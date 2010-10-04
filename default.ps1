@@ -7,7 +7,13 @@ properties {
   $pdflatex = "\Program Files (x86)\MiKTeX 2.8\miktex\bin\pdflatex.exe"
 }
 
-task default -depends MakePdf
+task default -depends MakePdf, StartPdf
+
+task StartPdf {
+   
+  start _build\latex\RavenDBMythology-$env:buildlabel.pdf
+  
+}
 
 task MakePdf -depends Init {
   exec { 
@@ -20,9 +26,6 @@ task MakePdf -depends Init {
   
   del RavenDBMythology-$env:buildlabel.pdf -ErrorAction SilentlyContinue
   mv RavenDBMythology.pdf RavenDBMythology-$env:buildlabel.pdf
-  
-  start RavenDBMythology-$env:buildlabel.pdf
-  
   popd
   
 }
@@ -33,7 +36,7 @@ task Init {
 	}
 }
 
-task Upload -depends default {
+task Upload -depends MakePdf {
 	Write-Host "Starting upload"
 	if (Test-Path $uploader) {
 		$log = $env:push_msg 
