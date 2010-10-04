@@ -44,7 +44,7 @@ task Upload -depends MakePdf {
 		  $log = git log -n 1 --oneline		
 		}
 		
-		$file = "RavenDBMythology-$env:buildlabel.pdf"
+		$file = "_build\latex\RavenDBMythology-$env:buildlabel.pdf"
 		write-host "Executing: $uploader '$uploadCategory' $file '$log'"
 		&$uploader "$uploadCategory" $file "$log"
 			
