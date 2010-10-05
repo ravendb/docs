@@ -94,7 +94,7 @@ background on each of the common NoSQL databases types, before starting to talk 
 
 
 NoSql Data stores
-================
+===================
 
 I am going to briefly touch on each NoSQL data store, from the developer perspective (what kind of API and interfaces 
 the data store have), and from the scaling perspective, to see how we can scale our solution. This isn't a book about
@@ -413,8 +413,8 @@ sites use some form of a graph database  to do things like "You might know...".
 
 Because graph databases are intentionally design to make sure that graph traversal is cheap, they also provide 
 other operations that tend to be very expensive without it. For example, Shortest Path between two nodes. That turn 
-out to be frequently useful when you want to do things like: "Who can recommend me to this company’s CTO so they would 
-hire me".
+out to be frequently useful when you want to do things like: Who can recommend me to this company's CTO so they would 
+hire me.
 
 One problem with scaling graph databases is that it is *very* hard to find an independent sub graph, which means that 
 it is very hard to shard graph databases. There are several effort currently in the academy to solve this problem, 
@@ -422,7 +422,7 @@ but I am not aware of any reliable solution as of yet.
 
 Column family databases (BigTable)
 ----------------------------------
-Column family databases are probably most known because of Goggle’s BigTable implementation. The are very similar on 
+Column family databases are probably most known because of Goggle's BigTable implementation. The are very similar on 
 the surface to relational database, but they are actually quite different beast. Some of the difference is 
 storing data by rows (relational) vs. storing data by columns (column family databases). But a lot of the difference 
 is conceptual in nature. You can't apply the same sort of solutions that you used in a relational form to a column 
@@ -481,7 +481,7 @@ example. We need to store: users and tweets. We define three column families:
 * UsersTweets - super column family, sorted by Sequential Guid
 
 Let us create the user (a note about the notation:
-I am using named parameters to denote column’s name & value here. The key parameter is the row key, and the column
+I am using named parameters to denote column's name & value here. The key parameter is the row key, and the column
 family is Users)::
 
   cfdb.Users.Insert(key: "@ayende", name: "Ayende Rahien", location: "Israel", profession: "Wizard");
@@ -519,7 +519,7 @@ Those value are visualized in figure 1.3. There are several things to notice in 
 
 That last bears some talking about. In a relational database, we would define a column called UserId, and that would 
 give us the ability to link back to the user. Moreover, a relational database will allow us to query the tweets 
-by the user id, letting us get the user’s tweets. A CFDB doesn't give us this option, there is no way to query by 
+by the user id, letting us get the user's tweets. A CFDB doesn't give us this option, there is no way to query by 
 column value. For that matter, there is no way to query by column (which is a familiar trick if you are using something
 like Lucene).
 
@@ -542,12 +542,12 @@ row in the Tweets table.
   Figure 1.4 - A representation of secondary index, connecting users & tweets, in a Column Family Database
   
 .. note::
-  Couldn't we create a super column in the Users’ column family to store the relationship?
+  Couldn't we create a super column in the Users' column family to store the relationship?
 
   
   We could, except that a column family can contain either columns or super columns, it cannot contain both.
   
-In order to get tweets for a user, we need to execute:
+In order to get tweets for a user, we need to execute::
 
   var tweetIds = 
        cfdb.UsersTweets.Get("@ayende")
@@ -555,7 +555,6 @@ In order to get tweets for a user, we need to execute:
                .Take(25)
                .OrderByDescending()
                .Select(x=>x.Value);
-
   var tweets = cfdb.Tweets.Get(tweetIds);
 
 .. note::
@@ -605,7 +604,7 @@ imagine that migrations using them are... unpleasant affairs, but they are one o
 scalability out of your data storage. 
 
 How to select a data storage solution?
-==============================
+=======================================
 So far I have shown you the major players in the NoSQL fields. Each of them has its own weaknesses and strengths. 
 A question that I get a lot is: 
 
@@ -627,7 +626,7 @@ a lot of sense to use a key/value store. But that doesn't means that orders shou
 a lot more flexibility, so I put them in a document database, etc. 
 
 Multiple data stores in a single application?
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+----------------------------------------------
 The logical conclusion of this approach is that a single application may have several different data stores. While I 
 wouldn't go out of my way to try to use any data store technology that exists out there in a project, I wouldn't 
 balk from using the best data store technology for the application purposes. The idea is to choose the best match for 
@@ -645,7 +644,7 @@ to a document database, rather than try to implement that on top of a RDBMS.
   discarded just because there are younger and sexier contenders in the ring.
 
 When is NoSQL a poor choice?
-============================
+-----------------------------
 After spending so long extolling the benefits of the various NoSQL solutions, I would like to point out at least one 
 scenario where I haven't seen a good NosQL solution for the RDBMS: Reporting.
 One of the great things about RDBMS is that given the information that it already have, it is very easy to massage the 
@@ -660,7 +659,7 @@ NoSQL solution) and they certainly have better scalability story than the RDBMS,
 RDBMS is still my tool of choice.
 
 And when scaling is not an issue?
-=================================
+----------------------------------
 The application data is one of the most precious assets that we have. And for a long time, there wasn't any question 
 about where we are going to put this data. The RDBMS was the only game in town. The initial drive away from the RDBMS 
 was indeed driven by the need to scale. But that was just the original impetuous to start developing the NoSQL 
