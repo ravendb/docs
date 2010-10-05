@@ -19,8 +19,8 @@ to retrieve the data, search it, read reports about it, etc.
 I distinctly remember learning how to do file IO by writing my own PhoneBook application and doing binary read/writes
 from the disk. And probably the hardest part was having to write the search routine. I ended up having to do a 
 sequential scan over the entire file for each search, and having to write custom code for each and every search 
-premutation that was required. Not surprisingly, developers facing the same solution at the dawn of computing quickly
-saught ways to avoid having to do this over & over again.
+permutation that was required. Not surprisingly, developers facing the same solution at the dawn of computing quickly
+sought ways to avoid having to do this over & over again.
 
 The first steps toward what we consider a database today were the ISAM (Indexed Sequential Access Method) files. Which
 are simply a way to store data in files with indexing. The problem with those cropped up when you wanted to do a bit 
@@ -29,7 +29,7 @@ and into data management libraries and systems. The next step was Edgar Codd's p
 Large Shared Data Banks".
 
 And from that point on, an absolute majority of the industry has been focused almost exclusively on relational 
-databases. For a very long time, data storange *was* putting things in a database.
+databases. For a very long time, data storage *was* putting things in a database.
 
 Until very recently, in fact...
 
