@@ -13,13 +13,13 @@ Probably the worst thing about relational databases is that they are so *good* i
 Wait! That is a *bad* thing? How?
 
 It is a bad thing because relational databases are appropriate for a wide range of tasks, but not for *every* task. 
-Yet it is exactly that that caused them to be used in contexts where they are not appropriate. In the last month alone (March 2010), 
+Yet it is exactly that which caused them to be used in contexts where they are not appropriate. In the last month alone (March 2010), 
 my strong recommendation for two different clients was that they need to switch to a non relational data store because it 
 would greatly simplify the work that they need to do.
 
 That met with some (justified) resistance, predictably. Most people equate data storage with RDBMS, there *is* no other way to store data. Since you are reading this book, you are
-probably already aware that there are other options out there for data storage. But you may not be ceratin why you might want to work with a No SQL database. Before we can answer that
-question, we have to revisit some of our knowledge about RDBMS first. We have to understand what it is that made RDBMS the de facto standard for data stroage for so long, and why there
+probably already aware that there are other options out there for data storage. But you may not be certain why you might want to work with a No SQL database. Before we can answer that
+question, we have to revisit some of our knowledge about RDBMS first. We have to understand what it is that made RDBMS the de facto standard for data storage for so long, and why there
 is such a fuss around the alternatives for RDBMS.
 
 Relational Databases have the following properties:
@@ -38,24 +38,24 @@ The most common reason to want to move from a RDBMS is running into the RDBMS li
 Actually, let me phrase that a little more strongly, RDBMS systems *cannot* be made to scale [1]_.
 
 The problem is inherit into the basic requirements of the relational database system, it *must* be consistent,  to handle things like foreign keys, maintain relations over the 
-entire dataset, etc. The problem, however, is that trying to scale a relational database over a set of machines. At that point, you run head on into the `CAP theorem <http://www.julianbrowne.com/article/viewer/brewers-cap-theorem>`_, 
+entire data set, etc. The problem, however, is that trying to scale a relational database over a set of machines. At that point, you run head on into the `CAP theorem <http://www.julianbrowne.com/article/viewer/brewers-cap-theorem>`_, 
 which state that you can have only two of the Consistency, Availability and Partition Tolerance triad. Hence, if consistency is your absolute requirement, you need to give up on either availability or partition tolerance.
 
 In most high scaling environments, it is not feasible to give up on either option, you *have* to give up on consistency. But RDBMS will not allow that so relational databases are out. That leave you with two basic choices:
 
-* Use an RDBMS, but instead of having a single instance across multiple nodes, treat each instance as an independent datastore. This approach is called sharding, and we will discuss how it applies to RavenDB in 
+* Use an RDBMS, but instead of having a single instance across multiple nodes, treat each instance as an independent data store. This approach is called sharding, and we will discuss how it applies to RavenDB in 
   :ref:`Chapter 7 <Chapter07>`. The problem with this approach with RDMBS is that you lose a lot of the capabilities that RDBMS brings to the table (you can't join between nodes, for example).
 * Use a No SQL solution.
 
-What it boils down to is that when you bring the need to scale to multiple machines, the drawbacks of using a RDBMS ( TODO: provide a full list) outweight the benefits that it usually brings to the table. Since we have to do a lot
+What it boils down to is that when you bring the need to scale to multiple machines, the drawbacks of using a RDBMS ( TODO: provide a full list) out weight the benefits that it usually brings to the table. Since we have to do a lot
 of work already with sharded SQL databases, it is worth turning out attention to the NoSQL alternatives, and what we might want to choose them. This book is about RavenDB, a Document Database, but I want to give you at least some
 background on each of the common NoSQL databases types, before starting to talk about RavenDB specifically.
 
 
-NoSql Datastores
+NoSql Data stores
 ================
 
-I am going to briefly touch on each NoSQL datastore, from the developer perspective (what kind of API and interfaces the datastore have), and from the scaling perspective, to see how we can scale our solution. This isn't a book about
+I am going to briefly touch on each NoSQL data store, from the developer perspective (what kind of API and interfaces the data store have), and from the scaling perspective, to see how we can scale our solution. This isn't a book about
 NoSQL solutions in general, but it is important to understand who are the other players in the fields when it comes the time to evaluate options your data storage strategy. 
 
 Almost all data stores need to handle things like:
@@ -67,13 +67,13 @@ Almost all data stores need to handle things like:
 * Replication
 * Scaling
 
-One thing that should be made clear upfront is the major difference between performance and scalability, the two are often at odds and usually increasing one would decrease the other.
+One thing that should be made clear up front is the major difference between performance and scalability, the two are often at odds and usually increasing one would decrease the other.
 For performance, we ask: How can we execute the same set of requests, over the same set of data with:
 
 * shorter time?
 * fewer resources usage (for example, less memory)?
 
-Note that here, too, there is usualy a tradeoff between resource usage and processing time. In general, you can cut the processing time by consuming more resources (for example, by adding a cache). Conversely, you can reduce 
+Note that here, too, there is usually a tradeoff between resource usage and processing time. In general, you can cut the processing time by consuming more resources (for example, by adding a cache). Conversely, you can reduce 
 resource usage by increasing the processing time (compute as needed, instead of precomputing results).
 
 For scaling, we ask: How can we meet our SLA when:
@@ -86,13 +86,13 @@ With relational databases, the answer is usually, you don't scale. The No SQL al
 .. sidebar:: Data access strategy follows the data access pattern
 
   One of the most common problems that I find when reviewing a project is that the first step (or one of them) was to build the Entity Relations Diagram, thereby sinking a large time/effort commitment 
-  into it before the project really starts and real world usage tells us what sort of data we actually need and what is the data access pterrn of the application.
+  into it before the project really starts and real world usage tells us what sort of data we actually need and what is the data access pattern of the application.
   
   One of the major problems with this approach is that it simply doesn't work with NoSQL solutions. An RDBMS allows very flexible querying, so you can sometimes get away with this approach (although it is generally discouraged
-  when using RDBMS as well), but NoSQL solutions often require you to query / access the data only in pre-defiend manner (for example, key/value stores allows only access by key). This means that the structure of your data is 
+  when using RDBMS as well), but NoSQL solutions often require you to query / access the data only in pre defined manner (for example, key/value stores allows only access by key). This means that the structure of your data is 
   usually going to be dictated by the way that you are going to access it. This is usually a surprise for people coming from the RDBMS world, since it is the inverse of how you usually model data in RDBMS.
   
-  We will discuess modeling techniques for a document database in :ref:`Chapter 2 <Chapter02>`.
+  We will discuss modeling techniques for a document database in :ref:`Chapter 2 <Chapter02>`.
 
 Key/Value Stores
 ----------------
@@ -178,7 +178,7 @@ Document Databases
 A document database is, at its core, a key/value store where the value is in a known format. A document db requires that the data will be store in a format that the database can understand. The format can be XML, JSON (JavaScript Object Notation), 
 Binary JSON (BSON), or just about anything, as long as the database can understand the document internal structure. In practice, most document databases uses JSON (or BSON) or XML.
 
-Why is this such a big thing? Because when the database can understand the format of the data that you send it, it can now do server side operations on that data. In most doc dbs, that means that we can now allow queries on
+Why is this such a big thing? Because when the database can understand the format of the data that you send it, it can now do server side operations on that data. In most document databases, that means that we can now allow queries on
 the document data. The known format also means that it is much easier to write tooling for the database, since it is possible to show, display and edit the data.
 
 I am going to use RavenDB as the example for this post. Documents in RavenDB use the JSON format, and each document contains both the actual data and additional metadata information about the document that is external to the document itself. 
@@ -212,7 +212,7 @@ can understand, we can ask the server to do things for us, such as querying. The
   
 Because the document database understand the format of the data, it can answer queries like that. Being able to perform queries is just one advantage of the database being able to understand the data, it also allows:
 
-* Projecting the docuemnt data into another form.
+* Projecting the document data into another form.
 * Running aggregations over a set of documents.
 * Doing partial updates (*patching* a document)
 
@@ -221,22 +221,22 @@ significantly easier than when using an RDBMS for most non trivial scenarios. It
 we think about it in our application are drastically different. Moreover, RDBMS has this little thing called Schemas. And modifying a schema can be a painful thing indeed, especially if you have to do it on production an on multiple
 nodes.
 
-The schemaless nature of a document database means that we don't have to worry about the shape of the data we are using, we can just serialize things into and out of the database. It helps that the commonly used format (JSON) 
+The schema less nature of a document database means that we don't have to worry about the shape of the data we are using, we can just serialize things into and out of the database. It helps that the commonly used format (JSON) 
 is both human readable and easily managed by tools.
 
-A document database doesn’t support relations, which means that each document is independent. That makes it much easier to shard the database than it would be in a relational database, because we don’t need to either store all 
+A document database doesn't support relations, which means that each document is independent. That makes it much easier to shard the database than it would be in a relational database, because we don't need to either store all 
 relations on the same shard or support distributed joins.  
 
 I like to think about document databases as a natural candidate for Domain Driven Design applications. When using a relational database, we are instructed to think in terms of Aggregates and always go through an aggregate.
 The problem with that is that it tends to produce very bad performance in many instances, as we need to traverse the aggregate associations, or specialized knowledge in each context. With a document database, aggregates are quite 
 natural, and highly performant, they are just the same document, after all.
 
-Standard modelling technique for a document database is to think in terms of aggregates, in fact. We discuss this in depth in the :ref:`next chapter <Chapter02>`.
+Standard modeling technique for a document database is to think in terms of aggregates, in fact. We discuss this in depth in the :ref:`next chapter <Chapter02>`.
 
 Concurrency
 ^^^^^^^^^^^^
 In most document stores, concurrency is only applicable on a single document, and it is usually offered as optimistic writes. For document databases that also have replication support, we have to deal with the same potential 
-conflicts that arise when using eventual consistenty key/value store, and we resolve them in much the same way. But letting the client decide how to merge all the conflicting versions. We discuss this in more detail in 
+conflicts that arise when using eventual consistency key/value store, and we resolve them in much the same way. But letting the client decide how to merge all the conflicting versions. We discuss this in more detail in 
 :ref:`Chapter 8, Replication <Chapter08>`.
 
 
@@ -247,7 +247,7 @@ stores are implemented by the user, using a manually maintained secondary index.
 
 Transactions 
 ^^^^^^^^^^^^^
-Most document databases will offer you transaction support for the a single docuemnt. RavenDB supports multi document (and multi node) transactions, but even so, it isn't recommended for common use, because of the potential for
+Most document databases will offer you transaction support for the a single document. RavenDB supports multi document (and multi node) transactions, but even so, it isn't recommended for common use, because of the potential for
 issues when using distributed transactions.
 
 Schema
@@ -259,7 +259,7 @@ We discuss indexes in detail in :ref:`Chapter 4 - RavenDB Indexes <Chapter04>`.
 Scaling Up
 ^^^^^^^^^^
 The common approach for scaling a document store is using sharding. Since each document is independent, document databases lends themselves easily to sharding. Usually sharding is combined with replication support to handle 
-failover in case of node failure, but that is about as complex as it gets. We discuss sharding strategies for RavenDB in :ref:`Chapter 7 - Scaling RavenDB <Chapter07>`.
+fail over in case of node failure, but that is about as complex as it gets. We discuss sharding strategies for RavenDB in :ref:`Chapter 7 - Scaling RavenDB <Chapter07>`.
 
 Common Usages
 ^^^^^^^^^^^^^^
@@ -300,39 +300,39 @@ to do things like "You might know…".
 Because graph databases are intentionally design to make sure that graph traversal is cheap, they also provide other operations that tend to be very expensive without it. For example, Shortest Path between two nodes. That turn 
 out to be frequently useful when you want to do things like: "Who can recommend me to this company’s CTO so they would hire me".
 
-One problem with scaling graph databases is that it is *very* hard to find an independent subgraph, which means that it is very hard to shard graph databases. There are several efforst currently in the academy to solve this problem, 
-but I am not aware of any reliable soluation as of yet.
+One problem with scaling graph databases is that it is *very* hard to find an independent sub graph, which means that it is very hard to shard graph databases. There are several effort currently in the academy to solve this problem, 
+but I am not aware of any reliable solution as of yet.
 
 Column family databases (BigTable)
 ----------------------------------
-Column family databases are probably most known because of Google’s BigTable implementation. The are very similar on the surface to relational database, but they are actually quite different beast. Some of the difference is 
-storing data by rows (relational) vs. storing data by columns (column family databases). But a lot of the difference is conceptual in nature. You can’t apply the same sort of solutions that you used in a relational form to a 
+Column family databases are probably most known because of Goggle’s BigTable implementation. The are very similar on the surface to relational database, but they are actually quite different beast. Some of the difference is 
+storing data by rows (relational) vs. storing data by columns (column family databases). But a lot of the difference is conceptual in nature. You can't apply the same sort of solutions that you used in a relational form to a 
 column database.
 
-That is because column databases are not relational, for that matter, they don’t even have what a RDBMS advocate would recognize as tables. The following concepts are critical to understand how column databases work:
+That is because column databases are not relational, for that matter, they don't even have what a RDBMS advocate would recognize as tables. The following concepts are critical to understand how column databases work:
 
 * Column family
 * Super columns
 * Column
 
-Columns and super columns in a column database are spare, meaning that they take exactly 0 bytes if they don’t have a value in them. Column families are the nearest thing that we have for a table, since they are about the only 
-thing that you need to define upfront. Unlike a table, however, the only thing that you define in a column family is the name and the key sort options (there is no fixed schema).
+Columns and super columns in a column database are spare, meaning that they take exactly 0 bytes if they don't have a value in them. Column families are the nearest thing that we have for a table, since they are about the only 
+thing that you need to define up front. Unlike a table, however, the only thing that you define in a column family is the name and the key sort options (there is no fixed schema).
 
-Column family databases are probably the best proof of leaky abstractions. Just about everything in CFDB (as I’ll call them from now on) is based around the idea of exposing the actual physical model to the users so they can 
+Column family databases are probably the best proof of leaky abstractions. Just about everything in CFDB (as I'll call them from now on) is based around the idea of exposing the actual physical model to the users so they can 
 make efficient use of that.
 
 * Column families - A column family is how the data is stored on the disk. All the data in a single column family will sit in the same file (actually, set of files, but that is close enough). 
   A column family can contain super columns or columns.
 * Super columns - A super column can be thought of as a dictionary, it is a column that contains other columns (but not other super columns).
-* Column - A column is a tuple of name, value and timestamp (I’ll ignore the timestamp and treat it as a key/value pair from now on).
+* Column - A column is a tuple of name, value and timestamp (I'll ignore the timestamp and treat it as a key/value pair from now on).
 
-It is important to understand that when schema design in a CFDB is of outmost importance, if you don’t build your schema right, you literally can’t get the data out. CFDB usually offer one of two forms of queries, by key or by 
+It is important to understand that when schema design in a CFDB is of outmost importance, if you don't build your schema right, you literally can't get the data out. CFDB usually offer one of two forms of queries, by key or by 
 key range. This make sense, since a CFDB is meant to be distributed, and the key determine where the actual physical data would be located. This is because the data is stored based on the sort order of the column family, and you 
 have no real way of changing the sorting (except choosing between ascending or descending).
 
-The sort order, unlike in a relational database, isn’t affected by the columns values, but by the column *names*.
+The sort order, unlike in a relational database, isn't affected by the columns values, but by the column *names*.
 
-Let assume that in the Users column family, in the row with the key ``@ayende``, we have the column named ``name`` set to "Ayende Rahine" and the column named ``location`` set to "Israel". The CFDB will physically sort them like 
+Let assume that in the Users column family, in the row with the key ``@ayende``, we have the column named ``name`` set to "Ayende Rahien" and the column named ``location`` set to "Israel". The CFDB will physically sort them like 
 this in the Users column family file::
 
   @ayende/location = "Israel"
@@ -352,9 +352,9 @@ This property is quite important to understanding how things work in a CFDB. Let
 
 Let us create the user (a note about the notation: I am using named parameters to denote column’s name & value here. The key parameter is the row key, and the column family is Users)::
 
-  cfdb.Users.Insert(key: "@ayende", name: "Ayende Rahine", location: "Israel", profession: "Wizard");
+  cfdb.Users.Insert(key: "@ayende", name: "Ayende Rahien", location: "Israel", profession: "Wizard");
 
-You can see a visualization of how this row looks like in figure 1.2. Note that this doesn’t look at all like how we would typically visualize a row in a relational database.
+You can see a visualization of how this row looks like in figure 1.2. Note that this doesn't look at all like how we would typically visualize a row in a relational database.
 
 .. figure:: _static/ColumnFamilyDb1.png
   :alt: A representation of a row in a Column Family Database
@@ -377,12 +377,12 @@ Now let us create a tweet::
 
 Those value are visualized in figure 1.3. There are several things to notice in the figure:
 
-* The actual key value doesn’t matter, but it *does* matter that it is sequential, because that will allow us to sort of it later. 
+* The actual key value doesn't matter, but it *does* matter that it is sequential, because that will allow us to sort of it later. 
 * Both rows have different data columns on them, because we don't have a schema for the column family. 
-* We don’t have any way to associate a user to a tweet.
+* We don't have any way to associate a user to a tweet.
 
 That last bears some talking about. In a relational database, we would define a column called UserId, and that would give us the ability to link back to the user. Moreover, a relational database will allow us to query the tweets 
-by the user id, letting us get the user’s tweets. A CFDB doesn’t give us this option, there is no way to query by column value. For that matter, there is no way to query by column (which is a familiar trick if you are using 
+by the user id, letting us get the user’s tweets. A CFDB doesn't give us this option, there is no way to query by column value. For that matter, there is no way to query by column (which is a familiar trick if you are using 
 something like Lucene).
 
 Instead, the only thing that a CFDB gives us is a query by key. In order to answer that question, we need to create a secondary index, which is where the UsersTweets column family comes into play::
@@ -395,12 +395,12 @@ which means that we can sort by it. What this actually does is create a single r
 row in the Tweets table.
 
 .. figure:: _static/ColumnFamilyDb3.png
-  :alt: A representation of seconadry index, connecting users & tweets, in a Column Family Database
+  :alt: A representation of secondary index, connecting users & tweets, in a Column Family Database
   
-  Figure 1.4 - A representation of seconadry index, connecting users & tweets, in a Column Family Database
+  Figure 1.4 - A representation of secondary index, connecting users & tweets, in a Column Family Database
   
 .. note::
-  Couldn’t we create a super column in the Users’ column family to store the relationship? 
+  Couldn't we create a super column in the Users’ column family to store the relationship? 
   
   We could, except that a column family can contain either columns or super columns, it cannot contain both.
   
@@ -421,7 +421,7 @@ In order to get tweets for a user, we need to execute:
 In essence, we execute two queries, the first on the UsersTweets column family, requesting the columns & values in the ``timeline`` super column in the row keyed “@ayende”, we then execute another query 
 against the Tweets column family to get the actual tweets.
 
-This sort of behavior is pretty common in NosQL datastores. It is called *secondary index*, a way to quickly access the data by key based on another entity/row/document value. This is one example of how the need to query for tweets
+This sort of behavior is pretty common in NosQL data stores. It is called *secondary index*, a way to quickly access the data by key based on another entity/row/document value. This is one example of how the need to query for tweets
 by user has affected the data that we store. If we didn't create this secondary index, we would have no possible way to answer a question such as "show me the last 25 tweets from @ayende". 
 
 Because the data is sorted by the column name, and because we choose to sort in descending order, we get the last 25 tweets for this user. What would happen if I wanted to show the last 25 tweets overall (for the public timeline)? 
@@ -438,12 +438,12 @@ The answer is quite simple. A CFDB is designed to run on a large number of machi
 databases, such as Oracle RAC will fall over and die very rapidly on the size of data and queries that a typical CFDB is handling easily. Remember that CFDB is really all about removing abstractions. CFDB is what happens when you 
 take a relational database, strip everything away that make it hard to run in on a cluster and see what happens.
 
-The reason that CFDB don’t provide joins is that joins require you to be able to scan the entire data set. That requires either someplace that has a view of the whole database (resulting in a bottleneck and a single point of 
-failure) or actually executing a query over all machines in the cluster. Since that number can be pretty high, we want to avoid that. CFDB don’t provide a way to query by column or value because that would necessitate either an 
+The reason that CFDB don't provide joins is that joins require you to be able to scan the entire data set. That requires either someplace that has a view of the whole database (resulting in a bottleneck and a single point of 
+failure) or actually executing a query over all machines in the cluster. Since that number can be pretty high, we want to avoid that. CFDB don't provide a way to query by column or value because that would necessitate either an 
 index of the entire data set (or just in a single column family) which is again, not practical, or running the query on all machines, which is not possible. By limiting queries to just by key, CFDB ensure that they know exactly 
 what node a query can run on. It means that each query is running on a small set of data, making them much cheaper.
 
-It requires a drastically different mode of thinking, and while I don’t have practical experience with CFDB, I would imagine that migrations using them are… unpleasant affairs, but they are one of the ways to get really high 
+It requires a drastically different mode of thinking, and while I don't have practical experience with CFDB, I would imagine that migrations using them are… unpleasant affairs, but they are one of the ways to get really high 
 scalability out of your data storage. 
 
 How to select a data storage solution?
@@ -452,12 +452,12 @@ So far I have shown you the major players in the NoSQL fields. Each of them has 
 
   I want to use NoSql-Technology-X for Xyz and...
   
-I usually cringe when I hear this sort of question, because almost invariablely, it falls into one of two pitfalls:
+I usually cringe when I hear this sort of question, because almost invariably, it falls into one of two pitfalls:
 
-* Trying to import a relational mindset into a NoSQL data store.
+* Trying to import a relational mind set into a NoSQL data store.
 * Trying to use a single data store for all things, including things that it really isn't suitable for.
 
-Selecting a data storage strategy isn't a one time decision. In a single application, you may use a Key/Value store to hold session infomration, graph database to serve social queries and a document database to hold your entities. 
+Selecting a data storage strategy isn't a one time decision. In a single application, you may use a Key/Value store to hold session information, graph database to serve social queries and a document database to hold your entities. 
 I view the "we use a single data store" mentality in the same way that I view people who want to write all their code in a single file. You certainly *can* do that, but that is going to be... awkward.
 
 I try to break down things based on the expected data access patterns expected from each section in the application. If in the product catalog am always dealing with queries by the product SKU, and speed is of the essence, it make 
@@ -468,21 +468,21 @@ Multiple data stores in a single application?
 The logical conclusion of this approach is that a single application may have several different data stores. While I wouldn't go out of my way to try to use any data store technology that exists out there in a project, I wouldn't 
 balk from using the best data store technology for the application purposes. The idea is to choose the best match for what we need to do, not to just use whatever is already there whatever it fits our purposes or not.
 
-That said, be aware that it only make sense to introduce a new data store technology to a project if the benefit of having multiple data stores outwieght the cost. If I need to support user defined fields, I would gravitate very 
+That said, be aware that it only make sense to introduce a new data store technology to a project if the benefit of having multiple data stores outweigh the cost. If I need to support user defined fields, I would gravitate very 
 quickly to a document database, rather than try to implement that on top of a RDBMS.
 
 .. warning:: Don't forget about the RDBMS
 
   Despite the name, NosQL actually stands for Not Only SQL. The main point is that the problem isn't with the RDBMS as a technology, the problem is that for many people, data storage *is* RDBMS. When choosing a data storage technology
-  I always take care to include RDBMS in the mix as well. RDBMS is an incredibely powerful tool and should not be discarded just because there are younger and sexier contenders in the ring.
+  I always take care to include RDBMS in the mix as well. RDBMS is an incredibly powerful tool and should not be discarded just because there are younger and sexier contenders in the ring.
 
 When is NoSQL a poor choice?
 ============================
-After spending so long extoling the benefits of the various NoSQL solutions, I would like to point out at least one scenario where I haven't seen a good NosQL solution for the RDBMS: Reporting.
+After spending so long extolling the benefits of the various NoSQL solutions, I would like to point out at least one scenario where I haven't seen a good NosQL solution for the RDBMS: Reporting.
 One of the great things about RDBMS is that given the information that it already have, it is very easy to massage the data into a lot of interesting forms. That is especially important when you are trying to do things like give the
 user the ability to analyze the data on their own, such as by providing the user with a report tool that allows them to query, aggregate and manipulate the data to their heart's content.
 
-While it is certainly possible to produce reports on top of a NoSQL store, you wouldn't be able to come close to the level of flexibility that a RDMBS will offer. That is one of the major benefits of the RDBMS, its flexbility.
+While it is certainly possible to produce reports on top of a NoSQL store, you wouldn't be able to come close to the level of flexibility that a RDMBS will offer. That is one of the major benefits of the RDBMS, its flexibility.
 The NoSQL solutions will tend to outperform the RDBMS solution (as long as you stay in the appropriate niche for each NoSQL solution) and they certainly have better scalability story than the RDBMS, but for user driven 
 reports, the RDBMS is still my tool of choice.
 
@@ -494,7 +494,7 @@ that benefited.
 
 Proven & Mature NoSQL solutions aren't applicable just at high end of scaling. NoSQL solutions provide a lot of benefits even for applications that will never need to scale higher than a single machine. Document databases drastically
 simplify things like user defined fields, or working with Aggregates. The performance of a NoSQL solution can often exceed a comparable RDBMS solution, because the NoSQL solution will usually focus on a very small subset of the 
-featureset that RDMBS has. 
+feature set that RDMBS has. 
 
 Summary
 ========
@@ -506,6 +506,6 @@ In the next chapter, we will leave the general topic of NoSQL and begin to focus
 
 
 .. [1] To be rather more exact, I should say that when I am talking about scaling, I am talking about scaling a database instance across a large number of machines. It is certainly possible
-  to scale RDBMS solutions, but the typical approach is by breaking the data store to indepedent nodes (sharding), which means that things like cross node joins are no longer possible. 
+  to scale RDBMS solutions, but the typical approach is by breaking the data store to independent nodes (sharding), which means that things like cross node joins are no longer possible. 
   Another RDBMS scaling solution is a set of servers that acts as a single logical database instance, such as Oracle RAC. The problem with this approach that the number of machines that can take part in such a system 
-  in limited (usually to low single digits), making it impracticle for high scaling requirements.
+  in limited (usually to low single digits), making it impractical for high scaling requirements.
