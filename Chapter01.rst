@@ -2,9 +2,36 @@ Chapter 1 - NoSQL? What is that?
 *********************************************
 
 .. contents:: In this chapter...
- 
-:depth: 3
+  :depth: 3
 
+In the beginning there was the data. And the Programmer put it in memory, and it was so. And on the second day,
+it was discovered that this data should be persisted, and then there was a file. And on the third day, the customer
+wanted searching, and that was the first database.
+
+This book is about RavenDB, a document database written in .NET. But I don't think that I can accurately talk about 
+RavenDB without first discussing some of the history of data storage in the IT field for the last half a century or 
+so.
+
+At first, data was simply stored in files, with each application having their own proprietary format. That quickly
+became a problem, since it was soon discovered that users have a lot of interesting requirements, such as being able
+to retrieve the data, search it, read reports about it, etc.
+
+I distinctly remember learning how to do file IO by writing my own PhoneBook application and doing binary read/writes
+from the disk. And probably the hardest part was having to write the search routine. I ended up having to do a 
+sequential scan over the entire file for each search, and having to write custom code for each and every search 
+premutation that was required. Not surprisingly, developers facing the same solution at the dawn of computing quickly
+saught ways to avoid having to do this over & over again.
+
+The first steps toward what we consider a database today were the ISAM (Indexed Sequential Access Method) files. Which
+are simply a way to store data in files with indexing. The problem with those cropped up when you wanted to do a bit 
+more than just accessing the data, in particular, aggregations. That was the point when data storage grew out of files
+and into data management libraries and systems. The next step was Edgar Codd's paper: "A Relational Model of Data for 
+Large Shared Data Banks".
+
+And from that point on, an absolute majority of the industry has been focused almost exclusively on relational 
+databases. For a very long time, data storange *was* putting things in a database.
+
+Until very recently, in fact...
 
 How we got this NoSQL thing?
 ============================
