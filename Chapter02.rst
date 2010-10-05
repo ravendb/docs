@@ -7,8 +7,15 @@ Chapter 2 - Grokking Document Databases
 In the previous chapter, we have spoken at length about a lot of different options for No SQL data stores. But even 
 though we touched on document databases, we haven't really discussed them in detail. In essence, document dataases
 stores documents (duh!). A document is usually represented as JSON (sometimes it can be XML). 
+
+.. note::
+
+  I am going to assume that you are familiar with RDBMS, and compare a document database behavior directly to the
+  behavior of RDBMS.
+
 The following JSON document represent an order::
 
+  // Listing 2.1 - A sample order document 
   { 
     "Date": "2010-10-05",
     "Customer": { 
@@ -36,8 +43,6 @@ The following JSON document represent an order::
       }      
     ]
   }
-
-.. rubric:: Listing 2.1 - A sample order document 
   
 Documents in a document database don't have to follow any schema and can have any form that they wish to be. This make 
 them an excellent choice when you want to use them for sparse models (models where most of the properties are usually
@@ -54,17 +59,21 @@ tables, and it is pretty common to have to touch more than five tables to get al
 logical entity. With document databases, all that information is already present in the document, and there is no need
 to do anything special. You just need to load the document, and the data is there.
 
-The down side here is while you can 
+The down side here is while you can embedd information inside the document very easily, it is harder to *referece* 
+information in other documents. In RDBMS, you can simply join to another table and get the data from the database
+that way. But document databases do not have the concept of joins (RavenDB has something similar called *includes*, 
+which is discussed in :ref:`Chapter 6 <Chapter06>`, but it isn't really a parallel).
+
+As you can imagine, these two changes leads to drastically different methods of modeling data in a document 
+database...
   
 Data modeling with document databases
 =====================================
 
-* How to model a document database
-* Documents and Indexes
 * Implications of document only storage:
 
   * Docs are independent
   * There are no joins
   * Queries only via indexes
- 
+* Documents and Indexes 
 * BASE - Basically AVailable, Soft State, Eventually Consistent
