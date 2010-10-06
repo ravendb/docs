@@ -267,7 +267,7 @@ It made sense to try to optimize this with normalization. In essence, normalizat
 the repeated patterns and substituting them with a marker. There is also another issue, when normalization came out, 
 the applications being were far different than the type of applications we build today. In terms of number of 
 users, time that you had to process a single request, concurrent requests, amount of data that you had to deal with, 
-etc. Under those circumstances, it actually made sense to trade off read speed for storage. In today’s world? I don't 
+etc. Under those circumstances, it actually made sense to trade off read speed for storage. In today's world? I don't 
 think that it hold as much.
 
 The other major benefit of normalization, which took extra emphasis when the reduction in storage became less important
