@@ -7,3 +7,4 @@ Things to talk about
 * Replication ot SQL
 * Primary keys management
 * implementation of denormalized reference in raven
+* Modeling many to many, many to one, one to one
