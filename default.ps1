@@ -16,9 +16,18 @@ task StartPdf {
 }
 
 task MakePdf -depends Init {
+  $global:log = $null
   exec { 
-    &$python $sphinx -b latex -d _build/doctrees  . _build/latex
+    $global:log = &$python $sphinx -b latex -d _build/doctrees  . _build/latex
   }
+  echo $global:log
+  
+  foreach ($line in $global:log ){
+    if( $line.Contains("warning") ) {
+      throw "Building the documents resulted in a warning!"
+    }
+  }
+  
   pushd _build/latex
   exec { 
       & $pdflatex .\RavenDBMythology.tex
