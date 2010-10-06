@@ -170,9 +170,9 @@ the rules for map/reduces functions, but it is important to be aware of what tho
   the map function output the same type as the output of the reduce function. Since the types are the same, it is 
   naturally possible to run the reduce function on its own output (after all, it is also the map function output).
   
-  Listing 5.9 shows an example of a map/reduce pair returning the same type::
+  Listing 5.10 shows an example of a map/reduce pair returning the same type::
   
-    // Listing 5.9 - Map/reduce pair returning the same type.
+    // Listing 5.10 - Map/reduce pair returning the same type.
     
     // map
     from post in docs.Posts
@@ -183,9 +183,9 @@ the rules for map/reduces functions, but it is important to be aware of what tho
     group result by result.BlogId into g
     select new { BlogId = g.Key, CommentCount = g.Sum(x=>x.CommentCount) }
     
-  And listing 5.10 shows an example of an invalid map/reduce pair::
+  And listing 5.11 shows an example of an invalid map/reduce pair::
   
-    // Listing 5.10 - Map/reduce pair returning different types
+    // Listing 5.11 - Map/reduce pair returning different types
     
     // map
     from post in docs.Posts
@@ -196,7 +196,7 @@ the rules for map/reduces functions, but it is important to be aware of what tho
     group result by result.BlogId into g
     select new { BlogId = g.Key, TotalComments = g.Sum(x=>x.CommentCount) }
     
-  If we will try to send the output of the reduce function in listing 5.10 back into the same function, we are going to
+  If we will try to send the output of the reduce function in listing 5.11 back into the same function, we are going to
   get an error because there is not CommentCount in the output of the reduce function.
 
 * The map and reduce function *must* be pure functions. A pure function is a function that:
@@ -237,7 +237,6 @@ problem, not a map/reduce sort of problem.
 
 Map/reduce assumes that the reduce step is going to... well *reduce* the data set :-).
 
-
 If you need fresh results, map/reduce isn't applicable either, it is an inherently a batch operation, not an online one.
 Trying to invoke map/reduce operation for a user request is going to be very expensive, and not something that you 
 really want to do. 
@@ -262,16 +261,16 @@ efficently cache and partition work as needed. When a document that is indexed b
 the map function only on that document, and then reduce the document along with the reduce results of all the other 
 documents that share the same reduce key (the item the Linq query groups on).
 
-Listing 5.11 shows a reduce function::
+Listing 5.12 shows a reduce function::
 
-    //Listing 5.11 - A sample reduce function
+    //Listing 5.12 - A sample reduce function
     
     // reduce
     from result in results
     group result by result.BlogId into g
     select new { BlogId = g.Key, CommentCount = g.Sum(x=>x.CommentCount) }
     
-The reduce key in listing 5.11 is the *value* of result.BlogId. RavenDB will use that to optimize what values it is will
+The reduce key in listing 5.12 is the *value* of ``result.BlogId``. RavenDB will use that to optimize what values it is will
 pass to the reduce function (the actual group by is usually done by RavenDB, and not by the linq query). This results in
 much cheaper cost of indexing for map/reduce indexes, compared to running a single query with a group by on all 
 documents with the same reduce key. 
@@ -289,8 +288,36 @@ documents with the same reduce key.
 We are almost done with the theory, I promise. We just have to deal with one tiny detail before we can start looking at
 some real code.
 
-How RavendB stroes the results of map/reduce indexes?
+How RavendB stores the results of map/reduce indexes?
 ======================================================
+
+In the :ref:`previous chapter <Chapter05>` we discussed how RavenDB deals with the results of simple indexes (containing
+only a map portion). Map/reduce indexes actually produce two different data points. The first is the output from the map
+function. Internally, those values are called *mapped results* inside RavenDB. Those values are never exposed externally
+but they are what allows RavenDB to perform partial index updates.
+
+The second output is the output from the reduce function. This is the externally visible output from a map/reduce index.
+And like simple indexes, that data is also stored inside a Lucene index. Storing the data in Lucene allows efficent and
+full featured querying capabilties (as well as all the other goodies, like full text searching).
+
+Unlike simple indexes (where the assumption is that most of the time you would like to search on the index, but get the
+actual document), map/reduce indexes don't serve just as an index, but actually store the data that we are going to 
+get as a result of a query.
+
+For example, if I query the index that we defined in listing 5.3 and listing 5.4 (and whose output is shown in listing 
+5.9) for the result for the ``blogs/9313`` blog, we will get::
+
+  { BlogId: "blogs/9313", CommentCount: 4  }
+  
+This value is stored in the index itself, and it is loaded directly from there. This means that you don't touch
+any documents when you query a map/reduce index. All the work is being handled by RavenDB on the background. And like
+simple indexes, it is possible to query a map/reduce and get a stale result. We handle this in exactly the same way we
+handle stale index with simple indexes.
+
+And now, after much ado, let us get to coding and write our first map/reduce index.
+
+Our first map/reduce index
+===========================
   
 In this chapter:
 
