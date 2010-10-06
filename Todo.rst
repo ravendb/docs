@@ -6,3 +6,4 @@ Things to talk about
 * Transactions
 * Replication ot SQL
 * Primary keys management
+* implementation of denormalized reference in raven
