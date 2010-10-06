@@ -272,7 +272,7 @@ think that it hold as much.
 
 The other major benefit of normalization, which took extra emphasis when the reduction in storage became less important
 as HD sizes grew, is that when you state a fact only once, you can modify it only once. The corollary to that is that 
-when you need to modify this data, you can do so in only one location. Except… there is a large set of scenarios where you
+when you need to modify this data, you can do so in only one location. Except... there is a large set of scenarios where you
 *don't* want to do that. 
 
 Let us take invoices as a good example. In the case of an invoicing system , if you changed the product 
