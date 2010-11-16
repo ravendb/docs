@@ -140,7 +140,7 @@ If you have the id of an existing document (for example the previous saved blog 
 
 	Blog existingBlog = session.Load<Blog>("blogs/1");
 
-This results in the HTTP communication shows in listing 3.7::
+This results in the HTTP communication shown in listing 3.7::
 	
 	GET /docs/blogs/1 HTTP/1.1
 	Accept-Encoding: deflate,gzip
@@ -195,6 +195,111 @@ Deleting existing documents
 
 Once a valid reference to a document has been retrieved, the document can be deleted with a call to Delete in the following manner::
 
-session.Delete(blog);
+	session.Delete(blog);
+	session.SaveChanges();
+
+Once again, this results in an HTTP communcation as shown in Listing listing 3.8::
+
+	POST /bulk_docs HTTP/1.1
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8081
+	Content-Length: 49
+	Expect: 100-continue
+
+	[{"Key":"blogs/1","Etag":null,"Method":"DELETE"}]
 
 	
+Transaction support in RavenDB
+=====================================
+
+All the previous examples have assumed that a single unit of work can be achieved with a single IDocumentSession and a single call to ``SaveChanges`` - for the most part this is definitely true - sometimes however we do need multiple calls to ``SaveChanges`` for one reason or another, but we want those calls to be contained within a single atomic operation.
+
+RavenDB supports System.Transaction for multiple operations against a RavenDB server, or even against multiple RavenDB servers.
+
+The client code for this is as simple as::
+
+	using (var transaction = new TransactionScope())
+	{
+		Blog existingBlog = session.Load<Blog>("blogs/1");
+
+		existingBlog.Title = "Some new title";
+
+		session.SaveChanges();
+
+
+		session.Delete(existingBlog);
+		session.SaveChanges();
+
+		transaction.Complete();
+	}
+	
+If at any point any of this code fails, none of the changes will be enacted against the RavenDB document store.
+
+The implementation details of this are not important, although it is possible to see that RavenDB does indeed send a transaction Id along with all of the the HTTP requests under this transaction scope as shown in listing 3.9::
+
+	POST /bulk_docs HTTP/1.1
+	Raven-Transaction-Information: 975ee0bf-cac9-4b8e-ba29-377de722f037, 00:01:00
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8081
+	Content-Length: 300
+	Expect: 100-continue
+
+	[{"Key":"blogs/1","Etag":null,"Method":"PUT","Document":{"Title":"Some new title","Category":null,"Content":null,"Comments":null},"Metadata":{"Raven-Entity-Name":"Blogs","Raven-Clr-Type":"ConsoleApplication5.Blog, ConsoleApplication5","@id":"blogs/1","@etag":"00000000-0000-0200-0000-000000000002"}}]
+
+A call to commit involves a separate call to another HTTP endpoint with that transaction id::
+
+	POST /transaction/commit?tx=975ee0bf-cac9-4b8e-ba29-377de722f037 HTTP/1.1
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8081
+	Content-Length: 0
+
+.. note::
+	While RavenDB supports System.Transactions, it is not recommended that this be used as an ordinary part of application workflow as it is part for the partition tolerance aspect of our beloved "CAP theorum".
+
+Basic query support in RavenDB
+=====================================
+
+Once data has been stored in RavenDB, the next useful operation is the ability to query based on some aspect of the documents that have been stored.
+
+For example, we might wish to ask for all the blog entries that belong to a certain category like so::
+
+	var results = from blog in session.Query<Blog>()
+				  where blog.Category == "RavenDB"
+				  select blog;
+				  
+That Just Works(tm) and gives us all the blogs with a category of RavenDB.
+
+The HTTP communication for this operation is shown in listing 3.10::
+
+	GET /indexes/dynamic/Blogs?query=Category:RavenDB&start=0&pageSize=128 HTTP/1.1
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8081
+
+The important part of this query is that we are querying the "Blogs" collection, for the property "Category" with the value of "RavenDB".
+
+We will also notice that a page size of 128 was passed along, although none was specified, which leads us onto the next topic of "Safe by default".
+
+Safe by default
+=====================================
+
+RavenDB, by default, will not allow operations that might compromise the stability of either the server or the client. The two examples that present themselves in the above examples are
+
+* If a page size value is not specified, the length of the results will be limited to 128 results
+* The number of remote calls to the server per session is limited to 30
+
+The first one is obvious - unbounded result sets are dangerous, and have been the cause of many failures in ORM based systems - unless a result-size has been specified, RavenDB will automatically attempt to limit the size of the returned result set.
+
+The second example is less immediate, and should never be reached if RavenDB is being utilised correctly - remote calls are expensive, and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other mis-use of the RavenDB session.
+
+Summary
+=====================================
+
+In this chapter we learned how to utilise the session as a basic "Unit of Work" in RavenDB, and saw a basic example of querying in action as well as examples of how these remote calls look in raw HTTP calls across the wire.
+
+We also saw how RavenDB attempts to be "safe" by default in limiting the capacity of common mistakes to cause damage in your application.
+
+In the next chapter, we will look more closely at the query API, and how to utilise this within our applications to good effect.
