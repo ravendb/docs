@@ -28,8 +28,8 @@ But we still don't have a good idea what an index *is*, right? Listing 5.2 shows
   from blogItem in docs.Blogs
   select new { blogItem.Title }
   
-That looks like a Linq query, and not any sort of index that *I* have seen before, so what is going on? Well, the answer is that what you see is the *index 
-definition function``, which is what RavenDB uses to extract the information to be indexed from the documents. Let us assume that the server contains the 
+That looks like a Linq query, and not any sort of index that *I* have seen before, so what is going on? Well, the answer is that what you see is the 
+``index definition function``, which is what RavenDB uses to extract the information to be indexed from the documents. Let us assume that the server contains the 
 documents in listing 5.3::
 
   // listing 5.3 - sample documents
@@ -56,7 +56,7 @@ The output of the indexing function in listing 5.2 over the documents in listing
 Those values are then stored inside a persistent index, which gives us the ability to perfom low cost queries over the values
 stored in the index. 
 
-.. question::
+.. note::
   
   Where did the ``__document_id`` in listing 5.4 came from? It doesn't appear in the indexing function in listing 5.2.
   
