@@ -1,4 +1,4 @@
-Chapter 2 - Grokking Document Databases
+Grokking Document Databases
 ***************************************
 
 .. contents:: In this chapter...
