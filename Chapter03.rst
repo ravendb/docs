@@ -1,36 +1,42 @@
 Chapter 3 - Basic Operations
 ****************************************
 
-This is a chapter of firsts, in which you will learn about the basic operations of RavenDB:
+In this chapter: 
 
-* Creating documents
+* Creating and modifying documents
 * Loading documents
-* Modifying documents
-* Querying documents
-* Deleting documents 
+* Querying documents 
 * Using System.Transactions
 
+So far we have spoken in abstracts, about No SQL in general and RavenDB in particular, but in this chapter, we leave the high level concepts aside and concentrate
+on actually using RavenDB. We will go through all the steps required to perform basic CRUD operations using RavenDB, familizaring ourselves with RavenDB APIs, concepts
+and workings.
 This chapter assumes usage of the RavenDB .NET Client API, and will provide examples of the underlying HTTP calls behind made for each call.
 
 Creating a document session
 =====================================
 
-In order to communicate with a RavenDB instance, we must first create a document store and initialize it like so::
+In order to communicate with a RavenDB instance, we must first create a document store and initialize it, you can see a sample of initializing a document store
+in listing 3.1::
 
+	// listing 3.1 - initializing a new document store
     store = new DocumentStore()
     {
         Url = "http://localhost:8080"
     };
     store.Initialize();
 	
-This will create a store that connects to a RavenDB server running on port 8080 on the local machine. 
+This will create a document store that connects to a RavenDB server running on port 8080 on the local machine. 
 
 .. note::
  
- It is possible to embed RavenDB in an application and run it in-process by utilising an EmbeddableDocumentStore, more information about this can be found in the documentation
+ It is possible to run RavenDB using an embedded mode in an application and run it in-process by utilising an EmbeddableDocumentStore, more information about this 
+ can be found in the documentation.
  
-Once a store has been created, the next step is to create a session against that store that will allow us to perform basic CRUD operations within a "unit of work" against that store. It is important to note that when invoking any operations against this store, that no changes will be made to the underlying document database until SaveChanges has been invoked in the following pattern:
+Once a document store has been created, the next step is to create a session against that document store that will allow us to perform basic CRUD operations within a Unit of Work. It is important to note that when invoking any operations against this store, that no changes will be made to the underlying document database until the ``SaveChanges`` method has been called, as in listing 3.2::
 
+	// listing 3.2 - saving changes using the session API
+	
 	using (IDocumentSession session = store.OpenSession())
 	{
 		// Operations against session
@@ -40,15 +46,22 @@ Once a store has been created, the next step is to create a session against that
 	}
 
 
-In this context, the session can be thought of as managing the transaction scope, and SaveChanges can be thought of as committing that transaction. Certainly, any operations made as part of this session will be committed atomically (that is to say, either they all succeed, or they all fail).
-	
-It will be assumed in the following examples that a valid store has been created, and that the calls are being made within the context of a valid session, and that SaveChanges is being called safely at the end of that session lifetime.
+In this context, the session can be thought of as managing all changes internally, and SaveChanges can be thought of as committing all those changes to the RavenDB server. Any operations submitted in a ``SaveChanges`` call will be committed atomically (that is to say, either they all succeed, or they all fail).
+
+It will be assumed in the following examples that a valid store has been created, and that the calls are being made within the context of a valid session, and that ``SaveChanges`` is being called safely at the end of that session lifetime.
+
+.. note::
+  
+  If you don't call ``SaveChanges``, all the changes made in that session will be discarded!
 	
 Saving a new document
 =====================================
 
-Assuming the following class structure::
+Before we can start saving information to RavenDB, we must define *what* we will save. You can see the sample class structure in 
+listing 3.3::
 
+	// listing 3.3 - Simple class structure
+	
     public class Blog
     {
 		public string Id { get; set ; }
@@ -64,8 +77,9 @@ Assuming the following class structure::
 	   public string Content { get; set;}
    }
   
-If we create a new object in our application like in the following example::
+We can now create a new instance of the ``Blog`` class, as shown in listing 3.4::
 
+	// listing 3.4 - creating a new instance of the Blog class
 	Blog blog = new Blog()
 	{
 		Title = "Hello RavenDB",
@@ -77,23 +91,30 @@ If we create a new object in our application like in the following example::
 
 		  }
 	};
-	
-Persisting this entire object graph involves using Store like so::
 
+.. note::
+
+	Neither the class itself or instansiating it required anything from RavenDB, either in the form of attributes or in the form of special
+	factories. The RavenDB Client API works with POCO (Plain Old CLR Objects) objects.
+
+Persisting this entire object graph involves using ``Store`` and then ``SaveChanges``, as seen in listing 3.5::
+
+	// listing 3.5 - saving the new instance to RavenDB
 	session.Store(blog);
 	session.SaveChanges();
 
-This will produce the following HTTP communication between the client and the server::
+The ``SaveChanges`` call will product the HTTP communication shown in listing 3.6. Note that the ``Store`` method operates purely in memory, and only
+the call to ``SaveChanges`` communicates with the server::
 
-	// PASTE HERE THE HTTP CALL SHOWING WHAT HAPPENS WHEN YOU CALL SAVE CHANGES
+	// TODO: PASTE HERE THE HTTP CALL SHOWING WHAT HAPPENS WHEN YOU CALL SAVE CHANGES
 	
 Two things of note at this point:
 
 * We left the "Id" property of Blog blank, and it is this property that will be used as the "primary key" for this document
-* The entire object graph is serialized and persisted as a single document
+* The entire object graph is serialized and persisted as a *single document*, not as a set of distinct objects.
 
 .. note::
-	If there is no "Id" property on a document, RavenDB will allocate an Id, but it will not be retrievable. In other words, having an Id is entirely optional, but as it is generally more useful to have this information available, most of your documents should have an Id property.
+	If there is no "Id" property on a document, RavenDB will allocate an Id, but it will be retrievable only by calling ``session.Advanced.GetDocumentId``. In other words, having an Id is entirely optional, but as it is generally more useful to have this information available, most of your documents should have an Id property.
 
 Loading & Editing an existing document
 =====================================
@@ -110,6 +131,7 @@ Flushing those changes to the document store is achieved in the usual way::
 
 	session.SaveChanges();
 	
+You don't have to call an ``Update`` method, or track any changes yourself. RavenDB will do all of that for you.
 For the above example, the above example will result in the following HTTP message::
 	
 	// PASTE HERE THE HTTP MESSAGE BEING SENT
