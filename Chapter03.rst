@@ -106,7 +106,24 @@ Persisting this entire object graph involves using ``Store`` and then ``SaveChan
 The ``SaveChanges`` call will product the HTTP communication shown in listing 3.6. Note that the ``Store`` method operates purely in memory, and only
 the call to ``SaveChanges`` communicates with the server::
 
-	// TODO: PASTE HERE THE HTTP CALL SHOWING WHAT HAPPENS WHEN YOU CALL SAVE CHANGES
+	POST /bulk_docs HTTP/1.1
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8080
+	Content-Length: 378
+	Expect: 100-continue
+
+	[{"Key":"blogs/1","Etag":null,"Method":"PUT","Document":{"Title":"Hello RavenDB","Category":"RavenDB","Content":"This is a blog about RavenDB","Comments":[{"Title":"Unrealistic","Content":"This example is unrealistic"},{"Title":"Nice","Content":"This example is nice"}]},"Metadata":{"Raven-Entity-Name":"Blogs","Raven-Clr-Type":"Blog"}}]
+	
+	
+	HTTP/1.1 200 OK
+	Content-Type: application/json; charset=utf-8
+	Server: Microsoft-HTTPAPI/2.0
+	Date: Tue, 16 Nov 2010 20:37:00 GMT
+	Content-Length: 205
+
+	[{"Etag": "00000000-0000-0100-0000-000000000002","Method":"PUT","Key":"blogs/1","Metadata":{"Raven-Entity-Name":"Blogs","Raven-Clr-Type":"Blog","@id":"blogs/1"}}]
+
 	
 Two things of note at this point:
 
@@ -123,6 +140,25 @@ If you have the id of an existing document (for example the previous saved blog 
 
 	Blog existingBlog = session.Load<Blog>("blogs/1");
 
+This results in the HTTP communication shows in listing 3.7::
+	
+	GET /docs/blogs/1 HTTP/1.1
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8080
+
+	HTTP/1.1 200 OK
+	Content-Type: application/json; charset=utf-8
+	Last-Modified: Tue, 16 Nov 2010 20:37:01 GMT
+	ETag: 00000000-0000-0100-0000-000000000002
+	Server: Microsoft-HTTPAPI/2.0
+	Raven-Entity-Name: Blogs
+	Raven-Clr-Type: Blog
+	Date: Tue, 16 Nov 2010 20:39:41 GMT
+	Content-Length: 214
+
+	{"Title":"Hello RavenDB","Category":"RavenDB","Content":"This is a blog about RavenDB","Comments":[{"Title":"Unrealistic","Content":"This example is unrealistic"},{"Title":"Nice","Content":"This example is nice"}]}
+
 Changes can then be made to that object in the usual manner::
 
 	existingBlog.Title = "Some new title";
@@ -134,7 +170,22 @@ Flushing those changes to the document store is achieved in the usual way::
 You don't have to call an ``Update`` method, or track any changes yourself. RavenDB will do all of that for you.
 For the above example, the above example will result in the following HTTP message::
 	
-	// PASTE HERE THE HTTP MESSAGE BEING SENT
+	POST /bulk_docs HTTP/1.1
+	Accept-Encoding: deflate,gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8080
+	Content-Length: 501
+	Expect: 100-continue
+
+	[{"Key":"blogs/1","Etag":null,"Method":"PUT","Document":{"Title":"Some new title","Category":"RavenDB","Content":"This is a blog about RavenDB","Comments":[{"Title":"Unrealistic","Content":"This example is unrealistic"},{"Title":"Nice","Content":"This example is nice"}]},"Metadata":{"Content-Encoding":"gzip","Raven-Entity-Name":"Blogs","Raven-Clr-Type":"Blog","Content-Type":"application/json; charset=utf-8","@etag":"00000000-0000-0100-0000-000000000002"}}]
+	
+	HTTP/1.1 200 OK
+	Content-Type: application/json; charset=utf-8
+	Server: Microsoft-HTTPAPI/2.0
+	Date: Tue, 16 Nov 2010 20:39:41 GMT
+	Content-Length: 280
+
+	[{"Etag": "00000000-0000-0100-0000-000000000003","Method":"PUT","Key":"blogs/1","Metadata":{"Content-Encoding":"gzip","Raven-Entity-Name":"Blogs","Raven-Clr-Type":"Blog","Content-Type":"application/json; charset=utf-8","@id":"blogs/1"}}]
 	
 .. note::
 	The entire document is sent to the server with the Id set to the existing document value, this means that the existing document will be replaced in the document store with the new one. Whilst patching operations are possible with RavenDB, the client API by default will always just replace the entire document in its entirety.
