@@ -1,6 +1,13 @@
 Map / Reduce indexes
 ********************************
 
+In this chapter:
+
+* What is map / reduce?
+* How map / reduce works in RavenDB?
+* Creating and querying map / reduce indexes
+* Where should we use map / reduce indexes?
+
 .. _MapReduce:
 
 One of the biggest hurdles for NoSQL databases has always been the perception that map/reduce is such a hard topic.
@@ -106,7 +113,7 @@ pair of map/reduce functions.
 * Listing 5.3 is the map function.
 * Listing 5.5 is the reduce function.
 
-I know what you are thinking, I am explaining to you thinks that you already knows, but bears with me. The fat lady 
+I know what you are thinking, I am explaining to you things that you already knows, but bears with me. The fat lady 
 hasn't sung yet, after all. I didn't complicated the query in 5.2 by breaking it apart to two separate queries for
 no reason. Let us assume that we have *another* data set, on another machine. This data set is shown in listing 5.7::
 
@@ -123,7 +130,7 @@ us the data in listing 5.8::
   { BlogId: "blogs/7269", CommentCount: 2 }
   { BlogId: "blogs/9313", CommentCount: 2 }
 
-The fun part starts now, because the reduce function *can be applied recursively*. What we are going to do now is to
+The fun part starts now, the reduce function *can be applied recursively*. What we are going to do now is to
 execute the query in listing 5.5 on the data in both listing 5.6 and 5.8 (we are simply going to concat the two datasets
 and execute the query on all the data at one). This gives us the results in listing 5.9::
 
@@ -139,7 +146,7 @@ boundaries.
 What is map/reduce, again?
 ===========================
 
-Map/reduce [#google]_ is simply a way to break the concept of group by to multiple steps. By breaking the group by 
+Map/reduce [#google]_ is simply a way to break the concept of ``group by`` to multiple steps. By breaking the ``group by`` 
 operation to multiple steps, we can execute a group by operation over a set of machines, allowing us to execute such
 operations on data sets which are too big to fit inside a single machine. Map/reduce is composed of two steps. 
 
@@ -149,7 +156,7 @@ that we don't care about and project the data that we are interested in for the 
 passed in (the Linq select clause).
 
 The second step in the map/reduce process is the reduce function (or a linq query). This function takes the output of
-the map function and *reduce* the values. In practice, the reduce function almost always uses a group by clause to 
+the map function and *reduce* the values. In practice, the reduce function almost always uses a ``group by`` clause to 
 aggregate the incoming dataset based on a common key.
 
 Distributed map/reduce relies on an executer that can execute the map function, and then the reduce function on the 
@@ -316,16 +323,110 @@ handle stale index with simple indexes.
 
 And now, after much ado, let us get to coding and write our first map/reduce index.
 
-Our first map/reduce index
-===========================
-  
-In this chapter:
+Creating our first map/reduce index
+====================================
 
-* Creating map / reduce indexes
-* Querying map / reduce indexes
+Using our shopping cart example, we want to find out how many items of each product where sold. As a reminder listing 
+5.13 shows the format of a shopping cart::
+
+  //listing 5.13 - a shopping cart document
+  
+  { // shoppingcarts/1342
+    "Products": [
+      { "Id": "products/31", "Quantity":3 },
+      { "Id": "products/25", "Quantity":1 },
+    ]
+  }
+  
+Before we start writing the map/reduce index, I usually find it useful to write the full linq query to do the same 
+calculation. That tends to make it easier to write the index later on. The linq query is shown in listing 5.14::
+
+  // listing 5.14 - a liqn query to calculate the count of products across all shopping carts
+  
+  from shoppingCart from docs.ShoppingCarts
+  from product in shoppingCart.Products
+  group product by product.Id into g
+  select new { ProductId = g.Key, Count = g.Sum(x=>x.Count) }
+  
+The next step is to break the query in listing 5.14 to multiple steps, and create an index out of it. We will use the 
+``AbstractIndexCreationTask`` to do that, as shown in listing 5.15::
+
+  // listing 5.15 - The products count index
+  
+  public class Products_ByCountInShoppingCart : AbstractIndexCreationTask<ShoppingCart, ProductByCountProjection>
+  {
+    public Products_ByCountInShoppingCart()
+    {
+        Map = carts => from cart in carts
+                       from product in cart.Products
+                       select new { ProductId = product.Id, Count = product.Count };
+        Reduce = results => from result in results
+                            group result by result.ProductId into g
+                            select new { ProductId = g.Key, Count = g.Sum(x=>x.Count) };
+    }
+  }
+
+The Map part in the index will extract a count for each product from all the shopping cart, exactly as in the blog example that
+we have examined previously. The only interesting part is that we dig deeper into the shopping cart, and project the values from
+one of its collections. And the Reduce part will aggregate teh results by the product id into the final answer.
+
+You might have noticed that we have added a new twist to the ``AbstractIndexCreationTask``, in the form of an additional 
+generic parameter. The second parameter ``ProductByCountProjection`` is the output of the Map function and is both the 
+input and output of the Reduce function.
+
+Querying map/reduce indexes
+============================
+
+Just like standard indexes, we can query a map / reduce index using the session API. Listing 5.16 shows loading the sold count
+for a particular product::
+  
+  // listing 5.16 - querying a map / reduce index
+  var results = session.Query<ProductByCountProjection, Products_ByCountInShoppingCart>()
+                  .Where(x => x.ProductId == "products/31")
+                  .ToList();
+
+The first parameter of the ``Query`` method is the type of the results, while the second parameter indicates which index we 
+should query. Unlike standard indexes (also called simple indexes or map-only indexes), the result of a map / reduce function
+is always a projection, and never the original document.
+
+We usually use the same type that we used when creating the index using the ``AbstractIndexCreationTask`` class. Now that we 
+know how to create and query indexes, we can move on to more important topics, _where_ will we use those?
+
+Where should we use map / reduce indexes?
+==========================================
+
+Map / reduce indexes are very useful in aggregating data, but they shouldn't be confused with a full blown reporting solution.
+While you can certainly use map / reduce indexes to build _some_ reports, in many cases, a report requires more than a map / reduce
+index can provide (for example, map / reduce indexes cannot support arbitrary grouping).
+
+Map / reduce indexes are useful when we want to look at the data in a single format. One common usage is as a part of a homepage or 
+dashboard views. A major advantage of the map / reduce indexes in RavenDB is that (like standard indexes), they are precomputed, 
+which means that querying them is a very cheap operation.
+
+That makes them ideal for aggregating large amount of data that will be viewed often.
+
+Summary
+========
+
+In this chapter, we have learned what map / reduce is, a way to break the calculation of data into discrete units that can be done
+independently (and even on separate machines). Afterward, we continued on discovering how map / reduce is implemented inside RavenDB
+and how best to take advantage of that.
+
+We finished with a sample of creating and querying a map / reduce index, which will allow us to calcuate how many items were sold for
+each product. Because of the way map / reduce works with RavenDB, querying the index is very cheap, and we can use this as part of 
+the product page, to show, for example, how popular a particular product is.
+
+Finally, we discussed where do we want to use map / reduce index. The obvious answer is that we want to use them whenever we have a 
+reason to use aggregation, but we have to be aware that unlike group by queries in a relational database, map / reduce queries in 
+RavenDB doesn't allow arbitrary grouping (which rules them out for use as part of a generic reporting service). On the other hand, they
+do provide very fast responses for fixed queries, such as the ones typically used in a dashboard / homepage scenarios. Their low cost of
+querying make it effiecnt to use them even in high traffic locations of your applications.
+
+In the next chapter, we will discuss Live Projections, Includes and other advanced indexing options. In the chapter after that, we will
+go over various querying scenarios and see how we can solve them with RavenDB.
 
 .. rubric:: Footnotes
 
 .. [#google] Map/reduce is an old concept, most functional languages uses the notion of map and reduce constant. In many
   such languages, those functions ussually serve where loops would be used in procedural languages. Google is the one
-  responsible for taking those concepts and applying them to distribute work across a set of worker nodes.
+  responsible for taking those concepts and popularizing them with regards to distributing work across a set of worker nodes.
