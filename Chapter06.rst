@@ -16,10 +16,10 @@ Map/reduce is actually a very simple (and elegant) solution to an equally simple
 Map/reduce is simply another way to say *group by*. Chances are, you are already familiar with the notion of group by and in fact, I am not aware of anything who has nightmares about group by - but I do know a few people who get the shakes at
 the mere mention of map/reduce (just ask `Bob <http://browsertoolkit.com/fault-tolerance.png>`).
 
-It is usually best to demonstrate such concepts using an example, and we will use countint the number of comments 
+It is usually best to demonstrate such concepts using an example, and we will use counting the number of comments 
 for each blog as our map/reduce sample. You can see a sample blog post document in listing 5.1::
 
-  // LIsting 5.1 - A sample blog post 
+  // Listing 5.1 - A sample blog post 
   
   { // Document id: posts/1923
     "Name": "Raven's Map/Reduce functionality",
@@ -35,7 +35,7 @@ for each blog as our map/reduce sample. You can see a sample blog post document 
 In order to answer the question of how many comments each blog have, we have to *aggregate* the data from multiple documents. Using 
 Linq, we can do so very easily, as shown in listing 5.2::
 
-  // Listing 5.2 - A Linq query to aggregate all the comments count per blog
+  // Listing 5.2 - A Linq query to aggregate all the comment count per blog
   
   from post in docs.Posts
   group post by post.BlogId into g
@@ -45,8 +45,8 @@ Linq, we can do so very easily, as shown in listing 5.2::
       CommentCount = g.Sum(x=>x.Comments.Length) 
     };
   
-You have probably seen similar code scores of times. Unfortunately, this code has a small, almost insignificant problem - 
-it assumes that it can access all the data. But what happen if the data is too big to fit in memory? Or even too big to
+You have probably seen similar code scores of times. Unfortunately, this code has a small, almost insignificant problem,
+it assumes that it can access all the data. But what happens if the data is too big to fit in memory? Or even too big to
 fit on a single machine?
 
 This is where map/reduce comes into play. Map/reduce is merely meant to deal with group by on a massive scale, but the
@@ -68,7 +68,7 @@ This suggests that that the only information that we actually need from the post
   select new 
     { 
       post.BlogId,
-      CommentCOunt = Comments.Length
+      CommentCount = Comments.Length
     }
     
 How is this useful? Well now instead of having to deal with full blown post documents, we can deal with a much smaller 
@@ -128,7 +128,7 @@ us the data in listing 5.8::
   { BlogId: "blogs/7269", CommentCount: 2 }
   { BlogId: "blogs/9313", CommentCount: 2 }
 
-The fun part starts now, the reduce function *can be applied recursively*. What we are going to do now is to
+The fun part starts now, because the reduce function *can be applied recursively*. What we are going to do now is to
 execute the query in listing 5.5 on the data in both listing 5.6 and 5.8 (we are simply going to combine the two datasets
 and execute the query on all of the data at once). This gives us the results in listing 5.9::
 
@@ -137,7 +137,7 @@ and execute the query on all of the data at once). This gives us the results in 
   { BlogId: "blogs/9313", CommentCount: 4  }  
   { BlogId: "blogs/2394", CommentCount: 1  }  
   
-And that is the whole secret for map/reduce, honestly. We were able to take two data sets from two distinct nodes and by
+And that is the whole secret of map/reduce, honestly. We were able to take two data sets from two distinct nodes and by
 applying the map/reduce algorithm, we were able to derive the final result for an aggregation that spanned machine 
 boundaries.
 
@@ -305,8 +305,8 @@ The second output is the output from the reduce function. This is the externally
 And like simple indexes, that data is also stored inside a Lucene index. Storing the data in Lucene allows efficent and
 full featured querying capabilties (as well as all the other goodies, like full text searching).
 
-Unlike simple indexes (where the assumption is that most of the time you would like to search on the index but get the
-actual document), map/reduce indexes don't just serve just as an index, but actually store the data that we are going to 
+Unlike simple indexes (where the assumption is that most of the time you would like to search on the index, but get the
+actual document), map/reduce indexes don't just serve as an index, but actually store the data that we are going to 
 get as a result of a query.
 
 For example, if I query the index that we defined in listing 5.3 and listing 5.4 (and whose output is shown in listing 
@@ -315,7 +315,7 @@ For example, if I query the index that we defined in listing 5.3 and listing 5.4
   { BlogId: "blogs/9313", CommentCount: 4  }
   
 This value is stored in the index itself, and it is loaded directly from there. This means that you don't touch
-any documents when you query a map/reduce index. All the work is being handled by RavenDB on the background. And like
+any documents when you query a map/reduce index. All the work is being handled by RavenDB in the background. And like
 simple indexes, it is possible to query a map/reduce and get a stale result. We handle this in exactly the same way we
 handle stale index with simple indexes.
 

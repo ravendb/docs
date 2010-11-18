@@ -2,9 +2,9 @@ properties {
   $base_dir  = resolve-path .
   $uploader = "..\Uploader\S3Uploader.exe"
   $uploadCategory = "RavenDBBook"
-  $python = "\Python27\python.exe"
-  $sphinx = "\Python27\Scripts\sphinx-build-script.py"
-  $pdflatex = "\Program Files (x86)\MiKTeX 2.8\miktex\bin\pdflatex.exe"
+  $python = "\Program Files\Python27\python.exe"
+  $sphinx = "\Program Files\Python27\Scripts\sphinx-build-script.py"
+  $pdflatex = "\Program Files\MiKTeX 2.8\miktex\bin\pdflatex.exe"
 }
 
 task default -depends MakePdf, StartPdf
