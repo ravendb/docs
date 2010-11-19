@@ -64,20 +64,20 @@ So by default RavenDB does the following when indexing a text field:
 * Analyzes the fields using a *lower case* analyzer ("Matt Warren" -> "matt warren")
 * Stores a the ID of the document that the anaylzed term comes from
 
-The fields is converted to lower case so that case-sensitivity isn't an issue in basic queries. The ID of the document is stored so that
-RavenDB can then pull the document out of the data store after is has performed the Lucene query. Remember RavenDB only uses Lucene to 
-store the indexed data, not the actual documents themselves.
+The fields is converted to lower case so that case-sensitivity isn't an issue in basic queries. The ID of the document
+is stored so that RavenDB can then pull the document out of the data store after is has performed the Lucene query. 
+Remember RavenDB only uses Lucene to store the *indexed data*, not the actual documents themselves.
 
 However things are slightly more complex when dealing with numbers. The rules that RavenDB follows here are:
 
-* If the value is null, create a single field with the supplied name with the unanalyzed value 'NULL_VALUE'
-* If the value is a string or was set to not analyzed, create a single field with the supplied name
-* If the value is a date, create a single field with millisecond precision with the supplied name
+* If the value is null, create a single field with the supplied name and the unanalyzed value 'NULL_VALUE'
+* If the value is a string or was set to be not analyzed, create a single field with the supplied name
+* If the value is a date, create a single field with millisecond precision and the supplied name
 * If the value is numeric (int, long, double, decimal, or float) it will create two fields
   * with the supplied name, containing the numeric value as an unanalyzed string - useful for direct queries
   * with the name: name +'_Range', containing the numeric value in a form that allows range queries
   
-The last item is important. So that RavenDB can use Lucene to perform range queries (i.e. Age > 4, Age < 40 etc) it 
+The last item is important. To enable RavenDB to perform range queries (i.e. Age > 4, Age < 40 etc) with Lucene, it 
 needs to store the numerical data in a format that is suitable for this. But it also stores the value in its original 
 format so that direct queries (such as matches) can be performed.
 
@@ -90,7 +90,7 @@ Take a look at figure 4.4 to see how a complex index is stored
 Advanced Lucene Options
 =======================
 
-RavenDB gives you full control on the indexing process, but exposing the low-level Lucene options as part of the 
+RavenDB gives you full control on the indexing process, by exposing the low-level Lucene options as part of the 
 index definition. You can use these like so::
 
     IndexDefinition indexAnalysed = new IndexDefinition()
@@ -107,18 +107,37 @@ By default RavenDB uses a *lower case* analyser, this converts a string into a l
 useful if you'd like to a full-text search on your documents. To achieve this you need to tokenise or analyse the 
 fields you are indexing.
 
-For instance given a field that contains the text "the small cat jumped over the hedge", the most basic analyser 
-would convert it to this:
+For instance given a field that contains the text "The quick brown fox jumped over the lazy dog, bob@hotmail.com 123432.", 
 
-[the] [small] [cat] [jumped] [over] [the] [hedge]
 
-You would then perform the same analysis on the text you want to match. For instance "small cat" -> [small] [cat]
+*Keyword Analyzer* keeps the entire stream as a single token.
+
+[The quick brown fox jumped over the lazy dog, bob@hotmail.com 123432.]
+
+
+*Whitespace Analyzer* tokenizes on white space only (note the punctuation at the end of "dog")
+
+[The]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dog,]   [bob@hotmail.com]   [123432.]
+
+
+*Stop Analyzer* strips out common English words (such as "and", "at" etc), tokenizes letters only and converts everything to lower case
+
+[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob]   [hotmail]   [com]
+
+
+*Simple Analyzer* only tokenizes letters and makes all tokens lower case
+
+[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dog]   [bob]   [hotmail]   [com]
+
+
+*Standard Analyzer* simple tokenizer that uses a stop list of common English works, also handles numbers and emails addresses correctly
+
+[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]
+
+
+You would then perform the same analysis on the text you want to match. For instance "quick brown" -> [quick] [brown]
 and Lucene would find all the documents with both of these terms in.
 
-
-Indexing
-^^^^^^^^
-(I'm pretty sure this is the same as Analyzing, If not how does it differ??)
 
 Sorting
 ^^^^^^^
@@ -131,3 +150,8 @@ Storage
 For completeness RavenDB allows you to control whether or not a field is stored in the index. This could be useful 
 if you wanted to pull back data directly from the Lucense index, but there are very few scenarious where this is
 useful. It's far better to let RavenDB handle this for you, so specifying this option isn't really recommended.
+
+Indexing
+^^^^^^^^
+Only in specific case in Map/Reduce indexes does RavenDB not index a field. But in normal queries it doesn't make
+sense to specify a field in the query and then ask Lucene *not* to index it.
