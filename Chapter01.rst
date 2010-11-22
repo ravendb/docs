@@ -1,4 +1,4 @@
-Chapter 1 - NoSQL? What is that?
+NoSQL? What is that?
 *********************************************
 
 .. contents:: In this chapter...
