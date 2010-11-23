@@ -134,7 +134,7 @@ Two things of note at this point:
 	If there is no "Id" property on a document, RavenDB will allocate an Id, but it will be retrievable only by calling ``session.Advanced.GetDocumentId``. In other words, having an Id is entirely optional, but as it is generally more useful to have this information available, most of your documents should have an Id property.
 
 Loading & Editing an existing document
-=====================================
+========================================
 
 If you have the id of an existing document (for example the previous saved blog entry), it can be loaded in the following manner::
 
