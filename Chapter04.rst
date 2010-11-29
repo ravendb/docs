@@ -1,4 +1,4 @@
-Chapter 4 - RavenDB Indexes
+Chapter 4 - 
 ****************************
 
 In this chapter:
