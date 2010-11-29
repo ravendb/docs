@@ -20,13 +20,14 @@ query, we have to do very little work. This is how RavenDB manages to achieve it
 your queries, it doesn't have to think, all the processing has already been done.
 
 Lucene comes with an advanced set of `query options <http://lucene.apache.org/java/2_4_0/queryparsersyntax.html>`_, 
-that allow RavenDB to support the following:
+that allow RavenDB to support the following (which is still just a partial list):
 
 * full text search
 * partial string matching
 * range queries (date, integer, float etc)
 * spatial searches
 * auto-complete or spell-checking
+* faceted searches
 
 
 How indexes are stored
@@ -46,7 +47,7 @@ And the following index::
   {
     Map = "docs => from doc in docs select new { doc.Name }",		
   };
-  db.DatabaseCommands.PutIndex("SimpleIndex", indexAnalysed);
+  db.DatabaseCommands.PutIndex("SimpleIndex", index);
 	
 .. note::
   In this chapter all code samples will be written using the Lucene syntax as we are looking at Lucene itself. 
@@ -62,20 +63,21 @@ Take a look at figure 4.3 to see how a simple index is stored
 So by default RavenDB does the following when indexing a text field:
 
 * Analyzes the fields using a *lower case* analyzer ("Matt Warren" -> "matt warren")
-* Stores a the ID of the document that the anaylzed term comes from
+* Stores a the ID of the document that the terms comes from
 
 The fields is converted to lower case so that case-sensitivity isn't an issue in basic queries. The ID of the document
 is stored so that RavenDB can then pull the document out of the data store after is has performed the Lucene query. 
-Remember RavenDB only uses Lucene to store the *indexed data*, not the actual documents themselves.
+Remember RavenDB only uses Lucene to store the *indexed data*, not the actual documents themselves. This reduces the total
+size of the index.
 
 However things are slightly more complex when dealing with numbers. The rules that RavenDB follows here are:
 
 * If the value is null, create a single field with the supplied name and the unanalyzed value 'NULL_VALUE'
-* If the value is a string or was set to be not analyzed, create a single field with the supplied name
+* If the value is a string or was set to be not analyzed, create a single field with the supplied name and value
 * If the value is a date, create a single field with millisecond precision and the supplied name
 * If the value is numeric (int, long, double, decimal, or float) it will create two fields
-  * with the supplied name, containing the numeric value as an unanalyzed string - useful for direct queries
-  * with the name: name +'_Range', containing the numeric value in a form that allows range queries
+  * using the field name, containing the numeric value as an unanalyzed string - useful for direct queries
+  * using the field name +'_Range', containing the numeric value in a form that allows range queries
   
 The last item is important. To enable RavenDB to perform range queries (i.e. Age > 4, Age < 40 etc) with Lucene, it 
 needs to store the numerical data in a format that is suitable for this. But it also stores the value in its original 
@@ -85,7 +87,7 @@ Take a look at figure 4.4 to see how a complex index is stored
 
 .. figure::  _static/LuceneComplexIndex.png
 
-  Figure 4.4 - A simple index
+  Figure 4.4 - A complex index
   
 Advanced Lucene Options
 =======================
@@ -150,8 +152,11 @@ Storage
 For completeness RavenDB allows you to control whether or not a field is stored in the index. This could be useful 
 if you wanted to pull back data directly from the Lucense index, but there are very few scenarious where this is
 useful. It's far better to let RavenDB handle this for you, so specifying this option isn't really recommended.
+Note that RavenDB allows to use projections directly from the document, without needing to store them in the index, 
+that means that there usually aren't good reasons to store fields data.
 
 Indexing
 ^^^^^^^^
-Only in specific case in Map/Reduce indexes does RavenDB not index a field. But in normal queries it doesn't make
-sense to specify a field in the query and then ask Lucene *not* to index it.
+Indexing allows you to control how you can search on an index. For the most part, you can just leave that to RavenDB's
+defaults. This options, along with the storage option, are there for completion sake, more than anything else, and is 
+only going to be useful for expert usage, if that.
