@@ -4,7 +4,7 @@ properties {
   $uploadCategory = "RavenDBBook"
   $python = "\Python27\python.exe"
   $sphinx = "\Python27\Scripts\sphinx-build-script.py"
-  $pdflatex_path = "\Program Files (x86)\MiKTeX 2.*\miktex\bin\pdflatex.exe"
+  $pdflatex_path = "\Program Files*\MiKTeX 2.*\miktex\bin\pdflatex.exe"
 }
 
 task default -depends MakePdf, StartPdf
