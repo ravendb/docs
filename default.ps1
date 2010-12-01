@@ -24,7 +24,7 @@ task MakePdf -depends Init {
   
   foreach ($line in $global:log ){
     if( $line.Contains("warning") ) {
-      throw "Building the documents resulted in a warning!"
+      throw "Building the documents resulted in a warning!" 
     }
   }
   

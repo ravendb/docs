@@ -12,7 +12,7 @@ This book is about RavenDB, a document database written in .NET. But I don't thi
 RavenDB without first discussing some of the history of data storage in the IT field for the last half a century or 
 so.
 
-At first, data was simply stored in files, with each application having their own proprietary format. That quickly
+At first, data was simply stored in files, with each application having its own proprietary format. That quickly
 became a problem, since it was soon discovered that users have a lot of interesting requirements, such as being able
 to retrieve the data, search it, read reports about it, etc.
 
@@ -33,11 +33,11 @@ databases. For a very long time, data storage *was* putting things in a database
 
 Until very recently, in fact...
 
-How we got this NoSQL thing?
+How we got to NoSQL?
 ============================
 
-Probably the worst thing about relational databases is that they are so *good* in what they are doing. Good enough to 
-conquer the entire market on data storage and hold it for decades.
+Probably the worst thing about relational databases is that they are so *good* in what they do. Good enough to 
+conquer the entire data storage market and hold it for decades.
 
 Wait! That is a *bad* thing? How?
 
@@ -48,9 +48,9 @@ relational data store because it would greatly simplify the work that they need 
 
 That met with some (justified) resistance, predictably. Most people equate data storage with RDBMS, there *is* no other
 way to store data. Since you are reading this book, you are probably already aware that there are other options out 
-there for data storage. But you may not be certain why you might want to work with a No SQL database. Before we can 
-answer that question, we have to revisit some of our knowledge about RDBMS first. We have to understand what it is that
-made RDBMS the de facto standard for data storage for so long, and why there is such a fuss around the alternatives for
+there. But you may not be certain why you might want to work with a NoSQL database. Before we can 
+answer that question, we have to revisit some of our knowledge about RDBMS. We have to understand what it is that
+made RDBMS the de facto standard for data storage for so long, and why there is such a fuss around the alternatives to
 RDBMS.
 
 Relational Databases have the following properties:
@@ -62,44 +62,44 @@ Relational Databases have the following properties:
 * Foreign keys
 * Schema
 
-Just about any of the No SQL approaches give up on some of those properties, sometimes, a NoSQL solution will gives 
+Just about any of the NoSQL approaches give up on some of those properties, sometimes, a NoSQL solution gives 
 up on *all* of those properties. Considering how useful an RDBMS is, and how flexible it turned out to be for so long.
-Why should we give all of those advantages?
+Why should we give up on all of those advantages?
 
 The most common reason to want to move from a RDBMS is running into the RDBMS limitations. In short, `RDBMS doesn't scale
 <http://adamblog.heroku.com/past/2009/7/6/sql_databases_dont_scale/>`_. 
 Actually, let me phrase that a little more strongly, RDBMS systems *cannot* be made to scale [1]_.
 
-The problem is inherit into the basic requirements of the relational database system, it *must* be consistent,  to 
-handle things like foreign keys, maintain relations over the entire data set, etc. The problem, however, is that trying to 
+The problem is inherant to the basic requirements of the relational database system, it *must* be consistent,  to 
+handle things like foreign keys, maintain relationships over the entire data set, etc. The problem, however, is that trying to 
 scale a relational database over a set of machines. At that point, you run head on into the `CAP theorem 
 <http://www.julianbrowne.com/article/viewer/brewers-cap-theorem>`_, which state that you can have only two of the 
 Consistency, Availability and Partition Tolerance triad. Hence, if consistency is your absolute requirement, you 
 need to give up on either availability or partition tolerance.
 
 In most high scaling environments, it is not feasible to give up on either option, you *have* to give up on consistency. 
-But RDBMS will not allow that so relational databases are out. That leave you with two basic choices:
+But RDBMS will not allow that so relational databases are out. That leaves you with two basic choices:
 
 * Use an RDBMS, but instead of having a single instance across multiple nodes, treat each instance as an independent 
   data store. This approach is called sharding, and we will discuss how it applies to RavenDB in :ref:`Chapter 7 
-  <Chapter07>`. The problem with this approach with RDMBS is that you lose a lot of the capabilities that RDBMS 
+  <Chapter07>`. The problem with this approach is that you lose a lot of the capabilities that RDBMS 
   brings to the table (you can't join between nodes, for example).
-* Use a No SQL solution.
+* Use a NoSQL solution.
 
 What it boils down to is that when you bring the need to scale to multiple machines, the drawbacks of using a RDBMS 
 ( TODO: provide a full list) out weight the benefits that it usually brings to the table. Since we have to do a lot
-of work already with sharded SQL databases, it is worth turning out attention to the NoSQL alternatives, and what 
+of work already with sharded SQL databases, it is worth turning our attention to NoSQL alternatives, and whether or not 
 we might want to choose them. This book is about RavenDB, a Document Database, but I want to give you at least some
-background on each of the common NoSQL databases types, before starting to talk about RavenDB specifically.
+background on each of the common NoSQL database types, before starting to talk about RavenDB specifically.
 
 
 NoSql Data stores
 ===================
 
 I am going to briefly touch on each NoSQL data store, from the developer perspective (what kind of API and interfaces 
-the data store have), and from the scaling perspective, to see how we can scale our solution. This isn't a book about
-NoSQL solutions in general, but it is important to understand who are the other players in the fields when it comes 
-the time to evaluate options your data storage strategy. 
+the data store has), and from the scaling perspective, to see how we can scale our solution. This isn't a book about
+NoSQL solutions in general, but it is important to understand who the other players are in the field when it comes 
+time to evaluate your data storage strategy options. 
 
 Almost all data stores need to handle things like:
 
@@ -114,8 +114,8 @@ One thing that should be made clear up front is the major difference between per
 often at odds and usually increasing one would decrease the other. For performance, we ask: How can we execute the same
 set of requests, over the same set of data with:
 
-* shorter time?
-* fewer resources usage (for example, less memory)?
+* shorter processing time?
+* less resource consumption (for example, less memory)?
 
 Note that here, too, there is usually a tradeoff between resource usage and processing time. In general, you can cut 
 the processing time by consuming more resources (for example, by adding a cache). Conversely, you can reduce resource 
@@ -126,15 +126,15 @@ For scaling, we ask: How can we meet our SLA when:
 * we get a *lot* more data?
 * we get a *lot* more requests?
 
-With relational databases, the answer is usually, you don't scale. The No SQL alternatives are generally quite simple to 
+With relational databases, the answer is usually, you don't scale. The NoSQL alternatives are generally quite simple to 
 scale, however.
 
 .. sidebar:: Data access strategy follows the data access pattern
 
   One of the most common problems that I find when reviewing a project is that the first step (or one of them) was to build
-  the Entity Relations Diagram, thereby sinking a large time/effort commitment into it before the project really
-  starts and real world usage tells us what sort of data we actually need and what is the data access pattern of the
-  application.
+  the Entity Relationship Diagram, thereby sinking a large time/effort commitment into it before the project really
+  starts and real world usage tells us what sort of data we actually need and what the data access pattern of the
+  application is.
   
   One of the major problems with this approach is that it simply doesn't work with NoSQL solutions. An
   RDBMS allows very flexible querying, so you can sometimes get away with this approach (although it is generally
@@ -144,11 +144,12 @@ scale, however.
   the RDBMS world, since it is the inverse of how you usually model data in RDBMS.
   
   We will discuss modeling techniques for a document database in :ref:`Chapter 2 <Chapter02>`.
+  
 
 Key/Value Stores
 ----------------
-The simplest No SQL databases are the Key/Value stores. They are simplest only in terms of their API, because the 
-actual implementation may be quite complex. But let us focus on the API that is exposed to by most key/value stores 
+The simplest NoSQL databases are Key/Value stores. They are simplest only in terms of their API, because the 
+actual implementation may be quite complex. But let us focus on the API that is exposed by most key/value stores 
 first. Most of the Key/Value stores expose some variation on the following API::
 
 	void Put(string key, byte[] data);
@@ -157,10 +158,10 @@ first. Most of the Key/Value stores expose some variation on the following API::
 
 There are many variations, but that is the basis for everything else. A key value store allows you to store values by 
 key, as simple as that. The value itself is just a blob, as far as the data store is concerned, it just stores it, 
-it doesn't actually care about the content. In other words, we don't have a data stored defined schema, but a client 
-defined semantics for understanding what the values are. The benefits of using this approach is that it is very simple 
-to build a key value store, and that it is very easy to scale it. It also tend to have great performance, because the 
-access pattern in key value store can be heavily optimized.
+it doesn't actually care about the content. In other words, we don't have a data store defined schema, but client 
+defined semantics for understanding what the values are. The benefits of using this approach are that it is very simple 
+to build a key value store, and that it is very easy to scale it. Key/value stores also tend to have great performance, because the 
+access pattern in a key/value store can be heavily optimized.
 
 In general, most key/value operations can be performed using O(1), regardless of how many machines there are in the 
 data stores and regardless of how much data is stored.
