@@ -169,9 +169,9 @@ data stores and regardless of how much data is stored.
 Concurrency
 ^^^^^^^^^^^^
 In Key/Value Store, concurrency is only applicable on a single key, and it is usually offered as either optimistic 
-writes or as eventually consistent. In highly scalable systems, optimistic writes are often not possible, because of 
-the cost of verifying that the value haven't changed (assuming the value may have replicated to other machines), there 
-for, we usually see either a key master (one machine own a key) or the eventual consistency model, which is discussed 
+writes or as eventual consistency. In highly scalable systems, optimistic writes are often not possible, because of 
+the cost of verifying that the value hasn't changed (assuming the value may have been replicated to other machines), there 
+for, we usually see either a key master (one machine owns the key) or the eventual consistency model, which is discussed 
 below.
 
 Queries
@@ -182,34 +182,34 @@ using a manually maintained secondary index.
 
 Transactions 
 ^^^^^^^^^^^^^
-While it is possible to offer transaction guarantees in a key value store, those are usually only offer in the context
-of a single key put. It is possible to offer those on multiple keys, but that really doesn't work when you start 
+While it is possible to offer transaction guarantees in a key/value store, those are usually only offered in the context
+of a single key Put operation. It is possible to offer those on multiple keys, but that really doesn't work when you start 
 thinking about a distributed key/value store, where different keys may reside on different machines. Because of that, 
-it is typically best to think about key/value stores as allowing transaction on a single key put on a single machine.
+it is typically best to think of key/value stores as allowing transactions on a single key Put operation on a single machine.
 
 Please note that transactions do *not* imply ACID. In a distributed key/value store, the only way to ensure that is if 
-a key can reside on a single machine. However, we usually do not want that, we want each key to live on multiple 
+a key can reside on a single machine. However, we usually don't want that, we want each key to live on multiple 
 machines, to avoid data loss / data unavailability if a node goes down for some reason. We discuss this model (also 
-call eventual consistent key/value store) below.
+called eventual consistent key/value store) below.
 
 Schema
 ^^^^^^^
-Key/value stores have the following schema Key is a string, Value is a blob. Which is probably not a very useful schema 
+Key/value stores have the following schema: Key is a string, Value is a blob. Which is probably not a very useful schema 
 for your purposes. Beyond that, the client is the one that determines how to deal the data. The key/value store just 
 stores it.
 
 Scaling Up
 ^^^^^^^^^^
 In Key Value stores, there are two major options for scaling, the simplest one would be to shard the entire key space. 
-That means that keys starting in A go to one server, while keys starting with B go to another server, and so on. In 
-this system, a key is only stored on a single server. That drastically simplify things like transactions guarantees, 
-but it expose the system for data loss if a single server goes down. At this point, we introduce replication, which 
-gives us safety from data loss, but also force us to give up on ACID guarantees.
+That means that keys starting with A go to one server, while keys starting with B go to another server, and so on. In 
+this system, a key is only stored on a single server. That drastically simplifies things such as guaranteed transactions, 
+but it exposes the system for data loss if a single server goes down. At this point, we introduce redundancy through replication, which 
+gives us safety from data loss, but also forces us to give up on ACID guarantees.
 
 Replication
 ^^^^^^^^^^^^
-In key value stores, the replication can be done by the store itself or by the client (writing to multiple servers). 
-Replication also introduce the problem of divergent versions. In other words, two servers in the same cluster think 
+In key/value stores, the replication can be done by the store itself or by the client (writing to multiple servers). 
+Replication also introduces the problem of divergent versions. In other words, two servers in the same cluster think 
 that the value of key "ABC" are two different things. Resolving that is a complex issue, the common approaches are to 
 decide that it can't happen (Scalaris) and reject updates where we can't ensure non conflict or to accept all updates
 and ask the client to resolve them for us at a later date (Amazon Dynamo, Rhino DHT).
@@ -217,18 +217,18 @@ and ask the client to resolve them for us at a later date (Amazon Dynamo, Rhino 
 Eventually consistent key/value stores
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 A system which decides that divergent versions of the same key should be avoided will reject updates if such a scenario 
-may happen. Following the CAP theorem, it means that we give up Partition Tolerance. The problem is that in most cases,
-you really can't assume that your network won't be partitioned. If that happen (and it happens quite frequently) and 
+may happen. Following the CAP theorem, means that we give up Partition Tolerance. The problem is that in most cases,
+you really can't assume that your network won't be partitioned. If that happens (and it happens quite frequently) and 
 you choose the reject divergent updates mode, you can no longer accept writes, rendering you unavailable. 
 
 To avoid this problem, there is a different model, of allowing divergent writes and let the client resolve the conflict 
-when the partition is resolves and the conflict is detected. We discuss exactly this problem in detail in 
+when the partition is resolved and the conflict is detected. We discuss exactly this problem in detail in 
 :ref:`Chapter 8, Replication <Chapter08>`.
 
 Common Usages
 ^^^^^^^^^^^^^^
 Key/Value stores shine when you need to access the data by key. User related data, such as the session or shopping cart 
-information are ideal, because we always know what the user id is. Another common usage is to store pre-compute data 
+information are ideal, because we always know what the user id is. Another common usage is to store pre-computed data 
 based on the primary key. For example, we may want to store all the information about a product (including related 
 products, reviews, etc) in a key/value store based on the product SKU. That allows us to query all the relevant data 
 about a product in an O(1) manner. Because key based queries are practically free, by structuring our data access 
@@ -244,14 +244,14 @@ zero config, key value store on the .NET platform.
 
 
 Just remember, if you need to do things more complex than just access a bucket of bits using a key, you probably need 
-to look at something else, and the logical next step in the chain in the Document Database.
+to look at something else, and the logical next step in the chain is Document Databases.
 
 Document Databases
 ------------------
 
 A document database is, at its core, a key/value store where the value is in a known format. A document db requires 
 that the data will be store in a format that the database can understand. The format can be XML, JSON (JavaScript 
-Object Notation), Binary JSON (BSON), or just about anything, as long as the database can understand the document 
+Object Notation), Binary JSON (BSON), or just about anything, as long as the database can understand the documents 
 internal structure. In practice, most document databases uses JSON (or BSON) or XML.
 
 Why is this such a big thing? Because when the database can understand the format of the data that you send it, it 
@@ -260,8 +260,8 @@ the document data. The known format also means that it is much easier to write t
 possible to show, display and edit the data.
 
 I am going to use RavenDB as the example for this post. Documents in RavenDB use the JSON format, and each document 
-contains both the actual data and additional metadata information about the document that is external to the document 
-itself. Here is an example of a document::
+contains both the actual data and additional metadata (information about the document that is external to the document 
+itself). Here is an example of a document::
 
   { 
     "name": "ayende", 
@@ -283,36 +283,36 @@ itself. Here is an example of a document::
   }
 
 We can *put* this document in the database, under the key "ayende". We can also *get* the document back by using
-the key "ayende". A document database is schema free, you don't have to define your schema ahead of time and adhere 
-to that. This allows us to store arbitrarily complex data. If I want to store trees, or collections, or dictionaries, 
+the key "ayende". A document database is schema free, you don't have to define your schema ahead of time and you don't have adhere 
+to that schema. This allows us to store arbitrarily complex data. If I want to store trees, or collections, or dictionaries, 
 that is quite easy. In fact, it is so natural that you don't really think about it.
 
-It does not, however, support relations. Each document is standalone. It can refer to other documents by store their 
+It does not, however, support relations. Each document is standalone. It can refer to other documents by storing their 
 key, but there is nothing to enforce relational integrity.
 
 The major benefit of using a document database comes from the fact that while it has all the benefits of a key/value 
 store, you aren't limited to just querying by key. By storing information in a form that the database
 can understand, we can ask the server to do things for us, such as querying. The following HTTP request will find all 
-documents where the name equals to `ayende`::
+documents where the name equals `ayende`::
   
   GET /indexes/dynamic?query=name:ayende
   
-Because the document database understand the format of the data, it can answer queries like that. Being able to 
+Because the document database understands the format of the data, it can answer queries like that. Being able to 
 perform queries is just one advantage of the database being able to understand the data, it also allows:
 
 * Projecting the document data into another form.
 * Running aggregations over a set of documents.
 * Doing partial updates (*patching* a document)
 
-From my point of view, though. The major benefit is that you are dealing with documents. There is little or
+From my point of view though, the major benefit is that you are dealing with documents. There is little or
 no impedance mismatch between objects and documents. That means that storing data in the document database is usually
 significantly easier than when using an RDBMS for most non trivial scenarios. It is usually quite painful to design a
 good physical data model for an RDBMS, because the way the data is laid out in the database and the way that we think
 about it in our application are drastically different. Moreover, RDBMS has this little thing called Schemas. And
-modifying a schema can be a painful thing indeed, especially if you have to do it on production an on
+modifying a schema can be a painful thing indeed, especially if you have to do it on production systems an on
 multiple nodes.
 
-The schema less nature of a document database means that we don't have to worry about the shape of the
+The schema-less nature of a document database means that we don't have to worry about the shape of the
 data we are using, we can just serialize things into and out of the database. It helps that the commonly used format
 (JSON) is both human readable and easily managed by tools.
 
