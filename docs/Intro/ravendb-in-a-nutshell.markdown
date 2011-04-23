@@ -18,41 +18,7 @@ RavenDB consists of a server and a client. The server handles data storage and q
 
 After you have a RavenDB server instance up and running, its easy to connect to it using the RavenDB client to store and retrieve your data. RavenDB works with your [POCO](http://en.wikipedia.org/wiki/Plain_Old_CLR_Object)s, meaning its super-easy to integrate it with your existing or newly-built application:
 
-<pre>
-// Create a simple object of existing class Company
-var myCompany = new Company  
-{
-    Name = "Hibernating Rhinos",  
-    Employees =  
-    {
-        new Employee
-        {  
-            Name = "Ayende Rahien"  
-        }
-    },
-    Country = "Israel"
-}
-
-// Store the company in our RavenDB server
-using(var session = documentStore.OpenSession())
-{
-    var entity =  session.Store<Company>(myCompany);
-    session.SaveChanges();
-}
-
-// Create a new session, retrieve an entity, and change it a bit
-using(var session = documentStore.OpenSession())
-{
-    Company entity = session.Query<Company>()
-        .Where(x => x.Region == "Israel")
-        .FirstOrDefault();
-              
-    // We can also load by ID: session.Load<Company>(companyId);
-          
-    entity.Name = "Another Company"; 
-    session.SaveChanges(); // will send the change to the database
-}
-</pre>
+{CODE nutshell1@Intro\Nutshell.cs /}
 
 As you may have noticed, RavenDB is using the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will not be persisted in the database. Also, all database calls within a session are fully transactional.
 
