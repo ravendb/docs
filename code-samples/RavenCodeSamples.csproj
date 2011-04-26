@@ -51,6 +51,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,6 +60,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeSampleBase.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="Intro\BasicOperations.cs" />
     <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

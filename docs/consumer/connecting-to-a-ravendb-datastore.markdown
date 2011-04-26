@@ -77,4 +77,16 @@ RavenDB connection string format is:
 
 ## Configuration
 
-/// TBD
+### Conventions
+
+The RavenDB Client API uses several conventions to control how it works, these can be modified at the DocumentStore level.
+
+* _FindIdentityProperty_ - Tell the RavenDB Client API how to find the property serving as the id property (the one holding the document key).
+
+* _FindTypeTagName_ - Find the tag name for the entity, a tag name is the collection name in which an entity will be enrolled, as well as the default entity key namespace.
+
+* _GenerateDocumentKey_ - Allows you to control the generation of keys for new entities. The rules for returned values follow the Raven document key generation strategies. By default, RavenDB uses the HiLo algorithm to generate new keys.
+
+* _IdentityPartsSeparator_ - A string that allows you to customize part of the document key generation. By default, Raven uses "plural_entity_name/hilo_number", which some users don't like because it makes putting the document key in the URL harder in some cases. You can set this to another value (such as "-"), which would generate: "plural_entity_name-hilo_number". This is an alternative to replacing the whole document key generation process.
+
+### TBD
