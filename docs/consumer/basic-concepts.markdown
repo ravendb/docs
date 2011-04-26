@@ -36,6 +36,16 @@ Esent is a native embeddable database engine which is part of Windows, and maint
 
 While Munin is useful for testing and temporary in-memory tasks, at this stage only Esent is supported for production usage.
 
+## Data structure
+
+Each entity being stored to the database is serialized into JSON, and called a _Document_.
+
+Entities of different types are grouped by their type, into what is being called a _Collection_. In other words, a _collection_ is a set of documents sharing the same type, but with unique ids. If one was to store two entities of the same type under the same id - only the last one stored will be persisted. However, using the same id when storing two entities of different types will result in having them both stored in the database.
+
+You can think of collections as tables and documents as rows in a schema-less database.
+
+Therefore, accessing an entity by id requires a full path - its collection name combined with its id.
+
 ## Client API
 
 Given a RavenDB server, embedded or remote, the Client API allows easy access to it from any .NET language. The Client API exposes all aspects of the RavenDB server to your application in a seamless manner.
@@ -74,6 +84,8 @@ The server instance can also be accessed via a RESTful API, making it accessible
 
 ## The Management Studio
 
-Each server instance is manageable via a remotely accessible Silverlight application - The Studio. We discuss its usage later in the docs, but here's how it looks like:
+Each server instance is manageable via a remotely accessible Silverlight application - The Management Studio. It can be accessed by pointing your favorite browser to the address (and port) the server is listening on.
+
+We discuss the Studio and how to use it in more depth later in the docs, but here's how it looks like:
 
 ![Figure 2: RavenDB Studio](images\studio.png)

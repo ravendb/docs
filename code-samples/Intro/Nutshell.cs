@@ -7,18 +7,6 @@ namespace RavenCodeSamples.Intro
 {
 	public class Nutshell : CodeSampleBase
 	{
-		private class Employee
-		{
-			public String Name { get; set; }
-		}
-
-		class Company
-		{
-			public String Name { get; set; }
-			public List<Employee> Employees { get; set; }
-			public String Country { get; set; }
-		}
-
 		public void NutshellSample()
 		{
 			using (var documentStore = NewDocumentStore())
