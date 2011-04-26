@@ -44,6 +44,16 @@ In addition to transparently managing all client-server communications, the Clie
 
 Reference Raven.Client.Lightweight.dll (or Raven.Client.Silverlight if you are using Silverlight) from your application, and you are ready to start interacting with the server.
 
+### Client API design guidelines
+
+The RavenDB Client API design intentionally mimics the widely familiar NHibernate API. The API is composed of the following main classes:
+
+* _IDocumentStore_ - This is expensive to create, thread safe and should only be created once per application. The Document Store is used to create DocumentSessions, to hold the conventions related to saving/loading data and any other global configuration.
+
+* _IDocumentSession_ - Instances of this interface are created by the DocumentStore, they are cheap to create and not thread safe. If an exception is thrown by an IDocumentSession method, the behavior of all of the methods (except Dispose) is undefined. The document session is used to interact with the Raven database, load data from the database, query the database, save and delete. Instances of this interface implement the Unit of Work pattern and change tracking. 
+
+* _IDocumentQuery_ - Allows querying the indexes on the RavenDB server. We discuss querying later in this part of the documentation.
+
 ### A document store
 
 First, you are going to need to declare and instantiate a document store.  We go into more details on the various ways there are to instantiate a document store in the next chapter.
