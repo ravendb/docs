@@ -23,7 +23,7 @@ namespace RavenCodeSamples.Intro
 		{
 			using (var documentStore = NewDocumentStore())
 			{
-				// BEGIN-MARKER(nutshell1)
+#region nutshell1
 				// Create a simple object of existing class Company
 				var myCompany = new Company
 				                	{
@@ -57,7 +57,7 @@ namespace RavenCodeSamples.Intro
 					entity.Name = "Another Company";
 					session.SaveChanges(); // will send the change to the database
 				}
-				// END-MARKER
+#endregion
 			}
 		}
 	}
