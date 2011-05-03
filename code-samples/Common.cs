@@ -1,10 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace RavenCodeSamples
 {
+
+	#region company_classes
 	public class Employee
 	{
 		public string Name { get; set; }
+		public string[] Specialities { get; set; }
+		public DateTime HiredAt { get; set; }
+		public double HourlyRate { get; set; }
 	}
 
 	public class Company
@@ -13,7 +19,9 @@ namespace RavenCodeSamples
 		public string Name { get; set; }
 		public List<Employee> Employees { get; set; }
 		public string Country { get; set; }
+		public int NumberOfHappyCustomers { get; set; }
 	}
+	#endregion
 
 	#region blogpost_classes
 	public class BlogPost
