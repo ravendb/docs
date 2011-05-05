@@ -2,13 +2,13 @@
 
 As we have already seen in the previous chapter, querying is made on a collection and using the `Session` object. Unless the user specifies what index to query explicitly, RavenDB will find an appropriate index to query, and create it on the fly if one does not already exist. We will see how to create named indexes, also called static, later in this chapter. Regardless of the index being actually queried, querying is being done using Linq expressions.
 
-The built-in Linq provider implements the `IQueryable` interface, and automatically translates any Linq query into a Lucene query understandable by the RavenDB server, handling all the low-level details for you. Therefore, querying RavenDB is easy to anyone who has used Linq before; if you're not familiar with Linq, following is a brief tutorial on how to use it to query RavenDB.
+The built-in Linq provider implements the `IQueryable` interface in full. Its job is to automatically translates any Linq query into a Lucene query understandable by the RavenDB server, handling all the low-level details for you. Therefore, querying RavenDB is easy to anyone who has used Linq before; if you're not familiar with Linq, following is a brief tutorial on how to use it to query RavenDB.
 
 Assuming we have entities of the following types stored in our database:
 
 {CODE company_classes@Common.cs /}
 
-Let's see how we can use Linq to easily query for data in various scenarios:
+Let's see how we can use Linq to easily query for data in various scenarios. We will not cover all Linq's features, but will highlight several which are important to be familiar with.
 
 ## Some basics
 
@@ -49,3 +49,7 @@ Here is how to use projections:
 {CODE linquerying_5@Consumer\DynamicQueries.cs /}
 
 Projections are useful when only part of the data is needed for your operation. Whenever change tracking isn't required, you're advised to use projections to ease bandwidth traffic between you and the server.
+
+## Sorting
+
+You can use the `orderby` / `.OrderBy()` / `.OrderByDescending()` clauses to perform simple sorting. As we will see in a later chapter, more advanced sorting options are supported using static indexes.
