@@ -22,11 +22,41 @@ After you have a RavenDB server instance up and running, its easy to connect to 
 
 As you may have noticed, RavenDB is using the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will not be persisted in the database. Also, all database calls within a session are fully transactional.
 
+## Building from source
+
+RavenDB requires .NET 4.0 SDK installed to build. You should be able to just open Raven in Visual Studio 2010 and start working with it immediately.
+
+Raven uses PowerShell to execute its build process. From the PowerShell prompt, execute: .\psake.ps1 default.ps1
+
+You may need to allow script execution in your power shell configuration: 
+
+  Set-ExecutionPolicy unrestricted
+
+The build process will, by default, execute all the tests, which may take a while. You may skip the tests by executing: 
+  
+  .\psake.ps1 default -task ReleaseNoTests
+
 ## Development cycle
 
 There are two flavors of RavenDB available - the stable build, which is production ready, and the unstable build. Since we at Hibernating Rhinos make a build out of every push, the unstable build is not recommended for production, although it is being thoroughly tested.
 
 New unstable builds are available daily, sometimes more than one a day. Stable builds are released whenever we feel comfortable enough with recent changes we made - usually when enough time has passed and a handful of people have used the unstable builds.
+
+## Reporting bugs
+
+Bugs should be reported in the mailing list: [http://groups.google.com/group/ravendb](http://groups.google.com/group/ravendb).
+
+When reporting a bug, please include:
+
+* The version and build of Raven that you used (can be the build number, or the git commit hash).
+* What did you try to do?
+* What happened?
+* What did you expect to happen?
+* Details about your environment.
+
+Bugs that comes with a way for us to reproduce the program locally (preferably a unit test) tends to be fixed much more quickly.
+
+A list of outstanding bugs can be found here: http://github.com/ravendb/ravendb/issues
 
 ## Licensing and support
 
