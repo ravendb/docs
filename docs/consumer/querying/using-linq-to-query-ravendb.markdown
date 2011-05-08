@@ -53,3 +53,7 @@ Projections are useful when only part of the data is needed for your operation. 
 ## Sorting
 
 You can use the `orderby` / `.OrderBy()` / `.OrderByDescending()` clauses to perform simple sorting. As we will see in a later chapter, more advanced sorting options are supported using static indexes.
+
+## Aggregate operators
+
+RavenDB supports only the `Count` Linq aggregate operator.
