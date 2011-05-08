@@ -2,14 +2,14 @@
 
 Once a document store has been created, the next step is to create a session against that document store that will allow us to perform basic CRUD operations within a Unit of Work. It is important to note that when invoking any operations against this store, that no changes will be made to the underlying document database until the `SaveChanges` method has been called, as in listing 3.2:
 
-	// Saving changes using the session API
-	using (IDocumentSession session = store.OpenSession())
-	{
-		// Operations against session
+    // Saving changes using the session API
+    using (IDocumentSession session = store.OpenSession())
+    {
+      // Operations against session
 
-		// Flush those changes
-		session.SaveChanges();
-	}
+      // Flush those changes
+      session.SaveChanges();
+    }
 
 In this context, the session can be thought of as managing all changes internally, and `SaveChanges` can be thought of as committing all those changes to the RavenDB server. Any operations submitted in a ``SaveChanges`` call will be committed atomically (that is to say, either they all succeed, or they all fail).
 
