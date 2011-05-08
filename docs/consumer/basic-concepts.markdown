@@ -18,33 +18,39 @@ The RavenDB server instance can be instantiated in more than a single way:
 
 * Embedding the server in your application.
 
-We will discuss the various deployment options in much more details later in the documentation.
+We will discuss the various deployment options in more detail later in the documentation.
 
-To jump-start your learning process, it is sufficient that you download the latest stable build, unzip it to a folder, and run Server\Raven.Server.exe. You will then see a screen like this:
+To jump-start your learning process, it is sufficient that you download the [latest stable build](http://ravendb.net/downloads), unzip it to a folder, and run Server\Raven.Server.exe. You will then see a screen like this:
 
 ![Figure 1: Raven.Server.exe](images\raven.server.png)
 
-Notice how a port for the server to listen on has been automatically selected for you, and an Esent data directory has been created and is ready to store your data.
+Notice how a port for the server to listen on has been automatically selected for you, and a data directory has been created and is ready to store your data. This is RavenDB in debug mode, for production usage, you'll generally run it in IIS or as a Service.
 
 As long as this window will stay open, the RavenDB server is up and running. Pressing Enter will terminate the server - new requests will no more be processed, but all data will be persisted in the data directory.
 
 ### Storage types
 
-RavenDB currently supports 2 types of storage engines, which are completely transactional and fail safe - Esent and Munin.
+RavenDB currently supports 2 types of storage engines, both of which are completely transactional and fail safe - Esent and Munin.
 
-Esent is a native embeddable database engine which is part of Windows, and maintained by Microsoft. Munin is written entirely in managed code, and is a custom project made as part of RavenDB. 
+Esent is a native embeddable database engine which is part of Windows, and maintained by Microsoft. Munin is written entirely in managed code specifically for its use as part of RavenDB. 
 
 While Munin is useful for testing and temporary in-memory tasks, at this stage only Esent is supported for production usage.
 
-## Data structure
+## Document Identifiers
 
 Each entity being stored to the database is serialized into JSON, and called a _Document_.
 
-Entities of different types are grouped by their type, into what is being called a _Collection_. In other words, a _collection_ is a set of documents sharing the same type, but with unique ids. If one was to store two entities of the same type under the same id - only the last one stored will be persisted. However, using the same id when storing two entities of different types will result in having them both stored in the database.
+Entities of different types are grouped by their type, into what is being called a _Collection_. In other words, a _collection_ is a set of documents sharing the same type, but with unique ids. If one was to store two entities of the same type under the same id - only the last one stored will be persisted. Collections are there to help you, they are virtual constructs that have no physical meaning to the database. For example, using the same id when storing two entities of different types will result, again, in only the last one stored in the database.
 
-You can think of collections as tables and documents as rows in a schema-less database.
+It is easy to think of collections as tables and documents as rows in a schema-less database. But you have to remember that the ids of documents are global, not scoped to the level of the collection. Document ids in RavenDB are strings, and are usually prefixed with the collection name:
 
-Therefore, accessing an entity by id requires a full path - its collection name combined with its id.
+* posts/1
+* blogs/1
+* users/1
+
+Note that those are three *different* ids, "posts/1", "blogs/1" and "users/1". You can think of it (and indeed, this is how it works by default) as the collection name and the collection id, but it is important to understand that this is merely a convention, not something that is enfored by RavenDB. There is absolutely nothing that would prevent you from saving a Post with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to.
+
+In your POCO classes, you can also use non string ids, which will be converted to the conventional format by RavenDB automatically. Integers and Guids are supported for such ids, but the general recommendation is that you'll use string ids.
 
 ## Client API
 
