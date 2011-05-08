@@ -16,36 +16,66 @@ Persisting this entire object graph involves calling `Store` and then `SaveChang
 
 {CODE saving_document_2@Intro\BasicOperations.cs /}
 
-The `SaveChanges` call will product the HTTP communication shown below. Note that the `Store` method operates purely in memory, and only the call to `SaveChanges` communicates with the server (line breaks were added for clarity):
+The `SaveChanges` call will product the HTTP communication shown below. Note that the `Store` method operates purely in memory, and only the call to `SaveChanges` communicates with the server (json was prettified for clarity):
 
-	POST /bulk_docs HTTP/1.1
-	Accept-Encoding: deflate,gzip
-	Content-Type: application/json; charset=utf-8
-	Host: 127.0.0.1:8080
-	Content-Length: 378
-	Expect: 100-continue
+    POST /bulk_docs HTTP/1.1
+    Accept-Encoding: deflate,gzip
+    Content-Type: application/json; charset=utf-8
+    Host: 127.0.0.1:8080
+    Content-Length: 378
+    Expect: 100-continue
 
-	[{"Key":"blogs/1","Etag":null,"Method":"PUT","Document":{"Title":"Hello RavenDB",
-	"Category":"RavenDB","Content":"This is a blog about RavenDB","Comments":
-	[{"Title":"Unrealistic","Content":"This example is unrealistic"},
-	{"Title":"Nice","Content":"This example is nice"}]},
-	"Metadata":{"Raven-Entity-Name":"Blogs","Raven-Clr-Type":"Blog"}}]
-	
-	
-	HTTP/1.1 200 OK
-	Content-Type: application/json; charset=utf-8
-	Server: Microsoft-HTTPAPI/2.0
-	Date: Tue, 16 Nov 2010 20:37:00 GMT
-	Content-Length: 205
+    [
+      {
+        "Key": "blogs/1",
+        "Etag": null,
+        "Method": "PUT",
+        "Document": {
+          "Title": "Hello RavenDB",
+          "Category": "RavenDB",
+          "Content": "This is a blog about RavenDB",
+          "Comments": [
+            {
+              "Title": "Unrealistic",
+              "Content": "This example is unrealistic"
+            },
+            {
+              "Title": "Nice",
+              "Content": "This example is nice"
+            }
+          ]
+        },
+        "Metadata": {
+          "Raven-Entity-Name": "Blogs",
+          "Raven-Clr-Type": "Blog"
+        }
+      }
+    ]
 
-	[{"Etag": "00000000-0000-0100-0000-000000000002",
-	"Method":"PUT","Key":"blogs/1","Metadata":{"Raven-Entity-Name":"Blogs",
-	"Raven-Clr-Type":"Blog","@id":"blogs/1"}}]
+
+    HTTP/1.1 200 OK
+    Content-Type: application/json; charset=utf-8
+    Server: Microsoft-HTTPAPI/2.0
+    Date: Tue, 16 Nov 2010 20:37:00 GMT
+    Content-Length: 205
+
+    [
+      {
+        "Etag": "00000000-0000-0100-0000-000000000002",
+        "Method": "PUT",
+        "Key": "blogs/1",
+        "Metadata": {
+          "Raven-Entity-Name": "Blogs",
+          "Raven-Clr-Type": "Blog",
+          "@id": "blogs/1"
+        }
+      }
+    ]
 
 	
 Two things of note at this point:
 
-* We left the "Id" property of BlogPost blank, and it is this property that will be used as the "primary key" for this document.
+* We left the "Id" property of BlogPost blank, and it is this property that will be used as the "primary key" for this document. RavenDB generated an id for us, "blogs/1", based on the default convention.
 
 * The entire object graph is serialized and persisted as a *single document*, not as a set of distinct objects.
 
