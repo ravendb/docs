@@ -62,6 +62,7 @@
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Consumer\DynamicQueries.cs" />
+    <Compile Include="Consumer\Paging.cs" />
     <Compile Include="Intro\BasicOperations.cs" />
     <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
