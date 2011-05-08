@@ -48,9 +48,9 @@ It is easy to think of collections as tables and documents as rows in a schema-l
 * blogs/1
 * users/1
 
-Note that those are three *different* ids, "posts/1", "blogs/1" and "users/1". You can think of it (and indeed, this is how it works by default) as the collection name and the collection id, but it is important to understand that this is merely a convention, not something that is enfored by RavenDB. There is absolutely nothing that would prevent you from saving a Post with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to.
+Note that those are three *different* ids, "posts/1", "blogs/1" and "users/1". You can think of it (and indeed, this is how it works by default) as the collection name concatenated with auto increment id specific for that collection, but it is important to understand that this is merely a convention, not something that is enfored by RavenDB. There is absolutely nothing that would prevent you from saving a Post with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to.
 
-In your POCO classes, you can also use non string ids, which will be converted to the conventional format by RavenDB automatically. Integers and Guids are supported for such ids, but the general recommendation is that you'll use string ids.
+In your POCO classes, you can also use non string ids, which will be converted to the conventional format by RavenDB automatically. Integers and Guids are supported for such ids, but the general recommendation is that you'll use string ids in your classes as well.
 
 ## Client API
 
