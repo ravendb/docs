@@ -66,7 +66,7 @@ The RavenDB Client API design intentionally mimics the widely familiar NHibernat
 
 * _IDocumentStore_ - This is expensive to create, thread safe and should only be created once per application. The Document Store is used to create DocumentSessions, to hold the conventions related to saving/loading data and any other global configuration.
 
-* _IDocumentSession_ - Instances of this interface are created by the DocumentStore, they are cheap to create and not thread safe. If an exception is thrown by an IDocumentSession method, the behavior of all of the methods (except Dispose) is undefined. The document session is used to interact with the Raven database, load data from the database, query the database, save and delete. Instances of this interface implement the Unit of Work pattern and change tracking. 
+* _IDocumentSession_ - Instances of this interface are created by the DocumentStore, they are cheap to create and are not thread safe. If an exception is thrown by any IDocumentSession method, the behavior of all of the methods (except Dispose) is undefined. The document session is used to interact with the Raven database, load data from the database, query the database, save and delete. Instances of this interface implement the Unit of Work pattern and change tracking. 
 
 * _IDocumentQuery_ - Allows querying the indexes on the RavenDB server. We discuss querying later in this part of the documentation.
 
@@ -78,7 +78,7 @@ A document store instance is your communication channel to the RavenDB server it
 
 ### Session
 
-The session object provides a fully transactional way of performing database operations. The session allows the consumer to store data into the database, and load it back when necessary explicitly or using queries.
+The session object provides a fully transactional way of performing database operations. The session allows the consumer to store data into the database, and load it back when necessary using queries or by document id.
 
 Other, more advanced operations are also accessible from the Session object, and are discussed in length later in the documentation.
 
