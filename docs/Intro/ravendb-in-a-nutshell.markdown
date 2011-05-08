@@ -2,7 +2,7 @@
 
 RavenDB is a **transactional**, **open-source** **[Document Database](/docs/intro/what-is-a-document-database.html)** written in **.NET**, offering a **flexible data model** designed to address requirements coming from real-world systems. RavenDB allows you to build high-performance, low-latency applications quickly and efficiently.
 
-Data in RavenDB is stored **schema-less** as JSON documents, and can be queried efficiently using **Linq** queries from .NET code or using **REST**ful API using other tools. Internally, RavenDB uses **Map/Reduce** indexes which are automatically created based on your usage, or were created explicitly by the consumer.
+Data in RavenDB is stored **schema-less** as JSON documents, and can be queried efficiently using **Linq** queries from .NET code or using **REST**ful API using other tools. Internally, RavenDB make use of indexes which are automatically created based on your usage, or were created explicitly by the consumer.
 
 RavenDB is built for **web-scale**, and is offering **replication** and **sharding** support out-of-the-box.
 
@@ -20,7 +20,7 @@ After you have a RavenDB server instance up and running, its easy to connect to 
 
 {CODE nutshell1@Intro\Nutshell.cs /}
 
-As you may have noticed, RavenDB is using the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will not be persisted in the database. Also, all database calls within a session are fully transactional.
+As you may have noticed, RavenDB is using the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will be persisted in the database in a single transaction.
 
 ## Building from source
 
@@ -40,7 +40,9 @@ The build process will, by default, execute all the tests, which may take a whil
 
 There are two flavors of RavenDB available - the stable build, which is production ready, and the unstable build. Since we at Hibernating Rhinos make a build out of every push, the unstable build is not recommended for production, although it is being thoroughly tested.
 
-New unstable builds are available daily, sometimes more than one a day. Stable builds are released whenever we feel comfortable enough with recent changes we made - usually when enough time has passed and a handful of people have used the unstable builds.
+New unstable builds are available daily, sometimes more than once a day. Stable builds are released whenever we feel comfortable enough with recent changes we made - usually when enough time has passed and a handful of people have used the unstable builds. This is usually done on a biweekly basis.
+
+In addition to the stable and unstable options, there is also the commercial version, which is the supported version for running in production.
 
 ## Reporting bugs
 
@@ -53,14 +55,15 @@ When reporting a bug, please include:
 * What happened?
 * What did you expect to happen?
 * Details about your environment.
+* Details about how to reproduce this error.
 
-Bugs that comes with a way for us to reproduce the program locally (preferably a unit test) tends to be fixed much more quickly.
+*Bugs that comes with a way for us to reproduce the program locally (preferably a unit test) tends to be fixed much more quickly.*
 
 A list of outstanding bugs can be found here: http://github.com/ravendb/ravendb/issues
 
 ## Licensing and support
 
-RavenDB is released as open-source under the AGPL license. What that means is it is freely available, but if you want to use this with proprietary software, you must buy a [commercial license](http://ravendb.net/licensing).
+RavenDB is released as open-source under the AGPL license. What that means is it is freely available, but if you want to use this with proprietary software, you **must** buy a [commercial license](http://ravendb.net/licensing).
 
 RavenDB has a very active [mailing list](http://groups.google.com/group/ravendb), where users and RavenDB developers attend all queries quickly and efficiently.
 
