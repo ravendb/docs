@@ -64,6 +64,7 @@
     <Compile Include="Consumer\DynamicQueries.cs" />
     <Compile Include="Consumer\Paging.cs" />
     <Compile Include="Consumer\Spatial.cs" />
+    <Compile Include="Consumer\StaticIndexes.cs" />
     <Compile Include="Intro\BasicOperations.cs" />
     <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
