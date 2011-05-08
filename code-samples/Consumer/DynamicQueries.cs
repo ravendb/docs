@@ -26,12 +26,12 @@ namespace RavenCodeSamples.Consumer
 					              where company.Name == "Hibernating Rhinos"
 					              select company;
 
-					// Numeric property comparison
+					// Numeric property range
 					results = from company in session.Query<Company>()
 					          where company.NumberOfHappyCustomers > 100
 					          select company;
 
-					// Filtering based on a nested property
+					// Filtering based on a nested (calculated) property
 					results = from company in session.Query<Company>()
 					          where company.Employees.Count > 10
 					          select company;
@@ -62,11 +62,6 @@ namespace RavenCodeSamples.Consumer
 					IQueryable<Company> companies = from c in session.Query<Company>()
 									 where c.Employees.Any(employee => employee.Name == "Ayende")
 					                 select c;
-
-					// Returns only companies whose employees hourly rate is less than $30
-					companies = from c in session.Query<Company>()
-								where c.Employees.All(employee => employee.HourlyRate < 30)
-								select c;
 
 					// Query on nested collections - will return any company with at least one developer
 					// whose speciality is in C#
