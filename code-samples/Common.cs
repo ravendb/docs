@@ -30,6 +30,7 @@ namespace RavenCodeSamples
 		public string Title { get; set; }
 		public string Category { get; set; }
 		public string Content { get; set; }
+		public string[] Tags { get; set; }
 		public BlogComment[] Comments { get; set; }
 	}
 
@@ -37,6 +38,14 @@ namespace RavenCodeSamples
 	{
 		public string Title { get; set; }
 		public string Content { get; set; }
+	}
+	#endregion
+
+	#region blogpost_mapreduce_classes
+	public class BlogTagPostsCount
+	{
+		public string Tag { get; set; }
+		public int Count { get; set; }
 	}
 	#endregion
 }
