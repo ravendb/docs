@@ -8,6 +8,9 @@ There are two flavors of RavenDB available:
 
 If you are not sure what to choose, go with the RavenDB Client. Only use Embedded if you are certain this is indeed what you need.
 
+.. note:
+  RavenDB Embedded can't run on the Client Profile.
+
 Each of those can be added to your project by either using **nuget** or extracting the contents of a build package. In this short tutorial we will show you how to do each.
 
 ## Installing using nuget
