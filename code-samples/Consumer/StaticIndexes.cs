@@ -132,7 +132,7 @@ namespace RavenCodeSamples.Consumer
 				}
 
 				#region static_sorting1
-				documentStore.DatabaseCommands.PutIndex("TestIdx", new IndexDefinitionBuilder<User, User>
+				documentStore.DatabaseCommands.PutIndex("TestIdx", new IndexDefinitionBuilder<Customer, Customer>
 																	{
 																		Map = users => from user in users select new { user.Age },
 																		SortOptions = { { x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short } }
@@ -141,7 +141,7 @@ namespace RavenCodeSamples.Consumer
 				#endregion
 
 				#region static_sorting2
-				documentStore.DatabaseCommands.PutIndex("CollationTestIdx", new IndexDefinitionBuilder<User, User>
+				documentStore.DatabaseCommands.PutIndex("CollationTestIdx", new IndexDefinitionBuilder<Customer, Customer>
 				                                                            	{
 				                                                            		Map = users => from doc in users select new {doc.Name},
 				                                                            		SortOptions = {{x => x.Name, SortOptions.String}},

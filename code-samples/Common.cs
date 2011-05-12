@@ -49,9 +49,28 @@ namespace RavenCodeSamples
 	}
 	#endregion
 
-	public class User
+	#region order_classes
+	public class Order
+	{
+		public Product[] Items { get; set; }
+		public int CustomerId { get; set; }
+		public double TotalPrice { get; set; }
+	}
+
+	public class Product
+	{
+		public string Id { get; set; }
+		public string Name { get; set; }
+		public string[] Images { get; set; }
+		public double Price { get; set; }
+	}
+
+	public class Customer
 	{
 		public string Name { get; set; }
+		public string Address { get; set; }
 		public short Age { get; set; }
+		public string HashedPassword { get; set; }
 	}
+	#endregion
 }
