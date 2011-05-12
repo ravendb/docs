@@ -48,4 +48,10 @@ namespace RavenCodeSamples
 		public int Count { get; set; }
 	}
 	#endregion
+
+	public class User
+	{
+		public string Name { get; set; }
+		public short Age { get; set; }
+	}
 }

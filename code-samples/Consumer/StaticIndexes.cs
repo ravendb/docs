@@ -80,40 +80,40 @@ namespace RavenCodeSamples.Consumer
 				#region static_indexes2
 				// Create an index where we search based on a post title
 				documentStore.DatabaseCommands.PutIndex("BlogPosts/ByTitles",
-				                                        new IndexDefinitionBuilder<BlogPost>
-				                                        	{
-				                                        		Map = posts => from post in posts
-				                                        		               select new {post.Title}
-				                                        	});
+														new IndexDefinitionBuilder<BlogPost>
+															{
+																Map = posts => from post in posts
+																			   select new { post.Title }
+															});
 				#endregion
 
 				#region static_indexes3
 				documentStore.DatabaseCommands.PutIndex("BlogPosts/PostsCountByTag",
-				                                        new IndexDefinitionBuilder<BlogPost, BlogTagPostsCount>
-				                                        	{
+														new IndexDefinitionBuilder<BlogPost, BlogTagPostsCount>
+															{
 																// The Map function: for each tag of each post, create a new BlogTagPostsCount
 																// object with the name of a tag and a count of one.
-				                                        		Map = posts => from post in posts
+																Map = posts => from post in posts
 																			   from tag in post.Tags
 																			   select new BlogTagPostsCount
-				                                        		                      	{
-				                                        		                      		Tag = tag,
-				                                        		                      		Count = 1
-				                                        		                      	},
+																						{
+																							Tag = tag,
+																							Count = 1
+																						},
 
 																// The Reduce function: group all the BlogTagPostsCount objects we got back
 																// from the Map function, use the Tag name as the key, and sum up all the
 																// counts. Since the Map function gives each tag a Count of 1, when the Reduce
 																// function returns we are going to have the correct Count of posts filed under
 																// each tag.
-				                                        		Reduce = results => from result in results
-				                                        		                    group result by result.Tag into g
-				                                        		                    select new BlogTagPostsCount
-				                                        		                    		{
-				                                        		                    			Tag = g.Key,
-				                                        		                    			Count = g.Sum(x => x.Count)
-				                                        		                    		}
-				                                        	});
+																Reduce = results => from result in results
+																					group result by result.Tag into g
+																					select new BlogTagPostsCount
+																							{
+																								Tag = g.Key,
+																								Count = g.Sum(x => x.Count)
+																							}
+															});
 
 				#endregion
 
@@ -135,9 +135,26 @@ namespace RavenCodeSamples.Consumer
 						.Count();
 					#endregion
 				}
+
+				#region static_sorting1
+				documentStore.DatabaseCommands.PutIndex("TestIdx", new IndexDefinitionBuilder<User, User>
+																	{
+																		Map = users => from user in users select new { user.Age },
+																		SortOptions = { { x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short } }
+																	}
+					);
+				#endregion
+
+				#region static_sorting2
+				documentStore.DatabaseCommands.PutIndex("CollationTestIdx", new IndexDefinitionBuilder<User, User>
+				                                                            	{
+				                                                            		Map = users => from doc in users select new {doc.Name},
+				                                                            		SortOptions = {{x => x.Name, SortOptions.String}},
+				                                                            		Analyzers = {{x => x.Name, "SvCollationAnalyzer"}}
+				                                                            	});
+				#endregion
 			}
 		}
-
 		#region static_indexes4
 		public class BlogPosts_PostsCountByTag : AbstractIndexCreationTask<BlogPost, BlogTagPostsCount>
 		{
@@ -163,5 +180,6 @@ namespace RavenCodeSamples.Consumer
 			}
 		}
 		#endregion
+
 	}
 }
