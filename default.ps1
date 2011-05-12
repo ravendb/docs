@@ -16,6 +16,8 @@ task StartPdf {
 }
 
 task MakePdf -depends Init {
+  return; # until we are done revising the docs
+
   $global:log = $null
   exec { 
     $global:log = &$python $sphinx -b latex -d _build/doctrees  . _build/latex
@@ -47,6 +49,7 @@ task Init {
 }
 
 task Upload -depends MakePdf {
+  return; # until we are done revising the docs
 	Write-Host "Starting upload"
 	if (Test-Path $uploader) {
 		$log = $env:push_msg 
