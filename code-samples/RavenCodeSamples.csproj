@@ -50,6 +50,7 @@
       <HintPath>EmbeddedClient\Raven.Storage.Managed.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
@@ -62,6 +63,7 @@
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Consumer\DynamicQueries.cs" />
+    <Compile Include="Consumer\LiveProjections.cs" />
     <Compile Include="Consumer\Paging.cs" />
     <Compile Include="Consumer\Spatial.cs" />
     <Compile Include="Consumer\StaticIndexes.cs" />
