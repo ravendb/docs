@@ -55,11 +55,6 @@ namespace RavenCodeSamples.Consumer
 			/// </summary>
 			/// <value>The analyzers.</value>
 			public IDictionary<string, string> Analyzers { get; set; }
-
-			/// <summary>
-			/// The fields that are queryable in the index
-			/// </summary>
-			public IList<string> Fields { get; set; }
 		}
 		#endregion
 	}
@@ -152,6 +147,38 @@ namespace RavenCodeSamples.Consumer
 				                                                            		SortOptions = {{x => x.Name, SortOptions.String}},
 				                                                            		Analyzers = {{x => x.Name, "SvCollationAnalyzer"}}
 				                                                            	});
+				#endregion
+
+				#region analyzers1
+
+				documentStore.DatabaseCommands.PutIndex("AnalyzersTestIdx", new IndexDefinitionBuilder<BlogPost, BlogPost>
+				                                                            	{
+				                                                            		Map =
+				                                                            			users =>
+				                                                            			from doc in users select new {doc.Tags, doc.Content},
+				                                                            		Analyzers =
+				                                                            			{
+				                                                            				{x => x.Tags, "SimpleAnalyzer"},
+				                                                            				{x => x.Content, "SnowballAnalyzer"}
+				                                                            			},
+				                                                            	});
+
+				#endregion
+
+				#region stores1
+				documentStore.DatabaseCommands.PutIndex("StoredFieldsTestIdx", new IndexDefinitionBuilder<BlogPost, BlogPost>
+				                                                               	{
+				                                                               		Map =
+				                                                               			users =>
+				                                                               			from doc in users
+				                                                               			select new {doc.Tags, doc.Content},
+				                                                               		Stores = {{x => x.Title, FieldStorage.Yes}},
+				                                                               		Indexes =
+				                                                               			{
+				                                                               				{x => x.Tags, FieldIndexing.NotAnalyzed},
+				                                                               				{x => x.Comments, FieldIndexing.No}
+				                                                               			}
+				                                                               	});
 				#endregion
 			}
 		}
