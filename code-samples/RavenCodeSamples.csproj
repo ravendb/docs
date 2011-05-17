@@ -31,6 +31,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=4.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>EmbeddedClient\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Abstractions">
       <HintPath>EmbeddedClient\Raven.Abstractions.dll</HintPath>
     </Reference>
@@ -45,6 +49,10 @@
     </Reference>
     <Reference Include="Raven.Http">
       <HintPath>EmbeddedClient\Raven.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Json, Version=1.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>EmbeddedClient\Raven.Json.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Storage.Managed">
       <HintPath>EmbeddedClient\Raven.Storage.Managed.dll</HintPath>
@@ -62,6 +70,7 @@
   <ItemGroup>
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Consumer\Attachments.cs" />
     <Compile Include="Consumer\DynamicQueries.cs" />
     <Compile Include="Consumer\LiveProjections.cs" />
     <Compile Include="Consumer\Paging.cs" />
