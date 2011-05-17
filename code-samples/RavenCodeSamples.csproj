@@ -73,6 +73,7 @@
     <Compile Include="Consumer\Attachments.cs" />
     <Compile Include="Consumer\DynamicQueries.cs" />
     <Compile Include="Consumer\LiveProjections.cs" />
+    <Compile Include="Consumer\Metadata.cs" />
     <Compile Include="Consumer\Paging.cs" />
     <Compile Include="Consumer\Spatial.cs" />
     <Compile Include="Consumer\StaticIndexes.cs" />
