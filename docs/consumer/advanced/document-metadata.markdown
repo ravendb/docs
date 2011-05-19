@@ -20,7 +20,7 @@ More metadata keys are used for storing replication information, concurrency boo
 
 ## Using the metadata
 
-Getting the metadata for an entity is quite easy. From the Client API, you simply call `GetMetadataFor` on the entity, like so:
+Getting the metadata for an entity is quite easy. From the Client API, you simply call `Advanced.GetMetadataFor` on the entity, like so:
 
 {CODE getting_metadata@Consumer\Metadata.cs /}
 
@@ -32,7 +32,7 @@ Metadata can be easily used when querying, too. For example, to create an index 
     where doc["@metadata"]["Raven-Entity-Name"] != null
     select new { Tag = doc["@metadata"]["Raven-Entity-Name"] };
 
-Using the HTTP API, some metadata is sent as headers and some as a JSON document embedded in the entity's document.
+Using the HTTP API, some metadata is sent as headers when getting and manipulating a single document andas a JSON document embedded in the entity's document (inside the `@metadata` element) when dealing with multiple documents.
 
 ## Manipulating metadata
 
@@ -40,10 +40,8 @@ While metadata was originally meant to be used by RavenDB itself, it is also pos
 
 There are three ways of doing that:
 
-* **Explicitly** - after retrieving a `RavenJObject` holding the metadata by calling `session.GetMetadatFor(entity)` method call, you can explicitly manipulate that object and add keys of your own.
-
-* **Events** - `session.OnEntityConverted` event gives you the hook to modify the document and metadata before it is stored in RavenDB.
+* **Explicitly** - after retrieving a `RavenJObject` holding the metadata by calling `session.Advanced.GetMetadatFor(entity)` method call, you can explicitly manipulate that object and add keys of your own.
 
 * **Listeners** - `documentStore.RegisterListener(myStoreListener)` provide a way to register an implementation of `IDocumentStoreListener`, which will be called when any session is about to store the entity to RavenDB.
 
-In each of those approaches, you get an access to the metadata instance, which you can then manipulate for your own needs. Common reasons to do this include wanting to add additional information for indexes to index, communicating with a server side bundle or simple have an out of band channel to store additional information about a document.
+In each of those approaches, you get an access to the metadata instance, which you can then manipulate for your own needs. Common reasons to do this include wanting to add additional information for indexes to index, communicating with a server side bundle or simply having an out of band channel to store additional information about a document.
