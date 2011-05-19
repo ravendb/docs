@@ -53,7 +53,7 @@ namespace RavenCodeSamples
 	public class Order
 	{
 		public Product[] Items { get; set; }
-		public int CustomerId { get; set; }
+		public string CustomerId { get; set; }
 		public double TotalPrice { get; set; }
 	}
 
