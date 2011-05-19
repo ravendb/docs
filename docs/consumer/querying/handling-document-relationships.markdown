@@ -2,7 +2,7 @@
 
 One of the design principals that RavenDB adheres to is the idea that documents are independent, meaning all data required to process a document is stored within the document itself. However, this doesn't mean there should not be relations between objects.
 
-There are valid scenarios where we need to define relationships between objects. By doing so, we expose ourself to one major problem: whenever we load the containing entity, we are going to need to load data from the referenced entities too, unless we are not interested in them. While the alternative of storing the whole entity in every object graph it is referenced in is no cheaper, this proves to be quite costly too in terms of database work and network traffic.
+There are valid scenarios where we need to define relationships between objects. By doing so, we expose ourself to one major problem: whenever we load the containing entity, we are going to need to load data from the referenced entities too, unless we are not interested in them. While the alternative of storing the whole entity in every object graph it is referenced in seems cheaper at first, this proves to be quite costly too in terms of database work and network traffic.
 
 RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one of them or more, and when applied correctly, they can drastically improve performance, reduce network bandwidth and speedup development.
 
@@ -12,9 +12,24 @@ The theory behind this topic and other related subjects are discussed in length 
 
 The easiest solution is to denormalize the data in the containing entity, forcing it to contain the actual value of the referenced entity in addition (or instead) of the foreign key.
 
-// TODO: json demonstration
+  { // Order document with id: orders/1234
+    "Customer": {
+      "Name": "Itamar",
+      "Id": "customers/2345"
+    },
+    Items: [
+      { 
+        "Product": { 
+          "Id": "products/1234",
+          "Name": "Milk",
+          "Cost": 2.3
+          },
+        "Quantity": 3
+      }
+    ]
+  }
 
-When using denormalization, usually there is no need to store the foreign entity as a while. It is enough to only keep the fields we know we are going to need the most whenever querying for the containing entity.
+As you can see in the sample above, the order document include denormalized data from both the customer and the product documents. We haven't copied all of the properties, just the ones that we care about for the order. This approach is called `denormalized reference`. The properties that we copy are the ones that we will use to process / display the root entity.
 
 ## Includes
 
@@ -33,22 +48,23 @@ We know whenever we load an order from the database we need to know the user nam
 
 So there isn’t a direct reference between the `Order` and the `Customer`. Instead, `Order` holds a `DenormalizedCustomer`, which holds the interesting bits from `Customer` that we need to process requests on `Order`.
 
-Now, what happens when the user's address is changed? we will have to perform an aggregate operation to update all orders this customer has made. And what if this is a constantly returning customer? this operation can become very demanding.
+Now, what happens when the user's address is changed? we will have to perform an aggregate operation to update all orders this customer has made. And what if this is a constantly returning customer? This operation can become very demanding.
 
-Using the RavenDB Includes feature you can do this much more efficiently.
+Using the RavenDB Includes feature you can do this much more efficiently, by instructing RavenDB to load the associated document on the first request. We can do so using:
 
-// TODO
+{CODE includes1@Consumer/Includes.cs /}
 
-// includes with queries
+You can even use includes with queries:
 
-What actually happens under the hood is that RavenDB actually has two channels in which it can return information for a load request. The first is the results channel, which is what is returned from the Load method call. The second is the Includes channel, which contains all the included documents. Those documents are not returned from the Load method call, but they are added to the session unit of work, and subsequent requests to load them can be served directly from the session cache.
+{CODE includes2@Consumer/Includes.cs /}
+
+What actually happens under the hood is that RavenDB actually has two channels in which it can return information for a load request. The first is the results channel, which is what is returned from the Load method call. The second is the Includes channel, which contains all the included documents. Those documents are not returned from the Load method call, but they are added to the session unit of work, and subsequent requests to load them can be served directly from the session cache, without any additional queries to the server.
 
 ## Live Projections
 
 Using Includes is very useful, but sometimes we want to do better than that, or just more. Using the Live Projections feature, you get more control over what to load into the result entity, and since it returns a projection of the actual entity you also get the chance to filter out properties you do not need.
 
-.. note:
-    Another important difference is that while Includes is used for explicit loading by id, Live Projections are used for querying.
+## An important difference is that while Includes is used for explicit loading by id, Live Projections are used for querying and cannot be used with explicit loading.
 
 Live Projections allow to query a Map/Reduce index built for one type, and return an entity of a completely different type, having the actual transformation occur on the server.
 
