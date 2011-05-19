@@ -2,7 +2,7 @@
 
 One of the design principals that RavenDB adheres to is the idea that documents are independent, meaning all data required to process a document is stored within the document itself. However, this doesn't mean there should not be relations between objects.
 
-There are valid scenarios where we need to define relationships between objects. By doing so, we expose ourself to one major problem: whenever we load the containing entity, we are going to need to load data from the referenced entities too, unless we are not interested in them. While the alternative of storing the whole entity in every object graph it is referenced in seems cheaper at first, this proves to be quite costly too in terms of database work and network traffic.
+There are valid scenarios where we need to define relationships between objects. By doing so, we expose ourself to one major problem: whenever we load the containing entity, we are going to need to load data from the referenced entities too, unless we are not interested in them. While the alternative of storing the whole entity in every object graph it is referenced in seems cheaper at first, this proves to be quite costly in terms of database work and network traffic.
 
 RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one of them or more, and when applied correctly, they can drastically improve performance, reduce network bandwidth and speedup development.
 
@@ -11,6 +11,8 @@ The theory behind this topic and other related subjects are discussed in length 
 ## Denormalization
 
 The easiest solution is to denormalize the data in the containing entity, forcing it to contain the actual value of the referenced entity in addition (or instead) of the foreign key.
+
+Take this JSON document for example:
 
   { // Order document with id: orders/1234
     "Customer": {
@@ -29,7 +31,7 @@ The easiest solution is to denormalize the data in the containing entity, forcin
     ]
   }
 
-As you can see in the sample above, the order document include denormalized data from both the customer and the product documents. We haven't copied all of the properties, just the ones that we care about for the order. This approach is called `denormalized reference`. The properties that we copy are the ones that we will use to process / display the root entity.
+As you can see, the `Order` document now contains denormalized data from both the `Customer` and the `Product` documents, which are saved elsewhere in full. Note how We haven't copied all the properties, and just saved the ones that we care about for this `Order`. This approach is called _denormalized reference_. The properties that we copy are the ones that we will use to display or process the root entity.
 
 ## Includes
 
@@ -54,11 +56,11 @@ Using the RavenDB Includes feature you can do this much more efficiently, by ins
 
 {CODE includes1@Consumer/Includes.cs /}
 
-You can even use includes with queries:
+You can even use Includes with queries:
 
 {CODE includes2@Consumer/Includes.cs /}
 
-What actually happens under the hood is that RavenDB actually has two channels in which it can return information for a load request. The first is the results channel, which is what is returned from the Load method call. The second is the Includes channel, which contains all the included documents. Those documents are not returned from the Load method call, but they are added to the session unit of work, and subsequent requests to load them can be served directly from the session cache, without any additional queries to the server.
+What actually happens under the hood is that RavenDB actually has two channels in which it can return information for a load request. The first is the results channel, which is what is returned from the Load method call. The second is the Includes channel, which contains all the included documents. Those documents are not returned from the `Load` method call, but they are added to the session unit of work, and subsequent requests to load them can be served directly from the session cache, without any additional queries to the server.
 
 ## Live Projections
 
