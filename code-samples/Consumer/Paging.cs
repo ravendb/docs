@@ -31,6 +31,7 @@ namespace RavenCodeSamples.Consumer
 					var results = session.Query<BlogPost>()
 						.Statistics(out stats)
 						.Where(x => x.Category == "RavenDB")
+						.Take(10)
 						.ToArray();
 					var totalResutls = stats.TotalResults;
 
