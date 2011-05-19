@@ -35,5 +35,3 @@ As you have guessed, this is a one-liner too:
 {CODE deleting_attachment@Consumer\Attachments.cs /}
 
 Same as with updating an attachment, you can specify an Etag to make sure the correct attachment is being removed, and you are not deleting one that has been recently updated by someone else.
-
-// TODO: RavenApps ???
