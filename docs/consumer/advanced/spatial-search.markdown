@@ -10,7 +10,7 @@ To allow spatial searches we will need to define an index like so:
 
 {CODE spatial1@Consumer\Spatial.cs /}
 
-The key part is the call to `SpatialIndex.Generate()`. The field name assigned to it will be ignored, so we recommend using the underscore letter to mark it, which is a conventions to an unimportant variable.
+The key part is the call to `SpatialIndex.Generate()`. The field name assigned to it will be ignored, so we recommend using the underscore letter to mark it, which is a convention used to denote an unimportant variable.
 
 This index gives us the ability to make spatial searches, using the following code:
 
