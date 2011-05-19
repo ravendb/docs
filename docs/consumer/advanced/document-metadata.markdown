@@ -32,13 +32,13 @@ Metadata can be easily used when querying, too. For example, to create an index 
     where doc["@metadata"]["Raven-Entity-Name"] != null
     select new { Tag = doc["@metadata"]["Raven-Entity-Name"] };
 
-Using the HTTP API, some metadata is sent as headers when getting and manipulating a single document andas a JSON document embedded in the entity's document (inside the `@metadata` element) when dealing with multiple documents.
+Using the HTTP API, some metadata is sent as headers when getting and manipulating a single document, and as a JSON document embedded in the entity's document (inside the `@metadata` element) when dealing with multiple documents.
 
 ## Manipulating metadata
 
 While metadata was originally meant to be used by RavenDB itself, it is also possible to add your own data to the metadata. This is useful when you have data about the entity you want to store, and it doesn't make sense to store it within the entity itself.
 
-There are three ways of doing that:
+There are two ways of doing that:
 
 * **Explicitly** - after retrieving a `RavenJObject` holding the metadata by calling `session.Advanced.GetMetadatFor(entity)` method call, you can explicitly manipulate that object and add keys of your own.
 
