@@ -55,4 +55,4 @@ You can use the `orderby` / `.OrderBy()` / `.OrderByDescending()` clauses to per
 
 ## Aggregate operators
 
-RavenDB supports only the `Count` Linq aggregate operator.
+RavenDB currently only supports the `Count` and `Distinct` Linq aggregate operators.
