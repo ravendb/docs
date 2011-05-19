@@ -36,22 +36,6 @@ Esent is a native embeddable database engine which is part of Windows, and maint
 
 While Munin is useful for testing and temporary in-memory tasks, at this stage only Esent is supported for production usage.
 
-## Document Identifiers
-
-Each entity being stored to the database is serialized into JSON, and called a _Document_.
-
-Entities of different types are grouped by their type, into what is being called a _Collection_. In other words, a _collection_ is a set of documents sharing the same type, but with unique ids. If one was to store two entities of the same type under the same id - only the last one stored will be persisted. Collections are there to help you, they are virtual constructs that have no physical meaning to the database. For example, using the same id when storing two entities of different types will result, again, in only the last one stored in the database.
-
-It is easy to think of collections as tables and documents as rows in a schema-less database. But you have to remember that the ids of documents are global, not scoped to the level of the collection. Document ids in RavenDB are strings, and are usually prefixed with the collection name:
-
-* posts/1
-* blogs/1
-* users/1
-
-Note that those are three *different* ids, "posts/1", "blogs/1" and "users/1". You can think of it (and indeed, this is how it works by default) as the collection name concatenated with auto increment id specific for that collection, but it is important to understand that this is merely a convention, not something that is enfored by RavenDB. There is absolutely nothing that would prevent you from saving a Post with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to.
-
-In your POCO classes, you can also use non string ids, which will be converted to the conventional format by RavenDB automatically. Integers and Guids are supported for such ids, but the general recommendation is that you'll use string ids in your classes as well.
-
 ## Client API
 
 Given a RavenDB server, embedded or remote, the Client API allows easy access to it from any .NET language. The Client API exposes all aspects of the RavenDB server to your application in a seamless manner.
@@ -87,6 +71,26 @@ Once a session has been opened, all entities that are retrieved from the server 
 ## REST API
 
 The server instance can also be accessed via a RESTful API, making it accessible from other platforms like AJAX queries in webpages or non-Windows applications written in Ruby-on-Rails, for example.
+
+## Documents, Collections and Document unique identifiers
+
+A single data entity in RavenDB is called a _Document_, and all Documents are persisted in RavenDB as JSON documents. A _Collection_ is a set of Documents with unique ids sharing the same RavenDB entity type (See: Metadata). Collections are only there to help you: they are virtual constructs that have no physical meaning to the database. It may be easy to think of Collections as tables and documents as rows in a schema-less database.
+
+In RavenDB each document has its own unique global id, in the sense that if one was trying to store two different entities under the same id (`users/1` for example) - only the last one will be persisted. This id is usually combined of the collection name and the entity's uniqe id within the collection, i.e. `users/1`, but as we will see in a moment document ids are independent of the entity type, and therefore doesn't always contain the collection name.
+
+When using the Client API, each POCO (or: .NET object) stored in RavenDB is considered a _Document_. When stored, it is serialized to JSON and then saved to the database. Entities of different types (for example, objects of classes BlogPost, User, and Comment) are grouped by their type and added to one collection by default, creating new documents with ids like `users/1`, `blogposts/1` and `comments/1`. Note how the class name is used to create the collection name, in its plural form.
+
+The general recommendation when using the Client API is not to have an `Id` property at all for your entities. RavenDB will track the ids for you, and they can be accessed whenever necessary using the `Session` object. If you do want to have an id property for some reason you can do that, and RavenDB will detect and convert it to the conventional format automatically. Although numeric and `Guid` ids are supported, it is recommended that you keep it as a string.
+
+RavenDB supports 3 ways of figuring out a unique id, or a document key, for a newly saved document:
+
+1. By default, the HiLo algorithm is used. Whenever you create a new `DocumentStore` object and it connects to a RavenDB server, HiLo keys are exchanged and your connection is assigned a range of values it can use in every call to `session.Store(entity)` with a new entity. A new set of values is negotiated automatically if the range was consumed.
+
+2. RavenDB also supports the notion of Identity, if you need ids to be consecutive, or when you want to specify a key name that is different from what RavenDB will produce for you. By creating a string `Id` property in your entity, and setting it to a value ending with a slash (/), you can tell RavenDB to use that as a key perfix for your entity. That prefix followed by the next available integer id for it will be your entity's id _after_ you call `SaveChanges()`.
+
+3. You can assign an id manually, but then if a document already exists in your RavenDB server under the same key it will be overwritten.
+
+{NOTE It is important to understand that a `Collection` is merely a convention, not something that is enforced by RavenDB. There is absolutely nothing that would prevent you from saving a `Post` with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to./}
 
 ## The Management Studio
 
