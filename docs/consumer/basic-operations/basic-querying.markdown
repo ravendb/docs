@@ -19,8 +19,7 @@ As usual, lets have a look at the HTTP communication for the first operation:
 	Content-Type: application/json; charset=utf-8
 	Host: 127.0.0.1:8081
 
-.. note::
-     Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in.
+## Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in.
 
 The important part to notice in this query is that we are querying the "BlogPosts" collection, for the property "Category" with the value of "RavenDB".
 
