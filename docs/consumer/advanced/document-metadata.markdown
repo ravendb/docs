@@ -40,7 +40,7 @@ While metadata was originally meant to be used by RavenDB itself, it is also pos
 
 There are two ways of doing that:
 
-* **Explicitly** - after retrieving a `RavenJObject` holding the metadata by calling `session.Advanced.GetMetadatFor(entity)` method call, you can explicitly manipulate that object and add keys of your own.
+* **Explicitly** - after retrieving a `RavenJObject` holding the metadata by calling `session.Advanced.GetMetadatFor(entity)` method call, you can explicitly manipulate that object and add keys of your own. Those changes will be tracked in the Unit of Work, and persisted following the next call to SaveChanges.
 
 * **Listeners** - `documentStore.RegisterListener(myStoreListener)` provide a way to register an implementation of `IDocumentStoreListener`, which will be called when any session is about to store the entity to RavenDB.
 
