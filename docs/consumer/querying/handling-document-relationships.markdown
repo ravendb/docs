@@ -39,7 +39,7 @@ Denormalizing data like shown above indeed avoids many lookups and results in tr
 
 {CODE order_classes@Common.cs /}
 
-We know whenever we load an order from the database we need to know the user name and his address. So we decided to denormalize the `Order.Customer` field, and store those details in the order object. Obviously, the password and other irrelevant details will not be denormalized:
+We know whenever we load an order from the database we need to know the user name and address. So we decided to denormalize the `Order.Customer` field, and store those details in the order object. Obviously, the password and other irrelevant details will not be denormalized:
 
 	public class DenormalizedCustomer
 	{
@@ -48,7 +48,7 @@ We know whenever we load an order from the database we need to know the user nam
 		public string Address { get; set; }
 	}
 
-So there isn’t a direct reference between the `Order` and the `Customer`. Instead, `Order` holds a `DenormalizedCustomer`, which holds the interesting bits from `Customer` that we need to process requests on `Order`.
+As you can see there isn’t a direct reference between the `Order` and the `Customer`. Instead, `Order` holds a `DenormalizedCustomer`, which holds the interesting bits from `Customer` that we need to process requests on `Order`.
 
 Now, what happens when the user's address is changed? we will have to perform an aggregate operation to update all orders this customer has made. And what if this is a constantly returning customer? This operation can become very demanding.
 
@@ -64,16 +64,34 @@ What actually happens under the hood is that RavenDB actually has two channels i
 
 ## Live Projections
 
-Using Includes is very useful, but sometimes we want to do better than that, or just more. Using the Live Projections feature, you get more control over what to load into the result entity, and since it returns a projection of the actual entity you also get the chance to filter out properties you do not need.
+Using Includes is very useful, but sometimes we want to do better than that, or just more. The Live Projection feature is unique to RavenDB, and it can be thought of as the third step of the Map/Reduce operation: after done with mapping all data, and it has been reduced (if asked to), the RavenDB server can transform the results into a completely different data structure and return it back instead of the original results.
 
-## An important difference is that while Includes is used for explicit loading by id, Live Projections are used for querying and cannot be used with explicit loading.
+Using the Live Projections feature, you get more control over what to load into the result entity, and since it returns a projection of the actual entity you also get the chance to filter out properties you do not need.
 
-Live Projections allow to query a Map/Reduce index built for one type, and return an entity of a completely different type, having the actual transformation occur on the server.
+Lets use an example to show how it can be used. Assuming we have many `User` entities, and many of them are actually an alias for another user. If we wanted to display all users with their aliases, we would probably need to do something like this:
 
-// Querying; The As<> method
+{CODE liveprojections1@Consumer\LiveProjections.cs /}
+
+Since we use Includes, the server will only be accessed once - indeed, but the entire object graph will be sent by the server for each referenced document (user entity for the alias). And its an awful lot of code to write, too.
+
+Using Live Projections, we can do this much more easily and on the server side:
+
+{CODE liveprojections2@Consumer\LiveProjections.cs /}
+
+The function declared in `TransformResults` will be executed on the results on the query, and that gives it the chance to modify, extend or filter them. In this case, it lets us look at data from another document and use it to project a new return type.
+
+Since each Live Projection will return a projection, you can use the `.As<>` clause to convert it back to a type known by your application:
+
+{CODE liveprojections3@Consumer\LiveProjections.cs /}
+
+The main benefit of using Live Projections is by having to write much less code, which will run on the server and can save a lot of network bandwidth by returning only the data we are interested in.
+
+{NOTE An important difference to note is that while Includes is useful for explicit loading by id or querying, Live Projections can be used for querying only. /}
 
 ## Summary
 
-There are no strict rules when to use which approach, but the general idea is to give it a good thought, and consider the various implication each has.
+There are no strict rules as to when to use which approach, but the general idea is to give it a good thought, and consider the various implication each has.
 
-For example, in an e-commerce application product names and prices are actually better be denormalized into an order line object, since you want to make sure the customer sees the same price and product title in the order history. But the customer name and addresses should never be denormalized into the order entity.
+As an example, in an e-commerce application product names and prices are actually better be denormalized into an order line object, since you want to make sure the customer sees the same price and product title in the order history. But the customer name and addresses should never be denormalized into the order entity.
+
+For most cases where denormalization is not an option, Includes are probably the answer. Whenever a serious processing is required after the Map/Reduce work is done, or when you need a different entity structure returned than those defined by your index - take a look at Live Projections.
