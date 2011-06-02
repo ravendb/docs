@@ -106,6 +106,7 @@
     <Compile Include="Consumer\Metadata.cs" />
     <Compile Include="Consumer\Paging.cs" />
     <Compile Include="Consumer\Spatial.cs" />
+    <Compile Include="Consumer\Stale.cs" />
     <Compile Include="Consumer\StaticIndexes.cs" />
     <Compile Include="Intro\BasicOperations.cs" />
     <Compile Include="Intro\ConnectingToDatastore.cs" />
