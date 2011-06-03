@@ -106,6 +106,7 @@
     <Compile Include="Consumer\LiveProjections.cs" />
     <Compile Include="Consumer\Metadata.cs" />
     <Compile Include="Consumer\Paging.cs" />
+    <Compile Include="Consumer\SetBased.cs" />
     <Compile Include="Consumer\Spatial.cs" />
     <Compile Include="Consumer\Stale.cs" />
     <Compile Include="Consumer\StaticIndexes.cs" />
