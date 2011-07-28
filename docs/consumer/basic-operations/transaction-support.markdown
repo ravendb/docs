@@ -49,4 +49,4 @@ A call to commit involves a separate call to another HTTP endpoint with that tra
 	Content-Length: 0
 
 .. note::
-	While RavenDB supports `System.Transactions`, it is not recommended that this be used as an ordinary part of application workflow as it is part for the partition tolerance aspect of our beloved "CAP theorum".
+	While RavenDB supports `System.Transactions`, you should only use this if you really require this (for example, to coordinate between multiple transactional resources), since there is additional cost for using `System.Transactions` and distributed transactions over simply using the standard API and the transactional `SaveChanges`.
