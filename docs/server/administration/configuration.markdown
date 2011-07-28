@@ -1,6 +1,10 @@
 ﻿# Configuration options
 
-All the configuration options detailed below are defined in the app.config's <appSettings> as separate values.
+All the configuration options detailed below are defined in the <appSettings> section of your config file as separate values. When running RavenDB as a website (through IIS, or in Embedded mode), the config file is web.config; otherwise it is the Raven.Server.exe.config file.
+
+Changes to the config file or additions / removal from the Plugins directory will not be picked up automatically by the RavenDB service. For your changes to be recognized you will need to restart the service. You can do so calling: <code>Raven.Server.exe /restart</code>.
+
+If you are running in Embedded mode, or RavenDB is running as an IIS application, touching the web.config file will cause IIS to automatically restart RavenDB.
 
 ## Core settings
 
