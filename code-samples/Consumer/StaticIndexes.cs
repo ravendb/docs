@@ -208,7 +208,10 @@ namespace RavenCodeSamples.Consumer
 			{
 				Map = posts => from doc in posts
 							   select new { doc.Tags, doc.Content };
-				Stores = new Dictionary<Expression<Func<BlogPost, object>>, FieldStorage> { { x => x.Title, FieldStorage.Yes } };
+				Stores = new Dictionary<Expression<Func<BlogPost, object>>, FieldStorage>
+				{
+					{ x => x.Title, FieldStorage.Yes }
+				};
 				Indexes = new Dictionary<Expression<Func<BlogPost, object>>, FieldIndexing>
 				                    {
 				                        {x => x.Tags, FieldIndexing.NotAnalyzed},
