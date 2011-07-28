@@ -14,6 +14,6 @@ The key part is the call to `SpatialIndex.Generate()`. The field name assigned t
 
 This index gives us the ability to make spatial searches, using the following code:
 
-{CODE spatial1@Consumer\Spatial.cs /}
+{CODE spatial2@Consumer\Spatial.cs /}
 
 This will return all the restaurants within 5 miles radius with a rating of 4 or more.
