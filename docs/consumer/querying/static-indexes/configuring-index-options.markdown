@@ -4,7 +4,7 @@ The indexes each RavenDB server instance uses to facilitate fast queries are pow
 
 Lucene takes a _Document_ , breaks it down into _Fields_ , and then split all text in a _Field_ into  tokens ( _Terms_ ) in a process called _Tokenization_ . Those tokens are what will be stored in the index, and be later searched upon.
 
-After a successful Map/Reduce operation, RavenDB feeds Lucene with each entity from the results as a _Document_ , and marks every property in it as a _Field_ . Then every property is going through the _Tokenization_ process using an object called a "Lucene Analyzer", and then finaly is stored into the index.
+After a successful indexing operation, RavenDB feeds Lucene with each entity from the results as a _Document_ , and marks every property in it as a _Field_ . Then every property is going through the _Tokenization_ process using an object called a "Lucene Analyzer", and then finaly is stored into the index.
 
 This process and its results can be controlled by using various field options and Analyzers, as explained below.
 
@@ -14,11 +14,15 @@ This process and its results can be controlled by using various field options an
 
 Lucene offers several Analyzers out-of-the-box, and new ones can be easily made. Different analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens post-tokenization.
 
-RavenDB uses Lucene's `StandardAlayzer` as it's default Analyzer. This analyzer is aware of e-mail and network addresses when tokenizing, normalizes case, filters out common English words, and also does some basic English stemming. Other available Analyzers behave a bit differently, as shown below
+RavenDB uses Lucene's `LowerCaseKeywordAnalyzer` as it's default Analyzer. It stores the entire term as a single token, after lowerring the case of all the characters. This allows you to perform exact matches, which is what you would expect, but it doesn't allow you to perform real full text searches. For that, we usually need to use the `StandardAnalyzer`. This analyzer is aware of e-mail and network addresses when tokenizing, normalizes case, filters out common English words, and also does some basic English stemming. Other available Analyzers behave a bit differently, as shown below
 
 Given this sample text:
 
-`The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.`
+`The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`
+
+* **LowerCaseKeywordAnalyzer** will produce a single token, with all letters set to lower case:
+
+  `the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]
 
 * **StandardAnalyzer** will produce the following tokens:
 
@@ -52,7 +56,7 @@ The Analyzer you are referencing to has to be available to the RavenDB server in
 
 ## Field options
 
-After the tokenization and analysis process is complete, the resulting tokens are stored in an index, which is now ready to be search with. As we have seen before, only fields in the Map/Reduce projections could be used for searched, and the actual tokens stored for each depends on how the selected Analyzer processed the original text.
+After the tokenization and analysis process is complete, the resulting tokens are stored in an index, which is now ready to be search with. As we have seen before, only fields in the final index projection could be used for searched, and the actual tokens stored for each depends on how the selected Analyzer processed the original text.
 
 Lucene allows storing the original token text for fields, and RavenDB exposes this feature in the index definition object via `Stores`.
 
@@ -60,6 +64,6 @@ By default, tokens are saved to the index as Indexed and Analyzed but not Stored
 
 {CODE stores1@Consumer\StaticIndexes.cs /}
 
-The default values for each field are `FieldStorage.No` in Stores and `FieldIndexing.Analyzed` in Indexes.
+The default values for each field are `FieldStorage.No` in Stores and `FieldIndexing.Default` in Indexes.
 
-Setting `FieldIndexing.No` causes values to not be available in where clauses when querying (similarly to not being present in the original projection). `FieldIndexing.NotAnalyzed` causes whole properties to be treated as a single token and matches must be exact, similarly to using a KeywordAnalyzer on this field. The latter is useful for product Ids, for example.
+Setting `FieldIndexing.No` causes values to not be available in where clauses when querying (similarly to not being present in the original projection). `FieldIndexing.NotAnalyzed` causes whole properties to be treated as a single token and matches must be exact, similarly to using a KeywordAnalyzer on this field. The latter is useful for product Ids, for example. `FieldIndexing.Analyzed` allows to perform full text search operations against the field. `FieldIndexing.Default` will index the field as a single term, in lower case.
