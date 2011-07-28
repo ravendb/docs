@@ -16,7 +16,7 @@ namespace RavenCodeSamples.Consumer
 					RavenJObject metadata = session.Advanced.GetMetadataFor(product);
 
 					// Get the last modified time stamp, which is known to be of type DateTime
-					DateTime collectionName = metadata["Last-Modified"].Value<DateTime>();
+					DateTime collectionName = metadata.Value<DateTime>("Last-Modified");
 					#endregion
 				}
 			}
