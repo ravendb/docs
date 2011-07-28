@@ -115,6 +115,7 @@
     <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Deployment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
