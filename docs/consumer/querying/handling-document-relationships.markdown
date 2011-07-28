@@ -4,7 +4,7 @@ One of the design principals that RavenDB adheres to is the idea that documents 
 
 There are valid scenarios where we need to define relationships between objects. By doing so, we expose ourself to one major problem: whenever we load the containing entity, we are going to need to load data from the referenced entities too, unless we are not interested in them. While the alternative of storing the whole entity in every object graph it is referenced in seems cheaper at first, this proves to be quite costly in terms of database work and network traffic.
 
-RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one of them or more, and when applied correctly, they can drastically improve performance, reduce network bandwidth and speedup development.
+RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one or more of them, and when applied correctly, they can drastically improve performance, reduce network bandwidth and speedup development.
 
 The theory behind this topic and other related subjects are discussed in length in the Theory section.
 
@@ -60,11 +60,11 @@ You can even use Includes with queries:
 
 {CODE includes2@Consumer/Includes.cs /}
 
-What actually happens under the hood is that RavenDB actually has two channels in which it can return information for a load request. The first is the results channel, which is what is returned from the Load method call. The second is the Includes channel, which contains all the included documents. Those documents are not returned from the `Load` method call, but they are added to the session unit of work, and subsequent requests to load them can be served directly from the session cache, without any additional queries to the server.
+What actually happens under the hood is that RavenDB actually has two channels in which it can return information for a load request. The first is the Results channel, which is what is returned from the Load method call. The second is the Includes channel, which contains all the included documents. Those documents are not returned from the `Load` method call, but they are added to the session unit of work, and subsequent requests to load them can be served directly from the session cache, without any additional queries to the server.
 
 ## Live Projections
 
-Using Includes is very useful, but sometimes we want to do better than that, or just more. The Live Projection feature is unique to RavenDB, and it can be thought of as the third step of the Map/Reduce operation: after done with mapping all data, and it has been reduced (if asked to), the RavenDB server can transform the results into a completely different data structure and return it back instead of the original results.
+Using Includes is very useful, but sometimes we want to do better than that, or just more than they can offer. The Live Projection feature is unique to RavenDB, and it can be thought of as the third step of the Map/Reduce operation: after done with mapping all data, and it has been reduced (if the index is a Map/Reduce index), the RavenDB server can transform the results into a completely different data structure and return it back instead of the original results.
 
 Using the Live Projections feature, you get more control over what to load into the result entity, and since it returns a projection of the actual entity you also get the chance to filter out properties you do not need.
 
@@ -84,7 +84,7 @@ Since each Live Projection will return a projection, you can use the `.As<>` cla
 
 {CODE liveprojections3@Consumer\LiveProjections.cs /}
 
-The main benefit of using Live Projections is by having to write much less code, which will run on the server and can save a lot of network bandwidth by returning only the data we are interested in.
+The main benefit of using Live Projections is having to write much less code, and the fact that it will run on the server and reduce a lot of network bandwidth by returning only the data we are interested in.
 
 {NOTE An important difference to note is that while Includes is useful for explicit loading by id or querying, Live Projections can be used for querying only. /}
 
@@ -92,6 +92,6 @@ The main benefit of using Live Projections is by having to write much less code,
 
 There are no strict rules as to when to use which approach, but the general idea is to give it a good thought, and consider the various implication each has.
 
-As an example, in an e-commerce application product names and prices are actually better be denormalized into an order line object, since you want to make sure the customer sees the same price and product title in the order history. But the customer name and addresses should never be denormalized into the order entity.
+As an example, in an e-commerce application product names and prices are actually better be denormalized into an order line object, since you want to make sure the customer sees the same price and product title in the order history. But the customer name and addresses should probably be references, rather than denormalized into the order entity.
 
 For most cases where denormalization is not an option, Includes are probably the answer. Whenever a serious processing is required after the Map/Reduce work is done, or when you need a different entity structure returned than those defined by your index - take a look at Live Projections.
