@@ -90,6 +90,12 @@ namespace RavenCodeSamples.Intro
 					session.Delete(existingBlogPost);
 					session.SaveChanges();
 					#endregion
+
+					#region deleting_document_2
+
+					session.Advanced.DatabaseCommands.Delete("posts/1234", null);
+
+					#endregion
 				}
 
 				using (var session = store.OpenSession())

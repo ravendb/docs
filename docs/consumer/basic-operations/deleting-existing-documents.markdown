@@ -22,3 +22,15 @@ Once again, this results in an HTTP communication as shown below:
     ]
 	
 Deletes are final and cannot be rolled back, once committed.
+
+If you have the id of a document, and you don't want to load it just in order to delete it, you can perform a direct delete using the `DatabaseCommands` property available in the `Advanced` section of the session API.
+
+{CODE deleting_document_2@Intro\BasicOperations.cs /}
+
+This results in an HTTP communication as shown below:
+
+    DELETE /docs/posts/1234 HTTP/1.1
+    Host: 127.0.0.1:8081
+    
+    
+Unlike session operations, `DatabaseCommands` operations execute immediately, and do not wait for `SaveChanges` to be called.
