@@ -15,16 +15,16 @@ namespace RavenCodeSamples.Consumer
 		}
 		#endregion
 
+		#region spatial1
 		public class Restaurants_ByRatingAndLocation : AbstractIndexCreationTask<Restaurant>
 		{
 			public Restaurants_ByRatingAndLocation()
 			{
-				#region spatial1
 				Map = restaurants => from r in restaurants
 				                     select new {r.Rating, _ = SpatialIndex.Generate(r.Latitude, r.Longitude)};
-				#endregion
 			}
 		}
+		#endregion
 
 		public void BasicSpatialSearch()
 		{
