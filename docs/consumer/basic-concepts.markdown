@@ -40,7 +40,7 @@ While Munin is useful for testing and temporary in-memory tasks, at this stage o
 
 Given a RavenDB server, embedded or remote, the Client API allows easy access to it from any .NET language. The Client API exposes all aspects of the RavenDB server to your application in a seamless manner.
 
-In addition to transparently managing all client-server communications, the Client API is also responsible for a complete integrated experience for the .NET consumer application. Among other things, the Client API is responsible for implementing the Unit of Work pattern, applying conventions to the process of saving/loading of data, integrating with System.Transactions, detecting changed entities, batching requests to the server, and more.
+In addition to transparently managing all client-server communications, the Client API is also responsible for a complete integrated experience for the .NET consumer application. Among other things, the Client API is responsible for implementing the Unit of Work pattern, applying conventions to the process of saving/loading of data, integrating with `System.Transactions`, detecting changed entities, batching requests to the server, and more.
 
 Reference Raven.Client.Lightweight.dll (or Raven.Client.Silverlight if you are using Silverlight) from your application, and you are ready to start interacting with the server.
 
@@ -48,7 +48,7 @@ Reference Raven.Client.Lightweight.dll (or Raven.Client.Silverlight if you are u
 
 The RavenDB Client API design intentionally mimics the widely familiar NHibernate API. The API is composed of the following main classes:
 
-* _IDocumentStore_ - This is expensive to create, thread safe and should only be created once per application. The Document Store is used to create DocumentSessions, to hold the conventions related to saving/loading data and any other global configuration.
+* _IDocumentStore_ - This is expensive to create, thread safe and should only be created once per application. The Document Store is used to create DocumentSessions, to hold the conventions related to saving/loading data and any other global configuration, such as the http cache for that server.
 
 * _IDocumentSession_ - Instances of this interface are created by the DocumentStore, they are cheap to create and are not thread safe. If an exception is thrown by any IDocumentSession method, the behavior of all of the methods (except Dispose) is undefined. The document session is used to interact with the Raven database, load data from the database, query the database, save and delete. Instances of this interface implement the Unit of Work pattern and change tracking. 
 
@@ -80,7 +80,7 @@ In RavenDB each document has its own unique global id, in the sense that if one 
 
 When using the Client API, each POCO (or: .NET object) stored in RavenDB is considered a _Document_. When stored, it is serialized to JSON and then saved to the database. Entities of different types (for example, objects of classes BlogPost, User, and Comment) are grouped by their type and added to one collection by default, creating new documents with ids like `users/1`, `blogposts/1` and `comments/1`. Note how the class name is used to create the collection name, in its plural form.
 
-The general recommendation when using the Client API is not to have an `Id` property at all for your entities. RavenDB will track the ids for you, and they can be accessed whenever necessary using the `Session` object. If you do want to have an id property for some reason you can do that, and RavenDB will detect and convert it to the conventional format automatically. Although numeric and `Guid` ids are supported, it is recommended that you keep it as a string.
+If you have an Id property on your entities, RavenDB will populate that property with the entity id. That property isn't mandatory, however, and you can have entities without an Id property, in which case RavenDB will manage the entity id internally. Although numeric and `Guid` ids are supported, it is recommended that you keep it as a string.
 
 RavenDB supports 3 ways of figuring out a unique id, or a document key, for a newly saved document:
 
@@ -91,6 +91,12 @@ RavenDB supports 3 ways of figuring out a unique id, or a document key, for a ne
 3. You can assign an id manually, but then if a document already exists in your RavenDB server under the same key it will be overwritten.
 
 {NOTE It is important to understand that a `Collection` is merely a convention, not something that is enforced by RavenDB. There is absolutely nothing that would prevent you from saving a `Post` with the document id of "users/1", and that would overwrite any existing document with the id "users/1", regardless of which collection it belongs to./}
+
+You can also setup a custom id generation strategy by supply a `DocumentKeyGenerator`, like so:
+
+  store.Conventions.DocumentKeyGenerator = entity => store.Conventions.GetTypeTagName(entity.GetType()) +"/";
+  
+This will instruct RavenDB to use identity id generation strategy for all the entities that this document store manages.
 
 ## The Management Studio
 

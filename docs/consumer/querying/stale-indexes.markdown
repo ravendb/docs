@@ -22,7 +22,7 @@ When it is a requirement to get non-stale results back from a query, it is possi
 
 {CODE stale2@Consumer\Stale.cs /}
 
-While a time-out of 5 seconds was specified, that is only an optional parameter. RavenDB can be told to wait indefinitely until there are non-stale results. This should only be used in unit-testing, and never in a real-world application, unless you are 100% sure you understand the implications and that is what you want to have.
+Note that a time-out of 5 seconds was specified, while you can ask RavenDB to wait indefinitely until there are non-stale results, this should only be used in unit-testing, and never in a real-world application, unless you are 100% sure you understand the implications and that is what you want to have.
 
 ## Setting cut-off point
 
@@ -33,3 +33,11 @@ Even when using `WaitForNonStaleResults` with a time-out like shown above, it is
 This will make sure that you get the latest results up to that point in time. All pending tasks for changes occurred after this cut-off point will not be considered. And like before, a time-out can be set on that as well.
 
 `WaitForNonStaleResultsAsOfNow` is also available, which is equivallent of calling `WaitForNonStaleResultsAsOf(DateTime.Now)`.
+
+Another option is to use `WaitForNonStaleResultsAsOfLastWrite`, which does exactly what it says it do. It tracks the last write by the application, and uses that as the cutoff point. This is usually recommended if you are working on machines where clock syncronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, it uses the etag values for the writes.
+
+You can also setup the document store to always wait for the last write, like so:
+
+  store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.MonotonicRead;
+
+All queries in the store would behave as if `WaitForNonStaleResultsAsOfLastWrite` was applied to them.

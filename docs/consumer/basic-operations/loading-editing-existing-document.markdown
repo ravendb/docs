@@ -43,7 +43,7 @@ Changes can then be made to that object in the usual manner:
 
 {CODE editing_document_2@Intro\BasicOperations.cs /}
 	
-Flushing those changes to the document store is achieved in the usual way::
+Flushing those changes to the document store is achieved in the usual way:
 
 {CODE editing_document_3@Intro\BasicOperations.cs /}
 	

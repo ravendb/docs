@@ -182,7 +182,9 @@ namespace RavenCodeSamples.Consumer
 			{
 				Map = users => from user in users select new {user.Age};
 				SortOptions = new Dictionary<Expression<Func<Customer, object>>, SortOptions>
-				              	{{x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short}};
+				{
+					{x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short}
+				};
 			}	
 		}
 		#endregion
@@ -194,9 +196,13 @@ namespace RavenCodeSamples.Consumer
 			{
 				Map = users => from doc in users select new {doc.Name};
 				SortOptions = new Dictionary<Expression<Func<Customer, object>>, SortOptions>
-				              	{{x => x.Name, Raven.Abstractions.Indexing.SortOptions.String}};
+				{
+					{x => x.Name, Raven.Abstractions.Indexing.SortOptions.String}
+				};
 				Analyzers = new Dictionary<Expression<Func<Customer, object>>, string>
-				            	{{x => x.Name, "Raven.Database.Indexing.Collation.Cultures.SvCollationAnalyzer, Raven.Database"}};
+				{
+					{x => x.Name, "Raven.Database.Indexing.Collation.Cultures.SvCollationAnalyzer, Raven.Database"}
+				};
 			}
 		}
 		#endregion
@@ -208,7 +214,10 @@ namespace RavenCodeSamples.Consumer
 			{
 				Map = posts => from doc in posts
 							   select new { doc.Tags, doc.Content };
-				Stores = new Dictionary<Expression<Func<BlogPost, object>>, FieldStorage> { { x => x.Title, FieldStorage.Yes } };
+				Stores = new Dictionary<Expression<Func<BlogPost, object>>, FieldStorage>
+				{
+					{ x => x.Title, FieldStorage.Yes }
+				};
 				Indexes = new Dictionary<Expression<Func<BlogPost, object>>, FieldIndexing>
 				                    {
 				                        {x => x.Tags, FieldIndexing.NotAnalyzed},

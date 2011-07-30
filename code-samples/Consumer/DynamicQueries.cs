@@ -12,9 +12,12 @@ namespace RavenCodeSamples.Consumer
 				using (var session = store.OpenSession())
 				{
 					#region linquerying_1
-					var results = (from company in session.Query<Company>()
-									   select company)
-									   .ToList();
+					var results = 
+						(
+							from company in session.Query<Company>()
+							select company
+						)
+							.ToArray();
 					#endregion
 				}
 
