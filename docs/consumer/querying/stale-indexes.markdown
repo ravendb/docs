@@ -22,7 +22,7 @@ When it is a requirement to get non-stale results back from a query, it is possi
 
 {CODE stale2@Consumer\Stale.cs /}
 
-Note that a time-out of 5 seconds was specified, while you can ask RavenDB to wait indefinitely until there are non-stale results, this should only be used in unit-testing, and never in a real-world application, unless you are 100% sure you understand the implications and that is what you want to have.
+Note that in the sample above a time-out of 5 seconds was specified. While you can ask RavenDB to wait indefinitely until there are non-stale results, this should only be used in unit-testing, and never in a real-world application, unless you are 100% sure you understand the implications, and that is what you want to have.
 
 ## Setting cut-off point
 
