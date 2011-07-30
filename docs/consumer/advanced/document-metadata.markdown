@@ -1,6 +1,6 @@
 ﻿# Working with document metadata
 
-Each RavenDB document has metadata properties attached to it, which are being used internally but can be exposed by request. This is usually used for things associated with the entity, but aren't a direct part of it.
+Each RavenDB document has metadata properties attached to it, which are being used internally but can be exposed to your code. This is usually used for things _about_ the entity, which aren't a direct part of it.
 
 A consumer may choose to use those properties (for indexing) or add key/value pairs of his own should he need to.
 
@@ -12,6 +12,7 @@ Here is a list of all properties RavenDB stores as metadata for its documents:
 * **Raven-Entity-Name** - Records the entity name, aka the name of the RavenDB collection this entity belongs to.
 * **Non-Authoritive-Information** - This boolean value will be set to true if the data received by the client has been modified by an uncommitted transaction. You can read more on it in the Advanced section.
 * **Temp-Index-Score** - When querying RavenDB, this value is the [Lucene score](http://lucene.apache.org/java/2_9_2/scoring.html) of the entity for the query that was executed.
+* **Raven-Read-Only** - This document should be considered read only and not modified.
 * **Last-Modified** - The last modified time-stamp for the entity.
 * **@etag** - Every document in RavenDB has a corresponding e-tag (entity tag) stored as a sequential Guid. This e-tag is updated by RavenDB every time the document is changed.
 * **@id** - The entity id, as extracted from the entity itself.

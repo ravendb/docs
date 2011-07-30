@@ -4,7 +4,7 @@ While the general advice is to store files on a dedicated server or in the cloud
 
 If large chunks of data are part of our entities, we would most probably take a performance hit quite quickly: Whenever a document containing this entity is requested, pulled for indexing or updated, the whole object graph would have to be loaded and processed.
 
-This is where Attachments come in. They offer the luxury of efficiently attaching even a very large blob to a RavenDB document. Attachments in RavenDB can have metadata, are replicated between nodes, can be cascade deleted on document deletions and are HTTP cachable.
+This is where Attachments come in. They offer the luxury of efficiently attaching even a large blob to a RavenDB document. Attachments in RavenDB can have metadata, are replicated between nodes, can be cascade deleted on document deletions and are HTTP cachable.
 
 Even better: with attachments you can load large chunks of data concurrently to loading the entities, so data is displayed without much delay and doesn't suffer from the size of the data attached to it.
 
@@ -22,7 +22,7 @@ As you can see, loading an attachment from RavenDB is very simple. Each attachme
 
 ## Storing and updating attachments
 
-Adding an attachments uses the exact same logic. You call `DatabaseCommands.PutAttachment` with the key to store the attachment at, the actual data and a `RavenJObject` containing metadata key/value pairs:
+Adding an attachment uses the exact same process. You call `DatabaseCommands.PutAttachment` with the key to store the attachment at, the actual data and a `RavenJObject` containing metadata key/value pairs:
 
 {CODE putting_attachment@Consumer\Attachments.cs /}
 

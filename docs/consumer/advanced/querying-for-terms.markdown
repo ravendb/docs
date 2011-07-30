@@ -6,6 +6,6 @@ To get all unique values indexed for "MyProperty" in a specific index, with a pa
 
 {CODE getterms1@Consumer\Faceted.cs /}
 
-The third parameter should be used for paging. Pass it the last term of the last page you got, and it will generate the next page for you.
+The third parameter is used for paging. Pass it the last term of the last page you got, and it will generate the next page for you.
 
 This is useful for implementing [Faceted Search](http://en.wikipedia.org/wiki/Faceted_search) for example.

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Transactions;
+using Raven.Client;
 using Raven.Client.Linq;
 using System.Linq;
 
@@ -60,6 +61,17 @@ namespace RavenCodeSamples.Intro
 
 			using (var store = NewDocumentStore())
 			{
+				#region open_the_session
+				// Saving changes using the session API
+				using (IDocumentSession session = store.OpenSession())
+				{
+					// Operations against session
+
+					// Flush those changes
+					session.SaveChanges();
+				}
+				#endregion
+
 				using (var session = store.OpenSession())
 				{
 					#region saving_document_2
@@ -89,6 +101,12 @@ namespace RavenCodeSamples.Intro
 					#region deleting_document_1
 					session.Delete(existingBlogPost);
 					session.SaveChanges();
+					#endregion
+
+					#region deleting_document_2
+
+					session.Advanced.DatabaseCommands.Delete("posts/1234", null);
+
 					#endregion
 				}
 
