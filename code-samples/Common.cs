@@ -41,6 +41,12 @@ namespace RavenCodeSamples
 	}
 	#endregion
 
+	public class BlogAuthor
+	{
+		public string Name { get; set; }
+		public string ImageUrl { get; set; }
+	}
+
 	#region blogpost_mapreduce_classes
 	public class BlogTagPostsCount
 	{
