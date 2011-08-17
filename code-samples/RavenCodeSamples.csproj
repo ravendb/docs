@@ -96,6 +96,7 @@
   <ItemGroup>
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Consumer\Advanced.cs" />
     <Compile Include="Consumer\Async.cs" />
     <Compile Include="Consumer\Attachments.cs" />
     <Compile Include="Consumer\DynamicQueries.cs" />
