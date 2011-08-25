@@ -109,6 +109,7 @@
     <Compile Include="Consumer\Spatial.cs" />
     <Compile Include="Consumer\Stale.cs" />
     <Compile Include="Consumer\StaticIndexes.cs" />
+    <Compile Include="HomepageSlides.cs" />
     <Compile Include="Intro\BasicOperations.cs" />
     <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
