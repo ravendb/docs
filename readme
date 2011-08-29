@@ -1,4 +1,8 @@
 This repository is for the RavenDB documenation book.
+
+The compiled book can be downloaded as a PDF from
+http://builds.hibernatingrhinos.com/download/2254
+
 The documentation system used is: http://sphinx.pocoo.org/
 
 To build the book you need:
