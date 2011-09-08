@@ -30,6 +30,7 @@ namespace RavenCodeSamples
 		public string Title { get; set; }
 		public string Category { get; set; }
 		public string Content { get; set; }
+		public DateTime PublishedAt { get; set; }
 		public string[] Tags { get; set; }
 		public BlogComment[] Comments { get; set; }
 	}

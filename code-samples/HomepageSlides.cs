@@ -13,10 +13,12 @@ namespace RavenCodeSamples
         #region Step 1
 
         // Client / Server
-        public static IDocumentStore MyDocStore = new DocumentStore {Url = "http://ravendb.mydomain.com/"};
+        public static IDocumentStore MyDocStore =
+            new DocumentStore {Url = "http://ravendb.mydomain.com/"};
 
         // Embedded
-        public static IDocumentStore EmbeddedDocStore = new EmbeddableDocumentStore {DataDirectory = "~/DataDir"};
+        public static IDocumentStore EmbeddedDocStore =
+            new EmbeddableDocumentStore {DataDirectory = "~/DataDir"};
 
         #endregion
 
@@ -27,27 +29,18 @@ namespace RavenCodeSamples
 
             using (var session = MyDocStore.OpenSession())
             {
-                session.Store(new BlogPost
-                                  {
-                                      Title = "Sample",
-                                      Content = "Some HTML content",
-                                      Comments = new[]
-                                                     {
-                                                         new BlogComment {Title = "First comment", Content = "foo"},
-                                                         new BlogComment {Title = "Second comment"}
-                                                     }
-                                  });
+            	session.Store(new BlogPost {Title = "Sample"});
                 session.SaveChanges();
             }
 
             #endregion
+
             #region Step 3
 
             using (var session = MyDocStore.OpenSession())
             {
                 var blogPosts = from post in session.Query<BlogPost>()
-                               from tag in post.Tags
-                               where "RavenDB".Equals(tag)
+                               where post.PublishedAt > new DateTime(2011, 8, 31)
                                select post;
 
                 Console.WriteLine(blogPosts.Count());
