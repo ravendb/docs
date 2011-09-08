@@ -1,22 +1,4 @@
-This repository is for the RavenDB documenation book.
+This repository is for the RavenDB documenation
 
-The compiled book can be downloaded as a PDF from
+The compiled old book can be downloaded as a PDF from
 http://builds.hibernatingrhinos.com/download/2254
-
-The documentation system used is: http://sphinx.pocoo.org/
-
-To build the book you need:
-
-Install Python
-  * http://www.python.org/ftp/python/2.7/python-2.7.msi
-Install SetupTools
-  * http://pypi.python.org/packages/2.7/s/setuptools/setuptools-0.6c11.win32-py2.7.exe
-Install Sphinx
-  * Go to C:\Python27\Scripts
-  * Execute .\easy_install sphinx
-Install MikTex
-  * http://miktex.org/2.8/setup
-  
-From the power shell command line
-  * Execute .\psake.ps1
-  
