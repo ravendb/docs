@@ -68,7 +68,8 @@ namespace RavenCodeSamples.Consumer
 
 				#region patching3
 
-				// This is how you rename a property; copying works exactly the same, but with Type = PatchCommandType.Copy
+				// This is how you rename a property; copying works
+				// exactly the same, but with Type = PatchCommandType.Copy
 				documentStore.DatabaseCommands.Patch(
 					"blogposts/1234",
 					new[]
@@ -102,8 +103,9 @@ namespace RavenCodeSamples.Consumer
 
 				#region patching_arrays1
 
-				// Append a new comment; Insert operation is supported as well, by
-				// using PatchCommandType.Add and specifying a Position to insert at
+				// Append a new comment; Insert operation is supported
+				// as well, by using PatchCommandType.Add and
+				// specifying a Position to insert at
 				documentStore.DatabaseCommands.Patch(
 					"blogposts/1234",
 					new[]
