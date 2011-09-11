@@ -28,7 +28,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 				{
 					yield return new Folder
 					             	{
-					             		Name = match.Groups[2].Value.Trim(),
+					             		Title = match.Groups[2].Value.Trim(),
 					             		Slug = path
 					             	};
 				}

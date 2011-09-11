@@ -7,5 +7,8 @@ namespace RavenDB.DocsCompiler.Model
 {
 	public interface IDocumentationItem
 	{
+		string Title { get; set; }
+		string Trail { get; set; }
+		string Slug { get; set; }
 	}
 }
