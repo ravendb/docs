@@ -103,6 +103,7 @@
     <Compile Include="Consumer\Attachments.cs" />
     <Compile Include="Consumer\DynamicQueries.cs" />
     <Compile Include="Consumer\Faceted.cs" />
+    <Compile Include="Consumer\Includes.cs" />
     <Compile Include="Consumer\LiveProjections.cs" />
     <Compile Include="Consumer\Metadata.cs" />
     <Compile Include="Consumer\Paging.cs" />
@@ -115,7 +116,6 @@
     <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\Deployment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
