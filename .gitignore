@@ -2,7 +2,9 @@
 [Dd]ebug/
 [Rr]elease/
 build/
-[Bb]in/
+[Bb]in/*.dll
+[Bb]in/*.pdb
+[Bb]in/*.xml
 [Oo]bj/
 *.suo
 *.sln.cache
@@ -11,3 +13,4 @@ _ReSharper.*/
 [Dd]ata/
 _build/*
 *.log
+Markdown Viewer*
