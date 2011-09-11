@@ -12,19 +12,13 @@ This process and its results can be controlled by using various field options an
 
 ### Understanding Analyzers
 
-Lucene offers several Analyzers out-of-the-box, and new ones can be easily made. Different analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens post-tokenization.
+Lucene offers several Analyzers out-of-the-box, and new ones can be made easily. Different analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens post-tokenization.
 
-RavenDB uses Lucene's `LowerCaseKeywordAnalyzer` as it's default Analyzer. It stores the entire term as a single token, after lowerring the case of all the characters. This allows you to perform exact matches, which is what you would expect, but it doesn't allow you to perform real full text searches. For that, we usually need to use the `StandardAnalyzer`. This analyzer is aware of e-mail and network addresses when tokenizing, normalizes case, filters out common English words, and also does some basic English stemming. Other available Analyzers behave a bit differently, as shown below
-
-Given this sample text:
+For example, given this sample text:
 
 `The quick brown fox jumped over the lazy dogs, Bob@hotmail.com 123432.`
 
-* **LowerCaseKeywordAnalyzer** will produce a single token, with all letters set to lower case:
-
-  `the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]
-
-* **StandardAnalyzer** will produce the following tokens:
+* **StandardAnalyzer**, which is Lucene's default, will produce the following tokens:
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`
 
@@ -44,9 +38,27 @@ Given this sample text:
 
     `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
 
-### Using a non-default Analyzer
+### RavenDB's default analyzer
 
-It's sometimes useful to use a non-default analyzer, for example to improve full-text search of long text fields, especially when they are in a different language than English.
+By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for all content. This implementation behaves like Lucene's KeywordAnalyzer, but it also perform case normalization by converting all characters to lower case. 
+
+In other words, by default RavenDB stores the entire term as a single token, in a lower case form. So given the same sample text from above, `LowerCaseKeywordAnalyzer` will produce a single token looking like this:
+
+  `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]
+
+This default behavior allows you to perform exact searches, which is exactly what you would expect. However, this doesn't allow you to perform full-text searches. For that, another analyzer should be used.
+
+### Full-text search
+
+To allow for full-text search on text fields, you can use the analyzers provided with Lucene out of the box. These are available as part of the Lucene distribution that ships with RavenDB.
+
+For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing, normalizes case, filters out common English words, and also does some basic English stemming.
+
+// TODO Collation analyzers
+
+For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple to do, and may already be available as a contrib package for Java Lucene or Lucene.NET.
+
+### Using a non-default Analyzer
 
 To make an entity property indexed using a specific Analyzer, all you need to do is match it with the name of the property, like so:
 

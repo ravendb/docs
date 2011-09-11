@@ -1,6 +1,6 @@
 ﻿# Set based operations
 
-Sometimes we need to update or delete a large amount of documents answering some criteria. In SQL this is a natural operation, and a query doing that will look like this:
+Sometimes we need to update or delete a large amount of documents answering some criteria. With SQL this is a natural operation, and a query doing that will look like this:
 
     DELETE FROM Users WHERE LastLogin < '2009-01-01'
     UPDATE Users SET IsActive = 0 WHERE LastLogin < '2010-01-01'

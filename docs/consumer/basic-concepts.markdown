@@ -68,6 +68,18 @@ Other, more advanced operations are also accessible from the Session object, and
 
 Once a session has been opened, all entities that are retrieved from the server are tracked, and whenever an entity has changed the user can choose whether to save it back changed to the data store, or to discard the changes made locally.
 
+### POCO serialization
+
+By default, all POCOs are serialized in the following manner:
+
+* All properties with a getter and a setter are serialized, regardless of their visibility (public, private or protected)
+
+* Property with no setter is ignored
+
+* All public fields are serialized, non-public fields are ignored
+
+This behavior can be customized, see the page under Advanced.
+
 ## REST API
 
 The server instance can also be accessed via a RESTful API, making it accessible from other platforms like AJAX queries in webpages or non-Windows applications written in Ruby-on-Rails, for example.
