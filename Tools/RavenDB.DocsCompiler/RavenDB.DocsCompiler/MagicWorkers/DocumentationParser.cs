@@ -37,6 +37,9 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			contents = CodeFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim()));
 			contents = contents.ResolveMarkdown();
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
+
+			contents = contents.Replace(@".markdown""", @".html"""); // TEMP HACK TO ALLOW STATIC HTML VIEWS
+
 			return contents;
 		}
 
