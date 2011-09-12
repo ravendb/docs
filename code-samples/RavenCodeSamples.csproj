@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -25,32 +25,68 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>bin\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AsyncCtpLibrary">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\AsyncCtpLibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="Esent.Interop">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Esent.Interop.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.NRefactory">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=4.0.2.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>packages\Newtonsoft.Json.4.0.2\lib\net40\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog">
+      <HintPath>packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Abstractions">
-      <HintPath>EmbeddedClient\Raven.Abstractions.dll</HintPath>
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Embedded">
-      <HintPath>EmbeddedClient\Raven.Client.Embedded.dll</HintPath>
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Client.Embedded.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>EmbeddedClient\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database">
-      <HintPath>EmbeddedClient\Raven.Database.dll</HintPath>
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Http">
-      <HintPath>EmbeddedClient\Raven.Http.dll</HintPath>
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Json">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Munin">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Munin.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Storage.Esent">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Storage.Esent.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Storage.Managed">
-      <HintPath>EmbeddedClient\Raven.Storage.Managed.dll</HintPath>
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Raven.Storage.Managed.dll</HintPath>
+    </Reference>
+    <Reference Include="Spatial.Net">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\Spatial.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="SpellChecker.Net">
+      <HintPath>packages\RavenDB-Embedded.1.0.0.465\lib\net40\SpellChecker.Net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -59,8 +95,30 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CodeSampleBase.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="Consumer\Advanced.cs" />
+    <Compile Include="Consumer\Async.cs" />
+    <Compile Include="Consumer\Attachments.cs" />
+    <Compile Include="Consumer\DynamicQueries.cs" />
+    <Compile Include="Consumer\Faceted.cs" />
+    <Compile Include="Consumer\LiveProjections.cs" />
+    <Compile Include="Consumer\Metadata.cs" />
+    <Compile Include="Consumer\Paging.cs" />
+    <Compile Include="Consumer\Patching.cs" />
+    <Compile Include="Consumer\SetBased.cs" />
+    <Compile Include="Consumer\Spatial.cs" />
+    <Compile Include="Consumer\Stale.cs" />
+    <Compile Include="Consumer\StaticIndexes.cs" />
+    <Compile Include="HomepageSlides.cs" />
+    <Compile Include="Intro\BasicOperations.cs" />
+    <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Server\Bundles.cs" />
+    <Compile Include="Server\Deployment.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
