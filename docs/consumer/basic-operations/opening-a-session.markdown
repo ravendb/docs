@@ -8,8 +8,6 @@ In this context, the session can be thought of as managing all changes internall
 
 It will be assumed in the following examples that a valid store has been created, and that the calls are being made within the context of a valid session, and that ``SaveChanges`` is being called safely at the end of that session lifetime.
 
-.. note::
-  
-  If you don't call ``SaveChanges``, all the changes made in that session will be discarded!
+{WARNING If you don't call `SaveChanges`, all the changes made in that session will be discarded! /}
 
 Whenever database access is needed, we are going to open a new session, and dispose of it right after we are done using it (and called `SaveChanges`).

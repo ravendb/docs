@@ -12,7 +12,7 @@ Every index is required to have a name and a Map function. The Map function is t
 
 The Reduce function is optional, and is written and executed just like the Map function, but this time on the results of the Map function. This is actually a second indexing pass, which allows us to perform aggregation operations quite cheaply, directly from the index.
 
-### Note:     To better understand the operations of the Map/Reduce functions, it is recommended that you read the Map/Reduce chapter in the Theory section.
+{INFO To better understand the operations of the Map/Reduce functions, it is recommended that you read the Map/Reduce chapter in the Theory section. /}
 
 The third function, `TransformResults`, is of a feature called Live Projections, which is discussed later in this chapter.
 
@@ -24,7 +24,7 @@ Once we figured out how our index should look like, we can go ahead and send the
 
 {CODE static_indexes2@Consumer\StaticIndexes.cs /}
 
-### Note: The `DatabaseCommands` object is available from both the session object _and_ the `IDocumentStore` object.
+{INFO The `DatabaseCommands` object is available from both the session object _and_ the `IDocumentStore` object. /}
 
 An alternative approach is to create a class which is derived from `AbstractIndexCreationTask<T>`, and populating the required fields in its constructor. This is very useful when you have many indexes to maintain, so you can keep each index in its own class, and pass them all in one line of code (assuming they all reside in the same assembly), like so:
 
@@ -42,7 +42,7 @@ Then we can create a new Map/Reduce index using the following code:
 
 {CODE static_indexes3@Consumer\StaticIndexes.cs /}
 
-### Note: Notice the use the generic `IndexDefinitionBuilder` class. It builds an `IndexDefinition` object for you based on the Linq queries you specified. If needed you can pass an `IndexDefinition` object with the Map/Reduce functions as strings.
+{NOTE Notice the use the generic `IndexDefinitionBuilder` class. It builds an `IndexDefinition` object for you based on the Linq queries you specified. If needed you can pass an `IndexDefinition` object with the Map/Reduce functions as strings. /}
 
 Alternatively, we can use the exact same logic in the form of `AbstractIndexCreationTask<T>`:
 

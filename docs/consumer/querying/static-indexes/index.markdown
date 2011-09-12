@@ -14,7 +14,7 @@ Querying static indexes is no different than what we have seen by now. Whenever 
 
 {CODE static_indexes1@Consumer\StaticIndexes.cs /}
 
-###  Note: RavenDB will throw if an explicit index name was used, when no such index exists.
+{NOTE RavenDB will throw if an explicit index name was used, when no such index exists. /}
 
 In this chapter we will learn how to create static indexes, and explore the various capabilities they offer.
 

@@ -8,9 +8,7 @@ To save a new blog post in our database server, we first create a new instance o
 
 {CODE saving_document_1@Intro\BasicOperations.cs /}
 
-.. note::
-
-	Neither the class itself or instantiating it required anything from RavenDB, either in the form of attributes or in the form of special factories. The RavenDB Client API works with POCO (Plain Old CLR Objects) objects.
+{INFO Neither the class itself or instantiating it required anything from RavenDB, either in the form of attributes or in the form of special factories. The RavenDB Client API works with POCO (Plain Old CLR Objects) objects. /}
 
 Persisting this entire object graph involves calling `Store` and then `SaveChanges`, on a session object we obtained from our document store:
 
@@ -79,5 +77,4 @@ Two things of note at this point:
 
 * The entire object graph is serialized and persisted as a *single document*, not as a set of distinct objects.
 
-.. note::
-	If there is no "Id" property on a document, RavenDB will allocate an Id, but it will be retrievable only by calling `session.Advanced.GetDocumentId`. In other words, having an Id is entirely optional, but as it is generally more useful to have this information available, most of your documents should have an Id property.
+{NOTE If there is no `Id` property on a document, RavenDB will allocate an Id, but it will be retrievable only by calling `session.Advanced.GetDocumentId`. In other words, having an Id is entirely optional, but as it is generally more useful to have this information available, most of your documents should have an Id property. /}
