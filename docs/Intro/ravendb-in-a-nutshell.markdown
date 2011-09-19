@@ -1,8 +1,8 @@
 ﻿# RavenDB in a nutshell
 
-RavenDB is a **transactional**, **open-source** **[Document Database](what-is-a-document-database.markdown)** written in **.NET**, offering a **flexible data model** designed to address requirements coming from real-world systems. RavenDB allows you to build high-performance, low-latency applications quickly and efficiently.
+RavenDB is a **transactional**, **open-source** [Document Database](what-is-a-document-database.markdown) written in **.NET**, offering a **flexible data model** designed to address requirements coming from real-world systems. RavenDB allows you to build high-performance, low-latency applications quickly and efficiently.
 
-Data in RavenDB is stored **schema-less** as JSON documents, and can be queried efficiently using **Linq** queries from .NET code or using **REST**ful API using other tools. Internally, RavenDB make use of indexes which are automatically created based on your usage, or were created explicitly by the consumer.
+Data in RavenDB is stored **schema-less** as JSON documents, and can be queried efficiently using **Linq** queries from .NET code or using **RESTful** API using other tools. Internally, RavenDB make use of indexes which are automatically created based on your usage, or were created explicitly by the consumer.
 
 RavenDB is built for **web-scale**, and is offering **replication** and **sharding** support out-of-the-box.
 
