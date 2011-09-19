@@ -38,11 +38,11 @@ The build process will, by default, execute all the tests, which may take a whil
 
 ## Development cycle
 
-There are two flavors of RavenDB available - the stable build, which is production ready, and the unstable build. Since we at Hibernating Rhinos make a build out of every push, the unstable build is not recommended for production, although it is being thoroughly tested.
+There are two flavors of RavenDB available - the stable build, which is production ready, and the unstable build. Since we at Hibernating Rhinos make a public build out of every push, the unstable build is **not** recommended for production, although it is thoroughly tested before being made available.
 
-New unstable builds are available daily, sometimes more than once a day. Stable builds are released whenever we feel comfortable enough with recent changes we made - usually when enough time has passed and a handful of people have used the unstable builds. This is usually done on a biweekly basis.
+New unstable builds are available daily, and sometimes more than once a day. Stable builds are released when we feel comfortable enough with recent changes we made - usually when enough time has passed and a handful of people have used the unstable builds. This is usually done on a biweekly basis.
 
-In addition to the stable and unstable options, there is also the commercial version, which is the supported version for running in production.
+Only stable builds are supported for production use. 
 
 ## Reporting bugs
 
