@@ -1,6 +1,6 @@
 ﻿# Opening a session
 
-Once a document store has been created, the next step is to create a session against that document store that will allow us to perform basic CRUD operations within a Unit of Work. It is important to note that when invoking any operations against this store no changes will be made to the underlying document database until the `SaveChanges` method has been called, as in listing 3.2:
+Once a document store has been created, the next step is to create a session against that document store that will allow us to perform basic CRUD operations within a Unit of Work. It is important to note that when invoking any operations against this store no changes will be made to the underlying document database until the `SaveChanges` method has been called:
 
 {CODE open_the_session@Intro\BasicOperations.cs /}
 
