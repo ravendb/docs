@@ -8,13 +8,13 @@ To save a new blog post in our database server, we first create a new instance o
 
 {CODE saving_document_1@Intro\BasicOperations.cs /}
 
-{INFO Neither the class itself or instantiating it required anything from RavenDB, either in the form of attributes or in the form of special factories. The RavenDB Client API works with POCO (Plain Old CLR Objects) objects. /}
+{INFO Neither the class itself nor instantiating it required anything from RavenDB, either in the form of attributes or in the form of special factories. The RavenDB Client API works with POCO (Plain Old CLR Objects) objects. /}
 
 Persisting this entire object graph involves calling `Store` and then `SaveChanges`, on a session object we obtained from our document store:
 
 {CODE saving_document_2@Intro\BasicOperations.cs /}
 
-The `SaveChanges` call will product the HTTP communication shown below. Note that the `Store` method operates purely in memory, and only the call to `SaveChanges` communicates with the server (json was prettified for clarity):
+The `SaveChanges` call will produce the HTTP communication shown below. Note that the `Store` method operates purely in memory, and only the call to `SaveChanges` communicates with the server (json was prettified for clarity):
 
     POST /bulk_docs HTTP/1.1
     Accept-Encoding: deflate,gzip

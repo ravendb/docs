@@ -66,17 +66,17 @@ RavenDB connection string format is:
 
 * _User / Password_ - for server mode only, the credentials to use when accessing the server.
 
-* _Enlist_ - whatever RavenDB should enlist in distributed transactions.
+* _Enlist_ - whatever RavenDB should enlist in distributed transactions. Not applicable for Silverlight.
 
-* _ResourceManagerId_ - Optional, for server mode only, the Resource Manager Id that will be used by the Distributed Transaction Coordinator (DTC) service to identify Raven. A custom resource manager id will need to be configured for each Raven server instance when Raven is hosted more than once per machine.
+* _ResourceManagerId_ - Optional, for server mode only, the Resource Manager Id that will be used by the Distributed Transaction Coordinator (DTC) service to identify Raven. A custom resource manager id will need to be configured for each Raven server instance when Raven is hosted more than once per machine. Not applicable for Silverlight.
 
 * _DefaultDatabase_ or _Database_ - for server mode only, use a specific database, not the default one. Using this will also ensure that the database exists.
 
 The following are samples of a few RavenDB connection strings:
 
-* Url=http://ravendb.mydomain.com - connect to a remove RavenDB instance at ravendb.mydomain.com, to the default database
-* Url=http://ravendb.mydomain.com;Database=Northwind - connect to a remove RavenDB instance at ravendb.mydomain.com, to the Northwind database there
-* Url=http://ravendb.mydomain.com;User=user;Password=secret- connect to a remove RavenDB instance at ravendb.mydomain.com, with the specified credentials
+* Url=http://ravendb.mydomain.com - connect to a remote RavenDB instance at ravendb.mydomain.com, to the default database
+* Url=http://ravendb.mydomain.com;Database=Northwind - connect to a remote RavenDB instance at ravendb.mydomain.com, to the Northwind database there
+* Url=http://ravendb.mydomain.com;User=user;Password=secret- connect to a remote RavenDB instance at ravendb.mydomain.com, with the specified credentials
 * DataDir=~\App_Data\RavenDB;Enslist=False - use embedded mode with the datbase located in the App_Data\RavenDB folder, without DTC support.
 
 ## Configuration
@@ -87,7 +87,7 @@ The RavenDB Client API uses several conventions to control how it works, these c
 
 * _FindIdentityProperty_ - Tell the RavenDB Client API how to find the property serving as the id property (the one holding the document key). Defaults to property named Id.
 
-* _FindTypeTagName_ - Find the tag name for the entity, a tag name is the collection name in which an entity will be enrolled, as well as the default entity key namespace. Defaults to the plural of the entity type. (And entity of type Post would be Posts, an entity of type Person would be People, etc).
+* _FindTypeTagName_ - Find the tag name for the entity, a tag name is the collection name in which an entity will be enrolled, as well as the default entity key namespace. Defaults to the plural of the entity type. (An entity of type Post would be Posts, an entity of type Person would be People, etc).
 
 * _GenerateDocumentKey_ - Allows you to control the generation of keys for new entities. The rules for returned values follow the Raven document key generation strategies. By default, RavenDB concatenate the type tag name with an increasing numeric id (posts/1, posts/2, post/3, etc).
 
