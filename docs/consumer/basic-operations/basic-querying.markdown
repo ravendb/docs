@@ -19,12 +19,12 @@ As usual, lets have a look at the HTTP communication for the first operation:
 	Content-Type: application/json; charset=utf-8
 	Host: 127.0.0.1:8081
 
-## Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in.
+{NOTE Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in /}
 
 The important part to notice in this query is that we are querying the "BlogPosts" collection, for the property "Category" with the value of "RavenDB".
 
 When we query RavenDB we first need to specify which collection we are interested on querying. Once we did that (in the first code snippet above - by specifying `session.Query<`**BlogPost**`>`), we can use the various available modifiers and clauses to filter the results as much as we'd like.
 
-RavenDB supports many querying types, ranging from simple value comparisons to geo-spatial queries, including a full blown full-text search queries.
+RavenDB supports many querying types, ranging from simple value comparisons to geo-spatial queries and even full blown full-text search queries.
 
 In the next chapters we will be discussing querying in more depth - from syntax, through all available querying options, to how RavenDB actually allows efficient data querying, and how you take all that to your advantage when designing your own complex data structure.
