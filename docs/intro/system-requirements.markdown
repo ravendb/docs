@@ -4,8 +4,7 @@ RavenDB comes in several flavors. Listed below are the system requirements for e
 
 ## Lightweight client
 
-* Min: .NET Framework 3.5 Client Profile
-** If you require the Parallel Shard Access Strategy - .NET 4.0.
+* Min: .NET Framework 3.5 Client Profile. 
 * Recommended: .NET Framework 4.0 Client Profile
 * The client doesn't require Windows and **can run on Mono**.
 
