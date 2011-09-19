@@ -72,9 +72,7 @@ Once a session has been opened, all entities that are retrieved from the server 
 
 By default, all POCOs are serialized in the following manner:
 
-* All properties with a getter and a setter are serialized, regardless of their visibility (public, private or protected)
-
-* Property with no setter is ignored
+* All properties with a getter are serialized, regardless of their visibility (public, private or protected)
 
 * All public fields are serialized, non-public fields are ignored
 
@@ -86,7 +84,7 @@ The server instance can also be accessed via a RESTful API, making it accessible
 
 ## Documents, Collections and Document unique identifiers
 
-A single data entity in RavenDB is called a _Document_, and all Documents are persisted in RavenDB as JSON documents. A _Collection_ is a set of Documents with unique ids sharing the same RavenDB entity type (See: Metadata). Collections are only there to help you: they are virtual constructs that have no physical meaning to the database. It may be easy to think of Collections as tables and documents as rows in a schema-less database.
+A single data entity in RavenDB is called a _Document_, and all Documents are persisted in RavenDB as JSON documents. A _Collection_ is a set of Documents with unique ids sharing the same RavenDB entity type (See: Metadata). Collections are only there to help you: they are virtual constructs that have no physical meaning to the database. It may be easy to think of Collections as tables and documents as rows in a schema-less database, but this is true only on the surface.
 
 In RavenDB each document has its own unique global id, in the sense that if one was trying to store two different entities under the same id (`users/1` for example) - only the last one will be persisted. This id is usually combined of the collection name and the entity's uniqe id within the collection, i.e. `users/1`, but as we will see in a moment document ids are independent of the entity type, and therefore doesn't always contain the collection name.
 
