@@ -8,7 +8,7 @@ Requests to the server are made using the client API available to any .NET or Si
 
 ### Launching a server instance
 
-The RavenDB server instance can be instantiated in more than a single way:
+The RavenDB server instance can be instantiated in several ways:
 
 * Running the Raven.Server.exe console application (located under /Server/ in the build package).
 
