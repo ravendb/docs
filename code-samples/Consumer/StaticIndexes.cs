@@ -149,6 +149,7 @@ namespace RavenCodeSamples.Consumer
 				#endregion
 			}
 		}
+
 		#region static_indexes4
 		public class BlogPosts_PostsCountByTag : AbstractIndexCreationTask<BlogPost, BlogTagPostsCount>
 		{
@@ -181,10 +182,8 @@ namespace RavenCodeSamples.Consumer
 			public SampleIndex1()
 			{
 				Map = users => from user in users select new {user.Age};
-				SortOptions = new Dictionary<Expression<Func<Customer, object>>, SortOptions>
-				{
-					{x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short}
-				};
+
+				SortOptions.Add(x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short);
 			}	
 		}
 		#endregion
@@ -195,14 +194,10 @@ namespace RavenCodeSamples.Consumer
 			public SampleIndex2()
 			{
 				Map = users => from doc in users select new {doc.Name};
-				SortOptions = new Dictionary<Expression<Func<Customer, object>>, SortOptions>
-				{
-					{x => x.Name, Raven.Abstractions.Indexing.SortOptions.String}
-				};
-				Analyzers = new Dictionary<Expression<Func<Customer, object>>, string>
-				{
-					{x => x.Name, "Raven.Database.Indexing.Collation.Cultures.SvCollationAnalyzer, Raven.Database"}
-				};
+
+				SortOptions.Add(x => x.Name, Raven.Abstractions.Indexing.SortOptions.String);
+
+				Analyzers.Add(x => x.Name, "Raven.Database.Indexing.Collation.Cultures.SvCollationAnalyzer, Raven.Database");
 			}
 		}
 		#endregion
@@ -214,15 +209,11 @@ namespace RavenCodeSamples.Consumer
 			{
 				Map = posts => from doc in posts
 							   select new { doc.Tags, doc.Content };
-				Stores = new Dictionary<Expression<Func<BlogPost, object>>, FieldStorage>
-				{
-					{ x => x.Title, FieldStorage.Yes }
-				};
-				Indexes = new Dictionary<Expression<Func<BlogPost, object>>, FieldIndexing>
-				                    {
-				                        {x => x.Tags, FieldIndexing.NotAnalyzed},
-				                        {x => x.Comments, FieldIndexing.No}
-				                    };
+
+				Stores.Add(x => x.Title, FieldStorage.Yes);
+
+				Indexes.Add(x => x.Tags, FieldIndexing.NotAnalyzed);
+				Indexes.Add(x => x.Comments, FieldIndexing.No);
 			}
 		}
 		#endregion
