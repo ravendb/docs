@@ -2,7 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using MarkdownSharp;
+using MarkdownDeep;
 
 namespace RavenDB.DocsCompiler.MagicWorkers
 {
@@ -108,14 +108,15 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
 		public static string ResolveMarkdown(this string content)
 		{
-			var md = new Markdown(new MarkdownOptions
-			{
-				AutoHyperlink = true,
-				AutoNewLines = true,
-				EncodeProblemUrlCharacters = true,
-				LinkEmails = false,
-				StrictBoldItalic = true,
-			});
+			// http://www.toptensoftware.com/markdowndeep/api
+			var md = new Markdown
+			         	{
+			         		AutoHeadingIDs = true,
+							ExtraMode = true,
+							NoFollowLinks = false,
+							SafeMode = false,
+							//UrlBaseLocation = 
+			         	};
 
 			return md.Transform(content);
 		}
