@@ -4,6 +4,7 @@ using System.IO;
 using System.Text;
 using RavenDB.DocsCompiler.MagicWorkers;
 using RavenDB.DocsCompiler.Model;
+using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler
 {
@@ -11,81 +12,64 @@ namespace RavenDB.DocsCompiler
 	{
 		private const string DocsListFileName = ".docslist";
 
-		public Folder RootFolder { get; protected set; }
-		private readonly string _outputPath, _fullPath;
+		public IDocsOutput Output { get; set; }
 
-		private Compiler(string fullPath, string outputPath)
+		public Folder RootFolder { get; protected set; }
+		private readonly string _fullPath;
+
+		private Compiler(string fullPath)
 		{
 			_fullPath = fullPath;
-			_outputPath = outputPath;
 		}
 
-		public static void CompileFile(string title, string fullPath, string outputFullPath)
+		//public void CompileFile(string title, string fullPath, string outputFullPath)
+		//{
+		//    var template = File.ReadAllText(@"z:\Projects\RavenDB\RavenDB-docs\Tools\html-template.html");
+
+		//    var contents = string.Format(template, title, DocumentationParser.Parse(fullPath));
+		//    File.WriteAllText(outputFullPath, contents);
+		//}
+
+		public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle)
 		{
-			var template = File.ReadAllText(@"z:\Projects\RavenDB\RavenDB-docs\Tools\html-template.html");
+			if (output == null)
+				throw new ArgumentNullException("output");
 
-			var contents = string.Format(template, title, DocumentationParser.Parse(fullPath));
-			File.WriteAllText(outputFullPath, contents);
-		}
+			var compiler = new Compiler(fullPath);
+			compiler.Output = output;
+			compiler.CompileFolder(compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty });
 
-		public static void CompileFolder(string title, string fullPath, string outputPath)
-		{
-			var compiler = new Compiler(fullPath, outputPath);
-			compiler.CompileFolder(compiler.RootFolder = new Folder { Title = title, Trail = string.Empty });
-
-			var menuToc = Path.Combine(outputPath, "toc.html");
-			var sb = new StringBuilder();
-			CreateHtmlToc(compiler.RootFolder, sb);
-			File.WriteAllText(menuToc, sb.ToString());
-		}
-
-		private static void CreateHtmlToc(IDocumentationItem item, StringBuilder sb)
-		{
-			var folder = item as Folder;
-			if (folder != null)
-			{
-				sb.AppendFormat(@"<li><a href=""{0}/index.html""><strong>{1}</strong></a><ul>", Path.Combine(item.Trail, item.Slug ?? string.Empty).Replace('\\', '/'), item.Title);
-				sb.AppendLine();
-				foreach (var documentationItem in folder.Items)
-				{
-					CreateHtmlToc(documentationItem, sb);
-				}
-				sb.AppendLine("</ul></li>");
-				return;
-			}
-
-			sb.AppendFormat(@"<li><a href=""{0}"">{1}</a></li>", Path.Combine(item.Trail, item.Slug).Replace('\\', '/').Replace(".markdown", ".html"), item.Title);
-			sb.AppendLine();
+			compiler.Output.GenerateToc(compiler.RootFolder);
 		}
 
 		private void CompileFolder(Folder folder)
 		{
-			var fullPath = Path.Combine(_fullPath, folder.Trail, folder.Slug ?? string.Empty);
+			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
+
+			var fullPath = Path.Combine(_fullPath, fullFolderSlug);
 			if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
 				return;
 
-			var outputPath = Path.Combine(_outputPath, folder.Trail, folder.Slug ?? string.Empty);
-			if (!Directory.Exists(outputPath))
-			{
-				Directory.CreateDirectory(outputPath);
-			}
-
-			CompileFile(folder.Title, Path.Combine(fullPath, "index.markdown"), Path.Combine(outputPath, "index.html"));
+			var contents = DocumentationParser.Parse(Path.Combine(fullPath, "index.markdown"));
+			Output.SaveDocItem(new Document
+			                   	{
+			                   		Title = folder.Title,
+			                   		Content = contents,
+									Trail = fullFolderSlug,
+			                   		Slug = "index"
+			                   	});
 
 			// Copy images
 			// TODO: Thumbs, lightbox
 			var imagesPath = Path.Combine(fullPath, "images");
 			if (Directory.Exists(imagesPath))
 			{
-				if (!Directory.Exists(Path.Combine(outputPath, "images")))
-					Directory.CreateDirectory(Path.Combine(outputPath, "images"));
-
 				var images = Directory.GetFiles(imagesPath);
 				foreach (var image in images)
 				{
 					var imageFileName = Path.GetFileName(image);
 					if (imageFileName == null) continue;
-					File.Copy(image, Path.Combine(outputPath, "images", imageFileName), true);
+					Output.SaveImage(folder, image);
 				}
 			}
 
@@ -101,7 +85,9 @@ namespace RavenDB.DocsCompiler
 				var document = item as Document;
 				if (document != null)
 				{
-					CompileFile(document.Title, Path.Combine(fullPath, document.Slug), Path.Combine(outputPath, document.Slug.Replace(".markdown", ".html")));
+					document.Content = DocumentationParser.Parse(Path.Combine(fullPath, document.Slug));
+					document.Slug = document.Slug.Replace(".markdown", "");
+					Output.SaveDocItem(document);
 					continue;
 				}
 

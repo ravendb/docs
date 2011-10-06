@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiler.cs" />
+    <Compile Include="Output\HtmlDocsOutput.cs" />
+    <Compile Include="Output\IDocsOutput.cs" />
     <Compile Include="MagicWorkers\DocsListParser.cs" />
     <Compile Include="Model\Document.cs" />
     <Compile Include="Model\Folder.cs" />
