@@ -57,5 +57,10 @@ namespace RavenDB.DocsCompiler.Output
 			sb.AppendFormat(@"<li><a href=""{0}"">{1}</a></li>", Path.Combine(item.Trail, item.Slug).Replace('\\', '/').Replace(".markdown", ".html"), item.Title);
 			sb.AppendLine();
 		}
+
+		public void Dispose()
+		{
+			// Nothing to do
+		}
 	}
 }
