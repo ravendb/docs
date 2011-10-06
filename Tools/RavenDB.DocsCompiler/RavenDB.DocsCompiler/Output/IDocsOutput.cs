@@ -1,8 +1,9 @@
-﻿using RavenDB.DocsCompiler.Model;
+﻿using System;
+using RavenDB.DocsCompiler.Model;
 
 namespace RavenDB.DocsCompiler.Output
 {
-	public interface IDocsOutput
+	public interface IDocsOutput : IDisposable
 	{
 		void SaveDocItem(Document doc);
 
