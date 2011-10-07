@@ -14,6 +14,8 @@ namespace RavenDB.DocsCompiler
 
 		public IDocsOutput Output { get; set; }
 
+		public string CodeSamplesPath { get; set; }
+
 		public Folder RootFolder { get; protected set; }
 		private readonly string _fullPath;
 
@@ -22,21 +24,17 @@ namespace RavenDB.DocsCompiler
 			_fullPath = fullPath;
 		}
 
-		//public void CompileFile(string title, string fullPath, string outputFullPath)
-		//{
-		//    var template = File.ReadAllText(@"z:\Projects\RavenDB\RavenDB-docs\Tools\html-template.html");
-
-		//    var contents = string.Format(template, title, DocumentationParser.Parse(fullPath));
-		//    File.WriteAllText(outputFullPath, contents);
-		//}
-
 		public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle)
 		{
 			if (output == null)
 				throw new ArgumentNullException("output");
 
-			var compiler = new Compiler(fullPath);
-			compiler.Output = output;
+			var compiler = new Compiler(Path.Combine(fullPath, "docs"))
+			               	{
+			               		Output = output,
+			               		CodeSamplesPath = Path.Combine(fullPath, "code-samples")
+			               	};
+
 			compiler.CompileFolder(compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty });
 
 			compiler.Output.GenerateToc(compiler.RootFolder);
@@ -50,7 +48,7 @@ namespace RavenDB.DocsCompiler
 			if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
 				return;
 
-			var contents = DocumentationParser.Parse(Path.Combine(fullPath, "index.markdown"));
+			var contents = DocumentationParser.Parse(this, Path.Combine(fullPath, "index.markdown"));
 			Output.SaveDocItem(new Document
 			                   	{
 			                   		Title = folder.Title,
@@ -85,7 +83,7 @@ namespace RavenDB.DocsCompiler
 				var document = item as Document;
 				if (document != null)
 				{
-					document.Content = DocumentationParser.Parse(Path.Combine(fullPath, document.Slug));
+					document.Content = DocumentationParser.Parse(this, Path.Combine(fullPath, document.Slug));
 					document.Slug = document.Slug.Replace(".markdown", "");
 					Output.SaveDocItem(document);
 					continue;

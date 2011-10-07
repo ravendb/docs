@@ -12,29 +12,13 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		static readonly Regex NotesFinder = new Regex(@"{(NOTE|WARNING|INFO|TIP|BLOCK)\s+(.+)/}", RegexOptions.Compiled);
 		static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-		public static string Parse(string fullPath)
+		public static string Parse(Compiler docsCompiler, string fullPath)
 		{
-			if (File.Exists(fullPath))
-				return ParseSingleFile(fullPath);
+			if (!File.Exists(fullPath))
+				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
 
-			//if (Directory.Exists(fullPath))
-			//    return ParseFolder(fullPath);
-
-			var fullerPath = Path.Combine(Settings.DocsPath, fullPath);
-
-			if (File.Exists(fullerPath))
-				return ParseSingleFile(fullerPath);
-
-			//if (Directory.Exists(fullerPath))
-			//    return ParseFolder(fullerPath);
-
-			throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
-		}
-
-		private static string ParseSingleFile(string fullPath)
-		{
 			var contents = File.ReadAllText(fullPath);
-			contents = CodeFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim()));
+			contents = CodeFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath));
 			contents = contents.ResolveMarkdown();
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
@@ -53,13 +37,13 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		//    throw new NotImplementedException();
 		//}
 
-		private static string GenerateCodeBlock(string value)
+		private static string GenerateCodeBlock(string value, string codeSamplesPath)
 		{
 			var values = value.Split('@');
 			var section = values[0];
 			var file = values[1];
 
-			var fileContent = LocateCodeFile(file);
+			var fileContent = LocateCodeFile(codeSamplesPath, file);
 			return "<pre class=\"brush: csharp\">" + Environment.NewLine
 				   + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent))
 				   .Replace("<", "&lt;") // to support syntax highlighting on pre tags
@@ -98,9 +82,9 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return sectionContent.Trim(Environment.NewLine.ToCharArray());
 		}
 
-		private static string LocateCodeFile(string file)
+		private static string LocateCodeFile(string codeSamplesPath, string file)
 		{
-			var codePath = Path.Combine(Settings.CodeSamplesPath, file);
+			var codePath = Path.Combine(codeSamplesPath, file);
 			if (File.Exists(codePath) == false)
 				throw new FileNotFoundException(string.Format("{0} was not found", codePath));
 			return File.ReadAllText(codePath);
