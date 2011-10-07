@@ -8,19 +8,17 @@ namespace RavenDB.DocsCompiler.Runner
 	{
 		static void Main(string[] args)
 		{
-			Settings.BasePath = @"z:\Projects\RavenDB\RavenDB-docs\";
-			Settings.CodeSamplesPath = @"z:\Projects\RavenDB\RavenDB-docs\code-samples\";
-			Settings.DocsPath = @"z:\Projects\RavenDB\RavenDB-docs\docs\";
+			const string basePath = @"z:\Projects\RavenDB\RavenDB-docs\";
 
 			IDocsOutput output = new HtmlDocsOutput
 									{
-										OutputPath = Path.Combine(Settings.BasePath, "html-compiled"),
-										PageTemplate = File.ReadAllText(Path.Combine(Settings.BasePath, @"Tools\html-template.html")),
+										OutputPath = Path.Combine(basePath, "html-compiled"),
+										PageTemplate = File.ReadAllText(Path.Combine(basePath, @"Tools\html-template.html")),
 									};
 
 			try
 			{
-				Compiler.CompileFolder(output, Settings.DocsPath, "Home");
+				Compiler.CompileFolder(output, basePath, "Home");
 			}
 			catch (Exception ex)
 			{

@@ -50,7 +50,6 @@
     <Compile Include="Model\Document.cs" />
     <Compile Include="Model\Folder.cs" />
     <Compile Include="Model\IDocumentationItem.cs" />
-    <Compile Include="Settings.cs" />
     <Compile Include="MagicWorkers\DocumentationParser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
