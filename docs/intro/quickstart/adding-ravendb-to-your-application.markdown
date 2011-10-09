@@ -26,7 +26,7 @@ You can find more on how to start using nuget [here](http://nuget.codeplex.com/d
 
 ### RavenDB on nuget
 
-Look for a RavenDB (or RavenDB-Embedded) package and click Instaell. Alternatively, If you're using PowerShell or the Package Manager Console, type `Instaell-Package RavenDB`.
+Look for a RavenDB (or RavenDB-Embedded) package and click Install. Alternatively, If you're using PowerShell or the Package Manager Console, type `Install-Package RavenDB`.
 
 Once you do that, nuget will copy all the required files, and add references and dependencies automatically to your project. Now you are ready to start using RavenDB from your application.
 
