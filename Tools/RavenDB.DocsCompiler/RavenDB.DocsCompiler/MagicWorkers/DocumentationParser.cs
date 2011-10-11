@@ -22,8 +22,6 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			contents = contents.ResolveMarkdown();
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
-			contents = contents.Replace(@".markdown""", @".html"""); // TEMP HACK TO ALLOW STATIC HTML VIEWS
-
 			return contents;
 		}
 
@@ -31,11 +29,6 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		{
 			return string.Format(@"<div class=""{0}-block block""><span>{1}</span></div>", blockType.ToLower(), blockText);
 		}
-
-		//private static void ParseFolder(string fullPath)
-		//{
-		//    throw new NotImplementedException();
-		//}
 
 		private static string GenerateCodeBlock(string value, string codeSamplesPath)
 		{
