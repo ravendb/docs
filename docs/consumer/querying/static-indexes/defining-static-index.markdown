@@ -1,10 +1,12 @@
 ﻿# Defining a static index
 
-To define a new index manually, you need to create an `IndexDefinition` object and pass it to the database. Once notified of the new index, the RavenDB server will execute a background indexing task to build the index. Once indexing is started (even before the indexing is completed), the index can be queried, and it will be constantly updated when additions or edits will occur.
+As we have seen, defining a static index allows for more sophisticated queries and is also likely to reduce staleness for some scenarios, and this is generally preferred over relying on dynamic indexes.
+
+To define a new index manually, you need to create an `IndexDefinition` object and pass it to the database. Once notified of the new index, the RavenDB server will execute a background indexing task to build the index. An index can be queried immediately after the indexing process has started, but until the process is finished the query results will be marked as stale. The index will be constantly updated when additions or edits occur.
 
 ## The IndexDefinition class
 
-An index definition is composed of an index name, Map/Reduce functions, an optional TransformResults function and several other indexing options:
+An index definition is composed of an index name, Map/Reduce functions, an optional TransformResults function and several other indexing options. The structure of the internal `IndexDefinition` class is shown here:
 
 {CODE index_definition@Consumer\StaticIndexes.cs /}
 
@@ -20,38 +22,34 @@ The remaining properties are useful for leveraging the full power of Lucene by c
 
 ## Creating a new index
 
-Once we figured out how our index should look like, we can go ahead and send the index definition we built to the server, so the indexing process can start. The most straight-forward way to do so is through the `PutIndex` function, available from the `DatabaseCommands` object:
+Once we figured out how our index should look like, we can go ahead and tell the server to create it, so the indexing process can start. The most straight-forward way to do that is through the `PutIndex` function, available from the `DatabaseCommands` object:
 
 {CODE static_indexes2@Consumer\StaticIndexes.cs /}
 
-{INFO The `DatabaseCommands` object is available from both the session object _and_ the `IDocumentStore` object. /}
+{NOTE Note the use the generic `IndexDefinitionBuilder` class. It builds an `IndexDefinition` object for you based on the Linq queries you specified. If needed you can pass an `IndexDefinition` object with the Map/Reduce functions as strings. /}
 
-An alternative approach is to create a class which is derived from `AbstractIndexCreationTask<T>`, and populating the required fields in its constructor. This is very useful when you have many indexes to maintain, so you can keep each index in its own class, and pass them all in one line of code (assuming they all reside in the same assembly), like so:
+A cleaner way to do this, which is also the recommended one, is to create an index class inheriting  from `AbstractIndexCreationTask<T>`, and name it after the indexing operation it does. In the constructor of that class you have access to all the the index properties, which you can change to match your.
 
-    Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(MyIndexClass).Assembly, documentStore);
-
-The recommended way of creating static indexes is by using `AbstractIndexCreationTask<T>`.
-
-## Putting indexes into practice
-
-Let's assume we have a blog with many posts, each filed under several tags, and now we want to know how many posts each tag has. Since creating indexes from code through the client API requires having strongly typed objects, we will need to create a helper entity for the Reduce operation:
-
-{CODE blogpost_mapreduce_classes@Common.cs /}
-
-Then we can create a new Map/Reduce index using the following code:
-
-{CODE static_indexes3@Consumer\StaticIndexes.cs /}
-
-{NOTE Notice the use the generic `IndexDefinitionBuilder` class. It builds an `IndexDefinition` object for you based on the Linq queries you specified. If needed you can pass an `IndexDefinition` object with the Map/Reduce functions as strings. /}
-
-Alternatively, we can use the exact same logic in the form of `AbstractIndexCreationTask<T>`:
-
-{CODE static_indexes4@Consumer\StaticIndexes.cs /}
-
-And trigger its execution on startup by calling:
+Telling the server to create the actual index is done by adding the following call on application startup. This one liner will submit all `AbstractIndexCreationTask<T>` classes for creation as indexes on the server (existing indexes will remain untouched):
 
 {CODE static_indexes5@Consumer\StaticIndexes.cs /}
 
-Either way, querying the indexes is the same, using the index name. Here's how we would go about finding the count of posts tagged under the "RavenDB" tag:
+With this approach each index can be in its own file, what makes it much easier to work with in case you have a lot of them.
+
+## Putting indexes into practice
+
+Let's assume we have a blog with many posts, each filed under several tags, and we wish to know how many posts are under each of the tags. One way to do this would be as follows:
+
+{CODE static_indexes3@Consumer\StaticIndexes.cs /}
+
+Where `BlogTagPostsCount` is declared like this:
+
+{CODE blogpost_mapreduce_classes@Common.cs /}
+
+A better way of doing this is by creating an index class, and using `IndexCreation.CreateIndexes` to submit it to the server:
+
+{CODE static_indexes4@Consumer\StaticIndexes.cs /}
+
+Either way, querying the indexes is the same. You can either let RavenDB decide which index to use, or instruct it to use a specific index by explicitly specifying the index name while querying. Here's how we would go about finding the count of posts tagged under the "RavenDB" tag:
 
 {CODE static_indexes6@Consumer\StaticIndexes.cs /}
