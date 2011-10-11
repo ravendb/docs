@@ -56,6 +56,11 @@ namespace RavenCodeSamples
 	}
 	#endregion
 
+	public class MyIndexClass
+	{
+	}
+
+
 	#region order_classes
 	public class Order
 	{

@@ -86,37 +86,40 @@ namespace RavenCodeSamples.Consumer
 				#endregion
 
 				#region static_indexes3
-				documentStore.DatabaseCommands.PutIndex("BlogPosts/PostsCountByTag",
-														new IndexDefinitionBuilder<BlogPost, BlogTagPostsCount>
-															{
-																// The Map function: for each tag of each post, create a new BlogTagPostsCount
-																// object with the name of a tag and a count of one.
-																Map = posts => from post in posts
-																			   from tag in post.Tags
-																			   select new
-																						{
-																							Tag = tag,
-																							Count = 1
-																						},
 
-																// The Reduce function: group all the BlogTagPostsCount objects we got back
-																// from the Map function, use the Tag name as the key, and sum up all the
-																// counts. Since the Map function gives each tag a Count of 1, when the Reduce
-																// function returns we are going to have the correct Count of posts filed under
-																// each tag.
-																Reduce = results => from result in results
-																					group result by result.Tag into g
-																					select new
-																							{
-																								Tag = g.Key,
-																								Count = g.Sum(x => x.Count)
-																							}
-															});
+				documentStore.DatabaseCommands.PutIndex(
+					"BlogPosts/PostsCountByTag",
+					new IndexDefinitionBuilder<BlogPost, BlogTagPostsCount>
+						{
+							// The Map function: for each tag of each post, create a new BlogTagPostsCount
+							// object with the name of a tag and a count of one.
+							Map = posts => from post in posts
+							               from tag in post.Tags
+							               select new
+							                      	{
+							                      		Tag = tag,
+							                      		Count = 1
+							                      	},
+
+							// The Reduce function: group all the BlogTagPostsCount objects we got back
+							// from the Map function, use the Tag name as the key, and sum up all the
+							// counts. Since the Map function gives each tag a Count of 1, when the Reduce
+							// function returns we are going to have the correct Count of posts filed under
+							// each tag.
+							Reduce = results => from result in results
+							                    group result by result.Tag
+							                    into g
+							                    select new
+							                           	{
+							                           		Tag = g.Key,
+							                           		Count = g.Sum(x => x.Count)
+							                           	}
+						});
 
 				#endregion
 
 				#region static_indexes5
-				Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(BlogPosts_PostsCountByTag).Assembly, documentStore);
+				Raven.Client.Indexes.IndexCreation.CreateIndexes(typeof(MyIndexClass).Assembly, documentStore);
 				#endregion
 
 				using (var session = documentStore.OpenSession())
