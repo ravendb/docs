@@ -9,6 +9,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 	public static class DocumentationParser
 	{
 		static readonly Regex CodeFinder = new Regex(@"{CODE\s+(.+)/}", RegexOptions.Compiled);
+		static readonly Regex CodeBlockFinder = new Regex(@"{CODE-START:(.+?)/}(.*?){CODE-END\s*/}", RegexOptions.Compiled | RegexOptions.Singleline);
 		static readonly Regex NotesFinder = new Regex(@"{(NOTE|WARNING|INFO|TIP|BLOCK)\s+(.+)/}", RegexOptions.Compiled);
 		static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
@@ -18,11 +19,20 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
 
 			var contents = File.ReadAllText(fullPath);
-			contents = CodeFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath));
+			contents = CodeBlockFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value));
+			contents = CodeFinder.Replace(contents, match => GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath));
 			contents = contents.ResolveMarkdown();
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
 			return contents;
+		}
+
+		private static string GenerateCodeBlock(string lang, string code)
+		{
+			return string.Format("<pre class=\"brush: {2}\">{0}{1}</pre>{0}", Environment.NewLine,
+			                     ConvertMarkdownCodeStatment(code).Replace("<", "&lt;"), // to support syntax highlighting on pre tags
+								 lang
+				);
 		}
 
 		private static string InjectNoteBlocks(string blockType, string blockText)
@@ -30,7 +40,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return string.Format(@"<div class=""{0}-block block""><span>{1}</span></div>", blockType.ToLower(), blockText);
 		}
 
-		private static string GenerateCodeBlock(string value, string codeSamplesPath)
+		private static string GenerateCodeBlockFromFile(string value, string codeSamplesPath)
 		{
 			var values = value.Split('@');
 			var section = values[0];
