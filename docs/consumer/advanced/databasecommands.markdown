@@ -1,9 +1,12 @@
 # DatabaseCommands
 
-The `DatabaseCommands` is the actual engine behind the Client API. On top of it, the Client API introduces features like Unit-of-Work and transactions. Therefore, while the `DatabaseCommands` are exposed in the Client API to allow for advanced usages, all operations that are performed directly against them are NOT transactional, and are NOT safe by default.
+The `DatabaseCommands` is the actual engine behind the Client API. The Client API introduces features like Unit-of-Work and transactions. Therefore, while the `DatabaseCommands` are exposed in the Client API to allow for advanced usages, all operations that are performed directly against them are NOT transactional, and are NOT safe by default.
+
+A `DatabaseCommands` object is available from both the session object _and_ the `IDocumentStore` object.
 
 ## Document operations
 
+{CODE-START:csharp /}
     // Puts the document in the database with the specified key.
     PutResult Put(string key, Guid? etag, RavenJObject document, RavenJObject metadata);
 
@@ -18,9 +21,11 @@ The `DatabaseCommands` is the actual engine behind the Client API. On top of it,
     
     // Retrieves documents for the specified key prefix    
     JsonDocument[] StartsWith(string keyPrefix, int start, int pageSize);
+{CODE-END/}
 
 ## Attachments
 
+{CODE-START:csharp /}
     // Puts a byte array as attachment with the specified key
     void PutAttachment(string key, Guid? etag, byte[] data, RavenJObject metadata);
     
@@ -29,9 +34,11 @@ The `DatabaseCommands` is the actual engine behind the Client API. On top of it,
     
     // Deletes the attachment with the specified key
     void DeleteAttachment(string key, Guid? etag);
+{CODE-END/}
     
 ## Indexes
 
+{CODE-START:csharp /}
     // Returns the names of all indexes that exist on the server
     string[] GetIndexNames(int start, int pageSize);
     
@@ -69,9 +76,11 @@ The `DatabaseCommands` is the actual engine behind the Client API. On top of it,
     
     // Perform a set based update using the specified index
     void UpdateByIndex(string indexName, IndexQuery queryToUpdate, PatchRequest[] patchRequests, bool allowStale);
+{CODE-END/}
     
 ## Transaction API
 
+{CODE-START:csharp /}
     // Commits the specified tx id
     void Commit(Guid txId);
 
@@ -86,9 +95,11 @@ The `DatabaseCommands` is the actual engine behind the Client API. On top of it,
     
     // Stores the recovery information
     void StoreRecoveryInformation(Guid resourceManagerId, Guid txId, byte[] recoveryInformation);
+{CODE-END/}
     
 ## Misc
 
+{CODE-START:csharp /}
     // Executed the specified commands as a single batch
     BatchResult[] Batch(IEnumerable<ICommandData> commandDatas);
 
@@ -125,3 +136,4 @@ The `DatabaseCommands` is the actual engine behind the Client API. On top of it,
 
     // Gets or sets the operations headers
     NameValueCollection OperationsHeaders { get; set; }
+{CODE-END/}
