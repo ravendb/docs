@@ -16,6 +16,7 @@ Persisting this entire object graph involves calling `Store` and then `SaveChang
 
 The `SaveChanges` call will produce the HTTP communication shown below. Note that the `Store` method operates purely in memory, and only the call to `SaveChanges` communicates with the server (json was prettified for clarity):
 
+{CODE-START:json /}
     POST /bulk_docs HTTP/1.1
     Accept-Encoding: deflate,gzip
     Content-Type: application/json; charset=utf-8
@@ -69,9 +70,9 @@ The `SaveChanges` call will produce the HTTP communication shown below. Note tha
         }
       }
     ]
-
+{CODE-END/}
 	
-Two things of note at this point:
+Two things to note at this point:
 
 * We left the "Id" property of BlogPost blank, and it is this property that will be used as the "primary key" for this document. RavenDB generated an id for us, "blogs/1", based on the default convention.
 

@@ -14,6 +14,7 @@ The easiest solution is to denormalize the data in the containing entity, forcin
 
 Take this JSON document for example:
 
+{CODE-START:json /}
   { // Order document with id: orders/1234
     "Customer": {
       "Name": "Itamar",
@@ -30,6 +31,7 @@ Take this JSON document for example:
       }
     ]
   }
+{CODE-END/}
 
 As you can see, the `Order` document now contains denormalized data from both the `Customer` and the `Product` documents, which are saved elsewhere in full. Note how We haven't copied all the properties, and just saved the ones that we care about for this `Order`. This approach is called _denormalized reference_. The properties that we copy are the ones that we will use to display or process the root entity.
 
