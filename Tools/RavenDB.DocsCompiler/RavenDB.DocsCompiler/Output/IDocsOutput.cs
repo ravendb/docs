@@ -5,6 +5,10 @@ namespace RavenDB.DocsCompiler.Output
 {
 	public interface IDocsOutput : IDisposable
 	{
+		string RootUrl { get; set; }
+
+		string ImagesPath { get; set; }
+
 		void SaveDocItem(Document doc);
 
 		void SaveImage(Folder ofFolder, string fullFilePath);

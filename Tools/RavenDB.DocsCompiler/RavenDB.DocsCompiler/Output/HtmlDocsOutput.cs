@@ -10,6 +10,9 @@ namespace RavenDB.DocsCompiler.Output
 
 		public string PageTemplate { get; set; }
 
+		public string RootUrl { get; set; }
+		public string ImagesPath { get; set; }
+
 		public void SaveDocItem(Document doc)
 		{
 			var outputPath = Path.Combine(OutputPath, doc.Trail);

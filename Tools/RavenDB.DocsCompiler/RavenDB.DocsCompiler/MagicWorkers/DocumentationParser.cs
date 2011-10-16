@@ -1,8 +1,10 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Text.RegularExpressions;
 using MarkdownDeep;
+using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler.MagicWorkers
 {
@@ -13,7 +15,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		static readonly Regex NotesFinder = new Regex(@"{(NOTE|WARNING|INFO|TIP|BLOCK)\s+(.+)/}", RegexOptions.Compiled);
 		static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-		public static string Parse(Compiler docsCompiler, string fullPath)
+		public static string Parse(Compiler docsCompiler, string fullPath, string currentSlug)
 		{
 			if (!File.Exists(fullPath))
 				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
@@ -21,7 +23,12 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			var contents = File.ReadAllText(fullPath);
 			contents = CodeBlockFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value));
 			contents = CodeFinder.Replace(contents, match => GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath));
-			contents = contents.ResolveMarkdown();
+
+			if (docsCompiler.Output.RootUrl == null)
+				contents = contents.ResolveMarkdown(docsCompiler.Output, currentSlug);
+			else
+				contents = contents.ResolveMarkdown(docsCompiler.Output, currentSlug);
+
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
 			return contents;
@@ -30,7 +37,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		private static string GenerateCodeBlock(string lang, string code)
 		{
 			return string.Format("<pre class=\"brush: {2}\">{0}{1}</pre>{0}", Environment.NewLine,
-			                     ConvertMarkdownCodeStatment(code).Replace("<", "&lt;"), // to support syntax highlighting on pre tags
+								 ConvertMarkdownCodeStatment(code).Replace("<", "&lt;"), // to support syntax highlighting on pre tags
 								 lang
 				);
 		}
@@ -93,17 +100,24 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return File.ReadAllText(codePath);
 		}
 
-		public static string ResolveMarkdown(this string content)
+		public static string ResolveMarkdown(this string content, IDocsOutput output, string currentSlug)
 		{
 			// http://www.toptensoftware.com/markdowndeep/api
 			var md = new Markdown
-			         	{
-			         		AutoHeadingIDs = true,
+						{
+							AutoHeadingIDs = true,
 							ExtraMode = true,
 							NoFollowLinks = false,
 							SafeMode = false,
-							//UrlBaseLocation = 
-			         	};
+							HtmlClassTitledImages = "figure",
+							UrlRootLocation = output.RootUrl,
+						};
+
+			if (!string.IsNullOrWhiteSpace(output.RootUrl))
+				md.UrlBaseLocation = output.RootUrl + "/" + currentSlug.Replace('\\', '/');
+
+			////if (!string.IsNullOrWhiteSpace(output.ImagesPath))
+			//    md.QualifyUrl = delegate(string image) { return output.ImagesPath + "/" + image; };
 
 			return md.Transform(content);
 		}
