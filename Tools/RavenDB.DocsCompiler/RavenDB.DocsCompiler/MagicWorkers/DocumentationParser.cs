@@ -2,8 +2,10 @@
 using System.IO;
 using System.Linq;
 using System.Security.Policy;
+using System.Text;
 using System.Text.RegularExpressions;
 using MarkdownDeep;
+using RavenDB.DocsCompiler.Model;
 using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler.MagicWorkers
@@ -13,9 +15,10 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		static readonly Regex CodeFinder = new Regex(@"{CODE\s+(.+)/}", RegexOptions.Compiled);
 		static readonly Regex CodeBlockFinder = new Regex(@"{CODE-START:(.+?)/}(.*?){CODE-END\s*/}", RegexOptions.Compiled | RegexOptions.Singleline);
 		static readonly Regex NotesFinder = new Regex(@"{(NOTE|WARNING|INFO|TIP|BLOCK)\s+(.+)/}", RegexOptions.Compiled);
+		static readonly Regex FilesListFinder = new Regex(@"{FILES-LIST(-RECURSIVE)?\s*/}", RegexOptions.Compiled);
 		static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-		public static string Parse(Compiler docsCompiler, string fullPath, string currentSlug)
+		public static string Parse(Compiler docsCompiler, Folder folder, string fullPath, string currentSlug)
 		{
 			if (!File.Exists(fullPath))
 				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
@@ -23,6 +26,11 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			var contents = File.ReadAllText(fullPath);
 			contents = CodeBlockFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value));
 			contents = CodeFinder.Replace(contents, match => GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath));
+
+			if (folder != null)
+			{
+				contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));
+			}
 
 			if (docsCompiler.Output.RootUrl == null)
 				contents = contents.ResolveMarkdown(docsCompiler.Output, currentSlug);
@@ -32,6 +40,20 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
 			return contents;
+		}
+
+		private static string GenerateFilesList(Folder folder, bool recursive)
+		{
+			if (folder.Items == null)
+				return string.Empty;
+
+			var sb = new StringBuilder();
+			foreach (var item in folder.Items)
+			{
+				sb.AppendFormat("* [{0}]({1})", item.Title, Path.Combine(item.Trail, item.Slug));
+				sb.AppendLine();
+			}
+			return sb.ToString();
 		}
 
 		private static string GenerateCodeBlock(string lang, string code)
