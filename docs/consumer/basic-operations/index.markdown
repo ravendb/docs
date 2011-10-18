@@ -1,3 +1,3 @@
 ﻿# Basic operations
 
-[FILES-LIST]
+{FILES-LIST/}
