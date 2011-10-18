@@ -22,20 +22,6 @@ After you have a RavenDB server instance up and running, its easy to connect to 
 
 As you may have noticed, RavenDB is using the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will be persisted in the database in a single transaction.
 
-## Building from source
-
-RavenDB requires .NET 4.0 SDK installed to build. You should be able to just open Raven in Visual Studio 2010 and start working with it immediately.
-
-Raven uses PowerShell to execute its build process. From the PowerShell prompt, execute: .\psake.ps1 default.ps1
-
-You may need to allow script execution in your power shell configuration: 
-
-  Set-ExecutionPolicy unrestricted
-
-The build process will, by default, execute all the tests, which may take a while. You may skip the tests by executing: 
-  
-  .\psake.ps1 default -task ReleaseNoTests
-
 ## Development cycle
 
 There are two flavors of RavenDB available - the stable build, which is production ready, and the unstable build. Since we at Hibernating Rhinos make a public build out of every push, the unstable build is **not** recommended for production, although it is thoroughly tested before being made available.
