@@ -53,12 +53,6 @@ RavenDB is released as open-source under the AGPL license. What that means is it
 
 RavenDB has a very active [mailing list](http://groups.google.com/group/ravendb), where users and RavenDB developers attend all queries quickly and efficiently.
 
-## Structure
-
-Here's a graph showing the code structure for RavenDB:
-
-![RavenDB code structure](images/ravendb_structure.png)
-
 ## Read more
 
 // Links to docs...
