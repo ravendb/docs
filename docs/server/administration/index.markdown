@@ -1,3 +1,3 @@
 ﻿# Server Administration
 
-[FILES-LIST]
+{FILES-LIST/}

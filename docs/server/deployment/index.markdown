@@ -1,3 +1,3 @@
 ﻿# Deployment
 
-[FILES-LIST]
+{FILES-LIST/}

@@ -4,4 +4,4 @@ This is a series of step-by-step descriptive short tutorials, which will provide
 
 Since no topic is fully covered here, for every topic we discuss we provide links to in-depth discussion in the docs.
 
-[FILES-LIST]
+{FILES-LIST/}

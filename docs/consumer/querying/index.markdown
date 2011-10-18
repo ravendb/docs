@@ -18,4 +18,4 @@ Also worth mentioning at this stage is the notion of *stale indexes*. Because Ra
 
 We will start by understanding the full range of querying options supported by RavenDB, and showing how they can be used intuitively by the RavenDB Linq provider. Then we will step in and learn about the Map/Reduce indexes that RavenDB uses and how to create them by hand, and after that we will explore more, less-obvious options supported by RavenDB.
 
-[FILES-LIST-RECURSIVE]
+{FILES-LIST-RECURSIVE/}

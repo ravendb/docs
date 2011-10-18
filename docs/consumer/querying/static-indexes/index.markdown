@@ -18,4 +18,4 @@ Querying static indexes is no different than what we have seen by now. Whenever 
 
 In this chapter we will learn how to create static indexes, and explore the various capabilities they offer.
 
-[FILES-LIST]
+{FILES-LIST/}
