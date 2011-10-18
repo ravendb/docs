@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using RavenDB.DocsCompiler.MagicWorkers;
 using RavenDB.DocsCompiler.Model;
@@ -43,36 +44,11 @@ namespace RavenDB.DocsCompiler
 		private void CompileFolder(Folder folder)
 		{
 			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
-
 			var fullPath = Path.Combine(_fullPath, fullFolderSlug);
 			if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
 				return;
 
-			var contents = DocumentationParser.Parse(this, Path.Combine(fullPath, "index.markdown"), "index");
-			Output.SaveDocItem(new Document
-			                   	{
-			                   		Title = folder.Title,
-			                   		Content = contents,
-									Trail = fullFolderSlug,
-			                   		Slug = "index"
-			                   	});
-
-			// Copy images
-			// TODO: Thumbs, lightbox
-			var imagesPath = Path.Combine(fullPath, "images");
-			if (Directory.Exists(imagesPath))
-			{
-				var images = Directory.GetFiles(imagesPath);
-				foreach (var image in images)
-				{
-					var imageFileName = Path.GetFileName(image);
-					if (imageFileName == null) continue;
-					Output.SaveImage(folder, image);
-				}
-			}
-
-			var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName));
-
+			var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName)).ToArray();
 			foreach (var item in docs)
 			{
 				if (item.Slug != null)
@@ -84,7 +60,7 @@ namespace RavenDB.DocsCompiler
 				if (document != null)
 				{
 					var strippedSlug = document.Slug.Replace(".markdown", "");
-					document.Content = DocumentationParser.Parse(this, Path.Combine(fullPath, document.Slug), strippedSlug);
+					document.Content = DocumentationParser.Parse(this, null, Path.Combine(fullPath, document.Slug), strippedSlug);
 					document.Slug = strippedSlug;
 					Output.SaveDocItem(document);
 					continue;
@@ -95,6 +71,28 @@ namespace RavenDB.DocsCompiler
 				{
 					CompileFolder(subFolder);
 					continue;
+				}
+			}
+
+			var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"), "index");
+			Output.SaveDocItem(new Document
+			{
+				Title = folder.Title,
+				Content = contents,
+				Trail = fullFolderSlug,
+				Slug = "index"
+			});
+
+			// Copy images
+			var imagesPath = Path.Combine(fullPath, "images");
+			if (Directory.Exists(imagesPath))
+			{
+				var images = Directory.GetFiles(imagesPath);
+				foreach (var image in images)
+				{
+					var imageFileName = Path.GetFileName(image);
+					if (imageFileName == null) continue;
+					Output.SaveImage(folder, image);
 				}
 			}
 		}
