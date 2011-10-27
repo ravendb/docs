@@ -1,7 +1,6 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Text;
 using System.Text.RegularExpressions;
 using MarkdownDeep;
@@ -136,12 +135,32 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 						};
 
 			if (!string.IsNullOrWhiteSpace(output.RootUrl))
-				md.UrlBaseLocation = output.RootUrl + "/" + currentSlug.Replace('\\', '/');
+			{
+				if (!string.IsNullOrWhiteSpace(currentSlug) && !currentSlug.Equals("index"))
+					md.UrlBaseLocation = output.RootUrl + "/" + currentSlug.Replace('\\', '/');
+				else
+					md.UrlBaseLocation = output.RootUrl;
+			}
 
 			////if (!string.IsNullOrWhiteSpace(output.ImagesPath))
 			//    md.QualifyUrl = delegate(string image) { return output.ImagesPath + "/" + image; };
 
+			md.PrepareImage = (tag, titledImage) => PrepareImage(output.ImagesPath, tag);
+
 			return md.Transform(content);
+		}
+
+		private static bool PrepareImage(string imagesPath, HtmlTag tag)
+		{
+			string src;
+			if (tag.attributes.TryGetValue("src", out src))
+			{
+				src = src.Replace('\\', '/');
+				if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
+					src = src.Substring(7);
+				tag.attributes["src"] = imagesPath + src;
+			}
+			return true;
 		}
 	}
 }
