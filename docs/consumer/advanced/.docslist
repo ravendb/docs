@@ -1,6 +1,7 @@
 databasecommands.markdown	DatabaseCommands
 document-metadata.markdown	Working with document metadata
 querying-for-terms.markdown	Querying for terms
+faceted-search.markdown	Faceted search
 spatial-search.markdown	Spatial search
 index-administration.markdown	Index Administration
 custom-serialization.markdown	Custom serialization / deserialization
