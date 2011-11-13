@@ -47,7 +47,7 @@ After creating this index, we can easily look for documents using the attribute 
 						.ToList();
 {CODE-END /}
 
-## Numberic fields
+## Numeric fields
 
 If the `Product` class had an integer property instead of a string one, we would have to use a `NumericField` in the index definition instead, to enable searches with numeric operators like `WhereGreaterThan()` and the like:
 
