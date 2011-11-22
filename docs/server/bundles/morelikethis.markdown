@@ -4,8 +4,7 @@ More Like This returns a list of similar documents that are related to a given d
 
 ## Installation
 
-+ Place the Raven.Bundles.MoreLikeThis.dll file in the server's Plugins directory
-+ Reference Raven.Client.MoreLikeThis in your project
+Place the Raven.Bundles.MoreLikeThis.dll file in the server's Plugins directory, and  reference Raven.Client.MoreLikeThis in your project to add MoreLikeThis support to the Client API.
 
 ## Usage
 ### Setup
@@ -18,11 +17,15 @@ In order for More Like This to work it must have access to the text in the index
 
 More Like This has many defaults already set, so the simplest usage will satisfy most usage scenarios.
 
-	var list = session.Advanced.MoreLikeThis<Article, ArticleIndex>(key);
+{CODE-START:csharp /}
+var list = session.Advanced.MoreLikeThis<Article, ArticleIndex>(key);
+{CODE-END /}
 
 More Like This will use all the fields defined in an index. To use only a specific field or fields, pass them in as the second parameter.
 
-	var list = session.Advanced.MoreLikeThis<Article, ArticleIndex>(key, “ArticleBody”);
+{CODE-START:csharp /}
+var list = session.Advanced.MoreLikeThis<Article, ArticleIndex>(key, “ArticleBody”);
+{CODE-END /}
 
 ### Advanced Usage
 
@@ -41,26 +44,8 @@ By passing in an object of type MoreLikeThisQueryParameters the More Like This d
 
 A document with a list of stop words can be stored in RavenDB. For example:
 
-	session.Store(new StopWordsSetup{ Id = "Config/Stopwords", StopWords = new List<string> { "I", "A", "Be" }});
+{CODE-START:csharp /}
+session.Store(new StopWordsSetup{ Id = "Config/Stopwords", StopWords = new List<string> { "I", "A", "Be" }});
+{CODE-END /}
 
 The document id is then set in MoreLikeThisQueryParameters
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
