@@ -12,6 +12,7 @@ The following bundles are available out of the box, to extend RavenDB's capabili
 * Authorization - allows to manage user groups, roles and permissions
 * Versioning - automatic versioning of documents upon changes or deltes
 * Cascade Deletes - automatic cascade deletes operations
+* More Like This - Returns documents that are related to a given document
 
 In the next chapter we will discuss how to create custom bundles, to address custom user needs.
 

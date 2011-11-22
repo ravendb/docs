@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using Raven.Abstractions.Indexing;
+using Raven.Client.Indexes;
 
 namespace RavenCodeSamples.Server
 {
@@ -33,4 +36,31 @@ namespace RavenCodeSamples.Server
             }
         }
     }
+
+    #region MoreLikeThis1
+    public class Article
+    {
+        public string Name { get; set; }
+        public string ArticleBody { get; set; }
+    }
+
+    public class ArticleIndex : AbstractIndexCreationTask<Article>
+    {
+        public DataIndex()
+        {
+            Map = docs => from doc in docs
+                          select new { doc.ArticleBody };
+
+
+
+            Stores = new Dictionary<Expression<Func<Article, object>>, FieldStorage>
+                             {
+                                 {
+                                     x => x.ArticleBody, FieldStorage.Yes
+                                 }
+                             };
+
+        }
+    }
+    #endregion
 }
