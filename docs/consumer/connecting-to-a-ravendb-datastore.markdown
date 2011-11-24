@@ -70,7 +70,7 @@ RavenDB connection string format is:
 
 * _ResourceManagerId_ - Optional, for server mode only, the Resource Manager Id that will be used by the Distributed Transaction Coordinator (DTC) service to identify Raven. A custom resource manager id will need to be configured for each Raven server instance when Raven is hosted more than once per machine. Not applicable for Silverlight.
 
-* _DefaultDatabase_ or _Database_ - for server mode only, use a specific database, not the default one. Using this will also ensure that the database exists.
+* _Database_ - for server mode only, use a specific database, not the default one. Using this will also ensure that the database exists.
 
 The following are samples of a few RavenDB connection strings:
 
