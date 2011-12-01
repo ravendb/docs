@@ -24,13 +24,18 @@ var list = session.Advanced.MoreLikeThis<Article, ArticleIndex>(key);
 More Like This will use all the fields defined in an index. To use only a specific field or fields, pass them in as the second parameter.
 
 {CODE-START:csharp /}
-var list = session.Advanced.MoreLikeThis<Article, ArticleIndex>(key, “ArticleBody”);
+var list = session.Advanced.MoreLikeThis<Data, DataIndex>(new MoreLikeThisQueryParameters
+{
+	DocumentId = key,
+	Fields = new[] { "Body" }
+});
 {CODE-END /}
 
 ### Advanced Usage
 
 By passing in an object of type MoreLikeThisQueryParameters the More Like This default can be changed.
 
++ **Fields** - Limit the fields that we search on to just the specified field names.
 + **Boost** - Boost terms in query based on score. Using this option may give more exact results by boosting the terms found by their score. The default is false.
 + **MaximumNumberOfTokensParsed** - The maximum number of tokens to parse in each example document field that is not stored with TermVector support. The default is 5000.
 + **MaximumWordLength** - Ignore words greater than this length or if 0 then this has no effect. The default is 0.
