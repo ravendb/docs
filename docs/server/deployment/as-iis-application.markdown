@@ -1,12 +1,12 @@
 ﻿# Deploying as an IIS application
 
-RavenDB can be run as an IIS application.
+RavenDB can be run as an IIS application, or from a virtual directory under an IIS application.
 
-## Creating a RavenDB application
+## Setting up a RavenDB IIS application
 
 1. [Download the distribution zip](http://ravendb.net/download), and extract the "Web" folder.
-2. In IIS Manager, create a new website and point it's physical path to the "/Web" folder you extracted.
-3. Set the Application Pool to "ASP.Net v4.0" (or create a new Application Pool set to .NET 4.0 Integrated Pipeline)
+2. In IIS Manager, create a new website and point it's physical path to the `"/Web"` folder you extracted. Alternatively, point a virtual directory under an existing website to that folder.
+3. Set the Application Pool for the IIS application you will be using to "ASP.Net v4.0", or create a new Application Pool set to .NET 4.0 Integrated Pipeline.
 4. Set port and host if needed.
 5. Make sure that the user you set for the website has write access to the physical database location.
 
