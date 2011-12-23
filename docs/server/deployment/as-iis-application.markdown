@@ -40,7 +40,7 @@ That will remove the WebDAV module and resolve the conflict.
 
 ## Setting up with IIS 6
 
-When using IIS 6, you need to modify the Web.config file and remove the `system.webServer` element and add the following system.web element:
+When using IIS 6, you need to make sure all requests are mapped to the ASP.NET DLL, and modify the Web.config file and remove the `system.webServer` element and add the following system.web element:
 
 {CODE-START:xml/}
 <system.web>
@@ -50,6 +50,9 @@ When using IIS 6, you need to modify the Web.config file and remove the `system.
    </httpHandlers>
 </system.web>
 {CODE-END/}
+
+If you are experiencing problems with accessubg the Studio, try this step: Home Directory > Configuration > Wildcard application maps > Insert
+c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll, and Uncheck Verify file exists.
 
 ## Web Configuration
 
