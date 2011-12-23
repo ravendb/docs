@@ -1,16 +1,19 @@
 # Batch Operations
 
-We can do batch operations by passing to the Batch method a list of ICommandData.
-We have DeleteCommandData, PutCommandData and PatchCommandData commands that letting you do a very usful batch operations.
+RavenDB supports batching multiple operations into a single request, reducing the number of remote calls and allowing several operations to share the same transactions.
 
-## DeleteCommandData
+Request batching in RavenDB is handled by the Client API using the Batch() method of DatabaseCommands, which accepts an array of operations to execute.
 
-// TODO: example here.
+Batching PUT and DELETEs:
 
-## PutCommandData
+// TODO: example for using DeleteCommandData, PutCommandData
 
-// TODO: example here.
+Another operation supported by batching is the [PATCH command](../../partial-document-updates).
 
-## PatchCommandData
+## Concurrency
 
-// TODO: example here.
+If an etag is specified in the command, that etag is compared to the current etag on the document on the server. If the etags do no match, a 409 Conlict status code will be returned from the server, causing a ConcurrencyException to be thrown. In such a case, the entire operation fails and non of the updates that were tried will succeed.
+
+## Transactions
+
+All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.
