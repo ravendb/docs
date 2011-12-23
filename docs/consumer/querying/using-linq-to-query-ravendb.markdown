@@ -55,4 +55,8 @@ You can use the `orderby` / `.OrderBy()` / `.OrderByDescending()` clauses to per
 
 ## Aggregate operators
 
-RavenDB currently only supports the `Count` and `Distinct` Linq aggregate operators, for more complex aggregations, you'll need to make use of Map/Reduce indexes.
+RavenDB only supports the `Count` and `Distinct` Linq aggregate operators. For more complex aggregations, you'll need to make use of Map/Reduce indexes.
+
+Similarly, the `SelectMany`, `GroupBy` and `Join` operators are not supported. Such operations should be made through a Map/Reduce index, and not while querying.
+
+The `let` keyword is not supported currently.
