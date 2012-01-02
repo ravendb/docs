@@ -1,3 +1,3 @@
 ﻿# The Management Studio
 
-// TBD
+This is an overview of the RavenDB studio
