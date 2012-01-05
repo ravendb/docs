@@ -133,7 +133,7 @@ Time (in milliseconds) the index has to be queried at least once in order for it
 
 * **Raven/Esent/LogFileSize**  
     The size of the database log file. The value is in megabytes.  
-    _Default:_ 16  
+    _Default:_ 64  
 
 * **Raven/Esent/LogBuffers**  
     The size of the in memory buffer for transaction log.  
@@ -146,3 +146,7 @@ Time (in milliseconds) the index has to be queried at least once in order for it
 * **Raven/Esent/LogsPath**  
     Where to keep the Esent transaction logs. Putting the logs in a different drive than the data and indexes will improve performance significantly.  
     _Default_: ~/Data/logs  
+
+* **Raven/Esent/CircularLog**  
+    Whether or not to enable circular logging with Esent.  
+    _Default_: true  
