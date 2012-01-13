@@ -4,6 +4,22 @@ The RavenDB Management Studio is a lightweight Silverlight client to let you eas
 
 The Studio is accessible from any RavenDB server, regardless of how it is deployed. However, it does require the user to authenticate against the server, most commonly using his Windows credentials.
 
-Following is the list of screens in the RavenDB Management Studio:
+// TODO: Studio screenshot
+
+## Basic navigation
+
+At the top left of the page there are the navigation tabs, a link for each of the screens in the Studio:
+
+![](Images/Base1.PNG)
+
+Some database-wide statistics are shown at the bottom of the screen:
+
+![](Images/Base3.PNG)
+
+There you will also find the Licensing status and the build number:
+
+![](Images/Base4.PNG)
+
+## Features overview
 
 {FILES-LIST /}
