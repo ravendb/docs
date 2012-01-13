@@ -1,8 +1,8 @@
-collection.markdown	Collection Page
+summary.markdown	Home Page
+documents.markdown 	The Documents Screen
+collections.markdown	The Collections Screen
 databases.markdown 	Databases Page
-documents.markdown 	Documents Pages
 indexes.markdown 	Indexes Pages
 logs.markdown		Logs Page
 statistics.markdown	Statistics Page
-summary.markdown	Home Page
-Tasks.markdown		Tasks page
+tasks.markdown		Tasks page
