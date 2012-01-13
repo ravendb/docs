@@ -2,7 +2,7 @@ summary.markdown	The Summary Screen
 documents.markdown	The Documents Screen
 collections.markdown	The Collections Screen
 indexes.markdown	Indexes
-databases.markdown	Database Selection
+multi-tenancy.markdown	Multi-tenancy Support
 statistics.markdown	Statistics Page
 tasks.markdown	Tasks page
 logs.markdown	Logs Page
