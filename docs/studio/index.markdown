@@ -20,6 +20,18 @@ There you will also find the Licensing status and the build number:
 
 ![](Images/Base4.PNG)
 
+## The Summary Screen
+
+The summary screen is the default screen shown whenever you access the RavenDB Management Studio, showing the latest documents updated (or created) in the database.
+
+![](Images/Summery2.PNG)
+
+When accessing an empty database (or tenant) the page will look like this:
+
+![](Images/Summery1.PNG)
+
+Clicking on "Create sample data" will add some dummy MvcMusicStore data and indexes to the database. This is usually helpful to jumpstart the RavenDB learning process.
+
 ## Features overview
 
 {FILES-LIST /}
