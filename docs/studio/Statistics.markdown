@@ -1,6 +1,8 @@
-## Statistics
-On the bottom of each page you have statistics on the database  
-![Statistics Fig 1](/Work/docs/docs/studio/Images/Statistics1.PNG)
+# Statistics
+
+On the bottom of each screen various statistics on the database are shown:
+
+![](Images/Statistics1.PNG)
 
 In here you can see:  
 
@@ -12,5 +14,6 @@ In here you can see:
 - Number of tasks waiting to happen (click will send to Statistics **TODO link**)
 
 
-On the statistics page you can see all the above data with addition of the extensions to the database, where you can see when each extension is activated (Startup, read, delete, ect...)  
-![Statistics Fig 2](/Work/docs/docs/studio/Images/Statistics2.PNG)
+On the statistics page you can see all the above data with addition of the extensions to the database, where you can see when each extension is activated (Startup, read, delete, ect...)
+
+![Statistics Fig 2](Images/Statistics2.PNG)
