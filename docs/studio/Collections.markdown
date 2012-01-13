@@ -1,20 +1,25 @@
-## Collections
-On the collections page you can browse the documents in your database by the Raven-Entity-Name of the document  
-![Collections Fig 1](/Work/docs/docs/studio/Images/Collections1.PNG)
+# The Collections Screen
 
-On the to you can choose which collection to view, each collection gets its own color (and when viewing the documents the line of color on the left matches that of the collection the document is a part of, in addition you have the name of the collection with the number of documents in it and a graphical representation of the size of the collection (stated by the number of pages).  
-![Collections Fig 2](/Work/docs/docs/studio/Images/Collections2.PNG)
+In this screen we show a list of all available collections in the database, and documents associated with them. A **Collection** in RavenDB is a group of documents sharing the same entity name. It is not a "database table", but rather a logical way of thinking of document groups.
 
-When right clicking on a collection you can delete the entire collection  
-![Collections Fig 3](/Work/docs/docs/studio/Images/Collections3.PNG)
+This is how the Collections screen looks like:
 
-after choosing delete a conformation message will appear  
-![Collections Fig 4](/Work/docs/docs/studio/Images/Collections4.PNG)
+![Figure 1: The Collections screen](Images/Collections1.PNG)
 
-##### Important!  
-With this option last amount of data can be deleted so be careful.
+In the top there is the list of all available collections, each with a number of documents currently associated with it, and each represented by a different color. Clicking on a collection in that list will load the documents associated with it in the viewing pane below. Navigating the documents is done the same way as it is done in the [Documents screen](documents).
 
-For information about buttons on the top right see the Documents options section **TODO link**
+![Figure 2: The list of available collection](Images/Collections2.PNG)
 
-Further information about handling the Document can be found in the Documents Section. 
-**TODO link**
+## Deleting a collection
+
+From this screen you can delete a bulk of documents based on their collection association.
+
+Since a Collection is just a logical unit in RavenDB, there is no actual meaning in deleting a collection. By deleting a collection in this screen, you are telling RavenDB to delete _all documents_ sharing the same entity name which is equal to the name of the Collection you are asking to delete.
+
+To perform this delete operation, right click on a Collection name from the list on the top and select "Delete". A confirmation dialog will appear.
+
+![Figure 3: Deleting a collection](Images/Collections3.PNG)
+
+![](Images/Collections4.PNG)
+
+{WARNING This operation cannot be undone, and is likely to delete a lot of documents. Use this option wisely. /}
