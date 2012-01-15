@@ -18,7 +18,7 @@ The Reduce function is optional, and is written and executed just like the Map f
 
 The third function, `TransformResults`, is of a feature called Live Projections, which is discussed later in this chapter.
 
-The remaining properties are useful for leveraging the full power of Lucene by customizing the indexes even further. We will discuss their use in depth later in this chapter.
+The remaining properties are useful for leveraging the full power of Lucene by customizing the indexes even further. We will discuss them in depth later in this chapter.
 
 ## Creating a new index
 
