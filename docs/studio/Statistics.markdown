@@ -2,7 +2,7 @@
 
 On the bottom of each screen various statistics on the database are shown:
 
-![](Images/Statistics1.PNG)
+![](Images/studio_statistics_1.PNG)
 
 In here you can see:  
 
@@ -16,4 +16,4 @@ In here you can see:
 
 On the statistics page you can see all the above data with addition of the extensions to the database, where you can see when each extension is activated (Startup, read, delete, ect...)
 
-![Statistics Fig 2](Images/Statistics2.PNG)
+![Statistics Fig 2](Images/studio_statistics_2.PNG)
