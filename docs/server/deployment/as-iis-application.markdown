@@ -56,7 +56,7 @@ c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll, and Uncheck Veri
 
 ## Web Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](../administration/configuration) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](administration/configuration) page for complete info.
 
 ## Recommended IIS Configuration
 
