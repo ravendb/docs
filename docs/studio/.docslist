@@ -1,1 +1,7 @@
-
+documents.markdown	The Documents Screen
+collections.markdown	The Collections Screen
+indexes.markdown	Indexes
+tasks.markdown	The Tasks Screen
+logs.markdown	The Logs Screen
+statistics.markdown	Database Statistics
+multi-tenancy.markdown	Multi-tenancy Support

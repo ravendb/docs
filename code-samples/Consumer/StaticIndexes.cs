@@ -124,31 +124,40 @@ namespace RavenCodeSamples.Consumer
 
 				using (var session = documentStore.OpenSession())
 				{
+					int count;
+
 					#region static_indexes6
-					session.Query<BlogTagPostsCount>("BlogPosts/PostsCountByTag")
-						.Where(x => x.Tag == "RavenDB")
-						.Count();
 
-					// altenratively, if we used an AbstractIndexCreationTask, we could use this version:
+					// This is how to query the first index we defined, using the BlogTagPostsCount class
 
-					session.Query<BlogTagPostsCount, BlogPosts_PostsCountByTag>()
-						.Where(x => x.Tag == "RavenDB")
-						.Count();
+					var blogTagPostsCount = session.Query<BlogTagPostsCount>("BlogPosts/PostsCountByTag")
+						.FirstOrDefault(x => x.Tag == "RavenDB")
+						?? new BlogTagPostsCount();
+					count = blogTagPostsCount.Count;
+
+					// Altenratively, if we used an AbstractIndexCreationTask, we could use this version
+					// Note how we reuse the ReduceResult class to get back the information
+
+					var tagPostsCount = session.Query<BlogPosts_PostsCountByTag.ReduceResult, BlogPosts_PostsCountByTag>()
+						.FirstOrDefault(x => x.Tag == "RavenDB")
+						?? new BlogPosts_PostsCountByTag.ReduceResult();
+					count = tagPostsCount.Count;
+
 					#endregion
 				}
 
 				#region analyzers1
 				documentStore.DatabaseCommands.PutIndex("AnalyzersTestIdx", new IndexDefinitionBuilder<BlogPost, BlogPost>
-				                                                            	{
-				                                                            		Map =
-				                                                            			users =>
-				                                                            			from doc in users select new {doc.Tags, doc.Content},
-				                                                            		Analyzers =
+																				{
+																					Map =
+																						users =>
+																						from doc in users select new { doc.Tags, doc.Content },
+																					Analyzers =
 				                                                            			{
 				                                                            				{x => x.Tags, "SimpleAnalyzer"},
 				                                                            				{x => x.Content, "SnowballAnalyzer"}
 				                                                            			},
-				                                                            	});
+																				});
 				#endregion
 			}
 		}
@@ -190,10 +199,10 @@ namespace RavenCodeSamples.Consumer
 		{
 			public SampleIndex1()
 			{
-				Map = users => from user in users select new {user.Age};
+				Map = users => from user in users select new { user.Age };
 
 				SortOptions.Add(x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short);
-			}	
+			}
 		}
 		#endregion
 
@@ -202,7 +211,7 @@ namespace RavenCodeSamples.Consumer
 		{
 			public SampleIndex2()
 			{
-				Map = users => from doc in users select new {doc.Name};
+				Map = users => from doc in users select new { doc.Name };
 
 				SortOptions.Add(x => x.Name, Raven.Abstractions.Indexing.SortOptions.String);
 
