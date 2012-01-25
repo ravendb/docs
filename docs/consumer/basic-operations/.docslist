@@ -1,7 +1,0 @@
-understanding-session-object.markdown	Understanding the Session object
-opening-a-session.markdown	Opening a session
-saving-new-document.markdown	Saving a new document
-loading-editing-existing-document.markdown	Loading & Editing an existing document
-deleting-existing-documents.markdown	Deleting existing documents
-transaction-support.markdown	Transaction support in RavenDB
-basic-querying.markdown	Basic query support

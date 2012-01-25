@@ -17,6 +17,10 @@ If you are running in Embedded mode, or RavenDB is running as an IIS application
     The maximum allowed page size for queries.  
     _Default:_ 1024  
     _Minimum:_ 10
+    
+* **Raven/MemoryCacheExpiration**  
+    The expiration value for documents in the internal document cache. Value is in seconds.
+    _Default:_ 5 minutes
 
 ## Index settings
 
@@ -60,6 +64,7 @@ Time (in milliseconds) the index has to be queried at least once in order for it
     _Minimum:_ 1 MB
 
 ## Data settings:
+
 * **Raven/RunInMemory**  
     Should RavenDB's storage be in-memory. If set to true, Munin would be used as the storage engine, regardless of what was specified for StorageTypeName  
     _Allowed values:_ true/false  
@@ -116,6 +121,9 @@ Time (in milliseconds) the index has to be queried at least once in order for it
 * **Raven/WebDir**  
     The directory to search for RavenDB's WebUI. This is usually only useful if you are debugging RavenDB's WebUI  
     _Default:_ ~/Raven/WebUI  
+    
+* **Raven/Authorization/Windows/RequiredGroups**  
+    Limit the users that can authenticate to RavenDB to only users in the specified groups. Multiple groups can be specified, separated by a semi column (;).
 
 ## Esent settings
 
@@ -133,7 +141,7 @@ Time (in milliseconds) the index has to be queried at least once in order for it
 
 * **Raven/Esent/LogFileSize**  
     The size of the database log file. The value is in megabytes.  
-    _Default:_ 16  
+    _Default:_ 64  
 
 * **Raven/Esent/LogBuffers**  
     The size of the in memory buffer for transaction log.  
@@ -146,3 +154,7 @@ Time (in milliseconds) the index has to be queried at least once in order for it
 * **Raven/Esent/LogsPath**  
     Where to keep the Esent transaction logs. Putting the logs in a different drive than the data and indexes will improve performance significantly.  
     _Default_: ~/Data/logs  
+
+* **Raven/Esent/CircularLog**  
+    Whether or not to enable circular logging with Esent.  
+    _Default_: true  

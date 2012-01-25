@@ -1,12 +1,12 @@
 ﻿# Deploying as an IIS application
 
-RavenDB can be run as an IIS application.
+RavenDB can be run as an IIS application, or from a virtual directory under an IIS application.
 
-## Creating a RavenDB application
+## Setting up a RavenDB IIS application
 
 1. [Download the distribution zip](http://ravendb.net/download), and extract the "Web" folder.
-2. In IIS Manager, create a new website and point it's physical path to the "/Web" folder you extracted.
-3. Set the Application Pool to "ASP.Net v4.0" (or create a new Application Pool set to .NET 4.0 Integrated Pipeline)
+2. In IIS Manager, create a new website and point it's physical path to the `"/Web"` folder you extracted. Alternatively, point a virtual directory under an existing website to that folder.
+3. Set the Application Pool for the IIS application you will be using to "ASP.Net v4.0", or create a new Application Pool set to .NET 4.0 Integrated Pipeline.
 4. Set port and host if needed.
 5. Make sure that the user you set for the website has write access to the physical database location.
 
@@ -40,7 +40,7 @@ That will remove the WebDAV module and resolve the conflict.
 
 ## Setting up with IIS 6
 
-When using IIS 6, you need to modify the Web.config file and remove the `system.webServer` element and add the following system.web element:
+When using IIS 6, you need to make sure all requests are mapped to the ASP.NET DLL, and modify the Web.config file and remove the `system.webServer` element and add the following system.web element:
 
 {CODE-START:xml/}
 <system.web>
@@ -51,9 +51,12 @@ When using IIS 6, you need to modify the Web.config file and remove the `system.
 </system.web>
 {CODE-END/}
 
+If you are experiencing problems with accessubg the Studio, try this step: Home Directory > Configuration > Wildcard application maps > Insert
+c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll, and Uncheck Verify file exists.
+
 ## Web Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](configuration) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](administration/configuration) page for complete info.
 
 ## Recommended IIS Configuration
 
