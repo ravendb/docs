@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using Raven.Json.Linq;
 
 namespace RavenCodeSamples.Consumer
@@ -14,7 +15,7 @@ namespace RavenCodeSamples.Consumer
 				#endregion
 
 				#region putting_attachment
-				byte[] data = new byte[] {1, 2, 3}; // don't forget to load the data from a file or something!
+				Stream data = new MemoryStream(new byte[] { 1, 2, 3 }); // don't forget to load the data from a file or something!
 				documentStore.DatabaseCommands.PutAttachment("videos/2", null, data,
 				                                             new RavenJObject {{"Description", "Kids play in the garden"}});
 				#endregion
