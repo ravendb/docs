@@ -26,7 +26,7 @@ For example, given this sample text:
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`
 
-* **SimpleAnalyzer** on the other hand will tokenize on all non-space characters, and will only make all the tokens lowercase:
+* **SimpleAnalyzer** on the other hand will tokenize on all non-alpha characters, and will make all the tokens lowercase:
 
     `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`
 
