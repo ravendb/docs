@@ -46,7 +46,7 @@ namespace RavenCodeSamples.Server
 
     public class ArticleIndex : AbstractIndexCreationTask<Article>
     {
-        public DataIndex()
+		public ArticleIndex()
         {
             Map = docs => from doc in docs
                           select new { doc.ArticleBody };
