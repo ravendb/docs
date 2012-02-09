@@ -65,6 +65,11 @@ This tells RavenDB that you would like to get the following facets.
  * 400.0 <= Cost <= 600.0
  * 600.0 <= Cost <= 800.0
  * Cost >= 800.0
+* For the **Megapixels** field, return the count of the following ranges:
+ * Megapixels <= 3.0
+ * 3.0 <= Megapixels <= 7.0
+ * 7.0 <= Megapixels <= 10.0
+ * Megapixels >= 10.0
 
 ## Step 2
 

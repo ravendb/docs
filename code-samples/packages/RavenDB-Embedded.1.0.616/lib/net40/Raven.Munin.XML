@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Raven.Munin</name>
+    </assembly>
+    <members>
+        <member name="M:Raven.Munin.Database.PerformIdleTasks">
+            <summary>
+            This method should be called when the application is idle
+            It is used for book keeping tasks such as compacting the data storage file.
+            </summary>
+        </member>
+        <member name="M:Raven.Munin.Database.Dispose">
+            <summary>
+            Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+            </summary>
+            <filterpriority>2</filterpriority>
+        </member>
+        <member name="T:Raven.Munin.ReadOnlyFileBasedPersistentSource">
+            <summary>
+            Simple read only version of the file based data.
+            It is mostly meant for read only access from remote application domain.
+            </summary>
+        </member>
+        <member name="T:Raven.Munin.StreamsPool.DisposableAction">
+            <summary>
+            A helper class that translate between Disposable and Action
+            </summary>
+        </member>
+        <member name="M:Raven.Munin.StreamsPool.DisposableAction.#ctor(System.Action)">
+            <summary>
+            Initializes a new instance of the <see cref="T:Raven.Munin.StreamsPool.DisposableAction"/> class.
+            </summary>
+            <param name="action">The action.</param>
+        </member>
+        <member name="M:Raven.Munin.StreamsPool.DisposableAction.Dispose">
+            <summary>
+            Execute the relevant actions
+            </summary>
+        </member>
+    </members>
+</doc>

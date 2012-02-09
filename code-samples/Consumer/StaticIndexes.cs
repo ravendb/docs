@@ -201,7 +201,7 @@ namespace RavenCodeSamples.Consumer
 			{
 				Map = users => from user in users select new { user.Age };
 
-				SortOptions.Add(x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short);
+				Sort(x => x.Age, Raven.Abstractions.Indexing.SortOptions.Short);
 			}
 		}
 		#endregion
@@ -213,7 +213,7 @@ namespace RavenCodeSamples.Consumer
 			{
 				Map = users => from doc in users select new { doc.Name };
 
-				SortOptions.Add(x => x.Name, Raven.Abstractions.Indexing.SortOptions.String);
+				Sort(x => x.Name, Raven.Abstractions.Indexing.SortOptions.String);
 
 				Analyzers.Add(x => x.Name, "Raven.Database.Indexing.Collation.Cultures.SvCollationAnalyzer, Raven.Database");
 			}
