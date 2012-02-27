@@ -5,11 +5,16 @@ using System.Linq.Expressions;
 using System.Text;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Indexes;
+using RavenCodeSamples.Consumer;
 
 namespace RavenCodeSamples.Server
 {
     public class Bundles : CodeSampleBase
     {
+		public class User
+		{
+			public string Name { get; set; }
+		}
         public void VersioningBundle()
         {
             using (var store = NewDocumentStore())
@@ -33,6 +38,14 @@ namespace RavenCodeSamples.Server
 
                     #endregion
                 }
+
+				#region versioning3
+				using (var session = store.OpenSession())
+				{
+					session.Store(new User { Name = "Ayende Rahien" });
+					session.SaveChanges();
+				}
+				#endregion
             }
         }
     }
