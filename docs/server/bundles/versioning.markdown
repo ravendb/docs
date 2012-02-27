@@ -22,12 +22,44 @@ Conversely, we can also set the default configuration to not version (`Exclude =
 
 ## How it works
 
-// TODO: http://ravendb.net/bundles/versioning
+With the Versioning Bundle installed, let us execute this code:
 
-## Attribution
+{CODE versioning3@Server\Bundles.cs /}
 
-## Querying for revisions
+If we inspect the server, we will see the following documents were created:
+
+![Figure 1: Versioned Documents](images\version_docs.png)
+
+The first document is the actual document that we just saved, we can see that it has a few additional metadata property than the ones we are used to:
+
+* Raven-Document-Revision - The document revision (starts at 1).
+* Raven-Document-Revision-Status - Whatever it is the Current revision or a Historical snapshot.
+
+Now, let us modify the original document. This will give us:
+
+![Figure 2: Versioned Documents, Modified](images\version_docs_2.png)
+
+As you can see, we have full audit record of all the changes that were made to the document.
+
+You can access each of the revisions by simply using its id "users/1/revisions1". However, modifications / deletions of revisions are not allowed, and will result in an error if attempted.
+
+Now, let us delete the original document:
+
+![Figure 3: Versioned Documents, Deleted](images\version_docs_3.png)
+
+That removed the current document, but the snapshots will remain in place, so you aren't going to lose the audit trail if the document is deleted. 
+
+As you can see, the Versioning Bundle attempts to make things as simple as possible, and once it is installed, you'll automatically get the appropriate audit trail. Working with revisions is identical to working with standard documents (except that you can't modify / delete them) and revision documents can be indexed like standard documents.
+
+Limitations
+
+* Versioning will fail on documents with keys larger than 230 characters.
+* Versioning will not attempt to version internal Raven document (documents whose key starts with "Raven/")
 
 ## Client integration
 
-// TODO: GetRevisionsFor<>
+The Versioning bundle also have a client side part, which you can access by adding a reference to Raven.Client.Versioning assembly.
+
+You can then access past revisions of a document using the following code:
+
+    var pastRevisions = session.Advanced.GetRevisionsFor<Loan>(loan.Id, 0, 25);
