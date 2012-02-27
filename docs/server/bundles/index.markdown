@@ -4,15 +4,16 @@ RavenDB in its core is a document database, and as such it is feature complete a
 
 The following bundles are available out of the box, to extend RavenDB's capabilities in several common scenarios:
 
-* Sharding and Replication
-* Quotas - to put size limits on a database
-* Expiration - removes expired documents automatically
-* Index Replication - replicates a RavenDB index to SQL Server
-* Authentication - authenticates DB users using OAuth
-* Authorization - allows to manage user groups, roles and permissions
-* Versioning - automatic versioning of documents upon changes or deltes
-* Cascade Deletes - automatic cascade deletes operations
-* More Like This - Returns documents that are related to a given document
+* Sharding and Replication.
+* Quotas - to put size limits on a database.
+* Expiration - removes expired documents automatically.
+* Index Replication - replicates a RavenDB index to SQL Server.
+* Authentication - authenticates DB users using OAuth.
+* Authorization - allows to manage user groups, roles and permissions.
+* Versioning - automatic versioning of documents upon changes or deltes.
+* Cascade Deletes - automatic cascade deletes operations.
+* More Like This - Returns documents that are related to a given document.
+* Unique Constrints - adds the ability to define unique constraints to RavenDB documents.
 
 In the next chapter we will discuss how to create custom bundles, to address custom user needs.
 
@@ -22,4 +23,10 @@ The path to the Plugins folder is configurable, see (configurations). By default
 
 Included in the RavenDB distribution package are two scripts, enabling easy installation and update of Bundles.
 
-// TODO
+* Raven-GetBundles.ps1
+* Raven-UpdateBundles.ps1
+
+Which you can use use to get new bundles or update the bundles you already have to a new version.
+
+Note that most bundles have to be setup when you create the database, and they cannot be removed afterward. So consider carefully your bundles strategy.
+You can usually add a bundle and then configure its behavior (effectively turning it on/off) at runtime, but adding/removing bundles is something that can only safely happen when the database is created.
