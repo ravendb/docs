@@ -28,7 +28,7 @@ With the Versioning Bundle installed, let us execute this code:
 
 If we inspect the server, we will see the following documents were created:
 
-![Figure 1: Versioned Documents](images\version_docs.png)
+![Figure 1: Versioned Documents](images\versioned_docs.png)
 
 The first document is the actual document that we just saved, we can see that it has a few additional metadata property than the ones we are used to:
 
@@ -37,7 +37,7 @@ The first document is the actual document that we just saved, we can see that it
 
 Now, let us modify the original document. This will give us:
 
-![Figure 2: Versioned Documents, Modified](images\version_docs_2.png)
+![Figure 2: Versioned Documents, Modified](images\versioned_docs_2.png)
 
 As you can see, we have full audit record of all the changes that were made to the document.
 
@@ -45,7 +45,7 @@ You can access each of the revisions by simply using its id "users/1/revisions1"
 
 Now, let us delete the original document:
 
-![Figure 3: Versioned Documents, Deleted](images\version_docs_3.png)
+![Figure 3: Versioned Documents, Deleted](images\versioned_docs_3.png)
 
 That removed the current document, but the snapshots will remain in place, so you aren't going to lose the audit trail if the document is deleted. 
 
