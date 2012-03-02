@@ -13,7 +13,7 @@ The following bundles are available out of the box, to extend RavenDB's capabili
 * Versioning - automatic versioning of documents upon changes or deltes.
 * Cascade Deletes - automatic cascade deletes operations.
 * More Like This - Returns documents that are related to a given document.
-* Unique Constrints - adds the ability to define unique constraints to RavenDB documents.
+* Unique Constraints - adds the ability to define unique constraints to RavenDB documents.
 
 In the next chapter we will discuss how to create custom bundles, to address custom user needs.
 
