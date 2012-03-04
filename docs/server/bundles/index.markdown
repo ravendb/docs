@@ -29,4 +29,4 @@ Included in the RavenDB distribution package are two scripts, enabling easy inst
 Which you can use use to get new bundles or update the bundles you already have to a new version.
 
 Note that most bundles have to be setup when you create the database, and they cannot be removed afterward. So consider carefully your bundles strategy.
-You can usually add a bundle and then configure its behavior (effectively turning it on/off) at runtime, but adding/removing bundles is something that can only safely happen when the database is created.
+You can usually add a bundle and then configure its behavior (effectively turning it on/off) at runtime, but adding/removing bundles is something that can safely happen only when the database is created.
