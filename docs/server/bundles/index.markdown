@@ -10,7 +10,7 @@ The following bundles are available out of the box, to extend RavenDB's capabili
 * Index Replication - replicates a RavenDB index to SQL Server.
 * Authentication - authenticates DB users using OAuth.
 * Authorization - allows to manage user groups, roles and permissions.
-* Versioning - automatic versioning of documents upon changes or deltes.
+* Versioning - automatic versioning of documents upon updates or deletes.
 * Cascade Deletes - automatic cascade deletes operations.
 * More Like This - Returns documents that are related to a given document.
 * Unique Constraints - adds the ability to define unique constraints to RavenDB documents.
