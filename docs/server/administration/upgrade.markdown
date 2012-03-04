@@ -2,7 +2,7 @@
 
 Upgrading RavenDB instance to a new version is very simple. In order to do so, you:
 
-- Shutdown the RavenDB server. (This is depends on your [deployment strategy](../../deployment/index.markdown). For a service - shutdown the service. For a IIS site - shutdown the IIS site.)
+- Shutdown the RavenDB server. (This is depends on your [deployment strategy](../../). For a service - shutdown the service. For a IIS site - shutdown the IIS site.)
 - Replace the binaries (including any bundles if you have them, their version has to match the server version).
 {NOTE Make sure to not delete your actual data which is the folders like `data` or `tenants`, or overwrite your configuration files like `Raven.Server.exe.config` or `web.config`. /}
 - Start the server again.

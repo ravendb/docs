@@ -8,7 +8,7 @@ Batching PUT and DELETEs:
 
 // TODO: example for using DeleteCommandData, PutCommandData
 
-Another operation supported by batching is the [PATCH command](../../partial-document-updates).
+Another operation supported by batching is the [PATCH command](../../../partial-document-updates).
 
 ## Concurrency
 
