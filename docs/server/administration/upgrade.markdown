@@ -20,5 +20,6 @@ However, if you want zero downtime, you can setup a failover server which will h
 - Shutdown and update the secondary server.
 
 Licensing:
+
 - If you have the secondary node running only for the during of the actual update, you don't need a license.
 - If you have the scondary node running constantly (hot backup), you do need a license.
