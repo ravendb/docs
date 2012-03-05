@@ -26,7 +26,7 @@ The `SaveChanges` call will produce the HTTP communication shown below. Note tha
 
     [
       {
-        "Key": "blogs/1",
+        "Key": "blogposts/1",
         "Etag": null,
         "Method": "PUT",
         "Document": {
@@ -45,8 +45,8 @@ The `SaveChanges` call will produce the HTTP communication shown below. Note tha
           ]
         },
         "Metadata": {
-          "Raven-Entity-Name": "Blogs",
-          "Raven-Clr-Type": "Blog"
+          "Raven-Entity-Name": "BlogPosts",
+          "Raven-Clr-Type": "BlogPost"
         }
       }
     ]
@@ -62,11 +62,11 @@ The `SaveChanges` call will produce the HTTP communication shown below. Note tha
       {
         "Etag": "00000000-0000-0100-0000-000000000002",
         "Method": "PUT",
-        "Key": "blogs/1",
+        "Key": "blogposts/1",
         "Metadata": {
-          "Raven-Entity-Name": "Blogs",
-          "Raven-Clr-Type": "Blog",
-          "@id": "blogs/1"
+          "Raven-Entity-Name": "BlogPosts",
+          "Raven-Clr-Type": "BlogPost",
+          "@id": "blogposts/1"
         }
       }
     ]
@@ -74,7 +74,7 @@ The `SaveChanges` call will produce the HTTP communication shown below. Note tha
 	
 Two things to note at this point:
 
-* We left the "Id" property of BlogPost blank, and it is this property that will be used as the "primary key" for this document. RavenDB generated an id for us, "blogs/1", based on the default convention.
+* We left the "Id" property of BlogPost blank, and it is this property that will be used as the "primary key" for this document. RavenDB generated an id for us, "blogposts/1", based on the default convention.
 
 * The entire object graph is serialized and persisted as a *single document*, not as a set of distinct objects.
 
