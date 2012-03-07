@@ -2,7 +2,7 @@
 
 Raven replication can be enabled by dropping the Raven.Bundles.Replication.dll to Raven's Plugins directory.
 
-You can read about potential deployment options for the replication bundle here: [Mixing Replication and Sharding]("/replicationandsharding/"). 
+You can read about potential deployment options for the replication bundle here: [Mixing Replication and Sharding](http://ravendb.net/docs/server/bundles/replicationandsharding). 
 The replication module will effect the following changes:
 
 * Track the server the document was originally written on. The replication bundle uses this information to determine if a replicated document is conflicting with the existing document.
@@ -19,16 +19,16 @@ The replication module will effect the following changes:
 ##Format of Raven/Replication/Destinations
 The destination document format is:
 
-`{  
-  "Destinations": [  
     {  
-      "Url": "http://raven_two:8080/"  
-    },  
-    {  
-      "Url": "http://raven_three:8080/"  
-    },  
-  ]  
-}`
+      "Destinations": [  
+        {  
+          "Url": "http://raven_two:8080/"  
+        },  
+        {  
+          "Url": "http://raven_three:8080/"  
+        },  
+      ]
+    }
 
 With an object containing a url per each instance to replicate to. Whenever this document is updated, replication kicks off and start replicating to the updates destination list.
 
@@ -67,7 +67,7 @@ In a replicating system, it is possible that two writes to the same document wil
 
 Resolving a conflict is easy, you just need to PUT a new version of the document. On PUT, the Replication Bundle will consider the conflict resolved.
 
-More details about conflicts are here: [Dealing with replication conflicts]("/replicationconflicts/").
+More details about conflicts are here: [Dealing with replication conflicts](http://ravendb.net/docs/server/bundles/replicationconflicts).
 
 ##Client integration
 Raven's Client API will detect and respond appropriately whenever a server has the replication bundle installed. This includes:
