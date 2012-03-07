@@ -2,3 +2,10 @@ quotas.markdown	Quotas Bundle
 versioning.markdown	Versioning Bundle
 morelikethis.markdown	More Like This
 unique-constraints.markdown	Unique Constraints
+authorization.markdown	Authorization Bundle
+cascadedelete.markdown	Cascade Delete Bundle
+expiration.markdown	Expiration Bundle
+indexreplication.markdown	Index Replication Bundle
+replication.markdown	Replication Bundle
+replicationandsharding.markdown	Replication & Sharding
+replicationconflicts.markdown	Dealing with Replication Conflicts
