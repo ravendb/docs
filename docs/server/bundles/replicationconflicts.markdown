@@ -24,6 +24,7 @@ Several things happened here:
 We can access each of the conflicting documents by their ids:
 
 ![Figure 4: Replication conflicts](images\replication_conflicts_docs_4.png)
+
 ![Figure 5: Replication conflicts](images\replication_conflicts_docs_5.png)
 
 We can resolve the conflict by writing a new document, which the Replication Bundle will consider as the result of user defined merge operation between the conflicts.
