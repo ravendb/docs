@@ -32,7 +32,7 @@ This is where dynamic fields come in. With the following index definition, Raven
 					select new
 					{
 						_ = p.Attributes.Select(attribute =>
-              new Field(attribute.Name, attribute.Value, Field.Store.NO, Field.Index.ANALYZED))
+              CreateField(attribute.Name, attribute.Value, stored: false, analyzed: true))
 					};
 			}
 		}
@@ -52,42 +52,4 @@ After creating the index, we can easily look for documents using the attribute n
 						.ToList();
 {CODE-END /}
 
-## Numeric fields
-
-If the `Product` class had an integer property instead of a string one, we would have to use a `NumericField` in the index definition instead, to enable searches with numeric operators like `WhereGreaterThan()` and the like:
-
-{CODE-START:csharp /}
-		public class Product_ByNumericAttributeUsingField : AbstractIndexCreationTask<Product>
-		{
-			public Product_ByNumericAttributeUsingField()
-			{
-				Map = products =>
-					from p in products
-					select new
-					{
-						_ = p.Attributes.Select(attribute =>
-              new NumericField(attribute.Name, attribute.NumericValue.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS))
-					};
-			}
-		}
-{CODE-END /}
-
-If you expect to have both numeric and string values, you can trigger dynamic field indexing on both types, like so:
-
-{CODE-START:csharp /}
-		public class Product_ByNumericAttributeUsingField : AbstractIndexCreationTask<Product>
-		{
-			public Product_ByNumericAttributeUsingField()
-			{
-				Map = products =>
-					from p in products
-					select new
-					{
-						_ = p.Attributes.Select(attribute =>
-              new Field(attribute.Name, attribute.Value, Field.Store.NO, Field.Index.ANALYZED))
-						__ = p.Attributes.Select(attribute =>
-              new NumericField(attribute.Name, attribute.NumericValue.ToString(), Field.Store.YES, Field.Index.NOT_ANALYZED_NO_NORMS))
-					};
-			}
-		}
-{CODE-END /}
+This will also work for numeric values, so range queries or searches with numeric operators like `WhereGreaterThan()` will work as well.
