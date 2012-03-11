@@ -22,13 +22,15 @@ From the nuget website:
 NuGet is a Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects that use the .NET Framework. When you add a library or tool, NuGet copies files to your solution and automatically makes whatever changes are needed in your project, such as adding references and changing your app.config or web.config file. When you remove a library, NuGet removes files and reverses whatever changes it made in your project so that no clutter is left.
 </blockquote>
 
-You can find more on how to start using nuget [here](http://nuget.codeplex.com/documentation?title=Getting%20Started).
+You can find more on how to start using nuget [in their website](http://nuget.codeplex.com/documentation?title=Getting%20Started).
 
 ### RavenDB on nuget
 
-Look for a RavenDB (or RavenDB-Embedded) package and click Install. Alternatively, If you're using PowerShell or the Package Manager Console, type `Install-Package RavenDB`.
+Look for a RavenDB (or RavenDB-Embedded) package and click Install. Alternatively, If you're using PowerShell or the Package Manager Console, type `Install-Package RavenDB`. To install the embedded version, type `Install-Package RavenDB-Embedded`.
 
 Once you do that, nuget will copy all the required files, and add references and dependencies automatically to your project. Now you are ready to start using RavenDB from your application.
+
+{INFO You can also add an unstable version of RavenDB through nuget by adding the `-Pre` flag, for example `Install-Package -Pre RavenDB`. Make sure to use the latest nuget version for this to work correctly. /}
 
 ## Manually adding RavenDB using the build package
 
@@ -46,14 +48,20 @@ Here's how to know which are the files you are going to need:
 
 * /EmbeddedClient - The files required to run the RavenDB client, in server or embedded mode.
 
+Whichever client version you choose to use, reference all the assemblies in the corresponding folder to your project.
+
 As for the rest of the folders in the package, here's a brief description of what they contain:
 
-* /Server - The files required to run RavenDB in server / service mode. Execute /Server/Raven.Server.exe /install to register and start the RavenDB service.
-		  
-* /Web - The files required to run RavenDB under IIS. Create an IIS site in the /Web directory to start the RavenDB site.
-		
-* /Bundles - Bundles that extend RavenDB in various ways.
-	
+* /Backup - [Standalone backup tool](../server/administration/backup-restore), for performing backup operations using a user with admin privileges.
+
+* /Bundles - [Bundles](../server/bundles) that extend RavenDB in various ways.
+
 * /Samples - Some sample applications for Raven. Under each sample application folder there is a "Start Raven.cmd" file which will starts Raven with all the data and indexes required to run the sample successfully.
-	
-* RavenSmuggler.exe - The Import/Export utility for RavenDB.
+
+* /Smuggler - [The Import/Export utility](../server/administration/export-import) for RavenDB.
+
+* /Server - The files required to run RavenDB in server / service mode. Execute /Server/Raven.Server.exe /install to register and start the RavenDB service.
+
+* /Web - The files required to run RavenDB under IIS. Create an IIS site in the /Web directory to start the RavenDB site.
+
+For more information on the various deployment options for RavenDB, see in the [Deployment section of the chapter on the Server side](../server/deployment).
