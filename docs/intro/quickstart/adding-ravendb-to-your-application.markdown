@@ -26,11 +26,15 @@ You can find more on how to start using nuget [in their website](http://nuget.co
 
 ### RavenDB on nuget
 
-Look for a RavenDB (or RavenDB-Embedded) package and click Install. Alternatively, If you're using PowerShell or the Package Manager Console, type `Install-Package RavenDB`. To install the embedded version, type `Install-Package RavenDB-Embedded`.
+We have 3 packages on nuget: RavenDB, RavenDB-Client and RavenDB-Embedded.
+
+RavenDB package includes both the client API and the server while that RavenDB-Client includes the client API only. RavenDB-Embedded includes the [embedded](http://ravendb.net/docs/server/deployment/embedded) version of RavenDB.
+
+You can install a nuget package either by searching one of the packages in the built-in UI of Visual Studio, choose a package and click Install, or by using the Package Manager Console Install-Package command with the package name, like `Install-Package RavenDB` to install the RavenDB package or `Install-Package RavenDB-Embedded` to install the RavenDB-Embedded package for example.
 
 Once you do that, nuget will copy all the required files, and add references and dependencies automatically to your project. Now you are ready to start using RavenDB from your application.
 
-{INFO You can also add an unstable version of RavenDB through nuget by adding the `-Pre` flag, for example `Install-Package -Pre RavenDB`. Make sure to use the latest nuget version for this to work correctly. /}
+{INFO You can also add an unstable version of RavenDB through nuget by adding the `-Pre` flag, for example `Install-Package RavenDB -Pre`. Make sure to use the latest nuget version for this to work correctly. /}
 
 ## Manually adding RavenDB using the build package
 
