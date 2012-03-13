@@ -88,6 +88,7 @@
     <Compile Include="Consumer\Paging.cs" />
     <Compile Include="Consumer\Patching.cs" />
     <Compile Include="Consumer\SetBased.cs" />
+    <Compile Include="Consumer\Sharding.cs" />
     <Compile Include="Server\Smuggler.cs" />
     <Compile Include="Consumer\Spatial.cs" />
     <Compile Include="Consumer\Stale.cs" />
