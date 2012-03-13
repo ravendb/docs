@@ -1,0 +1,3 @@
+http-api-multi-get.markdown   GET
+http-api-multi-set-based.markdown   Set based operations
+http-api-multi-batching.markdown   Batching requests
