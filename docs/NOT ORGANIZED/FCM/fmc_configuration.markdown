@@ -1,5 +1,5 @@
 #Running in Failover Cluster Manager
-###This feature is noly avilable in the Enterprise Edition
+###Note that this feature is only avilable in the Enterprise Edition of RavenDB.
 
 In order to ensure RavenDB high availability you can run it on a failover cluster.
 
