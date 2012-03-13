@@ -1,4 +1,4 @@
-﻿# Saving a new document
+# Saving a new document
 
 Before we can start saving information to RavenDB, we must define *what* we will save. For the purpose of these sections, we will use the following class structure:
 
@@ -26,7 +26,7 @@ The `SaveChanges` call will produce the actual HTTP communication, which is show
 
     [
       {
-        "Key": "blogposts/1",
+        "Key": "BlogPosts/1",
         "Etag": null,
         "Method": "PUT",
         "Document": {
@@ -62,11 +62,11 @@ The `SaveChanges` call will produce the actual HTTP communication, which is show
       {
         "Etag": "00000000-0000-0100-0000-000000000002",
         "Method": "PUT",
-        "Key": "blogposts/1",
+        "Key": "BlogPosts/1",
         "Metadata": {
           "Raven-Entity-Name": "BlogPosts",
           "Raven-Clr-Type": "BlogPost",
-          "@id": "blogposts/1"
+          "@id": "BlogPosts/1"
         }
       }
     ]
