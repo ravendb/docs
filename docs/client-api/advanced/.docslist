@@ -7,3 +7,4 @@ dynamic-fields.markdown	Dynamic fields
 /databasecommands	DatabaseCommands
 index-administration.markdown	Index Administration
 custom-serialization.markdown	Custom serialization / deserialization
+sharding.markdown	Sharding
