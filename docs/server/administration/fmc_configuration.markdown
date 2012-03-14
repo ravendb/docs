@@ -1,4 +1,4 @@
-#Running in Failover Cluster Manager
+#Windows Clustering
 ###Note that this feature is only avilable in the Enterprise Edition of RavenDB.
 
 In order to ensure RavenDB high availability you can run it on a failover cluster.
