@@ -1,7 +1,7 @@
 http-api-overview.markdown	Overview
-http-api-single	Single Document Operations
-http-api-multi	Multi Documents Operations
-http-api-attachments	Attachments Operations
+http-api-single.markdown	Single Document Operations
+http-api-multi.markdown	Multi Documents Operations
+http-api-attachments.markdown	Attachments Operations
 http-api-indexes-querying.markdown	Querying indexes
 http-api-comcurrency.markdown	Revisions and Concurrency with E-Tags
 http-api-security.markdown	Security for Anonymous Access
