@@ -1,4 +1,4 @@
-﻿# Embedded
+# Embedded
 
 RavenDB makes it very easy to be embedded within your application. The first step is to reference the embedded client, either via nuget (package name: RavenDB-Embedded) or by taking the files from the build zip.
 
@@ -20,4 +20,4 @@ Once you initialized the document store, you can browse directly to the WebUI, e
 
 ## Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](administration/configuration) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration) page for complete info.
