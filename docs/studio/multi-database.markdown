@@ -1,4 +1,4 @@
-# Multi-Tenancy Support
+# Multi-Database Support
 
 RavenDB supports multi-tenancy, and the Management Studio provides an easy way to manage multiple tenants from the same UI, and to create new tenants.
 
