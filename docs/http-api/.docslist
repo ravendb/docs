@@ -1,5 +1,5 @@
 http-api-overview.markdown	Overview
-/SingleDocumentOperations	Single Document Operations
+http-api-single	Single Document Operations
 http-api-multi	Multi Documents Operations
 http-api-attachments	Attachments Operations
 http-api-indexes-querying.markdown	Querying indexes
