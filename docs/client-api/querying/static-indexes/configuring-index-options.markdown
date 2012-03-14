@@ -1,4 +1,4 @@
-﻿# Configuring index options
+# Configuring index options
 
 The indexes each RavenDB server instance uses to facilitate fast queries are powered by Lucene, the full-text search engine.
 
@@ -54,7 +54,7 @@ To allow for full-text search on text fields, you can use the analyzers provided
 
 For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing, normalizes case, filters out common English words, and also does some basic English stemming.
 
-// TODO Collation analyzers
+[Collation analyzers](http://ravendb.net/docs/client-api/querying/static-indexes/customizing-results-order)
 
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple to do, and may already be available as a contrib package for Java Lucene or Lucene.NET.
 

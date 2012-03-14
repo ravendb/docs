@@ -1,7 +1,7 @@
 #Delete Triggers
 Delete triggers implement the AbstractDeleteTrigger interface and follow much the same pattern as PUT triggers.
 
-//TODO: check what image was supposed to be here
+![Figure 1: Triggers - Delete](/images/triggers_delete_docs.png)
 
 **Example: Cascading deletes**
 
