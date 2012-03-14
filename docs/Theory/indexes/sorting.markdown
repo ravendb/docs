@@ -2,7 +2,7 @@
 
 Sorting in RavenDB's indexes is usually based on lexical sorting of the data. You can override this in one of several ways.
 
-* For sorting using specific culture sorting rules, check out [RavenDB's collation support](http://old.ravendb.net/faq/collation).//"TODO: link to new site"
+* For sorting using specific culture sorting rules, check out [RavenDB's collation support](http://ravendb.net/docs/faq/collation-support).
 * If you want to sort it by dates, they are written to the index in a form that allow easy lexical sorting already, so you don't need to do anything.
 * For sorting numbers, you have to explicitly specify what is the number type (long, short, double, float, etc).
 
