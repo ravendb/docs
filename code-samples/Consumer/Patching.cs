@@ -1,4 +1,5 @@
 ﻿using Raven.Abstractions.Data;
+using Raven.Database.Json;
 using Raven.Json.Linq;
 
 namespace RavenCodeSamples.Consumer
@@ -12,10 +13,10 @@ namespace RavenCodeSamples.Consumer
 				#region patching1
 
 				var comment = new BlogComment
-				              	{
-				              		Title = "Foo",
-				              		Content = "Bar"
-				              	};
+								{
+									Title = "Foo",
+									Content = "Bar"
+								};
 
 				documentStore.DatabaseCommands.Patch(
 					"blogposts/1234",
@@ -133,6 +134,40 @@ namespace RavenCodeSamples.Consumer
 								}
 						});
 
+				#endregion
+
+				var doc = new RavenJObject();
+				#region nested1
+				var addToPatchedDoc = new JsonPatcher(doc).Apply(
+					new[]
+				{
+					new PatchRequest
+					{
+						Type = PatchCommandType.Modify,
+						Name = "user",
+						Nested = new[]
+						{
+							new PatchRequest {Type = PatchCommandType.Set, Name = "name", Value = new RavenJValue("rahien")},
+						}
+					},
+				});
+				#endregion
+
+				#region nested2
+				var removeFromPatchedDoc = new JsonPatcher(doc).Apply(
+				new[]
+				{
+					new PatchRequest
+					{
+						Type = PatchCommandType.Modify,
+						Name = "user",
+						PrevVal = RavenJObject.Parse(@"{ ""name"": ""ayende"", ""id"": 13}"),
+						Nested = new[]
+						{
+							new PatchRequest {Type = PatchCommandType.Unset, Name = "name" },
+						}
+					},
+				});
 				#endregion
 			}
 		}
