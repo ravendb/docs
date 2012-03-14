@@ -36,12 +36,13 @@ RavenDB saves additional data on each document, such as it's Collection associat
 
 On the top right corner of this screen you will find several buttons:
 
+- Search
 - Save changes
 - Reformat Document: will remove empty line and fix indentation
 - Delete Document: to permanently delete the current document, will prompt before doing the delete
 - Refresh: will reload the document from the server
 
-// TODO: Image of those icons
+![](Images/studio_documents_9.PNG)
 
 To the right of the form some statistics are shown - the metadata of the current document, formatted, and a list of possible reference found in it. Clicking on a reference will open that document for editing, if it exists in your database.
 
