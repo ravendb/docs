@@ -1,4 +1,55 @@
-#HTTP API - Single Document Operations - PATCH
+#HTTP API - Single Document Operations
+
+##GET<a id="get"></a>
+Perform a GET request to read a JSON document from its URL: 
+
+    > curl -X GET http://localhost:8080/docs/bobs_address
+
+Assuming there is a document with an id of "bobs_address", RavenDB will respond with the contents of that document and an HTTP 200 OK response code: 
+
+    HTTP/1.1 200 OK 
+ 
+    {  
+      "FirstName": "Bob",  
+      "LastName": "Smith",  
+      "Address": "5 Elm St."  
+    }
+
+If the URL specified does not point to a valid document, RavenDB follows HTTP conventions and responds with: 
+
+    HTTP/1.1 404 Not Found
+
+##PUT<a id="put"></a>
+Perform a PUT request to /docs/{document_id} to create the specified document with the given document id: 
+
+    > curl -X PUT http://localhost:8080/docs/bobs_address -d "{ FirstName: 'Bob', LastName: 'Smith', Address: '5 Elm St' }"
+
+For a successful request, RavenDB will respond with the id it generated and an HTTP 201 Created response code: 
+
+    HTTP/1.1 201 Created
+  
+    {"Key":"bobs_address","ETag":"179048f3-4c71-11df-8ec2-001fd08ec235"}
+
+It is important to note that a PUT in RavenDB will always create the specified document at the request URL, if necessary overwriting what was there before.
+
+A PUT request to /docs without specifying the document id in the URL is an invalid request and RavenDB will return a HTTP 400 Bad Request response code. 
+
+##POST<a id="post"></a>
+Perform a POST request to the /docs area to create the specified document and allow RavenDB to assign a unique id to it: 
+
+    > curl -X POST http://localhost:8080/docs -d "{ FirstName: 'Bob', LastName: 'Smith', Address: '5 Elm St' }"
+
+For a successful request, RavenDB will respond with the id it generated and an HTTP 201 Created response code: 
+
+    HTTP/1.1 201 Created  
+
+    {"Key":"5ecec911-4c71-11df-8ec2-001fd08ec235","ETag":"5ecec912-4c71-11df-8ec2-001fd08ec235"}
+
+It is important to note that a repeated POST request for the same document will create that document in a new place, with a new id each time.
+
+A POST to a document URL is an invalid request and RavenDB will return a HTTP 400 Bad Request response code.
+
+##PATCH<a id="patch"></a>
 By using a PATCH request, any single document within RavenDB can be updated without replacing the entire document with a PUT. The PATCH command allows Raven to implement field level concurrency.
 
 All PATCH requests are made to the URL of the document, and follow the general format of: 
@@ -20,7 +71,7 @@ For the purposes of these examples, suppose we start with this document:
     > curl http://localhost:8080/docs/post_1 -X PUT -d "{ title: 'A Blog Post', body: 'html markup here', 
       comments: [ {author: 'ayende', text: 'good post'} ] }"
 
-##Patch Operations
+###Patch Operations
 Raven supports the following patch operations:
 
 * Set - Set a property to a new value (optionally creating the property).
@@ -363,3 +414,23 @@ A subsequent GET of this document would show that the first operation worked, bu
     }
 
 Using this approach, you can make an atomic change to the a particular part of a document safely.
+
+##DELETE<a id="delete"></a>
+Perform a DELETE request to delete the JSON document specified by the URL: 
+
+    > curl -X DELETE http://localhost:8080/docs/bobs_address
+
+For a successful delete, RavenDB will respond with an HTTP response code 204 No Content: 
+
+    "HTTP/1.1 204 No Content"
+
+The only way a delete can fail is if [the etag doesn't match](http://ravendb.net/docs/http-api/http-api-comcurrency). If the document doesn't exist, a delete will still respond with a successful status code. 
+
+**Hard vs. Soft Deletes**  
+Deleting a document through the HTTP API is not reversible. In database terms, it is a "hard" delete.
+
+An alternative approach is to mark a document with a deleted flag and then ignore documents like this in your business logic.
+
+This approach, a "soft" delete, preserves the data intact in RavenDB and can be useful for auditing or undoing a user's actions.
+
+The right approach for you will depend on the problem space that you are modeling. 
