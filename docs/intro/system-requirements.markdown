@@ -10,9 +10,9 @@ RavenDB comes in several flavors. Listed below are the system requirements for e
 
 ## Silverlight client
 
-* Silverlight 4
+* Silverlight 4 or 5
 
 ## RavenDB server / Embedded
 
 * .Net framework 4
-* Windows _or_ Mono
+* Windows
