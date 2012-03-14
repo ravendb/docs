@@ -23,4 +23,4 @@ The longer answer is that instead of joining, RavenDB (like other NoSQL solution
 * **Server side joins**
     RavenDB's extensibility mechanism allows you to extend RavenDB to handle joins at the server side (eliminating network cost from simulating joins). The documentation about [Read Triggers](http://ravendb.net/docs/theory/extensions/triggers/read) contains an example of how to do just that.
 
-When using denormalization, you'll probably want to look at how to make [denormalized updates]("TODO://Link to denormalized data").
+When using denormalization, you'll probably want to look at how to make [denormalized updates](http://ravendb.net/docs/faq/denormalized-updates).

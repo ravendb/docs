@@ -8,4 +8,4 @@ For example, the following request:
 
     > curl -X GET http://localhost:8080/static/users/ayende.jpg
 
-Will retrieve an attachment whose key is "users/ayende.jpg", the response to the request is the exact byte stream that was stored in a previous [PUT]()//"TODO: link to put attachments" request.
+Will retrieve an attachment whose key is "users/ayende.jpg", the response to the request is the exact byte stream that was stored in a previous [PUT](http://ravendb.net/docs/http-api/attachments/http-api-put-attachments) request.
