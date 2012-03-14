@@ -15,7 +15,12 @@ Raven deals with the problem by setting limits on the number of documents that y
 ##Unbounded number of requests
 Another common issue mistake in all data access technologies is being overly chatty with the database. A common scenario might be:
 
-{code} // TODO: add code
+    var posts = postsRepository.GetRecentPosts();
+    foreach (var post in posts)
+    {
+       var comments = commentsRepository.GetRecentCommentsForPost(post);
+       recentComments.AddRange(comments);
+    }
 
 This code will execute a single query to load the recent posts, and then an additional query per each post. The problem with this approach is that it leads to slow applications, increase latency and overall strain on the system.
 

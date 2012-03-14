@@ -1,10 +1,9 @@
-how-index-work.markdown      How the indexes work
-indexing.markdown            Indexing information
-docs-http-indexes.markdown   Simple Indexes
-docs-http-indexes-dynamic.markdown   Dynamic Indexes
-dynamic-syntax.markdown      Dynamic Indexing Syntax
-spatial.markdown             Spatial Search Support
-docs-http-indexes-map-reduce.markdown   Map Reduce Indexes
-docs-http-stale-indexes.markdown    Handling stale indexes
-sorting.markdown             Indexing Sorting Options
-doc-indexes-errors.markdown  Errors handling in Indexes
+indexing.markdown	Indexing information
+docs-http-indexes.markdown	Simple Indexes
+docs-http-indexes-dynamic.markdown	Dynamic Indexes
+dynamic-syntax.markdown	Dynamic Indexing Syntax
+spatial.markdown	Spatial Search Support
+docs-http-indexes-map-reduce.markdown	Map Reduce Indexes
+docs-http-stale-indexes.markdown	Handling stale indexes
+sorting.markdown	Indexing Sorting Options
+doc-indexes-errors.markdown	Errors handling in Indexes
