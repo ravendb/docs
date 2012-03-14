@@ -1,7 +1,7 @@
 #Put triggers
 PUT triggers are classes that inherit the AbstractPutTrigger class:
 
-![Figure 1: Triggers - Put](/images/triggers_put_docs.png)
+![Figure 1: Triggers - Put](images\triggers_put_docs.png)
 
 1. AllowPut gives the trigger the chance to reject the PUT operation.
 2. OnPut gives the trigger the chance to modify the document and metadata before the changes are saved.

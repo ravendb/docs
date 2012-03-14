@@ -2,7 +2,7 @@
 Read triggers implement the AbstractReadTrigger interface and allow filtering, modifying and denying document reading and querying capabilities.
 Like PUT and DELETE triggers, the read trigger need to handle two operations, allowing the read operation to proceed and modifying the document before it is read by the user.
 
-![Figure 1: Triggers - Read](/images/triggers_read_docs.png)
+![Figure 1: Triggers - Read](images\triggers_read_docs.png)
 
 **Example: Information hiding**
 
