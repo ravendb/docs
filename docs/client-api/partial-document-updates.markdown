@@ -1,10 +1,10 @@
-﻿# Partial document updates using the Patching API
+# Partial document updates using the Patching API
 
 The process of document patching allows for modifying a document on the server without having to load it in full and saving it back. This is usually useful for updating denormalized data in entities.
 
 In a normal use case, the client would issue a Load command to the server, deserialize the response into an entity, make changes to that entity, and then send it back for the server serialized. Using the Patching API the client can issue a single Patch command and the server will perform the requested operation on the JSON representation of the document. This can save bandwidth and be faster, but it is not a transactional operation, and as such only the last patching command is actually going to be persisted.
 
-{NOTE Since this feature is not transactional, and involves low-level document manipulation, it is considered to be an expert feature and generally should not be used as a general purpose solution. If you have reached a scenario where you are considering using this, you might want to recheck your data model and see if it can be optimized to prevent usage of the Patching API. The only exception is updating denormalized data, where this approach is valid but not always recommended. /}
+{NOTE Since this feature involves low-level document manipulation, it is considered to be an expert feature and generally should not be used as a general purpose solution. If you have reached a scenario where you are considering using this, you might want to recheck your data model and see if it can be optimized to prevent usage of the Patching API. The only exception is updating denormalized data, where this approach is valid but not always recommended. /}
 
 The patching API is exposed through RavenDB's `DatabaseCommands`, available from the document store object and `session.Advanced`. A patch command is issued by calling a single function `Patch`, accepting three parameters: the document key, an array of PatchRequests and an optional Etag:
 
@@ -64,10 +64,20 @@ Any collection in your entity will be serialized into an array in the resulting 
 
 Being a JSON object, you can treat the entire array as value like shown above. Sometimes, however, you want to access certain items in the array
 
-// TODO Nested - the nested operations to perform. This is only valid when the `Type` is `PatchCommandType.Modify`
+## Working with nested operations
+The nested operatoions are only valid of the 'Type' is `PatchCommandType.Modify`.  
+If we want to change all items in a collection we could do that by setting the AllPositions porparty to 'true'
 
-// TODO AllPositions - Set this property to true if you want to modify all items in an collection
+**Here are a few examples of nested operations:**
 
-## Error handling
+Set value in a nested element:
 
-// TODO
+{CODE nested1@Consumer\Patching.cs /}
+
+Remove value in a nested element:
+
+{CODE nested2@Consumer\Patching.cs /}
+
+## Concurrency
+
+If we wanted to we could run several batch operations in parallel, but we will not be able to set which one will end first.
