@@ -40,7 +40,7 @@ By default, all POCOs are serialized in the following manner:
 
 * All public fields are serialized, non-public fields are ignored
 
-This behavior can be customized, as discussed [later in this chapter](/advanced/custom-serialization).
+This behavior can be customized, as discussed [later in this chapter](advanced/custom-serialization).
 
 ## Document IDs
 
@@ -48,4 +48,4 @@ When using the Client API, each POCO (Plain Old Clr Object - a .NET class instan
 
 {INFO As we mentioned before, this ID format is merely a convention, and document IDs can be any string. /}
 
-RavenDB will automatically assign IDs to objects you save into it, whether or not you have an Id property in your objects. We will discuss this [later in the chapter](/basic-operations/saving-new-document).
+RavenDB will automatically assign IDs to objects you save into it, whether or not you have an Id property in your objects. We will discuss this [later in the chapter](basic-operations/saving-new-document).

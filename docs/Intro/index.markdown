@@ -4,4 +4,4 @@ The intro section is all about being an entry gate to RavenDB and the documentat
 
 Basic Quickstart tutorials will be here as well.
 
-More in-depth theory on NoSQL, Document Databases and RavenDB are in the "Theory" chapter, and the real documentation in the rest of the chapters.
+More in-depth theory on NoSQL, Document Databases and RavenDB are in the [Theory chapter](../theory).

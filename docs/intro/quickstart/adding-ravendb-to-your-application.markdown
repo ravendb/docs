@@ -56,16 +56,16 @@ Whichever client version you choose to use, reference all the assemblies in the 
 
 As for the rest of the folders in the package, here's a brief description of what they contain:
 
-* /Backup - [Standalone backup tool](../server/administration/backup-restore), for performing backup operations using a user with admin privileges.
+* /Backup - [Standalone backup tool](../../server/administration/backup-restore), for performing backup operations using a user with admin privileges.
 
-* /Bundles - [Bundles](../server/bundles) that extend RavenDB in various ways.
+* /Bundles - [Bundles](../../server/bundles) that extend RavenDB in various ways.
 
 * /Samples - Some sample applications for Raven. Under each sample application folder there is a "Start Raven.cmd" file which will starts Raven with all the data and indexes required to run the sample successfully.
 
-* /Smuggler - [The Import/Export utility](../server/administration/export-import) for RavenDB.
+* /Smuggler - [The Import/Export utility](../../server/administration/export-import) for RavenDB.
 
 * /Server - The files required to run RavenDB in server / service mode. Execute /Server/Raven.Server.exe /install to register and start the RavenDB service.
 
 * /Web - The files required to run RavenDB under IIS. Create an IIS site in the /Web directory to start the RavenDB site.
 
-For more information on the various deployment options for RavenDB, see in the [Deployment section of the chapter on the Server side](../server/deployment).
+For more information on the various deployment options for RavenDB, see in the [Deployment section of the chapter on the Server side](../../server/deployment).
