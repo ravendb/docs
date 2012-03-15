@@ -22,7 +22,7 @@ One of the most expensive operations in an application is making remote calls. T
 
 ## Safe by default
 
-RavenDB, by default, will not allow operations that might compromise the stability of either the server or the client. There are mainly two examples that present themselves most often - sending too many requests, or receiving too large a response. Therefore, a RavenDB session automatically enforces the following limitations:
+By default, RavenDB will not allow operations that might compromise the stability of either the server or the client. There are mainly two examples that present themselves most often - sending too many requests, or receiving too large a response. Therefore, a RavenDB session automatically enforces the following limitations:
 
 * If a page size value is not specified, the length of the results will be limited to 128 results. At the server side as well, there is a hard limit to the page size of 1,024 results (configurable).
 * The number of remote calls to the server per session is limited to 30 (configurable).
