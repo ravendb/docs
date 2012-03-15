@@ -59,8 +59,8 @@ namespace RavenDB.DocsCompiler
 				var document = item as Document;
 				if (document != null)
 				{
-					var strippedSlug = document.Slug.Replace(".markdown", "");
-					document.Content = DocumentationParser.Parse(this, null, Path.Combine(fullPath, document.Slug), strippedSlug);
+					var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
+					document.Content = DocumentationParser.Parse(this, null, Path.Combine(fullPath, document.Slug), document.Trail);
 					document.Slug = strippedSlug;
 					Output.SaveDocItem(document);
 					continue;
@@ -74,7 +74,7 @@ namespace RavenDB.DocsCompiler
 				}
 			}
 
-			var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"), "index");
+			var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"), string.Empty);
 			Output.SaveDocItem(new Document
 			{
 				Title = folder.Title,
