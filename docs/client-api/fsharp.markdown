@@ -1,8 +1,8 @@
 # The F# Client API
 
-The F# client API is a thin wrapper around the standard Raven client API, that provides a small set of combinators and a computation builder that hides the complexity of dealing with Linq expressions from F#.
+The F# client API is a thin wrapper around the standard RavenDB client API, that provides a small set of combinators and a computation builder that hides the complexity of dealing with Linq expressions from F#.
 
-This documentation assumes some familiarity with the basics of Raven DB. 
+This documentation assumes some familiarity with the basics of RavenDB. 
 
 ## Creating a Document Store
 
@@ -122,7 +122,7 @@ For example lets say we wanted all of the customers born on a certain date and a
 		}
 
 
-we can then execute this query as normal
+We can then execute this query as normal
 
 	use session = docStore.OpenSession()
 	composedQuery (new DateTime(2012, 1, 1)) |> run session	
