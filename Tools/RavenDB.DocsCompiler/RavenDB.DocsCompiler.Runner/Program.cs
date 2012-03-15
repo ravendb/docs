@@ -14,6 +14,7 @@ namespace RavenDB.DocsCompiler.Runner
 									{
 										OutputPath = Path.Combine(basePath, "html-compiled"),
 										PageTemplate = File.ReadAllText(Path.Combine(basePath, @"Tools\html-template.html")),
+										RootUrl = "http://ravendb.net/docs/",
 									};
 
 			try

@@ -17,7 +17,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		static readonly Regex FilesListFinder = new Regex(@"{FILES-LIST(-RECURSIVE)?\s*/}", RegexOptions.Compiled);
 		static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-		public static string Parse(Compiler docsCompiler, Folder folder, string fullPath, string currentSlug)
+		public static string Parse(Compiler docsCompiler, Folder folder, string fullPath, string trail)
 		{
 			if (!File.Exists(fullPath))
 				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
@@ -31,11 +31,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 				contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));
 			}
 
-			if (docsCompiler.Output.RootUrl == null)
-				contents = contents.ResolveMarkdown(docsCompiler.Output, currentSlug);
-			else
-				contents = contents.ResolveMarkdown(docsCompiler.Output, currentSlug);
-
+			contents = contents.ResolveMarkdown(docsCompiler.Output, !string.IsNullOrWhiteSpace(docsCompiler.Output.RootUrl) ? trail : string.Empty);
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
 			return contents;
@@ -121,7 +117,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return File.ReadAllText(codePath);
 		}
 
-		public static string ResolveMarkdown(this string content, IDocsOutput output, string currentSlug)
+		public static string ResolveMarkdown(this string content, IDocsOutput output, string trail)
 		{
 			// http://www.toptensoftware.com/markdowndeep/api
 			var md = new Markdown
@@ -136,18 +132,33 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
 			if (!string.IsNullOrWhiteSpace(output.RootUrl))
 			{
-				if (!string.IsNullOrWhiteSpace(currentSlug) && !currentSlug.Equals("index"))
-					md.UrlBaseLocation = output.RootUrl + "/" + currentSlug.Replace('\\', '/');
-				else
-					md.UrlBaseLocation = output.RootUrl;
+				md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail);
 			}
-
-			////if (!string.IsNullOrWhiteSpace(output.ImagesPath))
-			//    md.QualifyUrl = delegate(string image) { return output.ImagesPath + "/" + image; };
 
 			md.PrepareImage = (tag, titledImage) => PrepareImage(output.ImagesPath, tag);
 
 			return md.Transform(content);
+		}
+
+		private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail)
+		{
+			string href;
+			if (!tag.attributes.TryGetValue("href", out href))
+				return true;
+
+			if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
+				return true;
+
+			Uri uri;
+			if (!string.IsNullOrWhiteSpace(trail)) trail += "/"; // make sure we don't lose the current slug
+			if (!Uri.TryCreate(new Uri(rootUrl + trail, UriKind.Absolute), new Uri(href, UriKind.Relative), out uri))
+			{
+				// TODO: Log error
+			}
+
+			tag.attributes["href"] = uri.AbsoluteUri;
+
+			return true;
 		}
 
 		private static bool PrepareImage(string imagesPath, HtmlTag tag)
