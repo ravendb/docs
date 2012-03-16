@@ -1,4 +1,4 @@
-#RavenDB Multiple Databases
+# Multiple Databases
 
 RavenDB natively supports multiple databases, and like most things in RavenDB, the way you configure additional databases is by creating a document. The RavenDB multi database support was explicitly designed to support multi tenancy scenarios, and RavenDB can easily handle hundreds or thousands of databases on the same instance.
 
