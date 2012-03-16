@@ -19,7 +19,13 @@ However, if you want zero downtime, you can setup a failover server which will h
 - Replace the binraies of the first and start it again.
 - Shutdown and update the secondary server.
 
-Licensing:
+## Stable file formats
+
+You don't have to do anything when you upgrade RavenDB to migrate the stored data. However, sometimes we perform changes which require changing the file format. RavenDB include support for perform those kind of migrations automatically on startup if it finds that the stored database is using an old format.
+
+Please note, however, that those migrations are only one way. If you want to move backward and a change to the file format have occurred, RavenDB will fail to start (with a detailed error message). You can move data between different versions using the [import/export tool](export-import), which works across all versions of RavenDB.
+
+## Licensing
 
 - If you have the secondary node running only for the during of the actual update, you don't need a license.
 - If you have the scondary node running constantly (hot backup), you do need a license.

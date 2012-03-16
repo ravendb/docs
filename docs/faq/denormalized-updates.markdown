@@ -1,4 +1,6 @@
-#Updating denormalized data
+# Updating denormalized data
+
+## See: [Set-based operations](../client-api/set-based-operations)
 
 Like most NoSQL solutions, RavenDB best practices favor denormalization over composition / joins for complex documents. A typical example would be storing the Artist name and id along with the Track document:
 

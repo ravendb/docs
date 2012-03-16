@@ -43,7 +43,7 @@ When reporting a bug, please include:
 * Details about your environment.
 * Details about how to reproduce this error.
 
-*Bugs that comes with a way for us to reproduce the program locally (preferably a unit test) tends to be fixed much more quickly.*
+*Bugs that comes with a way for us to reproduce the program locally (preferably a unit test) are usually fixed much more quickly.*
 
 A list of outstanding bugs can be found here: http://github.com/ravendb/ravendb/issues
 

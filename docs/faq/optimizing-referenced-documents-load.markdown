@@ -1,4 +1,4 @@
-#Optimizing referenced documents load
+# Optimizing referenced documents load
 
 One of the [design principals](http://ravendb.net/docs/theory/document-structure-design) that RavenDB adheres to is the idea that documents are independent, that all the data required to process a document is stored within the document itself.
 

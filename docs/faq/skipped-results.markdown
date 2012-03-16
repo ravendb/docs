@@ -1,4 +1,4 @@
-#What are skipped results?
+# SkippedResults
 
 When querying RavenDB, you sometimes get a result that contained skipped results. What are those? And why do we care? Let us assume that we have the following index:
 
