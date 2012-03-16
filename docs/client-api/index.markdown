@@ -40,7 +40,7 @@ By default, all POCOs are serialized in the following manner:
 
 * All public fields are serialized, non-public fields are ignored
 
-This behavior can be customized, as discussed [later in this chapter](advanced/custom-serialization).
+This behavior can be customized, as discussed [later in this chapter](./advanced/custom-serialization).
 
 ## Document IDs
 
