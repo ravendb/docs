@@ -45,7 +45,7 @@ When reporting a bug, please include:
 
 *Bugs that comes with a way for us to reproduce the program locally (preferably a unit test) are usually fixed much more quickly.*
 
-A list of outstanding bugs can be found here: http://github.com/ravendb/ravendb/issues
+A list of outstanding bugs can be found here: [http://issues.hibernatingrhinos.com/](http://issues.hibernatingrhinos.com/).
 
 ## Licensing and support
 
