@@ -1,4 +1,5 @@
 /deployment	Deployment strategies
-/bundles	Using the bundles
 /administration	Server administration
 multiple-databases.markdown	Multiple Databases
+/extending	Extending RavenDB
+/bundles	Using the bundles
