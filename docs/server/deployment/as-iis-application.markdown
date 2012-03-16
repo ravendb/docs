@@ -36,7 +36,7 @@ This usually happens when you are running RavenDB from a virtual directory. The 
  
 That will remove the WebDAV module and resolve the conflict.
 
-{NOTE Important: This modification is not to the RavenDB's web.config file, it is to the web.config of the parent application. /}
+{NOTE This modification is not to the RavenDB's web.config file, it is to the web.config of the parent application. /}
 
 ## Setting up with IIS 6
 

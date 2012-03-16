@@ -92,5 +92,3 @@ The RavenDB Client API uses several conventions to control how it works, these c
 * _GenerateDocumentKey_ - Allows you to control the generation of keys for new entities. The rules for returned values follow the Raven document key generation strategies. By default, RavenDB concatenate the type tag name with an increasing numeric id (posts/1, posts/2, post/3, etc).
 
 * _IdentityPartsSeparator_ - A string that allows you to customize part of the document key generation. By default, Raven uses "plural_entity_name/id", which some users don't like because it makes putting the document key in the URL harder in some cases. You can set this to another value (such as "-"), which would generate: "plural_entity_name-id". This is an alternative to replacing the whole document key generation process.
-
-### TBD
