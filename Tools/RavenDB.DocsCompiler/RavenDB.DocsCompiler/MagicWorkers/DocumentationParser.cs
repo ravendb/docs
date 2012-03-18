@@ -45,7 +45,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			var sb = new StringBuilder();
 			foreach (var item in folder.Items)
 			{
-				sb.AppendFormat("* [{0}]({1})", item.Title, Path.Combine(item.Trail, item.Slug));
+				sb.AppendFormat("* [{0}]({1})", item.Title, item.Slug);
 				sb.AppendLine();
 			}
 			return sb.ToString();
