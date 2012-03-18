@@ -17,7 +17,7 @@ To issue a batch-delete command you need to specify an index, and a query to be 
 
 ## The Update operation (Patching API)
 
-Performing a mass-update is exactly the same as making a mass-delete, but this time it uses the [Patching API](../partial-document-updates) to make it easy for us to define what to do with the documents matching our query:
+Performing a mass-update is exactly the same as making a mass-delete, but this time it uses the [Patching API](partial-document-updates) to make it easy for us to define what to do with the documents matching our query:
 
 {CODE setbased2@Consumer\SetBased.cs /}
 

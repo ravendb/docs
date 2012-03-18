@@ -75,7 +75,7 @@ With the defer command we can add our own commands to this call:
     			}
     
 
-Another operation supported by batching is the [PATCH command](../../../partial-document-updates).
+Another operation supported by batching is the [PATCH command](../../partial-document-updates).
 
 ## Concurrency
 
