@@ -74,7 +74,9 @@ namespace RavenDB.DocsCompiler
 				}
 			}
 
-			var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"), string.Empty);
+			var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"),
+			                                         string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug
+													 );
 			Output.SaveDocItem(new Document
 			{
 				Title = folder.Title,
