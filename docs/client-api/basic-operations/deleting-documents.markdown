@@ -28,7 +28,7 @@ This results in an HTTP communication as shown below:
 
 ## Delete by ID
 
-If you have the document's ID, and you don't want to load it just for the sake of delete it, you can either defer deleting it using the `Defer' command or doing a direct delete using the `DatabaseCommands`.
+If you have the document's ID, and you don't want to load it just for the sake of delete it, you can either defer deleting it using the `Defer` command or doing a direct delete using the `DatabaseCommands`.
 
 ### Delete by ID using the Defer command
 
