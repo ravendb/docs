@@ -11,7 +11,7 @@ namespace RavenCodeSamples.Consumer
 	{
 		public Sharding()
 		{
-			#region intro
+			#region store
 			var shards = new Dictionary<string, IDocumentStore>
 			             	{
 			             		{"Asia", new DocumentStore {Url = "http://localhost:8080"}},
@@ -19,37 +19,61 @@ namespace RavenCodeSamples.Consumer
 			             		{"America", new DocumentStore {Url = "http://localhost:8082"}},
 			             	};
 
-			var shardStrategy = new ShardStrategy
-			                    	{
-			                    		ShardAccessStrategy = new ParallelShardAccessStrategy(),
-			                    		ShardResolutionStrategy = new ShardResolutionByRegion(),
-			                    	};
+			var shardStrategy = new ShardStrategy(shards)
+				.ShardingOn<Company>(company => company.Region)
+				.ShardingOn<Invoice>(x => x.CompanyId);
 
-			using (var documentStore = new ShardedDocumentStore(shardStrategy, shards).Initialize())
+			var documentStore = new ShardedDocumentStore(shardStrategy).Initialize();
+			#endregion
+
+			#region SaveEntities
 			using (var session = documentStore.OpenSession())
 			{
-				//store 3 items in the 3 shards
-				session.Store(new Company {Name = "Company 1", Region = "Asia"});
-				session.Store(new Company {Name = "Company 2", Region = "Middle East"});
-				session.Store(new Company {Name = "Company 3", Region = "America"});
-				session.SaveChanges();
+				var asian = new Company { Name = "Company 1", Region = "Asia" };
+				session.Store(asian);
+				var middleEastern = new Company { Name = "Company 2", Region = "Middle-East" };
+				session.Store(middleEastern);
+				var american = new Company { Name = "Company 3", Region = "America" };
+				session.Store(american);
 
+				session.Store(new Invoice { CompanyId = american.Id, Amount = 3, IssuedAt = DateTime.Today.AddDays(-1) });
+				session.Store(new Invoice { CompanyId = asian.Id, Amount = 5, IssuedAt = DateTime.Today.AddDays(-1) });
+				session.Store(new Invoice { CompanyId = middleEastern.Id, Amount = 12, IssuedAt = DateTime.Today });
+				session.SaveChanges();
+			}
+			#endregion
+
+			#region Query
+			using (var session = documentStore.OpenSession())
+			{
 				//get all, should automagically retrieve from each shard
 				var allCompanies = session.Query<Company>()
-					.Customize(x => x.WaitForNonStaleResultsAsOfNow()).ToArray();
+					.Customize(x => x.WaitForNonStaleResultsAsOfNow())
+					.Where(company => company.Region == "Asia")
+					.ToArray();
 
 				foreach (var company in allCompanies)
 					Console.WriteLine(company.Name);
 			}
 			#endregion
+
+			documentStore.Dispose();
 		}
 
-		#region company
+		#region entities
 		public class Company
 		{
 			public string Id { get; set; }
 			public string Name { get; set; }
 			public string Region { get; set; }
+		}
+
+		public class Invoice
+		{
+			public string Id { get; set; }
+			public string CompanyId { get; set; }
+			public decimal Amount { get; set; }
+			public DateTime IssuedAt { get; set; }
 		}
 		#endregion
 
