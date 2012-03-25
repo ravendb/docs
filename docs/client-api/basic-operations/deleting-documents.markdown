@@ -1,4 +1,4 @@
-﻿# Deleting existing documents
+﻿# Deleting documents
 
 Once a valid reference to a document has been retrieved, the document can be deleted with a call to `Delete` in the following manner:
 
