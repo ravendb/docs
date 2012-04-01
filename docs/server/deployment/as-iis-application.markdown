@@ -9,7 +9,7 @@ RavenDB can be run as an IIS application, or from a virtual directory under an I
 3. Set the Application Pool for the IIS application you will be using to "ASP.Net v4.0", or create a new Application Pool set to .NET 4.0 Integrated Pipeline.
 4. Set port and host if needed.
 5. Make sure that the user you set for the website has write access to the physical database location.
-6. Make sure to disable "Overlapped Recycle" in App Pool Advanced Settings (if you won't do that when the IIS will try to load a new data the "data" file of RavenDB will still be in use and the IIS would not be able to update the site correctly). 
+6. Make sure to disable "Overlapped Recycle" in App Pool Advanced Settings.  (Otherwise, you may have two concurrent RavenDB instances competing for the same data directory, which is going to generate failures).
 
 ## Setting up with IIS 7.5
 
