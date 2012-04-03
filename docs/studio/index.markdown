@@ -12,14 +12,15 @@ At the top left of the page there are the navigation tabs, a link for each of th
 
 ![](Images/studio_base_1.PNG)  
 
-<a href="Images/studio_base_1.PNG" rel="lightbox" title="Testing">image Testing</a>
+<a href="Images/studio_base_1.PNG" rel="lightbox" title="Testing">
+<img width="100" height="100" alt="" src="Images/studio_base_1.PNG">
+</a>
 
 Some database-wide statistics are shown at the bottom of the screen:
 
 ![](Images/studio_base_3.PNG)
 
 There you will also find the Licensing status and the build number:
-
 ![](Images/studio_base_4.PNG)
 
 ## The Summary Screen
