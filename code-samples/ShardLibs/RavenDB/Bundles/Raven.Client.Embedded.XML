@@ -312,12 +312,6 @@
         </member>
         <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.ForDefaultDatabase">
             <summary>
-            Create a new instance of <see cref="T:Raven.Client.Connection.IDatabaseCommands"/> that will interacts
-            with the default database
-            </summary>
-        </member>
-        <member name="M:Raven.Client.Embedded.EmbeddedDatabaseCommands.GetRootDatabase">
-            <summary>
             Create a new instance of <see cref="T:Raven.Client.Connection.IDatabaseCommands"/> that will interact
             with the root database. Useful if the database has works against a tenant database.
             </summary>

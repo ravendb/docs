@@ -1391,6 +1391,11 @@
             this is useful if you want to have repeatable random queries
             </summary>
         </member>
+        <member name="M:Raven.Client.IDocumentQueryCustomization.TransformResults(System.Func{Raven.Abstractions.Data.IndexQuery,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.Object}})">
+            <summary>
+            Execute the transfromation function on the results of this query.
+            </summary>
+        </member>
         <member name="T:Raven.Client.Connection.IRavenQueryInspector">
             <summary>
             Provide access to the underlying <see cref="T:Raven.Client.IDocumentQuery`1"/>
@@ -2662,6 +2667,12 @@
               This is only valid on dynamic indexes queries
             </remarks>
         </member>
+        <member name="M:Raven.Client.IDocumentQueryBase`2.Intersect">
+            <summary>
+            Partition the query so we can intersect different parts of the query
+            across different index entries.
+            </summary>
+        </member>
         <member name="M:Raven.Client.IDocumentQueryBase`2.AfterQueryExecuted(System.Action{Raven.Abstractions.Data.QueryResult})">
             <summary>
             Callback to get the results of the query
@@ -3023,6 +3034,12 @@
             Simplified method for closing a clause within the query
             </summary>
             <returns></returns>
+        </member>
+        <member name="M:Raven.Client.Document.AsyncDocumentQuery`1.Raven#Client#IDocumentQueryBase{T@Raven#Client#IAsyncDocumentQuery{T}}#Intersect">
+            <summary>
+            Partition the query so we can intersect different parts of the query
+            across different index entries.
+            </summary>
         </member>
         <member name="M:Raven.Client.Document.AsyncDocumentQuery`1.Raven#Client#IDocumentQueryBase{T@Raven#Client#IAsyncDocumentQuery{T}}#GroupBy(Raven.Abstractions.Data.AggregationOperation,System.String[])">
             <summary>
@@ -3400,6 +3417,11 @@
             <param name="overwrite">Should the index be overwritten if it already exists.</param>
             <returns></returns>
         </member>
+        <member name="T:Raven.Client.Extensions.MultiDatabase">
+            <summary>
+             Methods to create mutli tenants databases
+            </summary>
+        </member>
         <member name="T:Raven.Client.Extensions.ExceptionExtensions">
             <summary>
              Extension methods to handle common scenarios
@@ -3670,6 +3692,12 @@
         <member name="M:Raven.Client.Linq.LinqExtensions.As``1(System.Linq.IQueryable)">
             <summary>
             Project using a different type
+            </summary>
+        </member>
+        <member name="M:Raven.Client.Linq.LinqExtensions.Intersect``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Partition the query so we can intersect different parts of the query
+            across different index entries.
             </summary>
         </member>
         <member name="M:Raven.Client.Linq.LinqExtensions.AsProjection``1(System.Linq.IQueryable)">
@@ -4122,7 +4150,7 @@
         <member name="M:Raven.Client.Silverlight.Connection.Async.AsyncServerClient.ForDefaultDatabase">
             <summary>
             Create a new instance of <see cref="T:Raven.Client.Connection.Async.IAsyncDatabaseCommands"/> that will interacts
-            with the default database
+            with the default database. Useful if the database has works against a tenant database.
             </summary>
         </member>
         <member name="M:Raven.Client.Silverlight.Connection.Async.AsyncServerClient.With(System.Net.ICredentials)">
@@ -4130,12 +4158,6 @@
             Returns a new <see cref="T:Raven.Client.Connection.Async.IAsyncDatabaseCommands"/> using the specified credentials
             </summary>
             <param name="credentialsForSession">The credentials for session.</param>
-        </member>
-        <member name="M:Raven.Client.Silverlight.Connection.Async.AsyncServerClient.GetRootDatabase">
-            <summary>
-            Create a new instance of <see cref="T:Raven.Client.Connection.Async.IAsyncDatabaseCommands"/> that will interact
-            with the root database. Useful if the database has works against a tenant database.
-            </summary>
         </member>
         <member name="M:Raven.Client.Silverlight.Connection.Async.AsyncServerClient.GetAsync(System.String)">
             <summary>
@@ -8891,6 +8913,18 @@
             This can be used to determine whatever the results can be cached.
             </summary>
         </member>
+        <member name="P:Raven.Abstractions.Data.QueryResult.ResultEtag">
+            <summary>
+            The ETag value for this index current state, which include what we docs we indexed,
+            what document were deleted, etc.
+            </summary>
+        </member>
+        <member name="P:Raven.Abstractions.Data.QueryResult.NonAuthoritativeInformation">
+            <summary>
+            Gets or sets a value indicating whether any of the documents returned by this query
+            are non authoritative (modified by uncommitted transaction).
+            </summary>
+        </member>
         <member name="T:Raven.Abstractions.Indexing.SortOptions">
             <summary>
             The sort options to use for a particular field
@@ -9099,7 +9133,7 @@
             Escapes Lucene operators and quotes phrases
             </summary>
         </member>
-        <member name="M:Raven.Client.Connection.RavenQuery.Escape(System.String,System.Boolean)">
+        <member name="M:Raven.Client.Connection.RavenQuery.Escape(System.String,System.Boolean,System.Boolean)">
             <summary>
             Escapes Lucene operators and quotes phrases
             </summary>
@@ -10147,6 +10181,11 @@
              Get the CLR type name to be stored in the entity metadata
             </summary>
         </member>
+        <member name="M:Raven.Client.Document.DocumentConvention.Clone">
+            <summary>
+            Clone the current conventions to a new instance
+            </summary>
+        </member>
         <member name="P:Raven.Client.Document.DocumentConvention.FailoverBehavior">
             <summary>
             How should we behave in a replicated environment when we can't 
@@ -10285,6 +10324,12 @@
         <member name="P:Raven.Client.Document.DocumentConvention.EnlistInDistributedTransactions">
             <summary>
              Whatever or not RavenDB will automatically enlist in distributed transactions
+            </summary>
+        </member>
+        <member name="P:Raven.Client.Document.DocumentConvention.ApplyReduceFunction">
+            <summary>
+            This is called in order to ensure that reduce function in a sharded environment is run 
+            over the merged results
             </summary>
         </member>
         <member name="T:Raven.Client.Document.ConsistencyOptions">
@@ -11515,6 +11560,12 @@
         <member name="P:Raven.Client.Linq.RavenQueryStatistics.IndexEtag">
             <summary>
             The etag of the queried index
+            </summary>
+        </member>
+        <member name="P:Raven.Client.Linq.RavenQueryStatistics.NonAuthoritativeInformation">
+            <summary>
+            Gets or sets a value indicating whether any of the documents returned by this query
+            are non authoritative (modified by uncommitted transaction).
             </summary>
         </member>
         <member name="T:Raven.Client.StoredEntityEventArgs">

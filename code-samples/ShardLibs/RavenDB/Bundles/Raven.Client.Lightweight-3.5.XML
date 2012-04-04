@@ -688,7 +688,7 @@
             Escapes Lucene operators and quotes phrases
             </summary>
         </member>
-        <member name="M:Raven.Client.Connection.RavenQuery.Escape(System.String,System.Boolean)">
+        <member name="M:Raven.Client.Connection.RavenQuery.Escape(System.String,System.Boolean,System.Boolean)">
             <summary>
             Escapes Lucene operators and quotes phrases
             </summary>
@@ -1423,6 +1423,11 @@
             </summary>
             <param name="credentialsForSession">The credentials for session.</param>
         </member>
+        <member name="M:Raven.Client.IDocumentStore.ExecuteIndex(Raven.Client.Indexes.AbstractIndexCreationTask)">
+            <summary>
+            Executes the index creation.
+            </summary>
+        </member>
         <member name="M:Raven.Client.IDocumentStore.GetLastWrittenEtag">
             <summary>
              Gets the etag of the last document written by any session belonging to this 
@@ -1461,6 +1466,11 @@
         <member name="P:Raven.Client.IDocumentStore.Url">
             <summary>
             Gets the URL.
+            </summary>
+        </member>
+        <member name="M:Raven.Client.DocumentStoreBase.ExecuteIndex(Raven.Client.Indexes.AbstractIndexCreationTask)">
+            <summary>
+            Executes the index creation.
             </summary>
         </member>
         <member name="M:Raven.Client.DocumentStoreBase.GetLastWrittenEtag">
@@ -1631,6 +1641,11 @@
              Get the CLR type name to be stored in the entity metadata
             </summary>
         </member>
+        <member name="M:Raven.Client.Document.DocumentConvention.Clone">
+            <summary>
+            Clone the current conventions to a new instance
+            </summary>
+        </member>
         <member name="P:Raven.Client.Document.DocumentConvention.FailoverBehavior">
             <summary>
             How should we behave in a replicated environment when we can't 
@@ -1765,6 +1780,12 @@
              Whatever or not RavenDB will automatically enlist in distributed transactions
             </summary>
         </member>
+        <member name="P:Raven.Client.Document.DocumentConvention.ApplyReduceFunction">
+            <summary>
+            This is called in order to ensure that reduce function in a sharded environment is run 
+            over the merged results
+            </summary>
+        </member>
         <member name="T:Raven.Client.Document.ConsistencyOptions">
             <summary>
             The consistency options for all queries, fore more details about the consistency options, see:
@@ -1887,6 +1908,11 @@
             <summary>
             Order the search results randomly using the specified seed
             this is useful if you want to have repeatable random queries
+            </summary>
+        </member>
+        <member name="M:Raven.Client.IDocumentQueryCustomization.TransformResults(System.Func{Raven.Abstractions.Data.IndexQuery,System.Collections.Generic.IEnumerable{System.Object},System.Collections.Generic.IEnumerable{System.Object}})">
+            <summary>
+            Execute the transfromation function on the results of this query.
             </summary>
         </member>
         <member name="T:Raven.Client.Document.IAbstractDocumentQuery`1">
@@ -3140,6 +3166,12 @@
               This is only valid on dynamic indexes queries
             </remarks>
         </member>
+        <member name="M:Raven.Client.IDocumentQueryBase`2.Intersect">
+            <summary>
+            Partition the query so we can intersect different parts of the query
+            across different index entries.
+            </summary>
+        </member>
         <member name="M:Raven.Client.IDocumentQueryBase`2.AfterQueryExecuted(System.Action{Raven.Abstractions.Data.QueryResult})">
             <summary>
             Callback to get the results of the query
@@ -3259,6 +3291,12 @@
              <remarks>
              This is only valid on dynamic indexes queries
              </remarks>
+        </member>
+        <member name="M:Raven.Client.Document.DocumentQuery`1.Raven#Client#IDocumentQueryBase{T@Raven#Client#IDocumentQuery{T}}#Intersect">
+            <summary>
+            Partition the query so we can intersect different parts of the query
+            across different index entries.
+            </summary>
         </member>
         <member name="M:Raven.Client.Document.DocumentQuery`1.Raven#Client#IDocumentQueryBase{T@Raven#Client#IDocumentQuery{T}}#Statistics(Raven.Client.Linq.RavenQueryStatistics@)">
             <summary>
@@ -5139,6 +5177,11 @@
             <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
             <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
         </member>
+        <member name="T:Raven.Client.Extensions.MultiDatabase">
+            <summary>
+             Methods to create mutli tenants databases
+            </summary>
+        </member>
         <member name="T:Raven.Client.Extensions.MultiTenancyExtensions">
             <summary>
              Extension methods to create mutli tenants databases
@@ -5700,6 +5743,12 @@
             Project using a different type
             </summary>
         </member>
+        <member name="M:Raven.Client.Linq.LinqExtensions.Intersect``1(System.Linq.IQueryable{``0})">
+            <summary>
+            Partition the query so we can intersect different parts of the query
+            across different index entries.
+            </summary>
+        </member>
         <member name="M:Raven.Client.Linq.LinqExtensions.AsProjection``1(System.Linq.IQueryable)">
             <summary>
             Project using a different type
@@ -6095,6 +6144,34 @@
             The etag of the queried index
             </summary>
         </member>
+        <member name="P:Raven.Client.Linq.RavenQueryStatistics.NonAuthoritativeInformation">
+            <summary>
+            Gets or sets a value indicating whether any of the documents returned by this query
+            are non authoritative (modified by uncommitted transaction).
+            </summary>
+        </member>
+        <member name="T:Raven.Client.Shard.IShardResolutionStrategy">
+            <summary>
+            Implementers of this interface provide a way to decide which shards will be queried
+            for a specified operation
+            </summary>
+        </member>
+        <member name="M:Raven.Client.Shard.IShardResolutionStrategy.GenerateShardIdFor(System.Object)">
+            <summary>
+             Generate a shard id for the specified entity
+             </summary>
+        </member>
+        <member name="M:Raven.Client.Shard.IShardResolutionStrategy.MetadataShardIdFor(System.Object)">
+            <summary>
+             The shard id for the server that contains the metadata (such as the HiLo documents)
+             for the given entity
+             </summary>
+        </member>
+        <member name="M:Raven.Client.Shard.IShardResolutionStrategy.PotentialShardsFor(Raven.Client.Shard.ShardRequestData)">
+            <summary>
+             Selects the shard ids appropriate for the specified data.
+             </summary><returns>Return a list of shards ids that will be search. Returning null means search all shards.</returns>
+        </member>
         <member name="T:Raven.Client.Shard.ShardedDocumentSession">
             <summary>
             Implements Unit of Work for accessing a set of sharded RavenDB servers
@@ -6159,12 +6236,11 @@
             sharding without really thinking about this too much
             </summary>
         </member>
-        <member name="M:Raven.Client.Shard.ShardedDocumentStore.#ctor(Raven.Client.Shard.ShardStrategy,System.Collections.Generic.IDictionary{System.String,Raven.Client.IDocumentStore})">
+        <member name="M:Raven.Client.Shard.ShardedDocumentStore.#ctor(Raven.Client.Shard.ShardStrategy)">
             <summary>
             Initializes a new instance of the <see cref="T:Raven.Client.Shard.ShardedDocumentStore"/> class.
             </summary>
             <param name="shardStrategy">The shard strategy.</param>
-            <param name="shards">The shards.</param>
         </member>
         <member name="M:Raven.Client.Shard.ShardedDocumentStore.Dispose">
             <summary>
@@ -6226,6 +6302,11 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:Raven.Client.Shard.ShardedDocumentStore.ExecuteIndex(Raven.Client.Indexes.AbstractIndexCreationTask)">
+            <summary>
+            Executes the index creation against each of the shards.
+            </summary>
+        </member>
         <member name="P:Raven.Client.Shard.ShardedDocumentStore.SharedOperationsHeaders">
             <summary>
             Gets the shared operations headers.
@@ -6284,28 +6365,21 @@
             <param name="operation">The operation.</param>
             <returns></returns>
         </member>
-        <member name="T:Raven.Client.Shard.IShardResolutionStrategy">
+        <member name="M:Raven.Client.Shard.DefaultShardResolutionStrategy.GenerateShardIdFor(System.Object)">
             <summary>
-            Implementers of this interface provide a way to decide which shards will be queried
-            for a specified operation
-            </summary>
+             Generate a shard id for the specified entity
+             </summary>
         </member>
-        <member name="M:Raven.Client.Shard.IShardResolutionStrategy.GenerateShardIdFor(System.Object)">
+        <member name="M:Raven.Client.Shard.DefaultShardResolutionStrategy.MetadataShardIdFor(System.Object)">
             <summary>
-            Generate a shard id for the specified entity
-            </summary>
+             The shard id for the server that contains the metadata (such as the HiLo documents)
+             for the given entity
+             </summary>
         </member>
-        <member name="M:Raven.Client.Shard.IShardResolutionStrategy.MetadataShardIdFor(System.Object)">
+        <member name="M:Raven.Client.Shard.DefaultShardResolutionStrategy.PotentialShardsFor(Raven.Client.Shard.ShardRequestData)">
             <summary>
-            The shard id for the server that contains the metadata (such as the HiLo documents)
-            for the given entity
-            </summary>
-        </member>
-        <member name="M:Raven.Client.Shard.IShardResolutionStrategy.PotentialShardsFor(Raven.Client.Shard.ShardRequestData)">
-            <summary>
-            Selects the shard ids appropriate for the specified data.
-            </summary>
-            <returns>Return a list of shards ids that will be search. Returning null means search all shards.</returns>
+             Selects the shard ids appropriate for the specified data.
+             </summary><returns>Return a list of shards ids that will be search. Returning null means search all shards.</returns>
         </member>
         <member name="T:Raven.Client.Shard.ShardRequestData">
             <summary>
@@ -6353,6 +6427,11 @@
         <member name="P:Raven.Client.Shard.ShardStrategy.ShardAccessStrategy">
             <summary>
             Gets or sets the shard access strategy.
+            </summary>
+        </member>
+        <member name="P:Raven.Client.Shard.ShardStrategy.ModifyDocumentId">
+            <summary>
+            Get or sets the modification for the document id for sharding
             </summary>
         </member>
         <member name="T:Raven.Client.StoredEntityEventArgs">

@@ -8,34 +8,46 @@ We geo locate the shards near the location where they are used, so companies in 
 
 RavenDB contains builtin support for sharding. It'll handle all aspects of sharding for you, leaving you with the sole task of defining the shard function (how to actually split the documents among multiple shards).
 
-Here is the `company` entity, which has the Region peroperty.
+Here are some entities that can be splitted to a different shards based on their Region: the `Company` and `Invoice` entities.
 
-{CODE company@Consumer\Sharding.cs /}
+{CODE entities@Consumer\Sharding.cs /}
 
 In order to achieve this, you need to use the ShardedDocumentStore, instead of the usual DocumentStore. Except for the initialization phase, it behaves just like the standard DocumentStore, and you have access to all of the usual API and features of RavenDB.
 
-In order to create a ShardedDocumentStore you should supply two parameters: a instance of ShardStrategy and a dictionary with the shards to operate on. The keys and values in the dictionary are the shard ID and a DocumentStore instance that point out to that shard.
+In order to create a ShardedDocumentStore you should supply an instance of ShardStrategy which in turn takes a dictionary with the shards to operate on. The keys and values in the dictionary are the shard ID and a DocumentStore instance that point out to that shard.
 
 The ShardStrategy tells to the ShardedDocumentStore how to interact with the shards. This allows you to customize different aspects of the sharding behavior, giving you the option of fine grained control over how RavenDB handles your data:
 
-* ShardResolutionStrategy: an instance that implements the `IShardResolutionStrategy` interface, which decides which shards should be contact in order to complete an database operation.
 * ShardAccessStrategy: an instance that implements the `IShardAccessStrategy` interface, which decides how to contact them. There are already built-in implementations of this interface which are `SequentialShardAccessStrategy` and `ParallelShardAccessStrategy` which let you access the shards in sequential or parallel manner respectively. The default value for this is `SequentialShardAccessStrategy`.
+* ShardResolutionStrategy: an instance that implements the `IShardResolutionStrategy` interface, which decides which shards should be contact in order to complete an database operation. The default implementation for this is the `DefaultShardResolutionStrategy` class, which let you to start with sharding fast without the need to implement `IShardResolutionStrategy` by yourself.
 * MergeQueryResults: a delegate that let you decide how to marge query result from a few shards. There is a default implementation for this which merges the result as they came back and apply minimal sorting behavior.
+* ModifyDocumentId: let you store the shard id for a document in the document it. The default implementation is: `(convention, shardId, documentId) => shardId + convention.IdentityPartsSeparator + documentId`.
 
-So in order to use sharding, you must implement `IShardResolutionStrategy`, which tells RavenDB what your sharding function is like, which has the following methods:
+So in order to use sharding, you can just use the `ShardStrategy` with its default behaviour:
+
+{CODE store@Consumer\Sharding.cs /}
+
+For a complex sharding environments you would probably want to implement the `IShardResolutionStrategy` yourself and set the `ShardResolutionStrategy` property in the `ShardStrategy` to hold your custome implementation instead of the `DefaultShardResolutionStrategy`. The `IShardResolutionStrategy` has the following methods that need to be implemented:
 
 - GenerateShardIdFor: here you can decide which shard should be used in order to store a specific entity.
 - MetadataShardIdFor: here you can decide which shard should be used in order to store the metadata documents (like the HiLo documents) for a specific entity.
 - PotentialShardsFor: here you can decide which shards should be contacted in order to complete a query operation. You can decide this based on the available parameters which can be the DocumentKey, EntityType and the Query.
- 
-Here is an example how to use the ShardedDocumentStore:
 
-{CODE intro@Consumer\Sharding.cs /}
+By default, if you don't set the `ShardResolutionStrategy` property on the `ShardStrategy` you'll use the `DefaultShardResolutionStrategy`. 
 
-In the above example we're storing each of the companies on a different shard, and then querying the companies from all of the shards.
+If you're using the `DefaultShardResolutionStrategy` you can just use the `ShardingOn` method on the `ShardStrategy` object, in order to instruct the `DefaultShardResolutionStrategy` what is property holds the shards id information for a specify entity.
+In the above code you can see that the `company` holds the shard ID in the Region property and the `invoce` holds the shard id in the CompanyId property. The CompanyId holds the shard id because of the `ModifyDocumentId` convention of the `ShardStrategy`.
 
-Let see the implementation of `IShardResolutionStrategy`:
+Now we can store some data which will be splitted across different shards:
 
-{CODE IShardResolutionStrategy@Consumer\Sharding.cs /}
+{CODE SaveEntities@Consumer\Sharding.cs /}
 
-Sharding is a great feature to have and with RavenDB you get this supported natively and easily.
+In the above example we're storing each of the companies on a different shard, and each of the invoices in the same shard of their dompany's shard.
+
+Now we can do operation like `Query`, `Load` or `LuceneQuery`, and the actuall shards that will be contacted in order to complete that opertion will be depnad on the `IShardResolutionStrategy` implementation.
+
+{CODE Query@Consumer\Sharding.cs /}
+
+If you're using the `DefaultShardResolutionStrategy` than in this case it'll make a request just to the "Asia" shard.
+
+In summary, sharding is a great feature to have and with RavenDB you get this supported natively and easily.

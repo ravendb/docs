@@ -1,4 +1,4 @@
-#Commands on multipule docuemnts
+#Commands on multiple documents
 
 ##Get<a id="get"></a>
 
