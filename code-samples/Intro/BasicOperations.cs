@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Transactions;
+using Raven.Abstractions.Commands;
 using Raven.Client;
 using Raven.Client.Linq;
 using System.Linq;
@@ -104,9 +105,11 @@ namespace RavenCodeSamples.Intro
 					#endregion
 
 					#region deleting_document_2
-
 					session.Advanced.DatabaseCommands.Delete("posts/1234", null);
+					#endregion
 
+					#region deleting_document_using_defer
+					session.Advanced.Defer(new DeleteCommandData {Key = "posts/1234"});
 					#endregion
 				}
 
