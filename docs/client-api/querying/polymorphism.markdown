@@ -45,13 +45,13 @@ The easiest way to do this is by writing a multi-map index like this one:
 And query it like this:
 
 {CODE-START:csharp /}
-var results = session.Advanced.LuceneQuery<object>("IndexName").WhereEquals(";
+var results = session.Advanced.LuceneQuery<object>("AnimalsIndex").WhereEquals("Name", "Mitzy");
 {CODE-END/}
 
 You can also use the Linq provider if your objects implement an interface, IAnimal for instance:
 
 {CODE-START:csharp /}
-session.Query<IAnimal>("IndexName").Where(x => x.Name == "Mitzy");
+session.Query<IAnimal>("AnimalsIndex").Where(x => x.Name == "Mitzy");
 {CODE-END/}
 
 ## Other ways
