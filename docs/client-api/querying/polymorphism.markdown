@@ -10,17 +10,17 @@ If we saved a Cat, it would have an Entity Name of "Cats" and if we saved a doc,
 
 If we wanted to index cats by name, we would write:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     from cat in docs.Cats
     select new { cat.Name }
-[/code]
+{CODE-END/}
 
 And for dogs:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     from dog in docs.Dogs
     select new { dog.Name }
-[/code]
+{CODE-END/}
 
 This works, but each index would only give us results for the animal it has been defined on. But what if we wanted to query across all animals?
 
@@ -28,7 +28,7 @@ This works, but each index would only give us results for the animal it has been
 
 The easiest way to do this is by writing a multi-map index like this one:
 
-[code lang=csharp]
+{CODE-START:csharp /}
 	public class AnimalsIndex : AbstractMultiMapIndexCreationTask
 	{
 		public AnimalsIndex()
@@ -40,25 +40,25 @@ The easiest way to do this is by writing a multi-map index like this one:
 								select new { d.Name });
 		}
 	}
-[/code]
+{CODE-END/}
 
 And query it like this:
 
-[code lang=csharp]
+{CODE-START:csharp /}
 var results = session.Advanced.LuceneQuery<object>("IndexName").WhereEquals(";
-[/code]
+{CODE-END/}
 
 You can also use the Linq provider if your objects implement an interface, IAnimal for instance:
 
-[code lang=csharp]
+{CODE-START:csharp /}
 session.Query<IAnimal>("IndexName").Where(x => x.Name == "Mitzy");
-[/code]
+{CODE-END/}
 
 ## Other ways
 
 Another option would be to modify the way we generate the Entity-Name for subclasses of Animal, like so:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     var documentStore = new DocumentStore()
     {
         Conventions =
@@ -71,22 +71,22 @@ Another option would be to modify the way we generate the Entity-Name for subcla
                                     }
             }
     };
-[/code]
+{CODE-END/}
 
 Using this method, we can now index on all animals using:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     from animal in docs.Animals
     select new { animal.Name }
-[/code]
+{CODE-END/}
 
 But what happen when you don't want to modify the entity name of an entity?
 
 You can create a polymorphic index using:
 
-[code lang=csharp]
+{CODE-START:csharp /}
      from animal in docs.WhereEntityIs("Cats", "Dogs")
      select new { animal.Name }
-[/code]
+{CODE-END/}
 
 That would generate an index that would match both Cats and Dogs.

@@ -6,7 +6,7 @@ RavenDB stores document in JSON format, which make it very flexible, but also ma
 
 That modification happens entirely at the [JSON.Net](http://json.codeplex.com/) layer, which is responsible for serializing and deserializing documents. The problem is when you have a model such as this:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     public class Sale
     {
        public Sale()
@@ -31,11 +31,11 @@ That modification happens entirely at the [JSON.Net](http://json.codeplex.com/) 
     {
        public string DiscountText { get; set; }
     }
-[/code]
+{CODE-END/}
 
 And you want to store the following data:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     using (var session = documentStore.OpenSession())
     {
         var sale = new Sale();
@@ -44,12 +44,12 @@ And you want to store the following data:
        session.Store(sale);
        session.SaveChanges();
     }
-[/code]
+{CODE-END/}
 
 With the default JSON.Net behavior, you can serialize this object graph, but you can't deserialize it, because there isn't enough information in the JSON to do so.
 
 RavenDB gives you the following extension point to handle that:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     documentStore.Conventions.CustomizeSerializer = serializer => serializer.TypeNameHandling = TypeNameHandling.All;
-[/code]
+{CODE-END/}

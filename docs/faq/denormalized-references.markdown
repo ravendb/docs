@@ -22,7 +22,7 @@ In other words, we need to hold in the Order class what we call a denormalized r
 
 The following shows how we can do this easily using code. First, the model:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     public interface INamedDocument
     {
         string Id { get; set; }
@@ -41,11 +41,11 @@ The following shows how we can do this easily using code. First, the model:
         public string Name { get; set; }
         public DenormalizedReference<Customer> Customer { get;set;}
     }
-[/code]
+{CODE-END/}
 
 Note that the Customer property on the Order is a DenormalizedReference of T. This class looks like this:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     public class DenormalizedReference<T> where T : INamedDocument
     {
         public string Id { get; set; }
@@ -60,18 +60,18 @@ Note that the Customer property on the Order is a DenormalizedReference of T. Th
             }
         }
     }
-[/code]
+{CODE-END/}
 
 This is pretty simple, except that we use something that you might not have seen before, implicit operators. This is just a C# language feature that tells the compiler that whenever it sees a expression of type T passed where the expected type is DenormalizedReference<T>, the implicit operator will be called to convert it.
 
 This allows the following code:
 
-[code lang=csharp]
+{CODE-START:csharp /}
     Customer customer = GetCurrentCustomer();
     var order = new Order
     {
        Customer = customer // implicit operator called here
     }
-[/code]
+{CODE-END/}
 
 The result is a more natural approach for working with the denormalized reference.
