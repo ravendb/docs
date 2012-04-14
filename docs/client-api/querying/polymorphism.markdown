@@ -6,7 +6,7 @@ For example, let us assume that we have the following inheritance hierarchy:
 
 ![Figure 1: Polymorphic indexes](images/polymorphic_indexes_faq.png)
 
-If we saved a Cat, it would have an Entity Name of "Cats" and if we saved a doc, it would have an Entity Name of "Dogs".
+If we saved a `Cat`, it would have an Entity-Name of "Cats" and if we saved a `Dog`, it would have an Entity-Name of "Dogs".
 
 If we wanted to index cats by name, we would write:
 
