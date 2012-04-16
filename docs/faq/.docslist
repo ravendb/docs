@@ -3,7 +3,6 @@ unique-constraints.markdown	Creating unique constraints
 slow-response-times.markdown	Resolving slow response times
 skipped-results.markdown	What are skipped results?
 polymorphism.markdown	Polymorphism in RavenDB
-polymorphic-indexes.markdown	Polymorphic indexes
 lucene-queries-examples.markdown	Lucene queries example
 low-memory-footprint.markdown	Reducing RavenDB memory footprint
 joins.markdown	Using joins in RavenDB
