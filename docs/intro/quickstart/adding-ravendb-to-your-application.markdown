@@ -10,31 +10,11 @@ If you are not sure what to choose, go with the RavenDB Client. Only use Embedde
 
 {NOTE RavenDB Embedded can't run on the Client Profile. /}
 
-Each of those can be added to your project by either using **nuget** or extracting the contents of a build package. In this short tutorial we will show you how to do each.
+Each of those can be added to your project by either using **nuget** or extracting the contents of a build package.
 
 ## Installing using nuget
 
-### What is nuget?
-
-From the nuget website:
-
-<blockquote>
-NuGet is a Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects that use the .NET Framework. When you add a library or tool, NuGet copies files to your solution and automatically makes whatever changes are needed in your project, such as adding references and changing your app.config or web.config file. When you remove a library, NuGet removes files and reverses whatever changes it made in your project so that no clutter is left.
-</blockquote>
-
-You can find more on how to start using nuget [in their website](http://nuget.codeplex.com/documentation?title=Getting%20Started).
-
-### RavenDB on nuget
-
-We have 3 packages on nuget: RavenDB, RavenDB-Client and RavenDB-Embedded.
-
-RavenDB package includes both the client API and the server while that RavenDB-Client includes the client API only. RavenDB-Embedded includes the [embedded](http://ravendb.net/docs/server/deployment/embedded) version of RavenDB.
-
-You can install a nuget package either by searching one of the packages in the built-in UI of Visual Studio, choose a package and click Install, or by using the Package Manager Console Install-Package command with the package name, like `Install-Package RavenDB` to install the RavenDB package or `Install-Package RavenDB-Embedded` to install the RavenDB-Embedded package for example.
-
-Once you do that, nuget will copy all the required files, and add references and dependencies automatically to your project. Now you are ready to start using RavenDB from your application.
-
-{INFO You can also add an unstable version of RavenDB through nuget by adding the `-Pre` flag, for example `Install-Package RavenDB -Pre`. Make sure to use the latest nuget version for this to work correctly. /}
+You can consume RavenDB through NuGet. Follow [this](http://ravendb.net/docs/intro/quickstart/adding-ravendb-through-nuget) article for instructions how to do that.
 
 ## Manually adding RavenDB using the build package
 
