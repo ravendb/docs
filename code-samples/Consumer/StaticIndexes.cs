@@ -76,6 +76,8 @@ namespace RavenCodeSamples.Consumer
 				}
 
 				#region static_indexes2
+				
+				
 				// Create an index where we search based on a post title
 				documentStore.DatabaseCommands.PutIndex("BlogPosts/ByTitles",
 														new IndexDefinitionBuilder<BlogPost>
@@ -83,6 +85,8 @@ namespace RavenCodeSamples.Consumer
 																Map = posts => from post in posts
 																			   select new { post.Title }
 															});
+															
+															
 				#endregion
 
 				#region static_indexes3
