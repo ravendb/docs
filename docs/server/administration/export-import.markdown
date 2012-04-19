@@ -1,4 +1,4 @@
-﻿# Exporting and Importing data
+# Exporting and Importing data
 
 In order to export or import data from a RavenDB server, you can use the Raven.Smuggler utility.
 
@@ -25,6 +25,25 @@ This command will import all the indexes, documents and attachments from the fil
 {NOTE This will _overwrite_ any existing document on the local instance. /}
 
 You can continue using that RavenDB instance while data is being imported to it.
+
+##Incremental Export and Import
+With the incremental export operation we can use in order to backup the database incrementally, on each export, we will only take the export the documents create or updated
+since the last export.
+
+To export data with incremental we can use 2 options.  
+If it is the fisrt run and the folder does not exist yet use (you can continue to use this command every time):
+
+    Raven.Smuggler out http://localhost:8080 folder_location --incremental
+
+If you ran the command before or you created the folder you can use:
+
+    Raven.Smuggler out http://localhost:8080 folder_location
+
+
+In order to import date that was exported with incemental operation, you can use either of the following:
+
+    1) Raven.Smuggler in http://localhost:8080 folder_location --incremental
+    2) Raven.Smuggler in http://localhost:8080 folder_location
 
 ## Command line options
 
