@@ -34,7 +34,7 @@ namespace RavenCodeSamples.Consumer
 				{
 					#region spatial2
 					var matchingResturants =
-						session.Advanced.LuceneQuery<Restaurant>("Restaurants/ByRatingAndLocaton")
+						session.Advanced.LuceneQuery<Restaurant>("Restaurants/ByRatingAndLocation")
 							.WhereGreaterThanOrEqual("Rating", 4)
 							.WithinRadiusOf(radius: 5, latitude: 38.9103000, longitude: -77.3942)
 							.ToList();
