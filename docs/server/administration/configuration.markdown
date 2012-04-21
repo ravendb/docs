@@ -107,7 +107,7 @@ Time (in milliseconds) the index has to be queried at least once in order for it
     Determine the value of the Access-Control-Allow-Origin header sent by the server  
     _Allowed values:_ null (don't send the header), *, http://example.org  
 
-* **Raven/AnonymousUserAccessMode**  
+* **Raven/AnonymousAccess**  
     Defines which operations are allowed for anonymous users  
     _Allowed values:_ All, Get, None  
     _Default:_ Get  
