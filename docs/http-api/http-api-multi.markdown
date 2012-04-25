@@ -1,26 +1,31 @@
-#Commands on multiple documents
+# Commands on multiple documents
 
-##Get<a id="get"></a>
+## GET
 
 We can address documents directly by using their key (in the following example, the key is 'users/ayende'):
 
+{CODE-START:json /}
     > curl http://localhost:8080/docs/users/ayende
 
     {
       "name": "ayende"
     }
+{CODE-END /}
 
 But while that is useful, there are often scenarios where we want to get more than a single document. In order to avoid the common SELECT N+1 issues, RavenDB supports the ability to get multiple documents in a single remote call.
  
 We load the database with the following two documents:
 
+{CODE-START:json /}
      > curl -X PUT http://localhost:8080/docs/users/ayende -d "{ name: 'ayende'}"
     {"Key":"users/ayende","ETag":"7f9cd674-4c6f-11df-8ec2-001fd08ec235"}
     > curl -X PUT http://localhost:8080/docs/users/oren -d "{ name: 'oren'}"
     {"Key":"users/oren","ETag":"7f9cd675-4c6f-11df-8ec2-001fd08ec235"}
+{CODE-END /}
 
 And now, in order to get them both in a single query, we use:
 
+{CODE-START:json /}
     > curl -X POST http://localhost:8080/queries -d "['users/ayende','users/oren']"
     [
        {
@@ -40,11 +45,13 @@ And now, in order to get them both in a single query, we use:
                  }
        }
     ]
+{CODE-END /}
 
 More formally, we POST a request to '/queries', with the content of a JSON array of document ids. The response for such a request is a JSON array of documents, include the document metadata.
 
 Important: If you request a non existing key, the request is ignored. In other words, the output of this request and the previous ones are identical.Â
 
+{CODE-START:json /}
     > curl -X POST http://localhost:8080/queries -d "['users/ayende','does not exists', 'users/oren']"
     [
           {
@@ -64,11 +71,12 @@ Important: If you request a non existing key, the request is ignored. In other w
                }
           }
     ]
+{CODE-END /}
 
 In other words, you cannot rely on the size of the returned array to be the same as the array of ids requested.
 Aside from missing documents, which are ignored, the order of the documents in the returned array match the order of ids in the requested array.
 
-##Set based operations <a id="set"></a>
+## Set based operations
 
 Typically, document databases don't support set based operations. Raven does for deletes and updates, for inserts, you can POST to the [bulk_docs](http://ravendb.net/docs/http-api/multi/http-api-multi-batching) endpoint (this is how the client API behaves).
 
@@ -79,46 +87,58 @@ Note that Raven indexes are allowed to be stale. If the index for the set based 
 * cutOff - determines what is the cut off point for considering the index stale.
 * allowStale - determines if the operation is allowed to proceed on a stale index (default: false)
 
-###Set based deletes
+### Set based deletes
 
 For example, let us say that we wanted to delete all the inactive users, we can define an index for the user activity status:
 
+{CODE-START:plain /}
     from user in docs.Users
     select new{user.IsActive}
+{CODE-END /}
 
 And now we can issue the following command:
 
-DELETE [http://localhost:8080/bulk_docs/UsersByActivityStatus?query=IsActive:False](http://localhost:8080/bulk_docs/UsersByActivityStatus?query=IsActive:False)
+{CODE-START:plain /}
+DELETE http://localhost:8080/bulk_docs/UsersByActivityStatus?query=IsActive:False
+{CODE-END /}
 
 This will remove all the documents from the UsersByActivityStatus where IsActive equals to false.
 
 This is the equivalent for:
 
+{CODE-START:plain /}
     DELETE FROM Users
     WHERE IsActive = 0
+{CODE-END /}
 
 ###Set based updates
 
 Set based updates work very similarly to set based deletes. They require an index to operate on an a query for this index. But they use the [PATCH format](http://ravendb.net/docs/http-api/singledocumentoperations/http-api-patch) as their payload. For example, if we wanted to mark all the users who haven't logged on recently as inactive, we could define the following index:
 
+{CODE-START:plain /}
     from user in docs.Users
     select new { user.LastLoginDate }
+{CODE-END /}
 
 And then issue the following command:
 
-PATCH [http://localhost:8080/bulk_docs/UsersByLastLoginDate?query=LastLoginDate:[NULL TO 20100527]](http://localhost:8080/bulk_docs/UsersByLastLoginDate?query=LastLoginDate:[NULL TO 20100527])
+{CODE-START:json /}
+PATCH http://localhost:8080/bulk_docs/UsersByLastLoginDate?query=LastLoginDate:[NULL TO 20100527]
 
     [
        { "Type": "Set", "Name": "IsActive", "Value": false
     ]
+{CODE-END /}
 
 This is the equivalent for:
 
+{CODE-START:plain /}
     UPDATE Users
     SET IsActive = 0
     WHERE LastLoginDate < '2010-05-27'
+{CODE-END /}
 
-##Batching requests<a id="batching"></a>
+##Batching requests
 RavenDB supports batching multiple operations into a single request, reducing the number of remote calls and allowing several operations to share the same transactions.
 Request batching in RavenDB is handled using the '/bulk_docs' endpoint, which accepts an array of operations to execute. The format for the operations is:
 
@@ -130,6 +150,7 @@ Request batching in RavenDB is handled using the '/bulk_docs' endpoint, which ac
 
 Below you can see an example of the the operation format:
 
+{CODE-START:json /}
     [
         {
             Method: "PUT",
@@ -164,9 +185,11 @@ Below you can see an example of the the operation format:
             Key: "NonExistent"
         }
     ]
+{CODE-END /}
     
 This can be executed using curl with the following syntax:
 
+{CODE-START:json /}
     > curl http://localhost:8080/bulk_docs -X POST -d "[ { Method:'PUT', Document:{  name:'BatchPut1_Name' }, Metadata:{  info:'BatchPut1_Info' },Key:'BatchPut1' }, 
                                                        { Method:'PUT', Document:{  name:'BatchPut2_Name' }, Metadata:{  }, Key:'BatchPut2' } ]"
     [
@@ -181,6 +204,7 @@ This can be executed using curl with the following syntax:
          "Key":"BatchPut2"
      }
     ]
+{CODE-END /}
 
 ###Concurrency
 If an etag is specified in the command, that etag is compared to the current etag on the document on the server. If the etags do no match, a 409 Conlict status code is returned. In such a case, the entire operation fails and non of the updates that were tried will succeed.

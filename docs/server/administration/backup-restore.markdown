@@ -33,7 +33,9 @@ The utility `Raven.Backup.exe` is available from the `/Tools` folder in both the
 
 Usage example:
 
+{CODE-START:plain /}
     Raven.Backup.exe --url=http://localhost:8080/ --dest=C:\Temp\Foo --nowait --readkey
+{CODE-END /}
 
 The backup utility will output the progress to the console window, pinging the server to get updated progress unless ordered otherwise.
 
@@ -49,7 +51,9 @@ Parameters are as follows:
 
 Alternatively, you can send an HTTP POST command to the `/admin/backup` endpoint as follows:
 
+{CODE-START:json /}
     curl -X POST http://localhost:8080/admin/backup -d "{ 'BackupLocation': 'C:\\Backups\\2010-05-06' }"
+{CODE-END /}
 
 The backup operation is asynchronous. The backup process will start, and the request will complete before the backup process is completed.
 
@@ -61,7 +65,9 @@ Restoring a database is an offline operation, it cannot operate on a running ins
 
 In embedded mode, you can initiate the restore operation by calling `DocumentDatabase.Restore()`, or through the command line:
 
+{CODE-START:plain /}
     Raven.Server.exe -src [backup location] -dest [restore location] -restore
+{CODE-END /}
     
 If the restore location doesn't exists, RavenDB will create it.
 
