@@ -10,7 +10,7 @@ The documentation is written using the [Markdown language](http://en.wikipedia.o
 
 The following non-standard syntax is supported as well:
 
-* For code blocks (supported: json, csharp):
+* For code blocks (supported: json, csharp, plain):
 
 	{CODE-START:json /}
 	...
