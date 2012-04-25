@@ -4,16 +4,16 @@
 
 Perform a PUT request to /static/{attachment key} to create the specified attachment at the given URL:
 
-[code lang=powershell]
+{CODE-START lang=powershell /}
     > curl -X PUT http://localhost:8080/static/users/ayende.jpg -d "[.. binary image data ...]"
-[/code]
+{CODE-END /}
 
 For a successful request, RavenDB will respond with the id it generated and an HTTP 201 Created response code:
 
-[code lang=plain]
+{CODE-START lang=plain /}
     HTTP/1.1 201 Created
     Location: /static/users/ayende.jpg
-[/code]
+{CODE-END /}
 
 It is important to note that a PUT in RavenDB will always create the specified attachment at the request URL, if necessary overwriting what was there before.
 
@@ -36,15 +36,15 @@ In addition to that, any custom HTTP header will also be stored and sent back to
 Raven supports the concept of attachments. Attachments are binary data that are stored in the database and can be retrieved by a key.
 Retrieving an attachment is done by performing an HTTP GET on the following URL:
 
-[code lang=powershell]
+{CODE-START lang=powershell /}
     > curl -X GET http://localhost:8080/static/{attachment key}
-[/code]
+{CODE-END /}
 
 For example, the following request:
 
-[code lang=powershell]
+{CODE-START lang=powershell /}
     > curl -X GET http://localhost:8080/static/users/ayende.jpg
-[/code]
+{CODE-END /}
 
 Will retrieve an attachment whose key is "users/ayende.jpg", the response to the request is the exact byte stream that was stored in a previous [PUT](http://ravendb.net/docs/http-api/attachments/http-api-put-attachments) request.
 
@@ -52,14 +52,14 @@ Will retrieve an attachment whose key is "users/ayende.jpg", the response to the
 
 Perform a DELETE request to delete the attachment specified by the URL:
 
-[code lang=powershell]
+{CODE-START lang=powershell /}
     > curl -X DELETE http://localhost:8080/static/users/ayende.jpg
-[/code]
+{CODE-END /}
 
 For a successful delete, RavenDB will respond with an HTTP response code 204 No Content:
 
-[code lang=plain]
+{CODE-START lang=plain /}
     "HTTP/1.1 204 No Content"
-[/code]
+{CODE-END /}
 
 The only way a delete can fail is if [the etag doesn't match](http://ravendb.net/docs/http-api/http-api-comcurrency), even if the attachment doesn't exist, a delete will still respond with a successful status code.
