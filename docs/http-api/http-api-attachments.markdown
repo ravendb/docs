@@ -4,7 +4,7 @@
 
 Perform a PUT request to /static/{attachment key} to create the specified attachment at the given URL:
 
-{CODE-START:powershell /}
+{CODE-START:plain /}
     > curl -X PUT http://localhost:8080/static/users/ayende.jpg -d "[.. binary image data ...]"
 {CODE-END /}
 
@@ -36,13 +36,13 @@ In addition to that, any custom HTTP header will also be stored and sent back to
 Raven supports the concept of attachments. Attachments are binary data that are stored in the database and can be retrieved by a key.
 Retrieving an attachment is done by performing an HTTP GET on the following URL:
 
-{CODE-START:powershell /}
+{CODE-START:plain /}
     > curl -X GET http://localhost:8080/static/{attachment key}
 {CODE-END /}
 
 For example, the following request:
 
-{CODE-START:powershell /}
+{CODE-START:plain /}
     > curl -X GET http://localhost:8080/static/users/ayende.jpg
 {CODE-END /}
 
@@ -52,7 +52,7 @@ Will retrieve an attachment whose key is "users/ayende.jpg", the response to the
 
 Perform a DELETE request to delete the attachment specified by the URL:
 
-{CODE-START:powershell /}
+{CODE-START:plain /}
     > curl -X DELETE http://localhost:8080/static/users/ayende.jpg
 {CODE-END /}
 

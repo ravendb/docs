@@ -2,6 +2,7 @@
 
 As part of the response when an index is queried, a property is attached indicating whether the results are stale - that is, whether there are currently any tasks outstanding against that index.
 
+{CODE-START:json /}
     > curl "http://localhost:8080/indexes/blogEntryByCategory?query=Category:RavenDb
 
     {
@@ -20,6 +21,7 @@ As part of the response when an index is queried, a property is attached indicat
           "IsStale":true,
           "TotalResults":1
     }
+{CODE-END /}
 
 That's the **IsStale** property there, indicating that the results that have come back are stale. Presumably somebody has added a new blog entry and the index has not yet had time to be updated.
 
@@ -27,6 +29,7 @@ A valid strategy for retrieving non-stale results is to set a timeout and query 
 
 For example, we could wait five seconds and run that same query again to get the new blog entry now it's been indexed:
 
+{CODE-START:json /}
     > curl "http://localhost:8080/indexes/blogEntryByCategory?query=Category:RavenDb
 
     {
@@ -55,11 +58,13 @@ For example, we could wait five seconds and run that same query again to get the
           "IsStale":true,
           "TotalResults":2
     }
+{CODE-END /}
     
 As you can see though, the IsStale flag is still true, because in the mean time somebody else has added yet another blog entry.
 
 To work around this, a 'cutOff' parameter may be included, which will set the IsStale flag based on all the tasks against an index up to a certain point in time.
 
+{CODE-START:json /}
     > curl "http://localhost:8080/indexes/blogEntryByCategory?query=Category:RavenDb&cutOff=2010-05-16T12:31:25.8017940%2B01:00
     
     {
@@ -88,6 +93,7 @@ To work around this, a 'cutOff' parameter may be included, which will set the Is
           "IsStale":false,
           "TotalResults":2
     }
+{CODE-END /}
 
 This time, the same results came back because the third blog entry still hasn't been indexed - but IsStale is false because the cut-off period was specified and happens to be before that third blog entry was added to the database.
 
