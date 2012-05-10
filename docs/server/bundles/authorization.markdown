@@ -52,7 +52,7 @@ And the last is defined using:
 
 Note that we have multiple axis of permissions for the same document.
 
-##Premmissions
+## Permissions
 
 Permissions are pretty simple, they allow or deny access to a document for a specific operation. Permissions have the following properties:
 
