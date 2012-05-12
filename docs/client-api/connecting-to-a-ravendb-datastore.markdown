@@ -12,8 +12,10 @@ In either mode, when the application shuts down, the document store instance(s) 
 
 To run in a server mode, add a reference to Raven.Client.Lightweight.dll to your application, and after launching the server instance separately connect to it using the following code:
 
+{CODE-START:csharp /}
     var documentStore = new DocumentStore { Url = "http://myravendb.mydomain.com/" };
     documentStore.Initialize();
+{CODE-END /}
 
 Where http://myravendb.mydomain.com/ is your the RavenDB server's address.
 
@@ -27,8 +29,10 @@ To have this, you will need the entire EmbeddedClient folder from the build pack
 
 After referencing Raven.Client.Embedded.dll, you need to initialize a new instance of EmbeddableDocumentStore. This is done by passing the path to the directory that the database resides in to the EmbeddableDocumentStore (the database will be created if it doesn't exists yet):
 
+{CODE-START:csharp /}
     var documentStore = new EmbeddableDocumentStore  {  DataDirectory = "path/to/database/directory"  };
     documentStore.Initialize();
+{CODE-END /}
 
 ## Silverlight support
 
@@ -36,8 +40,10 @@ If you are accessing a RavenDB instance from Silverlight, you are going to need 
 
 Using Silverlight, you can only access an external RavenDB server; there's still no embedded RavenDB implementation for Silverlight available to public use. You initialize a document store in Silverlight using:
 
+{CODE-START:csharp /}
     var documentStore = new DocumentStore { Url = "http://myravendb.mydomain.com/" };
     documentStore.Initialize();
+{CODE-END /}
 
 Where http://myravendb.mydomain.com/ is your the RavenDB server's address.
 
@@ -45,18 +51,22 @@ Where http://myravendb.mydomain.com/ is your the RavenDB server's address.
 
 To make things even simpler, the RavenDB Client API supports .NET's named connection strings. You can use that by setting the ConnectionStringName, and the RavenDB client will initialize automatically based on the connection string's parameters:
 
+{CODE-START:csharp /}
   new DocumentStore 
   {
     ConnectionStringName = "MyRavenConStr"
   }
+{CODE-END /}
 
 You can then define the connection string in the app.config:
 
+{CODE-START:plain /}
   <connectionStrings>
     <add name="Local" connectionString="DataDir = ~\Data"/>
     <add name="Server" connectionString="Url = http://localhost:8080"/>
     <add name="Secure" connectionString="Url = http://localhost:8080;user=beam;password=up;ResourceManagerId=d5723e19-92ad-4531-adad-8611e6e05c8a"/>
   </connectionStrings>
+{CODE-END /}
 
 RavenDB connection string format is:
 
