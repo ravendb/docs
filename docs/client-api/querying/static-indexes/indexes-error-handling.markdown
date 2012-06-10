@@ -46,29 +46,32 @@ RavenDB surfaces index execution errors in two places, the first is the database
 The following is the output of the '/stats' endpoint:  
 
 {CODE-START:json /}
-    {
-             "CountOfIndexes":1,
-             "CountOfDocuments":1,
-             "StaleIndexes":[
-    
-             ],
-             "Indexes":[
-                      {
-                               "Name":"PostsByTitle",
-                               "IndexingAttempts":1,
-                               "IndexingSuccesses":0,
-                               "IndexingErrors":1
-                      }
-             ],
-             "Errors":[
-                      {
-                               "Index":"PostsByTitle",
-                               "Error":"Cannot   perform   runtime   binding   on   a   null   reference",
-                               "Timestamp":"\/Date(1271778107096+0300)\/",
-                               "Document":"bob"
-                      }
-             ]
-    }
+	{
+		"LastDocEtag": "00000000-0000-0b00-0000-000000000001",
+		"LastAttachmentEtag": "00000000-0000-0000-0000-000000000000",
+		"CountOfIndexes": 1,
+		"ApproximateTaskCount": 0,
+		"CountOfDocuments": 1,
+		"StaleIndexes": [],
+		"CurrentNumberOfItemsToIndexInSingleBatch": 512,
+		"CurrentNumberOfItemsToReduceInSingleBatch": 256,
+		"Indexes":[
+			{
+				"Name": "PostsByTitle",
+				"IndexingAttempts": 1,
+				"IndexingSuccesses": 0,
+				"IndexingErrors": 1
+			}
+		],
+		"Errors":[
+			{
+				"Index": "PostsByTitle",
+				"Error": "Cannot   perform   runtime   binding   on   a   null   reference",
+				"Timestamp": "\/Date(1271778107096+0300)\/",
+				"Document": "bob"
+			}
+		]
+	}
 {CODE-END /}
 
 As you can see, RavenDB surfaces both the fact that the index has encountered, what was the document it errored on,    and what that error was. The errors collection contains the last 50 errors that happened on the server.
