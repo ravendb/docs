@@ -41,7 +41,7 @@ This index make the assumption that all documents have a Title property. A docum
 
 Because indexes are updated on a background thread, it is unlikely that users will be aware of those errors.  
 
-RavenDB surfaces index execution errors in two places, the first is the database statistics. Accessible for programmatic   access at '/stats' or in human readable form at '/raven/statistics.html'
+RavenDB surfaces index execution errors in two places, the first is the database statistics. Accessible for programmatic access at '/stats' or in human readable form at '/raven/studio.html#/statistics' or '/raven/statistics.html'
 
 The following is the output of the '/stats' endpoint:  
 
