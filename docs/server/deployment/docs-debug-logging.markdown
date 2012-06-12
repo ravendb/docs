@@ -27,5 +27,3 @@ Raven has extensive support for debug logging, enabling you to figure out exactl
 			<logger name="Raven.*" writeTo="AsyncLog"/>
 		</rules>
 	</nlog>
-
-You can then use a tool such as [dbgview](http://technet.microsoft.com/en-us/sysinternals/bb896647.aspx) to view the logs.
