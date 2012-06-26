@@ -103,7 +103,7 @@ This is equivalent to hitting the following Url:
 
     http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_Range:[Dx100 TO Dx300.0]
 
-{NOTE The data returned represents the count of the faceted data that satisfies the query `Where(x => x.Cost >= 100 && x.Cost <= 300 )` /}
+__NOTE:__ the data returned represents the faceted results for documents that satisfy the query `Where(x => x.Cost >= 100 && x.Cost <= 300 )`
 
 {CODE-START:json /}
 {
