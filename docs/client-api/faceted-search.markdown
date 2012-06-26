@@ -1,6 +1,6 @@
-﻿# Faceted Search
+# Faceted Search
 
-When displaying a large amount of data, often paging is used to make viewing the data manageable. However it's also useful to give some context of the entire data-set and a easy way to drill-down into particular categories. The common approach to doing this is "faceted search", as shown in the image below. __Note__ how the count of each category within the current search is across the top.
+When displaying a large amount of data, often paging is used to make viewing the data manageable. However it's also useful to give some context of the entire data-set and a easy way to drill-down into particular categories. The common approach to doing this is "faceted search", as shown in the image below. __Note__ how the count of each category within the current search is displayed across the top.
 
 ![Facets](images\CNET_faceted_search_2.jpg)
 
@@ -11,9 +11,9 @@ To achieve this in RavenDB, lets say you have a document like this:
     DateOfListing: "2000-09-01T00:00:00.0000000+01:00" 
     Manufacturer: "Jessops" 
     Model: "blah" 
-    Cost: 717.502206059872 
+    Cost: 717.50 
     Zoom: 9 
-    Megapixels: 10.4508949012733 
+    Megapixels: 10.45 
     ImageStabiliser: false 
 }
 {CODE-END /}
@@ -24,34 +24,32 @@ You need to setup your facet definitions and store them in RavenDB as a document
 
 {CODE-START:csharp /}
 _facets = new List<Facet>
-                        {
-                            new Facet {Name = "Manufacturer"},
-                            new Facet
-                                {
-                                    Name = "Cost_Range",
-                                    Mode = FacetMode.Ranges,
-                                    Ranges =
-                                        {
-                                            "[NULL TO Dx200.0]",
-                                            "[Dx200.0 TO Dx400.0]",
-                                            "[Dx400.0 TO Dx600.0]",
-                                            "[Dx600.0 TO Dx800.0]",
-                                            "[Dx800.0 TO NULL]",
-                                        }
-                                },
-                            new Facet
-                                {
-                                    Name = "Megapixels_Range",
-                                    Mode = FacetMode.Ranges,
-                                    Ranges =
-                                        {
-                                            "[NULL TO Dx3.0]",
-                                            "[Dx3.0 TO Dx7.0]",
-                                            "[Dx7.0 TO Dx10.0]",
-                                            "[Dx10.0 TO NULL]",
-                                        }
-                                }
-                        };
+{
+	new Facet<Test> {Name = x => x.Manufacturer},
+	new Facet<Test>
+	{  
+		Name = x => x.Cost,
+		Ranges =
+		{
+			x => x.Cost < 200m,
+			x => x.Cost > 200m && x.Cost < 400m,
+			x => x.Cost > 400m && x.Cost < 600m,
+			x => x.Cost > 600m && x.Cost < 800m,
+			x => x.Cost > 800m
+		}
+	},
+	new Facet<Test>
+	{  
+		Name = x => x.MegaPixels,
+		Ranges = 
+		{
+			x => x.MegaPixels < 3.0m,
+			x => x.MegaPixels > 3.0m && x.MegaPixels < 7.0m, 
+			x => x.MegaPixels > 7.0m && x.MegaPixels < 10.0m, 
+			x => x.MegaPixels > 10.0m
+		}
+	}
+};
                         
 session.Store(new FacetSetup { Id = "facets/CameraFacets", Facets = _facets });
 {CODE-END /}
