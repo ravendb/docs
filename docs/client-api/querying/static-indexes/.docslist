@@ -3,3 +3,4 @@ customizing-results-order.markdown	Customizing results order using SortOptions
 configuring-index-options.markdown	Configuring index options
 indexing-hierarchies.markdown	Indexing Hierarchical Data
 live-projections.markdown	Live Projections
+indexes-error-handling.markdown	Error handling in Indexes

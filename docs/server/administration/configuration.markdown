@@ -6,6 +6,27 @@ Changes to the config file or additions / removal from the Plugins directory wil
 
 If you are running in Embedded mode, or RavenDB is running as an IIS application, touching the web.config file will cause IIS to automatically restart RavenDB.
 
+## Sample configurations file
+
+This is the standard app.config XML file. The `appSettings` section is where the configuration options go, also for web applications which have a web.config file instead.
+
+{CODE-START:xml /}
+<?xml version="1.0" encoding="utf-8" ?> 
+<configuration> 
+  <appSettings> 
+    <add key="Raven/Port" value="*"/> 
+    <add key="Raven/DataDir" value="~\Data"/> 
+    <add key="Raven/AnonymousAccess" value="Get" /> 
+  </appSettings> 
+        <runtime> 
+                <loadFromRemoteSources enabled="true"/> 
+                <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1"> 
+                        <probing privatePath="Analyzers"/> 
+                </assemblyBinding> 
+        </runtime> 
+</configuration>
+{CODE-END /}
+
 ## Core settings
 
 * **Raven/BackgroundTasksPriority**  

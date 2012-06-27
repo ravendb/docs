@@ -38,7 +38,9 @@ This is where dynamic fields come in. With the following index definition, Raven
 		}
 {CODE-END /}
 
-The underscore used for defining the index name is just a convention - the call to `.Select(at => new Field(...))` will generate index fields based on the properties in the provided collection, without creating any field with the name specified there, hence the underscore.
+The underscore used for defining the field name in the Map object is just a convention, you can use any field name instead, but since that we're just want to call the `CreateField` method and not interesting the field value, we're using `_` as a convention to reflect that.
+
+The call to `CreateField(...)` will generate index fields based on the properties in the provided collection, without creating any field with the name specified there, hence the underscore.
 
 Obviously, this index can have more attributes defined in it for indexing, just like any other ordinary index.
 
