@@ -26,7 +26,7 @@ The most important assumption that the Auth Bundle makes that we can trust the c
 
 ![Figure 1: Authorization](images\authorization_docs.png)
 
-In other words, only the application server can talk to the RavenDB server and the application server is running trusted code. To be clear, this design doesn't not apply if users can connect directly to the database and lie about who they are. 
+In other words, only the application server can talk to the RavenDB server and the application server is running trusted code. To be clear, this design does not apply if users can connect directly to the database and lie about who they are. 
 
 ## Operations
 
@@ -52,7 +52,7 @@ And the last is defined using:
 
 Note that we have multiple axis of permissions for the same document.
 
-##Premmissions
+## Permissions
 
 Permissions are pretty simple, they allow or deny access to a document for a specific operation. Permissions have the following properties:
 
