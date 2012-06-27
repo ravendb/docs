@@ -32,7 +32,6 @@ namespace RavenCodeSamples.Consumer
 				using (var session = documentStore.OpenSession())
 				{
 					#region intersectIndex
-					
 					documentStore.DatabaseCommands.PutIndex("TShirtNested",
 											new IndexDefinition
 											{
@@ -51,11 +50,9 @@ namespace RavenCodeSamples.Consumer
 													{ "BarcodeNumber", SortOptions.Int }
 												}
 											});
-					
 					#endregion
 
 					#region intersectQuery
-
 					var shirts = session.Query<TShirt>("TShirtNested")
 						.OrderBy(x => x.BarcodeNumber)
 						.Where(x => x.Name == "Wolf")
@@ -64,7 +61,6 @@ namespace RavenCodeSamples.Consumer
 						.Intersect()
 						.Where(x => x.Types.Any(t => t.Colour == "Gray" && t.Size == "Large"))
 						.ToList();
-
 					#endregion
 				}
 			}
