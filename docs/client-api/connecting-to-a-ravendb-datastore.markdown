@@ -23,7 +23,7 @@ This will instantiate a communication channel between your application and the R
 
 When running in embedded mode, the data store is actually a server instance running on top of a local data directory, as opposed to connecting to a separate server instance.
 
-To have this, you will need the entire EmbeddedClient folder from the build package in your solution.
+To have this, you will need the entire EmbeddedClient folder from the build package in your solution. Note that you cannot use RavenDB Embedded on the Client Profile, you have to change the project properties to use the full .NET framework profiler. 
 
 After referencing Raven.Client.Embedded.dll, you need to initialize a new instance of EmbeddableDocumentStore. This is done by passing the path to the directory that the database resides in to the EmbeddableDocumentStore (the database will be created if it doesn't exists yet):
 
