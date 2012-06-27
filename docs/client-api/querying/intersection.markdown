@@ -86,4 +86,4 @@ You can then write the following query, which will give you the expected results
 __Note__ because of the way Intersection Queries work, any ordering you specify is applied to the first *Where* clause in your query. This ordering is then shared by the other *Where* clauses
 
 ##More Information
-For a more in-depth technical explanation of this feature, including some information on the internals and how it was implemeneted, see ????
+For a more in-depth technical explanation of this feature, including some information on the internals and how it was implemeneted, see [here](http://mattwarren.org/2012/06/27/ravendb-query-intersection/)
