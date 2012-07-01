@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Raven.Abstractions.Data;
+using Raven.Abstractions.Smuggler;
 using Raven.Smuggler;
 
 namespace RavenCodeSamples.Server
