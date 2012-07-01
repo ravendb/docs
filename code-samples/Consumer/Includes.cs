@@ -22,18 +22,18 @@ namespace RavenCodeSamples.Consumer
 					#endregion
 				}
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes1_2
+				using (var session = store.OpenSession())
+				{
+					#region includes1_2
 
-                    var order = session.Include<Order2, Customer2>(x => x.Customer2Id)
-                        .Load("orders/1234");
+					var order = session.Include<Order2, Customer2>(x => x.Customer2Id)
+						.Load("orders/1234");
 
-                    // this will not require querying the server!
-                    var cust2 = session.Load<Customer2>(order.Customer2Id);
+					// this will not require querying the server!
+					var cust2 = session.Load<Customer2>(order.Customer2Id);
 
-                    #endregion
-                }
+					#endregion
+				}
 
 				using (var session = store.OpenSession())
 				{
@@ -53,127 +53,127 @@ namespace RavenCodeSamples.Consumer
 					#endregion
 				}
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes2_2
+				using (var session = store.OpenSession())
+				{
+					#region includes2_2
 
-                    var orders = session.Query<Order2>()
-                        .Customize(x => x.Include<Order2, Customer2>(o => o.Customer2Id))
-                        .Where(x => x.TotalPrice > 100)
-                        .ToList();
+					var orders = session.Query<Order2>()
+						.Customize(x => x.Include<Order2, Customer2>(o => o.Customer2Id))
+						.Where(x => x.TotalPrice > 100)
+						.ToList();
 
-                    foreach (var order in orders)
-                    {
-                        // this will not require querying the server!
-                        var cust2 = session.Load<Customer2>(order.Customer2Id);
-                    }
+					foreach (var order in orders)
+					{
+						// this will not require querying the server!
+						var cust2 = session.Load<Customer2>(order.Customer2Id);
+					}
 
-                    #endregion
-                }
-                
-                using (var session = store.OpenSession())
-                {
-                    #region includes3
+					#endregion
+				}
 
-                    var order = session.Include<Order>(x => x.SupplierIds)
-                        .Load("orders/1234");
+				using (var session = store.OpenSession())
+				{
+					#region includes3
 
-                    foreach (var supplierId in order.SupplierIds)
-                    {
-                        // this will not require querying the server!
-                        var supp = session.Load<Supplier>(supplierId);
-                    }
+					var order = session.Include<Order>(x => x.SupplierIds)
+						.Load("orders/1234");
 
-                    #endregion
-                }
+					foreach (var supplierId in order.SupplierIds)
+					{
+						// this will not require querying the server!
+						var supp = session.Load<Supplier>(supplierId);
+					}
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes3_2
+					#endregion
+				}
 
-                    var order = session.Include<Order2, Supplier2>(x => x.Supplier2Ids)
-                        .Load("orders/1234");
+				using (var session = store.OpenSession())
+				{
+					#region includes3_2
 
-                    foreach (var supplier2Id in order.Supplier2Ids)
-                    {
-                        // this will not require querying the server!
-                        var supp2 = session.Load<Supplier2>(supplier2Id);
-                    }
+					var order = session.Include<Order2, Supplier2>(x => x.Supplier2Ids)
+						.Load("orders/1234");
 
-                    #endregion
-                }
+					foreach (var supplier2Id in order.Supplier2Ids)
+					{
+						// this will not require querying the server!
+						var supp2 = session.Load<Supplier2>(supplier2Id);
+					}
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes4
+					#endregion
+				}
 
-                    var order = session.Include<Order>(x => x.Refferal.CustomerId)
-                        .Load("orders/1234");
+				using (var session = store.OpenSession())
+				{
+					#region includes4
 
-                    // this will not require querying the server!
-                    var referrer = session.Load<Customer>(order.Refferal.CustomerId);
+					var order = session.Include<Order>(x => x.Refferal.CustomerId)
+						.Load("orders/1234");
 
-                    #endregion
-                }
+					// this will not require querying the server!
+					var referrer = session.Load<Customer>(order.Refferal.CustomerId);
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes4_2
+					#endregion
+				}
 
-                    var order = session.Include<Order2, Customer2>(x => x.Refferal2.Customer2Id)
-                        .Load("orders/1234");
+				using (var session = store.OpenSession())
+				{
+					#region includes4_2
 
-                    // this will not require querying the server!
-                    var referrer2 = session.Load<Customer2>(order.Refferal2.Customer2Id);
+					var order = session.Include<Order2, Customer2>(x => x.Refferal2.Customer2Id)
+						.Load("orders/1234");
 
-                    #endregion
-                }
+					// this will not require querying the server!
+					var referrer2 = session.Load<Customer2>(order.Refferal2.Customer2Id);
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes5
+					#endregion
+				}
 
-                    var order = session.Include<Order>(x => x.LineItems.Select(li => li.ProductId))
-                        .Load("orders/1234");
+				using (var session = store.OpenSession())
+				{
+					#region includes5
 
-                    foreach (var lineItem in order.LineItems)
-                    {
-                        // this will not require querying the server!
-                        var product = session.Load<Product>(lineItem.ProductId);
-                    }
+					var order = session.Include<Order>(x => x.LineItems.Select(li => li.ProductId))
+						.Load("orders/1234");
 
-                    #endregion
-                }
+					foreach (var lineItem in order.LineItems)
+					{
+						// this will not require querying the server!
+						var product = session.Load<Product>(lineItem.ProductId);
+					}
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes5_2
+					#endregion
+				}
 
-                    var order = session.Include<Order2, Product2>(x => x.LineItem2s.Select(li => li.Product2Id))
-                    .Load("orders/1234");
+				using (var session = store.OpenSession())
+				{
+					#region includes5_2
 
-                    foreach (var lineItem2 in order.LineItem2s)
-                    {
-                        // this will not require querying the server!
-                        var product2 = session.Load<Product2>(lineItem2.Product2Id);
-                    }
+					var order = session.Include<Order2, Product2>(x => x.LineItem2s.Select(li => li.Product2Id))
+					.Load("orders/1234");
 
-                    #endregion
-                }
+					foreach (var lineItem2 in order.LineItem2s)
+					{
+						// this will not require querying the server!
+						var product2 = session.Load<Product2>(lineItem2.Product2Id);
+					}
 
-                using (var session = store.OpenSession())
-                {
-                    #region includes6
+					#endregion
+				}
 
-                    var order = session.Include<Order3, Customer2>(x => x.Customer.Id)
-                        .Load("orders/1234");
+				using (var session = store.OpenSession())
+				{
+					#region includes6
 
-                    // this will not require querying the server!
-                    var fullCustomer = session.Load<Customer2>(order.Customer.Id);
+					var order = session.Include<Order3, Customer2>(x => x.Customer.Id)
+						.Load("orders/1234");
 
-                    #endregion
-                }
-            }
+					// this will not require querying the server!
+					var fullCustomer = session.Load<Customer2>(order.Customer.Id);
+
+					#endregion
+				}
+			}
 		}
 	}
 }
