@@ -1,4 +1,4 @@
-# Client side sharding
+# Sharding
 
 RavenDB has native sharding support. [Sharding](http://en.wikipedia.org/wiki/Shard_(database_architecture)) is a way to split your data across servers, so each server hold just a portion of your data. This is required in situations where you need to handle a lot of data.
 

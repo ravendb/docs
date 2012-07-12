@@ -1,4 +1,4 @@
-#Dealing with replication conflicts
+# Dealing with replication conflicts
 
 In a replicating system, it is possible that two writes to the same document will occur on two different servers, resulting in two independent versions of the same document. Usually this scenario shows up only when there was a network or node failure that resulted in the failover node taking over the duties of the failed / unreachable node. Another scenario where this may happen is if you have setup replication in a master/master format, where a user may write any document to any node.
 

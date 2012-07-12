@@ -1,23 +1,24 @@
-##Replication
+# Replication
 
-Raven replication can be enabled by dropping the Raven.Bundles.Replication.dll to Raven's Plugins directory.
+RavenDB supports replication out of the box. To enable it, you will need to drop the Raven.Bundles.Replication.dll to the server's `/Plugins` folder, just like you'd do with any other bundle.
 
-You can read about potential deployment options for the replication bundle here: [Mixing Replication and Sharding](http://ravendb.net/docs/server/bundles/replicationandsharding). 
-The replication module will effect the following changes:
+You can read about potential deployment options for the replication bundle here: [Mixing Replication and Sharding](../replication-and-sharding).
+
+Enabling the replication module will have the following effects on your system:
 
 * Track the server the document was originally written on. The replication bundle uses this information to determine if a replicated document is conflicting with the existing document.
 * Documents that encountered a conflict would be marked appropriately and will require automated or user involvement to resolve.
 * Document deletes result in delete markers, which the replication bundle needs in order to be able to replicate deletes to sibling instances. This is an implementation detail and is not noticeable to clients.
-* Several new endpoints will begin responding, including, but not limited to:
-* * /replication/replicate
-* * /replication/lastEtag
-* The replication bundle will create several system documents, including, but not limited to:
-* * Raven/Replication/Destinations - List of servers we need to replicate to
-* * Raven/Replication/Sources/[server] - Information about the data replicated from a particular server
+* Several new endpoints will begin responding, including, but not limited to `/replication/replicate` and `/replication/lastEtag`.
 * The replication bundle will not replicate any system documents (whose key starts in Raven/)
 
-##Format of Raven/Replication/Destinations
-The destination document format is:
+The replication bundle will create several system documents, including, but not limited to:
+* `Raven/Replication/Destinations` - List of servers we need to replicate to
+* `Raven/Replication/Sources/[server]` - Information about the data replicated from a particular server
+
+## The destinations document
+
+The destination document is saved with an ID of `Raven/Replication/Destinations`, and it's what telling the RavenDB instance where to replicate to. It's format is as follows:
 
     {  
       "Destinations": [  
@@ -33,6 +34,7 @@ The destination document format is:
 With an object containing a url per each instance to replicate to. Whenever this document is updated, replication kicks off and start replicating to the updates destination list.
 
 ## How replication works?
+
 On every transaction commit, Raven will look up the list of replication destination. For each of the destination, the replication bundle will:
 
 * Query the remote instance for the last document that we replicated to that instance.
@@ -41,6 +43,7 @@ On every transaction commit, Raven will look up the list of replication destinat
 Replication happens in the background and in parallel. 
 
 ##What about failures?
+
 Because of the way it is designed, a node can fail for a long period of time, and still come up and start accepting everything that it missed in the meanwhile. The Replication Bundle keeps track of only a single data item per each replicating server, the last etag seen from that server. This means that we don't have to worry about missing replication windows.
 
 When the replication bundle encountered a failure when replicating to a server, it has an intelligent error handling strategy. It is meant to be hands off, so nodes can fail and come back up without any administrative intervention. The strategy is outlined below:
@@ -67,7 +70,7 @@ In a replicating system, it is possible that two writes to the same document wil
 
 Resolving a conflict is easy, you just need to PUT a new version of the document. On PUT, the Replication Bundle will consider the conflict resolved.
 
-More details about conflicts are here: [Dealing with replication conflicts](http://ravendb.net/docs/server/bundles/replicationconflicts).
+More details about conflicts are here: [Dealing with replication conflicts](conflicts).
 
 ##Client integration
 Raven's Client API will detect and respond appropriately whenever a server has the replication bundle installed. This includes:

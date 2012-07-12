@@ -1,4 +1,3 @@
-replication.markdown	Replication Bundle
-replicationandsharding.markdown	Replication & Sharding
-replicationconflicts.markdown	Dealing with Replication Conflicts
-replication-from-embedded-raven.markdown	Enabling Replication from an Embedded RavenDB instance to a server instance
+/replication	Replication
+/sharding	Sharding
+replication-and-sharding.markdown	Replication & Sharding
