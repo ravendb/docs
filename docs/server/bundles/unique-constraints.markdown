@@ -44,7 +44,7 @@ The delete trigger acts whener it find a document being delete with constraints 
 
 ### Server side
 
-Drop the Raven.BUndles.UniqueContraints assembly in the Plugins directory.
+Drop the Raven.Bundles.UniqueContraints assembly in the Plugins directory.
 
 ### Client side
 
