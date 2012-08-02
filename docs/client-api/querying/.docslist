@@ -4,3 +4,4 @@ stale-indexes.markdown	Stale indexes
 /static-indexes	Static indexes
 handling-document-relationships.markdown	Handling document relationships
 polymorphism.markdown	Polymorphism
+intersection.markdown	Query Intersection

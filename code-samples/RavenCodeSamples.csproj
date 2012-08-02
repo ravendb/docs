@@ -111,6 +111,7 @@
     <Compile Include="Consumer\DynamicQueries.cs" />
     <Compile Include="Consumer\Faceted.cs" />
     <Compile Include="Consumer\Includes.cs" />
+    <Compile Include="Consumer\IntersectionQueries.cs" />
     <Compile Include="Consumer\LiveProjections.cs" />
     <Compile Include="Consumer\Metadata.cs" />
     <Compile Include="Consumer\MultiMap.cs" />
