@@ -4,6 +4,8 @@ The RavenDB Management Studio is a lightweight Silverlight client to let you eas
 
 The Studio is accessible from any RavenDB server, regardless of how it is deployed. However, it does require the user to authenticate against the server, most commonly using his Windows credentials.
 
+Assuming that you are running RavenDB on port 8080 (the default when running in debug / service mode), you can access the studio by pointing your browser to http://localhost:8080.
+
 // TODO: Studio screenshot
 
 ## Basic navigation
