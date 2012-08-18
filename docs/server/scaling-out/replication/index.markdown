@@ -54,7 +54,7 @@ When the replication bundle encountered a failure when replicating to a server, 
 * * Once every 10 replication cycles, until failure count reaches 100
 * * Once every 100 replication cycles, until failure count reaches 1,000
 * * Once every 1,000 replication cycles, when failure count is above 1,000
-* Any successful replication will reset the failure count, on the assumption that
+* Any successful replication will reset the failure count, since that means that the server on the other end is alive and responding.
 
 ##Can I bring up a new node and start replicating to it?
 Yes, you can. You can edit the Raven/Replication/Destinations document in the replicating instance to add the new node, and the Replication Bundle will immediately start replicating to that server.
