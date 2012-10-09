@@ -143,11 +143,11 @@ namespace RavenCodeSamples.Server
 			{
 				#region expiration1
 
-				var expiry = DateTime.UtcNow.AddMinutes(5);
+				var expiry = DateTime.Now.AddMinutes(5);
 				using (var session = documentStore.OpenSession())
 				{
 					session.Store(userSession);
-					session.Advanced.GetMetadataFor(userSession)["Raven-Expiration-Date"] = new RavenJValue(expiry);
+					session.Advanced.GetMetadataFor(userSession)["Raven-Expiration-Date"] = new RavenJValue(expiry.ToUniversalTime());
 					session.SaveChanges();
 				}
 
