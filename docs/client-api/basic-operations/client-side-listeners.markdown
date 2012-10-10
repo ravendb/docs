@@ -23,7 +23,8 @@ The `IDocumentDeleteListener` is used to provide additional logic when delete op
 ## IDocumentQueryListener ##
 The `IDocumentQueryListener` is used to modify all queries globally. Its `BeforeQueryExecuted` method has the following  parameter:
 
-- <em>queryCustomization</em>. An implementation of the `IDocumentQueryCustomization` interface that defines the global modification.
+- <em>queryCustomization</em>. The current document query, which gives you the ability to set some common options with regards to the query.
+  You can cast this to an IDocumentQuery<T> to be able to call query specific methods.
 
 ## IDocumentStoreListener ##
 The `IDocumentStoreListener` is used to provide additional logic when store operations occur.
