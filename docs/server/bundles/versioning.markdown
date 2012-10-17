@@ -58,7 +58,7 @@ Limitations
 
 ## Client integration
 
-The Versioning bundle also have a client side part, which you can access by adding a reference to Raven.Client.Versioning assembly.
+The Versioning bundle also have a client side part, which you can access by adding a reference to RavenDB.Client.Versioning assembly.
 
 You can then access past revisions of a document using the following code:
 
