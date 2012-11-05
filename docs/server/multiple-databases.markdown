@@ -31,6 +31,17 @@ From the client API, you have the following options:
 
 The first line will ensure that the database document exists, and the second will access the database. All operations done in the context of the northwindSession will apply only to the Northwind database.
 
+##Indexes
+
+The following command will create the indexes on the default database.
+
+	IndexCreation.CreateIndexes(typeof(Contacts_ContactDetails).Assembly, store);
+
+In order to create the indexes on a specific database, use the following command:
+
+	var catalog = new CompositionContainer(new AssemblyCatalog(typeof(Contacts_ContactDetails).Assembly));		
+	IndexCreation.CreateIndexes(catalog , store.DatabaseCommands.ForDatabase(dbName), store.Conventions);
+
 ##Bundles
 All the bundles on the server will be available to all the databases on the server.
 
