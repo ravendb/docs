@@ -87,8 +87,8 @@ namespace RavenCodeSamples.Intro
 				using (var session = store.OpenSession())
 				{
 					#region editing_document_1
-					// blogposts/1 is entity of type BlogPost with Id of 1
-					BlogPost existingBlogPost = session.Load<BlogPost>("blogposts/1");
+					// BlogPosts/1 is entity of type BlogPost with Id of 1
+					BlogPost existingBlogPost = session.Load<BlogPost>("BlogPosts/1");
 					#endregion
 
 					#region editing_document_2

@@ -8,7 +8,7 @@ Therefore, if you have the id of an existing document (for example the previousl
 
 This results in the HTTP communication shown below (prettified for clarity):
 
-    GET /docs/blogs/1 HTTP/1.1
+    GET /docs/BlogPosts/1 HTTP/1.1
     Accept-Encoding: deflate,gzip
     Content-Type: application/json; charset=utf-8
     Host: 127.0.0.1:8080
@@ -60,7 +60,7 @@ For the above example, the above example will result in the following HTTP messa
 
     [
       {
-        "Key": "blogs/1",
+        "Key": "BlogPosts/1",
         "Etag": null,
         "Method": "PUT",
         "Document": {
@@ -99,13 +99,13 @@ For the above example, the above example will result in the following HTTP messa
       {
         "Etag": "00000000-0000-0100-0000-000000000003",
         "Method": "PUT",
-        "Key": "blogs/1",
+        "Key": "BlogPosts/1",
         "Metadata": {
           "Content-Encoding": "gzip",
           "Raven-Entity-Name": "Blogs",
           "Raven-Clr-Type": "Blog",
           "Content-Type": "application/json; charset=utf-8",
-          "@id": "blogs/1"
+          "@id": "BlogPosts/1"
         }
       }
     ]
