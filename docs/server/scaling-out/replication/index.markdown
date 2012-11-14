@@ -1,6 +1,6 @@
 # Replication
 
-RavenDB supports replication out of the box. To enable it, you will need to drop the Raven.Bundles.Replication.dll to the server's `/Plugins` folder, just like you'd do with any other bundle.
+RavenDB supports replication out of the box. To enable it you have to activate a built-in replication bundle when creating a new database. 
 
 You can read about potential deployment options for the replication bundle here: [Mixing Replication and Sharding](../replication-and-sharding).
 
@@ -89,6 +89,9 @@ The Raven Client API is quite intelligent in this regard, upon failure, it will:
 * On the first successful request, the failure count is reset.
 
 If the second replicated node fails, the same logic applies to it as well, and we move to the third replicated node, and so on. If all nodes fail, an appropriate exception is thrown.
+
+{NOTE The Client API checks if the replication is setup on the server. If your server has not the replication bundle active you might notice in server's logs that requests for `/docs/Raven/Replication/Destinations` result in `404`. /}
+
 
 At a lower level, those are the operations that support replication:
 
