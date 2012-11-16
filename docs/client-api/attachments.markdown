@@ -58,6 +58,6 @@ The Client API offers an easy way to update attachment metadata:
 
 {CODE updating_attachment_metadata@Consumer\Attachments.cs /}
 
-The first parameters is a name of an attachment. The next one is an ETag number that you can provide to be sure that you do an update to a concrete version of an attachment, otherwise pass `null`. If the specified ETag does not match with the existing value in a database then `ConcurrencyException` will be thrown. The last argument is new metadata. 
+The first parameters is a name of an attachment. The next one is an ETag number that you can provide to be sure that you do an update to a concrete version of an attachment, otherwise pass `null`. If the specified ETag does not match with the existing value in a database then the RavenDB server will return a conflict error. The last argument is new metadata. 
 
 Note that the update is an overriding operation. Take care of sending even those values that you didn't changed it you don't want to loose them.
