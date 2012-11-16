@@ -38,6 +38,6 @@ Another option is to use `WaitForNonStaleResultsAsOfLastWrite`, which does exact
 
 You can also setup the document store to always wait for the last write, like so:
 
-  store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.MonotonicRead;
+  store.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
 
 All queries in the store would behave as if `WaitForNonStaleResultsAsOfLastWrite` was applied to them.
