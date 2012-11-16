@@ -17,11 +17,6 @@ namespace RavenCodeSamples.Consumer
 					documentStore.DatabaseCommands.GetAttachment("videos/1");
 				#endregion
 
-				#region retrieving_attachments_with_prefix
-				IEnumerable<Raven.Abstractions.Data.Attachment> attachmentHeadersStartingWith = 
-					documentStore.DatabaseCommands.GetAttachmentHeadersStartingWith("videos", 0, 10);
-				#endregion
-
 				#region putting_attachment
 				Stream data = new MemoryStream(new byte[] { 1, 2, 3 }); // don't forget to load the data from a file or something!
 				documentStore.DatabaseCommands.PutAttachment("videos/2", null, data,
@@ -35,6 +30,11 @@ namespace RavenCodeSamples.Consumer
 				#region retrieving_attachment_metadata
 				Raven.Abstractions.Data.Attachment attachementMetadata = 
 					documentStore.DatabaseCommands.HeadAttachment("Description");
+				#endregion
+
+				#region retrieving_attachment_headers_with_prefix
+				IEnumerable<Raven.Abstractions.Data.Attachment> attachmentsMetadata =
+					documentStore.DatabaseCommands.GetAttachmentHeadersStartingWith("videos", 0, 10);
 				#endregion
 
 				#region updating_attachment_metadata

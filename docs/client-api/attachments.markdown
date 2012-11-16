@@ -22,10 +22,6 @@ As you can see, loading an attachment from RavenDB is very simple. Each attachme
 * **int Size** - the size of the attachment,
 * **string Key** - the attachment name.
 
-You are also able to get all attachments which names start with a specified prefix. You just need to pass the prefix and paging parameters.
-
-{CODE retrieving_attachments_with_prefix@Consumer\Attachments.cs /}
-
 ## Storing and updating attachments
 
 Adding an attachment uses the exact same process. You call `DatabaseCommands.PutAttachment` with the key to store the attachment at, the actual data and a `RavenJObject` containing metadata key/value pairs:
@@ -51,6 +47,10 @@ If you need to grab just metadata of an attachment you can use HEAD method:
 {CODE retrieving_attachment_metadata@Consumer\Attachments.cs /}
 
 In result you will get a filled attachment object except from the Data property. In that case an attempt to use attachment's data will throw an exception.
+
+You are also able to get metadata of all attachments which names start with a specified prefix. You just need to pass the prefix and paging parameters.
+
+{CODE retrieving_attachment_headers_with_prefix@Consumer\Attachments.cs /}
 
 ###Update
 
