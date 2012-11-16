@@ -4,6 +4,8 @@ using Raven.Json.Linq;
 
 namespace RavenCodeSamples.Consumer
 {
+	using System.Collections.Generic;
+
 	public class Attachments : CodeSampleBase
 	{
 		public void SimpleAttachments()
@@ -11,7 +13,13 @@ namespace RavenCodeSamples.Consumer
 			using (var documentStore = NewDocumentStore())
 			{
 				#region retrieving_attachment
-				Raven.Abstractions.Data.Attachment attachment = documentStore.DatabaseCommands.GetAttachment("videos/1");
+				Raven.Abstractions.Data.Attachment attachment = 
+					documentStore.DatabaseCommands.GetAttachment("videos/1");
+				#endregion
+
+				#region retrieving_attachments_with_prefix
+				IEnumerable<Raven.Abstractions.Data.Attachment> attachmentHeadersStartingWith = 
+					documentStore.DatabaseCommands.GetAttachmentHeadersStartingWith("videos", 0, 10);
 				#endregion
 
 				#region putting_attachment
@@ -22,6 +30,15 @@ namespace RavenCodeSamples.Consumer
 
 				#region deleting_attachment
 				documentStore.DatabaseCommands.DeleteAttachment("videos/1", null);
+				#endregion
+
+				#region retrieving_attachment_metadata
+				Raven.Abstractions.Data.Attachment attachementMetadata = 
+					documentStore.DatabaseCommands.HeadAttachment("Description");
+				#endregion
+
+				#region updating_attachment_metadata
+				documentStore.DatabaseCommands.UpdateAttachmentMetadata("videos/1", null, new RavenJObject { { "Description", "Kids play in the bathroom" } });
 				#endregion
 			}
 		}
