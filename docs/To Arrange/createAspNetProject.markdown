@@ -10,34 +10,41 @@ In this section we will go over the steps to creating you own Asp.Net Web Applic
 
 {CODE-START:csharp /}
 
-	public class RavenDbController : ApiController
-    {
-		public DocumentStore Store { get; set; }
+	public abstract class RavenDbController : ApiController
+	{
+		public IDocumentStore Store
+		{
+			get { return LazyDocStore.Value; }
+		}
 
-	    public RavenDbController()
-	    {
-		    Store = new DocumentStore
-			    {
-				    Url = "http://localhost:8080"				
-			    };
-	    }
+		private static Lazy<IDocumentStore> LazyDocStore = new Lazy<IDocumentStore>(() =>
+			{
+				var docStore = new DocumentStore
+					{
+						Url = "http://localhost:8080",
+						DefaultDatabase = "Asp.Net-Sample"
+					};
 
-		public override Task<System.Net.Http.HttpResponseMessage> ExecuteAsync(
-			HttpControllerContext controllerContext, 
+				docStore.Initialize();
+				return docStore;
+			});
+
+		public IAsyncDocumentSession Session { get; set; }
+
+
+		public async override Task<System.Net.Http.HttpResponseMessage> ExecuteAsync(
+			HttpControllerContext controllerContext,
 			CancellationToken cancellationToken)
 		{
-			return base.ExecuteAsync(controllerContext, cancellationToken)
-				.ContinueWith(task =>
-				{
-					using (var asyncSession = Store.OpenAsyncSession())
-					{
-						if (task.Status != TaskStatus.Faulted && asyncSession != null)
-							asyncSession.SaveChangesAsync();
-					}
-					return task;
-				}).Unwrap();
+			using (Session = Store.OpenAsyncSession())
+			{
+				var result = await base.ExecuteAsync(controllerContext, cancellationToken);
+				await Session.SaveChangesAsync();
+
+				return result;
+			}
 		}
-    }
+	}
 
 {CODE-END/}
 

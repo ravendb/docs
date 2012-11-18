@@ -15,8 +15,8 @@
                 	$.each(data, function (key, val) {
 
                 		// Format the text to display.
-                		var str = val.Name;
-
+                		var str = val;
+                		
                 		// Add a list item for the product.
                 		$('<li/>', { html: str })
                         .appendTo($('#items'));
@@ -25,17 +25,18 @@
         	});
 
         	function add() {
-        		var id = $('#itemName').val();
+        		var name =  $('#itemName').val();
         	
         		$.ajax({
-        			url: API_URL,
+        			url: "api/sample",
         			cache: false,
-        			type: 'POST',
-        			contentType: 'application/text; charset=utf-8',
-        			data: id,
+        			type: 'PUT',
+        			data: {name: "=" + name},
         			statusCode: {
         				201 /*Created*/: function (data) {
-        					self.products.push(data);
+        					$('<li/>', { html: name })
+        						.appendTo($('#items'));
+        					$("#itemName").val("");
         				}
         			}
         		});
@@ -49,12 +50,12 @@
             <h1>All items</h1>
             <ul id="items"/>
         </div>
-        <div>
+        <form method="POST">
             <label for="itemName">Name:</label>
-            <input type="text" id="itemName" size="5"/>
+	        <input type="text" id="itemName" size="5"/>
             <input type="button" value="Add" onclick="add();" />
             <p id="item" />
-        </div>
+        </form>
     </div>
 </body>
 </html>

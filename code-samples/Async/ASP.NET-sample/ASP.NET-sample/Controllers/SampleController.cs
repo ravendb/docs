@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using ASP.NET_sample.Models;
@@ -14,9 +16,11 @@ namespace ASP.NET_sample.Controllers
 			return Session.Query<WebData>().Select(data => data.Name).ToListAsync();
 		}
 
-		public void PutItem(string name)
+		public HttpResponseMessage Put([FromBody]string value)
 		{
-			Session.Store(new WebData{Name = name});
+			Session.Store(new WebData{Name = value});
+
+			return new HttpResponseMessage(HttpStatusCode.Created);
 		}
     }
 }

@@ -41,16 +41,6 @@ namespace ASP.NET_sample.Controllers
 
 				return result;
 			}
-			//return base.ExecuteAsync(controllerContext, cancellationToken)
-			//	.ContinueWith(task =>
-			//	{
-			//		using (Session)
-			//		{
-			//			if (task.Status != TaskStatus.Faulted && Session!= null)
-			//				Session.SaveChangesAsync();
-			//		}
-			//		return task;
-			//	}).Unwrap();
 		}
 	}
 }
