@@ -19,7 +19,8 @@ namespace ASP.NET_sample.Controllers
 			{
 				var docStore = new DocumentStore
 					{
-						Url = "http://localhost:8080"
+						Url = "http://localhost:8080",
+						DefaultDatabase = "Asp.Net-Sample"
 					};
 
 				docStore.Initialize();

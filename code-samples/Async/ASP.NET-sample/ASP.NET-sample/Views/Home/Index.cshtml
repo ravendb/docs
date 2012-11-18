@@ -1,53 +1,60 @@
-﻿<header>
-    <div class="content-wrapper">
-        <div class="float-left">
-            <p class="site-title">
-                <a href="~/">ASP.NET Web API</a></p>
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>ASP.NET Web API</title>
+    <link href="../../Content/Site.css" rel="stylesheet" />
+    <script src="../../Scripts/jquery-1.7.1.min.js" 
+        type="text/javascript"></script>
+
+        <script type="text/javascript">
+        	$(document).ready(function () {
+        		// Send an AJAX request
+        		$.getJSON("api/sample/",
+                function (data) {
+                	// On success, 'data' contains a list of products.
+                	$.each(data, function (key, val) {
+
+                		// Format the text to display.
+                		var str = val.Name;
+
+                		// Add a list item for the product.
+                		$('<li/>', { html: str })
+                        .appendTo($('#items'));
+                	});
+                });
+        	});
+
+        	function add() {
+        		var id = $('#itemName').val();
+        	
+        		$.ajax({
+        			url: API_URL,
+        			cache: false,
+        			type: 'POST',
+        			contentType: 'application/text; charset=utf-8',
+        			data: id,
+        			statusCode: {
+        				201 /*Created*/: function (data) {
+        					self.products.push(data);
+        				}
+        			}
+        		});
+        	}
+        </script>
+
+</head>
+<body id="body" >
+    <div class="main-content">
+        <div>
+            <h1>All items</h1>
+            <ul id="items"/>
+        </div>
+        <div>
+            <label for="itemName">Name:</label>
+            <input type="text" id="itemName" size="5"/>
+            <input type="button" value="Add" onclick="add();" />
+            <p id="item" />
         </div>
     </div>
-</header>
-<div id="body">
-    <section class="featured">
-        <div class="content-wrapper">
-            <hgroup class="title">
-                <h1>Welcome to ASP.NET Web API!</h1>
-                <h2>Modify the code in this template to jump-start your ASP.NET Web API development.</h2>
-            </hgroup>
-            <p>
-                ASP.NET Web API allows you to expose your applications, data and services to the
-                web directly over HTTP.
-            </p>
-            <p>
-                To learn more about ASP.NET Web API visit
-                <a href="http://go.microsoft.com/fwlink/?LinkID=238195" title="ASP.NET Web API Website">http://asp.net/web-api</a>.
-                The page features <mark>videos, tutorials, and samples</mark> to help you get the most from ASP.NET Web API.
-                If you have any questions about ASP.NET Web API, visit
-                <a href="http://go.microsoft.com/fwlink/?LinkID=238196" title="ASP.NET Web API Forum">our forums</a>.
-            </p>
-        </div>
-    </section>
-    <section class="content-wrapper main-content clear-fix">
-        <h3>We suggest the following steps:</h3>
-        <ol class="round">
-            <li class="one">
-                <h5>Getting Started</h5>
-                ASP.NET Web API is a framework that makes it easy to build HTTP services that reach
-                a broad range of clients, including browsers and mobile devices. ASP.NET Web API
-                is an ideal platform for building RESTful applications on the .NET Framework.
-                <a href="http://go.microsoft.com/fwlink/?LinkId=245160">Learn more…</a>
-            </li>
-
-            <li class="two">
-                <h5>Add NuGet packages and jump-start your coding</h5>
-                NuGet makes it easy to install and update free libraries and tools.
-                <a href="http://go.microsoft.com/fwlink/?LinkId=245161">Learn more…</a>
-            </li>
-            <li class="three">
-                <h5>Find Web Hosting</h5>
-                You can easily find a web hosting company that offers the right mix of features
-                and price for your applications.
-                <a href="http://go.microsoft.com/fwlink/?LinkId=245164">Learn more…</a>
-            </li>
-        </ol>
-    </section>
-</div>
+</body>
+</html>
