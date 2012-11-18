@@ -1,6 +1,6 @@
 # Replication
 
-RavenDB supports replication out of the box. To enable it, you will need to drop the Raven.Bundles.Replication.dll to the server's `/Plugins` folder, just like you'd do with any other bundle.
+RavenDB supports replication out of the box. To enable it you have to activate a built-in replication bundle when creating a new database. 
 
 You can read about potential deployment options for the replication bundle here: [Mixing Replication and Sharding](../replication-and-sharding).
 
@@ -71,35 +71,3 @@ In a replicating system, it is possible that two writes to the same document wil
 Resolving a conflict is easy, you just need to PUT a new version of the document. On PUT, the Replication Bundle will consider the conflict resolved.
 
 More details about conflicts are here: [Dealing with replication conflicts](conflicts).
-
-##Client integration
-Raven's Client API will detect and respond appropriately whenever a server has the replication bundle installed. This includes:
-
-* Detecting that an instance is replicating to another set of instances.
-* When that instance is down, will automatically shift to the other instances.
-
-The Raven Client API is quite intelligent in this regard, upon failure, it will:
-
-* Assume that the failure is transient, and retry the request.
-* If the second attempt fails as well, we record the failure and shift to a replicated node, if available.
-* After ten consecutive failures, Raven will start replicating to this node less often
-* * Once every 10 requests, until failure count reaches 100
-* * Once every 100 requests, until failure count reaches 1,000
-* * Once every 1,000 requests, when failure count is above 1,000
-* On the first successful request, the failure count is reset.
-
-If the second replicated node fails, the same logic applies to it as well, and we move to the third replicated node, and so on. If all nodes fail, an appropriate exception is thrown.
-
-At a lower level, those are the operations that support replication:
-
-* Get - single document and multi documents
-* Put
-* Delete
-* Query
-* Rollback
-* Commit
-
-The following operation do not support replication in the Client API:
-
-* PutIndex
-* DeleteIndex

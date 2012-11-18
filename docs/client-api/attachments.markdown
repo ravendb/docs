@@ -1,4 +1,4 @@
-﻿# Attachments
+# Attachments
 
 While the general advice is to store files on a dedicated server or in the cloud whenever possible, some scenarios require storing large blobs in the database itself.
 
@@ -14,11 +14,13 @@ Attachments are handled outside of the Unit of Work, and as such they are not tr
 
 {CODE retrieving_attachment@Consumer\Attachments.cs /}
 
-As you can see, loading an attachment from RavenDB is very simple. Each attachment has its own unique key, and all it takes is passing that key to get an Attachment object. In that object you'll find 3 properties:
+As you can see, loading an attachment from RavenDB is very simple. Each attachment has its own unique key, and all it takes is passing that key to get an Attachment object. In that object you'll find five properties:
 
-* **byte[] Data** - the actual data as byte array.
-* **RavenJObject Metadata** - a dictionary object with the attachment's metadata.
-* **Guid Etag** - short for entity tag, a sequential Guid that is being updated every time the stored attachment changes.
+* **byte[] Data** - the actual data as byte array,
+* **RavenJObject Metadata** - a dictionary object with the attachment's metadata,
+* **Guid Etag** - short for entity tag, a sequential Guid that is being updated every time the stored attachment changes,
+* **int Size** - the size of the attachment,
+* **string Key** - the attachment name.
 
 ## Storing and updating attachments
 
@@ -35,3 +37,27 @@ As you have guessed, this is a one-liner too:
 {CODE deleting_attachment@Consumer\Attachments.cs /}
 
 Same as with updating an attachment, you can specify an Etag to make sure the correct attachment is being removed, and you are not deleting one that has been recently updated by someone else.
+
+##Attachment metadata
+
+###Retrieve
+
+If you need to grab just metadata of an attachment you can use HEAD method:
+
+{CODE retrieving_attachment_metadata@Consumer\Attachments.cs /}
+
+In result you will get a filled attachment object except from the Data property. In that case an attempt to use attachment's data will throw an exception.
+
+You are also able to get metadata of all attachments which names start with a specified prefix. You just need to pass the prefix and paging parameters.
+
+{CODE retrieving_attachment_headers_with_prefix@Consumer\Attachments.cs /}
+
+###Update
+
+The Client API offers an easy way to update attachment metadata:
+
+{CODE updating_attachment_metadata@Consumer\Attachments.cs /}
+
+The first parameters is a name of an attachment. The next one is an ETag number that you can provide to be sure that you do an update to a concrete version of an attachment, otherwise pass `null`. If the specified ETag does not match with the existing value in a database then the RavenDB server will return a conflict error. The last argument is new metadata. 
+
+Note that the update is an overriding operation. Take care of sending even those values that you didn't changed it you don't want to loose them.

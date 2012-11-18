@@ -63,7 +63,8 @@ It is important to note that a repeated POST request for the same document will 
 A POST to a document URL is an invalid request and RavenDB will return a HTTP 400 Bad Request response code.
 
 ##PATCH
-By using a PATCH request, any single document within RavenDB can be updated without replacing the entire document with a PUT. The PATCH command allows Raven to implement field level concurrency.
+
+Any single document within RavenDB can be updated without replacing the entire document with a PUT. You can do it either by using [Client API](../client-api/partial-document-updates) or by creating a PATCH request. The PATCH command allows Raven to implement field level concurrency.
 
 All PATCH requests are made to the URL of the document, and follow the general format of: 
 

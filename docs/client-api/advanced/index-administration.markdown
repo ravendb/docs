@@ -1,4 +1,4 @@
-﻿# Index administration
+# Index administration
 
 RavenDB indices can be administrated easily from the consumer end using either code or the embedded user interface.
 
@@ -15,3 +15,9 @@ RESET /indexes/indexName
 ## Deleting an index
 
 You can delete an index by calling `DocumentDatabase.DeleteIndex(indexName)` from the Client API.
+
+##Using The Studio
+
+The reset and delete operations can be also easily performed from the studio. You can right click on a index name and select an action:
+
+![Figure 1: Reset and delete index options in the studio](images\index-reset-delete-from-ui.png)
