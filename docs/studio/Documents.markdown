@@ -24,9 +24,14 @@ Either way, hovering over a document will show a tooltip with the document JSON 
 
 ## Editing a document
 
+----------
+
 By double clicking on a document in the list, or clicking on the pencil icon on it, you get to the document editing screen.
 
-The document ID - a unique key assigned to each document - is shown at the top of the form, and below that the document in its JSON representation is ready to be edited:
+The document ID
+
+----------
+ - a unique key assigned to each document - is shown at the top of the form, and below that the document in its JSON representation is ready to be edited:
 
 ![Figure 4: Editing a document](Images/studio_documents_4.PNG)
 
@@ -35,6 +40,9 @@ RavenDB saves additional data on each document, such as it's Collection associat
 ![Figure 5: Editing metadata](Images/studio_documents_7.PNG)
 
 On the top right corner of this screen you will find several buttons:
+
+----------
+
 
 - Search
 - Save changes
