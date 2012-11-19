@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
@@ -15,7 +16,7 @@ namespace ASP.NET_sample.Controllers
 			get { return LazyDocStore.Value; }
 		}
 
-		private static Lazy<IDocumentStore> LazyDocStore = new Lazy<IDocumentStore>(() =>
+		private static readonly Lazy<IDocumentStore> LazyDocStore = new Lazy<IDocumentStore>(() =>
 			{
 				var docStore = new DocumentStore
 					{
