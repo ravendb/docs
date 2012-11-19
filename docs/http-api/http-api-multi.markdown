@@ -26,55 +26,140 @@ We load the database with the following two documents:
 And now, in order to get them both in a single query, we use:
 
 {CODE-START:json /}
-    > curl -X POST http://localhost:8080/queries -d "['users/ayende','users/oren']"
-    [
-       {
-                 "name":"ayende",
-                "@metadata":{
-                    "Content-Type":"application/x-www-form-urlencoded",
-                    "@id":"users/ayende",
-                    "@etag":"7f9cd674-4c6f-11df-8ec2-001fd08ec235"
-                }
-       },
-       {
-                "name":"oren",
-                "@metadata":{
-                    "Content-Type":"application/x-www-form-urlencoded",
-                    "@id":"users/oren",
-                    "@etag":"7f9cd675-4c6f-11df-8ec2-001fd08ec235"
-                 }
-       }
-    ]
+> curl -X POST http://localhost:8080/queries -d "['users/ayende','users/oren']"
+{
+"Results":
+	[
+		{				
+			"name":"ayende",
+			"@metadata":
+			{	
+				"@id":"users/ayende",
+				"Last-Modified":"2012-11-16T13:29:08.5880000",
+				"@etag":"00000000-0000-2500-0000-000000000002",
+				"Non-Authoritative-Information":false
+			}
+		},
+		{		
+			"name":"oren",
+			"@metadata":
+			{
+				"@id":"users/oren",
+				"Last-Modified":"2012-11-16T13:29:17.9650000",
+				"@etag":"00000000-0000-2500-0000-000000000003",
+				"Non-Authoritative-Information":false
+			}
+		}
+	],
+"Includes":[]
+}
 {CODE-END /}
 
-More formally, we POST a request to '/queries', with the content of a JSON array of document ids. The response for such a request is a JSON array of documents, include the document metadata.
+More formally, we POST a request to '/queries', with the content of a JSON array of document ids. The response for such a request is a JSON
+object that consists of two arrays of documents - *Results* and *Includes*. Each document also includes the metadata.
 
-Important: If you request a non existing key, the request is ignored. In other words, the output of this request and the previous ones are identical.Â
+The *Results* array has documents that we asked for, while the *Includes* array contains optionally referenced documents. To determine what a reference you want to retrieve together with a document add the *include* parameter to the query string.
+
+For example, let's modify `users/ayende` by adding `location` property which is a reference to `locations/1` document:
 
 {CODE-START:json /}
-    > curl -X POST http://localhost:8080/queries -d "['users/ayende','does not exists', 'users/oren']"
-    [
-          {
-                "name":"ayende",
-                "@metadata":{
-                       "Content-Type":"application/x-www-form-urlencoded",
-                       "@id":"users/ayende",
-                       "@etag":"7f9cd674-4c6f-11df-8ec2-001fd08ec235"
-                }
-          },
-          {
-                "name":"oren",
-                "@metadata":{
-                       "Content-Type":"application/x-www-form-urlencoded",
-                       "@id":"users/oren",
-                       "@etag":"7f9cd675-4c6f-11df-8ec2-001fd08ec235"
-               }
-          }
-    ]
+> curl -X PUT http://localhost:8080/docs/locations/1 -d "{ country: 'Israel', city: 'Hadera' }"
+   
+> curl -X PUT http://localhost:8080/docs/users/ayende -d "{ name: 'ayende', location: 'locations/1' }"
+{CODE-END /}
+
+Now let's perform the following request:
+
+{CODE-START:json /}
+curl -X POST http://localhost:8080/queries?include=location -d "['users/ayende','users/oren']"
+
+{
+"Results":
+	[
+		{
+			"name":"ayende",
+			"location":"locations/1",
+			"@metadata":
+			{
+				"@id":"users/ayende",
+				"Last-Modified":"2012-11-19T07:42:58.9170000",
+				"@etag":"00000000-0000-2600-0000-000000000003",
+				"Non-Authoritative-Information":false
+			}
+		},
+		{
+			"name":"oren",
+			"@metadata":
+			{
+				"@id":"users/oren",
+				"Last-Modified":"2012-11-16T13:29:17.9650000",
+				"@etag":"00000000-0000-2500-0000-000000000003",
+				"Non-Authoritative-Information":false
+			}
+		}
+	],
+"Includes":
+	[
+		{
+			"country":"Israel",
+			"city":"Hadera",
+			"@metadata":
+			{
+				"@id":"locations/1",
+				"Last-Modified":"2012-11-19T07:45:22.1400000",
+				"@etag":"00000000-0000-2600-0000-000000000004",
+				"Non-Authoritative-Information":false
+			}
+		}
+	]
+}
+{CODE-END /}
+
+Note that now the *Includes* array is not empty and contains the `locations/1` document.
+
+{INFO You can add *include* parameter to the query string multiple times to get all referenced documents, e.g. /queries?include=location&include=projects /}
+ 
+Important: If you request a non existing key, the request is ignored. In other words, the *Results* of this request and the previous ones are identical.
+
+{CODE-START:json /}
+> curl -X POST http://localhost:8080/queries -d "['users/ayende','does not exists', 'users/oren']"
+{
+"Results":
+	[
+		{
+			"name":"ayende",
+			"location":"locations/1",
+			"@metadata":
+			{
+				"@id":"users/ayende",
+				"Last-Modified":"2012-11-19T07:42:58.9170000",
+				"@etag":"00000000-0000-2600-0000-000000000003",
+				"Non-Authoritative-Information":false
+			}
+		},
+		{
+			"name":"oren",
+			"@metadata":
+			{
+				"@id":"users/oren",
+				"Last-Modified":"2012-11-16T13:29:17.9650000",
+				"@etag":"00000000-0000-2500-0000-000000000003",
+				"Non-Authoritative-Information":false
+			}
+		}
+	],
+"Includes":[]
+}
 {CODE-END /}
 
 In other words, you cannot rely on the size of the returned array to be the same as the array of ids requested.
 Aside from missing documents, which are ignored, the order of the documents in the returned array match the order of ids in the requested array.
+
+Besides requesting by using POST to get multiple documents you can also use HTTP GET method. Then create the request as follows:
+
+{CODE-START:json /}
+> curl -X GET http://localhost:8080/queries?id=users/ayende"&"id=users/oren
+{CODE-END /}
 
 ## Set based operations
 
