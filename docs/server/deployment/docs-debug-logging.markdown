@@ -9,7 +9,6 @@ Raven has extensive support for debug logging, enabling you to figure out exactl
     			name="AsyncLog">
 
     			<target xsi:type="SplitGroup">
-    				<target xsi:type="HttpEndpoint" />
     				<target name="File" xsi:type="File"
     								fileName="${basedir}\Logs\${shortdate}.log">
     					<layout xsi:type="CsvLayout">
