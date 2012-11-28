@@ -1,0 +1,367 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{4439E699-C673-4503-84EC-0B925B37A6ED}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Raven.Documentation.Database</RootNamespace>
+    <AssemblyName>Raven.Documentation.Database</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include=".docslist" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Appendixes\.docslist" />
+    <None Include="Appendixes\index.markdown" />
+    <None Include="Appendixes\lucene-indexes-usage.markdown" />
+    <None Include="client-api\.docslist" />
+    <None Include="client-api\advanced\.docslist" />
+    <None Include="client-api\advanced\aggressive-caching.markdown" />
+    <None Include="client-api\advanced\asyncdatabasecommands\.docslist" />
+    <None Include="client-api\advanced\asyncdatabasecommands\index.markdown" />
+    <None Include="client-api\advanced\client-side-listeners.markdown" />
+    <None Include="client-api\advanced\custom-serialization.markdown" />
+    <None Include="client-api\advanced\databasecommands\.docslist" />
+    <None Include="client-api\advanced\databasecommands\batch.markdown" />
+    <None Include="client-api\advanced\databasecommands\index.markdown" />
+    <None Include="client-api\advanced\document-metadata.markdown" />
+    <None Include="client-api\advanced\dynamic-fields.markdown" />
+    <None Include="client-api\advanced\index-administration.markdown" />
+    <None Include="client-api\advanced\index.markdown" />
+    <None Include="client-api\advanced\querying-for-terms.markdown" />
+    <None Include="client-api\advanced\spatial-search.markdown" />
+    <None Include="client-api\advanced\transaction-support.markdown" />
+    <None Include="client-api\attachments.markdown" />
+    <None Include="client-api\basic-operations\.docslist" />
+    <None Include="client-api\basic-operations\basic-querying.markdown" />
+    <None Include="client-api\basic-operations\client-side-listeners.markdown" />
+    <None Include="client-api\basic-operations\deleting-documents.markdown" />
+    <None Include="client-api\basic-operations\document-convention-properties.markdown" />
+    <None Include="client-api\basic-operations\index.markdown" />
+    <None Include="client-api\basic-operations\loading-editing-existing-document.markdown" />
+    <None Include="client-api\basic-operations\opening-a-session.markdown" />
+    <None Include="client-api\basic-operations\saving-new-document.markdown" />
+    <None Include="client-api\basic-operations\understanding-session-object.markdown" />
+    <None Include="client-api\connecting-to-a-ravendb-datastore.markdown" />
+    <None Include="client-api\faceted-search.markdown" />
+    <None Include="client-api\fsharp.markdown" />
+    <None Include="client-api\index.markdown" />
+    <None Include="client-api\partial-document-updates.markdown" />
+    <None Include="client-api\querying\.docslist" />
+    <None Include="client-api\querying\handling-document-relationships.markdown" />
+    <None Include="client-api\querying\index.markdown" />
+    <None Include="client-api\querying\paging.markdown" />
+    <None Include="client-api\querying\polymorphism.markdown" />
+    <None Include="client-api\querying\searching.markdown" />
+    <None Include="client-api\querying\stale-indexes.markdown" />
+    <None Include="client-api\querying\static-indexes\.docslist" />
+    <None Include="client-api\querying\static-indexes\configuring-index-options.markdown" />
+    <None Include="client-api\querying\static-indexes\customizing-results-order.markdown" />
+    <None Include="client-api\querying\static-indexes\defining-static-index.markdown" />
+    <None Include="client-api\querying\static-indexes\index.markdown" />
+    <None Include="client-api\querying\static-indexes\indexes-error-handling.markdown" />
+    <None Include="client-api\querying\static-indexes\indexing-hierarchies.markdown" />
+    <None Include="client-api\querying\static-indexes\live-projections.markdown" />
+    <None Include="client-api\querying\using-linq-to-query-ravendb.markdown" />
+    <None Include="client-api\set-based-operations.markdown" />
+    <None Include="client-api\working-asynchronously.markdown" />
+    <None Include="faq\.docslist" />
+    <None Include="faq\denormalized-references.markdown" />
+    <None Include="faq\denormalized-updates.markdown" />
+    <None Include="faq\immutable-entities.markdown" />
+    <None Include="faq\index.markdown" />
+    <None Include="faq\indexing-across-entities.markdown" />
+    <None Include="faq\joins.markdown" />
+    <None Include="faq\low-memory-footprint.markdown" />
+    <None Include="faq\lucene-queries-examples.markdown" />
+    <None Include="faq\optimizing-referenced-documents-load.markdown" />
+    <None Include="faq\polymorphism.markdown" />
+    <None Include="faq\skipped-results.markdown" />
+    <None Include="faq\slow-response-times.markdown" />
+    <None Include="faq\storing-dates.markdown" />
+    <None Include="faq\unique-constraints.markdown" />
+    <None Include="faq\working-with-dtc.markdown" />
+    <None Include="http-api\.docslist" />
+    <None Include="http-api\http-api-attachments.markdown" />
+    <None Include="http-api\http-api-comcurrency.markdown" />
+    <None Include="http-api\http-api-indexes-querying.markdown" />
+    <None Include="http-api\http-api-multi.markdown" />
+    <None Include="http-api\http-api-security.markdown" />
+    <None Include="http-api\http-api-single.markdown" />
+    <None Include="http-api\index.markdown" />
+    <None Include="http-api\indexes\.docslist" />
+    <None Include="http-api\indexes\dynamic-indexes.markdown" />
+    <None Include="http-api\indexes\index.markdown" />
+    <None Include="http-api\indexes\map-reduce-indexes.markdown" />
+    <None Include="http-api\indexes\simple-indexes.markdown" />
+    <None Include="http-api\indexes\stale-indexes.markdown" />
+    <None Include="index.markdown" />
+    <None Include="Intro\.docslist" />
+    <None Include="Intro\basic-concepts.markdown" />
+    <None Include="Intro\building-from-source.markdown" />
+    <None Include="Intro\index.markdown" />
+    <None Include="Intro\quickstart\.docslist" />
+    <None Include="Intro\quickstart\adding-ravendb-through-nuget.markdown" />
+    <None Include="Intro\quickstart\adding-ravendb-to-your-application.markdown" />
+    <None Include="Intro\quickstart\index.markdown" />
+    <None Include="Intro\ravendb-in-a-nutshell.markdown" />
+    <None Include="Intro\safe-by-default.markdown" />
+    <None Include="Intro\system-requirements.markdown" />
+    <None Include="Intro\what-is-a-document-database.markdown" />
+    <None Include="Intro\what-is-nosql.markdown" />
+    <None Include="RavenLight\.docslist" />
+    <None Include="RavenLight\index.markdown" />
+    <None Include="server\.docslist" />
+    <None Include="server\administration\.docslist" />
+    <None Include="server\administration\backup-restore.markdown" />
+    <None Include="server\administration\configuration.markdown" />
+    <None Include="server\administration\export-import.markdown" />
+    <None Include="server\administration\fmc_configuration.markdown" />
+    <None Include="server\administration\index.markdown" />
+    <None Include="server\administration\upgrade.markdown" />
+    <None Include="server\bundles\.docslist" />
+    <None Include="server\bundles\authentication.markdown" />
+    <None Include="server\bundles\authorization-bundle-design.markdown" />
+    <None Include="server\bundles\authorization.markdown" />
+    <None Include="server\bundles\cascade-delete.markdown" />
+    <None Include="server\bundles\expiration.markdown" />
+    <None Include="server\bundles\index-replication.markdown" />
+    <None Include="server\bundles\index.markdown" />
+    <None Include="server\bundles\morelikethis.markdown" />
+    <None Include="server\bundles\quotas.markdown" />
+    <None Include="server\bundles\unique-constraints.markdown" />
+    <None Include="server\bundles\versioning.markdown" />
+    <None Include="server\deployment\.docslist" />
+    <None Include="server\deployment\as-a-service.markdown" />
+    <None Include="server\deployment\as-iis-application.markdown" />
+    <None Include="server\deployment\docs-debug-logging.markdown" />
+    <None Include="server\deployment\docs-deploy-debug.markdown" />
+    <None Include="server\deployment\embedded.markdown" />
+    <None Include="server\deployment\index.markdown" />
+    <None Include="server\deployment\recommended-configuration.markdown" />
+    <None Include="server\extending\.docslist" />
+    <None Include="server\extending\index.markdown" />
+    <None Include="server\extending\requestResponders\.docslist" />
+    <None Include="server\extending\requestResponders\index.markdown" />
+    <None Include="server\extending\triggers\.docslist" />
+    <None Include="server\extending\triggers\delete.markdown" />
+    <None Include="server\extending\triggers\index.markdown" />
+    <None Include="server\extending\triggers\indexing.markdown" />
+    <None Include="server\extending\triggers\put.markdown" />
+    <None Include="server\extending\triggers\read.markdown" />
+    <None Include="server\index.markdown" />
+    <None Include="server\multiple-databases.markdown" />
+    <None Include="server\scaling-out\.docslist" />
+    <None Include="server\scaling-out\index.markdown" />
+    <None Include="server\scaling-out\replication-and-sharding.markdown" />
+    <None Include="server\scaling-out\replication\.docslist" />
+    <None Include="server\scaling-out\replication\advanced-replication-details.markdown" />
+    <None Include="server\scaling-out\replication\client-integration.markdown" />
+    <None Include="server\scaling-out\replication\from-embedded-server.markdown" />
+    <None Include="server\scaling-out\replication\handling-conflicts.markdown" />
+    <None Include="server\scaling-out\replication\index.markdown" />
+    <None Include="server\scaling-out\sharding\.docslist" />
+    <None Include="server\scaling-out\sharding\index.markdown" />
+    <None Include="studio\.docslist" />
+    <None Include="studio\Collections.markdown" />
+    <None Include="studio\Documents.markdown" />
+    <None Include="studio\index.markdown" />
+    <None Include="studio\Indexes.markdown" />
+    <None Include="studio\Logs.markdown" />
+    <None Include="studio\multi-database.markdown" />
+    <None Include="studio\replication.markdown" />
+    <None Include="studio\Statistics.markdown" />
+    <None Include="studio\Tasks.markdown" />
+    <None Include="Theory\.docslist" />
+    <None Include="Theory\document-key-generation.markdown" />
+    <None Include="Theory\document-structure-design.markdown" />
+    <None Include="Theory\index.markdown" />
+    <None Include="Theory\ravendb-collections.markdown" />
+    <None Include="Theory\what-is-raven.markdown" />
+    <None Include="To Arrange\createAspNeMVC4Project.markdown" />
+    <None Include="To Arrange\createAspNetWebApiProject.markdown" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="client-api\advanced\images\CNET_faceted_search_2.jpg" />
+    <Content Include="client-api\advanced\images\index-reset-delete-from-ui.png" />
+    <Content Include="client-api\images\raven.server.png" />
+    <Content Include="client-api\images\studio.png" />
+    <Content Include="client-api\querying\images\polymorphic_indexes_faq.png" />
+    <Content Include="faq\images\authorization_bundle_faq.png" />
+    <Content Include="faq\images\denormalized_references_faq.png" />
+    <Content Include="Intro\images\json_doc.png" />
+    <Content Include="Intro\quickstart\images\build_package.png" />
+    <Content Include="server\administration\images\01CreateCluster.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard01.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard02.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard03.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard04.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard05.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard06.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard07.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard08.jpg" />
+    <Content Include="server\administration\images\01CreateCluster_Wizard09.jpg" />
+    <Content Include="server\administration\images\02ConfigureService.jpg" />
+    <Content Include="server\administration\images\02ConfigureService_Wizard01.jpg" />
+    <Content Include="server\administration\images\02ConfigureService_Wizard02.jpg" />
+    <Content Include="server\administration\images\02ConfigureService_Wizard03.jpg" />
+    <Content Include="server\administration\images\02ConfigureService_Wizard04.jpg" />
+    <Content Include="server\administration\images\02ConfigureService_Wizard05.jpg" />
+    <Content Include="server\administration\images\02ConfigureService_Wizard06.jpg" />
+    <Content Include="server\administration\images\02ConfigureService_Wizard07.jpg" />
+    <Content Include="server\administration\images\03ServiceInstalled.jpg" />
+    <Content Include="server\administration\images\04ServiceProperties.jpg" />
+    <Content Include="server\administration\images\04ServiceProperties_01General.jpg" />
+    <Content Include="server\administration\images\04ServiceProperties_02Failover.jpg" />
+    <Content Include="server\administration\images\05FailureSimulation.jpg" />
+    <Content Include="server\administration\images\05FailureSimulation_FailoverSuccess.jpg" />
+    <Content Include="server\administration\images\05FailureSimulation_Pending.jpg" />
+    <Content Include="server\bundles\images\authorization_docs.png" />
+    <Content Include="server\bundles\images\versioned_docs.png" />
+    <Content Include="server\bundles\images\versioned_docs_2.png" />
+    <Content Include="server\bundles\images\versioned_docs_3.png" />
+    <Content Include="server\extending\triggers\images\triggers_delete_docs.PNG" />
+    <Content Include="server\extending\triggers\images\triggers_docs.png" />
+    <Content Include="server\extending\triggers\images\triggers_index_docs.png" />
+    <Content Include="server\extending\triggers\images\triggers_put_docs.PNG" />
+    <Content Include="server\extending\triggers\images\triggers_read_docs.PNG" />
+    <Content Include="server\scaling-out\images\replication_and_sharding_docs.png" />
+    <Content Include="server\scaling-out\images\replication_and_sharding_docs_2.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_2.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_3.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_4.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_5.png" />
+    <Content Include="studio\Images\studio_base_1.PNG" />
+    <Content Include="studio\Images\studio_base_10.PNG" />
+    <Content Include="studio\Images\studio_base_11.PNG" />
+    <Content Include="studio\Images\studio_base_2.PNG" />
+    <Content Include="studio\Images\studio_base_3.PNG" />
+    <Content Include="studio\Images\studio_base_4.PNG" />
+    <Content Include="studio\Images\studio_base_5.PNG" />
+    <Content Include="studio\Images\studio_base_6.PNG" />
+    <Content Include="studio\Images\studio_base_7.1.PNG" />
+    <Content Include="studio\Images\studio_base_7.2.PNG" />
+    <Content Include="studio\Images\studio_base_7.3.PNG" />
+    <Content Include="studio\Images\studio_base_7.4.PNG" />
+    <Content Include="studio\Images\studio_base_7.PNG" />
+    <Content Include="studio\Images\studio_base_8.PNG" />
+    <Content Include="studio\Images\studio_base_9.PNG" />
+    <Content Include="studio\Images\studio_collections_1.PNG" />
+    <Content Include="studio\Images\studio_collections_2.PNG" />
+    <Content Include="studio\Images\studio_collections_3.PNG" />
+    <Content Include="studio\Images\studio_collections_4.PNG" />
+    <Content Include="studio\Images\studio_databases_1.PNG" />
+    <Content Include="studio\Images\studio_databases_10.PNG" />
+    <Content Include="studio\Images\studio_databases_11.PNG" />
+    <Content Include="studio\Images\studio_databases_12.PNG" />
+    <Content Include="studio\Images\studio_databases_13.PNG" />
+    <Content Include="studio\Images\studio_databases_14.PNG" />
+    <Content Include="studio\Images\studio_databases_15.PNG" />
+    <Content Include="studio\Images\studio_databases_16.PNG" />
+    <Content Include="studio\Images\studio_databases_17.PNG" />
+    <Content Include="studio\Images\studio_databases_18.PNG" />
+    <Content Include="studio\Images\studio_databases_19.PNG" />
+    <Content Include="studio\Images\studio_databases_2.PNG" />
+    <Content Include="studio\Images\studio_databases_3.PNG" />
+    <Content Include="studio\Images\studio_databases_4.PNG" />
+    <Content Include="studio\Images\studio_databases_5.PNG" />
+    <Content Include="studio\Images\studio_databases_6.PNG" />
+    <Content Include="studio\Images\studio_databases_7.PNG" />
+    <Content Include="studio\Images\studio_databases_8.PNG" />
+    <Content Include="studio\Images\studio_databases_9.PNG" />
+    <Content Include="studio\Images\studio_documents_1.PNG" />
+    <Content Include="studio\Images\studio_documents_2.PNG" />
+    <Content Include="studio\Images\studio_documents_3.PNG" />
+    <Content Include="studio\Images\studio_documents_4.PNG" />
+    <Content Include="studio\Images\studio_documents_5.PNG" />
+    <Content Include="studio\Images\studio_documents_6.PNG" />
+    <Content Include="studio\Images\studio_documents_7.PNG" />
+    <Content Include="studio\Images\studio_documents_8.PNG" />
+    <Content Include="studio\Images\studio_documents_9.PNG" />
+    <Content Include="studio\Images\studio_indexes_1.PNG" />
+    <Content Include="studio\Images\studio_indexes_10.PNG" />
+    <Content Include="studio\Images\studio_indexes_11.PNG" />
+    <Content Include="studio\Images\studio_indexes_12.PNG" />
+    <Content Include="studio\Images\studio_indexes_13.PNG" />
+    <Content Include="studio\Images\studio_indexes_14.PNG" />
+    <Content Include="studio\Images\studio_indexes_15.PNG" />
+    <Content Include="studio\Images\studio_indexes_16.PNG" />
+    <Content Include="studio\Images\studio_indexes_17.PNG" />
+    <Content Include="studio\Images\studio_indexes_18.PNG" />
+    <Content Include="studio\Images\studio_indexes_19.PNG" />
+    <Content Include="studio\Images\studio_indexes_2.PNG" />
+    <Content Include="studio\Images\studio_indexes_20.PNG" />
+    <Content Include="studio\Images\studio_indexes_3.PNG" />
+    <Content Include="studio\Images\studio_indexes_4.PNG" />
+    <Content Include="studio\Images\studio_indexes_5.PNG" />
+    <Content Include="studio\Images\studio_indexes_6.PNG" />
+    <Content Include="studio\Images\studio_indexes_7.PNG" />
+    <Content Include="studio\Images\studio_indexes_8.PNG" />
+    <Content Include="studio\Images\studio_indexes_9.PNG" />
+    <Content Include="studio\Images\studio_logs_1.PNG" />
+    <Content Include="studio\Images\studio_logs_2.PNG" />
+    <Content Include="studio\Images\studio_logs_3.PNG" />
+    <Content Include="studio\Images\studio_replication_1.png" />
+    <Content Include="studio\Images\studio_replication_10.png" />
+    <Content Include="studio\Images\studio_replication_11.png" />
+    <Content Include="studio\Images\studio_replication_12.png" />
+    <Content Include="studio\Images\studio_replication_13.png" />
+    <Content Include="studio\Images\studio_replication_14.png" />
+    <Content Include="studio\Images\studio_replication_2.png" />
+    <Content Include="studio\Images\studio_replication_3.png" />
+    <Content Include="studio\Images\studio_replication_4.png" />
+    <Content Include="studio\Images\studio_replication_5.png" />
+    <Content Include="studio\Images\studio_replication_6.png" />
+    <Content Include="studio\Images\studio_replication_7.png" />
+    <Content Include="studio\Images\studio_replication_8.png" />
+    <Content Include="studio\Images\studio_replication_9.png" />
+    <Content Include="studio\Images\studio_statistics_1.PNG" />
+    <Content Include="studio\Images\studio_statistics_2.PNG" />
+    <Content Include="studio\Images\studio_statistics_3.PNG" />
+    <Content Include="studio\Images\studio_tasks_1.PNG" />
+    <Content Include="studio\Images\studio_tasks_2.PNG" />
+    <Content Include="studio\Images\studio_tasks_3.PNG" />
+    <Content Include="studio\Images\studio_tasks_4.PNG" />
+    <Content Include="Theory\images\document_structure_2_docs.png" />
+    <Content Include="Theory\images\document_structure_3_docs.png" />
+    <Content Include="Theory\images\document_structure_docs.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
