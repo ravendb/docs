@@ -14,8 +14,6 @@
 		{
 			public string Name { get; set; }
 
-			public string Email { get; set; }
-
 			public byte Age { get; set; }
 
 			public ICollection<string> Hobbies { get; set; } 
@@ -63,7 +61,7 @@
 				{
 					#region linq_extensions_search_hobbies
 					users = session.Query<User>("UsersByHobbies")
-									.Search(x => x.Hobbies, "sport books computers").ToList();
+						.Search(x => x.Hobbies, "looking for someone who likes sport books computers").ToList();
 					#endregion
 				}
 
@@ -83,54 +81,54 @@
 					               .Search(x => x.Hobbies, "sport").ToList();
 					#endregion
 
+					#region linq_extensions_search_users_by_hobbies_boost
+					users = session.Query<User>("UsersByHobbies")
+								   .Search(x => x.Hobbies, "I love sport", boost:10)
+								   .Search(x => x.Hobbies, "but also like reading books", boost:5).ToList();
+					#endregion
+
+					#region linq_extensions_search_users_by_hobbies_guess
+					users = session.Query<User>("UsersByNameAndHobbiesAndAge")
+								   .Search(x => x.Hobbies, "computers")
+								   .Search(x => x.Name, "James")
+								   .Where(x => x.Age == 20).ToList();
+					#endregion
+
 					#region linq_extensions_search_users_by_name_and_hobbies_search_and
 					users = session.Query<User>("UsersByNameAndHobbies")
-								   .Search(x => x.Name, "Adam", options:SearchOptions.And)
-								   .Search(x => x.Hobbies, "sport").ToList();
+								   .Search(x => x.Name, "Adam")
+								   .Search(x => x.Hobbies, "sport", options: SearchOptions.And).ToList();
 					#endregion
-				}
 
-				using (var session = documentStore.OpenSession())
-				{
+					#region linq_extensions_search_users_by_name_not
+					users = session.Query<User>("UsersByName")
+							.Search(x => x.Name, "James", options: SearchOptions.Not).ToList();
+					#endregion
+
+					#region linq_extensions_search_users_by_name_and_hobbies_and_not
+					users = session.Query<User>("UsersByNameAndHobbies")
+							.Search(x => x.Name, "Adam")
+							.Search(x => x.Hobbies, "sport", options: SearchOptions.Not | SearchOptions.And)
+							.ToList();
+					#endregion
 
 					#region linq_extensions_search_where_name_post_wildcard
 					users = session.Query<User>("UsersByName")
-									.Search(x => x.Name, 
-											"Jo* Ad*", 
-											escapeQueryOptions:EscapeQueryOptions.AllowPostfixWildcard).ToList();
+						.Search(x => x.Name, "Jo* Ad*", 
+								escapeQueryOptions:EscapeQueryOptions.AllowPostfixWildcard).ToList();
 					#endregion
 
 					#region linq_extensions_search_where_name_all_wildcard
 					users = session.Query<User>("UsersByName")
-									.Search(x => x.Name, 
-											"*oh* *da*", 
-											escapeQueryOptions: EscapeQueryOptions.AllowAllWildcards).ToList();
+						.Search(x => x.Name, "*oh* *da*", 
+								escapeQueryOptions: EscapeQueryOptions.AllowAllWildcards).ToList();
 					#endregion
-				}
 
-
-
-
-
-
-				#region linq_extensions_search_index_users_by_name_and_email
-				documentStore.DatabaseCommands.PutIndex("UsersByNameAndEmail", new IndexDefinition
-				{
-					Map = "from user in docs.Users select new { user.Name, user.Email }",
-					Indexes = { {"Name", FieldIndexing.Analyzed}, {"Email", FieldIndexing.Analyzed}}
-				});
-				#endregion
-
-				using (var session = documentStore.OpenSession())
-				{
-					var q = session.Query<User>("UsersByNameAndEmail").Search(x => x.Name, "Arek*", options: SearchOptions.Or)
-					               .Search(x => x.Email, "*.ais.pl");
-
-					var str = q.ToString();
-
-					var results = q.ToList();
-
-
+					#region linq_extensions_search_where_name_raw
+					users = session.Query<User>("UsersByName")
+						.Search(x => x.Name, "*J?n*",
+								escapeQueryOptions: EscapeQueryOptions.RawQuery).ToList();
+					#endregion
 				}
 			}
 		}
