@@ -6,50 +6,14 @@ RavenDB stores document in JSON format, which make it very flexible, but also ma
 
 That modification happens entirely at the [JSON.Net](http://json.codeplex.com/) layer, which is responsible for serializing and deserializing documents. The problem is when you have a model such as this:
 
-{CODE-START:csharp /}
-    public class Sale
-    {
-       public Sale()
-       {
-           Items = new List<SaleItem>();
-       }
-       public string Id { get; set; }
-       public List<SaleItem> Items { get; private set; }
-    }
-
-    public abstract class SaleItem
-    {
-       public decimal Amount { get; set; }
-    }
-
-    public class ProductSaleItem : SaleItem
-    {
-        public string ProductNumber { get; set; }
-    }
-
-    public class DiscountSaleItem : SaleItem
-    {
-       public string DiscountText { get; set; }
-    }
-{CODE-END/}
+{CODE polymorphism_1@Faq/Polymorphism.cs /}
 
 And you want to store the following data:
 
-{CODE-START:csharp /}
-    using (var session = documentStore.OpenSession())
-    {
-        var sale = new Sale();
-       sale.Items.Add(new ProductSaleItem { Amount = 1.99m, ProductNumber = "123" });
-       sale.Items.Add(new DiscountSaleItem { Amount = -0.10m, DiscountText = "Hanukkah Discount" });
-       session.Store(sale);
-       session.SaveChanges();
-    }
-{CODE-END/}
+{CODE polymorphism_2@Faq/Polymorphism.cs /}
 
 With the default JSON.Net behavior, you can serialize this object graph, but you can't deserialize it, because there isn't enough information in the JSON to do so.
 
 RavenDB gives you the following extension point to handle that:
 
-{CODE-START:csharp /}
-    documentStore.Conventions.CustomizeSerializer = serializer => serializer.TypeNameHandling = TypeNameHandling.All;
-{CODE-END/}
+{CODE polymorphism_3@Faq/Polymorphism.cs /}

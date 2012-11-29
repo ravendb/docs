@@ -15,29 +15,6 @@ That decision make reading the data very fast and easy, but it present a challen
 
 In order to solve this exact problem RavenDB offers Set Based Operations. Here is how we can use them from the client API:
 
-{CODE-START:csharp /}
-    documentStore.DatabaseCommands.UpdateByIndex("Tracks/ByArtistId",
-                                         new IndexQuery
-                                         {
-                                             Query = "Artist:artists/294"
-                                         }, new[]
-                                         {
-                                             new PatchRequest
-                                             {
-                                                 Type = "Modify",
-                                                 Name = "Artist",
-                                                 Nested = new[]
-                                                 {
-                                                     new PatchRequest
-                                                     {
-                                                         Type = "Set",
-                                                         Name = "Name",
-                                                         Value = JValue.CreateString("Fame Soundtrack")
-                                                     },
-                                                 }
-                                             }
-                                         },
-                                         allowStale: false);
-{CODE-END /}
+{CODE denormalized_updates_1@Faq/DenormalizedUpdates.cs /}
     
 This will update the Artist.Name property on all the documents where the Tracks/ByArtistId index matched to the id artists/294.
