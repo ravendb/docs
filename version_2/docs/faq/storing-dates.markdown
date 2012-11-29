@@ -10,25 +10,7 @@ The decision whatever to use UTC or Local Time is an application decision, not a
 
 Imagine we are building fancy ASP.NET MVC application with a lot of AJAX code calling some REST JSON controllers. We probably want to deal with Dates on client side to. Remember JSON date is not parsed automatically by the browser itself.
 
-    [ActionName("Rest Person")]
-    [HttpPost]
-    public JsonResult Create(PersonCreateInputModel model)
-    {
-    	if (ModelState.IsValid)
-    	{
-    		var session = MvcApplication.RavenSession;
-    		var person = new Person(
-    			model.name,
-    			model.surname,
-    			DateTime.UtcNow
-    		);
-    		session.Store(person);
-    		session.SaveChanges();
-    		return Json(person);
-    	}
-    	Response.StatusCode = (int)HttpStatusCode.BadRequest;
-    	return null;
-    }
+{CODE storing_dates_1@Faq/StoringDates.cs /}
 
 What we see is the controller method creating a new person with name, surname, and created DateTime. We chose DateTime.UtcNow because it's easily parseable by this JavaScript helper method:
 
