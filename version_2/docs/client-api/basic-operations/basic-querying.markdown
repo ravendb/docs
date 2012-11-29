@@ -4,11 +4,11 @@ Once data has been stored in RavenDB, we have seen how it can be retrieved by id
 
 For example, we might wish to ask for all the blog entries that belong to a certain category like so:
 
-{CODE basic_querying_1@Intro\BasicOperations.cs /}
+{CODE basic_querying_1@ClientApi\BasicOperations\BasicQuerying.cs /}
 
 Or, using a different syntax, to find all blog posts that have at least 10 comments:
 
-{CODE basic_querying_2@Intro\BasicOperations.cs /}
+{CODE basic_querying_2@ClientApi\BasicOperations\BasicQuerying.cs /}
 
 That Just Works(tm) and gives us all the blog posts matching the criteria we have specified.
 

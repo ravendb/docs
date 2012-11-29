@@ -63,7 +63,6 @@
     <None Include="client-api\attachments.markdown" />
     <None Include="client-api\basic-operations\.docslist" />
     <None Include="client-api\basic-operations\basic-querying.markdown" />
-    <None Include="client-api\basic-operations\client-side-listeners.markdown" />
     <None Include="client-api\basic-operations\deleting-documents.markdown" />
     <None Include="client-api\basic-operations\document-convention-properties.markdown" />
     <None Include="client-api\basic-operations\index.markdown" />

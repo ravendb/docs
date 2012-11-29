@@ -6,7 +6,7 @@ RavenDB supports `System.Transactions` for multiple operations against a RavenDB
 
 The client code for this is as simple as::
 
-{CODE transaction_support_1@Intro\BasicOperations.cs /}
+{CODE transaction_support_1@ClientApi\Advanced\TransactionSupport.cs /}
 	
 If at any point any of this code fails, none of the changes will be enacted against the RavenDB document store.
 

@@ -103,6 +103,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Appendixes\LuceneIndexesUsage.cs" />
+    <Compile Include="ClientApi\Advanced\AsyncDatabaseCommands\Index.cs" />
+    <Compile Include="ClientApi\Advanced\DatabaseCommands\Batch.cs" />
+    <Compile Include="ClientApi\Advanced\DatabaseCommands\Index.cs" />
+    <Compile Include="ClientApi\Advanced\DocumentMetadata.cs" />
+    <Compile Include="ClientApi\Advanced\DynamicFields.cs" />
+    <Compile Include="ClientApi\Advanced\QueryingForTerms.cs" />
+    <Compile Include="ClientApi\Advanced\TransactionSupport.cs" />
+    <Compile Include="ClientApi\BasicOperations\BasicQuerying.cs" />
+    <Compile Include="ClientApi\BasicOperations\DeletingDocuments.cs" />
+    <Compile Include="ClientApi\BasicOperations\LoadingEditingExistingDocument.cs" />
+    <Compile Include="ClientApi\BasicOperations\OpeningSession.cs" />
+    <Compile Include="ClientApi\BasicOperations\SavingNewDocument.cs" />
+    <Compile Include="ClientApi\BasicOperations\UnderstandingSessionObject.cs" />
     <Compile Include="ClientApi\ConnectionToRavenDbDataStore.cs" />
     <Compile Include="ClientApi\FacetedSearch.cs" />
     <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
@@ -114,13 +127,11 @@
     <Compile Include="ClientApi\Querying\UsingLinqToQueryRavenDb.cs" />
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="Consumer\Advanced.cs" />
-    <Compile Include="Consumer\AggressiveCaching.cs" />
+    <Compile Include="ClientApi\Advanced\CustomSerialization.cs" />
+    <Compile Include="ClientApi\Advanced\AggressiveCaching.cs" />
     <Compile Include="ClientApi\WorkingAsynchronously.cs" />
     <Compile Include="ClientApi\Attachments.cs" />
-    <Compile Include="Consumer\Faceted.cs" />
-    <Compile Include="Consumer\Listeners.cs" />
-    <Compile Include="Consumer\Metadata.cs" />
+    <Compile Include="ClientApi\Advanced\ClientSideListeners.cs" />
     <Compile Include="Consumer\MultiMap.cs" />
     <Compile Include="ClientApi\Querying\Paging.cs" />
     <Compile Include="ClientApi\PartialDocumentUpdates.cs" />
@@ -128,11 +139,10 @@
     <Compile Include="ClientApi\SetBasedOperations.cs" />
     <Compile Include="Consumer\Sharding.cs" />
     <Compile Include="Server\Smuggler.cs" />
-    <Compile Include="Consumer\Spatial.cs" />
+    <Compile Include="ClientApi\Advanced\SpatialSearch.cs" />
     <Compile Include="ClientApi\Querying\StaleIndexes.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs" />
     <Compile Include="HomepageSlides.cs" />
-    <Compile Include="Intro\BasicOperations.cs" />
     <Compile Include="Intro\ConnectingToDatastore.cs" />
     <Compile Include="Intro\Nutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
