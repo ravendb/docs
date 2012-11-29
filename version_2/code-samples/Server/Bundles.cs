@@ -65,7 +65,7 @@ namespace RavenCodeSamples.Server
 
 			var docs = new Docs();
 
-			var x =
+			var z =
 
 			#region indexreplication2
 			// Questions/TitleAndVoteCount
