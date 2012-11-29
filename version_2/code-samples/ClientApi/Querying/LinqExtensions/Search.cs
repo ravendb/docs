@@ -3,7 +3,9 @@
 	using System.Collections.Generic;
 	using System.Linq;
 	using Raven.Abstractions.Indexing;
+	#region using
 	using Raven.Client;
+	#endregion
 
 	public class Search : CodeSampleBase
 	{

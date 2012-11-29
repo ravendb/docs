@@ -14,7 +14,7 @@ While dynamic indexes are very easy to work with, static indexes are much more u
 
 Querying static indexes is no different than what we have seen by now. Whenever you execute a query against RavenDB and an appropriate static index exists, RavenDB will direct your query to that index automatically. You can also specify the index name explicitly, like so:
 
-{CODE static_indexes1@Consumer\StaticIndexes.cs /}
+{CODE static_indexes1@ClientApi\Querying\StaticIndexes\Index.cs /}
 
 {NOTE RavenDB will throw if an explicit index name was used, when no such index exists. /}
 

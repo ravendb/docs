@@ -13,13 +13,13 @@ The same queries and indexes that are used for data retrieval are used for the b
 
 To issue a batch-delete command you need to specify an index, and a query to be sent to it. To minimize the chances of stale results coming back, bulk operations should only be performed on static indexes:
 
-{CODE setbased1@Consumer\SetBased.cs /}
+{CODE setbased1@ClientApi\SetBasedOperations.cs /}
 
 ## The Update operation (Patching API)
 
 Performing a mass-update is exactly the same as making a mass-delete, but this time it uses the [Patching API](partial-document-updates) to make it easy for us to define what to do with the documents matching our query:
 
-{CODE setbased2@Consumer\SetBased.cs /}
+{CODE setbased2@ClientApi\SetBasedOperations.cs /}
 
 ## Set-based operations and stale indexes
 
