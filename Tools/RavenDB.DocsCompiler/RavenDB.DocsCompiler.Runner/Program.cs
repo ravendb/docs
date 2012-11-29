@@ -13,7 +13,7 @@ namespace RavenDB.DocsCompiler.Runner
 			IDocsOutput output = new HtmlDocsOutput
 									{
 										OutputPath = Path.Combine(basePath, "html-compiled"),
-										PageTemplate = File.ReadAllText(Path.Combine(basePath, @"Tools\html-template.html")),
+										PageTemplate = File.ReadAllText(Path.Combine(basePath, @"..\Tools\html-template.html")),
 										RootUrl = "http://ravendb.net/docs/",
 									};
 
