@@ -102,28 +102,35 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Appendixes\LuceneIndexesUsage.cs" />
+    <Compile Include="ClientApi\ConnectionToRavenDbDataStore.cs" />
+    <Compile Include="ClientApi\FacetedSearch.cs" />
+    <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="ClientApi\Querying\Polymorphism.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\Index.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\LiveProjections.cs" />
+    <Compile Include="ClientApi\Querying\UsingLinqToQueryRavenDb.cs" />
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Consumer\Advanced.cs" />
     <Compile Include="Consumer\AggressiveCaching.cs" />
-    <Compile Include="Consumer\Async.cs" />
-    <Compile Include="Consumer\Attachments.cs" />
-    <Compile Include="Consumer\DynamicQueries.cs" />
+    <Compile Include="ClientApi\WorkingAsynchronously.cs" />
+    <Compile Include="ClientApi\Attachments.cs" />
     <Compile Include="Consumer\Faceted.cs" />
-    <Compile Include="Consumer\Includes.cs" />
     <Compile Include="Consumer\Listeners.cs" />
-    <Compile Include="Consumer\LiveProjections.cs" />
     <Compile Include="Consumer\Metadata.cs" />
     <Compile Include="Consumer\MultiMap.cs" />
-    <Compile Include="Consumer\Paging.cs" />
-    <Compile Include="Consumer\Patching.cs" />
+    <Compile Include="ClientApi\Querying\Paging.cs" />
+    <Compile Include="ClientApi\PartialDocumentUpdates.cs" />
     <Compile Include="ClientApi\Querying\LinqExtensions\Search.cs" />
-    <Compile Include="Consumer\SetBased.cs" />
+    <Compile Include="ClientApi\SetBasedOperations.cs" />
     <Compile Include="Consumer\Sharding.cs" />
     <Compile Include="Server\Smuggler.cs" />
     <Compile Include="Consumer\Spatial.cs" />
-    <Compile Include="Consumer\Stale.cs" />
-    <Compile Include="Consumer\StaticIndexes.cs" />
+    <Compile Include="ClientApi\Querying\StaleIndexes.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs" />
     <Compile Include="HomepageSlides.cs" />
     <Compile Include="Intro\BasicOperations.cs" />
     <Compile Include="Intro\ConnectingToDatastore.cs" />
@@ -135,6 +142,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

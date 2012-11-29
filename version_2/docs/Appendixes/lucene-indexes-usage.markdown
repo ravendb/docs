@@ -35,16 +35,7 @@ Using this format, it is pretty easy to perform both exact queries and range que
 
 Lucene uses Analyzers to split up text into the tokens that are then stored in the index. Normally the default analyzers is okay, but Raven lets you specify which built-in Lucene analyzer to use, in the case when the default analyzer isn't suitable. You can control the analyzer per-field like so:
 
-    store.DatabaseCommands.PutIndex("Movies",
-            new IndexDefinition
-            {
-                Map = "from movie in docs.Movies select new { movie.Name, movie.Tagline }",
-                Analyzers =
-                    {
-                        {"Name", typeof(SimpleAnalyzer).FullName},
-                        {"Tagline", typeof(StopAnalyzer).FullName},                                    
-                    }
-            });
+{CODE using_custom_analyzers@Appendixes\LuceneIndexesUsage.cs /}
 
 The output of the built-in analyzers are shown below, they are all tokenizing the following text:
 

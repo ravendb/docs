@@ -8,7 +8,7 @@ Dates are written to the index in a form which preserves lexicography order, and
 
 Numerical values, on the other hand, are stored as text and therefore require the user to specify explicitly what is the number type used so a correct sorting mechanism is enforced. This is quite easily done, by declaring the required sorting setup in `SortOptions` in the index definition:
 
-{CODE static_sorting1@Consumer\StaticIndexes.cs /}
+{CODE static_sorting1@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
 
 The index outlined above will allow sorting by value on the user's age (1, 2, 3, 11, etc). If we wouldn't specify this option, it would have been sorted lexically (1, 11, 2, 3, etc).
 
@@ -20,6 +20,6 @@ RavenDB supports using collations for documents sorting and indexing. You can se
 
 The following is an example of an index definition which allows sorting based on the Swedish lexical sorting rules:
 
-{CODE static_sorting2@Consumer\StaticIndexes.cs /}
+{CODE static_sorting2@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
 
 In general, you can sort using `[two-letters-culture-name]CollationAnalyzer`, and all the cultures supported by the .NET framework are supported.
