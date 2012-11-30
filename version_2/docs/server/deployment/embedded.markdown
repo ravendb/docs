@@ -4,7 +4,7 @@ RavenDB makes it very easy to be embedded within your application. The first ste
 
 After referencing the embedded client from your project, all that is left to do is initializing:
 
-{CODE embedded1@Server\Deployment.cs /}
+{CODE embedded1@Server\Deployment\Embedded.cs /}
 
 ## HTTP access
 
@@ -12,7 +12,7 @@ By default you don't have an external access to RavenDB, so if you want to use t
 
 RavenDB can be run in an embedded mode with HTTP enabled. To do that, you will just need to set another flag when initializing the embedded document store:
 
-{CODE embedded2@Server\Deployment.cs /}
+{CODE embedded2@Server\Deployment\Embedded.cs /}
 
 Note that you may want to call `NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(port)` to ensure that you can open the HTTP server without requiring administrator privileges.
 

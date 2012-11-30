@@ -13,16 +13,7 @@ Once done you can use OAuth for authentication.
 ## Adding users
 In order to add a user we can use the following code:
 
-    using(var session = documentStore.OpenSession())
-    {
-    	session.Store(new AuthenticationUser
-    	{
-    		Name = "Ayende",
-    		Id = "Raven/Users/Ayende",
-    		AllowedDatabases = new[] {"*"}
-     	}.SetPassword("abc"));
-    	session.SaveChanges();
-    }
+{CODE authenticate_1@Server\Bundles\Authentication.cs /}
 
 If no users are found on the database a user "admin" will be created with an auto generated password.
 This data can be viewed in the "authentication.config" file.
@@ -30,15 +21,7 @@ This data can be viewed in the "authentication.config" file.
 ## How to authenticate
 In order to authenticate we configure our documentStore:  
 
-    documentStore.Credentials = new NetworkCredential("userName", "password");
-
-We can also use ConnectionStringName:
-
-    new DocumentStore {	
-    					Url=http://ravendb.mydomain.com;
-    					User=user;
-    					Password=secret
-    				  }
+{CODE authenticate_2@Server\Bundles\Authentication.cs /}
 
 ## Customizations
 **Related server configuration options:**  
@@ -56,8 +39,6 @@ Default to creating a new certificate every time the server restarts
 In order to user a 3rd party server we need to specify that server in the Raven/OAuthTokenServer
 and make sure that the server will return an Access Token created with the same Certificate as our server in string format.
 
-example:
+Example:
 
-    var token = AccessToken.Create(CertificatePath, userId,
-										   authorizedDatabases);
-    response.Write(token.Serialize());
+{CODE authenticate_3@Server\Bundles\Authentication.cs /}
