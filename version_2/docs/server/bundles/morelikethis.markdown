@@ -11,29 +11,21 @@ Place the Raven.Bundles.MoreLikeThis.dll file in the server's Plugins directory,
 
 In order for More Like This to work it must have access to the text in the index, therefore, the index being queried needs to store the fields.
 
-{CODE MoreLikeThis1@Server\Bundles.cs /}
+{CODE MoreLikeThis1@Server\Bundles\MoreLikeThis.cs /}
 
 ### Basic Usage
 
 More Like This has many defaults already set, so the simplest usage will satisfy most usage scenarios.
 
-{CODE-START:csharp /}
-var list = session.Advanced.MoreLikeThis<Article, ArticleIndex>(key);
-{CODE-END /}
+{CODE more_like_this_1@Server\Bundles\MoreLikeThis.cs /}
 
 More Like This will use all the fields defined in an index. To use only a specific field or fields, pass them in as the second parameter.
 
-{CODE-START:csharp /}
-var list = session.Advanced.MoreLikeThis<Data, DataIndex>(new MoreLikeThisQueryParameters
-{
-	DocumentId = key,
-	Fields = new[] { "Body" }
-});
-{CODE-END /}
+{CODE more_like_this_2@Server\Bundles\MoreLikeThis.cs /}
 
 ### Advanced Usage
 
-By passing in an object of type MoreLikeThisQueryParameters the More Like This default can be changed.
+By passing in an object of type MoreLikeThisQuery the More Like This default can be changed.
 
 + **Fields** - Limit the fields that we search on to just the specified field names.
 + **Boost** - Boost terms in query based on score. Using this option may give more exact results by boosting the terms found by their score. The default is false.
@@ -49,8 +41,6 @@ By passing in an object of type MoreLikeThisQueryParameters the More Like This d
 
 A document with a list of stop words can be stored in RavenDB. For example:
 
-{CODE-START:csharp /}
-session.Store(new StopWordsSetup{ Id = "Config/Stopwords", StopWords = new List<string> { "I", "A", "Be" }});
-{CODE-END /}
+{CODE more_like_this_3@Server\Bundles\MoreLikeThis.cs /}
 
 The document id is then set in MoreLikeThisQueryParameters

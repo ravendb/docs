@@ -10,7 +10,7 @@ RavenDB contains builtin support for sharding. It'll handle all aspects of shard
 
 Here are some entities that can be split to different shards based on their Region: the `Company` and `Invoice` entities.
 
-{CODE entities@Consumer\Sharding.cs /}
+{CODE entities@Server\ScalingOut\Sharding\Index.cs /}
 
 In order to achieve this, you need to use the ShardedDocumentStore, instead of the usual DocumentStore. Except for the initialization phase, it behaves just like the standard DocumentStore, and you have access to all of the usual API and features of RavenDB.
 
@@ -25,7 +25,7 @@ The ShardStrategy tells the ShardedDocumentStore how to interact with the shards
 
 So in order to use sharding, you can just use the `ShardStrategy` with its default behaviour:
 
-{CODE store@Consumer\Sharding.cs /}
+{CODE store@Server\ScalingOut\Sharding\Index.cs /}
 
 For complex sharding environments you would probably want to implement the `IShardResolutionStrategy` yourself and set the `ShardResolutionStrategy` property in the `ShardStrategy` to hold your custom implementation instead of the `DefaultShardResolutionStrategy`. The `IShardResolutionStrategy` has the following methods that need to be implemented:
 
@@ -40,13 +40,13 @@ In the above code you can see that the `company` holds the shard ID in the Regio
 
 Now we can store some data which will be split across different shards:
 
-{CODE SaveEntities@Consumer\Sharding.cs /}
+{CODE SaveEntities@Server\ScalingOut\Sharding\Index.cs /}
 
 In the above example we're storing each of the companies on a different shard, and each of the invoices in the same shard of their company's shard.
 
 Now we can do operation like `Query`, `Load` or `LuceneQuery`, and the actual shards that will be contacted in order to complete that opertion will depend on the `IShardResolutionStrategy` implementation.
 
-{CODE Query@Consumer\Sharding.cs /}
+{CODE Query@Server\ScalingOut\Sharding\Index.cs /}
 
 If you're using the `DefaultShardResolutionStrategy` than in this case it'll make a request just to the "Asia" shard.
 

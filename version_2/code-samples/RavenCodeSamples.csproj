@@ -67,8 +67,9 @@
     <Reference Include="PowerCollections">
       <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\PowerCollections.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>packages\RavenDB.Client.2.0.2160-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Bundles.IndexReplication">
       <HintPath>packages\RavenDB.Bundles.IndexReplication.2.0.2160-Unstable\lib\net40\Raven.Bundles.IndexReplication.dll</HintPath>
@@ -79,8 +80,12 @@
     <Reference Include="Raven.Client.Embedded">
       <HintPath>packages\RavenDB.Embedded.2.0.2160-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>packages\RavenDB.Client.2.0.2160-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.UniqueConstraints">
+      <HintPath>..\packages\RavenDB.Client.UniqueConstraints.2.0.2161-Unstable\lib\net40\Raven.Client.UniqueConstraints.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database">
       <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Raven.Database.dll</HintPath>
@@ -132,12 +137,29 @@
     <Compile Include="ClientApi\WorkingAsynchronously.cs" />
     <Compile Include="ClientApi\Attachments.cs" />
     <Compile Include="ClientApi\Advanced\ClientSideListeners.cs" />
-    <Compile Include="Consumer\MultiMap.cs" />
     <Compile Include="ClientApi\Querying\Paging.cs" />
     <Compile Include="ClientApi\PartialDocumentUpdates.cs" />
     <Compile Include="ClientApi\Querying\LinqExtensions\Search.cs" />
     <Compile Include="ClientApi\SetBasedOperations.cs" />
-    <Compile Include="Consumer\Sharding.cs" />
+    <Compile Include="Server\Administration\ExportImport.cs" />
+    <Compile Include="Server\Bundles\Authentication.cs" />
+    <Compile Include="Server\Bundles\Authorization.cs" />
+    <Compile Include="Server\Bundles\AuthorizationBundleDesign.cs" />
+    <Compile Include="Server\Bundles\CascadeDelete.cs" />
+    <Compile Include="Server\Bundles\Expiration.cs" />
+    <Compile Include="Server\Bundles\IndexReplication.cs" />
+    <Compile Include="Server\Bundles\MoreLikeThis.cs" />
+    <Compile Include="Server\Bundles\UniqueConstraints.cs" />
+    <Compile Include="Server\Bundles\Versioning.cs" />
+    <Compile Include="Server\Extending\RequestResponders\Index.cs" />
+    <Compile Include="Server\Extending\Triggers\Delete.cs" />
+    <Compile Include="Server\Extending\Triggers\Indexing.cs" />
+    <Compile Include="Server\Extending\Triggers\Put.cs" />
+    <Compile Include="Server\Extending\Triggers\Read.cs" />
+    <Compile Include="Server\ScalingOut\Replication\ClientIntegration.cs" />
+    <Compile Include="Server\ScalingOut\Replication\FromEmbeddedServer.cs" />
+    <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
+    <Compile Include="Server\ScalingOut\Sharding\Index.cs" />
     <Compile Include="Faq\DenormalizedReferences.cs" />
     <Compile Include="Faq\DenormalizedUpdates.cs" />
     <Compile Include="Faq\ImmutableEntities.cs" />
@@ -146,16 +168,16 @@
     <Compile Include="Faq\StoringDates.cs" />
     <Compile Include="Faq\UniqueConstraints.cs" />
     <Compile Include="Faq\WorkingWithDtc.cs" />
+    <Compile Include="Intro\SafeByDefault.cs" />
     <Compile Include="MvcSampleBase.cs" />
-    <Compile Include="Server\Smuggler.cs" />
+    <Compile Include="Server\MultipleDatabases.cs" />
     <Compile Include="ClientApi\Advanced\SpatialSearch.cs" />
     <Compile Include="ClientApi\Querying\StaleIndexes.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs" />
     <Compile Include="HomepageSlides.cs" />
     <Compile Include="Intro\RavenDbInNutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\Bundles.cs" />
-    <Compile Include="Server\Deployment.cs" />
+    <Compile Include="Server\Deployment\Embedded.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

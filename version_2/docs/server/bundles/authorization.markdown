@@ -44,11 +44,11 @@ The Auth Bundle allows a much richer permissions system.
 
 We can define the first two requirements in the above scenario using the following:
 
-{CODE authorization1@Server\Bundles.cs /}
+{CODE authorization1@Server\Bundles\Authorization.cs /}
 
 And the last is defined using:
 
-{CODE authorization2@Server\Bundles.cs /}
+{CODE authorization2@Server\Bundles\Authorization.cs /}
 
 Note that we have multiple axis of permissions for the same document.
 
@@ -102,7 +102,7 @@ The Auth Bundle usage on the client side is limited to three methods:
 
 For example, here is the code for authorization hospitalization:
 
-{CODE authorization3@Server\Bundles.cs /}
+{CODE authorization3@Server\Bundles\Authorization.cs /}
 
 If the user doesn't have permissions to authorize hospitalization, an error will be raised when the change is persisted to the database in the SaveChanges call.
 

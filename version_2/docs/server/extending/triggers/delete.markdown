@@ -5,16 +5,6 @@ Delete triggers implement the AbstractDeleteTrigger interface and follow much th
 
 **Example: Cascading deletes**
 
-    public class CascadeDeleteTrigger : AbstractDeleteTrigger
-    {
-    
-        public override void OnDelete(string key, TransactionInformation txInfo)
-        {
-            var document = Database.Get(key, txInfo);
-            if (document == null)
-                return;
-            Database.Delete(document.Metadata.Value<string>("Cascade-Delete"), null, txInfo);
-        }
-    }
+{CODE delete_1@Server\Extending\Triggers\Delete.cs /}
 
 In this case, we perform another delete operation as part of the current delete operation. This operation is done under the same transaction as the original operation.
