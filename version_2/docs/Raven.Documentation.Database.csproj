@@ -141,6 +141,12 @@
     <None Include="Intro\what-is-nosql.markdown" />
     <None Include="RavenLight\.docslist" />
     <None Include="RavenLight\index.markdown" />
+    <None Include="samples\.docslist" />
+    <None Include="samples\index.markdown" />
+    <None Include="samples\mvc\.docslist" />
+    <None Include="samples\mvc\index.markdown" />
+    <None Include="samples\web-api\.docslist" />
+    <None Include="samples\web-api\index.markdown" />
     <None Include="server\.docslist" />
     <None Include="server\administration\.docslist" />
     <None Include="server\administration\backup-restore.markdown" />
@@ -208,8 +214,8 @@
     <None Include="Theory\index.markdown" />
     <None Include="Theory\ravendb-collections.markdown" />
     <None Include="Theory\what-is-raven.markdown" />
-    <None Include="To Arrange\createAspNeMVC4Project.markdown" />
-    <None Include="To Arrange\createAspNetWebApiProject.markdown" />
+    <None Include="samples\mvc\createAspNetMVC4Project.markdown" />
+    <None Include="samples\web-api\createAspNetWebApiProject.markdown" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="client-api\advanced\images\CNET_faceted_search_2.jpg" />
@@ -357,6 +363,7 @@
     <Content Include="Theory\images\document_structure_3_docs.png" />
     <Content Include="Theory\images\document_structure_docs.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
