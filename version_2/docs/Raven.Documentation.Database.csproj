@@ -112,6 +112,9 @@
     <None Include="faq\unique-constraints.markdown" />
     <None Include="faq\working-with-dtc.markdown" />
     <None Include="http-api\.docslist" />
+    <None Include="http-api\extensions\.docslist" />
+    <None Include="http-api\extensions\index.markdown" />
+    <None Include="http-api\extensions\metadata-only.markdown" />
     <None Include="http-api\http-api-attachments.markdown" />
     <None Include="http-api\http-api-comcurrency.markdown" />
     <None Include="http-api\http-api-indexes-querying.markdown" />
