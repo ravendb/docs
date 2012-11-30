@@ -35,7 +35,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ Normal
 
 * **Raven/MaxPageSize**  
-    The maximum allowed page size for queries.  
+    The maximum page size that can be specified on this server.  
     _Default:_ 1024  
     _Minimum:_ 10
     
@@ -43,129 +43,196 @@ This is the standard app.config XML file. The `appSettings` section is where the
     The expiration value for documents in the internal document cache. Value is in seconds.
     _Default:_ 5 minutes
 
+* **Raven/MemoryCacheLimitMegabytes**
+	The max size in MB for the internal document cache inside RavenDB server.
+	_Default:_ 50% of the total system meory minus the size of the esent cache.
+
+* **Raven/MemoryCacheLimitPercentage**
+	The percentage of memory that the internal document cache inside RavenDB server will use.
+	_Default:_ 0 (auto)
+
+* **Raven/MemoryCacheLimitCheckInterval**
+	The internal for checking that the internal document cache inside RavenDB server will be cleaned.
+	_Format:_ HH:MM:SS
+	_Default:_ depends on system polling interval
+
 ## Index settings
 
 * **Raven/IndexStoragePath**  
-    The path to the indexes that are kept on disk. Putting them in a different drive than the actual data will improve performance significantly.  
-    _Default_: ~/Data/Indexes
-    
-* **Raven/SkipCreatingStudioIndexes**  
-    Set to true, tells RavenDB NOT to create the indexes that are used by the Management Studio to provide some Collection related features.  
-    _Allowed values:_ true/false  
-    _Default:_ false  
+    The path for the indexes on disk. Useful if you want to store the indexes on another HDD for performance reasons.  
+    _Default:_ ~/Data/Indexes
 
 * **Raven/MaxNumberOfParallelIndexTasks**  
-    The maximum number of indexing tasks allowed to run in parallel  
-    _Default:_ the number of processors in the current machine
+    The number of indexing tasks that can be run in parallel. There is usually one or two indexing tasks for each index.   
+	_Default:_ the number of processors in the current machine
     
 * **Raven/MaxNumberOfItemsToIndexInSingleBatch**  
-    Max number of items to take for indexing in a batch  
-    _Default:_ 2500  
-    _Minimum:_ 128  
+	The max number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.   
+	_Default:_ 128 * 1024 for 64-bit and 64 * 1024 for 32-bit  
+	_Minimum:_ 128
+
+* **Raven/InitialNumberOfItemsToIndexInSingleBatch**
+	The number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.    
+    _Default:_ 512 for 64-bit and 256 for 32-bit  
+
+* **Raven/AvailableMemoryForRaisingIndexBatchSizeLimit**
+	The minimum amount of memory available for us to double the size of InitialNumberOfItemsToIndexInSingleBatch if we need to.   
+	_Default:_ 50% of total system memory  
+	_Minimum:_ 768
+
+* **Raven/ResetIndexOnUncleanShutdown**
+	When the database is shut down rudely, determine whatever to reset the index or to check it. Note that checking the index may take some time on large databases.   
+	_Default:_ false
+
+* **Raven/MaxIndexingRunLatency**
+	What is the suggested max latency for a single indexing run that allows the database to increase the indexing batch size.   
+	_Default:_ 5 minutes
+
+* **Raven/TaskScheduler**
+	The TaskScheduler type to use for executing indexing.   
 
 * **Raven/TempIndexPromotionMinimumQueryCount**  
-    How many times a temporary, auto-generated index has to be accessed before it can be promoted to be a permanent one  
-    _Default:_ 100  
+    The number of times a temporary index has to be queried during the promotion threshold to become a permanent auto index.    
+    _Default:_ 100   
+	_Minimum:_ 1  
 
 * **Raven/TempIndexPromotionThreshold**  
-Time (in milliseconds) the index has to be queried at least once in order for it to become permanent  
+	The promotion threshold for promoting a temporary dynamic index into a permanent auto index. The value is in second and refer to the length of time that the index have to get to the minimum query count value.   
     _Default:_ 60000 (once per minute)  
 
 * **Raven/TempIndexCleanupPeriod**  
-    How often to run the temporary index cleanup process (in seconds)  
+    How often will temp dynamic indexes be purged from the system. The value is in seconds.   
     _Default:_ 600 (10 minutes)  
 
 * **Raven/TempIndexCleanupThreshold**  
-    How much time in seconds to wait after a temporary index has been used before removing it if no further calls were made to it during that time  
+    How long does a temporary index hang around if there are no queries made to it. The value is in seconds.   
     _Default:_ 1200 (20 minutes)  
 
 * **Raven/TempIndexInMemoryMaxMB**  
-    Temp indexes are kept in memory until they reach this integer value in MB  
+    The max size in MB of a temporary index held in memory. When a temporary dynamic index exceeds that value, it will be using on disk indexing, rather then RAM indexing.   
     _Default:_ 25 MB  
     _Minimum:_ 1 MB
+
+* **Raven/CreateTemporaryIndexesForAdHocQueriesIfNeeded**
+	Whatever we allow creation of temporary indexes on dynamic queries.   
+	_Default:_ true
+
+* **Raven/Raven/SkipCreatingStudioIndexes**
+	Control whatever the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   
+	_Default:_ false
+
+* **Raven/LimitIndexesCapabilities**
+	Control whatever RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).   
+	_Default:_ false
 
 ## Data settings:
 
 * **Raven/RunInMemory**  
-    Should RavenDB's storage be in-memory. If set to true, Munin would be used as the storage engine, regardless of what was specified for StorageTypeName  
-    _Allowed values:_ true/false  
+    Whatever the database should run purely in memory. When running in memory, nothing is written to disk and if the server is restarted all data will be lost. This is mostly useful for testing.   
     _Default:_ false  
 
 * **Raven/DataDir**  
-    The directory for the RavenDB database. You can use the ~\ prefix to refer to RavenDB's base directory.  
+    The path for the database directory. Can use ~\ as the root, in which case the path will start from the server base directory.  
     _Default:_ ~\Data  
 
 * **Raven/StorageTypeName**  
     What storage type to use (see: RavenDB Storage engines)  
-    _Allowed values:_ esent, munin (at this point of time only Esent is fully supported by RavenDB)  
+    _Allowed values:_ esent, munin   
     _Default:_ esent  
 
 * **Raven/TransactionMode**  
-    What sort of transaction mode to use  
-    _Allowed values:_  Lazy (faster, but can result in data loss in the case of server crash), Safe (slower, but will never lose data)  
+    What transaction mode to use. Safe transaction mode ensures data consistency, but is slower. Lazy is faster, but may result in a data loss if the server crashes.   
+    _Allowed values:_  Lazy, Safe   
     _Default:_ Safe
 
 ## Http settings
 
 * **Raven/HostName**  
-    The hostname to use when creating the http listener (null to accept any hostname or address)  
+    The hostname to bind the embedded http server to, if we want to bind to a specific hostname, rather than all.  
     _Default:_ none, binds to all host names  
 
 * **Raven/Port**
-    The port to use when creating the http listener.  
-    _Default:_ 8080  
+    The port to use when creating the http listener. 
+	_Allowed:_ 1 - 65,536 or * (find first avaible port from 8080 and upward)   
+    _Default:_ 8080    
 
 * **Raven/VirtualDirectory**  
-    The virtual directory to use when creating the http listener.  
+    The virtual directory for the RavenDB server.  
     _Default:_ /  
 
 * **Raven/HttpCompression**  
-    Whether to use http compression or not  
-    _Allowed values:_ true/false  
+    Whatever http compression is enabled.   
     _Default:_ true  
 
 * **Raven/AccessControlAllowOrigin**  
-    Determine the value of the Access-Control-Allow-Origin header sent by the server  
-    _Allowed values:_ null (don't send the header), *, http://example.org  
+    Configures the server to send Access-Control-Allow-Origin header with the specified value. If this value isn't specified, all the access control settings are ignored.   
+    _Allowed values:_ null (don't send the header), *, http://example.org,   
+	_Default:_ none  
 
-* **Raven/AnonymousAccess**  
-    Defines which operations are allowed for anonymous users  
-    _Allowed values:_ All, Get, None  
-    _Default:_ Get  
+* **Raven/AccessControlMaxAge**
+	Configures the server to send Access-Control-Max-Age header with the specified value.  
+	_Default:_ 1728000 (20 days)
+
+* **Raven/AccessControlAllowMethods**
+	Configures the server to send Access-Control-Allow-Methods header with the specified value.   
+	_Default:_ PUT, PATCH, GET, DELETE, POST.
+
+* **Raven/AccessControlRequestHeaders**
+	Configures the server to send Access-Control-Request-Headers header with the specified value.   
+	_Default:_ none
 
 ## Misc settings
 
+* **Raven/License**
+	The full license string for RavenDB. If Raven/License is specified, it overrides the Raven/LicensePath configuration.   
+
+* **Raven/LicensePath**
+	The path to the license file for RavenDB.   
+	_Default:_ ~\license.xml
+
+## Bundles
+
+* **Raven/ActiveBundles**
+	Semicolon separated list of bundles names, such as: 'Replication;Versioning'. If the value is not specified, none of the bundles are installed.   
+	_Default:_ none
+
+* **Raven/BundlesSearchPattern**
+	Allow to limit the loaded plugins by specifying a search pattern, such as Raven.*.dll. Multiple values can be specified, separated by a semicolon (;).   
+
 * **Raven/PluginsDirectory**  
-    Where to look for plugins for RavenDB  
+    The location of the plugins directory for this database.   
     _Default:_ ~\Plugins  
 
+## Studio
+
 * **Raven/WebDir**  
-    The directory to search for RavenDB's WebUI. This is usually only useful if you are debugging RavenDB's WebUI  
-    _Default:_ ~/Raven/WebUI  
-    
-* **Raven/Authorization/Windows/RequiredGroups**  
-    Limit the users that can authenticate to RavenDB to only users in the specified groups. Multiple groups can be specified, separated by a semi column (;).
+    The location of the web directory for known files that makes up the RavenDB internal website.   
+    _Default:_ ~/Raven/WebUI
+
+* **Raven/RedirectStudioUrl**
+	The url to redirect the user to when then try to access the local studio.   
 
 ## Esent settings
 
 * **Raven/Esent/CacheSizeMax**  
-    The maximum size of the in memory cache that is used by the storage engine. The value is in megabytes.  
-    _Default:_ 1024  
+    The size in MB of the Esent page cache, which is the default storage engine.   
+    _Default:_ 256 for 32-bit and 25% of total system memory for 64-bit  
+	_Minimum:_ 256 for 32-bit and 1024 for 64-bit  
 
 * **Raven/Esent/MaxVerPages**  
-    The maximum size of version store (in memory modified data) available. The value is in megabytes.  
-    _Default:_ 128  
+    The maximum size of version store (in memory modified data) available. The value is in megabytes.   
+    _Default:_ 512  
 
 * **Raven/Esent/DbExtensionSize**  
-    The size that the database file will be enlarged with when the file is full. The value is in megabytes. Lower values will result in smaller file size, but slower performance.  
-    _Default:_ 16  
+    The size that the database file will be enlarged with when the file is full. The value is in megabytes. Lower values will result in smaller file size, but slower performance.    
+    _Default:_ 8  
 
 * **Raven/Esent/LogFileSize**  
-    The size of the database log file. The value is in megabytes.  
+    The size of the database log file. The value is in megabytes.    
     _Default:_ 64  
 
 * **Raven/Esent/LogBuffers**  
-    The size of the in memory buffer for transaction log.  
+    The size of the in memory buffer for transaction log.   
     _Default:_ 16  
 
 * **Raven/Esent/MaxCursors**  
@@ -173,9 +240,53 @@ Time (in milliseconds) the index has to be queried at least once in order for it
     _Default:_ 2048  
     
 * **Raven/Esent/LogsPath**  
-    Where to keep the Esent transaction logs. Putting the logs in a different drive than the data and indexes will improve performance significantly.  
-    _Default_: ~/Data/logs  
+    The path for the esent logs. Useful if you want to store the indexes on another HDD for performance reasons.     
+    _Default_: ~/Data/Logs  
 
 * **Raven/Esent/CircularLog**  
-    Whether or not to enable circular logging with Esent.  
+    Whatever circular logs will be used, defaults to true. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
     _Default_: true  
+
+## Tenants
+
+* **Raven/Tenants/MaxIdleTimeForTenantDatabase**
+	The time in seconds to allow a tenant database to be idle. Value is in seconds.   
+	_Default:_ 900
+
+* **Raven/Tenants/FrequnecyToCheckForIdleDatabases**
+	The time in seconds to check for an idle tenant database. Value is in seconds.   
+	_Default:_ 60
+
+## Quotas
+
+* **Raven/Quotas/Size/HardLimitInKB**
+	The hard limit after which we refuse any additional writes.   
+	_Default:_ none
+
+* **Raven/Quotas/Size/SoftMarginInKB**
+	The soft limit before which we will warn about the quota.   
+	_Default:_ 1024
+
+## Authorization & Authentication
+
+* **Raven/AnonymousAccess**
+	Determines what actions an anonymous user can do. Get - read only, All - read & write, None - allows access to only authenticated users.   
+	_Default:_ Get
+
+* **Raven/Authorization/Windows/RequiredGroups**
+	Limit the users that can authenticate to RavenDB to only users in the specified groups. Multiple groups can be specified, separated by a semicolon (;).   
+
+* **Raven/Authorization/Windows/RequiredUsers**
+	Limit the users that can authenticate to RavenDB to only the specified users. Multiple users can be specified, separate by a semicolon (;).   
+
+* **Raven/OAuthTokenServer**
+	The url clients should use for authenticating when using OAuth mode.  
+	_Default:_ http://RavenDB-Server-Url/OAuth/AccessToken - the internal OAuth server.
+
+* **Raven/OAuthTokenCertificatePath**
+	The path to the OAuth certificate.  
+	_Default:_ none. If no certificate is specified, one will be automatically created.
+
+* **Raven/OAuthTokenCertificatePassword**
+	The password for the OAuth certificate.  
+	_Default:_ none
