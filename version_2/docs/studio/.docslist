@@ -6,3 +6,4 @@ logs.markdown	The Logs Screen
 statistics.markdown	Database Statistics
 multi-database.markdown	Multi-databse Support
 replication.markdown	Replication Walkthrough
+patch.markdown	Patching
