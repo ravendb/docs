@@ -4,10 +4,10 @@ Raven allows you to use triggers to add custom behavior for the database. Those 
 
 Raven supports the following triggers:
 
-* [PUT triggers](/docs/server/extending/triggers/put)
-* [DELETE triggers](/docs/server/extending/triggers/delete)
-* [Read triggers](/docs/server/extending/triggers/read)
-* [Index update triggers](/docs/server/extending/triggers/indexing)
+* [PUT triggers](/docs/1.0/server/extending/triggers/put)
+* [DELETE triggers](/docs/1.0/server/extending/triggers/delete)
+* [Read triggers](/docs/1.0/server/extending/triggers/read)
+* [Index update triggers](/docs/1.0/server/extending/triggers/indexing)
 
 While not precisely a trigger, the document codec does fall into the same category:
 
