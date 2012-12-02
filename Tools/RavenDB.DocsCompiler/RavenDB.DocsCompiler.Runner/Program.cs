@@ -27,7 +27,7 @@ namespace RavenDB.DocsCompiler.Runner
 
 			try
 			{
-				Compiler.CompileFolder(output, docsPath, "Home");
+				Compiler.CompileFolder(output, docsPath, "Home", "2.0");
 			}
 			catch (Exception ex)
 			{
