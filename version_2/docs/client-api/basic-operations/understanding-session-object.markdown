@@ -2,7 +2,7 @@
 
 After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on the DB, we start by obtaining a new Session object from the document store. The Session object will contain everything needed to perform any operation necessary:
 
-{CODE session_usage_1@Intro\BasicOperations.cs /}
+{CODE session_usage_1@ClientApi\BasicOperations\UnderstandingSessionObject.cs /}
 
 The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and finally apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server and do something with it.
 
@@ -14,7 +14,7 @@ The Client API implements the Unit of Work pattern. That has several implication
 
 * The session manages change tracking for all the entities that it has either loaded or stored.
 
-{CODE session_usage_2@Intro\BasicOperations.cs /}
+{CODE session_usage_2@ClientApi\BasicOperations\UnderstandingSessionObject.cs /}
 
 ## Batching
 

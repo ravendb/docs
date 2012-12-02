@@ -65,6 +65,6 @@ Alternatively, if you prefer to do export/import from code rather than from the 
 
 Usage example:
 
-{CODE smuggler-api@Server\Smuggler.cs /}
+{CODE smuggler-api@Server\Administration\ExportImport.cs /}
 
 In the above code we exporting all of the data on the server, which is the documents, indexes and attachments, and than importing just the documents and the indexes. In this exmple the import would overwrite the existing documents, so if you want to import to another database you'll need to create another instance of the SmugllerApi with a defferent connection string options.

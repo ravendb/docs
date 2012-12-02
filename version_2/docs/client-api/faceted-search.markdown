@@ -22,39 +22,7 @@ To achieve this in RavenDB, lets say you have a document like this:
 
 You need to setup your facet definitions and store them in RavenDB as a document, like so:
 
-{CODE-START:csharp /}
-_facets = new List<Facet>
-                        {
-                            new Facet {Name = "Manufacturer"},
-                            new Facet
-                                {
-                                    Name = "Cost_Range",
-                                    Mode = FacetMode.Ranges,
-                                    Ranges =
-                                        {
-                                            "[NULL TO Dx200.0]",
-                                            "[Dx200.0 TO Dx400.0]",
-                                            "[Dx400.0 TO Dx600.0]",
-                                            "[Dx600.0 TO Dx800.0]",
-                                            "[Dx800.0 TO NULL]",
-                                        }
-                                },
-                            new Facet
-                                {
-                                    Name = "Megapixels_Range",
-                                    Mode = FacetMode.Ranges,
-                                    Ranges =
-                                        {
-                                            "[NULL TO Dx3.0]",
-                                            "[Dx3.0 TO Dx7.0]",
-                                            "[Dx7.0 TO Dx10.0]",
-                                            "[Dx10.0 TO NULL]",
-                                        }
-                                }
-                        };
-                        
-session.Store(new FacetSetup { Id = "facets/CameraFacets", Facets = _facets });
-{CODE-END /}
+{CODE step_1@ClientApi\FacetedSearch.cs /}
 
 This tells RavenDB that you would like to get the following facets.
 
@@ -75,31 +43,13 @@ This tells RavenDB that you would like to get the following facets.
 
 Next you need to create an index to work against, this can be setup like so:
 
-{CODE-START:csharp /}
-store.DatabaseCommands.PutIndex("CameraCost",
-                            new IndexDefinition
-                            {
-                                Map = @"from camera in docs 
-                                    select new 
-                                    { 
-                                        camera.Manufacturer, 
-                                        camera.Model, 
-                                        camera.Cost,
-                                        camera.DateOfListing,
-                                        camera.Megapixels
-                                    }"
-                            });
-{CODE-END /}
+{CODE step_2@ClientApi\FacetedSearch.cs /}
 
 ## Step 3
 
 Finally you can write the following code and you get back the data below.
 
-{CODE-START:csharp /}
-var facetResults = s.Query<Camera>("CameraCost") 
-                        .Where(x => x.Cost >= 100 && x.Cost <= 300 ) 
-                        .ToFacets("facets/CameraFacets");
-{CODE-END /}
+{CODE step_3@ClientApi\FacetedSearch.cs /}
 
 This is equivalent to hitting the following Url:
 

@@ -6,13 +6,13 @@ Before we can start saving information to RavenDB, we must define *what* we will
   
 To save a new blog post in our database server, we first create a new instance of the `BlogPost` class, as shown below:
 
-{CODE saving_document_1@Intro\BasicOperations.cs /}
+{CODE saving_document_1@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 Neither the class itself nor instantiating it requires anything from RavenDB, either in the form of attributes or in the form of special factories. The RavenDB Client API works with simple POCO (Plain Old CLR Objects) objects.
 
 Persisting this entire object graph involves calling `Store` and then `SaveChanges`, on a session object we obtained from our document store:
 
-{CODE saving_document_2@Intro\BasicOperations.cs /}
+{CODE saving_document_2@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 The `SaveChanges` call will produce the actual HTTP communication, which is shown below. Note that the `Store` method operates purely in memory, and only the call to `SaveChanges` communicates with the server (json was prettified for clarity):
 
@@ -102,6 +102,6 @@ You can also assign an ID manually by explicitly setting the string `Id` propert
 
 You can also setup a custom id generation strategy by supplying a `DocumentKeyGenerator` to the document store conventions, like so:
 
-  store.Conventions.DocumentKeyGenerator = entity => store.Conventions.GetTypeTagName(entity.GetType()) + "/";
-  
+{CODE saving_document_3@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
 This will instruct RavenDB to use identity id generation strategy for all the entities that this document store manages.

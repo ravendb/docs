@@ -10,8 +10,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>RavenCodeSamples</RootNamespace>
     <AssemblyName>RavenCodeSamples</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -21,6 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -29,67 +31,81 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="BouncyCastle.Crypto">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\BouncyCastle.Crypto.dll</HintPath>
     </Reference>
     <Reference Include="Esent.Interop">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Esent.Interop.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Esent.Interop.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="GeoAPI">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\GeoAPI.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\GeoAPI.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\ICSharpCode.NRefactory.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="ICSharpCode.NRefactory.CSharp">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\ICSharpCode.NRefactory.CSharp.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Jint.Raven">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Jint.Raven.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Jint.Raven.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Lucene.Net">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Lucene.Net.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Lucene.Net.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Lucene.Net.Contrib.Spatial.NTS">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Lucene.Net.Contrib.Spatial.NTS.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Lucene.Net.Contrib.Spatial.NTS.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Mono.Cecil">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Mono.Cecil.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Mono.Cecil.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="NetTopologySuite">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\NetTopologySuite.dll</HintPath>
-    </Reference>
-    <Reference Include="NLog">
-      <HintPath>packages\NLog.2.0.0.2000\lib\net40\NLog.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\NetTopologySuite.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="PowerCollections">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\PowerCollections.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\PowerCollections.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Abstractions">
-      <HintPath>packages\RavenDB.Client.2.0.2160-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Bundles.IndexReplication">
-      <HintPath>packages\RavenDB.Bundles.IndexReplication.2.0.2160-Unstable\lib\net40\Raven.Bundles.IndexReplication.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Bundles.IndexReplication.2.0.2161-Unstable\lib\net40\Raven.Bundles.IndexReplication.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Authorization">
-      <HintPath>packages\RavenDB.Client.Authorization.2.0.2160-Unstable\lib\net40\Raven.Client.Authorization.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Client.Authorization.2.0.2161-Unstable\lib\net40\Raven.Client.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Embedded">
-      <HintPath>packages\RavenDB.Embedded.2.0.2160-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Embedded.2.0.2161-Unstable\lib\net40\Raven.Client.Embedded.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>packages\RavenDB.Client.2.0.2160-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight, Version=1.2.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.UniqueConstraints">
+      <HintPath>..\packages\RavenDB.Client.UniqueConstraints.2.0.2161-Unstable\lib\net40\Raven.Client.UniqueConstraints.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Raven.Database.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Raven.Database.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Smuggler">
-      <HintPath>ShardLibs\RavenDB\Smuggler\Raven.Smuggler.dll</HintPath>
+      <HintPath>..\packages\Other\Raven.Smuggler.dll</HintPath>
     </Reference>
     <Reference Include="Spatial4n.Core.NTS">
-      <HintPath>packages\RavenDB.Database.2.0.2160-Unstable\lib\net40\Spatial4n.Core.NTS.dll</HintPath>
+      <HintPath>..\packages\RavenDB.Database.2.0.2161-Unstable\lib\net40\Spatial4n.Core.NTS.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -102,39 +118,84 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Appendixes\LuceneIndexesUsage.cs" />
+    <Compile Include="ClientApi\Advanced\AsyncDatabaseCommands\Index.cs" />
+    <Compile Include="ClientApi\Advanced\DatabaseCommands\Batch.cs" />
+    <Compile Include="ClientApi\Advanced\DatabaseCommands\Index.cs" />
+    <Compile Include="ClientApi\Advanced\DocumentMetadata.cs" />
+    <Compile Include="ClientApi\Advanced\DynamicFields.cs" />
+    <Compile Include="ClientApi\Advanced\QueryingForTerms.cs" />
+    <Compile Include="ClientApi\Advanced\TransactionSupport.cs" />
+    <Compile Include="ClientApi\BasicOperations\BasicQuerying.cs" />
+    <Compile Include="ClientApi\BasicOperations\DeletingDocuments.cs" />
+    <Compile Include="ClientApi\BasicOperations\LoadingEditingExistingDocument.cs" />
+    <Compile Include="ClientApi\BasicOperations\OpeningSession.cs" />
+    <Compile Include="ClientApi\BasicOperations\SavingNewDocument.cs" />
+    <Compile Include="ClientApi\BasicOperations\UnderstandingSessionObject.cs" />
+    <Compile Include="ClientApi\ConnectionToRavenDbDataStore.cs" />
+    <Compile Include="ClientApi\FacetedSearch.cs" />
+    <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="ClientApi\Querying\Polymorphism.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\Index.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\LiveProjections.cs" />
+    <Compile Include="ClientApi\Querying\UsingLinqToQueryRavenDb.cs" />
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="Consumer\Advanced.cs" />
-    <Compile Include="Consumer\AggressiveCaching.cs" />
-    <Compile Include="Consumer\Async.cs" />
-    <Compile Include="Consumer\Attachments.cs" />
-    <Compile Include="Consumer\DynamicQueries.cs" />
-    <Compile Include="Consumer\Faceted.cs" />
-    <Compile Include="Consumer\Includes.cs" />
-    <Compile Include="Consumer\Listeners.cs" />
-    <Compile Include="Consumer\LiveProjections.cs" />
-    <Compile Include="Consumer\Metadata.cs" />
-    <Compile Include="Consumer\MultiMap.cs" />
-    <Compile Include="Consumer\Paging.cs" />
-    <Compile Include="Consumer\Patching.cs" />
+    <Compile Include="ClientApi\Advanced\CustomSerialization.cs" />
+    <Compile Include="ClientApi\Advanced\AggressiveCaching.cs" />
+    <Compile Include="ClientApi\WorkingAsynchronously.cs" />
+    <Compile Include="ClientApi\Attachments.cs" />
+    <Compile Include="ClientApi\Advanced\ClientSideListeners.cs" />
+    <Compile Include="ClientApi\Querying\Paging.cs" />
+    <Compile Include="ClientApi\PartialDocumentUpdates.cs" />
     <Compile Include="ClientApi\Querying\LinqExtensions\Search.cs" />
-    <Compile Include="Consumer\SetBased.cs" />
-    <Compile Include="Consumer\Sharding.cs" />
-    <Compile Include="Server\Smuggler.cs" />
-    <Compile Include="Consumer\Spatial.cs" />
-    <Compile Include="Consumer\Stale.cs" />
-    <Compile Include="Consumer\StaticIndexes.cs" />
+    <Compile Include="ClientApi\SetBasedOperations.cs" />
+    <Compile Include="Samples\Mvc\CreateAspNetMvc4Project.cs" />
+    <Compile Include="Samples\WebApi\CreateAspNetWebApiProject.cs" />
+    <Compile Include="Server\Administration\ExportImport.cs" />
+    <Compile Include="Server\Bundles\Authentication.cs" />
+    <Compile Include="Server\Bundles\Authorization.cs" />
+    <Compile Include="Server\Bundles\AuthorizationBundleDesign.cs" />
+    <Compile Include="Server\Bundles\CascadeDelete.cs" />
+    <Compile Include="Server\Bundles\Expiration.cs" />
+    <Compile Include="Server\Bundles\IndexReplication.cs" />
+    <Compile Include="Server\Bundles\MoreLikeThis.cs" />
+    <Compile Include="Server\Bundles\UniqueConstraints.cs" />
+    <Compile Include="Server\Bundles\Versioning.cs" />
+    <Compile Include="Server\Extending\RequestResponders\Index.cs" />
+    <Compile Include="Server\Extending\Triggers\Delete.cs" />
+    <Compile Include="Server\Extending\Triggers\Indexing.cs" />
+    <Compile Include="Server\Extending\Triggers\Put.cs" />
+    <Compile Include="Server\Extending\Triggers\Read.cs" />
+    <Compile Include="Server\ScalingOut\Replication\ClientIntegration.cs" />
+    <Compile Include="Server\ScalingOut\Replication\FromEmbeddedServer.cs" />
+    <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
+    <Compile Include="Server\ScalingOut\Sharding\Index.cs" />
+    <Compile Include="Faq\DenormalizedReferences.cs" />
+    <Compile Include="Faq\DenormalizedUpdates.cs" />
+    <Compile Include="Faq\ImmutableEntities.cs" />
+    <Compile Include="Faq\OptimizingReferencedDocumentsLoad.cs" />
+    <Compile Include="Faq\Polymorphism.cs" />
+    <Compile Include="Faq\StoringDates.cs" />
+    <Compile Include="Faq\UniqueConstraints.cs" />
+    <Compile Include="Faq\WorkingWithDtc.cs" />
+    <Compile Include="Intro\SafeByDefault.cs" />
+    <Compile Include="MvcSampleBase.cs" />
+    <Compile Include="Server\MultipleDatabases.cs" />
+    <Compile Include="ClientApi\Advanced\SpatialSearch.cs" />
+    <Compile Include="ClientApi\Querying\StaleIndexes.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs" />
     <Compile Include="HomepageSlides.cs" />
-    <Compile Include="Intro\BasicOperations.cs" />
-    <Compile Include="Intro\ConnectingToDatastore.cs" />
-    <Compile Include="Intro\Nutshell.cs" />
+    <Compile Include="Intro\RavenDbInNutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Server\Bundles.cs" />
-    <Compile Include="Server\Deployment.cs" />
+    <Compile Include="Server\Deployment\Embedded.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

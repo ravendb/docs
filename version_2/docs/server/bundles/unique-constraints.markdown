@@ -50,27 +50,18 @@ Drop the Raven.Bundles.UniqueContraints assembly in the Plugins directory.
 
 When creating the DocumentStore, you'll need to register the UniqueConstraintsStoreListener in the store, like this:
 
-    store.RegisterListener(new UniqueConstraintsStoreListener());
+{CODE unique_constraints_1@Server\Bundles\UniqueConstraints.cs /}
 
 ### Extension methods
 
 To use the extension methods add using to
 
-    using Raven.Client.UniqueConstraints;
+{CODE using@Server\Bundles\UniqueConstraints.cs /}
 
 To check if a value is avaiable use:
 
-	var existingUser = session.LoadByUniqueConstraint<User>(x => x.Email, "john@gmail.com");
+{CODE unique_constraints_2@Server\Bundles\UniqueConstraints.cs /}
 
 To check a document against the database and use:
 
-	var user = new User() { Name = "John", Email = "john@gmail.com" };
-	var checkResult = session.CheckForUniqueConstraints(user);
-
-	// returns wheter it's constraints are avaiable
-	if ( checkResult.ConstraintsAreFree() ) {
-		session.Store(user);
-	} else {
-		var existingUser = checkResult.DocumentForProperty(x => x.Email);
-	}
-
+{CODE unique_constraints_3@Server\Bundles\UniqueConstraints.cs /}

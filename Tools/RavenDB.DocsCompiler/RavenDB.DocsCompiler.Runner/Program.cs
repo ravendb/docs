@@ -4,22 +4,30 @@ using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler.Runner
 {
-	class Program
+	public class Program
 	{
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
-			const string basePath = @"z:\Projects\RavenDB\RavenDB-docs\";
+			var rootPath = Path.GetFullPath("./../../../../../");
+
+			Generate(rootPath, "version_1");
+			Generate(rootPath, "version_2");
+		}
+
+		private static void Generate(string rootPath, string version)
+		{
+			var docsPath = Path.Combine(rootPath, version);
 
 			IDocsOutput output = new HtmlDocsOutput
-									{
-										OutputPath = Path.Combine(basePath, "html-compiled"),
-										PageTemplate = File.ReadAllText(Path.Combine(basePath, @"Tools\html-template.html")),
-										RootUrl = "http://ravendb.net/docs/",
-									};
+			{
+				OutputPath = Path.Combine(docsPath, "html-compiled"),
+				PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
+				RootUrl = "http://ravendb.net/docs/",
+			};
 
 			try
 			{
-				Compiler.CompileFolder(output, basePath, "Home");
+				Compiler.CompileFolder(output, docsPath, "Home");
 			}
 			catch (Exception ex)
 			{

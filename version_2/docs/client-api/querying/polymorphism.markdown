@@ -28,50 +28,21 @@ This works, but each index would only give us results for the animal it has been
 
 The easiest way to do this is by writing a multi-map index like this one:
 
-{CODE-START:csharp /}
-	public class AnimalsIndex : AbstractMultiMapIndexCreationTask
-	{
-		public AnimalsIndex()
-		{
-			AddMap<Cat>(cats => from c in cats
-								select new { c.Name });
-
-			AddMap<Dog>(dogs => from d in dogs
-								select new { d.Name });
-		}
-	}
-{CODE-END/}
+{CODE multi_map_1@ClientApi\Querying\Polymorphism.cs /}
 
 And query it like this:
 
-{CODE-START:csharp /}
-var results = session.Advanced.LuceneQuery<object>("AnimalsIndex").WhereEquals("Name", "Mitzy");
-{CODE-END/}
+{CODE multi_map_2@ClientApi\Querying\Polymorphism.cs /}
 
 You can also use the Linq provider if your objects implement an interface, IAnimal for instance:
 
-{CODE-START:csharp /}
-session.Query<IAnimal>("AnimalsIndex").Where(x => x.Name == "Mitzy");
-{CODE-END/}
+{CODE multi_map_3@ClientApi\Querying\Polymorphism.cs /}
 
 ## Other ways
 
 Another option would be to modify the way we generate the Entity-Name for subclasses of Animal, like so:
 
-{CODE-START:csharp /}
-    var documentStore = new DocumentStore()
-    {
-        Conventions =
-            {
-                FindTypeTagName = type =>
-                                    {
-                                        if (typeof(WhereEntityIs.Animal).IsAssignableFrom(type))
-                                            return "Animals";
-                                          return DocumentConvention.DefaultTypeTagName(type);
-                                    }
-            }
-    };
-{CODE-END/}
+{CODE other_ways_1@ClientApi\Querying\Polymorphism.cs /}
 
 Using this method, we can now index on all animals using:
 

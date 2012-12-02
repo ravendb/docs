@@ -4,4 +4,4 @@ The RavenDB client API supports executing the common operations asynchronously, 
 
 The TPL support is using `System.Threading.Tasks`, a good intro to which can be found [here](http://www.codethinked.com/net-40-and-systemthreadingtasks).
 
-{CODE async1@Consumer\Async.cs /}
+{CODE async1@ClientApi\WorkingAsynchronously.cs /}

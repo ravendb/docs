@@ -2,41 +2,13 @@
 
 fully supports System.Transactions as a durable resource manager. That means that you can write the following code and it will be fully transactional:
 
-    using(var tx = new TransactionScope())
-    {
-       using(var session = documentStore.OpenSession())
-       {
-               session.Store(new User { Name = "Ayende" } );
-               session.SaveChanges();
-       }
-       using(var session = documentStore.OpenSession())
-       {
-               session.Store(new User { Name = "Rahien" } );
-               session.SaveChanges();
-       }
-       tx.Complete();
-    }
+{CODE working_with_dtc_1@Faq/WorkingWithDtc.cs /}
 
 This code will either save both documents, or neither of them.
 
 That said, the way that System.Transactions is implemented leads to some interesting issues. Let us examine this code:
 
-    using(var tx = new TransactionScope())
-    {
-       using(var session = documentStore.OpenSession())
-       {
-               var user = session.Load<User>("users/1");
-               user.Name = "Ayende"; // old name is "Oren"
-               session.SaveChanges();
-       }
-       tx.Complete();
-    }
-
-    using(var session = documentStore.OpenSession())
-    {
-        var user = session.Load<User>("users/1");
-        Console.WriteLine(user.Name);
-    }
+{CODE working_with_dtc_2@Faq/WorkingWithDtc.cs /}
 
 What would you expect this code to produce? Probably you would expect this to output "Ayende". But as a matter of fact, "Oren" (the old value) will be outputted.
 
@@ -48,23 +20,7 @@ In practice, for most read-only scenarios, we can use the non authoritative valu
 
 You can ask RavenDB to wait until the pending transaction fully commits, by setting AllowNonAuthoritativeInformation to false, like this:
 
-    using(var tx = new TransactionScope())
-    {
-       using(var session = documentStore.OpenSession())
-       {
-               var user = session.Load<User>("users/1");
-               user.Name = "Ayende"; // old name is "Oren"
-               session.SaveChanges();
-       }
-       tx.Complete();
-    }
-
-    using(var session = documentStore.OpenSession())
-    {
-        session.Advanced.AllowNonAuthoritativeInformation = false;
-        var user = session.Load<User>("users/1");
-        Console.WriteLine(user.Name);
-    }
+{CODE working_with_dtc_3@Faq/WorkingWithDtc.cs /}
 
 This code will print "Ayende".
 

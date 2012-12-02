@@ -6,13 +6,13 @@ RavenDB makes it very easy to work with paging. In fact, with large data sets, i
 
 It is as simple as specifying a page size and passing a starting point. Using Linq from the Client API, it looks like this:
 
-{CODE paging1@Consumer\Paging.cs /}
+{CODE paging1@ClientApi\Querying\Paging.cs /}
 
 ## Finding the total results count when paging
 
 While paging you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
 
-{CODE paging2@Consumer\Paging.cs /}
+{CODE paging2@ClientApi\Querying\Paging.cs /}
 
 While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
 
@@ -26,4 +26,4 @@ In order to do proper paging in those scenarios, you should use the `SkippedResu
 
 For example, assuming a page size of 10:
 
-{CODE paging3@Consumer\Paging.cs /}
+{CODE paging3@ClientApi\Querying\Paging.cs /}

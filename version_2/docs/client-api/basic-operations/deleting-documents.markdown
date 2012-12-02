@@ -4,7 +4,7 @@
 
 Once a valid reference to a document has been retrieved, the document can be deleted with a call to `Delete` in the following manner:
 
-{CODE deleting_document_1@Intro\BasicOperations.cs /}
+{CODE deleting_document_1@ClientApi\BasicOperations\DeletingDocuments.cs /}
 
 This results in an HTTP communication as shown below:
 
@@ -36,13 +36,13 @@ Using the `Defer` command in the `Advanced` section of the session API, you can 
 
 Here is an example how to use it:
 
-{CODE deleting_document_using_defer@Intro\BasicOperations.cs /}
+{CODE deleting_document_using_defer@ClientApi\BasicOperations\DeletingDocuments.cs /}
 
 ### Delete by ID using the DatabaseCommands
 
 You can perform a direct delete using the `DatabaseCommands` property available in the `Advanced` section of the session API.
 
-{CODE deleting_document_2@Intro\BasicOperations.cs /}
+{CODE deleting_document_2@ClientApi\BasicOperations\DeletingDocuments.cs /}
 
 This results in an HTTP communication as shown below:
 
