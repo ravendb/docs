@@ -6,21 +6,4 @@ Whenever you are trying to use a non-default constructor for your entity, do the
 * Ensure every readonly property has a "Private setter" on it ... else it won't get populated
 * Use a custom Json resolver like this one:
 
-
-        public class PrivatePropertySetterResolver : DefaultContractResolver
-        {
-           protected override JsonProperty CreateProperty(JsonObjectContract contract, MemberInfo member)
-           {
-               var prop = base.CreateProperty(contract, member);
-               if (!prop.Writable)
-               {
-                   var property = member as PropertyInfo;
-                   if (property != null)
-                   {
-                       var hasPrivateSetter = property.GetSetMethod(true) != null;
-                       prop.Writable = hasPrivateSetter;
-                   }
-               }
-               return prop;
-           }
-        }
+{CODE immutable_entities_1@Faq/ImmutableEntities.cs /}

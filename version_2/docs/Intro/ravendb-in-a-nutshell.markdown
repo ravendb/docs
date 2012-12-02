@@ -18,7 +18,7 @@ RavenDB consists of a server and a client. The server handles data storage and q
 
 After you have a RavenDB server instance up and running, its easy to connect to it using the RavenDB client to store and retrieve your data. RavenDB works with your [POCO](http://en.wikipedia.org/wiki/Plain_Old_CLR_Object)s, meaning its super-easy to integrate it with your existing or newly-built application:
 
-{CODE nutshell1@Intro\Nutshell.cs /}
+{CODE nutshell1@Intro\RavenDbInNutshell.cs /}
 
 As you may have noticed, RavenDB is using the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will be persisted in the database in a single transaction.
 

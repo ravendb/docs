@@ -23,14 +23,7 @@ As a rule of thumb, whenever you are trying to get more than 128 documents in on
 
 Another common issue with all data access technologies is being overly chatty with the database. A common scenario might be:
 
-{CODE-START:csharp /}
-    var posts = postsRepository.GetRecentPosts();
-    foreach (var post in posts)
-    {
-       var comments = commentsRepository.GetRecentCommentsForPost(post);
-       recentComments.AddRange(comments);
-    }
-{CODE-END /}
+{CODE safe_by_default_1@Intro\SafeByDefault.cs /}
 
 This code will execute a single query to load the recent posts, and then an additional query for each post. The problem with this approach is that it leads to slow applications, increase latency and overall strain on the system. You may already know it by it's name: "SELECT N+1".
 

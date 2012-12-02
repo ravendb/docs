@@ -22,19 +22,7 @@ Since we can trust the client calling us, we can rely on the client to tell us w
 
 From the client API perspective, we are talking about:
 
-    using(var session = documentStore.OpenSession())
-    {
-         session.SecureFor("raven/authorization/users/8458", "/Operations/Debt/Finalize");
-        
-        var debtsQuery =   from debt in session.Query<Debt>("Debts/ByDepartment")
-                           where debt.Department == department
-                           select debt
-                           orderby debt.Amount;
-        
-         var debts = debtsQuery.Take(25).ToList();
-
-        // do something with the debts
-    }
+{CODE authorization_bundle_design_1@Server\Bundles\AuthorizationBundleDesign.cs /}
 
 I am not really happy with this API, but I think it would do for now. There are a couple of things to note with regards to this API:
 

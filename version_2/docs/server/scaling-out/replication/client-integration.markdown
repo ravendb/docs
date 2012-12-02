@@ -15,9 +15,7 @@ This is because a failover mechanism is turned on in a document store by default
 
 You are able to turn off the failover by using conventions of the document store. In order to do that use `FailImmediately` option:
 
-{CODE-START: csharp/}
-documentStore.Conventions.FailoverBehavior = FailoverBehavior.FailImmediately;
-{CODE-END /}
+{CODE client_integration_1@Server\ScalingOut\Replication\ClientIntegration.cs /}
 
 The remaining values of `FailoverBehavior` enumeration are:
 

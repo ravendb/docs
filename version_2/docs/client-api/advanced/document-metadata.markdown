@@ -23,7 +23,7 @@ More metadata keys are used for storing replication information, concurrency boo
 
 Getting the metadata for an entity is quite easy. From the Client API, you simply call `Advanced.GetMetadataFor` on the entity, like so:
 
-{CODE getting_metadata@Consumer\Metadata.cs /}
+{CODE getting_metadata@ClientApi\Advanced\DocumentMetadata.cs /}
 
 The `RavenJObject` is simply a dictionary, and the Client API provides convenient ways to transform the values in it to different types.
 

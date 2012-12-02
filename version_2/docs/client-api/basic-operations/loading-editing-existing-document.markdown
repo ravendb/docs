@@ -4,7 +4,7 @@ Each _document_ is stored as part of a _collection_, where a _collection_ is a s
 
 Therefore, if you have the id of an existing document (for example the previously saved BlogPost entry), it can be loaded in the following manner:
 
-{CODE editing_document_1@Intro\BasicOperations.cs /}
+{CODE editing_document_1@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
 
 This results in the HTTP communication shown below (prettified for clarity):
 
@@ -41,11 +41,11 @@ This results in the HTTP communication shown below (prettified for clarity):
 
 Changes can then be made to that object in the usual manner:
 
-{CODE editing_document_2@Intro\BasicOperations.cs /}
+{CODE editing_document_2@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
 	
 Flushing those changes to the document store is achieved in the usual way:
 
-{CODE editing_document_3@Intro\BasicOperations.cs /}
+{CODE editing_document_3@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
 	
 You don't have to call an `Update` method, or track any changes yourself. RavenDB will do all of that for you.
 

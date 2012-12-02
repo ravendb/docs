@@ -22,56 +22,16 @@ In other words, we need to hold in the Order class what we call a denormalized r
 
 The following shows how we can do this easily using code. First, the model:
 
-{CODE-START:csharp /}
-    public interface INamedDocument
-    {
-        string Id { get; set; }
-        string Name { get; set; }
-    }
-
-    public class Customer : INamedDocument
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-    }
-
-    public class Order : INamedDocument
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public DenormalizedReference<Customer> Customer { get;set;}
-    }
-{CODE-END/}
+{CODE denormalized_references_1@Faq/DenormalizedReferences.cs /}
 
 Note that the Customer property on the Order is a DenormalizedReference of T. This class looks like this:
 
-{CODE-START:csharp /}
-    public class DenormalizedReference<T> where T : INamedDocument
-    {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        
-        public static implicit operator DenormalizedReference<T> (T doc)
-        {
-            return new DenormalizedReference<T>
-            {
-                Id = doc.Id,
-                Name = doc.Name
-            }
-        }
-    }
-{CODE-END/}
+{CODE denormalized_references_2@Faq/DenormalizedReferences.cs /}
 
 This is pretty simple, except that we use something that you might not have seen before, implicit operators. This is just a C# language feature that tells the compiler that whenever it sees a expression of type T passed where the expected type is DenormalizedReference<T>, the implicit operator will be called to convert it.
 
 This allows the following code:
 
-{CODE-START:csharp /}
-    Customer customer = GetCurrentCustomer();
-    var order = new Order
-    {
-       Customer = customer // implicit operator called here
-    }
-{CODE-END/}
+{CODE denormalized_references_3@Faq/DenormalizedReferences.cs /}
 
 The result is a more natural approach for working with the denormalized reference.

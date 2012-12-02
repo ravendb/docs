@@ -26,8 +26,7 @@ Everything else remains the same. Note that unlike other databases, there isn't 
 
 From the client API, you have the following options:
 
-    documentStore.DatabaseCommands.EnsureDatabaseExists("Northwind");
-    var northwindSession = documentStore.OpenSession("Northwind");
+{CODE multiple_databases_1@Server\MultipleDatabases.cs /}
 
 The first line will ensure that the database document exists, and the second will access the database. All operations done in the context of the northwindSession will apply only to the Northwind database.
 

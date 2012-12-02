@@ -14,15 +14,15 @@ Let's see how we can use Linq to easily query for data in various scenarios. We 
 
 Say we wanted to get all entities of type `Company` into a List, how would we go about that? Ignoring for now the performance hit of loading a large bulk of data, we could do this pretty easily (note that this query is implicitly using Take(128), because it didn't specify a page size explicitly):
 
-{CODE linquerying_1@Consumer\DynamicQueries.cs /}
+{CODE linquerying_1@ClientApi\Querying\UsingLinqToQueryRavenDb.cs /}
 
 Since the whole idea of using Linq here is to apply some filtering in an efficient manner, we can use Linq's `where` clause to do this for us:
 
-{CODE linquerying_2@Consumer\DynamicQueries.cs /}
+{CODE linquerying_2@ClientApi\Querying\UsingLinqToQueryRavenDb.cs /}
 
 Note, however, Linq is just a syntactic sugar. Under the hood, all queries are transformed into a sequence of method calls and lambda expressions. For example, the above code snippet is re-written by the compiler to look like the following before compiling:
 
-{CODE linquerying_3@Consumer\DynamicQueries.cs /}
+{CODE linquerying_3@ClientApi\Querying\UsingLinqToQueryRavenDb.cs /}
 
 All throughout the documentation we are going to use both flavors interchangeably, and we refer to both as Linq.
 
@@ -34,7 +34,7 @@ Other than the `Where` clause, there are several other useful operators you coul
 
 `Any` can be used on collections of objects (or primitive lists) in your entities to return only those who satisfies a condition. RavenDB also supports an `In` operator, to make reverse `Any` comparisons easier:
 
-{CODE linquerying_4@Consumer\DynamicQueries.cs /}
+{CODE linquerying_4@ClientApi\Querying\UsingLinqToQueryRavenDb.cs /}
 
 ## Projections
 
@@ -44,7 +44,7 @@ RavenDB Linq queries support projections, but its important to know that project
 
 Here is how to use projections:
 
-{CODE linquerying_5@Consumer\DynamicQueries.cs /}
+{CODE linquerying_5@ClientApi\Querying\UsingLinqToQueryRavenDb.cs /}
 
 Projections are useful when only part of the data is needed for your operation. Whenever change tracking isn't required, you're advised to consider using projections to ease bandwidth traffic between you and the server. This isn't a general rule, because caching in the entire application also plays an important role here, and it might make it more efficent to load the cache results of a query than to issue a remote query for a projection.
 You can also use the `Distinct` method to only return distinct results from the server. When using projections, that means that on the server side, the database will compare all the projected fields for each object, and send us only unique results. If you aren't using projections, this has no effect but causing the server to do more work.
