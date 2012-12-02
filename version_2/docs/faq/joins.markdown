@@ -5,7 +5,7 @@ The short answer is that you don't, RavenDB supports no joins, since it isn't a 
 
 The longer answer is that instead of joining, RavenDB (like other NoSQL solutions) provides alternative solutions.
 
-* Denormalization (read more on [document based data modeling](http://ravendb.net/docs/theory/document-structure-design)) - This is the recommended approach
+* Denormalization (read more on [document based data modeling](http://ravendb.net/docs/2.0/theory/document-structure-design)) - This is the recommended approach
 
     Consider the case of music tracks and artists. In the relational world, you will have a column in the Tracks table that references the PK in the Artists table. To show a list of tracks with their artists, you will join between the two tables.
     In RavenDB, you will instead store in each Track document a denormalized reference to the artist, like so:
@@ -21,6 +21,6 @@ The longer answer is that instead of joining, RavenDB (like other NoSQL solution
 * **Client side joins**
     Of course, you can load the Artist by its id when you load a Track. This approach can be costly when you use it to load a collection of Tracks, so it is not recommended.
 * **Server side joins**
-    RavenDB's extensibility mechanism allows you to extend RavenDB to handle joins at the server side (eliminating network cost from simulating joins). The documentation about [Read Triggers](http://ravendb.net/docs/theory/extensions/triggers/read) contains an example of how to do just that.
+    RavenDB's extensibility mechanism allows you to extend RavenDB to handle joins at the server side (eliminating network cost from simulating joins). The documentation about [Read Triggers](http://ravendb.net/docs/2.0/theory/extensions/triggers/read) contains an example of how to do just that.
 
-When using denormalization, you'll probably want to look at how to make [denormalized updates](http://ravendb.net/docs/faq/denormalized-updates).
+When using denormalization, you'll probably want to look at how to make [denormalized updates](http://ravendb.net/docs/2.0/faq/denormalized-updates).
