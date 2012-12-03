@@ -1,4 +1,4 @@
-#RavenDB Collections
+﻿#RavenDB Collections
 RavenDB's collections are similar to [MongoDB's collections](http://www.mongodb.org/display/DOCS/Collections), they serve as a simple way to group related documents together. The expected usage pattern is that collections are used to group documents with similar structure, although that is not required. From the database standpoint, a collection is just a group of documents that share the same entity name.
 
 ##Raven-Entity-Name
@@ -17,46 +17,55 @@ As you can see, the HTTP header Raven-Entity-Name specifies that this document b
 Probably the most important role for collections is their use in indexes. RavenDB allows the use of the collection name when filtering the target audience for documents.
 For example, this index definition:
 
-    {  
-      'Map' : 'from post in docs.Posts select new { post.Title, post.PostedAt};'  
-    }
+{CODE-START:json /}
+	{
+		'Map' : 'from post in docs.Posts select new { post.Title, post.PostedAt};'
+	}
+{CODE-END /}
+    
 
 More formally, Raven filters the selected documents based on the name of the collection from the overall docs.
 The index definition above is equivalent to the following index definition:
 
-    {  
-      'Map' : 'from doc in docs  
-               where doc["@metadata"]["Raven-Entity-Name"] == "Posts"  
-               let post = doc  
-               select new { post.Title, post.PostedAt };'  
-    }
+{CODE-START:json /}
+	{
+		'Map' : 'from doc in docs  
+				where doc["@metadata"]["Raven-Entity-Name"] == "Posts"  
+				let post = doc  
+				select new { post.Title, post.PostedAt };'
+	}
+{CODE-END /}
 
 Using collections in this manner significantly simplifies the index definition and is strongly recommended.
 
 ##Raven/DocumentsByEntityName
 By default, RavenDB defines the index 'Raven/DocumentsByEntityName' as follows:
 
-    {  
-      'Map' : 'from doc in docs  
-               where doc["@metadata"]["Raven-Entity-Name"] != null  
-               select new { Tag = doc["@metadata"]["Raven-Entity-Name"] };'  
-    }
+{CODE-START:json /}
+	{  
+		'Map' : 'from doc in docs 
+					let Tag = doc["@metadata"]["Raven-Entity-Name"]
+					select new { Tag, LastModified = (DateTime)doc["@metadata"]["Last-Modified"] };'  
+	}
+{CODE-END /}
 
 This allows querying for documents based on their entity name using:
 
-http://localhost:8080/indexes/Raven/DocumentsByEntityName?query=Tag:Users
+{CODE-START:json /}
+	http://localhost:8080/indexes/Raven/DocumentsByEntityName?query=Tag:Users
 
-    {
-       "Results":[ 
-         {
-             "Name":"Ayende",
-             "@metadata":{
-                "Raven-Entity-Name":"Users",
-                "@id":"users/ayende",
-                "@etag":"ecdb775b-4c96-11df-8ec2-001fd08ec235"
-              }
-          }
-       ],  
-       "IsStale":false,  
-       "TotalResults":1  
-    }
+	{
+		"Results":[ 
+			{
+				"Name":"Ayende",
+				"@metadata":{
+				"Raven-Entity-Name":"Users",
+				"@id":"users/ayende",
+				"@etag":"ecdb775b-4c96-11df-8ec2-001fd08ec235"
+				}
+			}
+		],  
+		"IsStale":false,  
+		"TotalResults":1  
+	}
+{CODE-END /}

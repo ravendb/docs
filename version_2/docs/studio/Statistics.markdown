@@ -1,7 +1,6 @@
 # Statistics
 
-On the bottom of each screen various statistics on the database are shown:
-
+On the bottom of each screen various statistics on the database are shown:  
 ![Statistics Fig 1](Images/studio_statistics_1.PNG)
 
 In here you can see:  
@@ -37,15 +36,13 @@ On the statistics page you can see these options:
 
 If you don't see any of the above it means it is 0.
 
-If you click on the index name you will see only the statistics for this index.
-
+If you click on the index name you will see only the statistics for this index:  
 ![Statistics Fig 2](Images/studio_statistics_2.PNG)
 
 On the top left you can select what do you want to view:  
-
 ![Statistics Fig 3](Images/studio_statistics_3.PNG)  
 
 - All: shows all the statistics
 - Single Items: Shows the statistics that are not a list (number of documents, number of indexes, ect.)
-- Indexes: Show only the Indexes statistics
+- Indexes: Show only the Indexes statistics.
 - Index_Name: for each index you have in the database you will see its name here, This will show only the statistics for this index.
