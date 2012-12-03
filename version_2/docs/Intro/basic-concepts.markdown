@@ -1,6 +1,6 @@
 ﻿# Basic concepts
 
-RavenDB is a database technology based on a client-server architecture. That is to say, data is being stored on a server instance, and data requests from one or more clients are made to that instance.
+RavenDB is a database technology based on a client-server architecture. Data is stored on a server instance and data requests from one or more clients are made to that instance.
 
 Requests to the server are made using the [Client API](../client-api) available to any .NET or Silverlight application, or by [directly accessing the server's RESTful API](../http-api).
 
