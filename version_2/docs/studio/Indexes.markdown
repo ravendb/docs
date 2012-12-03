@@ -48,7 +48,7 @@ It is possible to add as many fields as you want (you can remove a field by pres
 
 - Stats: Direct to the Index statistics  
 ![Indexes Fig 17](Images/studio_indexes_17.PNG)
-- Query: Will send to the [query page](#query) on the index 
+- Query: Will send to the query page on the index 
 - Undo: Will discard all changes made to the index
 - Delete: Will delete the index
 
