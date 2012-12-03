@@ -186,6 +186,7 @@ Perform a PATCH request to the document URL with a type of "Set" to update an ex
 
 {CODE-START:json /}
     > curl -X PATCH http://localhost:8080/docs/post_1 -d "[{ Type: 'Set', Name: 'title', Value: 'A Better Blog Post'}]"
+{CODE-END /}
 
 A subsequent GET of this document would show the patched result: 
 
