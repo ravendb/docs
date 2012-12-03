@@ -1,3 +1,4 @@
+/Bundles	Bundles
 documents.markdown	The Documents Screen
 collections.markdown	The Collections Screen
 indexes.markdown	Indexes
@@ -7,3 +8,4 @@ statistics.markdown	Database Statistics
 multi-database.markdown	Multi-databse Support
 replication.markdown	Replication Walkthrough
 patch.markdown	Patching
+alerts.markdown	Alerts
