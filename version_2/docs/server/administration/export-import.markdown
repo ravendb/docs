@@ -52,11 +52,15 @@ You can tweak the export/import process with the following parameters:
  - operate-on-types: Specify the types to export/import. Usage example: `--operate-on-types=Indexes,Documents,Attachments`.
  - filter: Filter documents by a document property. Usage example: `--filter=Property-Name=Value`.
  - metadata-filter: Filter documents by a metadata property. Usage example: `--metadata-filter=Raven-Entity-Name=Posts`.
+ - timeout: The timeout (in miliseconds) to use for requests.
+ - batch-size: The batch size for requests.
  - database: The database to operate on. If no specified, the operations will be on the default database.
  - username: The username to use when the database requires the client to authenticate.
  - password: The password to use when the database requires the client to authenticate.
  - domain: The domain to use when the database requires the client to authenticate.
  - api-key: The API-key to use, when using OAuth.
+ - incremental: States usage of incremental operations.
+ - wait-for-indexing: Wait until all indexing activity has been completed (import only).
  - help: You can use the help option in order to print the built-in options documentation.
 
 ## SmugglerApi
