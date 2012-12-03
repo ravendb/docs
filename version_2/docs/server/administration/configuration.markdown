@@ -29,11 +29,6 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 ## Core settings
 
-* **Raven/BackgroundTasksPriority**  
-    What thread priority to give the various background tasks RavenDB uses (mostly for indexing)  
-    _Allowed values:_ Lowest, BelowNormal, Normal, AboveNormal, Highest  
-    _Default:_ Normal
-
 * **Raven/MaxPageSize**  
     The maximum page size that can be specified on this server.  
     _Default:_ 1024  
