@@ -26,9 +26,9 @@ To jump-start your learning process, it is sufficient that you download the [lat
 
 ![Figure 1: Raven.Server.exe](images\raven.server.png)
 
-Notice how a port for the server to listen on has been automatically selected for you, and a data directory has been created and is ready to store your data. This is RavenDB in debug mode, for production usage, you'll generally run it in IIS or as a Service.
+Notice how a port for the server to listen on has been automatically selected for you, and a data directory has been created and is ready to store your data. This is RavenDB in debug mode - for production usage, you'll generally run it in IIS or as a Service.
 
-As long as this window will stay open, the RavenDB server is up and running. Pressing Enter will terminate the server - new requests will no more be processed, but all data will be persisted in the data directory.
+As long as this window stays open, the RavenDB server is running. Pressing Enter will terminate the server - new requests will no lonjger be processed, but all data will be persisted in the data directory.
 
 ### Storage types
 
@@ -40,7 +40,7 @@ While Munin is useful for testing and temporary in-memory tasks, at this stage o
 
 ## Documents, Collections and Document unique identifiers
 
-A single data entity in RavenDB is called a _Document_ , and all Documents are persisted in RavenDB as [JSON documents](http://json.org). The JSON format was selected since it can store hierarchies, it is human readable, and it is as minimalistic as it gets. Every document has metadata attached to it, by default it only contains data that is used internally by RavenDB (for example - the `Raven-Entity-Name` attribute which stores the entity type for the document).
+A single data entity in RavenDB is called a _Document_ and all Documents are persisted in RavenDB as [JSON documents](http://json.org). The JSON format was selected because it can store hierarchies, it is human readable and it is as minimalistic as it gets. Every document has metadata attached to it, by default it only contains data that is used internally by RavenDB (for example - the `Raven-Entity-Name` attribute which stores the entity type for the document).
 
 A _Collection_ is a set of Documents sharing the same RavenDB entity type. It is not a "database table", but rather a logical way of thinking of document groups. A Collection is an entirely virtual construct that has no physical meaning to the database.
 
@@ -52,7 +52,7 @@ The convention in RavenDB is to have a document ID that is combined of the colle
 
 Every server instance is manageable via a remotely accessible Silverlight application - The Management Studio. It can be accessed by pointing your favorite browser to the address (and port) the server is listening on.
 
-We will discuss the Studio and how to use it in more depth later, but here's how it looks like:
+We will discuss the Studio and how to use it in more depth later, but here's what it looks like:
 
 ![Figure 2: RavenDB Studio](images\studio.png)
 
