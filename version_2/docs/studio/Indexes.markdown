@@ -1,13 +1,11 @@
 # Indexes
-On the top right you have two options  
+On the top right you have two options:  
 ![Indexes Fig 1](Images/studio_indexes_1.PNG)
 
-When you choose to create a new index the following page will load  
-The Content of this page will be explained [later in this page](#create)  
+When you choose to create a new index the following page will load:  
 ![Indexes Fig 2](Images/studio_indexes_2.PNG)  
 
-When you choose Dynamic Query the following page will load  
-The Content of this page will be explained [later in this page](#query)  
+When you choose Dynamic Query the following page will load:  
 ![Indexes Fig 3](Images/studio_indexes_3.PNG) 
 
 In Recent Queries you can see and load again recent queries  
@@ -37,11 +35,11 @@ If you have more the one map you can delete extra maps with the X on the right![
 Only one reduce is possible, if you add a reduce the icon from the top will be removed, if the reduce section is deleted (by pressing the X on the right) it will return to the options  
 ![Indexes Fig 8](Images/studio_indexes_8.PNG) 
 
-- Add transform: adds transform section to the index (this option will appear after you add a reduce)  
+- Add transform: adds transform section to the index  
 Only one transform is possible, if you add a transform the icon from the top will be removed, if the transform section is deleted (by pressing the X on the right) it will return to the options  
 ![Indexes Fig 9](Images/studio_indexes_9.PNG) 
 
-- Add Field: adds transform section to the index   
+- Add Field: adds a field section to the index   
 It is possible to add as many fields as you want (you can remove a field by pressing the X)    
 ![Indexes Fig 10](Images/studio_indexes_10.PNG)
 

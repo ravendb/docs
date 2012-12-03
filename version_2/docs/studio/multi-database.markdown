@@ -2,13 +2,12 @@
 
 RavenDB supports multi-tenancy, and the Management Studio provides an easy way to manage multiple tenants from the same UI, and to create new tenants.
 
-At the top right corner of each screen, by the RavenDB logo, we have several indicators.  
+At the top right corner of each screen, by the RavenDB logo, we have several indicators:  
 ![](Images/studio_base_2.PNG)  
 
 On the right we have a dot the represents the online status of the sever (red - offline, green online).  
 On the left we have the name of the current tenant you are working against is shown. Clicking on it will open a list of other available tenants, and selecting another one from that list will shift the Studio to working against that tenant.  
-In the middle we have the settings button which we will go into later in the page //TODO: link
-
+In the middle we have the settings button which we will go into later in the page.
 
 ## Creating a new tenant
 When you load the studio, if you don't have any databases on the server (other then the system database) you will get the "Create a new database" window.
@@ -17,14 +16,10 @@ When pressing on the link named "Databases" on the right of each page a new page
 
 ![Databases Fig 1](Images/studio_databases_1.PNG)
 
-On the top left you can create a new database:
-
-----------
-
+On the top left you can create a new database:  
 ![Databases Fig 2](Images/studio_databases_2.PNG)
 
-After selecting this option the "Create a new database" window will pop up:
-
+After selecting this option the "Create a new database" window will pop up:  
 ![Databases Fig 3](Images/studio_databases_3.PNG)
 
 In this page you need to select a unique name for your database.  
@@ -35,16 +30,16 @@ Below the name you can check the advanced settings option which allows you to se
 
 Some of the bundles have settings needed to be set on database creation, if one or more of these bundles was selected after you press "Next" you will be promoted to those settings  
 ![Databases Fig 6](Images/studio_databases_6.PNG)  
-For details of the bundles settings look in the bundles section in the studio documentations //TODO: Link
+For details of the bundles settings look in the [bundles section in the studio documentations](../Bundles)
 
-After the database is created you will have the new database in the databases page, the new database will automatically be selected as the current database. (Note that the database my already contain documents depending on the bundles selected).  
+After the database is created you will have the new database in the databases page, the new database will automatically be selected as the current database. (Note that the database my already contain documents depending on the bundles selected):  
 ![Databases Fig 7](Images/studio_databases_7.PNG)  
 
-Once you have more the one database you can switch between them from any page by clicking on the name of the active database and a list of possible databases will open, click on the database you want to view next.  
+Once you have more the one database you can switch between them from any page by clicking on the name of the active database and a list of possible databases will open, click on the database you want to view next:  
 ![Databases Fig 5](Images/studio_databases_5.PNG)  
 
 ## Deleting a database
-In order to delete a database you need to select it and then right-click on it and select "Delete" (you can also press the key "Delete")  
+In order to delete a database you need to select it and then right-click on it and select "Delete" (you can also press the key "Delete"):  
 ![Databases Fig 8](Images/studio_databases_8.PNG)  
 
 After that you will be promoted with the following window:  
@@ -62,9 +57,9 @@ After conformation you will be redirected to the "Documents" tab of the system d
 
 ## Database Settings
 In order to get to the settings page of a database you have 2 options:  
-1) Press the cog wheel icon next to the RavenDB logo in the top, from any page, in order to get to the settings of the selected database  
+1) Press the cog wheel icon next to the RavenDB logo in the top, from any page, in order to get to the settings of the selected database:  
 ![Databases Fig 12](Images/studio_databases_12.PNG)  
-2) In the databases page, right-click on the database you wish to see the settings for and select "Edit settings"  
+2) In the databases page, right-click on the database you wish to see the settings for and select "Edit settings":  
 ![Databases Fig 8](Images/studio_databases_8.PNG)  
 
 Now you will arrive to the "Settings" page:  
