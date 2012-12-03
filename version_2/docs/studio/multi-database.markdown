@@ -30,7 +30,7 @@ Below the name you can check the advanced settings option which allows you to se
 
 Some of the bundles have settings needed to be set on database creation, if one or more of these bundles was selected after you press "Next" you will be promoted to those settings  
 ![Databases Fig 6](Images/studio_databases_6.PNG)  
-For details of the bundles settings look in the [bundles section in the studio documentations](../Bundles)
+For details of the bundles settings look in the [bundles section in the studio documentations](bundles)
 
 After the database is created you will have the new database in the databases page, the new database will automatically be selected as the current database. (Note that the database my already contain documents depending on the bundles selected):  
 ![Databases Fig 7](Images/studio_databases_7.PNG)  
