@@ -93,6 +93,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RavenDB.Client.2.0.2161-Unstable\lib\net40\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
+    <Reference Include="Raven.Client.MvcIntegration">
+      <HintPath>..\packages\RavenDB.Client.MvcIntegration.2.0.2161-Unstable\lib\net40\Raven.Client.MvcIntegration.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Client.UniqueConstraints">
       <HintPath>..\packages\RavenDB.Client.UniqueConstraints.2.0.2161-Unstable\lib\net40\Raven.Client.UniqueConstraints.dll</HintPath>
     </Reference>
@@ -109,6 +112,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
@@ -119,6 +123,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Appendixes\LuceneIndexesUsage.cs" />
+    <Compile Include="Appendixes\ProfilingMvcApplication.cs" />
     <Compile Include="ClientApi\Advanced\AsyncDatabaseCommands\Index.cs" />
     <Compile Include="ClientApi\Advanced\DatabaseCommands\Batch.cs" />
     <Compile Include="ClientApi\Advanced\DatabaseCommands\Index.cs" />

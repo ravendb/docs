@@ -55,12 +55,14 @@
 
 	public abstract class Controller
 	{
-		public ActionResult RedirectToAction(object a, object b)
+		public dynamic ModelState { get; set; }
+
+		public ActionResult RedirectToAction(object a = null, object b = null)
 		{
 			return null;
 		}
 
-		public ActionResult View(object a, object b)
+		public ActionResult View(object a = null, object b = null)
 		{
 			return null;
 		}
