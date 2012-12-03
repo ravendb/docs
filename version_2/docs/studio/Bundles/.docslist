@@ -1,3 +1,5 @@
 encryption.markdown	Encryption Bundle
-quotas.markdown	Quotas Bundles
-replication.markdown	Replication Bundles
+quotas.markdown	Quotas Bundle
+replication.markdown	Replication Bundle
+versioning.markdown	Versioning Bundle
+authorization.markdown	Authorization Bundle
