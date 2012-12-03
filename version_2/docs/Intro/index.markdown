@@ -4,7 +4,7 @@ If you're new to RavenDB, then this is the place to start. This introduction wil
 
 After reading this, you will be familiar with:-
 * What RavenDB is and the philosophy behind it
-* Understanding the key components of RavenDB
+* The key components of RavenDB
 * How RavenDB helps avoid common data access problems
 * How to start using it inside Visual Studio
 
