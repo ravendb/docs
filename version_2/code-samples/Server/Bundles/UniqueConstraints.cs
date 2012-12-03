@@ -6,12 +6,21 @@
 
 	public class UniqueConstraints : CodeSampleBase
 	{
+		#region unique_constraints_4
 		private class User
 		{
+			[UniqueConstraint]
 			public string Name { get; set; }
 
+			[UniqueConstraint]
 			public string Email { get; set; }
+
+			public string FirstName { get; set; }
+
+			public string LastName { get; set; }
 		}
+
+		#endregion
 
 		public void Sample()
 		{
