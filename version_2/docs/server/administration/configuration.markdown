@@ -8,7 +8,7 @@ If you are running in Embedded mode, or RavenDB is running as an IIS application
 
 ## Sample configurations file
 
-This is the standard app.config XML file. The `appSettings` section is where the configuration options go, also for web applications which have a web.config file instead.
+This is the standard app.config XML file. The `appSettings` section is where the global configuration options go, also for web applications which have a web.config file instead.
 
 {CODE-START:xml /}
 <?xml version="1.0" encoding="utf-8" ?> 
@@ -27,7 +27,9 @@ This is the standard app.config XML file. The `appSettings` section is where the
 </configuration>
 {CODE-END /}
 
-## Core settings
+## Configuration options
+
+### Core settings
 
 * **Raven/MaxPageSize**  
     The maximum page size that can be specified on this server.  
@@ -35,23 +37,23 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Minimum:_ 10
     
 * **Raven/MemoryCacheExpiration**  
-    The expiration value for documents in the internal document cache. Value is in seconds.
-    _Default:_ 5 minutes
+    The expiration value for documents in the internal document cache. Value is in seconds.   
+    _Default:_ 5 minutes   
 
 * **Raven/MemoryCacheLimitMegabytes**
-	The max size in MB for the internal document cache inside RavenDB server.
-	_Default:_ 50% of the total system meory minus the size of the esent cache.
+	The max size in MB for the internal document cache inside RavenDB server.   
+	_Default:_ 50% of the total system meory minus the size of the esent cache.  
 
 * **Raven/MemoryCacheLimitPercentage**
-	The percentage of memory that the internal document cache inside RavenDB server will use.
-	_Default:_ 0 (auto)
+	The percentage of memory that the internal document cache inside RavenDB server will use.   
+	_Default:_ 0 (auto)   
 
 * **Raven/MemoryCacheLimitCheckInterval**
-	The internal for checking that the internal document cache inside RavenDB server will be cleaned.
-	_Format:_ HH:MM:SS
-	_Default:_ depends on system polling interval
+	The internal for checking that the internal document cache inside RavenDB server will be cleaned.   
+	_Format:_ HH:MM:SS   
+	_Default:_ depends on system polling interval   
 
-## Index settings
+### Index settings
 
 * **Raven/IndexStoragePath**  
     The path for the indexes on disk. Useful if you want to store the indexes on another HDD for performance reasons.  
@@ -112,7 +114,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Whatever we allow creation of temporary indexes on dynamic queries.   
 	_Default:_ true
 
-* **Raven/Raven/SkipCreatingStudioIndexes**
+* **Raven/SkipCreatingStudioIndexes**
 	Control whatever the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   
 	_Default:_ false
 
@@ -120,7 +122,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Control whatever RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).   
 	_Default:_ false
 
-## Data settings:
+### Data settings:
 
 * **Raven/RunInMemory**  
     Whatever the database should run purely in memory. When running in memory, nothing is written to disk and if the server is restarted all data will be lost. This is mostly useful for testing.   
@@ -140,7 +142,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Allowed values:_  Lazy, Safe   
     _Default:_ Safe
 
-## Http settings
+### Http settings
 
 * **Raven/HostName**  
     The hostname to bind the embedded http server to, if we want to bind to a specific hostname, rather than all.  
@@ -176,7 +178,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Configures the server to send Access-Control-Request-Headers header with the specified value.   
 	_Default:_ none
 
-## Misc settings
+### Misc settings
 
 * **Raven/License**
 	The full license string for RavenDB. If Raven/License is specified, it overrides the Raven/LicensePath configuration.   
@@ -185,7 +187,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The path to the license file for RavenDB.   
 	_Default:_ ~\license.xml
 
-## Bundles
+### Bundles
 
 * **Raven/ActiveBundles**
 	Semicolon separated list of bundles names, such as: 'Replication;Versioning'. If the value is not specified, none of the bundles are installed.   
@@ -198,7 +200,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     The location of the plugins directory for this database.   
     _Default:_ ~\Plugins  
 
-## Studio
+### Studio
 
 * **Raven/WebDir**  
     The location of the web directory for known files that makes up the RavenDB internal website.   
@@ -207,7 +209,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/RedirectStudioUrl**
 	The url to redirect the user to when then try to access the local studio.   
 
-## Esent settings
+### Esent settings
 
 * **Raven/Esent/CacheSizeMax**  
     The size in MB of the Esent page cache, which is the default storage engine.   
@@ -242,7 +244,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Whatever circular logs will be used, defaults to true. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
     _Default_: true  
 
-## Tenants
+### Tenants
 
 * **Raven/Tenants/MaxIdleTimeForTenantDatabase**
 	The time in seconds to allow a tenant database to be idle. Value is in seconds.   
@@ -252,7 +254,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The time in seconds to check for an idle tenant database. Value is in seconds.   
 	_Default:_ 60
 
-## Quotas
+### Quotas
 
 * **Raven/Quotas/Size/HardLimitInKB**
 	The hard limit after which we refuse any additional writes.   
@@ -262,7 +264,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The soft limit before which we will warn about the quota.   
 	_Default:_ 1024
 
-## Authorization & Authentication
+### Authorization & Authentication
 
 * **Raven/AnonymousAccess**
 	Determines what actions an anonymous user can do. Get - read only, All - read & write, None - allows access to only authenticated users.   
@@ -285,3 +287,77 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/OAuthTokenCertificatePassword**
 	The password for the OAuth certificate.  
 	_Default:_ none
+
+##Availability of configuration options
+
+Many of the configuration options described in section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this page](../../server/multiple-databases).
+
+| Configuration option | Database | Global |
+|:---------------------|:--------:|:------:|
+| **Raven/MaxPageSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png)  |
+| **Raven/MemoryCacheExpiration** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MemoryCacheLimitMegabytes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MemoryCacheLimitPercentage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MemoryCacheLimitCheckInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/IndexStoragePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfParallelIndexTasks** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfItemsToIndexInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/InitialNumberOfItemsToIndexInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/AvailableMemoryForRaisingIndexBatchSizeLimit** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/ResetIndexOnUncleanShutdown** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxIndexingRunLatency** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TaskScheduler** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TempIndexPromotionMinimumQueryCount** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TempIndexPromotionThreshold** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TempIndexCleanupPeriod** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TempIndexCleanupThreshold** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TempIndexInMemoryMaxMB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/CreateTemporaryIndexesForAdHocQueriesIfNeeded** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/StorageTypeName** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TransactionMode** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/HostName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Port** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/VirtualDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/HttpCompression** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/AccessControlAllowOrigin** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/AccessControlMaxAge** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/AccessControlAllowMethods** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/AccessControlRequestHeaders** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/License** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/LicensePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/ActiveBundles** | ![Yes](images\tick.png)* | ![Yes](images\tick.png) |
+| **Raven/BundlesSearchPattern** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/PluginsDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/Esent/CacheSizeMax** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Esent/MaxVerPages** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Esent/DbExtensionSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Esent/LogFileSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Esent/LogBuffers** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Esent/MaxCursors** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Esent/LogsPath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Esent/CircularLog** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/Tenants/MaxIdleTimeForTenantDatabase** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Tenants/FrequnecyToCheckForIdleDatabases** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/Quotas/Size/HardLimitInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Quotas/Size/SoftMarginInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/AnonymousAccess** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Authorization/Windows/RequiredGroups** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Authorization/Windows/RequiredUsers** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/OAuthTokenServer** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/OAuthTokenCertificatePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/OAuthTokenCertificatePassword** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+
+{NOTE **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database. /}
