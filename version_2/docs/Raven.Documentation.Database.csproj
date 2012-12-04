@@ -257,6 +257,8 @@
     <Content Include="server\administration\images\05FailureSimulation.jpg" />
     <Content Include="server\administration\images\05FailureSimulation_FailoverSuccess.jpg" />
     <Content Include="server\administration\images\05FailureSimulation_Pending.jpg" />
+    <Content Include="server\administration\images\delete.png" />
+    <Content Include="server\administration\images\tick.png" />
     <Content Include="server\bundles\images\authorization_docs.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />
     <Content Include="server\bundles\images\versioned_docs_2.png" />
