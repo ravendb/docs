@@ -79,6 +79,7 @@
     <None Include="client-api\querying\.docslist" />
     <None Include="client-api\querying\handling-document-relationships.markdown" />
     <None Include="client-api\querying\index.markdown" />
+    <None Include="client-api\querying\lazy-operations.markdown" />
     <None Include="client-api\querying\linq-extensions\.docslist" />
     <None Include="client-api\querying\linq-extensions\index.markdown" />
     <None Include="client-api\querying\linq-extensions\search.markdown" />
@@ -372,6 +373,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Appendixes\Images\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -5,3 +5,4 @@ stale-indexes.markdown	Stale indexes
 handling-document-relationships.markdown	Handling document relationships
 polymorphism.markdown	Polymorphism
 /linq-extensions	Linq extensions
+lazy-operations.markdown	Lazy Operations
