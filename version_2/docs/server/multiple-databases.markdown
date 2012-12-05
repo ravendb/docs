@@ -14,7 +14,7 @@ Defining a new database is done by creating a document with the name "Raven/Data
         }
     }
 
-The Settings dictionary allows you to modify the configuration for RavenDB's for the specified database.
+The Settings dictionary allows you to modify the configuration for RavenDB's for the specified database. The list of available configuration options can be found [here](administration/configuration#availability-of-configuration-options).
 
 Once that document is created, you can access the Northwind database using the same REST based API, but with the following base endpoint:
 

@@ -69,7 +69,7 @@ Some of the options are available for all databases, and some depend on the sele
 
 All databases will have the following:
 1) Database Settings - In here you have see the DatabaseDocument that represents the database, you can edit this document, but this is not advised as you can cause damage to the database.
-2) Periodic Backup - This section is explained in the Bundles section //TODO: Link
+2) Periodic Backup - This section is explained in the [Periodic Backup Page](bundles/periodicbackup)
 
 The Other options are dependent on the bundles selected for this database and are explained in the bundles section //TODO: Link
 

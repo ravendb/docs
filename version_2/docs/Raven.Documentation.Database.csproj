@@ -43,6 +43,7 @@
     <None Include="Appendixes\.docslist" />
     <None Include="Appendixes\index.markdown" />
     <None Include="Appendixes\lucene-indexes-usage.markdown" />
+    <None Include="Appendixes\profiling-mvc-application.markdown" />
     <None Include="client-api\.docslist" />
     <None Include="client-api\advanced\.docslist" />
     <None Include="client-api\advanced\aggressive-caching.markdown" />
@@ -256,6 +257,8 @@
     <Content Include="server\administration\images\05FailureSimulation.jpg" />
     <Content Include="server\administration\images\05FailureSimulation_FailoverSuccess.jpg" />
     <Content Include="server\administration\images\05FailureSimulation_Pending.jpg" />
+    <Content Include="server\administration\images\delete.png" />
+    <Content Include="server\administration\images\tick.png" />
     <Content Include="server\bundles\images\authorization_docs.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />
     <Content Include="server\bundles\images\versioned_docs_2.png" />
@@ -367,7 +370,9 @@
     <Content Include="Theory\images\document_structure_3_docs.png" />
     <Content Include="Theory\images\document_structure_docs.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Appendixes\Images\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

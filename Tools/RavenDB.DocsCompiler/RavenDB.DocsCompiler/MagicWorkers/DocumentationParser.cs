@@ -149,7 +149,15 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
 				return true;
 
-			href += "?version=" + versionUrl;
+			var hashIndex = href.IndexOf("#", StringComparison.InvariantCultureIgnoreCase);
+			if (hashIndex != -1)
+			{
+				href = href.Insert(hashIndex, "?version=" + versionUrl);
+			}
+			else
+			{
+				href += "?version=" + versionUrl;
+			}
 
 			Uri uri;
 			if (!string.IsNullOrWhiteSpace(trail)) trail += "/"; // make sure we don't lose the current slug
