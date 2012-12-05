@@ -59,7 +59,7 @@
 				}
 
 				#region stale4
-				documentStore.Conventions.DefaultQueryingConsistency = ConsistencyOptions.MonotonicRead;
+				documentStore.Conventions.DefaultQueryingConsistency = ConsistencyOptions.QueryYourWrites;
 
 				#endregion
 			}
