@@ -141,6 +141,8 @@
     <Compile Include="ClientApi\FacetedSearch.cs" />
     <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
     <Compile Include="ClientApi\Querying\LazyOperations.cs" />
+    <Compile Include="ClientApi\Querying\LinqExtensions\OfType.cs" />
+    <Compile Include="ClientApi\Querying\LinqExtensions\ProjectFromIndexFieldsInto.cs" />
     <Compile Include="ClientApi\Querying\Polymorphism.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs" />
