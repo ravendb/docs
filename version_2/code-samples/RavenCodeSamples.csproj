@@ -140,6 +140,7 @@
     <Compile Include="ClientApi\ConnectionToRavenDbDataStore.cs" />
     <Compile Include="ClientApi\FacetedSearch.cs" />
     <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="ClientApi\Querying\LazyOperations.cs" />
     <Compile Include="ClientApi\Querying\Polymorphism.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs" />
