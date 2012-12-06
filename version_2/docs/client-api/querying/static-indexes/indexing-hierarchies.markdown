@@ -21,10 +21,16 @@ One of the greatest advantages of a document database is that we have very few l
 
 While it is very easy to work with such a document in all respect, it does bring up an interesting question, how can we index all comments in the post?
 
-The answer to that is that Raven contains builtin support for indexing hierarchies, we can define an index using the following syntax:
+The answer to that is that Raven contains built-in support for indexing hierarchies, we can define an index using the following syntax:
 
-    from post in docs.Posts
-    from comment in Hierarchy(post, "Comments") 
-    select new { comment.Text }
+{CODE indexing_hierarchies_1@ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs /}
+
+then create it using:
+
+{CODE indexing_hierarchies_2@ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs /}
+
+Alternative way is to use `PutIndex` command:
+
+{CODE indexing_hierarchies_3@ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs /}
 
 This will index all the comments in the thread, regardless of their location in the hierarchy.
