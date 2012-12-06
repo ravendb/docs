@@ -33,7 +33,7 @@ Take this JSON document for example:
   }
 {CODE-END/}
 
-As you can see, the `Order` document now contains denormalized data from both the `Customer` and the `Product` documents, which are saved elsewhere in full. Note we won’t have copied all the customer properties into the order; instead we just clone the ones that we care about when displaying or processing an order. This approach is called _denormalized reference_.
+As you can see, the `Order` document now contains denormalized data from both the `Customer` and the `Product` documents, which are saved elsewhere in full. Note we won’t have copied all the customer properties into the order; instead we just clone the ones that we care about when displaying or processing an order. This approach is called *denormalized reference*.
 
 The denormalization approach avoids many cross document lookups and results in only the necessary data being transmitted over the network, but it makes other scenarios more difficult. For example, consider the following entity structure as our start point:
 

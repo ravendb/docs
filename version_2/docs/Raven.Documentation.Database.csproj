@@ -82,6 +82,8 @@
     <None Include="client-api\querying\lazy-operations.markdown" />
     <None Include="client-api\querying\linq-extensions\.docslist" />
     <None Include="client-api\querying\linq-extensions\index.markdown" />
+    <None Include="client-api\querying\linq-extensions\of-type.markdown" />
+    <None Include="client-api\querying\linq-extensions\project-from-index-fields-into.markdown" />
     <None Include="client-api\querying\linq-extensions\search.markdown" />
     <None Include="client-api\querying\paging.markdown" />
     <None Include="client-api\querying\polymorphism.markdown" />
