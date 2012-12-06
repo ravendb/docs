@@ -145,6 +145,7 @@
     <Compile Include="ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\Index.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\LiveProjections.cs" />
     <Compile Include="ClientApi\Querying\UsingLinqToQueryRavenDb.cs" />
     <Compile Include="CodeSampleBase.cs" />
