@@ -55,7 +55,13 @@ The RavenDB "Includes" feature addresses the limitations of denormalization. Ins
 
 {CODE includes1@ClientApi\Querying\HandlingDocumentRelationships.cs /}
 
-Above we are asking RavenDB to retrieve the `Order` "orders/1234" and at the same time "include" the `Customer` referenced by the `Order.CustomerId` property. The second call to `Load()` is resolved completely client side (i.e. without a second request to the RavenDB server) because the relevant `Customer` object has already been retrieved (this is the full `Customer` object not a denormalized version). You can also use Includes with queries:
+Above we are asking RavenDB to retrieve the `Order` "orders/1234" and at the same time "include" the `Customer` referenced by the `Order.CustomerId` property. The second call to `Load()` is resolved completely client side (i.e. without a second request to the RavenDB server) because the relevant `Customer` object has already been retrieved (this is the full `Customer` object not a denormalized version). 
+
+There is also a possibility to load multiple documents:
+
+{CODE includes_1@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+
+You can also use Includes with queries:
 
 {CODE includes2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
 
@@ -69,6 +75,10 @@ Include can be used with a many to one relationship. In the above classes, an `O
 
 Again, the calls to `Load()` within the `foreach` loop will not require a call to the server as the `Supplier` objects will already be loaded into the session cache.
 
+Multi-loads are also possible:
+
+{CODE includes_3@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+
 ### Secondary level includes
 
 An Include does not need to work only on the value of a top level property within a document. It can be used to load a value from a secondary level. In the classes above, the `Order` contains a `Referral` property which is of the type:
@@ -79,6 +89,10 @@ This class contains an identifier for a `Customer`. The following code will incl
 
 {CODE includes4@ClientApi\Querying\HandlingDocumentRelationships.cs /}
 
+Alternative way is to provide string based path:
+
+{CODE includes_4@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+
 This secondary level include will also work with collections. The `Order.LineItems` property holds a collection of `LineItem` objects which each contain a reference to a `Product`:
 
 {CODE order_classes_lineitem@Common.cs /}
@@ -86,6 +100,8 @@ This secondary level include will also work with collections. The `Order.LineIte
 The `Product` documents can be included using this syntax:
 
 {CODE includes5@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+
+when you want to load multiple documents.
 
 The `Select()` within the Include tells RavenDB which property of secondary level objects to use as a reference.
 
@@ -108,6 +124,37 @@ The samples above can be re-written as follows:
 {CODE includes5_2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
 
 The second parameter to the generic `Include<T, TInclude>` specifies which document collection the reference is pointing to. RavenDB will combine the name of the collection with the value of the reference property to find the full identifier of the referenced document. For example, from the first example, if the value of the `Order.Customer2Id` property is the integer 56, RavenDB will include the document with an Id of "customer2s/56" from the database. The `Session.Load<Customer2>()` method will be passed the value 56 and will look for then load the document "customer2s/56" from the session cache.
+
+### Lucene Queries
+
+Same query extensions have been applied to LuceneQuery, so to include `Customer` by `CustomerId` property can be achieved in both ways:
+
+{CODE includes_7@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+
+or
+
+{CODE includes_8@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+
+### Include rules
+
+When using string-based includes like:
+
+{CODE includes_4@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+
+you must remember to follow certain rules that must apply to providen string path:
+
+1.	**Dots** are used to separate properties e.g. `"Refferal.CustomerId"` in example above means that our `Order` contains property `Refferal` and that property contains another property called `CustomerId`.
+2.	**Commas** are used to indicate that property is a collection type e.g. List. So if our `Order` will have a list of LineItems and each `LineItem` will contain `ProductId` property then we can create string path as follows: `"LineItems.,ProductId"`.
+3.	**Prefixes** are used to indicate id prefix for **non-string** identifiers. e.g. if our `CustomerId` property in `"Refferal.CustomerId"` path is an integer then we should add `customers/` prefix so the final path would look like `"Refferal.CustomerId(customers/)"` and for our collection example it would be `"LineItems.,ProductId(products/)"` if the `ProductId` would be a non-string type.
+
+{NOTE **Prefix** is not required for string identifiers, because they contain it by default. /}
+
+Learning string path rules may be usefull when you will want to query database using HTTP API.
+
+{CODE-START:json /}
+   > curl -X GET "http://localhost:8080/queries/?include=LineItems.,ProductId(products/)&id=orders/1"
+
+{CODE-END /}
 
 ## Live Projections
 

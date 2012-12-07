@@ -39,6 +39,21 @@
 
 				using (var session = store.OpenSession())
 				{
+					#region includes_1
+					var orders = session.Include<Order>(x => x.CustomerId)
+						.Load("orders/1234", "orders/4321");
+
+					foreach (var order in orders)
+					{
+						// this will not require querying the server!
+						var cust = session.Load<Customer>(order.CustomerId);
+					}
+
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
 					#region includes1_2
 					var order = session.Include<Order2, Customer2>(x => x.Customer2Id)
 						.Load("orders/1234");
@@ -100,6 +115,24 @@
 
 				using (var session = store.OpenSession())
 				{
+					#region includes_3
+					var orders = session.Include<Order>(x => x.SupplierIds)
+						.Load("orders/1234", "orders/4321");
+
+					foreach (var order in orders)
+					{
+						foreach (var supplierId in order.SupplierIds)
+						{
+							// this will not require querying the server!
+							var supp = session.Load<Supplier>(supplierId);
+						}
+					}
+
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
 					#region includes3_2
 					var order = session.Include<Order2, Supplier2>(x => x.Supplier2Ids)
 						.Load("orders/1234");
@@ -118,6 +151,18 @@
 					#region includes4
 					var order = session.Include<Order>(x => x.Refferal.CustomerId)
 						.Load("orders/1234");
+
+					// this will not require querying the server!
+					var referrer = session.Load<Customer>(order.Refferal.CustomerId);
+
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region includes_4
+					var order = session.Include("Refferal.CustomerId")
+						.Load<Order>("orders/1234");
 
 					// this will not require querying the server!
 					var referrer = session.Load<Customer>(order.Refferal.CustomerId);
@@ -178,6 +223,41 @@
 
 					#endregion
 				}
+
+				using (var session = store.OpenSession())
+				{
+					#region includes_7
+					var orders = session.Advanced.LuceneQuery<Order2>()
+						.Include(x => x.Customer2Id)
+						.WhereGreaterThan(x => x.TotalPrice, 100)
+						.ToList();
+
+					foreach (var order in orders)
+					{
+						// this will not require querying the server!
+						var cust2 = session.Load<Customer2>(order.Customer2Id);
+					}
+
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region includes_8
+					var orders = session.Advanced.LuceneQuery<Order2>()
+						.Include("CustomerId")
+						.WhereGreaterThan(x => x.TotalPrice, 100)
+						.ToList();
+
+					foreach (var order in orders)
+					{
+						// this will not require querying the server!
+						var cust2 = session.Load<Customer2>(order.Customer2Id);
+					}
+
+					#endregion
+				}
+
 			}
 		}
 
@@ -242,10 +322,10 @@
 					(database, users) => from user in users
 										 let alias = database.Load<User>(user.AliasId)
 										 select new
-											        {
-												        Name = user.Name, 
+													{
+														Name = user.Name,
 														Alias = alias.Name
-											        };
+													};
 			}
 		}
 
