@@ -14,7 +14,7 @@ Here are the steps needed in order to set the api keys:
 A few tips:  
 
 - In order to set a key to all databases in the database name enter "*" (this will NOT grant access to the system database) 
-- To grant access to the system database set the database name to "<system>".
+- To grant access to the system database set the database name to "&lt;system&gt;".
 
 Once all settings are entered give the user the "full api key" (you can right-click on it to copy).
 
