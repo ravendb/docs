@@ -168,6 +168,7 @@
     <Compile Include="Server\Bundles\Authorization.cs" />
     <Compile Include="Server\Bundles\AuthorizationBundleDesign.cs" />
     <Compile Include="Server\Bundles\CascadeDelete.cs" />
+    <Compile Include="Server\Bundles\Encryption.cs" />
     <Compile Include="Server\Bundles\Expiration.cs" />
     <Compile Include="Server\Bundles\IndexReplication.cs" />
     <Compile Include="Server\Bundles\MoreLikeThis.cs" />
