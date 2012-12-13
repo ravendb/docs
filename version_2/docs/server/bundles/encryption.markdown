@@ -23,7 +23,7 @@ All settings can be overridden per database during the database creation process
 
 Above example demonstrates how to create `EncryptedDB` with active encryption and with non-default encryption algorithm.
 
-{NOTE All encryption settings can only be providen when database is beeing created. Changing them later will cause DB malfunction. /}
+{NOTE All encryption settings can only be provided when database is beeing created. Changing them later will cause DB malfunction. /}
 
 ##Encryption key management
 
