@@ -288,6 +288,17 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The password for the OAuth certificate.  
 	_Default:_ none
 
+### [Encryption](../bundles/encryption)
+
+* **Raven/Encryption/Algorithm**   
+	[AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) value. Additionaly provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class.     
+	_Default:_ "System.Security.Cryptography.AesManaged, System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"    
+* **Raven/Encryption/Key**   
+	Key used for encryption purposes with minimum length of 8 characters, base64 encoded.    
+* **Raven/Encryption/EncryptIndexes**   
+	Boolean value indicating if the indexes should be encrypted.  
+	_Default:_ True   
+
 ##Availability of configuration options
 
 Many of the configuration options described in section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this page](../../server/multiple-databases).
@@ -359,5 +370,11 @@ Many of the configuration options described in section above can be used both in
 | **Raven/OAuthTokenServer** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenCertificatePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenCertificatePassword** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/Encryption/Algorithm** | ![Yes](images\tick.png) | ![Yes](images\tick.png)** |
+| **Raven/Encryption/Key** | ![Yes](images\tick.png) | ![Yes](images\tick.png)** |
+| **Raven/Encryption/EncryptIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png)** |
 
 {NOTE **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database. /}
+
+{NOTE **Raven/Encryption** settings can only be provided when database is beeing created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption). /}
