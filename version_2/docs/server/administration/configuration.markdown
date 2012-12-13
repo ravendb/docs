@@ -371,9 +371,9 @@ Many of the configuration options described in section above can be used both in
 | **Raven/OAuthTokenCertificatePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenCertificatePassword** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
-| **Raven/Encryption/Algorithm** | ![Yes](images\tick.png) | ![Yes](images\tick.png)** |
-| **Raven/Encryption/Key** | ![Yes](images\tick.png) | ![Yes](images\tick.png)** |
-| **Raven/Encryption/EncryptIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png)** |
+| **Raven/Encryption/Algorithm** | ![Yes](images\tick.png)** | ![Yes](images\tick.png) |
+| **Raven/Encryption/Key** | ![Yes](images\tick.png)** | ![Yes](images\tick.png) |
+| **Raven/Encryption/EncryptIndexes** | ![Yes](images\tick.png)** | ![Yes](images\tick.png) |
 
 {NOTE **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database. /}
 
