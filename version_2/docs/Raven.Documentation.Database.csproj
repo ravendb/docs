@@ -279,6 +279,7 @@
     <Content Include="server\bundles\images\versioned_docs.png" />
     <Content Include="server\bundles\images\versioned_docs_2.png" />
     <Content Include="server\bundles\images\versioned_docs_3.png" />
+    <None Include="server\bundles\indexed-properties.markdown" />
     <Content Include="server\extending\triggers\images\triggers_delete_docs.PNG" />
     <Content Include="server\extending\triggers\images\triggers_docs.png" />
     <Content Include="server\extending\triggers\images\triggers_index_docs.png" />

@@ -11,3 +11,4 @@ authentication.markdown	Authentication Bundle
 encryption.markdown	Encryption Bundle
 compression.markdown	Compression Bundle
 periodic-backups.markdown	Periodic Backups
+indexed-properties.markdown	Indexed Properties
