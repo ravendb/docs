@@ -173,6 +173,7 @@
     <Compile Include="Server\Bundles\Expiration.cs" />
     <Compile Include="Server\Bundles\IndexReplication.cs" />
     <Compile Include="Server\Bundles\MoreLikeThis.cs" />
+    <Compile Include="Server\Bundles\PeriodicBackups.cs" />
     <Compile Include="Server\Bundles\UniqueConstraints.cs" />
     <Compile Include="Server\Bundles\Versioning.cs" />
     <Compile Include="Server\Extending\RequestResponders\Index.cs" />
