@@ -162,6 +162,7 @@
     <None Include="server\administration\export-import.markdown" />
     <None Include="server\administration\fmc_configuration.markdown" />
     <None Include="server\administration\index.markdown" />
+    <None Include="server\administration\statistics.markdown" />
     <None Include="server\administration\upgrade.markdown" />
     <None Include="server\bundles\.docslist" />
     <None Include="server\bundles\authentication.markdown" />
