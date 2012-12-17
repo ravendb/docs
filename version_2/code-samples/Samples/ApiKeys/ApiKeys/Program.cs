@@ -25,11 +25,12 @@ namespace ApiKeys
 			Console.Out.WriteLine("Follow these instructions:");
 			Console.Out.WriteLine("1) Open the browser");
 			Console.Out.WriteLine("2) Navigate to: http://localhost:" + port);
-			Console.Out.WriteLine("3) Go to the Databases section and select \"System Database\" (on the top right)");
-			Console.Out.WriteLine("4) Go to the settings (press the cog wheel next to the database name)");
-			Console.Out.WriteLine("5) In the Api Keys section Add a new key, select a name, generate a secret and add a database settings for \"ApiKeySample\"");
-			Console.Out.WriteLine("6) Don't forget to click the \"Save Changes\" button");
-			Console.Out.WriteLine("7) Right-click on the full api key and copy it");
+			Console.Out.WriteLine("3) Make sure there is a database named \"ApiKeySample\", if there isn't one, create it");
+			Console.Out.WriteLine("4) Go to the Databases section and select \"System Database\" (on the top right)");
+			Console.Out.WriteLine("5) Go to the settings (press the cog wheel next to the database name)");
+			Console.Out.WriteLine("6) In the Api Keys section Add a new key, select a name, generate a secret and add a database settings for \"ApiKeySample\"");
+			Console.Out.WriteLine("7) Don't forget to click the \"Save Changes\" button");
+			Console.Out.WriteLine("8) Right-click on the full api key and copy it");
 
 			Console.Out.WriteLine("Paste here the full api key: ");
 			var apiKey = Console.In.ReadLine();

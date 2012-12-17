@@ -17,4 +17,4 @@ You can also choose if you want to encryp the indexes as well (selected by defau
 After you create the database, a window with the selected key will appear, this is your last chance to backup the key:  
 ![Tasks Fig 3](Images/studio_encryption_3.PNG)  
 
-You can read more about the Encryption Bundle in [Here]() //TODO link
+You can read more about the Encryption Bundle in [here](../../server/bundles/encryption).

@@ -168,9 +168,13 @@
     <Compile Include="Server\Bundles\Authorization.cs" />
     <Compile Include="Server\Bundles\AuthorizationBundleDesign.cs" />
     <Compile Include="Server\Bundles\CascadeDelete.cs" />
+    <Compile Include="Server\Bundles\Compression.cs" />
+    <Compile Include="Server\Bundles\Encryption.cs" />
     <Compile Include="Server\Bundles\Expiration.cs" />
+    <Compile Include="Server\Bundles\IndexedProperties.cs" />
     <Compile Include="Server\Bundles\IndexReplication.cs" />
     <Compile Include="Server\Bundles\MoreLikeThis.cs" />
+    <Compile Include="Server\Bundles\PeriodicBackups.cs" />
     <Compile Include="Server\Bundles\UniqueConstraints.cs" />
     <Compile Include="Server\Bundles\Versioning.cs" />
     <Compile Include="Server\Extending\RequestResponders\Index.cs" />
