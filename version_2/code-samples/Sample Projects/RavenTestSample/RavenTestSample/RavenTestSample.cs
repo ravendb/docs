@@ -24,7 +24,7 @@ namespace RavenTestSample
 	#endregion
 
 	#region RavenTestSample2
-	public class IndexOnList : RavenTestBase
+	public class IndexTest : RavenTestBase
 	{
 		[Fact]
 		public void CanIndexAndQuery()
