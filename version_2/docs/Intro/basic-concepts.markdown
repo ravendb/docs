@@ -1,4 +1,4 @@
-﻿# Basic concepts
+# Basic concepts
 
 RavenDB is a database technology based on a client-server architecture. Data is stored on a server instance and data requests from one or more clients are made to that instance.
 
@@ -28,7 +28,7 @@ To jump-start your learning process, it is sufficient that you download the [lat
 
 Notice how a port for the server to listen on has been automatically selected for you, and a data directory has been created and is ready to store your data. This is RavenDB in debug mode - for production usage, you'll generally run it in IIS or as a Service.
 
-As long as this window stays open, the RavenDB server is running. Pressing Enter will terminate the server - new requests will no lonjger be processed, but all data will be persisted in the data directory.
+As long as this window stays open, the RavenDB server is running. Pressing Enter will terminate the server - new requests will no longer be processed, but all data will be persisted in the data directory.
 
 ### Storage types
 
