@@ -9,6 +9,7 @@ namespace RavenCodeSamples.Server.Bundles
 	public class IndexedProperties : CodeSampleBase
 	{
 		#region indexed_properties_1
+
 		public class Customer
 		{
 			public string Id { get; set; }
@@ -30,6 +31,7 @@ namespace RavenCodeSamples.Server.Bundles
 		#endregion
 
 		#region indexed_properties_2
+
 		public class OrderResults
 		{
 			public string CustomerId { get; set; }
@@ -44,30 +46,31 @@ namespace RavenCodeSamples.Server.Bundles
 		#endregion
 
 		#region indexed_properties_3
+
 		public class OrdersAverageAmount : AbstractIndexCreationTask<Order, OrderResults>
 		{
 			public OrdersAverageAmount()
 			{
 				Map = orders => from order in orders
-								select new
-									{
-										CustomerId = order.CustomerId,
-										TotalOfOrderAmounts = order.TotalAmount,
-										CountOfOrders = 1,
-										AverageOrderAmount = 0
-									};
+				                select new
+					                {
+						                CustomerId = order.CustomerId,
+						                TotalOfOrderAmounts = order.TotalAmount,
+						                CountOfOrders = 1,
+						                AverageOrderAmount = 0
+					                };
 
 				Reduce = results => from result in results
 				                    group result by result.CustomerId
 				                    into g
-									let total = g.Sum(x=> x.TotalOfOrderAmounts)
-									let count = g.Sum(x=> x.CountOfOrders)
+				                    let total = g.Sum(x => x.TotalOfOrderAmounts)
+				                    let count = g.Sum(x => x.CountOfOrders)
 				                    select new
 					                    {
 						                    CustomerId = g.Key,
-											TotalOfOrderAmounts = total,
-											CountOfOrders = count,
-											AverageOrderAmount = total / count
+						                    TotalOfOrderAmounts = total,
+						                    CountOfOrders = count,
+						                    AverageOrderAmount = total / count
 					                    };
 			}
 		}
@@ -79,36 +82,39 @@ namespace RavenCodeSamples.Server.Bundles
 			using (var store = NewDocumentStore())
 			{
 				#region indexed_properties_0
+
 				store.DatabaseCommands.CreateDatabase(new DatabaseDocument
 					{
 						Id = "ExampleDB",
 						Settings =
-				            {
-					            {"Raven/ActiveBundles", "IndexedProperties"}
-				            }
+							{
+								{ "Raven/ActiveBundles", "IndexedProperties" }
+							}
 					});
 
 				#endregion
 
 				#region indexed_properties_4
+
 				var ordersAverageAmount = new OrdersAverageAmount();
 				ordersAverageAmount.Execute(store);
 
 				store.DatabaseCommands.Put("Raven/IndexedProperties/" + ordersAverageAmount.IndexName,
-										   null,
-										   RavenJObject.FromObject(new IndexedPropertiesSetupDoc
-											   {
-												   DocumentKey = "CustomerId",
-												   FieldNameMappings =
-                                                       {
-                                                           {"AverageOrderAmount", "AverageOrderAmount"}
-                                                       }
-											   }),
-										   new RavenJObject());
+				                           null,
+				                           RavenJObject.FromObject(new IndexedPropertiesSetupDoc
+					                           {
+						                           DocumentKey = "CustomerId",
+						                           FieldNameMappings =
+							                           {
+								                           { "AverageOrderAmount", "AverageOrderAmount" }
+							                           }
+					                           }),
+				                           new RavenJObject());
 
 				#endregion
 
 				#region indexed_properties_5
+
 				using (var session = store.OpenSession())
 				{
 					session.Store(new Customer { Id = "customers/1", Name = "Customer 1" });
@@ -127,6 +133,7 @@ namespace RavenCodeSamples.Server.Bundles
 				#endregion
 
 				#region indexed_properties_6
+
 				using (var session = store.OpenSession())
 				{
 					var customer1 = session.Load<Customer>("customers/1"); // AverageOrderAmount is 6
