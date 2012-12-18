@@ -50,10 +50,10 @@ namespace Raven.Tests.Helpers
 		#region RavenTestBaseMethods
 		public EmbeddableDocumentStore NewDocumentStore(bool runInMemory = true, string requestedStorage = null, ComposablePartCatalog catalog = null,
 														bool deleteDirectory = true,	bool deleteDirectoryOnDispose = true);
-		//Creates an embedded database in port 8079 and adds it to a list of stores
+		//Creates an embedded document store
 
 		public IDocumentStore NewRemoteDocumentStore(bool fiddler = false);
-		//Creates a new database in port 8079
+		//Creates a new document store
 
 		public static void WaitForIndexing(IDocumentStore store);
 		//Waits for all indexes to be non stale
