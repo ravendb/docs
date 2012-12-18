@@ -23,7 +23,8 @@ After selecting this option the "Create a new database" window will pop up:
 ![Databases Fig 3](Images/studio_databases_3.PNG)
 
 In this page you need to select a unique name for your database.  
-On the right we can select which bundles you want to enable for your database (some bundles require a license to use). 
+On the right we can select which bundles you want to enable for your database (some bundles require a license to use).  
+You can't change the selection of the Periodic Backup Bundle, it is selected according to your license.
 
 Below the name you can check the advanced settings option which allows you to set the path for the database, logs and indexes:  
 ![Databases Fig 4](Images/studio_databases_4.PNG)  
