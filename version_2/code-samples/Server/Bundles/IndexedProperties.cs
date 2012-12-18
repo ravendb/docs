@@ -34,6 +34,10 @@ namespace RavenCodeSamples.Server.Bundles
 		{
 			public string CustomerId { get; set; }
 
+			public decimal TotalOfOrderAmounts { get; set; }
+
+			public int CountOfOrders { get; set; }
+
 			public decimal AverageOrderAmount { get; set; }
 		}
 
@@ -48,16 +52,22 @@ namespace RavenCodeSamples.Server.Bundles
 								select new
 									{
 										CustomerId = order.CustomerId,
-										AverageOrderAmount = order.TotalAmount
+										TotalOfOrderAmounts = order.TotalAmount,
+										CountOfOrders = 1,
+										AverageOrderAmount = 0
 									};
 
 				Reduce = results => from result in results
 				                    group result by result.CustomerId
 				                    into g
+									let total = g.Sum(x=> x.TotalOfOrderAmounts)
+									let count = g.Sum(x=> x.CountOfOrders)
 				                    select new
 					                    {
 						                    CustomerId = g.Key,
-						                    AverageOrderAmount = g.Average(x => x.AverageOrderAmount)
+											TotalOfOrderAmounts = total,
+											CountOfOrders = count,
+											AverageOrderAmount = total / count
 					                    };
 			}
 		}
