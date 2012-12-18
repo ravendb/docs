@@ -31,8 +31,7 @@ namespace RavenTestSample
 		{
 			using (var store = NewDocumentStore())
 			{
-				var container = new CompositionContainer(new TypeCatalog(typeof(SampleData_Index)));
-				IndexCreation.CreateIndexes(container, store);
+				new SampleData_Index().Execute(store);
 
 				using (var session = store.OpenSession())
 				{
