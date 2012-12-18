@@ -17,4 +17,4 @@ In addtion you have several virtual method you could use:
 Here is an example of a full test:  
 {CODE RavenTestSample2@Samples\RavenTests\RavenTestSample.cs /}
 
-After you have the test finished, send the "cs" file with the failing test to [RavenDB Support](emailto:support@ravendb.net)
+After you have the test finished, send the "cs" file with the failing test to [RavenDB Support](mailto:support@ravendb.net)
