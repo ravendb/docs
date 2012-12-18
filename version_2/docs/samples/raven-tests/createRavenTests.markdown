@@ -13,3 +13,5 @@ When you inherit from the class "RavenTestBase" you get the following methods to
 
 In addtion you have several virtual method you could use:  
 {CODE RavenTestBaseViruals@Samples\RavenTests\RavenTestBaseMethods.cs /}
+
+After you have the test finished, send the "cs" file with the failing test to [RavenDB Support](support@ravendb.net)
