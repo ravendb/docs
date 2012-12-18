@@ -21,35 +21,52 @@ namespace RavenTestSample
 	#endregion
 
 	#region RavenTestSample2
-	public class CanIndexOnNull : RavenTestBase
+	public class IndexOnList : RavenTestBase
 	{
 		[Fact]
-		public void CanIndexOnMissingProps()
+		public void CanIndexAndQuery()
 		{
 			using (var store = NewDocumentStore())
 			{
-				store.DatabaseCommands.PutIndex("test",
-												new IndexDefinition
-												{
-													Map = "from doc in docs select new { doc.Type, doc.Houses.Wheels} "
-												});
+				var container = new CompositionContainer(new TypeCatalog(typeof(SampleData_Index)));
+				IndexCreation.CreateIndexes(container, store);
 
-				for (int i = 0; i < 50; i++)
+				using (var session = store.OpenSession())
 				{
-					store.DatabaseCommands.Put("item/" + i, null,
-											   new RavenJObject { { "Type", "Car" } }, new RavenJObject());
+					session.Store(new SampleData
+					{
+						Name = "RavenDB"
+					});
+
+					session.SaveChanges();
 				}
 
-				using (var s = store.OpenSession())
+				using (var session = store.OpenSession())
 				{
-					s.Advanced.LuceneQuery<dynamic>("test")
-						.WaitForNonStaleResults()
-						.WhereGreaterThan("Wheels_Range", 4)
-						.ToArray();
-				}
+					var result = session.Query<SampleData, SampleData_Index>()
+						.Customize(customization => customization.WaitForNonStaleResultsAsOfNow())
+						.FirstOrDefault();
 
-				Assert.Empty(store.DocumentDatabase.Statistics.Errors);
+					Assert.Equal(result.Name, "RavenDB");
+				}
 			}
+		}
+	}
+
+	public class SampleData
+	{
+		public string Name { get; set; }
+	}
+
+	public class SampleData_Index : AbstractIndexCreationTask<SampleData>
+	{
+		public SampleData_Index()
+		{
+			Map = docs => from doc in docs
+						  select new
+						  {
+							  doc.Name
+						  };
 		}
 	}
 	#endregion
