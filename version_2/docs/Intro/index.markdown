@@ -1,7 +1,11 @@
 ﻿# Intro to RavenDB
 
-The intro section is all about being an entry gate to RavenDB and the documentation. It will include short discussions on general topics like "What is NoSQL" and "What is a Document Database", basic technical pages like "System requirements" and some discussion on features.
+If you're new to RavenDB, then this is the place to start. This introduction will help you understand the basics of RavenDB and how to use it.
 
-Basic Quickstart tutorials will be here as well.
+After reading this, you will be familiar with:-
+* What RavenDB is and the philosophy behind it
+* The key components of RavenDB
+* How RavenDB helps avoid common data access problems
+* How to start using it inside Visual Studio
 
-More in-depth theory on NoSQL, Document Databases and RavenDB are in the [Theory chapter](../theory).
+You'll also find a couple of quickstart tutorials so you can see how easy it is to get up and running with RavenDB.
