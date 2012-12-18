@@ -55,32 +55,14 @@ namespace Raven.Tests.Helpers
 		public IDocumentStore NewRemoteDocumentStore(bool fiddler = false);
 		//Creates a new database in port 8079
 
-		public static string GetDefaultStorageType(string requestedStorage = null);
-		//Gets the default storage type
-
-		protected RavenDbServer GetNewServer(int port = 8079, string dataDirectory = "Data", bool runInMemory = true);
-		// Get a new raven server 
-
-		public ITransactionalStorage NewTransactionalStorage();
-		//Gets a new transactional storage
-
 		public static void WaitForIndexing(IDocumentStore store);
 		//Waits for all indexes to be non stale
-
-		public static void WaitForAllRequestsToComplete(RavenDbServer server);
-		//Waits for all Request to be processed 
-
-		protected void WaitForBackup(DocumentDatabase db, bool checkError);
-		//Wait for backup operation to complete
 
 		public static void WaitForUserToContinueTheTest(EmbeddableDocumentStore documentStore, bool debug = true);
 		//Only active when debugging a test, will load the studio for the tested store
 
 		protected void WaitForUserToContinueTheTest();
 		//Only active when debugging a test, will load the studio for a server in port 8079
-
-		protected void ClearDatabaseDirectory();
-		//Cleans the database folder
 		#endregion
 
 		#region RavenTestBaseViruals
@@ -89,10 +71,6 @@ namespace Raven.Tests.Helpers
 		protected virtual void ModifyStore(EmbeddableDocumentStore documentStore);
 
 		protected virtual void ModifyConfiguration(RavenConfiguration configuration);
-
-		protected virtual void ModifyServer(RavenDbServer ravenDbServer);
-
-		protected virtual void CreateDefaultIndexes(IDocumentStore documentStore);
 		#endregion
 	}
 }
