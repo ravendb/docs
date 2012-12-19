@@ -64,6 +64,23 @@
 			documentStore.Dispose();
 		}
 
+		public void Sample()
+		{
+			var shards = new Dictionary<string, IDocumentStore>
+			             	{
+			             		{"Asia", new DocumentStore {Url = "http://localhost:8080"}},
+			             		{"Middle East", new DocumentStore {Url = "http://localhost:8081"}},
+			             		{"America", new DocumentStore {Url = "http://localhost:8082"}},
+			             	};
+
+			#region sharding_1
+			var shardStrategy = new ShardStrategy(shards)
+				.ShardingOn<Company>(company => company.Region)
+				.ShardingOn<Invoice>(x => x.CompanyId);
+
+			#endregion
+		}
+
 		#region entities
 		public class Company
 		{
