@@ -1,4 +1,4 @@
-﻿# RavenDB Bundles
+# RavenDB Bundles
 
 RavenDB in its core is a document database, and as such it is feature complete and very functional. A user may require additional functionality, such that is not implemented by the core, and this is where the bundles come in.
 
@@ -8,7 +8,6 @@ The following bundles are available out of the box, to extend RavenDB's capabili
 * Quotas - to put size limits on a database.
 * Expiration - removes expired documents automatically.
 * Index Replication - replicates a RavenDB index to SQL Server.
-* Authentication - authenticates DB users using OAuth.
 * Authorization - allows to manage user groups, roles and permissions.
 * Versioning - automatic versioning of documents upon updates or deletes.
 * Cascade Deletes - automatic cascade deletes operations.
