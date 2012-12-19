@@ -65,7 +65,7 @@
     <None Include="client-api\basic-operations\.docslist" />
     <None Include="client-api\basic-operations\basic-querying.markdown" />
     <None Include="client-api\basic-operations\deleting-documents.markdown" />
-    <None Include="client-api\basic-operations\document-convention-properties.markdown" />
+    <None Include="client-api\basic-operations\customizing-behavior.markdown" />
     <None Include="client-api\basic-operations\index.markdown" />
     <None Include="client-api\basic-operations\loading-editing-existing-document.markdown" />
     <None Include="client-api\basic-operations\opening-a-session.markdown" />

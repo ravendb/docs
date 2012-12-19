@@ -4,3 +4,4 @@ saving-new-document.markdown	Saving a new document
 loading-editing-existing-document.markdown	Loading & Editing an existing document
 deleting-documents.markdown	Deleting documents
 basic-querying.markdown	Basic query support
+customizing-behavior.markdown	Customizing the Behavior of the Client API
