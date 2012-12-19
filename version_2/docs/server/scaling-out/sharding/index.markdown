@@ -35,8 +35,17 @@ For complex sharding environments you would probably want to implement the `ISha
 
 By default, if you don't set the `ShardResolutionStrategy` property on the `ShardStrategy` you'll use the `DefaultShardResolutionStrategy`. 
 
-If you're using the `DefaultShardResolutionStrategy` you can just use the `ShardingOn` method on the `ShardStrategy` object, in order to instruct the `DefaultShardResolutionStrategy` which property holds the shards id information for a specific entity.
-In the above code you can see that the `company` holds the shard ID in the Region property and the `invoice` holds the shard id in the CompanyId property. The CompanyId holds the shard id because of the `ModifyDocumentId` convention of the `ShardStrategy`.
+##Default Shard Resolution Strategy
+
+If you're using the `DefaultShardResolutionStrategy` you can just use the `ShardingOn` method on the `ShardStrategy` object, in order to instruct the `DefaultShardResolutionStrategy` which property holds the shards id information for a specific entity.   
+
+{NOTE If used, `DefaultShardResolutionStrategy` `ShardingOn` implementation enforces user to setup it on all entities that are getting stored. /}
+
+{NOTE If `ShardingOn` is not used then `DefaultShardResolutionStrategy` will assign all entities within same session to the same shard. /}
+
+In the code below you can see that the `Company` holds the shard ID in the Region property and the `Invoice` holds the shard id in the CompanyId property. The CompanyId holds the shard id because of the `ModifyDocumentId` convention of the `ShardStrategy`.
+
+{CODE sharding_1@Server\ScalingOut\Sharding\Index.cs /}
 
 Now we can store some data which will be split across different shards:
 
