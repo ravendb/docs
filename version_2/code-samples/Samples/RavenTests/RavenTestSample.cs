@@ -14,10 +14,59 @@ namespace RavenTestSample
 		[Fact]
 		public void ThisIsMyTest()
 		{
-			//Write you test herer
+			//Write you test here
 			//Don't forget to use Asserts
 		}
+	}
+	#endregion
 
+	#region RavenTestSample2
+	public class IndexTest : RavenTestBase
+	{
+		[Fact]
+		public void CanIndexAndQuery()
+		{
+			using (var store = NewDocumentStore())
+			{
+				new SampleData_Index().Execute(store);
+
+				using (var session = store.OpenSession())
+				{
+					session.Store(new SampleData
+					{
+						Name = "RavenDB"
+					});
+
+					session.SaveChanges();
+				}
+
+				using (var session = store.OpenSession())
+				{
+					var result = session.Query<SampleData, SampleData_Index>()
+						.Customize(customization => customization.WaitForNonStaleResultsAsOfNow())
+						.FirstOrDefault();
+
+					Assert.Equal(result.Name, "RavenDB");
+				}
+			}
+		}
+	}
+
+	public class SampleData
+	{
+		public string Name { get; set; }
+	}
+
+	public class SampleData_Index : AbstractIndexCreationTask<SampleData>
+	{
+		public SampleData_Index()
+		{
+			Map = docs => from doc in docs
+						  select new
+						  {
+							  doc.Name
+						  };
+		}
 	}
 	#endregion
 }
