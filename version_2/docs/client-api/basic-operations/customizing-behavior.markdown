@@ -36,9 +36,9 @@ Gets or sets the name of the method referenced by a `Func` delegate for translat
 
 The default values of most of these properties are set internally by the <code>DocumentConvention</code> constructor.
 
-##Custom Id conventions
+##Overriding default identifier generation
 
-To override default document key generation algorithms, we added `RegisterIdConvention` and `RegisterAsyncIdConvention` methods to `DocumentConvention` where you can include your own Id generation logic.
+To override default document key generation algorithms, we added `RegisterIdConvention` and `RegisterAsyncIdConvention` methods to `DocumentConvention` where you can include your own indentifier generation logic.
 
 {CODE customizing_behaviors_8@ClientApi\BasicOperations\CustomizingBehavior.cs /}
 
