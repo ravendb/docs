@@ -1,7 +1,7 @@
 ﻿using System;
 using RavenDBSamples.BaseForSamples;
 
-namespace RavenDBSamples.Storing_Dates
+namespace RavenDBSamples.StoringDates
 {
 	public class StoringDatesSample : SampleBase
 	{
@@ -15,7 +15,7 @@ namespace RavenDBSamples.Storing_Dates
 
 		public void StoreLocalTime()
 		{
-			using (var session = Store.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				session.Store(new TimeSample
 					{
@@ -27,7 +27,7 @@ namespace RavenDBSamples.Storing_Dates
 
 		public void StoreUtcTime()
 		{
-			using (var session = Store.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				session.Store(new TimeSample
 				{
@@ -39,7 +39,7 @@ namespace RavenDBSamples.Storing_Dates
 
 		public void StoreWithOffset()
 		{
-			using (var session = Store.OpenSession())
+			using (var session = DocumentStore.OpenSession())
 			{
 				session.Store(new TimeOffsetSample
 				{

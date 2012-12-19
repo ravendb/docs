@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace RavenDBSamples.Storing_Dates
+namespace RavenDBSamples.BaseForSamples
 {
 	public class TimeSample
 	{
