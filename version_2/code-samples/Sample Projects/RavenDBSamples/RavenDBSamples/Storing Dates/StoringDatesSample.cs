@@ -1,26 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Raven.Client;
-using Raven.Client.Document;
+using RavenDBSamples.BaseForSamples;
 
 namespace RavenDBSamples.Storing_Dates
 {
-	public class StoringDates
+	public class StoringDatesSample : SampleBase
 	{
 		private DateTime Local { get; set; }
 		private DateTime Utc { get; set; }
-		private IDocumentStore Store { get; set; }
-		public StoringDates()
+		public StoringDatesSample()
 		{
-			Store = new DocumentStore
-				{
-					Url = "http://localhost:8080",
-					DefaultDatabase = "SampleDatabase"
-				}.Initialize();
-
 			Local = DateTime.Now;
 			Utc = DateTime.UtcNow;
 		}
