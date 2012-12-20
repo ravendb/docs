@@ -132,7 +132,6 @@
     <Compile Include="ClientApi\Advanced\QueryingForTerms.cs" />
     <Compile Include="ClientApi\Advanced\TransactionSupport.cs" />
     <Compile Include="ClientApi\BasicOperations\BasicQuerying.cs" />
-    <Compile Include="ClientApi\BasicOperations\CustomizingBehavior.cs" />
     <Compile Include="ClientApi\BasicOperations\DeletingDocuments.cs" />
     <Compile Include="ClientApi\BasicOperations\LoadingEditingExistingDocument.cs" />
     <Compile Include="ClientApi\BasicOperations\OpeningSession.cs" />

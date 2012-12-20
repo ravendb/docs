@@ -1,4 +1,4 @@
-# Customizing the Behavior of the Client API #
+#Customizing the Behavior of the Client API
 The RavenDB .NET Client API includes the following classes (interfaces):
 
 - <em>IDocumentStore</em>
@@ -6,7 +6,7 @@ The RavenDB .NET Client API includes the following classes (interfaces):
 
 After creating a document store as an instance of the `DocumentStore` class and opening a session (an instance of `IDocumentSession`) from the document store created, we need to access the properties of the `DocumentConvention` object in order customize the behavior of the RavenDB Client API.
 
-## DocumentConvention Properties ##
+##DocumentConvention Properties
 The `DocumentConvention` class includes the following properties, which users can use to modify the behavior of the RavenDB Client API:
 
 - <em>ApplyReduceFunction</em>. Gets or sets the name of the method referenced by an internally defined `ApplyReduceFunctionFunc` delegate. The method is called to obtain reduce results and to ensure that the reduce function is run over the merged results in a sharded environment. The default method is `DefaultApplyReduceFunction`.
@@ -35,45 +35,3 @@ Gets or sets the name of the method referenced by a `Func` delegate for translat
 - <em>UseParallelMultiGet</em>. Gets or sets a Boolean value that indicates whether RavenDB should use parallel multi-get processing. The default value is `true`. 
 
 The default values of most of these properties are set internally by the <code>DocumentConvention</code> constructor.
-
-##Overriding default identifier generation
-
-To override default document key generation algorithms, we added `RegisterIdConvention` and `RegisterAsyncIdConvention` methods to `DocumentConvention` where you can include your own indentifier generation logic.
-
-{CODE customizing_behaviors_8@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-Consider a `User` class:
-
-{CODE customizing_behaviors_1@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-To generate a custom Id with `users/` prefix combined with `Name` of the user you need to do as follows:
-
-{CODE customizing_behaviors_2@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-or if you want to register your convention for async operations then:
-
-{CODE customizing_behaviors_3@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-{NOTE Note that spectrum of identifier generation abilities is very wide, because `DatabaseCommands` object is passed into an indentifier convention function and can be used for advanced calculation techniques. /}
-
-{CODE customizing_behaviors_4@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-Above code will store new entity in the database with `users/jdoe` as a key and below code will store user using async operation with `users/jcarter` key:
-
-{CODE customizing_behaviors_5@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-###Inheritance
-
-Registered conventions are inheritance-aware, so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree
-
-If we will create a new class `PrivilegedUser` that will derive from our `User` class
-
-{CODE customizing_behaviors_5@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-then if we will add convention for `User`, both our types will use our custom convention
-
-{CODE customizing_behaviors_6@ClientApi\BasicOperations\CustomizingBehavior.cs /}
-
-If we register two conventions, one for `User` and second for `PrivilegedUser` then they will be picked for their specific types.
-
-{CODE customizing_behaviors_7@ClientApi\BasicOperations\CustomizingBehavior.cs /}
