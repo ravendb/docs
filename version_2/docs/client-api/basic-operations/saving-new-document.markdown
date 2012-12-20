@@ -105,3 +105,45 @@ You can also setup a custom id generation strategy by supplying a `DocumentKeyGe
 {CODE saving_document_3@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 This will instruct RavenDB to use identity id generation strategy for all the entities that this document store manages.
+
+###Overriding default ID generation
+
+To override default document key generation algorithms, we added `RegisterIdConvention` and `RegisterAsyncIdConvention` methods to `DocumentConvention` where you can include your own indentifier generation logic.
+
+{CODE saving_new_document_8@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+Consider a `User` class:
+
+{CODE saving_new_document_1@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+To generate a custom Id with `users/` prefix combined with `Name` of the user you need to do as follows:
+
+{CODE saving_new_document_2@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+or if you want to register your convention for async operations then:
+
+{CODE saving_new_document_3@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+{NOTE Note that spectrum of identifier generation abilities is very wide, because `DatabaseCommands` object is passed into an indentifier convention function and can be used for advanced calculation techniques. /}
+
+{CODE saving_new_document_4@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+Above code will store new entity in the database with `users/jdoe` as a key and below code will store user using async operation with `users/jcarter` key:
+
+{CODE saving_new_document_5@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+####Inheritance
+
+Registered conventions are inheritance-aware, so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree
+
+If we will create a new class `PrivilegedUser` that will derive from our `User` class
+
+{CODE saving_new_document_5@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+then if we will add convention for `User`, both our types will use our custom convention
+
+{CODE saving_new_document_6@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+If we register two conventions, one for `User` and second for `PrivilegedUser` then they will be picked for their specific types.
+
+{CODE saving_new_document_7@ClientApi\BasicOperations\SavingNewDocument.cs /}
