@@ -18,4 +18,10 @@ namespace RavenDBSamples.BaseForSamples
 		public string Title { get; set; }
 		public string Content { get; set; }
 	}
+
+	public class BlogAuthor
+	{
+		public string Name { get; set; }
+		public string ImageUrl { get; set; }
+	}
 }

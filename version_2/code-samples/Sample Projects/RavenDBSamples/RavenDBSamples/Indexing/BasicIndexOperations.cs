@@ -5,7 +5,7 @@ using Raven.Client.Linq;
 using RavenDBSamples.BaseForSamples;
 using System.Linq;
 
-namespace RavenDBSamples.BasicOperations
+namespace RavenDBSamples.Indexing
 {
 	public class BasicIndexOperations : SampleBase
 	{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using RavenDBSamples.BaseForSamples;
 
 namespace RavenDBSamples.BasicOperations
@@ -66,6 +67,27 @@ namespace RavenDBSamples.BasicOperations
 			{
 				session.Advanced.DocumentStore.DatabaseCommands.Delete(CompanyId, null);
 				// This opercation is immidiate and will not wait for "Save Changes"
+			}
+		}
+
+		public void UseMetadata()
+		{
+			using (var session = DocumentStore.OpenSession())
+			{
+				var product = session.Load<Product>(1);
+				var metadata = session.Advanced.GetMetadataFor(product);
+
+				// Get the last modified time stamp, which is known to be of type DateTime
+				var lastModified = metadata.Value<DateTime>("Last-Modified");
+			}
+		}
+
+		public void QueryForTerms()
+		{
+			using (var session = DocumentStore.OpenSession())
+			{
+				var firstPage = session.Advanced.DocumentStore.DatabaseCommands.GetTerms("indexName", "MyProperty", null, 128);
+				var secondPage = session.Advanced.DocumentStore.DatabaseCommands.GetTerms("indexName", "MyProperty", firstPage.Last(), 128);
 			}
 		}
 	}
