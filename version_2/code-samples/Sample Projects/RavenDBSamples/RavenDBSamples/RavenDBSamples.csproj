@@ -47,6 +47,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -54,17 +55,27 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsyncOperations\AsyncOperations.cs" />
+    <Compile Include="Attachments\Attachments.cs" />
     <Compile Include="BaseForSamples\BlogPost.cs" />
     <Compile Include="BaseForSamples\Company.cs" />
+    <Compile Include="BaseForSamples\Customer.cs" />
+    <Compile Include="BaseForSamples\Order.cs" />
+    <Compile Include="BaseForSamples\Restaurant.cs" />
     <Compile Include="BaseForSamples\SampleBase.cs" />
     <Compile Include="BaseForSamples\SampleEmbeddedBase.cs" />
-    <Compile Include="BasicOperations\BasicIndexOperations.cs" />
+    <Compile Include="Indexing\BasicIndexOperations.cs" />
     <Compile Include="BasicOperations\BasicQueryOperations.cs" />
     <Compile Include="BasicOperations\BasicSessionOperations.cs" />
+    <Compile Include="Indexing\IndexSortOptions.cs" />
+    <Compile Include="Patching\Patching.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SetBasedOperations\SetBasedOperations.cs" />
+    <Compile Include="SpatialSearch\SpatialSearch.cs" />
     <Compile Include="StoringDates\StoringDatesSample.cs" />
     <Compile Include="BaseForSamples\TimeSample.cs" />
+    <Compile Include="Transaction\Transaction.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
