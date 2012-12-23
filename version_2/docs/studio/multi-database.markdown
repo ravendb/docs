@@ -97,7 +97,7 @@ In here you have several details you need to set:
 
 - Name - name of the user
 - Secret - you cannot select it but you can generate it with the "Generate Secret" button next to it.
-- Full Api Key and Connection Strings - those are generated from other parameters of the key with right-click you can copy those to the clipboard
+- Full Api Key, Connection Strings and Direct Link - those are generated from other parameters of the key with right-click you can copy those to the clipboard
 - Enabled - check to enable this key.
 - Databases - in here you set the access for each database
  - Database Name - name of the database (will auto complete)
