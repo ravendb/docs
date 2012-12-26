@@ -11,6 +11,7 @@ namespace RavenDBSamples.BaseForSamples
 		public DateTime PublishedAt { get; set; }
 		public string[] Tags { get; set; }
 		public BlogComment[] Comments { get; set; }
+		public string Author { get; set; }
 	}
 
 	public class BlogComment
