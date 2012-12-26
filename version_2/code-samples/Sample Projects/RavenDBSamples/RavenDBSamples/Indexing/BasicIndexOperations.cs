@@ -1,4 +1,5 @@
 ﻿using System;
+using Raven.Abstractions.Indexing;
 using Raven.Client;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
@@ -56,7 +57,7 @@ namespace RavenDBSamples.Indexing
 		public void DefineIndex()
 		{
 			//Define Indexes from class
-			IndexCreation.CreateIndexes(typeof(MyIndexClass).Assembly, DocumentStore);
+			IndexCreation.CreateIndexes(typeof(SingleMapIndex).Assembly, DocumentStore);
 
 			//Directly define index
 			DocumentStore.DatabaseCommands.PutIndex("BlogPosts/ByTitles",
@@ -140,12 +141,40 @@ namespace RavenDBSamples.Indexing
 		}
 	}
 
-	public class MyIndexClass : AbstractIndexCreationTask<BlogPost>
+	public class SingleMapIndex : AbstractIndexCreationTask<BlogPost>
 	{
-		public MyIndexClass()
+		public SingleMapIndex()
 		{
 			Map = posts => from post in posts
 			               select new {post.Title};
+		}
+	}
+
+	public class MultiMapIndex : AbstractMultiMapIndexCreationTask<MultiMapIndex.Result>
+	{
+		public class Result
+		{
+			public object[] Content { get; set; }
+		}
+
+		public override string IndexName
+		{
+			get { return "SearchableItems/ByContent"; }
+		}
+
+		public MultiMapIndex()
+		{
+			AddMap<BlogPost>(items => from x in items
+			                          select
+				                          new Result {Content = new object[] {x.Author, x.Content, x.Content, x.Title, x.Tags}});
+
+			AddMap<Order>(items => from x in items
+			                       select new Result {Content = new object[] {x.Title}});
+
+			AddMap<Company>(items => from x in items
+			                      select new Result {Content = new object[] {x.Name, x.Type}});
+
+			Index(x => x.Content, FieldIndexing.Analyzed);
 		}
 	}
 }
