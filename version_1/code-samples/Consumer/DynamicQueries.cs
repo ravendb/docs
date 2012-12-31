@@ -67,9 +67,9 @@ namespace RavenCodeSamples.Consumer
 					                 select c;
 
 					// Query on nested collections - will return any company with at least one developer
-					// whose speciality is in C#
+					// whose specialty is in C#
 					companies = from c in session.Query<Company>()
-					            where c.Employees.Any(x => x.Specialities.Any(sp => sp == "C#"))
+					            where c.Employees.Any(x => x.Specialties.Any(sp => sp == "C#"))
 					            select c;
 
 					// Using the In operator - return entities whose a field value is in a provided list
@@ -85,13 +85,13 @@ namespace RavenCodeSamples.Consumer
 					// In this sample, we are only interested in the names of the companies satisfying
 					// our query conditions, so we project those only into an anonymous object.
 					var companyNames = from c in session.Query<Company>()
-					                   where c.Employees.Any(x => x.Specialities.Any(sp => sp == "C#"))
+					                   where c.Employees.Any(x => x.Specialties.Any(sp => sp == "C#"))
 					                   select new {c.Name}; // This is where the projection happens
 
 					// Same query same idea, but this time we want to get results as objects of type Company.
 					// Only the Name property will be populated, the rest will remain empty.
 					Company[] companies = (from c in session.Query<Company>()
-					                       where c.Employees.Any(x => x.Specialities.Any(sp => sp == "C#"))
+					                       where c.Employees.Any(x => x.Specialties.Any(sp => sp == "C#"))
 					                       select new Company {Name = c.Name}) // This is where the projection happens
 						.ToArray();
 					#endregion
