@@ -31,7 +31,7 @@
 				#endregion
 
 				#region retrieving_attachment_metadata
-				Raven.Abstractions.Data.Attachment attachementMetadata = 
+				Raven.Abstractions.Data.Attachment attachmentMetadata = 
 					documentStore.DatabaseCommands.HeadAttachment("Description");
 
 				#endregion

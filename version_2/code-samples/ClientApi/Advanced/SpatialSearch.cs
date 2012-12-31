@@ -34,7 +34,7 @@
 				using (var session = store.OpenSession())
 				{
 					#region spatial2
-					var matchingResturants =
+					var matchingRestaurants =
 						session.Advanced.LuceneQuery<Restaurant>("Restaurants/ByRatingAndLocation")
 							.WhereGreaterThanOrEqual("Rating", 4)
 							.WithinRadiusOf(radius: 5, latitude: 38.9103000, longitude: -77.3942)
