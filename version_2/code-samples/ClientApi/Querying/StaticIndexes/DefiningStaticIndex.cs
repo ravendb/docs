@@ -126,7 +126,7 @@
 						?? new BlogTagPostsCount();
 					count = blogTagPostsCount.Count;
 
-					// Altenratively, if we used an AbstractIndexCreationTask, we could use this version
+					// Alternatively, if we used an AbstractIndexCreationTask, we could use this version
 					// Note how we reuse the ReduceResult class to get back the information
 
 					var tagPostsCount = session.Query<BlogPosts_PostsCountByTag.ReduceResult, BlogPosts_PostsCountByTag>()

@@ -1,6 +1,6 @@
 # .NET Client API
 
-So far we have spoken in abstracts, about NoSQL in general and RavenDB in particular. In this chapter we focus on the .NET Client API. We will go through all the steps required to perform basic CRUD operations using RavenDB, familizaring ourselves with RavenDB APIs, concepts and workings.
+So far we have spoken in abstracts, about NoSQL in general and RavenDB in particular. In this chapter we focus on the .NET Client API. We will go through all the steps required to perform basic CRUD operations using RavenDB, familiarizing ourselves with RavenDB APIs, concepts and workings.
 
 ## What is the .NET Client API?
 
@@ -8,7 +8,7 @@ Given a RavenDB server, embedded or remote, the Client API allows easy access to
 
 In addition to transparently managing all client-server communications, the Client API is also responsible for a complete integrated experience for the .NET consumer application. Among other things, the Client API is responsible for implementing the Unit of Work pattern, applying conventions to the process of saving/loading of data, integrating with `System.Transactions`, batching requests to the server, caching, and more.
 
-The easiest way to start using RavenDB is by using nuget, but you can also reference the DLLs provided with the build package downloaded from our build server. A complete guide for doing so can be found in the [Quickstart turorials](../intro/quickstart/adding-ravendb-to-your-application).
+The easiest way to start using RavenDB is by using nuget, but you can also reference the DLLs provided with the build package downloaded from our build server. A complete guide for doing so can be found in the [Quickstart tutorials](../intro/quickstart/adding-ravendb-to-your-application).
 
 ## .NET Client API design guidelines
 

@@ -1,6 +1,6 @@
 #Client integration
 
-RavenDB's Client API is aware of the replication mechanism offered by server istances and is ready to support failover scenarios.
+RavenDB's Client API is aware of the replication mechanism offered by server instances and is ready to support failover scenarios.
 
 ##Failover behavior
 

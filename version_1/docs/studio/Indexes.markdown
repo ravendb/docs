@@ -7,7 +7,7 @@ When you choose to create a new index the following page will load
 The Content of this page will be explained [later in this page](#create)  
 ![Indexes Fig 2](Images/studio_indexes_2.PNG)  
 
-When you choose Dynamic Query the folloing page will load  
+When you choose Dynamic Query the following page will load  
 The Content of this page will be explained [later in this page](#query)  
 ![Indexes Fig 3](Images/studio_indexes_3.PNG) 
 

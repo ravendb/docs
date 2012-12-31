@@ -40,7 +40,7 @@ To setup a master-slave replication we will need at least two servers. First ser
 
 ![Figure 7: Create `users/1` document on master server](Images/studio_replicationwalkthrough_7.PNG)
 
-- On a slave server (8082), you will notice that document `users/1` has been replicated succesfully (this may take few moments).
+- On a slave server (8082), you will notice that document `users/1` has been replicated successfully (this may take few moments).
 
 ![Figure 8: Verify that document `users/1` has been replicated to slave](Images/studio_replicationwalkthrough_8.PNG)
 
@@ -78,10 +78,10 @@ To setup a master-master replication we will need at least two servers. Both of 
 
 ![Figure 14: Create `albums/1` document](Images/studio_replicationwalkthrough_11.PNG)
 
-- On other master (8081), you will notice that document `albums/1` has been replicated succesfully (this may take few moments). Change content of this document and save it (changed album name from 'Raven' to 'Cake').
+- On other master (8081), you will notice that document `albums/1` has been replicated successfully (this may take few moments). Change content of this document and save it (changed album name from 'Raven' to 'Cake').
 
 ![Figure 15: Verify that document `albums/1` has been replicated to other master, change and save its content](Images/studio_replicationwalkthrough_12.PNG)
 
-- Document replicates succesfully to 8082.
+- Document replicates successfully to 8082.
 
 ![Figure 16: Verify that document `albums/1` has been replicated with new content](Images/studio_replicationwalkthrough_13.PNG)

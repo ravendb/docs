@@ -9,14 +9,14 @@ Upgrading RavenDB instance to a new version is very simple. In order to do so, y
 
 On a live system, this process typically takes 30 seconds, which is fast sufficient in most cases.
 
-However, if you want zero downtime, you can setup a failover server which will handle requests until the primery server is started up. The steps to do so are:
+However, if you want zero downtime, you can setup a failover server which will handle requests until the primary server is started up. The steps to do so are:
 
 - When you setup the primary server, you have to make sure to that it has the Raven.Bundles.Replication assembly in the `plugins` folder.
 - Setup a second server, with the Raven.Bundles.Replication assembly in the `plugins` folder.
-- Setup a replication between the primery server to the second. (Modify Raven/Replication/Destinations document to point to the secondary server).
-- Wait until the second node will get all the docs from the primery node (but a minimum of 10 minutes, to make sure that any clients had the chance to get updated with the new replication infomration).
+- Setup a replication between the primary server to the second. (Modify Raven/Replication/Destinations document to point to the secondary server).
+- Wait until the second node will get all the docs from the primary node (but a minimum of 10 minutes, to make sure that any clients had the chance to get updated with the new replication information).
 - Shutdown the first. You're now silently failover by the clients to the secondary server.
-- Replace the binraies of the first and start it again.
+- Replace the binaries of the first and start it again.
 - Shutdown and update the secondary server.
 
 ## Stable file formats
@@ -28,4 +28,4 @@ Please note, however, that those migrations are only one way. If you want to mov
 ## Licensing
 
 - If you have the secondary node running only for the during of the actual update, you don't need a license.
-- If you have the scondary node running constantly (hot backup), you do need a license.
+- If you have the secondary node running constantly (hot backup), you do need a license.

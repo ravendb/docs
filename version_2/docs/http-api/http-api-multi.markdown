@@ -294,7 +294,7 @@ This can be executed using curl with the following syntax:
 {CODE-END /}
 
 ###Concurrency
-If an etag is specified in the command, that etag is compared to the current etag on the document on the server. If the etags do no match, a 409 Conlict status code is returned. In such a case, the entire operation fails and non of the updates that were tried will succeed.
+If an etag is specified in the command, that etag is compared to the current etag on the document on the server. If the etags do no match, a 409 Conflict status code is returned. In such a case, the entire operation fails and non of the updates that were tried will succeed.
 
 ###Transactions
 All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.
