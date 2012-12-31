@@ -6,9 +6,9 @@ This documentation assumes some familiarity with the basics of RavenDB.
 
 ## Creating a Document Store
 
-the F# language, contains a type called Discriminated Unions / Algebraic Data Types. By default the JSON.net serialiser that RavenDB uses cannot (de)serialise these types. 
+the F# language, contains a type called Discriminated Unions / Algebraic Data Types. By default the JSON.net serializer that RavenDB uses cannot (de)serialize these types. 
 
-The Raven DB F# client library comes with a JSON.net converter that allows these types to be handled. But we need to customise the document store. This can be acheived by adding the following code. 
+The Raven DB F# client library comes with a JSON.net converter that allows these types to be handled. But we need to customize the document store. This can be achieved by adding the following code. 
 
 	store.Conventions.CustomizeJsonSerializer <- (fun s -> s.Converters.Add(new UnionTypeConverter()))
 
@@ -102,7 +102,7 @@ as you can see this query will return you a tuple of order & customer.
 
 Due to the functional nature of the API we have the ability to compose queries.
 
-For example lets say we wanted all of the customers born on a certain date and all of the orders palaced on that same date. We can define the following
+For example lets say we wanted all of the customers born on a certain date and all of the orders placed on that same date. We can define the following
 
 	let ordersOn (date : DateTime) = 
 		raven { 

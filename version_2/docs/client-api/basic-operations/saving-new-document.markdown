@@ -94,7 +94,7 @@ Numeric or Guid Id properties are supported and will work seamlessly. In this ca
 
 Using this approach, IDs are available immediately after calling `Store` on the object - the RavenDB session will set a unique ID in memory without asking one from the server.
 
-RavenDB also supports the notion of Identity, for example if you need IDs to be consecutive. By creating a string `Id` property in your entity, and setting it to a value ending with a slash (/), you can tell RavenDB to use that as a key perfix for your entity. That prefix followed by the next available integer ID for it will be your entity's ID _after_ you call `SaveChanges()`.
+RavenDB also supports the notion of Identity, for example if you need IDs to be consecutive. By creating a string `Id` property in your entity, and setting it to a value ending with a slash (/), you can tell RavenDB to use that as a key prefix for your entity. That prefix followed by the next available integer ID for it will be your entity's ID _after_ you call `SaveChanges()`.
 
 You can also assign an ID manually by explicitly setting the string `Id` property of your object, but then if a document already exists in your RavenDB server under the same key it will be overwritten without any warning.
 
@@ -108,7 +108,7 @@ This will instruct RavenDB to use identity id generation strategy for all the en
 
 ###Overriding default ID generation
 
-To override default document key generation algorithms, we added `RegisterIdConvention` and `RegisterAsyncIdConvention` methods to `DocumentConvention` where you can include your own indentifier generation logic.
+To override default document key generation algorithms, we added `RegisterIdConvention` and `RegisterAsyncIdConvention` methods to `DocumentConvention` where you can include your own identifier generation logic.
 
 {CODE saving_new_document_8@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
@@ -124,7 +124,7 @@ or if you want to register your convention for async operations then:
 
 {CODE saving_new_document_3@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
-{NOTE Note that spectrum of identifier generation abilities is very wide, because `DatabaseCommands` object is passed into an indentifier convention function and can be used for advanced calculation techniques. /}
+{NOTE Note that spectrum of identifier generation abilities is very wide, because `DatabaseCommands` object is passed into an identifier convention function and can be used for advanced calculation techniques. /}
 
 {CODE saving_new_document_4@ClientApi\BasicOperations\SavingNewDocument.cs /}
 

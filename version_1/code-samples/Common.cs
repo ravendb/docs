@@ -8,7 +8,7 @@ namespace RavenCodeSamples
 	public class Employee
 	{
 		public string Name { get; set; }
-		public string[] Specialities { get; set; }
+		public string[] Specialties { get; set; }
 		public DateTime HiredAt { get; set; }
 		public double HourlyRate { get; set; }
 	}

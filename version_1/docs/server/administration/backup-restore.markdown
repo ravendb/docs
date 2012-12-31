@@ -25,7 +25,7 @@ If running from IIS, make sure to enable Windows Authentication for RavenDB's II
 
 Only one backup operation may run at any given time.
 
-{NOTE The utility has to be run with administrive privileges /}
+{NOTE The utility has to be run with administrative privileges /}
 
 ### Using the Raven.Backup utility
 

@@ -45,7 +45,7 @@
 					var user = new User() { Name = "John", Email = "john@gmail.com" };
 					var checkResult = session.CheckForUniqueConstraints(user);
 
-					// returns wheter it's constraints are avaiable
+					// returns whether its constraints are available
 					if (checkResult.ConstraintsAreFree())
 					{
 						session.Store(user);

@@ -81,7 +81,7 @@ will result in the following Lucene query: <em>Name:(Adam) AND Hobbies:(sport)</
 If you want to negate the term use `SearchOptions.Not`:
 
 {CODE linq_extensions_search_users_by_name_not@ClientApi\Querying\LinqExtensions\Search.cs /}
-Accodring to Lucene syntax it will be transformed to the query: <em>-Name:(James)</em>.
+According to Lucene syntax it will be transformed to the query: <em>-Name:(James)</em>.
 
 You can treat `SearchOptions` values as bit flags and create any combination of the defined enum values, e.g:
 

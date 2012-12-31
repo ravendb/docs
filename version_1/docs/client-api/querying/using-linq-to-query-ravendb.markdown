@@ -46,7 +46,7 @@ Here is how to use projections:
 
 {CODE linquerying_5@Consumer\DynamicQueries.cs /}
 
-Projections are useful when only part of the data is needed for your operation. Whenever change tracking isn't required, you're advised to consider using projections to ease bandwidth traffic between you and the server. This isn't a general rule, because caching in the entire application also plays an important role here, and it might make it more efficent to load the cache results of a query than to issue a remote query for a projection.
+Projections are useful when only part of the data is needed for your operation. Whenever change tracking isn't required, you're advised to consider using projections to ease bandwidth traffic between you and the server. This isn't a general rule, because caching in the entire application also plays an important role here, and it might make it more efficient to load the cache results of a query than to issue a remote query for a projection.
 You can also use the `Distinct` method to only return distinct results from the server. When using projections, that means that on the server side, the database will compare all the projected fields for each object, and send us only unique results. If you aren't using projections, this has no effect but causing the server to do more work.
 
 ## Sorting

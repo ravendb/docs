@@ -52,7 +52,7 @@ When using IIS 6, you need to make sure all requests are mapped to the ASP.NET D
 </system.web>
 {CODE-END/}
 
-If you are experiencing problems with accessubg the Studio, try this step: Home Directory > Configuration > Wildcard application maps > Insert
+If you are experiencing problems with accessing the Studio, try this step: Home Directory > Configuration > Wildcard application maps > Insert
 c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll, and Uncheck Verify file exists.
 
 ## Web Configuration
@@ -77,7 +77,7 @@ RavenDB isn't a typical web site because it needs to be running at all times. In
 
 ## HTTP Error 503
 
-You may hit an HTTP Error 503 - "The service is unavailable" - when deplying to IIS, with nothing written to the Event Log.
+You may hit an HTTP Error 503 - "The service is unavailable" - when deploying to IIS, with nothing written to the Event Log.
 
 This problem usually occurs when you are trying to run the RavenDB's IIS site on port 8080 after you have run RavenDB in executable mode. The problem stems from RavenDB reserving the `http://+:8080/` namespace for your user, and when IIS attempts to start a site on the same endpoint, it errors.
 

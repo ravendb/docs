@@ -4,7 +4,7 @@ The indexes each RavenDB server instance uses to facilitate fast queries are pow
 
 Lucene takes a _Document_ , breaks it down into _Fields_ , and then split all text in a _Field_ into  tokens ( _Terms_ ) in a process called _Tokenization_ . Those tokens are what will be stored in the index, and be later searched upon.
 
-After a successful indexing operation, RavenDB feeds Lucene with each entity from the results as a _Document_ , and marks every property in it as a _Field_ . Then every property is going through the _Tokenization_ process using an object called a "Lucene Analyzer", and then finaly is stored into the index.
+After a successful indexing operation, RavenDB feeds Lucene with each entity from the results as a _Document_ , and marks every property in it as a _Field_ . Then every property is going through the _Tokenization_ process using an object called a "Lucene Analyzer", and then finally is stored into the index.
 
 This process and its results can be controlled by using various field options and Analyzers, as explained below.
 

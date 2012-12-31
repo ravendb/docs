@@ -32,9 +32,9 @@ Even when using `WaitForNonStaleResults` with a time-out like shown above, it is
 
 This will make sure that you get the latest results up to that point in time. All pending tasks for changes occurred after this cut-off point will not be considered. And like before, a time-out can be set on that as well.
 
-`WaitForNonStaleResultsAsOfNow` is also available, which is equivallent of calling `WaitForNonStaleResultsAsOf(DateTime.Now)`.
+`WaitForNonStaleResultsAsOfNow` is also available, which is equivalent of calling `WaitForNonStaleResultsAsOf(DateTime.Now)`.
 
-Another option is to use `WaitForNonStaleResultsAsOfLastWrite`, which does exactly what it says it do. It tracks the last write by the application, and uses that as the cutoff point. This is usually recommended if you are working on machines where clock syncronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, it uses the etag values for the writes.
+Another option is to use `WaitForNonStaleResultsAsOfLastWrite`, which does exactly what it says it do. It tracks the last write by the application, and uses that as the cutoff point. This is usually recommended if you are working on machines where clock synchronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, it uses the etag values for the writes.
 
 You can also setup the document store to always wait for the last write, like so:
 

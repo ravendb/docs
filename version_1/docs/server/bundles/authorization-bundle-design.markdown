@@ -11,7 +11,7 @@ Rhino Security design has affected the design of this system heavily. In essence
 ##Important Assumptions
 The most important assumption that we make for the first version is that we can trust the client not to lie about whose user it is executing a certain operation. That one assumes the following deployment scenario:
 
-![Figuer 1: Authorization Bundle](/images/authorization_bundle_faq.png)
+![Figure 1: Authorization Bundle](/images/authorization_bundle_faq.png)
 
 In other words, only the application server can talk to the RavenDB server and the application server is running trusted code.
 
@@ -107,7 +107,7 @@ Permissions are defined on individual documents, using RavenDB's metadata featur
 Tags, operations and roles are hierarchical. But the way they work is quite different.
 
 * For Tags and Operations, having permission for "/Debts" gives you permission to "/Debts/Finalize".
-* For roles, it is the other way around, if you are a member of "/DebtAgents/Managers", you are also a memeber of "/DebtAgents".
+* For roles, it is the other way around, if you are a member of "/DebtAgents/Managers", you are also a member of "/DebtAgents".
 
 The Authorization Bundle uses all of those rules to apply permissions.
 
