@@ -99,7 +99,7 @@
 			void UpdateByIndex(string indexName, IndexQuery queryToUpdate, PatchRequest[] patchRequests);
 			void UpdateByIndex(string indexName, IndexQuery queryToUpdate, ScriptedPatchRequest patch);
 
-			// Queries the specified index in the Raven flavoured Lucene query syntax
+			// Queries the specified index in the Raven flavored Lucene query syntax
 			QueryResult Query(string index, IndexQuery query, string[] includes, bool metadataOnly = false, bool indexEntriesOnly = false);
 
 			#endregion
