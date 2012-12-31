@@ -57,7 +57,7 @@ A `DatabaseCommands` object is available from both the session object _and_ the 
     string PutIndex<TDocument, TReduceResult>(string name, IndexDefinitionBuilder<TDocument, TReduceResult> indexDef);
     string PutIndex<TDocument, TReduceResult>(string name, IndexDefinitionBuilder<TDocument, TReduceResult> indexDef, bool overwrite);
     
-    // Queries the specified index in the Raven flavoured Lucene query syntax
+    // Queries the specified index in the Raven flavored Lucene query syntax
     QueryResult Query(string index, IndexQuery query, string[] includes);
     
     // Deletes the specified index
@@ -131,7 +131,7 @@ A `DatabaseCommands` object is available from both the session object _and_ the 
     // Disable all caching within the given scope
     IDisposable DisableAllCaching();
     
-    // Perform a single POST requst containing multiple nested GET requests
+    // Perform a single POST request containing multiple nested GET requests
     GetResponse[] MultiGet(GetRequest[] requests);
 
     // Gets or sets the operations headers

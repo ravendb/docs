@@ -81,6 +81,6 @@ To change Faceted search from last step described [here](../faceted-search#step-
 
 ##Suggesting
 
-Similar practice as in Faceted search has been used in lazy suggestions. The `SuggestLazy()` extension method is avaialbe in `LinqExtensions` and can be used as a substitution to `Suggest()` to mark operation as a lazy one.
+Similar practice as in Faceted search has been used in lazy suggestions. The `SuggestLazy()` extension method is available in `LinqExtensions` and can be used as a substitution to `Suggest()` to mark operation as a lazy one.
 
 {CODE lazy_operations_suggest_1@ClientApi\Querying\LazyOperations.cs /}

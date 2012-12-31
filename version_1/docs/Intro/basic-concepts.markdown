@@ -4,7 +4,7 @@ RavenDB is a database technology based on a client-server architecture. That is 
 
 Requests to the server are made using the [Client API](../client-api) available to any .NET or Silverlight application, or by [directly accessing the server's RESTful API](../http-api).
 
-If you are a .NET developer, using the Client API is the easiest way for you to work with RavenDB, as it provides a great amount of features and a very slick API. The RESTful API makes RavenDB accessible from other platforms like AJAX queries in webpages or non-Windows applications written in Ruby-on-Rails, for example.
+If you are a .NET developer, using the Client API is the easiest way for you to work with RavenDB, as it provides a great amount of features and a very slick API. The RESTful API makes RavenDB accessible from other platforms like AJAX queries in web pages or non-Windows applications written in Ruby-on-Rails, for example.
 
 ## The RavenDB server
 
@@ -46,7 +46,7 @@ A _Collection_ is a set of Documents sharing the same RavenDB entity type. It is
 
 With RavenDB each document has its own unique global ID, in the sense that if one was trying to store two different entities under the same id (`users/1` for example) - the second write will overwrite the first one without any warning.
 
-The convention in RavenDB is to have a document ID that is combined of the collection name and the entity's uniqe id within the collection, i.e. `users/1`. However, that is only a convention: document IDs are independent of the entity type, and therefore don't have to contain the name of the collection they are assigned to.
+The convention in RavenDB is to have a document ID that is combined of the collection name and the entity's unique id within the collection, i.e. `users/1`. However, that is only a convention: document IDs are independent of the entity type, and therefore don't have to contain the name of the collection they are assigned to.
 
 ## The Management Studio
 

@@ -1,5 +1,5 @@
 # Create Raven Test with RavenTestBase
-In case you see an issue with RavenDB and you can to report it, the bast way is to create a failing test and send it to us so we could look into it and fix it as fast as possiable.
+In case you see an issue with RavenDB and you can to report it, the bast way is to create a failing test and send it to us so we could look into it and fix it as fast as possible.
 
 ## How to Create a Failing Test
 1) Create a new Console Application  

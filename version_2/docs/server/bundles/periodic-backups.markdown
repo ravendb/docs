@@ -1,7 +1,7 @@
 #Periodic Backups bundle
 
 RavenDB comes with support of doing periodic backups of documents and attachments to [Amazon AWS](http://aws.amazon.com/) services.  
-When creating a database in the studio you will see that you can't change the selection of the 'Periodic Backup Bundle' it's selection depands on the license.  
+When creating a database in the studio you will see that you can't change the selection of the 'Periodic Backup Bundle' it's selection depends on the license.  
 In order to periodic backups to work you must activate `PeriodicBackups` bundle, by activating this bundle globally and turning it on/off per database, or activating it per database only.
 
 ##How it works

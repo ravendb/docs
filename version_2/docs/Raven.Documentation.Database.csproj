@@ -120,7 +120,7 @@
     <None Include="http-api\extensions\index.markdown" />
     <None Include="http-api\extensions\metadata-only.markdown" />
     <None Include="http-api\http-api-attachments.markdown" />
-    <None Include="http-api\http-api-comcurrency.markdown" />
+    <None Include="http-api\http-api-concurrency.markdown" />
     <None Include="http-api\http-api-indexes-querying.markdown" />
     <None Include="http-api\http-api-multi.markdown" />
     <None Include="http-api\http-api-security.markdown" />

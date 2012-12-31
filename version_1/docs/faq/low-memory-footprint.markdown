@@ -1,6 +1,6 @@
 #Reducing RavenDB memory footprint
 
-By default, RavenDB will tradeoff higher memory usage for better performance, you can limit the amount of memory RavenDB will use when running on memory constrained hardware.
+By default, RavenDB will trade-off higher memory usage for better performance, you can limit the amount of memory RavenDB will use when running on memory constrained hardware.
 
 The following configuration options instruct RavenDB to use much less memory:
 

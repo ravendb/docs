@@ -1,6 +1,6 @@
 # Dynamic Indexes
 
-Rather than define indexes up front, RavenDB can analyse a query and create a temporary index on the fly, which will be persisted for some amount of time before then being disposed of.
+Rather than define indexes up front, RavenDB can analyze a query and create a temporary index on the fly, which will be persisted for some amount of time before then being disposed of.
 
 Further uses of similar queries (using the same parameters) will result in the temporary index being re-used, and if used enough in a given period of time the temporary index will be promoted and made permanent.
 
@@ -127,7 +127,7 @@ We will show the appropriate Linq query and the actual Lucene query generated fo
     where doc.Images.Any( img => img.Url == "/static/arava.jpg")
     select doc;
 
-    // List of bojects - lucene
+    // List of objects - lucene
 
     Images,Url:"/static/arava.jpg"
 

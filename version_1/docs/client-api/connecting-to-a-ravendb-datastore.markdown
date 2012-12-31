@@ -87,7 +87,7 @@ The following are samples of a few RavenDB connection strings:
 * Url=http://ravendb.mydomain.com - connect to a remote RavenDB instance at ravendb.mydomain.com, to the default database
 * Url=http://ravendb.mydomain.com;Database=Northwind - connect to a remote RavenDB instance at ravendb.mydomain.com, to the Northwind database there
 * Url=http://ravendb.mydomain.com;User=user;Password=secret- connect to a remote RavenDB instance at ravendb.mydomain.com, with the specified credentials
-* DataDir=~\App_Data\RavenDB;Enslist=False - use embedded mode with the datbase located in the App_Data\RavenDB folder, without DTC support.
+* DataDir=~\App_Data\RavenDB;Enlist=False - use embedded mode with the database located in the App_Data\RavenDB folder, without DTC support.
 
 ## Configuration
 

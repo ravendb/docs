@@ -20,11 +20,11 @@ On the top right you can create a new database:
 
 After selecting this option a window will pop up and you need to enter a name for the new database.
 
-{NOTE Each database must have a uniqe name /e}
+{NOTE Each database must have a unique name /e}
 
 ![Databases Fig 3](Images/studio_databases_3.PNG)
 
-Once you have selected the name a new empty database wil be created. The name of the selected database will appear on the top right next the databases link:
+Once you have selected the name a new empty database will be created. The name of the selected database will appear on the top right next the databases link:
 
 ![Databases Fig 4](Images/studio_databases_4.PNG)
 
