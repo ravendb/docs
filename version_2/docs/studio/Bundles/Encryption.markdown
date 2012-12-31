@@ -8,10 +8,10 @@ After you press "Next" you will get the following page:
 In here an auto-generated key is suggested to you, if you wish to enter a key for your own you can change it.  
 Make sure you backup this key!  
 
-In Addtion you can set the encryption algorithem:  
+In Addition you can set the encryption algorithm:  
 ![Tasks Fig 4](Images/studio_encryption_4.PNG)  
 
-You can also choose if you want to encryp the indexes as well (selected by default)
+You can also choose if you want to encrypt the indexes as well (selected by default)
 
 
 After you create the database, a window with the selected key will appear, this is your last chance to backup the key:  

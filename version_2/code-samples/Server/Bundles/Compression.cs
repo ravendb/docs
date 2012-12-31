@@ -13,7 +13,7 @@ namespace RavenCodeSamples.Server.Bundles
                 store.DatabaseCommands.CreateDatabase(new DatabaseDocument
                 {
                     Id = "CompressedDB",
-                    // Other configuration options ommited for simplicity
+                    // Other configuration options omitted for simplicity
                     Settings =
                             {
                                 // ...

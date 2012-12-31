@@ -14,6 +14,6 @@ In here you can see:
 - Number of tasks waiting to happen
 
 
-On the statistics page you can see all the above data with addition of the extensions to the database, where you can see when each extension is activated (Startup, read, delete, ect...)
+On the statistics page you can see all the above data with addition of the extensions to the database, where you can see when each extension is activated (Startup, read, delete, etc...)
 
 ![Statistics Fig 2](Images/studio_statistics_2.PNG)

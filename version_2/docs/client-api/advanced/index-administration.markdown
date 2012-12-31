@@ -1,6 +1,6 @@
 # Index administration
 
-RavenDB indices can be administrated easily from the consumer end using either code or the embedded user interface.
+RavenDB indexes can be administrated easily from the consumer end using either code or the embedded user interface.
 
 ## Resetting an index
 

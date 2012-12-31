@@ -42,7 +42,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/MemoryCacheLimitMegabytes**
 	The max size in MB for the internal document cache inside RavenDB server.   
-	_Default:_ 50% of the total system meory minus the size of the esent cache.  
+	_Default:_ 50% of the total system memory minus the size of the Esent cache.  
 
 * **Raven/MemoryCacheLimitPercentage**
 	The percentage of memory that the internal document cache inside RavenDB server will use.   
@@ -150,7 +150,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/Port**
     The port to use when creating the http listener. 
-	_Allowed:_ 1 - 65,536 or * (find first avaible port from 8080 and upward)   
+	_Allowed:_ 1 - 65,536 or * (find first available port from 8080 and upward)   
     _Default:_ 8080    
 
 * **Raven/VirtualDirectory**  

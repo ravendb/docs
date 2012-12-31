@@ -33,7 +33,7 @@ namespace RavenCodeSamples.Consumer
 						.Where(x => x.Category == "RavenDB")
 						.Take(10)
 						.ToArray();
-					var totalResutls = stats.TotalResults;
+					var totalResults = stats.TotalResults;
 
 					#endregion
 				}
@@ -52,7 +52,7 @@ namespace RavenCodeSamples.Consumer
 						.Where(x => x.Category == "RavenDB")
 						.Distinct()
 						.ToArray();
-					var totalResutls = stats.TotalResults;
+					var totalResults = stats.TotalResults;
 					var skippedResults = stats.SkippedResults;
 
 					// get the second page

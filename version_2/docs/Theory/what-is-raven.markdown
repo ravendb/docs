@@ -2,7 +2,7 @@
 Raven is a .NET Linq enabled Document Database, focused on providing high performance, schema-less, flexible and scalable NoSQL data store for the .NET and Windows platforms.
 
 ## What does this mean?
-Unlike a traditional RDMBS, Raven doesn't store data in rows and columns, instead allowing you to store any JSON document inside the database. Raven is schema-less, which means that you don't have to pre-define how the documents that are stored in the database will be formed. Because the data is not limited to simply columns and rows, you can store arbitrarily complex data such as arrays, dictionaries and trees with ease.
+Unlike a traditional RDMBS, Raven doesn't store data in rows and columns, instead allowing you to store any JSON document inside the database. Raven is schema-less, which means that you don't have to predefine how the documents that are stored in the database will be formed. Because the data is not limited to simply columns and rows, you can store arbitrarily complex data such as arrays, dictionaries and trees with ease.
 
 On top of the documents, you can define indexes (using C#'s Linq syntax) that the database will maintain for you. This gives you the best of both worlds, you get a schema free nature (no upfront agonizing about the database schema or trying to shoehorn data into a relational model) but you are still able to perform efficient queries.
 

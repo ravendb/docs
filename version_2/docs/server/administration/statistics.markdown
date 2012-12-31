@@ -2,13 +2,13 @@
 
 ##Server statistics
 
-One of the options available for the RavenDB administators is a capability of retrieving database statistics for the server. The statistics are available at `/admin/stats` endpoint.
+One of the options available for the RavenDB administrators is a capability of retrieving database statistics for the server. The statistics are available at `/admin/stats` endpoint.
 
 {CODE-START:json /}
    > curl -X GET "http://localhost:8080/admin/stats"
 {CODE-END /}
 
-Document with following format is retreived:
+Document with following format is retrieved:
 
 {CODE-START:json /}
 	{

@@ -44,7 +44,7 @@ The new value you set can be anything: a native type, an object, or a collection
 
 Removing a property is done by simply passing `PatchCommandType.Unset` as `Type`.
 
-To rename a property, or copy it's value to another property, specify the new path as the `Value`:
+To rename a property, or copy its value to another property, specify the new path as the `Value`:
 
 {CODE patching3@ClientApi/PartialDocumentUpdates.cs /}
 
@@ -65,7 +65,7 @@ Any collection in your entity will be serialized into an array in the resulting 
 Being a JSON object, you can treat the entire array as value like shown above. Sometimes, however, you want to access certain items in the array
 
 ## Working with nested operations
-The nested operatoions are only valid of the 'Type' is `PatchCommandType.Modify`.  
+The nested operations are only valid of the 'Type' is `PatchCommandType.Modify`.  
 If we want to change all items in a collection we could do that by setting the AllPositions porparty to 'true'
 
 **Here are a few examples of nested operations:**

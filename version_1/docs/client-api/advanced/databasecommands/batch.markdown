@@ -36,7 +36,7 @@ Batching PUT and DELETEs:
     					});
     			 }
 
-Defer opration: 
+Defer operation: 
 In RavenDB when you call SaveChanges() all the changed document are batched into one call to the server and either they all pass or non will pass.  
 With the defer command we can add our own commands to this call:
 
@@ -79,7 +79,7 @@ Another operation supported by batching is the [PATCH command](../../partial-doc
 
 ## Concurrency
 
-If an etag is specified in the command, that etag is compared to the current etag on the document on the server. If the etags do no match, a 409 Conlict status code will be returned from the server, causing a ConcurrencyException to be thrown. In such a case, the entire operation fails and non of the updates that were tried will succeed.
+If an etag is specified in the command, that etag is compared to the current etag on the document on the server. If the etags do no match, a 409 Conflict status code will be returned from the server, causing a ConcurrencyException to be thrown. In such a case, the entire operation fails and non of the updates that were tried will succeed.
 
 ## Transactions
 

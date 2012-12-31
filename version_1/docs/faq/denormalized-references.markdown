@@ -39,7 +39,7 @@ The following shows how we can do this easily using code. First, the model:
     {
         public string Id { get; set; }
         public string Name { get; set; }
-        public DenormalizedReference<Customer> Customer { get;set;}
+        public DenormalizedReference<Customer> Customer { get; set;}
     }
 {CODE-END/}
 

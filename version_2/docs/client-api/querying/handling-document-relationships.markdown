@@ -45,7 +45,7 @@ If we know that whenever we load an `Order` from the database we will need to kn
 
 There wouldn’t be a direct reference between the `Order` and the `Customer`. Instead, `Order` holds a `DenormalizedCustomer`, which contains the interesting bits from `Customer` that we need whenever we process `Order` objects.
 
-But, what happens when the user's address is changed? We will have to perform an aggregate operation to update all orders this customer has made. And what if the customer has a lot of orders or changes their address frequently? Keeping these details in synch could become very demanding on the server. What if another process that works with orders needs a different set of customer properties? The `DenormalizedCustomer` will need to be expanded, possibly to the point that the majority of the customer record is cloned.
+But, what happens when the user's address is changed? We will have to perform an aggregate operation to update all orders this customer has made. And what if the customer has a lot of orders or changes their address frequently? Keeping these details in sync could become very demanding on the server. What if another process that works with orders needs a different set of customer properties? The `DenormalizedCustomer` will need to be expanded, possibly to the point that the majority of the customer record is cloned.
 
 Denormalization is a viable solution for rarely changing data, or for data that must remain the same despite the underlying referenced data changing over time.
 
@@ -141,15 +141,15 @@ When using string-based includes like:
 
 {CODE includes_4@ClientApi\Querying\HandlingDocumentRelationships.cs /}
 
-you must remember to follow certain rules that must apply to providen string path:
+you must remember to follow certain rules that must apply to the provided string path:
 
-1.	**Dots** are used to separate properties e.g. `"Refferal.CustomerId"` in example above means that our `Order` contains property `Refferal` and that property contains another property called `CustomerId`.
+1.	**Dots** are used to separate properties e.g. `"Referral.CustomerId"` in example above means that our `Order` contains property `Referral` and that property contains another property called `CustomerId`.
 2.	**Commas** are used to indicate that property is a collection type e.g. List. So if our `Order` will have a list of LineItems and each `LineItem` will contain `ProductId` property then we can create string path as follows: `"LineItems.,ProductId"`.
-3.	**Prefixes** are used to indicate id prefix for **non-string** identifiers. e.g. if our `CustomerId` property in `"Refferal.CustomerId"` path is an integer then we should add `customers/` prefix so the final path would look like `"Refferal.CustomerId(customers/)"` and for our collection example it would be `"LineItems.,ProductId(products/)"` if the `ProductId` would be a non-string type.
+3.	**Prefixes** are used to indicate id prefix for **non-string** identifiers. e.g. if our `CustomerId` property in `"Referral.CustomerId"` path is an integer then we should add `customers/` prefix so the final path would look like `"Referral.CustomerId(customers/)"` and for our collection example it would be `"LineItems.,ProductId(products/)"` if the `ProductId` would be a non-string type.
 
 {NOTE **Prefix** is not required for string identifiers, because they contain it by default. /}
 
-Learning string path rules may be usefull when you will want to query database using HTTP API.
+Learning string path rules may be useful when you will want to query database using HTTP API.
 
 {CODE-START:json /}
    > curl -X GET "http://localhost:8080/queries/?include=LineItems.,ProductId(products/)&id=orders/1"

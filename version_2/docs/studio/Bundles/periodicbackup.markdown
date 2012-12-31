@@ -10,7 +10,7 @@ On the first run you need to activate the periodic backup, after you do so you w
 
 In here you have several fields to fill:  
 
-- Glaicer Vault Name/S3 Bucket Name: first select in which way you wish to backup and then enter the name  
+- Glacier Vault Name/S3 Bucket Name: first select in which way you wish to backup and then enter the name  
 ![Periodic Backup Fig 4](Images/studio_periodic_4.PNG)  
 - AWS Settings: You need to set the AWS access key, secret and region endpoint.
 - Interval: Set the interval between backups (in minutes)
