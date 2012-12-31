@@ -1,6 +1,6 @@
 # .NET Client API
 
-So far we have spoken in abstracts, about NoSQL in general and RavenDB in particular. In this chapter we focus on the .NET Client API. We will go through all the steps required to perform basic CRUD operations using RavenDB, familizaring ourselves with RavenDB APIs, concepts and workings.
+So far we have spoken in abstracts, about NoSQL in general and RavenDB in particular. In this chapter we focus on the .NET Client API. We will go through all the steps required to perform basic CRUD operations using RavenDB, familiarizing ourselves with RavenDB APIs, concepts and workings.
 
 ## What is the .NET Client API?
 

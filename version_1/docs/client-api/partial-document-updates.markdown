@@ -65,8 +65,8 @@ Any collection in your entity will be serialized into an array in the resulting 
 Being a JSON object, you can treat the entire array as value like shown above. Sometimes, however, you want to access certain items in the array
 
 ## Working with nested operations
-The nested operatoions are only valid of the 'Type' is `PatchCommandType.Modify`.  
-If we want to change all items in a collection we could do that by setting the AllPositions porparty to 'true'
+The nested operations are only valid of the 'Type' is `PatchCommandType.Modify`.  
+If we want to change all items in a collection we could do that by setting the AllPositions property to 'true'
 
 **Here are a few examples of nested operations:**
 

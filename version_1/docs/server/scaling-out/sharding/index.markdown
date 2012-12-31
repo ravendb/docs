@@ -6,7 +6,7 @@ Let's say in our application we have to handle data from a lot of companies acro
 
 The idea above is to geo locate the shards near the location where the data is used, so companies in Asia get served from a nearby server and respond more quickly to a user located in Asia. We are also able to reduce the load on each server, because it only handle some part of the data.
 
-RavenDB contains builtin support for sharding. It'll handle all aspects of sharding for you, leaving you with the sole task of defining the shard function (how to actually split the documents among multiple shards).
+RavenDB contains built-in support for sharding. It'll handle all aspects of sharding for you, leaving you with the sole task of defining the shard function (how to actually split the documents among multiple shards).
 
 Here are some entities that can be split to different shards based on their Region: the `Company` and `Invoice` entities.
 
@@ -23,7 +23,7 @@ The ShardStrategy tells the ShardedDocumentStore how to interact with the shards
 * MergeQueryResults: a delegate that lets you decide how to merge query results from a few shards. There is a default implementation for this which merges the result as they come back and apply minimal sorting behavior.
 * ModifyDocumentId: lets you store the shard id for a document in the document itself. The default implementation is: `(convention, shardId, documentId) => shardId + convention.IdentityPartsSeparator + documentId`.
 
-So in order to use sharding, you can just use the `ShardStrategy` with its default behaviour:
+So in order to use sharding, you can just use the `ShardStrategy` with its default behavior:
 
 {CODE store@Consumer\Sharding.cs /}
 
@@ -44,7 +44,7 @@ Now we can store some data which will be split across different shards:
 
 In the above example we're storing each of the companies on a different shard, and each of the invoices in the same shard of their company's shard.
 
-Now we can do operation like `Query`, `Load` or `LuceneQuery`, and the actual shards that will be contacted in order to complete that opertion will depend on the `IShardResolutionStrategy` implementation.
+Now we can do operation like `Query`, `Load` or `LuceneQuery`, and the actual shards that will be contacted in order to complete that operation will depend on the `IShardResolutionStrategy` implementation.
 
 {CODE Query@Consumer\Sharding.cs /}
 

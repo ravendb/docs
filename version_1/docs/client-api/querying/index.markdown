@@ -12,7 +12,7 @@ Therefore, there are 2 types of indexes in RavenDB:
 
 * *Static indexes* are named indexes which are created explicitly by the user.
 
-* *Dynamic indexes* are created by RavenDB automatically following some user query, if no matching index to query was found. RavenDB will find an appropriate index to query, and create it on the fly if one does not already exist. RavenDB will optimize itself based on the actual requests coming in, and can decide to promote a temporary index to a permenant one.
+* *Dynamic indexes* are created by RavenDB automatically following some user query, if no matching index to query was found. RavenDB will find an appropriate index to query, and create it on the fly if one does not already exist. RavenDB will optimize itself based on the actual requests coming in, and can decide to promote a temporary index to a permanent one.
 
 Also worth mentioning at this stage is the notion of *stale indexes*. Because RavenDB follows the "better stale than offline" approach, querying an index may return stale results - for example when a user queries a database that while a mass-update in progress. RavenDB will let the user know if results are stale, and can also be told to wait until non-stale results are available.
 
