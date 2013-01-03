@@ -164,6 +164,7 @@
     <Compile Include="Samples\Mvc\CreateAspNetMvc4Project.cs" />
     <Compile Include="Samples\WebApi\CreateAspNetWebApiProject.cs" />
     <Compile Include="Server\Administration\ExportImport.cs" />
+    <Compile Include="Server\Authentication\Index.cs" />
     <Compile Include="Server\Bundles\Authentication.cs" />
     <Compile Include="Server\Bundles\Authorization.cs" />
     <Compile Include="Server\Bundles\AuthorizationBundleDesign.cs" />

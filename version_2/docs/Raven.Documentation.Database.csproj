@@ -164,6 +164,8 @@
     <None Include="server\administration\index.markdown" />
     <None Include="server\administration\statistics.markdown" />
     <None Include="server\administration\upgrade.markdown" />
+    <None Include="server\authentication\.docslist" />
+    <None Include="server\authentication\index.markdown" />
     <None Include="server\bundles\.docslist" />
     <None Include="server\bundles\authentication.markdown" />
     <None Include="server\bundles\authorization-bundle-design.markdown" />
@@ -276,6 +278,7 @@
     <Content Include="server\administration\images\05FailureSimulation_Pending.jpg" />
     <Content Include="server\administration\images\delete.png" />
     <Content Include="server\administration\images\tick.png" />
+    <Content Include="server\authentication\images\authentication_1.png" />
     <Content Include="server\bundles\images\authorization_docs.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />
     <Content Include="server\bundles\images\versioned_docs_2.png" />
