@@ -4,9 +4,38 @@ RavenDB comes with a built-in authentication functionality and it supports two t
 * [Windows Authentication](index/#windows-authentication)   
 * [OAuth Authentication](index/#oauth-authentication)   
 
-Appropriate authentication type is chosen by examining incoming request headers and by default all actions except read-only are being authenticated. To change which actions are being authenticated please refer to [Raven/AnonymousAccess](../administration/configuration#authorization--authentication) configuration setting.
+Appropriate authentication type is chosen by examining incoming request headers and by default all actions except read-only are being authenticated. To determine which actions will be authenticated please refer to [Raven/AnonymousAccess](../administration/configuration#authorization--authentication) configuration setting.
 
 ##Windows Authentication
+
+When action (request) needs to be authenticated and no other authentication method is detected, then the Windows Authentication is chosen. Worth noting is that all `/admin` endpoint requests are processed using this method.
+
+By default all windows users and groups have access to all the databases, but this can be easily changed by editing `Raven/Authorization/WindowsSettings` document in `system` database. The document consists of list of users and groups that contain the list of accessible databases. For example this document could look like this:
+
+{CODE-START:json /}
+
+	{
+	  "RequiredGroups": [],
+	  "RequiredUsers": [
+		{
+		  "Name": "IIS AppPool\\DefaultAppPool",
+		  "Enabled": true,
+		  "Databases": [
+			{
+			  "Admin": false,
+			  "TenantId": "ExampleDB",
+			  "ReadOnly": true
+			}
+		  ]
+		}
+	  ]
+	}
+
+{CODE-END /}
+
+Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultAppPool`. Similar effect can be achieved using the Studio and editing `system` database settings.
+
+![Figure 1: `Windows Authentication` settings](images/authentication_1.PNG)
 
 ##OAuth Authentication
 
@@ -51,7 +80,7 @@ After a successful authentication, the token must be passed as a part of **Autho
 
 ###Example - API keys
 
-Another way is to use API keys. To do it we need to create a document with `Raven/ApiKeys/key_name` as a key and `ApiKeyDefinition` as a content.
+Another way is to use API keys. To do it we need to create a document with `Raven/ApiKeys/key_name` as a key and `ApiKeyDefinition` as a content on `system` database.
 
 {CODE authentication_3@Server/Authentication/Index.cs /}
 

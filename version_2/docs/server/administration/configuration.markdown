@@ -270,12 +270,6 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Determines what actions an anonymous user can do. Get - read only, All - read & write, None - allows access to only authenticated users.   
 	_Default:_ Get
 
-* **Raven/Authorization/Windows/RequiredGroups**
-	Limit the users that can authenticate to RavenDB to only users in the specified groups. Multiple groups can be specified, separated by a semicolon (;).   
-
-* **Raven/Authorization/Windows/RequiredUsers**
-	Limit the users that can authenticate to RavenDB to only the specified users. Multiple users can be specified, separate by a semicolon (;).   
-
 * **Raven/OAuthTokenServer**
 	The url clients should use for authenticating when using OAuth mode.  
 	_Default:_ http://RavenDB-Server-Url/OAuth/AccessToken - the internal OAuth server.
