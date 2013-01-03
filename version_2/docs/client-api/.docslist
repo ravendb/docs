@@ -6,5 +6,6 @@ partial-document-updates.markdown	Partial document updates using the Patching AP
 set-based-operations.markdown	Set based operations
 attachments.markdown	Attachments
 faceted-search.markdown	Faceted search
+changes-api.markdown	Changes API
 /advanced	Advanced topics
 fsharp.markdown	RavenDB in F#
