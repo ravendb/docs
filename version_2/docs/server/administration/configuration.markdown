@@ -264,7 +264,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The soft limit before which we will warn about the quota.   
 	_Default:_ 1024
 
-### Authorization & Authentication
+### [Authorization & Authentication](../authentication/index)
 
 * **Raven/AnonymousAccess**
 	Determines what actions an anonymous user can do. Get - read only, All - read & write, None - allows access to only authenticated users.   
