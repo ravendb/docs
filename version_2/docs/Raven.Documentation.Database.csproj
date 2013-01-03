@@ -164,6 +164,8 @@
     <None Include="server\administration\index.markdown" />
     <None Include="server\administration\statistics.markdown" />
     <None Include="server\administration\upgrade.markdown" />
+    <None Include="server\authentication\.docslist" />
+    <None Include="server\authentication\index.markdown" />
     <None Include="server\bundles\.docslist" />
     <None Include="server\bundles\authentication.markdown" />
     <None Include="server\bundles\authorization-bundle-design.markdown" />
