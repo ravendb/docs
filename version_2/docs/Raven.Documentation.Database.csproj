@@ -95,6 +95,7 @@
     <None Include="client-api\querying\static-indexes\index.markdown" />
     <None Include="client-api\querying\static-indexes\indexes-error-handling.markdown" />
     <None Include="client-api\querying\static-indexes\indexing-hierarchies.markdown" />
+    <None Include="client-api\querying\static-indexes\indexing-related-documents.markdown" />
     <None Include="client-api\querying\static-indexes\live-projections.markdown" />
     <None Include="client-api\querying\using-linq-to-query-ravendb.markdown" />
     <None Include="client-api\set-based-operations.markdown" />

@@ -42,7 +42,7 @@
 		public SampleRecurseIndex()
 		{
 			Map = posts => from post in posts
-						   from comment in Recurse(post, x => x.Comments.AsEnumerable())
+						   from comment in Recurse(post, x => x.Comments)
 						   select new
 						   {
 							   Author = comment.Author,
