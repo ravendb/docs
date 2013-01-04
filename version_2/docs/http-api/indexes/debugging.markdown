@@ -25,7 +25,9 @@ Map Reduce
 
 {CODE-START:json /}
    > curl -X PUT http://localhost:8080/databases/DB/indexes/AvgUsersAge 
-	-d "{ Map: 'from user in docs.Users select new {user.FirstName, user.Age}', Reduce: 'from result in results group result by new { result.FirstName } into nameGroup select new { nameGroup.Key.FirstName, Age = nameGroup.Average(x => x.Age) } '}"
+	-d "{ Map: 'from user in docs.Users select new { user.FirstName, AvgAge = user.Age, Count = 1 }', 
+		  Reduce: 'from result in results group result by new { result.FirstName } into g let ageSum = g.Sum(x => x.AvgAge) let count = g.Sum(x => x.Count) select new { g.Key.FirstName, AvgAge = ageSum / count, Count = count } '
+		}"
 {CODE-END /}
 
 ##Stats
@@ -132,7 +134,8 @@ In result you will get raw, mapped items of the index:
 		"Etag":"00000000-0000-0100-0000-00000000000f",
 		"Data":{
 			"FirstName":"David",
-			"Age":45.0
+			"AvgAge":45.0,
+			"Count":1.0
 		},
 		"Bucket":159818,
 		"Source":"users/4"
@@ -143,7 +146,8 @@ In result you will get raw, mapped items of the index:
 		"Etag":"00000000-0000-0100-0000-00000000000d",
 		"Data":{
 			"FirstName":"David",
-			"Age":20.0
+			"AvgAge":20.0,
+			"Count":1.0
 		},
 		"Bucket":814440,
 		"Source":"users/2"
@@ -185,7 +189,8 @@ The output:
 		"Data":
 		{
 			"FirstName":"David",
-			"Age":45.0
+			"AvgAge":45.0,
+			"Count":1.0
 		},
 		"Bucket":0,
 		"Source":"156"
@@ -197,13 +202,47 @@ The output:
 		"Data":
 		{
 			"FirstName":"David",
-			"Age":20.0
+			"AvgAge":20.0,
+			"Count":1.0
 		},
 		"Bucket":0,
 		"Source":"795"
 	}]
 }
 {CODE-END /}
+
+{NOTE This index debug option can be used only if the reduce operation was performed as multi-level process. RavenDB has also an optimized version of the reducing which is performed in single step (if the number of items per reduce key is smaller than `NumberOfItemsToExecuteReduceInSingleStep` value specified in configuration). Then instead of persisting intermediate results Raven will store them directly into Lucene indexes, so the usage of this debug command will give you no results. /}
+
+##Reduce keys
+
+Another option related to a map/reduce index is to get at a runtime the stats about all the keys in the index. To see the reduce keys and their number of their occurrence use *debug=keys* option:
+
+{CODE-START:json /}
+   > curl -X GET 
+	http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=keys
+{CODE-END /}
+
+{CODE-START:json /}
+{
+    "Count": 3,
+    "Results": [
+        {
+            "Count": 2,
+            "Key": "{\"FirstName\":\"Daniel\"}"
+        },
+        {
+            "Count": 2,
+            "Key": "{\"FirstName\":\"David\"}"
+        },
+        {
+            "Count": 1,
+            "Key": "{\"FirstName\":\"Bob\"}"
+        }
+    ]
+}
+{CODE-END /}
+
+
 
 ##Skipping projections
 
