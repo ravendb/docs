@@ -62,9 +62,10 @@
 			var userId = "users/ayende";
 			var certificate = new X509Certificate2();
 			var authorizedDatabases = new[] { "*" };
+			var key = certificate.Export(X509ContentType.Pkcs12);
 
 			#region authenticate_3
-			var token = AccessToken.Create(certificate, userId, authorizedDatabases);
+			var token = AccessToken.Create(key, userId, authorizedDatabases);
 			response.Write(token.Serialize());
 
 			#endregion

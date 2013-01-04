@@ -12,7 +12,11 @@
 		{
 			public SampleIndex1()
 			{
-				Map = users => from user in users select new { user.Age };
+				Map = users => from user in users
+							   select new
+								   {
+									   user.Age
+								   };
 
 				Sort(x => x.Age, SortOptions.Short);
 			}

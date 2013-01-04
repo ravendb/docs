@@ -71,7 +71,7 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 				}
 
 				#region saving_document_3
-				store.Conventions.DocumentKeyGenerator = (commands, entity) => store.Conventions.GetTypeTagName(entity.GetType()) + "/";
+				store.Conventions.DocumentKeyGenerator = (dbname, commands, entity) => store.Conventions.GetTypeTagName(entity.GetType()) + "/";
 
 				#endregion
 			}
@@ -82,12 +82,12 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 			using (var store = NewDocumentStore())
 			{
 				#region saving_new_document_2
-				store.Conventions.RegisterIdConvention<User>((commands, user) => "users/" + user.Name);
+				store.Conventions.RegisterIdConvention<User>((dbname, commands, user) => "users/" + user.Name);
 
 				#endregion
 
 				#region saving_new_document_3
-				store.Conventions.RegisterAsyncIdConvention<User>((commands, user) => new CompletedTask<string>("users/" + user.Name));
+				store.Conventions.RegisterAsyncIdConvention<User>((dbname, commands, user) => new CompletedTask<string>("users/" + user.Name));
 
 				#endregion
 
@@ -125,7 +125,7 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 			using (var store = NewDocumentStore())
 			{
 				#region saving_new_document_6
-				store.Conventions.RegisterIdConvention<User>((commands, user) => "users/" + user.Name);
+				store.Conventions.RegisterIdConvention<User>((dbname, commands, user) => "users/" + user.Name);
 
 				using (var session = store.OpenSession())
 				{
@@ -152,8 +152,8 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 			using (var store = NewDocumentStore())
 			{
 				#region saving_new_document_7
-				store.Conventions.RegisterIdConvention<User>((commands, user) => "users/" + user.Name);
-				store.Conventions.RegisterIdConvention<PrivilegedUser>((commands, user) => "admins/" + user.Name);
+				store.Conventions.RegisterIdConvention<User>((dbname, commands, user) => "users/" + user.Name);
+				store.Conventions.RegisterIdConvention<PrivilegedUser>((dbname, commands, user) => "admins/" + user.Name);
 
 				using (var session = store.OpenSession())
 				{
