@@ -105,6 +105,7 @@
     <Compile Include="ClientApi\ConnectionToRavenDbDataStore.cs" />
     <Compile Include="ClientApi\FacetedSearch.cs" />
     <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="ClientApi\Querying\Intersection.cs" />
     <Compile Include="ClientApi\Querying\LazyOperations.cs" />
     <Compile Include="ClientApi\Querying\LinqExtensions\OfType.cs" />
     <Compile Include="ClientApi\Querying\LinqExtensions\ProjectFromIndexFieldsInto.cs" />
