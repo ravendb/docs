@@ -20,4 +20,4 @@ Now we are able to do projection of the index results into `ProductViewModel` by
 The query as above will sent additional query string parameters: *?fetch=Name&fetch=Description*, what is a hint for RavenDB that those values should be pulled from index. 
 By default all properties of the type specified in `ProjectFromIndexFieldsInto<T>` method will be marked to retrieve from index fields. If the index will not store the field then it will be retrieved by loading the entire document and projecting needed property.
 
-Such query is treated as the projection (but very different than Live Projection). In result RavenDB will return only fields corresponding with properties that the type `T` contains. They will be transformed on the client side and returned as collection of specified type objects.
+Such query is treated as the projection (but very different than Live Projection - note that the index does not contain `TransformResults` definition). In result RavenDB will return only fields corresponding with properties that the type `T` contains. They will be transformed on the client side and returned as collection of specified type objects.
