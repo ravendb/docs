@@ -114,6 +114,7 @@
     <Compile Include="ClientApi\Querying\ResultsTransformation\ProjectFromIndexFieldsInto.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\SelectFields.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\TransformResults.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\Boosting.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\Index.cs" />

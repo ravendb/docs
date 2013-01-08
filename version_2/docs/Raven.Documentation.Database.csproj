@@ -93,6 +93,7 @@
     <None Include="client-api\querying\stale-indexes.markdown" />
     <None Include="client-api\querying\static-indexes\.docslist" />
     <None Include="client-api\querying\static-indexes\configuring-index-options.markdown" />
+    <None Include="client-api\querying\static-indexes\boosting.markdown" />
     <None Include="client-api\querying\static-indexes\spatial-search.markdown" />
     <None Include="client-api\querying\static-indexes\customizing-results-order.markdown" />
     <None Include="client-api\querying\static-indexes\defining-static-index.markdown" />
