@@ -1,4 +1,4 @@
-﻿namespace RavenCodeSamples.ClientApi.Querying.LinqExtensions
+﻿namespace RavenCodeSamples.ClientApi.Querying.ResultsTransformation
 {
 	using System.Collections.Generic;
 	using System.Linq;

@@ -106,9 +106,13 @@
     <Compile Include="ClientApi\FacetedSearch.cs" />
     <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
     <Compile Include="ClientApi\Querying\LazyOperations.cs" />
-    <Compile Include="ClientApi\Querying\LinqExtensions\OfType.cs" />
-    <Compile Include="ClientApi\Querying\LinqExtensions\ProjectFromIndexFieldsInto.cs" />
     <Compile Include="ClientApi\Querying\Polymorphism.cs" />
+    <Compile Include="ClientApi\Querying\ResultsTransformation\OfType.cs" />
+    <Compile Include="ClientApi\Querying\ResultsTransformation\Product.cs" />
+    <Compile Include="ClientApi\Querying\ResultsTransformation\ProductViewModel.cs" />
+    <Compile Include="ClientApi\Querying\ResultsTransformation\ProjectFromIndexFieldsInto.cs" />
+    <Compile Include="ClientApi\Querying\ResultsTransformation\SelectFields.cs" />
+    <Compile Include="ClientApi\Querying\ResultsTransformation\TransformResults.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\Index.cs" />
@@ -125,7 +129,7 @@
     <Compile Include="ClientApi\Advanced\ClientSideListeners.cs" />
     <Compile Include="ClientApi\Querying\Paging.cs" />
     <Compile Include="ClientApi\PartialDocumentUpdates.cs" />
-    <Compile Include="ClientApi\Querying\LinqExtensions\Search.cs" />
+    <Compile Include="ClientApi\Querying\Searching.cs" />
     <Compile Include="ClientApi\SetBasedOperations.cs" />
     <Compile Include="Samples\Mvc\CreateAspNetMvc4Project.cs" />
     <Compile Include="Samples\WebApi\CreateAspNetWebApiProject.cs" />
