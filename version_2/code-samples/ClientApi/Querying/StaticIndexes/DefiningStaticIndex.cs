@@ -1,4 +1,8 @@
-﻿namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
+﻿using System;
+using Raven.Abstractions.Indexing;
+using Raven.Client;
+
+namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 {
 	using System.Linq;
 
@@ -62,6 +66,63 @@
 		#endregion
 	}
 
+	public class User
+	{
+		public string FirstName { get; set; }
+
+		public string LastName { get; set; }
+	}
+
+	#region defining_static_index_1
+	public class Users_AllProperties : AbstractIndexCreationTask<User, Users_AllProperties.Result>
+	{
+		public class Result
+		{
+			public string Query { get; set; }
+		}
+
+		public Users_AllProperties()
+		{
+			Map = users => from user in users
+						   select new
+							   {
+								   Query = AsDocument(user).Select(x => x.Value)
+							   };
+
+			Index(x => x.Query, FieldIndexing.Analyzed);
+		}
+	}
+
+	#endregion
+
+	#region defining_static_index_3
+	public class Users_LastModified : AbstractIndexCreationTask<User>
+	{
+		public class Result
+		{
+			public DateTime LastModified { get; set; }
+		}
+
+		public Users_LastModified()
+		{
+			Map = users => from user in users
+						   select new
+							   {
+								   LastModified = MetadataFor(user).Value<DateTime>("Last-Modified")
+							   };
+
+			TransformResults = (database, results) => from result in results
+													  select new
+														  {
+															  FirstName = result.FirstName,
+															  LastName = result.LastName,
+															  LastModified = MetadataFor(result).Value<DateTime>("Last-Modified")
+														  };
+		}
+	}
+
+	#endregion
+
 	public class DefiningStaticIndex : CodeSampleBase
 	{
 		public void CreatingNewIndex()
@@ -71,7 +132,8 @@
 				#region static_indexes2
 				// Create an index where we search based on a post title
 				documentStore.DatabaseCommands.PutIndex("BlogPosts/ByTitles",
-														new IndexDefinitionBuilder<BlogPost> {
+														new IndexDefinitionBuilder<BlogPost>
+														{
 															Map = posts => from post in posts
 																		   select new { post.Title }
 														});
@@ -81,7 +143,8 @@
 				#region static_indexes3
 				documentStore.DatabaseCommands.PutIndex(
 					"BlogPosts/PostsCountByTag",
-					new IndexDefinitionBuilder<BlogPost, BlogTagPostsCount> {
+					new IndexDefinitionBuilder<BlogPost, BlogTagPostsCount>
+					{
 						// The Map function: for each tag of each post, create a new BlogTagPostsCount
 						// object with the name of a tag and a count of one.
 						Map = posts => from post in posts
@@ -152,24 +215,54 @@
 			public BlogPosts_PostsCountByTag()
 			{
 				Map = posts => from post in posts
-				                    from tag in post.Tags
-				                    select new
-					                           {
-						                           Tag = tag,
-						                           Count = 1
-					                           };
+							   from tag in post.Tags
+							   select new
+										  {
+											  Tag = tag,
+											  Count = 1
+										  };
 
 				Reduce = results => from result in results
-				                         group result by result.Tag
-				                         into g
-				                         select new
-					                                {
-						                                Tag = g.Key,
-						                                Count = g.Sum(x => x.Count)
-					                                };
+									group result by result.Tag
+										into g
+										select new
+												   {
+													   Tag = g.Key,
+													   Count = g.Sum(x => x.Count)
+												   };
 			}
 		}
 
 		#endregion
+
+		public void Sample()
+		{
+			using (var store = NewDocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region defining_static_index_2
+					session.Query<Users_AllProperties.Result, Users_AllProperties>()
+						   .Where(x => x.Query == "Ayende") // search first name
+						   .OfType<User>()
+						   .ToList();
+
+					session.Query<Users_AllProperties.Result, Users_AllProperties>()
+						   .Where(x => x.Query == "Rahien") // search last name
+						   .OfType<User>()
+						   .ToList();
+
+					#endregion
+
+					#region defining_static_index_4
+					session.Query<Users_LastModified.Result, Users_LastModified>()
+					       .OrderByDescending(x => x.LastModified)
+					       .OfType<User>()
+					       .ToList();
+
+					#endregion
+				}
+			}
+		}
 	}
 }

@@ -53,3 +53,21 @@ A better way of doing this is by creating an index class, and using `IndexCreati
 Either way, querying the indexes is the same. You can either let RavenDB decide which index to use, or instruct it to use a specific index by explicitly specifying the index name while querying. Here's how we would go about finding the count of posts tagged under the "RavenDB" tag:
 
 {CODE static_indexes6@ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs /}
+
+### Using `AsDocument` and `MetadataFor`
+
+To support more complex scenarios where one wants to use document metadata or document itself in index, the `AsDocument` and `MetadataFor` methos have been introduced.
+
+First method can be used to create an index that contains **everything** from the given document and allows one to search over all of the values of all the properties of the provided entity.
+
+{CODE defining_static_index_1@ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs /}
+
+{CODE defining_static_index_2@ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs /}
+
+{NOTE Indexing all entity properties will result in larger index sizes, decreased performance and may lead to poor search relevancy, because whole document is used as an index entry. Use with caution.  /}
+
+Second method allows us to use document metadata inside the index. For example:   
+
+{CODE defining_static_index_3@ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs /}
+
+{CODE defining_static_index_4@ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs /}

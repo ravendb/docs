@@ -105,6 +105,7 @@
     <Compile Include="ClientApi\ConnectionToRavenDbDataStore.cs" />
     <Compile Include="ClientApi\FacetedSearch.cs" />
     <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="ClientApi\Querying\Intersection.cs" />
     <Compile Include="ClientApi\Querying\LazyOperations.cs" />
     <Compile Include="ClientApi\Querying\Polymorphism.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\OfType.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\IndexingRelatedDocuments.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\LiveProjections.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\SpatialSearch.cs" />
     <Compile Include="ClientApi\Querying\UsingLinqToQueryRavenDb.cs" />
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
@@ -168,7 +170,6 @@
     <Compile Include="Intro\SafeByDefault.cs" />
     <Compile Include="MvcSampleBase.cs" />
     <Compile Include="Server\MultipleDatabases.cs" />
-    <Compile Include="ClientApi\Advanced\SpatialSearch.cs" />
     <Compile Include="ClientApi\Querying\StaleIndexes.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs" />
     <Compile Include="HomepageSlides.cs" />

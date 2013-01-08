@@ -1,7 +1,6 @@
 transaction-support.markdown	Transaction support in RavenDB
 document-metadata.markdown	Working with document metadata
 querying-for-terms.markdown	Querying for terms
-spatial-search.markdown	Spatial search
 dynamic-fields.markdown	Dynamic fields
 /databasecommands	DatabaseCommands
 /asyncdatabasecommands	AsyncDatabaseCommands

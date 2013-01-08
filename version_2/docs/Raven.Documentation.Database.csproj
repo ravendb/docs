@@ -59,7 +59,6 @@
     <None Include="client-api\advanced\index-administration.markdown" />
     <None Include="client-api\advanced\index.markdown" />
     <None Include="client-api\advanced\querying-for-terms.markdown" />
-    <None Include="client-api\advanced\spatial-search.markdown" />
     <None Include="client-api\advanced\transaction-support.markdown" />
     <None Include="client-api\attachments.markdown" />
     <None Include="client-api\basic-operations\.docslist" />
@@ -78,6 +77,7 @@
     <None Include="client-api\index.markdown" />
     <None Include="client-api\partial-document-updates.markdown" />
     <None Include="client-api\querying\.docslist" />
+    <None Include="client-api\querying\intersection.markdown" />
     <None Include="client-api\querying\handling-document-relationships.markdown" />
     <None Include="client-api\querying\index.markdown" />
     <None Include="client-api\querying\lazy-operations.markdown" />
@@ -93,6 +93,7 @@
     <None Include="client-api\querying\stale-indexes.markdown" />
     <None Include="client-api\querying\static-indexes\.docslist" />
     <None Include="client-api\querying\static-indexes\configuring-index-options.markdown" />
+    <None Include="client-api\querying\static-indexes\spatial-search.markdown" />
     <None Include="client-api\querying\static-indexes\customizing-results-order.markdown" />
     <None Include="client-api\querying\static-indexes\defining-static-index.markdown" />
     <None Include="client-api\querying\static-indexes\index.markdown" />
