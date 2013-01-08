@@ -166,7 +166,6 @@
     <Compile Include="Intro\SafeByDefault.cs" />
     <Compile Include="MvcSampleBase.cs" />
     <Compile Include="Server\MultipleDatabases.cs" />
-    <Compile Include="ClientApi\Advanced\SpatialSearch.cs" />
     <Compile Include="ClientApi\Querying\StaleIndexes.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs" />
     <Compile Include="HomepageSlides.cs" />
