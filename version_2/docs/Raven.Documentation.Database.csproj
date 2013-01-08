@@ -59,7 +59,6 @@
     <None Include="client-api\advanced\index-administration.markdown" />
     <None Include="client-api\advanced\index.markdown" />
     <None Include="client-api\advanced\querying-for-terms.markdown" />
-    <None Include="client-api\advanced\spatial-search.markdown" />
     <None Include="client-api\advanced\transaction-support.markdown" />
     <None Include="client-api\attachments.markdown" />
     <None Include="client-api\basic-operations\.docslist" />
