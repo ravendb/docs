@@ -1,13 +1,11 @@
-﻿namespace RavenCodeSamples.ClientApi.Querying.LinqExtensions
+﻿namespace RavenCodeSamples.ClientApi.Querying
 {
 	using System.Collections.Generic;
 	using System.Linq;
 	using Raven.Abstractions.Indexing;
-	#region using
 	using Raven.Client;
-	#endregion
 
-	public class Search : CodeSampleBase
+	public class Searching : CodeSampleBase
 	{
 		#region linq_extensions_search_user_class
 		public class User
@@ -20,7 +18,7 @@
 		}
 		#endregion
 
-		public Search()
+		public Searching()
 		{
 			using (var documentStore = NewDocumentStore())
 			{

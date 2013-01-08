@@ -1,28 +1,8 @@
-﻿namespace RavenCodeSamples.ClientApi.Querying.LinqExtensions
+﻿namespace RavenCodeSamples.ClientApi.Querying.ResultsTransformation
 {
 	using System.Collections.Generic;
 	using System.Linq;
 	using Raven.Client.Indexes;
-
-	#region linq_extensions_of_type_product_class
-	public class Product
-	{
-		public string Id { get; set; }
-		public string ArticleNumber { get; set; }
-		public string Name { get; set; }
-		public string Manufacturer { get; set; }
-		public string Description { get; set; }
-		public int QuantityInWarehouse { get; set; }
-	}
-	#endregion
-
-	#region linq_extensions_of_type_product_view_model_class
-	public class ProductViewModel
-	{
-		public string Name { get; set; }
-		public string Description { get; set; }
-	}
-	#endregion
 
 	#region linq_extensions_of_type_product_by_quantity_index
 	public class Product_ByQuantity : AbstractIndexCreationTask<Product>

@@ -1,3 +1,4 @@
-search.markdown	Search
 of-type.markdown	OfType (As)
 project-from-index-fields-into.markdown	ProjectFromIndexFieldsInto (AsProjection)
+transform-results.markdown	TransformResults
+select-fields.markdown	SelectFields
