@@ -253,6 +253,7 @@
     <Content Include="client-api\images\raven.server.png" />
     <Content Include="client-api\images\studio.png" />
     <Content Include="client-api\querying\images\polymorphic_indexes_faq.png" />
+    <None Include="client-api\querying\query-and-lucene-query.markdown" />
     <Content Include="faq\images\authorization_bundle_faq.png" />
     <Content Include="faq\images\denormalized_references_faq.png" />
     <Content Include="Intro\images\json_doc.png" />
