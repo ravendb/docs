@@ -73,7 +73,6 @@
     <None Include="client-api\changes-api.markdown" />
     <None Include="client-api\connecting-to-a-ravendb-datastore.markdown" />
     <None Include="client-api\faceted-search.markdown" />
-    <None Include="client-api\fsharp.markdown" />
     <None Include="client-api\index.markdown" />
     <None Include="client-api\partial-document-updates.markdown" />
     <None Include="client-api\querying\.docslist" />
