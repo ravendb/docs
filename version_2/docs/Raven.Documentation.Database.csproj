@@ -50,6 +50,7 @@
     <None Include="client-api\advanced\asyncdatabasecommands\.docslist" />
     <None Include="client-api\advanced\asyncdatabasecommands\index.markdown" />
     <None Include="client-api\advanced\client-side-listeners.markdown" />
+    <None Include="client-api\advanced\bulk-inserts.markdown" />
     <None Include="client-api\advanced\custom-serialization.markdown" />
     <None Include="client-api\advanced\databasecommands\.docslist" />
     <None Include="client-api\advanced\databasecommands\batch.markdown" />
@@ -73,7 +74,6 @@
     <None Include="client-api\changes-api.markdown" />
     <None Include="client-api\connecting-to-a-ravendb-datastore.markdown" />
     <None Include="client-api\faceted-search.markdown" />
-    <None Include="client-api\fsharp.markdown" />
     <None Include="client-api\index.markdown" />
     <None Include="client-api\partial-document-updates.markdown" />
     <None Include="client-api\querying\.docslist" />
