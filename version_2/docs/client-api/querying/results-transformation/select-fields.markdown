@@ -20,7 +20,7 @@ otherwise the entire document is pulled and appropriate properties are used for 
 
 {CODE select_fields_2@ClientApi\Querying\ResultsTransformation\SelectFields.cs /}
 
-In case above only *Name* property will be retrieved and the resulting objects will consist of projected *Name* value while *Description* will be empty.
+In case above only *Name* property will be retrieved and the resulting objects will consist of projected *Name* value while *Description* will be `null`.
 
 
 

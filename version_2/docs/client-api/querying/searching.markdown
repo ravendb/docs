@@ -21,7 +21,7 @@ Eventually all queries are always transformed into a Lucene query. The query lik
 
 ##Multiple terms
 
-When you need to do a more complex text searching use `Search` extension method. This method allows you to pass a few search terms that will be used in searching process for a particular field. Here is a sample code
+When you need to do a more complex text searching use `Search` extension method (in `Raven.Client` namespace). This method allows you to pass a few search terms that will be used in searching process for a particular field. Here is a sample code
 that uses `Search` extension to get users with name *John* or *Adam*:
 {CODE linq_extensions_search_name@ClientApi\Querying\Searching.cs /}
 
