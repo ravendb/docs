@@ -22,7 +22,7 @@ The available `BulkInsertOptions` are:
 
 The `BulkInsertOperation` consist of following the methods and events:
 
-* **Store** - `method` used to store the entity, with optional `id` parameter to explicitly declare the entity identifier    
+* **Store** - `method` used to store the entity, with optional `id` parameter to explicitly declare the entity identifier (will be generated automatically on client-side when overload without `id` will be used)       
 * **Report** - `event` that will be raised every time a batch has finished processing and after the whole operation      
 * **OnBeforeEntityInsert** - `event` that will be raised before entity will be processed    
 
