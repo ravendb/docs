@@ -8,3 +8,4 @@ searching.markdown	Searching
 /results-transformation	Results transformation
 lazy-operations.markdown	Lazy Operations
 intersection.markdown	Intersection
+query-and-lucene-query.markdown	Query and LuceneQuery
