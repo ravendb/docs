@@ -109,6 +109,7 @@
     <Compile Include="ClientApi\Querying\Intersection.cs" />
     <Compile Include="ClientApi\Querying\LazyOperations.cs" />
     <Compile Include="ClientApi\Querying\Polymorphism.cs" />
+    <Compile Include="ClientApi\Querying\QueryAndLuceneQuery.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\OfType.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\Product.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\ProductViewModel.cs" />
