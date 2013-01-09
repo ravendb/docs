@@ -16,7 +16,7 @@ Attachments are handled outside of the Unit of Work, and as such they are not tr
 
 As you can see, loading an attachment from RavenDB is very simple. Each attachment has its own unique key, and all it takes is passing that key to get an Attachment object. In that object you'll find five properties:
 
-* **byte[] Data** - the actual data as byte array,
+* **Func\<Stream\> Data** - the delegate that returns stream of actual data,
 * **RavenJObject Metadata** - a dictionary object with the attachment's metadata,
 * **Guid Etag** - short for entity tag, a sequential Guid that is being updated every time the stored attachment changes,
 * **int Size** - the size of the attachment,
