@@ -32,6 +32,10 @@ The most basic usage and probably most common one is to search for all points or
 
 {CODE spatial_search_3@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
 
+The method can be used also when using `LuceneQuery`.
+
+{CODE spatial_search_8@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+
 ##Advanced search
 
 The `WithinRadiusOf` method is a wrapper around `RelatesToShape` method.
@@ -45,6 +49,10 @@ where first parameter is a name of the field containing the shape to use for fil
 So to perform a radius search from the above example and use `RelatesToShape` method, we do as follows
 
 {CODE spatial_search_4@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+
+or when we want to use `LuceneQuery` then
+
+{CODE spatial_search_9@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
 
 {WARNING From RavenDB 2.0 the distance is measured in **kilometers** in contrast to the miles used in previous versions. /}
 
