@@ -89,7 +89,7 @@
     <None Include="client-api\querying\results-transformation\project-from-index-fields-into.markdown" />
     <None Include="client-api\querying\results-transformation\select-fields.markdown" />
     <None Include="client-api\querying\results-transformation\transform-results.markdown" />
-    <None Include="client-api\querying\searching.markdown" />
+    <None Include="client-api\querying\static-indexes\searching.markdown" />
     <None Include="client-api\querying\stale-indexes.markdown" />
     <None Include="client-api\querying\static-indexes\.docslist" />
     <None Include="client-api\querying\static-indexes\configuring-index-options.markdown" />

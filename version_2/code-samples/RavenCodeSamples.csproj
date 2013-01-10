@@ -135,7 +135,7 @@
     <Compile Include="ClientApi\Advanced\ClientSideListeners.cs" />
     <Compile Include="ClientApi\Querying\Paging.cs" />
     <Compile Include="ClientApi\PartialDocumentUpdates.cs" />
-    <Compile Include="ClientApi\Querying\Searching.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\Searching.cs" />
     <Compile Include="ClientApi\SetBasedOperations.cs" />
     <Compile Include="Samples\Mvc\CreateAspNetMvc4Project.cs" />
     <Compile Include="Samples\WebApi\CreateAspNetWebApiProject.cs" />

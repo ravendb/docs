@@ -4,7 +4,6 @@ stale-indexes.markdown	Stale indexes
 /static-indexes	Static indexes
 handling-document-relationships.markdown	Handling document relationships
 polymorphism.markdown	Polymorphism
-searching.markdown	Searching
 /results-transformation	Results transformation
 lazy-operations.markdown	Lazy Operations
 intersection.markdown	Intersection

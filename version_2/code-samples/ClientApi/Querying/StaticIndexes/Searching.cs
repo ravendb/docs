@@ -1,4 +1,4 @@
-﻿namespace RavenCodeSamples.ClientApi.Querying
+﻿namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 {
 	using System.Collections.Generic;
 	using System.Linq;
