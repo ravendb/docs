@@ -197,6 +197,7 @@
     <None Include="server\deployment\embedded.markdown" />
     <None Include="server\deployment\index.markdown" />
     <None Include="server\deployment\recommended-configuration.markdown" />
+    <None Include="server\administration\perf-counters.markdown" />
     <None Include="server\extending\.docslist" />
     <None Include="server\extending\index.markdown" />
     <None Include="server\extending\requestResponders\.docslist" />
