@@ -123,6 +123,7 @@
     <Compile Include="ClientApi\Querying\StaticIndexes\IndexingRelatedDocuments.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\LiveProjections.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\SpatialSearch.cs" />
+    <Compile Include="ClientApi\Querying\StaticIndexes\Suggestions.cs" />
     <Compile Include="ClientApi\Querying\UsingLinqToQueryRavenDb.cs" />
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
