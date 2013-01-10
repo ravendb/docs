@@ -50,6 +50,7 @@
     <None Include="client-api\advanced\asyncdatabasecommands\.docslist" />
     <None Include="client-api\advanced\asyncdatabasecommands\index.markdown" />
     <None Include="client-api\advanced\client-side-listeners.markdown" />
+    <None Include="client-api\advanced\bulk-inserts.markdown" />
     <None Include="client-api\advanced\custom-serialization.markdown" />
     <None Include="client-api\advanced\databasecommands\.docslist" />
     <None Include="client-api\advanced\databasecommands\batch.markdown" />
