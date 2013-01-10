@@ -16,4 +16,4 @@ Next step is to perform a query against that index.
 
 {CODE boosting_3@ClientApi\Querying\StaticIndexes\Boosting.cs /}
 
-Boosting is also available when using `Search` method. You can read more about it [here](../searching#boosting).
+Boosting is also available when using `Search` method. You can read more about it [here](searching#boosting).
