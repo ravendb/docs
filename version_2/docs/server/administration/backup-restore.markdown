@@ -41,11 +41,13 @@ The backup utility will output the progress to the console window, pinging the s
 
 Parameters are as follows:
 
-* url - Required. The RavenDB server URL. Backups will not work with Embedded databases.
+* url - Required. The URL to database that will be backuped. Server root URL (e.g. http://localhost:8080/) will point to `system` database, to point to a **specific database** please use `/databases/<database_name>` endpoint (e.g. to backup `ExampleDB` use http://localhost:8080/databases/ExampleDB).     
 * dest - Required. Backup destination. Has to be writable.
 * nowait - Optional. By default the utility will ping the server and wait until backup is done, specifying this flag will make the utility return immediately after the backup process has started.
 * readkey - Optional. Specifying this flag will make the utility wait for key press before exiting.
 * incremental - Optional. When specified, the backup process will be incremental when done to a folder where a previous backup lies. If `dest` is an empty folder, or it does not exist, a full backup will be created. For incremental backups to work, the configuration option `Raven/Esent/CircularLog` has to be set to false.
+
+{NOTE Backups are not supported for Embedded databases. /}
 
 ### Using the HTTP API
 
