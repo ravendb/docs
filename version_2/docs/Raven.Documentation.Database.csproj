@@ -166,6 +166,7 @@
     <None Include="server\administration\.docslist" />
     <None Include="server\administration\backup-restore.markdown" />
     <None Include="server\administration\configuration.markdown" />
+    <None Include="server\administration\long-shutdown-times.markdown" />
     <None Include="server\administration\export-import.markdown" />
     <None Include="server\administration\fmc_configuration.markdown" />
     <None Include="server\administration\index.markdown" />

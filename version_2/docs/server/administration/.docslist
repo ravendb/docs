@@ -4,3 +4,4 @@ export-import.markdown	Exporting and Importing data
 upgrade.markdown	Doing upgrade
 fmc_configuration.markdown	Windows Clustering
 statistics.markdown	Statistics
+long-shutdown-times.markdown	Long shutdown times
