@@ -1,5 +1,7 @@
 ﻿namespace RavenCodeSamples.ClientApi.Querying
 {
+	using System.Collections.Generic;
+	using System.Linq;
 	using Raven.Abstractions.Data;
 	using Raven.Client;
 	using Raven.Client.Indexes;
@@ -21,6 +23,19 @@
 			{
 				using (var session = store.OpenSession())
 				{
+					#region dynamic_query_1
+					var users = session.Advanced
+							 .LuceneQuery<Company>()
+							 .Where("Employees,Name:John").ToList();
+					#endregion
+
+					#region dynamic_query_2
+					var tagsBycount = session.Advanced.LuceneQuery<dynamic>()
+					                         .GroupBy(AggregationOperation.Count, "Tags,Count")
+					                         .OrderBy("Tags,Count")
+					                         .ToArray();
+					#endregion
+
 					#region immutable_query
 					var query = session.Query<User>().Where(x => x.Name.StartsWith("A"));
 

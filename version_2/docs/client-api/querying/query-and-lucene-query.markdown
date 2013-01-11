@@ -8,9 +8,42 @@ The entire LINQ API is a wrapper of `LuceneQuery` and is built on top on that.
 So when you use `Query` it always is translated to `LuceneQuery` object, which then builds a Lucene-syntax query that is sent to the server.
 However we still expose `LuceneQuery` in advanced options to allow the users to have the full power of Lucene available to them. 
 
+##LuceneQuery usage
+
+While in the most cases the usage of `Query` is enough, easier to crete and recommended to use you might want to utilize `LuceneQuery` directly.
+`LuceneQuery` is mostly designated to be used for dynamic queries and when you want a low level access.
+
+For example dynamic querying as is shown below:
+
+{CODE dynamic_query_1@ClientApi\Querying\QueryAndLuceneQuery.cs /}
+
+will cause that the following index will be created on a server:
+
+	Map:	from doc in docs.Companies
+			from docEmployeesItem in ((IEnumerable<dynamic>)doc.Employees).DefaultIfEmpty()
+			select new { Employees_Name = docEmployeesItem.Name }
+
+You can go even futher and create the dynamic query where its result is also `dynamic`:
+
+{CODE dynamic_query_2@ClientApi\Querying\QueryAndLuceneQuery.cs /}
+
+This will create the following map/reduce index on a server:
+
+	Map:	from doc in docs
+			from docTagsItem in ((IEnumerable<dynamic>)doc.Tags).DefaultIfEmpty()
+			select new { TagsCount = docTagsItem.Count, Count = 1 }
+
+	Reduce:	from result in results
+				group result by result.TagsCount
+				into g
+				select new
+				{
+					TagsCount = g.Key,
+					Count = g.Sum(x=>x.Count)
+				}
 ##Immutability
 
-The main difference between those two types of queries is that `LuceneQuery` is mutable while `Query` is immutable. It means that you might get different
+`LuceneQuery` is mutable while `Query` is immutable. It means that you might get different
 results if you try to *reuse* a query. The usage of `Query` method like in the following example:
 
 {CODE immutable_query@ClientApi\Querying\QueryAndLuceneQuery.cs /}
