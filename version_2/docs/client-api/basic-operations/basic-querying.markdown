@@ -12,13 +12,6 @@ Or, using a different syntax, to find all blog posts that have at least 10 comme
 
 That Just Works(tm) and gives us all the blog posts matching the criteria we have specified.
 
-As usual, lets have a look at the HTTP communication for the first operation:
-
-	GET /indexes/dynamic/BlogPosts?query=Category:RavenDB&start=0&pageSize=128 HTTP/1.1
-	Accept-Encoding: deflate,gzip
-	Content-Type: application/json; charset=utf-8
-	Host: 127.0.0.1:8081
-
 {NOTE Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in /}
 
 The important part to notice in this query is that we are querying the "BlogPosts" collection, for the property "Category" with the value of "RavenDB".
