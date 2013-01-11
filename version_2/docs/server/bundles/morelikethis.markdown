@@ -35,12 +35,14 @@ By passing in an object of type MoreLikeThisQuery the More Like This default can
 + **MinimumDocumentFrequency** - Ignore words which do not occur in at least this many documents. The default is 5.
 + **MinimumTermFrequency** - Ignore terms with less than this frequency in the source doc. The default is 2.
 + **MinimumWordLength** - Ignore words less than this length or if 0 then this has no effect. The default is 0.
-+ **StopWordsDocumentId** - See below.
++ **StopWordsDocumentId** - the document ID that contains the set of stop words (see below).
 
 ### Stop Words
 
-A document with a list of stop words can be stored in RavenDB. For example:
+Some of Lucene analyzers have a built-in list of common English words that are usually not useful for searching (like "a", "as", "the" etc.). Those words are called 
+*stop words* and they are considered to be uninteresting and ignored. If a used analyzer does not support stop words or you need to overload them you can specify your own.
+A document with the list of stop words can be stored in RavenDB by storing `StopWordsSetup` document:
 
 {CODE more_like_this_3@Server\Bundles\MoreLikeThis.cs /}
 
-The document id is then set in MoreLikeThisQueryParameters
+The document ID is then set in `MoreLikeThisQueryParameters`.
