@@ -66,3 +66,14 @@ The following operation do not support replication in the Client API:
 
 * PutIndex
 * DeleteIndex
+
+##Custom document ID generation
+
+The usage of replication doesn't influence the algorithm of [a document ID generation](../../../client-api/basic-operations/saving-new-document#document-ids).
+However in a Master/Master replication scenario it might be useful to add a server specific prefix to generated document identifiers. This would help to protect
+against conflicts of document IDs between the replicating servers. In order to set up the server's prefix you have to put `Raven/ServerPrefixForHilo`:
+
+{CODE client_integration_2@Server\ScalingOut\Replication\ClientIntegration.cs /}
+
+The *ServerPrefix* value will be fetch in the same request as the current *HiLo* and will also become of a part of generated document IDs. 
+For example storing a first `User` object will cause that its ID will be `Users/NorthServer/1`.
