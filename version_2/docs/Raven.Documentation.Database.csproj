@@ -43,6 +43,7 @@
     <None Include="Appendixes\.docslist" />
     <None Include="Appendixes\index.markdown" />
     <None Include="Appendixes\lucene-indexes-usage.markdown" />
+    <None Include="Appendixes\lucene-score.markdown" />
     <None Include="Appendixes\profiling-mvc-application.markdown" />
     <None Include="client-api\.docslist" />
     <None Include="client-api\advanced\.docslist" />

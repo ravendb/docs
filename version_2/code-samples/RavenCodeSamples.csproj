@@ -88,6 +88,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Appendixes\LuceneIndexesUsage.cs" />
+    <Compile Include="Appendixes\LuceneScore.cs" />
     <Compile Include="Appendixes\ProfilingMvcApplication.cs" />
     <Compile Include="ClientApi\Advanced\AsyncDatabaseCommands\Index.cs" />
     <Compile Include="ClientApi\Advanced\BulkInserts.cs" />
