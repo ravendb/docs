@@ -17,7 +17,7 @@ For example dynamic querying as is shown below:
 
 {CODE dynamic_query_1@ClientApi\Querying\QueryAndLuceneQuery.cs /}
 
-will cause that the following index will be created on a server:
+will cause that the following [dynamic index](../../http-api/indexes/dynamic-indexes) will be created on a server:
 
 	Map:	from doc in docs.Companies
 			from docEmployeesItem in ((IEnumerable<dynamic>)doc.Employees).DefaultIfEmpty()
@@ -27,7 +27,7 @@ You can go even futher and create the dynamic query where its result is also `dy
 
 {CODE dynamic_query_2@ClientApi\Querying\QueryAndLuceneQuery.cs /}
 
-This will create the following map/reduce index on a server:
+This will create the following map/reduce dynamic index on a server:
 
 	Map:	from doc in docs
 			from docTagsItem in ((IEnumerable<dynamic>)doc.Tags).DefaultIfEmpty()
