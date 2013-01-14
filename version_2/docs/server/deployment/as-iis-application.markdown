@@ -88,3 +88,9 @@ You can resolve this problem by executing the following on the command line:
 You can also see all existing registrations with the following command:
 
     ntsh http show urlacl
+
+## IISReset
+
+Another issue that is worth mentioning is a IISReset problem. By default it gives the IIS server 20 seconds to restart, 60 seconds to stop and 0s to reboot, after that period of time it aborts the thread of the application by using `Thread.Abort()` (in context of a RavenDB it means that we will have to run recovery process next time we start, so it will take even `longer`). In most cases the amount of time might be enough, but when we consider a multi-tenancy feature and possibility of a database recovery process, then the given time might not be enough.
+
+To handle the problematic IIS behavior we have redesigned the RavenDB startup process to handle `Thread.Abort()` more robustly and moved the DB initialization process to a separate, non-dependent by IIS process. More details about the issue and our solution can be found [here](http://ayende.com/blog/158817/things-we-learned-from-production-part-iindash-wake-up-or-i-kill-you-dead).
