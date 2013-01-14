@@ -70,6 +70,8 @@ or if you want to register your convention for async operations then:
 
 {NOTE Note that spectrum of identifier generation abilities is very wide, because `DatabaseCommands` object is passed into an identifier convention function and can be used for advanced calculation techniques. /}
 
+{NOTE As of version 2.0, the `dbname` is passed to the register convention methods to allow users to make `Id` generation decision per database (e.g. default document key generator - the `MultiDatabaseHiloGenerator` - is using this parameter to prevent sharing HiLo values accross the databases) /}
+
 {CODE saving_new_document_4@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 Above code will store new entity in the database with `users/jdoe` as a key and below code will store user using async operation with `users/jcarter` key:
