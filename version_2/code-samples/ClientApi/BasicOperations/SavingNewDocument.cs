@@ -11,9 +11,9 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 		public interface DocumentConvention
 		{
 			#region saving_new_document_8
-			DocumentConvention RegisterIdConvention<TEntity>(Func<IDatabaseCommands, TEntity, string> func);
+			DocumentConvention RegisterIdConvention<TEntity>(Func<string, IDatabaseCommands, TEntity, string> func);
 
-			DocumentConvention RegisterAsyncIdConvention<TEntity>(Func<IAsyncDatabaseCommands, TEntity, Task<string>> func);
+			DocumentConvention RegisterAsyncIdConvention<TEntity>(Func<string, IAsyncDatabaseCommands, TEntity, Task<string>> func);
 
 			#endregion
 		}
