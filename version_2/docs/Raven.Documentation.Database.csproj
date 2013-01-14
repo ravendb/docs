@@ -288,7 +288,7 @@
     <Content Include="server\administration\images\delete.png" />
     <Content Include="server\administration\images\tick.png" />
     <Content Include="server\authentication\images\authentication_1.png" />
-    <Content Include="server\bundles\images\authorization_docs.png" />
+    <Content Include="server\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />
     <Content Include="server\bundles\images\versioned_docs_2.png" />
     <Content Include="server\bundles\images\versioned_docs_3.png" />
