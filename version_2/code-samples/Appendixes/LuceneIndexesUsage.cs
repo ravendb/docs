@@ -11,7 +11,7 @@
 		{
 			var store = new DocumentStore();
 
-			# region using_custom_analyzers
+			#region using_custom_analyzers
 			store.DatabaseCommands.PutIndex(
 				"Movies",
 				new IndexDefinition
