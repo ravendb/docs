@@ -20,7 +20,7 @@
 					#region live_projections_2
 					documentSession.Query<Shipment, PurchaseHistoryIndex>()
 						.Where(x => x.UserId == userId)
-						.As<PurchaseHistoryViewItem>()
+						.OfType<PurchaseHistoryViewItem>()
 						.ToArray();
 
 					#endregion
