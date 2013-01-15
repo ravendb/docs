@@ -199,6 +199,8 @@
     <None Include="server\administration\perf-counters.markdown" />
     <None Include="server\extending\.docslist" />
     <None Include="server\extending\index.markdown" />
+    <None Include="server\extending\plugins\.docslist" />
+    <None Include="server\extending\plugins\index.markdown" />
     <None Include="server\extending\requestResponders\.docslist" />
     <None Include="server\extending\requestResponders\index.markdown" />
     <None Include="server\extending\triggers\.docslist" />

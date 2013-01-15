@@ -154,6 +154,7 @@
     <Compile Include="Server\Extending\Bundles\PeriodicBackups.cs" />
     <Compile Include="Server\Extending\Bundles\UniqueConstraints.cs" />
     <Compile Include="Server\Extending\Bundles\Versioning.cs" />
+    <Compile Include="Server\Extending\Plugins\Index.cs" />
     <Compile Include="Server\Extending\RequestResponders\Index.cs" />
     <Compile Include="Server\Extending\Triggers\Delete.cs" />
     <Compile Include="Server\Extending\Triggers\Indexing.cs" />
