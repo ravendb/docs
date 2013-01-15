@@ -8,7 +8,7 @@ To activate compression server-wide just add `Compression` to `Raven/ActiveBundl
 
 How to create a database with compression enabled can be found [here](). // TODO
 
-{CODE compression_1@Server\Bundles\Compression.cs /}
+{CODE compression_1@Server\Extending\Bundles\Compression.cs /}
 
 Above example demonstrates how to create new database called `CompressedDB` with `Compression` bundle enabled.
 

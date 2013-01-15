@@ -5,13 +5,13 @@ RavenDB is a great database for storing documents, and the ability to create ind
 
 Let us consider the following document:
 
-{CODE indexreplication1@Server\Bundles\IndexReplication.cs /}
+{CODE indexreplication1@Server\Extending\Bundles\IndexReplication.cs /}
 
 In a relational database, we would need at least two tables to represent this information. The Index Replication bundle is not about replicating documents to a relational database, for the simple reason that it is a highly complex problem (which requires  the use of a full ORM like [NHibernate](http://nhforge.org/) to do so).  You can't directly replicate between a document and a RDBMS table, because the format of a document simply cannot be made to work on a relational database.
 
 But RavenDB's indexes are meant to extract information from a document into a flat structure, perfect for replicating directly to a relation database table. Let us consider the following trivial index:
 
-{CODE indexreplication2@Server\Bundles\IndexReplication.cs /}
+{CODE indexreplication2@Server\Extending\Bundles\IndexReplication.cs /}
 
 It is pretty clear that we can easily replicate this index results (because it is a flat data structure) to a relational database. And that is precisely how the Index Replication bundle works. It replicate all the index updates to a table in a relational database.
 
@@ -41,7 +41,7 @@ Additional providers will likely work as well, but haven't been tested.
 
 The last step to configure the Index Replication bundle is to tell it which indexes to replicate and how to do it. We do that by creating a replication definition document, which looks like this:
 
-{CODE indexreplication3@Server\Bundles\IndexReplication.cs /}
+{CODE indexreplication3@Server\Extending\Bundles\IndexReplication.cs /}
 
 * Id is used to define to which index this document applies to, using the simple ("Raven/IndexReplication/"+ indexName) naming convention.
 * ColumnMapping is used to select which fields are replicated (the keys, of the left) and to which columns they map (the values, on the right).

@@ -22,7 +22,7 @@ Since we can trust the client calling us, we can rely on the client to tell us w
 
 From the client API perspective, we are talking about:
 
-{CODE authorization_bundle_design_1@Server\Bundles\AuthorizationBundleDesign.cs /}
+{CODE authorization_bundle_design_1@Server\Extending\Bundles\AuthorizationBundleDesign.cs /}
 
 I am not really happy with this API, but I think it would do for now. There are a couple of things to note with regards to this API:
 
