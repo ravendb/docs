@@ -2,11 +2,13 @@
 using System.ComponentModel.Composition;
 using System.IO;
 using System.Threading;
+using Lucene.Net.Documents;
 using Lucene.Net.Search;
 using Raven.Abstractions.Data;
 using Raven.Database;
 using Raven.Database.Data;
 using Raven.Database.Plugins;
+using Raven.Imports.Newtonsoft.Json.Linq;
 using Raven.Json.Linq;
 
 namespace RavenCodeSamples.Server.Extending.Plugins
@@ -361,6 +363,78 @@ namespace RavenCodeSamples.Server.Extending.Plugins
 			public DocumentDatabase Database { get; set; }
 
 			public abstract Query ProcessQuery(string indexName, Query query, IndexQuery originalQuery);
+		}
+
+		#endregion
+
+		#region plugins_2_0
+		public abstract class AbstractIndexUpdateTrigger
+		{
+			public virtual void Initialize()
+			{
+			}
+
+			public virtual void SecondStageInit()
+			{
+			}
+
+			public abstract AbstractIndexUpdateTriggerBatcher CreateBatcher(string indexName);
+
+			public DocumentDatabase Database { get; set; }
+		}
+
+		#endregion
+
+		#region plugins_2_1
+		public abstract class AbstractIndexUpdateTriggerBatcher
+		{
+			public virtual void OnIndexEntryDeleted(string entryKey)
+			{
+			}
+
+			public virtual void OnIndexEntryCreated(string entryKey, Document document)
+			{
+			}
+
+			public virtual void AnErrorOccured(Exception exception)
+			{
+			}
+		}
+
+		#endregion
+
+		#region plugins_2_2
+		public class SnapshotShoppingCartUpdateTrigger : AbstractIndexUpdateTrigger
+		{
+			public override AbstractIndexUpdateTriggerBatcher CreateBatcher(string indexName)
+			{
+				return new SnapshotShoppingCartBatcher(indexName, Database);
+			}
+		}
+
+		public class SnapshotShoppingCartBatcher : AbstractIndexUpdateTriggerBatcher
+		{
+			private readonly string indexName;
+
+			private readonly DocumentDatabase database;
+
+			public SnapshotShoppingCartBatcher(string indexName, DocumentDatabase database)
+			{
+				this.indexName = indexName;
+				this.database = database;
+			}
+
+			public override void OnIndexEntryCreated(string entryKey, Document document)
+			{
+				if (indexName != "Aggregates/ShoppingCart")
+					return;
+
+				var shoppingCart = RavenJObject.Parse(document.GetField("Aggregate").StringValue);
+				var shoppingCartId = document.GetField("Id").StringValue;
+
+				var result = database.Put("shoppingcarts/" + shoppingCartId + "/snapshots/", null, shoppingCart, new RavenJObject(), null);
+				document.Add(new Field("Snapshot", result.Key, Field.Store.YES, Field.Index.NOT_ANALYZED));
+			}
 		}
 
 		#endregion

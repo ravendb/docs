@@ -10,7 +10,8 @@ Triggers can be divided to four categories:
 * **PUT** triggers   
 * **DELETE** triggers  
 * **Read** triggers   
-* **Query** triggers   
+* **Index Query** triggers   
+* **Index Update** triggers    
 
 ###PUT triggers
 
@@ -84,7 +85,7 @@ In the example above, we only let the owner of a document to read it. You can se
 
 In this case, we detect that a document with a link was requested, and we stitch the document together with its link to create a single document.
 
-###Query triggers
+###Index Query triggers
 
 Query triggers have been introduced to extend the query parsing capabilities and provide users with a way to modify the queries before they are executed against the index. To write your own query trigger, you must inherit from `AbstractIndexQueryTrigger` class.
 
@@ -93,4 +94,36 @@ Query triggers have been introduced to extend the query parsing capabilities and
 where:   
 * **ProcessQuery** is used to perform any logic on the providen query.   
 * **Initialize** and **SecondStageInit** are used in trigger initialization process.    
+
+//TODO Examples
+
+###Index Update triggers
+
+Index Update triggers allow users to perform custom actions every time an index entry has been created or deleted. To write your own trigger we must consider two classes. The `AbstractIndexUpdateTrigger` and `AbstractIndexUpdateTriggerBatcher` defined below.
+
+{CODE plugins_2_0@Server\Extending\Plugins\Index.cs /}
+
+where:   
+* **CreateBatcher** is used to construct a batcher for given index.   
+* **Initialize** and **SecondStageInit** are used in trigger initialization process.    
+
+{CODE plugins_2_1@Server\Extending\Plugins\Index.cs /}
+
+where:   
+* **OnIndexEntryDeleted** is executed when index entry is being removed from the index. The provided key may represent an already deleted document.    
+* **OnIndexEntryCreated** is executed when specified document with given key is being inserted. The changes to the provided lucene document will be writen to the Lucene index.    
+* **AnErrorOccured** is used to notify the batcher that an error occured.   
+
+**Example: creating static snapshot from the indexed document**
+
+{CODE plugins_2_2@Server\Extending\Plugins\Index.cs /}
+
+This index works on the [following index](http://ayende.com/blog/4530/raven-event-sourcing) in order to create a static snapshot of the indexed document whenever it is indexed. Note that we use identity insert here (the key we use ends with '/') so we will have documents like this:
+
+* shoppingcarts/12/snapshots/1
+* shoppingcarts/12/snapshots/2
+* shoppingcarts/12/snapshots/3
+
+This is nice if we want to keep a record of all the changes to the index. Note that we also change the document to store the snapshot key for this particular version.    
+
 
