@@ -12,17 +12,18 @@
 			using (var documentStore = this.NewDocumentStore())
 			{
 				#region analyzers1
-				documentStore.DatabaseCommands.PutIndex("AnalyzersTestIdx", new IndexDefinitionBuilder<BlogPost, BlogPost>
-																				{
-																					Map =
-																						users =>
-																						from doc in users select new { doc.Tags, doc.Content },
-																					Analyzers =
-				                                                            			{
-				                                                            				{x => x.Tags, "SimpleAnalyzer"},
-				                                                            				{x => x.Content, "SnowballAnalyzer"}
-				                                                            			},
-																				});
+				documentStore.DatabaseCommands.PutIndex("AnalyzersTestIdx", 
+					new IndexDefinitionBuilder<BlogPost, BlogPost>
+					{
+						Map =
+							users =>
+							from doc in users select new { doc.Tags, doc.Content },
+						Analyzers =
+				            {
+				                {x => x.Tags, "SimpleAnalyzer"},
+				                {x => x.Content, "SnowballAnalyzer"}
+				            },
+					});
 
 				#endregion
 			}
