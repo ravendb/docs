@@ -6,7 +6,7 @@ For example, let us take a look at the following index:
 
 {CODE live_projections_1@ClientApi\Querying\StaticIndexes\LiveProjections.cs /}
 
-Note that when we query this index, we can query based on UserId or ProductId, but the result that we get back aren't of the same type that we query on. For that reason, we have the As<T>() extension method. We can use it to change the result type of the query:
+Note that when we query this index, we can query based on UserId or ProductId, but the result that we get back aren't of the same type that we query on. For that reason, we have the [`OfType<T>` (`As<T>`)](../results-transformation/of-type) extension method. We can use it to change the result type of the query:
 
 {CODE live_projections_2@ClientApi\Querying\StaticIndexes\LiveProjections.cs /}
 
