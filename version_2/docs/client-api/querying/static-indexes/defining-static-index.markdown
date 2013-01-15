@@ -16,7 +16,7 @@ The Reduce function is optional, and is written and executed just like the Map f
 
 {INFO To better understand the operations of the Map/Reduce functions, it is recommended that you read the Map/Reduce chapter in the Theory section. /}
 
-The third function, `TransformResults`, is of a feature called Live Projections, which is discussed later in this chapter.
+The third function, `TransformResults`, is of a feature called [Live Projections](live-projections), which is discussed later in this chapter.
 
 The remaining properties are useful for leveraging the full power of Lucene by customizing the indexes even further. We will discuss them in depth later in this chapter.
 
