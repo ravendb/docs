@@ -21,6 +21,8 @@ If you also define a reduce function (described below) then your index is going 
 The map function that is executed over the set of documents, the same like previously, filters data of documents and produces an output called *mapped results*. This one is stored internally in RavenDB 
 and it becomes an input for the reduce function. 
 
+{NOTE The map functions defined in multi map index must return identical types. /}
+
 ###Reduce
 
 The reduce function is an optional, written and executed just like the map function, but this time against the mapped results. In accordance with its name it takes the output of map functions
