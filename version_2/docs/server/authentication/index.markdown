@@ -1,8 +1,8 @@
 ﻿#Authentication & Authorization
 
 RavenDB comes with a built-in authentication functionality and it supports two types of authentication:    
-* [Windows Authentication](index/#windows-authentication)   
-* [OAuth Authentication](index/#oauth-authentication)   
+* [Windows Authentication](#windows-authentication)   
+* [OAuth Authentication](#oauth-authentication)   
 
 Appropriate authentication type is chosen by examining incoming request headers and by default all actions except read-only are being authenticated. To determine which actions will be authenticated please refer to [Raven/AnonymousAccess](../administration/configuration#authorization--authentication) configuration setting.
 
@@ -39,15 +39,11 @@ Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultApp
 
 ##OAuth Authentication
 
-Second supported authentication type is an [OAuth](http://oauth.net/) authentication. To leverage this type of authentication you need:   
-* OAuth server (RavenDB comes with a built-in server that can be accessed under `http://RavenDB-Server-Url/OAuth/AccessToken` url)   
-* OAuth certificate (certificate will be auto-generated if none is specified)    
-
-To change default OAuth server url, certificate path and password one must change configuration settings. How this can be achieved can be found [here](../administration/configuration#authorization--authentication).
+Second supported authentication type is an [OAuth](http://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
 
 ###Example - API keys
 
-API keys can be used to authenticate the user. To do it we need to create a document with `Raven/ApiKeys/key_name` as a key and `ApiKeyDefinition` as a content on `system` database.
+To authenticate the user by using API keys we need to create a document with `Raven/ApiKeys/key_name` as a key and `ApiKeyDefinition` as a content on `system` database.
 
 {CODE authentication_3@Server/Authentication/Index.cs /}
 
