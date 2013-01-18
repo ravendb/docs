@@ -23,4 +23,4 @@ In here you can edit all the permissions for the user as well as add roles to th
 After you create the database you can always edit these values in the settings section by pressing the cog wheel on the top right next to the database name:  
 ![Tasks Fig 5](Images/studio_authorization_6.PNG)  
 
-You can read more information about the Authorization Bundle [here](../../server/bundles/authorization?version=2.0)
+You can read more information about the Authorization Bundle [here](../../server/extending/bundles/authorization?version=2.0)

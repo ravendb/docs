@@ -50,22 +50,22 @@ Drop the `Raven.Bundles.UniqueContraints` assembly in the Plugins directory.
 
 To use Unique Constraint features on Client side you need to reference `Raven.Client.UniqueConstraints` assembly.
 
-{CODE using@Server\Bundles\UniqueConstraints.cs /}
+{CODE using@Server\Extending\Bundles\UniqueConstraints.cs /}
 
 When creating the DocumentStore, you'll need to register the `UniqueConstraintsStoreListener` in the store, like this:
 
-{CODE unique_constraints_1@Server\Bundles\UniqueConstraints.cs /}
+{CODE unique_constraints_1@Server\Extending\Bundles\UniqueConstraints.cs /}
 
 To define unique constraint on a property use `UniqueConstraint` attribute as shown below
 
-{CODE unique_constraints_4@Server\Bundles\UniqueConstraints.cs /}
+{CODE unique_constraints_4@Server\Extending\Bundles\UniqueConstraints.cs /}
 
 ### Extension methods
 
 To check if a value is available for use:
 
-{CODE unique_constraints_2@Server\Bundles\UniqueConstraints.cs /}
+{CODE unique_constraints_2@Server\Extending\Bundles\UniqueConstraints.cs /}
 
 To check document against the database use:
 
-{CODE unique_constraints_3@Server\Bundles\UniqueConstraints.cs /}
+{CODE unique_constraints_3@Server\Extending\Bundles\UniqueConstraints.cs /}

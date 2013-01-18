@@ -17,4 +17,4 @@ When you go to edit the "Collection" box you will get a dropdown with the names 
 After you create the database you can always edit these values in the settings section by pressing the cog wheel on the top right next to the database name:  
 ![Tasks Fig 5](Images/studio_versioning_5.PNG)  
 
-You can read more information about the Versioning Bundle [here](../../server/bundles/versioning?version=2.0)
+You can read more information about the Versioning Bundle [here](../../server/extending/bundles/versioning?version=2.0)

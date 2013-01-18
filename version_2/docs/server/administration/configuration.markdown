@@ -282,7 +282,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The password for the OAuth certificate.  
 	_Default:_ none
 
-### [Encryption](../bundles/encryption)
+### [Encryption](../extending/bundles/encryption)
 
 * **Raven/Encryption/Algorithm**   
 	[AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) value. Additionaly provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class.     
