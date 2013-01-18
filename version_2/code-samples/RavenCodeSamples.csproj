@@ -108,6 +108,7 @@
     <Compile Include="ClientApi\Advanced\DatabaseCommands\Index.cs" />
     <Compile Include="ClientApi\Advanced\DocumentMetadata.cs" />
     <Compile Include="ClientApi\Advanced\DynamicFields.cs" />
+    <Compile Include="ClientApi\Advanced\FullQuerySyntax.cs" />
     <Compile Include="ClientApi\Advanced\QueryingForTerms.cs" />
     <Compile Include="ClientApi\Advanced\TransactionSupport.cs" />
     <Compile Include="ClientApi\BasicOperations\BasicQuerying.cs" />

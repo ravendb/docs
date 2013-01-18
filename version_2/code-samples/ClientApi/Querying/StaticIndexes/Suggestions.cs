@@ -37,7 +37,7 @@
 				using (var session = store.OpenSession())
 				{
 					#region query
-					var query = session.Query<User, Users_ByName>().Where(x => x.FullName == "johne");
+					var query = session.Query<User, Users_ByFullName>().Where(x => x.FullName == "johne");
 
 					var user = query.FirstOrDefault();
 					#endregion
@@ -58,7 +58,7 @@
 
 					#region query_suggestion_with_options
 
-					session.Query<User, Users_ByName>()
+					session.Query<User, Users_ByFullName>()
 					       .Suggest(new SuggestionQuery()
 						                {
 							                Field = "FullName",
@@ -71,12 +71,33 @@
 					#endregion
 
 					#region document_store_suggestion
-					store.DatabaseCommands.Suggest("Users/ByName", new SuggestionQuery()
+					store.DatabaseCommands.Suggest("Users/ByFullName", new SuggestionQuery()
 						                                               {
 							                                               Field = "FullName",
 							                                               Term = "johne"
 						                                               });
 
+					#endregion
+
+					#region query_suggestion_over_multiple_words
+
+					SuggestionQueryResult resultsByMultipleWords = session.Query<User, Users_ByFullName>()
+						   .Suggest(new SuggestionQuery()
+						   {
+							   Field = "FullName",
+							   Term = "<<johne davi>>",
+							   Accuracy = 0.4f,
+							   MaxSuggestions = 5,
+							   Distance = StringDistanceTypes.JaroWinkler,
+							   Popularity = true,
+						   });
+
+					Console.WriteLine("Did you mean?");
+
+					foreach (var suggestion in resultsByMultipleWords.Suggestions)
+					{
+						Console.WriteLine("\t{0}", suggestion);
+					}
 					#endregion
 				}
 			}

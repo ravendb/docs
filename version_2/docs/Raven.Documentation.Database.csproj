@@ -58,6 +58,7 @@
     <None Include="client-api\advanced\databasecommands\index.markdown" />
     <None Include="client-api\advanced\document-metadata.markdown" />
     <None Include="client-api\advanced\dynamic-fields.markdown" />
+    <None Include="client-api\advanced\full-query-syntax.markdown" />
     <None Include="client-api\advanced\index-administration.markdown" />
     <None Include="client-api\advanced\index.markdown" />
     <None Include="client-api\advanced\querying-for-terms.markdown" />

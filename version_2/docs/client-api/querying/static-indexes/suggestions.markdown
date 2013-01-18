@@ -50,6 +50,24 @@ you to specify the suggesion query options:
 
 {CODE query_suggestion_with_options@ClientApi\Querying\StaticIndexes\Suggestions.cs /}
 
-The suggestion mechanism is also accessble from the document store:
+The suggestion mechanism is also accessible from the document store:
 
 {CODE document_store_suggestion@ClientApi\Querying\StaticIndexes\Suggestions.cs /}
+
+##Suggest over multiple words
+
+RavenDB allows you to perform a suggestion query over multiple words. In order to use this functionalify you have to pass the words that you are looking for
+in *Term* by using special RavenDB syntax (more details [here](../../advanced/full-query-syntax#suggestions-over-multiple-words)):
+
+{CODE query_suggestion_over_multiple_words@ClientApi\Querying\StaticIndexes\Suggestions.cs /}
+
+This will produce the results:
+
+	Did you mean?
+        john
+        jones
+        johnson
+        david
+        jack
+
+
