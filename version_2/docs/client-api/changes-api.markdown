@@ -32,6 +32,8 @@ The parameter of the `Changes` method is an optional database name that you want
 
 In order to retrieve notifications you have to subscribe server-side events by using either document or index related methods.
 
+{INFO To achieve a better experience of subsribing methods by using delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
+
 ###Document notifications
 
 You are able to subscribe changes of all documents in database. For example to get information from the server about replication conflicts use the following code:
