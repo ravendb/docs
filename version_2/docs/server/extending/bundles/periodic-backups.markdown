@@ -18,7 +18,7 @@ If you wish to setup periodic backups per database, then add `PeriodicBackups` t
 
 Bundle can also be activated during database creation process.
 
-{CODE periodic_backups_1@Server\Bundles\PeriodicBackups.cs /}
+{CODE periodic_backups_1@Server\Extending\Bundles\PeriodicBackups.cs /}
 
 ###Configuring backup destination
 
@@ -26,11 +26,11 @@ Two steps need to be taken to setup backup destination properly.
 
 First we need to add our AWS access and secret key to database settings. For example if we want to create new database with bundle already activated and keys setup, then we can execute following code:
 
-{CODE periodic_backups_2@Server\Bundles\PeriodicBackups.cs /}
+{CODE periodic_backups_2@Server\Extending\Bundles\PeriodicBackups.cs /}
 
 In next step we need to create a backup setup document under `Raven/Backup/Periodic/Setup` where we will store our backup destination configuration. This document will be created automatically when you will use Studio to setup periodic backups, but it can be created almost as easily using the API.
 
-{CODE periodic_backups_3@Server\Bundles\PeriodicBackups.cs /}
+{CODE periodic_backups_3@Server\Extending\Bundles\PeriodicBackups.cs /}
 
 `GlacierVaultName` and `S3BucketName` values **exclude** each other in favor to the `GlacierVaultName` so if you will specify both, then RavenDB will only use `GlacierVaultName`. 
 

@@ -38,7 +38,7 @@ As for the rest of the folders in the package, here's a brief description of wha
 
 * /Backup - [Standalone backup tool](../../server/administration/backup-restore), for performing backup operations using a user with admin privileges.
 
-* /Bundles - [Bundles](../../server/bundles) that extend RavenDB in various ways.
+* /Bundles - [Bundles](../../server/extending/bundles) that extend RavenDB in various ways.
 
 * /Samples - Some sample applications for Raven. Under each sample application folder there is a "Start Raven.cmd" file which will starts Raven with all the data and indexes required to run the sample successfully.
 

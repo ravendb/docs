@@ -11,17 +11,17 @@ Place the Raven.Bundles.MoreLikeThis.dll file in the server's Plugins directory,
 
 In order for More Like This to work it must have access to the text in the index, therefore, the index being queried needs to store the fields.
 
-{CODE MoreLikeThis1@Server\Bundles\MoreLikeThis.cs /}
+{CODE MoreLikeThis1@Server\Extending\Bundles\MoreLikeThis.cs /}
 
 ### Basic Usage
 
 More Like This has many defaults already set, so the simplest usage will satisfy most usage scenarios.
 
-{CODE more_like_this_1@Server\Bundles\MoreLikeThis.cs /}
+{CODE more_like_this_1@Server\Extending\Bundles\MoreLikeThis.cs /}
 
 More Like This will use all the fields defined in an index. To use only a specific field or fields, pass them in as the second parameter.
 
-{CODE more_like_this_2@Server\Bundles\MoreLikeThis.cs /}
+{CODE more_like_this_2@Server\Extending\Bundles\MoreLikeThis.cs /}
 
 ### Advanced Usage
 
@@ -43,6 +43,6 @@ Some of Lucene analyzers have a built-in list of common English words that are u
 *stop words* and they are considered to be uninteresting and ignored. If a used analyzer does not support stop words or you need to overload them you can specify your own.
 A document with the list of stop words can be stored in RavenDB by storing `StopWordsSetup` document:
 
-{CODE more_like_this_3@Server\Bundles\MoreLikeThis.cs /}
+{CODE more_like_this_3@Server\Extending\Bundles\MoreLikeThis.cs /}
 
 The document ID is then set in `MoreLikeThisQueryParameters`.

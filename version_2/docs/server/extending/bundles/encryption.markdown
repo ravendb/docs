@@ -19,7 +19,7 @@ All configuration settings can be setup server-wide by adding them to server con
 
 All settings can be overridden per database during the database creation process.
 
-{CODE encryption_1@Server\Bundles\Encryption.cs /}
+{CODE encryption_1@Server\Extending\Bundles\Encryption.cs /}
 
 Above example demonstrates how to create `EncryptedDB` with active encryption and with non-default encryption algorithm.
 

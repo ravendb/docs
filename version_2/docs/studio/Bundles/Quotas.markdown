@@ -15,4 +15,4 @@ In here you can set several parameters for the database:
 After you create the database you can always edit these values in the settings section by pressing the cog wheel on the top right next to the database name:  
 ![Tasks Fig 2](Images/studio_quotas_3.PNG)  
 
-You can read more information about the Quotas Bundle [here](../../server/bundles/quotas?version=2.0)
+You can read more information about the Quotas Bundle [here](../../server/bundles/extending/quotas?version=2.0)

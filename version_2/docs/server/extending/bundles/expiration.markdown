@@ -7,7 +7,7 @@ Simply place the Raven.Bundles.Expiration.dll in the Plugins directory.
 ##Usage
 You can set the expiration date for a document using the following code:
 
-{CODE expiration1@Server\Bundles\Expiration.cs /}
+{CODE expiration1@Server\Extending\Bundles\Expiration.cs /}
 
 As you can see, all we need to do is set the Raven-Expiration-Date property on the metadata for the appropriate date. And at the specified time, the document will automatically be deleted.
 

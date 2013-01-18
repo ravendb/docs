@@ -7,7 +7,7 @@ Simply place the Raven.Bundles.CascadeDelete.dll in the Plugins directory.
 ##Usage
 You can specify the documents and attachments to be cascade deleted using the following code:
 
-{CODE cascadedelete1@Server\Bundles\CascadeDelete.cs /}
+{CODE cascadedelete1@Server\Extending\Bundles\CascadeDelete.cs /}
 
 When the "parent" document is deleted, the documents with IDs "childId1" and "childId2" and the attachments with IDs "attachmentId1" and "attachmentId2" will be deleted as well.
 
