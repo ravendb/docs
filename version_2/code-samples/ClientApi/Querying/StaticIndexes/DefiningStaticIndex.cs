@@ -23,10 +23,14 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 			public string Name { get; set; }
 
 			/// <summary>
-			/// Gets or sets the map function
+			/// Gets or sets the map function, if there is only one
 			/// </summary>
-			/// <value>The map.</value>
 			public string Map { get; set; }
+
+			/// <summary>
+			/// All the map functions for this index
+			/// </summary>
+			public HashSet<string> Maps { get; set; }
 
 			/// <summary>
 			/// Gets or sets the reduce function
