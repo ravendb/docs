@@ -40,7 +40,7 @@ Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultApp
 ##OAuth Authentication
 
 Second supported authentication type is an [OAuth](http://oauth.net/) authentication. To leverage this type of authentication you need:   
-* OAuth server (RavenDB comes with a built-in server that can be accessed under `http://RavenDB-Server-Url/OAuth/AccessToken` url - implementation of **IAuthenticateClient** interface is needed)   
+* OAuth server (RavenDB comes with a built-in server that can be accessed under `http://RavenDB-Server-Url/OAuth/AccessToken` url)   
 * OAuth certificate (certificate will be auto-generated if none is specified)    
 
 To change default OAuth server url, certificate path and password one must change configuration settings. How this can be achieved can be found [here](../administration/configuration#authorization--authentication).
