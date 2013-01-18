@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using Raven.Abstractions.Data;
+using Raven.Client.Connection;
 using Raven.Client.Document;
 using Raven.Database;
 using Raven.Database.Server.Security.OAuth;
@@ -79,6 +80,15 @@ namespace RavenCodeSamples.Server.Authentication
 				};
 
 			#endregion
+
+			
+			using (var store = NewDocumentStore())
+			{
+				#region authentication_5
+				var json = ((ServerClient) store.DatabaseCommands).CreateRequest("GET", "/debug/user-info").ReadResponseJson();
+
+				#endregion
+			}
 		}
 	}
 }

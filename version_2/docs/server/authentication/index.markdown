@@ -50,3 +50,55 @@ To authenticate the user by using API keys we need to create a document with `Ra
 Now to perform any actions against specified database (`system` database must be declared explicitly), we need to provide the API key.
 
 {CODE authentication_4@Server/Authentication/Index.cs /}
+
+##Debugging authentication issues
+
+{NOTE This feature is available in RavenDB 2.0 build 2237 or higher. /}
+
+To grant the ability to resolve authentication issues, we have introduced `/debug/user-info` endpoint that will return information about current authenticated user and it can be accessed by executing the following code:
+
+{CODE authentication_5@Server/Authentication/Index.cs /}
+
+The returned results vary on the current authentication type:  
+ 
+* **Anonymous**      
+
+{CODE-START:json /}
+    {
+      "Remark": "Using anonymous user"
+    }
+{CODE-END /}
+
+* **Windows Authentication** with full access to all databases:    
+
+{CODE-START:json /}
+    {
+      "Remark": "Using windows auth",
+	  "User": "RavenUser",
+	  "IsAdmin": "True"
+    }
+{CODE-END /}
+
+* **Windows Authentication** with restricted access:   
+
+{CODE-START:json /}
+    {
+      "Remark": "Using windows auth",
+	  "User": "RavenUser",
+	  "IsAdmin": "False",
+	  "AdminDatabases": [],
+      "ReadOnlyDatabases": [ "ExampleReadOnlyDB" ],
+      "ReadWriteDatabases": [ "ExampleReadWriteDB" ]
+    }
+{CODE-END /}
+
+* **OAuth Authentication**:    
+
+{CODE-START:json /}
+    {
+      "Remark": "Using OAuth",
+	  "User": "RavenUser",
+	  "IsAdmin": "False",
+	  "TokenBody": "<token_here>"
+    }
+{CODE-END /}
