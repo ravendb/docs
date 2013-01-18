@@ -156,10 +156,6 @@
     <Compile Include="Server\Extending\Bundles\Versioning.cs" />
     <Compile Include="Server\Extending\Plugins\Index.cs" />
     <Compile Include="Server\Extending\RequestResponders\Index.cs" />
-    <Compile Include="Server\Extending\Triggers\Delete.cs" />
-    <Compile Include="Server\Extending\Triggers\Indexing.cs" />
-    <Compile Include="Server\Extending\Triggers\Put.cs" />
-    <Compile Include="Server\Extending\Triggers\Read.cs" />
     <Compile Include="Server\ScalingOut\Replication\ClientIntegration.cs" />
     <Compile Include="Server\ScalingOut\Replication\FromEmbeddedServer.cs" />
     <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
