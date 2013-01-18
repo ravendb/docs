@@ -10,13 +10,33 @@ An index definition is composed of an index name, Map/Reduce functions, an optio
 
 {CODE index_definition@ClientApi\Querying\StaticIndexes\DefiningStaticIndex.cs /}
 
-Every index is required to have a name and a Map function. The Map function is the way for us to tell RavenDB how to find the data we are interested in, and what fields we are going to be searching on. The Map function is written in Linq, just like you'd write a simple query
+###Map
 
-The Reduce function is optional, and is written and executed just like the Map function, but this time on the results of the Map function. This is actually a second indexing pass, which allows us to perform aggregation operations quite cheaply, directly from the index.
+Every index is required to have a name and at least one map function. The map functions are the way for us to tell RavenDB how to filter out the data we are interested in (fields we are going to be searching on). 
+They are written in Linq, just like you'd write a simple query. If you index definition contains only maps then according to their definitions, values selected from documents that belongs to the specified collection 
+will be stored inside a persistent Lucene index. The map function does not change any document values, just indicates which ones should be taken into account to index. This way we will be able to
+perform low cost queries over the stored values. 
 
-{INFO To better understand the operations of the Map/Reduce functions, it is recommended that you read the Map/Reduce chapter in the Theory section. /}
+If you also define a reduce function (described below) then your index is going to be considered as map/reduce. Then steps of the index processing are different than for a simple index (map-only).
+The map function that is executed over the set of documents, the same like previously, filters data of documents and produces an output called *mapped results*. This one is stored internally in RavenDB 
+and it becomes an input for the reduce function. 
 
-The third function, `TransformResults`, is of a feature called Live Projections, which is discussed later in this chapter.
+{NOTE The map functions defined in multi map index must return identical types. /}
+
+###Reduce
+
+The reduce function is an optional, written and executed just like the map function, but this time against the mapped results. In accordance with its name it takes the output of map functions
+and reduces the values. This is a second pass of the map/reduce index processing. The reduce function aggregates the incoming data set based on a *reduce key* (given in `group by` clause)
+and performs an actual operation over the groupped items. The values are calculated and then the actual results are stored into Lucene index. 
+
+{NOTE The reduce function must be able to process the map function output as well as its own output. This is required because reduce may be applied recursively to its own output. This means is that the output of map and reduce functions must be the same type. /}
+
+###TransformResults
+
+The third function, `TransformResults`, is a part of a feature called Live Projections. It has no effect on values that are stored into Lucene index but when it was applied then a processing of a query will take additional step on a server. 
+Before the RavenDB will send the query results to the client it will transform them according to the transform results definition. Then only the projected document values will be sent. More details about Live Projections you will find [here](live-projections).
+
+###Index options
 
 The remaining properties are useful for leveraging the full power of Lucene by customizing the indexes even further. We will discuss them in depth later in this chapter.
 
