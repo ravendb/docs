@@ -18,6 +18,7 @@
 			public FullName FullName { get; set; }
 			public IList<Tag> Tags { get; set; }
 			public DateTime DateOfBirth { get; set; }
+			public string CountryOfBirth { get; set; }
 		}
 
 		public class Tag
@@ -45,7 +46,6 @@
 						{
 							Query = "(Name:[[NULL_VALUE]] OR Name:[[EMPTY_STRING]])"
 						}, null);
-
 				#endregion
 
 				#region nested_properties
@@ -102,13 +102,50 @@
 					#endregion
 				}
 
-				
-				//using (var session = store.OpenSession())
-					//{
-					//	session.Advanced.LuceneQuery<
-					//		Product>().Where()
-					//}
-				}
+				#region suggestion_syntax
+				SuggestionQueryResult result = store.DatabaseCommands.Suggest(
+					"Users/ByFullName",
+					new SuggestionQuery()
+						{
+							Field = "FullName",
+							Term = "<<johne davi>>"
+						});
+				#endregion
+
+				#region age_exact
+				QueryResult usersByExactAge = store.DatabaseCommands.Query(
+					"Users/ByAge",
+					new IndexQuery
+					{
+						Query = "Age:20"
+					}, null);
+
+				#endregion
+
+				#region age_range
+				QueryResult usersByAgeRange = store.DatabaseCommands.Query(
+					"Users/ByAge",
+					new IndexQuery
+					{
+						Query = "Age_Range:{20 TO NULL}"
+					}, null);
+
+				#endregion
+
+				#region in_method
+				var usersByInMethod = store.DatabaseCommands.Query("Users/ByAge", new IndexQuery()
+				{
+					Query = "@in<Age>:(20, 25)"
+				}, null);
+				#endregion
+
+				#region in_method_comma
+				var usersWithComma = store.DatabaseCommands.Query("Users/ByVisitedCountries", new IndexQuery()
+				{
+					Query = "@in<VisitedCountries>:(\"Australia`,` Canada\", Israel)"
+				}, null);
+				#endregion
+			}
 		}
 	}
 }
