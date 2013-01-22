@@ -3,4 +3,4 @@
 /scaling-out	Scaling Out
 multiple-databases.markdown	Multiple Databases
 /extending	Extending RavenDB
-/authentication	Authentication & Authorization
+authentication.markdown	Authentication & Authorization
