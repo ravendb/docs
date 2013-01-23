@@ -2,7 +2,7 @@
 
 Under `Raven.Database.Plugins` namespace various interfaces and classes can be found that might be used to extend the database behavior.
 
-{NOTE All DLL's containing custom plugins must be placed in `Plugins` directory that by default are found in `~\Plugins`. To change the default location of this directory, please refer to [this](../../administration/configuration#bundles) page. /}
+{NOTE All DLL's containing custom plugins must be placed in `Plugins` directory that by default are found in `~\Plugins`. To change the default location of this directory, please refer to [this](../administration/configuration#bundles) page. /}
 
 ##Triggers
 
