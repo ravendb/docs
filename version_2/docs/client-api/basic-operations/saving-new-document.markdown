@@ -42,6 +42,8 @@ RavenDB also supports the notion of Identity, for example if you need IDs to be 
 
 You can also assign an ID manually by explicitly setting the string `Id` property of your object, but then if a document already exists in your RavenDB server under the same key it will be overwritten without any warning.
 
+{WARNING If you are going to store large number of documents with custom generated IDs, you must necessarily read the topic *Dealing with custom ID for high number of documents* presented below. /}
+
 ### Custom ID generation strategies
 
 You can also setup a custom id generation strategy by supplying a `DocumentKeyGenerator` to the document store conventions, like so:
@@ -93,3 +95,11 @@ then if we will add convention for `User`, both our types will use our custom co
 If we register two conventions, one for `User` and second for `PrivilegedUser` then they will be picked for their specific types.
 
 {CODE saving_new_document_7@ClientApi\BasicOperations\SavingNewDocument.cs /}
+
+##Dealing with custom ID for high number of documents
+
+The ways shown in this section give to you a great flexibility in creating identifiers of documents. You are able to assign to a document any `ID` as you can imagine.
+Everything is going to work correctly however you have to be aware that some kind of IDs might cause performance issues when number of documents with custom generated IDs is very high (millions of documents).
+
+The very unrecommended way is to use non-sequential data as document IDs (e.g. created by hash functions). In such case you might be experiencing the declining performance of searching for an existing document and inserting new ones.
+If your intention is to use custom identifiers and you expect that very high number of such documents might be saved in your database, then we suggest to make use of incremented IDs in order to ensure the good performance.
