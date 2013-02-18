@@ -26,8 +26,6 @@ Here's how to know which are the files you are going to need:
 
 * /Client - Lightweight RavenDB client for .NET 4.0. **This is the recommended client to use**.
 
-* /Client-3.5 - Lightweight RavenDB client for .NET 3.5.
-
 * /Silverlight - A lightweight Silverlight 4.0 client for RavenDB and its dependencies.
 
 * /EmbeddedClient - The files required to run the RavenDB client, in server or embedded mode.
