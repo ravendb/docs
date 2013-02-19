@@ -16,7 +16,7 @@ We have a bunch of NuGet packages that you can take advantage of in order to con
 
 ### Primary Packages
 
-This are the packages that you are most likely to want to add to your application.
+These are the packages that you are most likely to want to add to your application.
 
 - [RavenDB.Client](http://nuget.org/packages/RavenDB.Client)
 - [RavenDB.Embedded](http://nuget.org/packages/RavenDB.Embedded)
