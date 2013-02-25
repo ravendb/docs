@@ -52,3 +52,10 @@ Note: 3rd Party packages are not officially supported by Hibernating Rhinos. Con
 - [RavenDB.Client.ContextualListeners](http://nuget.org/packages/RavenDB.Client.ContextualListeners)
 
 Contact the [group](groups.google.com/group/ravendb) if you would like your extension listed here.
+
+## Nuget Unstable Builds
+
+Unstable builds are not published in the main NuGet gallery anymore. You can use the following NuGet feeds in order to have access to:
+
+1. RavenDB Unstable - [http://www.myget.org/F/ravendb/](http://www.myget.org/F/ravendb/)
+2. RavenDB Unstable Vnext - [http://www.myget.org/F/ravendbvnext/](http://www.myget.org/F/ravendbvnext/)
