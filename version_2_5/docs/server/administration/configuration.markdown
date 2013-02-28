@@ -161,6 +161,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Whatever http compression is enabled.   
     _Default:_ true  
 
+* **Raven/UseSsl**
+    Enable/disable SSL.   
+    _Default:_ false   
+
 * **Raven/AccessControlAllowOrigin**  
     Configures the server to send Access-Control-Allow-Origin header with the specified value. If this value isn't specified, all the access control settings are ignored.   
     _Allowed values:_ null (don't send the header), *, http://example.org,   
