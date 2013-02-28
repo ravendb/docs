@@ -12,6 +12,7 @@ namespace RavenDB.DocsCompiler.Runner
 
 			Generate(rootPath, "version_1");
 			Generate(rootPath, "version_2");
+			Generate(rootPath, "version_2_5");
 		}
 
 		private static void Generate(string rootPath, string version)
