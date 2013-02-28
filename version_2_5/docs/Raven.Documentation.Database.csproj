@@ -175,6 +175,7 @@
     <None Include="server\administration\statistics.markdown" />
     <None Include="server\administration\upgrade.markdown" />
     <None Include="server\authentication.markdown" />
+    <None Include="server\deployment\enabling-ssl.markdown" />
     <None Include="server\extending\bundles\.docslist" />
     <None Include="server\extending\bundles\authorization-bundle-design.markdown" />
     <None Include="server\extending\bundles\authorization.markdown" />
