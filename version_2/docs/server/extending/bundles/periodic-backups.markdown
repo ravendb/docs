@@ -36,3 +36,8 @@ In next step we need to create a backup setup document under `Raven/Backup/Perio
 
 {NOTE More information about Amazon Simple Storage Service (Amazon S3) can be found [here](http://aws.amazon.com/s3/) and if you are interested in Amazon Glacier then visit [this](http://aws.amazon.com/glacier/) page. /}
 
+###Restore from a periodic backup
+The periodic backup is not a full backup really. It is, instead, an incremental export.
+To restore a database from a periodic backup you must user Raven.Smuggler.exe using the following syntax:
+
+raven.smuggler.exe in http://localhost:8080 c:\path-to-folder --database=foo --incremental
