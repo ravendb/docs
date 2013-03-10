@@ -28,3 +28,20 @@ The following non-standard syntax is supported as well:
 * For a files list - will output a list of links to all child documents:
 
 	{FILES-LIST /}
+
+Generating PDF Version of Documentation
+
+Windows pre-requisites:
+- install pandoc @ http://johnmacfarlane.net/pandoc/installing.html
+-- I installed 1.11b
+-- (on my dev box this installed to C:\Users\<USERNAME>\AppData\Local\Pandoc\pandoc.exe)
+
+- install MikTex @ http://miktex.org/download
+-- I installed 2.9.4813
+
+1. Open Powershell into current folder
+2. Run generatePDF.ps1.  This will generate RavenDB-2.5.pdf
+
+(Special thanks to Karl Seguin for providing valuable information on generating PDFs from markdown files)
+
+Coming soon - epub and mobi
