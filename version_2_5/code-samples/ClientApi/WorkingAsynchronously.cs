@@ -2,6 +2,7 @@
 {
 	using Raven.Client;
 	using Raven.Client.Linq;
+	using Raven.Client.Extensions;
 
 	public class WorkingAsynchronously : CodeSampleBase
 	{
