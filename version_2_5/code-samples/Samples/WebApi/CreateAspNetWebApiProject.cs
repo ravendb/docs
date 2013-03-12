@@ -1,4 +1,6 @@
-﻿namespace RavenCodeSamples.Samples.WebApi
+﻿using Raven.Client.Extensions;
+
+namespace RavenCodeSamples.Samples.WebApi
 {
 	namespace Foo
 	{
