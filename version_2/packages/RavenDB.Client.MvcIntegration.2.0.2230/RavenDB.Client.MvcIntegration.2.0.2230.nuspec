@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>RavenDB.Client.MvcIntegration</id>
+    <version>2.0.2230</version>
+    <title>RavenDB Client MvcIntegration</title>
+    <authors>Hibernating Rhinos</authors>
+    <owners>Hibernating Rhinos</owners>
+    <licenseUrl>http://www.ravendb.net/licensing</licenseUrl>
+    <projectUrl>http://www.ravendb.net/</projectUrl>
+    <iconUrl>http://static.ravendb.net/logo-for-nuget.png</iconUrl>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <description>RavenDB Client MvcIntegration let you include a visual profiler in your ASP.NET MVC application which will show you all the opened sessions and the time took to complete each database request. This can help you when developing with RavenDB.</description>
+    <summary>A visual profiler for RavenDB that you can use in your ASP.NET MVC application.</summary>
+    <language>en-US</language>
+    <tags>nosql ravendb raven document database client mvc</tags>
+    <dependencies>
+      <dependency id="RavenDB.Client" version="[2.0.2230]" />
+    </dependencies>
+    <references>
+      <reference file="Raven.Client.MvcIntegration.dll" />
+    </references>
+  </metadata>
+</package>

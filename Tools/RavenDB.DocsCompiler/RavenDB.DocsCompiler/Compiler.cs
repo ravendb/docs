@@ -25,7 +25,7 @@ namespace RavenDB.DocsCompiler
 			_fullPath = fullPath;
 		}
 
-		public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle)
+		public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle, string versionUrl)
 		{
 			if (output == null)
 				throw new ArgumentNullException("output");
@@ -36,12 +36,12 @@ namespace RavenDB.DocsCompiler
 			               		CodeSamplesPath = Path.Combine(fullPath, "code-samples")
 			               	};
 
-			compiler.CompileFolder(compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty });
+			compiler.CompileFolder(compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty }, versionUrl);
 
 			compiler.Output.GenerateToc(compiler.RootFolder);
 		}
 
-		private void CompileFolder(Folder folder)
+		private void CompileFolder(Folder folder, string versionUrl)
 		{
 			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
 			var fullPath = Path.Combine(_fullPath, fullFolderSlug);
@@ -60,7 +60,7 @@ namespace RavenDB.DocsCompiler
 				if (document != null)
 				{
 					var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
-					document.Content = DocumentationParser.Parse(this, null, Path.Combine(fullPath, document.Slug), document.Trail);
+					document.Content = DocumentationParser.Parse(this, null, Path.Combine(fullPath, document.Slug), document.Trail, versionUrl);
 					document.Slug = strippedSlug;
 					Output.SaveDocItem(document);
 					continue;
@@ -69,14 +69,14 @@ namespace RavenDB.DocsCompiler
 				var subFolder = item as Folder;
 				if (subFolder != null)
 				{
-					CompileFolder(subFolder);
+					CompileFolder(subFolder, versionUrl);
 					continue;
 				}
 			}
 
 			var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"),
-			                                         string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug
-													 );
+			                                         string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
+													 versionUrl);
 			Output.SaveDocItem(new Document
 			{
 				Title = folder.Title,
