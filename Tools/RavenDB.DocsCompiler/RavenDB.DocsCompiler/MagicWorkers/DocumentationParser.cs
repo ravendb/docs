@@ -17,7 +17,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		static readonly Regex FilesListFinder = new Regex(@"{FILES-LIST(-RECURSIVE)?\s*/}", RegexOptions.Compiled);
 		static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-		public static string Parse(Compiler docsCompiler, Folder folder, string fullPath, string trail)
+		public static string Parse(Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl)
 		{
 			if (!File.Exists(fullPath))
 				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
@@ -31,7 +31,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 				contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));
 			}
 
-			contents = contents.ResolveMarkdown(docsCompiler.Output, !string.IsNullOrWhiteSpace(docsCompiler.Output.RootUrl) ? trail : string.Empty);
+			contents = contents.ResolveMarkdown(docsCompiler.Output, !string.IsNullOrWhiteSpace(docsCompiler.Output.RootUrl) ? trail : string.Empty, versionUrl);
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
 			return contents;
@@ -117,7 +117,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return File.ReadAllText(codePath);
 		}
 
-		public static string ResolveMarkdown(this string content, IDocsOutput output, string trail)
+		public static string ResolveMarkdown(this string content, IDocsOutput output, string trail, string versionUrl)
 		{
 			// http://www.toptensoftware.com/markdowndeep/api
 			var md = new Markdown
@@ -132,7 +132,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
 			if (!string.IsNullOrWhiteSpace(output.RootUrl))
 			{
-				md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail);
+				md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, versionUrl);
 			}
 
 			md.PrepareImage = (tag, titledImage) => PrepareImage(output.ImagesPath, tag);
@@ -140,7 +140,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return md.Transform(content);
 		}
 
-		private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail)
+		private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail, string versionUrl)
 		{
 			string href;
 			if (!tag.attributes.TryGetValue("href", out href))
@@ -148,6 +148,16 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
 			if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
 				return true;
+
+			var hashIndex = href.IndexOf("#", StringComparison.InvariantCultureIgnoreCase);
+			if (hashIndex != -1)
+			{
+				href = href.Insert(hashIndex, "?version=" + versionUrl);
+			}
+			else
+			{
+				href += "?version=" + versionUrl;
+			}
 
 			Uri uri;
 			if (!string.IsNullOrWhiteSpace(trail)) trail += "/"; // make sure we don't lose the current slug
