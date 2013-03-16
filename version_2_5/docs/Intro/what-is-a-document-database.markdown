@@ -20,11 +20,11 @@ For example, here is a sample document stored encoded in JSON (the format used i
 	    		Reason: "Oil Change"
 	    	},
 	    	{
-    			Date: "2012-07-11T13:53:23.0492000",
-				Mileage: 23718,
-				Reason: "Broken Fender"
-			}
-	    ]
+                Date: "2012-07-11T13:53:23.0492000",
+                Mileage: 23718,
+                Reason: "Broken Fender"
+            }
+        ]
     }
     {CODE-END}
 
