@@ -156,6 +156,7 @@
     <None Include="Intro\system-requirements.markdown" />
     <None Include="Intro\what-is-a-document-database.markdown" />
     <None Include="Intro\what-is-nosql.markdown" />
+    <None Include="Intro\what-is-new.markdown" />
     <None Include="RavenLight\.docslist" />
     <None Include="RavenLight\index.markdown" />
     <None Include="samples\.docslist" />
