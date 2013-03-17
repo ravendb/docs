@@ -1,8 +1,8 @@
 ﻿#Profiling ASP.NET MVC application using RavenProfiler
 
-To setup profiling in RavenDB using `RavenProfiler` you must follow few simple steps defined below:   
-1\.	Add `Raven.Client.MvcIntegration` assembly to MVC project. Alternative way is to install NuGet package that can be found [here](http://nuget.org/packages/RavenDB.Client.MvcIntegration).   
-2\.	Next step is to initialize profiler on our document store. This can be achieved by adding following code in `Global.asax.cs` file.   
+To set up profiling in RavenDB using the `RavenProfiler` you must follow a few simple steps which are defined below:   
+1\.	First, add `Raven.Client.MvcIntegration` assembly to MVC project. An alternative way is to install NuGet package that can be found [here](http://nuget.org/packages/RavenDB.Client.MvcIntegration).   
+2\.	The next step is to initialize the profiler on your document store. This can be achieved by adding the following code in `Global.asax.cs` file.   
 
 {CODE profiling_mvc_application_1@Appendixes\ProfilingMvcApplication.cs /}
 
@@ -12,11 +12,11 @@ To setup profiling in RavenDB using `RavenProfiler` you must follow few simple s
 
 ##Viewing profiling results
 
-To demonstrate profiler capabilities, lets create simple ASP.NET MVC 4 application and setup profiling in it.
+To demonstrate the capabilities of the profiler, let's create a simple ASP.NET MVC 4 application and set up profiling in it.
 
-1\.	How to setup ASP.NET MVC 4 application to use RavenDB can be found [here](../samples/mvc/createaspnetmvc4project?version=2.0).   
-2\.	Setup profiling using steps from section above.   
-3\.	Add following code to `HomeController`:   
+1\.	Instructions on how to set up ASP.NET MVC 4 application to use RavenDB can be found [here](../samples/mvc/createaspnetmvc4project?version=2.0).   
+2\.	Set up profiling using the steps from the section above.   
+3\.	Add the following code to `HomeController`:   
 
 {CODE profiling_mvc_application_5@Appendixes\ProfilingMvcApplication.cs /}
 
