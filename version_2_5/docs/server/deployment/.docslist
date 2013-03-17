@@ -4,4 +4,4 @@ embedded.markdown	Embedded
 recommended-configuration.markdown	Recommended configuration
 docs-deploy-debug.markdown	Running in Debug mode
 docs-debug-logging.markdown	Debug Logging
-enabling-ssl.markdown	Enabling SSL
+enabling-ssl.markdown	Enabling SSL (new in 2.5)
