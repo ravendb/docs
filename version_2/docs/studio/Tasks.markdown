@@ -27,7 +27,7 @@ You can see the current state of the indexing in here as well:
 You can create a sample data for your database here, this option will only work for an empty database 
 
 ## CSV Import
-Select a CSV file and import it to this database
+Select a CSV file and import it to this database. CSV files containing unicode characters should be encoded in UTF-8.
 
 ## Restore Database (will only appear in the system database) 
 In order to restore from a previous backup you need to enter the backup location, an optional location for the database and a name for the database.  
