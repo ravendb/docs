@@ -8,18 +8,18 @@ For example, here is a sample document stored encoded in JSON (the format used i
 
     {CODE-START: json}
     {
-		Id: "Cars-29"
-	    Manufacturer: "Ford",
-	    Model: "S-Max",
-	    Year: 2011,
-	    Mileage: 43532,
-	    ServiceHistory: [
-	    	{ 
-	    		Date: "2013-02-11T17:09:38.0830000",
-	    		Mileage: 39283,
-	    		Reason: "Oil Change"
-	    	},
-	    	{
+        Id: "Cars-29"
+        Manufacturer: "Ford",
+        Model: "S-Max",
+        Year: 2011,
+        Mileage: 43532,
+        ServiceHistory: [
+            { 
+                Date: "2013-02-11T17:09:38.0830000",
+                Mileage: 39283,
+                Reason: "Oil Change"
+            },
+            {
                 Date: "2012-07-11T13:53:23.0492000",
                 Mileage: 23718,
                 Reason: "Broken Fender"
@@ -32,12 +32,12 @@ The above document could co-exist in the same database as the following document
 
     {CODE-START: json}
     {
-		Id: "Person-2"
-	    FirstName: "John",
-		LastName: "Smith",
-		Age: 38,
-		Occupation: "SoftwareDeveloper"
-		CompanyId: "Companies-84"
+        Id: "Users-2"
+        FirstName: "John",
+        LastName: "Smith",
+        Age: 38,
+        Occupation: "SoftwareDeveloper"
+        CompanyId: "Companies-84"
     }
     {CODE-END}
 
