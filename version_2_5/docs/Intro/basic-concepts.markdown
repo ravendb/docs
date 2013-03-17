@@ -15,7 +15,7 @@ The RESTful API makes RavenDB accessible from other platforms like AJAX queries 
 
 #### Launching a server instance
 
-The RavenDB server instance can be instantiated in several ways:
+A RavenDB server instance can be instantiated in several ways:
 
 * Running the Raven.Server.exe console application (located under `/Server/` in the build package).
 
@@ -29,9 +29,9 @@ The various deployment options are discussed in more details in the [Server side
 
 To jump-start your learning process, it is sufficient that you 
 
-1. download the [latest stable build](http://ravendb.net/downloads)
-2. unzip it to a folder
-3. run Server\\Raven.Server.exe
+1. Download the [latest stable build](http://ravendb.net/downloads)
+2. Unzip it to a folder
+3. Run \\Server\\Raven.Server.exe
 
 You should see a screen like this:
 
@@ -39,9 +39,9 @@ You should see a screen like this:
 
 Notice that a port for the server to listen on has already been automatically selected for you, and a data directory has been created and is ready to store your data. This is RavenDB in debug mode.
 
-For production usage, you'll generally run it in IIS or as a Windows Service.
-
 As long as this window stays open, the RavenDB server is running. Pressing Enter will terminate the server - new requests will no longer be processed, but all data will be persisted in the data directory.
+
+For production usage, you'll generally run it in IIS or as a Windows Service. You can install the service by going to the \\Server folder and running the following command: `Raven.Server.exe /Start`. For more information, see the ReadMe file in the //Server folder.
 
 ### Storage types
 
@@ -62,23 +62,23 @@ A single data entity in RavenDB is called a _Document_ and all Documents are per
 
 The JSON format was selected because:
 
-* it can store hierarchies
-* it is human readable
-* it is as minimalistic as it gets.
+* It can store hierarchies
+* It is human readable
+* It is as minimalistic as it gets
 
-Every document has metadata attached to it.  By default it only contains data that is used internally by RavenDB (for example - the `Raven-Entity-Name` attribute which stores the entity type for the document).
+Every document has MetaData attached to it.  By default, this MetaData only contains data that is used internally by RavenDB (for example - the `Raven-Entity-Name` attribute which stores the entity type for the document).
 
 A _Collection_ is a set of Documents sharing the same RavenDB entity type. It is not a "database table", but rather a logical way of thinking of document groups. A Collection is an entirely virtual construct that has no physical meaning to the database.
 
 With RavenDB, each document has its own unique global ID, in the sense that if one was trying to store two different entities under the same id (`users/1` for example) - the second write will overwrite the first one without any warning.
 
-The convention in RavenDB is to have a document ID that is a combination of the collection name and the entity's unique id within the collection, i.e. `users/1`. However, that is only a convention: document IDs are independent of the entity type, and therefore don't have to contain the name of the collection they are assigned to.
+The convention in RavenDB is to have a document ID that is a combination of the collection name and the entity's unique id within the collection, i.e. `users/1`. This convention is enforced by default within RavenDb by pluralizing the name of the object class being saved, and adding an auto-incremented number to it. However, this document ID convention is not mandatory: document IDs are independent of the entity type, and therefore don't have to contain the name of the collection they are assigned to.
 
 ### The RavenDB Management Studio
 
 Every RavenDB server instance is manageable via a remotely accessible Silverlight application - The RavenDB Management Studio.
 
-It can be accessed by pointing your favorite browser to the address (and port) the server is listening on.
+It can be accessed by pointing your favorite browser to the address (and port) the server is listening on (this is :8080 by default).
 
 [Here](..\studio) is where we discuss the Studio and how to use it in depth.
 
