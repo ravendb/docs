@@ -16,6 +16,8 @@ This command will export all indexes, documents and attachments from the local R
 
 The dump file will also include documents that were added during the export process, so you can make changes while the export is executing.
 
+From `RavenDB 2.5` the Smuggler is using document streaming to speed up the process. To maintain backward compatibility, the Smuggler will detect from what version it exports the documents and adjust behavior accordingly.
+
 ## Importing
 
     Raven.Smuggler in http://localhost:8080 dump.raven
@@ -25,6 +27,8 @@ This command will import all the indexes, documents and attachments from the fil
 {NOTE This will _overwrite_ any existing document on the local instance. /}
 
 You can continue using that RavenDB instance while data is being imported to it.
+
+To speed up the process, the `Raven.Smuggler.exe` is using [bulk inserts](../../client-api/advanced/bulk-inserts) and `The Studio` is using batching.
 
 ##Incremental Export and Import
 With the incremental export operation we can use in order to backup the database incrementally, on each export, we will only take the export the documents create or updated
@@ -65,7 +69,7 @@ You can tweak the export/import process with the following parameters:
  - api-key: The API-key to use, when using OAuth.
  - incremental: States usage of incremental operations.
  - wait-for-indexing: Wait until all indexing activity has been completed (import only).
- - excludeexpired: Excludes expired documents created by the expiration bundle.    
+ - excludeexpired: Excludes expired documents created by the [expiration bundle](../extending/bundles/expiration).    
  - help: You can use the help option in order to print the built-in options documentation.
 
 ##Transforms
@@ -119,4 +123,4 @@ Usage example:
 
 {CODE smuggler-api@Server\Administration\ExportImport.cs /}
 
-In the above code we exporting all of the data on the server, which is the documents, indexes and attachments, and than importing just the documents and the indexes. In this example the import would overwrite the existing documents, so if you want to import to another database you'll need to create another instance of the SmugllerApi with a different connection string options.
+In the above code we exporting all of the data on the server, which is the documents, indexes, attachments and transformers, and than importing just the documents and the indexes. In this example the import would overwrite the existing documents, so if you want to import to another database you'll need to create another instance of the SmugllerApi with a different connection string options.
