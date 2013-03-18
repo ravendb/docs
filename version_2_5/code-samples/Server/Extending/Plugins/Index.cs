@@ -719,7 +719,6 @@ namespace RavenCodeSamples.Server.Extending.Plugins
 			public void AlterConfiguration(InMemoryRavenConfiguration configuration)
 			{
 				configuration.HttpCompression = false;
-				configuration.TempIndexCleanupPeriod = TimeSpan.FromMinutes(30);
 			}
 		}
 

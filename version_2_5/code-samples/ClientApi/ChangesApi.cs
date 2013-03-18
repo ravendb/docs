@@ -18,14 +18,8 @@
 
 				#region subscribe_documents_replication_conflict
 				store.Changes()
-					.ForAllDocuments()
-					 .Subscribe(change =>
-					 {
-						 if (change.Type == DocumentChangeTypes.ReplicationConflict)
-						 {
-							 Console.WriteLine("Replication conflict has occurred. Document id: " + change.Id);
-						 }
-					 });
+					.ForAllReplicationConflicts()
+					.Subscribe(conflict => Console.WriteLine("Replication conflict has occurred. Document id: " + conflict.Id));
 				#endregion
 
 				#region subscribe_documents_starting_with
