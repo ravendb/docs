@@ -22,7 +22,7 @@
 			};
 
 			var smugglerApi = new SmugglerApi(smugglerOptions, connectionStringOptions);
-			smugglerApi.ExportData(new SmugglerOptions { BackupPath = "dump.raven", OperateOnTypes = ItemType.Documents | ItemType.Indexes | ItemType.Attachments });
+			smugglerApi.ExportData(null, new SmugglerOptions { BackupPath = "dump.raven", OperateOnTypes = ItemType.Documents | ItemType.Indexes | ItemType.Attachments }, incremental: false);
 			smugglerApi.ImportData(new SmugglerOptions { BackupPath = "dump.raven", OperateOnTypes = ItemType.Documents | ItemType.Indexes });
 
 			#endregion
