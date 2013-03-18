@@ -49,9 +49,13 @@ In order to import date that was exported with incremental operation, you can us
 
 You can tweak the export/import process with the following parameters:
 
- - operate-on-types: Specify the types to export/import. Usage example: `--operate-on-types=Indexes,Documents,Attachments`.
+ - operate-on-types: Specify the types to export/import. Usage example: `--operate-on-types=Indexes,Documents,Attachments,Transformers`.
  - filter: Filter documents by a document property. Usage example: `--filter=Property-Name=Value`.
+ - negative-filter: Filter documents NOT matching a document property. Usage example: `--negative-filter=Property-Name=Value`.   
  - metadata-filter: Filter documents by a metadata property. Usage example: `--metadata-filter=Raven-Entity-Name=Posts`.
+ - negative-metadata-filter: Filter documents NOT matching a metadata property. Usage example: `--negative-metadata-filter=Raven-Entity-Name=Posts`.
+ - transform: Transform documents using a given script (import only).   
+ - transform-file: Transform documents using a given script file (import only).   
  - timeout: The timeout (in milliseconds) to use for requests.
  - batch-size: The batch size for requests.
  - database: The database to operate on. If no specified, the operations will be on the default database.
@@ -61,7 +65,51 @@ You can tweak the export/import process with the following parameters:
  - api-key: The API-key to use, when using OAuth.
  - incremental: States usage of incremental operations.
  - wait-for-indexing: Wait until all indexing activity has been completed (import only).
+ - excludeexpired: Excludes expired documents created by the expiration bundle.    
  - help: You can use the help option in order to print the built-in options documentation.
+
+##Transforms
+
+Transforms can be used to modify or filter out documents. The scripts must use JavaScript syntax and be in following format:   
+
+{CODE-START:json /}
+    
+	function(doc) {
+		// custom code here
+	}
+
+{CODE-END /}
+
+where `doc` will contain our document with it's metadata under `@metadata` property.
+
+1. Change scripts:   
+
+E.g. To change document property `Name` value to the new one, the following script can be used:   
+
+{CODE-START:json /}
+    
+	function(doc) {
+		doc['Name'] = 'NewValue';
+		return doc;
+	}
+
+{CODE-END /}
+
+2. Filter scripts:    
+
+If we return `null` then the document will be filtered out.   
+
+{CODE-START:json /}
+    
+	function(doc) {
+		var id = doc['@metadata']['@id']; 
+		if(id === 'orders/999')
+			return null;
+
+		return doc;
+	}
+
+{CODE-END /}
 
 ## SmugglerApi
 
