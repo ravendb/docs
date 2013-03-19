@@ -47,10 +47,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RavenDB.Database.2.5.2530-Unstable\lib\net40\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Bundles.IndexReplication, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\RavenDB.Bundles.IndexReplication.2.5.2530-Unstable\lib\net40\Raven.Bundles.IndexReplication.dll</HintPath>
-    </Reference>
     <Reference Include="Raven.Client.Authorization, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\RavenDB.Client.Authorization.2.5.2530-Unstable\lib\net40\Raven.Client.Authorization.dll</HintPath>
@@ -168,7 +164,6 @@
     <Compile Include="Server\Extending\Bundles\Encryption.cs" />
     <Compile Include="Server\Extending\Bundles\Expiration.cs" />
     <Compile Include="Server\Extending\Bundles\IndexedProperties.cs" />
-    <Compile Include="Server\Extending\Bundles\IndexReplication.cs" />
     <Compile Include="Server\Extending\Bundles\MoreLikeThis.cs" />
     <Compile Include="Server\Extending\Bundles\PeriodicBackups.cs" />
     <Compile Include="Server\Extending\Bundles\SqlReplication.cs" />

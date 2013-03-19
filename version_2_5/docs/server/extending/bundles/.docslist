@@ -6,7 +6,6 @@ authorization.markdown	Authorization Bundle
 authorization-bundle-design.markdown	Authorization Bundle Design Notes
 cascade-delete.markdown	Cascade Delete Bundle
 expiration.markdown	Expiration Bundle
-index-replication.markdown	Index Replication Bundle
 encryption.markdown	Encryption Bundle
 compression.markdown	Compression Bundle
 periodic-backups.markdown	Periodic Backups
