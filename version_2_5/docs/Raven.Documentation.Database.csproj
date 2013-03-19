@@ -185,7 +185,6 @@
     <None Include="server\extending\bundles\sql-replication.markdown" />
     <None Include="server\extending\bundles\encryption.markdown" />
     <None Include="server\extending\bundles\expiration.markdown" />
-    <None Include="server\extending\bundles\index-replication.markdown" />
     <None Include="server\extending\bundles\index.markdown" />
     <None Include="server\extending\bundles\morelikethis.markdown" />
     <None Include="server\extending\bundles\periodic-backups.markdown" />
