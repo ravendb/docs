@@ -16,7 +16,7 @@ where:
 *	**lat/lng** are latitude/longitude coordinates   
 *	**shapeWKT** is a shape in [WKT](http://en.wikipedia.org/wiki/Well-known_text) format    
 *	**strategy** is a spatial search strategy (default: `GeohashPrefixTree`)
-*	**maxTreeLevel** is a integer that indicates the maximum number of levels to be used in `PrefixTree` and controls the precision of shape representation (**9** for `GeohashPrefixTree` and **25** for `QuadPrefixTree`)      
+*	**maxTreeLevel** is a integer that indicates the maximum number of levels to be used in `PrefixTree` and controls the precision of shape representation (**9** for `GeohashPrefixTree` and **23** for `QuadPrefixTree`)      
 
 In our example we will use `Event` class and very simple index defined below.
 
@@ -44,7 +44,7 @@ More information about QuadTree can be found [here](http://en.wikipedia.org/wiki
 
 ###Precision
 
-By default the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to **9** and for QuadPrefixTree the value is **25**, which means that the coordinates are represented by a 9 or 25 character string. The difference exists, because the `QuadTree` representation would be much less precise if the level would be the same.
+By default the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to **9** and for QuadPrefixTree the value is **23**, which means that the coordinates are represented by a 9 or 23 character string. The difference exists, because the `QuadTree` representation would be much less precise if the level would be the same.
 
 1. Geohash precision values (from [http://unterbahn.com](http://unterbahn.com/2009/11/metric-dimensions-of-geohash-partitions-at-the-equator/)).
 
@@ -72,9 +72,9 @@ By default the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to 
 | 28 | ~15cm |
 | 27 | ~30cm |
 | 26 | ~60cm |
-| **25** | **~1.19m** |
+| 25 | ~1.19m |
 | 24 | ~2.39m |
-| 23 | ~4.78m |
+| **23** | **~4.78m** |
 | 22 | ~9.56m |
 | 21 | ~19.11m |
 | 20 | ~38.23m |
