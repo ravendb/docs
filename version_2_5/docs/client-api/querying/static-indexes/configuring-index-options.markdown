@@ -79,3 +79,17 @@ By default, tokens are saved to the index as Indexed and Analyzed but not Stored
 The default values for each field are `FieldStorage.No` in Stores and `FieldIndexing.Default` in Indexes.
 
 Setting `FieldIndexing.No` causes values to not be available in where clauses when querying (similarly to not being present in the original projection). `FieldIndexing.NotAnalyzed` causes whole properties to be treated as a single token and matches must be exact, similarly to using a KeywordAnalyzer on this field. The latter is useful for product Ids, for example. `FieldIndexing.Analyzed` allows to perform full text search operations against the field. `FieldIndexing.Default` will index the field as a single term, in lower case.
+
+##Term Vectors
+
+[Term Vector](http://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval and indexing. In RavenDB the features like [MoreLikeThis](../../../server/extending/bundles/morelikethis) or [text highlighting](searching#highlights) are leveraging the term vectors to acomplish their purposes.
+
+To create an index and enable Term Vectors on a specific field we can create index using `AbstractIndexCreationTask` and specify term vectors there or define our term vectors in `IndexDefinition` (directly or using `IndexDefinitionBuilder`).
+
+{CODE configuring_index_options_1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+
+{CODE configuring_index_options_2@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+
+The available Term Vector options are:
+
+{CODE configuring_index_options_3@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
