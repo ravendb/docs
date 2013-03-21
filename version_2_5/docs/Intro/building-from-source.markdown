@@ -1,4 +1,5 @@
-﻿# Building RavenDB from source
+﻿
+## Building RavenDB from source
 
 RavenDB requires .NET 4.0 SDK installed to build. You should be able to just open RavenDB in Visual Studio 2010 and start working with it immediately.
 

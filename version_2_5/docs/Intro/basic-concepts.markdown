@@ -43,7 +43,7 @@ For production usage, you'll generally run it in IIS or as a Windows Service.
 
 As long as this window stays open, the RavenDB server is running. Pressing Enter will terminate the server - new requests will no longer be processed, but all data will be persisted in the data directory.
 
-### Storage types
+#### Storage types
 
 RavenDB currently supports 2 types of storage engines, both of which are completely transactional and fail safe:
 
