@@ -63,7 +63,7 @@ After you have a RavenDB server instance up and running, it is easy to connect t
 
 As you may have noticed, RavenDB uses the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will be persisted in the database in a single transaction.
 
-## RavenDB Development cycle
+### RavenDB Development cycle
 
 There are two flavors of RavenDB available - the stable build, which is production ready, and the unstable build. Since we at Hibernating Rhinos make a public build out of every push, the unstable build is **not** recommended for production, although it is thoroughly tested before being made available.
 
