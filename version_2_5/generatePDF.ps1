@@ -11,6 +11,11 @@ pandoc --latex-engine xelatex --template pdf-template.tex `
 	docs\intro\system-requirements.markdown `
 	docs\intro\building-from-source.markdown `
 	docs\intro\what-is-new.markdown `
+	docs\theory\index.markdown `
+	docs\theory\what-is-raven.markdown `
+	docs\theory\document-key-generation.markdown `
+	docs\theory\document-structure-design.markdown `
+	docs\theory\ravendb-collections.markdown `
 	-o RavenDB-2.5.pdf
 
 ## TODO: Table of Contents
