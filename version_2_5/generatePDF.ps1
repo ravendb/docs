@@ -16,6 +16,19 @@ pandoc --latex-engine xelatex --template pdf-template.tex `
 	docs\theory\document-key-generation.markdown `
 	docs\theory\document-structure-design.markdown `
 	docs\theory\ravendb-collections.markdown `
+	docs\client-api\index.markdown `
+	docs\client-api\connecting-to-a-ravendb-datastore.markdown `
+	docs\client-api\basic-operations\understanding-session-object.markdown `
+	docs\client-api\basic-operations\opening-a-session.markdown `
+	docs\client-api\basic-operations\saving-new-document.markdown `
+	docs\client-api\basic-operations\loading-editing-existing-document.markdown `
+	docs\client-api\basic-operations\deleting-documents.markdown `
+	docs\client-api\basic-operations\basic-querying.markdown `
+	docs\client-api\basic-operations\customizing-behavior.markdown `
+	docs\client-api\querying\index.markdown `
+	docs\client-api\querying\using-linq-to-query-ravendb.markdown `
+	docs\client-api\querying\paging.markdown `
+	docs\client-api\querying\stale-indexes.markdown `
 	-o RavenDB-2.5.pdf
 
 ## TODO: Table of Contents
