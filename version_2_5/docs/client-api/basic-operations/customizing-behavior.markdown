@@ -1,4 +1,5 @@
-#Customizing the Behavior of the Client API
+
+### Customizing the Behavior of the Client API
 The RavenDB .NET Client API includes the following classes (interfaces):
 
 - <em>IDocumentStore</em>
@@ -6,7 +7,7 @@ The RavenDB .NET Client API includes the following classes (interfaces):
 
 After creating a document store as an instance of the `DocumentStore` class and opening a session (an instance of `IDocumentSession`) from the document store created, we need to access the properties of the `DocumentConvention` object in order customize the behavior of the RavenDB Client API.
 
-##DocumentConvention Properties
+#### DocumentConvention Properties
 The `DocumentConvention` class includes the following properties, which users can use to modify the behavior of the RavenDB Client API:
 
 - <em>ApplyReduceFunction</em>. Gets or sets the name of the method referenced by an internally defined `ApplyReduceFunctionFunc` delegate. The method is called to obtain reduce results and to ensure that the reduce function is run over the merged results in a sharded environment. The default method is `DefaultApplyReduceFunction`.

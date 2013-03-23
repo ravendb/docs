@@ -1,18 +1,23 @@
-﻿# Basic query support in RavenDB
+﻿
+### Basic query support in RavenDB
 
 Once data has been stored in RavenDB, we have seen how it can be retrieved by id, updated and deleted. The next useful operation is the ability to query based on some aspect of the documents that have been stored. 
 
 For example, we might wish to ask for all the blog entries that belong to a certain category like so:
 
-{CODE basic_querying_1@ClientApi\BasicOperations\BasicQuerying.cs /}
+	var results = from blog in session.Query<BlogPost>()
+	              where blog.Category == "RavenDB"
+	              select blog;
 
 Or, using a different syntax, to find all blog posts that have at least 10 comments:
 
-{CODE basic_querying_2@ClientApi\BasicOperations\BasicQuerying.cs /}
+	var results = session.Query<BlogPost>()
+	    .Where(x => x.Comments.Length >= 10)
+	    .ToList();
 
 That Just Works(tm) and gives us all the blog posts matching the criteria we have specified.
 
-{NOTE Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in /}
+    {NOTE Notice that a page size of 128 was passed along, although none was specified. This is RavenDB's "Safe by default" feature kicking in /}
 
 The important part to notice in this query is that we are querying the "BlogPosts" collection, for the property "Category" with the value of "RavenDB".
 
