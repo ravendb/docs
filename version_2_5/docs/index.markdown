@@ -1,8 +1,8 @@
 # RavenDB Documentation
 
-This is the official RavenDB documentation. 
+This is the official documentation for RavenDB. 
 
-If you find any errors or would like to ask for clarifications, please ask in our mailing list. Any feedback welcome.
+If you find any errors or would like to ask for clarifications, please ask in our [mailing list](http://groups.google.com/group/ravendb/). Any feedback is welcome.
 
 The sources for the documentation are available from [https://github.com/ravendb/docs](https://github.com/ravendb/docs). Feel free to fork the documentation base and offer updates.
 

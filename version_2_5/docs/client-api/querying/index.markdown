@@ -1,4 +1,5 @@
-﻿# Querying
+﻿
+## Querying
 
 In order to achieve very fast response times, the RavenDB server instance indexes your data in the background whenever it is added or changed. All indexes in RavenDB are Lucene-based, and we take advantage of this to provide a very fast, feature-rich and flexible querying system. RavenDB allows querying using the Lucene syntax; whether they are sent from the Client API via the Linq Provider or through the HTTP RESTful API, they are being translated into a Lucene query and executed against the appropriate index.
 
@@ -18,4 +19,6 @@ Also worth mentioning at this stage is the notion of *stale indexes*. Because Ra
 
 We will start by understanding the full range of querying options supported by RavenDB, and showing how they can be used intuitively by the RavenDB Linq provider. Then we will step in and learn about the Map/Reduce indexes that RavenDB uses and how to create them by hand, and after that we will explore more, less-obvious options supported by RavenDB.
 
+<pre>
 {FILES-LIST-RECURSIVE/}
+</pre>
