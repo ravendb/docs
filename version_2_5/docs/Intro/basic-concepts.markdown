@@ -41,9 +41,7 @@ Notice that a port for the server to listen on has already been automatically se
 
 As long as this window stays open, the RavenDB server is running. Pressing Enter will terminate the server - new requests will no longer be processed, but all data will be persisted in the data directory.
 
-For production usage, you'll generally run it in IIS or as a Windows Service. You can install the service by going to the \\Server folder and running the following command: `Raven.Server.exe /Start`. For more information, see the ReadMe file in the //Server folder.
-
-### Storage types
+#### Storage types
 
 RavenDB currently supports 2 types of storage engines, both of which are completely transactional and fail safe:
 

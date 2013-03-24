@@ -1,28 +1,29 @@
-# Adding RavenDB to Your Application
 
-There are two ways to of add RavenDB to your application:
+### Adding RavenDB to your application
 
-* The **RavenDB Client** is a lightweight library enabling you to connect to any RavenDB server; it exposes all RavenDB's strengths to your .NET or Silverlight application.
+There are two flavors of RavenDB available:
 
-* **RavenDB Embedded** is a full-blown RavenDB server that can be embedded in your application.
+* **RavenDB Client**: this is a lightweight library enabling you to connect to any RavenDB server; it exposes all RavenDB's strengths to your .NET or Silverlight application.
 
-If you are not sure what to choose, go with the RavenDB Client. Only use Embedded if you are certain this is indeed what you need.
+* **RavenDB Embedded**: this is a full-blown RavenDB server ready to be embedded in your application.
 
-{NOTE RavenDB Embedded can't run on the Client Profile. /}
+If you are not sure which to choose, go with the RavenDB Client. Only use Embedded if you are certain this is indeed what you need.
 
-Each of those can be added to your project by either using **nuget** or by extracting the contents of a build package.
+{NOTE RavenDB Embedded cannot be run on the Client Profile}
 
-## Installing using nuget
+Either of these can be added to your project by either using **NuGet** or extracting the contents of a build package.
 
-You can consume RavenDB through NuGet. Read [this article](http://ravendb.net/docs/intro/quickstart/adding-ravendb-through-nuget?version=2.0) for instructions how to do that.
+#### Installing using NuGet
 
-## Manually Adding RavenDB using the Build Package
+You can consume RavenDB through NuGet. Follow [this](http://ravendb.net/docs/intro/quickstart/adding-ravendb-through-nuget?version=2.0) article for instructions on how to do this.
 
-Grab a stable build from the [downloads page](http://ravendb.net/download), and extract the required files to a new "RavenDB" folder in your application. You'll then need update your project with references to them.
+#### Manually adding RavenDB using the build package
 
-Here's how to know which are the files you are going to need:
+Grab a stable build from the [downloads page](http://ravendb.net/download), and extract the required files to a new "RavenDB" folder in your application. You'll then need to update your project with references to them.
 
-![The folder structure in a RavenDB build package](images\build_package.png)
+Here's how to know which of the files you are going to need:
+
+![The folder structure in a RavenDB build package](images/build_package.png)
 
 * /Client - Lightweight RavenDB client for .NET 4.0. **This is the recommended client to use**.
 
@@ -30,9 +31,9 @@ Here's how to know which are the files you are going to need:
 
 * /EmbeddedClient - The files required to run the RavenDB client, in server or embedded mode.
 
-Whichever client version you choose to use, you should reference in your project all of the assemblies in the corresponding library folder.
+Whichever client version you choose to use, reference all the assemblies in the corresponding folder to your project.
 
-As for the rest of the folders in the package, here is a brief description of what they contain:
+As for the rest of the folders in the package, here's a brief description of what they contain:
 
 * /Backup - [Standalone backup tool](../../server/administration/backup-restore), for performing backup operations using a user with admin privileges.
 
