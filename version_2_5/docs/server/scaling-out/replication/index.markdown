@@ -70,7 +70,7 @@ In a replicating system, it is possible that two writes to the same document wil
 
 Resolving a conflict is easy, you just need to PUT a new version of the document. On PUT, the Replication Bundle will consider the conflict resolved.
 
-More details about conflicts are here: [Dealing with replication conflicts](conflicts).
+More details about conflicts are here: [Dealing with replication conflicts](handling-conflicts).
 
 ##What if I use API keys on my nodes?
 
