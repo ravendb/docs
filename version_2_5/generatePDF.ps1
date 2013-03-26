@@ -41,6 +41,7 @@ pandoc --latex-engine xelatex --template pdf-template.tex `
 	docs\client-api\querying\static-indexes\spatial-search.markdown `
 	docs\client-api\querying\static-indexes\boosting.markdown `
 	docs\client-api\querying\static-indexes\suggestions.markdown `
+	docs\client-api\querying\handling-document-relationships.markdown `
 	-o RavenDB-2.5.pdf
 
 
