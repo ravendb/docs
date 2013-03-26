@@ -73,12 +73,12 @@ Common (Put | Delete)
 The same like observing changes for documents you are allowed to grab information about indexes from the server. In order to look for changes for all indexes
 you should use the `ForAllIndexes` method. For example to get info about newly created indexes use the code:
 
-{CODE subscribe_document_delete@ClientApi\ChangesApi.cs /}
-
+{CODE subscribe_indexes@ClientApi\ChangesApi.cs /}
 
 If you are interested in observing changes of a specified index only, you can pass the index name:
 
 {CODE subscribe_index_reduce_completed@ClientApi\ChangesApi.cs /}
+
 This sample shows how to get information about completed reduce work by the map/reduce index.
 
 
