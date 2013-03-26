@@ -1,4 +1,5 @@
-# Configuring index options
+
+#### Configuring index options
 
 The indexes each RavenDB server instance uses to facilitate fast queries are powered by Lucene, the full-text search engine.
 
@@ -8,9 +9,9 @@ After a successful indexing operation, RavenDB feeds Lucene with each entity fro
 
 This process and its results can be controlled by using various field options and Analyzers, as explained below.
 
-## Configuring the analysis process
+##### Configuring the analysis process
 
-### Understanding Analyzers
+###### Understanding Analyzers
 
 Lucene offers several Analyzers out-of-the-box, and new ones can be made easily. Different analyzers differ in the way they split the text stream ("tokenize"), and in the way they process those tokens post-tokenization.
 
@@ -38,7 +39,7 @@ For example, given this sample text:
 
     `[The quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
 
-### RavenDB's default analyzer
+###### RavenDB's default analyzer
 
 By default, RavenDB uses a custom analyzer called `LowerCaseKeywordAnalyzer` for all content. This implementation behaves like Lucene's KeywordAnalyzer, but it also perform case normalization by converting all characters to lower case. 
 
@@ -48,7 +49,7 @@ In other words, by default RavenDB stores the entire term as a single token, in 
 
 This default behavior allows you to perform exact searches, which is exactly what you would expect. However, this doesn't allow you to perform full-text searches. For that, another analyzer should be used.
 
-### Full-text search
+###### Full-text search
 
 To allow for full-text search on text fields, you can use the analyzers provided with Lucene out of the box. These are available as part of the Lucene distribution that ships with RavenDB.
 
@@ -58,15 +59,26 @@ For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As
 
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple to do, and may already be available as a contrib package for Java Lucene or Lucene.NET.
 
-### Using a non-default Analyzer
+###### Using a non-default Analyzer
 
 To make an entity property indexed using a specific Analyzer, all you need to do is match it with the name of the property, like so:
 
-{CODE analyzers1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+	documentStore.DatabaseCommands.PutIndex("AnalyzersTestIdx", 
+	    new IndexDefinitionBuilder<BlogPost, BlogPost>
+	    {
+	        Map =
+	            users =>
+	            from doc in users select new { doc.Tags, doc.Content },
+	        Analyzers =
+	                        {
+	                            {x => x.Tags, "SimpleAnalyzer"},
+	                            {x => x.Content, "SnowballAnalyzer"}
+	                        },
+	    });
 
 The Analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the "Analyzers" folder of the RavenDB server directory, and use their fully qualified type name (including the assembly name).
 
-## Field options
+##### Field options
 
 After the tokenization and analysis process is complete, the resulting tokens are stored in an index, which is now ready to be search with. As we have seen before, only fields in the final index projection could be used for searched, and the actual tokens stored for each depends on how the selected Analyzer processed the original text.
 
@@ -74,7 +86,19 @@ Lucene allows storing the original token text for fields, and RavenDB exposes th
 
 By default, tokens are saved to the index as Indexed and Analyzed but not Stored - that is: they can be searched on using a specific Analyzer (or the default one), but their original value is unavailable after indexing. Enabling field storage causes values to be available to be retrieved via `IDocumentQuery<T>.SelectFields<TProjection>(...)`, and is done like so:
 
-{CODE stores1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+	public class StoresIndex : AbstractIndexCreationTask<BlogPost, BlogPost>
+	{
+	    public StoresIndex()
+	    {
+	        Map = posts => from doc in posts
+	                            select new { doc.Tags, doc.Content };
+	 
+	        Stores.Add(x => x.Title, FieldStorage.Yes);
+	 
+	        Indexes.Add(x => x.Tags, FieldIndexing.NotAnalyzed);
+	        Indexes.Add(x => x.Comments, FieldIndexing.No);
+	    }
+	}
 
 The default values for each field are `FieldStorage.No` in Stores and `FieldIndexing.Default` in Indexes.
 
