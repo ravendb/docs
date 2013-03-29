@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using RavenDB.DocsCompiler.Output;
 
@@ -9,10 +10,11 @@ namespace RavenDB.DocsCompiler.Runner
 		public static void Main(string[] args)
 		{
 			var rootPath = Path.GetFullPath("./../../../../../");
-
-			Generate(rootPath, "version_1");
-			Generate(rootPath, "version_2");
-			Generate(rootPath, "version_2_5");
+		    var documentationVersions = new List<String> {"version_1", "version_2", "version_2_5"};
+		    foreach (var documentationVersion in documentationVersions)
+		    {
+		        Generate(rootPath, documentationVersion);
+		    }			
 		}
 
 		private static void Generate(string rootPath, string version)
