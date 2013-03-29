@@ -22,12 +22,7 @@ namespace RavenDB.DocsCompiler.Runner
 			var docsPath = Path.Combine(rootPath, version);
 			var outputPath = Path.Combine(docsPath, "html-compiled");
 
-			IDocsOutput output = new HtmlDocsOutput
-			{
-				OutputPath = outputPath,
-				PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
-				RootUrl = "http://ravendb.net/docs/",
-			};
+			var output = CreateDocumentationOutputSpecification(rootPath, outputPath);
 
 			try
 			{
@@ -41,5 +36,16 @@ namespace RavenDB.DocsCompiler.Runner
 			Console.WriteLine("Done");
 
 		}
+
+	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath)
+	    {
+	        IDocsOutput output = new HtmlDocsOutput
+	            {
+	                OutputPath = outputPath,
+	                PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
+	                RootUrl = "http://ravendb.net/docs/",
+	            };
+	        return output;
+	    }
 	}
 }
