@@ -18,22 +18,26 @@ namespace RavenDB.DocsCompiler.Runner
 		private static void Generate(string rootPath, string version)
 		{
 			var docsPath = Path.Combine(rootPath, version);
+			var outputPath = Path.Combine(docsPath, "html-compiled");
 
 			IDocsOutput output = new HtmlDocsOutput
 			{
-				OutputPath = Path.Combine(docsPath, "html-compiled"),
+				OutputPath = outputPath,
 				PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
 				RootUrl = "http://ravendb.net/docs/",
 			};
 
 			try
 			{
+				Console.WriteLine("Generating documentation using docsPath: {0} and output path {1}", docsPath, outputPath);
 				Compiler.CompileFolder(output, docsPath, "Home", "2.0");
 			}
 			catch (Exception ex)
 			{
 				Console.WriteLine(ex.ToString());
 			}
+			Console.WriteLine("Done");
+
 		}
 	}
 }
