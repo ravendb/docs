@@ -41,6 +41,7 @@ namespace RavenDB.DocsCompiler.Runner
 	    {
 	        IDocsOutput output = new HtmlDocsOutput
 	            {
+                    ContentType = "html",
 	                OutputPath = outputPath,
 	                PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
 	                RootUrl = "http://ravendb.net/docs/",

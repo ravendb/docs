@@ -10,7 +10,8 @@ namespace RavenDB.DocsCompiler.Output
 
 		public string PageTemplate { get; set; }
 
-		public string RootUrl { get; set; }
+	    public string ContentType { get; set; }
+	    public string RootUrl { get; set; }
 		public string ImagesPath { get; set; }
 
 		public void SaveDocItem(Document doc)
