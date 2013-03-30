@@ -17,7 +17,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		static readonly Regex FilesListFinder = new Regex(@"{FILES-LIST(-RECURSIVE)?\s*/}", RegexOptions.Compiled);
 		static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-		public static string Parse(Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl)
+		public static string Parse(Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl, bool convertToHtml)
 		{
 			if (!File.Exists(fullPath))
 				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
@@ -31,7 +31,11 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 				contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));
 			}
 
-			contents = contents.ResolveMarkdown(docsCompiler.Output, !string.IsNullOrWhiteSpace(docsCompiler.Output.RootUrl) ? trail : string.Empty, versionUrl);
+            if (convertToHtml)
+            {
+                contents = contents.ResolveMarkdown(docsCompiler.Output, !string.IsNullOrWhiteSpace(docsCompiler.Output.RootUrl) ? trail : string.Empty, versionUrl);
+            }
+			
 			contents = NotesFinder.Replace(contents, match => InjectNoteBlocks(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
 
 			return contents;
