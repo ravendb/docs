@@ -1,9 +1,40 @@
+using System;
 using System.IO;
 using System.Text;
 using RavenDB.DocsCompiler.Model;
 
 namespace RavenDB.DocsCompiler.Output
 {
+    public class MarkdownDocsOutput : IDocsOutput
+    {
+        public void Dispose()
+        {
+        }
+        public string OutputPath { get; set; }
+
+        public string ContentType { get; set; }
+        public string RootUrl { get; set; }
+        public string ImagesPath { get; set; }
+        public void SaveDocItem(Document doc)
+        {
+            var outputPath = Path.Combine(OutputPath, doc.Trail);
+            if (!Directory.Exists(outputPath))
+            {
+                Directory.CreateDirectory(outputPath);
+            }
+
+                var contents = doc.Content;
+                File.WriteAllText(Path.Combine(outputPath, doc.Slug + ".markdown"), contents);
+        }
+
+        public void SaveImage(Folder ofFolder, string fullFilePath)
+        {
+        }
+
+        public void GenerateToc(IDocumentationItem rootItem)
+        {
+        }
+    }
 	public class HtmlDocsOutput : IDocsOutput
 	{
 		public string OutputPath { get; set; }
@@ -14,6 +45,11 @@ namespace RavenDB.DocsCompiler.Output
 	    public string RootUrl { get; set; }
 		public string ImagesPath { get; set; }
 
+	    public bool IsHtmlOutput
+	    {
+	        get { return ContentType.Equals("html", StringComparison.InvariantCultureIgnoreCase); }
+	    }
+
 		public void SaveDocItem(Document doc)
 		{
 			var outputPath = Path.Combine(OutputPath, doc.Trail);
@@ -22,8 +58,11 @@ namespace RavenDB.DocsCompiler.Output
 				Directory.CreateDirectory(outputPath);
 			}
 
-			var contents = string.Format(PageTemplate, doc.Title, doc.Content);
-			File.WriteAllText(Path.Combine(outputPath, doc.Slug + ".html"), contents);
+            if (IsHtmlOutput)
+            {
+                var contents = string.Format(PageTemplate, doc.Title, doc.Content);
+                File.WriteAllText(Path.Combine(outputPath, doc.Slug + ".html"), contents);
+            }			
 		}
 
 		public void SaveImage(Folder ofFolder, string fullFilePath)

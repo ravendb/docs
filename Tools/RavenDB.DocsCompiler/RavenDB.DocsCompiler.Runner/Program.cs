@@ -9,20 +9,31 @@ namespace RavenDB.DocsCompiler.Runner
 	{
 		public static void Main(string[] args)
 		{
+		    var contentType = "markdown";
+		    if (args.Length > 1)
+		    {
+		        contentType = args[0];
+		    }
 			var rootPath = Path.GetFullPath("./../../../../../");
 		    var documentationVersions = new List<String> {"version_1", "version_2", "version_2_5"};
 		    foreach (var documentationVersion in documentationVersions)
 		    {
-		        Generate(rootPath, documentationVersion);
+                Generate(rootPath, documentationVersion, contentType);
 		    }			
 		}
 
-		private static void Generate(string rootPath, string version)
-		{
+		private static void Generate(string rootPath, string version, string contentType)
+        {
+            const bool generateMarkdown = true;
 			var docsPath = Path.Combine(rootPath, version);
-			var outputPath = Path.Combine(docsPath, "html-compiled");
+            var outputPath = Path.Combine(docsPath, "html-compiled");
 
-			var output = CreateDocumentationOutputSpecification(rootPath, outputPath);
+            if (contentType.Equals("markdown", StringComparison.InvariantCultureIgnoreCase))
+            {
+                outputPath = Path.Combine(docsPath, "markdown-compiled");
+            }
+
+            var output = CreateDocumentationOutputSpecification(rootPath, outputPath, contentType);
 
 			try
 			{
@@ -37,16 +48,31 @@ namespace RavenDB.DocsCompiler.Runner
 
 		}
 
-	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath)
+	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath, string contentType)
 	    {
-	        IDocsOutput output = new HtmlDocsOutput
-	            {
+            if (contentType.Equals("html", StringComparison.InvariantCultureIgnoreCase))
+            {
+                IDocsOutput output = new HtmlDocsOutput
+                {
                     ContentType = "html",
-	                OutputPath = outputPath,
-	                PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
-	                RootUrl = "http://ravendb.net/docs/",
-	            };
-	        return output;
+                    OutputPath = outputPath,
+                    PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
+                    RootUrl = "http://ravendb.net/docs/",
+                };
+                return output;
+            }
+            else
+            {
+                IDocsOutput output = new MarkdownDocsOutput
+                    {
+                        ContentType = "markdown",
+                        OutputPath = outputPath,
+                        RootUrl = "http://ravendb.net/docs/",
+                    };
+                return output;
+            }
+            
+	        
 	    }
 	}
 }
