@@ -23,8 +23,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 				throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
 
 			var contents = File.ReadAllText(fullPath);
-			contents = CodeBlockFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value));
-			contents = CodeFinder.Replace(contents, match => GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath));
+			contents = CodeBlockFinder.Replace(contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value, convertToHtml));
+			contents = CodeFinder.Replace(contents, match => GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath, convertToHtml));
 
 			if (folder != null)
 			{
@@ -55,12 +55,17 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return sb.ToString();
 		}
 
-		private static string GenerateCodeBlock(string lang, string code)
+		private static string GenerateCodeBlock(string lang, string code, bool convertToHtml)
 		{
-			return string.Format("<pre class=\"brush: {2}\">{0}{1}</pre>{0}", Environment.NewLine,
-								 ConvertMarkdownCodeStatment(code).Replace("<", "&lt;"), // to support syntax highlighting on pre tags
-								 lang
-				);
+            if (convertToHtml)
+            {
+                return string.Format("<pre class=\"brush: {2}\">{0}{1}</pre>{0}", Environment.NewLine,
+                                     ConvertMarkdownCodeStatment(code).Replace("<", "&lt;"), // to support syntax highlighting on pre tags
+                                     lang
+                    );    
+            }
+            return string.Format("{0}{1}",Environment.NewLine,ConvertMarkdownCodeStatment(code).Replace("<", "&lt;"));
+
 		}
 
 		private static string InjectNoteBlocks(string blockType, string blockText)
@@ -68,17 +73,23 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return string.Format(@"<div class=""{0}-block block""><span>{1}</span></div>", blockType.ToLower(), blockText);
 		}
 
-		private static string GenerateCodeBlockFromFile(string value, string codeSamplesPath)
+		private static string GenerateCodeBlockFromFile(string value, string codeSamplesPath, bool convertToHtml)
 		{
 			var values = value.Split('@');
 			var section = values[0];
 			var file = values[1];
 
 			var fileContent = LocateCodeFile(codeSamplesPath, file);
-			return "<pre class=\"brush: csharp\">" + Environment.NewLine
-				   + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent))
-				   .Replace("<", "&lt;") // to support syntax highlighting on pre tags
-				   + "</pre>";
+            if (convertToHtml)
+            {
+                return "<pre class=\"brush: csharp\">" + Environment.NewLine
+                   + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent))
+                   .Replace("<", "&lt;") // to support syntax highlighting on pre tags
+                   + "</pre>";
+            }
+		    return Environment.NewLine
+                   + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent)).Replace("<", "&lt;");
+
 		}
 
 		private static string ConvertMarkdownCodeStatment(string code)
