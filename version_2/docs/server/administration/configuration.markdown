@@ -361,8 +361,6 @@ Many of the configuration options described in section above can be used both in
 | **Raven/Quotas/Size/SoftMarginInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/AnonymousAccess** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/Authorization/Windows/RequiredGroups** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/Authorization/Windows/RequiredUsers** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenServer** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenCertificatePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenCertificatePassword** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -374,3 +372,5 @@ Many of the configuration options described in section above can be used both in
 {NOTE **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database. /}
 
 {NOTE **Raven/Encryption** settings can only be provided when database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption). /}
+
+{NOTE **Raven/Authorization/Windows/RequiredGroups** and **Raven/Authorization/Windows/RequiredUsers** has been removed. You should create a document with the ID **Raven/Authorization/WindowsSettings** in order to configure [windows authentication](http://ravendb.net/docs/2.0/server/authentication#windows-authentication). /}
