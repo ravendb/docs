@@ -43,39 +43,96 @@ namespace RavenDB.DocsCompiler
                 compiler.ConvertToHTML = true;
             }
 
-			compiler.CompileFolder(compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty }, versionUrl);
+		    Console.WriteLine("CompileFolder - processing {0}", compiler.RootFolder);
+			var generatedText = compiler.CompileFolder(compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty }, versionUrl);
+		    var combine = Path.Combine(fullPath, "all.markdown");
+		    File.WriteAllText(combine, generatedText );
 
 			compiler.Output.GenerateToc(compiler.RootFolder);
 		}
 
-		private void CompileFolder(Folder folder, string versionUrl)
+		private string CompileFolder(Folder folder, string versionUrl)
 		{
 			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
 			var fullPath = Path.Combine(_fullPath, fullFolderSlug);
 			if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
-				return;
+				return "";
 
-			var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName)).ToArray();
-			foreach (var item in docs)
-			{
-				processItem(folder, versionUrl, item, fullPath);
-			}
-
-			var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"),
-			                                         string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
-                                                     versionUrl, ConvertToHTML);
-			Output.SaveDocItem(new Document
-			{
-				Title = folder.Title,
-				Content = contents,
-				Trail = fullFolderSlug,
-				Slug = "index"
-			});
+            if (ConvertToHTML)
+            {
+                processAsHTML(folder, versionUrl, fullPath, fullFolderSlug);
+                return "";
+            }
+            else
+            {
+                return processAsMarkdown(folder, versionUrl, fullPath, fullFolderSlug);
+            }
 			
-			CopyImages(folder, fullPath);
+			
 		}
 
-	    private void processItem(Folder folder, string versionUrl, IDocumentationItem item, string fullPath)
+	    private void processAsHTML(Folder folder, string versionUrl, string fullPath, string fullFolderSlug)
+	    {
+	        var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName)).ToArray();
+	        foreach (var item in docs)
+	        {
+	            Console.WriteLine("CompileFolder - processing item {0}", item.Trail);
+	            processItem(folder, versionUrl, item, fullPath);
+	        }
+
+	        var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"),
+	                                                 string.IsNullOrWhiteSpace(folder.Trail)
+	                                                     ? folder.Slug
+	                                                     : folder.Trail + "/" + folder.Slug,
+	                                                 versionUrl, ConvertToHTML);
+	        Output.SaveDocItem(new Document
+	            {
+	                Title = folder.Title,
+	                Content = contents,
+	                Trail = fullFolderSlug,
+	                Slug = "index"
+	            });
+
+	        CopyImages(folder, fullPath);
+	        return;
+	    }
+
+        private string processAsMarkdown(Folder folder, string versionUrl, string fullPath, string fullFolderSlug)
+        {
+            var output = "";
+            output += processIndexItem(folder, versionUrl, fullPath, fullFolderSlug);
+
+            var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName)).ToArray();
+            foreach (var item in docs)
+            {
+                Console.WriteLine("CompileFolder - processing item {0}", item.Trail);
+                output += processItem(folder, versionUrl, item, fullPath);
+            }
+
+            
+
+            CopyImages(folder, fullPath);
+            return output;
+        }
+
+	    private string processIndexItem(Folder folder, string versionUrl, string fullPath, string fullFolderSlug)
+	    {
+	        var contents = DocumentationParser.Parse(this, folder, Path.Combine(fullPath, "index.markdown"),
+	                                                 string.IsNullOrWhiteSpace(folder.Trail)
+	                                                     ? folder.Slug
+	                                                     : folder.Trail + "/" + folder.Slug,
+	                                                 versionUrl, ConvertToHTML);
+	        Output.SaveDocItem(new Document
+	            {
+	                Title = folder.Title,
+	                Content = contents,
+	                Trail = fullFolderSlug,
+	                Slug = "index"
+	            });
+	        return contents;
+	    }
+
+	    private string processItem(Folder folder, string versionUrl, IDocumentationItem item, string fullPath)
 	    {
 	        if (item.Slug != null)
 	            item.Slug = item.Slug.TrimStart('\\', '/');
@@ -85,15 +142,15 @@ namespace RavenDB.DocsCompiler
 	        var document = item as Document;
 	        if (document != null)
 	        {
-	            CompileDocument(versionUrl, document, fullPath);
-	            return;
+                return CompileDocument(versionUrl, document, fullPath);
 	        }
 
 	        var subFolder = item as Folder;
 	        if (subFolder != null)
 	        {
-	            CompileFolder(subFolder, versionUrl);
+	            return CompileFolder(subFolder, versionUrl);
 	        }
+	        return "";
 	    }
 
 	    private void CopyImages(Folder folder, string fullPath)
@@ -111,7 +168,7 @@ namespace RavenDB.DocsCompiler
 	        }
 	    }
 
-	    private void CompileDocument(string versionUrl, Document document, string fullPath)
+	    private string CompileDocument(string versionUrl, Document document, string fullPath)
 	    {
 	        var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
 	        string path = Path.Combine(fullPath, document.Slug);
@@ -119,6 +176,7 @@ namespace RavenDB.DocsCompiler
 	                                                     versionUrl, ConvertToHTML);
 	        document.Slug = strippedSlug;
 	        Output.SaveDocItem(document);
+	        return document.Content;
 	    }
 	}
 }

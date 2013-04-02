@@ -10,7 +10,8 @@ namespace RavenDB.DocsCompiler.Runner
 		public static void Main(string[] args)
 		{
 			var rootPath = Path.GetFullPath("./../../../../../");
-		    var documentationVersions = new List<String> {"version_1", "version_2", "version_2_5"};
+		    //var documentationVersions = new List<String> {"version_1", "version_2", "version_2_5"};
+            var documentationVersions = new List<String> { "version_2_5" };
 		    foreach (var documentationVersion in documentationVersions)
 		    {
 		        Generate(rootPath, documentationVersion);
