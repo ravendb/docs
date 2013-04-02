@@ -5,7 +5,7 @@ namespace RavenDB.DocsCompiler.Output
 {
 	public interface IDocsOutput : IDisposable
 	{
-        string ContentType { get; set; }
+        OutputType ContentType { get; set; }
 
 		string RootUrl { get; set; }
 

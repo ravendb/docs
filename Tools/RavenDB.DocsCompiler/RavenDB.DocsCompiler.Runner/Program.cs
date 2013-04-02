@@ -1,20 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using RavenDB.DocsCompiler;
 using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler.Runner
 {
-    public enum OutputType
-    {
-        HTML,
-        Markdown
-    }
 	public class Program
 	{
 		public static void Main(string[] args)
 		{
-		    var outputType = OutputType.HTML;
+		    var outputType = OutputType.Html;
 		    if (args.Length > 0 && args[0].Equals("markdown", StringComparison.CurrentCultureIgnoreCase))
 		        outputType = OutputType.Markdown;
 			var rootPath = Path.GetFullPath("./../../../../../");
@@ -62,17 +58,17 @@ namespace RavenDB.DocsCompiler.Runner
             {
                 return new MarkdownDocsOutput
                 {
-                    ContentType = "markdown",
+                    ContentType = OutputType.Markdown,
                     OutputPath = outputPath,
                     RootUrl = "http://ravendb.net/docs/",
 
                 };    
             }
-            if (outputType == OutputType.HTML)
+            if (outputType == OutputType.Html)
             {
                 IDocsOutput output = new HtmlDocsOutput
                 {
-                    ContentType = "html",
+                    ContentType = OutputType.Html,
                     OutputPath = outputPath,
                     PageTemplate = File.ReadAllText(Path.Combine(rootPath, @"Tools\html-template.html")),
                     RootUrl = "http://ravendb.net/docs/",
