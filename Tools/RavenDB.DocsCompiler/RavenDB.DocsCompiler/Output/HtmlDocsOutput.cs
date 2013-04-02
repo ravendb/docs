@@ -12,7 +12,7 @@ namespace RavenDB.DocsCompiler.Output
         }
         public string OutputPath { get; set; }
 
-        public string ContentType { get; set; }
+        public OutputType ContentType { get; set; }
         public string RootUrl { get; set; }
         public string ImagesPath { get; set; }
         public void SaveDocItem(Document doc)
@@ -46,13 +46,13 @@ namespace RavenDB.DocsCompiler.Output
 
 		public string PageTemplate { get; set; }
 
-	    public string ContentType { get; set; }
+	    public OutputType ContentType { get; set; }
 	    public string RootUrl { get; set; }
 		public string ImagesPath { get; set; }
 
 	    public bool IsHtmlOutput
 	    {
-	        get { return ContentType.Equals("html", StringComparison.InvariantCultureIgnoreCase); }
+            get { return ContentType == OutputType.Html; }
 	    }
 
 		public void SaveDocItem(Document doc)

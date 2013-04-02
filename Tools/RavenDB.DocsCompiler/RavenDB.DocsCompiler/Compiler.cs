@@ -9,6 +9,12 @@ using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler
 {
+    public enum OutputType
+    {
+        Html,
+        Markdown
+    }
+
 	public class Compiler
 	{
 		private const string DocsListFileName = ".docslist";
@@ -38,7 +44,7 @@ namespace RavenDB.DocsCompiler
 			               		Output = output,
 			               		CodeSamplesPath = Path.Combine(fullPath, "code-samples")
 			               	};
-            if (output.ContentType.Equals("html", StringComparison.InvariantCultureIgnoreCase))
+            if (output.ContentType == OutputType.Html)
             {
                 compiler.ConvertToHTML = true;
             }
