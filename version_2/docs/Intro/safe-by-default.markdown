@@ -39,5 +39,5 @@ By default, that limit is set to 30. On request #31, the session will throw an e
 
 You can override this behavior by setting a different limit:
 
+* Per session, by setting: IDocumentSession.Advanced.MaxNumberOfRequestsPerSession
 * Globally, by setting: DocumentConvention.MaxNumberOfRequestsPerSession
-* Per session, by setting: IDocumentSession.MaxNumberOfRequestsPerSession
