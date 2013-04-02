@@ -5,6 +5,8 @@ namespace RavenDB.DocsCompiler.Output
 {
 	public interface IDocsOutput : IDisposable
 	{
+        string ContentType { get; set; }
+
 		string RootUrl { get; set; }
 
 		string ImagesPath { get; set; }

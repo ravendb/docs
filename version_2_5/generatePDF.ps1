@@ -29,7 +29,21 @@ pandoc --latex-engine xelatex --template pdf-template.tex `
 	docs\client-api\querying\using-linq-to-query-ravendb.markdown `
 	docs\client-api\querying\paging.markdown `
 	docs\client-api\querying\stale-indexes.markdown `
+	docs\client-api\querying\static-indexes\index.markdown `
+	docs\client-api\querying\static-indexes\defining-static-index.markdown `
+	docs\client-api\querying\static-indexes\customizing-results-order.markdown `
+	docs\client-api\querying\static-indexes\configuring-index-options.markdown `
+	docs\client-api\querying\static-indexes\indexing-hierarchies.markdown `
+	docs\client-api\querying\static-indexes\indexing-related-documents.markdown `
+	docs\client-api\querying\static-indexes\live-projections.markdown `
+	docs\client-api\querying\static-indexes\indexes-error-handling.markdown `
+	docs\client-api\querying\static-indexes\searching.markdown `
+	docs\client-api\querying\static-indexes\spatial-search.markdown `
+	docs\client-api\querying\static-indexes\boosting.markdown `
+	docs\client-api\querying\static-indexes\suggestions.markdown `
+	docs\client-api\querying\handling-document-relationships.markdown `
 	-o RavenDB-2.5.pdf
+
 
 ## TODO: Table of Contents
 ## TODO: styling code
