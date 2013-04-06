@@ -1,16 +1,20 @@
-# Create ASP.NET MVC 4 Project with RavenDB
+# Creating ASP.NET MVC 4 Project with RavenDB
 In this section we will go over the steps to creating you own ASP.NET MVC4 Application.
 
+## Prerequisites
+1) Make sure you have the Microsoft ASP.NET MVC 4 installed.  
+2) You have installed NuGet package manager
+3) You are running Visual Studio 2010 or greater
+
 ## Step by Step Instructions
-1) Make sure you have ASP.NET MVC 4 installed.  
-2) In visual studio and create a new "ASP.NET MVC 4 Web Application" project.  
-3) As Project template select "Basic".  
-4) Add the NuGet Package named "RavenDB Client".  
-5) Create the following controller:
+1) Open the Micrsooft Visual Studio IDE.  Create a new "ASP.NET MVC 4 Web Application" project.  
+2) As Project template select "Basic".  
+3) Add the NuGet Package named "RavenDB Client".  
+4) Create the following controller:
 
 {CODE create_asp_net_mvc_4_project_1@Samples\Mvc\CreateAspNetMvc4Project.cs /}
 
-6) From now on write you application as you would normally but Inherit from RavenController in any controller you want to contact RavenDB
+5) From now on, write you application as you would normally, but make any controller that needs to talk to RavenDB inherit from RavenController.
 
 Example of a controller: 
 
