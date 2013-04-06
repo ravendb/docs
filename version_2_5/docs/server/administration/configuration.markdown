@@ -162,7 +162,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ true  
 
 * **Raven/UseSsl**
-    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service**
+    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service.**
     _Default:_ false   
 
 * **Raven/AccessControlAllowOrigin**  
