@@ -65,9 +65,15 @@ namespace RavenDB.DocsCompiler
         public IDocsOutput Output { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to convert to html.
+        /// Gets a value indicating whether to convert to html.
         /// </summary>
-        public bool ConvertToHtml { get; set; }
+        public bool ConvertToHtml
+        {
+            get
+            {
+                return this.Output.ContentType == OutputType.Html;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the code samples path.
@@ -110,10 +116,6 @@ namespace RavenDB.DocsCompiler
                                    CodeSamplesPath =
                                        Path.Combine(fullPath, "code-samples")
                                };
-            if (output.ContentType == OutputType.Html)
-            {
-                compiler.ConvertToHtml = true;
-            }
 
             Console.WriteLine("CompileFolder - processing {0}", compiler.RootFolder);
             var generatedText =
