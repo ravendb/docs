@@ -122,7 +122,7 @@ namespace RavenDB.DocsCompiler
             var combine = Path.Combine(fullPath, "all.markdown");
             File.WriteAllText(combine, generatedText);
 
-            compiler.Output.GenerateToc(compiler.RootFolder);
+            compiler.Output.GenerateTableOfContents(compiler.RootFolder);
         }
 
         /// <summary>
