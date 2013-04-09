@@ -1,8 +1,10 @@
-This repository contains the official RavenDB documenation
+This repository contains the official RavenDB documentation
 
 The compiled old book can still be downloaded as a PDF from [http://builds.hibernatingrhinos.com/download/2254](http://builds.hibernatingrhinos.com/download/2254)
 
 The documentation is written using the [Markdown language](http://en.wikipedia.org/wiki/Markdown), and may use some extended Markdown features.
+
+--------------------
 
 * Images should be stored under a local "images" folder, right below the document referencing them. The reference should be to "images/image_name.png". Image names should bear a unique descriptive name, like clientapi_intro_serverimage.png.
 
@@ -28,3 +30,27 @@ The following non-standard syntax is supported as well:
 * For a files list - will output a list of links to all child documents:
 
 	{FILES-LIST /}
+
+--------------------
+
+# RavenDB Documentation Ideas
+
+- How big can documents be?
+- How many writes per second does RavenDB support?
+- what's new in 2.0: http://nosql.mypopescu.com/post/40015290699/ravendb-2-0-is-out-over-6-months-of-features
+- monitor RavenDB: https://groups.google.com/forum/?fromgroups#!topic/ravendb/SVLJeyObA9s
+
+--------------------
+
+# Working with Markdown Documents
+
+With Visual Studio 2012, the (Web Essentials 2012)[http://visualstudiogallery.msdn.microsoft.com/07d54d12-7133-4e15-becb-6f451ea3bea6] extension will let you edit the Markdown and give a good preview once you hit save
+
+--------------------
+
+# Generating Documentation from Markdown Source
+
+- TODO: generate docs as pdf (like little mongodb book, etc)
+- see instructions for the Little MongoDB Book (https://github.com/karlseguin/the-little-mongodb-book/blob/master/readme.markdown)
+- on windows - install pandoc @ http://johnmacfarlane.net/pandoc/installing.html
+- http://brizzled.clapper.org/blog/2010/11/26/writing-markdown-and-pandoc/
