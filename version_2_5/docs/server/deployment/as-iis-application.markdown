@@ -11,14 +11,14 @@ RavenDB can be run as an IIS application, or from a virtual directory under an I
 5. Make sure that the user you set for the website has write access to the physical database location.
 6. Make sure to disable "Overlapped Recycle" in App Pool Advanced Settings.  (Otherwise, you may have two concurrent RavenDB instances competing for the same data directory, which is going to generate failures).
 
-## Setting up with IIS 7.5
+## Setting up with IIS 7.5 and 8.0
 
-* Remove the WebDAVModulse from the installed Modules in your server
-* If you wish to run with authentication:
-    * Ensure that "Windows Authentication" is installed support to IIS 7.5 (by default it is not)
-    * Enable "Windows Authentication"  for the RavenDB website.
+* Remove the WebDAVModule from the installed Modules on your IIS server
+* If you wish to run RavenDB with authentication:
+    * Ensure that IIS "Windows Authentication" security module is installed (by default it is not). This can be checked under `Programs and Features` > `Turn Windows features on or off` > `Internet Information Services` > `World Wide Web Services` > `Security`.
+    * Enable "Windows Authentication" for the RavenDB website.
     * In the web.config file, set the app settings value `Raven/AnonymousUserAccessMode` to Get or None
-* If you with to run with no authentication:
+* If you wish to run with no authentication:
     * In the web.config file, set the app settings value `Raven/AnonymousUserAccessMode` to All
 
 ## Setting up with IIS 7
