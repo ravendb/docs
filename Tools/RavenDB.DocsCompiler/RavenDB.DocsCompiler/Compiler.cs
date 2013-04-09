@@ -44,19 +44,19 @@ namespace RavenDB.DocsCompiler
         private const string DocsListFileName = ".docslist";
 
         /// <summary>
-        /// The _full path.
+        /// The destination full path.
         /// </summary>
-        private readonly string _fullPath;
+        private readonly string destinationFullPath;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Compiler"/> class.
         /// </summary>
-        /// <param name="fullPath">
+        /// <param name="destinationFullPath">
         /// The full path.
         /// </param>
-        private Compiler(string fullPath)
+        private Compiler(string destinationFullPath)
         {
-            this._fullPath = fullPath;
+            this.destinationFullPath = destinationFullPath;
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace RavenDB.DocsCompiler
         private string CompileFolder(Folder folder, string versionUrl)
         {
             var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
-            var fullPath = Path.Combine(this._fullPath, fullFolderSlug);
+            var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
             if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
             {
                 return string.Empty;
