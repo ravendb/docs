@@ -64,7 +64,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                                      lang
                     );    
             }
-            return string.Format("{0}{1}",Environment.NewLine,ConvertMarkdownCodeStatment(code).Replace("<", "&lt;"));
+            return string.Format("{0}{1}",Environment.NewLine,ConvertMarkdownCodeStatment(code)).Replace("<", "&lt;"));
 
 		}
 
