@@ -1,49 +1,8 @@
-pandoc --latex-engine xelatex --template pdf-template.tex `
-	docs\intro\index.markdown `
-	docs\intro\what-is-nosql.markdown `
-	docs\intro\what-is-a-document-database.markdown `
-	docs\intro\ravendb-in-a-nutshell.markdown `
-	docs\intro\basic-concepts.markdown `
-	docs\intro\safe-by-default.markdown `
-	docs\intro\quickstart\index.markdown `
-	docs\intro\quickstart\adding-ravendb-to-your-application.markdown `
-	docs\intro\quickstart\adding-ravendb-through-nuget.markdown `
-	docs\intro\system-requirements.markdown `
-	docs\intro\building-from-source.markdown `
-	docs\intro\what-is-new.markdown `
-	docs\theory\index.markdown `
-	docs\theory\what-is-raven.markdown `
-	docs\theory\document-key-generation.markdown `
-	docs\theory\document-structure-design.markdown `
-	docs\theory\ravendb-collections.markdown `
-	docs\client-api\index.markdown `
-	docs\client-api\connecting-to-a-ravendb-datastore.markdown `
-	docs\client-api\basic-operations\understanding-session-object.markdown `
-	docs\client-api\basic-operations\opening-a-session.markdown `
-	docs\client-api\basic-operations\saving-new-document.markdown `
-	docs\client-api\basic-operations\loading-editing-existing-document.markdown `
-	docs\client-api\basic-operations\deleting-documents.markdown `
-	docs\client-api\basic-operations\basic-querying.markdown `
-	docs\client-api\basic-operations\customizing-behavior.markdown `
-	docs\client-api\querying\index.markdown `
-	docs\client-api\querying\using-linq-to-query-ravendb.markdown `
-	docs\client-api\querying\paging.markdown `
-	docs\client-api\querying\stale-indexes.markdown `
-	docs\client-api\querying\static-indexes\index.markdown `
-	docs\client-api\querying\static-indexes\defining-static-index.markdown `
-	docs\client-api\querying\static-indexes\customizing-results-order.markdown `
-	docs\client-api\querying\static-indexes\configuring-index-options.markdown `
-	docs\client-api\querying\static-indexes\indexing-hierarchies.markdown `
-	docs\client-api\querying\static-indexes\indexing-related-documents.markdown `
-	docs\client-api\querying\static-indexes\live-projections.markdown `
-	docs\client-api\querying\static-indexes\indexes-error-handling.markdown `
-	docs\client-api\querying\static-indexes\searching.markdown `
-	docs\client-api\querying\static-indexes\spatial-search.markdown `
-	docs\client-api\querying\static-indexes\boosting.markdown `
-	docs\client-api\querying\static-indexes\suggestions.markdown `
-	docs\client-api\querying\handling-document-relationships.markdown `
+pushd ..\Tools\RavenDB.DocsCompiler\RavenDB.DocsCompiler.Runner\bin\debug\
+.\RavenDB.DocsCompiler.Runner.exe
+popd
+pandoc --latex-engine xelatex --template pdf-template.tex all.markdown `
 	-o RavenDB-2.5.pdf
-
 
 ## TODO: Table of Contents
 ## TODO: styling code
