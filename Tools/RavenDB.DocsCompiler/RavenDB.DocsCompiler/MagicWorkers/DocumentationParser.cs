@@ -1,14 +1,25 @@
-﻿using System;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using MarkdownDeep;
-using RavenDB.DocsCompiler.Model;
-using RavenDB.DocsCompiler.Output;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DocumentationParser.cs" company="Hibernating Rhinos">
+//   COPYRIGHT GOES HERE
+// </copyright>
+// <summary>
+//   Defines the DocumentationParser type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace RavenDB.DocsCompiler.MagicWorkers
 {
+    using System;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+
+    using MarkdownDeep;
+
+    using RavenDB.DocsCompiler.Model;
+    using RavenDB.DocsCompiler.Output;
+
     public static class DocumentationParser
     {
         private static readonly Regex CodeFinder = new Regex(@"{CODE\s+(.+)/}", RegexOptions.Compiled);
@@ -27,7 +38,10 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         public static string Parse(
             Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl, bool convertToHtml)
         {
-            if (!File.Exists(fullPath)) throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
+            if (!File.Exists(fullPath))
+            {
+                throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
+            }
 
             var contents = File.ReadAllText(fullPath);
             contents = CodeBlockFinder.Replace(
@@ -58,7 +72,10 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
         private static string GenerateFilesList(Folder folder, bool recursive)
         {
-            if (folder.Items == null) return string.Empty;
+            if (folder.Items == null)
+            {
+                return string.Empty;
+            }
 
             var sb = new StringBuilder();
             foreach (var item in folder.Items)
@@ -80,6 +97,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                     // to support syntax highlighting on pre tags
                     lang);
             }
+
             return string.Format("{0}{1}", Environment.NewLine, ConvertMarkdownCodeStatment(code));
                 // .Replace("<", "&lt;"));
 
@@ -105,6 +123,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                        // to support syntax highlighting on pre tags
                        + "</pre>";
             }
+
             return Environment.NewLine + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent));
                 // .Replace("<", "&lt;");
 
@@ -124,13 +143,17 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
         private static string GetFirstLineSpaces(string firstLine)
         {
-            if (firstLine == null) return string.Empty;
+            if (firstLine == null)
+            {
+                return string.Empty;
+            }
 
             var match = FirstLineSpacesFinder.Match(firstLine);
             if (match.Success)
             {
                 return firstLine.Substring(0, match.Length);
             }
+
             return string.Empty;
         }
 
@@ -147,7 +170,11 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         private static string LocateCodeFile(string codeSamplesPath, string file)
         {
             var codePath = Path.Combine(codeSamplesPath, file);
-            if (File.Exists(codePath) == false) throw new FileNotFoundException(string.Format("{0} was not found", codePath));
+            if (File.Exists(codePath) == false)
+            {
+                throw new FileNotFoundException(string.Format("{0} was not found", codePath));
+            }
+
             return File.ReadAllText(codePath);
         }
 
@@ -177,9 +204,15 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail, string versionUrl)
         {
             string href;
-            if (!tag.attributes.TryGetValue("href", out href)) return true;
+            if (!tag.attributes.TryGetValue("href", out href))
+            {
+                return true;
+            }
 
-            if (Uri.IsWellFormedUriString(href, UriKind.Absolute)) return true;
+            if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
+            {
+                return true;
+            }
 
             var hashIndex = href.IndexOf("#", StringComparison.InvariantCultureIgnoreCase);
             if (hashIndex != -1)
@@ -192,7 +225,11 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             }
 
             Uri uri;
-            if (!string.IsNullOrWhiteSpace(trail)) trail += "/"; // make sure we don't lose the current slug
+            if (!string.IsNullOrWhiteSpace(trail))
+            {
+                trail += "/"; // make sure we don't lose the current slug
+            }
+
             if (!Uri.TryCreate(new Uri(rootUrl + trail, UriKind.Absolute), new Uri(href, UriKind.Relative), out uri))
             {
                 // TODO: Log error
@@ -209,9 +246,13 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             if (tag.attributes.TryGetValue("src", out src))
             {
                 src = src.Replace('\\', '/');
-                if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase)) src = src.Substring(7);
+                if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    src = src.Substring(7);
+                }
                 tag.attributes["src"] = imagesPath + src;
             }
+
             return true;
         }
     }
