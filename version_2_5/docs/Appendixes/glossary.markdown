@@ -17,7 +17,7 @@ Document ID
 
 Entity
 
-Escent
+**Esent** - The underlying windows-based storage engine used by RavenDB
 
 Index
 
