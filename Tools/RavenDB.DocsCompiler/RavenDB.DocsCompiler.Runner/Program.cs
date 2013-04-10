@@ -66,7 +66,7 @@ namespace RavenDB.DocsCompiler.Runner
             {
                 Console.WriteLine(
                     "Generating documentation using docsPath: {0} and output path {1}", docsPath, outputPath);
-                Compiler.CompileFolder(output, docsPath, "Home", "2.0");
+                Compiler.CompileFolder(output, docsPath, "Home", version);
             }
             catch (Exception ex)
             {
