@@ -185,6 +185,7 @@ namespace RavenDB.DocsCompiler
         {
             var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
             var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
+
             if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
             {
                 return string.Empty;
@@ -196,7 +197,12 @@ namespace RavenDB.DocsCompiler
                 return string.Empty;
             }
 
-            return this.ProcessAsMarkdown(folder, versionUrl, fullPath, fullFolderSlug);
+            if (this.Output.ContentType == OutputType.Markdown)
+            {
+                return this.ProcessAsMarkdown(folder, versionUrl, fullPath, fullFolderSlug);
+            }
+
+            return string.Empty;
         }
 
         /// <summary>
