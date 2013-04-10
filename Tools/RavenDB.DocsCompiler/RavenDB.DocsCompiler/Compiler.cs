@@ -116,10 +116,35 @@ namespace RavenDB.DocsCompiler
             var generatedText =
                 compiler.CompileFolder(
                     compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty }, versionUrl);
-            var combine = Path.Combine(fullPath, "all.markdown");
+            var combinedFileName = CalculateCombinedFileName(output);
+            var combine = Path.Combine(fullPath, combinedFileName);
             File.WriteAllText(combine, generatedText);
 
             compiler.Output.GenerateTableOfContents(compiler.RootFolder);
+        }
+
+        /// <summary>
+        /// The calculates the file name for the file where all the combined documentation will get written to.
+        /// </summary>
+        /// <param name="output">
+        /// The output.
+        /// </param>
+        /// <returns>
+        /// The <see cref="string"/>.
+        /// </returns>
+        private static string CalculateCombinedFileName(IDocsOutput output)
+        {
+            if (output.ContentType == OutputType.Markdown)
+            {
+                return "all.markdown";
+            }
+                
+            if (output.ContentType == OutputType.Html)
+            {
+                return "all.html";
+            }
+
+            return "all.none";
         }
 
         /// <summary>
