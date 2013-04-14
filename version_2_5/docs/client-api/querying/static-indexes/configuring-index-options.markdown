@@ -63,18 +63,7 @@ For languages other than English, or if you need a custom analysis process, you 
 
 To make an entity property indexed using a specific Analyzer, all you need to do is match it with the name of the property, like so:
 
-	documentStore.DatabaseCommands.PutIndex("AnalyzersTestIdx", 
-	    new IndexDefinitionBuilder<BlogPost, BlogPost>
-	    {
-	        Map =
-	            users =>
-	            from doc in users select new { doc.Tags, doc.Content },
-	        Analyzers =
-	                        {
-	                            {x => x.Tags, "SimpleAnalyzer"},
-	                            {x => x.Content, "SnowballAnalyzer"}
-	                        },
-	    });
+{CODE analyzers1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
 
 The Analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the "Analyzers" folder of the RavenDB server directory, and use their fully qualified type name (including the assembly name).
 
@@ -86,19 +75,7 @@ Lucene allows storing the original token text for fields, and RavenDB exposes th
 
 By default, tokens are saved to the index as Indexed and Analyzed but not Stored - that is: they can be searched on using a specific Analyzer (or the default one), but their original value is unavailable after indexing. Enabling field storage causes values to be available to be retrieved via `IDocumentQuery<T>.SelectFields<TProjection>(...)`, and is done like so:
 
-	public class StoresIndex : AbstractIndexCreationTask<BlogPost, BlogPost>
-	{
-	    public StoresIndex()
-	    {
-	        Map = posts => from doc in posts
-	                            select new { doc.Tags, doc.Content };
-	 
-	        Stores.Add(x => x.Title, FieldStorage.Yes);
-	 
-	        Indexes.Add(x => x.Tags, FieldIndexing.NotAnalyzed);
-	        Indexes.Add(x => x.Comments, FieldIndexing.No);
-	    }
-	}
+{CODE stores1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
 
 The default values for each field are `FieldStorage.No` in Stores and `FieldIndexing.Default` in Indexes.
 
