@@ -36,7 +36,7 @@ namespace RavenDB.DocsCompiler.Output
             File.Copy(fullFilePath, Path.Combine(outputPath, Path.GetFileName(fullFilePath)), true);
         }
 
-        public void GenerateToc(IDocumentationItem rootItem)
+        public void GenerateTableOfContents(IDocumentationItem rootItem)
         {
         }
     }
@@ -79,7 +79,7 @@ namespace RavenDB.DocsCompiler.Output
 			File.Copy(fullFilePath, Path.Combine(outputPath, Path.GetFileName(fullFilePath)), true);
 		}
 
-		public void GenerateToc(IDocumentationItem rootItem)
+		public void GenerateTableOfContents(IDocumentationItem rootItem)
 		{
 			var menuToc = Path.Combine(OutputPath, "toc.html");
 			var sb = new StringBuilder();
