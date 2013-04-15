@@ -20,19 +20,37 @@ namespace RavenDB.DocsCompiler.MagicWorkers
     using RavenDB.DocsCompiler.Model;
     using RavenDB.DocsCompiler.Output;
 
+    /// <summary>
+    /// The Markdown documentation parser.
+    /// </summary>
     public static class DocumentationParser
     {
+        /// <summary>
+        /// Regular expression to identify code in the document.
+        /// </summary>
         private static readonly Regex CodeFinder = new Regex(@"{CODE\s+(.+)/}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Regular expression to identify a code block in the document.
+        /// </summary>
         private static readonly Regex CodeBlockFinder = new Regex(
             @"{CODE-START:(.+?)/}(.*?){CODE-END\s*/}", RegexOptions.Compiled | RegexOptions.Singleline);
 
+        /// <summary>
+        /// Regular expression to identify a notes block in the document.
+        /// </summary>
         private static readonly Regex NotesFinder = new Regex(
             @"{(NOTE|WARNING|INFO|TIP|BLOCK)\s+(.+)/}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Regular expression to identify a file list block in the document.
+        /// </summary>
         private static readonly Regex FilesListFinder = new Regex(
             @"{FILES-LIST(-RECURSIVE)?\s*/}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Regular expression to find the first line with a space in the document.
+        /// </summary>
         private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
         public static string Parse(
@@ -83,6 +101,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 sb.AppendFormat("* [{0}]({1})", item.Title, item.Slug);
                 sb.AppendLine();
             }
+
             return sb.ToString();
         }
 
@@ -99,8 +118,6 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             }
 
             return string.Format("{0}{1}", Environment.NewLine, ConvertMarkdownCodeStatment(code));
-                // .Replace("<", "&lt;"));
-
         }
 
         private static string InjectNoteBlocks(string blockType, string blockText)
@@ -126,7 +143,6 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
             return Environment.NewLine + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent));
                 // .Replace("<", "&lt;");
-
         }
 
         private static string ConvertMarkdownCodeStatment(string code)
@@ -250,6 +266,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 {
                     src = src.Substring(7);
                 }
+
                 tag.attributes["src"] = imagesPath + src;
             }
 
