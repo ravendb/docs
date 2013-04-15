@@ -54,8 +54,9 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
         public static string Parse(
-            Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl, bool convertToHtml)
+            Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl)
         {
+            bool convertToHtml = docsCompiler.ConvertToHtml;
             if (!File.Exists(fullPath))
             {
                 throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
