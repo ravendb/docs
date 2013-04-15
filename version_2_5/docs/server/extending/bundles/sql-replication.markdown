@@ -1,6 +1,6 @@
 #SQL Replication Bundle
 
-RavenDB 2.5 introduced new SQL Replication bundle.
+To provide an easy and flexible way to setup a replication to SQL servers, we have replaced the Index Replication bundle with new mechanism that is a part of a SQL Replication bundle.   
 
 Supported SQL providers:   
 * System.Data.SqlClient   
