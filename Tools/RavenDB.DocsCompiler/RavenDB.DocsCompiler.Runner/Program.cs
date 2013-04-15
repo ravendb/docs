@@ -7,12 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using RavenDB.DocsCompiler.Output;
+
 namespace RavenDB.DocsCompiler.Runner
 {
-    
-
-    using RavenDB.DocsCompiler.Output;
-
     /// <summary>
     /// The program.
     /// </summary>
