@@ -234,8 +234,7 @@ namespace RavenDB.DocsCompiler
                 folder,
                 Path.Combine(fullPath, "index.markdown"),
                 string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
-                versionUrl,
-                this.ConvertToHtml);
+                versionUrl);
             this.Output.SaveDocItem(
                 new Document { Title = folder.Title, Content = contents, Trail = fullFolderSlug, Slug = "index" });
 
@@ -301,8 +300,7 @@ namespace RavenDB.DocsCompiler
                 folder,
                 Path.Combine(fullPath, "index.markdown"),
                 string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
-                versionUrl,
-                this.ConvertToHtml);
+                versionUrl);
             this.Output.SaveDocItem(
                 new Document { Title = folder.Title, Content = contents, Trail = fullFolderSlug, Slug = "index" });
             return contents;
@@ -401,7 +399,7 @@ namespace RavenDB.DocsCompiler
         {
             var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
             string path = Path.Combine(fullPath, document.Slug);
-            document.Content = DocumentationParser.Parse(this, null, path, document.Trail, versionUrl, this.ConvertToHtml);
+            document.Content = DocumentationParser.Parse(this, null, path, document.Trail, versionUrl);
             document.Slug = strippedSlug;
             this.Output.SaveDocItem(document);
             return document.Content;
