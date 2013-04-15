@@ -110,12 +110,7 @@ namespace RavenDB.DocsCompiler
                 throw new ArgumentNullException("output");
             }
 
-            var compiler = new Compiler(Path.Combine(fullPath, "docs"))
-                               {
-                                   Output = output,
-                                   CodeSamplesPath =
-                                       Path.Combine(fullPath, "code-samples")
-                               };
+            var compiler = CreateDocumentationCompiler(output, fullPath);
 
             Console.WriteLine("CompileFolder - processing {0}", compiler.RootFolder);
             var generatedText =
@@ -125,6 +120,28 @@ namespace RavenDB.DocsCompiler
             File.WriteAllText(combine, generatedText);
 
             compiler.Output.GenerateTableOfContents(compiler.RootFolder);
+        }
+
+        /// <summary>
+        /// Creates an instance of the documentation compiler.
+        /// </summary>
+        /// <param name="output">
+        /// The output.
+        /// </param>
+        /// <param name="fullPath">
+        /// The full path.
+        /// </param>
+        /// <returns>
+        /// The <see cref="Compiler"/>.
+        /// </returns>
+        private static Compiler CreateDocumentationCompiler(IDocsOutput output, string fullPath)
+        {
+            return new Compiler(Path.Combine(fullPath, "docs"))
+                       {
+                           Output = output,
+                           CodeSamplesPath =
+                               Path.Combine(fullPath, "code-samples")
+                       };
         }
 
         /// <summary>
