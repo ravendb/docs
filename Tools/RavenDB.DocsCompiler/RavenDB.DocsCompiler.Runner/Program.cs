@@ -7,12 +7,13 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.IO;
+using RavenDB.DocsCompiler.Output;
+
 namespace RavenDB.DocsCompiler.Runner
 {
-    
-
-    using RavenDB.DocsCompiler.Output;
-
     /// <summary>
     /// The program.
     /// </summary>
@@ -64,7 +65,7 @@ namespace RavenDB.DocsCompiler.Runner
             {
                 Console.WriteLine(
                     "Generating documentation using docsPath: {0} and output path {1}", docsPath, outputPath);
-                Compiler.CompileFolder(output, docsPath, "Home", "2.0");
+                Compiler.CompileFolder(output, docsPath, "Home", version);
             }
             catch (Exception ex)
             {
