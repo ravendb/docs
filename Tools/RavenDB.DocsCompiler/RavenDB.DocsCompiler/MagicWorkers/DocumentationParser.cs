@@ -7,19 +7,19 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+
+using MarkdownDeep;
+
+using RavenDB.DocsCompiler.Model;
+using RavenDB.DocsCompiler.Output;
+
 namespace RavenDB.DocsCompiler.MagicWorkers
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
-    using MarkdownDeep;
-
-    using RavenDB.DocsCompiler.Model;
-    using RavenDB.DocsCompiler.Output;
-
     /// <summary>
     /// The Markdown documentation parser.
     /// </summary>
@@ -58,10 +58,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         {
             bool convertToHtml = docsCompiler.ConvertToHtml;
             if (!File.Exists(fullPath))
-            {
                 throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
-            }
-
+ 
             var contents = File.ReadAllText(fullPath);
             contents = CodeBlockFinder.Replace(
                 contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value, convertToHtml));
@@ -71,10 +69,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath, convertToHtml));
 
             if (folder != null)
-            {
                 contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));
-            }
-
+ 
             if (convertToHtml)
             {
                 contents = contents.ResolveMarkdown(
@@ -92,10 +88,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         private static string GenerateFilesList(Folder folder, bool recursive)
         {
             if (folder.Items == null)
-            {
                 return string.Empty;
-            }
-
+ 
             var sb = new StringBuilder();
             foreach (var item in folder.Items)
             {
@@ -161,10 +155,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         private static string GetFirstLineSpaces(string firstLine)
         {
             if (firstLine == null)
-            {
                 return string.Empty;
-            }
-
+ 
             var match = FirstLineSpacesFinder.Match(firstLine);
             if (match.Success)
             {
@@ -188,10 +180,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         {
             var codePath = Path.Combine(codeSamplesPath, file);
             if (File.Exists(codePath) == false)
-            {
                 throw new FileNotFoundException(string.Format("{0} was not found", codePath));
-            }
-
+ 
             return File.ReadAllText(codePath);
         }
 
@@ -209,10 +199,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                          };
 
             if (!string.IsNullOrWhiteSpace(output.RootUrl))
-            {
                 md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, versionUrl);
-            }
-
+ 
             md.PrepareImage = (tag, titledImage) => PrepareImage(output.ImagesPath, tag);
 
             return md.Transform(content);
@@ -222,31 +210,21 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         {
             string href;
             if (!tag.attributes.TryGetValue("href", out href))
-            {
                 return true;
-            }
-
+ 
             if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
-            {
                 return true;
-            }
-
+ 
             var hashIndex = href.IndexOf("#", StringComparison.InvariantCultureIgnoreCase);
             if (hashIndex != -1)
-            {
                 href = href.Insert(hashIndex, "?version=" + versionUrl);
-            }
             else
-            {
                 href += "?version=" + versionUrl;
-            }
-
+ 
             Uri uri;
             if (!string.IsNullOrWhiteSpace(trail))
-            {
                 trail += "/"; // make sure we don't lose the current slug
-            }
-
+ 
             if (!Uri.TryCreate(new Uri(rootUrl + trail, UriKind.Absolute), new Uri(href, UriKind.Relative), out uri))
             {
                 // TODO: Log error
@@ -264,10 +242,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             {
                 src = src.Replace('\\', '/');
                 if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
-                {
                     src = src.Substring(7);
-                }
-
+ 
                 tag.attributes["src"] = imagesPath + src;
             }
 
