@@ -1,34 +1,65 @@
-﻿using System;
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="DocumentationParser.cs" company="Hibernating Rhinos">
+//   COPYRIGHT GOES HERE
+// </copyright>
+// <summary>
+//   Defines the DocumentationParser type.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
+
+using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+
 using MarkdownDeep;
+
 using RavenDB.DocsCompiler.Model;
 using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler.MagicWorkers
 {
+    /// <summary>
+    /// The Markdown documentation parser.
+    /// </summary>
     public static class DocumentationParser
     {
+        /// <summary>
+        /// Regular expression to identify code in the document.
+        /// </summary>
         private static readonly Regex CodeFinder = new Regex(@"{CODE\s+(.+)/}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Regular expression to identify a code block in the document.
+        /// </summary>
         private static readonly Regex CodeBlockFinder = new Regex(
             @"{CODE-START:(.+?)/}(.*?){CODE-END\s*/}", RegexOptions.Compiled | RegexOptions.Singleline);
 
+        /// <summary>
+        /// Regular expression to identify a notes block in the document.
+        /// </summary>
         private static readonly Regex NotesFinder = new Regex(
             @"{(NOTE|WARNING|INFO|TIP|BLOCK)\s+(.+)/}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Regular expression to identify a file list block in the document.
+        /// </summary>
         private static readonly Regex FilesListFinder = new Regex(
             @"{FILES-LIST(-RECURSIVE)?\s*/}", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Regular expression to find the first line with a space in the document.
+        /// </summary>
         private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
         public static string Parse(
-            Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl, bool convertToHtml)
+            Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl)
         {
-            if (!File.Exists(fullPath)) throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
-
+            bool convertToHtml = docsCompiler.ConvertToHtml;
+            if (!File.Exists(fullPath))
+                throw new FileNotFoundException(string.Format("{0} was not found", fullPath));
+ 
             var contents = File.ReadAllText(fullPath);
             contents = CodeBlockFinder.Replace(
                 contents, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value, convertToHtml));
@@ -38,10 +69,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath, convertToHtml));
 
             if (folder != null)
-            {
                 contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));
-            }
-
+ 
             if (convertToHtml)
             {
                 contents = contents.ResolveMarkdown(
@@ -58,14 +87,16 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
         private static string GenerateFilesList(Folder folder, bool recursive)
         {
-            if (folder.Items == null) return string.Empty;
-
+            if (folder.Items == null)
+                return string.Empty;
+ 
             var sb = new StringBuilder();
             foreach (var item in folder.Items)
             {
                 sb.AppendFormat("* [{0}]({1})", item.Title, item.Slug);
                 sb.AppendLine();
             }
+
             return sb.ToString();
         }
 
@@ -80,9 +111,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                     // to support syntax highlighting on pre tags
                     lang);
             }
-            return string.Format("{0}{1}", Environment.NewLine, ConvertMarkdownCodeStatment(code));
-                // .Replace("<", "&lt;"));
 
+            return string.Format("{0}{1}", Environment.NewLine, ConvertMarkdownCodeStatment(code));
         }
 
         private static string InjectNoteBlocks(string blockType, string blockText)
@@ -105,9 +135,9 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                        // to support syntax highlighting on pre tags
                        + "</pre>";
             }
+
             return Environment.NewLine + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent));
                 // .Replace("<", "&lt;");
-
         }
 
         private static string ConvertMarkdownCodeStatment(string code)
@@ -124,13 +154,15 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
         private static string GetFirstLineSpaces(string firstLine)
         {
-            if (firstLine == null) return string.Empty;
-
+            if (firstLine == null)
+                return string.Empty;
+ 
             var match = FirstLineSpacesFinder.Match(firstLine);
             if (match.Success)
             {
                 return firstLine.Substring(0, match.Length);
             }
+
             return string.Empty;
         }
 
@@ -147,7 +179,9 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         private static string LocateCodeFile(string codeSamplesPath, string file)
         {
             var codePath = Path.Combine(codeSamplesPath, file);
-            if (File.Exists(codePath) == false) throw new FileNotFoundException(string.Format("{0} was not found", codePath));
+            if (File.Exists(codePath) == false)
+                throw new FileNotFoundException(string.Format("{0} was not found", codePath));
+ 
             return File.ReadAllText(codePath);
         }
 
@@ -165,10 +199,8 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                          };
 
             if (!string.IsNullOrWhiteSpace(output.RootUrl))
-            {
                 md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, versionUrl);
-            }
-
+ 
             md.PrepareImage = (tag, titledImage) => PrepareImage(output.ImagesPath, tag);
 
             return md.Transform(content);
@@ -177,22 +209,22 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail, string versionUrl)
         {
             string href;
-            if (!tag.attributes.TryGetValue("href", out href)) return true;
-
-            if (Uri.IsWellFormedUriString(href, UriKind.Absolute)) return true;
-
+            if (!tag.attributes.TryGetValue("href", out href))
+                return true;
+ 
+            if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
+                return true;
+ 
             var hashIndex = href.IndexOf("#", StringComparison.InvariantCultureIgnoreCase);
             if (hashIndex != -1)
-            {
                 href = href.Insert(hashIndex, "?version=" + versionUrl);
-            }
             else
-            {
                 href += "?version=" + versionUrl;
-            }
-
+ 
             Uri uri;
-            if (!string.IsNullOrWhiteSpace(trail)) trail += "/"; // make sure we don't lose the current slug
+            if (!string.IsNullOrWhiteSpace(trail))
+                trail += "/"; // make sure we don't lose the current slug
+ 
             if (!Uri.TryCreate(new Uri(rootUrl + trail, UriKind.Absolute), new Uri(href, UriKind.Relative), out uri))
             {
                 // TODO: Log error
@@ -209,9 +241,12 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             if (tag.attributes.TryGetValue("src", out src))
             {
                 src = src.Replace('\\', '/');
-                if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase)) src = src.Substring(7);
+                if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
+                    src = src.Substring(7);
+ 
                 tag.attributes["src"] = imagesPath + src;
             }
+
             return true;
         }
     }
