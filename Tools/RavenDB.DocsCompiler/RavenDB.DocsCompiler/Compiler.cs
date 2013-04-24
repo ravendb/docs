@@ -7,16 +7,16 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+using System;
+using System.IO;
+using System.Linq;
+
+using RavenDB.DocsCompiler.MagicWorkers;
+using RavenDB.DocsCompiler.Model;
+using RavenDB.DocsCompiler.Output;
+
 namespace RavenDB.DocsCompiler
 {
-    using System;
-    using System.IO;
-    using System.Linq;
-
-    using RavenDB.DocsCompiler.MagicWorkers;
-    using RavenDB.DocsCompiler.Model;
-    using RavenDB.DocsCompiler.Output;
-
     /// <summary>
     /// The output type.
     /// </summary>
@@ -106,10 +106,8 @@ namespace RavenDB.DocsCompiler
         public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle, string versionUrl)
         {
             if (output == null)
-            {
                 throw new ArgumentNullException("output");
-            }
-
+ 
             var compiler = CreateDocumentationCompiler(output, fullPath);
 
             Console.WriteLine("CompileFolder - processing {0}", compiler.RootFolder);
@@ -135,15 +133,11 @@ namespace RavenDB.DocsCompiler
         private static string CalculateCombinedFileName(IDocsOutput output)
         {
             if (output.ContentType == OutputType.Markdown)
-            {
                 return "all.markdown";
-            }
                 
             if (output.ContentType == OutputType.Html)
-            {
                 return "all.html";
-            }
-
+ 
             return "all.none";
         }
 
@@ -187,10 +181,8 @@ namespace RavenDB.DocsCompiler
             var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
 
             if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
-            {
                 return string.Empty;
-            }
-
+ 
             if (this.ConvertToHtml)
             {
                 this.ProcessAsHtml(folder, versionUrl, fullPath, fullFolderSlug);
@@ -198,10 +190,8 @@ namespace RavenDB.DocsCompiler
             }
 
             if (this.Output.ContentType == OutputType.Markdown)
-            {
                 return this.ProcessAsMarkdown(folder, versionUrl, fullPath, fullFolderSlug);
-            }
-
+ 
             return string.Empty;
         }
 
@@ -234,8 +224,7 @@ namespace RavenDB.DocsCompiler
                 folder,
                 Path.Combine(fullPath, "index.markdown"),
                 string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
-                versionUrl,
-                this.ConvertToHtml);
+                versionUrl);
             this.Output.SaveDocItem(
                 new Document { Title = folder.Title, Content = contents, Trail = fullFolderSlug, Slug = "index" });
 
@@ -301,8 +290,7 @@ namespace RavenDB.DocsCompiler
                 folder,
                 Path.Combine(fullPath, "index.markdown"),
                 string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
-                versionUrl,
-                this.ConvertToHtml);
+                versionUrl);
             this.Output.SaveDocItem(
                 new Document { Title = folder.Title, Content = contents, Trail = fullFolderSlug, Slug = "index" });
             return contents;
@@ -329,25 +317,19 @@ namespace RavenDB.DocsCompiler
         private string ProcessItem(Folder folder, string versionUrl, IDocumentationItem item, string fullPath)
         {
             if (item.Slug != null)
-            {
                 item.Slug = item.Slug.TrimStart('\\', '/');
-            }
-
+ 
             item.Trail = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
             folder.Items.Add(item);
 
             var document = item as Document;
             if (document != null)
-            {
                 return this.CompileDocument(versionUrl, document, fullPath);
-            }
-
+ 
             var subFolder = item as Folder;
             if (subFolder != null)
-            {
                 return CompileFolder(subFolder, versionUrl);
-            }
-
+ 
             return string.Empty;
         }
 
@@ -365,10 +347,8 @@ namespace RavenDB.DocsCompiler
             // Copy images
             var imagesPath = Path.Combine(fullPath, "images");
             if (!Directory.Exists(imagesPath))
-            {
                 return;
-            }
-
+ 
             var images = Directory.GetFiles(imagesPath);
             foreach (var image in images)
             {
@@ -401,7 +381,7 @@ namespace RavenDB.DocsCompiler
         {
             var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
             string path = Path.Combine(fullPath, document.Slug);
-            document.Content = DocumentationParser.Parse(this, null, path, document.Trail, versionUrl, this.ConvertToHtml);
+            document.Content = DocumentationParser.Parse(this, null, path, document.Trail, versionUrl);
             document.Slug = strippedSlug;
             this.Output.SaveDocItem(document);
             return document.Content;

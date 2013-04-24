@@ -31,9 +31,15 @@ namespace RavenDB.DocsCompiler.Output
         {
             var outputPath = Path.Combine(OutputPath, ofFolder.Trail, ofFolder.Slug, "images");
             if (!Directory.Exists(outputPath))
+            {
                 Directory.CreateDirectory(outputPath);
+            }
+                
+            var destFileName = Path.Combine(outputPath, Path.GetFileName(fullFilePath));
 
-            File.Copy(fullFilePath, Path.Combine(outputPath, Path.GetFileName(fullFilePath)), true);
+            //Console.WriteLine("Copying {0} to {1}", fullFilePath, destFileName);
+
+            File.Copy(fullFilePath, destFileName, true);
         }
 
         public void GenerateTableOfContents(IDocumentationItem rootItem)
