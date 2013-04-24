@@ -1,16 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="Compiler.cs" company="Hibernating Rhinos">
-//   COPYRIGHT GOES HERE
-// </copyright>
-// <summary>
-//   The program.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿// -----------------------------------------------------------------------
+//  <copyright file="Compiler.cs" company="Hibernating Rhinos LTD">
+//      Copyright (c) Hibernating Rhinos LTD. All rights reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
 using System;
 using System.IO;
 using System.Linq;
-
 using RavenDB.DocsCompiler.MagicWorkers;
 using RavenDB.DocsCompiler.Model;
 using RavenDB.DocsCompiler.Output;
