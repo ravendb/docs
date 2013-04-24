@@ -1,20 +1,14 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="DocumentationParser.cs" company="Hibernating Rhinos">
-//   COPYRIGHT GOES HERE
-// </copyright>
-// <summary>
-//   Defines the DocumentationParser type.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
-
+﻿// -----------------------------------------------------------------------
+//  <copyright file="DocumentationParser.cs" company="Hibernating Rhinos LTD">
+//      Copyright (c) Hibernating Rhinos LTD. All rights reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
 using System;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-
 using MarkdownDeep;
-
 using RavenDB.DocsCompiler.Model;
 using RavenDB.DocsCompiler.Output;
 

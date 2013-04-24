@@ -1,18 +1,13 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IDocsOutput.cs" company="Hibernating Rhinos">
-//   COPYRIGHT GOES HERE
-// </copyright>
-// <summary>
-//   The DocsOutput interface.
-// </summary>
-// --------------------------------------------------------------------------------------------------------------------
+﻿// -----------------------------------------------------------------------
+//  <copyright file="IDocsOutput.cs" company="Hibernating Rhinos LTD">
+//      Copyright (c) Hibernating Rhinos LTD. All rights reserved.
+//  </copyright>
+// -----------------------------------------------------------------------
+using System;
+using RavenDB.DocsCompiler.Model;
 
 namespace RavenDB.DocsCompiler.Output
 {
-    using System;
-
-    using RavenDB.DocsCompiler.Model;
-
     /// <summary>
     /// The DocsOutput interface.
     /// </summary>
