@@ -1,4 +1,5 @@
-﻿# Using Linq to query RavenDB indexes
+﻿
+### Using Linq to query RavenDB indexes
 
 As we have already seen in the previous chapter, querying is made on a collection and using the `Session` object. Unless the user specifies what index to query explicitly, RavenDB will find an appropriate index to query, or create it on the fly if one does not already exist. We will see how to create named indexes, also called static, later in this chapter. Regardless of the index being actually queried, querying is usually done using Linq.
 
@@ -10,7 +11,7 @@ Assuming we have entities of the following types stored in our database:
 
 Let's see how we can use Linq to easily query for data in various scenarios. We will not cover all Linq's features, but will highlight several which are important to be familiar with.
 
-## Some basics
+#### Some basics
 
 Say we wanted to get all entities of type `Company` into a List, how would we go about that? Ignoring for now the performance hit of loading a large bulk of data, we could do this pretty easily (note that this query is implicitly using Take(128), because it didn't specify a page size explicitly):
 
