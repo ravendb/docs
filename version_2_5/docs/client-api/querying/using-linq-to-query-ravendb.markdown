@@ -1,4 +1,5 @@
-﻿### Using Linq to query RavenDB indexes
+﻿
+### Using Linq to query RavenDB indexes
 
 As we have already seen in the previous chapter, querying is made on a collection and using the `Session` object. Unless the user specifies what index to query explicitly, RavenDB will find an appropriate index to query, or create it on the fly if one does not already exist. We will see how to create named indexes, also called static, later in this chapter. Regardless of the index being actually queried, querying is usually done using Linq.
 
