@@ -1,10 +1,11 @@
-﻿#Changes API
+﻿
+## Changes API
 
 The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
 You are able to subscribe to events for all documents or indexes as well as to indicate a particular one that you are interested in. 
 This mechanism lets you to notify users if something has changed without the need to do any expensive pooling. 
 
-##IDatabaseChanges interface
+### IDatabaseChanges interface
 
 The changes subscription is accessible by a document store. Depending on the type of the store you use (`DocumentStore`, `ShardedDocumentStore` or `EmbeddableDocumentStore`) you will get an appropriate instance
 which is an implementation of a common `IDatabaseChanges` interface.
@@ -13,7 +14,7 @@ which is an implementation of a common `IDatabaseChanges` interface.
 
 The parameter of the `Changes` method is an optional database name that you want get notifications from. If it is not provided the default database will be chosen.
 
-##Connection properties
+### Connection properties
 
 `IDatabaseChanges` has three properties that are related to the server connection:
 
@@ -28,13 +29,13 @@ The parameter of the `Changes` method is an optional database name that you want
 	event EventHandler ConnectionStatusChanged
 {CODE-END /}
 
-##Subscribing methods
+### Subscribing methods
 
 In order to retrieve notifications you have to subscribe server-side events by using either document or index related methods.
 
 {INFO To achieve a better experience of subsribing methods by using delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
-###Document notifications
+#### Document notifications
 
 You are able to subscribe changes of all documents in database. For example to get information from the server about replication conflicts use the following code:
 
@@ -68,7 +69,7 @@ BulkInsertEnded,
 Common (Put | Delete)
 {CODE-END /}
 
-###Index notifications
+#### Index notifications
 
 The same like observing changes for documents you are allowed to grab information about indexes from the server. In order to look for changes for all indexes
 you should use the `ForAllIndexes` method. For example to get info about newly created indexes use the code:
