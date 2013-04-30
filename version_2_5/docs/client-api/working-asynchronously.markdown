@@ -1,4 +1,5 @@
-﻿# Working Asynchronously
+﻿
+## Working Asynchronously
 
 The RavenDB client API supports executing the common operations asynchronously, so lengthy operations don't have to be blocking. This is also how the RavenDB Silverlight client is working.
 
