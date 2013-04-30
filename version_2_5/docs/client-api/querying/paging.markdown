@@ -1,4 +1,5 @@
-﻿# Paging
+﻿
+### Paging
 
 Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic, optimizing hardware usage, or just because no user can handle huge amounts of data at once anyway.
 
@@ -8,7 +9,7 @@ It is as simple as specifying a page size and passing a starting point. Using Li
 
 {CODE paging1@ClientApi\Querying\Paging.cs /}
 
-## Finding the total results count when paging
+#### Finding the total results count when paging
 
 While paging you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
 
@@ -16,7 +17,7 @@ While paging you sometimes need to know the exact number of results returned fro
 
 While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
 
-## Paging through tampered results
+#### Paging through tampered results
 
 For some queries, RavenDB will skip over some results internally, and by that invalidate the `TotalResults` value. For example when executing a Distinct query, `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
 
