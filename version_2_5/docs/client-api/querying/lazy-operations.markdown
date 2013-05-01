@@ -1,4 +1,4 @@
-﻿#Lazy Operations
+﻿### Lazy Operations
 
 Some of the operations in RavenDB can be evaluated lazily (performed only when needed).
 
@@ -8,7 +8,7 @@ This section will describe each of the available lazy operations:
 * **Faceted searching**   
 * **Suggesting**    
 
-## Querying
+#### Querying
 
 To perform query below
 
@@ -36,7 +36,7 @@ Lazy Lucene queries are also possible.
 
 {CODE lazy_operations_querying_5@ClientApi\Querying\LazyOperations.cs /}
 
-##Loading
+#### Loading
 
 Loading lazily is done in a bit different manner, it can be achieved by using one of the methods available in `session.Advanced.Lazily` property, so to perform below query
 
@@ -71,7 +71,7 @@ then we will be able to perform code such as
 
 {CODE lazy_operations_loading_8@ClientApi\Querying\LazyOperations.cs /}
 
-##Faceted search
+#### Faceted search
 
 To take advantage of lazy Faceted search use `ToFacetsLazy()` extension method from `LinqExtensions` found in `Raven.Client` namespace.
 
@@ -79,7 +79,7 @@ To change Faceted search from last step described [here](../faceted-search#step-
 
 {CODE lazy_operations_facets_1@ClientApi\Querying\LazyOperations.cs /}
 
-##Suggesting
+#### Suggesting
 
 Similar practice as in Faceted search has been used in lazy suggestions. The `SuggestLazy()` extension method is available in `LinqExtensions` and can be used as a substitution to `Suggest()` to mark operation as a lazy one.
 
