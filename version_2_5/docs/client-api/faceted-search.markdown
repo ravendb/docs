@@ -1,4 +1,5 @@
-﻿# Faceted Search
+﻿
+## Faceted Search
 
 When displaying a large amount of data, often paging is used to make viewing the data manageable. However it's also useful to give some context of the entire data-set and a easy way to drill-down into particular categories. The common approach to doing this is "faceted search", as shown in the image below. __Note__ how the count of each category within the current search is across the top.
 
@@ -18,7 +19,7 @@ To achieve this in RavenDB, lets say you have a document like this:
 }
 {CODE-END /}
 
-## Step 1
+### Step 1
 
 You need to setup your facet definitions and store them in RavenDB as a document, like so:
 
@@ -39,13 +40,13 @@ This tells RavenDB that you would like to get the following facets.
  * 7.0 <= Megapixels <= 10.0
  * Megapixels >= 10.0
 
-## Step 2
+### Step 2
 
 Next you need to create an index to work against, this can be setup like so:
 
 {CODE step_2@ClientApi\FacetedSearch.cs /}
 
-## Step 3
+### Step 3
 
 Finally you can write the following code and you get back the data below.
 
