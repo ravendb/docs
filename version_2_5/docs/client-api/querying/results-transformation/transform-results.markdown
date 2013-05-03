@@ -1,4 +1,4 @@
-﻿#TransformResults
+﻿##### TransformResults
 
 If you want to do a client side results transformation in most cases it will be enough to you use standard Linq `Select` method. 
 However if your intention is to create a bit more complex projection then `TransformResults` customization method might be useful.
@@ -6,7 +6,7 @@ An advantage of this approach is that you have an access to the executed index q
 
 In order to use this method you have to `Customize` your query as is in the example presented below.
 
-##Example
+###### Example
 
 Let's assume that we have the following classes:
 
