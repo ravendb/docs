@@ -1,6 +1,6 @@
-#HTTP API - Single Document Operations
+##HTTP API - Single Document Operations
 
-##GET
+###GET
 
 Perform a GET request to read a JSON document from its URL: 
 
@@ -24,7 +24,8 @@ If the URL specified does not point to a valid document, RavenDB follows HTTP co
 
     HTTP/1.1 404 Not Found
 
-##PUT
+###PUT
+
 Perform a PUT request to /docs/{document_id} to create the specified document with the given document id: 
 
 {CODE-START:json /}
@@ -43,7 +44,8 @@ It is important to note that a PUT in RavenDB will always create the specified d
 
 A PUT request to /docs without specifying the document id in the URL is an invalid request and RavenDB will return a HTTP 400 Bad Request response code. 
 
-##POST
+###POST
+
 Perform a POST request to the /docs area to create the specified document and allow RavenDB to assign a unique id to it: 
 
 {CODE-START:json /}
@@ -62,7 +64,7 @@ It is important to note that a repeated POST request for the same document will 
 
 A POST to a document URL is an invalid request and RavenDB will return a HTTP 400 Bad Request response code.
 
-##PATCH
+###PATCH
 
 Any single document within RavenDB can be updated without replacing the entire document with a PUT. You can do it either by using [Client API](../client-api/partial-document-updates) or by creating a PATCH request. The PATCH command allows Raven to implement field level concurrency.
 
@@ -91,7 +93,8 @@ For the purposes of these examples, suppose we start with this document:
       comments: [ {author: 'ayende', text: 'good post'} ] }"
 {CODE-END /}
 
-###Patch Operations
+####Patch Operations
+
 Raven supports the following patch operations:
 
 * Set - Set a property to a new value (optionally creating the property).
@@ -497,7 +500,8 @@ A subsequent GET of this document would show that the first operation worked, bu
 
 Using this approach, you can make an atomic change to the a particular part of a document safely.
 
-## DELETE
+### DELETE
+
 Perform a DELETE request to delete the JSON document specified by the URL: 
 
 {CODE-START:plain /}
