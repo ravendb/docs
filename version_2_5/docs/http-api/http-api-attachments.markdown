@@ -1,8 +1,9 @@
-#HTTP API - Attachment Operations
+
+##HTTP API - Attachment Operations
 
 Raven supports the concept of attachments. The attachments are binary data that are stored in the database and can be retrieved by a key.
 
-## PUT
+#### PUT
 
 Perform a PUT request to /static/{attachment key} to create the specified attachment at the given URL:
 
@@ -22,7 +23,7 @@ It is important to note that a PUT in RavenDB will always create the specified a
 
 While putting an attachment, it is possible to store metadata about it using HTTP Headers. By default a standard `Content-Type` HTTP header is always stored, however any custom header that you defined will be saved as well. When the attachment is next retrieved by GET request, its metadata are sent back to the client.
 
-## GET
+#### GET
 Retrieving an attachment is done by performing an HTTP GET on the following URL:
 
 {CODE-START:plain /}
@@ -37,7 +38,7 @@ For example, the following request:
 
 Will retrieve an attachment whose key is "users/ayende.jpg", the response to the request is the exact byte stream that was stored in a previous [PUT](http://ravendb.net/docs/http-api/attachments/http-api-put-attachments?version=2.0) request.
 
-## DELETE
+#### DELETE
 
 Perform a DELETE request to delete the attachment specified by the URL:
 
@@ -53,7 +54,7 @@ For a successful delete, RavenDB will respond with an HTTP response code 204 No 
 
 The only way a delete can fail is if [the etag doesn't match](http://ravendb.net/docs/http-api/http-api-concurrency?version=2.0), even if the attachment doesn't exist, a delete will still respond with a successful status code.
 
-##HEAD
+####HEAD
 
 To retrieve only metadata of an attachment execute a HEAD request:
 
@@ -63,7 +64,7 @@ To retrieve only metadata of an attachment execute a HEAD request:
 
 For a successful delete, RavenDB will respond with an HTTP response code 200 OK. Metadata will be contained in response headers.
 
-##POST
+####POST
 
 Perform a POST request to update attachment metadata:
 
