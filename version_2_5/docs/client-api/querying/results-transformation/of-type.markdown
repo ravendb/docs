@@ -1,4 +1,4 @@
-﻿#OfType (As)
+﻿##### OfType (As)
 
 RavenDB provides a feature called [Live Projections](../static-indexes/live-projections) that offers the ability to transform results of a query on a server side. 
 In order to use it in the Client API you have to use `OfType<T>` (`As<T>`) extension method accessible from `Raven.Client` namespace.
