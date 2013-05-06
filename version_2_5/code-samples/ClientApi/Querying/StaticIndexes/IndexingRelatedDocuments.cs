@@ -28,6 +28,8 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 		public class Book
 		{
 			public string Id { get; set; }
+			
+			public string Name { get; set; }
 		}
 
 		public class Author
@@ -66,7 +68,7 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 								 select new
 									 {
 										 Name = author.Name,
-										 Books = author.BookIds.Select(x => LoadDocument<Book>(x).Id)
+										 Books = author.BookIds.Select(x => LoadDocument<Book>(x).Name)
 									 };
 			}
 		}
