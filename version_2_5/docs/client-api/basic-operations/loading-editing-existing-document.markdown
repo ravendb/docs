@@ -1,4 +1,5 @@
-﻿# Loading & Editing an existing document
+﻿
+### Loading & Editing an existing document
 
 Each _document_ is stored as part of a *collection*, where a _collection_ is a set of documents sharing the same entity type.
 
