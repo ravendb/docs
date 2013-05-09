@@ -1,4 +1,5 @@
-﻿# Understanding the Session object
+﻿
+### Understanding the Session object
 
 After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on the DB, we start by obtaining a new Session object from the document store. The Session object will contain everything needed to perform any operation necessary:
 
@@ -6,7 +7,7 @@ After creating a RavenDB document store, we are ready to use the database server
 
 The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and finally apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server and do something with it.
 
-## Unit of Work
+#### Unit of Work
 
 The Client API implements the Unit of Work pattern. That has several implications:
 
@@ -16,11 +17,11 @@ The Client API implements the Unit of Work pattern. That has several implication
 
 {CODE session_usage_2@ClientApi\BasicOperations\UnderstandingSessionObject.cs /}
 
-## Batching
+#### Batching
 
 One of the most expensive operations in an application is making remote calls. The RavenDB Client API optimizes this for you by batching all write calls to the RavenDB server into a single call. This is the default behavior whenever using the Session object, so you don't have to do anything to enable it. This also ensures that writes to the database are always executed in a single transaction, no matter how many operations you are actually executing.
 
-## Safe by default
+#### Safe by default
 
 By default, RavenDB will not allow operations that might compromise the stability of either the server or the client. There are mainly two examples that present themselves most often - sending too many requests, or receiving too large a response. Therefore, a RavenDB session automatically enforces the following limitations:
 

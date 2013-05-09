@@ -1,4 +1,5 @@
-﻿# Basic query support in RavenDB
+﻿
+### Basic query support in RavenDB
 
 Once data has been stored in RavenDB, we have seen how it can be retrieved by id, updated and deleted. The next useful operation is the ability to query based on some aspect of the documents that have been stored. 
 
