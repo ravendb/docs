@@ -4,7 +4,14 @@ RavenDB comes with a built-in authentication functionality and it supports two t
 * [Windows Authentication](authentication/#windows-authentication)   
 * [OAuth Authentication](authentication/#oauth-authentication)   
 
-Appropriate authentication type is chosen by examining incoming request headers and by default all actions except read-only are being authenticated. To determine which actions will be authenticated please refer to [Raven/AnonymousAccess](../administration/configuration#authorization--authentication) configuration setting.
+Appropriate authentication type is chosen by examining incoming request headers and by default all actions except read-only are being authenticated. To determine which actions will be authenticated please refer to [Raven/AnonymousAccess](administration/configuration#authorization--authentication) configuration setting.
+
+##Security system - OSS vs commercial use
+
+The authentication feature is available only in commercial use of RavenDB. You will be able to enable it if you provide a valid commercial license to your database instance. For an open-source software the only available setting is `Raven/AnonymousAccess = Admin` which means that no authentication is required. Then any user will have all administrative permissions.
+An attempt to setup authentication for a database working under AGPL license will result in an exception thrown by a server.
+
+In order to prevent security issues in commercial systems related to a temporary lack of a valid license (e.g. if it just expired) RavenDB stores info about a last seen valid license. This way despite the fact that the license is temporary invalid, the authentication will be still working.
 
 ##Windows Authentication
 
