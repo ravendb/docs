@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RavenDB.DocsCompiler\RavenDB.DocsCompiler.csproj">
-      <Project>{EF48CFBD-DEA3-4D72-A407-142AF0C350B6}</Project>
+      <Project>{ef48cfbd-dea3-4d72-a407-142af0c350b6}</Project>
       <Name>RavenDB.DocsCompiler</Name>
     </ProjectReference>
   </ItemGroup>
