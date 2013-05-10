@@ -44,6 +44,22 @@ Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultApp
 
 ![Figure 1: `Windows Authentication` settings](images/authentication_1.PNG)
 
+###Allow to login by using an account with a blank password
+
+By default Windows Authentication does not allow to use an account that have a blank password. However if you really need this you can disable this Windows security policy by using:
+
+{CODE-START:json /}
+   > Raven.Server.exe /allow-blank-password-use
+{CODE-END /}
+
+It will disable the following policy _Limit local account use of blank passwords to console logon only_ on your Windows machine. In order to revert your changes you can use:
+
+{CODE-START:json /}
+   > Raven.Server.exe /deny-blank-password-use
+{CODE-END /}
+
+to get back into the default setting.
+
 ##OAuth Authentication
 
 Second supported authentication type is an [OAuth](http://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
