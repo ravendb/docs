@@ -274,7 +274,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Determines what actions an anonymous user can do. Get - read only, All - read & write, None - allows access to only authenticated users, Admin - all (including administrative actions).   
 	_Default:_ Get
 
-{WARNING `Admin` should only be used for testing and development, since it grants to **ANY** user administrative rights.  /}
+{WARNING If your database instance does not have a valid license then `Admin` is the only available option to set. In a commercial system it should not be used. It is only for testing and development purposes, since it grants to **ANY** user administrative rights.  /}
 
 * **Raven/OAuthTokenServer**
 	The url clients should use for authenticating when using OAuth mode.  
