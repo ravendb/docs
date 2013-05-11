@@ -1,17 +1,19 @@
-pandoc --latex-engine xelatex --template pdf-template.tex `
-	docs\intro\index.markdown `
-	docs\intro\what-is-nosql.markdown `
-	docs\intro\what-is-a-document-database.markdown `
-	docs\intro\ravendb-in-a-nutshell.markdown `
-	docs\intro\basic-concepts.markdown `
-	docs\intro\safe-by-default.markdown `
-	docs\intro\quickstart\index.markdown `
-	docs\intro\quickstart\adding-ravendb-to-your-application.markdown `
-	docs\intro\quickstart\adding-ravendb-through-nuget.markdown `
-	docs\intro\system-requirements.markdown `
-	docs\intro\building-from-source.markdown `
-	docs\intro\what-is-new.markdown `
-	-o RavenDB-2.5.pdf
+# Purpose: Generates a PDF version of the RavenDB documentation (version 2.5)
+# Author: Dominique Plante
+
+# PDF Assembly Process:
+# 1. all markdown files are merged into one single markdown file (all.markdown) via 'RavenDB.DocsCompiler.Runner.exe'
+# 2. pandoc is used to generate a PDF from 'all'markdown'
+
+# To generate 'all.markdown' used below, run this first (use 'debug' or 'release' folder name as needed):
+# Note that by default 'RavenDB.DocsCompiler.Runner.exe' generates HTML, but it will generate the merged 
+# markdown file 'all.markdown with the additional command line option
+
+# pushd ..\Tools\RavenDB.DocsCompiler\RavenDB.DocsCompiler.Runner\bin\debug
+# .\RavenDB.DocsCompiler.Runner markdown
+# popd
+
+pandoc --latex-engine xelatex --template pdf-template.tex all.markdown -o RavenDB-2.5.pdf
 
 ## TODO: Table of Contents
 ## TODO: styling code
