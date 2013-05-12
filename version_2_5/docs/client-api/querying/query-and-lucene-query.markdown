@@ -10,7 +10,7 @@ However we still expose `LuceneQuery` in advanced options to allow the users to 
 
 #### LuceneQuery usage
 
-While in the most cases the usage of `Query` is enough, easier to crete and recommended to use you might want to utilize `LuceneQuery` directly.
+While in the most cases the usage of `Query` is enough, easier to create and recommended to use you might want to utilize `LuceneQuery` directly.
 `LuceneQuery` is mostly designated to be used for dynamic queries and when you want a low level access.
 
 For example dynamic querying as is shown below:
