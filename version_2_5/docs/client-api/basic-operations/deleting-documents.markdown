@@ -5,8 +5,7 @@
 
 Once a valid reference to a document has been retrieved, the document can be deleted with a call to `Delete` in the following manner:
 
-	session.Delete(existingBlogPost);
-	session.SaveChanges();
+{CODE deleting_document_1@ClientApi\BasicOperations\DeletingDocuments.cs /}
 		
 {NOTE Deletes are final and cannot be rolled back, once committed. /} 
 
@@ -20,12 +19,12 @@ Using the `Defer` command in the `Advanced` section of the session API, you can 
 
 Here is an example how to use it:
 
-	session.Advanced.Defer(new DeleteCommandData { Key = "posts/1234" });
+{CODE deleting_document_using_defer@ClientApi\BasicOperations\DeletingDocuments.cs /}
 
 ##### Delete by ID using the DatabaseCommands
 
 You can perform a direct delete using the `DatabaseCommands` property available in the `Advanced` section of the session API.
 
-	Session.Advanced.DocumentStore.DatabaseCommands.Delete("posts/1234", null);
+{CODE deleting_document_2@ClientApi\BasicOperations\DeletingDocuments.cs /}
 
 Unlike session operations, `DatabaseCommands` operations execute immediately, and do not wait for `SaveChanges` to be called.
