@@ -22,27 +22,13 @@ Before we can start saving information to RavenDB, we must define *what* we will
   
 To save a new blog post in our database server, we first create a new instance of the `BlogPost` class, as shown below:
 
-	// Creating a new instance of the BlogPost class
-	BlogPost post = new BlogPost()
-	                    {
-	                        Title = "Hello RavenDB",
-	                        Category = "RavenDB",
-	                        Content = "This is a blog about RavenDB",
-	                        Comments = new BlogComment[]
-	                                    {
-	                                        new BlogComment() {Title = "Unrealistic", Content = "This example is unrealistic"},
-	                                        new BlogComment() {Title = "Nice", Content = "This example is nice"}
-	 
-	                                    }
-	                    };
+{CODE saving_document_1@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 Neither the class itself nor instantiating it requires anything from RavenDB, either in the form of attributes or in the form of special factories. The RavenDB Client API works with simple POCO (Plain Old CLR Objects) objects.
 
 Persisting this entire object graph involves calling `Store` and then `SaveChanges`, on a session object we obtained from our document store:
 
-	// Saving the new instance to RavenDB
-	session.Store(post);
-	session.SaveChanges();
+{CODE saving_document_2@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 The `Store` method operates purely in memory and only the call of `SaveChanges` will produce the actual communication with the server (a single POST by using [request batching](../../http-api/http-api-multi#batching-requests)).
 
@@ -78,7 +64,7 @@ You can also assign an ID manually by explicitly setting the string `Id` propert
 
 You can also setup a custom id generation strategy by supplying a `DocumentKeyGenerator` to the document store conventions, like so:
 
-	store.Conventions.DocumentKeyGenerator = (dbname, commands, entity) => store.Conventions.GetTypeTagName(entity.GetType()) + "/";
+{CODE saving_document_3@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 This will instruct RavenDB to use identity id generation strategy for all the entities that this document store manages.
 
@@ -86,44 +72,26 @@ This will instruct RavenDB to use identity id generation strategy for all the en
 
 To override default document key generation algorithms, we added `RegisterIdConvention` and `RegisterAsyncIdConvention` methods to `DocumentConvention` where you can include your own identifier generation logic.
 
-	DocumentConvention RegisterIdConvention<TEntity>(Func<string, IDatabaseCommands, TEntity, string> func);
-	 
-	DocumentConvention RegisterAsyncIdConvention<TEntity>(Func<string, IAsyncDatabaseCommands, TEntity, Task<string>> func);
+{CODE saving_new_document_8@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 
 Consider a `User` class:
 
-	public class User
-	{
-	    public string Name { get; set; }
-	    public string FirstName { get; set; }
-	    public string LastName { get; set; }
-	}
+{CODE saving_new_document_1@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 To generate a custom Id with `users/` prefix combined with `Name` of the user you need to do as follows:
 
-	store.Conventions.RegisterIdConvention<User>((dbname, commands, user) => "users/" + user.Name);
+{CODE saving_new_document_2@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 or if you want to register your convention for async operations then:
 
-	store.Conventions.RegisterAsyncIdConvention<User>((dbname, commands, user) => 
-		new CompletedTask<string>("users/" + user.Name));
+{CODE saving_new_document_3@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 {NOTE Note that spectrum of identifier generation abilities is very wide, because `DatabaseCommands` object is passed into an identifier convention function and can be used for advanced calculation techniques. /}
 
 {NOTE As of version 2.0, the `dbname` is passed to the register convention methods to allow users to make `Id` generation decision per database (e.g. default document key generator - the `MultiDatabaseHiloGenerator` - is using this parameter to prevent sharing HiLo values accross the databases) /}
 
-    using (var session = store.OpenSession())
-    {
-	    session.Store(new User
-	    {
-	        Name = "jdoe",
-	        FirstName = "John",
-	        LastName = "Doe"
-	    });
-	 
-	    session.SaveChanges();
-    }
+{CODE saving_new_document_4@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 Above code will store new entity in the database with `users/jdoe` as a key and below code will store user using async operation with `users/jcarter` key:
 
@@ -139,72 +107,23 @@ Above code will store new entity in the database with `users/jdoe` as a key and 
 	    session.SaveChangesAsync();
 	}
 
-##### Inheritance
+####Inheritance
 
 Registered conventions are inheritance-aware, so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree
 
 If we will create a new class `PrivilegedUser` that will derive from our `User` class
 
-	using (var session = store.OpenAsyncSession())
-	{
-	    session.Store(new User
-	    {
-	        Name = "jcarter",
-	        FirstName = "John",
-	        LastName = "Carter"
-	    });
-	 
-	    session.SaveChangesAsync();
-	}
+{CODE saving_new_document_5@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 then if we will add convention for `User`, both our types will use our custom convention
 
-	store.Conventions.RegisterIdConvention<User>((dbname, commands, user) => "users/" + user.Name);
-	 
-	using (var session = store.OpenSession())
-	{
-	    session.Store(new User // users/jdoe
-	    {
-	        Name = "jdoe",
-	        FirstName = "John",
-	        LastName = "Doe"
-	    });
-	 
-	    session.Store(new PrivilegedUser // users/jcarter
-	    {
-	        Name = "jcarter",
-	        FirstName = "John",
-	        LastName = "Carter"
-	    });
-	 
-	    session.SaveChanges();
-	}
+{CODE saving_new_document_6@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
 If we register two conventions, one for `User` and second for `PrivilegedUser` then they will be picked for their specific types.
 
-    store.Conventions.RegisterIdConvention<User>((dbname, commands, user) => "users/" + user.Name);
-    store.Conventions.RegisterIdConvention<PrivilegedUser>((dbname, commands, user) => "admins/" + user.Name);
-	 
-	using (var session = store.OpenSession())
-	{
-	    session.Store(new User // users/jdoe
-	    {
-	        Name = "jdoe",
-	        FirstName = "John",
-	        LastName = "Doe"
-	    });
-	 
-	    session.Store(new PrivilegedUser // admins/jcarter
-	    {
-	        Name = "jcarter",
-	        FirstName = "John",
-	        LastName = "Carter"
-	    });
-	 
-	    session.SaveChanges();
-	}
+{CODE saving_new_document_7@ClientApi\BasicOperations\SavingNewDocument.cs /}
 
-#### Dealing with custom ID for high number of documents
+####Dealing with custom ID for high number of documents
 
 The ways shown in this section give to you a great flexibility in creating identifiers of documents. You are able to assign to a document any `ID` as you can imagine.
 Everything is going to work correctly however you have to be aware that some kind of IDs might cause performance issues when number of documents with custom generated IDs is very high (millions of documents).
