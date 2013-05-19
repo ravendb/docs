@@ -169,5 +169,45 @@
 				#endregion
 			}
 		}
+
+		public void ComplexPatching() 
+		{
+			using (var documentStore = this.NewDocumentStore()) {
+				#region scriptedpatching1
+				var blogComment = new BlogComment() {
+					Title = "Awesome Feature",
+					Content = @"ScriptedPatchRequest is the greatest thing since sliced bread."
+				};
+
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest() {
+						Script = @"this.Comments.push(newComment)",
+						Values = { { "newComment", blogComment } }
+				});
+				#endregion
+
+				#region scriptedpatching2
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest() {
+						Script = "this.Tags.Remove(tagToRemove)",
+						Values = { { "tagToRemove", "Interesting" } }
+					});
+				#endregion
+
+				#region scriptedpatching3
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest() {
+						Script = @"
+							this.Comments.RemoveWhere(function(comment) { 
+								return comment.Content === 'Spam' 
+							});
+						"
+					});
+				#endregion
+			}
+		}
 	}
 }
