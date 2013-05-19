@@ -18,3 +18,10 @@ In order to solve this exact problem RavenDB offers Set Based Operations. Here i
 {CODE denormalized_updates_1@Faq/DenormalizedUpdates.cs /}
     
 This will update the Artist.Name property on all the documents where the Tracks/ByArtistId index matched to the id artists/294.
+
+## Updating denormalized references using ScriptedPatchRequest
+Another approach for denormalized reference updates is to use the `ScriptedPatchRequest`:
+
+{CODE denormalized_updates_2@Faq/DenormalizedUpdates.cs /}
+
+As you can see, `ScriptedPatchRequest` allows us to load a separate document and update our current document based on it's values.
