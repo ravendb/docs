@@ -182,15 +182,15 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         public static string ResolveMarkdown(this string content, IDocsOutput output, string trail, string versionUrl)
         {
             // http://www.toptensoftware.com/markdowndeep/api
-            var md = new Markdown
-                         {
-                             AutoHeadingIDs = true,
-                             ExtraMode = true,
-                             NoFollowLinks = false,
-                             SafeMode = false,
-                             HtmlClassTitledImages = "figure",
-                             UrlRootLocation = output.RootUrl,
-                         };
+	        var md = new Markdown
+	        {
+		        AutoHeadingIDs = true,
+		        ExtraMode = true,
+		        NoFollowLinks = false,
+		        SafeMode = false,
+		        HtmlClassTitledImages = "figure",
+		        UrlRootLocation = output.RootUrl,
+	        };
 
             if (!string.IsNullOrWhiteSpace(output.RootUrl))
                 md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, versionUrl);
