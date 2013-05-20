@@ -8,12 +8,12 @@ Raven is a non-relational data store. Trying to hammer a relational model on top
 Documents, unlike a row in a RDBMS, are not flat. You are not limited to just storing keys and values. Instead, you can store complex object graphs as a single document. That includes arrays, dictionaries and trees. Unlike a relational database, where a row can only contain simple values and more complex data structures need to be stored as relations, you don't need to work hard to get your data into Raven.  
 Let us take the following page as an example:
 
-![Figure 1: Document Structure](images\document_structure_docs.png)
+![Figure 1: Document Structure](images/document_structure_docs.png)
 
 In a relational database, we would have to touch no less than 4 tables to show the data in this single page (Posts, Comments, Tags, RelatedPosts).  
 Using Raven, we can store all the data that we need to work with as a single document with the following format:
 
-![Figure 2: Document Structure](images\document_structure_2_docs.png)
+![Figure 2: Document Structure](images/document_structure_2_docs.png)
 
 This format allows us to get everything that we need to display the page shown above in a single request.
 
@@ -34,7 +34,7 @@ Since Raven treats the entire Aggregate as a single document, the problem simply
 ###Associations Management
 Aggregate Roots may contain all of their children, but even Aggregates do not live in isolation. For example:
 
-![Figure 3: Document Structure](images\document_structure_3_docs.png)
+![Figure 3: Document Structure](images/document_structure_3_docs.png)
 
 The Aggregate Root for an Order will contain Order Lines, but an Order Line will not contain a Product. Instead, it contains a reference to the product id.  
 
