@@ -1,4 +1,5 @@
-﻿# Intro to RavenDB
+﻿
+# Intro to RavenDB
 
 If you're new to RavenDB, then this is the place to start. This introduction will help you understand the basics of RavenDB and how to use it.
 
