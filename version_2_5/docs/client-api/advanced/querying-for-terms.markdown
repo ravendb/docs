@@ -1,4 +1,5 @@
-# Querying for terms
+
+### Querying for terms
 
 RavenDB lets you retrieve all terms indexed in a Lucene index for a specific field. Fields are usually your entity properties, but depending on how you built your indexes they may contain different information.
 
