@@ -1,4 +1,5 @@
-﻿# Transaction support in RavenDB
+﻿
+### Transaction support in RavenDB
 
 All the previous examples have assumed that a single unit of work can be achieved with a single IDocumentSession and a single call to `SaveChanges`, and for the most part this is definitely true. Sometimes however we do need multiple calls to `SaveChanges` for one reason or another, but we want those calls to be contained within a single atomic operation.
 
