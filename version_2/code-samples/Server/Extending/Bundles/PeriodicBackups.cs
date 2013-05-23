@@ -54,7 +54,7 @@ namespace RavenCodeSamples.Server.Bundles
                                                {
                                                    AwsRegionEndpoint = "eu-west-1", // if not specified default is 'us-east-1'
                                                    GlacierVaultName = "your_glacier_vault_name",
-                                                   Interval = 60, // minutes
+												   IntervalMilliseconds = 60 * 1000,
                                                    S3BucketName = "your_s3_bucket_name"
                                                }),
                                            new RavenJObject());
