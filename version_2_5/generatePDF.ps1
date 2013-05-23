@@ -15,8 +15,6 @@
 
 pandoc --latex-engine xelatex --template pdf-template.tex all.markdown -o RavenDB-2.5.pdf
 
-##############################################################################################
-
 ## TODO: Table of Contents
 ## TODO: styling code
 ## TODO: figure out how to only refer to images from one folder
