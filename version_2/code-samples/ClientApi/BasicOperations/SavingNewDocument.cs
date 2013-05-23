@@ -77,7 +77,7 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 			}
 		}
 
-		public void Sample()
+		public async void Sample()
 		{
 			using (var store = NewDocumentStore())
 			{
@@ -109,14 +109,14 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 				#region saving_new_document_5
 				using (var session = store.OpenAsyncSession())
 				{
-					session.Store(new User
+					await session.StoreAsync(new User
 					{
 						Name = "jcarter",
 						FirstName = "John",
 						LastName = "Carter"
 					});
 
-					session.SaveChangesAsync();
+					await session.SaveChangesAsync();
 				}
 
 				#endregion

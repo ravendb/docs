@@ -3,7 +3,6 @@ using System.Threading.Tasks;
 using Raven.Abstractions.Util;
 using Raven.Client.Connection;
 using Raven.Client.Connection.Async;
-using Raven.Client.Extensions;
 
 namespace RavenCodeSamples.ClientApi.BasicOperations
 {
@@ -78,7 +77,7 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 			}
 		}
 
-		public void Sample()
+		public async void Sample()
 		{
 			using (var store = NewDocumentStore())
 			{
@@ -110,14 +109,14 @@ namespace RavenCodeSamples.ClientApi.BasicOperations
 				#region saving_new_document_5
 				using (var session = store.OpenAsyncSession())
 				{
-					session.Store(new User
+					await session.StoreAsync(new User
 					{
 						Name = "jcarter",
 						FirstName = "John",
 						LastName = "Carter"
 					});
 
-					session.SaveChangesAsync();
+					await session.SaveChangesAsync();
 				}
 
 				#endregion
