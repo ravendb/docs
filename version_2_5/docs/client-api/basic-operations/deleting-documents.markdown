@@ -26,5 +26,5 @@ Here is an example how to use it:
 You can perform a direct delete using the `DatabaseCommands` property available in the `Advanced` section of the session API.
 
 {CODE deleting_document_2@ClientApi\BasicOperations\DeletingDocuments.cs /}
-
+    
 Unlike session operations, `DatabaseCommands` operations execute immediately, and do not wait for `SaveChanges` to be called.
