@@ -63,14 +63,13 @@
 				return Session.Query<WebData>().Select(data => data.Name).ToListAsync();
 			}
 
-			public HttpResponseMessage Put([FromBody]string value)
+			public async Task<HttpResponseMessage> Put([FromBody]string value)
 			{
-				Session.Store(new WebData { Name = value });
+				await Session.StoreAsync(new WebData { Name = value });
 
 				return new HttpResponseMessage(HttpStatusCode.Created);
 			}
 		}
-
 		#endregion
 	}
 
