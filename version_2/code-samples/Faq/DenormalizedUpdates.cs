@@ -36,6 +36,22 @@
 					allowStale: false);
 
 				#endregion
+
+				#region denormalized_updates_2
+
+				documentStore.DatabaseCommands.UpdateByIndex(
+					"Tracks/ByArtistId",
+					new IndexQuery {
+						Query = "Artist:artists/294"
+					},
+					new ScriptedPatchRequest() {
+						Script = @"
+							var artist = LoadDocument(this.Artist.Id);
+							this.Artist.Name = artist.Name;
+						"
+					}, allowStale: false);
+
+				#endregion
 			}
 		}
 	}

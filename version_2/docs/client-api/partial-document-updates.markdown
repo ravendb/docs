@@ -78,6 +78,25 @@ Remove value in a nested element:
 
 {CODE nested2@ClientApi/PartialDocumentUpdates.cs /}
 
+## Performing complex updates
+If you need to deal with more complex patching algorithm, using the methods shown above, might become cumbersome.
+
+That's where the `ScriptedPatchRequest` comes in handy. It allows you to send a JavaScript snippet to the database which is executed against the JSON of the document which should be updated.
+
+Adding a new `BlogComment` is as simple as this:
+
+{CODE scriptedpatching1@ClientApi/PartialDocumentUpdates.cs /}
+
+`ScriptedPatchRequest` also provides an easy way to remove items from an array:
+
+{CODE scriptedpatching2@ClientApi/PartialDocumentUpdates.cs /}
+
+Often, you don't simply want to remove items from arrays but remove them conditionally instead. Even this can be done easily using `ScriptedPatchRequest`:
+
+{CODE scriptedpatching3@ClientApi/PartialDocumentUpdates.cs /}
+
+Of course, `ScriptedPatchRequest` allows you to use any arbitrary JavaScript functionality like for-loops as well.
+
 ## Concurrency
 
 If we wanted to we could run several batch operations in parallel, but we will not be able to set which one will end first.
