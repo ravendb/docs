@@ -107,7 +107,7 @@ Above code will store new entity in the database with `users/jdoe` as a key and 
 	    session.SaveChangesAsync();
 	}
 
-####Inheritance
+######Inheritance
 
 Registered conventions are inheritance-aware, so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree
 

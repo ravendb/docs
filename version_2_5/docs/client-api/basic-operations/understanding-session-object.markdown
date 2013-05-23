@@ -1,12 +1,9 @@
 ﻿
-## Basic Operations
-
 ### Understanding the Session object
 
 After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on the DB, we start by obtaining a new Session object from the document store. The Session object will contain everything needed to perform any operation necessary:
 
-	string companyId;
-	using (var session = documentStore.OpenSession())
+{CODE session_usage_1@ClientApi\BasicOperations\UnderstandingSessionObject.cs /}
 	{
 	    var entity = new Company { Name = "Company" };
 	    session.Store(entity);
