@@ -33,5 +33,42 @@
 				#endregion
 			}
 		}
+
+		public void Complex() 
+		{
+			using(var documentStore = NewDocumentStore()) {
+				#region scripted1
+				// Replace FirstName and LastName properties by FullName property
+				documentStore.DatabaseCommands.UpdateByIndex(
+					"Raven/DocumentsByEntityName",
+				    new IndexQuery { Query = "Tag:Users" },
+				    new ScriptedPatchRequest() {
+					    Script = @"
+							this.FullName = this.FirstName + ' ' + this.LastName;
+							delete this.FirstName;
+							delete this.LastName;
+						"
+				       }
+					);
+
+				#endregion
+
+				#region scripted2
+				// Replace FirstName and LastName properties by FullName property
+				documentStore.DatabaseCommands.UpdateByIndex(
+					"Raven/DocumentsByEntityName",
+					new IndexQuery { Query = "Tag:Users" },
+					new ScriptedPatchRequest() {
+						Script = @"
+							this.FullName = this.FirstName + ' ' + this.LastName;
+							delete this.FirstName;
+							delete this.LastName;
+						"
+					}
+					);
+
+				#endregion
+			}
+		}
 	}
 }

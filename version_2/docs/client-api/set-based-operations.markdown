@@ -1,4 +1,4 @@
-﻿# Set based operations
+# Set based operations
 
 Sometimes we need to update or delete a large amount of documents answering some criteria. With SQL this is a natural operation, and a query doing that will look like this:
 
@@ -20,6 +20,11 @@ To issue a batch-delete command you need to specify an index, and a query to be 
 Performing a mass-update is exactly the same as making a mass-delete, but this time it uses the [Patching API](partial-document-updates) to make it easy for us to define what to do with the documents matching our query:
 
 {CODE setbased2@ClientApi\SetBasedOperations.cs /}
+
+## Complex Set-based update operations using ScriptedPatchRequest
+As the `ScriptedPatchRequest` is part of the [Patching API](partial-document-updates), it can also be used on Set-based operations:
+
+{CODE scripted1@ClientApi\SetBasedOperations.cs /}
 
 ## Set-based operations and stale indexes
 
