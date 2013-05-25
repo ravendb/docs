@@ -1,4 +1,5 @@
-# Alerts
+
+## Alerts
 In the alerts page you can see alerts sent from the server (at the moment only errors in periodic backups will send alerts).  
 
 On the top you have the following toolbar:  
