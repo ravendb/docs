@@ -1,4 +1,5 @@
-# Dynamic fields
+
+### Dynamic fields
 
 While strongly typed entities are well processed by Linq expressions, some scenarios demand the use of dynamic properties. To support searching in object graphs that cannot have their entire structure be declared upfront, RavenDB exposes the following low-level API for creating fields from within index definitions.
 
