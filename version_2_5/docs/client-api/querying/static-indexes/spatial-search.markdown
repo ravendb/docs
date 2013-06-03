@@ -4,7 +4,7 @@ To support the ability to retrieve the data based on spatial coordinates, the sp
 
 ##### Creating Indexes
 
-To take an advantage of spatial search, first we need to create an index with spatial field. To mark field as a spatial field, we need to use `SpatialGenerate` method
+To take an advantage of spatial search, first we need to create an index with spatial field. To mark field as a spatial field, we need to use `SpatialGenerate` method:
 
 {CODE spatial_search_0@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
 
@@ -49,54 +49,54 @@ By default the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to 
 1. Geohash precision values (from [http://unterbahn.com](http://unterbahn.com/2009/11/metric-dimensions-of-geohash-partitions-at-the-equator/)).
 
 | Level | E-W distance at equator | N-S distance at equator |
-|:-----------------------|:---------------------|:---------------------|
-| 12 | ~3.7cm | ~1.8cm |
-| 11 | ~14.9cm | ~14.9cm |
-| 10 | ~1.19m | ~0.60m |
-| **9** | **~4.78m** | **~4.78m** |
-| 8 | ~38.2m | ~19.1m |
-| 7 | ~152.8m | ~152.8m |
-| 6 | ~1.2km | ~0.61km |
-| 5 | ~4.9km | ~4.9km |
-| 4 | ~39km | ~19.6km |
-| 3 | ~157km | ~157km |
-| 2 | ~1252km | ~626km |
-| 1 | ~5018km | ~5018km |
+|:----- |:------------------------|:------------------------|
+| 12    | ~3.7cm                  | ~1.8cm                  |
+| 11    | ~14.9cm                 | ~14.9cm                 |
+| 10    | ~1.19m                  | ~0.60m                  |
+| **9** | **~4.78m**              | **~4.78m**              |
+| 8     | ~38.2m                  | ~19.1m                  |
+| 7     | ~152.8m                 | ~152.8m                 |
+| 6     | ~1.2km                  | ~0.61km                 |
+| 5     | ~4.9km                  | ~4.9km                  |
+| 4     | ~39km                   | ~19.6km                 |
+| 3     | ~157km                  | ~157km                  |
+| 2     | ~1252km                 | ~626km                  |
+| 1     | ~5018km                 | ~5018km                 |
 
 2. Quadtree precision values
 
 | Level | Distance at equator |
-|:-----------------------|:---------------------|
-| 30 | ~4cm |
-| 29 | ~7cm |
-| 28 | ~15cm |
-| 27 | ~30cm |
-| 26 | ~60cm |
-| 25 | ~1.19m |
-| 24 | ~2.39m |
-| **23** | **~4.78m** |
-| 22 | ~9.56m |
-| 21 | ~19.11m |
-| 20 | ~38.23m |
-| 19 | ~76.23m |
-| 18 | ~152.92m |
-| 17 | ~305.84m |
-| 16 | ~611.67m |
-| 15 | ~1.22km |
-| 14 | ~2.45km |
-| 13 | ~4.89km |
-| 12 | ~9.79km |
-| 11 | ~19.57km |
-| 10 | ~39.15km |
-| 9 | ~78.29km |
-| 8 | ~156.58km |
-| 7 | ~313.12km |
-| 6 | ~625.85km |
-| 5 | ~1249km |
-| 4 | ~2473km |
-| 3 | ~4755km |
-| 2 | ~7996km |
-| 1 | ~15992km |
+|:-------|:-------------------|
+| 30     | ~4cm               |
+| 29     | ~7cm               |
+| 28     | ~15cm              |
+| 27     | ~30cm              |
+| 26     | ~60cm              |
+| 25     | ~1.19m             |
+| 24     | ~2.39m             |
+| **23** | **~4.78m**         |
+| 22     | ~9.56m             |
+| 21     | ~19.11m            |
+| 20     | ~38.23m            |
+| 19     | ~76.23m            |
+| 18     | ~152.92m           |
+| 17     | ~305.84m           |
+| 16     | ~611.67m           |
+| 15     | ~1.22km            |
+| 14     | ~2.45km            |
+| 13     | ~4.89km            |
+| 12     | ~9.79km            |
+| 11     | ~19.57km           |
+| 10     | ~39.15km           |
+| 9      | ~78.29km           |
+| 8      | ~156.58km          |
+| 7      | ~313.12km          |
+| 6      | ~625.85km          |
+| 5      | ~1249km            |
+| 4      | ~2473km            |
+| 3      | ~4755km            |
+| 2      | ~7996km            |
+| 1      | ~15992km           |
 
 ##Radius search
 
@@ -108,7 +108,7 @@ The method can be used also when using `LuceneQuery`.
 
 {CODE spatial_search_8@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
 
-##### Advanced search
+##Advanced search
 
 The `WithinRadiusOf` method is a wrapper around `RelatesToShape` method.
 
@@ -127,3 +127,8 @@ or when we want to use `LuceneQuery` then
 {CODE spatial_search_9@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
 
 {WARNING From RavenDB 2.0 the distance is measured in **kilometers** in contrast to the miles used in previous versions. /}
+
+
+
+
+
