@@ -24,7 +24,7 @@ In our example we will use `Event` class and very simple index defined below.
 
 {CODE spatial_search_2@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
 
-##Spatial search strategies
+##### Spatial search strategies
 
 1. GeohashPrefixTree
 
@@ -42,7 +42,7 @@ More information about QuadTree can be found [here](http://en.wikipedia.org/wiki
 
 {NOTE `GeohashPrefixTree` is a default `SpatialSearchStrategy`. Doing any changes to the strategy after index has been created will trigger re-indexation process. /}
 
-###Precision
+###### Precision
 
 By default the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to **9** and for QuadPrefixTree the value is **23**, which means that the coordinates are represented by a 9 or 23 character string. The difference exists, because the `QuadTree` representation would be much less precise if the level would be the same.
 
@@ -108,7 +108,7 @@ The method can be used also when using `LuceneQuery`.
 
 {CODE spatial_search_8@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
 
-##Advanced search
+##### Advanced search
 
 The `WithinRadiusOf` method is a wrapper around `RelatesToShape` method.
 
