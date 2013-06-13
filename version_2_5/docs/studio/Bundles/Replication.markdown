@@ -1,4 +1,5 @@
-# Replication Bundle
+
+### Replication Bundle
 When creating a database, if you want to use the replication bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_replication_1.PNG)  
 
