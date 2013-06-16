@@ -1,8 +1,8 @@
-# The Documents Screen
+### The Documents Screen
 
 This screen gives an overview of all documents in the RavenDB server instance.
 
-## Documents listing
+#### Documents listing
 
 The documents are loaded from the database, newest first, documents from different collections are striped with different colors, in the default view you will get the "Details" view :
 
@@ -21,7 +21,7 @@ The right button allows you to change the size of the document preview in the li
 ![Figure 2: Changing the size of the document preview in listing](Images/studio_base_7.PNG)  
 The "Id Only" option is recommended when using remote server as it uses less bandwidth.
 
-## Editing a document
+#### Editing a document
 By double clicking on a document in the list, or clicking on the pencil icon on it, you get to the document editing screen.
 
 The document ID
@@ -50,7 +50,7 @@ To the right of the form some statistics are shown - the metadata of the current
 
 ![Document Fig 8](Images/studio_documents_8.PNG)
 
-## Other options
+#### Other options
 
 Back in the main listing screen, at the top right corner of the screen you will find 2 additional Options:  
 
