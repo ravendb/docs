@@ -1,18 +1,18 @@
-﻿# System requirements
+﻿
+## System Requirements
 
 RavenDB comes in several flavors. Listed below are the system requirements for each.
 
-## Lightweight client
+### Lightweight Client
 
-* Min: .NET Framework 3.5 Client Profile. 
-* Recommended: .NET Framework 4.0 Client Profile
+* .NET Framework 4.0 Client Profile
 * The client doesn't require Windows and **can run on Mono**.
 
-## Silverlight client
+### Silverlight Client
 
 * Silverlight 4 or 5
 
-## RavenDB server / Embedded
+### RavenDB Server / Embedded
 
-* .Net framework 4
+* .NET Framework 4.0
 * Windows
