@@ -93,7 +93,7 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 				using (var session = store.OpenSession())
 				{
 					#region spatial_search_3
-					session.Query<Event>()
+					session.Query<Event, Events_SpatialIndex>()
 					       .Customize(x => x.WithinRadiusOf(
 						       fieldName: "Coordinates",
 						       radius: 10,
@@ -103,7 +103,7 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 					#endregion
 
 					#region spatial_search_8
-					session.Advanced.LuceneQuery<Event>()
+					session.Advanced.LuceneQuery<Event, Events_SpatialIndex>()
 						   .WithinRadiusOf(fieldName: "Coordinates", radius: 10, latitude: 32.1234, longitude: 23.4321)
 						   .ToList();
 
@@ -113,14 +113,14 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 				using (var session = store.OpenSession())
 				{
 					#region spatial_search_4
-					session.Query<Event>()
+					session.Query<Event, Events_SpatialIndex>()
 							.Customize(x => x.RelatesToShape("Coordinates", "Circle(32.1234, 23.4321, d=10.0000)", SpatialRelation.Within))
 							.ToList();
 
 					#endregion
 
 					#region spatial_search_9
-					session.Advanced.LuceneQuery<Event>()
+					session.Advanced.LuceneQuery<Event, Events_SpatialIndex>()
 						   .RelatesToShape("Coordinates", "Circle(32.1234, 23.4321, d=10.0000)", SpatialRelation.Within)
 						   .ToList();
 
