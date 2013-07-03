@@ -9,23 +9,21 @@ Dates are written to the index in a form which preserves lexicography order, and
 
 Numerical values, on the other hand, are stored as text and therefore require the user to specify explicitly what is the number type used so a correct sorting mechanism is enforced. This is quite easily done, by declaring the required sorting setup in `SortOptions` in the index definition:
 
-	public class SampleIndex1 : AbstractIndexCreationTask<Customer, Customer>
-	{
-	    public SampleIndex1()
-	    {
-	        Map = users => from user in users
-	                       select new
-	                           {
-	                               user.Age
-	                           };
-	 
-	        Sort(x => x.Age, SortOptions.Short);
-	    }
-	}
+{CODE static_sorting1@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
 
 The index outlined above will allow sorting by value on the user's age (1, 2, 3, 11, etc). If we wouldn't specify this option, it would have been sorted lexically (1, 11, 2, 3, etc).
 
 The default `SortOptions` value is `String`. Appropriate values available for all numeric types (`Byte`, `Double`, `Float`, `Int`, `Long` and `Short`).
+
+{NOTE Specifing the Sort in the index definitoin won't make results from this index be ordered unless you call OrderBy on the query itself. /}
+
+##### Uses example
+
+In the following query we are using the `OrderBy` method in order to indicate that we want to sort on `Age`:
+
+{CODE static_sorting3@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
+
+So, by default it will sort on Age as it was a string. By specifing `Sort(x => x.Age, SortOptions.Short)` in the index dedinition, we inidicate that the sort order should be in a numerical order. 
 
 ##### Collation support
 
@@ -33,16 +31,6 @@ RavenDB supports using collations for documents sorting and indexing. You can se
 
 The following is an example of an index definition which allows sorting based on the Swedish lexical sorting rules:
 
-	public class SampleIndex2 : AbstractIndexCreationTask<Customer, Customer>
-	{
-	    public SampleIndex2()
-	    {
-	        Map = users => from doc in users select new { doc.Name };
-	 
-	        Sort(x => x.Name, SortOptions.String);
-	 
-	        Analyzers.Add(x => x.Name, "Raven.Database.Indexing.Collation.Cultures.SvCollationAnalyzer, Raven.Database");
-	    }
-	}
+{CODE static_sorting1@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
 
 In general, you can sort using `[two-letters-culture-name]CollationAnalyzer`, and all the cultures supported by the .NET framework are supported.

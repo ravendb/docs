@@ -1,4 +1,6 @@
-﻿namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
+﻿using System.Collections.Generic;
+
+namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 {
 	using System.Linq;
 
@@ -38,5 +40,22 @@
 		}
 
 		#endregion
+
+		public void QueryWithOrderBy()
+		{
+			using (var store = NewDocumentStore())
+			using (var session = store.OpenSession())
+			{
+				#region static_sorting3
+
+				List<Customer> customers = session.Query<Customer>()
+					.OrderBy(customer => customer.Age)
+					.ToList();
+
+				#endregion
+			}
+
+			
+		}
 	}
 }
