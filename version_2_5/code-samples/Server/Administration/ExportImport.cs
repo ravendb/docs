@@ -22,8 +22,8 @@
 			};
 
 			var smugglerApi = new SmugglerApi(smugglerOptions, connectionStringOptions);
-			smugglerApi.ExportData(new SmugglerOptions { BackupPath = "dump.raven", OperateOnTypes = ItemType.Documents | ItemType.Indexes | ItemType.Attachments | ItemType.Transformers }, incremental: false);
-			smugglerApi.ImportData(new SmugglerOptions { BackupPath = "dump.raven", OperateOnTypes = ItemType.Documents | ItemType.Indexes });
+			smugglerApi.ExportData(null, new SmugglerOptions { BackupPath = "dump.raven", OperateOnTypes = ItemType.Documents | ItemType.Indexes | ItemType.Attachments | ItemType.Transformers }, incremental: false);
+			smugglerApi.ImportData(null, new SmugglerOptions { BackupPath = "dump.raven", OperateOnTypes = ItemType.Documents | ItemType.Indexes });
 
 			#endregion
 		}
