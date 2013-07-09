@@ -33,6 +33,13 @@ Etags are used for the following commands:
 
 In each case, before any operation is made, the etag from the client is compared to the current etag, and if the etag does not match, a 409 Conflict will be generated.
 
+If you don't have the current etag of the document and you want to prevent an operation on a document that was changed by someone else, you can use an empty etag which is `Guid.Empty`:
+
+{CODE-START:plain /}
+    > curl --header "If-Match:00000000-0000-0000-0000-000000000000"  
+         -X PUT http://localhost:8080/docs/bobs_address -d "{ FirstName : 'Bob', LastName: 'Smith', Address: '5 Elm St.' }"
+{CODE-END /}
+
 ## Last One in Wins
 
 When the e-tag is not specified in the header for a given request, the last request processed for that URL wins.
