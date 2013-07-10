@@ -16,3 +16,5 @@ E.g.
 
 To uninstall the certificate execute:    
 <code>Raven.Server.exe /uninstallSSL=PathToCertificate==CertificatePassword</code>   
+
+{NOTE The Studio might not work in some browsers (e.g. Firefox and Chrome) if the domain that certificate was issued for does not match the domain you are using it for. /}   
