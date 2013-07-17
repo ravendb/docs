@@ -19,14 +19,17 @@
 						Map = "from movie in docs.Movies select new { movie.Name, movie.Tagline }",
 						Analyzers =
 							{
-								{ "Name", typeof(SimpleAnalyzer).FullName }, 
-								{ "Tagline", typeof(StopAnalyzer).FullName },
+								{ "Name", typeof(SimpleAnalyzer).AssemblyQualifiedName }, 
+								{ "Tagline", typeof(StopAnalyzer).AssemblyQualifiedName },
+								{ "Other", typeof(MyCustomAnalyzer).AssemblyQualifiedName },
 							}
 					});
 
 			#endregion
 		}
 
-
+		public class MyCustomAnalyzer
+		{
+		}
 	}
 }

@@ -37,6 +37,8 @@ Lucene uses Analyzers to split up text into the tokens that are then stored in t
 
 {CODE using_custom_analyzers@Appendixes\LuceneIndexesUsage.cs /}
 
+{NOTE You can also use the `typeof(SimpleAnalyzer).FullName` intead of `AssemblyQualifiedName` but this will work only with lucene built-in indexes. `AssemblyQualifiedName` is required for your custom indexes. /}
+
 The output of the built-in analyzers are shown below, they are all tokenizing the following text:
 
     The quick brown fox jumped over the lazy dog, bob@hotmail.com 123432.
