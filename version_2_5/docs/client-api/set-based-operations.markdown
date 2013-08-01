@@ -22,6 +22,11 @@ Performing a mass-update is exactly the same as making a mass-delete, but this t
 
 {CODE setbased2@ClientApi\SetBasedOperations.cs /}
 
+### Complex Set-based update operations using ScriptedPatchRequest
+As the `ScriptedPatchRequest` is part of the [Patching API](partial-document-updates), it can also be used on Set-based operations:
+
+{CODE scripted1@ClientApi\SetBasedOperations.cs /}
+
 ### Set-based operations and stale indexes
 
 By default, set-based operations will not work on indexes that are stale, and the operation will only succeed if the specified index is NOT stale. This is to make sure you only delete what you intended to delete, and is part of RavenDB's safe-by-default approach.
