@@ -1,4 +1,6 @@
-﻿namespace RavenCodeSamples.ClientApi
+﻿using System;
+
+namespace RavenCodeSamples.ClientApi
 {
 	using Raven.Abstractions.Data;
 	using Raven.Database.Json;
@@ -211,6 +213,28 @@
 							});
 						"
 					});
+				#endregion
+
+				#region scriptedpatching_debug
+
+				var patchOutput = documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest
+					{
+						Script = @"
+							output(this.AuthorName);
+
+							this.NumberOfViews += 1;
+							output(this.NumberOfViews);
+						"
+					});
+
+				var debugInfo = patchOutput.Value<RavenJArray>("Debug");
+
+				foreach (var debug in debugInfo)
+				{
+					Console.WriteLine("Patch debug: " + debug);
+				}
 				#endregion
 			}
 		}

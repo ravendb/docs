@@ -98,6 +98,12 @@ Often, you don't simply want to remove items from arrays but remove them conditi
 
 Of course, `ScriptedPatchRequest` allows you to use any arbitrary JavaScript functionality like for-loops as well.
 
+### ScriptedPatch debugging
+
+The syntax of the scripted patch allows you to retrieve debug information from a script execution. To do that use `output` method inside the script body and next get the _Debug_ array of the returned result:
+
+{CODE scriptedpatching_debug@ClientApi/PartialDocumentUpdates.cs /}
+
 ### Concurrency
 
 If we wanted to we could run several batch operations in parallel, but we will not be able to set which one will end first.
