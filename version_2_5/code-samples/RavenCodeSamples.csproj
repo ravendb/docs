@@ -192,6 +192,7 @@
     <Compile Include="Server\ScalingOut\Replication\ClientIntegration.cs" />
     <Compile Include="Server\ScalingOut\Replication\FromEmbeddedServer.cs" />
     <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
+    <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
     <Compile Include="Server\ScalingOut\Sharding\Index.cs" />
     <Compile Include="Faq\DenormalizedReferences.cs" />
     <Compile Include="Faq\DenormalizedUpdates.cs" />
