@@ -65,7 +65,7 @@
 
 				var usersByNameJohn = store.DatabaseCommands.Query("dynamic", new IndexQuery()
 				{
-					Query = "Name.FirstName:John"
+					Query = "FullName.FirstName:John"
 				}, null);
 				#endregion
 
