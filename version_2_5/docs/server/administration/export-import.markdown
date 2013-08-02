@@ -32,7 +32,7 @@ You can continue using that RavenDB instance while data is being imported to it.
 
 To speed up the process, the `Raven.Smuggler.exe` is using [bulk inserts](../../client-api/advanced/bulk-inserts) and `The Studio` is using batching.
 
-##Incremental Export and Import
+## Incremental Export and Import
 With the incremental export operation we can use in order to backup the database incrementally, on each export, we will only take the export the documents create or updated
 since the last export.
 
@@ -74,9 +74,18 @@ You can tweak the export/import process with the following parameters:
  - excludeexpired: Excludes expired documents created by the [expiration bundle](../extending/bundles/expiration).    
  - help: You can use the help option in order to print the built-in options documentation.
 
-##Transforms
+## Filtering
 
-Transforms can be used to modify or filter out documents. The scripts must use JavaScript syntax and be in following format:   
+To filter out documents we introduced few filtering options that can be used during import or export process.
+
+1. `filter` is used to filter documents based on a property. E.g. if we want to export all documents with property `Name` and value `John` then we must apply command as follows: `--filter=Name=John` .   
+2. `negative-filter` is an opposite to `filter` and will filter documents that does NOT match the given property.  
+3. `metadata-filter` is similar to `filter`, but works on document metadata properties.   
+4. `negative-metadata-filter` filters out documents that does NOT match given metadata property.   
+
+## Transforms
+
+Transforms can be used to modify or filter out documents, but only work during the import process. The scripts must use JavaScript syntax and be in following format:   
 
 {CODE-START:json /}
     
