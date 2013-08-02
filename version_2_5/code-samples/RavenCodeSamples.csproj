@@ -62,29 +62,37 @@
     <Reference Include="NLog">
       <HintPath>..\..\packages\NLog.2.0.1.2\lib\net45\NLog.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Abstractions-4.5">
-      <HintPath>..\..\packages\RavenDB.Client.2.5.2629-Unstable\lib\net45\Raven.Abstractions-4.5.dll</HintPath>
+    <Reference Include="Raven.Abstractions-4.5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Client.2.5.2668-Unstable\lib\net45\Raven.Abstractions-4.5.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Bundles.IndexReplication-4.5">
-      <HintPath>..\..\packages\RavenDB.Bundles.IndexReplication.2.5.2629-Unstable\lib\net45\Raven.Bundles.IndexReplication-4.5.dll</HintPath>
+    <Reference Include="Raven.Bundles.IndexReplication-4.5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Bundles.IndexReplication.2.5.2668-Unstable\lib\net45\Raven.Bundles.IndexReplication-4.5.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Authorization-4.5">
-      <HintPath>..\..\packages\RavenDB.Client.Authorization.2.5.2629-Unstable\lib\net45\Raven.Client.Authorization-4.5.dll</HintPath>
+    <Reference Include="Raven.Client.Authorization-4.5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Client.Authorization.2.5.2668-Unstable\lib\net45\Raven.Client.Authorization-4.5.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Embedded-4.5">
-      <HintPath>..\..\packages\RavenDB.Embedded.2.5.2629-Unstable\lib\net45\Raven.Client.Embedded-4.5.dll</HintPath>
+    <Reference Include="Raven.Client.Embedded-4.5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Embedded.2.5.2668-Unstable\lib\net45\Raven.Client.Embedded-4.5.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight-4.5">
-      <HintPath>..\..\packages\RavenDB.Client.2.5.2629-Unstable\lib\net45\Raven.Client.Lightweight-4.5.dll</HintPath>
+    <Reference Include="Raven.Client.Lightweight-4.5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Client.2.5.2668-Unstable\lib\net45\Raven.Client.Lightweight-4.5.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.MvcIntegration-4.5">
-      <HintPath>..\..\packages\RavenDB.Client.MvcIntegration.2.5.2629-Unstable\lib\net45\Raven.Client.MvcIntegration-4.5.dll</HintPath>
+    <Reference Include="Raven.Client.MvcIntegration-4.5, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Client.MvcIntegration.2.5.2668-Unstable\lib\net45\Raven.Client.MvcIntegration-4.5.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.UniqueConstraints-4.5">
-      <HintPath>..\..\packages\RavenDB.Client.UniqueConstraints.2.5.2629-Unstable\lib\net45\Raven.Client.UniqueConstraints-4.5.dll</HintPath>
+    <Reference Include="Raven.Client.UniqueConstraints-4.5, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Client.UniqueConstraints.2.5.2668-Unstable\lib\net45\Raven.Client.UniqueConstraints-4.5.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Database-4.5">
-      <HintPath>..\..\packages\RavenDB.Database.2.5.2629-Unstable\lib\net45\Raven.Database-4.5.dll</HintPath>
+    <Reference Include="Raven.Database-4.5, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Database.2.5.2668-Unstable\lib\net45\Raven.Database-4.5.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Smuggler-4.5">
       <HintPath>..\packages\Other\Raven.Smuggler-4.5.exe</HintPath>
@@ -160,6 +168,7 @@
     <Compile Include="ClientApi\Querying\StaticIndexes\SpatialSearch.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\Suggestions.cs" />
     <Compile Include="ClientApi\Querying\UsingLinqToQueryRavenDb.cs" />
+    <Compile Include="ClientApi\Advanced\UnboundedResults.cs" />
     <Compile Include="CodeSampleBase.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="ClientApi\Advanced\CustomSerialization.cs" />
