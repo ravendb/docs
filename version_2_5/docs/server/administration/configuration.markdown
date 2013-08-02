@@ -369,21 +369,30 @@ Many of the configuration options described in section above can be used both in
 | **Raven/MemoryCacheLimitCheckInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/IndexStoragePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxIndexWritesBeforeRecreate** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxNumberOfParallelIndexTasks** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxNumberOfItemsToIndexInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfItemsToReduceInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfItemsToPreFetchForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/InitialNumberOfItemsToIndexInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/AvailableMemoryForRaisingIndexBatchSizeLimit** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/ResetIndexOnUncleanShutdown** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxIndexingRunLatency** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeRunningIdleIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeMarkingAutoIndexAsIdle** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeRunningAbandonedIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeMarkingIdleIndexAsAbandoned** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/TaskScheduler** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NewIndexInMemoryMaxMB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TimeToWaitBeforeRunningIdleIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TimeToWaitBeforeMarkingAutoIndexAsIdle** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TimeToWaitBeforeMarkingIdleIndexAsAbandoned** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TimeToWaitBeforeRunningAbandonedIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/CompiledIndexCacheDirectory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/NumberOfItemsToExecuteReduceInSingleStep** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/DisableDocumentPreFetchingForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxIndexCommitPointStoreTimeInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfStoredCommitPoints** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MinIndexingTimeIntervalToStoreCommitPoint** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -428,6 +437,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/AdditionalStepsForScriptBasedOnDocumentSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/AnonymousAccess** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/AllowLocalAccessWithoutAuthorization** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Authorization/Windows/RequiredGroups** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Authorization/Windows/RequiredUsers** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenServer** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
