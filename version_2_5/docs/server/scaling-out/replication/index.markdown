@@ -42,7 +42,7 @@ On every transaction commit, Raven will look up the list of replication destinat
 
 Replication happens in the background and in parallel. 
 
-##What about failures?
+## What about failures?
 
 Because of the way it is designed, a node can fail for a long period of time, and still come up and start accepting everything that it missed in the meanwhile. The Replication Bundle keeps track of only a single data item per each replicating server, the last etag seen from that server. This means that we don't have to worry about missing replication windows.
 
@@ -56,10 +56,10 @@ When the replication bundle encountered a failure when replicating to a server, 
 * * Once every 1,000 replication cycles, when failure count is above 1,000
 * Any successful replication will reset the failure count, on the assumption that since we reached the server, it is now healthy again.
 
-##Can I bring up a new node and start replicating to it?
+## Can I bring up a new node and start replicating to it?
 Yes, you can. You can edit the Raven/Replication/Destinations document in the replicating instance to add the new node, and the Replication Bundle will immediately start replicating to that server.
 
-##What about timeouts?
+## What about timeouts?
 By default, the replication bundle have a timeout of 500 ms. You can control that by specifying "Raven/Replication/ReplicationRequestTimeout" in the configuration file <appSettings/> section.
 
 The default value assumes servers that are near one another, for replication over the WAN, you would likely want to add additional time. Please note that timeout failures for the replication bundle counts as failures, and the replication bundle will reduce the number of replication attempts against a node that fails often.
@@ -72,7 +72,9 @@ Resolving a conflict is easy, you just need to PUT a new version of the document
 
 More details about conflicts are here: [Dealing with replication conflicts](handling-conflicts).
 
-##What if I use API keys on my nodes?
+{WARNING If master-master replication is set up and [Expiration bundle](../../extending/bundles/expiration) is used on more than one server then the conflicts will occur. To solve this, use expiration bundle only on one server /}
+
+## What if I use API keys on my nodes?
 
 If [API keys](../../authentication#oauth-authentication) are in use, then all nodes **MUST** use identical API key for the replication to work.
 
