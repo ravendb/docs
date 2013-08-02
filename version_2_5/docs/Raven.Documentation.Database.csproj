@@ -290,7 +290,6 @@
     <Content Include="server\extending\bundles\images\versioned_docs.png" />
     <Content Include="server\extending\bundles\images\versioned_docs_2.png" />
     <Content Include="server\extending\bundles\images\versioned_docs_3.png" />
-    <None Include="server\extending\bundles\indexed-properties.markdown" />
     <Content Include="server\scaling-out\images\replication_and_sharding_docs.png" />
     <Content Include="server\scaling-out\images\replication_and_sharding_docs_2.png" />
     <Content Include="server\scaling-out\replication\images\replication_conflicts_docs.png" />
