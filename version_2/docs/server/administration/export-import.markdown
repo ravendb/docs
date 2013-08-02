@@ -50,8 +50,10 @@ In order to import date that was exported with incremental operation, you can us
 You can tweak the export/import process with the following parameters:
 
  - operate-on-types: Specify the types to export/import. Usage example: `--operate-on-types=Indexes,Documents,Attachments`.
- - filter: Filter documents by a document property. Usage example: `--filter=Property-Name=Value`.
- - metadata-filter: Filter documents by a metadata property. Usage example: `--metadata-filter=Raven-Entity-Name=Posts`.
+ - filter: Filter documents by a document property. Usage example: `--filter=Property-Name=Value`.   
+ - negative-filter: Filter documents NOT matching a document property. Usage example: `--negative-filter=Property-Name=Value`.    
+ - metadata-filter: Filter documents by a metadata property. Usage example: `--metadata-filter=Raven-Entity-Name=Posts`.   
+ - negative-metadata-filter: Filter documents NOT matching a metadata property. Usage example: `--negative-metadata-filter=Raven-Entity-Name=Posts`.   
  - timeout: The timeout (in milliseconds) to use for requests.
  - batch-size: The batch size for requests.
  - database: The database to operate on. If no specified, the operations will be on the default database.
@@ -62,6 +64,15 @@ You can tweak the export/import process with the following parameters:
  - incremental: States usage of incremental operations.
  - wait-for-indexing: Wait until all indexing activity has been completed (import only).
  - help: You can use the help option in order to print the built-in options documentation.
+
+## Filtering
+
+To filter out documents we introduced few filtering options that can be used during import or export process.
+
+1. `filter` is used to filter documents based on a property. E.g. if we want to export all documents with property `Name` and value `John` then we must apply command as follows: `--filter=Name=John` .   
+2. `negative-filter` is an opposite to `filter` and will filter documents that does NOT match the given property.  
+3. `metadata-filter` is similar to `filter`, but works on document metadata properties.   
+4. `negative-metadata-filter` filters out documents that does NOT match given metadata property.   
 
 ## SmugglerApi
 

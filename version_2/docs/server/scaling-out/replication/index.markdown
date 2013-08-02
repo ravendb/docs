@@ -72,6 +72,8 @@ Resolving a conflict is easy, you just need to PUT a new version of the document
 
 More details about conflicts are here: [Dealing with replication conflicts](handling-conflicts).
 
+{WARNING If master-master replication is set up and [Expiration bundle](../../extending/bundles/expiration) is used on more than one server then the conflicts will occur. To solve this, use expiration bundle only on one server /}
+
 ##What if I use API keys on my nodes?
 
 If [API keys](../../authentication#oauth-authentication) are in use, then all nodes **MUST** use identical API key for the replication to work.
