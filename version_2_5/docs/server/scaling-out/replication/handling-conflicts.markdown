@@ -34,3 +34,5 @@ The Client API fully supports working with such scenarios, as the following code
 {CODE replicationconflicts1@Server\ScalingOut\Replication\HandlingConflicts.cs /}
 
 If this code detects conflict, it will give the user the choice of which of the conflicting versions they want to keep. A more sophisticated approach would be to try to do an actual merge based on the business meaning of the document.
+
+{NOTE Document Conflict listeners can be used to perform an automatical conflict resolution. More about them can be found [here](../../../client-api/advanced/client-side-listeners#document-conflict-listener). /}
