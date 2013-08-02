@@ -216,6 +216,7 @@
     <None Include="server\scaling-out\replication\from-embedded-server.markdown" />
     <None Include="server\scaling-out\replication\handling-conflicts.markdown" />
     <None Include="server\scaling-out\replication\index.markdown" />
+    <None Include="server\scaling-out\replication\write-assurance.markdown" />
     <None Include="server\scaling-out\sharding\.docslist" />
     <None Include="server\scaling-out\sharding\index.markdown" />
     <None Include="studio\.docslist" />
