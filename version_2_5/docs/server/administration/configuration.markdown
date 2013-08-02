@@ -72,6 +72,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 128 * 1024 for 64-bit and 16 * 1024 for 32-bit  
 	_Minimum:_ 128
 
+* **Raven/MaxNumberOfItemsToReduceInSingleBatch**  
+	The max number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.   
+	_Default:_ 1/2 * `Raven/MaxNumberOfItemsToIndexInSingleBatch`
+	_Minimum:_ 128
+
 * **Raven/MaxNumberOfItemsToPreFetchForIndexing**  
 	The max number of items that will be prefetched for indexing. Larger batch size result in faster indexing, but higher memory usage.   
 	_Default:_ 128 * 1024 for 64-bit and 16 * 1024 for 32-bit  
@@ -133,6 +138,26 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/CompiledIndexCacheDirectory**
 	Path to a directory used by index compilator.    
 	_Default:_ ~\Raven\CompiledIndexCache
+
+* **Raven/NumberOfItemsToExecuteReduceInSingleStep**
+	The number that controls if single step reduce optimization is performed. If the count of mapped results is less than this value then the reduce is executed in a single step.  
+	_Default:_ 1024
+
+* **Raven/DisableDocumentPreFetchingForIndexing**
+	Disables the document prefetcher.
+	_Default:_ false
+
+* **Raven/MaxIndexCommitPointStoreTimeInterval**
+	Maximum time interval for storing commit points for map indexes when new items were added. The commit points are used to restore index if unclean shutdown was detected.   
+	_Default:_ 5 minutes
+
+* **Raven/MaxNumberOfStoredCommitPoints**
+	Maximum number of kept commit points to restore map index after unclean shutdown.   
+	_Default:_ 5
+
+* **Raven/MinIndexingTimeIntervalToStoreCommitPoint**
+	Minimum interval between between successive indexing that will allow to store a  commit point.    
+	_Default:_ 1 minute
 
 ### Data settings:
 
@@ -303,6 +328,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ Get
 
 {WARNING If your database instance does not have a valid license then `Admin` is the only available option to set. In a commercial system it should not be used. It is only for testing and development purposes, since it grants to **ANY** user administrative rights.  /}
+
+* **Raven/AllowLocalAccessWithoutAuthorization**
+	If set local request don't require authentication.   
+	_Default:_ Get
 
 * **Raven/OAuthTokenServer**
 	The url clients should use for authenticating when using OAuth mode.  
