@@ -138,6 +138,7 @@
     <None Include="faq\unique-constraints.markdown" />
     <None Include="faq\working-with-dtc.markdown" />
     <None Include="http-api\.docslist" />
+    <None Include="http-api\excel-integration.markdown" />
     <None Include="http-api\extensions\.docslist" />
     <None Include="http-api\extensions\index.markdown" />
     <None Include="http-api\extensions\metadata-only.markdown" />
@@ -284,6 +285,8 @@
     <None Include="client-api\querying\query-and-lucene-query.markdown" />
     <Content Include="faq\images\authorization_bundle_faq.png" />
     <Content Include="faq\images\denormalized_references_faq.png" />
+    <Content Include="http-api\images\excel-result.png" />
+    <Content Include="http-api\images\excel-transformer.png" />
     <Content Include="Intro\images\json_doc.png" />
     <Content Include="Intro\quickstart\images\build_package.png" />
     <Content Include="server\administration\images\01CreateCluster.jpg" />
