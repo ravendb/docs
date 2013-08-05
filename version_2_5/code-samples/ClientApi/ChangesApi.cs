@@ -3,6 +3,7 @@
 	using System;
 	using Raven.Abstractions.Data;
 	using Raven.Client.Changes;
+	using Raven.Client.Document;
 
 	public class ChangesApi : CodeSampleBase
 	{
@@ -68,6 +69,32 @@
 							 Console.WriteLine("Index" + change.Name + " has been removed.");
 						 }
 					 });
+				#endregion
+
+				#region subscribe_bulk_insert
+				using (var bulkInsert = store.BulkInsert())
+				{
+					store.Changes()
+						.ForBulkInsert(bulkInsert.OperationId)
+						.Subscribe(change =>
+						{
+							switch (change.Type)
+							{
+								case DocumentChangeTypes.BulkInsertStarted:
+									// do something
+									break;
+								case DocumentChangeTypes.BulkInsertEnded:
+									// do something
+									break;
+								case DocumentChangeTypes.BulkInsertError:
+									// do something
+									break;
+							}
+						});
+
+					// process bulk insert here
+				}
+
 				#endregion
 			}
 		}
