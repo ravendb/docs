@@ -66,6 +66,7 @@ ReplicationConflict,
 AttachmentReplicationConflict,
 BulkInsertStarted,
 BulkInsertEnded,
+BulkInsertError
 Common (Put | Delete)
 {CODE-END /}
 
@@ -99,3 +100,13 @@ RemoveFromIndex,
 IndexAdded,
 IndexRemoved
 {CODE-END /}
+
+#### BulkInsert notifications
+
+To observe the bulk insert operations, you can subscribe using the `ForBulkInsert` method from the API with bulk insert operation id as a parameter.
+
+In a result of subscribing to bulk insert notifications you will get `BulkInsertChangeNotification` objects that contain same properties as `DocumentChangeNotification` with additional `OperationId` property to mark for which bulk insert notification the notification occured.
+
+{CODE subscribe_bulk_insert@ClientApi\ChangesApi.cs /}
+
+
