@@ -183,6 +183,7 @@
     <None Include="server\extending\bundles\authorization.markdown" />
     <None Include="server\extending\bundles\cascade-delete.markdown" />
     <None Include="server\extending\bundles\compression.markdown" />
+    <None Include="server\extending\bundles\scripted-index-results.markdown" />
     <None Include="server\extending\bundles\sql-replication.markdown" />
     <None Include="server\extending\bundles\encryption.markdown" />
     <None Include="server\extending\bundles\expiration.markdown" />
