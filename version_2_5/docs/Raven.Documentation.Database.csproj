@@ -271,6 +271,15 @@
     <Content Include="Appendixes\Images\profiling_mvc_application_2.png" />
     <Content Include="Appendixes\Images\profiling_mvc_application_3.png" />
     <Content Include="client-api\advanced\images\CNET_faceted_search_2.jpg" />
+    <Content Include="http-api\images\excel_connections.png" />
+    <Content Include="http-api\images\excel_connections_dialog_1.png" />
+    <Content Include="http-api\images\excel_connections_dialog_2.png" />
+    <Content Include="http-api\images\excel_from_text.png" />
+    <Content Include="http-api\images\excel_from_text_dialog.png" />
+    <Content Include="http-api\images\excel_from_text_results.png" />
+    <Content Include="http-api\images\excel_from_text_select.png" />
+    <Content Include="http-api\images\excel_from_text_wizard_1.png" />
+    <Content Include="http-api\images\excel_from_text_wizard_2.png" />
     <Content Include="Intro\images\raven.server.png" />
     <Content Include="Intro\images\studio.png" />
     <Content Include="samples\api-keys\Images\apikeys_1.PNG" />
@@ -285,8 +294,6 @@
     <None Include="client-api\querying\query-and-lucene-query.markdown" />
     <Content Include="faq\images\authorization_bundle_faq.png" />
     <Content Include="faq\images\denormalized_references_faq.png" />
-    <Content Include="http-api\images\excel-result.png" />
-    <Content Include="http-api\images\excel-transformer.png" />
     <Content Include="Intro\images\json_doc.png" />
     <Content Include="Intro\quickstart\images\build_package.png" />
     <Content Include="server\administration\images\01CreateCluster.jpg" />
