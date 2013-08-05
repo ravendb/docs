@@ -59,13 +59,27 @@ This is the standard app.config XML file. The `appSettings` section is where the
     The path for the indexes on disk. Useful if you want to store the indexes on another HDD for performance reasons.  
     _Default:_ ~/Data/Indexes
 
+* **Raven/MaxIndexWritesBeforeRecreate**   
+    The number of writes before index writer will be recreated (to save memory).     
+    _Default:_ 256 * 1024    
+
 * **Raven/MaxNumberOfParallelIndexTasks**  
     The number of indexing tasks that can be run in parallel. There is usually one or two indexing tasks for each index.   
 	_Default:_ the number of processors in the current machine
     
 * **Raven/MaxNumberOfItemsToIndexInSingleBatch**  
 	The max number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.   
-	_Default:_ 128 * 1024 for 64-bit and 64 * 1024 for 32-bit  
+	_Default:_ 128 * 1024 for 64-bit and 16 * 1024 for 32-bit  
+	_Minimum:_ 128
+
+* **Raven/MaxNumberOfItemsToReduceInSingleBatch**  
+	The max number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.   
+	_Default:_ 1/2 * `Raven/MaxNumberOfItemsToIndexInSingleBatch`
+	_Minimum:_ 128
+
+* **Raven/MaxNumberOfItemsToPreFetchForIndexing**  
+	The max number of items that will be prefetched for indexing. Larger batch size result in faster indexing, but higher memory usage.   
+	_Default:_ 128 * 1024 for 64-bit and 16 * 1024 for 32-bit  
 	_Minimum:_ 128
 
 * **Raven/InitialNumberOfItemsToIndexInSingleBatch**
@@ -83,35 +97,34 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/MaxIndexingRunLatency**
 	What is the suggested max latency for a single indexing run that allows the database to increase the indexing batch size.   
-	_Default:_ 5 minutes
+	_Default:_ 5 minutes 
+
+* **Raven/TimeToWaitBeforeRunningIdleIndexes**
+	Time that server is waiting before running idle indices.   
+	_Default:_ 10 minutes    
+
+* **Raven/TimeToWaitBeforeMarkingAutoIndexAsIdle**
+	Time that server will wait before marking auto index as idle.    
+	_Default:_ 1 hour   
+
+* **Raven/TimeToWaitBeforeRunningAbandonedIndexes**
+	Time that server will wait before running abandoned indices.      
+	_Default:_ 3 hours    
+
+* **Raven/TimeToWaitBeforeMarkingIdleIndexAsAbandoned**
+	Time that server will wait before marking idle indices as abandoned.   
+	_Default:_ 72 hours   
 
 * **Raven/TaskScheduler**
 	The TaskScheduler type to use for executing indexing.   
 
-* **Raven/TempIndexPromotionMinimumQueryCount**  
-    The number of times a temporary index has to be queried during the promotion threshold to become a permanent auto index.    
-    _Default:_ 100   
-	_Minimum:_ 1  
-
-* **Raven/TempIndexPromotionThreshold**  
-	The promotion threshold for promoting a temporary dynamic index into a permanent auto index. The value is in second and refer to the length of time that the index have to get to the minimum query count value.   
-    _Default:_ 60000 (once per minute)  
-
-* **Raven/TempIndexCleanupPeriod**  
-    How often will temp dynamic indexes be purged from the system. The value is in seconds.   
-    _Default:_ 600 (10 minutes)  
-
-* **Raven/TempIndexCleanupThreshold**  
-    How long does a temporary index hang around if there are no queries made to it. The value is in seconds.   
-    _Default:_ 1200 (20 minutes)  
-
-* **Raven/TempIndexInMemoryMaxMB**  
+* **Raven/NewIndexInMemoryMaxMB**  
     The max size in MB of a temporary index held in memory. When a temporary dynamic index exceeds that value, it will be using on disk indexing, rather then RAM indexing.   
-    _Default:_ 25 MB  
-    _Minimum:_ 1 MB
+    _Default:_ 64 MB   
+    _Minimum:_ 1 MB   
 
-* **Raven/CreateTemporaryIndexesForAdHocQueriesIfNeeded**
-	Whatever we allow creation of temporary indexes on dynamic queries.   
+* **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded**
+	Whatever we allow creation of auto indexes on dynamic queries.   
 	_Default:_ true
 
 * **Raven/SkipCreatingStudioIndexes**
@@ -121,6 +134,30 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/LimitIndexesCapabilities**
 	Control whatever RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).   
 	_Default:_ false
+
+* **Raven/CompiledIndexCacheDirectory**
+	Path to a directory used by index compilator.    
+	_Default:_ ~\Raven\CompiledIndexCache
+
+* **Raven/NumberOfItemsToExecuteReduceInSingleStep**
+	The number that controls if single step reduce optimization is performed. If the count of mapped results is less than this value then the reduce is executed in a single step.  
+	_Default:_ 1024
+
+* **Raven/DisableDocumentPreFetchingForIndexing**
+	Disables the document prefetcher.
+	_Default:_ false
+
+* **Raven/MaxIndexCommitPointStoreTimeInterval**
+	Maximum time interval for storing commit points for map indexes when new items were added. The commit points are used to restore index if unclean shutdown was detected.   
+	_Default:_ 5 minutes
+
+* **Raven/MaxNumberOfStoredCommitPoints**
+	Maximum number of kept commit points to restore map index after unclean shutdown.   
+	_Default:_ 5
+
+* **Raven/MinIndexingTimeIntervalToStoreCommitPoint**
+	Minimum interval between between successive indexing that will allow to store a  commit point.    
+	_Default:_ 1 minute
 
 ### Data settings:
 
@@ -190,6 +227,12 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/LicensePath**
 	The path to the license file for RavenDB.   
 	_Default:_ ~\license.xml
+
+* **Raven/ServerName**
+	Name of the server that will show up on `/admin/stats` endpoint.   
+
+* **Raven/ClusterName**
+	Name of the cluster that will show up on `/admin/stats` endpoint.   
 
 ### Bundles
 
@@ -268,6 +311,16 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The soft limit before which we will warn about the quota.   
 	_Default:_ 1024
 
+### JavaScript parser
+
+* **Raven/MaxStepsForScript**
+	Maximum number of steps that javascripts functions can have (used for scripted patching).   
+	_Default:_ 10000
+
+* **Raven/AdditionalStepsForScriptBasedOnDocumentSize**
+	Number that will expand `Raven/MaxStepsForScript` based on a document size. Formula is as follows: MaxStepsForScript = `Raven/MaxStepsForScript` + (documentSize * `Raven/AdditionalStepsForScriptBasedOnDocumentSize`)
+	_Default:_ 5
+
 ### [Authorization & Authentication](../authentication)
 
 * **Raven/AnonymousAccess**
@@ -275,6 +328,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ Get
 
 {WARNING If your database instance does not have a valid license then `Admin` is the only available option to set. In a commercial system it should not be used. It is only for testing and development purposes, since it grants to **ANY** user administrative rights.  /}
+
+* **Raven/AllowLocalAccessWithoutAuthorization**
+	If set local request don't require authentication.   
+	_Default:_ Get
 
 * **Raven/OAuthTokenServer**
 	The url clients should use for authenticating when using OAuth mode.  
@@ -312,21 +369,30 @@ Many of the configuration options described in section above can be used both in
 | **Raven/MemoryCacheLimitCheckInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/IndexStoragePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxIndexWritesBeforeRecreate** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxNumberOfParallelIndexTasks** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxNumberOfItemsToIndexInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfItemsToReduceInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfItemsToPreFetchForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/InitialNumberOfItemsToIndexInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/AvailableMemoryForRaisingIndexBatchSizeLimit** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/ResetIndexOnUncleanShutdown** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxIndexingRunLatency** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeRunningIdleIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeMarkingAutoIndexAsIdle** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeRunningAbandonedIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TimeToWaitBeforeMarkingIdleIndexAsAbandoned** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/TaskScheduler** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TempIndexPromotionMinimumQueryCount** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TempIndexPromotionThreshold** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TempIndexCleanupPeriod** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TempIndexCleanupThreshold** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TempIndexInMemoryMaxMB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/CreateTemporaryIndexesForAdHocQueriesIfNeeded** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/NewIndexInMemoryMaxMB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/CompiledIndexCacheDirectory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/NumberOfItemsToExecuteReduceInSingleStep** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/DisableDocumentPreFetchingForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxIndexCommitPointStoreTimeInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxNumberOfStoredCommitPoints** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MinIndexingTimeIntervalToStoreCommitPoint** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -335,6 +401,7 @@ Many of the configuration options described in section above can be used both in
 | &nbsp; |||
 | **Raven/HostName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Port** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/UseSSL** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/VirtualDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/HttpCompression** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AccessControlAllowOrigin** | ![No](images\delete.png) | ![Yes](images\tick.png) |
@@ -344,6 +411,8 @@ Many of the configuration options described in section above can be used both in
 | &nbsp; |||
 | **Raven/License** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/LicensePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/ServerName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/ClusterName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/ActiveBundles** | ![Yes](images\tick.png)* | ![Yes](images\tick.png) |
 | **Raven/BundlesSearchPattern** | ![No](images\delete.png) | ![Yes](images\tick.png) |
@@ -364,7 +433,11 @@ Many of the configuration options described in section above can be used both in
 | **Raven/Quotas/Size/HardLimitInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Quotas/Size/SoftMarginInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
+| **Raven/MaxStepsForScript** | ![Yes](images\tick.png) | ![No](images\tick.png) |
+| **Raven/AdditionalStepsForScriptBasedOnDocumentSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
 | **Raven/AnonymousAccess** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/AllowLocalAccessWithoutAuthorization** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Authorization/Windows/RequiredGroups** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Authorization/Windows/RequiredUsers** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenServer** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
