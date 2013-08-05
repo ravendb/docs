@@ -10,3 +10,4 @@ encryption.markdown	Encryption Bundle
 compression.markdown	Compression Bundle
 periodic-backups.markdown	Periodic Backups
 sql-replication.markdown	SQL Replication Bundle
+scripted-index-results.markdown	Scripted Index Results Bundle
