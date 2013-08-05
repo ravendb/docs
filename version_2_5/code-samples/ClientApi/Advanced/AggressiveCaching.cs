@@ -26,6 +26,10 @@
 				documentStore.MaxNumberOfCachedRequests = 2048;
 				#endregion
 
+				#region disable_changes_tracking
+				documentStore.Conventions.ShouldAggressiveCacheTrackChanges = false;
+				#endregion
+
 				using (var session = documentStore.OpenSession())
 				{
 					#region aggressive_cache_load
@@ -44,7 +48,19 @@
 						var users = session.Query<User>().ToList();
 					}
 					#endregion
+
+					#region aggressive_cache_for_one_day_1
+					using  (session.Advanced.DocumentStore.AggressivelyCache()) { }
+					#endregion
+
+					#region aggressive_cache_for_one_day_2
+					using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromDays(1))) { }
+					#endregion
 				}
+
+				#region should_save_changes_force_aggressive_cache_check_convention
+				documentStore.Conventions.ShouldSaveChangesForceAggresiveCacheCheck = true;
+				#endregion
 			}
 		}
 	}
