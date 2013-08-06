@@ -1,4 +1,5 @@
 configuration.markdown	Configuration options
+index-administration.markdown	Index Administration
 backup-restore.markdown	Backup & Restore
 export-import.markdown	Exporting and Importing data
 upgrade.markdown	Doing upgrade

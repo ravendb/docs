@@ -59,7 +59,7 @@
     <None Include="client-api\advanced\document-metadata.markdown" />
     <None Include="client-api\advanced\dynamic-fields.markdown" />
     <None Include="client-api\advanced\full-query-syntax.markdown" />
-    <None Include="client-api\advanced\index-administration.markdown" />
+    <None Include="server\administration\index-administration.markdown" />
     <None Include="client-api\advanced\index.markdown" />
     <None Include="client-api\advanced\unbounded-results.markdown" />
     <None Include="client-api\advanced\querying-for-terms.markdown" />
@@ -255,7 +255,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="client-api\advanced\images\CNET_faceted_search_2.jpg" />
-    <Content Include="client-api\advanced\images\index-reset-delete-from-ui.png" />
+    <Content Include="server\administration\images\index-lock-unlock-ui.png" />
+    <Content Include="server\administration\images\index-reset-delete-from-ui.png" />
     <Content Include="client-api\images\raven.server.png" />
     <Content Include="client-api\images\studio.png" />
     <Content Include="client-api\querying\images\polymorphic_indexes_faq.png" />
