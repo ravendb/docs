@@ -86,6 +86,7 @@
     <None Include="client-api\querying\lazy-operations.markdown" />
     <None Include="client-api\querying\paging.markdown" />
     <None Include="client-api\querying\polymorphism.markdown" />
+    <None Include="client-api\querying\query-customizations.markdown" />
     <None Include="client-api\querying\results-transformation\.docslist" />
     <None Include="client-api\querying\results-transformation\index.markdown" />
     <None Include="client-api\querying\results-transformation\of-type.markdown" />
@@ -178,6 +179,7 @@
     <None Include="server\administration\upgrade.markdown" />
     <None Include="server\authentication.markdown" />
     <None Include="server\deployment\enabling-ssl.markdown" />
+    <None Include="server\deployment\installer.markdown" />
     <None Include="server\extending\bundles\.docslist" />
     <None Include="server\extending\bundles\authorization-bundle-design.markdown" />
     <None Include="server\extending\bundles\authorization.markdown" />
@@ -288,6 +290,12 @@
     <Content Include="server\administration\images\05FailureSimulation_Pending.jpg" />
     <Content Include="server\administration\images\delete.png" />
     <Content Include="server\administration\images\tick.png" />
+    <Content Include="server\deployment\images\installer_iis_application_pool.png" />
+    <Content Include="server\deployment\images\installer_iis_existing_site.png" />
+    <Content Include="server\deployment\images\installer_iis_new_site.png" />
+    <Content Include="server\deployment\images\installer_iis_performance_counters.png" />
+    <Content Include="server\deployment\images\installer_welcome_screen.png" />
+    <Content Include="server\deployment\images\installer_windows_service.png" />
     <Content Include="server\images\authentication_1.png" />
     <Content Include="server\extending\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\extending\bundles\images\versioned_docs.png" />
