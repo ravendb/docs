@@ -30,5 +30,5 @@ You can create a sample data for your database here, this option will only work 
 Select a CSV file and import it to this database
 
 ## Restore Database (will only appear in the system database) 
-In order to restore from a previous backup you need to enter the backup location, an optional location for the database and a name for the database.  
+In order to restore from a previous backup you need to enter the backup location, an optional location for the database and a name for the database.  Also there is a possibility to force a defragmentation by checking `Defrag` option.
 ![Tasks Fig 4](Images/studio_tasks_4.PNG)

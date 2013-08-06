@@ -156,6 +156,7 @@
     <Compile Include="ClientApi\Querying\ResultsTransformation\Product.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\ProductViewModel.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\ProjectFromIndexFieldsInto.cs" />
+    <Compile Include="ClientApi\Querying\ResultsTransformation\ResultTransformers.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\SelectFields.cs" />
     <Compile Include="ClientApi\Querying\ResultsTransformation\TransformResults.cs" />
     <Compile Include="ClientApi\Querying\StaticIndexes\Boosting.cs" />
