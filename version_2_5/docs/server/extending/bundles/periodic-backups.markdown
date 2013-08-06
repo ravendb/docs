@@ -32,7 +32,7 @@ In next step we need to create a backup setup document under `Raven/Backup/Perio
 
 {CODE periodic_backups_3@Server\Extending\Bundles\PeriodicBackups.cs /}
 
-`GlacierVaultName` and `S3BucketName` values **exclude** each other in favor to the `GlacierVaultName` so if you will specify both, then RavenDB will only use `GlacierVaultName`. 
+`GlacierVaultName` and `S3BucketName` values **exclude** each other in favor of the `GlacierVaultName` so if you will specify both, then RavenDB will only use `GlacierVaultName`. 
 
 {NOTE More information about Amazon Simple Storage Service (Amazon S3) can be found [here](http://aws.amazon.com/s3/) and if you are interested in Amazon Glacier then visit [this](http://aws.amazon.com/glacier/) page. /}
 
