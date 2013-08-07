@@ -8,7 +8,7 @@ An index usually need to be reset because it has reached its error quota and bee
 
 You can reset an index in one of the following ways:
 
-* Using the embedded API, by calling: 
+* Using the client API, by calling: 
 {CODE reset_index@Server\Administration\IndexAdministration.cs /}
 * Using the HTTP API, by issuing a HTTP call to the index with RESET as the method name: 
 {CODE-START:plain /}
