@@ -14,7 +14,7 @@ you need to put a special setup document under key `Raven/ScriptedIndexResults/[
 
 ##Example
 
-Lets assume that we have the following index:
+Let us assume that we have the following index:
 
 {CODE index_def@Server\Extending\Bundles\ScriptedIndexResults.cs /}
 

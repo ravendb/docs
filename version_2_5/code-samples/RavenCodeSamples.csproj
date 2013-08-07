@@ -224,6 +224,7 @@
     <Compile Include="Intro\RavenDbInNutshell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Server\Deployment\Embedded.cs" />
+    <Compile Include="Studio\DynamicReporting.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
