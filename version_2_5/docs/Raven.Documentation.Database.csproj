@@ -59,7 +59,7 @@
     <None Include="client-api\advanced\document-metadata.markdown" />
     <None Include="client-api\advanced\dynamic-fields.markdown" />
     <None Include="client-api\advanced\full-query-syntax.markdown" />
-    <None Include="client-api\advanced\index-administration.markdown" />
+    <None Include="server\administration\index-administration.markdown" />
     <None Include="client-api\advanced\index.markdown" />
     <None Include="client-api\advanced\unbounded-results.markdown" />
     <None Include="client-api\advanced\querying-for-terms.markdown" />
@@ -86,6 +86,7 @@
     <None Include="client-api\querying\lazy-operations.markdown" />
     <None Include="client-api\querying\paging.markdown" />
     <None Include="client-api\querying\polymorphism.markdown" />
+    <None Include="client-api\querying\query-customizations.markdown" />
     <None Include="client-api\querying\results-transformation\.docslist" />
     <None Include="client-api\querying\results-transformation\result-transformers.markdown" />
     <None Include="client-api\querying\results-transformation\index.markdown" />
@@ -179,6 +180,7 @@
     <None Include="server\administration\upgrade.markdown" />
     <None Include="server\authentication.markdown" />
     <None Include="server\deployment\enabling-ssl.markdown" />
+    <None Include="server\deployment\installer.markdown" />
     <None Include="server\extending\bundles\.docslist" />
     <None Include="server\extending\bundles\authorization-bundle-design.markdown" />
     <None Include="server\extending\bundles\authorization.markdown" />
@@ -253,7 +255,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="client-api\advanced\images\CNET_faceted_search_2.jpg" />
-    <Content Include="client-api\advanced\images\index-reset-delete-from-ui.png" />
+    <Content Include="server\administration\images\index-lock-unlock-ui.png" />
+    <Content Include="server\administration\images\index-reset-delete-from-ui.png" />
     <Content Include="client-api\images\raven.server.png" />
     <Content Include="client-api\images\studio.png" />
     <Content Include="client-api\querying\images\polymorphic_indexes_faq.png" />
@@ -289,6 +292,12 @@
     <Content Include="server\administration\images\05FailureSimulation_Pending.jpg" />
     <Content Include="server\administration\images\delete.png" />
     <Content Include="server\administration\images\tick.png" />
+    <Content Include="server\deployment\images\installer_iis_application_pool.png" />
+    <Content Include="server\deployment\images\installer_iis_existing_site.png" />
+    <Content Include="server\deployment\images\installer_iis_new_site.png" />
+    <Content Include="server\deployment\images\installer_iis_performance_counters.png" />
+    <Content Include="server\deployment\images\installer_welcome_screen.png" />
+    <Content Include="server\deployment\images\installer_windows_service.png" />
     <Content Include="server\images\authentication_1.png" />
     <Content Include="server\extending\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\extending\bundles\images\versioned_docs.png" />
