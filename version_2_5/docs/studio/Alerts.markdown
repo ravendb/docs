@@ -1,5 +1,5 @@
-
 ## Alerts
+
 In the alerts page you can see alerts sent from the server.  
 
 On the top you have the following toolbar:  
