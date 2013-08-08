@@ -242,7 +242,36 @@ Another option related to a map/reduce index is to get at a runtime the stats ab
 }
 {CODE-END /}
 
+##Scheduled reductions
 
+Sometimes you might want to be interested how much reduce work is still left to do. To get that information you can use *debug=schedules* option:
+
+{CODE-START:json /}
+   > curl -X GET 
+	http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=schedules
+{CODE-END /}
+
+{CODE-START:json /}
+{
+
+    "Count": 2,
+    "Results": [
+        {
+            "Timestamp": "2013-08-08T08:05:04.2391854Z",
+            "Etag": "00000000-0000-0100-0000-000000000001",
+            "Key": "users/1",
+            "Level": 0,
+            "Bucket": 43933
+        },
+        {
+            "Timestamp": "2013-08-08T08:05:04.2421868Z",
+            "Etag": "00000000-0000-0100-0000-000000000002",
+            "Key": "users/2",
+            "Level": 0,
+            "Bucket": 43933
+        }
+}
+{CODE-END /}
 
 ##Skipping projections
 
