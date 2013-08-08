@@ -38,11 +38,11 @@ namespace RavenCodeSamples.Server.Extending.Plugins
 			{
 			}
 
-			public virtual void AfterPut(string key, RavenJObject document, RavenJObject metadata, Guid etag, TransactionInformation transactionInformation)
+			public virtual void AfterPut(string key, RavenJObject document, RavenJObject metadata, Etag etag, TransactionInformation transactionInformation)
 			{
 			}
 
-			public virtual void AfterCommit(string key, RavenJObject document, RavenJObject metadata, Guid etag)
+			public virtual void AfterCommit(string key, RavenJObject document, RavenJObject metadata, Etag etag)
 			{
 			}
 
@@ -97,11 +97,11 @@ namespace RavenCodeSamples.Server.Extending.Plugins
 			{
 			}
 
-			public virtual void AfterPut(string key, Stream data, RavenJObject metadata, Guid etag)
+			public virtual void AfterPut(string key, Stream data, RavenJObject metadata, Etag etag)
 			{
 			}
 
-			public virtual void AfterCommit(string key, Stream data, RavenJObject metadata, Guid etag)
+			public virtual void AfterCommit(string key, Stream data, RavenJObject metadata, Etag etag)
 			{
 			}
 

@@ -41,8 +41,15 @@ The first one accepts ETag of a document that you want to starts from:
 If you use the second one then you will have to provide a prefix key of the documents you want to stream and optionally a string value that
 should match the documet key after the specified prefix:
 
-{CODE doc_streaming_2@ClientApi\Advanced\UnboundedResults.cs /}
+
 
 The query above will return all documents where ID starts with _"users/"_ and the end matches the expression _"*Ra?en"_ (e.g. "users/Admins/Raven", "Users/Ragen").
 
 Note that here you still have an option to page the results. The parameters _start_ and _pageSize_ have the default values here.
+
+## Async version
+
+There is also an asynchronous version of Unbounded results API available. Here is the sample usage presented:
+
+{CODE query_streaming_async@ClientApi\Advanced\UnboundedResults.cs /}
+ 

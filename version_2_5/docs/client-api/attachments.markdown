@@ -19,7 +19,7 @@ As you can see, loading an attachment from RavenDB is very simple. Each attachme
 
 * **Func\<Stream\> Data** - the delegate that returns stream of actual data,
 * **RavenJObject Metadata** - a dictionary object with the attachment's metadata,
-* **Guid Etag** - short for entity tag, a sequential Guid that is being updated every time the stored attachment changes,
+* **Etag Etag** - short for entity tag, a sequential identifier that is being updated every time the stored attachment changes,
 * **int Size** - the size of the attachment,
 * **string Key** - the attachment name.
 

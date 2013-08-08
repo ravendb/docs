@@ -236,6 +236,7 @@
     <None Include="studio\Bundles\Replication.markdown" />
     <None Include="studio\Bundles\Versioning.markdown" />
     <None Include="studio\Documents.markdown" />
+    <None Include="studio\dynamic-reporting.markdown" />
     <None Include="studio\index.markdown" />
     <None Include="studio\Indexes.markdown" />
     <None Include="studio\Logs.markdown" />
@@ -318,6 +319,7 @@
     <Content Include="studio\Bundles\Images\studio_encryption_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_encryption_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_encryption_3.PNG" />
+    <Content Include="studio\Bundles\Images\studio_encryption_4.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_3.PNG" />
@@ -349,6 +351,9 @@
     <Content Include="studio\Bundles\Images\studio_versioning_3.PNG" />
     <Content Include="studio\Bundles\Images\studio_versioning_4.PNG" />
     <Content Include="studio\Bundles\Images\studio_versioning_5.PNG" />
+    <Content Include="studio\Images\reporting_1.png" />
+    <Content Include="studio\Images\reporting_2.png" />
+    <Content Include="studio\Images\reporting_3.png" />
     <Content Include="studio\Images\studio_alerts_1.PNG" />
     <Content Include="studio\Images\studio_base_1.PNG" />
     <Content Include="studio\Images\studio_base_10.PNG" />
@@ -399,14 +404,17 @@
     <Content Include="studio\Images\studio_documents_9.PNG" />
     <Content Include="studio\Images\studio_indexes_1.PNG" />
     <Content Include="studio\Images\studio_indexes_10.PNG" />
+    <Content Include="studio\Images\studio_indexes_10_1.PNG" />
     <Content Include="studio\Images\studio_indexes_11.PNG" />
     <Content Include="studio\Images\studio_indexes_12.PNG" />
     <Content Include="studio\Images\studio_indexes_13.PNG" />
     <Content Include="studio\Images\studio_indexes_14.PNG" />
     <Content Include="studio\Images\studio_indexes_15.PNG" />
+    <Content Include="studio\Images\studio_indexes_15_1.PNG" />
     <Content Include="studio\Images\studio_indexes_16.PNG" />
     <Content Include="studio\Images\studio_indexes_17.PNG" />
     <Content Include="studio\Images\studio_indexes_18.PNG" />
+    <Content Include="studio\Images\studio_indexes_18_1.PNG" />
     <Content Include="studio\Images\studio_indexes_19.PNG" />
     <Content Include="studio\Images\studio_indexes_2.PNG" />
     <Content Include="studio\Images\studio_indexes_20.PNG" />
