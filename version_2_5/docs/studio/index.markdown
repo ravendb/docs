@@ -1,4 +1,3 @@
-
 # The Management Studio
 
 The RavenDB Management Studio is a lightweight Silverlight client to let you easily manage the data in a RavenDB server instance. Using the Studio you can view, create, edit or delete documents, manage indexes, issue queries, view the errors log, import / export, and more.
