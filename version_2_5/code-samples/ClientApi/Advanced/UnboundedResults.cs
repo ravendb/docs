@@ -5,6 +5,7 @@
 // -----------------------------------------------------------------------
 
 using System;
+using System.Threading.Tasks;
 using Raven.Abstractions.Data;
 using Raven.Client.Linq;
 
@@ -86,6 +87,35 @@ namespace RavenCodeSamples.ClientApi.Advanced
 
 					#endregion
 				}
+			}
+		}
+
+		public async Task AsyncStreamingAPI()
+		{
+			using (var store = NewDocumentStore())
+			{
+				#region query_streaming_async
+				using (var asyncSession = store.OpenAsyncSession())
+				{
+					var query = asyncSession.Query<User>("Users/ByActive").Where(x => x.Active);
+
+					using (var enumerator = await asyncSession.Advanced.StreamAsync(query))
+					{
+						while (await enumerator.MoveNextAsync())
+						{
+							User activeUser = enumerator.Current.Document;
+						}
+					}
+					
+					using (var enumerator = await asyncSession.Advanced.StreamAsync<User>(Etag.Empty))
+					{
+						while (await enumerator.MoveNextAsync())
+						{
+							User activeUser = enumerator.Current.Document;
+						}
+					}
+				}
+				#endregion
 			}
 		}
 	}

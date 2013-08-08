@@ -12,15 +12,13 @@
 			using (var store = NewDocumentStore())
 			{
 				#region getting_database_changes_instance
-
 				IDatabaseChanges changes = store.Changes("DatabaseName");
-
 				#endregion
 
-				#region subscribe_documents_replication_conflict
+				#region subscribe_for_all_documents
 				store.Changes()
-					.ForAllReplicationConflicts()
-					.Subscribe(conflict => Console.WriteLine("Replication conflict has occurred. Document id: " + conflict.Id));
+				     .ForAllDocuments()
+				     .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
 				#endregion
 
 				#region subscribe_documents_starting_with
@@ -61,14 +59,30 @@
 
 				#region subscribe_index_reduce_completed
 				store.Changes()
-					.ForIndex("Users/ByName")
+					.ForIndex("Orders/Total")
 					 .Subscribe(change =>
 					 {
-						 if (change.Type == IndexChangeTypes.IndexRemoved)
+						 if (change.Type == IndexChangeTypes.ReduceCompleted)
 						 {
-							 Console.WriteLine("Index" + change.Name + " has been removed.");
+							 Console.WriteLine("Index 'Orders/Total' has finished the reduce work.");
 						 }
 					 });
+				#endregion
+
+				#region subscribe_documents_replication_conflict
+				store.Changes()
+					.ForAllReplicationConflicts()
+					.Subscribe(conflict =>
+						{
+							if (conflict.ItemType == ReplicationConflictTypes.DocumentReplicationConflict)
+							{
+								Console.WriteLine("Conflict detected for {0}. Ids of conflicted docs: {1}. " +
+								                  "Type of replication operation: {2}",
+								                  conflict.Id, 
+												  string.Join(", ", conflict.Conflicts), 
+												  conflict.OperationType);
+							}						
+						});
 				#endregion
 
 				#region subscribe_bulk_insert
