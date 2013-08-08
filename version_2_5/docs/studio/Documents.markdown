@@ -1,16 +1,38 @@
-### The Documents Screen
+# The Documents Screen
 
 This screen gives an overview of all documents in the RavenDB server instance.
 
-#### Documents listing
+## Document collections
+
+When you will enter thin screen, on the left side you will see all available collections for the current database. Each collection will be represented by a different color and a number of documents that belong to it.
+
+![Figure 2: The list of available collection](Images/studio_collections_2.PNG)
+
+![Figure 1: Document collections](Images/studio_collections_1.PNG)
+
+{INFO A **Collection** in RavenDB is a group of documents sharing the same entity name. It is not a "database table", but rather a logical way of thinking of document groups. /}
+
+### Deleting collections
+
+From this screen you can delete a bulk of documents based on their collection association.
+
+Since a Collection is just a logical unit in RavenDB, there is no actual meaning in deleting a collection. By deleting a collection in this screen, you are telling RavenDB to delete _all documents_ sharing the same entity name which is equal to the name of the Collection you are asking to delete.
+
+To perform this delete operation, right click on a Collection name from the list on the left and select "Delete Collection". A confirmation dialog will appear.
+
+![Figure 3: Deleting a collection](Images/studio_collections_3.PNG)
+
+![](Images/studio_collections_4.PNG)
+
+{WARNING This operation cannot be undone, and is likely to delete a lot of documents. Use this option wisely. /}
+
+## Documents listing
 
 The documents are loaded from the database, newest first, documents from different collections are striped with different colors, in the default view you will get the "Details" view :
 
 ![Figure 1: Documents listing](Images/studio_documents_1.PNG)
 
-{INFO A **Collection** in RavenDB is a group of documents sharing the same entity name. It is not a "database table", but rather a logical way of thinking of document groups. /}
-
-In the left of the view you will find a couple of buttons.
+In the right side of the view you will find a couple of buttons.
 
 ![](Images/studio_base_11.PNG)
 
@@ -21,7 +43,7 @@ The right button allows you to change the size of the document preview in the li
 ![Figure 2: Changing the size of the document preview in listing](Images/studio_base_7.PNG)  
 The "Id Only" option is recommended when using remote server as it uses less bandwidth.
 
-#### Editing a document
+## Editing a document
 By double clicking on a document in the list, or clicking on the pencil icon on it, you get to the document editing screen.
 
 The document ID
@@ -36,8 +58,8 @@ RavenDB saves additional data on each document, such as it's Collection associat
 
 On the top right corner of this screen you will find several buttons:
 
-- Save changes
-- Reformat Document: will remove empty line and fix indentation
+- Save
+- Reformat: will remove empty line and fix indentation
 - Outlining: Select whether to enable, disable or auto collapse outlining
 - Refresh: will reload the document from the server
 - Delete Document: to permanently delete the current document, will prompt before doing the delete
@@ -50,7 +72,7 @@ To the right of the form some statistics are shown - the metadata of the current
 
 ![Document Fig 8](Images/studio_documents_8.PNG)
 
-#### Other options
+## Other options
 
 Back in the main listing screen, at the top right corner of the screen you will find 2 additional Options:  
 
