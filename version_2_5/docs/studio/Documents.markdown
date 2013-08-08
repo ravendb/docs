@@ -1,4 +1,4 @@
-# The Documents Screen
+# Documents
 
 This screen gives an overview of all documents in the RavenDB server instance.
 

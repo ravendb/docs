@@ -235,7 +235,6 @@
     <None Include="studio\Bundles\replication-walkthrough.markdown" />
     <None Include="studio\Bundles\Replication.markdown" />
     <None Include="studio\Bundles\Versioning.markdown" />
-    <None Include="studio\Collections.markdown" />
     <None Include="studio\Documents.markdown" />
     <None Include="studio\index.markdown" />
     <None Include="studio\Indexes.markdown" />
@@ -350,6 +349,7 @@
     <Content Include="studio\Bundles\Images\studio_versioning_3.PNG" />
     <Content Include="studio\Bundles\Images\studio_versioning_4.PNG" />
     <Content Include="studio\Bundles\Images\studio_versioning_5.PNG" />
+    <Content Include="studio\Images\studio_alerts_1.PNG" />
     <Content Include="studio\Images\studio_base_1.PNG" />
     <Content Include="studio\Images\studio_base_10.PNG" />
     <Content Include="studio\Images\studio_base_11.PNG" />
@@ -420,6 +420,21 @@
     <Content Include="studio\Images\studio_logs_1.PNG" />
     <Content Include="studio\Images\studio_logs_2.PNG" />
     <Content Include="studio\Images\studio_logs_3.PNG" />
+    <Content Include="studio\Images\studio_patch_1.PNG" />
+    <Content Include="studio\Images\studio_patch_10.PNG" />
+    <Content Include="studio\Images\studio_patch_11.PNG" />
+    <Content Include="studio\Images\studio_patch_12.PNG" />
+    <Content Include="studio\Images\studio_patch_13.PNG" />
+    <Content Include="studio\Images\studio_patch_14.PNG" />
+    <Content Include="studio\Images\studio_patch_15.PNG" />
+    <Content Include="studio\Images\studio_patch_2.PNG" />
+    <Content Include="studio\Images\studio_patch_3.PNG" />
+    <Content Include="studio\Images\studio_patch_4.PNG" />
+    <Content Include="studio\Images\studio_patch_5.PNG" />
+    <Content Include="studio\Images\studio_patch_6.PNG" />
+    <Content Include="studio\Images\studio_patch_7.PNG" />
+    <Content Include="studio\Images\studio_patch_8.PNG" />
+    <Content Include="studio\Images\studio_patch_9.PNG" />
     <Content Include="studio\Images\studio_statistics_1.PNG" />
     <Content Include="studio\Images\studio_statistics_2.PNG" />
     <Content Include="studio\Images\studio_statistics_3.PNG" />

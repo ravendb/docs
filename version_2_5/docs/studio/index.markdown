@@ -5,8 +5,6 @@ The RavenDB Management Studio is a lightweight Silverlight client to let you eas
 
 The Studio is accessible from any RavenDB server, regardless of how it is deployed. However, it does require the user to authenticate against the server, most commonly using their Windows credentials.
 
-// TODO: Studio screenshot
-
 ## Basic navigation
 
 At the top left of the page there are the navigation tabs, a link for each of the screens in the Studio:  
