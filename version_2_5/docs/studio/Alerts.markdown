@@ -1,4 +1,4 @@
-## Alerts
+# Alerts
 
 In the alerts page you can see alerts sent from the server.  
 
