@@ -54,7 +54,7 @@ The result of subscription methods above is `DocumentChangeNotification` object.
 {CODE-START: csharp /}
 DocumentChangeTypes Type { get; set; }
 string Id { get; set; }
-Guid? Etag { get; set; }
+Etag Etag { get; set; }
 {CODE-END /}
 
 where `DocumentChangeTypes` is the enum with the values as follow:
@@ -88,7 +88,7 @@ As the result of subscribing the index notifications you will get `IndexChangeNo
 {CODE-START: csharp /}
 IndexChangeTypes Type { get; set; }
 string Name { get; set; }
-Guid? Etag { get; set; }
+Etag Etag { get; set; }
 {CODE-END /}
 
 `IndexChangeTypes` is the enum that has the flags:

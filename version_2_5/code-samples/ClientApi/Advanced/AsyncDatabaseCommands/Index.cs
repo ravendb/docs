@@ -28,13 +28,13 @@
 			Task DeleteDocumentAsync(string id);
 
 			// Puts the document with the specified key in the database
-			Task<PutResult> PutAsync(string key, Guid? etag, RavenJObject document, RavenJObject metadata);
+			Task<PutResult> PutAsync(string key, Etag etag, RavenJObject document, RavenJObject metadata);
 
 			#endregion
 
 			#region index_2
 			// Puts the attachment with the specified key asynchronously
-			Task PutAttachmentAsync(string key, Guid? etag, byte[] data, RavenJObject metadata);
+			Task PutAttachmentAsync(string key, Etag etag, byte[] data, RavenJObject metadata);
 
 			// Gets the attachment by the specified key asynchronously
 			Task<Attachment> GetAttachmentAsync(string key);
@@ -43,7 +43,7 @@
 			Task<JsonDocument[]> StartsWithAsync(string keyPrefix, int start, int pageSize, bool metadataOnly = false);
 
 			// Deletes the attachment with the specified key asynchronously
-			Task DeleteAttachmentAsync(string key, Guid? etag);
+			Task DeleteAttachmentAsync(string key, Etag etag);
 
 			#endregion
 
