@@ -13,12 +13,10 @@ Therefore, there are 2 types of indexes in RavenDB:
 
 * *Static indexes* are named indexes which are created explicitly by the user.
 
-* *Dynamic indexes* are created by RavenDB automatically following some user query, if no matching index to query was found. RavenDB will find an appropriate index to query, and create it on the fly if one does not already exist. RavenDB will optimize itself based on the actual requests coming in, and can decide to promote a temporary index to a permanent one.
+* *Dynamic (auto) indexes* are created by RavenDB automatically following a user query, if no matching index to query was found. RavenDB will find an appropriate index to query, and create it on the fly if one does not already exist. RavenDB will optimize itself based on the actual requests coming in, and can decide to promote an auto index to a permanent one.
 
 Also worth mentioning at this stage is the notion of *stale indexes*. Because RavenDB follows the "better stale than offline" approach, querying an index may return stale results - for example when a user queries a database that while a mass-update in progress. RavenDB will let the user know if results are stale, and can also be told to wait until non-stale results are available.
 
 We will start by understanding the full range of querying options supported by RavenDB, and showing how they can be used intuitively by the RavenDB Linq provider. Then we will step in and learn about the Map/Reduce indexes that RavenDB uses and how to create them by hand, and after that we will explore more, less-obvious options supported by RavenDB.
 
-<pre>
 {FILES-LIST-RECURSIVE/}
-</pre>
