@@ -27,10 +27,10 @@
 			MultiLoadResult Get(string[] ids, string[] includes, bool metadataOnly = false);
 
 			// Puts the document in the database with the specified key
-			PutResult Put(string key, Guid? etag, RavenJObject document, RavenJObject metadata);
+			PutResult Put(string key, Etag etag, RavenJObject document, RavenJObject metadata);
 
 			// Deletes the document with the specified key
-			void Delete(string key, Guid? etag);
+			void Delete(string key, Etag etag);
 
 			// Retrieves the document metadata for the specified document key.
 			JsonDocumentMetadata Head(string key);
@@ -42,10 +42,10 @@
 
 			#region index_2
 			// Puts a byte array as attachment with the specified key
-			void PutAttachment(string key, Guid? etag, Stream data, RavenJObject metadata);
+			void PutAttachment(string key, Etag etag, Stream data, RavenJObject metadata);
 
 			// Updates just the attachment with the specified key's metadata
-			void UpdateAttachmentMetadata(string key, Guid? etag, RavenJObject metadata);
+			void UpdateAttachmentMetadata(string key, Etag etag, RavenJObject metadata);
 
 			// Retrieves the attachment with the specified key
 			Attachment GetAttachment(string key);
@@ -57,7 +57,7 @@
 			Attachment HeadAttachment(string key);
 
 			// Deletes the attachment with the specified key
-			void DeleteAttachment(string key, Guid? etag);
+			void DeleteAttachment(string key, Etag etag);
 
 			#endregion
 
@@ -138,8 +138,8 @@
 			FacetResults GetFacets(string index, IndexQuery query, string facetSetupDoc);
 
 			// Sends a patch request for a specific document
-			void Patch(string key, PatchRequest[] patches, Guid? etag);
-			void Patch(string key, ScriptedPatchRequest patch, Guid? etag);
+			void Patch(string key, PatchRequest[] patches, Etag etag);
+			void Patch(string key, ScriptedPatchRequest patch, Etag etag);
 
 			// Sends a patch request for a specific document, ignoring the document's Etag
 			void Patch(string key, PatchRequest[] patches);
