@@ -40,8 +40,15 @@ The left button allows you to Export to CSV.
 
 The right button allows you to change the size of the document preview in the listing - from Details view to Extra Large Card view that will show the data of the document as a JSON string (by clicking on the icon toggles between the different views):
 
-![Figure 2: Changing the size of the document preview in listing](Images/studio_base_7.PNG)  
-The "Id Only" option is recommended when using remote server as it uses less bandwidth.
+![Figure 2.1: Changing the size of the document preview in listing](Images/studio_base_7.1.PNG)  
+
+![Figure 2.2: Changing the size of the document preview in listing](Images/studio_base_7.2.PNG)  
+
+![Figure 2.3: Changing the size of the document preview in listing](Images/studio_base_7.3.PNG)  
+
+![Figure 2.4: Changing the size of the document preview in listing](Images/studio_base_7.4.PNG)    
+
+{INFO **Id Only** option is recommended when using a remote server as it uses less bandwidth. /}
 
 ## Editing a document
 By double clicking on a document in the list, or clicking on the pencil icon on it, you get to the document editing screen.
