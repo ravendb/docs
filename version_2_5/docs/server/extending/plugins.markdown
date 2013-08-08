@@ -216,6 +216,6 @@ To alter database configuration you can edit the configuration document (more ab
 
 {CODE plugins_5_0@Server\Extending\Plugins\Index.cs /}
 
-**Example: Disable compression and extend temp index cleanup period**
+**Example: Disable compression**
 
 {CODE plugins_5_1@Server\Extending\Plugins\Index.cs /}
