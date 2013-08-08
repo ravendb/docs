@@ -1,9 +1,8 @@
 /bundles	Bundles
-documents.markdown	The Documents Screen
-collections.markdown	The Collections Screen
+documents.markdown	Documents
 indexes.markdown	Indexes
-tasks.markdown	The Tasks Screen
-logs.markdown	The Logs Screen
+tasks.markdown	Tasks
+logs.markdown	Logs
 statistics.markdown	Database Statistics
 multi-database.markdown	Multi-databse Support
 patch.markdown	Patching
