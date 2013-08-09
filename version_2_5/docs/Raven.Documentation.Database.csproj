@@ -335,7 +335,6 @@
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_11.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_12.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_13.png" />
-    <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_14.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_2.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_3.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_4.png" />
@@ -343,7 +342,6 @@
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_6.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_7.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_8.png" />
-    <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_9.png" />
     <Content Include="studio\Bundles\Images\studio_replication_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_replication_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_replication_3.PNG" />
