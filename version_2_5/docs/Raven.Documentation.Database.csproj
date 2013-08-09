@@ -324,6 +324,9 @@
     <Content Include="studio\Bundles\Images\studio_periodic_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_3.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_4.PNG" />
+    <Content Include="studio\Bundles\Images\studio_periodic_5.PNG" />
+    <Content Include="studio\Bundles\Images\studio_periodic_6.png" />
+    <Content Include="studio\Bundles\Images\studio_periodic_7.png" />
     <Content Include="studio\Bundles\Images\studio_quotas_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_quotas_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_quotas_3.PNG" />
