@@ -1,5 +1,5 @@
+# Encryption Bundle
 
-### Encryption Bundle
 When creating a database, if you want to use the encryption bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_encryption_1.PNG)  
 
@@ -13,7 +13,6 @@ In Addition you can set the encryption algorithm:
 ![Tasks Fig 4](Images/studio_encryption_4.PNG)  
 
 You can also choose if you want to encrypt the indexes as well (selected by default)
-
 
 After you create the database, a window with the selected key will appear, this is your last chance to backup the key:  
 ![Tasks Fig 3](Images/studio_encryption_3.PNG)  
