@@ -18,4 +18,4 @@ In quotas settings you can set several parameters for the database:
 Bundle settings can always be adjusted in the database settings view, which you can access from top panel.   
 ![Tasks Fig 2](Images/studio_quotas_3.PNG)  
 
-You can read more information about the Quotas Bundle [here](../../server/bundles/extending/quotas)
+{INFO You can read more information about the Quotas Bundle [here](../../server/bundles/extending/quotas) /}
