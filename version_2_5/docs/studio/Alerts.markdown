@@ -1,6 +1,6 @@
+# Alerts
 
-## Alerts
-In the alerts page you can see alerts sent from the server (at the moment only errors in periodic backups will send alerts).  
+In the alerts page you can see alerts sent from the server.  
 
 On the top you have the following toolbar:  
 ![Tasks Fig 1](Images/studio_alerts_1.PNG)  

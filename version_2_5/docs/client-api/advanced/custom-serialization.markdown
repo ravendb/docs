@@ -41,4 +41,4 @@ For example, following is an example for specifying that only public fields and 
 
 #### Identity field
 
-While serializing, RavenDB makes some assumptions about your ID entity (if exists). The complete discussion can be found [here](http://ravendb.net/docs/theory/document-key-generation?version=2.0).
+While serializing, RavenDB makes some assumptions about your ID entity (if exists). The complete discussion can be found [here](http://ravendb.net/docs/theory/document-key-generation).
