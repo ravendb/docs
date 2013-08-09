@@ -1,9 +1,9 @@
+# Versioning Bundle
 
-### Versioning Bundle
-When creating a database, if you want to use the versioning bundle you need to select it in the database creation window:  
+If you want to use `Versioning Bundle` then you must select it from the bundle list during the database creation:   
 ![Tasks Fig 1](Images/studio_versioning_1.PNG)  
 
-After you press "Next" you will get the following page:  
+After pressing "Next" you will get the following page:  
 ![Tasks Fig 2](Images/studio_versioning_2.PNG)  
 
 {INFO On the left side of the `Bundle Setup` dialog you will see a list of all selected bundles that require additional configuration. /}
@@ -13,10 +13,11 @@ You will always have the default versioning here, with it you can edit the defau
 
 When you add a new versioning an additional box will be added:  
 ![Tasks Fig 3](Images/studio_versioning_3.PNG)  
+
 When you go to edit the "Collection" box you will get a dropdown with the names of the available collections (this happens only when you already have documents in the database:  
 ![Tasks Fig 4](Images/studio_versioning_4.PNG)  
 
-After you create the database you can always edit these values in the settings section by pressing the cog wheel on the top right next to the database name:  
+Bundle settings can always be adjusted in the database settings view, which you can access from top panel.   
 ![Tasks Fig 5](Images/studio_versioning_5.PNG)  
 
-You can read more information about the Versioning Bundle [here](../../server/extending/bundles/versioning?version=2.0)
+{INFO You can read more information about the Versioning Bundle [here](../../server/extending/bundles/versioning) /}
