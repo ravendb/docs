@@ -1,5 +1,4 @@
-
-#### Live Projections
+# Live Projections
 
 {NOTE Live Projections feature is obsolete in favor of [Result Transformers](../results-transformation/result-transformers). /}
 

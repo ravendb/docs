@@ -1,7 +1,6 @@
+# Commands on multiple documents
 
-## Commands on multiple documents
-
-### GET
+## GET
 
 We can address documents directly by using their key (in the following example, the key is 'users/ayende'):
 
@@ -162,7 +161,7 @@ Besides requesting by using POST to get multiple documents you can also use HTTP
 > curl -X GET http://localhost:8080/queries?id=users/ayende"&"id=users/oren
 {CODE-END /}
 
-### Set based operations
+## Set based operations
 
 Typically, document databases don't support set based operations. Raven does it for deletes and updates. For inserts, you can POST to the [bulk_docs](http-api-multi#batching-requests) endpoint (this is how the Client API behaves).
 
@@ -175,7 +174,7 @@ Note that Raven indexes are allowed to be stale. If the index for the set based 
 
 The analogous Client API reference section you will find [here](../client-api/set-based-operations).
 
-#### Set based deletes
+### Set based deletes
 
 For example, let us say that we wanted to delete all the inactive users, we can define an index for the user activity status:
 
@@ -199,7 +198,7 @@ This is the equivalent for:
     WHERE IsActive = 0
 {CODE-END /}
 
-####Set based updates
+###Set based updates
 
 Set based updates work very similarly to set based deletes. They require an index to operate on an a query for this index. But they use the [PATCH format](../http-api/http-api-single#patch) as their payload. For example, if we wanted to mark all the users who haven't logged on recently as inactive, we could define the following index:
 
@@ -226,7 +225,7 @@ This is the equivalent for:
     WHERE LastLoginDate < '2010-05-27'
 {CODE-END /}
 
-###Batching requests
+##Batching requests
 
 RavenDB supports batching multiple operations into a single request, reducing the number of remote calls and allowing several operations to share the same transactions.
 Request batching in RavenDB is handled using the '/bulk_docs' endpoint, which accepts an array of operations to execute. The format for the operations is:
@@ -295,10 +294,10 @@ This can be executed using curl with the following syntax:
     ]
 {CODE-END /}
 
-####Concurrency
+###Concurrency
 
 If an etag is specified in the command, that etag is compared to the current etag on the document on the server. If the etags do no match, a 409 Conflict status code is returned. In such a case, the entire operation fails and non of the updates that were tried will succeed.
 
-####Transactions
+###Transactions
 
 All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.

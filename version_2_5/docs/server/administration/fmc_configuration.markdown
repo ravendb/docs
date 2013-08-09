@@ -1,5 +1,6 @@
 #Windows Clustering
-###Note that this feature is only available in the Enterprise Edition of RavenDB.
+
+{INFO Windows Clustering feature is only available in the Enterprise Edition. /}
 
 In order to ensure RavenDB high availability you can run it on a failover cluster.
 

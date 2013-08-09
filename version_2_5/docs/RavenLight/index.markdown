@@ -1,3 +1,0 @@
-﻿# RavenLight
-
-// TBD

@@ -1,10 +1,10 @@
-#Cascade Delete Bundle
+# Cascade Delete Bundle
 The cascade delete bundle allows for a specified set of documents and attachments to be deleted when the document that owns it is deleted. Typical usage scenarios include deleting an attachment that is referenced by a document or removing a set of child documents referenced by a parent document.
 
-##Installation
+## Installation
 Simply place the Raven.Bundles.CascadeDelete.dll in the Plugins directory.
 
-##Usage
+## Usage
 You can specify the documents and attachments to be cascade deleted using the following code:
 
 {CODE cascadedelete1@Server\Extending\Bundles\CascadeDelete.cs /}

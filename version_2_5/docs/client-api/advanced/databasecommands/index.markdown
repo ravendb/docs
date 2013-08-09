@@ -1,9 +1,6 @@
-
 # DatabaseCommands
 
 The `DatabaseCommands` is the actual engine behind the Client API. The Client API introduces features like Unit-of-Work and transactions. Therefore, while the `DatabaseCommands` are exposed in the Client API to allow for advanced usages, all operations that are performed directly against them are NOT transactional, and are NOT safe by default.
-
-The `DatabaseCommands` object is available from `IDocumentStore`.
 
 ## Document operations
 

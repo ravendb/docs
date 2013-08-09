@@ -1,10 +1,10 @@
-﻿#Plugins
+﻿# Plugins
 
 Under `Raven.Database.Plugins` namespace various interfaces and classes can be found that might be used to extend the database behavior.
 
 {NOTE All DLL's containing custom plugins must be placed in `Plugins` directory that by default are found in `~\Plugins`. To change the default location of this directory, please refer to [this](../administration/configuration#bundles) page. /}
 
-##Triggers
+## Triggers
 
 This type of extensions grants the ability to manipulate when certain action is taking place e.g. document is deleted or index is updated.
 
@@ -15,7 +15,7 @@ Triggers can be divided to four categories:
 * **Index Query** triggers   
 * **Index Update** triggers    
 
-###PUT triggers
+### PUT triggers
 
 To create his own trigger, one must inherit from `AbstractPutTrigger` or `AbstractAttachmentPutTrigger`, but before we will do that lets take a look at them more closely.
 
@@ -39,7 +39,7 @@ where:
 Most of the logic is in `AllowPut` method, where we check the existing owner (by checking the current version of the document) and reject the update if it if the owner doesn't match.
 In the `OnPut` method, we ensure that the metadata we need is setup correctly. To control attachment putting, similar trigger can be created.
 
-###DELETE triggers
+### DELETE triggers
 
 Delete triggers are similar in shape to the put triggers, but in contrast to them they control the delete operations. To build your own trigger, one must inherit from `AbstractDeleteTrigger` or `AbstractAttachmentDeleteTrigger`.
 
@@ -60,7 +60,7 @@ where:
 
 In this case, we perform another delete operation as part of the current delete operation. This operation is done under the same transaction as the original operation.
 
-###Read triggers
+### Read triggers
 
 Another type of triggers is used to control the access to the documents and manipulate their context when performing read operations. Similar to the previous triggers, two classes were introduced, the `AbstractReadTrigger` and `AbstractAttachmentReadTrigger`.
 
@@ -87,7 +87,7 @@ In the example above, we only let the owner of a document to read it. You can se
 
 In this case, we detect that a document with a link was requested, and we stitch the document together with its link to create a single document.
 
-###Index Query triggers
+### Index Query triggers
 
 Query triggers have been introduced to extend the query parsing capabilities and provide users with a way to modify the queries before they are executed against the index. To write your own query trigger, you must inherit from `AbstractIndexQueryTrigger` class.
 
@@ -101,7 +101,7 @@ where:
 
 {CODE plugins_1_4@Server\Extending\Plugins\Index.cs /}
 
-###Index Update triggers
+### Index Update triggers
 
 Index Update triggers allow users to perform custom actions every time an index entry has been created or deleted. To write your own trigger we must consider two classes. The `AbstractIndexUpdateTrigger` and `AbstractIndexUpdateTriggerBatcher` defined below.
 
@@ -130,7 +130,7 @@ This index works on the [following index](http://ayende.com/blog/4530/raven-even
 
 This is nice if we want to keep a record of all the changes to the index. Note that we also change the document to store the snapshot key for this particular version.    
 
-##Codecs
+## Codecs
 
 The `AbstractDocumentCodec` and `AbstractIndexCodec` classes have been introduced as an entry point to custom compression methods.
 
@@ -151,7 +151,7 @@ where:
 
 {CODE plugins_3_3@Server\Extending\Plugins\Index.cs /}
 
-##Tasks
+## Tasks
 
 Another type of plugins gives us the ability to perform various actions during server/database startup process or enables us to perform actions periodically. For these needs we have introduced two interfaces and one abstract class.
 
@@ -176,7 +176,7 @@ where:
 
 {CODE plugins_4_4@Server\Extending\Plugins\Index.cs /}
 
-##Compilation Extensions
+## Compilation Extensions
 
 There might be a certian situations when users want to put more complex logic to calculate a value of an index entry field. To do this, in RavenDB, we have introduced an `AbstractDynamicCompilationExtension`.
 
@@ -196,7 +196,7 @@ Now we can use our `Palindrome` in our index definition.
 
 {CODE plugins_6_3@Server\Extending\Plugins\Index.cs /}
 
-##Analyzer Generators
+## Analyzer Generators
 
 To add your custom analyzer, one must implement the `AbstractAnalyzerGenerator` class and provide logic when your custom analyzer should be used.
 
@@ -210,7 +210,7 @@ where:
 
 {CODE plugins_7_1@Server\Extending\Plugins\Index.cs /}
 
-##Database configuration
+## Database configuration
 
 To alter database configuration you can edit the configuration document (more about how it can be done and what configuration options are available can be found [here](../../administration/configuration)), but sometimes it might be better to change configuration programatically e.g. imagine a situation, where you have 100 databases and you want to change one setting in every one of them. This is why the `IAlterConfiguration` interfaces was created.
 

@@ -1,5 +1,4 @@
-
-## Safe by default
+# Safe by default
 
 One of the key design principles guiding the development of RavenDB is that it should be *safe by default*. RavenDB will let you shoot yourself in the foot, but only after you have made it absolutely clear that this is what you actually want to do.
 
@@ -7,7 +6,7 @@ This design was influenced by the [Release It!](http://pragprog.com/book/mnee/re
 
 We will cover some behaviors in other systems that RavenDB addresses using defaults
 
-### Unbounded result sets
+## Unbounded result sets
 
 This is probably the most common error that people make with any sort of data access technology. "Just give me the whole thing, I'll make sense of it on the client side." In the RDBMS world, this would be expressed as "SELECT * FROM Orders".
 
@@ -22,7 +21,7 @@ While you can override the server-side using the `Raven/MaxPageSize` configurati
 
 As a rule of thumb, whenever you are trying to get more than 128 documents in one go, definitely more than 1,024, you are doing something wrong.
 
-### Unbounded number of requests
+## Unbounded number of requests
 
 Another common issue with all data access technologies is being overly chatty with the database. A common scenario might be:
 

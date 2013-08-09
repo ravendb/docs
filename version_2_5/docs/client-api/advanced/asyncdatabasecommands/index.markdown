@@ -1,4 +1,3 @@
-
 # AsyncDatabaseCommands
 
 The `AsyncDatabaseCommands` is the actual engine behind the Async Client API. It is available from `IDocumentStore`.

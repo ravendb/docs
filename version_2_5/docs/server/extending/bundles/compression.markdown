@@ -1,12 +1,12 @@
-﻿#Compression bundle
+﻿# Compression bundle
 
 To reduce the cost of I/O operations and reduce the size of the database on disk, we have introduced the `Compression` bundle. Compression is only applied on documents, indexes are not compressed. This is because RavenDB is performing a lot of random reads from indexes, whereas with documents, we almost always read/write the full content. Worth noting is that compression process is fully transparent for the end-user.
 
-##How to enable compression
+## How to enable compression
 
 To activate compression server-wide just add `Compression` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with compression bundle turned on using API or Studio.
 
-How to create a database with compression enabled can be found [here](). // TODO
+How to create a database with compression enabled using Studio can be found [here](../../../studio/bundles/compression).
 
 {CODE compression_1@Server\Extending\Bundles\Compression.cs /}
 

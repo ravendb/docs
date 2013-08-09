@@ -1,4 +1,4 @@
-﻿### Results Transformers
+﻿# Results Transformers
 
 Results Transformers have been introduced in RavenDB 2.5 to give the user the ability to do a server side projections (with possibility to load data from other documents).
 
