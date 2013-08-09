@@ -1,5 +1,4 @@
-﻿
-# Intro to RavenDB
+﻿# Intro to RavenDB
 
 ## Welcome To RavenDB
 

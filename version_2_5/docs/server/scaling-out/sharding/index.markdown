@@ -35,7 +35,7 @@ For complex sharding environments you would probably want to implement the `ISha
 
 By default, if you don't set the `ShardResolutionStrategy` property on the `ShardStrategy` you'll use the `DefaultShardResolutionStrategy`. 
 
-##Default Shard Resolution Strategy
+## Default Shard Resolution Strategy
 
 If you're using the `DefaultShardResolutionStrategy` you can just use the `ShardingOn` method on the `ShardStrategy` object, in order to instruct the `DefaultShardResolutionStrategy` which property holds the shards id information for a specific entity.   
 

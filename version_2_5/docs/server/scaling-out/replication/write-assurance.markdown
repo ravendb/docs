@@ -1,4 +1,4 @@
-﻿#Write Assurance
+﻿# Write Assurance
 
 RavenDB handles the replication in an asynchronous manner. Saving an entity on a server will cause that an async task will be run which will replicate the newly added document to configured destination servers.
 From the code perspective it means that when you call `session.SaveChanges()` document is stored on the primary node and it does not wait for the replication to the other ones.

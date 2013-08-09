@@ -1,4 +1,3 @@
-
 # .NET Client API
 
 ## The RavenDB .NET Client API

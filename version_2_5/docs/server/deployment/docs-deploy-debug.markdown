@@ -1,4 +1,5 @@
-#Raven - Running in Debug mode
+# Raven - Running in Debug mode
+
 Raven can be deployed in several ways, but the simplest method is to simply start the server located in the release zip under "/Server/Raven.Server.exe"
 That will start the server as a console application, which displays the server log.
 The server logs all requests, including status and duration. You can use that to get an idea how fast Raven really is.
@@ -6,7 +7,8 @@ The server logs all requests, including status and duration. You can use that to
 * Close the server by hitting Enter on the console.
 * If you want to clear the log and keep the server running, you can type "cls" and then enter.
 
-##Debug Configuration
+## Debug Configuration
+
 You can set the following configuration options in the Raven.Server.exe.config file's appSettings section:
 
 * Raven/DataDir - The physical location for the Raven data directory.
