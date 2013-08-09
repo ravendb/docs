@@ -192,7 +192,7 @@ namespace RavenCodeSamples.ClientApi
 					});
 				#endregion
 
-				#region scriptedpatching2
+				#region scriptedpatching_remove
 				documentStore.DatabaseCommands.Patch(
 					"blogposts/1234",
 					new ScriptedPatchRequest()
@@ -202,7 +202,7 @@ namespace RavenCodeSamples.ClientApi
 					});
 				#endregion
 
-				#region scriptedpatching3
+				#region scriptedpatching_remove_where
 				documentStore.DatabaseCommands.Patch(
 					"blogposts/1234",
 					new ScriptedPatchRequest()
@@ -214,6 +214,73 @@ namespace RavenCodeSamples.ClientApi
 						"
 					});
 				#endregion
+
+				#region scriptedpatching_map
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest()
+					{
+						Script = @"
+							this.Comments.Map(function(comment) {   
+								if(comment.Content.indexOf(""Raven"") != -1)
+								{
+									comment.Title = ""[Raven] "" + comment.Title;
+								}
+								return comment;
+							});
+						"
+					});
+				#endregion
+
+				#region scriptedpatching_load
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest()
+					{
+						Script = @"
+							var author = LoadDocument(this.Author.Id);
+							this.AuthorName = author.FirstName + ' ' + author.LastName;
+						"
+					});
+				#endregion
+
+				#region scriptedpatching_put
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest()
+					{
+						Script = @"
+							PutDocument('titles/' + this.Title,
+										{ 'PostId' : this.Id }, 
+										{ 'MetadataAuthorValue' : this.Author }
+							);
+						"
+					});
+				#endregion
+
+				#region scriptedpatching_trim
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest()
+					{
+						Script = @"
+							this.Title = this.Title.trim();
+						"
+					});
+				#endregion
+
+				#region scriptedpatching_lodash
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest()
+					{
+						Script = @"_(this.Comments).forEach(function(comment){
+							PutDocument('CommentAuthors/', { 'Author' : comment.Author }
+							);
+						});"
+					});
+				#endregion
+				
 
 				#region scriptedpatching_debug
 
@@ -236,6 +303,8 @@ namespace RavenCodeSamples.ClientApi
 					Console.WriteLine("Patch debug: " + debug);
 				}
 				#endregion
+
+
 			}
 		}
 	}

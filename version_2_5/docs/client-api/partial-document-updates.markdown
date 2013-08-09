@@ -1,4 +1,4 @@
-## Partial document updates using the Patching API
+# Partial document updates using the Patching API
 
 The process of document patching allows for modifying a document on the server without having to load it in full and saving it back. This is usually useful for updating denormalized data in entities.
 
@@ -16,7 +16,7 @@ Following are a description of the `PatchRequest` object, and the different opti
 
 {CODE blogpost_classes@Common.cs /}
 
-### The PatchRequest object
+## The PatchRequest object
 
 When creating a PatchRequest object to be used in a patch command, at least 2 properties have to be specified: `Name` and `Type`.
 
@@ -34,7 +34,7 @@ Given the object graph stored under a given key, `Name` is the path from the roo
 * **Insert** - Insert an item to an array at a specified position
 * **Remove** - Remove an item from an array at a specified position
 
-### Performing simple updates
+## Performing simple updates
 
 A property in a stored document is a field from an entity. To change it's value using the Patching API, provide its path in `Name`, and initialize `Type` with `PatchCommandType.Set`. Then, serialize the object you want to save into that property, and pass it as `Value`.
 
@@ -52,11 +52,11 @@ Numeric values used as counters can be incremented or decremented, without worry
 
 {CODE patching4@ClientApi/PartialDocumentUpdates.cs /}
 
-### Conditional updates
+## Conditional updates
 
 If `PrevVal` is set, it's value will be compared against the current value of the property to verify a change isn't overwriting new values. If the value is `null`, the operation is always successful.
 
-### Working with arrays
+## Working with arrays
 
 Any collection in your entity will be serialized into an array in the resulting JSON document. You can perform collection-specific operations on it easily, by using the `Position` property:
 
@@ -64,10 +64,10 @@ Any collection in your entity will be serialized into an array in the resulting 
 
 Being a JSON object, you can treat the entire array as value like shown above. Sometimes, however, you want to access certain items in the array
 
-### Working with nested operations
+## Working with nested operations
 
 The nested operations are only valid of the 'Type' is `PatchCommandType.Modify`.  
-If we want to change all items in a collection we could do that by setting the AllPositions porparty to 'true'
+If we want to change all items in a collection we could do that by setting the AllPositions property to 'true'
 
 **Here are a few examples of nested operations:**
 
@@ -79,7 +79,11 @@ Remove value in a nested element:
 
 {CODE nested2@ClientApi/PartialDocumentUpdates.cs /}
 
-### Performing complex updates
+## Concurrency
+
+If we wanted to we could run several batch operations in parallel, but we will not be able to set which one will end first.
+
+## Performing complex updates
 If you need to deal with more complex patching algorithm, using the methods shown above, might become cumbersome.
 
 That's where the `ScriptedPatchRequest` comes in handy. It allows you to send a JavaScript snippet to the database which is executed against the JSON of the document which should be updated.
@@ -88,22 +92,69 @@ Adding a new `BlogComment` is as simple as this:
 
 {CODE scriptedpatching1@ClientApi/PartialDocumentUpdates.cs /}
 
-`ScriptedPatchRequest` also provides an easy way to remove items from an array:
+Of course, `ScriptedPatchRequest` allows you to use any arbitrary JavaScript functionality like for-loops. Additionally there are a few custom methods available that you can use in your scripts:
 
-{CODE scriptedpatching2@ClientApi/PartialDocumentUpdates.cs /}
+#### Remove
+An easy way to remove items from an array:
 
-Often, you don't simply want to remove items from arrays but remove them conditionally instead. Even this can be done easily using `ScriptedPatchRequest`:
+{CODE scriptedpatching_remove@ClientApi/PartialDocumentUpdates.cs /}
 
-{CODE scriptedpatching3@ClientApi/PartialDocumentUpdates.cs /}
+#### RemoveWhere
 
-Of course, `ScriptedPatchRequest` allows you to use any arbitrary JavaScript functionality like for-loops as well.
+Often, you don't simply want to remove items from arrays but remove them conditionally instead:
 
-### ScriptedPatch debugging
+{CODE scriptedpatching_remove_where@ClientApi/PartialDocumentUpdates.cs /}
 
-The syntax of the scripted patch allows you to retrieve debug information from a script execution. To do that use `output` method inside the script body and next get the _Debug_ array of the returned result:
+#### Map
+
+It is used to modify the collection of elements:
+
+{CODE scriptedpatching_map@ClientApi/PartialDocumentUpdates.cs /}
+
+#### LoadDocument
+
+It allows to load a separate document and update a current document based on it's values:
+
+{CODE scriptedpatching_load@ClientApi/PartialDocumentUpdates.cs /}
+
+#### PutDocument
+
+By using this you can even create a new document or update an another existing one:
+
+{CODE scriptedpatching_put@ClientApi/PartialDocumentUpdates.cs /}
+
+The following parameters are passed to this method (according to the order):
+
+* key of a document 
+	* you can specify just a prefix e.g. 'Titles/' 
+	* if `null` is provided then a database will create it as GUID
+* document body as JSON
+* metadata as JSON (optionally)
+	* if you specify 'etag' property here then it will do the check to ensure that it matches an Etag of an updated document (if not `ConcurrencyException` will be thrown)
+
+#### trim
+
+A small but very helpful helper:
+
+{CODE scriptedpatching_trim@ClientApi/PartialDocumentUpdates.cs /}
+
+#### output
+
+It allows to retrieve debug information from a script execution. In order to extract this info, get the _Debug_ array of the returned result:
 
 {CODE scriptedpatching_debug@ClientApi/PartialDocumentUpdates.cs /}
 
-### Concurrency
+#### lodash.js
 
-If we wanted to we could run several batch operations in parallel, but we will not be able to set which one will end first.
+You can also take advantage of any function from [Lo-Dash](http://lodash.com/) library which is included into Raven script engine by default. Example with <em>forEach</em> usage:
+
+{CODE scriptedpatching_lodash@ClientApi/PartialDocumentUpdates.cs /}
+
+### Script limitations
+
+Raven limits the number of statements in a script to execute. By default it is 10.000 steps, you can control it by using _Raven/MaxStepsForScript_ setting. 
+
+Additionally you can change a value of a setting
+_Raven/AdditionalStepsForScriptBasedOnDocumentSize_ that allows to perform a few additional steps calculated as <em>sizeOfDocument * specifiedValue</em> (default is 5).
+
+We also limit a recursion to 50 calls.
