@@ -1,16 +1,16 @@
-#Periodic Backups bundle
+# Periodic Backups bundle
 
 RavenDB comes with support of doing periodic backups of documents and attachments to [Amazon AWS](http://aws.amazon.com/) services.  
 When creating a database in the studio you will see that you can't change the selection of the 'Periodic Backup Bundle' it's selection depends on the license.  
 In order to periodic backups to work you must activate `PeriodicBackups` bundle, by activating this bundle globally and turning it on/off per database, or activating it per database only.
 
-##How it works
+## How it works
 
 Periodic backups are leveraging the concept of incremental backups available in RavenDB and to take advantage of that, we are storing an information about last successful ETag of the documents and attachments that were send to backup destination.
 
-##Configuration
+## Configuration
 
-###Activating bundle
+### Activating bundle
 
 To activate bundle globally just add `PeriodicBackups` to the `Raven/ActiveBundles`. More about setting up configuration can be found [here](../Administration/configuration).
 
@@ -20,7 +20,7 @@ Bundle can also be activated during database creation process.
 
 {CODE periodic_backups_1@Server\Extending\Bundles\PeriodicBackups.cs /}
 
-###Configuring backup destination
+### Configuring backup destination
 
 Two steps need to be taken to setup backup destination properly.
 

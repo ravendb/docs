@@ -1,5 +1,4 @@
-
-## What is NoSQL?
+# What is NoSQL?
 
 A NoSQL database offers an alternative to the RDBMS style of data storage (**R**elational **D**ata**b**ase **M**anagement **S**ystem), shedding the rigid, table-based system used in an RDBMS, in place of a different storage model that emphasizes higher scalability and availability over conformant to a relational model.
 
@@ -13,7 +12,7 @@ In short, NoSQL database management systems are useful when working with a huge 
 
 Other usages of this technology are related with the flexibility of the data model; a lot of applications might gain from this unstructured data model: tools like CRM, ERP, BPM, etc, could use this flexibility to store their data without performing changes on tables or creating generic columns in a database. These databases are also good to create prototypes or fast applications, because this flexibility provides a tool to develop new features very easily.
 
-### Classes of NoSQL Solutions
+## Classes of NoSQL Solutions
 
 Most NoSQL solutions store data using one of the following models:
 

@@ -1,4 +1,4 @@
-## Basic concepts
+# Basic concepts
 
 RavenDB is a database technology based on a client-server architecture. Data is stored on a server instance and data requests from one or more clients are made to that instance.
 
@@ -11,9 +11,9 @@ If you are a .NET developer, using the Client API is the easiest way for you to 
 
 The RESTful API makes RavenDB accessible from other platforms like AJAX queries in web pages or non-Windows applications written in Ruby on Rails, for example.
 
-### The RavenDB server
+## The RavenDB server
 
-#### Launching a server instance
+### Launching a server instance
 
 A RavenDB server instance can be instantiated in several ways:
 
@@ -41,7 +41,7 @@ Notice that a port for the server to listen on has already been automatically se
 
 As long as this window stays open, the RavenDB server is running. Pressing Enter will terminate the server - new requests will no longer be processed, but all data will be persisted in the data directory.
 
-#### Storage types
+### Storage types
 
 RavenDB currently supports 2 types of storage engines, both of which are completely transactional and fail safe:
 
@@ -54,7 +54,7 @@ Munin is written entirely in managed code specifically for its use as part of Ra
 
 While Munin is useful for testing and temporary in-memory tasks, at this stage only Esent is supported for production usage.
 
-### Documents, Collections and Document unique identifiers
+## Documents, Collections and Document unique identifiers
 
 A single data entity in RavenDB is called a _Document_ and all Documents are persisted in RavenDB as [JSON documents](http://json.org).
 
@@ -72,7 +72,7 @@ With RavenDB, each document has its own unique global ID, in the sense that if o
 
 The convention in RavenDB is to have a document ID that is a combination of the collection name and the entity's unique id within the collection, i.e. `users/1`. This convention is enforced by default within RavenDb by pluralizing the name of the object class being saved, and adding an auto-incremented number to it. However, this document ID convention is not mandatory: document IDs are independent of the entity type, and therefore don't have to contain the name of the collection they are assigned to.
 
-### The RavenDB Management Studio
+## The RavenDB Management Studio
 
 Every RavenDB server instance is manageable via a remotely accessible Silverlight application - The RavenDB Management Studio.
 

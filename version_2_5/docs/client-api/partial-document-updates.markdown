@@ -1,4 +1,4 @@
-## Partial document updates using the Patching API
+# Partial document updates using the Patching API
 
 The process of document patching allows for modifying a document on the server without having to load it in full and saving it back. This is usually useful for updating denormalized data in entities.
 
@@ -16,7 +16,7 @@ Following are a description of the `PatchRequest` object, and the different opti
 
 {CODE blogpost_classes@Common.cs /}
 
-### The PatchRequest object
+## The PatchRequest object
 
 When creating a PatchRequest object to be used in a patch command, at least 2 properties have to be specified: `Name` and `Type`.
 
@@ -34,7 +34,7 @@ Given the object graph stored under a given key, `Name` is the path from the roo
 * **Insert** - Insert an item to an array at a specified position
 * **Remove** - Remove an item from an array at a specified position
 
-### Performing simple updates
+## Performing simple updates
 
 A property in a stored document is a field from an entity. To change it's value using the Patching API, provide its path in `Name`, and initialize `Type` with `PatchCommandType.Set`. Then, serialize the object you want to save into that property, and pass it as `Value`.
 
@@ -52,11 +52,11 @@ Numeric values used as counters can be incremented or decremented, without worry
 
 {CODE patching4@ClientApi/PartialDocumentUpdates.cs /}
 
-### Conditional updates
+## Conditional updates
 
 If `PrevVal` is set, it's value will be compared against the current value of the property to verify a change isn't overwriting new values. If the value is `null`, the operation is always successful.
 
-### Working with arrays
+## Working with arrays
 
 Any collection in your entity will be serialized into an array in the resulting JSON document. You can perform collection-specific operations on it easily, by using the `Position` property:
 
@@ -64,7 +64,7 @@ Any collection in your entity will be serialized into an array in the resulting 
 
 Being a JSON object, you can treat the entire array as value like shown above. Sometimes, however, you want to access certain items in the array
 
-### Working with nested operations
+## Working with nested operations
 
 The nested operations are only valid of the 'Type' is `PatchCommandType.Modify`.  
 If we want to change all items in a collection we could do that by setting the AllPositions porparty to 'true'
@@ -79,7 +79,7 @@ Remove value in a nested element:
 
 {CODE nested2@ClientApi/PartialDocumentUpdates.cs /}
 
-### Performing complex updates
+## Performing complex updates
 If you need to deal with more complex patching algorithm, using the methods shown above, might become cumbersome.
 
 That's where the `ScriptedPatchRequest` comes in handy. It allows you to send a JavaScript snippet to the database which is executed against the JSON of the document which should be updated.
@@ -98,12 +98,12 @@ Often, you don't simply want to remove items from arrays but remove them conditi
 
 Of course, `ScriptedPatchRequest` allows you to use any arbitrary JavaScript functionality like for-loops as well.
 
-### ScriptedPatch debugging
+## ScriptedPatch debugging
 
 The syntax of the scripted patch allows you to retrieve debug information from a script execution. To do that use `output` method inside the script body and next get the _Debug_ array of the returned result:
 
 {CODE scriptedpatching_debug@ClientApi/PartialDocumentUpdates.cs /}
 
-### Concurrency
+## Concurrency
 
 If we wanted to we could run several batch operations in parallel, but we will not be able to set which one will end first.

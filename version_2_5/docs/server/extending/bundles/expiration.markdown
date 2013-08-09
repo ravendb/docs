@@ -1,4 +1,5 @@
 # Expiration Bundle
+
 The expiration bundle serves a very simple purpose, it deletes documents whose time have passed. Usage scenarios for the Expiration Bundle include storing user sessions in RavenDB or using RavenDB as a cache.
 
 ## Usage

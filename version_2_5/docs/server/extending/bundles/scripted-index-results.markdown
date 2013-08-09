@@ -1,4 +1,4 @@
-﻿#Scripted Index Results
+﻿# Scripted Index Results
 
 Scripted Index Results bundle allows you to attach scripts to indexes. Those scripts can operate on the results of the indexing. It opens a lot of opportunities like a modification
 of documents by index calculated values or recursive map/reduce indexes.
@@ -12,7 +12,7 @@ you need to put a special setup document under key `Raven/ScriptedIndexResults/[
 
 {CODE setup_doc@Server\Extending\Bundles\ScriptedIndexResults.cs /}
 
-##Example
+## Example
 
 Let us assume that we have the following index:
 

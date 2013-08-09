@@ -1,13 +1,12 @@
-
-## What is RavenDB?
+# What is RavenDB?
 RavenDB is a .NET Linq enabled Document Database, focused on providing high performance, schema-less, flexible and scalable NoSQL data store for the .NET and Windows platforms.
 
-### What does this mean?
+## What does this mean?
 Unlike a traditional RDMBS, RavenDB doesn't store data in rows and columns, instead allowing you to store any JSON document inside the database. RavenDB is schema-less, which means that you don't have to predefine how the documents that are stored in the database will be formed. Because the data is not limited to simply columns and rows, you can store arbitrarily complex data such as arrays, dictionaries and trees with ease.
 
 On top of the documents, you can define indexes (using C#'s Linq syntax) that the database will maintain for you. This gives you the best of both worlds, you get a schema free nature (no upfront agonizing about the database schema or trying to shoehorn data into a relational model) but you are still able to perform efficient queries.
 
-###Expected Usage and Sweet Spots
+## Expected Usage and Sweet Spots
 The schema-less nature makes it ideal to store dynamic data, such as CMS and CRM entities, which the end user can usually customize as necessary or semi structure data (provided by human). On top of that, RavenDB offers a powerful indexing mechanism, allowing you to define a Linq query as an index. RavenDB will take that query and execute it in the background, the result of that Linq query is immediately available as a view that you can query upon.
 We see RavenDB as appropriate for:
 
@@ -16,7 +15,7 @@ We see RavenDB as appropriate for:
 * Persisted View Models - Instead of recreating the view model from scratch on every request, you can store it in its final form in RavenDB. That leads to reduced computation, reduced number of remote calls and improved overall performance.
 * Large Data Sets - The underlying storage mechanism for RavenDB is known to scale in excess of 1 terabyte (on a single machine) and the non relational nature of the database makes it trivial to shard the database across multiple machines, something that RavenDB can do natively.
 
-###Documents
+## Documents
 A document within RavenDB is just a standard JSON object, such as this one:
 
 {code} //TODO: add code
@@ -25,14 +24,14 @@ Each document in RavenDB is stored using a key (in RDBMS terms, the primary key)
 
 RavenDB can store any document, requiring no schema. 
 
-###Metadata
+## Metadata
 In addition to the data in the document itself, RavenDB provides a way to store additional metadata about a document. The metadata information is a set of key/value information that is associated with the document.
 That information can be as simple as who was the user who last updated the document or a list of endpoints to notify when that document is updated.
 
-###Attachments
+## Attachments
 In addition to just storing documents, RavenDB also provides a solution for storing binary data. While documents must be valid JSON documents, attachments are treated as binary data which are just stored and retrieved from the database. Using attachments is a much more efficient form of storing binary data as opposed to encoding the same as a JSON document.
 
-###Indexes
+## Indexes
 RavenDB uses indexes as a way to provide order in a schema free world. An index is a Linq query that operates over a set of documents, producing a projection out of each document that can be efficiently queried. An index is essentially a Linq query that RavenDB executes in the background, and whose results are stored in persistent storage. Those results can be efficiently queried at a later date.
 An index looks like the following:
 

@@ -1,5 +1,4 @@
-﻿
-## RavenDB in a nutshell
+﻿# RavenDB in a nutshell
 
 RavenDB is a **transactional**, **open-source** [Document Database](what-is-a-document-database) written in **.NET**, and offering a **flexible data model** designed to address requirements coming from real-world systems. RavenDB allows you to build high-performance, low-latency applications quickly and efficiently.
 
@@ -11,7 +10,7 @@ RavenDB is built for **web-scale**, and offers **replication** and **sharding** 
 
 There are a whole lot more of exciting features - check [RavenDB's features page](http://ravendb.net/features).
 
-### Using RavenDB
+## Using RavenDB
 
 RavenDB consists of two parts - a server and a client. The server handles data storage and queries, and the client is what a consumer uses to communicate with the server. 
 
@@ -31,7 +30,7 @@ After you have a RavenDB server instance up and running, it is easy to connect t
 
 As you may have noticed, RavenDB uses the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will be persisted in the database in a single transaction.
 
-### RavenDB Development cycle
+## RavenDB Development cycle
 
 There are two flavors of RavenDB available - the stable build, which is production ready, and the unstable build. Since we at Hibernating Rhinos make a public build out of every push, the unstable build is **not** recommended for production, although it is thoroughly tested before being made available.
 
@@ -39,7 +38,7 @@ New unstable builds are available daily, and sometimes more than once a day. Sta
 
 Only stable builds are supported for production use. 
 
-### Reporting bugs
+## Reporting bugs
 
 Bugs should be reported in the mailing list: [http://groups.google.com/group/ravendb](http://groups.google.com/group/ravendb).
 
@@ -56,7 +55,7 @@ When reporting a bug, please include:
 
 A list of outstanding bugs can be found here: [http://issues.hibernatingrhinos.com/](http://issues.hibernatingrhinos.com/).
 
-### Licensing and support
+## Licensing and support
 
 RavenDB is released as open-source under the AGPL license. What that means is it is freely available, but if you want to use this with proprietary software, you **must** buy a [commercial license](http://ravendb.net/licensing).
 
