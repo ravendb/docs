@@ -14,7 +14,7 @@ To set up profiling in RavenDB using the `RavenProfiler` you must follow a few s
 
 To demonstrate the capabilities of the profiler, let's create a simple ASP.NET MVC 4 application and set up profiling in it.
 
-1\.	Instructions on how to set up ASP.NET MVC 4 application to use RavenDB can be found [here](../samples/mvc/createaspnetmvc4project?version=2.0).   
+1\.	Instructions on how to set up ASP.NET MVC 4 application to use RavenDB can be found [here](../samples/mvc/createaspnetmvc4project).   
 2\.	Set up profiling using the steps from the section above.   
 3\.	Add the following code to `HomeController`:   
 
