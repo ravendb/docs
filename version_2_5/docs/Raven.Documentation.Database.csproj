@@ -60,6 +60,7 @@
     <None Include="client-api\advanced\document-metadata.markdown" />
     <None Include="client-api\advanced\dynamic-fields.markdown" />
     <None Include="client-api\advanced\full-query-syntax.markdown" />
+    <None Include="client-api\backward-compatibility.markdown" />
     <None Include="Intro\high-performance.markdown" />
     <None Include="samples\api-keys\.docslist" />
     <None Include="samples\api-keys\index.markdown" />
@@ -166,8 +167,6 @@
     <None Include="Intro\system-requirements.markdown" />
     <None Include="Intro\what-is-a-document-database.markdown" />
     <None Include="Intro\what-is-nosql.markdown" />
-    <None Include="RavenLight\.docslist" />
-    <None Include="RavenLight\index.markdown" />
     <None Include="samples\.docslist" />
     <None Include="samples\index.markdown" />
     <None Include="samples\mvc\.docslist" />

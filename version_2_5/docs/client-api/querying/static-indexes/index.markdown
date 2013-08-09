@@ -1,5 +1,4 @@
-﻿
-### Static indexes
+﻿# Static indexes
 
 As we explained earlier in this chapter, RavenDB uses indexes to satisfy queries. Whenever a user issues a query RavenDB will use an existing index or create a new one if no matching index was found.
 
@@ -15,8 +14,10 @@ While dynamic indexes are very easy to work with, static indexes are much more u
 
 Querying static indexes is no different than what we have seen by now. Whenever you execute a query against RavenDB and an appropriate static index exists, RavenDB will direct your query to that index automatically. You can also specify the index name explicitly, like so:
 
-	var results = session.Query<BlogPost>("MyBlogPostsIndex").ToArray();
+{CODE static_indexes1@ClientApi\Querying\StaticIndexes\Index.cs /}
 
 {NOTE RavenDB will throw if an explicit index name was used, when no such index exists. /}
 
 In this chapter we will learn how to create static indexes, and explore the various capabilities they offer.
+
+{FILES-LIST/}

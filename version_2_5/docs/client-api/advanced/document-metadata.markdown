@@ -1,11 +1,10 @@
-﻿
-### Working with document metadata
+﻿# Working with document metadata
 
 Each RavenDB document has metadata properties attached to it, which are being used internally but can be exposed to your code. This is usually used for things _about_ the entity, which aren't a direct part of it.
 
 A consumer may choose to use those properties (for indexing) or add key/value pairs of his own should he need to.
 
-#### Internal metadata keys
+## Internal metadata keys
 
 Here is a list of all properties RavenDB stores as metadata for its documents:
 
@@ -20,7 +19,7 @@ Here is a list of all properties RavenDB stores as metadata for its documents:
 
 More metadata keys are used for storing replication information, concurrency bookkeeping and ACL used for securing the entity.
 
-#### Using the metadata
+## Using the metadata
 
 Getting the metadata for an entity is quite easy. From the Client API, you simply call `Advanced.GetMetadataFor` on the entity, like so:
 
@@ -36,7 +35,7 @@ Metadata can be easily used when querying, too. For example, to create an index 
 
 Using the HTTP API, some metadata is sent as headers when getting and manipulating a single document, and as a JSON document embedded in the entity's document (inside the `@metadata` element) when dealing with multiple documents.
 
-#### Manipulating metadata
+## Manipulating metadata
 
 While metadata was originally meant to be used by RavenDB itself, it is also possible to add your own data to the metadata. This is useful when you have data about the entity you want to store, and it doesn't make sense to store it within the entity itself.
 

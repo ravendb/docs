@@ -1,5 +1,4 @@
-﻿
-### Intersection
+﻿# Intersection
 
 To allow users to `Intersect` queries on the server-side and return only documents that match **all** the provided sub-queries we have introduced the query intersection feature.
 

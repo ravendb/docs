@@ -1,4 +1,4 @@
-﻿##### OfType (As)
+﻿# OfType (As)
 
 {NOTE Both methods `OfType<T>` and `As<T>` are obsolete in favor of [Result Transformers](result-transformers) /}
 

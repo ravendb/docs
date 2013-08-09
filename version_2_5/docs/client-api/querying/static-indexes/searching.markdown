@@ -1,12 +1,11 @@
-﻿
-#### Searching
+﻿#Searching
 
-One of the most common functionality that many real world applications provide is a search feature. Many times it will be enough to apply `Where` closure to create a simple condition, for example to get all users whose age is greater that 20 use the code:
+One of the most common functionality that many real world applications provide is a search feature. Many times it will be enough to apply `Where` closure to create a simple condition,
+for example to get all users whose age is greater that 20 use the code:
 
 {CODE linq_extensions_search_where_age@ClientApi\Querying\StaticIndexes\Searching.cs /}
 
 where `User` class and `UsersByName` index are defined as follow:
-
 {CODE linq_extensions_search_user_class@ClientApi\Querying\StaticIndexes\Searching.cs /}
 {CODE linq_extensions_search_index_users_by_name@ClientApi\Querying\StaticIndexes\Searching.cs /}
 
@@ -20,11 +19,10 @@ Eventually all queries are always transformed into a Lucene query. The query lik
 
 {INFO Note that that results of a query might be different depending on [an analyzer](../static-indexes/configuring-index-options) that was applied./}
 
-##### Multiple terms
+##Multiple terms
 
 When you need to do a more complex text searching use `Search` extension method (in `Raven.Client` namespace). This method allows you to pass a few search terms that will be used in searching process for a particular field. Here is a sample code
 that uses `Search` extension to get users with name *John* or *Adam*:
-
 {CODE linq_extensions_search_name@ClientApi\Querying\StaticIndexes\Searching.cs /}
 
 Each of search terms (separated by space character) will be checked independently. The result documents must match exact one of the passed terms.
@@ -39,7 +37,7 @@ Now you are able to execute the following search:
 
 In result you will get users that are interested in *sport*, *books* or *computers*.
 
-##### Multiple fields
+##Multiple fields
 
 By using `Search` extension you are also able to look for by multiple indexed fields. First let's introduce the index:
  
@@ -49,7 +47,7 @@ Now we are able to search by using `Name` and `Hobbies` properties:
 
 {CODE linq_extensions_search_users_by_name_and_hobbies@ClientApi\Querying\StaticIndexes\Searching.cs /}
 
-##### Boosting
+##Boosting
 
 Indexing in RavenDB is built upon Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
 Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
@@ -59,7 +57,7 @@ RavenDB also supports that, in order to improve your searching mechanism and pro
 
 The search above will promote users who do sports before book readers and they will be placed at the top of the result list.
 
-##### Search options
+##Search options
 
 In order to specify the logic of search expression specify the options argument of the `Search` method. It is `SearchOptions` enum with the following values:
 
@@ -71,9 +69,7 @@ In order to specify the logic of search expression specify the options argument 
 By default RavenDB attempts to guess and match up the semantics between terms. If there are consecutive searches, they will be OR together, otherwise AND semantic will be used by default.
 
 The following query:
-
 {CODE linq_extensions_search_users_by_hobbies_guess@ClientApi\Querying\StaticIndexes\Searching.cs /}
-
 will be translated into <em>( Hobbies:(computers) Name:(James)) AND (Age:20)</em> (if there is no boolean operator then OR is used).
 
 You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follow:
@@ -85,16 +81,14 @@ will result in the following Lucene query: <em>Name:(Adam) AND Hobbies:(sport)</
 If you want to negate the term use `SearchOptions.Not`:
 
 {CODE linq_extensions_search_users_by_name_not@ClientApi\Querying\StaticIndexes\Searching.cs /}
-
 According to Lucene syntax it will be transformed to the query: <em>-Name:(James)</em>.
 
 You can treat `SearchOptions` values as bit flags and create any combination of the defined enum values, e.g:
 
 {CODE linq_extensions_search_users_by_name_and_hobbies_and_not@ClientApi\Querying\StaticIndexes\Searching.cs /}
-
 It will produce the following Lucene query: <em>Name:(Adam) AND -Hobbies:(sport)</em>.
 
-##### Query escaping
+##Query escaping
 
 The code examples presented in this section have hard coded searching terms. However in a real use case the user will specify the term. You are able to control the escaping strategy of the provided query by specifying 
 the `EscapeQueryOptions` parameter. It's the enum that can have one of the following values:

@@ -1,9 +1,8 @@
-﻿
-#### Customizing results order using SortOptions
+﻿# Customizing results order using SortOptions
 
 Indexes in RavenDB are lexicographically sorted by default, so all queries return results which are ordered lexicographically. When putting a static index in RavenDB, you can specify custom sorting requirements, to ensure results are sorted the way you want them to.
 
-##### Native types
+## Native types
 
 Dates are written to the index in a form which preserves lexicography order, and is readable by both human and machine (like so: `2011-04-04T11:28:46.0404749+03:00`), so this requires no user intervention, too.
 
@@ -17,7 +16,7 @@ The default `SortOptions` value is `String`. Appropriate values available for al
 
 {NOTE Specifing the Sort in the index definitoin won't make results from this index be ordered unless you call OrderBy on the query itself. /}
 
-##### Uses example
+## Uses example
 
 In the following query we are using the `OrderBy` method in order to indicate that we want to sort on `Age`:
 
@@ -25,7 +24,7 @@ In the following query we are using the `OrderBy` method in order to indicate th
 
 So, by default it will sort on Age as it was a string. By specifing `Sort(x => x.Age, SortOptions.Short)` in the index dedinition, we inidicate that the sort order should be in a numerical order. 
 
-##### Collation support
+## Collation support
 
 RavenDB supports using collations for documents sorting and indexing. You can setup a specific collation for an index field, so you can sort based of culture specific rules.
 
