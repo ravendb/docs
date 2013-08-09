@@ -97,7 +97,10 @@ MapCompleted,
 ReduceCompleted,
 RemoveFromIndex,
 IndexAdded,
-IndexRemoved
+IndexRemoved,
+IndexDemotedToIdle,
+IndexPromotedFromIdle,
+IndexDemotedToAbandoned
 {CODE-END /}
 
 ## Replication conflict notifications

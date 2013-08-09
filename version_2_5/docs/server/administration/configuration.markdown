@@ -119,7 +119,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The TaskScheduler type to use for executing indexing.   
 
 * **Raven/NewIndexInMemoryMaxMB**  
-    The max size in MB of a temporary index held in memory. When a temporary dynamic index exceeds that value, it will be using on disk indexing, rather then RAM indexing.   
+    The max size in MB of a new index held in memory. When the index exceeds that value, it will be using a disk rather than memory for indexing.   
     _Default:_ 64 MB   
     _Minimum:_ 1 MB   
 

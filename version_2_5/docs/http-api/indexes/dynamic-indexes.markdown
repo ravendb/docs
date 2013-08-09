@@ -1,10 +1,9 @@
 # Dynamic Indexes
 
-Rather than define indexes up front, RavenDB can analyze a query and create a temporary index on the fly, which will be persisted for some amount of time before then being disposed of.
+Rather than define indexes up front, RavenDB can analyze a query and create an auto index on the fly. Further uses of similar queries (using the same parameters) will result in the auto index being re-used.
 
-Further uses of similar queries (using the same parameters) will result in the temporary index being re-used, and if used enough in a given period of time the temporary index will be promoted and made permanent.
+Automatic indexes have their age, and that is tracked internally by RavenDB. If an automatic index isn't being used, it will become idle and eventually abandoned (see [index priorities](../../server/administration/index-administration#index-prioritization)). If it is a very young index, we will decide it was a temporary index after all, and remove it from the system completely.
 
-All temporary indexes except those which have been made permanent will be cleared on start-up.
 
 {NOTE When a dynamic index is first created, results are likely to be stale, subsequent calls can be used to alleviate this, but this may result in sup optimal application performance. /}
 
