@@ -1,13 +1,12 @@
-
-### Replication walkthrough
+# Replication walkthrough
 
 Below examples will show you how to quickly setup replication in RavenDB using The Studio.
 
-#### Replicating documents from one server to another (master-slave)
+## Replicating documents from one server to another (master-slave)
 
-To setup a master-slave replication we will need at least two servers. First server will serve as a master (in our example the server at port 8081) and second one will be a slave (server at port 8081).
+To setup a master-slave replication we will need at least two servers. First server will serve as a master (in our example the server at port 8081) and second one will be a slave (server at port 8082).
 
-##### Configuring master server
+### Configuring master server
 
 - Open studio on master server, create new database called `ExampleDB1` and enable `Replication bundle` feature.
 
@@ -21,21 +20,13 @@ To setup a master-slave replication we will need at least two servers. First ser
 
 ![Figure 3: Replication documents](Images/studio_replicationwalkthrough_3.PNG)
 
-##### Configuring slave server
+### Configuring slave server
 
-- Open studio on slave server, create new database called `ExampleDB2` and enable `Replication bundle` feature.
+- Open studio on slave server, create new database called `ExampleDB2` and enable `Replication bundle` feature. That's it.
 
 ![Figure 4: Create `ExampleDB2` database with `Replication bundle` enabled](Images/studio_replicationwalkthrough_4.PNG)
 
-- To setup a slave replication, do not add any replication destinations. Just proceed by clicking `OK`.
-
-![Figure 5: Setup replication destination](Images/studio_replicationwalkthrough_5.PNG)
-
-- Document `Raven/Replication/Destinations` will be created, you will notice that, in a contrast to master server, it will be empty.
-
-![Figure 6: Replication documents](Images/studio_replicationwalkthrough_6.PNG)
-
-##### Test
+### Test
 
 - On a master server (8081) create document `users/1` as seen on a figure below.
 
@@ -45,11 +36,11 @@ To setup a master-slave replication we will need at least two servers. First ser
 
 ![Figure 8: Verify that document `users/1` has been replicated to slave](Images/studio_replicationwalkthrough_8.PNG)
 
-#### Replicating documents between servers (master-master)
+## Replicating documents between servers (master-master)
 
 To setup a master-master replication we will need at least two servers. Both of them (in our example 8081 and 8082) will serve as masters.
 
-##### Configuring first master server
+### Configuring first master server
 
 - Open studio on first master server, create new database called `ExampleDB1` and enable `Replication bundle` feature.
 
@@ -63,7 +54,7 @@ To setup a master-master replication we will need at least two servers. Both of 
 
 ![Figure 11: Replication documents](Images/studio_replicationwalkthrough_3.PNG)
 
-##### Configuring second master server
+### Configuring second master server
 
 - Open studio on second master server, create new database called `ExampleDB2` and enable `Replication bundle` feature.
 
@@ -73,7 +64,7 @@ To setup a master-master replication we will need at least two servers. Both of 
 
 ![Figure 13: Setup replication destination](Images/studio_replicationwalkthrough_10.PNG)
 
-##### Test
+### Test
 
 - On one of the masters (let's say 8082) create document `albums/1` as seen on a figure below.
 
