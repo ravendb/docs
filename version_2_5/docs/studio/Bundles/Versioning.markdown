@@ -5,7 +5,8 @@ When creating a database, if you want to use the versioning bundle you need to s
 
 After you press "Next" you will get the following page:  
 ![Tasks Fig 2](Images/studio_versioning_2.PNG)  
-Pay attention the if you select other bundles that has settings to set they will all appear here in the list on the left.  
+
+{INFO On the left side of the `Bundle Setup` dialog you will see a list of all selected bundles that require additional configuration. /}
 
 In here you can set the versioning, press the "Add Versioning" do add another versioning settings.  
 You will always have the default versioning here, with it you can edit the default "Max Revisions" number and choose to exclude it.  
