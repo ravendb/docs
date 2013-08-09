@@ -5,7 +5,7 @@ In order to achieve very fast response times, the RavenDB server instance indexe
 
 For most operations this is done transparently, and all you need to be familiar with is Linq and some RavenDB-specific operations. However, there are many other handy features that only become available once you understand the way RavenDB operates on its indexes.
 
-In this chapter we explore the various querying options available in RavenDB, from the immediately visible and most frequently used ones, to more advanced topics like Includes, Attachments, Live Projections and more.
+In this chapter we explore the various querying options available in RavenDB, from the immediately visible and most frequently used ones, to more advanced topics like Includes, Attachments and more.
 
 Before we start, it is important to understand that __all__ queries sent to a RavenDB server use an index to return results. While you can define your own indexes manually (we will see how later), RavenDB does this for you automatically if you haven't done so.
 
@@ -13,7 +13,7 @@ Therefore, there are 2 types of indexes in RavenDB:
 
 * *Static indexes* are named indexes which are created explicitly by the user.
 
-* *Dynamic (auto) indexes* are created by RavenDB automatically following a user query, if no matching index to query was found. RavenDB will find an appropriate index to query, and create it on the fly if one does not already exist. RavenDB will optimize itself based on the actual requests coming in, and can decide to promote an auto index to a permanent one.
+* *Dynamic (auto) indexes* are created by RavenDB automatically based on queries. The database is able to analyze your queries and generate the required indexes on the fly, if no matching one has been found. RavenDB will manage [priorities](../../server/administration/index-administration#index-prioritization) of these indexes and even can remove them from the system completely if they have not been used for a long time.
 
 Also worth mentioning at this stage is the notion of *stale indexes*. Because RavenDB follows the "better stale than offline" approach, querying an index may return stale results - for example when a user queries a database that while a mass-update in progress. RavenDB will let the user know if results are stale, and can also be told to wait until non-stale results are available.
 
