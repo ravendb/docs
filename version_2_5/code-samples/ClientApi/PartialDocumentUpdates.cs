@@ -192,6 +192,15 @@ namespace RavenCodeSamples.ClientApi
 					});
 				#endregion
 
+				#region scriptedpatching_get_id
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest()
+					{
+						Script = "var currentDocId = this.__document_id;"
+					});
+				#endregion
+
 				#region scriptedpatching_remove
 				documentStore.DatabaseCommands.Patch(
 					"blogposts/1234",

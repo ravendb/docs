@@ -92,6 +92,10 @@ Adding a new `BlogComment` is as simple as this:
 
 {CODE scriptedpatching1@ClientApi/PartialDocumentUpdates.cs /}
 
+As you can see you can inject the values into the script by using _Values_ collection. In order to get the id of the current document use:
+
+{CODE scriptedpatching_get_id@ClientApi/PartialDocumentUpdates.cs /}
+
 Of course, `ScriptedPatchRequest` allows you to use any arbitrary JavaScript functionality like for-loops. Additionally there are a few custom methods available that you can use in your scripts:
 
 #### Remove
