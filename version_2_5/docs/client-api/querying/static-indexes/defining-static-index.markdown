@@ -33,6 +33,8 @@ and performs an actual operation over the groupped items. The values are calcula
 
 ###TransformResults
 
+{NOTE The usage of this function is obsolete in favor of [Result Transformers](../results-transformation/result-transformers) /}
+
 The third function, `TransformResults`, is a part of a feature called Live Projections. It has no effect on values that are stored into Lucene index but when it was applied then a processing of a query will take additional step on a server. 
 Before the RavenDB will send the query results to the client it will transform them according to the transform results definition. Then only the projected document values will be sent. More details about Live Projections you will find [here](live-projections).
 

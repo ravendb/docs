@@ -23,6 +23,11 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 			public string Name { get; set; }
 
 			/// <summary>
+			/// Get or set the index lock mode
+			/// </summary>
+			public IndexLockMode LockMode { get; set; }
+
+			/// <summary>
 			/// Gets or sets the map function, if there is only one
 			/// </summary>
 			public string Map { get; set; }
@@ -41,6 +46,7 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 			/// <summary>
 			/// Gets or sets the translator function
 			/// </summary>
+			[Obsolete("Use Result Transformers instead.")]
 			public string TransformResults { get; set; }
 
 			/// <summary>
@@ -66,6 +72,29 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 			/// </summary>
 			/// <value>The analyzers.</value>
 			public IDictionary<string, string> Analyzers { get; set; }
+
+			/// <summary>
+			/// The fields that are queryable in the index
+			/// </summary>
+			public IList<string> Fields { get; set; }
+
+			/// <summary>
+			/// Gets or sets the suggest options
+			/// </summary>
+			/// <value>The suggest options.</value>
+			public IDictionary<string, SuggestionOptions> Suggestions { get; set; }
+
+			/// <summary>
+			/// Gets or sets the term vectors options
+			/// </summary>
+			/// <value>The term vectors.</value>
+			public IDictionary<string, FieldTermVector> TermVectors { get; set; }
+
+			/// <summary>
+			/// Gets or sets the spatial options
+			/// </summary>
+			/// <value>The spatial options.</value>
+			public IDictionary<string, SpatialOptions> SpatialIndexes { get; set; }
 		}
 		#endregion
 	}
