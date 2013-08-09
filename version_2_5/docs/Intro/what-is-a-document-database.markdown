@@ -1,4 +1,3 @@
-﻿
-## What is a Document Database?
+﻿# What is a Document Database?
 
 // TBD

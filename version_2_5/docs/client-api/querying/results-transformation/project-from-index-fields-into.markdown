@@ -1,4 +1,4 @@
-﻿#### ProjectFromIndexFieldsInto (AsProjection)
+﻿#ProjectFromIndexFieldsInto (AsProjection)
 
 The `ProjectFromIndexFieldsInto<T>` (`AsProjection<T>`) method (extension accessible from `Raven.Client` namespace) provides the way to change the type of a query result according to *stored fields in an index*.
 

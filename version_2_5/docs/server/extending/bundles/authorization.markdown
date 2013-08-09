@@ -60,7 +60,7 @@ Permissions are pretty simple, they allow or deny access to a document for a spe
 * When there are an allow permission and a deny permission at the same priority, the deny permission will override the allow permission.
 * If there isn't a permission that allow the operation, the operation is denied.
 
-##Tagging entities
+## Tagging entities
 Entity tagging is one of the ways in which you can provide additional information for the Auth Bundle. Let us look at how the "Hospitalization/Authorize" permission is set up for our patient, Mary.
 
 Mary is tagged as a Patient, so when DrHowser tries to authorize hospitalization for her, the following things happen:
@@ -83,7 +83,7 @@ One last concept to remember before we move to the concrete usage discussion. Ta
 * For Operations, having a permission for "Hospitalization" will match for operation "Hospitalization/Authorize"
 * For Roles, if you are a member of "Doctors/Pediatrician", you are also a member of "Doctors".
 
-##Installation
+## Installation
 To install the Auth Bundle on the server side, simply place the Raven.Bundles.Authorization.dll in the Plugins directory.
 
 To use the Auth Bundle on the client side, you need to reference:
@@ -93,7 +93,7 @@ To use the Auth Bundle on the client side, you need to reference:
 
 And import the "Raven.Client.Authorization" namespace to include the authorization extension methods.
 
-##Usage
+## Usage
 The Auth Bundle usage on the client side is limited to three methods:
 
 * SetAuthorizationFor - which setup permissions and tags for a specific document.
@@ -106,7 +106,7 @@ For example, here is the code for authorization hospitalization:
 
 If the user doesn't have permissions to authorize hospitalization, an error will be raised when the change is persisted to the database in the SaveChanges call.
 
-##Applying permissions
+## Applying permissions
 The response for denying an operation are worth some note.
 
 * When performing a query over a set of documents, some of which we don't have the permission for under the specified operation, those documents are filtered out from the query.

@@ -41,6 +41,7 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="Appendixes\.docslist" />
+    <None Include="Appendixes\glossary.markdown" />
     <None Include="Appendixes\index.markdown" />
     <None Include="Appendixes\lucene-indexes-usage.markdown" />
     <None Include="Appendixes\lucene-score.markdown" />
@@ -59,6 +60,14 @@
     <None Include="client-api\advanced\document-metadata.markdown" />
     <None Include="client-api\advanced\dynamic-fields.markdown" />
     <None Include="client-api\advanced\full-query-syntax.markdown" />
+    <None Include="client-api\backward-compatibility.markdown" />
+    <None Include="Intro\high-performance.markdown" />
+    <None Include="samples\api-keys\.docslist" />
+    <None Include="samples\api-keys\index.markdown" />
+    <None Include="samples\api-keys\using-api-keys.markdown" />
+    <None Include="samples\raven-tests\.docslist" />
+    <None Include="samples\raven-tests\createRavenTests.markdown" />
+    <None Include="samples\raven-tests\index.markdown" />
     <None Include="server\administration\index-administration.markdown" />
     <None Include="client-api\advanced\index.markdown" />
     <None Include="client-api\advanced\unbounded-results.markdown" />
@@ -117,7 +126,6 @@
     <None Include="faq\immutable-entities.markdown" />
     <None Include="faq\index.markdown" />
     <None Include="faq\indexing-across-entities.markdown" />
-    <None Include="faq\joins.markdown" />
     <None Include="faq\low-memory-footprint.markdown" />
     <None Include="faq\lucene-queries-examples.markdown" />
     <None Include="faq\optimizing-referenced-documents-load.markdown" />
@@ -159,9 +167,6 @@
     <None Include="Intro\system-requirements.markdown" />
     <None Include="Intro\what-is-a-document-database.markdown" />
     <None Include="Intro\what-is-nosql.markdown" />
-    <None Include="Intro\what-is-new.markdown" />
-    <None Include="RavenLight\.docslist" />
-    <None Include="RavenLight\index.markdown" />
     <None Include="samples\.docslist" />
     <None Include="samples\index.markdown" />
     <None Include="samples\mvc\.docslist" />
@@ -228,6 +233,7 @@
     <None Include="studio\Alerts.markdown" />
     <None Include="studio\Bundles\.docslist" />
     <None Include="studio\Bundles\Authorization.markdown" />
+    <None Include="studio\Bundles\compression.markdown" />
     <None Include="studio\Bundles\Encryption.markdown" />
     <None Include="studio\Bundles\index.markdown" />
     <None Include="studio\Bundles\periodicbackup.markdown" />
@@ -254,7 +260,18 @@
     <None Include="samples\web-api\createAspNetWebApiProject.markdown" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Appendixes\Images\profiling_mvc_application_1.png" />
+    <Content Include="Appendixes\Images\profiling_mvc_application_2.png" />
+    <Content Include="Appendixes\Images\profiling_mvc_application_3.png" />
     <Content Include="client-api\advanced\images\CNET_faceted_search_2.jpg" />
+    <Content Include="Intro\images\raven.server.png" />
+    <Content Include="Intro\images\studio.png" />
+    <Content Include="samples\api-keys\Images\apikeys_1.PNG" />
+    <Content Include="samples\api-keys\Images\apikeys_2.PNG" />
+    <Content Include="samples\api-keys\Images\apikeys_3.PNG" />
+    <Content Include="samples\api-keys\Images\apikeys_4.PNG" />
+    <Content Include="samples\api-keys\Images\apikeys_5.PNG" />
+    <Content Include="samples\raven-tests\Images\tests_1.PNG" />
     <Content Include="server\administration\images\index-lock-unlock-ui.png" />
     <Content Include="server\administration\images\index-reset-delete-from-ui.png" />
     <Content Include="client-api\images\raven.server.png" />
@@ -298,6 +315,7 @@
     <Content Include="server\deployment\images\installer_iis_performance_counters.png" />
     <Content Include="server\deployment\images\installer_welcome_screen.png" />
     <Content Include="server\deployment\images\installer_windows_service.png" />
+    <Content Include="server\extending\bundles\images\sql_replication_studio.png" />
     <Content Include="server\images\authentication_1.png" />
     <Content Include="server\extending\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\extending\bundles\images\versioned_docs.png" />
@@ -455,9 +473,7 @@
     <Content Include="Theory\images\document_structure_3_docs.png" />
     <Content Include="Theory\images\document_structure_docs.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Appendixes\Images\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>

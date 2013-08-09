@@ -1,4 +1,4 @@
-### Bulk inserts
+# Bulk inserts
 
 One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
 
@@ -26,7 +26,7 @@ The `BulkInsertOperation` consist of following the methods and events:
 * **Report** - `event` that will be raised every time a batch has finished processing and after the whole operation      
 * **OnBeforeEntityInsert** - `event` that will be raised before entity will be processed    
 
-#### Limitations
+## Limitations
 
 There are several limitations to the API:
 

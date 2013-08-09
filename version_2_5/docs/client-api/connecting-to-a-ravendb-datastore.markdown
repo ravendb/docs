@@ -1,5 +1,4 @@
-﻿
-## Connecting to a RavenDB data store
+﻿# Connecting to a RavenDB data store
 
 As we have seen, RavenDB can run in one of two modes:
  
@@ -12,7 +11,7 @@ Since a document store instance is not cheap to create but is thread-safe, the g
 
 In either mode, when the application shuts down, the document store instance(s) used should be disposed to ensure proper cleanup.
 
-### Running in server mode
+## Running in server mode
 
 To run in a server mode, add a reference to Raven.Client.Lightweight.dll to your application, and after launching the server instance separately connect to it using the following code:
 
@@ -22,7 +21,7 @@ Where `http://myravendb.mydomain.com/` is your the RavenDB server's address.
 
 This will instantiate a communication channel between your application and the RavenDB server instance in the network address you provided.
 
-### Running in embedded mode
+## Running in embedded mode
 
 When running in embedded mode, the data store is actually a server instance running on top of a local data directory, as opposed to connecting to a separate server instance.
 
@@ -32,7 +31,7 @@ After referencing Raven.Client.Embedded.dll, you need to initialize a new instan
 
 {CODE running_in_embedded_mode@ClientApi\ConnectionToRavenDbDataStore.cs /}
 
-### Silverlight support
+## Silverlight support
 
 If you are accessing a RavenDB instance from Silverlight, you are going to need the Silverlight folder from the build package, and add a reference to all the DLLs in it to your application.
 
@@ -42,7 +41,7 @@ Using Silverlight, you can only access an external RavenDB server; there's still
 
 Where `http://myravendb.mydomain.com/` is your the RavenDB server's address.
 
-### Using a connection string
+## Using a connection string
 
 To make things even simpler, the RavenDB Client API supports .NET's named connection strings. You can use that by setting the ConnectionStringName, and the RavenDB client will initialize automatically based on the connection string's parameters:
 
@@ -83,9 +82,9 @@ The following are samples of a few RavenDB connection strings:
     * DataDir = ~\App_Data\RavenDB;Enlist=False 
         * use embedded mode with the database located in the App_Data\RavenDB folder, without DTC support.
 
-### Configuration
+## Configuration
 
-#### Conventions
+### Conventions
 
 The RavenDB Client API uses several conventions to control how it works, these can be modified at the DocumentStore level.
 

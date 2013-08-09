@@ -1,5 +1,4 @@
-﻿
-## Querying
+﻿# Querying
 
 In order to achieve very fast response times, the RavenDB server instance indexes your data in the background whenever it is added or changed. All indexes in RavenDB are Lucene-based, and we take advantage of this to provide a very fast, feature-rich and flexible querying system. RavenDB allows querying using the Lucene syntax; whether they are sent from the Client API via the Linq Provider or through the HTTP RESTful API, they are being translated into a Lucene query and executed against the appropriate index.
 

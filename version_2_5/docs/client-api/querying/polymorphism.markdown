@@ -1,4 +1,4 @@
-### Polymorphic indexes
+# Polymorphic indexes
 
 By default, RavenDB indexes operate only on a specific entity type, or a Collection, and it ignores the inheritance hierarchy when it does so.
 
@@ -24,7 +24,7 @@ And for dogs:
 
 This works, but each index would only give us results for the animal it has been defined on. But what if we wanted to query across all animals?
 
-#### Multi-map indexes
+## Multi-map indexes
 
 The easiest way to do this is by writing a multi-map index like this one:
 
@@ -38,7 +38,7 @@ You can also use the Linq provider if your objects implement an interface, IAnim
 
 {CODE multi_map_3@ClientApi\Querying\Polymorphism.cs /}
 
-#### Other ways
+## Other ways
 
 Another option would be to modify the way we generate the Entity-Name for subclasses of Animal, like so:
 

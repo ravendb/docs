@@ -1,7 +1,6 @@
-﻿
-### Adding RavenDB through NuGet
+﻿# Adding RavenDB through NuGet
 
-#### What is NuGet?
+## What is NuGet?
 
 From the nuget website:
 
@@ -11,11 +10,11 @@ NuGet is a Visual Studio extension that makes it easy to add, remove, and update
 
 You can find more on how to start using nuget [in their website](http://docs.nuget.org/).
 
-#### Adding RavenDB through NuGet
+## Adding RavenDB through NuGet
 
 We have a bunch of NuGet packages that you can take advantage of in order to consume RavenDB in your project. Follow the links to get more information about the contents and purpose of each package.
 
-##### Primary Packages
+### Primary Packages
 
 These are the packages that you are most likely to want to add to your application.
 
@@ -23,7 +22,7 @@ These are the packages that you are most likely to want to add to your applicati
 - [RavenDB.Embedded](http://nuget.org/packages/RavenDB.Embedded)
 - [RavenDB.AspNetHost](http://nuget.org/packages/RavenDB.AspNetHost)
 
-##### Secondary Packages
+### Secondary Packages
 
 - [RavenDB.Database](http://nuget.org/packages/RavenDB.Database)
 - [RavenDB.Client.Debug](http://nuget.org/packages/RavenDB.Client.Debug)
@@ -31,7 +30,7 @@ These are the packages that you are most likely to want to add to your applicati
 - [RavenDB.Client.MvcIntegration](http://nuget.org/packages/RavenDB.Client.MvcIntegration)
 - [RavenDB.Server](http://nuget.org/packages/RavenDB.Server)
 
-##### Bundles Packages
+### Bundles Packages
 
 - [RavenDB.Bundles.Authentication](http://nuget.org/packages/RavenDB.Bundles.Authentication)
 - [RavenDB.Bundles.Authorization](http://nuget.org/packages/RavenDB.Bundles.Authorization)
@@ -44,17 +43,17 @@ These are the packages that you are most likely to want to add to your applicati
 - [RavenDB.Bundles.UniqueConstraints](http://nuget.org/packages/RavenDB.Bundles.UniqueConstraints) / [Client](http://nuget.org/packages/RavenDB.Client.UniqueConstraints)
 - [RavenDB.Bundles.Versioning](http://nuget.org/packages/RavenDB.Bundles.Versioning)
 
-##### 3rd Party
+### 3rd Party
 Note: 3rd Party packages are not officially supported by Hibernating Rhinos. Contact the author of these packages if there are any issues
 
-######Author: [Damian Hickey](http://twitter.com/randompunter)
+####Author: [Damian Hickey](http://twitter.com/randompunter)
 
 - [RavenDB.Bundles.Revisions](http://nuget.org/packages/RavenDB.Bundles.Revisions)
 - [RavenDB.Client.ContextualListeners](http://nuget.org/packages/RavenDB.Client.ContextualListeners)
 
 Contact the [group](groups.google.com/group/ravendb) if you would like your extension listed here.
 
-#### Nuget Unstable Builds
+## Nuget Unstable Builds
 
 Unstable builds are not published in the main NuGet gallery anymore. You can use the following NuGet feeds in order to have access to:
 

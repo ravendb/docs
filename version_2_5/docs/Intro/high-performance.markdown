@@ -1,5 +1,4 @@
-﻿
-## High Performance
+﻿# High Performance
 
 RavenDB can be used for application that needs to store millions of records and has fast query times.
 

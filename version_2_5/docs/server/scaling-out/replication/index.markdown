@@ -20,7 +20,9 @@ The replication bundle will create several system documents, including, but not 
 
 The destination document is saved with an ID of `Raven/Replication/Destinations`, and it's what telling the RavenDB instance where to replicate to. It's format is as follows:
 
-    {  
+{CODE-START:json /}
+
+	{  
       "Destinations": [  
         {  
           "Url": "http://raven_two:8080/"  
@@ -30,6 +32,7 @@ The destination document is saved with an ID of `Raven/Replication/Destinations`
         },  
       ]
     }
+{CODE-END /}
 
 With an object containing a url per each instance to replicate to. Whenever this document is updated, replication kicks off and start replicating to the updates destination list.
 

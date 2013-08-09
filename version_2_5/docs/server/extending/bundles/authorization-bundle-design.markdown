@@ -1,4 +1,4 @@
-#RavenDB Authorization Bundle Design
+# RavenDB Authorization Bundle Design
 
 I used to be able to just sit down and write some code, and eventually things would work. Just In Time Design. That is how I wrote things like Rhino Mocks, for example.
 
@@ -8,7 +8,7 @@ Several years ago (2007, [to be exact](http://ayende.com/blog/2958/a-vision-of-e
 
 Rhino Security design has affected the design of this system heavily. In essence, this is a port (of a sort) of Rhino Security to RavenDB, with the necessary changes to make the move to a NoSQL database. I am pretty happy with the design and I actually think that we might do back porting to Rhino Security at some point.
 
-##Important Assumptions
+## Important Assumptions
 The most important assumption that we make for the first version is that we can trust the client not to lie about whose user it is executing a certain operation. That one assumes the following deployment scenario:
 
 ![Figure 1: Authorization Bundle](images/authorization_bundle_faq.png)
@@ -17,7 +17,7 @@ In other words, only the application server can talk to the RavenDB server and t
 
 To be clear, this design doesn't not apply if users can connect directly to the database and lie about who they are. However, that scenario is expected to crop up, even though it is out of scope for the current version. Our design need to be future proofed in that regard.
 
-##Context & User
+## Context & User
 Since we can trust the client calling us, we can rely on the client to tell us which user a particular action is executed on behalf of, and what is the context of the operation.
 
 From the client API perspective, we are talking about:
@@ -29,7 +29,7 @@ I am not really happy with this API, but I think it would do for now. There are 
 * The user specified is using the reserved namespace "raven/". This allows the authorization bundle to have a well known format for the users documents.
 * The operation specified is using the Rhino Security conventions for operations. By using this format, we can easily construct hierarchical permissions.
 
-##Defining Users
+## Defining Users
 The format of the authorization user document is as follows:
 
     // doc id /raven/authorization/users/2929
@@ -47,7 +47,7 @@ There are several things to note here:
 * Note that the Roles that we have are hierarchical as well. This is important, since we would use that when defining permissions. Beyond that, Roles are used in a similar manner to groups in something like Active Directory. And the hierarchical format allows to manage that sort of hierarchical grouping inside Raven easily.
 * Note that we can also define permissions on the user for documents that are tagged with a particular tag. This is important if we want to grant a specific user permission for a group of documents.
 
-##Roles
+## Roles
 The main function of roles is to define permissions for a set of tagged documents. A role document will look like this:
 
     // doc id /raven/authorization/roles/DebtAgents/Managers
@@ -58,7 +58,7 @@ The main function of roles is to define permissions for a set of tagged document
         ]
     }
 
-##Defining permissions
+## Defining permissions
 Permissions are defined on individual documents, using RavenDB's metadata feature. Here is an example of one such document, with the authorization metadata:
 
     //docid-/debts/2931

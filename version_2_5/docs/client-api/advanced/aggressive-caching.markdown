@@ -1,4 +1,3 @@
-
 # Aggressive Caching
 
 ## Cache options
