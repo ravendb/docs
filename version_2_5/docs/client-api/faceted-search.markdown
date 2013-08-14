@@ -53,7 +53,9 @@ Finally you can write the following code and you get back the data below.
 
 This is equivalent to hitting the following Url:
 
-    http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_Range:[Dx100 TO Dx300.0]
+{CODE-START:plain /}
+http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_Range:[Dx100 TO Dx300.0]
+{CODE-END /}
 
 {NOTE The data returned represents the count of the faceted data that satisfies the query `Where(x => x.Cost >= 100 && x.Cost <= 300 )` /}
 

@@ -30,3 +30,5 @@ The nice thing about this, and what makes this feature different from standard m
 In code, this would look something like this:
 
 {CODE query@Studio\DynamicReporting.cs /}
+
+This reporting availability takes advantage of the [dynamic aggregation](../client-api/querying/dynamic-aggregation) feature.
