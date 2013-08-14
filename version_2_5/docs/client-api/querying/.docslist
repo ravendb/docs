@@ -9,3 +9,4 @@ lazy-operations.markdown	Lazy Operations
 intersection.markdown	Intersection
 query-and-lucene-query.markdown	Query and LuceneQuery
 query-customizations.markdown	Query customization
+dynamic-aggregation.markdown	Dynamic aggregation

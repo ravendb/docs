@@ -147,6 +147,7 @@
     <Compile Include="ClientApi\ChangesApi.cs" />
     <Compile Include="ClientApi\ConnectionToRavenDbDataStore.cs" />
     <Compile Include="ClientApi\FacetedSearch.cs" />
+    <Compile Include="ClientApi\Querying\DynamicAggregation.cs" />
     <Compile Include="ClientApi\Querying\HandlingDocumentRelationships.cs" />
     <Compile Include="ClientApi\Querying\Intersection.cs" />
     <Compile Include="ClientApi\Querying\LazyOperations.cs" />
