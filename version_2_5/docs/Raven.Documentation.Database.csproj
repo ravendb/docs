@@ -63,6 +63,7 @@
     <None Include="client-api\backward-compatibility.markdown" />
     <None Include="client-api\querying\dynamic-aggregation.markdown" />
     <None Include="Intro\high-performance.markdown" />
+    <None Include="Intro\what-is-new.markdown" />
     <None Include="samples\api-keys\.docslist" />
     <None Include="samples\api-keys\index.markdown" />
     <None Include="samples\api-keys\using-api-keys.markdown" />
