@@ -87,8 +87,20 @@ In order to set the priority of the index to idle for example, you can either cr
 
 or use the studio. If so you need to go to _Indexes_ and _Edit_ selected index and there set up the priority:
 
-![Figure 2: Index priority](images/index-priority.png)
+![Figure 3: Index priority](images/index-priority.png)
 
 All of the time settings used by RavenDB to automatically manage the priorities of indexes you will find on the [configuration options page](configuration) (look for options that starts with <em>TimeToWaitBefore</em>). 
 
+
+## Persistence of an auto index
+
+When auto indexes are created then they are kept in memory until they won't reach a given size from the configuration. You can force to write indexed data to a disk by using _Make index persisted_ option:
+
+![Figure 4: Persist index](images/index-persist.png)
+
+From the HTTP API perspective, it can be accomplished by calling the following address:
+
+ {CODE-START:plain /}
+> curl -X POST http://localhost:8080/databases/DB1/indexes/IndexName?op=forceWriteToDisk
+{CODE-END /}
 
