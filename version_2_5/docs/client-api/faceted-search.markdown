@@ -113,3 +113,7 @@ http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_
    ]
 }
 {CODE-END /}
+
+###Stale results
+
+The faceted search does not take into account a stealeness of an index. You can't wait for non stale results by customize you query by one of `WaitForNonStaleResultsXXX` method.
