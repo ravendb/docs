@@ -97,7 +97,7 @@ Transforms can be used to modify or filter out documents, but only work during t
 
 where `doc` will contain our document with it's metadata under `@metadata` property.
 
-1. Change scripts:   
+#### Change scripts:   
 
 E.g. To change document property `Name` value to the new one, the following script can be used:   
 
@@ -110,7 +110,7 @@ E.g. To change document property `Name` value to the new one, the following scri
 
 {CODE-END /}
 
-2. Filter scripts:    
+#### Filter scripts:    
 
 If we return `null` then the document will be filtered out.   
 
