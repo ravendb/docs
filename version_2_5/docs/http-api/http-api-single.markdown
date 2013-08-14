@@ -44,6 +44,14 @@ It is important to note that a PUT in RavenDB will always create the specified d
 
 A PUT request to /docs without specifying the document id in the URL is an invalid request and RavenDB will return a HTTP 400 Bad Request response code. 
 
+###Document metadata
+
+All of the document metadata are sent through HTTP headers, so if you also want to include some metadata values you have to specify `--header` options. For example:
+
+{CODE-START:json /}
+    > curl -X PUT http://localhost:8080/docs/items/1 -d "{ }" --header "CreatedBy:Adam Smith" --header "ItemOwner:John Davis"
+{CODE-END /}
+
 ##POST
 
 Perform a POST request to the /docs area to create the specified document and allow RavenDB to assign a unique id to it: 
