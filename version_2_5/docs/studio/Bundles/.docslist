@@ -6,3 +6,6 @@ versioning.markdown	Versioning Bundle
 authorization.markdown	Authorization Bundle
 periodicbackup.markdown	Periodic Backup Bundle
 compression.markdown	Compression Bundle
+expiration.markdown	Expiration Bundle
+sql-replication.markdown	SQL Replication Bundle
+scripted-index-results.markdown	Scripted Index Bundle
