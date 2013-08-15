@@ -236,6 +236,9 @@
     <None Include="studio\Bundles\.docslist" />
     <None Include="studio\Bundles\Authorization.markdown" />
     <None Include="studio\Bundles\compression.markdown" />
+    <None Include="studio\Bundles\scripted-index.markdown" />
+    <None Include="studio\Bundles\sql-replication.markdown" />
+    <None Include="studio\Bundles\expiration.markdown" />
     <None Include="studio\Bundles\Encryption.markdown" />
     <None Include="studio\Bundles\index.markdown" />
     <None Include="studio\Bundles\periodicbackup.markdown" />
@@ -336,10 +339,12 @@
     <Content Include="studio\Bundles\Images\studio_authorization_4.PNG" />
     <Content Include="studio\Bundles\Images\studio_authorization_5.PNG" />
     <Content Include="studio\Bundles\Images\studio_authorization_6.PNG" />
+    <Content Include="studio\Bundles\Images\studio_compression_1.png" />
     <Content Include="studio\Bundles\Images\studio_encryption_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_encryption_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_encryption_3.PNG" />
     <Content Include="studio\Bundles\Images\studio_encryption_4.PNG" />
+    <Content Include="studio\Bundles\Images\studio_expiration_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_periodic_3.PNG" />
@@ -358,8 +363,6 @@
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_2.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_3.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_4.png" />
-    <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_5.png" />
-    <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_6.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_7.png" />
     <Content Include="studio\Bundles\Images\studio_replicationwalkthrough_8.png" />
     <Content Include="studio\Bundles\Images\studio_replication_1.PNG" />
@@ -367,6 +370,8 @@
     <Content Include="studio\Bundles\Images\studio_replication_3.PNG" />
     <Content Include="studio\Bundles\Images\studio_replication_4.PNG" />
     <Content Include="studio\Bundles\Images\studio_replication_5.PNG" />
+    <Content Include="studio\Bundles\Images\studio_scripted_index_1.png" />
+    <Content Include="studio\Bundles\Images\studio_sql_replication_1.png" />
     <Content Include="studio\Bundles\Images\studio_versioning_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_versioning_2.PNG" />
     <Content Include="studio\Bundles\Images\studio_versioning_3.PNG" />
