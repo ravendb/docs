@@ -236,7 +236,7 @@
     <None Include="studio\Bundles\.docslist" />
     <None Include="studio\Bundles\Authorization.markdown" />
     <None Include="studio\Bundles\compression.markdown" />
-    <None Include="studio\Bundles\scripted-index.markdown" />
+    <None Include="studio\Bundles\scripted-index-results.markdown" />
     <None Include="studio\Bundles\sql-replication.markdown" />
     <None Include="studio\Bundles\expiration.markdown" />
     <None Include="studio\Bundles\Encryption.markdown" />
@@ -371,6 +371,10 @@
     <Content Include="studio\Bundles\Images\studio_replication_4.PNG" />
     <Content Include="studio\Bundles\Images\studio_replication_5.PNG" />
     <Content Include="studio\Bundles\Images\studio_scripted_index_1.png" />
+    <Content Include="studio\Bundles\Images\studio_scripted_index_2.png" />
+    <Content Include="studio\Bundles\Images\studio_scripted_index_3.png" />
+    <Content Include="studio\Bundles\Images\studio_scripted_index_4.png" />
+    <Content Include="studio\Bundles\Images\studio_scripted_index_5.png" />
     <Content Include="studio\Bundles\Images\studio_sql_replication_1.png" />
     <Content Include="studio\Bundles\Images\studio_versioning_1.PNG" />
     <Content Include="studio\Bundles\Images\studio_versioning_2.PNG" />
