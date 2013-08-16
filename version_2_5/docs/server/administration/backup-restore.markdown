@@ -61,6 +61,8 @@ The backup operation is asynchronous. The backup process will start, and the req
 
 You can check the status of the backup by querying the document with the key: "Raven/Backup/Status". The backup is completed when the IsRunning field in the document is set to false. The backup current status can be tracked by querying the backup status document, this includes any errors that occur during the backup process.
 
+{WARNING The backup of an encrypted database contains the encryption key (`Raven/Encryption/Key`) as a plain text. This is required to make RavenDB able to restore the backup on a different machine. /}
+
 ## How to restore a database
 
 Restoring a database is an offline operation, it cannot operate on a running instance of RavenDB.
