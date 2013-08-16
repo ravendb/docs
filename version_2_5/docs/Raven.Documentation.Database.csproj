@@ -424,6 +424,10 @@
     <Content Include="studio\Images\studio_databases_8.PNG" />
     <Content Include="studio\Images\studio_databases_9.PNG" />
     <Content Include="studio\Images\studio_documents_1.PNG" />
+    <Content Include="studio\Images\studio_documents_10.png" />
+    <Content Include="studio\Images\studio_documents_11.png" />
+    <Content Include="studio\Images\studio_documents_12.png" />
+    <Content Include="studio\Images\studio_documents_13.png" />
     <Content Include="studio\Images\studio_documents_2.PNG" />
     <Content Include="studio\Images\studio_documents_3.PNG" />
     <Content Include="studio\Images\studio_documents_4.PNG" />
