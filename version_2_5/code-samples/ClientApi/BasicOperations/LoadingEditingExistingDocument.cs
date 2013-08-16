@@ -20,8 +20,45 @@
 					#region editing_document_3
 					session.SaveChanges();
 					#endregion
+
+					#region editing_document_5
+					BlogPostWithIntegerId blogPostWithIntegerId = session.Load<BlogPostWithIntegerId>(1);
+					#endregion
+
+					#region editing_document_6
+					existingBlogPost = session.Load<BlogPost>(1);
+					#endregion
+
+					#region editing_document_7
+					BlogPost[] blogPosts = session.Load<BlogPost>("blogposts/1", 
+																  "blogposts/2", 
+																  "blogposts/3");
+					#endregion
+
+					#region editing_document_8
+					BlogPostWithIntegerId[] blogPostsWithInts = session.Load<BlogPostWithIntegerId>(1, 2, 3);
+					#endregion
+
+					#region editing_document_9
+					BlogPost[] prefixedResults = session.Advanced.LoadStartingWith<BlogPost>("blogposts/1");
+					#endregion
+
+					#region editing_document_10
+					BlogPost[] prefixedResultsWithMatch = session.Advanced.LoadStartingWith<BlogPost>("blogposts/1"
+						, "/Author/*t");
+					#endregion
 				}
 			}
 		}
+
+		#region editing_document_4
+		public class BlogPostWithIntegerId
+		{
+			public int Id { get; set; }
+			/*
+			 ...
+			*/
+		}
+		#endregion
 	}
 }
