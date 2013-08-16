@@ -102,3 +102,24 @@ For a new document created through the Studio the `Raven-entity-Name` metadata a
 If you have a a multi-tenant database set up, while browsing the documents in the Default Database tenant you will see one or more special documents titled "Sys Doc" with the names of the available tenants. Do not edit or delete this document - doing so might cause you to lose access to that tenant, although the actual data in it is not deleted.
 
 ![Document Fig 2](Images/studio_documents_2.PNG)
+
+
+##Conflicted documents
+
+The studio provides an easy acccess to replication conflicted documents. In order to get them go to <em>Documents > Conflicts</em>:
+
+![Document Fig 10](Images/studio_documents_10.png)
+
+After selecting this option you will see the list of all conflicts:
+
+![Document Fig 11](Images/studio_documents_11.png)
+
+Each record includes an identifier of a conflicted document, the time when a conflict was detected and a list of conflicted versions. You can select one of them to see the specific version of the conflicted item:
+
+![Document Fig 12](Images/studio_documents_12.png)
+
+If you double click a list record from _Conflicts_ screen then you will get the document where conflicted parts will be marked as visible on the image below:
+
+![Document Fig 12](Images/studio_documents_13.png)
+
+Here you can resolve the conflict by manually selecting the appropriate parts of the document and saving it.
