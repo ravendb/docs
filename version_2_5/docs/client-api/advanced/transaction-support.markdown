@@ -15,7 +15,7 @@ The implementation details of this are not important, although it is possible to
 {CODE-START:json /}
     POST /bulk_docs HTTP/1.1
     Raven-Transaction-Information: 975ee0bf-cac9-4b8e-ba29-377de722f037, 00:01:00
-    Accept-Encoding: deflate,gzip
+    Accept-Encoding: gzip
     Content-Type: application/json; charset=utf-8
     Host: 127.0.0.1:8081
     Content-Length: 300
@@ -42,11 +42,22 @@ The implementation details of this are not important, although it is possible to
     ]
 {CODE-END /}
 
-A call to commit involves a separate call to another HTTP endpoint with that transaction id:
+A call to save changes involves separate calls to another HTTP endpoint with that transaction id. According to the DTC protocol, a commit is a two-phase operation. 
+Phase one called _Prepare_ involves the first request when the actual work is made (but the transaction is not commited yet):
+
+{CODE-START:json /}
+	POST /transaction/prepare?tx=975ee0bf-cac9-4b8e-ba29-377de722f037 HTTP/1.1
+	Accept-Encoding: gzip
+	Content-Type: application/json; charset=utf-8
+	Host: 127.0.0.1:8081
+	Content-Length: 0
+{CODE-END /}
+
+If the Prepare phase succeeded then the actual transaction commit is made by sending the request:
 
 {CODE-START:json /}
 	POST /transaction/commit?tx=975ee0bf-cac9-4b8e-ba29-377de722f037 HTTP/1.1
-	Accept-Encoding: deflate,gzip
+	Accept-Encoding: gzip
 	Content-Type: application/json; charset=utf-8
 	Host: 127.0.0.1:8081
 	Content-Length: 0

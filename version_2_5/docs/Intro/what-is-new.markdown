@@ -29,7 +29,7 @@
 * [Better pre fetching algorithms for reducing IO](http://ayende.com/blog/160291/ravendb-indexing-optimizations-step-iii-skipping-the-disk-altogether)
 * [More robust and better pefromance of SQL Replication](../server/extending/bundler/sql-replication)
 * DTC performance improvement
-* Better adherence to the DTC protocol
+* [Better adherence to the DTC protocol](../client-api/advanced/transaction-support)
 * Will refresh the index writer every now and then, avoiding high memory costs for active indexes
 * Faster error reporting by bulk inserts
 * Removed db write lock and enabled completely concurrent writes
