@@ -1,4 +1,4 @@
-# RavenDB Authorization Bundle Design
+# Bundle: Authorization Bundle Design
 
 I used to be able to just sit down and write some code, and eventually things would work. Just In Time Design. That is how I wrote things like Rhino Mocks, for example.
 
@@ -32,6 +32,7 @@ I am not really happy with this API, but I think it would do for now. There are 
 ## Defining Users
 The format of the authorization user document is as follows:
 
+{CODE-START:json /}
     // doc id /raven/authorization/users/2929
     {
         "Name": "Ayende Rahien",
@@ -40,6 +41,7 @@ The format of the authorization user document is as follows:
            { "Operation": "/Operations/Debts/Finalize", "Tag": "/Tags/Debts/High", "Allow": true, "Priority": 1, }
         ]
     }
+{CODE-END /}
 
 There are several things to note here:
 
@@ -50,17 +52,19 @@ There are several things to note here:
 ## Roles
 The main function of roles is to define permissions for a set of tagged documents. A role document will look like this:
 
+{CODE-START:json /}
     // doc id /raven/authorization/roles/DebtAgents/Managers
-
     {
        "Permissions": [
            { "Operation": "/Operations/Debts/Finalize", "Tag": "/Tags/Debts/High", "Allow": true, "Priority": 1, }
         ]
     }
+{CODE-END /}
 
 ## Defining permissions
 Permissions are defined on individual documents, using RavenDB's metadata feature. Here is an example of one such document, with the authorization metadata:
 
+{CODE-START:json /}
     //docid-/debts/2931
     {
       "@metadata": {
@@ -91,6 +95,7 @@ Permissions are defined on individual documents, using RavenDB's metadata featur
       }
       //more document data
     }
+{CODE-END /}
 
 Tags, operations and roles are hierarchical. But the way they work is quite different.
 

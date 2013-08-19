@@ -1,4 +1,4 @@
-# Replication Bundle
+# Bundle: Replication
 
 If you want to use `Replication Bundle` then you must select it from the bundle list during the database creation:   
 ![Tasks Fig 1](Images/studio_replication_1.PNG)  

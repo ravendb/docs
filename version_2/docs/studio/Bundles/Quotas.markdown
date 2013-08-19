@@ -1,4 +1,4 @@
-# Quotas Bundle
+# Bundle: Quotas
 When creating a database, if you want to use the quotas bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_quotas_1.PNG)  
 
