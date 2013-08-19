@@ -1,4 +1,5 @@
 # Bundle: Index Replication
+
 RavenDB is a great database for storing documents, and the ability to create indexes on top of documents make extracting information out of the indexes very easy. There are situations, especially for reports, when you still want to use a relational database. The Index Replication Bundle is meant to handle just those scenarios. It is capable of replicating an index a table in a relational database.
 
 ## How it works?
