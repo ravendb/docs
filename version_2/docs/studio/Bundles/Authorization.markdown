@@ -1,4 +1,4 @@
-# Authorization Bundle
+# Bundle: Authorization
 When creating a database, if you want to use the versioning bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_authorization_1.PNG)  
 

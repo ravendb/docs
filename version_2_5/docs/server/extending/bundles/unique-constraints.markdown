@@ -1,4 +1,4 @@
-# UniqueConstraints Bundle
+# Bundle: Unique Constraints
 
 ## Premise
 
@@ -26,7 +26,6 @@ Allows to load a document by it's UniqueConstraint, returning null if the docume
 
 Checks a document to see if it's constraints are available in the server. It returns a `UniqueConstraintCheckResult` containing the loaded docs and what property they are responsible for.
 
-
 ### UniqueConstraintsPutTrigger
 
 The put trigger acts whenever it finds a document being inserted with constraints metadata. It checks for existing documents in the constraints. If any existing document is found, it returns a VetoResult.Deny informing the conflicting fields. This would need to be checked on the client-side using a try block for the OperationVetoedException.
@@ -36,9 +35,6 @@ If a document is being updated the trigger updates the generated constraint docu
 ### UniqueConstraintsDeleteTrigger
 
 The delete trigger acts whenever it find a document being delete with constraints metadata and deletes the referenced constraint documents.
-
-### Thanks to Felipe Leusin (for contributing the code) and Matt Warren (for helping in setting up and testing).
-
 
 ## Usage
 
@@ -69,3 +65,5 @@ To check if a value is available for use:
 To check document against the database use:
 
 {CODE unique_constraints_3@Server\Extending\Bundles\UniqueConstraints.cs /}
+
+{INFO Thanks to Felipe Leusin (for contributing the code) and Matt Warren (for helping in setting up and testing). /}

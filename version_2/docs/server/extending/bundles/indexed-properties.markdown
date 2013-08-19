@@ -1,4 +1,4 @@
-﻿#Indexed Properties bundle
+﻿# Bundle: Indexed Properties
 
 Another bundle available in RavenDB is `Indexed Properties` bundle. It enables auto-updating of document properties by Indexing process, but what does it mean? In real-life scenario it gives user the ability to utilize index calculated values.
 

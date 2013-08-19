@@ -1,4 +1,4 @@
-﻿# Quotas Bundle
+﻿# Bundle: Quotas
 
 The Quotas Bundle is helpful when you want to restrict the size of a database. By setting a hard limit and a soft margin, the bundle will make sure you never exceed the space you designate for it to use.
 
@@ -10,14 +10,26 @@ A soft limit is defined by the hard-limit minus the soft-limit margin, both are 
 
 ## Installation
 
-Put the Raven.Bundles.Quotas.dll file in the server's Plugins directory.
+To activate compression server-wide just add `Quotas` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with compression bundle turned on using API or Studio.
 
-Configure the following values by adding entries to your app.config:
+How to create a database with quotas enabled using Studio can be found [here](../../../studio/bundles/quotas).
 
-* **Raven/Quotas/Size/HardLimitInKB**  
-    The hard limit in KBs.  
-    _Default:_ no limit
+## Configuration
 
-* **Raven/Quotas/Size/SoftMarginInKB**  
-    The margin value in KBs to start showing warning in the log.  
-    _Default:_ 1024 ( = 1MB)
+Configure the following values by adding entries to your [server configuration](../../administration/configuration) or [database settings](../../multiple-databases):
+
+* **Raven/Quotas/Size/HardLimitInKB**
+	The hard limit after which we refuse any additional writes.   
+	_Default:_ none
+
+* **Raven/Quotas/Size/SoftMarginInKB**
+	The soft limit before which we will warn about the quota.   
+	_Default:_ 1024
+
+* **Raven/Quotas/Documents/HardLimit**
+	The hard limit after which we refuse any additional documents.   
+	_Default:_ Int64.MaxValue
+
+* **Raven/Quotas/Documents/SoftLimit**
+	The soft limit before which we will warn about the document limit quota.   
+	_Default:_ Int64.MaxValue

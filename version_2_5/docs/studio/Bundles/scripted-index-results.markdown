@@ -1,4 +1,4 @@
-# Scripted Index Results Bundle
+# Bundle: Scripted Index Results
 
 When creating a database, if you want to use the scripted index results bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_scripted_index_1.PNG)  
