@@ -17,12 +17,13 @@
 
 						entity.Title = "Some new title";
 
-						session.SaveChanges();
+						session.SaveChanges(); // will create HTTP request
 
 						session.Delete(entity);
-						session.SaveChanges();
 
-						transaction.Complete();
+						session.SaveChanges(); // will create HTTP request
+
+						transaction.Complete(); // will commit transaction
 					}
 					#endregion
 				}
