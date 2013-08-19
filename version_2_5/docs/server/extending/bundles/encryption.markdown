@@ -1,10 +1,10 @@
-﻿# Encryption bundle
+﻿# Bundle: Encryption
 
 The encryption bundle introduces data encryption to RavenDB. By default it uses AES-128 encryption algorithm, but this can be easily changed if needed. Encryption is fully transparent for the end-user, it applies to all documents and in default configuration to all indexes as well.
 
 ## Configuration
 
-If you want to setup new database with encryption bundle using the Studio, then please refer to [this](../../studio/Bundles/encryption) page.
+If you want to setup new database with encryption bundle using the Studio, then please refer to [this](../../../studio/Bundles/encryption) page.
 
 Three possible configuration options are:   
 * **Raven/Encryption/Algorithm** with [AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) as a value. Additionally provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class    

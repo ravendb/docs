@@ -1,4 +1,4 @@
-# UniqueConstraints Bundle
+# Bundle: Unique Constraints
 
 ## Premise
 
