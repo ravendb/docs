@@ -97,6 +97,12 @@ Often, you don't simply want to remove items from arrays but remove them conditi
 
 Of course, `ScriptedPatchRequest` allows you to use any arbitrary JavaScript functionality like for-loops as well.
 
+### lodash.js
+
+You can also take advantage of any function from [Lo-Dash](http://lodash.com/) library which is included into Raven script engine by default. Example with <em>forEach</em> usage:
+
+{CODE scriptedpatching_lodash@ClientApi/PartialDocumentUpdates.cs /}
+
 ## Concurrency
 
 If we wanted to we could run several batch operations in parallel, but we will not be able to set which one will end first.
