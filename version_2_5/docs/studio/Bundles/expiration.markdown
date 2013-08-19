@@ -1,4 +1,4 @@
-# Expiration Bundle
+# Bundle: Expiration
 
 When creating a database, if you want to use the expiration bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_expiration_1.PNG)  

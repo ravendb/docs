@@ -1,4 +1,4 @@
-# Periodic Backup Bundle
+# Bundle: Periodic Backup
 
 In order to enable `Periodic Backup` you need to enter database settings by pressing `Settings` on a top navigation panel.   
 ![Periodic Backup Fig 1](Images/studio_periodic_1.PNG)  

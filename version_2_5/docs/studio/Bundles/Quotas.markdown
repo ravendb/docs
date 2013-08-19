@@ -1,4 +1,4 @@
-# Quotas Bundle
+# Bundle: Quotas
 
 If you want to use `Quotas Bundle` then you must select it from the bundle list during the database creation:   
 ![Tasks Fig 1](Images/studio_quotas_1.PNG)  
