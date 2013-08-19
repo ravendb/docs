@@ -311,6 +311,14 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The soft limit before which we will warn about the quota.   
 	_Default:_ 1024
 
+* **Raven/Quotas/Documents/HardLimit**
+	The hard limit after which we refuse any additional documents.   
+	_Default:_ Int64.MaxValue
+
+* **Raven/Quotas/Documents/SoftLimit**
+	The soft limit before which we will warn about the document limit quota.   
+	_Default:_ Int64.MaxValue
+
 ### JavaScript parser
 
 * **Raven/MaxStepsForScript**
@@ -432,6 +440,8 @@ Many of the configuration options described in section above can be used both in
 | &nbsp; |||
 | **Raven/Quotas/Size/HardLimitInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Quotas/Size/SoftMarginInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Quotas/Documents/HardLimit** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Quotas/Documents/SoftLimit** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/MaxStepsForScript** | ![Yes](images\tick.png) | ![No](images\tick.png) |
 | **Raven/AdditionalStepsForScriptBasedOnDocumentSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |

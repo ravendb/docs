@@ -2,7 +2,11 @@
 
 The versioning bundle will create snapshots for every document upon every update made to it, or when it is deleted. It is useful when you need to track history of documents, or when you need a full audit trail.
 
-As with all bundles, installation is as easy as just dropping Raven.Bundles.Versioning.dll into the plugins directory.
+## Installation
+
+To activate versioning server-wide just add `Versioning` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with compression bundle turned on using API or Studio.
+
+How to create a database with compression enabled using Studio can be found [here](../../../studio/bundles/versioning).
 
 ## Configuration
 
