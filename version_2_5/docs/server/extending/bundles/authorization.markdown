@@ -1,4 +1,4 @@
-# Authorization Bundle
+# Bundle: Authorization
 
 The Authorization Bundle extend RavenDB and add document level permissions. The Auth Bundle allows to define permissions for a specific user, a group or using arbitrary tagging. The system is design to be high performance, scalable and flexible. 
 

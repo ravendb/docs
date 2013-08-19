@@ -1,10 +1,10 @@
-﻿# More Like This Bundle
+﻿# Bundle: More Like This
 
 More Like This returns a list of similar documents that are related to a given document. This feature can be used, for example, when viewing an article many news sites show a list of related articles at the bottom of the page. To accomplish this, the RavenDB More Like This uses the More Like This from Lucene contrib project. To find out how this more about the algorithm Aaron Johnson has an [excellent blog](http://cephas.net/blog/2008/03/30/how-morelikethis-works-in-lucene/) post describing it.
 
 ## Installation
 
-Place the Raven.Bundles.MoreLikeThis.dll file in the server's Plugins directory, and  reference Raven.Client.MoreLikeThis in your project to add MoreLikeThis support to the Client API.
+This bundle is built-in into server and client and do not need any installation.
 
 ## Usage
 ### Setup
@@ -29,10 +29,16 @@ By passing in an object of type MoreLikeThisQuery the More Like This default can
 
 + **Fields** - Limit the fields that we search on to just the specified field names.
 + **Boost** - Boost terms in query based on score. Using this option may give more exact results by boosting the terms found by their score. The default is false.
++ **BoostFactor** - Factor that is used during term boosting. Default: 1.   
++ **IndexName** - Name of an index to use in operation.   
++ **DocumentId** - The id of a document that will be used as the basis for comparision.   
++ **MapGroupFields** - The values for the mapping group fields that will be used as the basis for comparision.   
 + **MaximumNumberOfTokensParsed** - The maximum number of tokens to parse in each example document field that is not stored with TermVector support. The default is 5000.
 + **MaximumWordLength** - Ignore words greater than this length or if 0 then this has no effect. The default is 0.
 + **MaximumQueryTerms** - Return a Query with no more than this many terms. The default is 25.
 + **MinimumDocumentFrequency** - Ignore words which do not occur in at least this many documents. The default is 5.
++ **MaximumDocumentFrequency** - Ignore words which occur in more than this many documents. Default is Int32.MaxValue.
++ **MaximumDocumentFrequencyPercentage** - Ignore words which occur in more than this percentage of documents.
 + **MinimumTermFrequency** - Ignore terms with less than this frequency in the source doc. The default is 2.
 + **MinimumWordLength** - Ignore words less than this length or if 0 then this has no effect. The default is 0.
 + **StopWordsDocumentId** - the document ID that contains the set of stop words (see below).
