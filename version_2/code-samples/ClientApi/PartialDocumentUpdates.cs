@@ -207,6 +207,17 @@
 						"
 					});
 				#endregion
+
+				#region scriptedpatching_lodash
+				documentStore.DatabaseCommands.Patch(
+					"blogposts/1234",
+					new ScriptedPatchRequest()
+					{
+						Script = @"_(this.Comments).forEach(function(comment){
+							comment.Content = 'newContent';
+						});"
+					});
+				#endregion
 			}
 		}
 	}
