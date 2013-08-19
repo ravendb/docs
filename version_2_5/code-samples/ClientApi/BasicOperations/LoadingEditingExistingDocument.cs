@@ -30,8 +30,8 @@
 					#endregion
 
 					#region editing_document_7
-					BlogPost[] blogPosts = session.Load<BlogPost>("blogposts/1", 
-																  "blogposts/2", 
+					BlogPost[] blogPosts = session.Load<BlogPost>("blogposts/1",
+																  "blogposts/2",
 																  "blogposts/3");
 					#endregion
 
@@ -39,13 +39,20 @@
 					BlogPostWithIntegerId[] blogPostsWithInts = session.Load<BlogPostWithIntegerId>(1, 2, 3);
 					#endregion
 
-					#region editing_document_9
+					#region editing_document_9_0
 					BlogPost[] prefixedResults = session.Advanced.LoadStartingWith<BlogPost>("blogposts/1");
 					#endregion
 
-					#region editing_document_10
-					BlogPost[] prefixedResultsWithMatch = session.Advanced.LoadStartingWith<BlogPost>("blogposts/1"
-						, "/Author/*t");
+					#region editing_document_9_1
+					BlogPost[] prefixedResultsWithMatch = session.Advanced
+						.LoadStartingWith<BlogPost>("blogposts/1", "*/Author/*t");
+
+					#endregion
+
+					#region editing_document_9_2
+					BlogPost[] prefixedResultsWithMultipleMatch = session.Advanced
+						.LoadStartingWith<BlogPost>("blogposts/1", "*/Author/*t|*/Type/*t");
+
 					#endregion
 				}
 			}
