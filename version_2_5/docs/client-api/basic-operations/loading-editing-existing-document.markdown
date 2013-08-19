@@ -65,13 +65,17 @@ The same would work for non string identifiers of course:
 Another option to load multiple documents, this time only if theirs ids fulfill the specified criteria, is `LoadStartingWith` method. As you can guess you can specify a prefix of an identifier
 to return only documents that match it. For example to get `BlogPost` entities that ID is of the form _blogposts/1*_ use the following code:
 
-{CODE editing_document_9@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
+{CODE editing_document_9_0@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
 
 In result you will get posts the following sample ids: _blogposts/1, blogposts/10, blogposts/1/Author/Matt_ etc.
 
 Except from the prefix you are also able to pass the regular expression that the identifiers (after the prefix part) of returned docs have to match. Example:
 
-{CODE editing_document_9@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
+{CODE editing_document_9_1@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
 
 Here we provided the additional criteria, that limits the results only to documents that IDs have the form _blogposts/1\*/Author/\*t_ for example: <em>blogposts/11/Author/Matt</em>.
 In the matches parameter you can specify \* and ? as special regular expression characters.
+
+Multiple criterias can be separated using `|`. E.g. If we want to add to our previous results documents with IDs that have the form _blogposts/1\*/Type/\*t_ for example: <em>blogposts/11/Type/Innovation</em> then following query needs to be executed:   
+
+{CODE editing_document_9_2@ClientApi\BasicOperations\LoadingEditingExistingDocument.cs /}
