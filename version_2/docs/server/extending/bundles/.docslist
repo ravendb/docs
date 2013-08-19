@@ -11,3 +11,4 @@ compression.markdown	Compression Bundle
 periodic-backups.markdown	Periodic Backups
 indexed-properties.markdown	Indexed Properties
 sql-replication.markdown	SQL Replication Bundle
+index-replication.markdown	Index Replication

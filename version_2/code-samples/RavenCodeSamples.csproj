@@ -158,6 +158,7 @@
     <Compile Include="Server\Extending\Bundles\Encryption.cs" />
     <Compile Include="Server\Extending\Bundles\Expiration.cs" />
     <Compile Include="Server\Extending\Bundles\IndexedProperties.cs" />
+    <Compile Include="Server\Extending\Bundles\IndexReplication.cs" />
     <Compile Include="Server\Extending\Bundles\MoreLikeThis.cs" />
     <Compile Include="Server\Extending\Bundles\PeriodicBackups.cs" />
     <Compile Include="Server\Extending\Bundles\SqlReplication.cs" />

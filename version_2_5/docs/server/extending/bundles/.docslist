@@ -11,3 +11,4 @@ compression.markdown	Bundle: Compression
 periodic-backups.markdown	Bundle: Periodic Backups
 sql-replication.markdown	Bundle: SQL Replication
 scripted-index-results.markdown	Bundle: Scripted Index Results
+index-replication.markdown	Bundle: Index Replication
