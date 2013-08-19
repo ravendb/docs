@@ -1,16 +1,16 @@
-#Periodic Backups bundle
+# Bundle: Periodic Backups
 
 RavenDB comes with support of doing periodic backups of documents and attachments to [Amazon AWS](http://aws.amazon.com/) services.  
 When creating a database in the studio you will see that you can't change the selection of the 'Periodic Backup Bundle' it's selection depends on the license.  
 In order to periodic backups to work you must activate `PeriodicBackups` bundle, by activating this bundle globally and turning it on/off per database, or activating it per database only.
 
-##How it works
+## How it works
 
 Periodic backups are leveraging the concept of incremental backups available in RavenDB and to take advantage of that, we are storing an information about last successful ETag of the documents and attachments that were send to backup destination.
 
-##Configuration
+## Configuration
 
-###Activating bundle
+### Activating bundle
 
 To activate bundle globally just add `PeriodicBackups` to the `Raven/ActiveBundles`. More about setting up configuration can be found [here](../Administration/configuration).
 
@@ -20,7 +20,7 @@ Bundle can also be activated during database creation process.
 
 {CODE periodic_backups_1@Server\Extending\Bundles\PeriodicBackups.cs /}
 
-###Configuring backup destination
+### Configuring backup destination
 
 Two steps need to be taken to setup backup destination properly.
 
@@ -36,7 +36,7 @@ In next step we need to create a backup setup document under `Raven/Backup/Perio
 
 {NOTE More information about Amazon Simple Storage Service (Amazon S3) can be found [here](http://aws.amazon.com/s3/) and if you are interested in Amazon Glacier then visit [this](http://aws.amazon.com/glacier/) page. /}
 
-###Restore from a periodic backup
+### Restore from a periodic backup
 The periodic backup is not a full backup really. It is, instead, an incremental export.
 To restore a database from a periodic backup you must user Raven.Smuggler.exe using the following syntax:
 

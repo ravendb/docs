@@ -1,4 +1,4 @@
-#SQL Replication Bundle
+# Bundle: SQL Replication
 
 To provide an easy and flexible way to setup a replication to SQL servers, we have replaced the Index Replication bundle with new mechanism that is a part of a SQL Replication bundle.   
 
@@ -11,7 +11,7 @@ Supported SQL providers:
 * MySql.Data.MySqlClient   
 * Npgsql   
 
-##Setup
+## Setup
 
 To configure SQL Replication, we need to enable the `SQL Replication Bundle` and insert a `SQL Replication Configuration` document into our database. This can be done by using the Studio or manually by inserting proper document `(Raven.Database.Bundles.SqlReplication.SqlReplicationConfig`) under `Raven/SqlReplication/Configuration/name_here` key.
 
@@ -28,7 +28,7 @@ where:
 * **FactoryName**, **ConnectionString**, **ConnectionStringName** and **ConnectionStringSettingName** are used to provide connection strings to destination DB in various ways   
 * **SqlReplicationTables** is a list of tables to which the documents will be replicated   
 
-##Example
+## Example
 
 Let us consider a simple scenario, where we have an `Order` with `OrderLines` and we want to setup a replication to MSSQL.
 
@@ -57,11 +57,11 @@ First we need to setup our MSSQL by creating a database with two tables. In our 
 
 Last step is to insert a document with our configuration. This can be done using `Studio` or manually.
 
-###Manual
+### Manual
 
 {CODE sql_replication_3@Server\Extending\Bundles\SqlReplication.cs /}
 
-###Using the Studio
+### Using the Studio
 
 In Studio the configuration page is found under `Settings -> SQL Replication`.
 

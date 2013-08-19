@@ -1,14 +1,14 @@
-quotas.markdown	Quotas Bundle
-versioning.markdown	Versioning Bundle
-morelikethis.markdown	More Like This
-unique-constraints.markdown	Unique Constraints
-authorization.markdown	Authorization Bundle
-authorization-bundle-design.markdown	Authorization Bundle Design Notes
-cascade-delete.markdown	Cascade Delete Bundle
-expiration.markdown	Expiration Bundle
-encryption.markdown	Encryption Bundle
-compression.markdown	Compression Bundle
-periodic-backups.markdown	Periodic Backups
-indexed-properties.markdown	Indexed Properties
-sql-replication.markdown	SQL Replication Bundle
-index-replication.markdown	Index Replication
+quotas.markdown	Bundle: Quotas
+versioning.markdown	Bundle: Versioning
+morelikethis.markdown	Bundle: More Like This
+unique-constraints.markdown	Bundle: Unique Constraints
+authorization.markdown	Bundle: Authorization
+authorization-bundle-design.markdown	Bundle: Authorization Bundle Design
+cascade-delete.markdown	Bundle: Cascade Delete
+expiration.markdown	Bundle: Expiration
+encryption.markdown	Bundle: Encryption
+compression.markdown	Bundle: Compression
+periodic-backups.markdown	Bundle: Periodic Backups
+indexed-properties.markdown	Bundle: Indexed Properties
+sql-replication.markdown	Bundle: SQL Replication
+index-replication.markdown	Bundle: Index Replication

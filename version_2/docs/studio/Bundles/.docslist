@@ -1,7 +1,7 @@
-encryption.markdown	Encryption Bundle
-quotas.markdown	Quotas Bundle
-replication.markdown	Replication Bundle
-replication-walkthrough.markdown	Replication Walkthrough
-versioning.markdown	Versioning Bundle
-authorization.markdown	Authorization Bundle
-periodicbackup.markdown	Periodic Backup Bundle
+encryption.markdown	Bundle: Encryption - Studio
+quotas.markdown	Bundle: Quotas - Studio
+replication.markdown	Bundle: Replication - Studio
+replication-walkthrough.markdown	Bundle: Replication Walkthrough - Studio
+versioning.markdown	Bundle: Versioning - Studio
+authorization.markdown	Bundle: Authorization - Studio
+periodicbackup.markdown	Bundle: Periodic Backup - Studio

@@ -1,4 +1,4 @@
-# Compression Bundle
+# Bundle: Compression
 
 When creating a database, if you want to use the compression bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_compression_1.PNG)  

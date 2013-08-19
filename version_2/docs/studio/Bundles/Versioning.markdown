@@ -1,4 +1,4 @@
-# Versioning Bundle
+# Bundle: Versioning
 When creating a database, if you want to use the versioning bundle you need to select it in the database creation window:  
 ![Tasks Fig 1](Images/studio_versioning_1.PNG)  
 
