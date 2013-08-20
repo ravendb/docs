@@ -11,7 +11,7 @@
 * [More notifications in Changes API](../client-api/changes-api) (replication conflicts, bulk inserts, index priorities)
 * [Spatial Enhancements](../client-api/querying/static-indexes/spatial-search)
 * [NoTracking and NoCaching query customizations](../client-api/querying/query-customizations)
-* Excel integration - CSV endpoint
+* [Excel integration](../http-api/excel-integration) - CSV endpoint
 * [MSI Installer](../server/deployment/installer)
 * [Write Assurance](../server/scaling-out/replication/write-assurance)
 * [Usage Northwind for sample data](http://ayende.com/blog/162338/ravendb-sample-data-hello-northwind)
