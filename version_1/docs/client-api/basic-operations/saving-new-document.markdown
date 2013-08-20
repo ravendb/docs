@@ -80,6 +80,11 @@ In the example above we had a string Id property for `BlogPost`, and left it bla
 
 If there is no `Id` property on a document, RavenDB will still generate a unique ID, but it will be retrievable only by calling `session.Advanced.GetDocumentId(object)`. In other words, having an `Id` property is entirely optional, so you can explicitly define such a property only when you need this information to be more accessible.
 
+### Document ID limitations
+
+1. Maximum number of characters is **127**
+2. Id cannot contain **\\**
+
 ### Document IDs generation strategies
 
 RavenDB supports 3 ways of figuring out a unique id, or a document key, for a newly saved document.
