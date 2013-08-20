@@ -26,7 +26,7 @@ If there is no `Id` property on a document, RavenDB will still generate a unique
 
 ### Document ID limitations
 
-1. Maximum number of characters is **1024**
+1. Maximum number of characters is **1023**
 2. Id cannot contain **\\**
 
 ### Document IDs generation strategies
