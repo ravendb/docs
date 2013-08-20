@@ -280,6 +280,8 @@
     <Content Include="http-api\images\excel_from_text_select.png" />
     <Content Include="http-api\images\excel_from_text_wizard_1.png" />
     <Content Include="http-api\images\excel_from_text_wizard_2.png" />
+    <Content Include="http-api\images\excel_result.png" />
+    <Content Include="http-api\images\excel_transformer.png" />
     <Content Include="Intro\images\raven.server.png" />
     <Content Include="Intro\images\studio.png" />
     <Content Include="samples\api-keys\Images\apikeys_1.PNG" />
