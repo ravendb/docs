@@ -9,12 +9,12 @@ Commercial editions can be used in closed source environment and are available u
 
 At the development stage, developers can develop with RavenDB without a license. Once you are ready to deploy your application you need to buy a license. For that matter, any of the following environments require a license: 
 
-- QA
+- QA, if used also by someone outside of the core developers team
 - UAT
 - Pre Production
-- Production.
+- Production
 
-A hot spare instances also require a license.
+A hot spare instance also require a license.
 
 ## Open Source Projects
 
