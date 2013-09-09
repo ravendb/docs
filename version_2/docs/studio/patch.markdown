@@ -1,7 +1,7 @@
 #Patch
 With patching you can apply changes to a document or several documents using javascript.
 
-In the studio when you select the "patch" tab you get this page:  
+In the studio when you select the "Patch" from the "Documents" dropdown you get this page: 
 ![Figure 1](Images/studio_patch_1.PNG)  
 
 In the top left you can select what do you want to patch on (a single document, a collection or an index).  
