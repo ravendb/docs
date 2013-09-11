@@ -13,4 +13,4 @@ Or use the following configuration options:
 	The path to the license file for RavenDB.   
 	_Default:_ ~\license.xml
 
-{NOTE Each instance of RavenDB outside of the development machines should be registered with a license.}
+{NOTE Each instance of RavenDB outside of the development machines must be registered with a license. /}
