@@ -11,6 +11,6 @@ So if you do not use one of the above cases, you can safely upgrade your server 
 
 ## Client v2 to Server v2.5
 
-It is safe to use v2 of the client with v2.5 of the server, except if you are using the DTC feature.
+The only breaking change that we have between v2 client and v2.5 server is if you are using the DTC feature and used promotable transactions.
 
-The only breaking change that we have between v2 client and v2.5 server is if you are using the DTC feature. In this case, you will have to use the v2.5 client.
+If you aren't using promotable transactions (for example, you use MSMQ & RavenDB together), there is no issue. If you require promotable transactions, you will have to use the v2.5 client.
