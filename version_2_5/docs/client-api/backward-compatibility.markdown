@@ -13,5 +13,4 @@ So if you do not use one of the above cases, you can safely upgrade your server 
 
 It is safe to use v2 of the client with v2.5 of the server, except if you are using the DTC feature.
 
-The only breaking change that we have is with DTC. If you are using this feature, you must also use the client of 2.5.
-But since we are not recommend the use of DTC anyway, and also because that this is not very often used, there is a big chance that you are not using this feature.
+The only breaking change that we have between v2 client and v2.5 server is if you are using the DTC feature. In this case, you will have to use the v2.5 client.
