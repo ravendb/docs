@@ -5,7 +5,9 @@ RavenDB can be run as an IIS application, or from a virtual directory under an I
 ## Choosing between running in IIS mode or in Service mode.
 
 There are no real performance considerations between running in IIS or running in Service mode. However, running in IIS means that you get the benefits of the IIS management tools, monitoring and tracking abilities. IIS will also monitor RavenDB and take actions if needed.
+
 The down side of using IIS is that you might need to add IIS specific configuration (such as increasing maximum request time for bulk inserts) for certain scenarios.
+
 Both options are supported and the choice is mostly about what is easier for your ops team to support.
 
 ## Setting up a RavenDB IIS application
