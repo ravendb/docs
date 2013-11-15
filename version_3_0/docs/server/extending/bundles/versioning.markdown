@@ -60,6 +60,18 @@ Limitations
 * Versioning will fail on documents with keys larger than 230 characters.
 * Versioning will not attempt to version internal Raven document (documents whose key starts with "Raven/")
 
+## Versioning only when explicitly requested
+
+The Versioning bundle supports explicitly requesting Versions to be created.  For example if you have a product in an eCommerce application you may want to save a Version each time its definition changes, but not when its stock changes because a sale is made.
+
+To do this, set `ExcludeUnlessExplicit = true` in the configuration. To request an entity be versioned when it is saved, call 
+
+```
+Session.Advanced.ExplicitlyVersion(entity);
+```
+
+This adds a metadata key which acts as a signal to the bundle to create a version.  The key is transient before the document is stored.
+
 ## Client integration
 
 The Versioning bundle also have a client side part, which you can access by adding a reference to Raven.Client.Versioning assembly.
