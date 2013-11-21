@@ -12,9 +12,10 @@ Enabling the replication module will have the following effects on your system:
 * Several new endpoints will begin responding, including, but not limited to `/replication/replicate` and `/replication/lastEtag`.
 * The replication bundle will not replicate any system documents (whose key starts in Raven/)
 
-The replication bundle will create several system documents, including, but not limited to:
-* `Raven/Replication/Destinations` - List of servers we need to replicate to
-* `Raven/Replication/Sources/[server]` - Information about the data replicated from a particular server
+In order to setup the replication, you can create the following documents:
+
+	* `Raven/Replication/Destinations` - List of servers we need to replicate to
+	* `Raven/Replication/Sources/[server]` - Information about the data replicated from a particular server
 
 ## The destinations document
 
