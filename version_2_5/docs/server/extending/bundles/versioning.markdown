@@ -4,9 +4,9 @@ The versioning bundle will create snapshots for every document upon every update
 
 ## Installation
 
-To activate versioning server-wide just add `Versioning` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with compression bundle turned on using API or Studio.
+To activate versioning server-wide just add `Versioning` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with versioning bundle turned on using API or Studio.
 
-How to create a database with compression enabled using Studio can be found [here](../../../studio/bundles/versioning).
+How to create a database with versioning enabled using Studio can be found [here](../../../studio/bundles/versioning).
 
 ## Configuration
 
