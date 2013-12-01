@@ -4,445 +4,334 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using RavenDB.DocsCompiler.MagicWorkers;
 using RavenDB.DocsCompiler.Model;
 using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler
 {
-    /// <summary>
-    /// The output type.
-    /// </summary>
-    public enum OutputType
-    {
-        /// <summary>
-        /// HTML output.
-        /// </summary>
-        Html,
+	/// <summary>
+	/// The output type.
+	/// </summary>
+	public enum OutputType
+	{
+		/// <summary>
+		/// HTML output.
+		/// </summary>
+		Html,
 
-        /// <summary>
-        /// Markdown output.
-        /// </summary>
-        Markdown
-    }
+		/// <summary>
+		/// Markdown output.
+		/// </summary>
+		Markdown
+	}
 
-    /// <summary>
-    /// The Client Type
-    /// </summary>
-    public enum ClientType
-    {
-        /// <summary>
-        /// Java client
-        /// </summary>
-        Java,
+	/// <summary>
+	/// The Client Type
+	/// </summary>
+	public enum ClientType
+	{
+		/// <summary>
+		/// Java client
+		/// </summary>
+		None,
 
-        /// <summary>
-        /// csharp
-        /// </summary>
-        Csharp,
+		/// <summary>
+		/// Java client
+		/// </summary>
+		Java,
 
-        /// <summary>
-        /// HTTP
-        /// </summary>
-        Http
-    }
+		/// <summary>
+		/// csharp
+		/// </summary>
+		Csharp,
 
-    /// <summary>
-    /// The documentation compiler.
-    /// </summary>
-    public class Compiler
-    {
-        /// <summary>
-        /// The file name representing a documentation list.
-        /// </summary>
-        private const string DocsListFileName = ".docslist";
+		/// <summary>
+		/// HTTP
+		/// </summary>
+		Http
+	}
 
-        /// <summary>
-        /// The destination full path.
-        /// </summary>
-        private readonly string destinationFullPath;
+	/// <summary>
+	/// The documentation compiler.
+	/// </summary>
+	public class Compiler
+	{
+		/// <summary>
+		/// The file name representing a documentation list.
+		/// </summary>
+		private const string DocsListFileName = ".docslist";
 
-        /// <summary>
-        /// Initializes a new instance of the <see cref="Compiler"/> class.
-        /// </summary>
-        /// <param name="destinationFullPath">
-        /// The full path.
-        /// </param>
-        private Compiler(string destinationFullPath)
-        {
-            this.destinationFullPath = destinationFullPath;
-        }
+		/// <summary>
+		/// The destination full path.
+		/// </summary>
+		private readonly string destinationFullPath;
 
-        /// <summary>
-        /// Gets or sets the output.
-        /// </summary>
-        public IDocsOutput Output { get; set; }
+		/// <summary>
+		/// Initializes a new instance of the <see cref="Compiler"/> class.
+		/// </summary>
+		/// <param name="destinationFullPath">
+		/// The full path.
+		/// </param>
+		private Compiler(string destinationFullPath)
+		{
+			this.destinationFullPath = destinationFullPath;
 
-        /// <summary>
-        /// Gets a value indicating whether to convert to html.
-        /// </summary>
-        public bool ConvertToHtml
-        {
-            get
-            {
-                return this.Output.ContentType == OutputType.Html;
-            }
-        }
+			SupportedLanguages = new List<ClientType>
+		    {
+			    ClientType.Csharp,
+			    ClientType.Http,
+			    ClientType.Java
+		    };
+		}
 
-        public string Brush
-        {
-            get
-            {
-                switch (Output.ClientType)
-                {
-                    case ClientType.Csharp:
-                        return "csharp";
-                    case ClientType.Java:
-                        return "java";
-                    case ClientType.Http:
-                        return "plain";
-                    default:
-                        return null;
-                }
-            }
-        }
+		/// <summary>
+		/// Gets or sets the output.
+		/// </summary>
+		public IDocsOutput Output { get; set; }
 
-        /// <summary>
-        /// Gets or sets the C# code samples path.
-        /// </summary>
-        public string CsharpCodeSamplesPath { get; set; }
+		public IList<ClientType> SupportedLanguages { get; private set; }
 
-        /// <summary>
-        /// Gets or sets the java code samples path.
-        /// </summary>
-        public string JavaCodeSamplesPath { get; set; }
+		/// <summary>
+		/// Gets a value indicating whether to convert to html.
+		/// </summary>
+		public bool ConvertToHtml
+		{
+			get
+			{
+				return this.Output.ContentType == OutputType.Html;
+			}
+		}
 
-        public string CodeSamplesPath
-        {
-            get { return Output.ClientType == ClientType.Csharp ? CsharpCodeSamplesPath : JavaCodeSamplesPath; }
-        }
+		public string Brush
+		{
+			get
+			{
+				switch (Output.ClientType)
+				{
+					case ClientType.Csharp:
+						return "csharp";
+					case ClientType.Java:
+						return "java";
+					case ClientType.Http:
+						return "plain";
+					default:
+						return null;
+				}
+			}
+		}
 
-        /// <summary>
-        /// Gets or sets the root folder.
-        /// </summary>
-        public Folder RootFolder { get; protected set; }
+		/// <summary>
+		/// Gets or sets the C# code samples path.
+		/// </summary>
+		public string CsharpCodeSamplesPath { get; set; }
 
-        /// <summary>
-        /// Compiles the documentation in the folder.
-        /// </summary>
-        /// <param name="output">
-        /// The output.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        /// <param name="homeTitle">
-        /// The home title.
-        /// </param>
-        /// <param name="versionUrl">
-        /// The version url.
-        /// </param>
-        /// <exception cref="ArgumentNullException">
-        /// Throws an ArgumentNullException when output is null
-        /// </exception>
-        public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle, string versionUrl)
-        {
-            if (output == null)
-                throw new ArgumentNullException("output");
- 
-            var compiler = CreateDocumentationCompiler(output, fullPath);
+		/// <summary>
+		/// Gets or sets the java code samples path.
+		/// </summary>
+		public string JavaCodeSamplesPath { get; set; }
 
-            Console.WriteLine("CompileFolder - processing {0}", compiler.RootFolder);
-            var generatedText =
-                compiler.CompileFolder(
-                    compiler.RootFolder = new Folder { Title = homeTitle, Trail = string.Empty }, versionUrl);
-            var combinedFileName = CalculateCombinedFileName(output);
-            var combine = Path.Combine(fullPath, combinedFileName);
-            File.WriteAllText(combine, generatedText);
+		public string CodeSamplesPath
+		{
+			get { return Output.ClientType == ClientType.Csharp ? CsharpCodeSamplesPath : JavaCodeSamplesPath; }
+		}
 
-            compiler.Output.GenerateTableOfContents(compiler.RootFolder);
-        }
+		/// <summary>
+		/// Gets or sets the root folder.
+		/// </summary>
+		public Folder RootFolder { get; protected set; }
 
-        /// <summary>
-        /// The calculates the file name for the file where all the combined documentation will get written to.
-        /// </summary>
-        /// <param name="output">
-        /// The output.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        private static string CalculateCombinedFileName(IDocsOutput output)
-        {
-            if (output.ContentType == OutputType.Markdown)
-                return "all.markdown";
-                
-            if (output.ContentType == OutputType.Html)
-                return "all.html";
- 
-            return "all.none";
-        }
+		public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle, string versionUrl)
+		{
+			if (output == null)
+				throw new ArgumentNullException("output");
 
-        /// <summary>
-        /// Creates an instance of the documentation compiler.
-        /// </summary>
-        /// <param name="output">
-        /// The output.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        /// <returns>
-        /// The <see cref="Compiler"/>.
-        /// </returns>
-        private static Compiler CreateDocumentationCompiler(IDocsOutput output, string fullPath)
-        {
-            return new Compiler(Path.Combine(fullPath, "docs"))
-                       {
-                           Output = output,
-                           CsharpCodeSamplesPath =
-                               Path.Combine(fullPath, "code-samples"),
-                           JavaCodeSamplesPath = 
-                               Path.Combine(fullPath, "java-code-samples/src/test/java/net/ravendb")
-                       };
-        }
+			var compiler = CreateDocumentationCompiler(output, fullPath);
 
-        /// <summary>
-        /// Compiles the folder.
-        /// </summary>
-        /// <param name="folder">
-        /// The folder.
-        /// </param>
-        /// <param name="versionUrl">
-        /// The version url.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        private string CompileFolder(Folder folder, string versionUrl)
-        {
-            var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
-            var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
+			compiler.ParseDocumentation(compiler.RootFolder = new Folder
+			{
+				Title = homeTitle,
+				Trail = string.Empty,
+				VirtualTrail = string.Empty
+			}, versionUrl, ClientType.None);
 
-            if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
-                return string.Empty;
- 
-            if (this.ConvertToHtml)
-            {
-                this.ProcessAsHtml(folder, versionUrl, fullPath, fullFolderSlug);
-                return string.Empty;
-            }
+			compiler.CompileDocumentation(compiler.RootFolder, versionUrl, ClientType.None);
+		}
 
-            if (this.Output.ContentType == OutputType.Markdown)
-                return this.ProcessAsMarkdown(folder, versionUrl, fullPath, fullFolderSlug);
- 
-            return string.Empty;
-        }
+		private void CompileDocumentation(Folder folder, string versionUrl, ClientType currentLanguage)
+		{
+			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
+			var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
 
-        /// <summary>
-        /// Processes item as HTML.
-        /// </summary>
-        /// <param name="folder">
-        /// The folder.
-        /// </param>
-        /// <param name="versionUrl">
-        /// The version url.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        /// <param name="fullFolderSlug">
-        /// The full folder slug.
-        /// </param>
-        private void ProcessAsHtml(Folder folder, string versionUrl, string fullPath, string fullFolderSlug)
-        {
-            var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName)).ToArray();
-            foreach (var item in docs)
-            {
-                Console.WriteLine("CompileFolder - processing item {0}", item.Trail);
-                this.ProcessItem(folder, versionUrl, item, fullPath);
-            }
+			if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
+				return;
 
-            var contents = DocumentationParser.Parse(
-                this,
-                folder,
-                Path.Combine(fullPath, "index.markdown"),
-                string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
-                versionUrl);
-            this.Output.SaveDocItem(
-                new Document { Title = folder.Title, Content = contents, Trail = fullFolderSlug, Slug = "index" });
+			var languagesToProces = new List<ClientType>();
+			if (folder.Multilanguage)
+			{
+				languagesToProces.AddRange(SupportedLanguages);
+			}
+			else
+			{
+				languagesToProces.Add(currentLanguage);
+			}
 
-            this.CopyImages(folder, fullPath);
-        }
+			foreach (var language in languagesToProces)
+			{
+				if (ConvertToHtml)
+					CompileAsHtml(folder, versionUrl, fullPath, fullFolderSlug, language);
+			}
+		}
 
-        /// <summary>
-        /// Process item as markdown.
-        /// </summary>
-        /// <param name="folder">
-        /// The folder.
-        /// </param>
-        /// <param name="versionUrl">
-        /// The version url.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        /// <param name="fullFolderSlug">
-        /// The full folder slug.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        private string ProcessAsMarkdown(Folder folder, string versionUrl, string fullPath, string fullFolderSlug)
-        {
-            var output = string.Empty;
-            output += this.ProcessIndexItem(folder, versionUrl, fullPath, fullFolderSlug);
+		private void CompileAsHtml(Folder folder, string versionUrl, string fullPath, string fullFolderSlug, ClientType currentLanguage)
+		{
+			foreach (var child in folder.Children)
+			{
+				var document = child as Document;
+				if (document != null)
+					CompileDocument(versionUrl, document, fullPath, currentLanguage);
 
-            var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName)).ToArray();
-            foreach (var item in docs)
-            {
-                Console.WriteLine("CompileFolder - processing item {0}", item.Trail);
-                output += this.ProcessItem(folder, versionUrl, item, fullPath);
-            }
+				var subFolder = child as Folder;
+				if (subFolder != null)
+					CompileDocumentation(subFolder, versionUrl, currentLanguage);
+			}
 
-            this.CopyImages(folder, fullPath);
-            return output;
-        }
+			CopyImages(folder, fullPath);
+		}
 
-        /// <summary>
-        /// Process index item.
-        /// </summary>
-        /// <param name="folder">
-        /// The folder.
-        /// </param>
-        /// <param name="versionUrl">
-        /// The version url.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        /// <param name="fullFolderSlug">
-        /// The full folder slug.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        private string ProcessIndexItem(Folder folder, string versionUrl, string fullPath, string fullFolderSlug)
-        {
-            var contents = DocumentationParser.Parse(
-                this,
-                folder,
-                Path.Combine(fullPath, "index.markdown"),
-                string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug,
-                versionUrl);
-            this.Output.SaveDocItem(
-                new Document { Title = folder.Title, Content = contents, Trail = fullFolderSlug, Slug = "index" });
-            return contents;
-        }
+		private void ParseDocumentation(Folder folder, string versionUrl, ClientType currentLanguage)
+		{
+			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
+			var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
 
-        /// <summary>
-        /// Processes an item.
-        /// </summary>
-        /// <param name="folder">
-        /// The folder.
-        /// </param>
-        /// <param name="versionUrl">
-        /// The version url.
-        /// </param>
-        /// <param name="item">
-        /// The item.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        private string ProcessItem(Folder folder, string versionUrl, IDocumentationItem item, string fullPath)
-        {
-            if (item.Slug != null)
-                item.Slug = item.Slug.TrimStart('\\', '/');
- 
-            item.Trail = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
-            folder.Items.Add(item);
+			if (!File.Exists(Path.Combine(fullPath, DocsListFileName)))
+				return;
 
-            var document = item as Document;
-            if (document != null)
-                return this.CompileDocument(versionUrl, document, fullPath);
- 
-            var subFolder = item as Folder;
-            if (subFolder != null)
-                return CompileFolder(subFolder, versionUrl);
- 
-            return string.Empty;
-        }
+			var languagesToProces = new List<ClientType>();
+			if (folder.Multilanguage)
+			{
+				languagesToProces.AddRange(SupportedLanguages);
+			}
+			else
+			{
+				languagesToProces.Add(currentLanguage);
+			}
 
-        /// <summary>
-        /// TCopy images.
-        /// </summary>
-        /// <param name="folder">
-        /// The folder.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        private void CopyImages(Folder folder, string fullPath)
-        {
-            // Copy images
-            var imagesPath = Path.Combine(fullPath, "images");
-            if (!Directory.Exists(imagesPath))
-                return;
- 
-            var images = Directory.GetFiles(imagesPath);
-            foreach (var image in images)
-            {
-                var imageFileName = Path.GetFileName(image);
-                if (imageFileName == null)
-                {
-                    continue;
-                }
+			foreach (var language in languagesToProces)
+			{
+				var docs = DocsListParser.Parse(Path.Combine(fullPath, DocsListFileName), folder).ToArray();
+				foreach (var item in docs)
+				{
+					item.Language = language;
 
-                this.Output.SaveImage(folder, image);
-            }
-        }
+					if (item.Slug != null)
+						item.Slug = item.Slug.TrimStart('\\', '/');
 
-        /// <summary>
-        /// Compile a document.
-        /// </summary>
-        /// <param name="versionUrl">
-        /// The version url.
-        /// </param>
-        /// <param name="document">
-        /// The document.
-        /// </param>
-        /// <param name="fullPath">
-        /// The full path.
-        /// </param>
-        /// <returns>
-        /// The <see cref="string"/>.
-        /// </returns>
-        private string CompileDocument(string versionUrl, Document document, string fullPath)
-        {
-            var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
+					item.Trail = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
+					item.VirtualTrail = Path.Combine(folder.VirtualTrail, folder.Slug ?? string.Empty);
 
-            string path = Path.Combine(fullPath, strippedSlug + "." + Output.ClientType.ToString().ToLowerInvariant() + ".markdown");
-            if (!File.Exists(path))
-            {
-                // fall back to plain mode
-                 path = Path.Combine(fullPath, document.Slug);
-            }
-            if (!File.Exists(path))
-            {
-                // not documented
-                path = Path.Combine(destinationFullPath, "not-documented.markdown");
-            }
+					if (language != ClientType.None && !item.VirtualTrail.Contains(language.ToString()))
+					{
+						item.VirtualTrail = Path.Combine(item.VirtualTrail, language.ToString());
+					}
 
-            document.Content = DocumentationParser.Parse(this, null, path, document.Trail, versionUrl);
-            document.Slug = strippedSlug;
-            this.Output.SaveDocItem(document);
-            return document.Content;
-        }
-    }
+					var document = item as Document;
+					if (document != null)
+						continue;
+
+					var subFolder = item as Folder;
+					if (subFolder != null)
+						ParseDocumentation(subFolder, versionUrl, language);
+				}
+			}
+		}
+
+		private static Compiler CreateDocumentationCompiler(IDocsOutput output, string fullPath)
+		{
+			return new Compiler(Path.Combine(fullPath, "docs"))
+					   {
+						   Output = output,
+						   CsharpCodeSamplesPath =
+							   Path.Combine(fullPath, "code-samples"),
+						   JavaCodeSamplesPath =
+							   Path.Combine(fullPath, "java-code-samples/src/test/java/net/ravendb")
+					   };
+		}
+
+		private void CopyImages(Folder folder, string fullPath)
+		{
+			// Copy images
+			var imagesPath = Path.Combine(fullPath, "images");
+			if (!Directory.Exists(imagesPath))
+				return;
+
+			var images = Directory.GetFiles(imagesPath);
+			foreach (var image in images)
+			{
+				var imageFileName = Path.GetFileName(image);
+				if (imageFileName == null)
+				{
+					continue;
+				}
+
+				this.Output.SaveImage(folder, image);
+			}
+		}
+
+		private string CompileDocument(string versionUrl, Document document, string fullPath, ClientType language)
+		{
+			var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
+
+			string path = Path.Combine(fullPath, strippedSlug + "." + language + ".markdown");
+			if (!File.Exists(path))
+			{
+				// fall back to plain mode
+				path = Path.Combine(fullPath, document.Slug);
+			}
+
+			if (!File.Exists(path))
+			{
+				return CompileNotDocumented(versionUrl, document, strippedSlug, fullPath, language);
+			}
+
+			document.Content = DocumentationParser.Parse(this, null, path, document.Trail, versionUrl);
+			document.Slug = strippedSlug;
+			this.Output.SaveDocItem(document);
+			return document.Content;
+		}
+
+		private string CompileNotDocumented(string versionUrl, Document document, string strippedSlug, string fullPath, ClientType currentLanguage)
+		{
+			var builder = new StringBuilder();
+			builder.Append("<ul>");
+			foreach (var language in SupportedLanguages.Where(x => x != currentLanguage))
+			{
+				var path = Path.Combine(fullPath, strippedSlug + "." + language + ".markdown");
+				if (File.Exists(path))
+				{
+					var url = "/"
+						+ document.VirtualTrail
+						.Replace(currentLanguage.ToString(), language.ToString())
+						.Replace("\\", "/")
+						+ "/" + strippedSlug + ".html";
+
+					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", url, language);
+				}
+			}
+			builder.Append("</ul>");
+
+			var pathToNotDocumented = Path.Combine(destinationFullPath, "not-documented.markdown");
+			document.Content = DocumentationParser.Parse(this, null, pathToNotDocumented, document.Trail, versionUrl);
+			document.Content = string.Format(document.Content, currentLanguage, builder);
+			document.Slug = strippedSlug;
+
+			Output.SaveDocItem(document);
+
+			return document.Content;
+		}
+	}
 }
