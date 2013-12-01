@@ -103,10 +103,10 @@ namespace RavenDB.DocsCompiler.Output
 
 			var builder = new StringBuilder();
 			builder.AppendFormat("<li class='{1}'>{0}", GenerateMenuItemTitle(item), isOpen ? "open" : string.Empty);
-			foreach (var g in item.Children.GroupBy(x => x.Title))
+			foreach (var g in item.Children.Where(x => x.Language == ClientType.None || x.Language == current.Language))
 			{
 				builder.Append("<ul>");
-				builder.Append(GenerateMenuItem(g.First(), current));
+				builder.Append(GenerateMenuItem(g, current));
 				builder.Append("</ul>");
 			}
 
