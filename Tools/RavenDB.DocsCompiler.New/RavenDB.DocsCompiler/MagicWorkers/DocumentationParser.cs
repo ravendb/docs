@@ -81,11 +81,11 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
         private static string GenerateFilesList(Folder folder, bool recursive)
         {
-            if (folder.Items == null)
+            if (folder.Children == null)
                 return string.Empty;
  
             var sb = new StringBuilder();
-            foreach (var item in folder.Items)
+			foreach (var item in folder.Children)
             {
                 sb.AppendFormat("* [{0}]({1})", item.Title, item.Slug);
                 sb.AppendLine();

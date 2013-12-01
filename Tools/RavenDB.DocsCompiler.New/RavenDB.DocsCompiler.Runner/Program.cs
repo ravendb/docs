@@ -38,12 +38,11 @@ namespace RavenDB.DocsCompiler.Runner
 	        var rootPath = Path.GetFullPath("./../../../../../");
             var documentationVersions = new List<string> { "version_3_0" };
             
-            var clientVersions = new List<ClientType> {ClientType.Csharp, ClientType.Http, ClientType.Java};
-            foreach (var clientVersion in clientVersions) 
             foreach (var documentationVersion in documentationVersions)
             {
-				Generate(rootPath, clientVersion, documentationVersion, outputType, debugMode);
+				Generate(rootPath, documentationVersion, outputType, debugMode);
             }
+
             Console.ReadKey();
         }
 
@@ -62,13 +61,13 @@ namespace RavenDB.DocsCompiler.Runner
         /// <param name="outputType">
         /// The output type (HTML or Markdown).
         /// </param>
-        private static void Generate(string rootPath, ClientType clientVersion, string version, OutputType outputType, bool debugMode)
+        private static void Generate(string rootPath, string version, OutputType outputType, bool debugMode)
         {
             var docsPath = Path.Combine(rootPath, version);
 
-            var outputPath = CalculateOutputPath(outputType, docsPath, clientVersion);
+            var outputPath = CalculateOutputPath(outputType, docsPath);
             
-            var output = CreateDocumentationOutputSpecification(rootPath, outputPath, outputType, version, debugMode, clientVersion);
+            var output = CreateDocumentationOutputSpecification(rootPath, outputPath, outputType, version, debugMode);
 
             try
             {
@@ -96,14 +95,13 @@ namespace RavenDB.DocsCompiler.Runner
         /// <returns>
         /// The <see cref="string"/>.
         /// </returns>
-        private static string CalculateOutputPath(OutputType outputType, string docsPath, ClientType clientVersion)
+        private static string CalculateOutputPath(OutputType outputType, string docsPath)
         {
             var outputPath = Path.Combine(docsPath, "html-compiled");
             if (outputType == OutputType.Markdown)
             {
                 outputPath = Path.Combine(docsPath, "markdown-compiled");
             }
-            outputPath = Path.Combine(outputPath, clientVersion.ToString().ToLowerInvariant());
 
             return outputPath;
         }
@@ -124,7 +122,7 @@ namespace RavenDB.DocsCompiler.Runner
 	    /// <returns>
 	    /// The <see cref="IDocsOutput"/>.
 	    /// </returns>
-	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath, OutputType outputType, string version, bool debugMode, ClientType clientType)
+	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath, OutputType outputType, string version, bool debugMode)
         {
             if (outputType == OutputType.Markdown)
             {
@@ -132,7 +130,6 @@ namespace RavenDB.DocsCompiler.Runner
                            {
                                ContentType = OutputType.Markdown,
                                OutputPath = outputPath,
-                               ClientType = clientType,
                                RootUrl = "http://ravendb.net/docs/",
                            };
             }
@@ -143,7 +140,6 @@ namespace RavenDB.DocsCompiler.Runner
                                          {
                                              ContentType = OutputType.Html,
                                              OutputPath = outputPath,
-                                             ClientType = clientType,
                                              PageTemplate =
                                                  File.ReadAllText(
                                                      Path.Combine(rootPath, version, @"html-template.html")),

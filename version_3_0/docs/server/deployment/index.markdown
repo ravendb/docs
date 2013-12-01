@@ -1,3 +1,0 @@
-﻿# Deployment strategies
-
-{FILES-LIST/}

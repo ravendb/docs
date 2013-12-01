@@ -4,6 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using RavenDB.DocsCompiler.Model;
 
 namespace RavenDB.DocsCompiler.Output
