@@ -38,20 +38,20 @@
                         <h1>Docs</h1>
                         <div class="article-info">
                             <div>
-                                Client version: <strong>.NET</strong>. Other
-                                <select>
-                                    <option value="">select</option>
-                                    <option value="HTTP">HTTP</option>
-                                    <option value="Java">Java</option>
+                                Client version: 
+								<select id="client-version">
+                                    <option value="csharp">.NET</option>
+                                    <option value="http">HTTP</option>
+                                    <option value="java">Java</option>
                                 </select>
                             </div>
                             <div>
-                                RavenDB version: <strong>3.0</strong>. Other versions
-                                <select>
-                                    <option value="">select</option>
+                                RavenDB version: 
+								<select id="docs-version">
                                     <option value="1.0">1.0</option>
                                     <option value="2.0">2.0</option>
-                                    <option value="3.5">3.5</option>
+                                    <option value="2.5">2.5</option>
+									<option value="3.0">3.0</option>
                                 </select>
                             </div>
                         </div>
@@ -105,18 +105,53 @@
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
             }}
         }})();
+	
+	function extractValueFromUrl(supportedValues) {{
+		var href = window.location.href;
+		var parts = window.location.href.split('/');
+		
+		for(var i = 0; i < supportedValues.length; i++) {{
+			var value = supportedValues[i];
+			for(var j = 0; j < parts.length; j++) {{
+				var part = parts[j].toLowerCase();
+				if (part === value)
+					return value;
+			}}
+		}}
+		
+		return supportedValues[0];
+	}}
+	
+	function initializeLanguage() {{
+		var supportedClients = $.map($('#client-version option'), function(element) {{
+			return element.val();
+		}});
+		var client = extractValueFromUrl(supportedClients);
+		$('#client-version').val(client);
+	}}
+	
+	function initializeVersion() {{
+		var supportedVersions = $.map($('#docs-version option'), function(element) {{
+			return element.val();
+		}});
+		var version = extractValueFromUrl(supportedVersions);
+		$('#docs-version').val(version);
+	}}
 
-        $(document).ready(function () {{
-            $("#tree-menu").treeview({{
-                animated: "fast",
-                collapsed: true,
-                unique: true,
-                persist: false,
-                toggle: function () {{
-                    window.console && console.log("%o was toggled", this);
-                }}
-            }});
-        }});
+	function initializeMenu() {{
+		$("#tree-menu").treeview({{
+			animated: "fast",
+			collapsed: true,
+			unique: true,
+			persist: false
+		}});
+	}}
+  
+    $(document).ready(function () {{
+		initializeMenu();
+		initializeVersion();
+		initializeLanguage();
+	}});
     </script>
 </body>
 </html>
