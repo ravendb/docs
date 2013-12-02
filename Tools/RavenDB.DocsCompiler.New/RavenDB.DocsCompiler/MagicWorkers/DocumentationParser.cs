@@ -245,6 +245,9 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 root = root.Parent;
             }
 
+            if (root == null) 
+                return href;
+
             var parts = href.Split('/').ToList();
             for (int index = 0; index < parts.Count; index++)
             {
@@ -255,14 +258,14 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 }
 
                 root = root.Children.FirstOrDefault(x => x.Slug.Equals(part, StringComparison.OrdinalIgnoreCase));
-                if (root != null)
+                if (root == null)
+                    break;
+
+                var folder = root as Folder;
+                if (folder != null && folder.Multilanguage)
                 {
-                    var folder = root as Folder;
-                    if (folder != null && folder.Multilanguage)
-                    {
-                        parts.Insert(index + 1, "client_type");
-                        break;
-                    }
+                    parts.Insert(index + 1, "client_type");
+                    break;
                 }
             }
 

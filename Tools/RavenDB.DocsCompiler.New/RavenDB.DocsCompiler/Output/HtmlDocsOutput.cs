@@ -15,10 +15,11 @@ namespace RavenDB.DocsCompiler.Output
 		public string OutputPath { get; set; }
 
 		public OutputType ContentType { get; set; }
-		public ClientType ClientType { get; set; }
 		public string RootUrl { get; set; }
 		public string ImagesPath { get; set; }
-		public void SaveDocItem(Document doc)
+	    public CompilationMode CompilationMode { get; set; }
+
+	    public void SaveDocItem(Document doc)
 		{
 			var outputPath = Path.Combine(OutputPath, doc.Trail);
 			if (!Directory.Exists(outputPath))
@@ -56,7 +57,6 @@ namespace RavenDB.DocsCompiler.Output
 		public string PageTemplate { get; set; }
 
 		public OutputType ContentType { get; set; }
-		public ClientType ClientType { get; set; }
 		public string RootUrl { get; set; }
 		public string ImagesPath { get; set; }
 
@@ -65,7 +65,9 @@ namespace RavenDB.DocsCompiler.Output
 			get { return ContentType == OutputType.Html; }
 		}
 
-		public void SaveDocItem(Document doc)
+	    public CompilationMode CompilationMode { get; set; }
+
+	    public void SaveDocItem(Document doc)
 		{
 			var outputPath = Path.Combine(OutputPath, doc.VirtualTrail);
 			if (!Directory.Exists(outputPath))
@@ -103,7 +105,11 @@ namespace RavenDB.DocsCompiler.Output
 
 			var builder = new StringBuilder();
 			builder.AppendFormat("<li class='{1}'>{0}", GenerateMenuItemTitle(item, current), isOpen ? "open" : string.Empty);
-			foreach (var g in item.Children.GroupBy(x => x.Trail))
+			foreach (var g in item.Children.GroupBy(x => new
+			                                                 {
+			                                                     x.Trail,
+                                                                 x.Slug
+			                                                 }))
 			{
 			    var child = g.FirstOrDefault(x => x.Language == current.Language) ?? g.First();
 
@@ -215,7 +221,7 @@ namespace RavenDB.DocsCompiler.Output
 			var folder = item as Folder;
 			if (folder != null)
 			{
-				sb.AppendFormat(@"<li><a href=""{0}/{1}/index.html""><strong>{2}</strong></a><ul>", ClientType.ToString().ToLowerInvariant(), Path.Combine(item.Trail, item.Slug ?? string.Empty).Replace('\\', '/'), item.Title);
+				sb.AppendFormat(@"<li><a href=""{0}/{1}/index.html""><strong>{2}</strong></a><ul>", item.Language, Path.Combine(item.Trail, item.Slug ?? string.Empty).Replace('\\', '/'), item.Title);
 				sb.AppendLine();
 				foreach (var documentationItem in folder.Children)
 				{
@@ -225,7 +231,7 @@ namespace RavenDB.DocsCompiler.Output
 				return;
 			}
 
-			sb.AppendFormat(@"<li><a href=""{0}/{1}"">{2}</a></li>", ClientType.ToString().ToLowerInvariant(), Path.Combine(item.Trail, item.Slug).Replace('\\', '/').Replace(".markdown", ".html"), item.Title);
+            sb.AppendFormat(@"<li><a href=""{0}/{1}"">{2}</a></li>", item.Language, Path.Combine(item.Trail, item.Slug).Replace('\\', '/').Replace(".markdown", ".html"), item.Title);
 			sb.AppendLine();
 		}
 

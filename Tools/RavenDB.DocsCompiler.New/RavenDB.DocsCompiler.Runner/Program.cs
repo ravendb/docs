@@ -14,6 +14,8 @@ using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler.Runner
 {
+    using System.Diagnostics;
+
     /// <summary>
     /// The program.
     /// </summary>
@@ -24,6 +26,8 @@ namespace RavenDB.DocsCompiler.Runner
             public string VersionPath { get; set; }
 
             public string VersionAlias { get; set; }
+
+            public CompilationMode CompilationMode { get; set; }
         }
 
         /// <summary>
@@ -45,12 +49,17 @@ namespace RavenDB.DocsCompiler.Runner
 	        var rootPath = Path.GetFullPath("./../../../../../");
             var documentationVersions = new List<VersionInfo>
                                             {
-                                                new VersionInfo { VersionAlias = "3.0", VersionPath = "version_3_0" }
+                                                new VersionInfo { VersionAlias = "3.0", VersionPath = "version_3_0", CompilationMode = CompilationMode.Normal },
+                                                new VersionInfo { VersionAlias = "2.5", VersionPath = "version_2_5", CompilationMode = CompilationMode.Legacy },
+                                                new VersionInfo { VersionAlias = "2.0", VersionPath = "version_2", CompilationMode = CompilationMode.Legacy },
+                                                new VersionInfo { VersionAlias = "1.0", VersionPath = "version_1", CompilationMode = CompilationMode.Legacy },
                                             };
             
             foreach (var documentationVersion in documentationVersions)
             {
+                Console.WriteLine("Starting compilation for: " + documentationVersion.VersionAlias);
 				Generate(rootPath, documentationVersion, outputType, debugMode);
+                Console.WriteLine("Finished compilation.");
             }
 
             Console.ReadKey();
@@ -88,6 +97,9 @@ namespace RavenDB.DocsCompiler.Runner
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+
+                if (Debugger.IsAttached) 
+                    throw;
             }
 
             Console.WriteLine("Done");
@@ -143,6 +155,7 @@ namespace RavenDB.DocsCompiler.Runner
                                ContentType = OutputType.Markdown,
                                OutputPath = outputPath,
                                RootUrl = rootUrl,
+                               CompilationMode = version.CompilationMode
                            };
             }
 
@@ -156,7 +169,8 @@ namespace RavenDB.DocsCompiler.Runner
                                                  File.ReadAllText(
                                                      Path.Combine(rootPath, version.VersionPath, @"html-template.html")),
                                              RootUrl = rootUrl,
-											 ImagesPath = debugMode ? "images/" : null
+											 ImagesPath = debugMode ? "images/" : null,
+                                             CompilationMode = version.CompilationMode
                                          };
                 return output;
             }
