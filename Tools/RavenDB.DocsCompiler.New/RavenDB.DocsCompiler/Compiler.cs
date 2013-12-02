@@ -61,6 +61,8 @@ namespace RavenDB.DocsCompiler
 	/// </summary>
 	public class Compiler
 	{
+        private readonly IDictionary<ClientType, string> _codeSamplesPaths = new Dictionary<ClientType, string>(); 
+
 		/// <summary>
 		/// The file name representing a documentation list.
 		/// </summary>
@@ -125,27 +127,22 @@ namespace RavenDB.DocsCompiler
 			}
 		}
 
-		/// <summary>
-		/// Gets or sets the C# code samples path.
-		/// </summary>
-		public string CsharpCodeSamplesPath { get; set; }
-
-		/// <summary>
-		/// Gets or sets the java code samples path.
-		/// </summary>
-		public string JavaCodeSamplesPath { get; set; }
-
-		public string CodeSamplesPath
+		public string GetCodeSamplesPath(ClientType language)
 		{
-			get { return Output.ClientType == ClientType.Csharp ? CsharpCodeSamplesPath : JavaCodeSamplesPath; }
+		    return _codeSamplesPaths[language];
 		}
+
+	    public void AddCodeSamplesPath(ClientType language, string path)
+	    {
+	        _codeSamplesPaths.Add(language, path);
+	    }
 
 		/// <summary>
 		/// Gets or sets the root folder.
 		/// </summary>
 		public Folder RootFolder { get; protected set; }
 
-		public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle, string versionUrl)
+		public static void CompileFolder(IDocsOutput output, string fullPath, string homeTitle)
 		{
 			if (output == null)
 				throw new ArgumentNullException("output");
@@ -157,12 +154,12 @@ namespace RavenDB.DocsCompiler
 				Title = homeTitle,
 				Trail = string.Empty,
 				VirtualTrail = string.Empty
-			}, versionUrl, ClientType.None);
+			}, ClientType.None);
 
-			compiler.CompileDocumentation(compiler.RootFolder, versionUrl, ClientType.None);
+			compiler.CompileDocumentation(compiler.RootFolder, ClientType.None);
 		}
 
-		private void CompileDocumentation(Folder folder, string versionUrl, ClientType currentLanguage)
+		private void CompileDocumentation(Folder folder, ClientType currentLanguage)
 		{
 			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
 			var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
@@ -183,27 +180,27 @@ namespace RavenDB.DocsCompiler
 			foreach (var language in languagesToProces)
 			{
 				if (ConvertToHtml)
-					CompileAsHtml(folder, versionUrl, fullPath, fullFolderSlug, language);
+					CompileAsHtml(folder, fullPath, fullFolderSlug, language);
 			}
 		}
 
-		private void CompileAsHtml(Folder folder, string versionUrl, string fullPath, string fullFolderSlug, ClientType currentLanguage)
+		private void CompileAsHtml(Folder folder, string fullPath, string fullFolderSlug, ClientType currentLanguage)
 		{
 			foreach (var child in folder.Children)
 			{
 				var document = child as Document;
 				if (document != null)
-					CompileDocument(versionUrl, document, fullPath, currentLanguage);
+					CompileDocument(document, fullPath, currentLanguage);
 
 				var subFolder = child as Folder;
 				if (subFolder != null)
-					CompileDocumentation(subFolder, versionUrl, currentLanguage);
+					CompileDocumentation(subFolder, currentLanguage);
 			}
 
 			CopyImages(folder, fullPath);
 		}
 
-		private void ParseDocumentation(Folder folder, string versionUrl, ClientType currentLanguage)
+		private void ParseDocumentation(Folder folder, ClientType currentLanguage)
 		{
 			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
 			var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
@@ -245,21 +242,22 @@ namespace RavenDB.DocsCompiler
 
 					var subFolder = item as Folder;
 					if (subFolder != null)
-						ParseDocumentation(subFolder, versionUrl, language);
+						ParseDocumentation(subFolder, language);
 				}
 			}
 		}
 
 		private static Compiler CreateDocumentationCompiler(IDocsOutput output, string fullPath)
 		{
-			return new Compiler(Path.Combine(fullPath, "docs"))
+			var compiler = new Compiler(Path.Combine(fullPath, "docs"))
 					   {
-						   Output = output,
-						   CsharpCodeSamplesPath =
-							   Path.Combine(fullPath, "code-samples"),
-						   JavaCodeSamplesPath =
-							   Path.Combine(fullPath, "java-code-samples/src/test/java/net/ravendb")
+						   Output = output
 					   };
+
+            compiler.AddCodeSamplesPath(ClientType.Csharp, Path.Combine(fullPath, "code-samples"));
+            compiler.AddCodeSamplesPath(ClientType.Java, Path.Combine(fullPath, "java-code-samples/src/test/java/net/ravendb"));
+
+		    return compiler;
 		}
 
 		private void CopyImages(Folder folder, string fullPath)
@@ -282,7 +280,7 @@ namespace RavenDB.DocsCompiler
 			}
 		}
 
-		private string CompileDocument(string versionUrl, Document document, string fullPath, ClientType language)
+		private string CompileDocument(Document document, string fullPath, ClientType language)
 		{
 			var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
 
@@ -295,16 +293,16 @@ namespace RavenDB.DocsCompiler
 
 			if (!File.Exists(path))
 			{
-				return CompileNotDocumented(versionUrl, document, strippedSlug, fullPath, language);
+				return CompileNotDocumented(document, strippedSlug, fullPath, language);
 			}
 
-			document.Content = DocumentationParser.Parse(this, null, path, document.Trail, versionUrl);
+			document.Content = DocumentationParser.Parse(this, null, document, path, document.Trail);
 			document.Slug = strippedSlug;
 			this.Output.SaveDocItem(document);
 			return document.Content;
 		}
 
-		private string CompileNotDocumented(string versionUrl, Document document, string strippedSlug, string fullPath, ClientType currentLanguage)
+		private string CompileNotDocumented(Document document, string strippedSlug, string fullPath, ClientType currentLanguage)
 		{
 			var builder = new StringBuilder();
 			builder.Append("<ul>");
@@ -325,7 +323,7 @@ namespace RavenDB.DocsCompiler
 			builder.Append("</ul>");
 
 			var pathToNotDocumented = Path.Combine(destinationFullPath, "not-documented.markdown");
-			document.Content = DocumentationParser.Parse(this, null, pathToNotDocumented, document.Trail, versionUrl);
+			document.Content = DocumentationParser.Parse(this, null, document, pathToNotDocumented, document.Trail);
 			document.Content = string.Format(document.Content, currentLanguage, builder);
 			document.Slug = strippedSlug;
 

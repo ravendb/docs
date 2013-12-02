@@ -124,15 +124,20 @@
 	
 	function initializeLanguage() {{
 		var supportedClients = $.map($('#client-version option'), function(element) {{
-			return element.val();
+			return element.value;
 		}});
 		var client = extractValueFromUrl(supportedClients);
 		$('#client-version').val(client);
+		
+		$.each($('a'), function(index, a) {{
+			var href = a.href;
+			a.href = href.replace('client_type', client);
+		}});
 	}}
 	
 	function initializeVersion() {{
 		var supportedVersions = $.map($('#docs-version option'), function(element) {{
-			return element.val();
+			return element.value;
 		}});
 		var version = extractValueFromUrl(supportedVersions);
 		$('#docs-version').val(version);
