@@ -148,7 +148,7 @@ namespace RavenDB.DocsCompiler.Output
 		        url = url.Replace(document.Language.ToString(), "client_type");
 		    }
 
-			return RootUrl + url;
+		    return new Uri(RootUrl + url).AbsoluteUri.Replace("//", "/");
 		}
 
 		private static bool IsMenuItemOpen(IDocumentationItem item, Document current)

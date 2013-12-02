@@ -308,7 +308,7 @@ namespace RavenDB.DocsCompiler
 						.Replace("\\", "/")
 						+ "/" + strippedSlug + ".html";
 
-					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", Output.RootUrl + url, language.GetDescription());
+					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", new Uri(Output.RootUrl + url).AbsoluteUri.Replace("//", "/"), language.GetDescription());
 				}
 			}
 			builder.Append("</ul>");
