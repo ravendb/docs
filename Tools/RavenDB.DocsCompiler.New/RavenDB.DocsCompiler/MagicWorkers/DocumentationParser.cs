@@ -59,7 +59,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             contents = CodeFinder.Replace(
                 contents,
                 match =>
-                GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.GetCodeSamplesPath(document.Language), convertToHtml, docsCompiler.Brush));
+                GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.GetCodeSamplesPath(match.Groups[1].Value.Trim(), document.Language), convertToHtml, docsCompiler.GetBrush(document.Language)));
 
             if (folder != null)
                 contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));

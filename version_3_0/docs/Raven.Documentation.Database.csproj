@@ -50,7 +50,6 @@
     <None Include="studio\example-2.markdown" />
     <None Include="studio\example.markdown" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>

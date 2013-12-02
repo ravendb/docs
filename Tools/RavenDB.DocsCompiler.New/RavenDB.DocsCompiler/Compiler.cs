@@ -109,28 +109,13 @@ namespace RavenDB.DocsCompiler
 			}
 		}
 
-		public string Brush
-		{
-			get
-			{
-				switch (Output.ClientType)
-				{
-					case ClientType.Csharp:
-						return "csharp";
-					case ClientType.Java:
-						return "java";
-					case ClientType.Http:
-						return "plain";
-					default:
-						return null;
-				}
-			}
-		}
+	    public string GetCodeSamplesPath(string path, ClientType language)
+	    {
+	        if (language == ClientType.None) 
+                language = path.EndsWith("java") ? ClientType.Java : ClientType.Csharp;
 
-		public string GetCodeSamplesPath(ClientType language)
-		{
-		    return _codeSamplesPaths[language];
-		}
+	        return _codeSamplesPaths[language];
+	    }
 
 	    public void AddCodeSamplesPath(ClientType language, string path)
 	    {
@@ -186,7 +171,7 @@ namespace RavenDB.DocsCompiler
 
 		private void CompileAsHtml(Folder folder, string fullPath, string fullFolderSlug, ClientType currentLanguage)
 		{
-			foreach (var child in folder.Children)
+			foreach (var child in folder.Children.Where(x => x.Language == currentLanguage))
 			{
 				var document = child as Document;
 				if (document != null)
@@ -317,7 +302,7 @@ namespace RavenDB.DocsCompiler
 						.Replace("\\", "/")
 						+ "/" + strippedSlug + ".html";
 
-					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", url, language);
+					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", Output.RootUrl + url, language);
 				}
 			}
 			builder.Append("</ul>");
@@ -331,5 +316,20 @@ namespace RavenDB.DocsCompiler
 
 			return document.Content;
 		}
+
+	    public string GetBrush(ClientType language)
+	    {
+            switch (language)
+            {
+                case ClientType.Csharp:
+                    return "csharp";
+                case ClientType.Java:
+                    return "java";
+                case ClientType.Http:
+                    return "plain";
+                default:
+                    return null;
+            }
+	    }
 	}
 }

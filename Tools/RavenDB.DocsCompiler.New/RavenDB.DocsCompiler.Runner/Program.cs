@@ -134,7 +134,7 @@ namespace RavenDB.DocsCompiler.Runner
 	    /// </returns>
 	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath, OutputType outputType, VersionInfo version, bool debugMode)
 	    {
-	        var rootUrl = "http://ravendb.net/docs/" + version.VersionAlias;
+	        var rootUrl = "http://ravendb.net/docs/" + version.VersionAlias + "/";
 
             if (outputType == OutputType.Markdown)
             {
