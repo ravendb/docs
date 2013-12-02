@@ -14,12 +14,12 @@ namespace RavenDB.DocsCompiler.Output
     /// </summary>
     public interface IDocsOutput : IDisposable
     {
+        CompilationMode CompilationMode { get; set; }
+
         /// <summary>
         /// Gets or sets the content type.
         /// </summary>
         OutputType ContentType { get; set; }
-
-        ClientType ClientType { get; set; }
 
         /// <summary>
         /// Gets or sets the root url.

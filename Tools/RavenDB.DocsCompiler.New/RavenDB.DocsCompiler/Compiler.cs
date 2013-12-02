@@ -18,6 +18,12 @@ namespace RavenDB.DocsCompiler
 
     using RavenDB.DocsCompiler.Extensions;
 
+    public enum CompilationMode
+    {
+        Normal,
+        Legacy
+    }
+
     /// <summary>
 	/// The output type.
 	/// </summary>
@@ -140,18 +146,24 @@ namespace RavenDB.DocsCompiler
 
 			var compiler = CreateDocumentationCompiler(output, fullPath);
 
+            Console.WriteLine("Parsing documentation.");
 			compiler.ParseDocumentation(compiler.RootFolder = new Folder
 			{
 				Title = homeTitle,
 				Trail = string.Empty,
 				VirtualTrail = string.Empty
 			}, ClientType.None);
+            Console.WriteLine("Finished parsing.");
 
+            Console.WriteLine("Starting actual compilation.");
 			compiler.CompileDocumentation(compiler.RootFolder, ClientType.None);
+            Console.WriteLine("Finished actual compilation.");
 		}
 
 		private void CompileDocumentation(Folder folder, ClientType currentLanguage)
 		{
+            Console.WriteLine("Processing folder: {0} | Path: {1} | Language: {2}", folder.Slug, string.IsNullOrEmpty(folder.Trail) ? "/" : folder.Trail, folder.Language.GetDescription());
+
 			var fullFolderSlug = Path.Combine(folder.Trail, folder.Slug ?? string.Empty);
 			var fullPath = Path.Combine(this.destinationFullPath, fullFolderSlug);
 
@@ -188,7 +200,29 @@ namespace RavenDB.DocsCompiler
 					CompileDocumentation(subFolder, currentLanguage);
 			}
 
-			CopyImages(folder, fullPath);
+		    if (Output.CompilationMode == CompilationMode.Legacy)
+		    {
+		        var document = new Document
+		                           {
+		                               Title = folder.Title,
+		                               Trail = fullFolderSlug,
+		                               Slug = "index",
+		                               VirtualTrail = fullFolderSlug,
+		                               Parent = folder,
+		                               Language = ClientType.DotNet
+		                           };
+
+		        document.Content = DocumentationParser.Parse(
+		            this,
+		            folder,
+		            document,
+		            Path.Combine(fullPath, "index.markdown"),
+		            string.IsNullOrWhiteSpace(folder.Trail) ? folder.Slug : folder.Trail + "/" + folder.Slug);
+
+		        Output.SaveDocItem(document);
+		    }
+
+		    CopyImages(folder, fullPath);
 		}
 
 		private void ParseDocumentation(Folder folder, ClientType currentLanguage)
