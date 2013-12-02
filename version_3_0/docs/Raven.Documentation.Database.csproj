@@ -42,7 +42,7 @@
     </None>
     <None Include="client-api\.docslist" />
     <None Include="client-api\documents\.docslist" />
-    <None Include="client-api\documents\delete.csharp.markdown" />
+    <None Include="client-api\documents\delete.dotnet.markdown" />
     <None Include="client-api\documents\delete.java.markdown" />
     <None Include="not-documented.markdown" />
     <None Include="index.markdown" />

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Compiler.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Output\HtmlDocsOutput.cs" />
     <Compile Include="Output\IDocsOutput.cs" />
     <Compile Include="MagicWorkers\DocsListParser.cs" />

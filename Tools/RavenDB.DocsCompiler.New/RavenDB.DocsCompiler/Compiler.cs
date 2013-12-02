@@ -14,7 +14,11 @@ using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler
 {
-	/// <summary>
+    using System.ComponentModel;
+
+    using RavenDB.DocsCompiler.Extensions;
+
+    /// <summary>
 	/// The output type.
 	/// </summary>
 	public enum OutputType
@@ -46,13 +50,15 @@ namespace RavenDB.DocsCompiler
 		Java,
 
 		/// <summary>
-		/// csharp
+		/// dotnet
 		/// </summary>
-		Csharp,
+		[Description(".NET")]
+		DotNet,
 
 		/// <summary>
 		/// HTTP
 		/// </summary>
+        [Description("HTTP")]
 		Http
 	}
 
@@ -85,7 +91,7 @@ namespace RavenDB.DocsCompiler
 
 			SupportedLanguages = new List<ClientType>
 		    {
-			    ClientType.Csharp,
+			    ClientType.DotNet,
 			    ClientType.Http,
 			    ClientType.Java
 		    };
@@ -112,7 +118,7 @@ namespace RavenDB.DocsCompiler
 	    public string GetCodeSamplesPath(string path, ClientType language)
 	    {
 	        if (language == ClientType.None) 
-                language = path.EndsWith("java") ? ClientType.Java : ClientType.Csharp;
+                language = path.EndsWith("java") ? ClientType.Java : ClientType.DotNet;
 
 	        return _codeSamplesPaths[language];
 	    }
@@ -239,7 +245,7 @@ namespace RavenDB.DocsCompiler
 						   Output = output
 					   };
 
-            compiler.AddCodeSamplesPath(ClientType.Csharp, Path.Combine(fullPath, "code-samples"));
+            compiler.AddCodeSamplesPath(ClientType.DotNet, Path.Combine(fullPath, "code-samples"));
             compiler.AddCodeSamplesPath(ClientType.Java, Path.Combine(fullPath, "java-code-samples/src/test/java/net/ravendb"));
 
 		    return compiler;
@@ -302,14 +308,14 @@ namespace RavenDB.DocsCompiler
 						.Replace("\\", "/")
 						+ "/" + strippedSlug + ".html";
 
-					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", Output.RootUrl + url, language);
+					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", Output.RootUrl + url, language.GetDescription());
 				}
 			}
 			builder.Append("</ul>");
 
 			var pathToNotDocumented = Path.Combine(destinationFullPath, "not-documented.markdown");
 			document.Content = DocumentationParser.Parse(this, null, document, pathToNotDocumented, document.Trail);
-			document.Content = string.Format(document.Content, currentLanguage, builder);
+			document.Content = string.Format(document.Content, currentLanguage.GetDescription(), builder);
 			document.Slug = strippedSlug;
 
 			Output.SaveDocItem(document);
@@ -321,7 +327,7 @@ namespace RavenDB.DocsCompiler
 	    {
             switch (language)
             {
-                case ClientType.Csharp:
+                case ClientType.DotNet:
                     return "csharp";
                 case ClientType.Java:
                     return "java";
