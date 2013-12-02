@@ -80,7 +80,7 @@ namespace RavenDB.DocsCompiler.Output
 			}
 		}
 
-		private static string GenerateMenu(Document doc)
+		private string GenerateMenu(Document doc)
 		{
 			var root = doc.Parent;
 			while (root != null)
@@ -97,16 +97,18 @@ namespace RavenDB.DocsCompiler.Output
 			return root.Children.Aggregate(string.Empty, (current, child) => current + GenerateMenuItem(child, doc));
 		}
 
-		private static string GenerateMenuItem(IDocumentationItem item, Document current)
+		private string GenerateMenuItem(IDocumentationItem item, Document current)
 		{
 			var isOpen = IsMenuItemOpen(item, current);
 
 			var builder = new StringBuilder();
-			builder.AppendFormat("<li class='{1}'>{0}", GenerateMenuItemTitle(item), isOpen ? "open" : string.Empty);
-			foreach (var g in item.Children.Where(x => x.Language == ClientType.None || x.Language == current.Language))
+			builder.AppendFormat("<li class='{1}'>{0}", GenerateMenuItemTitle(item, current), isOpen ? "open" : string.Empty);
+			foreach (var g in item.Children.GroupBy(x => x.Trail))
 			{
-				builder.Append("<ul>");
-				builder.Append(GenerateMenuItem(g, current));
+			    var child = g.FirstOrDefault(x => x.Language == current.Language) ?? g.First();
+
+			    builder.Append("<ul>");
+				builder.Append(GenerateMenuItem(child, current));
 				builder.Append("</ul>");
 			}
 
@@ -115,12 +117,12 @@ namespace RavenDB.DocsCompiler.Output
 			return builder.ToString();
 		}
 
-		private static string GenerateMenuItemTitle(IDocumentationItem item)
+		private string GenerateMenuItemTitle(IDocumentationItem item, Document current)
 		{
 			var document = item as Document;
 			if (document != null)
 			{
-				return string.Format("<a href='{0}'>{1}</a>", GenerateUrlForDocument(document), item.Title);
+				return string.Format("<a href='{0}'>{1}</a>", GenerateUrlForDocument(document, current), item.Title);
 			}
 
 			var folder = item as Folder;
@@ -132,10 +134,8 @@ namespace RavenDB.DocsCompiler.Output
 			return string.Empty;
 		}
 
-		private static string GenerateUrlForDocument(Document document)
+		private string GenerateUrlForDocument(Document document, Document current)
 		{
-			string baseUrl = "http://ravendb.net/docs/3.0";
-
 			var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
 
 			var url = "/"
@@ -143,7 +143,12 @@ namespace RavenDB.DocsCompiler.Output
 						.Replace("\\", "/")
 						+ "/" + strippedSlug + ".html";
 
-			return baseUrl + url;
+		    if (document.Language != current.Language)
+		    {
+		        url = url.Replace(document.Language.ToString(), "client_type");
+		    }
+
+			return RootUrl + url;
 		}
 
 		private static bool IsMenuItemOpen(IDocumentationItem item, Document current)
