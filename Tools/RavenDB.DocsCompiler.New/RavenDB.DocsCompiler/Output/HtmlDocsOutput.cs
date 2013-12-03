@@ -105,13 +105,17 @@ namespace RavenDB.DocsCompiler.Output
 
 			var builder = new StringBuilder();
 			builder.AppendFormat("<li class='{1}'>{0}", GenerateMenuItemTitle(item, current), isOpen ? "open" : string.Empty);
-			foreach (var g in item.Children.GroupBy(x => new
-			                                                 {
-			                                                     x.Trail,
-                                                                 x.Slug
-			                                                 }))
+
+		    var groups = item.Children
+                .GroupBy(x => new { x.Trail, x.Slug, IsFolder = x is Folder, IsDocument = x is Document })
+                .OrderByDescending(x => x.Key.IsFolder);
+
+            foreach (var g in groups)
 			{
 			    var child = g.FirstOrDefault(x => x.Language == current.Language) ?? g.First();
+
+			    if (CompilationMode == CompilationMode.Legacy && child.Slug == "index") 
+                    continue;
 
 			    builder.Append("<ul>");
 				builder.Append(GenerateMenuItem(child, current));
@@ -128,19 +132,27 @@ namespace RavenDB.DocsCompiler.Output
 			var document = item as Document;
 			if (document != null)
 			{
-				return string.Format("<a href='{0}'>{1}</a>", GenerateUrlForDocument(document, current), item.Title);
+				return string.Format("<a href='{0}' class='{2}'>{1}</a>", GenerateUrlForDocument(document, current), item.Title, item == current ? "current" : string.Empty);
 			}
 
 			var folder = item as Folder;
 			if (folder != null)
 			{
-				return string.Format("<span>{0}</span>", item.Title);
+			    switch (CompilationMode)
+			    {
+			        case CompilationMode.Legacy:
+                        return string.Format("<a href='{0}' class='folder'>{1}</a>", GenerateUrlForFolder(folder), item.Title);
+			        case CompilationMode.Normal:
+			            return string.Format("<span>{0}</span>", item.Title);
+			        default:
+			            throw new NotSupportedException();
+			    }
 			}
 
 			return string.Empty;
 		}
 
-		private string GenerateUrlForDocument(Document document, Document current)
+        private string GenerateUrlForDocument(Document document, Document current)
 		{
 			var strippedSlug = document.Slug.Replace(".markdown", string.Empty);
 
@@ -156,6 +168,21 @@ namespace RavenDB.DocsCompiler.Output
 
 		    return new Uri(RootUrl + url).AbsoluteUri.Replace("//", "/");
 		}
+
+        private string GenerateUrlForFolder(Folder folder)
+        {
+            var strippedSlug = folder.Slug.Replace(".markdown", string.Empty);
+
+            var url = "/"
+                        + folder.VirtualTrail
+                        .Replace("\\", "/")
+                        + "/" + strippedSlug + "/";
+
+            return new Uri(RootUrl + url)
+                .AbsoluteUri
+                .Replace("///", "/")
+                .Replace("//", "/");
+        }
 
 		private static bool IsMenuItemOpen(IDocumentationItem item, Document current)
 		{

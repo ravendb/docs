@@ -212,6 +212,8 @@ namespace RavenDB.DocsCompiler
 		                               Language = ClientType.DotNet
 		                           };
 
+                folder.Children.Add(document);
+
 		        document.Content = DocumentationParser.Parse(
 		            this,
 		            folder,
@@ -368,7 +370,7 @@ namespace RavenDB.DocsCompiler
                 case ClientType.Http:
                     return "plain";
                 default:
-                    return null;
+                    return "csharp";
             }
 	    }
 	}
