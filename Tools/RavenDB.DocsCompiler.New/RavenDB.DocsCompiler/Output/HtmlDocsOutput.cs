@@ -77,7 +77,7 @@ namespace RavenDB.DocsCompiler.Output
 
 			if (IsHtmlOutput)
 			{
-				var contents = string.Format(PageTemplate, doc.Title, doc.Content, GenerateMenu(doc), GenerateBreadcrumbs(doc));
+				var contents = string.Format(PageTemplate, doc.Title, doc.Content, GenerateMenu(doc), RootUrl);
 				File.WriteAllText(Path.Combine(outputPath, doc.Slug + ".html"), contents);
 			}
 		}

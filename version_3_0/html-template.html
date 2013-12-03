@@ -16,13 +16,12 @@
     <link rel="stylesheet" type="text/css" href="http://static.ravendb.net/SyntaxHighlighter/styles/shCore.css" />
     <link rel="stylesheet" type="text/css" href="http://static.ravendb.net/SyntaxHighlighter/styles/shThemeVS.css" />
     <link rel="stylesheet" type="text/css" href="http://static.ravendb.net/styles/fancybox.css" media="all">
-    <link rel="stylesheet" type="text/css" href="css/jquery.treeview.css" />
-    <link rel="stylesheet" type="text/css" href="css/menu.css" />
-    <link rel="stylesheet" type="text/css" href="css/newstyles.css" />
+    <link rel="stylesheet" type="text/css" href="http://localhost/Raven.Styles/Content/jquery.treeview.css" />
+    <link rel="stylesheet" type="text/css" href="http://localhost/Raven.Styles/Content/styles.css" />
 
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
     <script type="text/javascript" src="http://static.ravendb.net/scripts/jquery.main.js"></script>
-    <script type="text/javascript" src="scripts/jquery.treeview.js"></script>
+    <script type="text/javascript" src="http://localhost/Raven.Styles/Scripts/jquery.treeview.js"></script>
     <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 </head>
 <body>
@@ -35,18 +34,17 @@
                         <h1 style="color:#9b002b;">Docs (Beta)</h1>
                     </header>
                     <div>
-                        <h1>Docs</h1>
                         <div class="article-info">
-                            <div>
-                                Client version: 
+                            <div class="client">
+                                Client 
 								<select id="client-version">
                                     <option value="csharp">.NET</option>
                                     <option value="http">HTTP</option>
                                     <option value="java">Java</option>
                                 </select>
                             </div>
-                            <div>
-                                RavenDB version: 
+                            <div class="version">
+                                Version 
 								<select id="docs-version">
                                     <option value="1.0">1.0</option>
                                     <option value="2.0">2.0</option>
@@ -54,14 +52,12 @@
 									<option value="3.0">3.0</option>
                                 </select>
                             </div>
+							<div class="home">
+								<a href="{3}">
+									Documentation
+								</a>
+							</div>
                         </div>
-                        <div class="article-navigation">
-                            <div></div>
-                            <ul>
-                                {3}
-                            </ul>
-                        </div>
-
                         <div class="article-sidebar">
                             <ul class="treeview-famfamfam" id="tree-menu">
                                 {2}

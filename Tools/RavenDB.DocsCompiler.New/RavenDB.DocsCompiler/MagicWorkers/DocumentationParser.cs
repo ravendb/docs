@@ -216,7 +216,6 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             if (!string.IsNullOrWhiteSpace(trail))
                 trail += "/"; // make sure we don't lose the current slug
 
-
             href = AdjustHrefForMultilanguage(document, href);
 
             if (!Uri.TryCreate(new Uri(rootUrl + trail, UriKind.Absolute), new Uri(href, UriKind.Relative), out uri))
