@@ -49,7 +49,7 @@ namespace RavenDB.DocsCompiler.Runner
 	        var rootPath = Path.GetFullPath("./../../../../../");
             var documentationVersions = new List<VersionInfo>
                                             {
-                                                new VersionInfo { VersionAlias = "3.0", VersionPath = "version_3_0", CompilationMode = CompilationMode.Normal },
+                                                new VersionInfo { VersionAlias = "3.0", VersionPath = "version_3", CompilationMode = CompilationMode.Normal },
                                                 new VersionInfo { VersionAlias = "2.5", VersionPath = "version_2_5", CompilationMode = CompilationMode.Legacy },
                                                 new VersionInfo { VersionAlias = "2.0", VersionPath = "version_2", CompilationMode = CompilationMode.Legacy },
                                                 new VersionInfo { VersionAlias = "1.0", VersionPath = "version_1", CompilationMode = CompilationMode.Legacy },

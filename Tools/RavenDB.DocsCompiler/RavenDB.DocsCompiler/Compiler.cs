@@ -157,6 +157,7 @@ namespace RavenDB.DocsCompiler
 
             Console.WriteLine("Starting actual compilation.");
 			compiler.CompileDocumentation(compiler.RootFolder, ClientType.None);
+			compiler.Output.GenerateTableOfContents(compiler.RootFolder);
             Console.WriteLine("Finished actual compilation.");
 		}
 
@@ -333,18 +334,20 @@ namespace RavenDB.DocsCompiler
 		{
 			var builder = new StringBuilder();
 			builder.Append("<ul>");
+
 			foreach (var language in SupportedLanguages.Where(x => x != currentLanguage))
 			{
 				var path = Path.Combine(fullPath, strippedSlug + "." + language + ".markdown");
 				if (File.Exists(path))
 				{
-					var url = "/"
+					var url = 
+						(Output.RootUrl.EndsWith("/") ? string.Empty : "/")
 						+ document.VirtualTrail
-						.Replace(currentLanguage.ToString(), language.ToString())
+						.Replace(currentLanguage.ToString(), language.ToString().ToLower())
 						.Replace("\\", "/")
-						+ "/" + strippedSlug + ".html";
+						+ "/" + strippedSlug;
 
-					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", new Uri(Output.RootUrl + url).AbsoluteUri.Replace("//", "/"), language.GetDescription());
+					builder.AppendFormat("<li><a href='{0}'>{1}</a></li>", new Uri(Output.RootUrl + url).AbsoluteUri, language.GetDescription());
 				}
 			}
 			builder.Append("</ul>");
