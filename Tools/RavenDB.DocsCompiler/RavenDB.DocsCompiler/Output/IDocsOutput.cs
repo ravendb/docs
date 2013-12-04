@@ -4,6 +4,7 @@
 //  </copyright>
 // -----------------------------------------------------------------------
 using System;
+using System.Collections.Generic;
 using RavenDB.DocsCompiler.Model;
 
 namespace RavenDB.DocsCompiler.Output
@@ -13,6 +14,8 @@ namespace RavenDB.DocsCompiler.Output
     /// </summary>
     public interface IDocsOutput : IDisposable
     {
+        CompilationMode CompilationMode { get; set; }
+
         /// <summary>
         /// Gets or sets the content type.
         /// </summary>

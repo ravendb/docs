@@ -6,12 +6,16 @@ namespace RavenDB.DocsCompiler.Model
 	{
 		public Folder()
 		{
-			Items = new List<IDocumentationItem>();
+			Children = new List<IDocumentationItem>();
 		}
 
 		public string Title { get; set; }
 		public string Slug { get; set; }
+		public ClientType Language { get; set; }
+		public IDocumentationItem Parent { get; set; }
+		public List<IDocumentationItem> Children { get; set; }
 		public string Trail { get; set; }
-		public IList<IDocumentationItem> Items { get; private set; }
+		public string VirtualTrail { get; set; }
+        public bool Multilanguage { get; set; }
 	}
 }
