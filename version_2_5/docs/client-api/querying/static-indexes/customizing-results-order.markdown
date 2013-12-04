@@ -14,6 +14,16 @@ The index outlined above will allow sorting by value on the user's age (1, 2, 3,
 
 The default `SortOptions` value is `String`. Appropriate values available for all numeric types (`Byte`, `Double`, `Float`, `Int`, `Long` and `Short`).
 
+{NOTE Specifing the Sort in the index definitoin won't make results from this index be ordered unless you call OrderBy on the query itself. /}
+
+### Usage example
+
+In the following query we are using the `OrderBy` method in order to indicate that we want to sort on `Age`:
+
+{CODE static_sorting3@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
+
+So, by default it will sort on Age as it was a string. By specifing `Sort(x => x.Age, SortOptions.Short)` in the index dedinition, we inidicate that the sort order should be in a numerical order. 
+
 ## Collation support
 
 RavenDB supports using collations for documents sorting and indexing. You can setup a specific collation for an index field, so you can sort based of culture specific rules.
