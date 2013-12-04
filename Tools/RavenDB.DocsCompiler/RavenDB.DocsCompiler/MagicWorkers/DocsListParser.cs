@@ -13,10 +13,12 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		//static readonly Regex DocsListLine = new Regex(@"\^[FILES-LIST(-RECURSIVE)?\]", RegexOptions.Compiled);
 		static readonly Regex DocsListLine = new Regex(@"^([\w\-/\.]{2,})\t(.+)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
-		public static IEnumerable<IDocumentationItem> Parse(string filePath)
+		public static IEnumerable<IDocumentationItem> Parse(string filePath, Folder folder)
 		{
+			var results = new List<IDocumentationItem>();
+
 			if (!File.Exists(filePath))
-				yield break;
+				return results;
 
 			var contents = File.ReadAllText(filePath);
 
@@ -24,24 +26,35 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			foreach (Match match in matches)
 			{
 				var path = match.Groups[1].Value.Trim();
+
 				if (path[0] == '\\' || path[0] == '/')
 				{
-					yield return new Folder
-					             	{
-					             		Title = match.Groups[2].Value.Trim(),
-					             		Slug = path
-					             	};
+					var multilanguage = path.StartsWith("/m");
+					if (multilanguage)
+						path = path.Substring(2, path.Length - 2);
+
+					results.Add(new Folder
+					{
+						Multilanguage = multilanguage,
+						Title = match.Groups[2].Value.Trim(),
+						Slug = path,
+						Parent = folder
+					});
 				}
 				else
 				{
-					yield return new Document
-					             	{
-					             		Title = match.Groups[2].Value.Trim(),
-					             		Slug = path,
-					             	};
+					results.Add(new Document
+					{
+						Title = match.Groups[2].Value.Trim(),
+						Slug = path,
+						Parent = folder
+					});
 				}
-				
 			}
+
+			folder.Children.AddRange(results);
+
+			return results;
 		}
 
 		/*

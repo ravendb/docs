@@ -47,8 +47,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
         /// </summary>
         private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-        public static string Parse(
-            Compiler docsCompiler, Folder folder, string fullPath, string trail, string versionUrl)
+        public static string Parse(Compiler docsCompiler, Folder folder, Document document, string fullPath, string trail)
         {
             bool convertToHtml = docsCompiler.ConvertToHtml;
             if (!File.Exists(fullPath))
@@ -60,7 +59,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             contents = CodeFinder.Replace(
                 contents,
                 match =>
-                GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.CodeSamplesPath, convertToHtml));
+                GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), docsCompiler.GetCodeSamplesPath(match.Groups[1].Value.Trim(), document.Language), convertToHtml, docsCompiler.GetBrush(document.Language)));
 
             if (folder != null)
                 contents = FilesListFinder.Replace(contents, match => GenerateFilesList(folder, false));
@@ -70,7 +69,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 contents = contents.ResolveMarkdown(
                     docsCompiler.Output,
                     !string.IsNullOrWhiteSpace(docsCompiler.Output.RootUrl) ? trail : string.Empty,
-                    versionUrl);
+                    document);
             }
 
             contents = NotesFinder.Replace(
@@ -81,11 +80,11 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
         private static string GenerateFilesList(Folder folder, bool recursive)
         {
-            if (folder.Items == null)
+            if (folder.Children == null)
                 return string.Empty;
  
             var sb = new StringBuilder();
-            foreach (var item in folder.Items)
+			foreach (var item in folder.Children)
             {
                 sb.AppendFormat("* [{0}]({1})", item.Title, item.Slug);
                 sb.AppendLine();
@@ -115,7 +114,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 @"<div class=""{0}-block block""><span>{1}</span></div>", blockType.ToLower(), blockText);
         }
 
-        private static string GenerateCodeBlockFromFile(string value, string codeSamplesPath, bool convertToHtml)
+        private static string GenerateCodeBlockFromFile(string value, string codeSamplesPath, bool convertToHtml, string brush)
         {
             var values = value.Split('@');
             var section = values[0];
@@ -124,7 +123,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             var fileContent = LocateCodeFile(codeSamplesPath, file);
             if (convertToHtml)
             {
-                return "<pre class=\"brush: csharp\">" + Environment.NewLine
+                return "<pre class=\"brush: " + brush + "\">" + Environment.NewLine
                        + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent)).Replace("<", "&lt;")
                        // to support syntax highlighting on pre tags
                        + "</pre>";
@@ -167,6 +166,10 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             var start = file.IndexOf(startText) + startText.Length;
             var end = file.IndexOf("#endregion", start);
             var sectionContent = file.Substring(start, end - start);
+            if (sectionContent.EndsWith("//"))
+            {
+                sectionContent = sectionContent.TrimEnd(new char[] { '/'});
+            }
             return sectionContent.Trim(Environment.NewLine.ToCharArray());
         }
 
@@ -179,7 +182,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             return File.ReadAllText(codePath);
         }
 
-        public static string ResolveMarkdown(this string content, IDocsOutput output, string trail, string versionUrl)
+        public static string ResolveMarkdown(this string content, IDocsOutput output, string trail, Document document)
         {
             // http://www.toptensoftware.com/markdowndeep/api
 	        var md = new Markdown
@@ -193,14 +196,14 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 	        };
 
             if (!string.IsNullOrWhiteSpace(output.RootUrl))
-                md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, versionUrl);
+                md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, document);
  
             md.PrepareImage = (tag, titledImage) => PrepareImage(output.ImagesPath, tag);
 
             return md.Transform(content);
         }
 
-        private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail, string versionUrl)
+        private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail, Document document)
         {
             string href;
             if (!tag.attributes.TryGetValue("href", out href))
@@ -209,16 +212,12 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             if (Uri.IsWellFormedUriString(href, UriKind.Absolute))
                 return true;
  
-            var hashIndex = href.IndexOf("#", StringComparison.InvariantCultureIgnoreCase);
-            if (hashIndex != -1)
-                href = href.Insert(hashIndex, "?version=" + versionUrl);
-            else
-                href += "?version=" + versionUrl;
- 
             Uri uri;
             if (!string.IsNullOrWhiteSpace(trail))
                 trail += "/"; // make sure we don't lose the current slug
- 
+
+            href = AdjustHrefForMultilanguage(document, href);
+
             if (!Uri.TryCreate(new Uri(rootUrl + trail, UriKind.Absolute), new Uri(href, UriKind.Relative), out uri))
             {
                 // TODO: Log error
@@ -227,6 +226,51 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             tag.attributes["href"] = uri.AbsoluteUri;
 
             return true;
+        }
+
+        private static string AdjustHrefForMultilanguage(Document document, string href)
+        {
+            if (document == null)
+                return href;
+
+            var root = document.Parent;
+            while (root != null)
+            {
+                if (root.Parent == null)
+                {
+                    break;
+                }
+
+                root = root.Parent;
+            }
+
+            if (root == null) 
+                return href;
+
+            var parts = href.Split('/').ToList();
+            for (int index = 0; index < parts.Count; index++)
+            {
+                var part = parts[index];
+                if (part == ".." || part == ".")
+                {
+                    continue;
+                }
+
+                root = root.Children.FirstOrDefault(x => x.Slug.Equals(part, StringComparison.OrdinalIgnoreCase));
+                if (root == null)
+                    break;
+
+                var folder = root as Folder;
+                if (folder != null && folder.Multilanguage)
+                {
+                    parts.Insert(index + 1, "client_type");
+                    break;
+                }
+            }
+
+            href = parts.Aggregate(string.Empty, (current, part) => current + (part + "/"));
+            href = href.Substring(0, href.Length - 1);
+            return href;
         }
 
         private static bool PrepareImage(string imagesPath, HtmlTag tag)

@@ -17,3 +17,5 @@ site-compiled/
 html-images/
 packages/*/
 all.html
+/*.DotSettings
+/Tools/RavenDB.DocsCompiler/*.DotSettings

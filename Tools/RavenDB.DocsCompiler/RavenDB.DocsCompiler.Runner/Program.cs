@@ -14,11 +14,22 @@ using RavenDB.DocsCompiler.Output;
 
 namespace RavenDB.DocsCompiler.Runner
 {
+    using System.Diagnostics;
+
     /// <summary>
     /// The program.
     /// </summary>
     public class Program
     {
+        private class VersionInfo
+        {
+            public string VersionPath { get; set; }
+
+            public string VersionAlias { get; set; }
+
+            public CompilationMode CompilationMode { get; set; }
+        }
+
         /// <summary>
         /// The main method.  This is where the program execution begins
         /// </summary>
@@ -36,12 +47,22 @@ namespace RavenDB.DocsCompiler.Runner
 	        bool debugMode = args.Length > 1 && args[1].Equals("debug", StringComparison.InvariantCultureIgnoreCase);
 
 	        var rootPath = Path.GetFullPath("./../../../../../");
-            var documentationVersions = new List<string> { "version_1", "version_2", "version_2_5" };
-
+            var documentationVersions = new List<VersionInfo>
+                                            {
+                                                new VersionInfo { VersionAlias = "3.0", VersionPath = "version_3_0", CompilationMode = CompilationMode.Normal },
+                                                new VersionInfo { VersionAlias = "2.5", VersionPath = "version_2_5", CompilationMode = CompilationMode.Legacy },
+                                                new VersionInfo { VersionAlias = "2.0", VersionPath = "version_2", CompilationMode = CompilationMode.Legacy },
+                                                new VersionInfo { VersionAlias = "1.0", VersionPath = "version_1", CompilationMode = CompilationMode.Legacy },
+                                            };
+            
             foreach (var documentationVersion in documentationVersions)
             {
+                Console.WriteLine("Starting compilation for: " + documentationVersion.VersionAlias);
 				Generate(rootPath, documentationVersion, outputType, debugMode);
+                Console.WriteLine("Finished compilation.");
             }
+
+            Console.ReadKey();
         }
 
         /// <summary>
@@ -50,28 +71,35 @@ namespace RavenDB.DocsCompiler.Runner
         /// <param name="rootPath">
         /// The root path of the documentation to generate.
         /// </param>
+        /// <param name="clientVersion">
+        /// The client language to generate.
+        /// </param>
         /// <param name="version">
         /// The version of the documentation to generate.
         /// </param>
         /// <param name="outputType">
         /// The output type (HTML or Markdown).
         /// </param>
-        private static void Generate(string rootPath, string version, OutputType outputType, bool debugMode)
+        private static void Generate(string rootPath, VersionInfo version, OutputType outputType, bool debugMode)
         {
-            var docsPath = Path.Combine(rootPath, version);
+            var docsPath = Path.Combine(rootPath, version.VersionPath);
 
             var outputPath = CalculateOutputPath(outputType, docsPath);
-            var output = CreateDocumentationOutputSpecification(rootPath, outputPath, outputType, debugMode);
+            
+            var output = CreateDocumentationOutputSpecification(rootPath, outputPath, outputType, version, debugMode);
 
             try
             {
                 Console.WriteLine(
                     "Generating documentation using docsPath: {0} and output path {1}", docsPath, outputPath);
-                Compiler.CompileFolder(output, docsPath, "Home", version);
+                Compiler.CompileFolder(output, docsPath, "Home");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
+
+                if (Debugger.IsAttached) 
+                    throw;
             }
 
             Console.WriteLine("Done");
@@ -116,15 +144,18 @@ namespace RavenDB.DocsCompiler.Runner
 	    /// <returns>
 	    /// The <see cref="IDocsOutput"/>.
 	    /// </returns>
-	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath, OutputType outputType, bool debugMode)
-        {
+	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath, OutputType outputType, VersionInfo version, bool debugMode)
+	    {
+	        var rootUrl = "http://ravendb.net/docs/" + version.VersionAlias + "/";
+
             if (outputType == OutputType.Markdown)
             {
                 return new MarkdownDocsOutput
                            {
                                ContentType = OutputType.Markdown,
                                OutputPath = outputPath,
-                               RootUrl = "http://ravendb.net/docs/",
+                               RootUrl = rootUrl,
+                               CompilationMode = version.CompilationMode
                            };
             }
 
@@ -136,9 +167,10 @@ namespace RavenDB.DocsCompiler.Runner
                                              OutputPath = outputPath,
                                              PageTemplate =
                                                  File.ReadAllText(
-                                                     Path.Combine(rootPath, @"Tools\html-template.html")),
-                                             RootUrl = "http://ravendb.net/docs/",
-											 ImagesPath = debugMode ? "images/" : null
+                                                     Path.Combine(rootPath, version.VersionPath, @"html-template.html")),
+                                             RootUrl = rootUrl,
+											 ImagesPath = debugMode ? "images/" : null,
+                                             CompilationMode = version.CompilationMode
                                          };
                 return output;
             }
