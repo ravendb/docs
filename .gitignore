@@ -17,3 +17,6 @@ site-compiled/
 html-images/
 packages/*/
 all.html
+packages/*/
+.nuget
+Tools/RavenDB.DocsCompiler/packages/*
