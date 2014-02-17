@@ -65,3 +65,21 @@ automatically remove the old version and then will install the new one.
 ##Uninstall
 
 Uninstallation can be accomplished by _Programs and Features_ in _Control Panel_ . Only the files created during an installation process will be removed, so all of database data will remain untouched on a disk.
+
+
+##Quiet mode installation from command line
+
+The RavenDB installer can also be run from a command line with administrative privileges. In order to do that you will have to specify all required installation
+settings. Below there is a command which installs RavenDB as a windows service:
+
+{CODE-START:json /}
+   > ravendb-[version].exe /quiet /log C:\Temp\raven_log.txt /msicl RAVEN_TARGET_ENVIRONMENT=DEVELOPMENT /msicl TARGETDIR=C:\ /msicl INSTALLFOLDER=C:\RavenDB /msicl RAVEN_INSTALLATION_TYPE=SERVICE /msicl REMOVE=IIS /msicl ADDLOCAL=Service
+{CODE-END /}
+
+The list of RavenDB specific settings:
+
+* <em>RAVEN_INSTALLATION_TYPE</em> - available options: IIS (default) or SERVICE
+* <em>RAVEN_TARGET_ENVIRONMENT</em> - available options: PRODUCTION (default), DEVELOPMENT
+* <em>RAVEN_LICENSE_FILE_PATH</em>
+* <em>SERVICE_NAME</em> - default: RavenDB
+* <em>SERVICE_PORT</em> - default: 8080
