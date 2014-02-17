@@ -95,6 +95,11 @@ namespace RavenCodeSamples.ClientApi.Querying.StaticIndexes
 			/// </summary>
 			/// <value>The spatial options.</value>
 			public IDictionary<string, SpatialOptions> SpatialIndexes { get; set; }
+
+			/// <summary>
+			/// Prevent index from being kept in memory. Default: false
+			/// </summary>
+			public bool DisableInMemoryIndexing { get; set; }
 		}
 		#endregion
 	}
