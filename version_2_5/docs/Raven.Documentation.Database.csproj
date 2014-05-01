@@ -205,7 +205,7 @@
     <None Include="server\extending\bundles\expiration.markdown" />
     <None Include="server\extending\bundles\index.markdown" />
     <None Include="server\extending\bundles\morelikethis.markdown" />
-    <None Include="server\extending\bundles\periodic-backups.markdown" />
+    <None Include="server\extending\bundles\periodic-backup.markdown" />
     <None Include="server\extending\bundles\quotas.markdown" />
     <None Include="server\extending\bundles\unique-constraints.markdown" />
     <None Include="server\extending\bundles\versioning.markdown" />
