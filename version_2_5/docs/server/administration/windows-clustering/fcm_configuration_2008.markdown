@@ -67,14 +67,14 @@ Execute the following steps on every cluster node:
 ![Figure 3: FMC Configuration](images\03ServiceInstalled.jpg)
 * Service properties  
 ![Figure 4.1: FMC Configuration](images\04ServiceProperties.jpg)
-* * General options  
+	* General options  
 ![Figure 4.2: FMC Configuration](images\04ServiceProperties_01General.jpg)
-* * Failover options  
+	* Failover options  
 ![Figure 4.3: FMC Configuration](images\04ServiceProperties_02Failover.jpg)
 * Failure simulation  
  1. Right click on RavenDB resource and choose *Simulate failure of this resource* 
 ![Figure 5.1: FMC Configuration](images\05FailureSimulation.jpg)
  2. During failover the resource has been moved to a different node and is in pending mode  
 ![Figure 5.2: FMC Configuration](images\05FailureSimulation_Pending.jpg)
- 3. Failover succeed  
+ 3. Failover succeeded  
 ![Figure 5.3: FMC Configuration](images\05FailureSimulation_FailoverSuccess.jpg)
