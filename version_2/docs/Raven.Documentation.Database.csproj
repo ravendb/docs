@@ -186,7 +186,7 @@
     <None Include="server\extending\bundles\index.markdown" />
     <None Include="server\extending\bundles\indexed-properties.markdown" />
     <None Include="server\extending\bundles\morelikethis.markdown" />
-    <None Include="server\extending\bundles\periodic-backups.markdown" />
+    <None Include="server\extending\bundles\periodic-backup.markdown" />
     <None Include="server\extending\bundles\quotas.markdown" />
     <None Include="server\extending\bundles\sql-replication.markdown" />
     <None Include="server\extending\bundles\unique-constraints.markdown" />
