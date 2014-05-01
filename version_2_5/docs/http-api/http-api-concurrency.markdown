@@ -40,6 +40,12 @@ If you don't have the current etag of the document and you want to prevent an op
          -X PUT http://localhost:8080/docs/bobs_address -d "{ FirstName : 'Bob', LastName: 'Smith', Address: '5 Elm St.' }"
 {CODE-END /}
 
+### False concurrent access error
+
+As we mentioned an e-tag is changed every time when a document is changed. It happens even if a modification is made by RavenDB itself. 
+The basic scenario when the database needs to change a document e-tag internally is a referenced documents handling. 
+That is the reason that you might get a false conflict error response (`409 Conflict`), even though nobody else has changed a specified document.
+
 ## Last One in Wins
 
 When the e-tag is not specified in the header for a given request, the last request processed for that URL wins.

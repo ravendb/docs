@@ -95,13 +95,13 @@ namespace RavenCodeSamples.Server.Extending.Bundles
 							PutDocument(this.Company, company);
 						",
 						DeleteScript = @"
-							var company = LoadDocument(this.Company);
+							var company = LoadDocument(key);
 							if(company == null)
 									return;
 							delete company.Orders;
-							PutDocument(this.Company, company);
+							PutDocument(key, company);
 						"
-					});
+                    });
 				 }
 				 #endregion
 			 }
