@@ -160,7 +160,7 @@
     <Compile Include="Server\Extending\Bundles\IndexedProperties.cs" />
     <Compile Include="Server\Extending\Bundles\IndexReplication.cs" />
     <Compile Include="Server\Extending\Bundles\MoreLikeThis.cs" />
-    <Compile Include="Server\Extending\Bundles\PeriodicBackups.cs" />
+    <Compile Include="Server\Extending\Bundles\PeriodicBackup.cs" />
     <Compile Include="Server\Extending\Bundles\SqlReplication.cs" />
     <Compile Include="Server\Extending\Bundles\UniqueConstraints.cs" />
     <Compile Include="Server\Extending\Bundles\Versioning.cs" />

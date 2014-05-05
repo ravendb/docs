@@ -123,41 +123,45 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ 64 MB   
     _Minimum:_ 1 MB   
 
-* **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded**
+* **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded**  
 	Whatever we allow creation of auto indexes on dynamic queries.   
 	_Default:_ true
 
-* **Raven/SkipCreatingStudioIndexes**
+* **Raven/SkipCreatingStudioIndexes**  
 	Control whatever the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   
 	_Default:_ false
 
-* **Raven/LimitIndexesCapabilities**
+* **Raven/LimitIndexesCapabilities**  
 	Control whatever RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).   
 	_Default:_ false
 
-* **Raven/CompiledIndexCacheDirectory**
+* **Raven/CompiledIndexCacheDirectory**  
 	Path to a directory used by index compilator.    
 	_Default:_ ~\Raven\CompiledIndexCache
 
-* **Raven/NumberOfItemsToExecuteReduceInSingleStep**
+* **Raven/NumberOfItemsToExecuteReduceInSingleStep**  
 	The number that controls if single step reduce optimization is performed. If the count of mapped results is less than this value then the reduce is executed in a single step.  
 	_Default:_ 1024
 
-* **Raven/DisableDocumentPreFetchingForIndexing**
+* **Raven/DisableDocumentPreFetchingForIndexing**  
 	Disables the document prefetcher.
 	_Default:_ false
 
-* **Raven/MaxIndexCommitPointStoreTimeInterval**
+* **Raven/MaxIndexCommitPointStoreTimeInterval**  
 	Maximum time interval for storing commit points for map indexes when new items were added. The commit points are used to restore index if unclean shutdown was detected.   
 	_Default:_ 5 minutes
 
-* **Raven/MaxNumberOfStoredCommitPoints**
+* **Raven/MaxNumberOfStoredCommitPoints**  
 	Maximum number of kept commit points to restore map index after unclean shutdown.   
 	_Default:_ 5
 
-* **Raven/MinIndexingTimeIntervalToStoreCommitPoint**
+* **Raven/MinIndexingTimeIntervalToStoreCommitPoint**  
 	Minimum interval between between successive indexing that will allow to store a  commit point.    
 	_Default:_ 1 minute
+
+* **Raven/DisableInMemoryIndexing**  
+	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IdexDefinition](../../client-api/querying/static-indexes/defining-static-index).    
+	_Default:_ false
 
 ### Data settings:
 
@@ -401,6 +405,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/MaxIndexCommitPointStoreTimeInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxNumberOfStoredCommitPoints** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MinIndexingTimeIntervalToStoreCommitPoint** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/DisableInMemoryIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |

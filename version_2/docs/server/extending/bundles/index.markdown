@@ -13,7 +13,7 @@ The following bundles are available out of the box, to extend RavenDB's capabili
 * [Replication](../../scaling-out/replication) - provides a way to replicate data between servers.
 * [SQL Replication](sql-replication) - replicates a RavenDB documents to SQL Server.
 * [Versioning](versioning) - automatic versioning of documents upon updates or deletes.
-* [Periodic Backups](periodic-backups) - configure backups.
+* [Periodic Backup](periodic-backup) - configure backups.
 * [Indexed Properties](indexed-properties)
 
 {INFO Built-in bundles can be selectively added to a specific database using `Raven/ActiveBundles` property in the database document. The documentation describing how to manage database configuration documents can be found [here](../../multiple-databases). /}

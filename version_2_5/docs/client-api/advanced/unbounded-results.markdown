@@ -13,6 +13,11 @@ The unbounded results implementation is based on the following approach:
 * use a streaming based model (to avoid memory usage problems in case of loading millions of records),
 * freeze the returned stream (what you read is a snapshot of the data as it was when you started reading it).
 
+Important side notes:    
+
+* the index already exists. Creation of a index won't occur and the query error with an `IndexDoesNotExistsException` exception.
+* `WaitForNonStaleResults` and its various friends are not respected/used.
+
 In order to take advantage of the query results streaming use the code:
 
 {CODE query_streaming_1@ClientApi\Advanced\UnboundedResults.cs /}
