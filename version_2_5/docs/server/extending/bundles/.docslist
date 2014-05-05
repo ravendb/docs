@@ -8,7 +8,7 @@ cascade-delete.markdown	Bundle: Cascade Delete
 expiration.markdown	Bundle: Expiration
 encryption.markdown	Bundle: Encryption
 compression.markdown	Bundle: Compression
-periodic-backups.markdown	Bundle: Periodic Backups
+periodic-backup.markdown	Bundle: Periodic Backup
 sql-replication.markdown	Bundle: SQL Replication
 scripted-index-results.markdown	Bundle: Scripted Index Results
 index-replication.markdown	Bundle: Index Replication

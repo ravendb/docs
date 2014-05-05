@@ -28,9 +28,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BBBC44
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.0", "3.0", "{409076C0-9A7B-4EF1-A8ED-962A1B6BE1BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Database", "version_3_0\docs\Raven.Documentation.Database.csproj", "{2776C7CF-3BD2-447C-B8B4-671A3C1581FF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Database", "version_3\docs\Raven.Documentation.Database.csproj", "{2776C7CF-3BD2-447C-B8B4-671A3C1581FF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.CodeSamples", "version_3_0\code-samples\Raven.Documentation.CodeSamples.csproj", "{B6570234-95DD-403C-93C8-975CC6280365}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.CodeSamples", "version_3\code-samples\Raven.Documentation.CodeSamples.csproj", "{B6570234-95DD-403C-93C8-975CC6280365}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

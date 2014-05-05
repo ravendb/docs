@@ -5,7 +5,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenDB.DocsCompiler", "Rav
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RavenDB.DocsCompiler.Runner", "RavenDB.DocsCompiler.Runner\RavenDB.DocsCompiler.Runner.csproj", "{5BBC36AE-D95B-47BC-9FB4-64000F9EAFEA}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{A31C2D8A-278C-4E3E-8421-CCE7E740AE3D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{5D07F761-6064-4FC5-9C03-E9494A9CE479}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
 		.nuget\NuGet.exe = .nuget\NuGet.exe
