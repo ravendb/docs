@@ -3,7 +3,7 @@
 In order to export or import data from a RavenDB server, you can use the Raven.Smuggler utility.
 
 Raven.Smuggler is distributed in both the:
-- RavenDB [distribution package](http://builds.hibernatingrhinos.com/Builds/RavenDB). It is located under the `/Smuggler` folder.
+- RavenDB [distribution package](http://ravendb.net/download). It is located under the `/Smuggler` folder.
 - RavenDB.Server [nuget package](https://nuget.org/packages/RavenDB.Server). It is located under the `/tools` folder.
 
 Using the Smuggler utility is necessary when trying to move a RavenDB Data folder around between servers. Simply copying it is not supported and can result in server errors.
@@ -20,7 +20,7 @@ The dump file will also include documents that were added during the export proc
 
 From `RavenDB 2.5` the Smuggler is using document streaming to speed up the process. To maintain backward compatibility, the Smuggler will detect from what version it exports the documents and adjust behavior accordingly.
 
-{INFO If you use replication, make sure to avoid exporting the Raven/Replication/Destinations document using the following command: `Raven.Smuggler out http://localhost:8080 dump.ravendump --negative-metadata-filter:@id=Raven/Replication/Destinations`. Otherwise, once you import the file to a new database, this database will start to replicate to all of the destination databases. /}
+Note that if you're using the replication bundle active on the database, it is recommend that you filter out the document with the ID `Raven/Replication/Destinations`, using the following command: `Raven.Smuggler out http://localhost:8080 dump.ravendump --negative-metadata-filter:@id=Raven/Replication/Destinations`.
 
 ## Importing
 
@@ -34,7 +34,8 @@ You can continue using that RavenDB instance while data is being imported to it.
 
 To speed up the process, the `Raven.Smuggler.exe` is using [bulk inserts](../../client-api/advanced/bulk-inserts) and `The Studio` is using batching.
 
-{INFO If you have the replication or periodic backup bunldes active, it is recommened that you'll filter out the following documents when doing an import: Raven/Replication/Destinations, Raven/Replication/VersionHilo, Raven/Backup/Periodic/Setup, Raven/Backup/Periodic/Status. This can be done using the following command: Raven.Smuggler in http://localhost:8080 dump.ravendump --negative-metadata-filter:@id=Raven/Replication/Destinations --negative-metadata-filter:@id=Raven/Backup/Periodic/Setup --negative-metadata-filter:@id=Raven/Backup/Periodic/Status --negative-metadata-filter:@id=Raven/Replication/VersionHilo /}
+Note that if you have either the replication bundle or the periodic backup bunlde active on the database, it is recommened that you'll filter out the following documents when doing an import: `Raven/Replication/Destinations`, `Raven/Replication/VersionHilo`, `Raven/Backup/Periodic/Setup`, `Raven/Backup/Periodic/Status`.  
+This can be done using the following command: `Raven.Smuggler in http://localhost:8080 dump.ravendump --negative-metadata-filter:@id=Raven/Replication/Destinations --negative-metadata-filter:@id=Raven/Backup/Periodic/Setup --negative-metadata-filter:@id=Raven/Backup/Periodic/Status --negative-metadata-filter:@id=Raven/Replication/VersionHilo`.
 
 ## Incremental Export and Import
 With the incremental export operation we can use in order to backup the database incrementally, on each export, we will only take the export the documents create or updated
