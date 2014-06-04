@@ -166,7 +166,7 @@ namespace RavenDB.DocsCompiler.Output
 		        url = url.Replace(document.Language.ToString(), "client_type");
 		    }
 
-		    return new Uri(RootUrl + url).AbsoluteUri.Replace("//", "/");
+	        return new Uri(RootUrl + url).AbsoluteUri;
 		}
 
         private string GenerateUrlForFolder(Folder folder)
