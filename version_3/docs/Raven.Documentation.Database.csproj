@@ -108,6 +108,23 @@
     <None Include="client-api\commands\transformers\how-to\query-using-transformer.markdown" />
     <None Include="client-api\commands\transformers\put.markdown" />
     <None Include="client-api\commands\what-are-commands.markdown" />
+    <None Include="client-api\concurrency\.docslist" />
+    <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
+    <None Include="client-api\faq\.docslist" />
+    <None Include="client-api\faq\what-is-a-document-store.dotnet.markdown" />
+    <None Include="client-api\how-to\.docslist" />
+    <None Include="client-api\how-to\create-transformers-using-abstracttransformercreationtask.markdown" />
+    <None Include="client-api\how-to\create-indexes-using-abstractindexcreationtask.markdown" />
+    <None Include="client-api\how-to\integrate-with-excel.markdown" />
+    <None Include="client-api\how-to\setup-sharding.markdown" />
+    <None Include="client-api\how-to\use-fips-compliant-encryption-algorithms.markdown" />
+    <None Include="client-api\how-to\send-custom-requests-using-httpjsonrequestfactory.markdown" />
+    <None Include="client-api\how-to\setup-aggresive-caching.markdown" />
+    <None Include="client-api\how-to\work-with-authentication.markdown" />
+    <None Include="client-api\how-to\setup-connection-string.markdown" />
+    <None Include="client-api\how-to\setup-failover-servers-and-failover-behavior.markdown" />
+    <None Include="client-api\how-to\setup-default-database.markdown" />
+    <None Include="client-api\how-to\initialize-document-store.markdown" />
     <None Include="client-api\listeners\.docslist" />
     <None Include="client-api\listeners\what-are-store-listeners-and-how-to-work-with-them.markdown" />
     <None Include="client-api\listeners\what-are-query-listeners-and-how-to-work-with-them.markdown" />
@@ -166,9 +183,7 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="client-api\how-to\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
