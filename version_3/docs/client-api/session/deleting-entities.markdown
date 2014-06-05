@@ -1,1 +1,1 @@
-# Session : Deleting entities
+# Client API : Session : Deleting entities

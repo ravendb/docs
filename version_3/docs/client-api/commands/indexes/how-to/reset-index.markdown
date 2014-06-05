@@ -1,3 +1,3 @@
-# Indexes : How to reset index?
+# Client API : Indexes : How to reset index?
 
 TODO

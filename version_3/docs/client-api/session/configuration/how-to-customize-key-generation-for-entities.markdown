@@ -1,1 +1,1 @@
-# Session : Configuration : How to customize key generation for entities?
+# Client API : Session : How to customize key generation for entities?

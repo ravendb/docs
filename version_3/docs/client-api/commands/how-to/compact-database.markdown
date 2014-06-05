@@ -1,3 +1,3 @@
-# Commands: How to compact database?
+# Client API : Commands : How to compact database?
 
 TODO

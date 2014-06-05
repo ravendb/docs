@@ -1,1 +1,1 @@
-# Session : Configuration : How to customize identity property lookup for entities?
+# Client API : Session : How to customize identity property lookup for entities?

@@ -1,1 +1,1 @@
-# What is a session and how does it work?
+# Client API : Session : What is a session and how does it work?

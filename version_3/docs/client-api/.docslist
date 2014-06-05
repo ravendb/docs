@@ -2,7 +2,7 @@ what-is-a-document-store	What is a document store?
 /commands	Commands
 /session	Session
 /bulk-insert	Bulk Insert
-/changes-api	Changes API
+/changes	Changes API
 /listeners	Listeners
 /bundles	Bundles
 /concurrency Concurrency

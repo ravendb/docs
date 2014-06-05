@@ -1,1 +1,1 @@
-# Session : Configuration : How to change maximum number of requests per session?
+# Client API : Session : How to change maximum number of requests per session?

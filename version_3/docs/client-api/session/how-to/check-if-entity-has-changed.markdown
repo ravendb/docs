@@ -1,1 +1,1 @@
-# Session : How to check if entity has changed?
+# Client API : Session : How to check if entity has changed?

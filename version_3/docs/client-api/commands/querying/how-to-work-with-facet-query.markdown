@@ -1,3 +1,3 @@
-# Querying: How to work with Facet query?
+# Client API : Querying : How to work with Facet query?
 
 TODO
