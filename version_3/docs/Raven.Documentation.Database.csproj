@@ -61,6 +61,18 @@
     <None Include="client-api\commands\documents\put.markdown" />
     <None Include="client-api\commands\documents\delete.dotnet.markdown" />
     <None Include="client-api\commands\documents\delete.java.markdown" />
+    <None Include="client-api\commands\how-to\.docslist" />
+    <None Include="client-api\commands\how-to\get-names-of-all-databases-on-a-server.markdown" />
+    <None Include="client-api\commands\how-to\get-server-build-number.markdown" />
+    <None Include="client-api\commands\how-to\get-full-url-for-a-document.markdown" />
+    <None Include="client-api\commands\how-to\start-backup-restore-operations.markdown" />
+    <None Include="client-api\commands\how-to\get-database-and-server-statistics.markdown" />
+    <None Include="client-api\commands\how-to\compact-database.markdown" />
+    <None Include="client-api\commands\how-to\create-delete-database.markdown" />
+    <None Include="client-api\commands\how-to\switch-commands-credentials.markdown" />
+    <None Include="client-api\commands\how-to\disable-caching.markdown" />
+    <None Include="client-api\commands\how-to\start-stop-indexing-and-get-indexing-status.markdown" />
+    <None Include="client-api\commands\how-to\switch-commands-to-a-different-database.markdown" />
     <None Include="client-api\commands\indexes\.docslist" />
     <None Include="client-api\commands\indexes\delete.markdown" />
     <None Include="client-api\commands\indexes\get.markdown" />
@@ -99,7 +111,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="client-api\commands\how-to\" />
     <Folder Include="client-api\how-to\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
