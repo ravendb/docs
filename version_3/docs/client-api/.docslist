@@ -1,4 +1,8 @@
 what-is-a-document-store.markdown	What is a document store?
 /commands	Commands
 /session	Session
+/bulk-insert	Bulk Insert
+/changes-api	Changes API
+/listeners	Listeners
+/bundles	Bundles
 /how-to
