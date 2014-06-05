@@ -1,0 +1,1 @@
+Client API : How to setup connection string?
