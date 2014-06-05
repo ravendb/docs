@@ -50,9 +50,9 @@ namespace RavenDB.DocsCompiler.Runner
             var documentationVersions = new List<VersionInfo>
                                             {
                                                 new VersionInfo { VersionAlias = "3.0", VersionPath = "version_3", CompilationMode = CompilationMode.Normal },
-                                                new VersionInfo { VersionAlias = "2.5", VersionPath = "version_2_5", CompilationMode = CompilationMode.Legacy },
-                                                new VersionInfo { VersionAlias = "2.0", VersionPath = "version_2", CompilationMode = CompilationMode.Legacy },
-                                                new VersionInfo { VersionAlias = "1.0", VersionPath = "version_1", CompilationMode = CompilationMode.Legacy },
+                                                //new VersionInfo { VersionAlias = "2.5", VersionPath = "version_2_5", CompilationMode = CompilationMode.Legacy },
+                                                //new VersionInfo { VersionAlias = "2.0", VersionPath = "version_2", CompilationMode = CompilationMode.Legacy },
+                                                //new VersionInfo { VersionAlias = "1.0", VersionPath = "version_1", CompilationMode = CompilationMode.Legacy },
                                             };
             
             foreach (var documentationVersion in documentationVersions)
@@ -146,8 +146,8 @@ namespace RavenDB.DocsCompiler.Runner
 	    /// </returns>
 	    private static IDocsOutput CreateDocumentationOutputSpecification(string rootPath, string outputPath, OutputType outputType, VersionInfo version, bool debugMode)
 	    {
-	        var rootUrl = "http://ravendb.net/docs/" + version.VersionAlias + "/";
-
+	        //var rootUrl = @"http://ravendb.net/docs/" + version.VersionAlias + "/";
+		    var rootUrl = @"http://localhost/RavenDoc/version_3/html-compiled/";
             if (outputType == OutputType.Markdown)
             {
                 return new MarkdownDocsOutput

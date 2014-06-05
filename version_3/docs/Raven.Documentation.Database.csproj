@@ -41,9 +41,54 @@
       <SubType>Designer</SubType>
     </None>
     <None Include="client-api\.docslist" />
-    <None Include="client-api\documents\.docslist" />
-    <None Include="client-api\documents\delete.dotnet.markdown" />
-    <None Include="client-api\documents\delete.java.markdown" />
+    <None Include="client-api\commands\.docslist" />
+    <None Include="client-api\commands\attachments\.docslist" />
+    <None Include="client-api\commands\attachments\delete.markdown" />
+    <None Include="client-api\commands\attachments\get.markdown" />
+    <None Include="client-api\commands\attachments\how-to\.docslist" />
+    <None Include="client-api\commands\attachments\how-to\update-attachment-metadata-only.markdown" />
+    <None Include="client-api\commands\attachments\how-to\get-attachment-metadata-only.markdown" />
+    <None Include="client-api\commands\attachments\put.markdown" />
+    <None Include="client-api\commands\batches\.docslist" />
+    <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.markdown" />
+    <None Include="client-api\commands\documents\.docslist" />
+    <None Include="client-api\commands\documents\get.markdown" />
+    <None Include="client-api\commands\documents\how-to\.docslist" />
+    <None Include="client-api\commands\documents\how-to\delete-or-update-documents-using-index.markdown" />
+    <None Include="client-api\commands\documents\how-to\get-document-metadata-only.markdown" />
+    <None Include="client-api\commands\documents\stream.markdown" />
+    <None Include="client-api\commands\documents\delete.markdown" />
+    <None Include="client-api\commands\documents\put.markdown" />
+    <None Include="client-api\commands\documents\delete.dotnet.markdown" />
+    <None Include="client-api\commands\documents\delete.java.markdown" />
+    <None Include="client-api\commands\indexes\.docslist" />
+    <None Include="client-api\commands\indexes\delete.markdown" />
+    <None Include="client-api\commands\indexes\get.markdown" />
+    <None Include="client-api\commands\indexes\how-to\.docslist" />
+    <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.markdown" />
+    <None Include="client-api\commands\indexes\how-to\reset-index.markdown" />
+    <None Include="client-api\commands\indexes\how-to\get-index-terms.markdown" />
+    <None Include="client-api\commands\indexes\put.markdown" />
+    <None Include="client-api\commands\patches\.docslist" />
+    <None Include="client-api\commands\patches\how-to-use-javascript-to-patch-your-documents.markdown" />
+    <None Include="client-api\commands\patches\how-to-work-with-patch-requests.markdown" />
+    <None Include="client-api\commands\querying\.docslist" />
+    <None Include="client-api\commands\querying\how-to-work-with-morelikethis-query.markdown" />
+    <None Include="client-api\commands\querying\how-to-work-with-suggestion-query.markdown" />
+    <None Include="client-api\commands\querying\how-to-work-with-facet-query.markdown" />
+    <None Include="client-api\commands\querying\how-to-stream-query-results.markdown" />
+    <None Include="client-api\commands\querying\how-to-query-a-database.markdown" />
+    <None Include="client-api\commands\transformers\.docslist" />
+    <None Include="client-api\commands\transformers\delete.markdown" />
+    <None Include="client-api\commands\transformers\get.markdown" />
+    <None Include="client-api\commands\transformers\how-to\.docslist" />
+    <None Include="client-api\commands\transformers\how-to\query-using-transformer.markdown" />
+    <None Include="client-api\commands\transformers\put.markdown" />
+    <None Include="client-api\commands\what-are-commands.markdown" />
+    <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="start\.docslist" />
+    <None Include="start\getting-started.markdown" />
+    <None Include="start\whats-new.markdown" />
     <None Include="not-documented.markdown" />
     <None Include="index.markdown" />
     <None Include="studio\.docslist" />
@@ -52,6 +97,10 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="client-api\commands\how-to\" />
+    <Folder Include="client-api\how-to\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
