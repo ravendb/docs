@@ -1,1 +1,1 @@
-# Session : How to get entity id?
+# Client API : Session : How to get entity id?

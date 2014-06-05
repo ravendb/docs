@@ -1,3 +1,3 @@
-# Commands: How to get database and server statistics?
+# Client API : Commands : How to get database and server statistics?
 
 TODO

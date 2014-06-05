@@ -1,3 +1,3 @@
-# Attachments : Delete
+# Client API : Attachments : Delete
 
 TODO

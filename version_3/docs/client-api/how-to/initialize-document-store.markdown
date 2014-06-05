@@ -1,1 +1,1 @@
-Client API : How to initialize a document store?
+# Client API : How to initialize a document store?

@@ -1,3 +1,3 @@
-# Patches: How to work with patch requests?
+# Client API : Patches: How to work with patch requests?
 
 TODO

@@ -1,3 +1,3 @@
-# Listeners : What are store listeners and how to work with them?
+# Client API : What are store listeners and how to work with them?
 
 TODO

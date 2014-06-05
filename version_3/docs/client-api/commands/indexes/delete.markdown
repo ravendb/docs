@@ -1,3 +1,3 @@
-# Indexes : Delete
+# Client API : Indexes : Delete
 
 TODO

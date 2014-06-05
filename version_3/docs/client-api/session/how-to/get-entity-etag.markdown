@@ -1,1 +1,1 @@
-# Session : How to get entity etag?
+# Client API : Session : How to get entity etag?

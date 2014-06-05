@@ -1,1 +1,1 @@
-# Session : How to perform operations lazily?
+# Client API : Session : How to perform operations lazily?

@@ -1,1 +1,1 @@
-# Session : Opening a session
+# Client API : Session : Opening a session

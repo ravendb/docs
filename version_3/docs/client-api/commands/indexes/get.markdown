@@ -1,3 +1,3 @@
-# Indexes : Get
+# Client API : Indexes : Get
 
 TODO

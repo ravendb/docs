@@ -1,3 +1,3 @@
-# Indexes : How to get index terms?
+# Client API : Indexes : How to get index merge suggestions?
 
 TODO

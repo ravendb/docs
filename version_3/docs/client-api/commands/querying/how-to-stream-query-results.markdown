@@ -1,3 +1,3 @@
-# Querying: How to stream query results?
+# Client API : Querying : How to stream query results?
 
 TODO
