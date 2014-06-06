@@ -13,15 +13,6 @@
 			 #endregion
 		}
 
-		#region put_2
-		public class PutResult
-		{
-			public string Key { get; set; }
-
-			public Etag ETag { get; set; }
-		}
-		#endregion
-
 		private class Person
 		{
 			public string FirstName { get; set; }
@@ -40,10 +31,10 @@
 						"people/1",
 						null,
 						RavenJObject.FromObject(new Person
-							                        {
-								                        FirstName = "John", 
-														LastName = "Doe"
-							                        }),
+						{
+							FirstName = "John", 
+							LastName = "Doe"
+						}),
 						new RavenJObject());
 				#endregion
 			}

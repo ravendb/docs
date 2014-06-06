@@ -15,7 +15,7 @@
 
 **Return Value**
 
-{CODE put_2@ClientApi\Commands\Documents\Put.cs /}
+{CODE putresult@Common.cs /}
 
 - Key - unique key under which document was stored   
 - ETag - stored document etag   
