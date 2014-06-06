@@ -9,8 +9,8 @@
 			using (var store = new DocumentStore())
 			{
 				#region what_are_commands_1
-				var commands = store.DatabaseCommands;
-				var asyncCommands = store.AsyncDatabaseCommands;
+					var commands = store.DatabaseCommands;
+	var asyncCommands = store.AsyncDatabaseCommands;
 				#endregion
 			}
         }
