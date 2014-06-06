@@ -107,7 +107,7 @@
     <None Include="client-api\commands\transformers\how-to\.docslist" />
     <None Include="client-api\commands\transformers\how-to\query-using-transformer.markdown" />
     <None Include="client-api\commands\transformers\put.markdown" />
-    <None Include="client-api\commands\what-are-commands.markdown" />
+    <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docslist" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
     <None Include="client-api\faq\.docslist" />
@@ -170,6 +170,7 @@
     <None Include="client-api\session\storing-entities.markdown" />
     <None Include="client-api\session\opening-a-session.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
+    <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="start\.docslist" />
     <None Include="start\getting-started.markdown" />
