@@ -1,8 +1,8 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Documents
+﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 {
-    using System;
+	using System;
 
-    public class Delete
+	public class Delete
     {
         #region delete_1
         public Delete()
