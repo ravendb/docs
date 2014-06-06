@@ -69,7 +69,7 @@
     <None Include="client-api\commands\documents\how-to\get-document-metadata-only.markdown" />
     <None Include="client-api\commands\documents\stream.markdown" />
     <None Include="client-api\commands\documents\delete.markdown" />
-    <None Include="client-api\commands\documents\put.markdown" />
+    <None Include="client-api\commands\documents\put.dotnet.markdown" />
     <None Include="client-api\commands\documents\delete.dotnet.markdown" />
     <None Include="client-api\commands\documents\delete.java.markdown" />
     <None Include="client-api\commands\how-to\.docslist" />
@@ -109,7 +109,7 @@
     <None Include="client-api\commands\transformers\put.markdown" />
     <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docslist" />
-    <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
+    <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.dotnet.markdown" />
     <None Include="client-api\faq\.docslist" />
     <None Include="client-api\faq\how-document-store-handles-replication.markdown" />
     <None Include="client-api\how-to\.docslist" />
