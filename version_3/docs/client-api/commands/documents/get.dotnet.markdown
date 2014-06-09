@@ -109,7 +109,7 @@ There are few methods that allow you to retrieve documents from a database:
 
 **Parameters**   
 
-- keyPrefix - prefix for which to documents should be returned   
+- keyPrefix - prefix for which documents should be returned   
 - matches - pipe ('|') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters)    
 - start - number of documents that should be skipped   
 - pageSize - maximum number of documents that will be retrieved   

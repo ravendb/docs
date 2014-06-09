@@ -67,7 +67,7 @@
     <None Include="client-api\commands\documents\how-to\.docslist" />
     <None Include="client-api\commands\documents\how-to\delete-or-update-documents-using-index.dotnet.markdown" />
     <None Include="client-api\commands\documents\how-to\get-document-metadata-only.dotnet.markdown" />
-    <None Include="client-api\commands\documents\stream.markdown" />
+    <None Include="client-api\commands\documents\stream.dotnet.markdown" />
     <None Include="client-api\commands\documents\put.dotnet.markdown" />
     <None Include="client-api\commands\documents\delete.dotnet.markdown" />
     <None Include="client-api\commands\how-to\.docslist" />
