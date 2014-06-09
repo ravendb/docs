@@ -56,4 +56,4 @@ This methods returns a index **name** as a result.
 
 If **overwrite** is set to **true** and `IndexDefinition` haven't changed, no action will be taken on server-side and no indexing data will be lost.
 
-[SAFE BY DEFAULT] **PutIndex** methods does **not allow** indexes to be **overwritten**, because this causes all previous indexing data to be lost, which in many cases is not desired.
+[SAFE BY DEFAULT] By default, **PutIndex** methods does **not allow** indexes to be **overwritten**, because this causes all previous indexing data to be lost, which in many cases is not desired.
