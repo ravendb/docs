@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.Threading.Tasks;
 
 	using Raven.Abstractions.Data;
 	using Raven.Json.Linq;
@@ -81,5 +82,24 @@
 			public int Status { get; set; }
 		}
 		#endregion
+
+		#region operation
+		public class Operation
+		{
+			public RavenJToken WaitForCompletion()
+			{
+				throw new CodeOmitted();
+			}
+
+			public Task<RavenJToken> WaitForCompletionAsync()
+			{
+				throw new CodeOmitted();
+			}
+		}
+		#endregion
+
+		private class CodeOmitted : Exception
+		{
+		}
 	}
 }
