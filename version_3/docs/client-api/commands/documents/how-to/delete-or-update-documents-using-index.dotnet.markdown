@@ -79,7 +79,7 @@ Mass-update can also be executed with JavaScript patch.
 
 ## Remarks
 
-By default, set-based operations will **not** work on indexes that are stale, and the operation will only succeed if the specified index is NOT stale. This is to make sure you only delete what you intended to delete, and is part of RavenDB's safe-by-default approach.
+[SAFE BY DEFAULT] Set-based operations will **not work** on indexes that are stale, and the operation will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete.
 
 For indexes that are updated all the time, you can set a `Cutoff` in the `IndexQuery` object you send, and that will make sure the operation is executed and that you know what results to expect.
 
