@@ -57,3 +57,9 @@ This methods returns a index **name** as a result.
 If **overwrite** is set to **true** and `IndexDefinition` haven't changed, no action will be taken on server-side and no indexing data will be lost.
 
 [SAFE BY DEFAULT] By default, **PutIndex** methods does **not allow** indexes to be **overwritten**, because this causes all previous indexing data to be lost, which in many cases is not desired.
+
+#### Related articles
+
+- [How to **reset index**?](../../../client-api/commands/indexes/reset-index)  
+- [GetIndex](../../../client-api/commands/indexes/get)  
+- [DeleteIndex](../../../client-api/commands/indexes/delete)  

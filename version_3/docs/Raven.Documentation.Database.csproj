@@ -83,7 +83,7 @@
     <None Include="client-api\commands\how-to\start-stop-indexing-and-get-indexing-status.markdown" />
     <None Include="client-api\commands\how-to\switch-commands-to-a-different-database.markdown" />
     <None Include="client-api\commands\indexes\.docslist" />
-    <None Include="client-api\commands\indexes\delete.markdown" />
+    <None Include="client-api\commands\indexes\delete.dotnet.markdown" />
     <None Include="client-api\commands\indexes\get.markdown" />
     <None Include="client-api\commands\indexes\how-to\.docslist" />
     <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.markdown" />
