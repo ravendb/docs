@@ -12,7 +12,7 @@ There are following commands that can be used to manipulate documents:
 - [Put](../../client-api/commands/documents/put)   
 - [Get](../../client-api/commands/documents/get)   
 - [GetDocuments](../../client-api/commands/documents/get)   
-- [MultiGet](../../client-api/commands/documents/get)    
+- MultiGet   
 - [StartsWith](../../client-api/commands/documents/get)    
 - [Head](../../client-api/commands/documents/how-to/get-document-metadata-only)   
 - [Delete](../../client-api/commands/documents/delete)   

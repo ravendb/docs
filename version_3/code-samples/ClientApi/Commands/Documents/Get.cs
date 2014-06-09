@@ -1,9 +1,9 @@
 ﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 {
-	using System;
 	using System.Collections.Generic;
 
 	using Raven.Abstractions.Data;
+	using Raven.Client;
 	using Raven.Client.Document;
 	using Raven.Json.Linq;
 
@@ -26,6 +26,13 @@
 
 			#region get_3_0
 			JsonDocument[] GetDocuments(int start, int pageSize, bool metadataOnly = false);
+			#endregion
+
+			#region get_4_0
+			JsonDocument[] StartsWith(string keyPrefix, string matches, int start, int pageSize,
+								  RavenPagingInformation pagingInformation = null, bool metadataOnly = false,
+								  string exclude = null, string transformer = null,
+								  Dictionary<string, RavenJToken> queryInputs = null);
 			#endregion
 		}
 
@@ -154,6 +161,36 @@
 			{
 				#region get_3_1
 				var documents = store.DatabaseCommands.GetDocuments(0, 10, metadataOnly: false);
+				#endregion
+			}
+		}
+
+		public void StartsWith()
+		{
+			using (var store = new DocumentStore())
+			{
+				#region get_4_1
+				// return up to 128 documents with key that starts with 'people'
+				var result = store.DatabaseCommands.StartsWith("people", null, 0, 128);
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				#region get_4_2
+				// return up to 128 documents with key that starts with 'people/' 
+				// and rest of the key begins with "1" or "2" e.g. people/10, people/25
+				var result = store.DatabaseCommands.StartsWith("people/", "1*|2*", 0, 128); 
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				#region get_4_3
+				// return up to 128 documents with key that starts with 'people/' 
+				// and rest of the key have length of 3, begins and ends with "1" 
+				// and contains any character at 2nd position e.g. people/101, people/1B1
+				var result = store.DatabaseCommands.StartsWith("people/", "1?1", 0, 128);
 				#endregion
 			}
 		}

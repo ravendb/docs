@@ -44,5 +44,27 @@
 			public Etag ETag { get; set; }
 		}
 		#endregion
+
+		#region getrequest
+		public class GetRequest
+		{
+			public string Url { get; set; }
+
+			public IDictionary<string, string> Headers { get; set; }
+
+			public string Query { get; set; }
+		}
+		#endregion
+
+		#region getresponse
+		public class GetResponse
+		{
+			public RavenJToken Result { get; set; }
+
+			public IDictionary<string,string> Headers { get; set; }
+
+			public int Status { get; set; }
+		}
+		#endregion
 	}
 }
