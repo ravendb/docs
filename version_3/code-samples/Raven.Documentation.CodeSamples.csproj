@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientApi\Commands\Documents\Get.cs" />
+    <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs" />
     <Compile Include="ClientApi\Commands\Documents\Put.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
