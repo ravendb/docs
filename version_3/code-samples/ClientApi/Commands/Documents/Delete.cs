@@ -1,14 +1,25 @@
 ﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 {
-	using System;
+	using Raven.Abstractions.Data;
+	using Raven.Client.Document;
 
 	public class Delete
-    {
-        #region delete_1
-        public Delete()
-        {
-            Console.Write("hello world!");
-        }
-        #endregion
-    }
+	{
+		private interface IFoo
+		{
+			#region delete_1
+			void Delete(string key, Etag etag);
+			#endregion
+		}
+
+		public Delete()
+		{
+			using (var store = new DocumentStore())
+			{
+				#region delete_2
+				store.DatabaseCommands.Delete("people/1", null);
+				#endregion
+			}
+		}
+	}
 }

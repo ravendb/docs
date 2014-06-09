@@ -27,6 +27,21 @@
 		}
 		#endregion
 
+		#region jsondocumentmetadata
+		public class JsonDocumentMetadata
+		{
+			public RavenJObject Metadata { get; set; }
+
+			public Etag Etag { get; set; }
+
+			public string Key { get; set; }
+
+			public DateTime? LastModified { get; set; }
+
+			public bool? NonAuthoritativeInformation { get; set; }
+		}
+		#endregion
+
 		#region multiloadresult
 		public class MultiLoadResult
 		{
