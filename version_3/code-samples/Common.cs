@@ -98,6 +98,17 @@
 		}
 		#endregion
 
+		#region transformerdefinition
+		public class TransformerDefinition
+		{
+			public string TransformResults { get; set; }
+
+			public int TransfomerId { get; set; }
+
+			public string Name { get; set; }
+		}
+		#endregion
+
 		private class CodeOmitted : Exception
 		{
 		}

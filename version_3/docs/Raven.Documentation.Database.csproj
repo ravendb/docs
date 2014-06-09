@@ -100,11 +100,11 @@
     <None Include="client-api\commands\querying\how-to-stream-query-results.markdown" />
     <None Include="client-api\commands\querying\how-to-query-a-database.markdown" />
     <None Include="client-api\commands\transformers\.docslist" />
-    <None Include="client-api\commands\transformers\delete.markdown" />
+    <None Include="client-api\commands\transformers\delete.dotnet.markdown" />
     <None Include="client-api\commands\transformers\get.markdown" />
     <None Include="client-api\commands\transformers\how-to\.docslist" />
     <None Include="client-api\commands\transformers\how-to\query-using-transformer.markdown" />
-    <None Include="client-api\commands\transformers\put.markdown" />
+    <None Include="client-api\commands\transformers\put.dotnet.markdown" />
     <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docslist" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.dotnet.markdown" />
