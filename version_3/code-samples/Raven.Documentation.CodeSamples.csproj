@@ -68,6 +68,9 @@
     <Compile Include="ClientApi\Commands\Documents\Put.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Get.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Delete.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetIndexMergeSuggestions.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetTerms.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\ResetIndex.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Put.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Put.cs" />

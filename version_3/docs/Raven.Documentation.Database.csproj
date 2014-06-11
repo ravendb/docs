@@ -86,9 +86,9 @@
     <None Include="client-api\commands\indexes\delete.dotnet.markdown" />
     <None Include="client-api\commands\indexes\get.dotnet.markdown" />
     <None Include="client-api\commands\indexes\how-to\.docslist" />
-    <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.markdown" />
-    <None Include="client-api\commands\indexes\how-to\reset-index.markdown" />
-    <None Include="client-api\commands\indexes\how-to\get-index-terms.markdown" />
+    <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.dotnet.markdown" />
+    <None Include="client-api\commands\indexes\how-to\reset-index.dotnet.markdown" />
+    <None Include="client-api\commands\indexes\how-to\get-index-terms.dotnet.markdown" />
     <None Include="client-api\commands\indexes\put.dotnet.markdown" />
     <None Include="client-api\commands\patches\.docslist" />
     <None Include="client-api\commands\patches\how-to-use-javascript-to-patch-your-documents.markdown" />
