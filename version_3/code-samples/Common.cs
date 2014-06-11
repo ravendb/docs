@@ -2,6 +2,7 @@
 {
 	using System;
 	using System.Collections.Generic;
+	using System.IO;
 	using System.Threading.Tasks;
 
 	using Raven.Abstractions.Data;
@@ -235,6 +236,62 @@
 			/// Proposition of a new index definition for a merged index
 			/// </summary>
 			public IndexDefinition MergedIndex = new IndexDefinition();
+		}
+		#endregion
+
+		#region attachment
+		public class Attachment
+		{
+			/// <summary>
+			/// Function that returns attachment data
+			/// </summary>
+			public Func<Stream> Data { get; set; }
+
+			/// <summary>
+			/// Size of the attachment.
+			/// </summary>
+			/// <remarks>The max size of an attachment can be 2GB.</remarks>
+			public int Size { get; set; }
+
+			/// <summary>
+			/// Attachment metadata
+			/// </summary>
+			public RavenJObject Metadata { get; set; }
+
+			/// <summary>
+			/// Attachment ETag
+			/// </summary>
+			public Etag Etag { get; set; }
+
+			/// <summary>
+			/// Attachment key
+			/// </summary>
+			public string Key { get; set; }
+		}
+		#endregion
+
+		#region attachmentinformation
+		public class AttachmentInformation
+		{
+			/// <summary>
+			/// Size of the attachment.
+			/// </summary>
+			public int Size { get; set; }
+
+			/// <summary>
+			/// Attachment key
+			/// </summary>
+			public string Key { get; set; }
+
+			/// <summary>
+			/// Attachment metadata
+			/// </summary>
+			public RavenJObject Metadata { get; set; }
+
+			/// <summary>
+			/// Attachment ETag
+			/// </summary>
+			public Etag Etag { get; set; }
 		}
 		#endregion
 

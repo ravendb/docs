@@ -61,6 +61,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientApi\Commands\Attachments\Delete.cs" />
+    <Compile Include="ClientApi\Commands\Attachments\Get.cs" />
+    <Compile Include="ClientApi\Commands\Attachments\Put.cs" />
     <Compile Include="ClientApi\Commands\Documents\Get.cs" />
     <Compile Include="ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs" />
     <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs" />
