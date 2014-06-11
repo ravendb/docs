@@ -72,6 +72,8 @@
     <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs" />
     <Compile Include="ClientApi\Commands\Documents\Stream.cs" />
     <Compile Include="ClientApi\Commands\Documents\Put.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsToDifferentDatabase.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Get.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Delete.cs" />
     <Compile Include="ClientApi\Commands\Indexes\HowTo\GetIndexMergeSuggestions.cs" />
