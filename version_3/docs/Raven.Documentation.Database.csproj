@@ -92,7 +92,7 @@
     <None Include="client-api\commands\indexes\put.dotnet.markdown" />
     <None Include="client-api\commands\patches\.docslist" />
     <None Include="client-api\commands\patches\how-to-use-javascript-to-patch-your-documents.markdown" />
-    <None Include="client-api\commands\patches\how-to-work-with-patch-requests.markdown" />
+    <None Include="client-api\commands\patches\how-to-work-with-patch-requests.dotnet.markdown" />
     <None Include="client-api\commands\querying\.docslist" />
     <None Include="client-api\commands\querying\how-to-work-with-morelikethis-query.markdown" />
     <None Include="client-api\commands\querying\how-to-work-with-suggestion-query.markdown" />
