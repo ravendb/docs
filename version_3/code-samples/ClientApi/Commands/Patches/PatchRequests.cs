@@ -35,7 +35,7 @@
 			/// <summary>
 			/// Sends a patch request for a specific document which may or may not currently exist
 			/// </summary>
-			/// <param name="key">Key of the document to patch</param>
+			/// <param name="key">Id of the document to patch</param>
 			/// <param name="patchesToExisting">Array of patch requests to apply to an existing document</param>
 			/// <param name="patchesToDefault">Array of patch requests to apply to a default document when the document is missing</param>
 			/// <param name="defaultMetadata">The metadata for the default document when the document is missing</param>
