@@ -20,5 +20,5 @@
 #### Related articles
 
 - [How to **update** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/update-attachment-metadata-only)  
-- [Get](../../../client-api/commands/attachments/get)  
-- [Delete](../../../client-api/commands/attachments/delete)  
+- [GetAttachment](../../../client-api/commands/attachments/get)  
+- [DeleteAttachment](../../../client-api/commands/attachments/delete)  

@@ -17,5 +17,5 @@
 
 #### Related articles
 
-- [Get](../../../client-api/commands/attachments/get)  
-- [Put](../../../client-api/commands/attachments/put)  
+- [GetAttachment](../../../client-api/commands/attachments/get)  
+- [PutAttachment](../../../client-api/commands/attachments/put)  

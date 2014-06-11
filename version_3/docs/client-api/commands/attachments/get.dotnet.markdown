@@ -2,7 +2,7 @@
 
 There are few methods that allow you to download attachments from a database:   
 - [GetAttachment](../../../client-api/commands/attachments/get#getattachment)   
-- [GetAttachments](../../../client-api/commands/documents/get#getattachments)   
+- [GetAttachments](../../../client-api/commands/attachments/get#getattachments)   
 
 ## GetAttachment
 
@@ -47,5 +47,6 @@ There are few methods that allow you to download attachments from a database:
 
 #### Related articles
 
+- [How to **get** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
 - [PutAttachment](../../../client-api/commands/attachments/put)  
 - [DeleteAttachment](../../../client-api/commands/attachments/delete)  
