@@ -66,6 +66,7 @@
     <Compile Include="ClientApi\Commands\Attachments\HowTo\Update.cs" />
     <Compile Include="ClientApi\Commands\Attachments\HowTo\Head.cs" />
     <Compile Include="ClientApi\Commands\Attachments\Put.cs" />
+    <Compile Include="ClientApi\Commands\Batches\Batch.cs" />
     <Compile Include="ClientApi\Commands\Documents\Get.cs" />
     <Compile Include="ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs" />
     <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs" />

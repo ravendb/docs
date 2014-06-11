@@ -48,4 +48,4 @@
 
 #### Related articles
 
-[How to work with **patch requests**?](../../../client-api/commands/patches/how-to-work-with-patch-requests.dotnet) 
+[How to work with **patch requests**?](../../../client-api/commands/patches/how-to-work-with-patch-requests) 
