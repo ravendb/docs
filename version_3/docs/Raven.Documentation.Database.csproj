@@ -54,12 +54,12 @@
     <None Include="client-api\changes\how-to-subscribe-to-document-changes.markdown" />
     <None Include="client-api\commands\.docslist" />
     <None Include="client-api\commands\attachments\.docslist" />
-    <None Include="client-api\commands\attachments\delete.markdown" />
-    <None Include="client-api\commands\attachments\get.markdown" />
+    <None Include="client-api\commands\attachments\delete.dotnet.markdown" />
+    <None Include="client-api\commands\attachments\get.dotnet.markdown" />
     <None Include="client-api\commands\attachments\how-to\.docslist" />
     <None Include="client-api\commands\attachments\how-to\update-attachment-metadata-only.markdown" />
     <None Include="client-api\commands\attachments\how-to\get-attachment-metadata-only.markdown" />
-    <None Include="client-api\commands\attachments\put.markdown" />
+    <None Include="client-api\commands\attachments\put.dotnet.markdown" />
     <None Include="client-api\commands\batches\.docslist" />
     <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.markdown" />
     <None Include="client-api\commands\documents\.docslist" />
