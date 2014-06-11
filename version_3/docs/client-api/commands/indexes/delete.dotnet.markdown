@@ -17,4 +17,4 @@
 #### Related articles
 
 - [GetIndex](../../../client-api/commands/indexes/get)  
-- [PutIndex](../../../client-api/commands/indexes/delete)  
+- [PutIndex](../../../client-api/commands/indexes/put)  
