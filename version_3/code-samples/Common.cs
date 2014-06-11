@@ -379,6 +379,22 @@
 		}
 		#endregion
 
+		#region scriptedpatchrequest
+		public class ScriptedPatchRequest
+		{
+			/// <summary>
+			/// JavaScript function that will patch a document
+			/// </summary>
+			/// <value>The type.</value>
+			public string Script { get; set; }
+
+			/// <summary>
+			/// Additional values that will be passed to function
+			/// </summary>
+			public Dictionary<string, object> Values { get; set; }
+		}
+		#endregion
+
 		private class CodeOmitted : Exception
 		{
 		}

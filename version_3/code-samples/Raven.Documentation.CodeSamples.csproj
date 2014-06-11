@@ -77,6 +77,7 @@
     <Compile Include="ClientApi\Commands\Indexes\HowTo\GetTerms.cs" />
     <Compile Include="ClientApi\Commands\Indexes\HowTo\ResetIndex.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Put.cs" />
+    <Compile Include="ClientApi\Commands\Patches\JavaScript.cs" />
     <Compile Include="ClientApi\Commands\Patches\PatchRequests.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Put.cs" />
