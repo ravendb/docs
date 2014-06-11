@@ -51,7 +51,7 @@
 
 			using (var store = new DocumentStore())
 			{
-				#region update_by_index_4
+				#region update_by_index_2
 				// Set property 'Name' for all documents in collection 'People' to 'Patched Name'
 				var operation = store
 					.DatabaseCommands
@@ -69,6 +69,28 @@
 										Name = "Name", 
 										Value = "Patched Name"
 									}
+							},
+						allowStale: false);
+
+				operation.WaitForCompletion();
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				#region update_by_index_4
+				// Set property 'Name' for all documents in collection 'People' to 'Patched Name'
+				var operation = store
+					.DatabaseCommands
+					.UpdateByIndex(
+						"Raven/DocumentsByEntityName",
+						new IndexQuery
+						{
+							Query = "Tag:People"
+						},
+						new ScriptedPatchRequest
+							{
+								Script = @"this.Name = 'Patched Name';"
 							},
 						allowStale: false);
 
