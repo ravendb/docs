@@ -77,11 +77,13 @@
     <Compile Include="ClientApi\Commands\Indexes\HowTo\GetTerms.cs" />
     <Compile Include="ClientApi\Commands\Indexes\HowTo\ResetIndex.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Put.cs" />
+    <Compile Include="ClientApi\Commands\Patches\PatchRequests.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Put.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Include="Entities.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

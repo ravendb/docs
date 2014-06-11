@@ -295,6 +295,90 @@
 		}
 		#endregion
 
+		#region patchrequest
+		public class PatchRequest
+		{
+			/// <summary>
+			/// Type of the operation
+			/// </summary>
+			public PatchCommandType Type { get; set; }
+
+			/// <summary>
+			/// Gets or sets the previous value, which is compared against the current value to verify a
+			/// change isn't overwriting new values.
+			/// If the value is null, the operation is always successful
+			/// </summary>
+			public RavenJToken PrevVal { get; set; }
+
+			/// <summary>
+			/// Value that will be applied
+			/// </summary>
+			public RavenJToken Value { get; set; }
+
+			/// <summary>
+			/// Gets or sets the nested operations to perform. This is only valid when the <see cref="Type"/> is <see cref="PatchCommandType.Modify"/>.
+			/// </summary>
+			public PatchRequest[] Nested { get; set; }
+
+			/// <summary>
+			/// Name of the property that will be patched
+			/// </summary>
+			public string Name { get; set; }
+
+			/// <summary>
+			/// Position in array that will be patched
+			/// </summary>
+			public int? Position { get; set; }
+
+			/// <summary>
+			/// Set this property to true if you want to modify all items in an collection.
+			/// </summary>
+			public bool? AllPositions { get; set; }
+		}
+		#endregion
+
+		#region patchcommandtype
+		public enum PatchCommandType
+		{
+			/// <summary>
+			/// Set a property
+			/// </summary>
+			Set,
+			/// <summary>
+			/// Unset (remove) a property
+			/// </summary>
+			Unset,
+			/// <summary>
+			/// Add an item to an array
+			/// </summary>
+			Add,
+			/// <summary>
+			/// Append an item to an array
+			/// </summary>
+			Insert,
+			/// <summary>
+			/// Remove an item from an array at a specified position
+			/// </summary>
+			Remove,
+			/// <summary>
+			/// Modify a property value by providing a nested set of patch operation
+			/// </summary>
+			Modify,
+			/// <summary>
+			/// Increment a property by a specified value
+			/// </summary>
+			Inc,
+			/// <summary>
+			/// Copy a property value to another property
+			/// </summary>
+			Copy,
+			/// <summary>
+			/// Rename a property
+			/// </summary>
+			Rename
+		}
+		#endregion
+
 		private class CodeOmitted : Exception
 		{
 		}
