@@ -45,3 +45,7 @@ Type: string
 ### Example
 
 {CODE get_indexing_status_2@ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs /}
+
+#### Related articles
+
+- [How to **create** or **delete database**?](../../client-api/commands/how-to/create-delete-database)   

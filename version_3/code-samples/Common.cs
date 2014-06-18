@@ -5,7 +5,6 @@
 	using System.IO;
 	using System.Threading.Tasks;
 
-	using Raven.Abstractions.Commands;
 	using Raven.Abstractions.Data;
 	using Raven.Abstractions.Indexing;
 	using Raven.Json.Linq;
@@ -537,9 +536,9 @@
 			public bool? Deleted { get; set; }
 		}
 		#endregion
+	}
 
-		private class CodeOmitted : Exception
-		{
-		}
+	public class CodeOmitted : Exception
+	{
 	}
 }
