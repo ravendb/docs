@@ -196,14 +196,14 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 	        };
 
             if (!string.IsNullOrWhiteSpace(output.RootUrl))
-                md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, document);
+                md.PrepareLink = tag => PrepareLink(tag, output.RootUrl, trail, document, output.DebugMode);
  
             md.PrepareImage = (tag, titledImage) => PrepareImage(output.ImagesPath, tag);
 
             return md.Transform(content);
         }
 
-        private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail, Document document)
+        private static bool PrepareLink(HtmlTag tag, string rootUrl, string trail, Document document, bool debugMode)
         {
             string href;
             if (!tag.attributes.TryGetValue("href", out href))
@@ -223,7 +223,11 @@ namespace RavenDB.DocsCompiler.MagicWorkers
                 // TODO: Log error
             }
 
-            tag.attributes["href"] = uri.AbsoluteUri;
+	        var finalHref = uri.AbsoluteUri;
+	        if (debugMode && finalHref.EndsWith(".html") == false)
+		        finalHref += ".html";
+
+			tag.attributes["href"] = finalHref;
 
             return true;
         }

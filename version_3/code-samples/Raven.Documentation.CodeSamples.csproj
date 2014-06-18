@@ -72,6 +72,12 @@
     <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs" />
     <Compile Include="ClientApi\Commands\Documents\Stream.cs" />
     <Compile Include="ClientApi\Commands\Documents\Put.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\BuildNumber.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\Compact.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\CreateDeleteDatabase.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseNames.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs" />
     <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs" />
     <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsToDifferentDatabase.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Get.cs" />
