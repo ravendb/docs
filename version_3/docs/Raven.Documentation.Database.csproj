@@ -94,11 +94,11 @@
     <None Include="client-api\commands\patches\how-to-use-javascript-to-patch-your-documents.dotnet.markdown" />
     <None Include="client-api\commands\patches\how-to-work-with-patch-requests.dotnet.markdown" />
     <None Include="client-api\commands\querying\.docslist" />
-    <None Include="client-api\commands\querying\how-to-work-with-morelikethis-query.markdown" />
-    <None Include="client-api\commands\querying\how-to-work-with-suggestion-query.markdown" />
-    <None Include="client-api\commands\querying\how-to-work-with-facet-query.markdown" />
-    <None Include="client-api\commands\querying\how-to-stream-query-results.markdown" />
-    <None Include="client-api\commands\querying\how-to-query-a-database.markdown" />
+    <None Include="client-api\commands\querying\how-to-work-with-morelikethis-query.dotnet.markdown" />
+    <None Include="client-api\commands\querying\how-to-work-with-suggestion-query.dotnet.markdown" />
+    <None Include="client-api\commands\querying\how-to-work-with-facet-query.dotnet.markdown" />
+    <None Include="client-api\commands\querying\how-to-stream-query-results.dotnet.markdown" />
+    <None Include="client-api\commands\querying\how-to-query-a-database.dotnet.markdown" />
     <None Include="client-api\commands\transformers\.docslist" />
     <None Include="client-api\commands\transformers\delete.dotnet.markdown" />
     <None Include="client-api\commands\transformers\get.dotnet.markdown" />
@@ -170,6 +170,9 @@
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="glossary\.docslist" />
+    <None Include="glossary\indexing.markdown" />
+    <None Include="indexes\.docslist" />
     <None Include="start\.docslist" />
     <None Include="start\getting-started.markdown" />
     <None Include="start\whats-new.markdown" />
@@ -182,7 +185,9 @@
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="indexes\full-query-syntax.markdown" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
