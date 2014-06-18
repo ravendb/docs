@@ -12,8 +12,12 @@ By default, commands available directly in store are working with credentials th
 
 **Return Value**
 
-Method returns new instance of commands that will use desired credentials.
+Method returns new instance of commands that will use given credentials.
 
 ## Example
 
 {CODE with_2@ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs /}
+
+#### Related articles
+
+- [How to **switch** commands to a different **database**?](../../../client-api/commands/how-to/switch-commands-to-a-different-database)   
