@@ -12,7 +12,7 @@ By default, commands available directly in store are working on a default databa
 
 **Return Value**
 
-Method returns new instance of commands that is scoped to the desired database.
+Method returns new instance of commands that is scoped to the requested database.
 
 ### Example
 
