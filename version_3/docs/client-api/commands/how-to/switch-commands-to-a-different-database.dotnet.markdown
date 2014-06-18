@@ -32,4 +32,4 @@ Method returns new instance of commands that is scoped to the system database.
 
 #### Related articles
 
-- [How to **switch** commands **credentials**?](../../client-api/commands/how-to/switch-commands-to-a-different-database)   
+- [How to **switch** commands **credentials**?](../../../client-api/commands/how-to/switch-commands-credentials)   

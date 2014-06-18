@@ -57,5 +57,7 @@ namespace RavenDB.DocsCompiler.Output
         /// The root item.
         /// </param>
         void GenerateTableOfContents(IDocumentationItem rootItem);
+
+		bool DebugMode { get; }
     }
 }
