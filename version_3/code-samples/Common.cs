@@ -614,6 +614,15 @@
 			public string Assembly { get; set; }
 		}
 		#endregion
+
+		#region buildnumber
+		public class BuildNumber
+		{
+			public string ProductVersion { get; set; }
+
+			public string BuildVersion { get; set; }
+		}
+		#endregion
 	}
 
 	public class CodeOmitted : Exception
