@@ -80,7 +80,7 @@
     <None Include="client-api\commands\how-to\create-delete-database.markdown" />
     <None Include="client-api\commands\how-to\switch-commands-credentials.dotnet.markdown" />
     <None Include="client-api\commands\how-to\disable-caching.markdown" />
-    <None Include="client-api\commands\how-to\start-stop-indexing-and-get-indexing-status.markdown" />
+    <None Include="client-api\commands\how-to\start-stop-indexing-and-get-indexing-status.dotnet.markdown" />
     <None Include="client-api\commands\how-to\switch-commands-to-a-different-database.dotnet.markdown" />
     <None Include="client-api\commands\indexes\.docslist" />
     <None Include="client-api\commands\indexes\delete.dotnet.markdown" />

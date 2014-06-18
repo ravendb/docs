@@ -12,7 +12,7 @@ By default, commands available directly in store are working with credentials th
 
 **Return Value**
 
-Method returns new instance of commands that will use desired credentials.
+Method returns new instance of commands that will use given credentials.
 
 ## Example
 
