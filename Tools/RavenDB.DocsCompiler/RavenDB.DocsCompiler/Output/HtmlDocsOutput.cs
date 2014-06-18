@@ -49,6 +49,8 @@ namespace RavenDB.DocsCompiler.Output
 		public void GenerateTableOfContents(IDocumentationItem rootItem)
 		{
 		}
+
+		public bool DebugMode { get; set; }
 	}
 	public class HtmlDocsOutput : IDocsOutput
 	{
@@ -67,7 +69,9 @@ namespace RavenDB.DocsCompiler.Output
 
 	    public CompilationMode CompilationMode { get; set; }
 
-	    public void SaveDocItem(Document doc)
+		public bool DebugMode { get; set; }
+
+		public void SaveDocItem(Document doc)
 		{
 			var outputPath = Path.Combine(OutputPath, doc.VirtualTrail);
 			if (!Directory.Exists(outputPath))

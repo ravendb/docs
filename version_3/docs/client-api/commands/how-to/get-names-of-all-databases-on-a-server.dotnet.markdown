@@ -27,4 +27,4 @@ Names of all databases on a server
 
 #### Related articles
 
-- [How to **create** or **delete database**?](../../client-api/commands/how-to/create-delete-database)   
+- [How to **create** or **delete database**?](../../../client-api/commands/how-to/create-delete-database)   

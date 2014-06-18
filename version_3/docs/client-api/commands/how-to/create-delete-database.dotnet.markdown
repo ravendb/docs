@@ -71,6 +71,6 @@ Ignore any exceptions that could occured during database creation. Default: `fal
 
 #### Related articles
 
-- [How to **switch** commands to different **database**?](../../client-api/commands/how-to/switch-commands-to-a-different-database)   
-- [How to get database and server **statistics**?](../../client-api/commands/how-to/get-database-and-server-statistics)   
-- [How to start **backup** or **restore** operations?](../../client-api/commands/how-to/start-backup-restore-operations)   
+- [How to **switch** commands to different **database**?](../../../client-api/commands/how-to/switch-commands-to-a-different-database)   
+- [How to get database and server **statistics**?](../../../client-api/commands/how-to/get-database-and-server-statistics)   
+- [How to start **backup** or **restore** operations?](../../../client-api/commands/how-to/start-backup-restore-operations)   

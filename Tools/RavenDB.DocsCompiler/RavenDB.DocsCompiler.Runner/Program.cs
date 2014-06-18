@@ -170,7 +170,8 @@ namespace RavenDB.DocsCompiler.Runner
                                                      Path.Combine(rootPath, version.VersionPath, @"html-template.html")),
                                              RootUrl = rootUrl,
 											 ImagesPath = debugMode ? "images/" : null,
-                                             CompilationMode = version.CompilationMode
+                                             CompilationMode = version.CompilationMode,
+											 DebugMode = debugMode
                                          };
                 return output;
             }

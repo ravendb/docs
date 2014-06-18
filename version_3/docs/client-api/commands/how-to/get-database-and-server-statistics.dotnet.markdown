@@ -38,4 +38,4 @@ Current statistics for a server
 
 #### Related articles
 
-- [How to **switch** commands to different **database**?](../../client-api/commands/how-to/switch-commands-to-a-different-database)   
+- [How to **switch** commands to different **database**?](../../../client-api/commands/how-to/switch-commands-to-a-different-database)   
