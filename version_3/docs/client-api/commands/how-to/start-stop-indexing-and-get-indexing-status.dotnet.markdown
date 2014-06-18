@@ -39,8 +39,8 @@ This methods retrieves current status of the indexing.
 
 **Return Value**
 
-Type: string
-:   `"Indexing"` if the indexing is running, `"Paused"` otherwise.
+Type: string   
+`"Indexing"` if the indexing is running, `"Paused"` otherwise.
 
 ### Example
 

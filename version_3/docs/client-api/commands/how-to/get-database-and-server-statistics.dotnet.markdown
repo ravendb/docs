@@ -12,8 +12,7 @@ Database statistics can be downloaded using `GetStatistics` method in commands.
 
 **Return Value**
 
-value
-:   Type: [DatabaseStatistics]()   
+Type: [DatabaseStatistics]()   
 Current statistics for a database that commands work on
 
 ### Example
@@ -30,8 +29,7 @@ Server statistics can be downloaded using `GetStatistics` method in `GlobalAdmin
 
 **Return Value**
 
-value
-:   Type: [AdminStatistics]()   
+Type: [AdminStatistics]()   
 Current statistics for a server
 
 ### Example
