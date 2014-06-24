@@ -70,16 +70,24 @@ Uninstallation can be accomplished by _Programs and Features_ in _Control Panel_
 ##Quiet mode installation from command line
 
 The RavenDB installer can also be run from a command line with administrative privileges. In order to do that you will have to specify all required installation
-settings. Below there is a command which installs RavenDB as a windows service:
+settings. The following command shows the dialog with available options:
 
 {CODE-START:json /}
-   > ravendb-[version].exe /quiet /log C:\Temp\raven_log.txt /msicl RAVEN_TARGET_ENVIRONMENT=DEVELOPMENT /msicl TARGETDIR=C:\ /msicl INSTALLFOLDER=C:\RavenDB /msicl RAVEN_INSTALLATION_TYPE=SERVICE /msicl REMOVE=IIS /msicl ADDLOCAL=Service
+   > ravendb-[version].exe -help
 {CODE-END /}
 
-The list of RavenDB specific settings:
+Below there is a command which installs RavenDB as a windows service:
 
-* <em>RAVEN_INSTALLATION_TYPE</em> - available options: IIS (default) or SERVICE
+{CODE-START:json /}
+   > ravendb-[version].exe /quiet /log C:\Temp\raven_log.txt /msicl "RAVEN_TARGET_ENVIRONMENT=DEVELOPMENT TARGETDIR=C:\ INSTALLFOLDER=C:\RavenDB RAVEN_INSTALLATION_TYPE=SERVICE REMOVE=IIS ADDLOCAL=Service"
+{CODE-END /}
+
+The list of RavenDB specific properties:
+
+* <em>RAVEN_INSTALLATION_TYPE</em> - available options: SERVICE or IIS (quiet mode instalation on IIS is not recommended)
 * <em>RAVEN_TARGET_ENVIRONMENT</em> - available options: PRODUCTION (default), DEVELOPMENT
-* <em>RAVEN_LICENSE_FILE_PATH</em>
+* <em>RAVEN_LICENSE_FILE_PATH</em> - a full path to the license file
+* <em>RAVEN_DATA_DIR</em> - data directory (default: ~\Data)
+* <em>RAVEN_INDEX_DIR</em> - indexes location (default: ~\Data\Indexes)
 * <em>SERVICE_NAME</em> - default: RavenDB
 * <em>SERVICE_PORT</em> - default: 8080
