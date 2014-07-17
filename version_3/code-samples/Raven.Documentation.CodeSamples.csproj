@@ -35,12 +35,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Raven.Abstractions">
-      <HintPath>..\..\packages\RavenDB.Client.3.0.3256-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Client.3.0.3345-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\packages\RavenDB.Client.3.0.3256-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Raven.Client.Lightweight, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\RavenDB.Client.3.0.3345-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -89,6 +90,7 @@
     <Compile Include="ClientApi\Commands\Patches\JavaScript.cs" />
     <Compile Include="ClientApi\Commands\Patches\PatchRequests.cs" />
     <Compile Include="ClientApi\Commands\Querying\HowToQueryDatabase.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToStreamQueryResults.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Put.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />

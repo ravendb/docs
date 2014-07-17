@@ -18,6 +18,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 				#region build_number_2
 				var buildNumber = store
 					.DatabaseCommands
+					.GlobalAdmin
 					.GetBuildNumber();
 				#endregion
 			}

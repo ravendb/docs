@@ -27,11 +27,10 @@
 				result = store.DatabaseCommands.Query("Users/ByName", new IndexQuery
 				{
 					Query = "Name:James"
-				}, null);
+				});
 
 				var users = result.Results; // documents resulting from this query - users
 				#endregion
-				//TODO arek - remove null
 
 				#region query_database_3
 
