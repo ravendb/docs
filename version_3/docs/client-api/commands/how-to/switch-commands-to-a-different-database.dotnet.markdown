@@ -8,11 +8,14 @@ By default, commands available directly in store are working on a default databa
 
 **Parameters**
 
-- database - name of a database for which you want to get new commands   
+database
+:   Type: string   
+name of a database for which you want to get new commands   
 
 **Return Value**
 
-Method returns new instance of commands that is scoped to the requested database.
+Type: IDatabaseCommands   
+New instance of commands that is scoped to the requested database.
 
 ### Example
 

@@ -16,19 +16,41 @@ There are few methods that allow you to retrieve documents from a database:
 
 **Parameters**   
 
-- key - key of the document you want to retrieve   
+key
+:   Type: string   
+key of the document you want to retrieve  
 
 **Return Value**
 
 {CODE jsondocument@Common.cs /}
 
-- DataAsJson - document data   
-- Metadata - document metadata  
-- Etag - current document ETag   
-- Key - document key  
-- LastModified - last modified date of document   
-- NonAuthoritativeInformation - indicates if document is non authoritative (modified by uncommited transaction)   
-- TempIndexScore - ranking of document in current query   
+DataAsJson
+:   Type: RavenJObject   
+Document data
+
+Metadata
+:   Type: RavenJObject   
+Document metadata
+
+Etag
+:   Type: Etag   
+current document ETag
+
+Key
+:   Type: string   
+document key
+
+Metadata
+:   Type: DateTime?   
+last modified date of document 
+
+NonAuthoritativeInformation
+:   Type: bool?   
+indicates if document is non authoritative (modified by uncommited transaction)  
+
+TempIndexScore
+:   Type: float?   
+ranking of document in current query  
 
 ### Example
 
@@ -44,18 +66,37 @@ There are few methods that allow you to retrieve documents from a database:
 
 **Parameters**   
 
-- keys - array of keys of the documents you want to retrieve   
-- includes - array of paths in documents in which server should look for a 'referenced' document (check example)   
-- transformer - name of a transformer that should be used to transform the results   
-- queryInputs - inputs (parameters) that will can be used by transformer
-- metadataOnly - specifies if only document metadata should be returned   
+keys
+:   Type: string[]   
+array of keys of the documents you want to retrieve 
+
+includes
+:   Type: string[]   
+array of paths in documents in which server should look for a 'referenced' document (check example)  
+
+transformer
+:   Type: string   
+name of a transformer that should be used to transform the results    
+
+transformerParameters
+:   Type: Dictionary<string, RavenJToken>   
+inputs (parameters) that will can be used by transformer
+
+metadataOnly
+:   Type: bool   
+specifies if only document metadata should be returned
 
 **Return Value**
 
 {CODE multiloadresult@Common.cs /}
 
-- Results - list of documents in **exact** same order as in **keys** parameter      
-- Includes - list of documents that were found in specified paths that were passed in **includes** parameter      
+Results
+:   Type: List<RavenJObject>   
+list of documents in **exact** same order as in **keys** parameter
+
+Includes
+:   Type: List<RavenJObject>   
+list of documents that were found in specified paths that were passed in **includes** parameter     
 
 ### Example I
 
@@ -79,21 +120,49 @@ There are few methods that allow you to retrieve documents from a database:
 
 **Parameters**   
 
-- start - number of documents that should be skipped   
-- pageSize - maximum number of documents that will be retrieved   
-- metadataOnly - specifies if only document metadata should be returned   
+start
+:   Type: int   
+number of documents that should be skipped 
+
+pageSize
+:   Type: int   
+maximum number of documents that will be retrieved 
+
+metadataOnly
+:   Type: bool   
+specifies if only document metadata should be returned   
 
 **Return Value**
 
 {CODE jsondocument@Common.cs /}
 
-- DataAsJson - document data   
-- Metadata - document metadata  
-- Etag - current document ETag   
-- Key - document key  
-- LastModified - last modified date of document   
-- NonAuthoritativeInformation - indicates if document is non authoritative (modified by uncommited transaction)   
-- TempIndexScore - ranking of document in current query   
+DataAsJson
+:   Type: RavenJObject   
+Document data
+
+Metadata
+:   Type: RavenJObject   
+Document metadata
+
+Etag
+:   Type: Etag   
+current document ETag
+
+Key
+:   Type: string   
+document key
+
+Metadata
+:   Type: DateTime?   
+last modified date of document 
+
+NonAuthoritativeInformation
+:   Type: bool?   
+indicates if document is non authoritative (modified by uncommited transaction)  
+
+TempIndexScore
+:   Type: float?   
+ranking of document in current query  
 
 ### Example
 
@@ -109,27 +178,73 @@ There are few methods that allow you to retrieve documents from a database:
 
 **Parameters**   
 
-- keyPrefix - prefix for which documents should be returned   
-- matches - pipe ('|') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters)    
-- start - number of documents that should be skipped   
-- pageSize - maximum number of documents that will be retrieved   
-- pagingInformation - used to perform rapid pagination on server side      
-- metadataOnly - specifies if only document metadata should be returned   
-- exclude - pipe ('|') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters)       
-- transformer - name of a transformer that should be used to transform the results   
-- queryInputs - inputs (parameters) that will can be used by transformer   
+keyPrefix
+:   Type: string   
+prefix for which documents should be returned 
+
+matches
+:   Type: string   
+pipe ('|') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters)  
+
+start
+:   Type: int   
+number of documents that should be skipped 
+
+pageSize
+:   Type: int   
+maximum number of documents that will be retrieved
+
+pagingInformation
+:   Type: RavenPagingInformation   
+used to perform rapid pagination on server side 
+
+metadataOnly
+:   Type: bool   
+specifies if only document metadata should be returned   
+
+exclude
+:   Type: string   
+pipe ('|') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters)       
+
+transformer
+:   Type: string   
+name of a transformer that should be used to transform the results  
+
+transformerParameters
+:   Type: Dictionary<string, RavenJToken>      
+inputs (parameters) that will can be used by transformer   
 
 **Return Value**
 
 {CODE jsondocument@Common.cs /}
 
-- DataAsJson - document data   
-- Metadata - document metadata  
-- Etag - current document ETag   
-- Key - document key  
-- LastModified - last modified date of document   
-- NonAuthoritativeInformation - indicates if document is non authoritative (modified by uncommited transaction)   
-- TempIndexScore - ranking of document in current query   
+DataAsJson
+:   Type: RavenJObject   
+Document data
+
+Metadata
+:   Type: RavenJObject   
+Document metadata
+
+Etag
+:   Type: Etag   
+current document ETag
+
+Key
+:   Type: string   
+document key
+
+Metadata
+:   Type: DateTime?   
+last modified date of document 
+
+NonAuthoritativeInformation
+:   Type: bool?   
+indicates if document is non authoritative (modified by uncommited transaction)  
+
+TempIndexScore
+:   Type: float?   
+ranking of document in current query  
 
 ### Example I
 

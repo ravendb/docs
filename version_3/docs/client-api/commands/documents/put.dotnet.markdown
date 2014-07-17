@@ -8,17 +8,33 @@
 
 **Parameters**   
 
-- key - unique key under which document will be stored
-- etag - current document etag, used for concurrency checks (`null` to skip check) 
-- document - document data  
-- metadata - document metadata  
+key
+:   Type: string   
+unique key under which document will be stored
+
+etag
+:   Type: Etag   
+current document etag, used for concurrency checks (`null` to skip check) 
+
+document
+:   Type: RavenJObject   
+document data
+
+metadata
+:   Type: RavenJObject   
+document metadata
 
 **Return Value**
 
 {CODE putresult@Common.cs /}
 
-- Key - unique key under which document was stored   
-- ETag - stored document etag   
+Key
+:   Type: string   
+unique key under which document was stored  
+
+ETag
+:   Type: Etag   
+stored document etag 
 
 ## Example
 

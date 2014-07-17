@@ -8,8 +8,13 @@
 
 **Parameters**   
 
-- key - key of a document to delete   
-- etag - current document etag, used for concurrency checks (`null` to skip check)   
+key
+:   Type: string   
+Key of a document to delete
+
+etag
+:   Type: Etag   
+current document etag, used for concurrency checks (`null` to skip check)   
 
 ## Example
 

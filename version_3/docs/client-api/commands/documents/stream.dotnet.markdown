@@ -8,13 +8,33 @@
 
 **Parameters**   
 
-- fromEtag - ETag of a document from which stream should start (mutually exclusive with 'startsWith')   
-- startsWith - prefix for which documents should be streamed (mutually exclusive with 'fromEtag')   
-- matches - pipe ('|') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters)    
-- start - number of documents that should be skipped   
-- pageSize - maximum number of documents that will be retrieved   
-- exclude - pipe ('|') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters)       
-- pagingInformation - used to perform rapid pagination on server side      
+fromEtag
+:   Type: Etag   
+ETag of a document from which stream should start (mutually exclusive with 'startsWith')   
+
+startsWith
+:   Type: string   
+prefix for which documents should be streamed (mutually exclusive with 'fromEtag')   
+
+matches
+:   Type: string   
+pipe ('|') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters)
+
+start
+:   Type: int   
+number of documents that should be skipped   
+
+pageSize
+:   Type: int   
+maximum number of documents that will be retrieved
+
+exclude
+:   Type: string   
+pipe ('|') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters)       
+
+pagingInformation
+:   Type: RavenPagingInformation   
+used to perform rapid pagination on server side      
 
 ## Example
 

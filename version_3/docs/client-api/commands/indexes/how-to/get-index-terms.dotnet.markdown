@@ -8,14 +8,26 @@
 
 **Parameters**   
 
-- index - name of an index   
-- field - index field   
-- fromValue - starting point for a query, used for paging    
-- pageSize - maximum number of terms that will be returned      
+index
+:   Type: string   
+Name of an index
+
+field
+:   Type: string   
+Index field
+
+fromValue
+:   Type: string   
+Starting point for a query, used for paging
+
+pageSize
+:   Type: int   
+Maximum number of terms that will be returned
 
 **Return Value**
 
-This methods returns an array of index terms as a result.
+Type: string[]   
+Array of index terms.
 
 ## Example
 

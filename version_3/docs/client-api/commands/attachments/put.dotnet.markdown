@@ -8,10 +8,21 @@
 
 **Parameters**   
 
-- key - unique key under which attachment will be stored
-- etag - current attachment etag, used for concurrency checks (`null` to skip check) 
-- data - attachment data   
-- metadata - attachment metadata  
+key
+:   Type: string   
+unique key under which attachment will be stored
+
+etag
+:   Type: Etag   
+current attachment etag, used for concurrency checks (`null` to skip check) 
+
+data
+:   Type: Stream   
+attachment data
+
+metadata
+:   Type: RavenJObject   
+attachment metadata
 
 ## Example
 

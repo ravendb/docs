@@ -8,9 +8,17 @@
 
 **Parameters**   
 
-- key - key under which attachment is stored
-- etag - current attachment etag, used for concurrency checks (`null` to skip check) 
-- metadata - attachment metadata  
+key
+:   Type: string   
+ key under which attachment is stored
+
+etag
+:   Type: bool   
+current attachment etag, used for concurrency checks (`null` to skip check) 
+
+metadata
+:   Type: RavenJObject   
+attachment metadata
 
 ## Example
 

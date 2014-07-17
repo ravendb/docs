@@ -14,7 +14,9 @@ There are few methods that allow you to download attachments from a database:
 
 **Parameters**   
 
-- key - key of the attachment you want to download   
+key
+:   Type: string   
+key of the attachment you want to download
 
 **Return Value**
 
@@ -34,8 +36,13 @@ There are few methods that allow you to download attachments from a database:
 
 **Parameters**   
 
-- startEtag - ETag from which to start    
-- batchSize - maximum number of attachment that will be downloaded   
+startEtag
+:   Type: Etag   
+ETag from which to start
+
+batchSize
+:   Type: int   
+maximum number of attachment that will be downloaded   
 
 **Return Value**
 

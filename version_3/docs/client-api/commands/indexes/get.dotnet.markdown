@@ -15,7 +15,9 @@ There are few methods that allow you to retrieve index from a database:
 
 **Parameters**   
 
-- name - name of an index   
+name
+:   Type: string   
+name of an index
 
 **Return Value**
 
@@ -35,8 +37,13 @@ There are few methods that allow you to retrieve index from a database:
 
 **Parameters**   
 
-- start - number of documents that should be skipped   
-- pageSize - maximum number of documents that will be retrieved   
+start
+:   Type: string   
+Number of documents that should be skipped
+
+pageSize
+:   Type: int   
+Maximum number of documents that will be retrieved  
 
 **Return Value**
 
@@ -54,13 +61,19 @@ There are few methods that allow you to retrieve index from a database:
 
 {CODE get_3_0@ClientApi\Commands\Indexes\Get.cs /}
 
-**Parameters**   
+**Parameters**  
+ 
+start
+:   Type: string   
+Number of documents that should be skipped
 
-- start - number of documents that should be skipped   
-- pageSize - maximum number of documents that will be retrieved   
+pageSize
+:   Type: int   
+Maximum number of documents that will be retrieved  
 
 **Return Value**
 
+Type: string[]   
 This methods returns an array of index **name** as a result.
 
 ### Example

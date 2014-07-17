@@ -8,11 +8,14 @@ By default, commands available directly in store are working with credentials th
 
 **Parameters**
 
-- credentialsForSession - credentials that should be used by new commands   
+credentialsForSession
+:   Type: ICredentials   
+credentials that should be used by new commands
 
 **Return Value**
 
-Method returns new instance of commands that will use given credentials.
+Type: IDatabaseCommands   
+New instance of commands that will use given credentials.
 
 ## Example
 
