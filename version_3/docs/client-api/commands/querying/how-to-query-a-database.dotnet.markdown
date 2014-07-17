@@ -30,7 +30,8 @@ True if query results should contains only [index entries](../../../glossary/ind
 
 **Return Value**    
 
-[QueryResult]() object which represents results of a specified query.
+Type: [QueryResult]()   
+Object which represents results of a specified query.
 
 ##Example I
 
@@ -47,3 +48,4 @@ If a model of your documents is that they reference others and you want to retri
 #### Related articles
 
 - [Full RavenDB query syntax](../../../Indexes/full-query-syntax) 
+- [How to **stream query** results?](../../../client-api/commands/querying/how-to-stream-query-results)

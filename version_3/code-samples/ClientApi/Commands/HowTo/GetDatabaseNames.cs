@@ -18,6 +18,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 				#region get_database_names_2
 				var databaseNames = store
 					.DatabaseCommands
+					.GlobalAdmin
 					.GetDatabaseNames(0, 10);
 				#endregion
 			}
