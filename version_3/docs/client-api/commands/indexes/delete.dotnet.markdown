@@ -8,7 +8,9 @@
 
 **Parameters**   
 
-- name - name of an index to delete   
+name
+:   Type: string   
+name of an index to delete
 
 ## Example
 

@@ -8,8 +8,13 @@
 
 **Parameters**   
 
-- key - key of an attachment to delete   
-- etag - current attachment etag, used for concurrency checks (`null` to skip check)   
+key
+:   Type: string   
+key of an attachment to delete
+
+etag
+:   Type: Etag   
+current attachment etag, used for concurrency checks (`null` to skip check)
 
 ## Example
 

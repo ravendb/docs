@@ -8,7 +8,9 @@
 
 **Parameters**   
 
-- name - name of a transformer to delete   
+name
+:   Type: string   
+name of a transformer to delete
 
 ## Example
 

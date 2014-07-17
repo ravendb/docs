@@ -17,15 +17,29 @@ To issue a batch-delete command you need to specify an index, and a query to be 
 
 {CODE delete_by_index_1@ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs /}
 
-- indexName - name of an index to perform a query on   
-- queryToDelete - query that will be performed    
-- allowStale - can operation be performed on a stale index   
+indexName
+:   Type: string   
+name of an index to perform a query on
+
+queryToDelete
+:   Type: IndexQuery   
+query that will be performed  
+
+allowStale
+:   Type: bool   
+can operation be performed on a stale index   
 
 ### Return Value
 
 {CODE operation@Common.cs /}
 
-- WaitForCompletion - returns state of an operation   
+WaitForCompletion
+:   Type: method   
+returns state of an operation    
+
+### Remarks
+
+{NOTE `DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception.}
 
 ### Example
 
@@ -39,16 +53,29 @@ Performing a mass-update is exactly the same as making a mass-delete, but this t
 
 {CODE update_by_index_1@ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs /}
 
-- indexName - name of an index to perform a query on   
-- queryToUpdate - query that will be performed  
-- patchRequests - array of patches that will be executed on query results     
-- allowStale - can operation be performed on a stale index   
+indexName
+:   Type: string   
+name of an index to perform a query on
+
+queryToUpdate
+:   Type: IndexQuery   
+query that will be performed
+
+patchRequests
+:   Type: PatchRequest[]   
+array of patches that will be executed on query results
+
+allowStale
+:   Type: bool   
+can operation be performed on a stale index
 
 ### Return Value
 
 {CODE operation@Common.cs /}
 
-- WaitForCompletion - returns state of an operation   
+WaitForCompletion
+:   Type: method   
+returns state of an operation  
 
 ### Example
 
@@ -62,16 +89,29 @@ Mass-update can also be executed with JavaScript patch.
 
 {CODE update_by_index_3@ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs /}
 
-- indexName - name of an index to perform a query on   
-- queryToUpdate - query that will be performed  
-- patch - JavaScript patch that will be executed on query results        
-- allowStale - can operation be performed on a stale index   
+indexName
+:   Type: string   
+name of an index to perform a query on
+
+queryToUpdate
+:   Type: IndexQuery   
+query that will be performed
+
+patch
+:   Type: ScriptedPatchRequest   
+JavaScript patch that will be executed on query results
+
+allowStale
+:   Type: bool   
+can operation be performed on a stale index
 
 ### Return Value
 
 {CODE operation@Common.cs /}
 
-- WaitForCompletion - returns state of an operation   
+WaitForCompletion
+:   Type: method   
+returns state of an operation   
 
 ### Example
 

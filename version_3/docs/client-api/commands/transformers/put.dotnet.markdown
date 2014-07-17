@@ -10,12 +10,18 @@
 
 {CODE transformerdefinition@Common.cs /}
 
-- name - name of a transformer to delete   
-- transformerDef - definition of a transformer   
+Name
+:   Type: string   
+name of a transformer
+
+transformerDef
+:   Type: TransformerDefinition   
+definition of a transformer  
 
 **Return Value**
 
-This methods returns a transformer **name** as a result.
+Type: string   
+Transformer **name**.
 
 ## Example
 

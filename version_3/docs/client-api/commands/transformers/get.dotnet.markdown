@@ -14,15 +14,25 @@ There are few methods that allow you to retrieve transformers from a database:
 
 **Parameters**   
 
-- name - transformer name   
+name
+:   Type: string   
+transformer name
 
 **Return Value**
 
 {CODE transformerdefinition@Common.cs /}
 
-- TransformResults - function that will convert (transform) results   
-- TransformerId - internal transformer Id
-- Name - transformer name   
+TransformResults
+:   Type: string   
+function that will convert (transform) results 
+
+TransformerId
+:   Type: int   
+internal transformer Id
+
+Name
+:   Type: string   
+transformer name  
 
 ### Example
 
@@ -38,16 +48,29 @@ There are few methods that allow you to retrieve transformers from a database:
 
 **Parameters**   
 
-- start - number of documents that should be skipped   
-- pageSize - maximum number of documents that will be retrieved   
+start
+:   Type: int   
+number of documents that should be skipped   
+
+pageSize
+:   Type: int   
+maximum number of transformers that will be retrieved   
 
 **Return Value**
 
 {CODE transformerdefinition@Common.cs /}
 
-- TransformResults - function that will convert (transform) results   
-- TransformerId - internal transformer Id
-- Name - transformer name 
+TransformResults
+:   Type: string   
+function that will convert (transform) results 
+
+TransformerId
+:   Type: int   
+internal transformer Id
+
+Name
+:   Type: string   
+transformer name  
 
 ### Example
 

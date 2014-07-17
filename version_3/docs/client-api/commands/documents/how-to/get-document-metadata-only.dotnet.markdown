@@ -8,17 +8,29 @@
 
 **Parameters**   
 
-- key - key of a document to get metadata for    
+key
+:   Type: string   
+key of a document to get metadata for
 
 **Return Value**
 
 {CODE jsondocumentmetadata@Common.cs /}
 
-- Metadata - document metadata  
-- Etag - current document ETag   
-- Key - document key  
-- LastModified - last modified date of document   
-- NonAuthoritativeInformation - indicates if document is non authoritative (modified by uncommited transaction)   
+Metadata
+:   Type: RavenJObject   
+Document metadata
+
+Etag
+:   Type: Etag   
+current document ETag
+
+Key
+:   Type: string   
+document key
+
+Metadata
+:   Type: DateTime?   
+last modified date of document 
 
 ## Example
 

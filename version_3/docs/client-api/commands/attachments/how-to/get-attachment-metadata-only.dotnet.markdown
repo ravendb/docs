@@ -14,7 +14,9 @@ There are few methods that allow you to download attachment metadata from a data
 
 **Parameters**   
 
-- key - key of the attachment you want to download metadata for   
+key
+:   Type: string   
+key of the attachment you want to download metadata for
 
 **Return Value**
 
@@ -34,9 +36,17 @@ There are few methods that allow you to download attachment metadata from a data
 
 **Parameters**   
 
-- idPrefix - prefix for which attachments should be returned   
-- start - number of attachments that should be skipped   
-- pageSize - maximum number of attachments that will be returned   
+idPrefix
+:   Type: string   
+prefix for which attachments should be returned
+
+start
+:   Type: int   
+number of attachments that should be skipped
+
+pageSize
+:   Type: int   
+maximum number of attachments that will be returned
 
 **Return Value**
 
