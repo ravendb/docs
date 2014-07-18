@@ -103,7 +103,7 @@
     <None Include="client-api\commands\transformers\delete.dotnet.markdown" />
     <None Include="client-api\commands\transformers\get.dotnet.markdown" />
     <None Include="client-api\commands\transformers\how-to\.docslist" />
-    <None Include="client-api\commands\transformers\how-to\query-using-transformer.markdown" />
+    <None Include="client-api\commands\transformers\how-to\transform-query-results.dotnet.markdown" />
     <None Include="client-api\commands\transformers\put.dotnet.markdown" />
     <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docslist" />
