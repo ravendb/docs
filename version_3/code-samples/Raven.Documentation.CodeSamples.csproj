@@ -89,6 +89,7 @@
     <Compile Include="ClientApi\Commands\Indexes\Put.cs" />
     <Compile Include="ClientApi\Commands\Patches\JavaScript.cs" />
     <Compile Include="ClientApi\Commands\Patches\PatchRequests.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToWorkWithFacetQuery.cs" />
     <Compile Include="ClientApi\Commands\Querying\HowToQueryDatabase.cs" />
     <Compile Include="ClientApi\Commands\Querying\HowToStreamQueryResults.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
