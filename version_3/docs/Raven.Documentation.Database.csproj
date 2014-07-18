@@ -166,7 +166,7 @@
     <None Include="client-api\session\loading-entities.markdown" />
     <None Include="client-api\session\deleting-entities.markdown" />
     <None Include="client-api\session\storing-entities.markdown" />
-    <None Include="client-api\session\opening-a-session.markdown" />
+    <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
