@@ -92,6 +92,8 @@
     <Compile Include="ClientApi\Commands\Querying\HowToWorkWithFacetQuery.cs" />
     <Compile Include="ClientApi\Commands\Querying\HowToQueryDatabase.cs" />
     <Compile Include="ClientApi\Commands\Querying\HowToStreamQueryResults.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToWorkWithSuggestionQuery.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Put.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
