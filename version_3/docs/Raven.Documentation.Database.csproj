@@ -73,8 +73,8 @@
     <None Include="client-api\commands\how-to\.docslist" />
     <None Include="client-api\commands\how-to\get-names-of-all-databases-on-a-server.dotnet.markdown" />
     <None Include="client-api\commands\how-to\get-server-build-number.dotnet.markdown" />
-    <None Include="client-api\commands\how-to\get-full-url-for-a-document.markdown" />
-    <None Include="client-api\commands\how-to\start-backup-restore-operations.markdown" />
+    <None Include="client-api\commands\how-to\get-full-url-for-a-document.dotnet.markdown" />
+    <None Include="client-api\commands\how-to\start-backup-restore-operations.dotnet.markdown" />
     <None Include="client-api\commands\how-to\get-database-and-server-statistics.dotnet.markdown" />
     <None Include="client-api\commands\how-to\compact-database.dotnet.markdown" />
     <None Include="client-api\commands\how-to\create-delete-database.dotnet.markdown" />
