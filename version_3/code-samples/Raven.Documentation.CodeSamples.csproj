@@ -103,6 +103,7 @@
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Include="ClientApi\Session\Deleting.cs" />
     <Compile Include="ClientApi\Session\SavingChanges.cs" />
     <Compile Include="ClientApi\Session\StoringEntities.cs" />
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
