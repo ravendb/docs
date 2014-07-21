@@ -162,7 +162,7 @@
     <None Include="client-api\session\querying\how-to-customize-query.markdown" />
     <None Include="client-api\session\querying\how-to-stream-query-results.markdown" />
     <None Include="client-api\session\querying\how-to-query.markdown" />
-    <None Include="client-api\session\saving-changes.markdown" />
+    <None Include="client-api\session\saving-changes.dotnet.markdown" />
     <None Include="client-api\session\loading-entities.markdown" />
     <None Include="client-api\session\deleting-entities.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
