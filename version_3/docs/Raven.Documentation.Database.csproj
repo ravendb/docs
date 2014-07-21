@@ -140,14 +140,14 @@
     <None Include="client-api\session\how-to\use-optimistic-concurrency.markdown" />
     <None Include="client-api\session\how-to\mark-entity-as-readonly.markdown" />
     <None Include="client-api\session\how-to\check-if-there-are-any-changes-on-a-session.markdown" />
-    <None Include="client-api\session\how-to\clear-a-session.markdown" />
+    <None Include="client-api\session\how-to\clear-a-session.dotnet.markdown" />
     <None Include="client-api\session\how-to\check-if-entity-has-changed.markdown" />
     <None Include="client-api\session\how-to\get-entity-url.markdown" />
     <None Include="client-api\session\how-to\get-entity-etag.markdown" />
     <None Include="client-api\session\how-to\get-entity-metadata.markdown" />
     <None Include="client-api\session\how-to\get-entity-id.markdown" />
     <None Include="client-api\session\how-to\refresh-entity.markdown" />
-    <None Include="client-api\session\how-to\evict-entity-from-a-session.markdown" />
+    <None Include="client-api\session\how-to\evict-entity-from-a-session.dotnet.markdown" />
     <None Include="client-api\session\how-to\perform-operations-lazily.markdown" />
     <None Include="client-api\session\how-to\defer-operations.dotnet.markdown" />
     <None Include="client-api\session\querying\.docslist" />
