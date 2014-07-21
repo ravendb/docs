@@ -15,7 +15,7 @@ Instance of an entity for which metadata will be returned.
 **Return Value**
 
 Type: [RavenJObject]()   
-Returns entity metadata.
+Returns entity metadata. If the `instance` is transient it will load document from server and attach entity and its metadata to session.
 
 ## Example
 
