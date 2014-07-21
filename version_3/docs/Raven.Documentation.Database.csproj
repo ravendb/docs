@@ -149,7 +149,7 @@
     <None Include="client-api\session\how-to\refresh-entity.markdown" />
     <None Include="client-api\session\how-to\evict-entity-from-a-session.markdown" />
     <None Include="client-api\session\how-to\perform-operations-lazily.markdown" />
-    <None Include="client-api\session\how-to\defer-operations.markdown" />
+    <None Include="client-api\session\how-to\defer-operations.dotnet.markdown" />
     <None Include="client-api\session\querying\.docslist" />
     <None Include="client-api\session\querying\how-to-perform-a-faceted-search.markdown" />
     <None Include="client-api\session\querying\how-to-perform-dynamic-aggregation.markdown" />
