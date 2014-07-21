@@ -113,6 +113,7 @@
     <Compile Include="ClientApi\Session\HowTo\HasChanged.cs" />
     <Compile Include="ClientApi\Session\HowTo\Refresh.cs" />
     <Compile Include="ClientApi\Session\HowTo\Evict.cs" />
+    <Compile Include="ClientApi\Session\HowTo\WhatChanged.cs" />
     <Compile Include="ClientApi\Session\SavingChanges.cs" />
     <Compile Include="ClientApi\Session\StoringEntities.cs" />
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
