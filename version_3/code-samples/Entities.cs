@@ -27,12 +27,14 @@ namespace Raven.Documentation.CodeSamples
 		public string Street { get; set; }
 	}
 
+	#region comment
 	public class Comment
 	{
 		public string Author { get; set; }
 
 		public string Message { get; set; }
 	}
+	#endregion
 
 	public class Company
 	{
