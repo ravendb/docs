@@ -141,7 +141,7 @@
     <None Include="client-api\session\how-to\mark-entity-as-readonly.markdown" />
     <None Include="client-api\session\how-to\check-if-there-are-any-changes-on-a-session.markdown" />
     <None Include="client-api\session\how-to\clear-a-session.dotnet.markdown" />
-    <None Include="client-api\session\how-to\check-if-entity-has-changed.markdown" />
+    <None Include="client-api\session\how-to\check-if-entity-has-changed.dotnet.markdown" />
     <None Include="client-api\session\how-to\get-entity-url.dotnet.markdown" />
     <None Include="client-api\session\how-to\get-entity-etag.dotnet.markdown" />
     <None Include="client-api\session\how-to\get-entity-metadata.dotnet.markdown" />
