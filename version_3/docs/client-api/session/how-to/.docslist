@@ -10,4 +10,3 @@ get-entity-url.markdown	...get entity url
 check-if-entity-has-changed.markdown	...check if entity has changed
 check-if-there-are-any-changes-on-a-session.markdown	...check if there are any changes on a session
 mark-entity-as-readonly.markdown	...mark entity as readonly
-use-optimistic-concurrency.markdown	...use optimistic concurrency
