@@ -1,4 +1,7 @@
-﻿namespace Raven.Documentation.CodeSamples
+﻿using System;
+using System.Collections.Generic;
+
+namespace Raven.Documentation.CodeSamples
 {
 	public class Entities
 	{
@@ -29,5 +32,22 @@
 		public string Author { get; set; }
 
 		public string Message { get; set; }
+	}
+
+	public class Company
+	{
+		public string Id { get; set; }
+		public string Name { get; set; }
+		public List<Employee> Employees { get; set; }
+		public string Country { get; set; }
+		public int NumberOfHappyCustomers { get; set; }
+	}
+
+	public class Employee
+	{
+		public string Name { get; set; }
+		public string[] Specialties { get; set; }
+		public DateTime HiredAt { get; set; }
+		public double HourlyRate { get; set; }
 	}
 }
