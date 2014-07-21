@@ -37,7 +37,7 @@ Instance of a session object that implements `IDocumentSession` interface.
 
 ## Remarks
 
-Always remember to release session allocated resources after usage by invoking `Dispose` method or using `using` statement.
+Always remember to release session allocated resources after usage by invoking `Dispose` method or wrapping session object in `using` statement.
 
 #### Related articles
 
