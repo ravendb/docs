@@ -145,7 +145,7 @@
     <None Include="client-api\session\how-to\get-entity-url.markdown" />
     <None Include="client-api\session\how-to\get-entity-etag.markdown" />
     <None Include="client-api\session\how-to\get-entity-metadata.markdown" />
-    <None Include="client-api\session\how-to\get-entity-id.markdown" />
+    <None Include="client-api\session\how-to\get-entity-id.dotnet.markdown" />
     <None Include="client-api\session\how-to\refresh-entity.dotnet.markdown" />
     <None Include="client-api\session\how-to\evict-entity-from-a-session.dotnet.markdown" />
     <None Include="client-api\session\how-to\perform-operations-lazily.markdown" />
