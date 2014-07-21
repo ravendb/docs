@@ -164,7 +164,7 @@
     <None Include="client-api\session\querying\how-to-query.markdown" />
     <None Include="client-api\session\saving-changes.dotnet.markdown" />
     <None Include="client-api\session\loading-entities.markdown" />
-    <None Include="client-api\session\deleting-entities.markdown" />
+    <None Include="client-api\session\deleting-entities.dotnet.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.dotnet.markdown" />
