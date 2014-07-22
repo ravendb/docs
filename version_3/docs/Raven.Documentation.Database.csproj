@@ -137,7 +137,7 @@
     <None Include="client-api\session\configuration\how-to-customize-key-generation-for-entities.markdown" />
     <None Include="client-api\session\how-to\.docslist" />
     <None Include="client-api\session\configuration\how-to-change-maximum-number-of-requests-per-session.dotnet.markdown" />
-    <None Include="client-api\session\configuration\how-to-use-optimistic-concurrency.markdown" />
+    <None Include="client-api\session\configuration\how-to-enable-optimistic-concurrency.dotnet.markdown" />
     <None Include="client-api\session\how-to\mark-entity-as-readonly.dotnet.markdown" />
     <None Include="client-api\session\how-to\check-if-there-are-any-changes-on-a-session.dotnet.markdown" />
     <None Include="client-api\session\how-to\clear-a-session.dotnet.markdown" />
@@ -163,7 +163,7 @@
     <None Include="client-api\session\querying\how-to-stream-query-results.markdown" />
     <None Include="client-api\session\querying\how-to-query.markdown" />
     <None Include="client-api\session\saving-changes.dotnet.markdown" />
-    <None Include="client-api\session\loading-entities.markdown" />
+    <None Include="client-api\session\loading-entities.dotnet.markdown" />
     <None Include="client-api\session\deleting-entities.dotnet.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />

@@ -104,7 +104,8 @@
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
     <Compile Include="ClientApi\Session\Configuration\MaxRequests.cs" />
-    <Compile Include="ClientApi\Session\Deleting.cs" />
+    <Compile Include="ClientApi\Session\Configuration\OptimisticConcurrency.cs" />
+    <Compile Include="ClientApi\Session\DeletingEntities.cs" />
     <Compile Include="ClientApi\Session\HowTo\Clear.cs" />
     <Compile Include="ClientApi\Session\HowTo\Defer.cs" />
     <Compile Include="ClientApi\Session\HowTo\GetDocumentId.cs" />
@@ -116,6 +117,7 @@
     <Compile Include="ClientApi\Session\HowTo\Refresh.cs" />
     <Compile Include="ClientApi\Session\HowTo\Evict.cs" />
     <Compile Include="ClientApi\Session\HowTo\WhatChanged.cs" />
+    <Compile Include="ClientApi\Session\LoadingEntities.cs" />
     <Compile Include="ClientApi\Session\SavingChanges.cs" />
     <Compile Include="ClientApi\Session\StoringEntities.cs" />
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
