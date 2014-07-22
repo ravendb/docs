@@ -1,1 +1,10 @@
-/documents	Documents
+what-is-a-document-store	[TODO] What is a document store?
+/commands	Commands
+/session	Session
+/bulk-insert	Bulk Insert
+/changes	Changes API
+/listeners	Listeners
+/bundles	Bundles
+/concurrency Concurrency
+/how-to	How to...
+/faq	FAQ
