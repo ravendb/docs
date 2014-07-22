@@ -47,6 +47,7 @@
     <None Include="client-api\bundles\how-to-work-with-unique-constraints-bundle.markdown" />
     <None Include="client-api\bundles\how-to-work-with-authorization-bundle.markdown" />
     <None Include="client-api\changes\.docslist" />
+    <None Include="client-api\changes\what-is-changes-api.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-bulk-insert-operation-changes.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-replication-conflicts.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-transformer-changes.markdown" />
