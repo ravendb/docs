@@ -86,7 +86,9 @@ namespace RavenDB.DocsCompiler.MagicWorkers
             var sb = new StringBuilder();
 			foreach (var item in folder.Children)
             {
-                sb.AppendFormat("* [{0}]({1})", item.Title, item.Slug);
+	            if (item.Slug == "index")
+		            continue;
+	            sb.AppendFormat("* [{0}]({1})", item.Title, item.Slug);
                 sb.AppendLine();
             }
 
