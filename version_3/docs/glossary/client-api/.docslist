@@ -1,3 +1,5 @@
 /commands	Commands
 /bulk-insert	Bulk Insert
 operation.markdown	Operation
+database-statistics.markdown	DatabaseStatistics
+admin-statistics.markdown	AdminStatistics
