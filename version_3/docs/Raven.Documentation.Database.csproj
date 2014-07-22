@@ -172,6 +172,9 @@
     <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
+    <None Include="glossary\bulk-insert\.docslist" />
+    <None Include="glossary\bulk-insert\bulk-insert-operation.markdown" />
+    <None Include="glossary\bulk-insert\bulk-insert-options.markdown" />
     <None Include="glossary\indexing.markdown" />
     <None Include="indexes\.docslist" />
     <None Include="start\.docslist" />
