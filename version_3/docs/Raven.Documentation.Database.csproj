@@ -42,7 +42,7 @@
     </None>
     <None Include="client-api\.docslist" />
     <None Include="client-api\bulk-insert\.docslist" />
-    <None Include="client-api\bulk-insert\how-to-work-with-bulk-insert-operation.markdown" />
+    <None Include="client-api\bulk-insert\how-to-work-with-bulk-insert-operation.dotnet.markdown" />
     <None Include="client-api\bundles\.docslist" />
     <None Include="client-api\bundles\how-to-work-with-unique-constraints-bundle.markdown" />
     <None Include="client-api\bundles\how-to-work-with-authorization-bundle.markdown" />
