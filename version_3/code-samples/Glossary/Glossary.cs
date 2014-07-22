@@ -1,4 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.Glossary
+﻿using System;
+
+using Raven.Abstractions.Data;
+using Raven.Json.Linq;
+
+namespace Raven.Documentation.CodeSamples.Glossary
 {
 	public class Glossary
 	{
@@ -40,6 +45,40 @@
 			public int BatchSize { get; set; }
 
 			public int WriteTimeoutMilliseconds { get; set; }
+		}
+		#endregion
+
+		#region json_document
+		public class JsonDocument
+		{
+			public RavenJObject DataAsJson { get; set; }
+
+			public RavenJObject Metadata { get; set; }
+
+			public Etag Etag { get; set; }
+
+			public string Key { get; set; }
+
+			public DateTime? LastModified { get; set; }
+
+			public bool? NonAuthoritativeInformation { get; set; }
+
+			public float? TempIndexScore { get; set; }
+		}
+		#endregion
+
+		#region json_document_metadata
+		public class JsonDocumentMetadata
+		{
+			public RavenJObject Metadata { get; set; }
+
+			public Etag Etag { get; set; }
+
+			public string Key { get; set; }
+
+			public DateTime? LastModified { get; set; }
+
+			public bool? NonAuthoritativeInformation { get; set; }
 		}
 		#endregion
 	}
