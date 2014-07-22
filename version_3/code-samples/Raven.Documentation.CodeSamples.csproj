@@ -62,6 +62,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClientApi\BulkInsert\BulkInserts.cs" />
     <Compile Include="ClientApi\Commands\Attachments\Delete.cs" />
     <Compile Include="ClientApi\Commands\Attachments\Get.cs" />
     <Compile Include="ClientApi\Commands\Attachments\HowTo\Update.cs" />
