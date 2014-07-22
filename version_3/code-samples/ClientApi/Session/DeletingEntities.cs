@@ -4,7 +4,7 @@ using Raven.Client.Document;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session
 {
-	public class Deleting
+	public class DeletingEntities
 	{
 		private interface IFoo
 		{
@@ -17,7 +17,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 			#endregion
 		}
 
-		public Deleting()
+		public DeletingEntities()
 		{
 			using (var store = new DocumentStore())
 			{
