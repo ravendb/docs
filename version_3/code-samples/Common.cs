@@ -51,36 +51,6 @@
 		}
 		#endregion
 
-		#region indexmergeresults
-		public class IndexMergeResults
-		{
-			/// <summary>
-			/// Dictionary of unmergable indexes with reason why they can't be merged
-			/// </summary>
-			public Dictionary<string, string> Unmergables = new Dictionary<string, string>();
-
-			/// <summary>
-			/// List of all merge suggestions
-			/// </summary>
-			public List<MergeSuggestions> Suggestions = new List<MergeSuggestions>();
-		}
-		#endregion
-
-		#region mergesuggestions
-		public class MergeSuggestions
-		{
-			/// <summary>
-			/// List of all indexes (names) that can be merged together
-			/// </summary>
-			public List<string> CanMerge = new List<string>();
-
-			/// <summary>
-			/// Proposition of a new index definition for a merged index
-			/// </summary>
-			public IndexDefinition MergedIndex = new IndexDefinition();
-		}
-		#endregion
-
 		#region attachment
 		public class Attachment
 		{
