@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 
 using Raven.Abstractions.Data;
+using Raven.Abstractions.FileSystem;
 using Raven.Abstractions.Indexing;
 using Raven.Json.Linq;
 
@@ -374,6 +375,146 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			/// Proposition of a new index definition for a merged index
 			/// </summary>
 			public IndexDefinition MergedIndex = new IndexDefinition();
+		}
+		#endregion
+
+		#region database_statistics
+		public class DatabaseStatistics
+		{
+			public Etag LastDocEtag { get; set; }
+
+			public Etag LastAttachmentEtag { get; set; }
+
+			public int CountOfIndexes { get; set; }
+
+			public int InMemoryIndexingQueueSize { get; set; }
+
+			public long ApproximateTaskCount { get; set; }
+
+			public long CountOfDocuments { get; set; }
+
+			public long CountOfAttachments { get; set; }
+
+			public string[] StaleIndexes { get; set; }
+
+			public int CurrentNumberOfItemsToIndexInSingleBatch { get; set; }
+
+			public int CurrentNumberOfItemsToReduceInSingleBatch { get; set; }
+
+			public decimal DatabaseTransactionVersionSizeInMB { get; set; }
+
+			public IndexStats[] Indexes { get; set; }
+
+			public ServerError[] Errors { get; set; }
+
+			public TriggerInfo[] Triggers { get; set; }
+
+			public IEnumerable<ExtensionsLog> Extensions { get; set; }
+
+			public ActualIndexingBatchSize[] ActualIndexingBatchSize { get; set; }
+
+			public FutureBatchStats[] Prefetches { get; set; }
+
+			public Guid DatabaseId { get; set; }
+
+			public bool SupportsDtc { get; set; }
+
+			public class TriggerInfo
+			{
+				public string Type { get; set; }
+				public string Name { get; set; }
+			}
+		}
+		#endregion
+
+		#region actual_indexing_batch_size
+		public class ActualIndexingBatchSize
+		{
+			public int Size { get; set; }
+			public DateTime Timestamp { get; set; }
+		}
+		#endregion
+
+		#region future_batch_stats
+		public class FutureBatchStats
+		{
+			public DateTime Timestamp { get; set; }
+			public TimeSpan? Duration { get; set; }
+			public int? Size { get; set; }
+			public int Retries { get; set; }
+		}
+		#endregion
+
+		#region extensions_log
+		public class ExtensionsLog
+		{
+			public string Name { get; set; }
+			public ExtensionsLogDetail[] Installed { get; set; }
+		}
+		#endregion
+
+		#region extensions_log_detail
+		public class ExtensionsLogDetail
+		{
+			public string Name { get; set; }
+			public string Assembly { get; set; }
+		}
+		#endregion
+
+		#region admin_statistics
+		public class AdminStatistics
+		{
+			public string ServerName { get; set; }
+			public int TotalNumberOfRequests { get; set; }
+			public TimeSpan Uptime { get; set; }
+			public AdminMemoryStatistics Memory { get; set; }
+
+			public IEnumerable<LoadedDatabaseStatistics> LoadedDatabases { get; set; }
+			public IEnumerable<FileSystemStats> LoadedFileSystems { get; set; }
+		}
+		#endregion
+
+		#region admin_memory_statistics
+		public class AdminMemoryStatistics
+		{
+			public decimal DatabaseCacheSizeInMB { get; set; }
+			public decimal ManagedMemorySizeInMB { get; set; }
+			public decimal TotalProcessMemorySizeInMB { get; set; }
+		}
+		#endregion
+
+		#region loaded_database_statistics
+		public class LoadedDatabaseStatistics
+		{
+			public string Name { get; set; }
+			public DateTime LastActivity { get; set; }
+			public long TransactionalStorageAllocatedSize { get; set; }
+			public string TransactionalStorageAllocatedSizeHumaneSize { get; set; }
+			public long TransactionalStorageUsedSize { get; set; }
+			public string TransactionalStorageUsedSizeHumaneSize { get; set; }
+			public long IndexStorageSize { get; set; }
+			public string IndexStorageHumaneSize { get; set; }
+			public long TotalDatabaseSize { get; set; }
+			public string TotalDatabaseHumaneSize { get; set; }
+			public long CountOfDocuments { get; set; }
+			public long CountOfAttachments { get; set; }
+			public decimal DatabaseTransactionVersionSizeInMB { get; set; }
+			public DatabaseMetrics Metrics { get; set; }
+		}
+		#endregion
+
+		#region file_system_stats
+		public class FileSystemStats
+		{
+			public string Name { get; set; }
+
+			public long FileCount { get; set; }
+
+			public FileSystemMetrics Metrics { get; set; }
+
+			public IList<SynchronizationDetails> ActiveSyncs { get; set; }
+
+			public IList<SynchronizationDetails> PendingSyncs { get; set; }
 		}
 		#endregion
 	}
