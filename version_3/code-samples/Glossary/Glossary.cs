@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 
 using Raven.Abstractions.Data;
 using Raven.Json.Linq;
@@ -81,5 +82,16 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			public bool? NonAuthoritativeInformation { get; set; }
 		}
 		#endregion
+
+		/*
+		#region operation
+		public class Operation
+		{
+			public RavenJToken WaitForCompletion() { ... }
+
+			public Task<RavenJToken> WaitForCompletionAsync() { ... }
+		}
+		#endregion
+		*/
 	}
 }

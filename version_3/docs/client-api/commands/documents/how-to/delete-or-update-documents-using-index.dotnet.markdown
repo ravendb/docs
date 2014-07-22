@@ -31,11 +31,8 @@ can operation be performed on a stale index
 
 ### Return Value
 
-{CODE operation@Common.cs /}
-
-WaitForCompletion
-:   Type: method   
-returns state of an operation    
+Type: [Operation](../../../../glossary/operation)   
+Object that allows to wait for operation to complete. 
 
 ### Remarks
 
@@ -71,11 +68,8 @@ can operation be performed on a stale index
 
 ### Return Value
 
-{CODE operation@Common.cs /}
-
-WaitForCompletion
-:   Type: method   
-returns state of an operation  
+Type: [Operation](../../../../glossary/operation)   
+Object that allows to wait for operation to complete. 
 
 ### Example
 
@@ -107,11 +101,8 @@ can operation be performed on a stale index
 
 ### Return Value
 
-{CODE operation@Common.cs /}
-
-WaitForCompletion
-:   Type: method   
-returns state of an operation   
+Type: [Operation](../../../../glossary/operation)   
+Object that allows to wait for operation to complete. 
 
 ### Example
 
