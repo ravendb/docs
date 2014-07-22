@@ -1,12 +1,12 @@
-initialize-document-store.markdown	...initialize document store
-setup-default-database.markdown	...setup default database
-setup-connection-string.markdown	...setup connection string
-setup-failover-servers-and-failover-behavior.markdown	...setup failover servers and failover behavior
-work-with-authentication.markdown	...work with authentication
-create-indexes-using-abstractindexcreationtask.markdown	...create indexes using AbstractIndexCreationTask
-create-transformers-using-abstracttransformercreationtask.markdown	...create transformers using AbstractTransformerCreationTask
-setup-aggresive-caching.markdown	...setup aggresive caching
-send-custom-requests.markdown	...send custom requests
-use-fips-compliant-encryption-algorithms.markdown	...use FIPS compliant encryption algorithms
-setup-sharding.markdown	...setup sharding
-integrate-with-excel.markdown	...integrate with Excel
+initialize-document-store.markdown	[TODO] ...initialize document store
+setup-default-database.markdown	[TODO] ...setup default database
+setup-connection-string.markdown	[TODO] ...setup connection string
+setup-failover-servers-and-failover-behavior.markdown	[TODO] ...setup failover servers and failover behavior
+work-with-authentication.markdown	[TODO] ...work with authentication
+create-indexes-using-abstractindexcreationtask.markdown	[TODO] ...create indexes using AbstractIndexCreationTask
+create-transformers-using-abstracttransformercreationtask.markdown	[TODO] ...create transformers using AbstractTransformerCreationTask
+setup-aggresive-caching.markdown	[TODO] ...setup aggresive caching
+send-custom-requests.markdown	[TODO] ...send custom requests
+use-fips-compliant-encryption-algorithms.markdown	[TODO] ...use FIPS compliant encryption algorithms
+setup-sharding.markdown	[TODO] ...setup sharding
+integrate-with-excel.markdown	[TODO] ...integrate with Excel
