@@ -1,0 +1,1 @@
+# Client API : How to initialize a document store?

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{341FBAB9-7D4E-4DAF-ABA9-34BF0CE5DD6D}"
 EndProject
@@ -14,6 +14,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Database", "version_3\docs\Raven.Documentation.Database.csproj", "{2776C7CF-3BD2-447C-B8B4-671A3C1581FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.CodeSamples", "version_3\code-samples\Raven.Documentation.CodeSamples.csproj", "{B6570234-95DD-403C-93C8-975CC6280365}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{2B74D28A-BB28-438B-8EDE-D0A3771B5009}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -70,9 +75,9 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{2776C7CF-3BD2-447C-B8B4-671A3C1581FF} = {2AA4509D-1C23-41F9-8E44-ED7058E6C4EA}
-		{B6570234-95DD-403C-93C8-975CC6280365} = {2AA4509D-1C23-41F9-8E44-ED7058E6C4EA}
 		{EF48CFBD-DEA3-4D72-A407-142AF0C350B6} = {341FBAB9-7D4E-4DAF-ABA9-34BF0CE5DD6D}
 		{5BBC36AE-D95B-47BC-9FB4-64000F9EAFEA} = {341FBAB9-7D4E-4DAF-ABA9-34BF0CE5DD6D}
+		{2776C7CF-3BD2-447C-B8B4-671A3C1581FF} = {2AA4509D-1C23-41F9-8E44-ED7058E6C4EA}
+		{B6570234-95DD-403C-93C8-975CC6280365} = {2AA4509D-1C23-41F9-8E44-ED7058E6C4EA}
 	EndGlobalSection
 EndGlobal
