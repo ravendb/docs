@@ -8,14 +8,12 @@
 
 **Parameters**   
 
-{CODE transformerdefinition@Common.cs /}
-
 Name
 :   Type: string   
 name of a transformer
 
 transformerDef
-:   Type: TransformerDefinition   
+:   Type: [TransformerDefinition](../../../glossary/transformers/transformer-definition)      
 definition of a transformer  
 
 **Return Value**

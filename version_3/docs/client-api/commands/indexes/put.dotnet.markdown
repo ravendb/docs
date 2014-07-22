@@ -19,14 +19,12 @@ name
 Name of an index
 
 indexDef
-:   Type: IndexDefinition   
+:   Type: [IndexDefinition](../../../glossary/indexes/index-definition)    
 Definition of an index  
 
 overwrite
 :   Type: bool   
 Indicates if index can be overwritten (if 'false' then exception will be thrown if index exists)  
-
-{CODE indexdefinition@Common.cs /}
 
 **Return Value**
 

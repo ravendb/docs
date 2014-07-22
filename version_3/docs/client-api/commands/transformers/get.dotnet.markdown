@@ -20,19 +20,8 @@ transformer name
 
 **Return Value**
 
-{CODE transformerdefinition@Common.cs /}
-
-TransformResults
-:   Type: string   
-function that will convert (transform) results 
-
-TransformerId
-:   Type: int   
-internal transformer Id
-
-Name
-:   Type: string   
-transformer name  
+Type: [TransformerDefinition](../../../glossary/transformers/transformer-definition)     
+Instance of TransformerDefinition repesenting transformer.
 
 ### Example
 
@@ -58,19 +47,8 @@ maximum number of transformers that will be retrieved
 
 **Return Value**
 
-{CODE transformerdefinition@Common.cs /}
-
-TransformResults
-:   Type: string   
-function that will convert (transform) results 
-
-TransformerId
-:   Type: int   
-internal transformer Id
-
-Name
-:   Type: string   
-transformer name  
+Type: [TransformerDefinition](../../../glossary/transformers/transformer-definition)     
+Instance of TransformerDefinition repesenting transformer.
 
 ### Example
 

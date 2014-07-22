@@ -31,7 +31,7 @@ can operation be performed on a stale index
 
 ### Return Value
 
-Type: [Operation](../../../../glossary/operation)   
+Type: [Operation](../../../../glossary/client-api/operation)   
 Object that allows to wait for operation to complete. 
 
 ### Remarks
@@ -68,7 +68,7 @@ can operation be performed on a stale index
 
 ### Return Value
 
-Type: [Operation](../../../../glossary/operation)   
+Type: [Operation](../../../../glossary/client-api/operation)   
 Object that allows to wait for operation to complete. 
 
 ### Example
@@ -101,7 +101,7 @@ can operation be performed on a stale index
 
 ### Return Value
 
-Type: [Operation](../../../../glossary/operation)   
+Type: [Operation](../../../../glossary/client-api/operation)   
 Object that allows to wait for operation to complete. 
 
 ### Example

@@ -21,7 +21,8 @@ name of an index
 
 **Return Value**
 
-{CODE indexdefinition@Common.cs /}
+Type: [IndexDefinition](../../../glossary/indexes/index-definition)   
+Instance of IndexDefinition repesenting index.
 
 ### Example
 
@@ -47,7 +48,8 @@ Maximum number of documents that will be retrieved
 
 **Return Value**
 
-{CODE indexdefinition@Common.cs /}
+Type: [IndexDefinition](../../../glossary/indexes/index-definition)   
+Instance of IndexDefinition repesenting index.
 
 ### Example
 
