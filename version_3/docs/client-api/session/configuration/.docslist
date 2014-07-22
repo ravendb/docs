@@ -2,4 +2,4 @@ how-to-change-maximum-number-of-requests-per-session.markdown	How to change maxi
 how-to-customize-key-generation-for-entities.markdown	How to customize key generation for entities?
 how-to-customize-collection-assignment-for-entities.markdown	How to customize collection assignment for entities?
 how-to-customize-identity-property-lookup-for-entities.markdown	How to customize identity property lookup for entities?
-how-to-use-optimistic-concurrency.markdown	How to use optimistic concurrency?
+how-to-enable-optimistic-concurrency.markdown	How to enable optimistic concurrency?
