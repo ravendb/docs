@@ -1,0 +1,5 @@
+batch-result.markdown	BatchResult
+put-command-data.markdown	PutCommandData
+delete-command-data.markdown	DeleteCommandData
+patch-command-data.markdown	PatchCommandData
+scripted-patch-command-data.markdown	ScriptedPatchCommandData

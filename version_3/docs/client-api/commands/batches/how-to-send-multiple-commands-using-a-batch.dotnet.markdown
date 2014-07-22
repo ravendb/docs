@@ -10,27 +10,15 @@ To send **multiple operations** in a **single request**, reducing the number of 
 
 An array of following commands:
 
-- PutCommandData
-
-{CODE putcommanddata@Common.cs /}
-
-- DeleteCommandData
-
-{CODE deletecommanddata@Common.cs /}
-
-- PatchCommandData
-
-{CODE patchcommanddata@Common.cs /}
-
-- ScriptedPatchCommandData
-
-{CODE scriptedpatchcommanddata@Common.cs /}
+- [PutCommandData](../../../glossary/client-api/commands/put-command-data)
+- [DeleteCommandData](../../../glossary/client-api/commands/delete-command-data)
+- [PatchCommandData](../../../glossary/client-api/commands/patch-command-data)
+- [ScriptedPatchCommandData](../../../glossary/client-api/commands/scripted-patch-command-data)
 
 **Return Value**
 
+Type: [BatchResult](../../../glossary/client-api/commands/batch-result)[]   
 An array of batch results matching **exactly** the order of commands send.
-
-{CODE batchresult@Common.cs /}
 
 ## Example
 

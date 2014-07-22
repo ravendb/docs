@@ -13,12 +13,12 @@ database
 Name of database for which bulk operation should be performed. If `null` then `DefaultDatabase` from DocumentStore will be used.
 
 options
-:   Type: [BulkInsertOptions](../../glossary/bulk-insert/bulk-insert-options)   
+:   Type: [BulkInsertOptions](../../glossary/client-api/bulk-insert/bulk-insert-options)   
 Bulk operations options that should be used.
 
 **Return Value**
 
-Type: [BulkInsertOperation](../../glossary/bulk-insert/bulk-insert-operation)     
+Type: [BulkInsertOperation](../../glossary/client-api/bulk-insert/bulk-insert-operation)     
 Instance of BulkInsertOperation used for interaction.
 
 ## Limitations
