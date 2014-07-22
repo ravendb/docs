@@ -8,9 +8,8 @@
 
 **Return Value**
 
-{CODE indexmergeresults@Common.cs /}
-
-{CODE mergesuggestions@Common.cs /}
+Type: [IndexMergeResults](../../../../glossary/indexes/index-merge-results)   
+Merge suggestions for indexes.
 
 ## Example
 
