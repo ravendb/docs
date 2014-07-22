@@ -51,21 +51,6 @@
 		}
 		#endregion
 
-		#region operation
-		public class Operation
-		{
-			public RavenJToken WaitForCompletion()
-			{
-				throw new CodeOmitted();
-			}
-
-			public Task<RavenJToken> WaitForCompletionAsync()
-			{
-				throw new CodeOmitted();
-			}
-		}
-		#endregion
-
 		#region transformerdefinition
 		public class TransformerDefinition
 		{
