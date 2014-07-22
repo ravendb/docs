@@ -22,35 +22,8 @@ key of the document you want to retrieve
 
 **Return Value**
 
-{CODE jsondocument@Common.cs /}
-
-DataAsJson
-:   Type: RavenJObject   
-Document data
-
-Metadata
-:   Type: RavenJObject   
-Document metadata
-
-Etag
-:   Type: Etag   
-current document ETag
-
-Key
-:   Type: string   
-document key
-
-Metadata
-:   Type: DateTime?   
-last modified date of document 
-
-NonAuthoritativeInformation
-:   Type: bool?   
-indicates if document is non authoritative (modified by uncommited transaction)  
-
-TempIndexScore
-:   Type: float?   
-ranking of document in current query  
+Type: [JsonDocument](../../../glossary/json/json-document)   
+Object representing retrieved document.
 
 ### Example
 
@@ -134,35 +107,8 @@ specifies if only document metadata should be returned
 
 **Return Value**
 
-{CODE jsondocument@Common.cs /}
-
-DataAsJson
-:   Type: RavenJObject   
-Document data
-
-Metadata
-:   Type: RavenJObject   
-Document metadata
-
-Etag
-:   Type: Etag   
-current document ETag
-
-Key
-:   Type: string   
-document key
-
-Metadata
-:   Type: DateTime?   
-last modified date of document 
-
-NonAuthoritativeInformation
-:   Type: bool?   
-indicates if document is non authoritative (modified by uncommited transaction)  
-
-TempIndexScore
-:   Type: float?   
-ranking of document in current query  
+Type: [JsonDocument](../../../glossary/json/json-document)   
+Object representing retrieved document.
 
 ### Example
 
@@ -216,35 +162,8 @@ inputs (parameters) that will can be used by transformer
 
 **Return Value**
 
-{CODE jsondocument@Common.cs /}
-
-DataAsJson
-:   Type: RavenJObject   
-Document data
-
-Metadata
-:   Type: RavenJObject   
-Document metadata
-
-Etag
-:   Type: Etag   
-current document ETag
-
-Key
-:   Type: string   
-document key
-
-Metadata
-:   Type: DateTime?   
-last modified date of document 
-
-NonAuthoritativeInformation
-:   Type: bool?   
-indicates if document is non authoritative (modified by uncommited transaction)  
-
-TempIndexScore
-:   Type: float?   
-ranking of document in current query  
+Type: [JsonDocument](../../../glossary/json/json-document)   
+Object representing retrieved document.
 
 ### Example I
 

@@ -14,23 +14,8 @@ key of a document to get metadata for
 
 **Return Value**
 
-{CODE jsondocumentmetadata@Common.cs /}
-
-Metadata
-:   Type: RavenJObject   
-Document metadata
-
-Etag
-:   Type: Etag   
-current document ETag
-
-Key
-:   Type: string   
-document key
-
-Metadata
-:   Type: DateTime?   
-last modified date of document 
+Type: [JsonDocumentMetadata](../../../../glossary/json/json-document-metadata)   
+Metadata information for document with given key.
 
 ## Example
 
