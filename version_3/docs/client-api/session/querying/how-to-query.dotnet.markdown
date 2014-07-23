@@ -16,6 +16,15 @@ isMapReduce
 :   Type: bool   
 Indicates if queried index is a map/reduce index (modifies how we treat identifier properties).
 
+**Return Value**
+
+Type: IRavenQueryable   
+Object instance implementing IRavenQueryable interface containing additional query methods and extensions.
+
+## Remarks
+
+By default, if `page size` is not specified, the value will be set to `128`. This is part of **Safe-by-Default** approach.
+
 ## Example I - Basic
 
 {CODE query_1_1@ClientApi\Session\Querying\HowToQuery.cs /}
@@ -73,6 +82,6 @@ Available custom methods and extensions:
 - ToListAsync
 - [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries)
 
-## Remarks
+#### Related articles
 
-By default, if `page size` is not specified, the value will be set to `128`. This is part of **Safe-by-Default** approach.
+TODO
