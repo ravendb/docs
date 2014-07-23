@@ -30,7 +30,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 																		   {
 																			   FirstName = "John", 
 																			   LastName = "Doe", 
-																			   Address = "addresses/1"
+																			   AddressId = "addresses/1"
 																		   }),
 									Metadata = new RavenJObject()
 								},

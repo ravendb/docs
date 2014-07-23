@@ -15,7 +15,7 @@ namespace Raven.Documentation.CodeSamples
 
 		public string LastName { get; set; }
 
-		public string Address { get; set; }
+		public string AddressId { get; set; }
 	}
 
 	public class Address

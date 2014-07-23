@@ -143,12 +143,12 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				{
 					#region loading_entities_2_1
 					// loading 'people/1'
-					// including document found in 'Address' property
+					// including document found in 'AddressId' property
 					var person = session
-						.Include<Person>(x => x.Address)
+						.Include<Person>(x => x.AddressId)
 						.Load<Person>("people/1");
 
-					var address = session.Load<Address>(person.Address); // this will not make server call
+					var address = session.Load<Address>(person.AddressId); // this will not make server call
 					#endregion
 				}
 
@@ -156,12 +156,12 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				{
 					#region loading_entities_2_2
 					// loading 'people/1'
-					// including document found in 'Address' property
+					// including document found in 'AddressId' property
 					var person = session
-						.Include("Address")
+						.Include("AddressId")
 						.Load<Person>("people/1");
 
-					var address = session.Load<Address>(person.Address); // this will not make server call
+					var address = session.Load<Address>(person.AddressId); // this will not make server call
 					#endregion
 				}
 

@@ -106,7 +106,7 @@
 					.DatabaseCommands
 					.Get(
 						new[] { "people/1", "people/2" },
-						new [] { "Address" });
+						new [] { "AddressId" });
 
 				var results = resultsWithIncludes.Results; // people/1, people/2
 				var includes = resultsWithIncludes.Includes; // addresses/1
