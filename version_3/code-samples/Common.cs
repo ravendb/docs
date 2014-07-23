@@ -51,62 +51,6 @@
 		}
 		#endregion
 
-		#region attachment
-		public class Attachment
-		{
-			/// <summary>
-			/// Function that returns attachment data
-			/// </summary>
-			public Func<Stream> Data { get; set; }
-
-			/// <summary>
-			/// Size of the attachment.
-			/// </summary>
-			/// <remarks>The max size of an attachment can be 2GB.</remarks>
-			public int Size { get; set; }
-
-			/// <summary>
-			/// Attachment metadata
-			/// </summary>
-			public RavenJObject Metadata { get; set; }
-
-			/// <summary>
-			/// Attachment ETag
-			/// </summary>
-			public Etag Etag { get; set; }
-
-			/// <summary>
-			/// Attachment key
-			/// </summary>
-			public string Key { get; set; }
-		}
-		#endregion
-
-		#region attachmentinformation
-		public class AttachmentInformation
-		{
-			/// <summary>
-			/// Size of the attachment.
-			/// </summary>
-			public int Size { get; set; }
-
-			/// <summary>
-			/// Attachment key
-			/// </summary>
-			public string Key { get; set; }
-
-			/// <summary>
-			/// Attachment metadata
-			/// </summary>
-			public RavenJObject Metadata { get; set; }
-
-			/// <summary>
-			/// Attachment ETag
-			/// </summary>
-			public Etag Etag { get; set; }
-		}
-		#endregion
-
 		#region patchrequest
 		public class PatchRequest
 		{
@@ -213,23 +157,6 @@
 			public string ProductVersion { get; set; }
 
 			public string BuildVersion { get; set; }
-		}
-		#endregion
-
-		#region queryheaderinformation
-		public class QueryHeaderInformation
-		{
-			public string Index { get; set; }
-
-			public bool IsStale { get; set; }
-
-			public DateTime IndexTimestamp { get; set; }
-
-			public int TotalResults { get; set; }
-
-			public Etag ResultEtag { get; set; }
-
-			public Etag IndexEtag { get; set; }
 		}
 		#endregion
 	}

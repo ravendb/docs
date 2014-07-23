@@ -1,5 +1,6 @@
 /commands	Commands
 /bulk-insert	Bulk Insert
 operation.markdown	Operation
+query-header-information.markdown	QueryHeaderInformation
 database-statistics.markdown	DatabaseStatistics
 admin-statistics.markdown	AdminStatistics

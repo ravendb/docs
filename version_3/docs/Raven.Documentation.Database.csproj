@@ -172,6 +172,7 @@
     <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
+    <None Include="glossary\client-api\query-header-information.markdown" />
     <None Include="glossary\client-api\bulk-insert\.docslist" />
     <None Include="glossary\client-api\bulk-insert\bulk-insert-operation.markdown" />
     <None Include="glossary\client-api\bulk-insert\bulk-insert-options.markdown" />
@@ -189,6 +190,8 @@
     <None Include="glossary\indexes\index-merge-results.markdown" />
     <None Include="glossary\indexes\index-definition.markdown" />
     <None Include="glossary\json\.docslist" />
+    <None Include="glossary\json\attachment-information.markdown" />
+    <None Include="glossary\json\attachment.markdown" />
     <None Include="glossary\json\json-document.markdown" />
     <None Include="glossary\json\json-document-metadata.markdown" />
     <None Include="glossary\transformers\.docslist" />
