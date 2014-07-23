@@ -122,6 +122,7 @@
     <Compile Include="ClientApi\Session\Querying\HowToCustomize.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToQuery.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToStream.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToUseTransformers.cs" />
     <Compile Include="ClientApi\Session\SavingChanges.cs" />
     <Compile Include="ClientApi\Session\StoringEntities.cs" />
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
