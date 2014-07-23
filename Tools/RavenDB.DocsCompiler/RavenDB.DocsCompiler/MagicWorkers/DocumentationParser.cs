@@ -227,7 +227,17 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
 	        var finalHref = uri.AbsoluteUri;
 	        if (debugMode && finalHref.EndsWith(".html") == false)
-		        finalHref += ".html";
+	        {
+		        if (finalHref.Contains("#"))
+		        {
+			        var indexOfHash = finalHref.IndexOf("#", StringComparison.OrdinalIgnoreCase);
+			        finalHref = finalHref.Insert(indexOfHash, ".html");
+		        }
+		        else
+		        {
+					finalHref += ".html";
+		        }
+	        }
 
 			tag.attributes["href"] = finalHref;
 

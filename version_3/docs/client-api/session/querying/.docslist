@@ -1,6 +1,6 @@
 how-to-query.markdown	How to query?
 how-to-stream-query-results.markdown	How to stream query results?
-how-to-customize-query.markdown	[TODO] How to customize query?
+how-to-customize-query.markdown	How to customize query?
 how-to-use-transformers-in-queries.markdown	[TODO] How to use transformers in queries?
 how-to-use-lucene-in-queries.markdown	[TODO] How to use lucene in queries?
 how-to-perform-a-faceted-search.markdown	[TODO] How to perform a faceted search?
@@ -13,3 +13,4 @@ how-to-intersect-queries.markdown	[TODO] How to intersect queries?
 how-to-perform-queries-lazily.markdown	[TODO] How to perform queries lazily?
 how-to-work-with-suggestions.markdown	[TODO] How to work with suggestions?
 how-to-use-search.markdown	[TODO] How to use search?
+how-to-use-highlighting.markdown	[TODO] How to use highlighting?
