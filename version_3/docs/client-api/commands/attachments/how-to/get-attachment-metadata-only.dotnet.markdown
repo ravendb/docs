@@ -20,7 +20,8 @@ key of the attachment you want to download metadata for
 
 **Return Value**
 
-{CODE attachment@Common.cs /}
+Type: [Attachment](../../../glossary/json/attachment)   
+Object that represents attachment.
 
 ### Example
 
@@ -50,7 +51,8 @@ maximum number of attachments that will be returned
 
 **Return Value**
 
-{CODE attachmentinformation@Common.cs /}
+Type: [AttachmentInformation](../../../glossary/json/attachment-information)   
+Object that represents attachment metadata information.
 
 ### Example
 
