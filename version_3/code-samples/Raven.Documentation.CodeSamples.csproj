@@ -133,6 +133,7 @@
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
     <Compile Include="Indexes\IndexingHierarchicalData.cs" />
+    <Compile Include="Indexes\IndexingPolymorphicData.cs" />
     <Compile Include="Indexes\IndexingRelatedDocuments.cs" />
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
