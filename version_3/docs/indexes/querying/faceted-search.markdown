@@ -22,7 +22,7 @@ To achieve this in RavenDB, lets say you have a document like this:
 
 You need to setup your facet definitions and store them in RavenDB as a document, like so:
 
-{CODE step_1@ClientApi\FacetedSearch.cs /}
+{CODE step_1@Indexes\Querying\FacetedSearch.cs /}
 
 This tells RavenDB that you would like to get the following facets.
 
@@ -43,13 +43,13 @@ This tells RavenDB that you would like to get the following facets.
 
 Next you need to create an index to work against, this can be setup like so:
 
-{CODE step_2@ClientApi\FacetedSearch.cs /}
+{CODE step_2@Indexes\Querying\FacetedSearch.cs /}
 
 ## Step 3
 
 Finally you can write the following code and you get back the data below.
 
-{CODE step_3@ClientApi\FacetedSearch.cs /}
+{CODE step_3@Indexes\Querying\FacetedSearch.cs /}
 
 This is equivalent to hitting the following Url:
 
@@ -117,3 +117,7 @@ http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_
 ###Stale results
 
 The faceted search does not take into account a stealeness of an index. You can't wait for non stale results by customize you query by one of `WaitForNonStaleResultsXXX` method.
+
+#### Related articles
+
+TODO
