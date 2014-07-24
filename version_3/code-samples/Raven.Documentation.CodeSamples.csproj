@@ -140,6 +140,7 @@
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
     <Compile Include="Indexes\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="Indexes\Querying\Highlights.cs" />
     <Compile Include="Indexes\Querying\Intersection.cs" />
     <Compile Include="Indexes\Querying\Paging.cs" />
     <Compile Include="Indexes\Querying\Searching.cs" />
