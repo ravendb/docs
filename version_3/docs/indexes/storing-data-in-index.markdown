@@ -6,7 +6,7 @@ Lucene allows storing the original token text for fields, and RavenDB exposes th
 
 By default, tokens are saved to the index as Indexed and Analyzed but not Stored - that is: they can be searched on using a specific Analyzer (or the default one), but their original value is unavailable after indexing. Enabling field storage causes values to be available to be retrieved via `IDocumentQuery<T>.SelectFields<TProjection>(...)`, and is done like so:
 
-{CODE stores1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+{CODE storing_1@Indexes\Storing.cs /}
 
 The default values for each field are `FieldStorage.No` in Stores and `FieldIndexing.Default` in Indexes.
 

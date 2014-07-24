@@ -62,6 +62,10 @@ For languages other than English, or if you need a custom analysis process, you 
 
 To make an entity property indexed using a specific Analyzer, all you need to do is match it with the name of the property, like so:
 
-{CODE analyzers1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+{CODE analyzers_1@Indexes\Analyzers.cs /}
 
 The Analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the "Analyzers" folder of the RavenDB server directory, and use their fully qualified type name (including the assembly name).
+
+#### Related articles
+
+TODO

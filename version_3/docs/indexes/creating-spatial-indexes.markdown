@@ -6,9 +6,9 @@ To support the ability to retrieve the data based on spatial coordinates, the sp
 
 To take an advantage of the spatial search, first we need to create an index with a spatial field. To mark field as the spatial field, we need to use `SpatialGenerate` method:
 
-{CODE spatial_search_0@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_0@Indexes\SpatialIndexes.cs /}
 
-{CODE spatial_search_6@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_6@Indexes\SpatialIndexes.cs /}
 
 where:   
 
@@ -20,29 +20,29 @@ where:
 
 In our example we will use `Event` class and very simple index defined below.
 
-{CODE spatial_search_1@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_1@Indexes\SpatialIndexes.cs /}
 
-{CODE spatial_search_2@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_2@Indexes\SpatialIndexes.cs /}
 
 If our `Event` would contain the WKT property already:   
 
-{CODE spatial_search_enhancements_1@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_1@Indexes\SpatialIndexes.cs /}
 
 then we could define our field using `Spatial` method in `AbstractIndexCreationTask`:   
 
-{CODE spatial_search_enhancements_2@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_2@Indexes\SpatialIndexes.cs /}
 
 where under `options` we got access to our geography and cartesian factories:   
 
-{CODE spatial_search_enhancements_3@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_3@Indexes\SpatialIndexes.cs /}
 
 `GeographySpatialOptionsFactory`:   
 
-{CODE spatial_search_enhancements_4@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_4@Indexes\SpatialIndexes.cs /}
 
 `CartesianSpatialOptionsFactory`:   
 
-{CODE spatial_search_enhancements_5@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_5@Indexes\SpatialIndexes.cs /}
 
 ## Spatial search strategies
 
@@ -124,41 +124,41 @@ B. Quadtree precision values
 
 Beside the `Event` class let us add `SpatialDoc` with a corresponding index to show how to do a strongly-typed spatial query using `Spatial` method.
 
-{CODE spatial_search_enhancements_8@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_8@Indexes\SpatialIndexes.cs /}
 
-{CODE spatial_search_enhancements_9@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_9@Indexes\SpatialIndexes.cs /}
 
 The methods available under `criteria` are:   
 
-{CODE spatial_search_enhancements_a@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_a@Indexes\SpatialIndexes.cs /}
 
 ### Radius search
 
 The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search we will use `WithinRadiusOf` method that is a part of query customizations.
 
-{CODE spatial_search_3@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_3@Indexes\SpatialIndexes.cs /}
 
 The method can be used also when using `LuceneQuery`.
 
-{CODE spatial_search_8@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_8@Indexes\SpatialIndexes.cs /}
 
 #### Advanced search
 
 The `WithinRadiusOf` method is a wrapper around `RelatesToShape` method.
 
-{CODE spatial_search_5@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_5@Indexes\SpatialIndexes.cs /}
 
-{CODE spatial_search_7@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_7@Indexes\SpatialIndexes.cs /}
 
 where first parameter is a name of the field containing the shape to use for filtering, next one is a shape in [WKT](http://en.wikipedia.org/wiki/Well-known_text) format and the last one is a spatial relation type.
 
 So to perform a radius search from the above example and use `RelatesToShape` method, we do as follows
 
-{CODE spatial_search_4@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_4@Indexes\SpatialIndexes.cs /}
 
 or when we want to use `LuceneQuery` then
 
-{CODE spatial_search_9@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_9@Indexes\SpatialIndexes.cs /}
 
 {WARNING From RavenDB 2.0 the distance by default is measured in **kilometers** in contrast to the miles used in previous versions. /}
 
@@ -166,11 +166,11 @@ or when we want to use `LuceneQuery` then
 
 From version 2.5 RavenDB also supports indexing of [GeoJSON](http://www.geojson.org/geojson-spec.html) objects.
 
-{CODE spatial_search_enhancements_6@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_6@Indexes\SpatialIndexes.cs /}
 
 Beside the WKT and GeoJSON following formats are also supported:   
 
-{CODE spatial_search_enhancements_7@ClientApi/Querying/StaticIndexes/SpatialSearch.cs /}
+{CODE spatial_search_enhancements_7@Indexes\SpatialIndexes.cs /}
 
 ## Third-party spatial library integration
 

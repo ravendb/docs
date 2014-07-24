@@ -4,10 +4,14 @@
 
 To create an index and enable Term Vectors on a specific field we can create index using `AbstractIndexCreationTask` and specify term vectors there or define our term vectors in `IndexDefinition` (directly or using `IndexDefinitionBuilder`).
 
-{CODE configuring_index_options_1@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+{CODE term_vectors_1@Indexes\TermVectors.cs /}
 
-{CODE configuring_index_options_2@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+{CODE term_vectors_2@Indexes\TermVectors.cs /}
 
 The available Term Vector options are:
 
-{CODE configuring_index_options_3@ClientApi\Querying\StaticIndexes\ConfiguringIndexOptions.cs /}
+{CODE term_vectors_3@Indexes\TermVectors.cs /}
+
+#### Related articles
+
+TODO
