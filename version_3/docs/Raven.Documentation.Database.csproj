@@ -162,7 +162,8 @@
     <None Include="client-api\session\querying\how-to-perform-queries-lazily.markdown" />
     <None Include="client-api\session\querying\how-to-query-a-spatial-index.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-multifaceted-search.markdown" />
-    <None Include="client-api\session\querying\how-to-use-lucene-in-queries.dotnet.markdown" />
+    <None Include="client-api\session\querying\lucene\.docslist" />
+    <None Include="client-api\session\querying\lucene\how-to-use-lucene-in-queries.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-perform-projection.markdown" />
     <None Include="client-api\session\querying\how-to-use-transformers-in-queries.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-customize-query.dotnet.markdown" />
@@ -202,6 +203,32 @@
     <None Include="glossary\transformers\.docslist" />
     <None Include="glossary\transformers\transformer-definition.markdown" />
     <None Include="indexes\.docslist" />
+    <None Include="indexes\creating.markdown" />
+    <None Include="indexes\boosting.markdown" />
+    <None Include="indexes\dynamic-fields.markdown" />
+    <None Include="indexes\indexing-hierarchies.markdown" />
+    <None Include="indexes\indexing-related-documents.markdown" />
+    <None Include="indexes\querying\.docslist" />
+    <None Include="indexes\querying\suggestions.markdown" />
+    <None Include="indexes\term-vectors.markdown" />
+    <None Include="indexes\using-analyzers.markdown" />
+    <None Include="indexes\storing.markdown" />
+    <None Include="indexes\customizing-results-order.markdown" />
+    <None Include="indexes\querying\handling-document-relationships.markdown" />
+    <None Include="indexes\polymorphism.markdown" />
+    <None Include="indexes\indexes-error-handling.markdown" />
+    <None Include="indexes\querying\dynamic-aggregation.markdown" />
+    <None Include="indexes\querying\faceted-search.markdown" />
+    <None Include="indexes\querying\intersection.markdown" />
+    <None Include="indexes\querying\projections.markdown" />
+    <None Include="indexes\querying\query-and-lucene-query.markdown" />
+    <None Include="indexes\querying\searching.markdown" />
+    <None Include="indexes\spatial-search.markdown" />
+    <None Include="indexes\stale-indexes.markdown" />
+    <None Include="indexes\querying\filtering.markdown" />
+    <None Include="indexes\querying\sorting.markdown" />
+    <None Include="indexes\querying\basics.markdown" />
+    <None Include="indexes\querying\paging.markdown" />
     <None Include="start\.docslist" />
     <None Include="start\getting-started.markdown" />
     <None Include="start\whats-new.markdown" />
@@ -210,13 +237,18 @@
     <None Include="studio\.docslist" />
     <None Include="studio\example-2.markdown" />
     <None Include="studio\example.markdown" />
+    <None Include="transformers\.docslist" />
+    <None Include="transformers\what-is-transformer.markdown" />
+    <None Include="transformers\using.markdown" />
+    <None Include="transformers\creating.markdown" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="indexes\full-query-syntax.markdown" />
+    <None Include="indexes\querying\full-query-syntax.markdown" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
