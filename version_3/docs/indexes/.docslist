@@ -7,7 +7,7 @@ indexing-related-documents.markdown	[TODO] Indexing related documents
 indexing-hierarchical-data.markdown	[TODO] Indexing hierarchical data
 indexing-polymorphic-data.markdown	[TODO] Indexing polymorphic data
 boosting.markdown	[TODO] Boosting
-cutomizing-results-order.markdown	[TODO] Customizing results order
+customizing-results-order.markdown	[TODO] Customizing results order
 storing-data-in-index.markdown	[TODO] Storing data in index
 using-analyzers.markdown	[TODO] Analyzers
 using-term-vectors.markdown	[TODO] Term Vectors

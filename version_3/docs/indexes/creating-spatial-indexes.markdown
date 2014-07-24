@@ -178,6 +178,6 @@ To integrate with other spatial libraries, the document store must be configured
 
 Examples of such converters can be found at [Simon Bartlett's github repository page](https://github.com/sibartlett/RavenDB.Client.Spatial).
 
+#### Related articles
 
-
-
+TODO
