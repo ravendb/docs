@@ -132,6 +132,7 @@
     <Compile Include="Glossary\Glossary.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
+    <Compile Include="Indexes\IndexingRelatedDocuments.cs" />
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
     <Compile Include="Indexes\Querying\HandlingDocumentRelationships.cs" />
@@ -139,6 +140,7 @@
     <Compile Include="Indexes\Querying\Paging.cs" />
     <Compile Include="Indexes\Querying\Searching.cs" />
     <Compile Include="Indexes\Querying\Suggestions.cs" />
+    <Compile Include="Indexes\SpatialIndexes.cs" />
     <Compile Include="Indexes\Storing.cs" />
     <Compile Include="Indexes\TermVectors.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
