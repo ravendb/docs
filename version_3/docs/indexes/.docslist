@@ -3,7 +3,7 @@ what-is-index.markdown	[TODO] What is index?
 creating-indexes.markdown	[TODO] Creating indexes
 creating-spatial-indexes.markdown	[TODO] Creating spatial indexes
 stale-indexes.markdown	[TODO] Stale indexes
-indexing-document-relationships.markdown	[TODO] Indexing document relationships
+indexing-related-documents.markdown	[TODO] Indexing related documents
 indexing-hierarchical-data.markdown	[TODO] Indexing hierarchical data
 indexing-polymorphic-data.markdown	[TODO] Indexing polymorphic data
 boosting.markdown	[TODO] Boosting
