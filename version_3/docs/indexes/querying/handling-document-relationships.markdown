@@ -37,11 +37,11 @@ As you can see, the `Order` document now contains denormalized data from both th
 
 The denormalization approach avoids many cross document lookups and results in only the necessary data being transmitted over the network, but it makes other scenarios more difficult. For example, consider the following entity structure as our start point:
 
-{CODE order_classes_basic@Common.cs /}
+{CODE order_classes_basic@Entities.cs /}
 
 If we know that whenever we load an `Order` from the database we will need to know the customer's name and address, we could decide to create a denormalized `Order.Customer` field, and store those details in the directly in the `Order` object. Obviously, the password and other irrelevant details will not be denormalized:
 
-{CODE order_classes_denormalizedcustomer@Common.cs /}
+{CODE order_classes_denormalizedcustomer@Entities.cs /}
 
 There wouldn’t be a direct reference between the `Order` and the `Customer`. Instead, `Order` holds a `DenormalizedCustomer`, which contains the interesting bits from `Customer` that we need whenever we process `Order` objects.
 
@@ -53,17 +53,17 @@ Denormalization is a viable solution for rarely changing data, or for data that 
 
 The RavenDB "Includes" feature addresses the limitations of denormalization. Instead of one object containing copies of the properties from another object, it is only necessary to hold a reference to the second object. Then RavenDB can be instructed to pre-load the referenced document at the same time that the root object is retrieved. We can do this using:
 
-{CODE includes1@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes1@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 Above we are asking RavenDB to retrieve the `Order` "orders/1234" and at the same time "include" the `Customer` referenced by the `Order.CustomerId` property. The second call to `Load()` is resolved completely client side (i.e. without a second request to the RavenDB server) because the relevant `Customer` object has already been retrieved (this is the full `Customer` object not a denormalized version). 
 
 There is also a possibility to load multiple documents:
 
-{CODE includes_1@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes_1@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 You can also use Includes with queries:
 
-{CODE includes2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes2@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 Under the hood, this works because RavenDB has two channels through which it can return information in response to a load request. The first is the Results channel, through which the root object retrieved by the `Load()` method call is returned. The second is the Includes channel, through which any included documents are sent back to the client. Client side, those included documents are not returned from the `Load()` method call, but they are added to the session unit of work, and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
 
@@ -71,35 +71,35 @@ Under the hood, this works because RavenDB has two channels through which it can
 
 Include can be used with a many to one relationship. In the above classes, an `Order` has a property `SupplierIds` which contains an array of references to `Supplier` documents. The following code will cause the suppliers to be pre-loaded:
 
-{CODE includes3@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes3@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 Again, the calls to `Load()` within the `foreach` loop will not require a call to the server as the `Supplier` objects will already be loaded into the session cache.
 
 Multi-loads are also possible:
 
-{CODE includes_3@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes_3@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 ### Secondary level includes
 
 An Include does not need to work only on the value of a top level property within a document. It can be used to load a value from a secondary level. In the classes above, the `Order` contains a `Referral` property which is of the type:
 
-{CODE order_classes_referral@Common.cs /}
+{CODE order_classes_referral@Entities.cs /}
 
 This class contains an identifier for a `Customer`. The following code will include the document referenced by that secondary level identifier:
 
-{CODE includes4@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes4@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 Alternative way is to provide string based path:
 
-{CODE includes_4@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes_4@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 This secondary level include will also work with collections. The `Order.LineItems` property holds a collection of `LineItem` objects which each contain a reference to a `Product`:
 
-{CODE order_classes_lineitem@Common.cs /}
+{CODE order_classes_lineitem@Entities.cs /}
 
 The `Product` documents can be included using this syntax:
 
-{CODE includes5@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes5@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 when you want to load multiple documents.
 
@@ -109,19 +109,19 @@ The `Select()` within the Include tells RavenDB which property of secondary leve
 
 The above `Include` samples assume that the Id property being used to resolve a reference is a string and it contains the full identifier for the referenced document (e.g. the `CustomerId` property will contain a value such as `"customers/5678"`). Include can also work with Value Type identifiers. Given these entities:
 
-{CODE order_classes2@Common.cs /}
+{CODE order_classes2@Entities.cs /}
 
 The samples above can be re-written as follows:
 
-{CODE includes1_2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes1_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
-{CODE includes2_2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes2_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
-{CODE includes3_2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes3_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
-{CODE includes4_2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes4_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
-{CODE includes5_2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes5_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 The second parameter to the generic `Include<T, TInclude>` specifies which document collection the reference is pointing to. RavenDB will combine the name of the collection with the value of the reference property to find the full identifier of the referenced document. For example, from the first example, if the value of the `Order.Customer2Id` property is the integer 56, RavenDB will include the document with an Id of "customer2s/56" from the database. The `Session.Load<Customer2>()` method will be passed the value 56 and will look for then load the document "customer2s/56" from the session cache.
 
@@ -129,17 +129,17 @@ The second parameter to the generic `Include<T, TInclude>` specifies which docum
 
 Same query extensions have been applied to LuceneQuery, so to include `Customer` by `CustomerId` property can be achieved in both ways:
 
-{CODE includes_7@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes_7@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 or
 
-{CODE includes_8@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes_8@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 ### Include rules
 
 When using string-based includes like:
 
-{CODE includes_4@ClientApi\Querying\HandlingDocumentRelationships.cs /}
+{CODE includes_4@Indexes\Querying\HandlingDocumentRelationships.cs /}
 
 you must remember to follow certain rules that must apply to the provided string path:
 
@@ -156,52 +156,14 @@ Learning string path rules may be useful when you will want to query database us
 
 {CODE-END /}
 
-## Live Projections
-
-Using Includes is very powerful, but sometimes we want to do even more complex manipulation. The Live Projection feature is unique to RavenDB, and it can be thought of as the third step of the Map/Reduce operation: after having mapped all data, and it has been reduced (if the index is a Map/Reduce index), the RavenDB server can additionally transform the results into a completely different data structure and return that back instead of the original results.
-
-Using the Live Projections feature, you have more control over what to load into the result entity, and since it returns a projection of the original entity, you also get the chance to filter out properties you do not need.
-
-Let's look at an example to show how it can be used. Assuming we have many `User` entities and many of them are actually an alias for another user. If we wanted to display all users with their aliases using `Include()`, we would probably need to write something like this:
-
-{CODE liveprojections1@ClientApi\Querying\HandlingDocumentRelationships.cs /}
-
-Since we use Includes, the server will only be accessed once - which is good, but the entire object graph for each referenced document (user entity for the alias) will be returned by the server... and it's an awful lot of code to write too!
-
-Using Live Projections, we can get the same end result much more easily and with the transformation applied on the server side. This code defines an index which performs a Live Projection:
-
-{CODE liveprojections2@ClientApi\Querying\HandlingDocumentRelationships.cs /}
-
-The function declared in `TransformResults` will be executed on the results of the query, which gives it the opportunity to modify, extend or filter those results. In this case, it lets us look at data from another document and use it to project a new return type.
-
-A Live Projection will return a projection, on which you can use the `.As<>` clause to convert it back to a type known by your application:
-
-{CODE liveprojections3@ClientApi\Querying\HandlingDocumentRelationships.cs /}
-
-The main benefits of using Live Projections are; not having to write as much code, they run on the server and they reduce the network bandwidth by returning only the data we are interested in.
-
-{NOTE An important difference to note is that while Includes are useful for both explicit loading by id and for querying, Live Projections can only be used for querying. /}
-
-## Combining Approaches
-
-It is possible to combine the above techniques. Using the `DenormalizedCustomer` from above and creating an order that uses it:
-
-{CODE order_classes_ordertodenormalizedcustomer@Common.cs /}
-
-We have the advantages of a denormalization, a quick and simple load of an `Order` and the fairly static `Customer` details that are required for most processing. But we also have the ability to easily and efficiently load the full `Customer` object when necessary using:
-
-{CODE includes6@ClientApi\Querying\HandlingDocumentRelationships.cs /}
-
-This combining of denormalization and Includes could also be used with a list of denormalized objects.
-
-It is possible to use Include on a query against a Live Projection. Includes are evaluated after the `TransformResults` has been evaluated. This opens up the possibility of implementing Tertiary Includes (i.e. retrieving documents that are referenced by documents that are referenced by the root document). 
-
-Whilst RavenDB can support Tertiary Includes, before resorting to them you should re-evaluate your document model. Needing to use Tertiary Includes can be an indication that you are designing your documents along "Relational" lines.
-
 ## Summary
 
 There are no strict rules as to when to use which approach, but the general idea is to give it a lot of thought, and consider the implications each approach has.
 
 As an example, in an e-commerce application it might be better to denormalize product names and prices into an order line object, since you want to make sure the customer sees the same price and product title in the order history. But the customer name and addresses should probably be references, rather than denormalized into the order entity.
 
-For most cases where denormalization is not an option, Includes are probably the answer. Whenever serious processing is required after the Map/Reduce work is done, or when you need a different entity structure returned than those defined by your index - take a look at Live Projections.
+For most cases where denormalization is not an option, Includes are probably the answer.
+
+##Related articles
+
+TODO
