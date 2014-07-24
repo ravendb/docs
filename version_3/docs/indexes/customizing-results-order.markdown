@@ -8,7 +8,7 @@ Dates are written to the index in a form which preserves lexicography order, and
 
 Numerical values, on the other hand, are stored as text and therefore require the user to specify explicitly what is the number type used so a correct sorting mechanism is enforced. This is quite easily done, by declaring the required sorting setup in `SortOptions` in the index definition:
 
-{CODE static_sorting1@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
+{CODE static_sorting1@Indexes\CustomizingResultsOrder.cs /}
 
 The index outlined above will allow sorting by value on the user's age (1, 2, 3, 11, etc). If we wouldn't specify this option, it would have been sorted lexically (1, 11, 2, 3, etc).
 
@@ -20,7 +20,7 @@ The default `SortOptions` value is `String`. Appropriate values available for al
 
 In the following query we are using the `OrderBy` method in order to indicate that we want to sort on `Age`:
 
-{CODE static_sorting3@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
+{CODE static_sorting3@Indexes\CustomizingResultsOrder.cs /}
 
 So, by default it will sort on Age as it was a string. By specifing `Sort(x => x.Age, SortOptions.Short)` in the index dedinition, we inidicate that the sort order should be in a numerical order. 
 
@@ -30,6 +30,10 @@ RavenDB supports using collations for documents sorting and indexing. You can se
 
 The following is an example of an index definition which allows sorting based on the Swedish lexical sorting rules:
 
-{CODE static_sorting2@ClientApi\Querying\StaticIndexes\CustomizingResultsOrder.cs /}
+{CODE static_sorting2@Indexes\CustomizingResultsOrder.cs /}
 
 In general, you can sort using `[two-letters-culture-name]CollationAnalyzer`, and all the cultures supported by the .NET framework are supported.
+
+#### Related articles
+
+TODO

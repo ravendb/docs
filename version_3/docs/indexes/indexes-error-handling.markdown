@@ -98,3 +98,7 @@ A disabled index cannot be queried, all queries to a disabled index will result 
 The only thing that can be done with a disabled index is to either delete it or replace the index definition with one that is resilient to those errors.
 
 There is no way to "resume" a disabled index.
+
+#### Related articles
+
+TODO

@@ -30,3 +30,7 @@ or
 {NOTE Indexes will be updated automatically when related documents will change. /}
 
 {NOTE Using `LoadDocument` adds a loaded document to tracking list. This may cause very expensive calculations to occur especially when multiple documents are tracking the same document. /}
+
+#### Related articles
+
+TODO
