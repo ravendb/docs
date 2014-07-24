@@ -228,7 +228,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes_7
-					var orders = session.Advanced.LuceneQuery<Order2>()
+					var orders = session.Advanced.DocumentQuery<Order2>()
 						.Include(x => x.Customer2Id)
 						.WhereGreaterThan(x => x.TotalPrice, 100)
 						.ToList();
@@ -245,7 +245,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes_8
-					var orders = session.Advanced.LuceneQuery<Order2>()
+					var orders = session.Advanced.DocumentQuery<Order2>()
 						.Include("CustomerId")
 						.WhereGreaterThan(x => x.TotalPrice, 100)
 						.ToList();
