@@ -25,14 +25,18 @@ While it is very easy to work with such a document in all respect, it does bring
 
 The answer to that is that Raven contains built-in support for indexing hierarchies, we can define an index using the following syntax:
 
-{CODE indexing_hierarchies_1@ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs /}
+{CODE indexing_hierarchies_1@Indexes\IndexingHierarchicalData.cs /}
 
 then create it using:
 
-{CODE indexing_hierarchies_2@ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs /}
+{CODE indexing_hierarchies_2@Indexes\IndexingHierarchicalData.cs /}
 
 Alternative way is to use `PutIndex` command:
 
-{CODE indexing_hierarchies_3@ClientApi\Querying\StaticIndexes\IndexingHierarchies.cs /}
+{CODE indexing_hierarchies_3@Indexes\IndexingHierarchicalData.cs /}
 
 This will index all the comments in the thread, regardless of their location in the hierarchy.
+
+#### Related articles
+
+TODO
