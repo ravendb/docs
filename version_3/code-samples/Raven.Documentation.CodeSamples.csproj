@@ -130,6 +130,8 @@
     <Compile Include="Entities.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Glossary\Glossary.cs" />
+    <Compile Include="Indexes\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="Indexes\Querying\Paging.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientApi\Session\OpeningSession.cs" />
   </ItemGroup>
