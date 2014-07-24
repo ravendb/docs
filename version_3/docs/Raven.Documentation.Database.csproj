@@ -205,6 +205,7 @@
     <None Include="indexes\.docslist" />
     <None Include="indexes\creating-indexes.markdown" />
     <None Include="indexes\boosting.markdown" />
+    <None Include="indexes\querying\highlights.markdown" />
     <None Include="indexes\using-dynamic-fields.markdown" />
     <None Include="indexes\indexing-hierarchical-data.markdown" />
     <None Include="indexes\indexing-related-documents.markdown" />

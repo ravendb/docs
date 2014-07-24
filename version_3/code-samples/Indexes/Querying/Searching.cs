@@ -182,45 +182,6 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 								escapeQueryOptions: EscapeQueryOptions.RawQuery).ToList();
 					#endregion
 				}
-
-				using (var session = documentStore.OpenSession())
-				{
-					#region highlights_2
-					FieldHighlightings highlightings;
-
-					var results = session.Advanced.LuceneQuery<SearchItem>("ContentSearchIndex")
-									 .Highlight("Text", 128, 1, out highlightings)
-									 .Search("Text", "raven")
-									 .ToArray();
-
-					var builder = new StringBuilder()
-						.AppendLine("<ul>");
-
-					foreach (var result in results)
-					{
-						var fragments = highlightings.GetFragments(result.Id);
-						builder.AppendLine(string.Format("<li>{0}</li>", fragments.First()));
-					}
-
-					var ul = builder
-						.AppendLine("</ul>")
-						.ToString();
-
-					#endregion
-				}
-
-				using (var session = documentStore.OpenSession())
-				{
-					#region highlights_5
-					FieldHighlightings highlightings;
-
-					var results = session.Advanced.LuceneQuery<SearchItem>("ContentSearchIndex")
-									 .Highlight("Text", 128, 1, out highlightings)
-									 .SetHighlighterTags("**", "**")
-									 .Search("Text", "raven")
-									 .ToArray();
-					#endregion
-				}
 			}
 		}
 	}
