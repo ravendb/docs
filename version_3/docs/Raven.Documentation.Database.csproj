@@ -162,7 +162,7 @@
     <None Include="client-api\session\querying\how-to-perform-queries-lazily.markdown" />
     <None Include="client-api\session\querying\how-to-query-a-spatial-index.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-multifaceted-search.markdown" />
-    <None Include="client-api\session\querying\how-to-use-lucene-in-queries.markdown" />
+    <None Include="client-api\session\querying\how-to-use-lucene-in-queries.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-perform-projection.markdown" />
     <None Include="client-api\session\querying\how-to-use-transformers-in-queries.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-customize-query.dotnet.markdown" />

@@ -1,8 +1,8 @@
+/lucene	Lucene
 how-to-query.markdown	How to query?
 how-to-stream-query-results.markdown	How to stream query results?
 how-to-customize-query.markdown	How to customize query?
 how-to-use-transformers-in-queries.markdown	How to use transformers in queries?
-how-to-use-lucene-in-queries.markdown	[TODO] How to use lucene in queries?
 how-to-perform-a-faceted-search.markdown	[TODO] How to perform a faceted search?
 how-to-perform-a-multifaceted-search.markdown	[TODO] How to perform a multifaceted search?
 how-to-query-a-spatial-index.markdown	[TODO] How to query a spatial index?
