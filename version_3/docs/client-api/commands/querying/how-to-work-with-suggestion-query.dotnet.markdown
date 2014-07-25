@@ -13,7 +13,7 @@ index
 A name of an index to query.
 
 suggestionQuery
-:   Type: [SuggestionQuery]()  
+:   Type: [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query)   
 A suggestion query definition containing all information required to query a specified index.
 
 **Return Value**
@@ -27,6 +27,6 @@ Result containing array of all suggestions for executed query
 
 #### Related articles
 
-- [Full RavenDB query syntax](../../../Indexes/full-query-syntax)   
+- [Full RavenDB query syntax](../../../indexes/full-query-syntax)   
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)   
 - [How to **stream query** results?](../../../client-api/commands/querying/how-to-stream-query-results)   

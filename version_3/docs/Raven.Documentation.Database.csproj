@@ -159,7 +159,7 @@
     <None Include="client-api\session\querying\how-to-perform-dynamic-aggregation.markdown" />
     <None Include="client-api\session\querying\how-to-use-morelikethis.markdown" />
     <None Include="client-api\session\querying\how-to-use-search.dotnet.markdown" />
-    <None Include="client-api\session\querying\how-to-work-with-suggestions.markdown" />
+    <None Include="client-api\session\querying\how-to-work-with-suggestions.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-perform-queries-lazily.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-query-a-spatial-index.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-multifaceted-search.markdown" />
@@ -179,6 +179,8 @@
     <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
+    <None Include="glossary\client-api\querying\.docslist" />
+    <None Include="glossary\client-api\querying\suggestion-query.markdown" />
     <None Include="glossary\client-api\raven-query-statistics.markdown" />
     <None Include="glossary\client-api\query-header-information.markdown" />
     <None Include="glossary\client-api\bulk-insert\.docslist" />
