@@ -652,5 +652,57 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			public Dictionary<string, double> TimingsInMilliseconds { get; set; }
 		}
 		#endregion
+
+		#region suggestion_query
+		public class SuggestionQuery
+		{
+			public static float DefaultAccuracy = 0.5f;
+
+			public static int DefaultMaxSuggestions = 15;
+
+			public static StringDistanceTypes DefaultDistance = StringDistanceTypes.Levenshtein;
+
+			/// <summary>
+			/// The term is what the user likely entered, and will used as the basis of the suggestions.
+			/// </summary>
+			public string Term { get; set; }
+
+			/// <summary>
+			/// Field to be used in conjunction with the index.
+			/// </summary>
+			public string Field { get; set; }
+
+			/// <summary>
+			/// Number of suggestions to return.
+			/// </summary>
+			public int MaxSuggestions { get; set; }
+
+			/// <summary>
+			/// Gets or sets the string distance algorithm.
+			/// </summary>
+			public StringDistanceTypes? Distance { get; set; }
+
+			/// <summary>
+			/// Accuracy.
+			/// </summary>
+			public float? Accuracy { get; set; }
+
+			/// <summary>
+			/// Whatever to return the terms in order of popularity
+			/// </summary>
+			public bool Popularity { get; set; }
+		}
+		#endregion
+
+		#region string_distance_types
+		public enum StringDistanceTypes
+		{
+			None,
+			Default,
+			Levenshtein,
+			JaroWinkler,
+			NGram,
+		}
+		#endregion
 	}
 }

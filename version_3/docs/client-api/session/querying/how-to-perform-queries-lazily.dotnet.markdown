@@ -45,7 +45,7 @@ Lazy query initializer returning count of matched documents.
 **Parameters**   
 
 query
-:   Type: [SuggestionQuery]()  
+:   Type: [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query)     
 A suggestion query definition containing all information required to query a specified index.
 
 **Return Value**
