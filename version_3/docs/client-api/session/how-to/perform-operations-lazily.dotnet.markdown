@@ -6,14 +6,14 @@ Operation execution for operations such as `Load`, `Load with Includes`, `LoadSt
 
 Available operations are:
 
-- `Load` - described [here]().
-- `Load with Includes` - described [here]().
-- `LoadStartingWith` - described [here]().
-- `MoreLikeThis` - described [here]().
+- `Load` - described [here](../../../client-api/session/loading-entities#load).
+- `Load with Includes` - described [here](../../../client-api/session/loading-entities#load-with-includes).
+- `LoadStartingWith` - described [here](../../../client-api/session/loading-entities#loadstartingwith).
+- `MoreLikeThis` - described [here](../../../client-api/session/querying/how-to-use-morelikethis).
 
 ## Querying
 
-Dedicated article about lazy queries can be found [here]().
+Dedicated article about lazy queries can be found [here](../../../client-api/session/querying/how-to-perform-queries-lazily).
 
 ## Example
 

@@ -149,7 +149,7 @@
     <None Include="client-api\session\how-to\get-entity-id.dotnet.markdown" />
     <None Include="client-api\session\how-to\refresh-entity.dotnet.markdown" />
     <None Include="client-api\session\how-to\evict-entity-from-a-session.dotnet.markdown" />
-    <None Include="client-api\session\how-to\perform-operations-lazily.markdown" />
+    <None Include="client-api\session\how-to\perform-operations-lazily.dotnet.markdown" />
     <None Include="client-api\session\how-to\defer-operations.dotnet.markdown" />
     <None Include="client-api\session\querying\.docslist" />
     <None Include="client-api\session\querying\how-to-use-highlighting.markdown" />
@@ -157,6 +157,7 @@
     <None Include="client-api\session\querying\how-to-get-query-statistics.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-faceted-search.markdown" />
     <None Include="client-api\session\querying\how-to-perform-dynamic-aggregation.markdown" />
+    <None Include="client-api\session\querying\how-to-use-morelikethis.markdown" />
     <None Include="client-api\session\querying\how-to-use-search.markdown" />
     <None Include="client-api\session\querying\how-to-work-with-suggestions.markdown" />
     <None Include="client-api\session\querying\how-to-perform-queries-lazily.markdown" />
