@@ -158,7 +158,7 @@
     <None Include="client-api\session\querying\how-to-perform-a-faceted-search.markdown" />
     <None Include="client-api\session\querying\how-to-perform-dynamic-aggregation.markdown" />
     <None Include="client-api\session\querying\how-to-use-morelikethis.markdown" />
-    <None Include="client-api\session\querying\how-to-use-search.markdown" />
+    <None Include="client-api\session\querying\how-to-use-search.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-work-with-suggestions.markdown" />
     <None Include="client-api\session\querying\how-to-perform-queries-lazily.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-query-a-spatial-index.markdown" />
