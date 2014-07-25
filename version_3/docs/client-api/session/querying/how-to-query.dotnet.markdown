@@ -62,7 +62,7 @@ Available custom methods and extensions:
 - FirstAsync
 - FirstOrDefaultAsync
 - [Include]()
-- [Intersect](../../../client-api/session/querying/how-to-intersect-queries)
+- [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [OrderByScore]()
