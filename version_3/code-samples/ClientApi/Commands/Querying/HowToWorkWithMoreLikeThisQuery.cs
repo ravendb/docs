@@ -17,7 +17,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Querying
 			using (var store = new DocumentStore())
 			{
 				#region more_like_this_2
-				// Search for similar documents to 'article/1'
+				// Search for similar documents to 'articles/1'
 				// using 'Articles/MoreLikeThis' index and search only field 'Body'
 				var result = store
 					.DatabaseCommands
@@ -25,7 +25,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Querying
 						new MoreLikeThisQuery
 							{
 								IndexName = "Articles/MoreLikeThis",
-								DocumentId = "article/1",
+								DocumentId = "articles/1",
 								Fields = new[] { "Body" }
 							});
 				#endregion

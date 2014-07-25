@@ -47,7 +47,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Transformers.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region query_transformer_3
-				// Search for similar documents to 'article/1'
+				// Search for similar documents to 'articles/1'
 				// using 'Articles/MoreLikeThis' index, search only field 'Body'
 				// and transform results using 'Articles/NoComments' transformer
 				QueryHeaderInformation queryHeaderInfo;
@@ -57,7 +57,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Transformers.HowTo
 						new MoreLikeThisQuery
 						{
 							IndexName = "Articles/MoreLikeThis",
-							DocumentId = "article/1",
+							DocumentId = "articles/1",
 							Fields = new[] { "Body" },
 							ResultsTransformer = "Articles/NoComments"
 						});

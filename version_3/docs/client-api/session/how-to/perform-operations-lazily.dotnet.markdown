@@ -9,7 +9,7 @@ Available operations are:
 - `Load` - described [here](../../../client-api/session/loading-entities#load).
 - `Load with Includes` - described [here](../../../client-api/session/loading-entities#load-with-includes).
 - `LoadStartingWith` - described [here](../../../client-api/session/loading-entities#loadstartingwith).
-- `MoreLikeThis` - described [here](../../../client-api/session/querying/how-to-use-morelikethis).
+- `MoreLikeThis` - described [here](../../../client-api/session/how-to/use-morelikethis).
 
 ## Querying
 
