@@ -12,17 +12,17 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 		{
 			/*
 			#region lazy_1
-			public static Lazy<IEnumerable<T>> Lazily<T>(
+			Lazy<IEnumerable<T>> Lazily<T>(
 				this IQueryable<T> source) { ... }
 
-			public static Lazy<IEnumerable<T>> Lazily<T>(
+			Lazy<IEnumerable<T>> Lazily<T>(
 				this IQueryable<T> source,
 				Action<IEnumerable<T>> onEval) { ... }
 
-			public static Lazy<Task<IEnumerable<T>>> LazilyAsync<T>(
+			Lazy<Task<IEnumerable<T>>> LazilyAsync<T>(
 				this IQueryable<T> source) { ... }
 
-			public static Lazy<Task<IEnumerable<T>>> LazilyAsync<T>(
+			Lazy<Task<IEnumerable<T>>> LazilyAsync<T>(
 				this IQueryable<T> source,
 				Action<IEnumerable<T>> onEval) { ... }
 			#endregion
@@ -30,17 +30,17 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 
 			/*
 			#region lazy_4
-			public static Lazy<int> CountLazily<T>(
+			Lazy<int> CountLazily<T>(
 				this IRavenQueryable<T> source) { ... }
 			#endregion
 			*/
 
 			/*
 			#region lazy_6
-			public static Lazy<SuggestionQueryResult> SuggestLazy(
+			Lazy<SuggestionQueryResult> SuggestLazy(
 				this IQueryable queryable) { ... }
 
-			public static Lazy<SuggestionQueryResult> SuggestLazy(
+			Lazy<SuggestionQueryResult> SuggestLazy(
 				this IQueryable queryable,
 				SuggestionQuery query) { ... }
 			#endregion
@@ -48,13 +48,13 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 
 			/*
 			#region lazy_8
-			public static Lazy<FacetResults> ToFacetsLazy<T>(
+			Lazy<FacetResults> ToFacetsLazy<T>(
 				this IQueryable<T> queryable,
 				string facetSetupDoc,
 				int start = 0,
 				int? pageSize = null) { ... }
 
-			public static Lazy<FacetResults> ToFacetsLazy<T>(
+			Lazy<FacetResults> ToFacetsLazy<T>(
 				this IQueryable<T> queryable,
 				IEnumerable<Facet> facets,
 				int start = 0,
