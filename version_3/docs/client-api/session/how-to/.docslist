@@ -1,5 +1,5 @@
 defer-operations.markdown	...defer operations
-perform-operations-lazily.markdown	[TODO] ...perform operations lazily
+perform-operations-lazily.markdown	...perform operations lazily
 clear-a-session.markdown	...clear a session
 evict-entity-from-a-session.markdown	...evict entity from a session
 refresh-entity.markdown	...refresh entity
