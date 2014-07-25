@@ -704,5 +704,24 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			NGram,
 		}
 		#endregion
+
+		/*
+		#region field_highlightings
+		public class FieldHighlightings
+		{
+			public string FieldName { get; private set; }
+
+			/// <summary>
+			/// Document Ids of available highlights.
+			/// </summary>
+			public IEnumerable<string> ResultIndents { get { ... } }
+
+			/// <summary>
+			/// Returns the list of document's field highlighting fragments.
+			/// </summary>
+			public string[] GetFragments(string documentId) { ... }
+		}
+		#endregion
+		*/
 	}
 }
