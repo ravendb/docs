@@ -153,8 +153,8 @@
     <None Include="client-api\session\how-to\defer-operations.dotnet.markdown" />
     <None Include="client-api\session\querying\.docslist" />
     <None Include="client-api\session\querying\how-to-use-highlighting.markdown" />
-    <None Include="client-api\session\querying\how-to-intersect-queries.markdown" />
-    <None Include="client-api\session\querying\how-to-get-query-statistics.markdown" />
+    <None Include="client-api\session\querying\how-to-use-intersect.markdown" />
+    <None Include="client-api\session\querying\how-to-get-query-statistics.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-faceted-search.markdown" />
     <None Include="client-api\session\querying\how-to-perform-dynamic-aggregation.markdown" />
     <None Include="client-api\session\querying\how-to-use-morelikethis.markdown" />
@@ -179,6 +179,7 @@
     <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
+    <None Include="glossary\client-api\raven-query-statistics.markdown" />
     <None Include="glossary\client-api\query-header-information.markdown" />
     <None Include="glossary\client-api\bulk-insert\.docslist" />
     <None Include="glossary\client-api\bulk-insert\bulk-insert-operation.markdown" />
