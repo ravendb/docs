@@ -591,5 +591,66 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			public Etag Etag { get; set; }
 		}
 		#endregion
+
+		#region raven_query_statistics
+		public class RavenQueryStatistics
+		{
+			/// <summary>
+			/// Whatever the query returned potentially stale results
+			/// </summary>
+			public bool IsStale { get; set; }
+
+			/// <summary>
+			/// The duration of the query _server side_
+			/// </summary>
+			public long DurationMilliseconds { get; set; }
+
+			/// <summary>
+			/// What was the total count of the results that matched the query
+			/// </summary>
+			public int TotalResults { get; set; }
+
+			/// <summary>
+			/// Gets or sets the skipped results
+			/// </summary>
+			public int SkippedResults { get; set; }
+
+			/// <summary>
+			/// The time when the query results were unstale.
+			/// </summary>
+			public DateTime Timestamp { get; set; }
+
+			/// <summary>
+			/// The name of the index queried
+			/// </summary>
+			public string IndexName { get; set; }
+
+			/// <summary>
+			/// The timestamp of the queried index
+			/// </summary>
+			public DateTime IndexTimestamp { get; set; }
+
+			/// <summary>
+			/// The etag of the queried index
+			/// </summary>
+			public Etag IndexEtag { get; set; }
+
+			/// <summary>
+			/// Gets or sets a value indicating whether any of the documents returned by this query
+			/// are non authoritative (modified by uncommitted transaction).
+			/// </summary>
+			public bool NonAuthoritativeInformation { get; set; }
+
+			/// <summary>
+			/// The timestamp of the last time the index was queried
+			/// </summary>
+			public DateTime LastQueryTime { get; set; }
+
+			/// <summary>
+			/// Detailed timings for various parts of a query (Lucene search, loading documents, transforming results)
+			/// </summary>
+			public Dictionary<string, double> TimingsInMilliseconds { get; set; }
+		}
+		#endregion
 	}
 }
