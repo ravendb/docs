@@ -165,7 +165,7 @@
     <None Include="client-api\session\querying\how-to-perform-a-multifaceted-search.dotnet.markdown" />
     <None Include="client-api\session\querying\lucene\.docslist" />
     <None Include="client-api\session\querying\lucene\how-to-use-lucene-in-queries.dotnet.markdown" />
-    <None Include="client-api\session\querying\how-to-perform-projection.markdown" />
+    <None Include="client-api\session\querying\how-to-perform-projection.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-use-transformers-in-queries.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-customize-query.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-stream-query-results.dotnet.markdown" />
