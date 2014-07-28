@@ -155,7 +155,7 @@
     <None Include="client-api\session\querying\how-to-use-highlighting.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-use-intersect.markdown" />
     <None Include="client-api\session\querying\how-to-get-query-statistics.dotnet.markdown" />
-    <None Include="client-api\session\querying\how-to-perform-a-faceted-search.markdown" />
+    <None Include="client-api\session\querying\how-to-perform-a-faceted-search.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-perform-dynamic-aggregation.markdown" />
     <None Include="client-api\session\how-to\use-morelikethis.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-use-search.dotnet.markdown" />
