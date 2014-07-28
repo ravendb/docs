@@ -2,12 +2,33 @@
 
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Client.Indexes;
 using Raven.Client.Linq;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
 	public class HowToPerformProjection
 	{
+		#region projection_4
+		public class PeopleByCity : AbstractIndexCreationTask<Person>
+		{
+			public class Result 
+			{
+				public string City { get; set; }
+			}
+
+			public PeopleByCity()
+			{
+				Map = people => from person in people 
+								let address = LoadDocument<Address>(person.AddressId) 
+								select new
+									       {
+										       City = address.City
+									       };
+			}
+		}
+		#endregion
+
 		private class PersonFirstAndLastName
 		{
 			public string FirstName { get; set; }
@@ -60,6 +81,20 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					var results = session
 						.Query<Person>()
 						.ProjectFromIndexFieldsInto<PersonFirstAndLastName>()
+						.ToList();
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region projection_5
+					// query index 'PeopleByCity' 
+					// return documents from collection 'People' that live in 'New York'
+					// project them to 'Person'
+					var results = session
+						.Query<PeopleByCity.Result, PeopleByCity>()
+						.Where(x => x.City == "New York")
+						.OfType<Person>()
 						.ToList();
 					#endregion
 				}
