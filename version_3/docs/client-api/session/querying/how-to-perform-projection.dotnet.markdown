@@ -2,13 +2,14 @@
 
 There are a couple types of projections:
 
-- using [Select](../../../client-api/session/querying/how-to-perform-projection#select---simple-projection)
+- using [Select](../../../client-api/session/querying/how-to-perform-projection#select)
+- using [ProjectFromIndexFieldsInto](../../../client-api/session/querying/how-to-perform-projection#projectfromindexfieldsinto)
+- using [OfType (As)](../../../client-api/session/querying/how-to-perform-projection#oftype-as---simple-projection)
 - using transformer [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries)
-- using [ProjectFromIndexFieldsInto]()
 
-## Select - simple projection
+## Select
 
-The most basic projection is done by using LINQ `Select` method.
+The most common projection is done by using LINQ `Select` method.
 
 ### Example I
 
@@ -29,6 +30,16 @@ This extension method uses reflection to extract all public fields and propertie
 ### Example
 
 {CODE projection_3@ClientApi\Session\Querying\HowToPerformProjection.cs /}
+
+## OfType (As) - simple projection
+
+`OfType` or `As` is a client-side projection. The easiest explanation of how it works is: take results that server returned and map them to given type. This may become useful when querying index that contains fields that are not available in mapped type.
+
+### Example
+
+{CODE projection_4@ClientApi\Session\Querying\HowToPerformProjection.cs /}
+
+{CODE projection_5@ClientApi\Session\Querying\HowToPerformProjection.cs /}
 
 ### Remarks
 
