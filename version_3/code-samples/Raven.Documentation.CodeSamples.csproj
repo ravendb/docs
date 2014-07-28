@@ -123,6 +123,7 @@
     <Compile Include="ClientApi\Session\Querying\HowToGetQueryStatistics.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToPerformFacetedSearch.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToPerformMultiFacetedSearch.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToPerformProjection.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToPerformQueriesLazily.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToQuery.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToStream.cs" />
