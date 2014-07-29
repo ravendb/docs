@@ -161,7 +161,7 @@
     <None Include="client-api\session\querying\how-to-use-search.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-work-with-suggestions.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-perform-queries-lazily.dotnet.markdown" />
-    <None Include="client-api\session\querying\how-to-query-a-spatial-index.markdown" />
+    <None Include="client-api\session\querying\how-to-query-a-spatial-index.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-multifaceted-search.dotnet.markdown" />
     <None Include="client-api\session\querying\lucene\.docslist" />
     <None Include="client-api\session\querying\lucene\how-to-use-lucene-in-queries.dotnet.markdown" />
@@ -181,6 +181,7 @@
     <None Include="glossary\.docslist" />
     <None Include="glossary\client-api\querying\.docslist" />
     <None Include="glossary\client-api\querying\field-highlightings.markdown" />
+    <None Include="glossary\client-api\querying\spatial-criteria-factory.markdown" />
     <None Include="glossary\client-api\querying\suggestion-query.markdown" />
     <None Include="glossary\client-api\raven-query-statistics.markdown" />
     <None Include="glossary\client-api\query-header-information.markdown" />
