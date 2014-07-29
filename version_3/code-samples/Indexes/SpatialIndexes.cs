@@ -227,14 +227,14 @@ namespace Raven.Documentation.CodeSamples.Indexes
 				{
 					#region spatial_search_4
 					session.Query<Event, Events_SpatialIndex>()
-							.Customize(x => x.RelatesToShape("Coordinates", "Circle(32.1234, 23.4321, d=10.0000)", SpatialRelation.Within))
+							.Customize(x => x.RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
 							.ToList();
 
 					#endregion
 
 					#region spatial_search_9
 					session.Advanced.LuceneQuery<Event, Events_SpatialIndex>()
-						   .RelatesToShape("Coordinates", "Circle(32.1234, 23.4321, d=10.0000)", SpatialRelation.Within)
+						   .RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within)
 						   .ToList();
 
 					#endregion

@@ -723,5 +723,35 @@ namespace Raven.Documentation.CodeSamples.Glossary
 		}
 		#endregion
 		*/
+
+		#region spatial_criteria
+		public class SpatialCriteria
+		{
+			public SpatialRelation Relation { get; set; }
+
+			public object Shape { get; set; }
+		}
+		#endregion
+
+		/*
+		#region spatial_criteria_factory
+		public class SpatialCriteriaFactory
+		{
+			public SpatialCriteria RelatesToShape(
+				object shape,
+				SpatialRelation relation) { ... }
+
+			public SpatialCriteria Intersects(object shape) { ... }
+
+			public SpatialCriteria Contains(object shape) { ... }
+
+			public SpatialCriteria Disjoint(object shape) { ... }
+
+			public SpatialCriteria Within(object shape) { ... }
+
+			public SpatialCriteria WithinRadiusOf(double radius, double x, double y) { ... }
+		}
+		#endregion
+		*/
 	}
 }
