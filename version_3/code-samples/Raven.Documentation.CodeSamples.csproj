@@ -121,6 +121,7 @@
     <Compile Include="ClientApi\Session\LoadingEntities.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToCustomize.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToGetQueryStatistics.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToPerformDynamicAggregation.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToPerformFacetedSearch.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToPerformMultiFacetedSearch.cs" />
     <Compile Include="ClientApi\Session\Querying\HowToPerformProjection.cs" />
