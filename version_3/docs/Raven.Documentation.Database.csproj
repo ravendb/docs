@@ -180,6 +180,7 @@
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
     <None Include="glossary\client-api\querying\.docslist" />
+    <None Include="glossary\client-api\querying\dynamic-aggregation-query.markdown" />
     <None Include="glossary\client-api\querying\field-highlightings.markdown" />
     <None Include="glossary\client-api\querying\spatial-criteria-factory.markdown" />
     <None Include="glossary\client-api\querying\suggestion-query.markdown" />

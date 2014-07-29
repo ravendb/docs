@@ -753,5 +753,44 @@ namespace Raven.Documentation.CodeSamples.Glossary
 		}
 		#endregion
 		*/
+
+		/*
+		#region dynamic_aggregation_query
+		public class DynamicAggregationQuery<TResult>
+		{
+			public DynamicAggregationQuery<TResult> AndAggregateOn(
+				Expression<Func<TResult, object>> path,
+				string displayName = null) { ... }
+
+			public DynamicAggregationQuery<TResult> AndAggregateOn(
+				string path,
+				string displayName = null) { ... }
+
+			public DynamicAggregationQuery<TResult> AddRanges(
+				params Expression<Func<TResult, bool>>[] paths) { ... }
+
+			public DynamicAggregationQuery<TResult> MaxOn(
+				Expression<Func<TResult, object>> path) { ... }
+
+			public DynamicAggregationQuery<TResult> MinOn(
+				Expression<Func<TResult, object>> path) { ... }
+
+			public DynamicAggregationQuery<TResult> SumOn(
+				Expression<Func<TResult, object>> path) { ... }
+
+			public DynamicAggregationQuery<TResult> AverageOn(
+				Expression<Func<TResult, object>> path) { ... }
+
+			public DynamicAggregationQuery<TResult> CountOn(
+				Expression<Func<TResult, object>> path) { ... }
+
+			public FacetResults ToList() { ... }
+
+			public Lazy<FacetResults> ToListLazy() { ... }
+
+			public Task<FacetResults> ToListAsync() { ... }
+		}
+		#endregion
+		*/
 	}
 }

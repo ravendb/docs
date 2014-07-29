@@ -20,18 +20,18 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 		{
 			/*
 			#region aggregate_1
-			DynamicAggregationQuery<T> AggregateBy<T>(
-				this IQueryable<T> queryable,
+			DynamicAggregationQuery<TResult> AggregateBy<TResult>(
+				this IQueryable<TResult> queryable,
 				string path,
 				string displayName = null) { ... }
 
-			DynamicAggregationQuery<T> AggregateBy<T>(
-				this IQueryable<T> queryable,
-				Expression<Func<T, object>> path) { ... }
+			DynamicAggregationQuery<TResult> AggregateBy<TResult>(
+				this IQueryable<TResult> queryable,
+				Expression<Func<TResult, object>> path) { ... }
 
-			DynamicAggregationQuery<T> AggregateBy<T>(
-				this IQueryable<T> queryable,
-				Expression<Func<T, object>> path,
+			DynamicAggregationQuery<TResult> AggregateBy<TResult>(
+				this IQueryable<TResult> queryable,
+				Expression<Func<TResult, object>> path,
 				string displayName) { ... }
 			#endregion
 			*/
