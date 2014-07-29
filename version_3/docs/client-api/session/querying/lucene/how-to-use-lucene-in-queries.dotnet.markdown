@@ -19,7 +19,7 @@ Indicates if queried index is a map/reduce index (modifies how we treat identifi
 **Return Value**
 
 Type: IDocumentQuery   
-Object instance implementing IDocumentQuery interface containing additional query methods and extensions.
+Instance implementing IDocumentQuery interface containing additional query methods and extensions.
 
 ## Example I - Basic
 
