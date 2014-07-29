@@ -15,7 +15,7 @@ Name of a transformer to use.
 **Return Value**
 
 Type: IRavenQueryable   
-Object instance implementing IRavenQueryable interface containing additional query methods and extensions.
+Instance implementing IRavenQueryable interface containing additional query methods and extensions.
 
 ## Example I
 

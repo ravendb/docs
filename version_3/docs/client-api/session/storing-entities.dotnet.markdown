@@ -24,7 +24,7 @@ Fourth overload stores entity in session with given id and forces concurrency ch
 
 entity
 :   Type: object   
-Instance of an object that will be stored
+Entity that will be stored
 
 etag
 :   Type: Etag   

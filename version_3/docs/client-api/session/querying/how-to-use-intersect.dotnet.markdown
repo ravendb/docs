@@ -9,7 +9,7 @@ To return only documents that match **all** provided sub-queries we have introdu
 **Return Value**
 
 Type: IRavenQueryable   
-Object instance implementing IRavenQueryable interface containing additional query methods and extensions.
+Instance implementing IRavenQueryable interface containing additional query methods and extensions.
 
 ## Example
 
