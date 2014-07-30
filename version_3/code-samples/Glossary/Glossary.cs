@@ -884,5 +884,42 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			TransformerRemoved = 2
 		}
 		#endregion
+
+		#region replication_conflict_notification
+		public class ReplicationConflictNotification : EventArgs
+		{
+			public ReplicationConflictTypes ItemType { get; set; }
+
+			public string Id { get; set; }
+
+			public Etag Etag { get; set; }
+
+			public ReplicationOperationTypes OperationType { get; set; }
+
+			public string[] Conflicts { get; set; }
+		}
+		#endregion
+
+		#region replication_conflict_types
+		[Flags]
+		public enum ReplicationConflictTypes
+		{
+			None = 0,
+
+			DocumentReplicationConflict = 1,
+			AttachmentReplicationConflict = 2,
+		}
+		#endregion
+
+		#region replication_operation_types
+		[Flags]
+		public enum ReplicationOperationTypes
+		{
+			None = 0,
+
+			Put = 1,
+			Delete = 2,
+		}
+		#endregion
 	}
 }

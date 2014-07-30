@@ -26,7 +26,21 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 					var subscribtion = store
 						.Changes()
 						.ForBulkInsert(bulkInsert.OperationId)
-						.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
+						.Subscribe(change =>
+						{
+							switch (change.Type)
+							{
+								case DocumentChangeTypes.BulkInsertStarted:
+									// do something
+									break;
+								case DocumentChangeTypes.BulkInsertEnded:
+									// do something
+									break;
+								case DocumentChangeTypes.BulkInsertError:
+									// do something
+									break;
+							}
+						});
 
 					try
 					{

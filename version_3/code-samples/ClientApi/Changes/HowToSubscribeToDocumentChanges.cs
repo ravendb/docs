@@ -34,7 +34,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 			#endregion
 
 			#region document_changes_9
-			IObservableWithTask<DocumentChangeNotification> 
+			IObservableWithTask<DocumentChangeNotification>
 				ForDocumentsStartingWith(string docIdPrefix);
 			#endregion
 
@@ -52,7 +52,19 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 				var subscribtion = store
 					.Changes()
 					.ForDocument("people/1")
-					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
+					.Subscribe(
+						change =>
+						{
+							switch (change.Type)
+							{
+								case DocumentChangeTypes.Put:
+									// do something
+									break;
+								case DocumentChangeTypes.Delete:
+									// do something
+									break;
+							}
+						});
 				#endregion
 			}
 
