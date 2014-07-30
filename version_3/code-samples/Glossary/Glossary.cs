@@ -792,5 +792,36 @@ namespace Raven.Documentation.CodeSamples.Glossary
 		}
 		#endregion
 		*/
+
+		#region document_change_notification
+		public class DocumentChangeNotification : EventArgs
+		{
+			public DocumentChangeTypes Type { get; set; }
+
+			public string Id { get; set; }
+
+			public string CollectionName { get; set; }
+
+			public string TypeName { get; set; }
+
+			public Etag Etag { get; set; }
+
+			public string Message { get; set; }
+		}
+		#endregion
+
+		#region document_change_types
+		[Flags]
+		public enum DocumentChangeTypes
+		{
+			None = 0,
+			Put = 1,
+			Delete = 2,
+			BulkInsertStarted = 4,
+			BulkInsertEnded = 8,
+			BulkInsertError = 16,
+			Common = Put | Delete
+		}
+		#endregion
 	}
 }
