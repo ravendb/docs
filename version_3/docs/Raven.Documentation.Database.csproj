@@ -52,7 +52,7 @@
     <None Include="client-api\changes\how-to-subscribe-to-replication-conflicts.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-transformer-changes.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-index-changes.markdown" />
-    <None Include="client-api\changes\how-to-subscribe-to-document-changes.markdown" />
+    <None Include="client-api\changes\how-to-subscribe-to-document-changes.dotnet.markdown" />
     <None Include="client-api\commands\.docslist" />
     <None Include="client-api\commands\attachments\.docslist" />
     <None Include="client-api\commands\attachments\delete.dotnet.markdown" />
@@ -179,6 +179,8 @@
     <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
+    <None Include="glossary\client-api\changes\.docslist" />
+    <None Include="glossary\client-api\changes\document-change-notification.markdown" />
     <None Include="glossary\client-api\querying\.docslist" />
     <None Include="glossary\client-api\querying\dynamic-aggregation-query.markdown" />
     <None Include="glossary\client-api\querying\field-highlightings.markdown" />
