@@ -117,6 +117,7 @@
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Include="ClientApi\Listeners\General.cs" />
     <Compile Include="ClientApi\Session\Configuration\MaxRequests.cs" />
     <Compile Include="ClientApi\Session\Configuration\OptimisticConcurrency.cs" />
     <Compile Include="ClientApi\Session\DeletingEntities.cs" />
