@@ -24,7 +24,19 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 				var subscribtion = store
 					.Changes()
 					.ForAllTransformers()
-					.Subscribe(change => Console.WriteLine("{0} on transformer {1}", change.Type, change.Name));
+					.Subscribe(
+						change =>
+						{
+							switch (change.Type)
+							{
+								case TransformerChangeTypes.TransformerAdded:
+									// do something
+									break;
+								case TransformerChangeTypes.TransformerRemoved:
+									// do something
+									break;
+							}
+						});
 				#endregion
 			}
 		}

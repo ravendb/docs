@@ -42,15 +42,15 @@ event EventHandler ConnectionStatusChanged
 In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
 
 - [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
-- [ForAllIndexes]()
-- [ForAllReplicationConflicts]()
-- [ForAllTransformers]()
-- [ForBulkInsert]()
+- [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
+- [ForAllReplicationConflicts](../../client-api/changes/how-to-subscribe-to-replication-conflicts)
+- [ForAllTransformers](../../client-api/changes/how-to-subscribe-to-transformer-changes)
+- [ForBulkInsert](../../client-api/changes/how-to-subscribe-to-bulk-insert-operation-changes)
 - [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
 - [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
 - [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsoftype)
 - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
-- [ForIndex]()
+- [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
 
 ## Unsubscribing
 
