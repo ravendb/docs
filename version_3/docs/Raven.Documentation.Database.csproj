@@ -50,7 +50,7 @@
     <None Include="client-api\changes\what-is-changes-api.dotnet.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-bulk-insert-operation-changes.dotnet.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-replication-conflicts.markdown" />
-    <None Include="client-api\changes\how-to-subscribe-to-transformer-changes.markdown" />
+    <None Include="client-api\changes\how-to-subscribe-to-transformer-changes.dotnet.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-index-changes.dotnet.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-document-changes.dotnet.markdown" />
     <None Include="client-api\commands\.docslist" />
@@ -180,6 +180,7 @@
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
     <None Include="glossary\client-api\changes\.docslist" />
+    <None Include="glossary\client-api\changes\transformer-change-notification.markdown" />
     <None Include="glossary\client-api\changes\bulk-insert-change-notification.markdown" />
     <None Include="glossary\client-api\changes\index-change-notification.markdown" />
     <None Include="glossary\client-api\changes\document-change-notification.markdown" />
