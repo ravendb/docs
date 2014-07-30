@@ -120,6 +120,7 @@
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Include="ClientApi\HowTo\SetupDefaultDatabase.cs" />
     <Compile Include="ClientApi\Listeners\Conflict.cs" />
     <Compile Include="ClientApi\Listeners\Conversion.cs" />
     <Compile Include="ClientApi\Listeners\Delete.cs" />

@@ -1,5 +1,5 @@
 initialize-document-store.markdown	[TODO] ...initialize document store
-setup-default-database.markdown	[TODO] ...setup default database
+setup-default-database.markdown	...setup default database
 setup-connection-string.markdown	[TODO] ...setup connection string
 setup-failover-servers-and-failover-behavior.markdown	[TODO] ...setup failover servers and failover behavior
 work-with-authentication.markdown	[TODO] ...work with authentication

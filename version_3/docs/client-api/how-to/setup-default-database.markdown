@@ -1,1 +1,0 @@
-# Client API : How to setup a default database?
