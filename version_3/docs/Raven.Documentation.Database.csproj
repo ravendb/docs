@@ -122,7 +122,7 @@
     <None Include="client-api\how-to\work-with-authentication.markdown" />
     <None Include="client-api\how-to\setup-connection-string.markdown" />
     <None Include="client-api\how-to\setup-failover-servers-and-failover-behavior.markdown" />
-    <None Include="client-api\how-to\setup-default-database.markdown" />
+    <None Include="client-api\how-to\setup-default-database.dotnet.markdown" />
     <None Include="client-api\how-to\initialize-document-store.markdown" />
     <None Include="client-api\listeners\.docslist" />
     <None Include="client-api\listeners\what-are-store-listeners-and-how-to-work-with-them.dotnet.markdown" />
