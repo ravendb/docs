@@ -1,4 +1,5 @@
 /commands	Commands
+/changes	Changes API
 /querying	Querying
 /bulk-insert	Bulk Insert
 operation.markdown	Operation
