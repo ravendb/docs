@@ -1,6 +1,6 @@
-what-are-listeners.markdown	[TODO] What are listeners?
-what-are-conflict-listeners-and-how-to-work-with-them.markdown	[TODO] Conflict listeners
-what-are-conversion-listeners-and-how-to-work-with-them.markdown	[TODO] Conversion listeners
-what-are-delete-listeners-and-how-to-work-with-them.markdown	[TODO] Delete listeners
-what-are-query-listeners-and-how-to-work-with-them.markdown	[TODO] Query listeners
-what-are-store-listeners-and-how-to-work-with-them.markdown	[TODO] Store listeners
+what-are-listeners.markdown	What are listeners?
+what-are-store-listeners-and-how-to-work-with-them.markdown	Store listeners
+what-are-delete-listeners-and-how-to-work-with-them.markdown	Delete listeners
+what-are-conversion-listeners-and-how-to-work-with-them.markdown	Conversion listeners
+what-are-conflict-listeners-and-how-to-work-with-them.markdown	Conflict listeners
+what-are-query-listeners-and-how-to-work-with-them.markdown	Query listeners
