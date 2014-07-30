@@ -41,20 +41,26 @@ event EventHandler ConnectionStatusChanged
 
 In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
 
-- [ForAllDocuments]()
+- [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
 - [ForAllIndexes]()
 - [ForAllReplicationConflicts]()
 - [ForAllTransformers]()
 - [ForBulkInsert]()
-- [ForDocument]()
-- [ForDocumentsInCollection]()
-- [ForDocumentsOfType]()
-- [ForDocumentsStartingWith]()
+- [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
+- [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
+- [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsoftype)
+- [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
 - [ForIndex]()
+
+## Unsubscribing
+
+In order to end subscribtion (stop listening for particular notifications) you must `Dispose` it.
+
+{CODE changes_2@ClientApi\Changes\WhatIsChangesApi.cs /}
 
 ## Remarks
 
-{INFO To achieve better experience of subscribing methods by using delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
+{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
 #### Related articles
 
