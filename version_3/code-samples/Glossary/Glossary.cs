@@ -858,5 +858,12 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			IndexMarkedAsErrored = 512
 		}
 		#endregion
+
+		#region bulk_insert_change_notification
+		public class BulkInsertChangeNotification : DocumentChangeNotification
+		{
+			public Guid OperationId { get; set; }
+		}
+		#endregion
 	}
 }
