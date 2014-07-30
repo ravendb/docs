@@ -865,5 +865,24 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			public Guid OperationId { get; set; }
 		}
 		#endregion
+
+		#region transformer_change_notification
+		public class TransformerChangeNotification : EventArgs
+		{
+			public TransformerChangeTypes Type { get; set; }
+
+			public string Name { get; set; }
+		}
+		#endregion
+
+		#region transformer_change_types
+		public enum TransformerChangeTypes
+		{
+			None = 0,
+
+			TransformerAdded = 1,
+			TransformerRemoved = 2
+		}
+		#endregion
 	}
 }
