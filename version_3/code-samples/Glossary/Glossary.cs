@@ -823,5 +823,40 @@ namespace Raven.Documentation.CodeSamples.Glossary
 			Common = Put | Delete
 		}
 		#endregion
+
+		#region index_change_notification
+		public class IndexChangeNotification : EventArgs
+		{
+			public IndexChangeTypes Type { get; set; }
+
+			public string Name { get; set; }
+
+			public Etag Etag { get; set; }
+		}
+		#endregion
+
+		#region index_change_types
+		[Flags]
+		public enum IndexChangeTypes
+		{
+			None = 0,
+
+			MapCompleted = 1,
+			ReduceCompleted = 2,
+			RemoveFromIndex = 4,
+
+			IndexAdded = 8,
+			IndexRemoved = 16,
+
+			IndexDemotedToIdle = 32,
+			IndexPromotedFromIdle = 64,
+
+			IndexDemotedToAbandoned = 128,
+
+			IndexDemotedToDisabled = 256,
+
+			IndexMarkedAsErrored = 512
+		}
+		#endregion
 	}
 }

@@ -101,7 +101,7 @@ To observe all document changes for documents with Id that contains given prefix
 
 docIdPrefix
 :   Type: string   
-Document Id prefix which notifications will be processed.
+Document Id prefix for which notifications will be processed.
 
 **Return value**
 
