@@ -1,6 +1,6 @@
 what-is-changes-api.markdown	What is Changes API?
 how-to-subscribe-to-document-changes.markdown	How to subscribe to document changes?
 how-to-subscribe-to-index-changes.markdown	How to subscribe to index changes?
-how-to-subscribe-to-bulk-insert-operation-changes.markdown	[TODO] How to subscribe to bulk insert operation changes?
+how-to-subscribe-to-bulk-insert-operation-changes.markdown	How to subscribe to bulk insert operation changes?
 how-to-subscribe-to-transformer-changes.markdown	[TODO] How to subscribe to transformer changes?
 how-to-subscribe-to-replication-conflicts.markdown	[TODO] How to subscribe to replication conflicts?

@@ -1,2 +1,3 @@
 document-change-notification.markdown	DocumentChangeNotification
 index-change-notification.markdown	IndexChangeNotification
+bulk-insert-change-notification.markdown	BulkInsertChangeNotification
