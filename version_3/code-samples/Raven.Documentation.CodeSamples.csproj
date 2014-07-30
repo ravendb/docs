@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientApi\BulkInsert\BulkInserts.cs" />
+    <Compile Include="ClientApi\Changes\HowToSubscribeToBulkInsertChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToDocumentChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToIndexChanges.cs" />
     <Compile Include="ClientApi\Changes\WhatIsChangesApi.cs" />
@@ -117,7 +118,12 @@
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Include="ClientApi\Listeners\Conflict.cs" />
+    <Compile Include="ClientApi\Listeners\Conversion.cs" />
+    <Compile Include="ClientApi\Listeners\Delete.cs" />
     <Compile Include="ClientApi\Listeners\General.cs" />
+    <Compile Include="ClientApi\Listeners\Query.cs" />
+    <Compile Include="ClientApi\Listeners\Store.cs" />
     <Compile Include="ClientApi\Session\Configuration\MaxRequests.cs" />
     <Compile Include="ClientApi\Session\Configuration\OptimisticConcurrency.cs" />
     <Compile Include="ClientApi\Session\DeletingEntities.cs" />
