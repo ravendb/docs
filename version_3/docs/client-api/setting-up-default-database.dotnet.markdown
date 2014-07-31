@@ -4,11 +4,11 @@
 
 ## Example I
 
-{CODE default_database_1@ClientApi\HowTo\SetupDefaultDatabase.cs /}
+{CODE default_database_1@ClientApi\SetupDefaultDatabase.cs /}
 
 ## Example II
 
-{CODE default_database_2@ClientApi\HowTo\SetupDefaultDatabase.cs /}
+{CODE default_database_2@ClientApi\SetupDefaultDatabase.cs /}
 
 ## Remarks
 

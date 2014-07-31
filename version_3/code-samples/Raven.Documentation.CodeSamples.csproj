@@ -120,7 +120,7 @@
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
-    <Compile Include="ClientApi\HowTo\SetupDefaultDatabase.cs" />
+    <Compile Include="ClientApi\SetupDefaultDatabase.cs" />
     <Compile Include="ClientApi\Listeners\Conflict.cs" />
     <Compile Include="ClientApi\Listeners\Conversion.cs" />
     <Compile Include="ClientApi\Listeners\Delete.cs" />
@@ -163,6 +163,7 @@
     <Compile Include="ClientApi\Session\SavingChanges.cs" />
     <Compile Include="ClientApi\Session\StoringEntities.cs" />
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
+    <Compile Include="ClientApi\SetupConnectionString.cs" />
     <Compile Include="Entities.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Glossary\Glossary.cs" />
@@ -190,6 +191,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="ClientApi\HowTo\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
