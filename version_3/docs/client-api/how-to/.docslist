@@ -1,7 +1,5 @@
 setup-failover-servers-and-failover-behavior.markdown	[TODO] ...setup failover servers and failover behavior
 work-with-authentication.markdown	[TODO] ...work with authentication
-create-indexes-using-abstractindexcreationtask.markdown	[TODO] ...create indexes using AbstractIndexCreationTask
-create-transformers-using-abstracttransformercreationtask.markdown	[TODO] ...create transformers using AbstractTransformerCreationTask
 setup-aggresive-caching.markdown	[TODO] ...setup aggresive caching
 send-custom-requests.markdown	[TODO] ...send custom requests
 use-fips-compliant-encryption-algorithms.markdown	[TODO] ...use FIPS compliant encryption algorithms
