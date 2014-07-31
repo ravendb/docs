@@ -7,11 +7,11 @@
 You can define the connection string in the application configuration file (`app.config` or `web.config`).
 
 {CODE-START:plain /}
-  <connectionStrings>
-    <add name="Local" connectionString="DataDir = ~\Data"/>
-    <add name="Server" connectionString="Url = http://localhost:8080"/>
-    <add name="Secure" connectionString="Url = http://localhost:8080;user=beam;password=up;ResourceManagerId=d5723e19-92ad-4531-adad-8611e6e05c8a"/>
-  </connectionStrings>
+    <connectionStrings>
+        <add name="Local" connectionString="DataDir = ~\Data"/>
+        <add name="Server" connectionString="Url = http://localhost:8080"/>
+        <add name="Secure" connectionString="Url = http://localhost:8080;user=beam;password=up;ResourceManagerId=d5723e19-92ad-4531-adad-8611e6e05c8a"/>
+    </connectionStrings>
 {CODE-END /}
 
 ## Format
@@ -39,8 +39,8 @@ Url
 Specify where to locate the server.
 
 Failover
-:   Type: string  
-Define failover server. Read more [here](../client-api/how-to/setup-failover-servers-and-failover-behavior).
+:   Type: string in predefined format   
+Failover server definition. Read more [here](../client-api/bundles/how-client-integrates-with-replication-bundle#failover-servers).
 
 Database or DefaultDatabase
 :   Type: string  

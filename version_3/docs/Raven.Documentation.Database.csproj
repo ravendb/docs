@@ -44,6 +44,7 @@
     <None Include="client-api\bulk-insert\.docslist" />
     <None Include="client-api\bulk-insert\how-to-work-with-bulk-insert-operation.dotnet.markdown" />
     <None Include="client-api\bundles\.docslist" />
+    <None Include="client-api\bundles\how-client-integrates-with-replication-bundle.dotnet.markdown" />
     <None Include="client-api\bundles\how-to-work-with-unique-constraints-bundle.markdown" />
     <None Include="client-api\bundles\how-to-work-with-authorization-bundle.markdown" />
     <None Include="client-api\changes\.docslist" />
@@ -119,7 +120,6 @@
     <None Include="client-api\how-to\setup-aggresive-caching.markdown" />
     <None Include="client-api\how-to\work-with-authentication.markdown" />
     <None Include="client-api\setting-up-connection-string.dotnet.markdown" />
-    <None Include="client-api\how-to\setup-failover-servers-and-failover-behavior.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\creating-document-store.dotnet.markdown" />
     <None Include="client-api\listeners\.docslist" />
@@ -176,6 +176,8 @@
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
+    <None Include="glossary\bundles\.docslist" />
+    <None Include="glossary\bundles\replication-destination.markdown" />
     <None Include="glossary\client-api\changes\.docslist" />
     <None Include="glossary\client-api\changes\replication-conflict-notification.markdown" />
     <None Include="glossary\client-api\changes\transformer-change-notification.markdown" />
@@ -285,7 +287,6 @@
     <None Include="server\scaling-out\replication\how-replication-works.markdown" />
     <None Include="server\scaling-out\replication\replicating-from-embedded-instance.markdown" />
     <None Include="server\scaling-out\replication\replication-conflicts.markdown" />
-    <None Include="server\scaling-out\replication\client-integration.markdown" />
     <None Include="server\scaling-out\sharding\.docslist" />
     <None Include="server\scaling-out\sharding\how-to-setup-sharding.markdown" />
     <None Include="server\troubleshooting\.docslist" />
