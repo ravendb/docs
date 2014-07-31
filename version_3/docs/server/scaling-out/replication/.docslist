@@ -1,5 +1,4 @@
 how-replication-works.markdown	How repication works?
-client-integration.markdown	Client integration
 replication-conflicts.markdown	Replication conflicts
 replicating-from-embedded-instance.markdown	Replicating from Embedded instance
 write-assurance.markdown	Write assurance

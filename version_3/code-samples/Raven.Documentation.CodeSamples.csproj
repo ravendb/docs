@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClientApi\BulkInsert\BulkInserts.cs" />
+    <Compile Include="ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToBulkInsertChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToDocumentChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToIndexChanges.cs" />

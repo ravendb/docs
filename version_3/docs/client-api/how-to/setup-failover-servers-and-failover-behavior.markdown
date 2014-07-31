@@ -1,1 +1,0 @@
-# Client API : How to setup failover servers and failover behavior?
