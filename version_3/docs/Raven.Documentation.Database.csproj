@@ -120,10 +120,10 @@
     <None Include="client-api\how-to\send-custom-requests-using-httpjsonrequestfactory.markdown" />
     <None Include="client-api\how-to\setup-aggresive-caching.markdown" />
     <None Include="client-api\how-to\work-with-authentication.markdown" />
-    <None Include="client-api\how-to\setup-connection-string.markdown" />
+    <None Include="client-api\setting-up-connection-string.dotnet.markdown" />
     <None Include="client-api\how-to\setup-failover-servers-and-failover-behavior.markdown" />
-    <None Include="client-api\how-to\setup-default-database.dotnet.markdown" />
-    <None Include="client-api\how-to\initialize-document-store.markdown" />
+    <None Include="client-api\setting-up-default-database.dotnet.markdown" />
+    <None Include="client-api\creating-document-store.dotnet.markdown" />
     <None Include="client-api\listeners\.docslist" />
     <None Include="client-api\listeners\what-are-store-listeners-and-how-to-work-with-them.dotnet.markdown" />
     <None Include="client-api\listeners\what-are-query-listeners-and-how-to-work-with-them.dotnet.markdown" />
@@ -176,7 +176,6 @@
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.dotnet.markdown" />
-    <None Include="client-api\what-is-a-document-store.http.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docslist" />
     <None Include="glossary\client-api\changes\.docslist" />
