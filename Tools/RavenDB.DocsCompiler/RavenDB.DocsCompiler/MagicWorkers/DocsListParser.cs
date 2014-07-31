@@ -29,7 +29,7 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 
 				if (path[0] == '\\' || path[0] == '/')
 				{
-					var multilanguage = path.StartsWith("/m");
+					var multilanguage = path.StartsWith("/m/");
 					if (multilanguage)
 						path = path.Substring(2, path.Length - 2);
 
