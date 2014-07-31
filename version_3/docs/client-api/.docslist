@@ -1,4 +1,7 @@
-what-is-a-document-store	[TODO] What is a document store?
+what-is-a-document-store.markdown	[TODO] What is a document store?
+creating-document-store.markdown	[TODO] Creating document store
+setting-up-default-database.markdown	Setting up default database
+setting-up-connection-string.markdown	[TODO] Setting up connection string
 /commands	Commands
 /session	Session
 /bulk-insert	Bulk Insert
