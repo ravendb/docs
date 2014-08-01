@@ -274,7 +274,7 @@
     <None Include="server\extending\bundles\quotas.markdown" />
     <None Include="server\extending\plugins.markdown" />
     <None Include="server\installation\.docslist" />
-    <None Include="server\configuration\recommended-configuration.markdown" />
+    <None Include="server\installation\system-requirements.markdown" />
     <None Include="server\installation\upgrading-to-new-version.markdown" />
     <None Include="server\installation\using-installer.markdown" />
     <None Include="server\installation\embedded.markdown" />
