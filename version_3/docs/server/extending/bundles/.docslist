@@ -1,12 +1,12 @@
-authorization.markdown	Authorization
-cascade-delete.markdown	Cascade Delete
-compression.markdown	Compression
-encryption.markdown	Encryption
-expiration.markdown	Expiration
-periodic-export.markdown	Periodic Export
-quotas.markdown	Quotas
-replication.markdown	Replication
-scripted-index-results.markdown	Scripted Index Results
-sql-replication.markdown	SQL Replication
-unique-constraints.markdown	Unique Constraints
-versioning.markdown	Versioning
+authorization.markdown	[TODO] Authorization
+cascade-delete.markdown	[TODO] Cascade Delete
+compression.markdown	[TODO] Compression
+encryption.markdown	[TODO] Encryption
+expiration.markdown	[TODO] Expiration
+periodic-export.markdown	[TODO] Periodic Export
+quotas.markdown	[TODO] Quotas
+replication.markdown	[TODO] Replication
+scripted-index-results.markdown	[TODO] Scripted Index Results
+sql-replication.markdown	[TODO] SQL Replication
+unique-constraints.markdown	[TODO] Unique Constraints
+versioning.markdown	[TODO] Versioning
