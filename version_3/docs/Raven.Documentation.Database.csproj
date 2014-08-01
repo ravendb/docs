@@ -115,8 +115,8 @@
     <None Include="client-api\how-to\.docslist" />
     <None Include="client-api\how-to\integrate-with-excel.markdown" />
     <None Include="client-api\how-to\setup-sharding.markdown" />
-    <None Include="client-api\how-to\use-fips-compliant-encryption-algorithms.markdown" />
-    <None Include="client-api\how-to\send-custom-requests-using-httpjsonrequestfactory.markdown" />
+    <None Include="server\configuration\enabling-fips-compliant-encryption-algorithms.markdown" />
+    <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.dotnet.markdown" />
     <None Include="client-api\how-to\setup-aggresive-caching.markdown" />
     <None Include="client-api\how-to\work-with-authentication.markdown" />
     <None Include="client-api\setting-up-connection-string.dotnet.markdown" />
