@@ -1,1 +1,0 @@
-# Client API : How to use FIPS compliant encryption algorithms?

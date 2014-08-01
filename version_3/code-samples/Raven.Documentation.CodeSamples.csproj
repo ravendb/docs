@@ -44,6 +44,7 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
     <Reference Include="System.Reactive.Core">
       <HintPath>..\..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
     </Reference>
@@ -121,6 +122,7 @@
     <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Include="ClientApi\HowTo\SendCustomRequest.cs" />
     <Compile Include="ClientApi\SetupDefaultDatabase.cs" />
     <Compile Include="ClientApi\Listeners\Conflict.cs" />
     <Compile Include="ClientApi\Listeners\Conversion.cs" />
@@ -193,9 +195,7 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ClientApi\HowTo\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
