@@ -1,0 +1,37 @@
+﻿@using Raven.Documentation.Web.Helpers
+@model Raven.Documentation.Web.Models.SearchModel
+@{
+	ViewBag.Title = "Search";
+}
+@{
+	var i = 0;
+}
+<div id="search">
+	<div class="panel-group" id="accordion">
+		@foreach (var result in Model.Results)
+		{
+			var id = "collapse" + i++;
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h4 class="panel-title">
+						<a data-toggle="collapse" data-parent="#accordion" href="#@id">
+							<span class="badge pull-right">@result.Value.Count results</span>
+							@result.Key.GetDescription()
+						</a>
+					</h4>
+				</div>
+				<div id="@id" class="panel-collapse collapse in">
+					<ul class="list-group">
+						@foreach (var r in result.Value)
+						{
+							<li class="list-group-item">
+								<h4>@Html.ActionLink(r.Title, MVC.Docs.ActionNames.Articles, new { language = @Model.CurrentLanguage, key = @r.Key }) <small>@r.Key</small></h4>
+							</li>
+						}
+					</ul>
+				</div>
+			</div>
+		}
+	</div>
+</div>
+

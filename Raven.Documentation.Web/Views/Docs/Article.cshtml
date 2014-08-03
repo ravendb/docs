@@ -1,0 +1,17 @@
+﻿@using Raven.Documentation.Web.Helpers
+@model Raven.Documentation.Web.Models.ArticleModel
+@{
+	ViewBag.Title = Model.Title;
+}
+<div id="article">
+	<div class="row">
+		<div class="col-md-3">
+			@Html.GenerateTableOfContents(Model.TableOfContents, Model.Key)
+		</div>
+		<div class="col-md-9">
+			@Html.Raw(Model.HtmlContent)
+		</div>
+	</div>
+</div>
+
+

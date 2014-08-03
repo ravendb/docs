@@ -1,0 +1,150 @@
+﻿body {
+	//padding-top: 50px;
+	padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+	padding-left: 15px;
+	padding-right: 15px;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+	max-width: 280px;
+}
+
+.bs-callout {
+	margin: 20px 0;
+	padding: 5px 20px;
+	border-left: 3px solid #eee;
+}
+
+.bs-callout-danger {
+	background-color: #fdf7f7;
+	border-color: #d9534f;
+}
+
+.bs-callout-note {
+	background-color: #f4f8fa;
+	border-color: #5bc0de;
+}
+
+.bs-callout-warning {
+	background-color: #fcf8f2;
+	border-color: #f0ad4e;
+}
+
+.bs-callout-info {
+	background-color: #f4f8fa;
+	border-color: #5bc0de;
+}
+
+.bs-callout-safe {
+	background-color: #f4f8fa;
+	border-color: #7109AA;
+}
+
+div#search {
+	div#accordion {
+		.panel-collapse {
+			& > .list-group {
+				margin-bottom: 0;
+
+				.list-group-item {
+					border-radius: 0;
+
+					&:first-child {
+						border-top-right-radius: 0;
+						border-top-left-radius: 0;
+					}
+
+					border-width: 1px 0;
+				}
+			}
+		}
+	}
+}
+
+#sidebar {
+	.fa {
+		margin-right: 10px;
+	}
+
+	.panel-collapse > .list-group .list-group-item:first-child {
+		border-top-right-radius: 0;
+		border-top-left-radius: 0;
+	}
+
+	.panel-collapse > .list-group .list-group-item {
+		border-width: 1px 0;
+	}
+
+	.panel-collapse > .list-group {
+		margin-bottom: 0;
+	}
+
+	.panel-collapse > .list-group > .list-group-item {
+		&.folder {
+			& > span {
+				cursor: pointer;
+			}
+
+			&.out {
+				& > ul.list-group {
+					display: none;
+				}
+			}
+		}
+	}
+
+	.panel-collapse .list-group-item {
+		border-radius: 0;
+
+		&.selected {
+			border-right: 4px solid #d9534f;
+		}
+	}
+
+	.panel-collapse .list-group .list-group {
+		margin: 0;
+		margin-top: 10px;
+	}
+
+	.panel-collapse .list-group a {
+		padding-right: 5px;
+	}
+
+	.panel-collapse .list-group-item li.list-group-item {
+		margin: 0 -15px;
+		border-top: 1px solid #ddd;
+		border-bottom: 0;
+		padding-left: 30px;
+
+		&:last-child {
+			padding-bottom: 0;
+		}
+
+		li.list-group-item {
+			margin: 0px -15px 0px -30px;
+			padding-left: 45px;
+
+			&:last-child {
+				padding-bottom: 0;
+				margin-bottom: -10px;
+			}
+		}
+	}
+
+	.panel-collapse div.list-group div.list-group {
+		margin: 0;
+	}
+
+	.panel-collapse div.list-group .list-group a.list-group-item {
+		border-top: 1px solid #ddd;
+		border-bottom: 0;
+		padding-left: 30px;
+	}
+}

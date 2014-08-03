@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>RavenDB Documentation :: Put</title>
+    <meta name="robots" content="noindex,nofollow">
+
+    <script type="text/javascript" src="http://static.ravendb.net/SyntaxHighlighter/scripts/shCore.js"></script>
+    <script type="text/javascript" src="http://static.ravendb.net/SyntaxHighlighter/scripts/shBrushCSharp.js"></script>
+    <script type="text/javascript" src="http://static.ravendb.net/SyntaxHighlighter/scripts/shBrushJava.js"></script>
+    <script type="text/javascript" src="http://static.ravendb.net/SyntaxHighlighter/scripts/shBrushJSON.js"></script>
+    <script type="text/javascript" src="http://static.ravendb.net/SyntaxHighlighter/scripts/shBrushPlain.js"></script>
+    <script type="text/javascript" src="http://static.ravendb.net/SyntaxHighlighter/scripts/shBrushXml.js"></script>
+
+    <link rel="stylesheet" type="text/css" href="http://ravendb.net/Static/Styles/all.css" />
+    <link rel="stylesheet" type="text/css" href="http://static.ravendb.net/SyntaxHighlighter/styles/shCore.css" />
+    <link rel="stylesheet" type="text/css" href="http://static.ravendb.net/SyntaxHighlighter/styles/shThemeVS.css" />
+    <link rel="stylesheet" type="text/css" href="http://static.ravendb.net/styles/fancybox.css" media="all">
+    <link rel="stylesheet" type="text/css" href="http://ravendb.net/Static/Styles/jquery.treeview.css" />
+
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.3/jquery.min.js"></script>
+    <script type="text/javascript" src="http://static.ravendb.net/scripts/jquery.main.js"></script>
+    <script type="text/javascript" src="http://ravendb.net/Static/Scripts/jquery.treeview.js"></script>
+    <!--[if lt IE 9]><script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+</head>
+<body>
+    <div id="page">
+        <div id="main">
+            <div class="main-holder">
+                <div class="wrapper">
+                    <header id="header">
+                        <strong class="logo"><a href="http://docs.ravendb.net/toc.html">RavenDB Open source 2nd generation document DB</a></strong>
+                        <h1 style="color:#9b002b;">Docs (Beta)</h1>
+                    </header>
+                    <div id="docs">
+                        <div class="article-info">
+                            <div class="client">
+                                Client 
+								<select id="client-version">
+                                    <option value="dotnet">.NET</option>
+                                    <option value="http">HTTP</option>
+                                    <option value="java">Java</option>
+                                </select>
+                            </div>
+                            <div class="version">
+                                Version 
+								<select id="docs-version">
+                                    <option value="1.0">1.0</option>
+                                    <option value="2.0">2.0</option>
+                                    <option value="2.5">2.5</option>
+									<option value="3.0">3.0</option>
+                                </select>
+                            </div>
+							<div class="home">
+								<a href="http://localhost/RavenDoc/version_3/html-compiled/">
+									Documentation
+								</a>
+							</div>
+                        </div>
+                        <div class="article-sidebar">
+							<ul class="treeview-famfamfam" id="tree-menu">
+								<li class=''><span>Start</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//start/getting-started.html' class=''>Getting started</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//start/whats-new.html' class=''>What's new</a></li></ul></li><li class=''><span>Glossary</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//glossary/indexing.html' class=''>Indexing</a></li></ul></li><li class='open'><span>Client API</span><ul><li class='open'><span>Commands</span><ul><li class='open'><span>Documents</span><ul><li class=''><span>How to...</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/documents/how-to/get-document-metadata-only.html' class=''>...get document metadata only</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/documents/how-to/delete-or-update-documents-using-index.html' class=''>...delete/update documents using index</a></li></ul></li></ul><ul><li class='open'><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/documents/put.html' class='current'>Put</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/documents/get.html' class=''>Get</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/documents/delete.html' class=''>Delete</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/documents/stream.html' class=''>Stream</a></li></ul></li></ul><ul><li class=''><span>Indexes</span><ul><li class=''><span>How to...</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/indexes/how-to/reset-index.html' class=''>...reset index</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/indexes/how-to/get-index-terms.html' class=''>...get index terms</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/indexes/how-to/get-index-merge-suggestions.html' class=''>...get index merge suggestions</a></li></ul></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/indexes/put.html' class=''>Put</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/indexes/get.html' class=''>Get</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/indexes/delete.html' class=''>Delete</a></li></ul></li></ul><ul><li class=''><span>Attachments</span><ul><li class=''><span>How to...</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/attachments/how-to/get-attachment-metadata-only.html' class=''>...get attachment metadata only</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/attachments/how-to/update-attachment-metadata-only.html' class=''>...update attachment metadata only</a></li></ul></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/attachments/put.html' class=''>Put</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/attachments/get.html' class=''>Get</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/attachments/delete.html' class=''>Delete</a></li></ul></li></ul><ul><li class=''><span>Querying</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/querying/how-to-query-a-database.html' class=''>How to query a database?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/querying/how-to-stream-query-results.html' class=''>How to stream query results?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/querying/how-to-work-with-facet-query.html' class=''>How to work with Facet query?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/querying/how-to-work-with-suggestion-query.html' class=''>How to work with Suggestion query?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/querying/how-to-work-with-morelikethis-query.html' class=''>How to work with MoreLikeThis query?</a></li></ul></li></ul><ul><li class=''><span>Transformers</span><ul><li class=''><span>How to...</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/transformers/how-to/query-using-transformer.html' class=''>...query using transformer</a></li></ul></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/transformers/put.html' class=''>Put</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/transformers/get.html' class=''>Get</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/transformers/delete.html' class=''>Delete</a></li></ul></li></ul><ul><li class=''><span>Batches</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/batches/how-to-send-multiple-commands-using-a-batch.html' class=''>How to send multiple commands using a batch?</a></li></ul></li></ul><ul><li class=''><span>Patches</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/patches/how-to-work-with-patch-requests.html' class=''>How to work with patch requests</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/patches/how-to-use-javascript-to-patch-your-documents.html' class=''>How to use JavaScript to patch your documents</a></li></ul></li></ul><ul><li class=''><span>How to...</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/switch-commands-to-a-different-database.html' class=''>...switch commands to a different database</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/switch-commands-credentials.html' class=''>...switch commands credentials</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/disable-caching.html' class=''>...disable caching</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/start-stop-indexing-and-get-indexing-status.html' class=''>...start or stop indexing and get indexing status</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/create-delete-database.html' class=''>...create or delete database</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/compact-database.html' class=''>...compact database</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/get-database-and-server-statistics.html' class=''>...get database and server statistics</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/start-backup-restore-operations.html' class=''>...start backup or restore operations</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/get-full-url-for-a-document.html' class=''>...get full url for a document</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/get-server-build-number.html' class=''>...get server build number</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/how-to/get-names-of-all-databases-on-a-server.html' class=''>...get names of all databases on a server</a></li></ul></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/commands/what-are-commands.html' class=''>What are commands?</a></li></ul></li></ul><ul><li class=''><span>Session</span><ul><li class=''><span>Querying</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-query.html' class=''>How to query?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-stream-query-results.html' class=''>How to stream query results?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-customize-query.html' class=''>How to customize query?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-use-transformers-in-queries.html' class=''>How to use transformers in queries?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-use-lucene-in-queries.html' class=''>How to use lucene in queries?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-use-input-parameters-in-queries.html' class=''>How to use input parameters in queries?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-perform-a-faceted-search.html' class=''>How to perform a faceted search?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-perform-a-multifaceted-search.html' class=''>How to perform a multifaceted search?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-query-a-spatial-index.html' class=''>How to query a spatial index?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-perform-intersection-queries.html' class=''>How to perform intersection queries?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/querying/how-to-perform-dynamic-aggregation.html' class=''>How to perform dynamic aggregation?</a></li></ul></li></ul><ul><li class=''><span>Configuration</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/configuration/change-maximum-number-of-requests-per-session.html' class=''>How to change maximum number of requests per session?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/configuration/how-to-customize-key-generation-for-entities.html' class=''>How to customize key generation for entities?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/configuration/how-to-customize-collection-assignment-for-entities.html' class=''>How to customize collection assignment for entities?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/configuration/how-to-customize-identity-property-lookup-for-entities.html' class=''>How to customize identity property lookup for entities?</a></li></ul></li></ul><ul><li class=''><span>How to...</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/defer-operations.html' class=''>...defer operations</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/perform-operations-lazily.html' class=''>...perform operations lazily</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/clear-a-session.html' class=''>...clear a session</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/evict-entity-from-a-session.html' class=''>...evict entity from a session</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/refresh-entity.html' class=''>...refresh entity</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/get-entity-id.html' class=''>...get entity id</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/get-entity-metadata.html' class=''>...get entity metadata</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/get-entity-etag.html' class=''>...get entity etag</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/get-entity-url.html' class=''>...get entity url</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/check-if-there-are-any-changed-on-a-session.html' class=''>...check if there are any changes on a session</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/mark-entity-as-readonly.html' class=''>...mark entity as readonly</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/how-to/use-optimistic-concurrency.html' class=''>...use optimistic concurrency</a></li></ul></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/what-is-a-session-and-how-does-it-work.html' class=''>What is a session and how does it work</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/opening-a-session.html' class=''>Opening a session</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/storing-entities.html' class=''>Storing entities</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/loading-entities.html' class=''>Loading entities</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/session/saving-changes.html' class=''>Saving changes</a></li></ul></li></ul><ul><li class=''><span>Bulk Insert</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/bulk-insert/how-to-work-with-bulk-insert-operation.html' class=''>How to work with bulk insert operation?</a></li></ul></li></ul><ul><li class=''><span>Changes API</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/changes/how-to-subscribe-to-document-changes.html' class=''>How to subscribe to document changes?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/changes/how-to-subscribe-to-index-changes.html' class=''>How to subscribe to index changes?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/changes/how-to-subscribe-to-bulk-insert-operation-changes.html' class=''>How to subscribe to bulk insert operation changes?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/changes/how-to-subscribe-to-transformer-changes.html' class=''>How to subscribe to transformer changes?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/changes/how-to-subscribe-to-replication-conflicts.html' class=''>How to subscribe to replication conflicts?</a></li></ul></li></ul><ul><li class=''><span>Listeners</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/listeners/what-are-listeners.html' class=''>What are listeners?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/listeners/what-are-conflict-listeners-and-how-to-work-with-them.html' class=''>Conflict listeners</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/listeners/what-are-conversion-listeners-and-how-to-work-with-them.html' class=''>Conversion listeners</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/listeners/what-are-delete-listeners-and-how-to-work-with-them.html' class=''>Delete listeners</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/listeners/what-are-query-listeners-and-how-to-work-with-them.html' class=''>Query listeners</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/listeners/what-are-store-listeners-and-how-to-work-with-them.html' class=''>Store listeners</a></li></ul></li></ul><ul><li class=''><span>Bundles</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/bundles/how-to-work-with-authorization-bundle.html' class=''>How to work with authorization bundle?</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/bundles/how-to-work-with-unique-constraints-bundle.html' class=''>How to work with unique constraints bundle?</a></li></ul></li></ul><ul><li class=''><span>How to...</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/initialize-document-store.html' class=''>...initialize document store</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/setup-default-database.html' class=''>...setup default database</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/setup-connection-string.html' class=''>...setup connection string</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/setup-failover-servers-and-failover-behavior.html' class=''>...setup failover servers and failover behavior</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/work-with-authentication.html' class=''>...work with authentication</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/create-indexes-using-abstractindexcreationtask.html' class=''>...create indexes using AbstractIndexCreationTask</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/create-transformers-using-abstracttransformercreationtask.html' class=''>...create transformers using AbstractTransformerCreationTask</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/setup-aggresive-caching.html' class=''>...setup aggresive caching</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/send-custom-requests.html' class=''>...send custom requests</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/use-fips-compliant-encryption-algorithms.html' class=''>...use FIPS compliant encryption algorithms</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/setup-sharding.html' class=''>...setup sharding</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/how-to/integrate-with-excel.html' class=''>...integrate with Excel</a></li></ul></li></ul><ul><li class=''><span>FAQ</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/faq/how-document-store-handles-replication.html' class=''>How document store handles replication?</a></li></ul></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//client-api/Http/what-is-a-document-store.html' class=''>What is a document store?</a></li></ul></li><li class=''><span>Indexes</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//indexes/full-query-syntax.html' class=''>Full RavenDB query syntax</a></li></ul></li><li class=''><span>Studio</span><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//studio/example.html' class=''>Example</a></li></ul><ul><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled//studio/example-2.html' class=''>Example 2</a></li></ul></li><li class=''><a href='http://localhost/RavenDoc/version_3/html-compiled///index.html' class=''>Home</a></li>
+							</ul>
+                        </div>
+                        <div class="article-main">
+                            <div class="article-body">
+                                <h2 id="not-documented">Not documented</h2>
+<p>This feature is not documented yet for HTTP, but might be available in other languages.</p>
+<h4 id="this-article-is-available-in-following-languages">This article is available in following languages</h4>
+<p><ul><li><a href='http://localhost/RavenDoc/version_3/html-compiled/client-api/dotnet/commands/documents/put'>.NET</a></li></ul></p>
+
+                            </div>
+                        </div>
+						<div class="clear"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <div class="wrapper">
+                <a class="back-top" href="#topbar">Back to Top</a>
+                <div class="holder">
+                    <div class="develop">
+                        <em>Proudly Developed by</em>
+                        <strong>hibernating <span>rhinos</span></strong>
+                        <a href="#"><img class="logo" alt="image description" src="http://static.ravendb.net/images/logo-rhino.png" width="51" height="50"></a>
+                    </div>
+                </div>
+                <p>Copyright &copy; 2013 Hibernating Rhinos. All rights reserved.</p>
+            </div>
+        </footer>
+    </div>
+    <script type="text/javascript">
+        SyntaxHighlighter.all()
+    </script>
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-23458527-2']);
+        _gaq.push(['_trackPageview']);
+        (function () {
+            {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            }
+        })();
+	
+	function extractValueFromUrl(supportedValues) {
+		var href = window.location.href;
+		var parts = window.location.href.split('/');
+		
+		for(var i = 0; i < supportedValues.length; i++) {
+			var value = supportedValues[i];
+			for(var j = 0; j < parts.length; j++) {
+				var part = parts[j].toLowerCase();
+				if (part === value)
+					return value;
+			}
+		}
+		
+		return supportedValues[0];
+	}
+	
+	function initializeLanguage() {
+		var supportedClients = $.map($('#client-version option'), function(element) {
+			return element.value;
+		});
+		var client = extractValueFromUrl(supportedClients);
+		$('#client-version').val(client);
+		
+		$.each($('a'), function(index, a) {
+			var href = a.href;
+			a.href = href.replace('client_type', client);
+		});
+	}
+	
+	function initializeVersion() {
+		var supportedVersions = $.map($('#docs-version option'), function(element) {
+			return element.value;
+		});
+		var version = extractValueFromUrl(supportedVersions);
+		$('#docs-version').val(version);
+	}
+
+	function initializeMenu() {
+		$("#tree-menu").treeview({
+			animated: "fast",
+			collapsed: true,
+			unique: true,
+			persist: false
+		});
+	}
+  
+    $(document).ready(function () {
+		initializeMenu();
+		initializeVersion();
+		initializeLanguage();
+	});
+    </script>
+</body>
+</html>

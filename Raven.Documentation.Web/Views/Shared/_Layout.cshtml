@@ -1,0 +1,87 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>@ViewBag.Title - My ASP.NET Application</title>
+	@Styles.Render("~/Content/css")
+	@Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+	<div class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				@Html.ActionLink("Docs", MVC.Docs.ActionNames.Index, MVC.Docs.Name, null, new { @class = "navbar-brand" })
+			</div>
+			<div class="navbar-collapse collapse">
+				<ul class="nav navbar-nav">
+					<li><a href="#">Getting started</a></li>
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Theory <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu">
+							<li><a href="#">@Html.ActionLink("Indexes", MVC.Docs.ActionNames.Indexes, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, null)</a></li>
+							<li><a href="#">@Html.ActionLink("Transformers", MVC.Docs.ActionNames.Transformers, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, null)</a></li>
+							<li class="divider"></li>
+							<li><a href="#">@Html.ActionLink("Glossary", MVC.Docs.ActionNames.Glossary, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, null)</a></li>
+						</ul>
+					</li>
+					<li>@Html.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, null)</li>
+					<li>@Html.ActionLink("Server", MVC.Docs.ActionNames.Server, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, null)</li>
+					<li></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="container body-content">
+		<div class="row">
+			<div class="col-sm-9">
+				@if (Html.IsDebug())
+				{
+					@Html.ActionLink("Generate docs", MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, new { @class = "btn btn-danger" })
+				}
+				<div class="pull-right">
+					<span>Code samples </span>
+					<div class="btn-group">
+						@Html.LanguageLink(Language.Csharp, ViewContext)
+						@Html.LanguageLink(Language.Java, ViewContext)
+						@Html.LanguageLink(Language.Http, ViewContext)
+					</div>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<div class="pull-right">
+					@using (Html.BeginForm(MVC.Docs.ActionNames.Search, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, FormMethod.Post, null))
+					{
+						<div class="input-group">
+							@Html.TextBox("value", string.Empty, new { required = "required", @class = "form-control" })
+							<span class="input-group-btn">
+								<button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+							</span>
+						</div>
+					}
+				</div>
+			</div>
+		</div>
+		<hr />
+		@RenderBody()
+	</div>
+
+	@Scripts.Render("~/bundles/jquery")
+	@Scripts.Render("~/bundles/bootstrap")
+	<script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+	@RenderSection("scripts", required: false)
+	<script type="text/javascript">
+		$('#article li.list-group-item.folder > span').click(function () {
+			$(this).parent().toggleClass('out');
+		});
+	</script>
+
+</body>
+</html>
