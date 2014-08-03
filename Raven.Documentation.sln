@@ -1,0 +1,55 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30501.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Web", "Raven.Documentation.Web\Raven.Documentation.Web.csproj", "{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Parser", "Raven.Documentation.Parser\Raven.Documentation.Parser.csproj", "{F83EA05A-F381-4D22-94E9-5E6055E05190}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{02197DA7-3859-4919-98A7-4FAFC4D75F2B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.0", "3.0", "{D7A35FF1-9733-414A-BD78-D9355990B0A1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Pages", "Documentation\3.0\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{446905B5-6EF6-4603-95F9-93B649D35CE9}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{8A787F97-0171-4191-91C1-131FC2C305FE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{D776FEB7-2D71-421D-BDE9-185206C30EF8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Samples", "Documentation\3.0\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{419311FE-2A2A-43BA-9813-A096FDB6FE1B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Release|Any CPU.Build.0 = Release|Any CPU
+		{446905B5-6EF6-4603-95F9-93B649D35CE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{446905B5-6EF6-4603-95F9-93B649D35CE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{446905B5-6EF6-4603-95F9-93B649D35CE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{446905B5-6EF6-4603-95F9-93B649D35CE9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{419311FE-2A2A-43BA-9813-A096FDB6FE1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{419311FE-2A2A-43BA-9813-A096FDB6FE1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{419311FE-2A2A-43BA-9813-A096FDB6FE1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{419311FE-2A2A-43BA-9813-A096FDB6FE1B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D7A35FF1-9733-414A-BD78-D9355990B0A1} = {02197DA7-3859-4919-98A7-4FAFC4D75F2B}
+		{446905B5-6EF6-4603-95F9-93B649D35CE9} = {D7A35FF1-9733-414A-BD78-D9355990B0A1}
+		{8A787F97-0171-4191-91C1-131FC2C305FE} = {D7A35FF1-9733-414A-BD78-D9355990B0A1}
+		{D776FEB7-2D71-421D-BDE9-185206C30EF8} = {8A787F97-0171-4191-91C1-131FC2C305FE}
+		{419311FE-2A2A-43BA-9813-A096FDB6FE1B} = {D776FEB7-2D71-421D-BDE9-185206C30EF8}
+	EndGlobalSection
+EndGlobal
