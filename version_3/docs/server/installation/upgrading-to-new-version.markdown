@@ -8,7 +8,7 @@ Manual upgrades of RavenDB instance to a new version is very simple. In order to
 
 0. Download distribution package from [here](http://ravendb.net/download).
 1. Shutdown the RavenDB server (this is depends on your deployment strategy. For a service - shutdown the service. For a IIS site - shutdown the IIS site).
-2. Remove old RavenDB binaries. Make sure to not delete your actual data which is the folders like data or tenants, or overwrite your configuration files like Raven.Server.exe.config or web.config.
+2. Remove old RavenDB binaries. Make sure to not delete your actual data which is in folders like `Data`, or overwrite your configuration files like `Raven.Server.exe.config` or `web.config`.
 3. Copy new binaries 
 4. Start the server again.
 
@@ -18,7 +18,7 @@ The RavenDB installer supports upgrades. The previously used settings (like a se
 
 ## High availability
 
-However, if you want zero downtime, you can setup a failover server which will handle requests until the primary server is started up. The steps to do so are:
+If you want zero downtime, you can setup a failover server which will handle requests until the primary server is started up. The steps to do so are:
 
 1. Setup a replication between the primary and secondary server.
 2. Wait until the second node will get all the docs from the primary node (but a minimum of 10 minutes, to make sure that any clients had the chance to get updated with the new replication information).
