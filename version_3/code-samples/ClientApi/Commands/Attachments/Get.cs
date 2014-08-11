@@ -17,7 +17,7 @@
 			#endregion
 
 			#region get_2_0
-			AttachmentInformation[] GetAttachments(Etag startEtag, int batchSize);
+			AttachmentInformation[] GetAttachments(int start, Etag startEtag, int pageSize);
 			#endregion
 		}
 
@@ -39,7 +39,7 @@
 				#region get_2_1
 				var attachments = store
 					.DatabaseCommands
-					.GetAttachments(Etag.Empty, 10);
+					.GetAttachments(start: 0, startEtag: Etag.Empty, pageSize: 10);
 				#endregion
 			}
 		}

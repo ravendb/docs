@@ -76,7 +76,16 @@ namespace Raven.Documentation.CodeSamples.Server.Administration
 			// found on http://localhost:8080
 			// and import them to NewNorthwind
 			// found on the same server
-			await SmugglerOperation.Between(
+			var smugglerApi = new SmugglerApi
+			{
+				SmugglerOptions =
+				{
+					OperateOnTypes = ItemType.Documents | ItemType.Indexes,
+					Incremental = false
+				}
+			};
+
+			await smugglerApi.Between(
 				new SmugglerBetweenOptions
 				{
 					From = new RavenConnectionStringOptions
@@ -89,11 +98,6 @@ namespace Raven.Documentation.CodeSamples.Server.Administration
 						Url = "http://localhost:8080",
 						DefaultDatabase = "NewNorthwind"
 					}
-				},
-				new SmugglerOptions
-				{
-					OperateOnTypes = ItemType.Documents | ItemType.Indexes,
-					Incremental = false
 				});
 			#endregion
 		}
