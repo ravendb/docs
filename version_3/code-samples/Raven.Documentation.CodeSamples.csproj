@@ -201,6 +201,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientApi\Session\OpeningSession.cs" />
     <Compile Include="Server\Administration\ExportImport.cs" />
+    <Compile Include="Server\Configuration\Authentication.cs" />
     <Compile Include="Server\Configuration\MultipleDatabases.cs" />
     <Compile Include="Server\Installation\Embedded.cs" />
   </ItemGroup>
