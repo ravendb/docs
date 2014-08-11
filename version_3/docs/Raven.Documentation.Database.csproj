@@ -313,6 +313,8 @@
     <None Include="indexes\querying\full-query-syntax.markdown" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="server\configuration\images\delete.png" />
+    <Content Include="server\configuration\images\tick.png" />
     <Content Include="server\configuration\windows-clustering\images\01CreateCluster.jpg" />
     <Content Include="server\configuration\windows-clustering\images\01CreateCluster_2012.jpg" />
     <Content Include="server\configuration\windows-clustering\images\01CreateCluster_Wizard01.jpg" />
@@ -366,6 +368,8 @@
     <Content Include="server\installation\images\installer_iis_performance_counters.png" />
     <Content Include="server\installation\images\installer_welcome_screen.png" />
     <Content Include="server\installation\images\installer_windows_service.png" />
+    <Content Include="server\scaling-out\images\replication_and_sharding_docs.png" />
+    <Content Include="server\scaling-out\images\replication_and_sharding_docs_2.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
