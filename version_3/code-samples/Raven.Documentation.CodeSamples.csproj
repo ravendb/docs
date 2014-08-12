@@ -43,15 +43,18 @@
     </Reference>
     <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RavenDB.Database.3.0.3397-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\..\packages\RavenDB.Database.3.0.3409-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Authorization">
+      <HintPath>..\..\packages\RavenDB.Client.Authorization.3.0.3409-Unstable\lib\net45\Raven.Client.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RavenDB.Client.3.0.3397-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\packages\RavenDB.Client.3.0.3409-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RavenDB.Database.3.0.3397-Unstable\lib\net45\Raven.Database.dll</HintPath>
+      <HintPath>..\..\packages\RavenDB.Database.3.0.3409-Unstable\lib\net45\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Smuggler, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -209,6 +212,7 @@
     <Compile Include="Server\Administration\ExportImport.cs" />
     <Compile Include="Server\Configuration\Authentication.cs" />
     <Compile Include="Server\Configuration\MultipleDatabases.cs" />
+    <Compile Include="Server\Extending\Bundles\Authorization.cs" />
     <Compile Include="Server\Extending\Plugins.cs" />
     <Compile Include="Server\Installation\Embedded.cs" />
   </ItemGroup>
