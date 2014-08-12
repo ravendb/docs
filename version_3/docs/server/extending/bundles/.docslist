@@ -1,5 +1,5 @@
-authorization.markdown	[TODO] Authorization
-cascade-delete.markdown	[TODO] Cascade Delete
+authorization.markdown	Authorization
+cascade-delete.markdown	Cascade Delete
 compression.markdown	[TODO] Compression
 encryption.markdown	[TODO] Encryption
 expiration.markdown	[TODO] Expiration
