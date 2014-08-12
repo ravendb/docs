@@ -215,6 +215,7 @@
     <Compile Include="Server\Extending\Bundles\Authorization.cs" />
     <Compile Include="Server\Extending\Bundles\CascadeDelete.cs" />
     <Compile Include="Server\Extending\Bundles\Compression.cs" />
+    <Compile Include="Server\Extending\Bundles\Encryption.cs" />
     <Compile Include="Server\Extending\Plugins.cs" />
     <Compile Include="Server\Installation\Embedded.cs" />
   </ItemGroup>
