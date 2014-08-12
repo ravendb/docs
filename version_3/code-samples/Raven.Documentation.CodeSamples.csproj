@@ -35,6 +35,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\RavenDB.Database.3.0.3397-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
@@ -203,6 +209,7 @@
     <Compile Include="Server\Administration\ExportImport.cs" />
     <Compile Include="Server\Configuration\Authentication.cs" />
     <Compile Include="Server\Configuration\MultipleDatabases.cs" />
+    <Compile Include="Server\Extending\Plugins.cs" />
     <Compile Include="Server\Installation\Embedded.cs" />
   </ItemGroup>
   <ItemGroup>
