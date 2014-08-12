@@ -117,3 +117,7 @@ The response for denying an operation are worth some note.
 While documents queried using an index will be filtered according to the security rules, there isn't any filtering for fetching the data done directly from the index. Fetching data from the index requires an explicit action (marking the field as stored), so it isn't usually a concern, but be aware that even with the Auth Bundle, if you are storing fields in the indexes, they can be read regardless of the authorization setup you have.
 
 For much the same reason, the result of map/reduce indexes cannot be secured, and will have no filtering applied to them.
+
+#### Related articles
+
+TODO
