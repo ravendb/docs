@@ -1,6 +1,6 @@
 authorization.markdown	Authorization
 cascade-delete.markdown	Cascade Delete
-compression.markdown	[TODO] Compression
+compression.markdown	Compression
 encryption.markdown	[TODO] Encryption
 expiration.markdown	[TODO] Expiration
 periodic-export.markdown	[TODO] Periodic Export
