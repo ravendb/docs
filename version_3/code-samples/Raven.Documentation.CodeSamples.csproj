@@ -214,6 +214,8 @@
     <Compile Include="Server\Extending\Bundles\Authorization.cs" />
     <Compile Include="Server\Extending\Bundles\CascadeDelete.cs" />
     <Compile Include="Server\Extending\Bundles\Compression.cs" />
+    <Compile Include="Server\Extending\Bundles\AuthorizationBundleDesign.cs" />
+    <Compile Include="Server\Extending\Bundles\Versioning.cs" />
     <Compile Include="Server\Extending\Bundles\UniqueConstraints.cs" />
     <Compile Include="Server\Extending\Bundles\SqlReplication.cs" />
     <Compile Include="Server\Extending\Bundles\ScriptedIndexResults.cs" />

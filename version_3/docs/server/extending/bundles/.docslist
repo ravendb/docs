@@ -1,4 +1,4 @@
-authorization.markdown	Authorization
+authorization.markdown	[Studio] Authorization
 cascade-delete.markdown	Cascade Delete
 compression.markdown	Compression
 encryption.markdown	Encryption
@@ -7,6 +7,7 @@ periodic-export.markdown	Periodic Export
 quotas.markdown	Quotas
 replication.markdown	Replication
 scripted-index-results.markdown	[RDoc-241] Scripted Index Results
-sql-replication.markdown	[RDoc-178, RDoc-223, RDoc-224, RDoc-227, RDoc-228] SQL Replication
+sql-replication.markdown	[RDoc-178, RDoc-223, RDoc-224, RDoc-227, RDoc-228, Studio] SQL Replication
 unique-constraints.markdown	Unique Constraints
-versioning.markdown	[TODO] Versioning
+versioning.markdown	[Studio] Versioning
+/faq	FAQ
