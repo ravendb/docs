@@ -260,6 +260,7 @@
     <None Include="server\configuration\windows-clustering\windows-server-2008.markdown" />
     <None Include="server\extending\.docslist" />
     <None Include="server\extending\bundles\.docslist" />
+    <None Include="server\extending\bundles\authorization-design.markdown" />
     <None Include="server\extending\bundles\scripted-index-results.markdown" />
     <None Include="server\extending\bundles\sql-replication.markdown" />
     <None Include="server\extending\bundles\replication.markdown" />
@@ -369,6 +370,11 @@
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_FailoverSuccess_2012.jpg" />
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_Pending.jpg" />
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_Pending_2012.jpg" />
+    <Content Include="server\extending\bundles\images\authorization_bundle_faq.png" />
+    <Content Include="server\extending\bundles\images\sql_replication_studio.png" />
+    <Content Include="server\extending\bundles\images\versioned_docs.png" />
+    <Content Include="server\extending\bundles\images\versioned_docs_2.png" />
+    <Content Include="server\extending\bundles\images\versioned_docs_3.png" />
     <Content Include="server\installation\images\installer_iis_application_pool.png" />
     <Content Include="server\installation\images\installer_iis_existing_site.png" />
     <Content Include="server\installation\images\installer_iis_new_site.png" />
