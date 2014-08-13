@@ -13,9 +13,9 @@
 
 		protected string CurrentVersion { get; private set; }
 
-		private readonly DocumentStore _store;
+		private readonly IDocumentStore _store;
 
-		protected DocumentStore DocumentStore
+		protected IDocumentStore DocumentStore
 		{
 			get
 			{
@@ -25,7 +25,7 @@
 
 		protected IDocumentSession DocumentSession { get; private set; }
 
-		protected BaseController(DocumentStore store)
+		protected BaseController(IDocumentStore store)
 		{
 			_store = store;
 		}

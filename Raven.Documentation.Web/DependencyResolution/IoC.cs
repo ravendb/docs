@@ -2,6 +2,7 @@ namespace Raven.Documentation.Web.DependencyResolution
 {
 	using Raven.Client;
 	using Raven.Client.Document;
+	using Raven.Client.Embedded;
 
 	using StructureMap;
 
@@ -9,15 +10,16 @@ namespace Raven.Documentation.Web.DependencyResolution
 	{
 		public static IContainer Initialize()
 		{
-			var store = new DocumentStore
+			var store = new EmbeddableDocumentStore
 							{
-								Url = "http://localhost:8787",
-								DefaultDatabase = "Documentation"
+								//Url = "http://localhost:8787",
+								DefaultDatabase = "Documentation",
+								UseEmbeddedHttpServer = true
 							};
 
 			store.Initialize();
 
-			ObjectFactory.Initialize(x => x.For<DocumentStore>().Use(store));
+			ObjectFactory.Initialize(x => x.For<IDocumentStore>().Use(store));
 
 			return ObjectFactory.Container;
 		}
