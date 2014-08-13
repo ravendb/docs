@@ -1,0 +1,5 @@
+document-change-notification.markdown	DocumentChangeNotification
+index-change-notification.markdown	IndexChangeNotification
+bulk-insert-change-notification.markdown	BulkInsertChangeNotification
+transformer-change-notification.markdown	TransformerChangeNotification
+replication-conflict-notification.markdown	ReplicationConflictNotification
