@@ -22,7 +22,7 @@
 
 		public static Language DefaultLanguage = Language.Csharp;
 
-		public DocsController(DocumentStore store)
+		public DocsController(IDocumentStore store)
 			: base(store)
 		{
 		}
@@ -65,10 +65,10 @@
 
 		public virtual ActionResult Generate()
 		{
-			DocumentSession
-				.Query<DocumentationPage>()
-				.Customize(x => x.WaitForNonStaleResults())
-				.Count();
+			//DocumentSession
+			//	.Query<DocumentationPage>()
+			//	.Customize(x => x.WaitForNonStaleResults())
+			//	.Count();
 
 			var parser =
 				new DocumentationParser(
@@ -76,10 +76,10 @@
 						{
 							PathToDocumentationDirectory = @"F:\Workspaces\HR\RavenDB-Docs\Documentation",
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
-							ImagesUrl = DocumentStore.Url.ForDatabase(DocumentStore.DefaultDatabase) + "/static/"
+							//ImagesUrl = DocumentStore.Url.ForDatabase(DocumentStore.DefaultDatabase) + "/static/"
 						});
 
-			foreach (var attachment in DocumentStore.DatabaseCommands.GetAttachments(Etag.Empty, 1024))
+			foreach (var attachment in DocumentStore.DatabaseCommands.GetAttachments(0, Etag.Empty, 1024))
 			{
 				DocumentStore.DatabaseCommands.DeleteAttachment(attachment.Key, null);
 			}
