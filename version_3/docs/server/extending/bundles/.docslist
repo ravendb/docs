@@ -7,6 +7,6 @@ periodic-export.markdown	Periodic Export
 quotas.markdown	Quotas
 replication.markdown	Replication
 scripted-index-results.markdown	[RDoc-241] Scripted Index Results
-sql-replication.markdown	[TODO] SQL Replication
+sql-replication.markdown	[RDoc-178, RDoc-223, RDoc-224, RDoc-227, RDoc-228] SQL Replication
 unique-constraints.markdown	[TODO] Unique Constraints
 versioning.markdown	[TODO] Versioning
