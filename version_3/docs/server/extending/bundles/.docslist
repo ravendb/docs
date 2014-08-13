@@ -4,7 +4,7 @@ compression.markdown	Compression
 encryption.markdown	Encryption
 expiration.markdown	Expiration
 periodic-export.markdown	Periodic Export
-quotas.markdown	[TODO] Quotas
+quotas.markdown	Quotas
 replication.markdown	[TODO] Replication
 scripted-index-results.markdown	[TODO] Scripted Index Results
 sql-replication.markdown	[TODO] SQL Replication
