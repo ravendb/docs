@@ -260,7 +260,8 @@
     <None Include="server\configuration\windows-clustering\windows-server-2008.markdown" />
     <None Include="server\extending\.docslist" />
     <None Include="server\extending\bundles\.docslist" />
-    <None Include="server\extending\bundles\authorization-design.markdown" />
+    <None Include="server\extending\bundles\faq\.docslist" />
+    <None Include="server\extending\bundles\faq\authorization-bundle-design.markdown" />
     <None Include="server\extending\bundles\scripted-index-results.markdown" />
     <None Include="server\extending\bundles\sql-replication.markdown" />
     <None Include="server\extending\bundles\replication.markdown" />
@@ -370,6 +371,7 @@
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_FailoverSuccess_2012.jpg" />
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_Pending.jpg" />
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_Pending_2012.jpg" />
+    <Content Include="server\extending\bundles\faq\images\authorization_bundle_faq.png" />
     <Content Include="server\extending\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\extending\bundles\images\sql_replication_studio.png" />
     <Content Include="server\extending\bundles\images\versioned_docs.png" />
@@ -383,6 +385,11 @@
     <Content Include="server\installation\images\installer_windows_service.png" />
     <Content Include="server\scaling-out\images\replication_and_sharding_docs.png" />
     <Content Include="server\scaling-out\images\replication_and_sharding_docs_2.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_2.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_3.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_4.png" />
+    <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_5.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
