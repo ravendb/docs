@@ -224,6 +224,7 @@
     <Compile Include="Server\Extending\Bundles\Encryption.cs" />
     <Compile Include="Server\Extending\Plugins.cs" />
     <Compile Include="Server\Installation\Embedded.cs" />
+    <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
