@@ -45,6 +45,7 @@
 				@if (Html.IsDebug())
 				{
 					@Html.ActionLink("Generate docs", MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, new { @class = "btn btn-danger" })
+					@Html.ActionLink("Validate links", MVC.Docs.ActionNames.Validate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, new { @class = "btn btn-danger", target = "_blank" })
 				}
 				<div class="pull-right">
 					<span>Code samples </span>

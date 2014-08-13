@@ -62,6 +62,12 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Validate()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Validate);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Welcome()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Welcome);
@@ -125,6 +131,7 @@ namespace Raven.Documentation.Web.Controllers
         public class ActionNamesClass
         {
             public readonly string Search = "Search";
+            public readonly string Validate = "Validate";
             public readonly string Generate = "Generate";
             public readonly string Welcome = "Welcome";
             public readonly string Index = "Index";
@@ -140,6 +147,7 @@ namespace Raven.Documentation.Web.Controllers
         public class ActionNameConstants
         {
             public const string Search = "Search";
+            public const string Validate = "Validate";
             public const string Generate = "Generate";
             public const string Welcome = "Welcome";
             public const string Index = "Index";
@@ -160,6 +168,15 @@ namespace Raven.Documentation.Web.Controllers
         {
             public readonly string language = "language";
             public readonly string value = "value";
+        }
+        static readonly ActionParamsClass_Validate s_params_Validate = new ActionParamsClass_Validate();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Validate ValidateParams { get { return s_params_Validate; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Validate
+        {
+            public readonly string language = "language";
+            public readonly string version = "version";
         }
         static readonly ActionParamsClass_Welcome s_params_Welcome = new ActionParamsClass_Welcome();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -253,6 +270,7 @@ namespace Raven.Documentation.Web.Controllers
                 public readonly string Search = "Search";
                 public readonly string Server = "Server";
                 public readonly string Transformers = "Transformers";
+                public readonly string Validate = "Validate";
                 public readonly string Welcome = "Welcome";
             }
             public readonly string Article = "~/Views/Docs/Article.cshtml";
@@ -264,6 +282,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Search = "~/Views/Docs/Search.cshtml";
             public readonly string Server = "~/Views/Docs/Server.cshtml";
             public readonly string Transformers = "~/Views/Docs/Transformers.cshtml";
+            public readonly string Validate = "~/Views/Docs/Validate.cshtml";
             public readonly string Welcome = "~/Views/Docs/Welcome.cshtml";
         }
     }
@@ -283,6 +302,19 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
             SearchOverride(callInfo, language, value);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ValidateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Validate(string language, string version)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Validate);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ValidateOverride(callInfo, language, version);
             return callInfo;
         }
 

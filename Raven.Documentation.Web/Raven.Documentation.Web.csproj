@@ -242,6 +242,7 @@
     <Content Include="Views\Docs\Transformers.cshtml" />
     <Content Include="Views\Docs\Glossary.cshtml" />
     <Content Include="Views\Docs\Welcome.cshtml" />
+    <Content Include="Views\Docs\Validate.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

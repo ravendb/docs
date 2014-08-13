@@ -1,0 +1,34 @@
+﻿@model List<Raven.Documentation.Parser.Data.PageLinksValidationResult>
+@{
+    ViewBag.Title = "Validate";
+}
+
+<h2>Validation Report</h2>
+
+@foreach (var result in Model)
+{
+	if (result.Links.Count == 0)
+	{
+		continue;
+	}
+
+	<div>
+		@Html.ActionLink(result.PageKey, MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = result.PageKey }, null)
+		<ul>
+			@foreach (var link in result.Links)
+			{
+				if (link.Value)
+				{
+					<li class="text-success">@link.Key</li>
+				}
+				else
+				{
+					<li class="text-danger">@link.Key</li>
+				}
+			}
+		</ul>
+	</div>
+}
+
+
+

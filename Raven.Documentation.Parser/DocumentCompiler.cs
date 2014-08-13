@@ -39,7 +39,7 @@
 				content = _parser.Transform(content);
 				content = TransformBlocks(content, documentationVersion);
 
-				var htmlDocument = ParseHtml(content);
+				var htmlDocument = HtmlHelper.ParseHtml(content);
 
 				var title = ExtractTitle(htmlDocument);
 				var textContent = ExtractTextContent(htmlDocument);
@@ -136,14 +136,6 @@
 				return "No title";
 
 			return node.InnerText;
-		}
-
-		private static HtmlDocument ParseHtml(string content)
-		{
-			var htmlDocument = new HtmlDocument();
-			htmlDocument.LoadHtml(content);
-
-			return htmlDocument;
 		}
 
 		private string TransformBlocks(string content, double documentationVersion)
