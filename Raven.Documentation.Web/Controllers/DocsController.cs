@@ -1,16 +1,12 @@
 ﻿namespace Raven.Documentation.Web.Controllers
 {
-	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
-	using System.IO;
 	using System.Linq;
 	using System.Web.Mvc;
 
 	using Raven.Abstractions.Data;
 	using Raven.Client;
-	using Raven.Client.Connection;
-	using Raven.Client.Document;
 	using Raven.Documentation.Parser;
 	using Raven.Documentation.Parser.Data;
 	using Raven.Documentation.Web.Models;
@@ -61,6 +57,26 @@
 					.ToDictionary(x => x.Key, x => x.Take(10).ToList());
 
 			return View(MVC.Docs.Views.Search, new SearchModel(pages, CurrentLanguage));
+		}
+
+		public virtual ActionResult Validate(string language, string version)
+		{
+			var pages = DocumentSession
+				.Query<DocumentationPage>()
+				.ToList();
+
+			var options = new ParserOptions
+						{
+							PathToDocumentationDirectory = @"F:\Workspaces\HR\RavenDB-Docs\Documentation",
+							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
+							//ImagesUrl = DocumentStore.Url.ForDatabase(DocumentStore.DefaultDatabase) + "/static/"
+						};
+
+			var results = new DocumentationValidator(options)
+				.ValidateLinks(pages)
+				.ToList();
+
+			return View(MVC.Docs.Views.Validate, results);
 		}
 
 		public virtual ActionResult Generate()

@@ -14,7 +14,8 @@ namespace Raven.Documentation.Web.DependencyResolution
 							{
 								//Url = "http://localhost:8787",
 								DefaultDatabase = "Documentation",
-								UseEmbeddedHttpServer = true
+								UseEmbeddedHttpServer = true,
+								RunInMemory = true
 							};
 
 			store.Initialize();
