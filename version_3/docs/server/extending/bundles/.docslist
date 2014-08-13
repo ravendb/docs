@@ -6,7 +6,7 @@ expiration.markdown	Expiration
 periodic-export.markdown	Periodic Export
 quotas.markdown	Quotas
 replication.markdown	Replication
-scripted-index-results.markdown	[TODO] Scripted Index Results
+scripted-index-results.markdown	[RDoc-241] Scripted Index Results
 sql-replication.markdown	[TODO] SQL Replication
 unique-constraints.markdown	[TODO] Unique Constraints
 versioning.markdown	[TODO] Versioning
