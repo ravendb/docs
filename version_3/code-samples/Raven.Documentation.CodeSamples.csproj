@@ -225,6 +225,7 @@
     <Compile Include="Server\Extending\Plugins.cs" />
     <Compile Include="Server\Installation\Embedded.cs" />
     <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
+    <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
