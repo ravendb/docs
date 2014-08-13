@@ -50,6 +50,9 @@
     <Reference Include="Raven.Client.Lightweight">
       <HintPath>..\..\packages\RavenDB.Client.3.0.3411-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
+    <Reference Include="Raven.Client.UniqueConstraints">
+      <HintPath>..\..\packages\RavenDB.Client.UniqueConstraints.3.0.3411-Unstable\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Database">
       <HintPath>..\..\packages\RavenDB.Database.3.0.3411-Unstable\lib\net45\Raven.Database.dll</HintPath>
     </Reference>
@@ -211,6 +214,7 @@
     <Compile Include="Server\Extending\Bundles\Authorization.cs" />
     <Compile Include="Server\Extending\Bundles\CascadeDelete.cs" />
     <Compile Include="Server\Extending\Bundles\Compression.cs" />
+    <Compile Include="Server\Extending\Bundles\UniqueConstraints.cs" />
     <Compile Include="Server\Extending\Bundles\SqlReplication.cs" />
     <Compile Include="Server\Extending\Bundles\ScriptedIndexResults.cs" />
     <Compile Include="Server\Extending\Bundles\PeriodicExport.cs" />
