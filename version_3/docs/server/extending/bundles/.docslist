@@ -3,7 +3,7 @@ cascade-delete.markdown	Cascade Delete
 compression.markdown	Compression
 encryption.markdown	Encryption
 expiration.markdown	Expiration
-periodic-export.markdown	[TODO] Periodic Export
+periodic-export.markdown	Periodic Export
 quotas.markdown	[TODO] Quotas
 replication.markdown	[TODO] Replication
 scripted-index-results.markdown	[TODO] Scripted Index Results
