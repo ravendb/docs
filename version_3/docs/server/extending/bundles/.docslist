@@ -5,7 +5,7 @@ encryption.markdown	Encryption
 expiration.markdown	Expiration
 periodic-export.markdown	Periodic Export
 quotas.markdown	Quotas
-replication.markdown	[TODO] Replication
+replication.markdown	Replication
 scripted-index-results.markdown	[TODO] Scripted Index Results
 sql-replication.markdown	[TODO] SQL Replication
 unique-constraints.markdown	[TODO] Unique Constraints
