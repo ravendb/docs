@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{419311FE-2A2A-43BA-9813-A096FDB6FE1B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Raven.Documentation.Samples</RootNamespace>
+    <AssemblyName>Raven.Documentation.Samples</AssemblyName>
+    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\..\..\..\..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Raven.Abstractions">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3415-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Lightweight">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3415-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClientApi\Commands\Attachments\Delete.cs" />
+    <Compile Include="ClientApi\Commands\Attachments\Get.cs" />
+    <Compile Include="ClientApi\Commands\Attachments\HowTo\Head.cs" />
+    <Compile Include="ClientApi\Commands\Attachments\HowTo\Update.cs" />
+    <Compile Include="ClientApi\Commands\Attachments\Put.cs" />
+    <Compile Include="ClientApi\Commands\Batches\Batch.cs" />
+    <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
+    <Compile Include="ClientApi\Commands\Documents\Get.cs" />
+    <Compile Include="ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs" />
+    <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs" />
+    <Compile Include="ClientApi\Commands\Documents\Put.cs" />
+    <Compile Include="ClientApi\Commands\Documents\Stream.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\BuildNumber.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\Compact.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\CreateDeleteDatabase.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseNames.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsToDifferentDatabase.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\Delete.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\Get.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetIndexMergeSuggestions.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetTerms.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\ResetIndex.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\Put.cs" />
+    <Compile Include="ClientApi\Commands\Patches\JavaScript.cs" />
+    <Compile Include="ClientApi\Commands\Patches\PatchRequests.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToQueryDatabase.cs" />
+    <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
+    <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
+    <Compile Include="ClientApi\Commands\Transformers\Put.cs" />
+    <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
+    <Compile Include="Common.cs" />
+    <Compile Include="Entities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
