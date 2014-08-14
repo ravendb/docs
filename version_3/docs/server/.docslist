@@ -2,5 +2,6 @@
 /configuration	Configuration
 /administration	Administration
 /scaling-out	Scaling out
-/extending	Extending
+/bundles	Bundles
+/plugins	Plugins
 /troubleshooting	Troubleshooting
