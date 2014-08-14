@@ -1,4 +1,4 @@
-# Bundle: Periodic Export
+# Bundle : Periodic Export
 
 RavenDB comes with support of doing periodic exports of documents and attachments to file system folder, [Amazon AWS](http://aws.amazon.com/) services or [Microsoft Azure](http://azure.microsoft.com/) storage.  
 

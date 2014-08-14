@@ -1,4 +1,4 @@
-# Upgrading to a new version
+# Installation : Upgrading to a new version
 
 {INFO On a live system, this process typically takes 30 seconds. /}
 
