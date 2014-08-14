@@ -228,6 +228,7 @@
     <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
     <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
     <Compile Include="Server\ScalingOut\Sharding\HowToSetupSharding.cs" />
+    <Compile Include="Transformers\WhatAreTransformers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
