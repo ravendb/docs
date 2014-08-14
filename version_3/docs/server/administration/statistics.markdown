@@ -1,6 +1,6 @@
-#Statistics
+# Administration : Statistics
 
-##Server statistics
+## Server statistics
 
 One of the options available for the RavenDB administrators is a capability of retrieving database statistics for the server. The statistics are available at `/admin/stats` endpoint or by Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
 
@@ -148,7 +148,7 @@ where
     * **RequestsDuration** - detailed request duration statistics
     * ...many more
 
-##Database statistics
+## Database statistics
 
 To obtain database statistics one must use `/stats` endpoint or access them by Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
 

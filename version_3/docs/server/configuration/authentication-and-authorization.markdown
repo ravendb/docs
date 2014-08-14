@@ -1,4 +1,4 @@
-# Authentication & Authorization
+# Configuration : Authentication & Authorization
 
 RavenDB comes with a built-in authentication functionality and it supports two types of authentication:    
 * [Windows Authentication](../../server/configuration/authentication-and-authorization#windows-authentication)   

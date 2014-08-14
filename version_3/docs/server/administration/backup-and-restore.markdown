@@ -1,4 +1,4 @@
-# Backup and Restore
+# Administration : Backup and Restore
 
 RavenDB supports backup and restore. Backups can be performed while the database in online and accepting requests (including writes). 
 
