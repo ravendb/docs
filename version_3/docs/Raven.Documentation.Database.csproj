@@ -293,7 +293,7 @@
     <None Include="server\scaling-out\replication\.docslist" />
     <None Include="server\scaling-out\replication\write-assurance.markdown" />
     <None Include="server\scaling-out\replication\how-replication-works.markdown" />
-    <None Include="server\scaling-out\replication\replicating-from-embedded-instance.markdown" />
+    <None Include="server\scaling-out\replication\replication-and-embedded-instance.markdown" />
     <None Include="server\scaling-out\replication\replication-conflicts.markdown" />
     <None Include="server\scaling-out\sharding\.docslist" />
     <None Include="server\scaling-out\sharding\how-to-setup-sharding.markdown" />

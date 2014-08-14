@@ -1,4 +1,4 @@
 how-replication-works.markdown	How replication works?
 replication-conflicts.markdown	Replication conflicts
-replicating-from-embedded-instance.markdown	[TODO] Replicating from Embedded instance
+replication-and-embedded-instance.markdown	Replication and Embedded instance
 write-assurance.markdown	Write assurance
