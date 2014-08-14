@@ -291,6 +291,8 @@
     <None Include="server\scaling-out\.docslist" />
     <None Include="server\scaling-out\replication-with-sharding.markdown" />
     <None Include="server\scaling-out\replication\.docslist" />
+    <None Include="server\scaling-out\replication\kb\.docslist" />
+    <None Include="server\scaling-out\replication\kb\advanced-replication-details.markdown" />
     <None Include="server\scaling-out\replication\write-assurance.markdown" />
     <None Include="server\scaling-out\replication\how-replication-works.markdown" />
     <None Include="server\scaling-out\replication\replication-and-embedded-instance.markdown" />
