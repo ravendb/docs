@@ -110,8 +110,6 @@
     <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docslist" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.dotnet.markdown" />
-    <None Include="client-api\faq\.docslist" />
-    <None Include="client-api\faq\how-document-store-handles-replication.markdown" />
     <None Include="client-api\how-to\.docslist" />
     <None Include="client-api\how-to\integrate-with-excel.markdown" />
     <None Include="client-api\how-to\setup-sharding.markdown" />
