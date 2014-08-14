@@ -1,4 +1,4 @@
-# Replication : Advanced replication details
+# KB : Replication : Advanced replication details
 
 An activation of the replication bundle will have an impact on how your database will act. There are some internal procedures that are executed only if this module is enabled. Note that is it enough the bundle is active, it doesn't have to be configured to indicate any destination node. Below there are listed implications of active replication that you should be aware.
 

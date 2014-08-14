@@ -259,8 +259,7 @@
     <None Include="server\configuration\windows-clustering\windows-server-2012.markdown" />
     <None Include="server\configuration\windows-clustering\windows-server-2008.markdown" />
     <None Include="server\bundles\.docslist" />
-    <None Include="server\bundles\kb\.docslist" />
-    <None Include="server\bundles\kb\authorization-bundle-design.markdown" />
+    <None Include="server\kb\authorization-bundle-design.markdown" />
     <None Include="server\bundles\scripted-index-results.markdown" />
     <None Include="server\bundles\sql-replication.markdown" />
     <None Include="server\bundles\replication.markdown" />
@@ -273,6 +272,8 @@
     <None Include="server\bundles\authorization.markdown" />
     <None Include="server\bundles\versioning.markdown" />
     <None Include="server\bundles\quotas.markdown" />
+    <None Include="server\kb\.docslist" />
+    <None Include="server\kb\long-shutdown-times.markdown" />
     <None Include="server\plugins\.docslist" />
     <None Include="server\plugins\database-configuration.markdown" />
     <None Include="server\plugins\analyzer-generators.markdown" />
@@ -291,8 +292,7 @@
     <None Include="server\scaling-out\.docslist" />
     <None Include="server\scaling-out\replication-with-sharding.markdown" />
     <None Include="server\scaling-out\replication\.docslist" />
-    <None Include="server\scaling-out\replication\kb\.docslist" />
-    <None Include="server\scaling-out\replication\kb\advanced-replication-details.markdown" />
+    <None Include="server\kb\advanced-replication-details.markdown" />
     <None Include="server\scaling-out\replication\write-assurance.markdown" />
     <None Include="server\scaling-out\replication\how-replication-works.markdown" />
     <None Include="server\scaling-out\replication\replication-and-embedded-instance.markdown" />
@@ -300,7 +300,7 @@
     <None Include="server\scaling-out\sharding\.docslist" />
     <None Include="server\scaling-out\sharding\how-to-setup-sharding.markdown" />
     <None Include="server\troubleshooting\.docslist" />
-    <None Include="server\troubleshooting\enabling-debug-logging.markdown" />
+    <None Include="server\troubleshooting\enabling-logging.markdown" />
     <None Include="server\troubleshooting\debug-endpoints.markdown" />
     <None Include="server\troubleshooting\running-in-debug-mode.markdown" />
     <None Include="start\.docslist" />
@@ -372,7 +372,7 @@
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_FailoverSuccess_2012.jpg" />
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_Pending.jpg" />
     <Content Include="server\configuration\windows-clustering\images\05FailureSimulation_Pending_2012.jpg" />
-    <Content Include="server\bundles\kb\images\authorization_bundle_faq.png" />
+    <Content Include="server\kb\images\authorization_bundle_faq.png" />
     <Content Include="server\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\bundles\images\sql_replication_studio.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />
