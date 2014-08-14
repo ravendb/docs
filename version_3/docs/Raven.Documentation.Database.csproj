@@ -310,7 +310,7 @@
     <None Include="studio\example-2.markdown" />
     <None Include="studio\example.markdown" />
     <None Include="transformers\.docslist" />
-    <None Include="transformers\what-is-transformer.markdown" />
+    <None Include="transformers\what-are-transformers.markdown" />
     <None Include="transformers\using.markdown" />
     <None Include="transformers\creating.markdown" />
   </ItemGroup>
