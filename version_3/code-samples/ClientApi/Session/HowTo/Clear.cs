@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
@@ -18,7 +19,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region clear_2
-					session.Store(new Person
+					session.Store(new Employee
 									  {
 										  FirstName = "John",
 										  LastName = "Doe"

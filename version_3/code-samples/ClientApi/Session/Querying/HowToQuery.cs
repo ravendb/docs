@@ -33,7 +33,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region query_1_1
 					// load up to 128 entities from 'Employees' collection
-					var people = session
+					var employees = session
 						.Query<Employee>()
 						.ToList();
 					#endregion
@@ -44,7 +44,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					#region query_1_2
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
-					var people = session
+					var employees = session
 						.Query<Employee>()
 						.Where(x => x.FirstName == "Robert")
 						.ToList();
@@ -56,9 +56,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					#region query_1_3
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
-					var people = from person in session.Query<Employee>()
-								 where person.FirstName == "Robert"
-								 select person;
+					var employees = from employee in session.Query<Employee>()
+								 where employee.FirstName == "Robert"
+								 select employee;
 					#endregion
 				}
 
@@ -68,9 +68,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var people = from person in session.Query<Employee>("My/Custom/Index")
-								 where person.FirstName == "Robert"
-								 select person;
+					var employees = from employee in session.Query<Employee>("My/Custom/Index")
+								 where employee.FirstName == "Robert"
+								 select employee;
 					#endregion
 				}
 
@@ -80,9 +80,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var people = from person in session.Query<Employee, MyCustomIndex>()
-								 where person.FirstName == "Robert"
-								 select person;
+					var employees = from employee in session.Query<Employee, MyCustomIndex>()
+								 where employee.FirstName == "Robert"
+								 select employee;
 					#endregion
 				}
 			}

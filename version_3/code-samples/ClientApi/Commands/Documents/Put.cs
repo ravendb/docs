@@ -1,4 +1,5 @@
-﻿using Raven.Client.Document;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 using Raven.Json.Linq;
 

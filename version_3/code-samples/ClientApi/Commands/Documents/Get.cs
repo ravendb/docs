@@ -1,4 +1,9 @@
-﻿using Raven.Client.Document;
+﻿using System.Collections.Generic;
+
+using Raven.Abstractions.Data;
+using Raven.Client;
+using Raven.Client.Document;
+using Raven.Json.Linq;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 {

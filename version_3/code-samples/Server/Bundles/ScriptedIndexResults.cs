@@ -9,45 +9,40 @@ using System.Linq;
 using Raven.Abstractions.Data;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
-using Raven.Documentation.CodeSamples;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.Server.Bundles
 {
-	public class Order
-	{
-		public Company Company { get; set; }
-		public LineItem[] Lines { get; set; }
-	}
-
-	public class OrderResult
-	{
-		public string Company { get; set; }
-		public int Count { get; set; }
-		public decimal Total { get; set; }
-	}
-
 	#region index_def
-	public class OrdersByCompany : AbstractIndexCreationTask<Order, OrderResult>
+	public class Orders_ByCompany : AbstractIndexCreationTask<Order, Orders_ByCompany.Result>
 	{
-		public OrdersByCompany()
+		public class Result
+		{
+			public string Company { get; set; }
+
+			public int Count { get; set; }
+
+			public decimal Total { get; set; }
+		}
+
+		public Orders_ByCompany()
 		{
 			Map = orders => from order in orders
-			                select new
-				                       {
-					                       order.Company,
-					                       Count = 1,
-					                       Total = order.Lines.Sum(l => (l.Quantity * l.Price))
-				                       };
+							select new
+							{
+								order.Company,
+								Count = 1,
+								Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+							};
 
 			Reduce = results => from result in results
-			                    group result by result.Company
-			                    into g
-			                    select new
-				                           {
-					                           Company = g.Key,
-					                           Count = g.Sum(x => x.Count),
-					                           Total = g.Sum(x => x.Total)
-				                           };
+								group result by result.Company into g
+								select new
+								{
+									Company = g.Key,
+									Count = g.Sum(x => x.Count),
+									Total = g.Sum(x => x.Total)
+								};
 		}
 	}
 	#endregion
@@ -77,11 +72,11 @@ namespace Raven.Documentation.CodeSamples.Server.Bundles
 				using (var session = store.OpenSession())
 				{
 					session.Store(new Abstractions.Data.ScriptedIndexResults
-						              {
-							              Id = Abstractions.Data.ScriptedIndexResults.IdPrefix + "IndexName",
-							              IndexScript = @"", // index script
-							              DeleteScript = @"" // delete script body
-						              });
+									  {
+										  Id = Abstractions.Data.ScriptedIndexResults.IdPrefix + "IndexName",
+										  IndexScript = @"", // index script
+										  DeleteScript = @"" // delete script body
+									  });
 
 					session.SaveChanges();
 				}
@@ -91,23 +86,23 @@ namespace Raven.Documentation.CodeSamples.Server.Bundles
 				using (var session = store.OpenSession())
 				{
 					session.Store(new Abstractions.Data.ScriptedIndexResults
-						              {
-							              Id = Abstractions.Data.ScriptedIndexResults.IdPrefix + new OrdersByCompany().IndexName,
-							              IndexScript = @"
+									  {
+										  Id = Abstractions.Data.ScriptedIndexResults.IdPrefix + new Orders_ByCompany().IndexName,
+										  IndexScript = @"
 							var company = LoadDocument(this.Company);
 							if(company == null)
 									return;
 							company.Orders = { Count: this.Count, Total: this.Total };
 							PutDocument(this.Company, company);
 						",
-							              DeleteScript = @"
+										  DeleteScript = @"
 							var company = LoadDocument(key);
 							if(company == null)
 									return;
 							delete company.Orders;
 							PutDocument(key, company);
 						"
-						              });
+									  });
 				}
 				#endregion
 			}

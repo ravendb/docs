@@ -24,7 +24,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region stats_2
 					RavenQueryStatistics stats;
-					var people = session.Query<Employee>()
+					var employees = session.Query<Employee>()
 						.Where(x => x.FirstName == "Robert")
 						.Statistics(out stats)
 						.ToList();
