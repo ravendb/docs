@@ -29,10 +29,16 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 			#endregion
 
 			#region get_4_0
-			JsonDocument[] StartsWith(string keyPrefix, string matches, int start, int pageSize,
-								  RavenPagingInformation pagingInformation = null, bool metadataOnly = false,
-								  string exclude = null, string transformer = null,
-								  Dictionary<string, RavenJToken> queryInputs = null);
+			JsonDocument[] StartsWith(
+				string keyPrefix, 
+				string matches,
+				int start,
+				int pageSize,
+				RavenPagingInformation pagingInformation = null,
+				bool metadataOnly = false,
+				string exclude = null,
+				string transformer = null,
+				Dictionary<string, RavenJToken> queryInputs = null);
 			#endregion
 		}
 
