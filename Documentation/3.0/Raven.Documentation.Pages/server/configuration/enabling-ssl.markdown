@@ -8,12 +8,21 @@ By default, secure connectivity is disabled. To enable the SSL in RavenDB, you n
 2. tell RavenDB to use the specified X509 certificate. 
 
 To tell RavenDB to use the specified X509 certificate execute the following command on the command line:   
-<code>Raven.Server.exe /installSSL=PathToCertificate==CertificatePassword</code>    
+
+{CODE-BLOCK:plain}
+Raven.Server.exe /installSSL=PathToCertificate==CertificatePassword
+{CODE-BLOCK/}
+
 E.g.   
-<code>Raven.Server.exe /installSSL=C:\Temp\MyCertificate.pfx==MyPassword</code>  
+{CODE-BLOCK:plain}
+Raven.Server.exe /installSSL=C:\Temp\MyCertificate.pfx==MyPassword
+{CODE-BLOCK/}
 
 To uninstall the certificate execute:    
-<code>Raven.Server.exe /uninstallSSL=PathToCertificate==CertificatePassword</code>   
+
+{CODE-BLOCK:plain}
+Raven.Server.exe /uninstallSSL=PathToCertificate==CertificatePassword
+{CODE-BLOCK/}
 
 {NOTE The Studio might not work in some browsers (e.g. Firefox and Chrome) if the domain that certificate was issued for does not match the domain you are using it for. /}   
 
