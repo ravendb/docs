@@ -85,7 +85,7 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Validate, results);
 		}
 
-		public virtual ActionResult Generate()
+		public virtual ActionResult Generate(string language, string version, string key)
 		{
 			//DocumentSession
 			//	.Query<DocumentationPage>()
@@ -139,7 +139,13 @@ namespace Raven.Documentation.Web.Controllers
 
 			DocumentSession.SaveChanges();
 
-			return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+			if (string.IsNullOrEmpty(key))
+				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+
+			return RedirectToAction(
+				MVC.Docs.ActionNames.Articles,
+				MVC.Docs.Name,
+				new { language = CurrentLanguage, version = CurrentVersion, key = key });
 		}
 
 		public virtual ActionResult Welcome(string language, string version)
@@ -199,6 +205,8 @@ namespace Raven.Documentation.Web.Controllers
 
 		public virtual ActionResult Articles(string version, string language, string key)
 		{
+			ViewBag.Key = null;
+
 			var allPages = DocumentSession
 				.Query<DocumentationPage>()
 				.Where(x => x.Key == key)
@@ -223,6 +231,8 @@ namespace Raven.Documentation.Web.Controllers
 				return View(MVC.Docs.Views.NotDocumented, new NotDocumentedModel(key, CurrentLanguage, allPages, toc));
 
 			Debug.Assert(pages.Count <= 2);
+
+			ViewBag.Key = key;
 
 			var all = pages.FirstOrDefault(x => x.Language == Language.All);
 			if (all != null)

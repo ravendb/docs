@@ -3,8 +3,8 @@
 // Don't change it directly as your change would get overwritten.  Instead, make changes
 // to the .tt file (i.e. the T4 template) and save it to regenerate this file.
 
-// Make sure the compiler doesn't complain about missing Xml comments
-#pragma warning disable 1591
+// Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
+#pragma warning disable 1591, 3008, 3009
 #region T4MVC
 
 using System;
@@ -65,6 +65,12 @@ namespace Raven.Documentation.Web.Controllers
         public virtual System.Web.Mvc.ActionResult Validate()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Validate);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Generate()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -177,6 +183,16 @@ namespace Raven.Documentation.Web.Controllers
         {
             public readonly string language = "language";
             public readonly string version = "version";
+        }
+        static readonly ActionParamsClass_Generate s_params_Generate = new ActionParamsClass_Generate();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Generate GenerateParams { get { return s_params_Generate; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Generate
+        {
+            public readonly string language = "language";
+            public readonly string version = "version";
+            public readonly string key = "key";
         }
         static readonly ActionParamsClass_Welcome s_params_Welcome = new ActionParamsClass_Welcome();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -319,13 +335,16 @@ namespace Raven.Documentation.Web.Controllers
         }
 
         [NonAction]
-        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo);
+        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string key);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Generate()
+        public override System.Web.Mvc.ActionResult Generate(string language, string version, string key)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
-            GenerateOverride(callInfo);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            GenerateOverride(callInfo, language, version, key);
             return callInfo;
         }
 
@@ -438,4 +457,4 @@ namespace Raven.Documentation.Web.Controllers
 }
 
 #endregion T4MVC
-#pragma warning restore 1591
+#pragma warning restore 1591, 3008, 3009
