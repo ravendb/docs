@@ -98,6 +98,12 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Studio()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Studio);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Server()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Server);
@@ -149,6 +155,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Index = "Index";
             public readonly string Start = "Start";
             public readonly string Client = "Client";
+            public readonly string Studio = "Studio";
             public readonly string Server = "Server";
             public readonly string Indexes = "Indexes";
             public readonly string Transformers = "Transformers";
@@ -166,6 +173,7 @@ namespace Raven.Documentation.Web.Controllers
             public const string Index = "Index";
             public const string Start = "Start";
             public const string Client = "Client";
+            public const string Studio = "Studio";
             public const string Server = "Server";
             public const string Indexes = "Indexes";
             public const string Transformers = "Transformers";
@@ -238,6 +246,15 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string version = "version";
             public readonly string language = "language";
         }
+        static readonly ActionParamsClass_Studio s_params_Studio = new ActionParamsClass_Studio();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Studio StudioParams { get { return s_params_Studio; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Studio
+        {
+            public readonly string version = "version";
+            public readonly string language = "language";
+        }
         static readonly ActionParamsClass_Server s_params_Server = new ActionParamsClass_Server();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Server ServerParams { get { return s_params_Server; } }
@@ -303,6 +320,7 @@ namespace Raven.Documentation.Web.Controllers
                 public readonly string Search = "Search";
                 public readonly string Server = "Server";
                 public readonly string Start = "Start";
+                public readonly string Studio = "Studio";
                 public readonly string Transformers = "Transformers";
                 public readonly string Validate = "Validate";
                 public readonly string Welcome = "Welcome";
@@ -316,6 +334,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Search = "~/Views/Docs/Search.cshtml";
             public readonly string Server = "~/Views/Docs/Server.cshtml";
             public readonly string Start = "~/Views/Docs/Start.cshtml";
+            public readonly string Studio = "~/Views/Docs/Studio.cshtml";
             public readonly string Transformers = "~/Views/Docs/Transformers.cshtml";
             public readonly string Validate = "~/Views/Docs/Validate.cshtml";
             public readonly string Welcome = "~/Views/Docs/Welcome.cshtml";
@@ -416,6 +435,19 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             ClientOverride(callInfo, version, language);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void StudioOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Studio(string version, string language)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Studio);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            StudioOverride(callInfo, version, language);
             return callInfo;
         }
 
