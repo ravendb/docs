@@ -3,6 +3,7 @@
 using Raven.Abstractions.Data;
 using Raven.Client.Changes;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 {
@@ -46,7 +47,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 					{
 						for (int i = 0; i < 1000 * 1000; i++)
 						{
-							bulkInsert.Store(new Person
+							bulkInsert.Store(new Employee
 							{
 								FirstName = "FirstName #" + i,
 								LastName = "LastName #" + i

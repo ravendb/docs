@@ -107,8 +107,8 @@
 						new ScriptedPatchRequest
 						{
 							Script = @"
-										var person = LoadDocument(differentEmployeeId);
-										this.FirstName = person.FirstName;",
+										var employee = LoadDocument(differentEmployeeId);
+										this.FirstName = employee.FirstName;",
 							Values = new Dictionary<string, object>
 								         {
 									         { "differentEmployeeId", "employees/2" }

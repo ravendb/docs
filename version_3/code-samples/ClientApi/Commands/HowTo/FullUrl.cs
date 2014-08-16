@@ -16,16 +16,16 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region full_url_2
-				// http://localhost:8080/databases/DB1/docs/people/1
-				var url = store.DatabaseCommands.UrlFor("people/1");
+				// http://localhost:8080/databases/Northwind/docs/employees/1
+				var url = store.DatabaseCommands.UrlFor("employees/1");
 				#endregion
 			}
 
 			using (var store = new DocumentStore())
 			{
 				#region full_url_3
-				// http://localhost:8080/docs/people/1
-				var url = store.DatabaseCommands.ForSystemDatabase().UrlFor("people/1");
+				// http://localhost:8080/docs/employees/1
+				var url = store.DatabaseCommands.ForSystemDatabase().UrlFor("employees/1");
 				#endregion
 			}
 		}

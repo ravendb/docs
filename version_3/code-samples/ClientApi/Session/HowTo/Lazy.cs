@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
@@ -15,25 +16,25 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region lazy_1
-					Lazy<Person> personLazy = session
+					Lazy<Employee> employeeLazy = session
 						.Advanced
 						.Lazily
-						.Load<Person>("people/1");
+						.Load<Employee>("employees/1");
 
-					var person = personLazy.Value; // load operation will be executed here
+					var employee = employeeLazy.Value; // load operation will be executed here
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region lazy_2
-					Lazy<IEnumerable<Person>> peopleLazy = session
-						.Query<Person>()
+					Lazy<IEnumerable<Employee>> employeesLazy = session
+						.Query<Employee>()
 						.Lazily();
 
 					session.Advanced.Eagerly.ExecuteAllPendingLazyOperations(); // query will be executed here
 
-					var people = peopleLazy.Value;
+					var employees = employeesLazy.Value;
 					#endregion
 				}
 			}

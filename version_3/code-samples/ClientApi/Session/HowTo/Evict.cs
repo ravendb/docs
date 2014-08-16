@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
@@ -18,22 +19,22 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region evict_2
-					var person1 = new Person
+					var employee1 = new Employee
 						              {
 							              FirstName = "John", 
 										  LastName = "Doe"
 						              };
 
-					var person2 = new Person
+					var employee2 = new Employee
 						              {
 							              FirstName = "Joe", 
 										  LastName = "Shmoe"
 						              };
 
-					session.Store(person1);
-					session.Store(person2);
+					session.Store(employee1);
+					session.Store(employee2);
 
-					session.Advanced.Evict(person1);
+					session.Advanced.Evict(employee1);
 
 					session.SaveChanges(); // only 'Joe Shmoe' will be saved
 					#endregion
@@ -42,10 +43,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region evict_3
-					var person = session.Load<Person>("people/1"); // loading from server
-					person = session.Load<Person>("people/1"); // no server call
-					session.Advanced.Evict(person);
-					person = session.Load<Person>("people/1"); // loading from server
+					var employee = session.Load<Employee>("employees/1"); // loading from server
+					employee = session.Load<Employee>("employees/1"); // no server call
+					session.Advanced.Evict(employee);
+					employee = session.Load<Employee>("employees/1"); // loading from server
 					#endregion
 				}
 			}

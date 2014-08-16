@@ -1,5 +1,6 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
@@ -19,8 +20,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region get_etag_2
-					var person = session.Load<Person>("people/1");
-					var etag = session.Advanced.GetEtagFor(person);
+					var employee = session.Load<Employee>("employees/1");
+					var etag = session.Advanced.GetEtagFor(employee);
 					#endregion
 				}
 			}

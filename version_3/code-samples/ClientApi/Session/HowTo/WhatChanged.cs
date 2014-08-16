@@ -2,6 +2,7 @@
 
 using Raven.Abstractions.Data;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 using Xunit;
 
@@ -29,7 +30,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				{
 					Assert.False(session.Advanced.HasChanges);
 
-					session.Store(new Person
+					session.Store(new Employee
 									  {
 										  FirstName = "John",
 										  LastName = "Doe"
@@ -42,29 +43,29 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				#region what_changed_4
 				using (var session = store.OpenSession())
 				{
-					session.Store(new Person
+					session.Store(new Employee
 					{
 						FirstName = "Joe",
 						LastName = "Doe"
 					});
 
 					var changes = session.Advanced.WhatChanged();
-					var personChanges = changes["people/1"];
-					var change = personChanges[0].Change; // DocumentsChanges.ChangeType.DocumentAdded
+					var employeeChanges = changes["employees/1"];
+					var change = employeeChanges[0].Change; // DocumentsChanges.ChangeType.DocumentAdded
 				}
 				#endregion
 
 				#region what_changed_5
 				using (var session = store.OpenSession())
 				{
-					var person = session.Load<Person>("people/1"); // 'Joe Doe'
-					person.FirstName = "John";
-					person.LastName = "Shmoe";
+					var employee = session.Load<Employee>("employees/1"); // 'Joe Doe'
+					employee.FirstName = "John";
+					employee.LastName = "Shmoe";
 
 					var changes = session.Advanced.WhatChanged();
-					var personChanges = changes["people/1"];
-					var change1 = personChanges[0]; // DocumentsChanges.ChangeType.FieldChanged
-					var change2 = personChanges[1]; // DocumentsChanges.ChangeType.FieldChanged
+					var employeeChanges = changes["employees/1"];
+					var change1 = employeeChanges[0]; // DocumentsChanges.ChangeType.FieldChanged
+					var change2 = employeeChanges[1]; // DocumentsChanges.ChangeType.FieldChanged
 				}
 				#endregion
 			}
