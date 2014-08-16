@@ -303,6 +303,7 @@
     <None Include="server\troubleshooting\running-in-debug-mode.markdown" />
     <None Include="start\.docslist" />
     <None Include="start\getting-started.markdown" />
+    <None Include="start\about-examples.markdown" />
     <None Include="start\whats-new.markdown" />
     <None Include="not-documented.markdown" />
     <None Include="index.markdown" />
