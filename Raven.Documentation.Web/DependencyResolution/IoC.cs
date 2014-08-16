@@ -1,7 +1,8 @@
+using System.Configuration;
+
 namespace Raven.Documentation.Web.DependencyResolution
 {
 	using Raven.Client;
-	using Raven.Client.Document;
 	using Raven.Client.Embedded;
 
 	using StructureMap;
@@ -10,11 +11,12 @@ namespace Raven.Documentation.Web.DependencyResolution
 	{
 		public static IContainer Initialize()
 		{
+			var url = ConfigurationManager.AppSettings["Raven/Server/Url"];
 			var store = new EmbeddableDocumentStore
 							{
-								//Url = "http://localhost:8787",
+								Url = string.IsNullOrEmpty(url) == false ? url : null,
 								DefaultDatabase = "Documentation",
-								UseEmbeddedHttpServer = true,
+								UseEmbeddedHttpServer = string.IsNullOrEmpty(url),
 								RunInMemory = true
 							};
 

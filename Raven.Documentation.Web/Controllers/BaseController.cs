@@ -4,7 +4,6 @@
 	using System.Web.Mvc;
 
 	using Raven.Client;
-	using Raven.Client.Document;
 	using Raven.Documentation.Parser.Data;
 
 	public abstract partial class BaseController : Controller

@@ -84,6 +84,8 @@
 					           });
 			}
 
+			tag.attributes["class"] = "img-responsive img-thumbnail";
+
 			return true;
 		}
 
