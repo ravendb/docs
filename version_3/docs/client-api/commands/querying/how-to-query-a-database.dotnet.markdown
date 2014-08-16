@@ -35,7 +35,7 @@ Object which represents results of a specified query.
 
 ##Example I
 
-A sample **Query** method call that returns users with a specified name:
+A sample **Query** method call that returns orders for a specified specified company:
 
 {CODE query_database_2@ClientApi\Commands\Querying\HowToQueryDatabase.cs /}
 

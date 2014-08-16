@@ -55,92 +55,92 @@
 				store
 					.DatabaseCommands
 					.Patch(
-						"people/1",
+						"employees/1",
 						new ScriptedPatchRequest
 							{
 								Script = "this.FirstName = 'Robert';"
 							});
 				#endregion
 
-				#region patch_2
+				#region patch_3
 				// trim FirstName
 				store
 					.DatabaseCommands
 					.Patch(
-						"people/1",
+						"employees/1",
 						new ScriptedPatchRequest
 						{
 							Script = "this.FirstName = this.FirstName.trim();"
 						});
 				#endregion
 
-				#region patch_3
+				#region patch_4
 				// add new property Age with value of 30
 				store
 					.DatabaseCommands
 					.Patch(
-						"people/1",
+						"employees/1",
 						new ScriptedPatchRequest
 						{
 							Script = "this.Age = 30;"
 						});
 				#endregion
 
-				#region patch_4
+				#region patch_5
 				// add new property Age with value of 30 using LoDash
 				store
 					.DatabaseCommands
 					.Patch(
-						"people/1",
+						"employees/1",
 						new ScriptedPatchRequest
 						{
 							Script = "_.extend(this, { 'Age': '30'});"
 						});
 				#endregion
 
-				#region patch_5
+				#region patch_6
 				// passing data and loading different document
 				store
 					.DatabaseCommands
 					.Patch(
-						"people/1",
+						"employees/1",
 						new ScriptedPatchRequest
 						{
 							Script = @"
-										var person = LoadDocument(differentPersonId);
+										var person = LoadDocument(differentEmployeeId);
 										this.FirstName = person.FirstName;",
 							Values = new Dictionary<string, object>
 								         {
-									         { "differentPersonId", "people/2" }
+									         { "differentEmployeeId", "employees/2" }
 								         }
 						});
 				#endregion
 
-				#region patch_6
+				#region patch_7
 				// accessing metadata (added ClrType property with value from @metadata)
 				store
 					.DatabaseCommands
 					.Patch(
-						"people/1",
+						"employees/1",
 						new ScriptedPatchRequest
 						{
 							Script = @"this.ClrType = this['@metadata']['Raven-Clr-Type'];"
 						});
 				#endregion
 
-				#region patch_7
+				#region patch_8
 				// creating new document with auto-assigned key e.g. 'Comments/100'
 				store
 					.DatabaseCommands
 					.Patch(
-						"people/1",
+						"employees/1",
 						new ScriptedPatchRequest
 						{
 							Script = @"PutDocument('Comments/', { 'Author': this.LastName }, { });"
 						});
 				#endregion
 
-				#region patch_8
+				#region patch_9
 				// add a new comment to Comments
 				store
 					.DatabaseCommands
@@ -148,12 +148,12 @@
 						"blogposts/1",
 						new ScriptedPatchRequest
 						{
-							Script = @"this.Comments.push({ 'Author': this.FirstName + ' ' + this.LastName, Message: 'Hi' });"
+							Script = @"this.Comments.push({ 'Title': 'Some title', 'Content': 'Lore ipsum' });"
 						});
 				#endregion
 
-				#region patch_9
-				// removing comments with 'Joe Doe' as na author
+				#region patch_1_0
+				// removing comments with 'Some title' as a title
 				store
 					.DatabaseCommands
 					.Patch(
@@ -162,12 +162,12 @@
 						{
 							Script = @"
 										this.Comments.RemoveWhere(function(comment) {
-											return comment.Author == 'Joe Doe';
+											return comment.Title == 'Some title';
 										});"
 						});
 				#endregion
 
-				#region patch_1_0
+				#region patch_1_1
 				// modifying each comment
 				store
 					.DatabaseCommands
@@ -177,7 +177,7 @@
 						{
 							Script = @"
 										this.Comments.Map(function(comment) {
-											comment.Author = 'Joe Doe';
+											comment.Title = 'New title';
 											return comment;
 										});"
 						});
