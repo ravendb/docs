@@ -28,7 +28,7 @@
 			using (var store = new DocumentStore())
 			{
 				#region stream_2
-				var enumerator = store.DatabaseCommands.StreamDocs(null, "people/");
+				var enumerator = store.DatabaseCommands.StreamDocs(null, "products/");
 				while (enumerator.MoveNext())
 				{
 					var document = enumerator.Current;
