@@ -1,9 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Patches
-{
-	using Raven.Abstractions.Data;
-	using Raven.Client.Document;
-	using Raven.Json.Linq;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using Raven.Json.Linq;
 
+namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Patches
+{
 	public class PatchRequests
     {
 		private interface IFoo
@@ -51,7 +51,7 @@
 				#region patch_2
 				// change FirstName to Robert
 				store.DatabaseCommands.Patch(
-					"people/1",
+					"employees/1",
 					new[]
 						{
 							new PatchRequest
@@ -66,7 +66,7 @@
 				#region patch_1_0
 				// change FirstName to Robert and LastName to Carter in single request
 				store.DatabaseCommands.Patch(
-					"people/1",
+					"employees/1",
 					new[]
 						{
 							new PatchRequest
@@ -87,7 +87,7 @@
 				#region patch_3
 				// add new property Age with value of 30
 				store.DatabaseCommands.Patch(
-					"people/1",
+					"employees/1",
 					new[]
 						{
 							new PatchRequest
@@ -102,7 +102,7 @@
 				#region patch_4
 				// increment Age property value by 10
 				store.DatabaseCommands.Patch(
-					"people/1",
+					"employees/1",
 					new[]
 						{
 							new PatchRequest
@@ -117,7 +117,7 @@
 				#region patch_5
 				// remove property Age
 				store.DatabaseCommands.Patch(
-					"people/1",
+					"employees/1",
 					new[]
 						{
 							new PatchRequest
@@ -131,7 +131,7 @@
 				#region patch_6
 				// rename FirstName to First
 				store.DatabaseCommands.Patch(
-					"people/1",
+					"employees/1",
 					new[]
 						{
 							new PatchRequest
@@ -153,10 +153,10 @@
 								{
 									Type = PatchCommandType.Add, 
 									Name = "Comments",
-									Value = RavenJObject.FromObject(new Comment
+									Value = RavenJObject.FromObject(new BlogComment
 										                                {
-											                                Author = "John Doe",
-																			Message = "Hi"
+																			Content = "Lore ipsum",
+																			Title = "Some title"
 										                                })
 								}
 						});
@@ -173,10 +173,10 @@
 									Type = PatchCommandType.Insert, 
 									Position = 0,
 									Name = "Comments",
-									Value = RavenJObject.FromObject(new Comment
+									Value = RavenJObject.FromObject(new BlogComment
 										                                {
-											                                Author = "John Doe",
-																			Message = "Hi"
+											                                Content = "Lore ipsum",
+																			Title = "Some title"
 										                                })
 								}
 						});
@@ -198,8 +198,8 @@
 											         new PatchRequest
 												         {
 													         Type = PatchCommandType.Set,
-															 Name = "Author",
-															 Value = "Robert Doe"
+															 Name = "Title",
+															 Value = "New title"
 												         }
 										         }
 								}

@@ -91,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blog.cs" />
     <Compile Include="ClientApi\BulkInsert\BulkInserts.cs" />
     <Compile Include="ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToBulkInsertChanges.cs" />
