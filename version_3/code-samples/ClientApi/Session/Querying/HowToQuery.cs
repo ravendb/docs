@@ -3,12 +3,13 @@
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
 	public class HowToQuery
 	{
-		private class MyCustomIndex : AbstractIndexCreationTask<Person>
+		private class MyCustomIndex : AbstractIndexCreationTask<Employee>
 		{
 		}
 
@@ -31,9 +32,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region query_1_1
-					// load up to 128 entities from 'People' collection
-					var people = session
-						.Query<Person>()
+					// load up to 128 entities from 'Employees' collection
+					var employees = session
+						.Query<Employee>()
 						.ToList();
 					#endregion
 				}
@@ -41,11 +42,11 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region query_1_2
-					// load up to 128 entities from 'People' collection
-					// where FirstName equals 'John'
-					var people = session
-						.Query<Person>()
-						.Where(x => x.FirstName == "John")
+					// load up to 128 entities from 'Employees' collection
+					// where FirstName equals 'Robert'
+					var employees = session
+						.Query<Employee>()
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -53,35 +54,35 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region query_1_3
-					// load up to 128 entities from 'People' collection
-					// where FirstName equals 'John'
-					var people = from person in session.Query<Person>()
-								 where person.FirstName == "John"
-								 select person;
+					// load up to 128 entities from 'Employees' collection
+					// where FirstName equals 'Robert'
+					var employees = from employee in session.Query<Employee>()
+								 where employee.FirstName == "Robert"
+								 select employee;
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region query_1_4
-					// load up to 128 entities from 'People' collection
-					// where FirstName equals 'John'
+					// load up to 128 entities from 'Employees' collection
+					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var people = from person in session.Query<Person>("My/Custom/Index")
-								 where person.FirstName == "John"
-								 select person;
+					var employees = from employee in session.Query<Employee>("My/Custom/Index")
+								 where employee.FirstName == "Robert"
+								 select employee;
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region query_1_5
-					// load up to 128 entities from 'People' collection
-					// where FirstName equals 'John'
+					// load up to 128 entities from 'Employees' collection
+					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var people = from person in session.Query<Person, MyCustomIndex>()
-								 where person.FirstName == "John"
-								 select person;
+					var employees = from employee in session.Query<Employee, MyCustomIndex>()
+								 where employee.FirstName == "Robert"
+								 select employee;
 					#endregion
 				}
 			}

@@ -46,6 +46,10 @@
 
 {CODE patch_1_0@ClientApi\Commands\Patches\Javascript.cs /}
 
+## Example X
+
+{CODE patch_1_1@ClientApi\Commands\Patches\Javascript.cs /}
+
 #### Related articles
 
 [How to work with **patch requests**?](../../../client-api/commands/patches/how-to-work-with-patch-requests) 

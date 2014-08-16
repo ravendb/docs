@@ -35,15 +35,29 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\RavenDB.Database.3.0.3356-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Abstractions">
+      <HintPath>..\..\packages\RavenDB.Client.3.0.3411-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Authorization">
+      <HintPath>..\..\packages\RavenDB.Client.Authorization.3.0.3411-Unstable\lib\net45\Raven.Client.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\packages\RavenDB.Client.3.0.3356-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\packages\RavenDB.Client.3.0.3411-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.UniqueConstraints">
+      <HintPath>..\..\packages\RavenDB.Client.UniqueConstraints.3.0.3411-Unstable\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database">
-      <HintPath>..\..\packages\RavenDB.Database.3.0.3356-Unstable\lib\net45\Raven.Database.dll</HintPath>
+      <HintPath>..\..\packages\RavenDB.Database.3.0.3411-Unstable\lib\net45\Raven.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Smuggler">
+      <HintPath>..\..\packages\RavenDB.Server.3.0.3411-Unstable\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -77,6 +91,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Blog.cs" />
     <Compile Include="ClientApi\BulkInsert\BulkInserts.cs" />
     <Compile Include="ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToBulkInsertChanges.cs" />
@@ -171,8 +186,8 @@
     <Compile Include="ClientApi\Session\StoringEntities.cs" />
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
     <Compile Include="ClientApi\SetupConnectionString.cs" />
-    <Compile Include="Entities.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Faceted.cs" />
     <Compile Include="Glossary\Glossary.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
@@ -192,10 +207,30 @@
     <Compile Include="Indexes\SpatialIndexes.cs" />
     <Compile Include="Indexes\Storing.cs" />
     <Compile Include="Indexes\TermVectors.cs" />
+    <Compile Include="Northwind.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ClientApi\Session\OpeningSession.cs" />
+    <Compile Include="Server\Administration\ExportImport.cs" />
+    <Compile Include="Server\Configuration\Authentication.cs" />
     <Compile Include="Server\Configuration\MultipleDatabases.cs" />
+    <Compile Include="Server\Bundles\Authorization.cs" />
+    <Compile Include="Server\Bundles\CascadeDelete.cs" />
+    <Compile Include="Server\Bundles\Compression.cs" />
+    <Compile Include="Server\Bundles\AuthorizationBundleDesign.cs" />
+    <Compile Include="Server\Bundles\Versioning.cs" />
+    <Compile Include="Server\Bundles\UniqueConstraints.cs" />
+    <Compile Include="Server\Bundles\SqlReplication.cs" />
+    <Compile Include="Server\Bundles\ScriptedIndexResults.cs" />
+    <Compile Include="Server\Bundles\PeriodicExport.cs" />
+    <Compile Include="Server\Bundles\Expiration.cs" />
+    <Compile Include="Server\Bundles\Encryption.cs" />
+    <Compile Include="Server\Plugins.cs" />
     <Compile Include="Server\Installation\Embedded.cs" />
+    <Compile Include="Server\ScalingOut\Replication\FromEmbeddedServer.cs" />
+    <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
+    <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
+    <Compile Include="Server\ScalingOut\Sharding\HowToSetupSharding.cs" />
+    <Compile Include="Transformers\WhatAreTransformers.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

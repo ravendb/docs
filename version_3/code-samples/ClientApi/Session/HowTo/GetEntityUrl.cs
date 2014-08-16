@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
@@ -18,9 +19,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region get_entity_url_2
-					var person = session.Load<Person>("people/1");
-					// http://localhost:8080/databases/DB1/docs/people/1
-					var url = session.Advanced.GetDocumentUrl(person);
+					var employee = session.Load<Employee>("employees/1");
+					// http://localhost:8080/databases/Northwind/docs/employees/1
+					var url = session.Advanced.GetDocumentUrl(employee);
 					#endregion
 				}
 			}

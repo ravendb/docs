@@ -10,16 +10,16 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Transformers.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region query_transformer_1
-				// query for all users with 'Name' equal to 'James' using 'Users/ByName' index
-				// and transform results using 'Users/FullName' transformer
+				// query for all orders with 'Company' equal to 'companies/1' using 'Orders/Totals' index
+				// and transform results using 'Order/Statistics' transformer
 				var result = store
 					.DatabaseCommands
 					.Query(
-						"Users/ByName",
+						"Orders/Totals",
 						new IndexQuery
 						{
-							Query = "Name:James",
-							ResultsTransformer = "Users/FullName"
+							Query = "Company:companies/1",
+							ResultsTransformer = "Order/Statistics"
 						});
 				#endregion
 			}
@@ -27,18 +27,18 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Transformers.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region query_transformer_2
-				// query for all users with 'Name' equal to 'James' using 'Users/ByName' index
-				// and transform results using 'Users/FullName' transformer
+				// query for all orders with 'Company' equal to 'companies/1' using 'Orders/Totals' index
+				// and transform results using 'Order/Statistics' transformer
 				// stream the results
 				QueryHeaderInformation queryHeaderInfo;
 				var result = store
 					.DatabaseCommands
 					.StreamQuery(
-						"Users/ByName",
+						"Orders/Totals",
 						new IndexQuery
 						{
-							Query = "Name:James",
-							ResultsTransformer = "Users/FullName"
+							Query = "Company:companies/1",
+							ResultsTransformer = "Order/Statistics"
 						},
 						out queryHeaderInfo);
 				#endregion

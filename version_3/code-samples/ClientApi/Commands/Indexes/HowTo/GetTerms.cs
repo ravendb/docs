@@ -24,7 +24,7 @@
 				#region get_terms_2
 				var terms = store
 					.DatabaseCommands
-					.GetTerms("BlogPosts/ByTitles", "Title", null, 128);
+					.GetTerms("Orders/Totals", "Company", null, 128);
 				#endregion
 			}
 		}

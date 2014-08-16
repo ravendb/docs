@@ -3,6 +3,7 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Indexes.Querying;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
@@ -22,7 +23,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 			*/
 		}
 
-		private class Users_ByFullName : AbstractIndexCreationTask<User>
+		private class Employees_ByFullName : AbstractIndexCreationTask<Employee>
 		{
 		}
 
@@ -33,9 +34,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region suggest_2
-
 					var suggestions = session
-						.Query<User, Users_ByFullName>()
+						.Query<Employee, Employees_ByFullName>()
 						.Suggest(
 							new SuggestionQuery
 								{
