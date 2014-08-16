@@ -17,7 +17,7 @@
 			using (var store = new DocumentStore())
 			{
 				#region delete_2
-				store.DatabaseCommands.Delete("people/1", null);
+				store.DatabaseCommands.Delete("employees/1", null);
 				#endregion
 			}
 		}

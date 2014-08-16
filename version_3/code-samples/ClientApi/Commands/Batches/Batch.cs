@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Batches
+﻿using Raven.Documentation.CodeSamples.Orders;
+
+namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Batches
 {
 	using System.Collections.Generic;
 
@@ -27,27 +29,26 @@
 						       {
 							       new PutCommandData
 								       {
-									       Key = "people/1",
-										   Document = RavenJObject.FromObject(new Person
+									       Key = "products/999",
+										   Document = RavenJObject.FromObject(new Product
 											{
-												FirstName = "John",
-												LastName = "Doe",
-												AddressId = "addresses/1"
+												Name = "My Product",
+												Supplier = "suppliers/999"
 											}),
 											Metadata = new RavenJObject()
 								       }, 
 								   new PutCommandData
 									   {
-											Key = "addresses/1",
-											Document = RavenJObject.FromObject(new Address
+											Key = "suppliers/999",
+											Document = RavenJObject.FromObject(new Supplier
 											{
-												Street = "Crystal Oak Street",
+												Name = "My Supplier",
 											}),
 											Metadata = new RavenJObject()
 									   }, 
 								   new DeleteCommandData
 									   {
-											Key = "people/2"
+											Key = "products/2"
 									   }
 						       });
 				#endregion

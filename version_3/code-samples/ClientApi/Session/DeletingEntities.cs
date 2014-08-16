@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session
 {
@@ -25,10 +26,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				{
 					#region deleting_2
 					// if UseOptimisticConcurrency is set to 'true' (default 'false')
-					// this 'Delete' method will use loaded 'people/1' etag for concurrency check
+					// this 'Delete' method will use loaded 'employees/1' etag for concurrency check
 					// and might throw ConcurrencyException
-					var person = session.Load<Person>("people/1");
-					session.Delete(person);
+					var employee = session.Load<Employee>("employees/1");
+					session.Delete(employee);
 					session.SaveChanges();
 					#endregion
 				}
@@ -37,8 +38,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				{
 					#region deleting_3
 					// this 'Delete' method will not do any Etag-based concurrency checks
-					// because Etag for 'people/1' is unknown
-					session.Delete("people/1");
+					// because Etag for 'employees/1' is unknown
+					session.Delete("employees/1");
 					session.SaveChanges();
 					#endregion
 				}
