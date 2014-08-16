@@ -1,25 +1,34 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Indexes.Foo;
+using Raven.Documentation.CodeSamples.Orders;
 
-using Raven.Client;
-using Raven.Client.Document;
-using Raven.Client.Indexes;
+using System;
+using System.Linq;
 
 namespace Raven.Documentation.CodeSamples.Indexes.Querying
 {
 	public class HandlingDocumentRelationships
 	{
-		public class User
+		private class Order
 		{
-			public string Id { get; set; }
-			public string Name { get; set; }
-			public string AliasId { get; set; }
+			public int CustomerId { get; set; }
+			public Guid[] SupplierIds { get; set; }
+			public Referral Refferal { get; set; }
+			public LineItem[] LineItems { get; set; }
+			public double TotalPrice { get; set; }
 		}
 
-		public class UserAndAlias
+		private class Referral
 		{
-			public string UserName { get; set; }
-			public string Alias { get; set; }
+			public int CustomerId { get; set; }
+			public double CommissionPercentage { get; set; }
+		}
+
+		private class LineItem
+		{
+			public Guid ProductId { get; set; }
+			public string Name { get; set; }
+			public int Quantity { get; set; }
 		}
 
 		public void Includes()
@@ -33,7 +42,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var cust = session.Load<Customer>(order.CustomerId);
+					var customer = session.Load<Customer>(order.CustomerId);
 
 					#endregion
 				}
@@ -47,7 +56,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 					foreach (var order in orders)
 					{
 						// this will not require querying the server!
-						var cust = session.Load<Customer>(order.CustomerId);
+						var customer = session.Load<Customer>(order.CustomerId);
 					}
 
 					#endregion
@@ -56,11 +65,11 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes1_2
-					var order = session.Include<Order2, Customer2>(x => x.Customer2Id)
+					var order = session.Include<Order, Customer>(x => x.CustomerId)
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var cust2 = session.Load<Customer2>(order.Customer2Id);
+					var customer = session.Load<Customer>(order.CustomerId);
 
 					#endregion
 				}
@@ -76,7 +85,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 					foreach (var order in orders)
 					{
 						// this will not require querying the server!
-						var cust = session.Load<Customer>(order.CustomerId);
+						var customer = session.Load<Customer>(order.CustomerId);
 					}
 
 					#endregion
@@ -85,15 +94,15 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes2_2
-					var orders = session.Query<Order2>()
-						.Customize(x => x.Include<Order2, Customer2>(o => o.Customer2Id))
+					var orders = session.Query<Order>()
+						.Customize(x => x.Include<Order, Customer>(o => o.CustomerId))
 						.Where(x => x.TotalPrice > 100)
 						.ToList();
 
 					foreach (var order in orders)
 					{
 						// this will not require querying the server!
-						var cust2 = session.Load<Customer2>(order.Customer2Id);
+						var customer = session.Load<Customer>(order.CustomerId);
 					}
 
 					#endregion
@@ -108,7 +117,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 					foreach (var supplierId in order.SupplierIds)
 					{
 						// this will not require querying the server!
-						var supp = session.Load<Supplier>(supplierId);
+						var supplier = session.Load<Supplier>(supplierId);
 					}
 
 					#endregion
@@ -125,7 +134,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 						foreach (var supplierId in order.SupplierIds)
 						{
 							// this will not require querying the server!
-							var supp = session.Load<Supplier>(supplierId);
+							var supplier = session.Load<Supplier>(supplierId);
 						}
 					}
 
@@ -135,13 +144,13 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes3_2
-					var order = session.Include<Order2, Supplier2>(x => x.Supplier2Ids)
+					var order = session.Include<Order, Supplier>(x => x.SupplierIds)
 						.Load("orders/1234");
 
-					foreach (var supplier2Id in order.Supplier2Ids)
+					foreach (var supplier2Id in order.SupplierIds)
 					{
 						// this will not require querying the server!
-						var supp2 = session.Load<Supplier2>(supplier2Id);
+						var supplier = session.Load<Supplier>(supplier2Id);
 					}
 
 					#endregion
@@ -154,8 +163,7 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var referrer = session.Load<Customer>(order.Refferal.CustomerId);
-
+					var customer = session.Load<Customer>(order.Refferal.CustomerId);
 					#endregion
 				}
 
@@ -166,20 +174,18 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 						.Load<Order>("orders/1234");
 
 					// this will not require querying the server!
-					var referrer = session.Load<Customer>(order.Refferal.CustomerId);
-
+					var customer = session.Load<Customer>(order.Refferal.CustomerId);
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region includes4_2
-					var order = session.Include<Order2, Customer2>(x => x.Refferal2.Customer2Id)
+					var order = session.Include<Order, Customer>(x => x.Refferal.CustomerId)
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var referrer2 = session.Load<Customer2>(order.Refferal2.Customer2Id);
-
+					var customer = session.Load<Customer>(order.Refferal.CustomerId);
 					#endregion
 				}
 
@@ -201,51 +207,48 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes5_2
-					var order = session.Include<Order2, Product2>(x => x.LineItem2s.Select(li => li.Product2Id))
+					var order = session.Include<Order, Product>(x => x.LineItems.Select(li => li.ProductId))
 					.Load("orders/1234");
 
-					foreach (var lineItem2 in order.LineItem2s)
+					foreach (var lineItem2 in order.LineItems)
 					{
 						// this will not require querying the server!
-						var product2 = session.Load<Product2>(lineItem2.Product2Id);
+						var product = session.Load<Product>(lineItem2.ProductId);
 					}
-
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region includes6
-					var order = session.Include<Order3, Customer2>(x => x.Customer.Id)
+					var order = session.Include<Order, Customer>(x => x.CustomerId)
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var fullCustomer = session.Load<Customer2>(order.Customer.Id);
-
+					var customer = session.Load<Customer>(order.CustomerId);
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region includes_7
-					var orders = session.Advanced.DocumentQuery<Order2>()
-						.Include(x => x.Customer2Id)
+					var orders = session.Advanced.DocumentQuery<Order>()
+						.Include(x => x.CustomerId)
 						.WhereGreaterThan(x => x.TotalPrice, 100)
 						.ToList();
 
 					foreach (var order in orders)
 					{
 						// this will not require querying the server!
-						var cust2 = session.Load<Customer2>(order.Customer2Id);
+						var customer = session.Load<Customer>(order.CustomerId);
 					}
-
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region includes_8
-					var orders = session.Advanced.DocumentQuery<Order2>()
+					var orders = session.Advanced.DocumentQuery<Order>()
 						.Include("CustomerId")
 						.WhereGreaterThan(x => x.TotalPrice, 100)
 						.ToList();
@@ -253,12 +256,10 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 					foreach (var order in orders)
 					{
 						// this will not require querying the server!
-						var cust2 = session.Load<Customer2>(order.Customer2Id);
+						var customer = session.Load<Customer>(order.CustomerId);
 					}
-
 					#endregion
 				}
-
 			}
 		}
 	}

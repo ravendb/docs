@@ -19,7 +19,7 @@ Returns Id for specified entity. Method may return `null` if `entity` is **null,
 
 ## Example
 
-{CODE comment@Entities.cs /}
+{CODE get_document_id_3@ClientApi\Session\HowTo\GetDocumentId.cs /}
 
 {CODE get_document_id_2@ClientApi\Session\HowTo\GetDocumentId.cs /}
 
