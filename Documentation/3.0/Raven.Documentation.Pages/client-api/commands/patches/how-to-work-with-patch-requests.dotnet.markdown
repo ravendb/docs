@@ -1,4 +1,4 @@
-# Client API : Patches: How to work with patch requests?
+# Commands : Patches: How to work with patch requests?
 
 **Patch** command is used to perform partial document updates without having to load, modify and save full documents. This is usually useful for updating denormalized data in entities.
 

@@ -8,19 +8,19 @@
 	using Raven.Json.Linq;
 
 	public class Stream
-    {
+	{
 		private interface IFoo
 		{
-			 #region stream_1
-			 IEnumerator<RavenJObject> StreamDocs(
-				 Etag fromEtag = null,
-				 string startsWith = null,
-				 string matches = null,
-				 int start = 0,
-				 int pageSize = int.MaxValue,
-				 string exclude = null,
-				 RavenPagingInformation pagingInformation = null);
-			 #endregion
+			#region stream_1
+			IEnumerator<RavenJObject> StreamDocs(
+				Etag fromEtag = null,
+				string startsWith = null,
+				string matches = null,
+				int start = 0,
+				int pageSize = int.MaxValue,
+				string exclude = null,
+				RavenPagingInformation pagingInformation = null);
+			#endregion
 		}
 
 		public Stream()

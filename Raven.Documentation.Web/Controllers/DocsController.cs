@@ -89,8 +89,6 @@ namespace Raven.Documentation.Web.Controllers
 
 		public virtual ActionResult Generate(string language, string version, string key)
 		{
-			
-
 			var parser =
 				new DocumentationParser(
 					new ParserOptions
@@ -140,7 +138,14 @@ namespace Raven.Documentation.Web.Controllers
 
 			if (string.IsNullOrEmpty(key))
 			{
-				Thread.Sleep(TimeSpan.FromSeconds(2));
+				while (true)
+				{
+					var stats = DocumentStore.DatabaseCommands.GetStatistics();
+					if (stats.StaleIndexes.Any() == false)
+						break;
+
+					Thread.Sleep(500);
+				}
 
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
 			}

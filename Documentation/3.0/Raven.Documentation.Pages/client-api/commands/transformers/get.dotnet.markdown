@@ -1,4 +1,4 @@
-# Client API : Transformers : Get
+# Commands : Transformers : Get
 
 There are few methods that allow you to retrieve transformers from a database:   
 - [GetTransformer](../../../client-api/commands/transformers/get#gettransformer)   

@@ -1,4 +1,4 @@
-# Client API : How to subscribe to bulk insert operation changes?
+# Changes API : How to subscribe to bulk insert operation changes?
 
 `ForBulkInsert` method can be used to aquire notifications for bulk insert operations.
 

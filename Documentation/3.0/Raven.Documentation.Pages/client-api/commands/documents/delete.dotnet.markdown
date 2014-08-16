@@ -1,4 +1,4 @@
-# Client API : Documents : Delete
+# Commands : Documents : Delete
 
 **Delete** is used to remove a document from a database.
 

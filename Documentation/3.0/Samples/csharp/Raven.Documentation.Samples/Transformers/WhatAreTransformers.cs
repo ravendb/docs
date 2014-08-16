@@ -23,13 +23,13 @@ namespace Raven.Documentation.CodeSamples.Transformers
 
 			public Employees_NameAndPhone()
 			{
-				TransformResults = employees => from employee in employees
-												select new
-												{
-													employee.FirstName,
-													employee.LastName,
-													employee.HomePhone
-												};
+				TransformResults = employees => from employee in employees 
+								select new
+								{
+									employee.FirstName, 
+									employee.LastName, 
+									employee.HomePhone
+								};
 			}
 		}
 		#endregion

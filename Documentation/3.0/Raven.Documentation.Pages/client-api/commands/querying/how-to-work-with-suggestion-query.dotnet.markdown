@@ -1,4 +1,4 @@
-# Client API : Querying : How to work with Suggestion query?
+# Commands : Querying : How to work with Suggestion query?
 
 To take advantage of a suggestion feature use **Suggest** method from commands.
 

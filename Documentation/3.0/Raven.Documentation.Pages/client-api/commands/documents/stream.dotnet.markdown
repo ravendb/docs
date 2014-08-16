@@ -1,4 +1,4 @@
-# Client API : Documents : Stream
+# Commands : Documents : Stream
 
 **StreamDocs** is used to stream documents from a database that match given criteria.
 

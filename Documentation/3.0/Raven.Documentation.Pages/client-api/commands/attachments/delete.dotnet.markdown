@@ -1,4 +1,4 @@
-# Client API : Attachments : Delete
+# Attachments : Delete
 
 **DeleteAttachment** is used to remove a attachment from a database.
 

@@ -1,4 +1,4 @@
-# Querying : How to perform dynamic aggregation?
+# Session : Querying : How to perform dynamic aggregation?
 
 Dynamic aggregation can be performed using `AggregateBy` method. Internally such aggregation is an extended [faceted search]().
 

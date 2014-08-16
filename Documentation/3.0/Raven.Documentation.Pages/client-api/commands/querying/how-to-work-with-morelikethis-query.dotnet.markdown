@@ -1,4 +1,4 @@
-# Client API : Querying : How to work with MoreLikeThis query?
+# Commands : Querying : How to work with MoreLikeThis query?
 
 To find similar or related documents use **MoreLikeThis** method from commands.
 

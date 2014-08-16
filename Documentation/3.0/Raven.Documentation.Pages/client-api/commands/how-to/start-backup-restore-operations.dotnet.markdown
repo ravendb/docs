@@ -1,4 +1,4 @@
-# Client API : Commands : How to start backup or restore operations?
+# Commands : How to start backup or restore operations?
 
 To start or restore backup use `StartBackup` or `StartRestore` operations respectively.
 

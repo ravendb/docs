@@ -1,4 +1,4 @@
-# Client API : Commands : How to create or delete database?
+# Commands : How to create or delete database?
 
 This article will describe following commands (and extensions) that enable you to manage databases on a server:   
 - [CreateDatabase]()   
