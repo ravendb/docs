@@ -245,6 +245,7 @@
     <Content Include="Views\Docs\Welcome.cshtml" />
     <Content Include="Views\Docs\Validate.cshtml" />
     <Content Include="Views\Docs\Start.cshtml" />
+    <Content Include="Views\Docs\Studio.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
