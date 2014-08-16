@@ -152,8 +152,7 @@ you must remember to follow certain rules that must apply to the provided string
 Learning string path rules may be useful when you will want to query database using HTTP API.
 
 {CODE-BLOCK:json}
-   > curl -X GET "http://localhost:8080/queries/?include=LineItems.,ProductId(products/)&id=orders/1"
-
+	curl -X GET "http://localhost:8080/queries/?include=LineItems.,ProductId(products/)&id=orders/1"
 {CODE-BLOCK/}
 
 ## Summary

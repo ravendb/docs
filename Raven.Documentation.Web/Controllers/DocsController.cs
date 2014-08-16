@@ -87,10 +87,7 @@ namespace Raven.Documentation.Web.Controllers
 
 		public virtual ActionResult Generate(string language, string version, string key)
 		{
-			//DocumentSession
-			//	.Query<DocumentationPage>()
-			//	.Customize(x => x.WaitForNonStaleResults())
-			//	.Count();
+			
 
 			var parser =
 				new DocumentationParser(
@@ -140,7 +137,14 @@ namespace Raven.Documentation.Web.Controllers
 			DocumentSession.SaveChanges();
 
 			if (string.IsNullOrEmpty(key))
+			{
+				DocumentSession
+					.Query<DocumentationPage>()
+					.Customize(x => x.WaitForNonStaleResults())
+					.Count();
+
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+			}
 
 			return RedirectToAction(
 				MVC.Docs.ActionNames.Articles,

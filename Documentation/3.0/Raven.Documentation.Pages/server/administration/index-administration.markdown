@@ -24,7 +24,7 @@ It is important to note that this is not a security feature, you can unlock the 
 
 To lock the index you need to create a HTTP call:
 {CODE-BLOCK:plain}
-    > curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=lockModeChange&mode=LockedIgnore
+ 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=lockModeChange&mode=LockedIgnore
 {CODE-BLOCK/}
 
 The available modes are:
@@ -66,7 +66,7 @@ since the last time it was indexed.
 In order to set the priority of the index to idle for example, you can either create a HTTP request like following:
 
 {CODE-BLOCK:plain}
-> curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?priority=Idle
+	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?priority=Idle
 {CODE-BLOCK/}
 
 or use the studio. If so you need to go to _Indexes_ and _Edit_ selected index and there set up the priority:
@@ -84,8 +84,8 @@ When auto indexes are created then they are kept in memory until they won't reac
 
 From the HTTP API perspective, it can be accomplished by calling the following address:
 
- {CODE-BLOCK:plain}
-> curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk
+{CODE-BLOCK:plain}
+	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk
 {CODE-BLOCK/}
 
 #### Related articles

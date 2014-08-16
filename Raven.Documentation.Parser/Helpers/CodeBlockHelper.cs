@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.Parser.Helpers
+﻿using System.Linq;
+
+namespace Raven.Documentation.Parser.Helpers
 {
 	using System;
 	using System.Collections.Generic;
@@ -22,6 +24,8 @@
 
 		private static readonly Regex CodeTabBlockFinder = new Regex(@"{CODE-TAB-BLOCK:(.+?)}(.*?){CODE-TAB-BLOCK/}", RegexOptions.Compiled | RegexOptions.Singleline);
 
+		private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
+
 		public static string GenerateCodeBlocks(string content, double documentationVersion, ParserOptions options)
 		{
 			content = CodeTabsFinder.Replace(content, match => GenerateCodeTabsBlock(match.Groups[1].Value.Trim(), documentationVersion, options));
@@ -36,9 +40,7 @@
 		{
 			var language = (CodeBlockLanguage)Enum.Parse(typeof(CodeBlockLanguage), languageAsString, true);
 
-			content = content
-				.Replace("<", "&lt;")
-				.Replace(">", "&gt;");
+			content = NormalizeContent(content);
 
 			var builder = new StringBuilder();
 			builder.AppendLine(string.Format("<pre class='prettyprint {0}'>", ConvertLanguageToCssClass(language)));
@@ -160,7 +162,7 @@
 			if (sectionContent.EndsWith("//"))
 				sectionContent = sectionContent.TrimEnd(new[] { '/' });
 
-			return sectionContent.Trim(Environment.NewLine.ToCharArray());
+			return NormalizeContent(sectionContent);
 		}
 
 		private static string ExtractSectionFromCsharpFile(string section, string filePath)
@@ -180,20 +182,41 @@
 			if (sectionContent.EndsWith("//"))
 				sectionContent = sectionContent.TrimEnd(new[] { '/' });
 
-			sectionContent = sectionContent.Trim(Environment.NewLine.ToCharArray());
+			return NormalizeContent(sectionContent);
+		}
 
-			while (sectionContent.StartsWith("\t\t\t"))
-			{
-				sectionContent = sectionContent.Replace("\t\t\t", "\t\t");
-			}
-
-			sectionContent = sectionContent
+		private static string NormalizeContent(string content)
+		{
+			content = content
 				.Replace("<", "&lt;")
 				.Replace(">", "&gt;");
 
-			return sectionContent
+			content = content
 				.TrimEnd('\t')
-				.TrimEnd(Environment.NewLine.ToCharArray());
+				.TrimEnd(Environment.NewLine.ToCharArray())
+				.TrimStart(Environment.NewLine.ToCharArray());
+
+			var line = content.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			var firstLineSpaces = GetFirstLineSpaces(line.FirstOrDefault());
+			var firstLineSpacesLength = firstLineSpaces.Length;
+			var formattedLines = line
+				.Select(l => string.Format("    {0}", l.Substring(l.Length < firstLineSpacesLength ? 0 : firstLineSpacesLength)));
+
+			return string.Join(Environment.NewLine, formattedLines);
+		}
+
+		private static string GetFirstLineSpaces(string firstLine)
+		{
+			if (firstLine == null)
+				return string.Empty;
+
+			var match = FirstLineSpacesFinder.Match(firstLine);
+			if (match.Success)
+			{
+				return firstLine.Substring(0, match.Length);
+			}
+
+			return string.Empty;
 		}
 
 		private static string ConvertLanguageToCssClass(Language language)
