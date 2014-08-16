@@ -120,18 +120,18 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 		{
 			var values = value.Split('@');
 			var section = values[0];
-			var file = values[1];
+			var fileName = values[1];
 
-			var fileContent = LocateCodeFile(codeSamplesPath, file);
+			var fileContent = LocateCodeFile(codeSamplesPath, fileName);
 			if (convertToHtml)
 			{
 				return "<pre class=\"brush: " + brush + "\">" + Environment.NewLine
-					   + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent)).Replace("<", "&lt;")
+					   + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent, fileName)).Replace("<", "&lt;")
 					// to support syntax highlighting on pre tags
 					   + "</pre>";
 			}
 
-			return Environment.NewLine + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent));
+			return Environment.NewLine + ConvertMarkdownCodeStatment(ExtractSection(section, fileContent, fileName));
 			// .Replace("<", "&lt;");
 		}
 
@@ -161,11 +161,19 @@ namespace RavenDB.DocsCompiler.MagicWorkers
 			return string.Empty;
 		}
 
-		private static string ExtractSection(string section, string file)
+		private static string ExtractSection(string section, string file, string fileName)
 		{
 			// NOTE: Nested regions are not supported
 			var startText = string.Format("#region {0}", section);
-			var start = file.IndexOf(startText) + startText.Length;
+			var indexOfStartText = file.IndexOf(startText, StringComparison.OrdinalIgnoreCase);
+			if (indexOfStartText == -1)
+			{
+				Console.ForegroundColor = ConsoleColor.Red;
+				Console.WriteLine("Could not find region '{0}' in '{1}'.", startText, fileName);
+				Console.ResetColor();
+			}
+
+			var start = indexOfStartText + startText.Length;
 			var end = file.IndexOf("#endregion", start);
 			var sectionContent = file.Substring(start, end - start);
 			if (sectionContent.EndsWith("//"))

@@ -4,9 +4,14 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
 	public class GetDocumentId
 	{
-		private class EmployeeWithoutIdProperty
+		#region get_document_id_3
+		public class Comment
 		{
+			public string Author { get; set; }
+
+			public string Message { get; set; }
 		}
+		#endregion
 
 		private interface IFoo
 		{
@@ -19,14 +24,14 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 		{
 			using (var store = new DocumentStore())
 			{
-				EmployeeWithoutIdProperty employee = null;
+				Comment comment = null;
 
 				using (var session = store.OpenSession())
 				{
 					#region get_document_id_2
 					var commentId = session
 						.Advanced
-						.GetDocumentId(employee); // e.g. employees/1
+						.GetDocumentId(comment); // e.g. comments/1
 					#endregion
 				}
 			}
