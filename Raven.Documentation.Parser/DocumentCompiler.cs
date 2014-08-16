@@ -131,7 +131,7 @@
 
 		private static string ExtractTitle(HtmlDocument htmlDocument)
 		{
-			var node = htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(x => x.Name == "h2");
+			var node = htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(x => x.Name == "h1");
 			if (node == null)
 				return "No title";
 
