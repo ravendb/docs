@@ -1,4 +1,4 @@
-# Transformers : What are transformers?
+# What are transformers?
 
 Transformers have been introduced in RavenDB 2.5 as a substitution to TransformResults feature available back then. The easiest explanation of Transformers is that there are a **LINQ-based server-side projection functions** with the ability to load external documents, include additional results, even make decisions based on passed parameters and many more.
 

@@ -1,4 +1,4 @@
-# Client API : Transformers : Put
+# Commands : Transformers : Put
 
 **PutTransformer** is used to remove a transformer from a database.
 

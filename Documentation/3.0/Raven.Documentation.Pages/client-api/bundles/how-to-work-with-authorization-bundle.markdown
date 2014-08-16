@@ -1,3 +1,3 @@
-# Client API : How to work with authorization bundle?
+# Bundle : Authorization : How to work with authorization bundle?
 
 TODO

@@ -1,4 +1,4 @@
-# Client API : Commands : How to start or stop indexing and get indexing status?
+# Commands : How to start or stop indexing and get indexing status?
 
 Following commands have been created to enable user to toggle indexing and retrieve indexing status:   
 - [StartIndexing]()   

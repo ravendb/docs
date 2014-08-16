@@ -1,3 +1,3 @@
-# Client API : Session : How to customize key generation for entities?
+# Session : How to customize key generation for entities?
 
 TODO

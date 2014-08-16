@@ -1,4 +1,4 @@
-# Client API : Documents : Get
+# Commands : Documents : Get
 
 There are few methods that allow you to retrieve documents from a database:   
 - [Get](../../../client-api/commands/documents/get#get)   

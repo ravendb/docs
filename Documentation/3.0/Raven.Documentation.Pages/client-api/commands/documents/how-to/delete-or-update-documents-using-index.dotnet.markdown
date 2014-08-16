@@ -1,4 +1,4 @@
-# Client API : Documents : How to delete or update documents using index?
+# Commands : Documents : How to delete or update documents using index?
 
 Sometimes we need to update or delete a large amount of documents answering some criteria. With SQL this is a natural operation, and a query doing that will look like this:
 

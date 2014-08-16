@@ -1,4 +1,4 @@
-# Querying : How to perform a multifaceted search?
+# Session : Querying : How to perform a multifaceted search?
 
 Multiple [Facet queries] can be executed at once using `MultiFacetedSearch` method from `Advanced` session operations.
 

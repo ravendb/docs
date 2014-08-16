@@ -1,4 +1,4 @@
-# Client API : Indexes : How to get index merge suggestions?
+# Commands : Indexes : How to get index merge suggestions?
 
 **GetIndexMergeSuggestions** will retrieve all suggestions for index merging.
 

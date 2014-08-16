@@ -1,4 +1,4 @@
-# Client API : Commands : How to switch commands credentials?
+# Commands : How to switch commands credentials?
 
 By default, commands available directly in store are working with credentials that were setup for that store. To use different credentials for commands use **With** method.
 
