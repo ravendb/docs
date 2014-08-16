@@ -73,13 +73,13 @@ The RavenDB installer can also be run from a command line with administrative pr
 settings. The following command shows the dialog with available options:
 
 {CODE-BLOCK:json}
-   > ravendb-[version].exe -help
+	ravendb-[version].exe -help
 {CODE-BLOCK/}
 
 Below there is a command which installs RavenDB as a windows service:
 
 {CODE-BLOCK:json}
-   > ravendb-[version].exe /quiet /log C:\Temp\raven_log.txt /msicl "RAVEN_TARGET_ENVIRONMENT=DEVELOPMENT TARGETDIR=C:\ INSTALLFOLDER=C:\RavenDB RAVEN_INSTALLATION_TYPE=SERVICE REMOVE=IIS ADDLOCAL=Service"
+	ravendb-[version].exe /quiet /log C:\Temp\raven_log.txt /msicl "RAVEN_TARGET_ENVIRONMENT=DEVELOPMENT TARGETDIR=C:\ INSTALLFOLDER=C:\RavenDB RAVEN_INSTALLATION_TYPE=SERVICE REMOVE=IIS ADDLOCAL=Service"
 {CODE-BLOCK/}
 
 The list of RavenDB specific properties:

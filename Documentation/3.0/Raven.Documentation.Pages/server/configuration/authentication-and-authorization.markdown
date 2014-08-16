@@ -47,13 +47,13 @@ Above example gives a read-only access to `Northwind` to `IIS AppPool\DefaultApp
 By default Windows Authentication does not allow to use an account that have a blank password. However if you really need this you can disable this Windows security policy by using:
 
 {CODE-BLOCK:json}
-   > Raven.Server.exe /allow-blank-password-use
+	Raven.Server.exe /allow-blank-password-use
 {CODE-BLOCK/}
 
 It will disable the following policy _Limit local account use of blank passwords to console logon only_ on your Windows machine. In order to revert your changes you can use:
 
 {CODE-BLOCK:json}
-   > Raven.Server.exe /deny-blank-password-use
+	Raven.Server.exe /deny-blank-password-use
 {CODE-BLOCK/}
 
 to get back into the default setting.

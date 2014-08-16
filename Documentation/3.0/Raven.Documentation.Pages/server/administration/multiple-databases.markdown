@@ -5,20 +5,22 @@ RavenDB natively supports multiple databases, and like most things in RavenDB, t
 Defining a new database is done by creating a document with the name "Raven/Databases/[database name]" with the following contents:
 
 {CODE-BLOCK:json}
-	// Raven/Databases/Northwind
-	{
-        "Settings" : 
-        { 
-              "Raven/DataDir": "~/Tenants/Northwind"
-        }
+// Raven/Databases/Northwind
+{
+    "Settings" : 
+    { 
+            "Raven/DataDir": "~/Tenants/Northwind"
     }
+}
 {CODE-BLOCK/}
 
 The `Settings` dictionary allows you to modify the configuration for RavenDB's for the specified database. The list of available configuration options can be found [here](../../server/configuration/configuration-options#availability-of-configuration-options).
 
 Once that document is created, you can access the Northwind database using the same REST based API, but with the following base endpoint:
 
+{CODE-BLOCK:plain}
     http://localhost:8080/databases/northwind
+{CODE-BLOCK/}
 
 Everything else remains the same. Note that unlike other databases, there isn't any additional steps that you have to go through. Once the document describing the database is created, RavenDB will create the database the first time a requests comes in for that database.
 

@@ -134,11 +134,9 @@ To filter out documents we introduced few filtering options that can be used dur
 Transforms can be used to modify or filter out documents, but only work during the import process. The scripts must use JavaScript syntax and be in following format:   
 
 {CODE-BLOCK:json}
-    
-	function(doc) {
-		// custom code here
-	}
-
+function(doc) {
+	// custom code here
+}
 {CODE-BLOCK/}
 
 where `doc` will contain our document with it's metadata under `@metadata` property.
@@ -148,12 +146,10 @@ where `doc` will contain our document with it's metadata under `@metadata` prope
 E.g. To change document property `Name` value to the new one, the following script can be used:   
 
 {CODE-BLOCK:json}
-    
-	function(doc) {
-		doc['Name'] = 'NewValue';
-		return doc;
-	}
-
+function(doc) {
+	doc['Name'] = 'NewValue';
+	return doc;
+}
 {CODE-BLOCK/}
 
 #### Filter scripts:    
@@ -161,15 +157,12 @@ E.g. To change document property `Name` value to the new one, the following scri
 If we return `null` then the document will be filtered out.   
 
 {CODE-BLOCK:json}
-    
-	function(doc) {
-		var id = doc['@metadata']['@id']; 
-		if(id === 'orders/999')
-			return null;
-
-		return doc;
-	}
-
+function(doc) {
+	var id = doc['@metadata']['@id'];
+	if(id === 'orders/999')
+		return null;
+	return doc;
+}
 {CODE-BLOCK/}
 
 ## SmugglerApi

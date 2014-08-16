@@ -29,14 +29,14 @@ in order to modify a company document. Note that we need to ensure that if the i
 Now if you take a look at the documents from the companies collection after orders indexation then you will see the added values. For example:
 
 {CODE-BLOCK:json}
-	{ 
-		"Id" : "companies/1", 
-		...
-		"Orders" : {
-			"Count" : 7,
-			"Total" : 1234
-		}
+{ 
+	"Id" : "companies/1", 
+	...
+	"Orders" : {
+		"Count" : 7,
+		"Total" : 1234
 	}
+}
 {CODE-BLOCK/}
 
 #### Related articles

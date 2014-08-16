@@ -25,19 +25,22 @@ namespace Raven.Documentation.CodeSamples.Server.Configuration
 			using (var store = new DocumentStore())
 			{
 				#region authentication_3
-				store.DatabaseCommands.Put("Raven/ApiKeys/sample",
-										   null,
-										   RavenJObject.FromObject(new ApiKeyDefinition
-										   {
-											   Name = "sample",
-											   Secret = "ThisIsMySecret",
-											   Enabled = true,
-											   Databases = new List<ResourceAccess>
-							                           {
-								                           new ResourceAccess {TenantId = "*"},
-								                           new ResourceAccess {TenantId = Constants.SystemDatabase},
-							                           }
-										   }), new RavenJObject());
+				store
+					.DatabaseCommands
+					.Put(
+						"Raven/ApiKeys/sample",
+						null,
+						RavenJObject.FromObject(new ApiKeyDefinition
+						{
+							Name = "sample",
+							Secret = "ThisIsMySecret",
+							Enabled = true,
+							Databases = new List<ResourceAccess>
+							        {
+								        new ResourceAccess {TenantId = "*"},
+								        new ResourceAccess {TenantId = Constants.SystemDatabase},
+							        }
+						}), new RavenJObject());
 				#endregion
 			}
 
