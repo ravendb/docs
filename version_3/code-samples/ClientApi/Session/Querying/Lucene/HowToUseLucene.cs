@@ -3,12 +3,13 @@
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying.Lucene
 {
 	public class HowToUseLucene
 	{
-		private class MyCustomIndex : AbstractIndexCreationTask<Person>
+		private class MyCustomIndex : AbstractIndexCreationTask<Employee>
 		{
 		}
 
@@ -33,10 +34,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying.Lucene
 				using (var session = store.OpenSession())
 				{
 					#region document_query_2
-					// load up to 128 entities from 'People' collection
+					// load up to 128 entities from 'Employees' collection
 					var people = session
 						.Advanced
-						.DocumentQuery<Person>()
+						.DocumentQuery<Employee>()
 						.ToList();
 					#endregion
 				}
@@ -44,12 +45,12 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying.Lucene
 				using (var session = store.OpenSession())
 				{
 					#region document_query_3
-					// load up to 128 entities from 'People' collection
-					// where FirstName equals 'John'
+					// load up to 128 entities from 'Employees' collection
+					// where FirstName equals 'Robert'
 					var people = session
 						.Advanced
-						.DocumentQuery<Person>()
-						.WhereEquals(x => x.FirstName, "John")
+						.DocumentQuery<Employee>()
+						.WhereEquals(x => x.FirstName, "Robert")
 						.ToList();
 					#endregion
 				}
@@ -57,13 +58,13 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying.Lucene
 				using (var session = store.OpenSession())
 				{
 					#region document_query_4
-					// load up to 128 entities from 'People' collection
-					// where FirstName equals 'John'
+					// load up to 128 entities from 'Employees' collection
+					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
 					var people = session
 						.Advanced
-						.DocumentQuery<Person>("My/Custom/Index")
-						.WhereEquals(x => x.FirstName, "John")
+						.DocumentQuery<Employee>("My/Custom/Index")
+						.WhereEquals(x => x.FirstName, "Robert")
 						.ToList();
 					#endregion
 				}
@@ -71,13 +72,13 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying.Lucene
 				using (var session = store.OpenSession())
 				{
 					#region document_query_5
-					// load up to 128 entities from 'People' collection
-					// where FirstName equals 'John'
+					// load up to 128 entities from 'Employees' collection
+					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
 					var people = session
 						.Advanced
-						.DocumentQuery<Person, MyCustomIndex>()
-						.WhereEquals("FirstName", "John")
+						.DocumentQuery<Employee, MyCustomIndex>()
+						.WhereEquals("FirstName", "Robert")
 						.ToList();
 					#endregion
 				}

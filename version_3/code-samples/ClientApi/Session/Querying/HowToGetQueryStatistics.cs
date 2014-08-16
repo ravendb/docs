@@ -3,6 +3,7 @@
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Linq;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
@@ -23,8 +24,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region stats_2
 					RavenQueryStatistics stats;
-					var people = session.Query<Person>()
-						.Where(x => x.FirstName == "John")
+					var people = session.Query<Employee>()
+						.Where(x => x.FirstName == "Robert")
 						.Statistics(out stats)
 						.ToList();
 
