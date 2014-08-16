@@ -5,9 +5,9 @@ dynamic selection and complex aggregation with additional filtering.
 
 When working with a map/reduce index we are able to do only limited amount of queries. Let's imagine a sample SQL query:
 
-{CODE-START:csharp /}
+{CODE-BLOCK:csharp}
 select sum(Total) from Orders where Total > 500 group by Product
-{CODE-END /}
+{CODE-BLOCK/}
 
 In order give you the ability to query like this, we introduced the dynamic aggregation feature. Thanks this you can build the following query:
 

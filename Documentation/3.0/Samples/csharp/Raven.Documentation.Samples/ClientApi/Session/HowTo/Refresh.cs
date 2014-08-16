@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 using Xunit;
 
@@ -20,13 +21,13 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region refresh_2
-					var person = session.Load<Person>("people/1");
-					Assert.Equal("Doe", person.LastName);
+					var employee = session.Load<Employee>("employees/1");
+					Assert.Equal("Doe", employee.LastName);
 
 					// LastName changed to 'Shmoe'
 
-					session.Advanced.Refresh(person);
-					Assert.Equal("Shmoe", person.LastName);
+					session.Advanced.Refresh(employee);
+					Assert.Equal("Shmoe", employee.LastName);
 					#endregion
 				}
 			}

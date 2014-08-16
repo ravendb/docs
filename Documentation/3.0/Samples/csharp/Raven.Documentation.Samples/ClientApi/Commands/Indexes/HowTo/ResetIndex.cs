@@ -16,7 +16,7 @@
 			using (var store = new DocumentStore())
 			{
 				#region reset_index_2
-				store.DatabaseCommands.ResetIndex("BlogPosts/ByTitles");
+				store.DatabaseCommands.ResetIndex("Orders/Totals");
 				#endregion
 			}
 		}

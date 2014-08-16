@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
@@ -70,12 +71,12 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region lazy_2
-					var peopleLazy = session
-						.Query<Person>()
-						.Where(x => x.FirstName == "John")
+					var employeesLazy = session
+						.Query<Employee>()
+						.Where(x => x.FirstName == "Robert")
 						.Lazily();
 
-					var people = peopleLazy.Value; // query will be executed here
+					var employees = employeesLazy.Value; // query will be executed here
 					#endregion
 				}
 
@@ -83,8 +84,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region lazy_5
 					var countLazy = session
-						.Query<Person>()
-						.Where(x => x.FirstName == "John")
+						.Query<Employee>()
+						.Where(x => x.FirstName == "Robert")
 						.CountLazily();
 
 					var count = countLazy.Value; // query will be executed here
@@ -95,7 +96,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region lazy_7
 					var suggestLazy = session
-						.Query<Person>()
+						.Query<Employee>()
 						.SuggestLazy();
 
 					var suggest = suggestLazy.Value; // query will be executed here
@@ -124,12 +125,12 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region lazy_3
-					var peopleLazy = session
-						.Query<Person>()
-						.Where(x => x.FirstName == "John")
+					var employeesLazy = session
+						.Query<Employee>()
+						.Where(x => x.FirstName == "Robert")
 						.LazilyAsync();
 
-					var people = await peopleLazy.Value; // query will be executed here
+					var employees = await employeesLazy.Value; // query will be executed here
 					#endregion
 				}
 			}

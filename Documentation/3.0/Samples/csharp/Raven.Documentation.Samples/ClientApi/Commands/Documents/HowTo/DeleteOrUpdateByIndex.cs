@@ -34,14 +34,14 @@
 			using (var store = new DocumentStore())
 			{
 				#region delete_by_index_2
-				// remove all documents from 'People' collection
+				// remove all documents from 'Employees' collection
 				var operation = store
 					.DatabaseCommands
 					.DeleteByIndex(
 						"Raven/DocumentsByEntityName",
 						new IndexQuery
 							{
-								Query = "Tag:People"
+								Query = "Tag:Employees"
 							},
 						allowStale: false);
 
@@ -52,21 +52,21 @@
 			using (var store = new DocumentStore())
 			{
 				#region update_by_index_2
-				// Set property 'Name' for all documents in collection 'People' to 'Patched Name'
+				// Set property 'FirstName' for all documents in collection 'Employees' to 'Patched Name'
 				var operation = store
 					.DatabaseCommands
 					.UpdateByIndex(
 						"Raven/DocumentsByEntityName",
 						new IndexQuery
 							{
-								Query = "Tag:People"
+								Query = "Tag:Employees"
 							},
 						new[]
 							{
 								new PatchRequest
 									{
 										Type = PatchCommandType.Set, 
-										Name = "Name", 
+										Name = "FirstName", 
 										Value = "Patched Name"
 									}
 							},
@@ -79,18 +79,18 @@
 			using (var store = new DocumentStore())
 			{
 				#region update_by_index_4
-				// Set property 'Name' for all documents in collection 'People' to 'Patched Name'
+				// Set property 'FirstName' for all documents in collection 'Employees' to 'Patched Name'
 				var operation = store
 					.DatabaseCommands
 					.UpdateByIndex(
 						"Raven/DocumentsByEntityName",
 						new IndexQuery
 						{
-							Query = "Tag:People"
+							Query = "Tag:Employees"
 						},
 						new ScriptedPatchRequest
 							{
-								Script = @"this.Name = 'Patched Name';"
+								Script = @"this.FirstName = 'Patched Name';"
 							},
 						allowStale: false);
 

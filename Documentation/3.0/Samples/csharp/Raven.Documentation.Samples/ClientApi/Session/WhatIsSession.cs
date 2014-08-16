@@ -1,6 +1,7 @@
 ﻿using System;
 
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 using Xunit;
 

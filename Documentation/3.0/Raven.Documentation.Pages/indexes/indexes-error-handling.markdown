@@ -6,19 +6,19 @@ Indexes in RavenDB are user provided Linq queries running on top of dynamic JSON
 
 An index definition such as the following one will fail:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
     { "Map" : "from doc in docs where doc.Type == 'posts' select new{ doc.Title.Length }" }
-{CODE-END /}
+{CODE-BLOCK/}
 
 The error is the use of single quotes to enclose a string, something that is not allowed in C#. This will result in the following compilation error:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
     {
            "url":"/indexes/PostsByTitle",
            "error":"System.InvalidOperationException: Could not understand query: \r\n-- line 1 col 44: Char not terminated\r\n-- line 1 col 50: Char not terminated\r\n-- line 1 col 47: 
                               invalid QueryExpressionBody\r\n\r\n     at Raven.Database.Linq.QueryParsingUtils.GetVariableDeclaration(String query)"
     }
-{CODE-END /}
+{CODE-BLOCK/}
 
 The error isn't very clear in the JSON format, but what it is saying is:
 
@@ -33,9 +33,9 @@ Which should give you enough information to figure out what is wrong. Those erro
 
 A common case is an index that doesn't take into account that other documents also exists on the server. For example, let us take this index:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
     { "Map" : "from doc in docs select new{ doc.Title.Length }" }
-{CODE-END /}
+{CODE-BLOCK/}
 
 This index make the assumption that all documents have a Title property. A document that doesn't have that property will return null when it is access, resulting in a NullReferenceException when the index is executed.
 
@@ -45,7 +45,7 @@ RavenDB surfaces index execution errors in two places, the first is the database
 
 The following is the output of the '/stats' endpoint:  
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
 	{
 		"LastDocEtag": "00000000-0000-0b00-0000-000000000001",
 		"LastAttachmentEtag": "00000000-0000-0000-0000-000000000000",
@@ -72,7 +72,7 @@ The following is the output of the '/stats' endpoint:
 			}
 		]
 	}
-{CODE-END /}
+{CODE-BLOCK/}
 
 As you can see, RavenDB surfaces both the fact that the index has encountered, what was the document it errored on,    and what that error was. The errors collection contains the last 50 errors that happened on the server.
 
@@ -87,13 +87,13 @@ Furthermore, in order to protect itself from indexes that always fail, RavenDB w
 
 A disabled index cannot be queried, all queries to a disabled index will result in an error similar to this one:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
     {
              "url":"/indexes/PostsByTitle",
              "error":"Index   PostsByTitle   is   invalid,   out   of   10   indexing   attempts,   10   has   failed.\r\nError   rate   of   100%   exceeds   allowed   15%   error   rate",
              "index":"PostsByTitle"
     }
-{CODE-END /}
+{CODE-BLOCK/}
 
 The only thing that can be done with a disabled index is to either delete it or replace the index definition with one that is resilient to those errors.
 

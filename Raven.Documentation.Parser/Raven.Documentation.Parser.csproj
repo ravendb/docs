@@ -61,6 +61,7 @@
     <Compile Include="Data\Category.cs" />
     <Compile Include="Data\CodeTab.cs" />
     <Compile Include="Data\DocumentationImage.cs" />
+    <Compile Include="Data\CodeBlockLanguage.cs" />
     <Compile Include="Data\Language.cs" />
     <Compile Include="Attributes\PrefixAttribute.cs" />
     <Compile Include="Data\PageLinksValidationResult.cs" />

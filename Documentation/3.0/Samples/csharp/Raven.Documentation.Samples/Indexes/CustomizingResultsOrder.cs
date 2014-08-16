@@ -1,41 +1,42 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-using Raven.Abstractions.Indexing;
+﻿using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
+
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Raven.Documentation.CodeSamples.Indexes
 {
 	public class CustomizingResultsOrder
 	{
 		#region static_sorting1
-		public class SampleIndex1 : AbstractIndexCreationTask<Customer, Customer>
+		public class Products_ByUnitsInStock : AbstractIndexCreationTask<Product>
 		{
-			public SampleIndex1()
+			public Products_ByUnitsInStock()
 			{
-				Map = users => from user in users
-							   select new
-							   {
-								   user.Age
-							   };
+				Map = products => from product in products
+								  select new
+								  {
+									  product.UnitsInStock
+								  };
 
-				Sort(x => x.Age, SortOptions.Short);
+				Sort(x => x.UnitsInStock, SortOptions.Int);
 			}
 		}
 
 		#endregion
 
 		#region static_sorting2
-		public class SampleIndex2 : AbstractIndexCreationTask<Customer, Customer>
+		public class Products_ByName : AbstractIndexCreationTask<Product>
 		{
-			public SampleIndex2()
+			public Products_ByName()
 			{
-				Map = users => from doc in users
-							   select new
-										{
-											doc.Name
-										};
+				Map = products => from product in products
+								  select new
+								  {
+									  product.Name
+								  };
 
 				Sort(x => x.Name, SortOptions.String);
 
@@ -51,8 +52,8 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			using (var session = store.OpenSession())
 			{
 				#region static_sorting3
-				List<Customer> customers = session.Query<Customer>()
-					.OrderBy(customer => customer.Age)
+				List<Product> products = session.Query<Product>()
+					.OrderBy(product => product.UnitsInStock)
 					.ToList();
 				#endregion
 			}

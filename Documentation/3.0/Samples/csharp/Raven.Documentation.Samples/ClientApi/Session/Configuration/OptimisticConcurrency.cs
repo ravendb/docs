@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Configuration
 {
@@ -13,20 +14,20 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Configuration
 				{
 					session.Advanced.UseOptimisticConcurrency = true;
 
-					var person = new Person { FirstName = "John", LastName = "Doe" };
+					var product = new Product { Name = "Some Name" };
 
-					session.Store(person, "people/1");
+					session.Store(product, "products/999");
 					session.SaveChanges();
 
 					using (var otherSession = store.OpenSession())
 					{
-						var otherPerson = otherSession.Load<Person>("people/1");
-						otherPerson.LastName = "Shmoe";
+						var otherProduct = otherSession.Load<Product>("products/999");
+						otherProduct.Name = "Other Name";
 
 						otherSession.SaveChanges();
 					}
 
-					person.FirstName = "Joe";
+					product.Name = "Better Name";
 					session.SaveChanges(); // throws ConcurrencyException
 				}
 				#endregion

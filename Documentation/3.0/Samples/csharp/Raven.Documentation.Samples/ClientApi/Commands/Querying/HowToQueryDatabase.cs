@@ -24,24 +24,24 @@
 				QueryResult result;
 
 				#region query_database_2
-				result = store.DatabaseCommands.Query("Users/ByName", new IndexQuery
+				result = store.DatabaseCommands.Query("Orders/Totals", new IndexQuery
 				{
-					Query = "Name:James"
+					Query = "Company:companies/1"
 				});
 
-				var users = result.Results; // documents resulting from this query - users
+				var users = result.Results; // documents resulting from this query - orders
 				#endregion
 
 				#region query_database_3
 
-				result = store.DatabaseCommands.Query("Users/ByName", new IndexQuery(),
+				result = store.DatabaseCommands.Query("Orders/Totals", new IndexQuery(),
 					new[]
 					{
-						"AddressId",
-						"Employer.CompanyId"
+						"Company",
+						"Employee"
 					});
 
-				var referencedDocs = result.Includes; // included documents - addresses and companies
+				var referencedDocs = result.Includes; // included documents - companies and employees
 				#endregion
 			}
 		} 

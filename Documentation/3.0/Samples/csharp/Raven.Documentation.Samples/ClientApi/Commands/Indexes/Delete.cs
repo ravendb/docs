@@ -16,7 +16,7 @@
 			using (var store = new DocumentStore())
 			{
 				#region delete_2
-				store.DatabaseCommands.DeleteIndex("BlogPosts/ByTitles");
+				store.DatabaseCommands.DeleteIndex("Orders/Totals");
 				#endregion
 			}
 		}

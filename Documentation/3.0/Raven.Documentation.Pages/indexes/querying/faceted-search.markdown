@@ -6,7 +6,7 @@ When displaying a large amount of data, often paging is used to make viewing the
 
 To achieve this in RavenDB, lets say you have a document like this:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
 { 
     DateOfListing: "2000-09-01T00:00:00.0000000+01:00" 
     Manufacturer: "Jessops" 
@@ -16,7 +16,7 @@ To achieve this in RavenDB, lets say you have a document like this:
     Megapixels: 10.4508949012733 
     ImageStabiliser: false 
 }
-{CODE-END /}
+{CODE-BLOCK/}
 
 ## Step 1
 
@@ -53,13 +53,13 @@ Finally you can write the following code and you get back the data below.
 
 This is equivalent to hitting the following Url:
 
-{CODE-START:plain /}
+{CODE-BLOCK:plain}
 http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_Range:[Dx100 TO Dx300.0]
-{CODE-END /}
+{CODE-BLOCK/}
 
 {NOTE The data returned represents the count of the faceted data that satisfies the query `Where(x => x.Cost >= 100 && x.Cost <= 300 )` /}
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
 {
    Manufacturer: [
       {
@@ -112,7 +112,7 @@ http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_
       }
    ]
 }
-{CODE-END /}
+{CODE-BLOCK/}
 
 ###Stale results
 

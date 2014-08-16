@@ -37,6 +37,10 @@ Object that represents attachment.
 
 **Parameters**   
 
+start
+:   Type: int   
+Indicates how many attachments should be skipped.
+
 startEtag
 :   Type: Etag   
 ETag from which to start

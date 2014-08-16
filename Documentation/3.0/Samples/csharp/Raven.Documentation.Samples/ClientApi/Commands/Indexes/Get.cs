@@ -25,7 +25,7 @@
 			using (var store = new DocumentStore())
 			{
 				#region get_1_1
-				var index = store.DatabaseCommands.GetIndex("BlogPosts/ByTitles");
+				var index = store.DatabaseCommands.GetIndex("Orders/Totals");
 				#endregion
 
 				#region get_2_1

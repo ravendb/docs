@@ -7,22 +7,14 @@ using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session
 {
 	public class LoadingEntities
 	{
-		private class PersonNoLastName : AbstractTransformerCreationTask<Person>
+		private class Employees_NoLastName : AbstractTransformerCreationTask<Employee>
 		{
-			public PersonNoLastName()
-			{
-				TransformResults = people => from person in people
-											 select new
-														{
-															Id = person.Id,
-															FirstName = person.FirstName
-														};
-			}
 		}
 
 		private interface IFoo
@@ -125,109 +117,109 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_1_1
-					var person = session.Load<Person>("people/1");
+					var employee = session.Load<Employee>("employees/1");
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_1_2
-					// loading 'people/1'
-					// and transforming result using 'PersonNoLastName' transformer
+					// loading 'employees/1'
+					// and transforming result using 'Employees_NoLastName' transformer
 					// which returns 'LastName' as 'null'
-					var person = session.Load<PersonNoLastName, Person>("people/1");
+					var employee = session.Load<Employees_NoLastName, Employee>("employees/1");
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_2_1
-					// loading 'people/1'
-					// including document found in 'AddressId' property
-					var person = session
-						.Include<Person>(x => x.AddressId)
-						.Load<Person>("people/1");
+					// loading 'products/1'
+					// including document found in 'Supplier' property
+					var product = session
+						.Include<Product>(x => x.Supplier)
+						.Load<Product>("products/1");
 
-					var address = session.Load<Address>(person.AddressId); // this will not make server call
+					var supplier = session.Load<Address>(product.Supplier); // this will not make server call
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_2_2
-					// loading 'people/1'
-					// including document found in 'AddressId' property
-					var person = session
-						.Include("AddressId")
-						.Load<Person>("people/1");
+					// loading 'products/1'
+					// including document found in 'Supplier' property
+					var product = session
+						.Include("Supplier")
+						.Load<Product>("products/1");
 
-					var address = session.Load<Address>(person.AddressId); // this will not make server call
+					var supplier = session.Load<Address>(product.Supplier); // this will not make server call
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_3_1
-					var people = session.Load<Person>(new List<string> { "people/1", "people/2" });
-					var person1 = people[0];
-					var person2 = people[1];
+					var employees = session.Load<Employee>(new List<string> { "employees/1", "employees/2" });
+					var employee1 = employees[0];
+					var employee2 = employees[1];
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_3_2
-					// loading 'people/1' and 'people/2'
-					// and transforming results using 'PersonNoLastName' transformer
+					// loading 'employees/1' and 'employees/2'
+					// and transforming results using 'Employees_NoLastName' transformer
 					// which returns 'LastName' as 'null'
-					var people = session
-						.Load<PersonNoLastName, Person>(new List<string> { "people/1", "people/2" });
-					var person1 = people[0];
-					var person2 = people[1];
+					var employees = session
+						.Load<Employees_NoLastName, Employee>(new List<string> { "employees/1", "employees/2" });
+					var employee1 = employees[0];
+					var employee2 = employees[1];
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_4_1
-					// return up to 128 entities with Id that starts with 'people'
+					// return up to 128 entities with Id that starts with 'employees'
 					var result = session
 						.Advanced
-						.LoadStartingWith<Person>("people", null, 0, 128);
+						.LoadStartingWith<Employee>("employees", null, 0, 128);
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_4_2
-					// return up to 128 entities with Id that starts with 'people/' 
-					// and rest of the key begins with "1" or "2" e.g. people/10, people/25
+					// return up to 128 entities with Id that starts with 'employees/' 
+					// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
 					var result = session
 						.Advanced
-						.LoadStartingWith<Person>("people/", "1*|2*", 0, 128);
+						.LoadStartingWith<Employee>("employees/", "1*|2*", 0, 128);
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_4_3
-					// return up to 128 entities with Id that starts with 'people/' 
+					// return up to 128 entities with Id that starts with 'employees/' 
 					// and rest of the Id have length of 3, begins and ends with "1" 
-					// and contains any character at 2nd position e.g. people/101, people/1B1
-					// and transform results using 'PersonNoLastName' transformer
+					// and contains any character at 2nd position e.g. employees/101, employees/1B1
+					// and transform results using 'Employees_NoLastName' transformer
 					var result = session
 						.Advanced
-						.LoadStartingWith<PersonNoLastName, Person>("people/", "1?1", 0, 128);
+						.LoadStartingWith<Employees_NoLastName, Employee>("employees/", "1?1", 0, 128);
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_5_1
-					var enumerator = session.Advanced.Stream<Person>(null, "people/");
+					var enumerator = session.Advanced.Stream<Employee>(null, "employees/");
 					while (enumerator.MoveNext())
 					{
-						var person = enumerator.Current;
+						var employee = enumerator.Current;
 					}
 					#endregion
 				}
@@ -235,9 +227,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_6_1
-					var isLoaded = session.Advanced.IsLoaded("people/1"); // false
-					var person = session.Load<Person>("people/1");
-					isLoaded = session.Advanced.IsLoaded("people/1"); // true
+					var isLoaded = session.Advanced.IsLoaded("employees/1"); // false
+					var employee = session.Load<Employee>("employees/1");
+					isLoaded = session.Advanced.IsLoaded("employees/1"); // true
 					#endregion
 				}
 			}

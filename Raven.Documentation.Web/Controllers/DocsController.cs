@@ -1,4 +1,10 @@
-﻿namespace Raven.Documentation.Web.Controllers
+﻿using System.Configuration;
+
+using Raven.Client.Connection;
+using Raven.Client.Document;
+using Raven.Client.Embedded;
+
+namespace Raven.Documentation.Web.Controllers
 {
 	using System.Collections.Generic;
 	using System.Diagnostics;
@@ -67,9 +73,9 @@
 
 			var options = new ParserOptions
 						{
-							PathToDocumentationDirectory = @"F:\Workspaces\HR\RavenDB-Docs\Documentation",
+							PathToDocumentationDirectory = ConfigurationManager.AppSettings["Raven/Documentation/Directory"],
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
-							//ImagesUrl = DocumentStore.Url.ForDatabase(DocumentStore.DefaultDatabase) + "/static/"
+							ImagesUrl = GetImagesUrl()
 						};
 
 			var results = new DocumentationValidator(options)
@@ -90,9 +96,9 @@
 				new DocumentationParser(
 					new ParserOptions
 						{
-							PathToDocumentationDirectory = @"F:\Workspaces\HR\RavenDB-Docs\Documentation",
+							PathToDocumentationDirectory = ConfigurationManager.AppSettings["Raven/Documentation/Directory"],
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
-							//ImagesUrl = DocumentStore.Url.ForDatabase(DocumentStore.DefaultDatabase) + "/static/"
+							ImagesUrl = GetImagesUrl()
 						});
 
 			foreach (var attachment in DocumentStore.DatabaseCommands.GetAttachments(0, Etag.Empty, 1024))
@@ -235,6 +241,15 @@
 				return all;
 
 			return list.First(x => x.Language != Language.All);
+		}
+
+		private string GetImagesUrl()
+		{
+			var remoteStore = DocumentStore as DocumentStore;
+			if (remoteStore != null)
+				return remoteStore.Url.ForDatabase(remoteStore.DefaultDatabase) + "/static/";
+
+			return null;
 		}
 	}
 }

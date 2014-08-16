@@ -35,13 +35,13 @@ You may get a "405 Method Not Allowed" error when trying to create an index from
 
 This usually happens when you are running RavenDB from a virtual directory. The problem is a conflict that occurs with the WebDAV module. To resolve that, you need to edit the web.config file in the parent directory and add:
 
-{CODE-START:xml/}
+{CODE-BLOCK:xml}
 <system.webServer>
    <modules runAllManagedModulesForAllRequests="true">
       <remove name="WebDAVModule" />
    </modules>
  </system.webServer>
-{CODE-END/}
+{CODE-BLOCK/}
  
 That will remove the WebDAV module and resolve the conflict.
 
@@ -51,14 +51,14 @@ That will remove the WebDAV module and resolve the conflict.
 
 When using IIS 6, you need to make sure all requests are mapped to the ASP.NET DLL, and modify the Web.config file and remove the `system.webServer` element and add the following system.web element:
 
-{CODE-START:xml/}
+{CODE-BLOCK:xml}
 <system.web>
    <httpHandlers>
       <add path="*" verb="*" 
          type="Raven.Web.ForwardToRavenRespondersFactory, Raven.Web"/>
    </httpHandlers>
 </system.web>
-{CODE-END/}
+{CODE-BLOCK/}
 
 If you are experiencing problems with accessing the Studio, try this step: Home Directory > Configuration > Wildcard application maps > Insert
 c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll, and Uncheck Verify file exists.
@@ -73,15 +73,15 @@ RavenDB isn't a typical web site because it needs to be running at all times. In
 
 * If you created a dedicated application pool for RavenDB, change the application pool configuration in the application host file (C:\Windows\System32\inetsrv\config\applicationHost.config) to:
 
-{CODE-START:xml/}
+{CODE-BLOCK:xml}
        <add name="RavenApplicationPool" managedRuntimeVersion="v4.0" startMode="AlwaysRunning" />
-{CODE-END/}
+{CODE-BLOCK/}
 
 * If Raven runs in an application pool with other sites, modify the application host file (C:\Windows\System32\inetsrv\config\applicationHost.config) to: 
 
-{CODE-START:xml/}
+{CODE-BLOCK:xml}
        <application path="/Raven" serviceAutoStartEnabled="true" />
-{CODE-END/}
+{CODE-BLOCK/}
 
 ## HTTP Error 503
 

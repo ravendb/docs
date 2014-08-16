@@ -29,7 +29,7 @@ By default, if `page size` is not specified, the value will be set to `128`. Thi
 
 {CODE query_1_1@ClientApi\Session\Querying\HowToQuery.cs /}
 
-Notice that by specifying `Person` as a type parameter, we are not only defining a result type, but also marking name of collection that will be queried.
+Notice that by specifying `Employee` as a type parameter, we are not only defining a result type, but also marking name of collection that will be queried.
 
 ## Example II - Syntax
 

@@ -3,6 +3,7 @@
 using Raven.Abstractions.Data;
 using Raven.Client.Changes;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 {
@@ -51,7 +52,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 				#region document_changes_2
 				var subscribtion = store
 					.Changes()
-					.ForDocument("people/1")
+					.ForDocument("employees/1")
 					.Subscribe(
 						change =>
 						{
@@ -73,7 +74,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 				#region document_changes_4
 				var subscribtion = store
 					.Changes()
-					.ForDocumentsInCollection<Person>()
+					.ForDocumentsInCollection<Employee>()
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
 				#endregion
 			}
@@ -81,7 +82,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region document_changes_5
-				var collectionName = store.Conventions.GetTypeTagName(typeof(Person));
+				var collectionName = store.Conventions.GetTypeTagName(typeof(Employee));
 				var subscribtion = store
 					.Changes()
 					.ForDocumentsInCollection(collectionName)
@@ -94,7 +95,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 				#region document_changes_7
 				var subscribtion = store
 					.Changes()
-					.ForDocumentsOfType<Person>()
+					.ForDocumentsOfType<Employee>()
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
 				#endregion
 			}
@@ -102,7 +103,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region document_changes_8
-				var typeName = store.Conventions.FindClrTypeName(typeof(Person));
+				var typeName = store.Conventions.FindClrTypeName(typeof(Employee));
 				var subscribtion = store
 					.Changes()
 					.ForDocumentsOfType(typeName)
@@ -115,7 +116,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 				#region document_changes_1_0
 				var subscribtion = store
 					.Changes()
-					.ForDocumentsStartingWith("people/1") // people/1, people/10, people/11, etc.
+					.ForDocumentsStartingWith("employees/1") // employees/1, employees/10, employees/11, etc.
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
 				#endregion
 			}
@@ -125,7 +126,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Changes
 				#region document_changes_1_2
 				var subscribtion = store
 					.Changes()
-					.ForAllDocuments() // people/1, orders/1, customers/1, etc.
+					.ForAllDocuments() // employees/1, orders/1, customers/1, etc.
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
 				#endregion
 			}

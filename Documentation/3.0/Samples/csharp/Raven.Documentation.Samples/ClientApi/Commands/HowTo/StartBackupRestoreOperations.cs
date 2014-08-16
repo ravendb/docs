@@ -29,10 +29,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 					.DatabaseCommands
 					.GlobalAdmin
 					.StartBackup(
-						@"C:\temp\backup\DB1\",
+						@"C:\temp\backup\Northwind\",
 						new DatabaseDocument(),
 						incremental: false,
-						databaseName: "DB1");
+						databaseName: "Northwind");
 				#endregion
 
 				#region backup_restore_4
@@ -42,9 +42,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 					.StartRestore(
 						new RestoreRequest
 							{
-								BackupLocation = @"C:\temp\backup\DB1\",
-								DatabaseLocation = @"~\Databases\DB2",
-								DatabaseName = "DB2"
+								BackupLocation = @"C:\temp\backup\Northwind\",
+								DatabaseLocation = @"~\Databases\NewNorthwind\",
+								DatabaseName = "NewNorthwind"
 							});
 				#endregion
 			}

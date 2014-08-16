@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 using Raven.Json.Linq;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
@@ -19,8 +20,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region get_metadata_2
-					var person = session.Load<Person>("people/1");
-					var metadata = session.Advanced.GetMetadataFor(person);
+					var employee = session.Load<Employee>("employees/1");
+					var metadata = session.Advanced.GetMetadataFor(employee);
 					#endregion
 				}
 			}
