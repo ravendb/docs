@@ -37,22 +37,20 @@ Let us consider a simple scenario, where we have an `Order` with `OrderLines` an
 First we need to setup our MSSQL by creating a database with two tables. In our case the database will be called `ExampleDB` and the tables will be called `Orders` and `OrderLines`.      
 
 {CODE-BLOCK:json}
-    
-					CREATE TABLE [dbo].[OrderLines]
-					(
-						[Id] int identity primary key,
-						[OrderId] [nvarchar](50) NOT NULL,
-						[Qty] [int] NOT NULL,
-						[Product] [nvarchar](255) NOT NULL,
-						[Cost] [int] NOT NULL
-					)
-
-					CREATE TABLE [dbo].[Orders]
-					(
-						[Id] [nvarchar](50) NOT NULL,
-						[OrderLinesCount] [int] NOT NULL,
-						[TotalCost] [int] NOT NULL
-					)
+CREATE TABLE [dbo].[OrderLines]
+(
+	[Id] int identity primary key,
+	[OrderId] [nvarchar](50) NOT NULL,
+	[Qty] [int] NOT NULL,
+	[Product] [nvarchar](255) NOT NULL,
+	[Cost] [int] NOT NULL
+)
+CREATE TABLE [dbo].[Orders]
+(
+	[Id] [nvarchar](50) NOT NULL,
+	[OrderLinesCount] [int] NOT NULL,
+	[TotalCost] [int] NOT NULL
+)
 {CODE-BLOCK/}
 
 Last step is to insert a document with our configuration. This can be done using `Studio` or manually.

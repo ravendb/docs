@@ -30,7 +30,7 @@
                               ExtraMode = true,
                               NoFollowLinks = false,
                               SafeMode = false,
-                              HtmlClassTitledImages = "figure",
+                              HtmlClassTitledImages = "figure text-center",
                               UrlRootLocation = options.RootUrl
                           };
 

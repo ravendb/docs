@@ -1,4 +1,6 @@
-﻿using System.Configuration;
+﻿using System;
+using System.Configuration;
+using System.Threading;
 
 using Raven.Client.Connection;
 using Raven.Client.Document;
@@ -138,10 +140,7 @@ namespace Raven.Documentation.Web.Controllers
 
 			if (string.IsNullOrEmpty(key))
 			{
-				DocumentSession
-					.Query<DocumentationPage>()
-					.Customize(x => x.WaitForNonStaleResults())
-					.Count();
+				Thread.Sleep(TimeSpan.FromSeconds(2));
 
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
 			}

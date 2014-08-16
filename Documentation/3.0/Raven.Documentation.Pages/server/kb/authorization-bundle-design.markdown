@@ -33,14 +33,14 @@ I am not really happy with this API, but I think it would do for now. There are 
 The format of the authorization user document is as follows:
 
 {CODE-BLOCK:json}
-    // doc id /raven/authorization/users/2929
-    {
-        "Name": "Ayende Rahien",
-        "Roles": [ "/Administrators", "/DebtAgents/Managers"],
-        "Permissions": [
-           { "Operation": "/Operations/Debts/Finalize", "Tag": "/Tags/Debts/High", "Allow": true, "Priority": 1, }
-        ]
-    }
+// doc id /raven/authorization/users/2929
+{
+    "Name": "Ayende Rahien",
+    "Roles": [ "/Administrators", "/DebtAgents/Managers"],
+    "Permissions": [
+        { "Operation": "/Operations/Debts/Finalize", "Tag": "/Tags/Debts/High", "Allow": true, "Priority": 1, }
+    ]
+}
 {CODE-BLOCK/}
 
 There are several things to note here:
@@ -53,48 +53,48 @@ There are several things to note here:
 The main function of roles is to define permissions for a set of tagged documents. A role document will look like this:
 
 {CODE-BLOCK:json}
-    // doc id /raven/authorization/roles/DebtAgents/Managers
-    {
-       "Permissions": [
-           { "Operation": "/Operations/Debts/Finalize", "Tag": "/Tags/Debts/High", "Allow": true, "Priority": 1, }
-        ]
-    }
+// doc id /raven/authorization/roles/DebtAgents/Managers
+{
+    "Permissions": [
+        { "Operation": "/Operations/Debts/Finalize", "Tag": "/Tags/Debts/High", "Allow": true, "Priority": 1, }
+    ]
+}
 {CODE-BLOCK/}
 
 ## Defining permissions
 Permissions are defined on individual documents, using RavenDB's metadata feature. Here is an example of one such document, with the authorization metadata:
 
 {CODE-BLOCK:json}
-    //docid-/debts/2931
-    {
-      "@metadata": {
-        "Authorization": {
-          "Tags": [
-            "/Tags/Debts/High"
-          ],
-          "Permissions": [
-            {
-              "User": "raven/authorization/users/2929",
-              "Operation": "/Operations/Debts",
-              "Allow": true,
-              "Priority": 3
-            },
-            {
-              "User": "raven/authorization/roles/DebtsAgents/Managers",
-              "Operation": "/Operations/Debts",
-              "Allow": false,
-              "Priority": 1
-            }
-          ]
+//docid-/debts/2931
+{
+    "@metadata": {
+    "Authorization": {
+        "Tags": [
+        "/Tags/Debts/High"
+        ],
+        "Permissions": [
+        {
+            "User": "raven/authorization/users/2929",
+            "Operation": "/Operations/Debts",
+            "Allow": true,
+            "Priority": 3
+        },
+        {
+            "User": "raven/authorization/roles/DebtsAgents/Managers",
+            "Operation": "/Operations/Debts",
+            "Allow": false,
+            "Priority": 1
         }
-      },
-      "Amount": 301581.92,
-      "Debtor": {
-        "Name": "Samuel Byrom",
-        "Id": "debots/82985"
-      }
-      //more document data
+        ]
     }
+    },
+    "Amount": 301581.92,
+    "Debtor": {
+    "Name": "Samuel Byrom",
+    "Id": "debots/82985"
+    }
+    //more document data
+}
 {CODE-BLOCK/}
 
 Tags, operations and roles are hierarchical. But the way they work is quite different.

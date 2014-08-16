@@ -14,25 +14,24 @@ Enabling the replication module will have the following effects on your system:
 
 In order to setup the replication, you can create the following documents:
 
-	* `Raven/Replication/Destinations` - List of servers we need to replicate to
-	* `Raven/Replication/Sources/[server]` - Information about the data replicated from a particular server
+* `Raven/Replication/Destinations` - List of servers we need to replicate to
+* `Raven/Replication/Sources/[server]` - Information about the data replicated from a particular server
 
 ## The destinations document
 
 The destination document is saved with an ID of `Raven/Replication/Destinations`, and it's what telling the RavenDB instance where to replicate to. It's format is as follows:
 
 {CODE-BLOCK:json}
-
-	{  
-      "Destinations": [  
-        {  
-          "Url": "http://raven_two:8080/"  
-        },  
-        {  
-          "Url": "http://raven_three:8080/"  
-        },  
-      ]
-    }
+{
+    "Destinations": [
+		{
+			"Url": "http://raven_two:8080/"
+		},
+		{
+			"Url": "http://raven_three:8080/"
+		}
+    ]
+}
 {CODE-BLOCK/}
 
 With an object containing a url per each instance to replicate to. Whenever this document is updated, replication kicks off and start replicating to the updates destination list.
