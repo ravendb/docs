@@ -1,12 +1,7 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
+﻿using Raven.Client.Document;
+
+namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 {
-	using System.Collections.Generic;
-
-	using Raven.Abstractions.Data;
-	using Raven.Client;
-	using Raven.Client.Document;
-	using Raven.Json.Linq;
-
 	public class Get
 	{
 		private interface IFoo
@@ -36,80 +31,29 @@
 			#endregion
 		}
 
-		private class Person
-		{
-			public string FirstName { get; set; }
-
-			public string LastName { get; set; }
-
-			public string Address { get; set; }
-		}
-
-		private class Address
-		{
-			public string Street { get; set; }
-		}
-
 		public Get()
 		{
 			using (var store = new DocumentStore())
 			{
 				#region get_1_2
-				var document = store.DatabaseCommands.Get("people/1"); // null if does not exist
+				var document = store.DatabaseCommands.Get("products/1"); // null if does not exist
 				#endregion
 
 				#region get_2_2
 				var resultsWithoutIncludes = store
 					.DatabaseCommands
-					.Get(new[] { "people/1", "people/2" }, null);
+					.Get(new[] { "products/1", "products/2" }, null);
 				#endregion
 
 				#region get_2_3
-				store
-					.DatabaseCommands
-					.Put(
-						"addresses/1",
-						null,
-						RavenJObject.FromObject(new Address
-						{
-							Street = "Crystal Oak Street"
-						}),
-						new RavenJObject());
-
-				store
-					.DatabaseCommands
-					.Put(
-						"people/1",
-						null,
-						RavenJObject.FromObject(new Person 
-						{ 
-							FirstName = "John",
-							LastName = "Doe",
-							Address = "addresses/1"
-						}),
-						new RavenJObject());
-
-				store
-					.DatabaseCommands
-					.Put(
-						"people/2",
-						null,
-						RavenJObject.FromObject(new Person 
-						{ 
-							FirstName = "Nick",
-							LastName = "Doe",
-							Address = "addresses/1"
-						}),
-						new RavenJObject());
-
 				var resultsWithIncludes = store
 					.DatabaseCommands
 					.Get(
-						new[] { "people/1", "people/2" },
-						new [] { "AddressId" });
+						new[] { "products/1", "products/2" },
+						new[] { "Category" });
 
-				var results = resultsWithIncludes.Results; // people/1, people/2
-				var includes = resultsWithIncludes.Includes; // addresses/1
+				var results = resultsWithIncludes.Results; // products/1, products/2
+				var includes = resultsWithIncludes.Includes; // categories/1
 				#endregion
 			}
 		}
@@ -119,37 +63,14 @@
 			using (var store = new DocumentStore())
 			{
 				#region get_2_4
-				store
-					.DatabaseCommands
-					.Put(
-						"people/1",
-						null,
-						RavenJObject.FromObject(new Person
-						{
-							FirstName = "John",
-							LastName = "Doe"
-						}),
-						new RavenJObject());
-
-				store
-					.DatabaseCommands
-					.Put(
-						"people/3",
-						null,
-						RavenJObject.FromObject(new Person
-						{
-							FirstName = "Nick",
-							LastName = "Doe"
-						}),
-						new RavenJObject());
-
+				// assuming that 'products/9999' does not exist
 				var resultsWithIncludes = store
 					.DatabaseCommands
 					.Get(
-						new[] { "people/1", "people/2", "people/3" },
+						new[] { "products/1", "products/9999", "products/3" },
 						null);
 
-				var results = resultsWithIncludes.Results; // people/1, null, people/3
+				var results = resultsWithIncludes.Results; // products/1, null, products/3
 				var includes = resultsWithIncludes.Includes; // empty
 				#endregion
 			}
@@ -170,27 +91,27 @@
 			using (var store = new DocumentStore())
 			{
 				#region get_4_1
-				// return up to 128 documents with key that starts with 'people'
-				var result = store.DatabaseCommands.StartsWith("people", null, 0, 128);
+				// return up to 128 documents with key that starts with 'products'
+				var result = store.DatabaseCommands.StartsWith("products", null, 0, 128);
 				#endregion
 			}
 
 			using (var store = new DocumentStore())
 			{
 				#region get_4_2
-				// return up to 128 documents with key that starts with 'people/' 
-				// and rest of the key begins with "1" or "2" e.g. people/10, people/25
-				var result = store.DatabaseCommands.StartsWith("people/", "1*|2*", 0, 128); 
+				// return up to 128 documents with key that starts with 'products/' 
+				// and rest of the key begins with "1" or "2" e.g. products/10, products/25
+				var result = store.DatabaseCommands.StartsWith("products/", "1*|2*", 0, 128); 
 				#endregion
 			}
 
 			using (var store = new DocumentStore())
 			{
 				#region get_4_3
-				// return up to 128 documents with key that starts with 'people/' 
+				// return up to 128 documents with key that starts with 'products/' 
 				// and rest of the key have length of 3, begins and ends with "1" 
-				// and contains any character at 2nd position e.g. people/101, people/1B1
-				var result = store.DatabaseCommands.StartsWith("people/", "1?1", 0, 128);
+				// and contains any character at 2nd position e.g. products/101, products/1B1
+				var result = store.DatabaseCommands.StartsWith("products/", "1?1", 0, 128);
 				#endregion
 			}
 		}
