@@ -6,12 +6,13 @@ using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
 	public class HowToCustomize
 	{
-		private class PersonNoLastName : AbstractTransformerCreationTask<Person>
+		private class Employees_NoLastName : AbstractTransformerCreationTask<Employee>
 		{
 		}
 
@@ -90,7 +91,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region customize_1_1
 					// set 'PageSize' to 10
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.BeforeQueryExecution(query => query.PageSize = 10))
 						.ToList();
 					#endregion
@@ -99,9 +100,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region customize_2_1
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.NoCaching())
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -109,9 +110,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region customize_3_1
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.NoTracking())
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -120,9 +121,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region customize_4_1
 					// results will be ordered randomly each time
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.RandomOrdering())
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -130,10 +131,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region customize_5_1
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer(true))
-						.TransformWith<PersonNoLastName, Person>()
-						.Where(x => x.FirstName == "John")
+						.TransformWith<Employees_NoLastName, Employee>()
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -142,10 +143,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region customize_6_1
 					RavenQueryStatistics stats;
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.ShowTimings())
 						.Statistics(out stats)
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 
 					var timings = stats.TimingsInMilliseconds;
@@ -156,9 +157,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region customize_7_1
 					// filter-out all results where 'LastName' equals 'Doe' on client-side
-					var results = session.Query<Person>()
-						.Customize(x => x.TransformResults((indexQuery, queryResults) => queryResults.Cast<Person>().Where(q => q.LastName != "Doe")))
-						.Where(x => x.FirstName == "John")
+					var results = session.Query<Employee>()
+						.Customize(x => x.TransformResults((indexQuery, queryResults) => queryResults.Cast<Employee>().Where(q => q.LastName != "Doe")))
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -166,9 +167,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region customize_8_1
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.WaitForNonStaleResults())
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -179,9 +180,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// results will be considered non-stale
 					// if last indexed document modified date
 					// will be greater than 1 minute ago
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.WaitForNonStaleResultsAsOf(DateTime.Now.AddMinutes(-1)))
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -189,9 +190,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region customize_10_1
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.WaitForNonStaleResultsAsOfLastWrite())
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}
@@ -199,9 +200,9 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region customize_11_1
-					var results = session.Query<Person>()
+					var results = session.Query<Employee>()
 						.Customize(x => x.WaitForNonStaleResultsAsOfNow())
-						.Where(x => x.FirstName == "John")
+						.Where(x => x.FirstName == "Robert")
 						.ToList();
 					#endregion
 				}

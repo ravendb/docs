@@ -187,6 +187,7 @@
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
     <Compile Include="ClientApi\SetupConnectionString.cs" />
     <Compile Include="Common.cs" />
+    <Compile Include="Faceted.cs" />
     <Compile Include="Glossary\Glossary.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />

@@ -3,6 +3,7 @@
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
+using Raven.Documentation.CodeSamples.Orders;
 
 using Xunit;
 
@@ -10,33 +11,33 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
 	public class HowToUseTransformers
 	{
-		private class PersonNoLastName : AbstractTransformerCreationTask<Person>
+		private class Products_Name : AbstractTransformerCreationTask<Product>
 		{
 		}
 
 		#region transformers_5
-		public class PersonWithAddress
+		public class ProductWithCategoryAndSupplier
 		{
-			public string FirstName { get; set; }
+			public string Name { get; set; }
 
-			public string LastName { get; set; }
+			public Supplier Supplier { get; set; }
 
-			public Address Address { get; set; }
+			public Category Category { get; set; }
 		}
 		#endregion
 
 		#region transformers_4
-		private class PersonAddress : AbstractTransformerCreationTask<Person>
+		public class Products_WithCategoryAndSupplier : AbstractTransformerCreationTask<Product>
 		{
-			public PersonAddress()
+			public Products_WithCategoryAndSupplier()
 			{
 				TransformResults =
-					people => from person in people 
-							  select new
+					products => from product in products 
+								select new
 								{
-									FirstName = person.FirstName, 
-									LastName = person.LastName, 
-									Address = LoadDocument<Address>(person.AddressId)
+									Name = product.Name,
+									Category = LoadDocument<Category>(product.Category),
+									Supplier = LoadDocument<Supplier>(product.Supplier)
 								};
 			}
 		}
@@ -59,13 +60,13 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region transformers_2
-					// return up to 128 entities from 'People' collection
-					// transform results using 'PersonNoLastName' transformer
-					// which returns 'LastName' as 'null'
+					// return up to 128 entities from 'Products' collection
+					// transform results using 'Products_Name' transformer
+					// which returns only 'Name' property, rest will be 'null'
 					var results = session
-						.Query<Person>()
-						.Where(x => x.FirstName == "John")
-						.TransformWith<PersonNoLastName, Person>()
+						.Query<Product>()
+						.Where(x => x.Name == "Chocolade")
+						.TransformWith<Products_Name, Product>()
 						.ToList();
 					#endregion
 				}
@@ -73,28 +74,18 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region transformers_3
-					var address = new Address { Street = "Crystal Oak Street" };
-					session.Store(address);
-					session.Store(new Person
-						              {
-							              FirstName = "John",
-										  LastName = "Doe",
-										  AddressId = address.Id
-						              });
-					session.SaveChanges();
-
-					// return 1 entity from 'People' collection
-					// transform results using 'PersonAddress' transformer
-					// project results to 'PersonWithAddress' class
-					var person = session
-						.Query<Person>()
-						.Where(x => x.FirstName == "John")
-						.TransformWith<PersonAddress, PersonWithAddress>()
+					// return 1 entity from 'Products' collection
+					// transform results using 'Products_WithCategoryAndSupplier' transformer
+					// project results to 'ProductWithCategoryAndSupplier' class
+					var product = session
+						.Query<Product>()
+						.Where(x => x.Name == "Chocolade")
+						.TransformWith<Products_WithCategoryAndSupplier, ProductWithCategoryAndSupplier>()
 						.First();
 
-					Assert.Equal("John", person.FirstName);
-					Assert.Equal("Doe", person.LastName);
-					Assert.Equal("Crystal Oak Street", person.Address.Street);
+					Assert.Equal("Chocolade", product.Name);
+					Assert.Equal("Confections", product.Category.Name);
+					Assert.Equal("Zaanse Snoepfabriek", product.Supplier.Name);
 					#endregion
 				}
 			}

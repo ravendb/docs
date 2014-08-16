@@ -4,6 +4,7 @@ using System.Linq;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
@@ -34,14 +35,14 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region stream_2
 					var query = session
-						.Query<Person>()
-						.Where(x => x.FirstName == "John");
+						.Query<Employee>()
+						.Where(x => x.FirstName == "Robert");
 
 					var results = session.Advanced.Stream(query);
 
 					while (results.MoveNext())
 					{
-						var person = results.Current;
+						var employee = results.Current;
 					}
 					#endregion
 				}
@@ -51,15 +52,15 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					#region stream_3
 					var query = session
 						.Advanced
-						.DocumentQuery<Person>()
-						.WhereEquals(x => x.FirstName, "John");
+						.DocumentQuery<Employee>()
+						.WhereEquals(x => x.FirstName, "Robert");
 
 					QueryHeaderInformation queryHeaderInformation;
 					var results = session.Advanced.Stream(query, out queryHeaderInformation);
 
 					while (results.MoveNext())
 					{
-						var person = results.Current;
+						var employee = results.Current;
 					}
 					#endregion
 				}
