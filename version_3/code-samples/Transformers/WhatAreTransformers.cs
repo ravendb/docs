@@ -3,29 +3,33 @@ using System.Linq;
 
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.Transformers
 {
 	public class WhatAreTransformers
 	{
 		#region transformers_1
-		public class Orders_Prices : AbstractTransformerCreationTask<Order>
+		public class Employees_NameAndPhone : AbstractTransformerCreationTask<Employee>
 		{
 			public class Result
 			{
-				public string CustomerId { get; set; }
+				public string FirstName { get; set; }
 
-				public double TotalPrice { get; set; }
+				public double LastName { get; set; }
+
+				public double HomePhone { get; set; }
 			}
 
-			public Orders_Prices()
+			public Employees_NameAndPhone()
 			{
-				TransformResults = orders => from order in orders 
-											 select new
-												        {
-															CustomerId = order.CustomerId,
-													        TotalPrice = order.TotalPrice
-												        };
+				TransformResults = employees => from employee in employees
+												select new
+												{
+													employee.FirstName,
+													employee.LastName,
+													employee.HomePhone
+												};
 			}
 		}
 		#endregion
@@ -36,20 +40,20 @@ namespace Raven.Documentation.CodeSamples.Transformers
 			{
 				#region transformers_2
 				// save transformer on server
-				new Orders_Prices().Execute(store);
+				new Employees_NameAndPhone().Execute(store);
 				#endregion
 
 				using (var session = store.OpenSession())
 				{
 					#region transformers_3
-					Orders_Prices.Result result = session
-						.Load<Orders_Prices, Orders_Prices.Result>("orders/1"); 
+					Employees_NameAndPhone.Result result = session
+						.Load<Employees_NameAndPhone, Employees_NameAndPhone.Result>("employees/1");
 					#endregion
 
 					#region transformers_4
-					IList<Orders_Prices.Result> results = session
-						.Query<Order>()
-						.TransformWith<Orders_Prices, Orders_Prices.Result>()
+					IList<Employees_NameAndPhone.Result> results = session
+						.Query<Employee>()
+						.TransformWith<Employees_NameAndPhone, Employees_NameAndPhone.Result>()
 						.ToList();
 					#endregion
 				}
