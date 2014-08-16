@@ -1,1 +1,1 @@
-# Client API : How to integrate with Excel?
+# How to integrate with Excel?

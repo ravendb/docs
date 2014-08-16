@@ -1,4 +1,4 @@
-# Client API : How to send custom request using HttpJsonRequestFactory?
+# How to send custom request using HttpJsonRequestFactory?
 
 Custom requests can be send using HttpJsonRequestFactory which can be accessed by `JsonRequestFactory` property in `DocumentStore`. This is the same factory that client uses for communication.
 

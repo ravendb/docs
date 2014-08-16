@@ -1,3 +1,3 @@
-# Client API : Revisions and concurrency with ETags
+# Revisions and concurrency with ETags
 
 TODO

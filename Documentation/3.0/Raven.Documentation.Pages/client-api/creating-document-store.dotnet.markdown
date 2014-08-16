@@ -1,1 +1,1 @@
-# Client API : How to create a document store?
+# How to create a document store?
