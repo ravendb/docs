@@ -1,4 +1,4 @@
-# Client API : How to setup a default database?
+# How to setup a default database?
 
 `DefaultDatabase` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [Commands](../../client-api/commands/what-are-commands) or create a [Session](../../client-api/session/what-is-a-session-and-how-does-it-work) without explicitly passing database on which they should operate on then default database is assumed.
 

@@ -1,1 +1,1 @@
-# Client API : How to setup sharding?
+# How to setup sharding?

@@ -1,4 +1,4 @@
-# Client API : How to setup connection string?
+# How to setup connection string?
 
 .NET named connection strings are supported by Client API. You can use them by setting the `ConnectionStringName` property value in `DocumentStore`, and the RavenDB client will initialize automatically based on the connection string's parameters.
 

@@ -1,1 +1,1 @@
-# Client API : How to setup aggresive caching?
+# How to setup aggresive caching?

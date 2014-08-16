@@ -1,3 +1,3 @@
-# Client API : What is a document store?
+# What is a document store?
 
 TODO
