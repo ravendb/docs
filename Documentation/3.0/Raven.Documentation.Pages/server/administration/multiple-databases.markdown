@@ -1,10 +1,10 @@
-# Configuration : Multiple Databases
+# Administration : Multiple Databases
 
 RavenDB natively supports multiple databases, and like most things in RavenDB, the way you configure additional databases is by creating a document. The RavenDB multi database support was explicitly designed to support multi tenancy scenarios, and RavenDB can easily handle hundreds or thousands of databases on the same instance.
 
 Defining a new database is done by creating a document with the name "Raven/Databases/[database name]" with the following contents:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
 	// Raven/Databases/Northwind
 	{
         "Settings" : 
@@ -12,7 +12,7 @@ Defining a new database is done by creating a document with the name "Raven/Data
               "Raven/DataDir": "~/Tenants/Northwind"
         }
     }
-{CODE-END /}
+{CODE-BLOCK/}
 
 The `Settings` dictionary allows you to modify the configuration for RavenDB's for the specified database. The list of available configuration options can be found [here](../../server/configuration/configuration-options#availability-of-configuration-options).
 

@@ -26,7 +26,7 @@ Instance implementing IDocumentChanges interface appropriate to store type.
 
 `IDatabaseChanges` has three properties that are related to the server connection:
 
-{CODE-START: csharp /}
+{CODE-BLOCK:csharp}
 // represents the task responsible for establishing connection with the server
 Task Task { get; }
 
@@ -35,7 +35,7 @@ bool Connected { get; }
 
 // the event raised if a connection state is changed
 event EventHandler ConnectionStatusChanged
-{CODE-END /}
+{CODE-BLOCK/}
 
 ## Subscribtions
 

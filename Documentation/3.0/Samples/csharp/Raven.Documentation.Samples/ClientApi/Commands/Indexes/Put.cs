@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Indexes
+﻿using Raven.Documentation.CodeSamples.Orders;
+
+namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Indexes
 {
 	using System.Linq;
 
@@ -23,11 +25,6 @@
 			#endregion
 		}
 
-		private class BlogPost
-		{
-			public string Title { get; set; }
-		}
-
 		public Put()
 		{
 			using (var store = new DocumentStore())
@@ -36,10 +33,16 @@
 				var indexName = store
 					.DatabaseCommands
 					.PutIndex(
-						"BlogPosts/ByTitles",
+						"Orders/Totals",
 						new IndexDefinition
 							{
-								Map = "from post in docs.Posts select new { post.Title }"
+								Map = @"from order in docs.Orders
+										select new 
+										{
+											order.Employee,
+											order.Company,
+											Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+										}"
 							});
 				#endregion
 			}
@@ -50,10 +53,16 @@
 				var indexName = store
 					.DatabaseCommands
 					.PutIndex(
-						"BlogPosts/ByTitles",
-						new IndexDefinitionBuilder<BlogPost>
+						"Orders/Totals",
+						new IndexDefinitionBuilder<Order>
 							{
-								Map = posts => from post in posts select new { post.Title }
+								Map = orders => from order in orders
+												select new
+												{
+													order.Employee,
+													order.Company,
+													Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+												}
 							});
 				#endregion
 			}

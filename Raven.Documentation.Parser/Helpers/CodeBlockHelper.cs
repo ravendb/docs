@@ -34,7 +34,11 @@
 
 		private static string GenerateCodeBlock(string languageAsString, string content)
 		{
-			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
+			var language = (CodeBlockLanguage)Enum.Parse(typeof(CodeBlockLanguage), languageAsString, true);
+
+			content = content
+				.Replace("<", "&lt;")
+				.Replace(">", "&gt;");
 
 			var builder = new StringBuilder();
 			builder.AppendLine(string.Format("<pre class='prettyprint {0}'>", ConvertLanguageToCssClass(language)));
@@ -106,6 +110,10 @@
 		private static CodeTab GenerateCodeTab(string languageAsString, string content)
 		{
 			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
+
+			content = content
+				.Replace("<", "&lt;")
+				.Replace(">", "&gt;");
 
 			return new CodeTab { Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
 		}
@@ -198,6 +206,27 @@
 					return "lang-java";
 				case Language.Http:
 					return "lang-js";
+				default:
+					throw new NotSupportedException(language.ToString());
+			}
+		}
+
+		private static object ConvertLanguageToCssClass(CodeBlockLanguage language)
+		{
+			switch (language)
+			{
+				case CodeBlockLanguage.Csharp:
+					return "lang-cs";
+				case CodeBlockLanguage.Java:
+					return "lang-java";
+				case CodeBlockLanguage.Http:
+					return "lang-js";
+				case CodeBlockLanguage.Json:
+					return "lang-json";
+				case CodeBlockLanguage.Plain:
+					return string.Empty;
+				case CodeBlockLanguage.Xml:
+					return "lang-xml";
 				default:
 					throw new NotSupportedException(language.ToString());
 			}

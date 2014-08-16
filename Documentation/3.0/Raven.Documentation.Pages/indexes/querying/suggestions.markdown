@@ -9,7 +9,7 @@ Let's consider an example where the users have the option to look for other user
 
 If in the database there is the following collection of users:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
 // users/1
 {
 	"Name": "John Smith"
@@ -26,7 +26,7 @@ If in the database there is the following collection of users:
 {
 	"Name": "David Jones"
 }
-{CODE-END/}
+{CODE-BLOCK/}
 then our sample query will not find any user. Then we can ask RavenDB for help by using:
 
 {CODE query_suggestion@Indexes\Querying\Suggestions.cs /}

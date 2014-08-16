@@ -33,62 +33,275 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ICSharpCode.SharpZipLib">
+      <HintPath>..\..\..\..\..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\..\..\..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
+    </Reference>
     <Reference Include="Raven.Abstractions">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3415-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3422-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.Authorization">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.3.0.3422-Unstable\lib\net45\Raven.Client.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3415-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3422-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Client.UniqueConstraints">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.3.0.3422-Unstable\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Database">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3422-Unstable\lib\net45\Raven.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="Raven.Smuggler">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3421-Unstable\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\..\..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\..\..\..\packages\Microsoft.Net.Http.2.2.22\lib\net45\System.Net.Http.Primitives.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.WebRequest" />
+    <Reference Include="System.Reactive.Core">
+      <HintPath>..\..\..\..\..\packages\Rx-Core.2.2.5\lib\net45\System.Reactive.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Interfaces">
+      <HintPath>..\..\..\..\..\packages\Rx-Interfaces.2.2.5\lib\net45\System.Reactive.Interfaces.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.Linq">
+      <HintPath>..\..\..\..\..\packages\Rx-Linq.2.2.5\lib\net45\System.Reactive.Linq.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Reactive.PlatformServices">
+      <HintPath>..\..\..\..\..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="xunit">
+      <HintPath>..\..\..\..\..\packages\xunit.1.9.2\lib\net20\xunit.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClientApi\Commands\Attachments\Delete.cs" />
-    <Compile Include="ClientApi\Commands\Attachments\Get.cs" />
-    <Compile Include="ClientApi\Commands\Attachments\HowTo\Head.cs" />
-    <Compile Include="ClientApi\Commands\Attachments\HowTo\Update.cs" />
-    <Compile Include="ClientApi\Commands\Attachments\Put.cs" />
-    <Compile Include="ClientApi\Commands\Batches\Batch.cs" />
-    <Compile Include="ClientApi\Commands\Documents\Delete.cs" />
-    <Compile Include="ClientApi\Commands\Documents\Get.cs" />
-    <Compile Include="ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs" />
-    <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs" />
-    <Compile Include="ClientApi\Commands\Documents\Put.cs" />
-    <Compile Include="ClientApi\Commands\Documents\Stream.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\BuildNumber.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\Compact.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\CreateDeleteDatabase.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseNames.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs" />
-    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsToDifferentDatabase.cs" />
-    <Compile Include="ClientApi\Commands\Indexes\Delete.cs" />
-    <Compile Include="ClientApi\Commands\Indexes\Get.cs" />
-    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetIndexMergeSuggestions.cs" />
-    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetTerms.cs" />
-    <Compile Include="ClientApi\Commands\Indexes\HowTo\ResetIndex.cs" />
-    <Compile Include="ClientApi\Commands\Indexes\Put.cs" />
-    <Compile Include="ClientApi\Commands\Patches\JavaScript.cs" />
-    <Compile Include="ClientApi\Commands\Patches\PatchRequests.cs" />
-    <Compile Include="ClientApi\Commands\Querying\HowToQueryDatabase.cs" />
-    <Compile Include="ClientApi\Commands\Transformers\Delete.cs" />
-    <Compile Include="ClientApi\Commands\Transformers\Get.cs" />
-    <Compile Include="ClientApi\Commands\Transformers\Put.cs" />
-    <Compile Include="ClientApi\Commands\WhatAreCommands.cs" />
+    <Compile Include="Blog.cs" />
+    <Compile Include="ClientApi\BulkInsert\BulkInserts.cs" />
+    <Compile Include="ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs" />
+    <Compile Include="ClientApi\Changes\HowToSubscribeToBulkInsertChanges.cs" />
+    <Compile Include="ClientApi\Changes\HowToSubscribeToDocumentChanges.cs" />
+    <Compile Include="ClientApi\Changes\HowToSubscribeToIndexChanges.cs" />
+    <Compile Include="ClientApi\Changes\HowToSubscribeToReplicationConflictsChanges.cs" />
+    <Compile Include="ClientApi\Changes\HowToSubscribeToTransformerChanges.cs" />
+    <Compile Include="ClientApi\Changes\WhatIsChangesApi.cs" />
+    <Compile Include="ClientApi\Commands\Attachments\Delete.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Attachments\Get.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Attachments\HowTo\Head.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Attachments\HowTo\Update.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Attachments\Put.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Batches\Batch.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Documents\Delete.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Documents\Get.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Documents\HowTo\DeleteOrUpdateByIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Documents\HowTo\Head.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Documents\Put.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Documents\Stream.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\BuildNumber.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\Compact.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\CreateDeleteDatabase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\DisableCaching.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\FullUrl.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseNames.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\StartBackupRestoreOperations.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsToDifferentDatabase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\Delete.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\Get.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetIndexMergeSuggestions.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\GetTerms.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\ResetIndex.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\Put.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Patches\JavaScript.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Patches\PatchRequests.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Querying\HowToQueryDatabase.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Querying\HowToStreamQueryResults.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToWorkWithFacetQuery.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.cs" />
+    <Compile Include="ClientApi\Commands\Querying\HowToWorkWithSuggestionQuery.cs" />
+    <Compile Include="ClientApi\Commands\Transformers\Delete.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Transformers\Get.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\Transformers\HowTo\TransformQueryResults.cs" />
+    <Compile Include="ClientApi\Commands\Transformers\Put.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\Commands\WhatAreCommands.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ClientApi\HowTo\SendCustomRequest.cs" />
+    <Compile Include="ClientApi\Listeners\Conflict.cs" />
+    <Compile Include="ClientApi\Listeners\Conversion.cs" />
+    <Compile Include="ClientApi\Listeners\Delete.cs" />
+    <Compile Include="ClientApi\Listeners\General.cs" />
+    <Compile Include="ClientApi\Listeners\Query.cs" />
+    <Compile Include="ClientApi\Listeners\Store.cs" />
+    <Compile Include="ClientApi\Session\Configuration\MaxRequests.cs" />
+    <Compile Include="ClientApi\Session\Configuration\OptimisticConcurrency.cs" />
+    <Compile Include="ClientApi\Session\DeletingEntities.cs" />
+    <Compile Include="ClientApi\Session\HowTo\Clear.cs" />
+    <Compile Include="ClientApi\Session\HowTo\Defer.cs" />
+    <Compile Include="ClientApi\Session\HowTo\Evict.cs" />
+    <Compile Include="ClientApi\Session\HowTo\GetDocumentId.cs" />
+    <Compile Include="ClientApi\Session\HowTo\GetEntityUrl.cs" />
+    <Compile Include="ClientApi\Session\HowTo\GetEtag.cs" />
+    <Compile Include="ClientApi\Session\HowTo\GetMetadata.cs" />
+    <Compile Include="ClientApi\Session\HowTo\HasChanged.cs" />
+    <Compile Include="ClientApi\Session\HowTo\Lazy.cs" />
+    <Compile Include="ClientApi\Session\HowTo\MarkAsReadonly.cs" />
+    <Compile Include="ClientApi\Session\HowTo\MoreLikeThis.cs" />
+    <Compile Include="ClientApi\Session\HowTo\Refresh.cs" />
+    <Compile Include="ClientApi\Session\HowTo\WhatChanged.cs" />
+    <Compile Include="ClientApi\Session\LoadingEntities.cs" />
+    <Compile Include="ClientApi\Session\OpeningSession.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToCustomize.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToGetQueryStatistics.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToPerformDynamicAggregation.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToPerformFacetedSearch.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToPerformMultiFacetedSearch.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToPerformProjection.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToPerformQueriesLazily.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToQuery.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToQuerySpatialIndex.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToStream.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToUseHighlighting.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToUseIntersect.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToUseSearch.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToUseTransformers.cs" />
+    <Compile Include="ClientApi\Session\Querying\HowToWorkWithSuggestions.cs" />
+    <Compile Include="ClientApi\Session\Querying\Lucene\HowToUseLucene.cs" />
+    <Compile Include="ClientApi\Session\SavingChanges.cs" />
+    <Compile Include="ClientApi\Session\StoringEntities.cs" />
+    <Compile Include="ClientApi\Session\WhatIsSession.cs" />
+    <Compile Include="ClientApi\SetupConnectionString.cs" />
+    <Compile Include="ClientApi\SetupDefaultDatabase.cs" />
     <Compile Include="Common.cs" />
-    <Compile Include="Entities.cs" />
+    <Compile Include="Faceted.cs" />
+    <Compile Include="Glossary\Glossary.cs" />
+    <Compile Include="Indexes\Analyzers.cs" />
+    <Compile Include="Indexes\Boosting.cs" />
+    <Compile Include="Indexes\CustomizingResultsOrder.cs" />
+    <Compile Include="Indexes\DynamicFields.cs" />
+    <Compile Include="Indexes\IndexingHierarchicalData.cs" />
+    <Compile Include="Indexes\IndexingPolymorphicData.cs" />
+    <Compile Include="Indexes\IndexingRelatedDocuments.cs" />
+    <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
+    <Compile Include="Indexes\Querying\FacetedSearch.cs" />
+    <Compile Include="Indexes\Querying\HandlingDocumentRelationships.cs" />
+    <Compile Include="Indexes\Querying\Highlights.cs" />
+    <Compile Include="Indexes\Querying\Intersection.cs" />
+    <Compile Include="Indexes\Querying\Paging.cs" />
+    <Compile Include="Indexes\Querying\Searching.cs" />
+    <Compile Include="Indexes\Querying\Suggestions.cs" />
+    <Compile Include="Indexes\SpatialIndexes.cs" />
+    <Compile Include="Indexes\Storing.cs" />
+    <Compile Include="Indexes\TermVectors.cs" />
+    <Compile Include="Northwind.cs" />
+    <Compile Include="Server\Administration\ExportImport.cs" />
+    <Compile Include="Server\Bundles\Authorization.cs" />
+    <Compile Include="Server\Bundles\AuthorizationBundleDesign.cs" />
+    <Compile Include="Server\Bundles\CascadeDelete.cs" />
+    <Compile Include="Server\Bundles\Compression.cs" />
+    <Compile Include="Server\Bundles\Encryption.cs" />
+    <Compile Include="Server\Bundles\Expiration.cs" />
+    <Compile Include="Server\Bundles\PeriodicExport.cs" />
+    <Compile Include="Server\Bundles\ScriptedIndexResults.cs" />
+    <Compile Include="Server\Bundles\SqlReplication.cs" />
+    <Compile Include="Server\Bundles\UniqueConstraints.cs" />
+    <Compile Include="Server\Bundles\Versioning.cs" />
+    <Compile Include="Server\Configuration\Authentication.cs" />
+    <Compile Include="Server\Configuration\MultipleDatabases.cs" />
+    <Compile Include="Server\Installation\Embedded.cs" />
+    <Compile Include="Server\Plugins.cs" />
+    <Compile Include="Server\ScalingOut\Replication\FromEmbeddedServer.cs" />
+    <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
+    <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
+    <Compile Include="Server\ScalingOut\Sharding\HowToSetupSharding.cs" />
+    <Compile Include="Server\Troubleshooting\EnablingLogging.cs" />
+    <Compile Include="Transformers\WhatAreTransformers.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -98,6 +311,11 @@
       <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
     </PropertyGroup>
     <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
+  </Target>
+  <Import Project="..\..\..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\..\..\..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -72,15 +72,15 @@ Uninstallation can be accomplished by _Programs and Features_ in _Control Panel_
 The RavenDB installer can also be run from a command line with administrative privileges. In order to do that you will have to specify all required installation
 settings. The following command shows the dialog with available options:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
    > ravendb-[version].exe -help
-{CODE-END /}
+{CODE-BLOCK/}
 
 Below there is a command which installs RavenDB as a windows service:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
    > ravendb-[version].exe /quiet /log C:\Temp\raven_log.txt /msicl "RAVEN_TARGET_ENVIRONMENT=DEVELOPMENT TARGETDIR=C:\ INSTALLFOLDER=C:\RavenDB RAVEN_INSTALLATION_TYPE=SERVICE REMOVE=IIS ADDLOCAL=Service"
-{CODE-END /}
+{CODE-BLOCK/}
 
 The list of RavenDB specific properties:
 

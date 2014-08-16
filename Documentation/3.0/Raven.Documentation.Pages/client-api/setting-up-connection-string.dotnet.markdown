@@ -6,13 +6,13 @@
 
 You can define the connection string in the application configuration file (`app.config` or `web.config`).
 
-{CODE-START:plain /}
+{CODE-BLOCK:plain}
     <connectionStrings>
         <add name="Local" connectionString="DataDir = ~\Data"/>
         <add name="Server" connectionString="Url = http://localhost:8080"/>
         <add name="Secure" connectionString="Url = http://localhost:8080;user=beam;password=up;ResourceManagerId=d5723e19-92ad-4531-adad-8611e6e05c8a"/>
     </connectionStrings>
-{CODE-END /}
+{CODE-BLOCK/}
 
 ## Format
 

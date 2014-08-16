@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
@@ -18,8 +19,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region mark_as_readonly_2
-					var person = session.Load<Person>("people/1");
-					session.Advanced.MarkReadOnly(person);
+					var employee = session.Load<Employee>("employees/1");
+					session.Advanced.MarkReadOnly(employee);
 					session.SaveChanges();
 					#endregion
 				}

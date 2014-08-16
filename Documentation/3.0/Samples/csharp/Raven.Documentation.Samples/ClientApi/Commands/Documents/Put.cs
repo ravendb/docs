@@ -1,9 +1,10 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
-{
-	using Raven.Abstractions.Data;
-	using Raven.Client.Document;
-	using Raven.Json.Linq;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
+using Raven.Json.Linq;
 
+namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
+{
 	public class Put
     {
 		private interface IFoo
@@ -11,13 +12,6 @@
 			 #region put_1
 			 PutResult Put(string key, Etag etag, RavenJObject document, RavenJObject metadata);
 			 #endregion
-		}
-
-		private class Person
-		{
-			public string FirstName { get; set; }
-
-			public string LastName { get; set; }
 		}
 
 		public Put()
@@ -28,12 +22,12 @@
 				store
 					.DatabaseCommands
 					.Put(
-						"people/1",
+						"categories/999",
 						null,
-						RavenJObject.FromObject(new Person
+						RavenJObject.FromObject(new Category
 						{
-							FirstName = "John", 
-							LastName = "Doe"
+							Name = "My Category",
+							Description = "My Category description"
 						}),
 						new RavenJObject());
 				#endregion

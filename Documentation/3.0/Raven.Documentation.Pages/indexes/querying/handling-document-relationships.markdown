@@ -14,7 +14,7 @@ The easiest solution is to denormalize the data within the containing entity, fo
 
 Take this JSON document for example:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
   { // Order document with id: orders/1234
     "Customer": {
       "Name": "Itamar",
@@ -31,17 +31,17 @@ Take this JSON document for example:
       }
     ]
   }
-{CODE-END/}
+{CODE-BLOCK/}
 
 As you can see, the `Order` document now contains denormalized data from both the `Customer` and the `Product` documents, which are saved elsewhere in full. Note we won’t have copied all the customer properties into the order; instead we just clone the ones that we care about when displaying or processing an order. This approach is called *denormalized reference*.
 
 The denormalization approach avoids many cross document lookups and results in only the necessary data being transmitted over the network, but it makes other scenarios more difficult. For example, consider the following entity structure as our start point:
 
-{CODE order_classes_basic@Entities.cs /}
+{XCODE order_classes_basic@Entities.cs /}
 
 If we know that whenever we load an `Order` from the database we will need to know the customer's name and address, we could decide to create a denormalized `Order.Customer` field, and store those details in the directly in the `Order` object. Obviously, the password and other irrelevant details will not be denormalized:
 
-{CODE order_classes_denormalizedcustomer@Entities.cs /}
+{XCODE order_classes_denormalizedcustomer@Entities.cs /}
 
 There wouldn’t be a direct reference between the `Order` and the `Customer`. Instead, `Order` holds a `DenormalizedCustomer`, which contains the interesting bits from `Customer` that we need whenever we process `Order` objects.
 
@@ -83,7 +83,7 @@ Multi-loads are also possible:
 
 An Include does not need to work only on the value of a top level property within a document. It can be used to load a value from a secondary level. In the classes above, the `Order` contains a `Referral` property which is of the type:
 
-{CODE order_classes_referral@Entities.cs /}
+{XCODE order_classes_referral@Entities.cs /}
 
 This class contains an identifier for a `Customer`. The following code will include the document referenced by that secondary level identifier:
 
@@ -95,7 +95,7 @@ Alternative way is to provide string based path:
 
 This secondary level include will also work with collections. The `Order.LineItems` property holds a collection of `LineItem` objects which each contain a reference to a `Product`:
 
-{CODE order_classes_lineitem@Entities.cs /}
+{XCODE order_classes_lineitem@Entities.cs /}
 
 The `Product` documents can be included using this syntax:
 
@@ -109,7 +109,7 @@ The `Select()` within the Include tells RavenDB which property of secondary leve
 
 The above `Include` samples assume that the Id property being used to resolve a reference is a string and it contains the full identifier for the referenced document (e.g. the `CustomerId` property will contain a value such as `"customers/5678"`). Include can also work with Value Type identifiers. Given these entities:
 
-{CODE order_classes2@Entities.cs /}
+{XCODE order_classes2@Entities.cs /}
 
 The samples above can be re-written as follows:
 
@@ -151,10 +151,10 @@ you must remember to follow certain rules that must apply to the provided string
 
 Learning string path rules may be useful when you will want to query database using HTTP API.
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
    > curl -X GET "http://localhost:8080/queries/?include=LineItems.,ProductId(products/)&id=orders/1"
 
-{CODE-END /}
+{CODE-BLOCK/}
 
 ## Summary
 

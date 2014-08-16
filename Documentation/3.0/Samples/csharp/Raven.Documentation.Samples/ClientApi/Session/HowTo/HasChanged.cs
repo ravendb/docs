@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 {
@@ -18,10 +19,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region has_changed_2
-					var person = session.Load<Person>("people/1");
-					var hasChanged = session.Advanced.HasChanged(person); // false
-					person.LastName = "Shmoe";
-					hasChanged = session.Advanced.HasChanged(person); // true
+					var employee = session.Load<Employee>("employees/1");
+					var hasChanged = session.Advanced.HasChanged(employee); // false
+					employee.LastName = "Shmoe";
+					hasChanged = session.Advanced.HasChanged(employee); // true
 					#endregion
 				}
 			}

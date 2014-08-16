@@ -4,32 +4,35 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.Linq;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
 	public class HowToPerformProjection
 	{
 		#region projection_4
-		public class PeopleByCity : AbstractIndexCreationTask<Person>
+		public class Products_BySupplierName : AbstractIndexCreationTask<Product>
 		{
-			public class Result 
+			public class Result
 			{
-				public string City { get; set; }
+				public string Name { get; set; }
 			}
 
-			public PeopleByCity()
+			public Products_BySupplierName()
 			{
-				Map = people => from person in people 
-								let address = LoadDocument<Address>(person.AddressId) 
-								select new
-									       {
-										       City = address.City
-									       };
+				Map =
+					products =>
+					from product in products
+					let supplier = LoadDocument<Supplier>(product.Supplier)
+					select new
+						       {
+							       Name = supplier.Name
+						       };
 			}
 		}
 		#endregion
 
-		private class PersonFirstAndLastName
+		private class EmployeeFirstAndLastName
 		{
 			public string FirstName { get; set; }
 
@@ -46,7 +49,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// request 'FirstName' and 'LastName' from server
 					// and project it to anonymous class
 					var results = session
-						.Query<Person>()
+						.Query<Employee>()
 						.Select(x => new
 						{
 							FirstName = x.FirstName,
@@ -60,10 +63,10 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				{
 					#region projection_2
 					// request 'FirstName' and 'LastName' from server
-					// and project it to 'PersonFirstAndLastName'
+					// and project it to 'EmployeeFirstAndLastName'
 					var results = session
-						.Query<Person>()
-						.Select(x => new PersonFirstAndLastName
+						.Query<Employee>()
+						.Select(x => new EmployeeFirstAndLastName
 						{
 							FirstName = x.FirstName,
 							LastName = x.LastName
@@ -75,12 +78,12 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region projection_3
-					// request all public fields/properties available in 'PersonFirstAndLastName'
-					// ('FirstName' and 'LastName')
+					// request all public fields/properties available 
+					// in 'EmployeeFirstAndLastName' ('FirstName' and 'LastName')
 					// and project it to instance of this class
 					var results = session
-						.Query<Person>()
-						.ProjectFromIndexFieldsInto<PersonFirstAndLastName>()
+						.Query<Employee>()
+						.ProjectFromIndexFieldsInto<EmployeeFirstAndLastName>()
 						.ToList();
 					#endregion
 				}
@@ -88,13 +91,13 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region projection_5
-					// query index 'PeopleByCity' 
-					// return documents from collection 'People' that live in 'New York'
-					// project them to 'Person'
+					// query index 'Products_BySupplierName' 
+					// return documents from collection 'Products' that have a supplier 'Norske Meierier'
+					// project them to 'Products'
 					var results = session
-						.Query<PeopleByCity.Result, PeopleByCity>()
-						.Where(x => x.City == "New York")
-						.OfType<Person>()
+						.Query<Products_BySupplierName.Result, Products_BySupplierName>()
+						.Where(x => x.Name == "Norske Meierier")
+						.OfType<Product>()
 						.ToList();
 					#endregion
 				}

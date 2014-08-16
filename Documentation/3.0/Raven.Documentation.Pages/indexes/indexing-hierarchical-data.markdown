@@ -2,7 +2,7 @@
 
 One of the greatest advantages of a document database is that we have very few limits in how we structure our data. One very common such scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread, such as the following document:
 
-{CODE-START:json /}
+{CODE-BLOCK:json}
     {  //posts/123
       'Name': 'Hello Raven',
       'Comments': [
@@ -19,7 +19,7 @@ One of the greatest advantages of a document database is that we have very few l
         }
       ]
     }
-{CODE-END /}
+{CODE-BLOCK/}
 
 While it is very easy to work with such a document in all respect, it does bring up an interesting question, how can we index all comments in the post?
 

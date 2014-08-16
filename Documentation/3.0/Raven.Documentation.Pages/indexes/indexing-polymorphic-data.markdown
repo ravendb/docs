@@ -10,17 +10,17 @@ If we saved a `Cat`, it would have an Entity-Name of "Cats" and if we saved a `D
 
 If we wanted to index cats by name, we would write:
 
-{CODE-START:csharp /}
+{CODE-BLOCK:csharp}
     from cat in docs.Cats
     select new { cat.Name }
-{CODE-END/}
+{CODE-BLOCK/}
 
 And for dogs:
 
-{CODE-START:csharp /}
+{CODE-BLOCK:csharp}
     from dog in docs.Dogs
     select new { dog.Name }
-{CODE-END/}
+{CODE-BLOCK/}
 
 This works, but each index would only give us results for the animal it has been defined on. But what if we wanted to query across all animals?
 
@@ -46,19 +46,19 @@ Another option would be to modify the way we generate the Entity-Name for subcla
 
 Using this method, we can now index on all animals using:
 
-{CODE-START:csharp /}
+{CODE-BLOCK:csharp}
     from animal in docs.Animals
     select new { animal.Name }
-{CODE-END/}
+{CODE-BLOCK/}
 
 But what happen when you don't want to modify the entity name of an entity?
 
 You can create a polymorphic index using:
 
-{CODE-START:csharp /}
+{CODE-BLOCK:csharp}
      from animal in docs.WhereEntityIs("Cats", "Dogs")
      select new { animal.Name }
-{CODE-END/}
+{CODE-BLOCK/}
 
 That would generate an index that would match both Cats and Dogs.
 

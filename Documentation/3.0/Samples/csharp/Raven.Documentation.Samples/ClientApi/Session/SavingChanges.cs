@@ -1,4 +1,5 @@
 ﻿using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session
 {
@@ -19,7 +20,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				{
 					#region saving_changes_2
 					// storing new entity
-					session.Store(new Person
+					session.Store(new Employee
 						              {
 							              FirstName = "John", 
 										  LastName = "Doe"

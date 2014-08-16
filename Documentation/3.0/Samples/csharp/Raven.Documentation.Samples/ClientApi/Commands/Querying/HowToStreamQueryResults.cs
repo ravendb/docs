@@ -27,16 +27,16 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Querying
 				var enumerator = store
 					.DatabaseCommands
 					.StreamQuery(
-						"Users/ByName",
+						"Orders/Totals",
 						new IndexQuery
 						{
-							Query = "Name:James"
+							Query = "Company:companies/1"
 						},
 						out queryHeaderInfo);
 
 				while (enumerator.MoveNext())
 				{
-					var user = enumerator.Current;
+					var order = enumerator.Current;
 				}
 				#endregion
 			}

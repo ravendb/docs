@@ -1,5 +1,6 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session
 {
@@ -32,8 +33,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				{
 					#region store_entities_5
 					// generate Id automatically
-					// with new empty database and default conventions: 'people/1'
-					session.Store(new Person
+					// with new empty database and default conventions: 'employee/1'
+					session.Store(new Employee
 						              {
 							              FirstName = "John", 
 										  LastName = "Doe"
