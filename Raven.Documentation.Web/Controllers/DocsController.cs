@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Configuration;
+using System.IO;
 using System.Threading;
 
 using Raven.Client.Connection;
@@ -75,7 +76,7 @@ namespace Raven.Documentation.Web.Controllers
 
 			var options = new ParserOptions
 						{
-							PathToDocumentationDirectory = ConfigurationManager.AppSettings["Raven/Documentation/Directory"],
+							PathToDocumentationDirectory = GetDocumentationDirectory(),
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
 							ImagesUrl = GetImagesUrl()
 						};
@@ -93,7 +94,7 @@ namespace Raven.Documentation.Web.Controllers
 				new DocumentationParser(
 					new ParserOptions
 						{
-							PathToDocumentationDirectory = ConfigurationManager.AppSettings["Raven/Documentation/Directory"],
+							PathToDocumentationDirectory = GetDocumentationDirectory(),
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
 							ImagesUrl = GetImagesUrl()
 						});
@@ -290,6 +291,15 @@ namespace Raven.Documentation.Web.Controllers
 				return embeddableDocumentStore.Url.ForDatabase(embeddableDocumentStore.DefaultDatabase) + "/static/";
 
 			return null;
+		}
+
+		private static string GetDocumentationDirectory()
+		{
+			var directory = ConfigurationManager.AppSettings["Raven/Documentation/Directory"];
+			if (string.IsNullOrEmpty(directory) == false)
+				return directory;
+
+			return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\Documentation\\");
 		}
 	}
 }
