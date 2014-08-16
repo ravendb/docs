@@ -5,7 +5,7 @@
 One of the options available for the RavenDB administrators is a capability of retrieving database statistics for the server. The statistics are available at `/admin/stats` endpoint or by Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
 
 {CODE-BLOCK:json}
-   > curl -X GET "http://localhost:8080/admin/stats"
+	curl -X GET "http://localhost:8080/admin/stats"
 {CODE-BLOCK/}
 
 Document with following format is retrieved:
@@ -153,8 +153,8 @@ where
 To obtain database statistics one must use `/stats` endpoint or access them by Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
 
 {CODE-BLOCK:json}
-   > curl -X GET "http://localhost:8080/stats" //statistics for 'system' database
-   > curl -X GET "http://localhost:8080/databases/Northwind/stats" //statistics for 'Northwind' database
+	curl -X GET "http://localhost:8080/stats" //statistics for 'system' database
+curl -X GET "http://localhost:8080/databases/Northwind/stats" //statistics for 'Northwind' database
 {CODE-BLOCK/}
 
 Executing one of the above actions will end up in getting a document in the following format:
