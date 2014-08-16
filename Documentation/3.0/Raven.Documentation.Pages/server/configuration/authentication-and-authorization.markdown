@@ -20,24 +20,22 @@ When action (request) needs to be authenticated and no other authentication meth
 By default all windows users and groups have access to all the databases, but this can be easily changed by editing `Raven/Authorization/WindowsSettings` document in `system` database. The document consists of list of users and groups that contain the list of accessible databases. For example this document could look like this:
 
 {CODE-BLOCK:json}
-
-	{
-	  "RequiredGroups": [],
-	  "RequiredUsers": [
+{
+	"RequiredGroups": [],
+	"RequiredUsers": [
 		{
-		  "Name": "IIS AppPool\\DefaultAppPool",
-		  "Enabled": true,
-		  "Databases": [
-			{
-			  "Admin": false,
-			  "TenantId": "Northwind",
-			  "ReadOnly": true
-			}
-		  ]
+			"Name": "IIS AppPool\\DefaultAppPool",
+			"Enabled": true,
+			"Databases": [
+				{
+					"Admin": false,
+					"TenantId": "Northwind",
+					"ReadOnly": true
+				}
+			]
 		}
-	  ]
-	}
-
+	]
+}
 {CODE-BLOCK/}
 
 Above example gives a read-only access to `Northwind` to `IIS AppPool\DefaultAppPool`. Similar effect can be achieved using the Studio and editing `system` database settings.
@@ -85,43 +83,43 @@ The returned results vary on the current authentication type:
 * **Anonymous**      
 
 {CODE-BLOCK:json}
-    {
-      "Remark": "Using anonymous user"
-    }
+{
+    "Remark": "Using anonymous user"
+}
 {CODE-BLOCK/}
 
 * **Windows Authentication** with full access to all databases:    
 
 {CODE-BLOCK:json}
-    {
-      "Remark": "Using windows auth",
-	  "User": "RavenUser",
-	  "IsAdmin": "True"
-    }
+{
+    "Remark": "Using windows auth",
+	"User": "RavenUser",
+	"IsAdmin": "True"
+}
 {CODE-BLOCK/}
 
 * **Windows Authentication** with restricted access:   
 
 {CODE-BLOCK:json}
-    {
-      "Remark": "Using windows auth",
-	  "User": "RavenUser",
-	  "IsAdmin": "False",
-	  "AdminDatabases": [],
-      "ReadOnlyDatabases": [ "ReadOnlyNorthwind" ],
-      "ReadWriteDatabases": [ "ReadWriteNorthwind" ]
-    }
+{
+    "Remark": "Using windows auth",
+	"User": "RavenUser",
+	"IsAdmin": "False",
+	"AdminDatabases": [],
+    "ReadOnlyDatabases": [ "ReadOnlyNorthwind" ],
+    "ReadWriteDatabases": [ "ReadWriteNorthwind" ]
+}
 {CODE-BLOCK/}
 
 * **OAuth Authentication**:    
 
 {CODE-BLOCK:json}
-    {
-      "Remark": "Using OAuth",
-	  "User": "RavenUser",
-	  "IsAdmin": "False",
-	  "TokenBody": "<token_here>"
-    }
+{
+    "Remark": "Using OAuth",
+	"User": "RavenUser",
+	"IsAdmin": "False",
+	"TokenBody": "<token_here>"
+}
 {CODE-BLOCK/}
 
 #### Related articles
