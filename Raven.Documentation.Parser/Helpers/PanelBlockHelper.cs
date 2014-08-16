@@ -24,7 +24,7 @@
 			if (string.IsNullOrEmpty(title) == false)
 			{
 				builder.AppendLine("<div class='panel-heading'>");
-				builder.AppendLine("<h2 class='panel-title'>");
+				builder.AppendLine(string.Format("<h2 id='{0}' class='panel-title'>", ConvertTilteToId(title)));
 				builder.AppendLine(title);
 				builder.AppendLine("</h2>");
 				builder.AppendLine("</div>");
@@ -36,6 +36,12 @@
 			builder.AppendLine("</div>");
 
 			return builder.ToString();
+		}
+
+		private static string ConvertTilteToId(string title)
+		{
+			var parts = title.Split(new[] { ' ' });
+			return string.Join("-", parts).ToLowerInvariant();
 		}
 	}
 }

@@ -6,7 +6,7 @@ There are few methods that allow you to retrieve documents from a database:
 - [GetDocuments](../../../client-api/commands/documents/get#getdocuments)   
 - [StartsWith](../../../client-api/commands/documents/get#startswith)  
 
-## Get
+{PANEL:Get}
 
 **Get** can be used to retrieve a single document.
 
@@ -29,7 +29,9 @@ Object representing retrieved document.
 
 {CODE get_1_2@ClientApi\Commands\Documents\Get.cs /}
 
-## Get - multiple documents
+{PANEL/}
+
+{PANEL:Get - multiple documents}
 
 **Get** can also be used to retrieve a list of documents.
 
@@ -83,7 +85,9 @@ list of documents that were found in specified paths that were passed in **inclu
 
 {CODE get_2_4@ClientApi\Commands\Documents\Get.cs /}
 
-## GetDocuments
+{PANEL/}
+
+{PANEL:GetDocuments}
 
 **GetDocuments** can be used to retrieve multiple documents.
 
@@ -114,7 +118,9 @@ Object representing retrieved document.
 
 {CODE get_3_1@ClientApi\Commands\Documents\Get.cs /}
 
-## StartsWith
+{PANEL/}
+
+{PANEL:StartsWith}
 
 **StartsWith** can be used to retrieve multiple documents for a specified key prefix.
 
@@ -176,6 +182,8 @@ Object representing retrieved document.
 ### Example III
 
 {CODE get_4_3@ClientApi\Commands\Documents\Get.cs /}
+
+{PANEL/}
 
 #### Related articles
 
