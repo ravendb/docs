@@ -244,6 +244,7 @@
     <Content Include="Views\Docs\Glossary.cshtml" />
     <Content Include="Views\Docs\Welcome.cshtml" />
     <Content Include="Views\Docs\Validate.cshtml" />
+    <Content Include="Views\Docs\Start.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

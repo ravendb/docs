@@ -86,6 +86,12 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Start()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Start);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Client()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Client);
@@ -141,6 +147,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Generate = "Generate";
             public readonly string Welcome = "Welcome";
             public readonly string Index = "Index";
+            public readonly string Start = "Start";
             public readonly string Client = "Client";
             public readonly string Server = "Server";
             public readonly string Indexes = "Indexes";
@@ -157,6 +164,7 @@ namespace Raven.Documentation.Web.Controllers
             public const string Generate = "Generate";
             public const string Welcome = "Welcome";
             public const string Index = "Index";
+            public const string Start = "Start";
             public const string Client = "Client";
             public const string Server = "Server";
             public const string Indexes = "Indexes";
@@ -211,6 +219,15 @@ namespace Raven.Documentation.Web.Controllers
         {
             public readonly string language = "language";
             public readonly string version = "version";
+        }
+        static readonly ActionParamsClass_Start s_params_Start = new ActionParamsClass_Start();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Start StartParams { get { return s_params_Start; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Start
+        {
+            public readonly string version = "version";
+            public readonly string language = "language";
         }
         static readonly ActionParamsClass_Client s_params_Client = new ActionParamsClass_Client();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -285,6 +302,7 @@ namespace Raven.Documentation.Web.Controllers
                 public readonly string NotFound = "NotFound";
                 public readonly string Search = "Search";
                 public readonly string Server = "Server";
+                public readonly string Start = "Start";
                 public readonly string Transformers = "Transformers";
                 public readonly string Validate = "Validate";
                 public readonly string Welcome = "Welcome";
@@ -297,6 +315,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string NotFound = "~/Views/Docs/NotFound.cshtml";
             public readonly string Search = "~/Views/Docs/Search.cshtml";
             public readonly string Server = "~/Views/Docs/Server.cshtml";
+            public readonly string Start = "~/Views/Docs/Start.cshtml";
             public readonly string Transformers = "~/Views/Docs/Transformers.cshtml";
             public readonly string Validate = "~/Views/Docs/Validate.cshtml";
             public readonly string Welcome = "~/Views/Docs/Welcome.cshtml";
@@ -371,6 +390,19 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             IndexOverride(callInfo, language, version);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void StartOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Start(string version, string language)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Start);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            StartOverride(callInfo, version, language);
             return callInfo;
         }
 

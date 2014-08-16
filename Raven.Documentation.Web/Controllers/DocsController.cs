@@ -158,6 +158,15 @@ namespace Raven.Documentation.Web.Controllers
 			return RedirectToAction(MVC.Docs.ActionNames.Welcome, MVC.Docs.Name, new { language = language, version = version });
 		}
 
+		public virtual ActionResult Start(string version, string language)
+		{
+			var toc = DocumentSession
+				.Query<TableOfContents>()
+				.First(x => x.Category == Category.Start);
+
+			return View(MVC.Docs.Views.Start, new PageModel(toc));
+		}
+
 		public virtual ActionResult Client(string version, string language)
 		{
 			var toc = DocumentSession
@@ -258,6 +267,10 @@ namespace Raven.Documentation.Web.Controllers
 			var remoteStore = DocumentStore as DocumentStore;
 			if (remoteStore != null)
 				return remoteStore.Url.ForDatabase(remoteStore.DefaultDatabase) + "/static/";
+
+			var embeddableDocumentStore = (EmbeddableDocumentStore)DocumentStore;
+			if (embeddableDocumentStore.Url != null)
+				return embeddableDocumentStore.Url.ForDatabase(embeddableDocumentStore.DefaultDatabase) + "/static/";
 
 			return null;
 		}
