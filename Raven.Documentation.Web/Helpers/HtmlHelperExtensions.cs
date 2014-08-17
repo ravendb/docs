@@ -3,12 +3,10 @@
 	using System;
 	using System.Collections.Generic;
 	using System.Diagnostics;
-	using System.Dynamic;
 	using System.Text;
 	using System.Web.Mvc;
 	using System.Web.Mvc.Html;
 	using System.Web.Routing;
-	using System.Web.UI.WebControls;
 
 	using Raven.Documentation.Parser.Data;
 
@@ -16,11 +14,7 @@
 	{
 		public static bool IsDebug(this HtmlHelper htmlHelper)
 		{
-#if DEBUG
-			return true;
-#else 
-			return false;
-#endif
+			return DebugHelper.IsDebug();
 		}
 
 		public static MvcHtmlString VersionLink(this HtmlHelper htmlHelper, string version, string currentVersion, Language currentLanguage)

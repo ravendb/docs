@@ -6,6 +6,7 @@ using System.Threading;
 using Raven.Client.Connection;
 using Raven.Client.Document;
 using Raven.Client.Embedded;
+using Raven.Documentation.Web.Helpers;
 
 namespace Raven.Documentation.Web.Controllers
 {
@@ -32,7 +33,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 		}
 
-		public virtual ActionResult Search(string language, string value)
+		public virtual ActionResult Search(string language, string version, string value)
 		{
 			if (string.IsNullOrEmpty(value))
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
@@ -42,6 +43,8 @@ namespace Raven.Documentation.Web.Controllers
 				.Highlight("TextContent", 128, 1, out contentHighlighting)
 				.SetHighlighterTags("<span class='label label-warning'>", "</span>")
 				.WhereIn(x => x.Language, new[] { Language.All, CurrentLanguage })
+				.AndAlso()
+				.WhereEquals(x => x.Version, CurrentVersion)
 				.AndAlso()
 				.OpenSubclause()
 				.Search(x => x.Title, value).Boost(15)
@@ -70,6 +73,9 @@ namespace Raven.Documentation.Web.Controllers
 
 		public virtual ActionResult Validate(string language, string version)
 		{
+			if (DebugHelper.IsDebug() == false)
+				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+
 			var pages = DocumentSession
 				.Query<DocumentationPage>()
 				.Take(1024)
@@ -91,6 +97,9 @@ namespace Raven.Documentation.Web.Controllers
 
 		public virtual ActionResult Generate(string language, string version, string key)
 		{
+			if (DebugHelper.IsDebug() == false)
+				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+
 			var parser =
 				new DocumentationParser(
 					new ParserOptions

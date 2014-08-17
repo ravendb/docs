@@ -189,6 +189,7 @@ namespace Raven.Documentation.Web.Controllers
         public class ActionParamsClass_Search
         {
             public readonly string language = "language";
+            public readonly string version = "version";
             public readonly string value = "value";
         }
         static readonly ActionParamsClass_Validate s_params_Validate = new ActionParamsClass_Validate();
@@ -347,15 +348,16 @@ namespace Raven.Documentation.Web.Controllers
         public T4MVC_DocsController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string value);
+        partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string value);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Search(string language, string value)
+        public override System.Web.Mvc.ActionResult Search(string language, string version, string value)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
-            SearchOverride(callInfo, language, value);
+            SearchOverride(callInfo, language, version, value);
             return callInfo;
         }
 
