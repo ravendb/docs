@@ -256,7 +256,7 @@ namespace Raven.Documentation.Web.Controllers
 
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == category);
+				.First(x => x.Category == category && x.Version == CurrentVersion);
 
 			if (pages.Count == 0)
 				return View(MVC.Docs.Views.NotDocumented, new NotDocumentedModel(key, CurrentLanguage, allPages, toc));
