@@ -46,11 +46,15 @@
 
 		public static MvcHtmlString GenerateNavigation(this HtmlHelper htmlHelper, Language language, string version)
 		{
-			if (version == "3.0")
-				return GenerateNavigationFor30(htmlHelper, language);
+			var mode = GetMode(version);
 
-			if (version == "2.5")
-				return GenerateNavigationFor25(htmlHelper, language);
+			switch (mode)
+			{
+				case DocumentationMode.Normal:
+					return GenerateNavigationFor30(htmlHelper, language);
+				case DocumentationMode.Legacy:
+					return GenerateNavigationFor25(htmlHelper, language);
+			}
 
 			return null;
 		}
@@ -66,7 +70,7 @@
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server", MVC.Docs.ActionNames.Server, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Studio, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
-			
+
 			builder.AppendLine("<li class='dropdown'>");
 			builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");
 			builder.AppendLine("<ul class='dropdown-menu' role='menu'>");
@@ -105,9 +109,11 @@
 			return new MvcHtmlString(builder.ToString());
 		}
 
-		public static MvcHtmlString GenerateTableOfContents(this HtmlHelper htmlHelper, TableOfContents tableOfContents, string key)
+		public static MvcHtmlString GenerateTableOfContents(this HtmlHelper htmlHelper, UrlHelper urlHelper, TableOfContents tableOfContents, string key)
 		{
 			Debug.Assert(tableOfContents != null);
+
+			var mode = GetMode(tableOfContents.Version);
 
 			var builder = new StringBuilder();
 			builder.AppendLine("<div class='panel-group' id='sidebar'>");
@@ -122,7 +128,17 @@
 					builder.AppendLine("<div class='panel panel-default'>");
 					builder.AppendLine("<div class='panel-heading'>");
 					builder.AppendLine("<h4 class='panel-title'>");
-					builder.AppendLine(string.Format("<a data-toggle='collapse' data-parent='#sidebar' href='#{0}'>", id));
+
+					switch (mode)
+					{
+						case DocumentationMode.Normal:
+							builder.AppendLine(string.Format("<a data-toggle='collapse' data-parent='#sidebar' href='#{0}'>", id));
+							break;
+						case DocumentationMode.Legacy:
+							builder.AppendLine(string.Format("<a href='{0}'>", urlHelper.Action(MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { version = tableOfContents.Version, language = Language.Csharp, key = item.Key })));
+							break;
+					}
+
 					builder.AppendLine(string.Format("<span class='fa fa-folder-o'></span><span>{0}</span>", item.Title));
 					builder.AppendLine("</a>");
 					builder.AppendLine("</h4>");
@@ -132,7 +148,7 @@
 
 					builder.AppendLine(string.Format("<div id='{0}' class='panel-collapse collapse {1}'>", id, containsKey ? "in" : string.Empty));
 					builder.AppendLine("<ul class='list-group'>");
-					GenerateTableOfContents(htmlHelper, builder, item.Items, key, 0);
+					GenerateTableOfContents(htmlHelper, urlHelper, builder, item.Items, key, 0, tableOfContents.Version, mode);
 					builder.AppendLine("</ul>");
 					builder.AppendLine("</div>");
 					builder.AppendLine("</div>");
@@ -155,7 +171,7 @@
 			return new MvcHtmlString(builder.ToString());
 		}
 
-		private static void GenerateTableOfContents(HtmlHelper htmlHelper, StringBuilder builder, IEnumerable<TableOfContents.TableOfContentsItem> items, string key, int level)
+		private static void GenerateTableOfContents(HtmlHelper htmlHelper, UrlHelper urlHelper, StringBuilder builder, IEnumerable<TableOfContents.TableOfContentsItem> items, string key, int level, string version, DocumentationMode mode)
 		{
 			foreach (var item in items)
 			{
@@ -178,7 +194,7 @@
 				builder.AppendLine(string.Format("<li class='list-group-item {0}'>", css));
 
 				if (item.IsFolder)
-					GenerateForFolder(htmlHelper, builder, item, key, level, containsKey);
+					GenerateForFolder(htmlHelper, urlHelper, builder, item, key, level, containsKey, version, mode);
 				else
 					GenerateForArticle(htmlHelper, builder, item);
 
@@ -192,12 +208,19 @@
 			builder.AppendLine(string.Format("<span class='fa fa-file-text-o'></span>{0}", link));
 		}
 
-		private static void GenerateForFolder(HtmlHelper htmlHelper, StringBuilder builder, TableOfContents.TableOfContentsItem item, string key, int level, bool containsKey)
+		private static void GenerateForFolder(HtmlHelper htmlHelper, UrlHelper urlHelper, StringBuilder builder, TableOfContents.TableOfContentsItem item, string key, int level, bool containsKey, string version, DocumentationMode mode)
 		{
+			if (mode == DocumentationMode.Legacy)
+				builder.AppendLine(string.Format("<a href='{0}'>", urlHelper.Action(MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { version = version, language = Language.Csharp, key = item.Key })));
+
 			builder.AppendLine(string.Format("<span class='fa fa-folder {1}'></span><span>{0}</span>", item.Title, containsKey ? "text-danger" : string.Empty));
+
+			if (mode == DocumentationMode.Legacy)
+				builder.AppendLine("</a>");
+
 			builder.AppendLine("<ul class='list-group'>");
 
-			GenerateTableOfContents(htmlHelper, builder, item.Items, key, ++level);
+			GenerateTableOfContents(htmlHelper, urlHelper, builder, item.Items, key, ++level, version, mode);
 
 			builder.AppendLine("</ul>");
 		}
@@ -226,6 +249,23 @@
 			}
 
 			return false;
+		}
+
+		private static DocumentationMode GetMode(string version)
+		{
+			switch (version)
+			{
+				case "3.0":
+					return DocumentationMode.Normal;
+				default:
+					return DocumentationMode.Legacy;
+			}
+		}
+
+		private enum DocumentationMode
+		{
+			Normal,
+			Legacy
 		}
 	}
 }
