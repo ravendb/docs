@@ -34,14 +34,24 @@
 					@Html.Raw("&nbsp;")
 					@Html.ActionLink("Validate links", MVC.Docs.ActionNames.Validate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, new { @class = "btn btn-warning", target = "_blank" })
 				}
-				<div class="pull-right">
-					<span>Code samples </span>
+				<div class="pull-right chooser">
+					<span>Version </span>
 					<div class="btn-group">
-						@Html.LanguageLink(Language.Csharp, ViewContext)
-						@Html.LanguageLink(Language.Java, ViewContext)
-						@Html.LanguageLink(Language.Http, ViewContext)
+						@Html.VersionLink("2.5", (string)ViewBag.CurrentVersion, Language.Csharp)
+						@Html.VersionLink("3.0", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
 					</div>
 				</div>
+				@if (ViewBag.CurrentVersion == "3.0")
+				{
+					<div class="pull-right chooser">
+						<span>Code samples </span>
+						<div class="btn-group">
+							@Html.LanguageLink(Language.Csharp, ViewContext)
+							@Html.LanguageLink(Language.Java, ViewContext)
+							@Html.LanguageLink(Language.Http, ViewContext)
+						</div>
+					</div>
+				}
 			</div>
 			<div class="col-sm-3">
 				<div class="pull-right">
