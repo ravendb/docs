@@ -22,9 +22,8 @@ namespace Raven.Documentation.Web.DependencyResolution
 
 			store.Initialize();
 
-			ObjectFactory.Initialize(x => x.For<IDocumentStore>().Use(store));
-
-			return ObjectFactory.Container;
+			var container = new Container(x => x.For<IDocumentStore>().Use(store));
+			return container;
 		}
 	}
 }
