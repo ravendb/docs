@@ -105,3 +105,6 @@ div#search div#accordion .panel-collapse > .list-group .list-group-item:first-ch
   border-bottom: 0;
   padding-left: 30px;
 }
+div.container div.chooser {
+  margin-right: 10px;
+}

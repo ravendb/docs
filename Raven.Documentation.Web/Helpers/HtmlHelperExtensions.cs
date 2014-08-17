@@ -23,6 +23,19 @@
 #endif
 		}
 
+		public static MvcHtmlString VersionLink(this HtmlHelper htmlHelper, string version, string currentVersion, Language currentLanguage)
+		{
+			var isCurrentVersion = version == currentVersion;
+
+			var css = "btn";
+			if (isCurrentVersion)
+				css += " btn-success";
+			else
+				css += " btn-default";
+
+			return htmlHelper.ActionLink(version, MVC.Docs.ActionNames.Welcome, MVC.Docs.Name, new { version = version, language = currentLanguage }, new { @class = css });
+		}
+
 		public static MvcHtmlString LanguageLink(this HtmlHelper htmlHelper, Language language, ViewContext viewContext)
 		{
 			var controllerName = viewContext.Controller.ControllerContext.RouteData.Values["controller"].ToString();
