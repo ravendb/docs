@@ -28,19 +28,19 @@
 			}
 		}
 
-		public string GetPathToDocumentationPagesDirectory(double documentationVersion)
+		public string GetPathToDocumentationPagesDirectory(string documentationVersion)
 		{
-			return Path.Combine(PathToDocumentationDirectory, documentationVersion.ToString("#.0", CultureInfo.InvariantCulture), "Raven.Documentation.Pages");
+			return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Raven.Documentation.Pages");
 		}
 
-		public string GetPathToDocumentationSamplesDirectory(Language language, double documentationVersion)
+		public string GetPathToDocumentationSamplesDirectory(Language language, string documentationVersion)
 		{
 			switch (language)
 			{
 				case Language.Csharp:
-					return Path.Combine(PathToDocumentationDirectory, documentationVersion.ToString("#.0", CultureInfo.InvariantCulture), "Samples", "csharp", "Raven.Documentation.Samples");
+					return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "csharp", "Raven.Documentation.Samples");
 				case Language.Java:
-					return Path.Combine(PathToDocumentationDirectory, documentationVersion.ToString("#.0", CultureInfo.InvariantCulture), "Samples", "java", "Raven.Documentation.Samples");
+					return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "java", "Raven.Documentation.Samples");
 				default:
 					throw new NotSupportedException(language.ToString());
 			}

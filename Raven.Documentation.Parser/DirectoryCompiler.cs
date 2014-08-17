@@ -27,7 +27,7 @@
 		public IEnumerable<DocumentationPage> Compile(DirectoryInfo directoryInfo)
 		{
 			var directoryName = directoryInfo.Name;
-			var documentationVersion = ParseVersion(directoryName);
+			var documentationVersion = directoryName;
 
 			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
 			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationSamplesDirectory(Language.Csharp, documentationVersion)));
@@ -39,7 +39,7 @@
 		public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo)
 		{
 			var directoryName = directoryInfo.Name;
-			var documentationVersion = ParseVersion(directoryName);
+			var documentationVersion = directoryName;
 			var directory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
 
 			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
@@ -86,7 +86,7 @@
 			}
 		}
 
-		private DocumentationPage CompileDocumentationPage(FolderItem page, string directory, double documentationVersion)
+		private DocumentationPage CompileDocumentationPage(FolderItem page, string directory, string documentationVersion)
 		{
 			var path = Path.Combine(directory, page.Name + FileExtensionHelper.GetLanguageFileExtension(page.Language) + Constants.MarkdownFileExtension);
 			var fileInfo = new FileInfo(path);
@@ -118,7 +118,7 @@
 			}
 		}
 
-		private IEnumerable<DocumentationPage> CompileDocumentationDirectory(string directory, double documentationVersion)
+		private IEnumerable<DocumentationPage> CompileDocumentationDirectory(string directory, string documentationVersion)
 		{
 			var docListFilePath = Path.Combine(directory, Constants.DocListFileName);
 			if (File.Exists(docListFilePath) == false)
@@ -141,6 +141,19 @@
 					yield return CompileDocumentationPage(pageToCompile, directory, documentationVersion);
 				}
 			}
+
+			var indexFilePath = Path.Combine(directory, "index" + Constants.MarkdownFileExtension);
+			if (File.Exists(indexFilePath) == false)
+				yield break;
+
+			var indexItem = new FolderItem(isFolder: false)
+				                {
+					                Description = string.Empty,
+					                Language = Language.All,
+					                Name = "index"
+				                };
+
+			yield return CompileDocumentationPage(indexItem, directory, documentationVersion);
 		}
 
 		private static IEnumerable<FolderItem> GetPages(string directory, FolderItem item)
@@ -167,11 +180,6 @@
 									 };
 				}
 			}
-		}
-
-		private static double ParseVersion(string directoryName)
-		{
-			return double.Parse(directoryName, CultureInfo.InvariantCulture);
 		}
 	}
 }

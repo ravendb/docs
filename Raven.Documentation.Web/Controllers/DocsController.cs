@@ -72,6 +72,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var pages = DocumentSession
 				.Query<DocumentationPage>()
+				.Take(1024)
 				.ToList();
 
 			var options = new ParserOptions
@@ -171,7 +172,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Start);
+				.First(x => x.Category == Category.Start && x.Version == CurrentVersion);
 
 			return View(MVC.Docs.Views.Start, new PageModel(toc));
 		}
@@ -180,7 +181,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == Category.ClientApi);
+				.First(x => x.Category == Category.ClientApi && x.Version == CurrentVersion);
 
 			return View(MVC.Docs.Views.Client, new PageModel(toc));
 		}
@@ -189,7 +190,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Studio);
+				.First(x => x.Category == Category.Studio && x.Version == CurrentVersion);
 
 			return View(MVC.Docs.Views.Studio, new PageModel(toc));
 		}
@@ -198,7 +199,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Server);
+				.First(x => x.Category == Category.Server && x.Version == CurrentVersion);
 
 			return View(MVC.Docs.Views.Server, new PageModel(toc));
 		}
@@ -207,7 +208,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Indexes);
+				.First(x => x.Category == Category.Indexes && x.Version == CurrentVersion);
 
 			return View(MVC.Docs.Views.Indexes, new PageModel(toc));
 		}
@@ -216,7 +217,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Transformers);
+				.First(x => x.Category == Category.Transformers && x.Version == CurrentVersion);
 
 			return View(MVC.Docs.Views.Transformers, new PageModel(toc));
 		}
@@ -225,7 +226,7 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			var toc = DocumentSession
 				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Glossary);
+				.First(x => x.Category == Category.Glossary && x.Version == CurrentVersion);
 
 			return View(MVC.Docs.Views.Glossary, new PageModel(toc));
 		}
@@ -234,9 +235,12 @@ namespace Raven.Documentation.Web.Controllers
 		{
 			ViewBag.Key = null;
 
+			var indexKey = key + "/index";
+
 			var allPages = DocumentSession
 				.Query<DocumentationPage>()
-				.Where(x => x.Key == key)
+				.Where(x => x.Key == key || x.Key == indexKey)
+				.Where(x => x.Version == CurrentVersion)
 				.ToList();
 
 			if (allPages.Count == 0)

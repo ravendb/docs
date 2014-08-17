@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.Web.Controllers
+﻿using System.Globalization;
+
+namespace Raven.Documentation.Web.Controllers
 {
 	using System;
 	using System.Web.Mvc;

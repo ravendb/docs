@@ -44,6 +44,67 @@
 			return htmlHelper.ActionLink(language.GetDescription(), actionName, controllerName, routeValues, new Dictionary<string, object> { { "class", css } });
 		}
 
+		public static MvcHtmlString GenerateNavigation(this HtmlHelper htmlHelper, Language language, string version)
+		{
+			if (version == "3.0")
+				return GenerateNavigationFor30(htmlHelper, language);
+
+			if (version == "2.5")
+				return GenerateNavigationFor25(htmlHelper, language);
+
+			return null;
+		}
+
+		private static MvcHtmlString GenerateNavigationFor30(HtmlHelper htmlHelper, Language language)
+		{
+			var builder = new StringBuilder();
+			builder.AppendLine("<ul class='nav navbar-nav'>");
+
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Getting started", MVC.Docs.ActionNames.Start, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Indexes", MVC.Docs.ActionNames.Indexes, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Transformers", MVC.Docs.ActionNames.Transformers, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server", MVC.Docs.ActionNames.Server, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Studio, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			
+			builder.AppendLine("<li class='dropdown'>");
+			builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");
+			builder.AppendLine("<ul class='dropdown-menu' role='menu'>");
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Glossary", MVC.Docs.ActionNames.Glossary, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine("</ul>");
+			builder.AppendLine("</li>");
+
+			builder.AppendLine("</ul>");
+
+			return new MvcHtmlString(builder.ToString());
+		}
+
+		private static MvcHtmlString GenerateNavigationFor25(HtmlHelper htmlHelper, Language language)
+		{
+			var builder = new StringBuilder();
+			builder.AppendLine("<ul class='nav navbar-nav'>");
+
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Intro", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "intro" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Theory", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "theory" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink(".NET Client API", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "client-api" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("HTTP API", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "http-api" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server side", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "server" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "studio" }, null)));
+
+			builder.AppendLine("<li class='dropdown'>");
+			builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");
+			builder.AppendLine("<ul class='dropdown-menu' role='menu'>");
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Appendixes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "appendixes" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("FAQ", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "faq" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "samples" }, null)));
+			builder.AppendLine("</ul>");
+			builder.AppendLine("</li>");
+
+			builder.AppendLine("</ul>");
+
+			return new MvcHtmlString(builder.ToString());
+		}
+
 		public static MvcHtmlString GenerateTableOfContents(this HtmlHelper htmlHelper, TableOfContents tableOfContents, string key)
 		{
 			Debug.Assert(tableOfContents != null);
