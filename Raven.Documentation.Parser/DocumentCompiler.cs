@@ -25,7 +25,7 @@
 			_options = options;
 		}
 
-		public DocumentationPage Compile(FileInfo file, FolderItem page, double documentationVersion)
+		public DocumentationPage Compile(FileInfo file, FolderItem page, string documentationVersion)
 		{
 			try
 			{
@@ -62,7 +62,7 @@
 			}
 		}
 
-		private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, double documentationVersion, HtmlTag tag)
+		private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
 		{
 			string src;
 			if (tag.attributes.TryGetValue("src", out src))
@@ -73,7 +73,7 @@
 				if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
 					src = src.Substring(7);
 
-				var newSrc = string.Format("{0}/{1}", documentationVersion.ToString("#.0", CultureInfo.InvariantCulture), src);
+				var newSrc = string.Format("{0}/{1}", documentationVersion, src);
 
 				tag.attributes["src"] = imagesUrl + newSrc;
 
@@ -89,7 +89,7 @@
 			return true;
 		}
 
-		private string ExtractKey(FileInfo file, FolderItem page, double documentationVersion)
+		private string ExtractKey(FileInfo file, FolderItem page, string documentationVersion)
 		{
 			var pathToDocumentationPagesDirectory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
 			var key = file.FullName.Substring(pathToDocumentationPagesDirectory.Length, file.FullName.Length - pathToDocumentationPagesDirectory.Length);
@@ -140,7 +140,7 @@
 			return node.InnerText;
 		}
 
-		private string TransformBlocks(string content, double documentationVersion)
+		private string TransformBlocks(string content, string documentationVersion)
 		{
 			content = NoteBlockHelper.GenerateNoteBlocks(content);
 			content = CodeBlockHelper.GenerateCodeBlocks(content, documentationVersion, _options);

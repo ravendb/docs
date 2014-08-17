@@ -27,7 +27,7 @@
 
 		private PageLinksValidationResult ValidatePageLinks(DocumentationPage page, IList<DocumentationPage> pages)
 		{
-			var result = new PageLinksValidationResult(page.Key);
+			var result = new PageLinksValidationResult(page.Key, page.Language, page.Version);
 
 			var htmlDocument = HtmlHelper.ParseHtml(page.HtmlContent);
 			var links = htmlDocument.DocumentNode.SelectNodes("//a[@href]");
@@ -40,15 +40,23 @@
 			{
 				var hrefAttribute = link.Attributes["href"];
 				var href = hrefAttribute.Value.Trim();
-				var isValid = false;
-				Uri uri = null;
-				if (string.IsNullOrEmpty(href) == false)
-				{
-					uri = href.StartsWith("http") ? new Uri(href, UriKind.Absolute) : new Uri(currentUri + href, UriKind.Absolute);
-					isValid = ValidatePageLink(uri, pages);
-				}
 
-				result.Links[string.Format("[{0}][{1}]", link.InnerText, uri)] = isValid;
+				try
+				{
+					var isValid = false;
+					Uri uri = null;
+					if (string.IsNullOrEmpty(href) == false)
+					{
+						uri = href.StartsWith("http") ? new Uri(href, UriKind.Absolute) : new Uri(currentUri + href, UriKind.Absolute);
+						isValid = ValidatePageLink(uri, pages);
+					}
+
+					result.Links[string.Format("[{0}][{1}]", link.InnerText, uri)] = isValid;
+				}
+				catch (Exception)
+				{
+					result.Links[href] = false;
+				}
 			}
 
 			return result;
@@ -56,19 +64,17 @@
 
 		private bool ValidatePageLink(Uri uri, IEnumerable<DocumentationPage> pages)
 		{
-			var url = uri.AbsoluteUri;
-			//if (url.StartsWith(_options.RootUrl, StringComparison.OrdinalIgnoreCase))
-			//{
-			//	var key = url.Substring(_options.RootUrl.Length);
-			//	var hashIndex = key.IndexOf("#", StringComparison.OrdinalIgnoreCase);
-			//	if (hashIndex != -1)
-			//		key = key
+			try
+			{
+				var url = uri.AbsoluteUri;
 
-			//	return pages.Any(x => x.Key.Equals(key, StringComparison.OrdinalIgnoreCase));
-			//}
-
-			var response = _client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result;
-			return response.IsSuccessStatusCode;
+				var response = _client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result;
+				return response.IsSuccessStatusCode;
+			}
+			catch (Exception)
+			{
+				return false;
+			}
 		}
 	}
 }

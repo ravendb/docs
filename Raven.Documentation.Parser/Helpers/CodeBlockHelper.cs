@@ -26,7 +26,7 @@ namespace Raven.Documentation.Parser.Helpers
 
 		private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-		public static string GenerateCodeBlocks(string content, double documentationVersion, ParserOptions options)
+		public static string GenerateCodeBlocks(string content, string documentationVersion, ParserOptions options)
 		{
 			content = CodeTabsFinder.Replace(content, match => GenerateCodeTabsBlock(match.Groups[1].Value.Trim(), documentationVersion, options));
 			content = CodeWithLanguageFinder.Replace(content, match => GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim(), documentationVersion, options));
@@ -49,7 +49,7 @@ namespace Raven.Documentation.Parser.Helpers
 			return builder.ToString();
 		}
 
-		private static string GenerateCodeBlockFromFile(string languageAsString, string value, double documentationVersion, ParserOptions options)
+		private static string GenerateCodeBlockFromFile(string languageAsString, string value, string documentationVersion, ParserOptions options)
 		{
 			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
 			var samplesDirectory = options.GetPathToDocumentationSamplesDirectory(language, documentationVersion);
@@ -76,7 +76,7 @@ namespace Raven.Documentation.Parser.Helpers
 			return builder.ToString();
 		}
 
-		private static string GenerateCodeTabsBlock(string content, double documentationVersion, ParserOptions options)
+		private static string GenerateCodeTabsBlock(string content, string documentationVersion, ParserOptions options)
 		{
 			var tabs = new List<CodeTab>();
 			var matches = CodeTabFinder.Matches(content);
@@ -120,7 +120,7 @@ namespace Raven.Documentation.Parser.Helpers
 			return new CodeTab { Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
 		}
 
-		private static CodeTab GenerateCodeTabFromFile(string languageAsString, string value, double documentationVersion, ParserOptions options)
+		private static CodeTab GenerateCodeTabFromFile(string languageAsString, string value, string documentationVersion, ParserOptions options)
 		{
 			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
 			var samplesDirectory = options.GetPathToDocumentationSamplesDirectory(language, documentationVersion);

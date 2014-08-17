@@ -9,7 +9,7 @@
 			Images = new List<DocumentationImage>();
 		}
 
-        public double Version { get; set; }
+        public string Version { get; set; }
 
 	    public string HtmlContent { get; set; }
 

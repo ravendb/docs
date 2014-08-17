@@ -9,7 +9,7 @@
 			Items = new List<TableOfContentsItem>();
 		}
 
-		public double Version { get; set; }
+		public string Version { get; set; }
 
 		public Category Category { get; set; }
 

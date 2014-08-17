@@ -27,6 +27,31 @@ namespace Raven.Documentation.Parser.Data
 
 		[Prefix("start")]
 		[Description("Getting started")]
-		Start
+		Start,
+
+		// legacy categories
+
+		[Prefix("intro")]
+		Intro,
+
+		[Prefix("theory")]
+		Theory,
+
+		[Prefix("http-api")]
+		[Description("HTTP API")]
+		HttpApi,
+
+		[Prefix("appendixes")]
+		Appendixes,
+
+		[Prefix("faq")]
+		[Description("FAQ")]
+		Faq,
+
+		[Prefix("samples")]
+		Samples,
+
+		[Prefix("index")]
+		Index,
 	}
 }
