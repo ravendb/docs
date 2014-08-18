@@ -27,10 +27,10 @@ namespace Raven.Documentation.CodeSamples.Transformers
 			public static void Main(string[] args)
 			{
 				using (var store = new DocumentStore
-									   {
-										   Url = "http://localhost:8080",
-										   DefaultDatabase = "Northwind"
-									   })
+				{
+					Url = "http://localhost:8080",
+					DefaultDatabase = "Northwind"
+				})
 				{
 					store.Initialize();
 
@@ -90,10 +90,10 @@ namespace Raven.Documentation.CodeSamples.Transformers
 				store
 					.DatabaseCommands
 					.PutTransformer("Orders/Company", new TransformerDefinition
-						                                  {
-							                                  Name = "Orders/Company",
-															  TransformResults = "from result in results select result.Company"
-						                                  });
+					{
+						Name = "Orders/Company",
+						TransformResults = "from result in results select result.Company"
+					});
 				#endregion
 
 				#region transformers_7
