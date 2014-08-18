@@ -206,6 +206,7 @@
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\CreatingDocumentStore.cs" />
     <Compile Include="ClientApi\HowTo\SendCustomRequest.cs" />
     <Compile Include="ClientApi\Listeners\Conflict.cs" />
     <Compile Include="ClientApi\Listeners\Conversion.cs" />
