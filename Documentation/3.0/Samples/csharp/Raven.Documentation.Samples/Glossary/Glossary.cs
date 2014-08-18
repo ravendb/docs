@@ -46,6 +46,8 @@ namespace Raven.Documentation.CodeSamples.Glossary
 		{
 			public bool OverwriteExisting { get; set; }
 
+			public bool SkipOverwriteIfUnchanged { get; set; }
+
 			public bool CheckReferencesInIndexes { get; set; }
 
 			public int BatchSize { get; set; }

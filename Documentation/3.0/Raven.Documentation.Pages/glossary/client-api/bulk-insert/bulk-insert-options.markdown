@@ -6,6 +6,10 @@ OverwriteExisting
 :   Type: bool   
 Indicates if existing documents should be overwritten. If not, exception will be thrown. Default: `false`.
 
+SkipOverwriteIfUnchanged
+:   Type: bool   
+Determines whether should skip to overwrite a document when it is updated by exactly the same document (by comparing a content and as well as metadata). Default: `false`.
+
 CheckReferencesInIndexes
 :   Type: bool   
 Enables reference checking. Default: `false`.
