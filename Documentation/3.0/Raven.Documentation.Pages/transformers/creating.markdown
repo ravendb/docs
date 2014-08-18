@@ -1,14 +1,16 @@
 # Creating transformers
 
-Transformers can be created and send to server in couple of ways, starting from using low-level commands to creating custom classes and sending them individually or even scanning an assembly.
+{PANEL}
+Transformers can be created and send to server in couple of ways, starting from using low-level [commands](../transformers/creating#using-commands) to creating [custom classes](../transformers/creating#using-abstracttransformercreationtask) and sending them individually or even scanning an assembly.
+{PANEL/}
 
 {PANEL:using AbstractTransformerCreationTask}
 
 Special abstract class has been created for strongly-typed transformer creation called `AbstractTransformerCreationTask`. 
 
-There are certain benefits of using it like:
+There are certain benefits of using it:
 
-- strongly-typed syntax
+- **strongly-typed syntax**
 - ability to deploy it easily
 - ability to deploy it using assembly scanner (more about it later)
 - ability to pass transformer as generic type is various methods without having to hardcode string-based names
