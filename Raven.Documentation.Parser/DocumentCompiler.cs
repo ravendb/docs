@@ -31,7 +31,7 @@
 			{
 				var key = ExtractKey(file, page, documentationVersion);
 				var category = CategoryHelper.ExtractCategoryFromPath(key);
-				var images = new List<DocumentationImage>();
+				var images = new HashSet<DocumentationImage>();
 
 				_parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, _options.ImagesUrl, documentationVersion, tag);
 
