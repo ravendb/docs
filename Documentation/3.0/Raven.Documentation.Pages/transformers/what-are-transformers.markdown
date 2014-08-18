@@ -22,6 +22,7 @@ If we want to transform our query or load results we need to perform few steps.
 
 More examples with detailed description can be found [here](../transformers/using).
 
-#### Related articles
+## Related articles
 
-TODO
+- [Creating transformers](../transformers/creating)
+- [Using transformers](../transformers/using)

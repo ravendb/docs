@@ -295,6 +295,7 @@
     <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
     <Compile Include="Server\ScalingOut\Sharding\HowToSetupSharding.cs" />
     <Compile Include="Server\Troubleshooting\EnablingLogging.cs" />
+    <Compile Include="Transformers\Creating.cs" />
     <Compile Include="Transformers\WhatAreTransformers.cs" />
   </ItemGroup>
   <ItemGroup>

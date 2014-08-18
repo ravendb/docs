@@ -6,7 +6,7 @@
     {
 		public DocumentationPage()
 		{
-			Images = new List<DocumentationImage>();
+			Images = new HashSet<DocumentationImage>();
 		}
 
         public string Version { get; set; }
@@ -25,6 +25,6 @@
 
 	    public Category Category { get; set; }
 
-		public List<DocumentationImage> Images { get; set; }
+		public HashSet<DocumentationImage> Images { get; set; }
     }
 }

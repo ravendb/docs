@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.IO;
 using System.Threading;
+using System.Threading.Tasks;
 
 using Raven.Client.Connection;
 using Raven.Client.Document;
@@ -128,16 +129,18 @@ namespace Raven.Documentation.Web.Controllers
 			{
 				DocumentSession.Store(page);
 
-				foreach (var image in page.Images)
-				{
-					if (System.IO.File.Exists(image.ImagePath) == false)
-						continue;
+				Parallel.ForEach(
+					page.Images,
+					image =>
+						{
+							if (System.IO.File.Exists(image.ImagePath) == false)
+								return;
 
-					using (var file = System.IO.File.OpenRead(image.ImagePath))
-					{
-						DocumentStore.DatabaseCommands.PutAttachment(image.ImageKey, null, file, new RavenJObject());
-					}
-				}
+							using (var file = System.IO.File.OpenRead(image.ImagePath))
+							{
+								DocumentStore.DatabaseCommands.PutAttachment(image.ImageKey, null, file, new RavenJObject());
+							}
+						});
 			}
 
 			foreach (var toc in parser.GenerateTableOfContents())
@@ -148,17 +151,15 @@ namespace Raven.Documentation.Web.Controllers
 			DocumentSession.SaveChanges();
 
 			if (string.IsNullOrEmpty(key))
-			{
-				while (true)
-				{
-					var stats = DocumentStore.DatabaseCommands.GetStatistics();
-					if (stats.StaleIndexes.Any() == false)
-						break;
-
-					Thread.Sleep(500);
-				}
-
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+
+			while (true)
+			{
+				var stats = DocumentStore.DatabaseCommands.GetStatistics();
+				if (stats.StaleIndexes.Any() == false)
+					break;
+
+				Thread.Sleep(500);
 			}
 
 			return RedirectToAction(

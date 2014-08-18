@@ -182,3 +182,4 @@ UpgradeLog*.htm
 FakesAssemblies/
 CompiledIndexCache
 Raven
+/version_3/html-compiled
