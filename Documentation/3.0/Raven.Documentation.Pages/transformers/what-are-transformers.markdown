@@ -20,9 +20,9 @@ If we want to transform our query or load results we need to perform few steps.
 
 {CODE transformers_4@Transformers/WhatAreTransformers.cs /}
 
-More examples with detailed description can be found [here](../transformers/using).
+More examples with detailed description can be found [here](../transformers/basic-transformations).
 
 ## Related articles
 
-- [Creating transformers](../transformers/creating)
-- [Using transformers](../transformers/using)
+- [Creating and deploying transformers](../transformers/creating-and-deploying)
+- [Basic transformations](../transformers/basic-transformations)

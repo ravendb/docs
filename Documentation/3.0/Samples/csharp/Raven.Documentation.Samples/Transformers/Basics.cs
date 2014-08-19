@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Raven.Client.Document;
-using Raven.Client.Document.SessionOperations;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.Transformers
+namespace Raven.Documentation.Samples.Transformers
 {
-	public class Using
+	public class Basics
 	{
 		/*
 		#region transformers_1
@@ -102,82 +100,7 @@ namespace Raven.Documentation.CodeSamples.Transformers
 		}
 		#endregion
 
-		#region transformers_1_2
-		public class Products_ProductAndCategoryName : AbstractTransformerCreationTask<Product>
-		{
-			public class Result
-			{
-				public string ProductName { get; set; }
-
-				public string CategoryName { get; set; }
-			}
-
-			public Products_ProductAndCategoryName()
-			{
-				TransformResults =
-					products =>
-					from product in products
-					let category = LoadDocument<Category>(product.Category)
-					select new
-					{
-						ProductName = product.Name,
-						CategoryName = category.Name
-					};
-			}
-		}
-		#endregion
-
-		#region transformers_1_3
-		public class Employees_BirthDay : AbstractTransformerCreationTask<Employee>
-		{
-			public class Result
-			{
-				public string FirstName { get; set; }
-
-				public string LastName { get; set; }
-
-				public string BirthDay { get; set; }
-			}
-
-			public Employees_BirthDay()
-			{
-				TransformResults =
-					employees =>
-					from employee in employees
-					// if no parameter is passed use 't' format
-					let dateFormat = ParameterOrDefault("DateFormat", "t").Value<string>()
-					select new
-					{
-						FirstName = employee.FirstName,
-						LastName = employee.LastName,
-						BirthDay = employee.Birthday.ToString(dateFormat)
-					};
-			}
-		}
-		#endregion
-
-		#region transformers_1_4
-		public class Orders_Employees_FirstAndLastName : AbstractTransformerCreationTask<Order>
-		{
-			public class Result
-			{
-				public string FirstName { get; set; }
-
-				public string LastName { get; set; }
-			}
-
-			public Orders_Employees_FirstAndLastName()
-			{
-				TransformResults =
-					orders =>
-					from order in orders
-					let employee = LoadDocument<Employee>(order.Employee)
-					select TransfromWith("Employees/FirstAndLastName", employee);
-			}
-		}
-		#endregion
-
-		public Using()
+		public Basics()
 		{
 			using (var store = new DocumentStore())
 			{
@@ -217,17 +140,6 @@ namespace Raven.Documentation.CodeSamples.Transformers
 					IList<Address> results = session
 						.Query<Employee>()
 						.TransformWith<Employees_Address, Address>()
-						.ToList();
-					#endregion
-				}
-
-				using (var session = store.OpenSession())
-				{
-					#region transformers_1_4
-					IList<Employees_BirthDay.Result> results = session
-						.Query<Employee>()
-						.TransformWith<Employees_BirthDay, Employees_BirthDay.Result>()
-						.AddTransformerParameter("DateFormat", "D")
 						.ToList();
 					#endregion
 				}
