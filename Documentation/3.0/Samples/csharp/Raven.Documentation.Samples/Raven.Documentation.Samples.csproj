@@ -297,8 +297,14 @@
     <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
     <Compile Include="Server\ScalingOut\Sharding\HowToSetupSharding.cs" />
     <Compile Include="Server\Troubleshooting\EnablingLogging.cs" />
+    <Compile Include="Transformers\Basics.cs" />
     <Compile Include="Transformers\Creating.cs" />
-    <Compile Include="Transformers\Using.cs" />
+    <Compile Include="Transformers\Including.cs" />
+    <Compile Include="Transformers\Loading.cs" />
+    <Compile Include="Transformers\Metadata.cs" />
+    <Compile Include="Transformers\Nesting.cs" />
+    <Compile Include="Transformers\Parameters.cs" />
+    <Compile Include="Transformers\Recurse.cs" />
     <Compile Include="Transformers\WhatAreTransformers.cs" />
   </ItemGroup>
   <ItemGroup>
