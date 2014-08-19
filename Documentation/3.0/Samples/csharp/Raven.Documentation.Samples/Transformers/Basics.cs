@@ -30,11 +30,11 @@ namespace Raven.Documentation.Samples.Transformers
 			public Employees_FirstAndLastName()
 			{
 				TransformResults = employees => from employee in employees
-												select new
-												{
-													FirstName = employee.FirstName,
-													LastName = employee.LastName
-												};
+								select new
+								{
+									FirstName = employee.FirstName,
+									LastName = employee.LastName
+								};
 			}
 			#endregion
 		}

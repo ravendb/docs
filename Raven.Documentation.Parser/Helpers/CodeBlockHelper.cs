@@ -81,7 +81,14 @@ namespace Raven.Documentation.Parser.Helpers
 			var tabs = new List<CodeTab>();
 			var matches = CodeTabFinder.Matches(content);
 			foreach (Match match in matches)
-				tabs.Add(GenerateCodeTabFromFile(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim(), documentationVersion, options));
+			{
+				var languageAndTitle = match.Groups[1].Value.Trim();
+				var parts = languageAndTitle.Split(':');
+				var languageAsString = parts[0];
+				var title = parts.Length > 1 ? parts[1] : null;
+				var value = match.Groups[2].Value.Trim();
+				tabs.Add(GenerateCodeTabFromFile(languageAsString, title, value, documentationVersion, options));
+			}
 
 			matches = CodeTabBlockFinder.Matches(content);
 			foreach (Match match in matches)
@@ -90,14 +97,18 @@ namespace Raven.Documentation.Parser.Helpers
 			var builder = new StringBuilder();
 			builder.AppendLine("<div class='code-tabs'>");
 			builder.AppendLine("<ul class='nav nav-tabs'>");
-			foreach (var tab in tabs)
-				builder.AppendLine(string.Format("<li class='code-tab'><a href='#{0}' data-toggle='tab'>{1}</a></li>", tab.Id, ConvertLanguageToDisplayName(tab.Language)));
+			for (int index = 0; index < tabs.Count; index++)
+			{
+				var tab = tabs[index];
+				builder.AppendLine(string.Format("<li class='code-tab {2}'><a href='#{0}' data-toggle='tab'>{1}</a></li>", tab.Id, tab.Title ?? ConvertLanguageToDisplayName(tab.Language), index == 0 ? "active" : string.Empty));
+			}
 			builder.AppendLine("</ul>");
 
 			builder.AppendLine("<div class='tab-content'>");
-			foreach (var tab in tabs)
+			for (int index = 0; index < tabs.Count; index++)
 			{
-				builder.AppendLine(string.Format("<div class='tab-pane code-tab' id='{0}'>", tab.Id));
+				var tab = tabs[index];
+				builder.AppendLine(string.Format("<div class='tab-pane code-tab {1}' id='{0}'>", tab.Id, index == 0 ? "active" : string.Empty));
 				builder.AppendLine(string.Format("<pre class='prettyprint {0}'>", ConvertLanguageToCssClass(tab.Language)));
 				builder.AppendLine(tab.Content);
 				builder.AppendLine("</pre>");
@@ -120,7 +131,7 @@ namespace Raven.Documentation.Parser.Helpers
 			return new CodeTab { Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
 		}
 
-		private static CodeTab GenerateCodeTabFromFile(string languageAsString, string value, string documentationVersion, ParserOptions options)
+		private static CodeTab GenerateCodeTabFromFile(string languageAsString, string title, string value, string documentationVersion, ParserOptions options)
 		{
 			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
 			var samplesDirectory = options.GetPathToDocumentationSamplesDirectory(language, documentationVersion);
@@ -142,7 +153,7 @@ namespace Raven.Documentation.Parser.Helpers
 					throw new NotSupportedException(language.ToString());
 			}
 
-			return new CodeTab { Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
+			return new CodeTab { Title = title, Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
 		}
 
 		private static string ExtractSectionFromJavaFile(string section, string filePath)
