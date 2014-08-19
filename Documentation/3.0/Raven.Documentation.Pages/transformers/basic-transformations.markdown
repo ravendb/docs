@@ -47,7 +47,7 @@ If we would [store]() `FirstName` and `LastName` in index that was queried, then
 
 ## Projecting single property
 
-Single properties can be projected with ease:
+You do not have to create new objects each time, when only single property is needed all you need to do is select that property:
 
 {CODE transformers_8@Transformers/Basics.cs /}
 
@@ -55,7 +55,7 @@ Single properties can be projected with ease:
 
 ## Projecting complex property
 
-Complex types can be projected as well:
+When your documents contain nested objects and you want to return only those, then projection can look as follows:
 
 {CODE transformers_1_0@Transformers/Basics.cs /}
 
