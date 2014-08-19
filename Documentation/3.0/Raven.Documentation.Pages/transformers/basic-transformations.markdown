@@ -18,11 +18,10 @@ You probably noticed that we're passing `Employee` as a generic parameter to `Ab
 
 - next step is to create a transformation itself, to do it we need to set the `TransformResults` property with our function in **parameterless constructor**.
 
-{CODE transformers_2@Transformers/Basics.cs /}
-
-or if you preffer method syntax in LINQ:
-
-{CODE transformers_3@Transformers/Basics.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Query-syntax transformers_2@Transformers/Basics.cs /}
+{CODE-TAB:csharp:Method-syntax transformers_3@Transformers/Basics.cs /}
+{CODE-TABS/}
 
 - final step is to [deploy it to the server](../transformers/creating-and-deploying) (omitted) and transform our query results using [TransformWith](../client-api/session/querying/how-to-use-transformers-in-queries) query extension method:
 
