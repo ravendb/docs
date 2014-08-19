@@ -1,15 +1,14 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
-using Raven.Client.Linq;
 using Raven.Client.Indexes;
+using Raven.Client.Linq;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.Transformers
+namespace Raven.Documentation.Samples.Transformers
 {
 	namespace Raven.Documentation.CodeSamples.Transformers.Foo
 	{
