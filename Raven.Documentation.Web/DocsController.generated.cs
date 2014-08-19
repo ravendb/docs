@@ -110,18 +110,6 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Indexes()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Indexes);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Transformers()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Transformers);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Glossary()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Glossary);
@@ -157,8 +145,6 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Client = "Client";
             public readonly string Studio = "Studio";
             public readonly string Server = "Server";
-            public readonly string Indexes = "Indexes";
-            public readonly string Transformers = "Transformers";
             public readonly string Glossary = "Glossary";
             public readonly string Articles = "Articles";
         }
@@ -175,8 +161,6 @@ namespace Raven.Documentation.Web.Controllers
             public const string Client = "Client";
             public const string Studio = "Studio";
             public const string Server = "Server";
-            public const string Indexes = "Indexes";
-            public const string Transformers = "Transformers";
             public const string Glossary = "Glossary";
             public const string Articles = "Articles";
         }
@@ -261,24 +245,6 @@ namespace Raven.Documentation.Web.Controllers
         public ActionParamsClass_Server ServerParams { get { return s_params_Server; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Server
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_Indexes s_params_Indexes = new ActionParamsClass_Indexes();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Indexes IndexesParams { get { return s_params_Indexes; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Indexes
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_Transformers s_params_Transformers = new ActionParamsClass_Transformers();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Transformers TransformersParams { get { return s_params_Transformers; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Transformers
         {
             public readonly string version = "version";
             public readonly string language = "language";
@@ -463,32 +429,6 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             ServerOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void IndexesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Indexes(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Indexes);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            IndexesOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void TransformersOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Transformers(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Transformers);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            TransformersOverride(callInfo, version, language);
             return callInfo;
         }
 

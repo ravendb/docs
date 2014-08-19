@@ -72,8 +72,8 @@
 			builder.AppendLine("<ul class='nav navbar-nav'>");
 
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Getting started", MVC.Docs.ActionNames.Start, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Indexes", MVC.Docs.ActionNames.Indexes, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Transformers", MVC.Docs.ActionNames.Transformers, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Indexes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "indexes/what-are-indexes" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Transformers", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "transformers/what-are-transformers" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server", MVC.Docs.ActionNames.Server, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Studio, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));

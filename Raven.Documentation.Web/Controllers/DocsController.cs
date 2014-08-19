@@ -214,24 +214,6 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Server, new PageModel(toc));
 		}
 
-		public virtual ActionResult Indexes(string version, string language)
-		{
-			var toc = DocumentSession
-				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Indexes && x.Version == CurrentVersion);
-
-			return View(MVC.Docs.Views.Indexes, new PageModel(toc));
-		}
-
-		public virtual ActionResult Transformers(string version, string language)
-		{
-			var toc = DocumentSession
-				.Query<TableOfContents>()
-				.First(x => x.Category == Category.Transformers && x.Version == CurrentVersion);
-
-			return View(MVC.Docs.Views.Transformers, new PageModel(toc));
-		}
-
 		public virtual ActionResult Glossary(string version, string language)
 		{
 			var toc = DocumentSession
