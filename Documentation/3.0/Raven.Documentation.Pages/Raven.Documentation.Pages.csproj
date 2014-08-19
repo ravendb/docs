@@ -215,7 +215,7 @@
     <None Include="glossary\transformers\transformer-definition.markdown" />
     <None Include="indexes\.docslist" />
     <None Include="indexes\boosting.markdown" />
-    <None Include="indexes\creating-indexes.markdown" />
+    <None Include="indexes\creating-and-deploying.markdown" />
     <None Include="indexes\creating-spatial-indexes.markdown" />
     <None Include="indexes\customizing-results-order.markdown" />
     <None Include="indexes\indexes-error-handling.markdown" />

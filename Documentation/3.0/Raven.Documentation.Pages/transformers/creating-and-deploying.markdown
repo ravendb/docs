@@ -23,7 +23,7 @@ Disadvanage of this is approach is that transformer names are auto-generated fro
 
 Actually there is only one naming conventions: each `_` in class name will be translated to `/` in transformer name.
 
-E.g.
+e.g.
 
 In `Northwind` samples there is a transformer called `Orders/Company`. To get such a transformer name, we need to create class called `Orders_Company`.
 
@@ -31,23 +31,23 @@ In `Northwind` samples there is a transformer called `Orders/Company`. To get su
 
 ### Sending to server
 
-Since transformers are server-side projections, they must be stored on server. To do so, we need to create instance of our class that implements `AbstractTransformerCreationTask` and use one of the deployment methods: `Execute` or `ExecuteAsync` for asynchronous call.
+Since transformers are server-side projections, they must be stored on server. To do so, we need to create instance of our class that inherits from `AbstractTransformerCreationTask` and use one of the deployment methods: `Execute` or `ExecuteAsync` for asynchronous call.
 
 {CODE transformers_2@Transformers/Creating.cs /}
 
 {CODE transformers_3@Transformers/Creating.cs /}
 
-{SAFE If transformer exists on server and definition (name, transform function) is the same as the one that was send, then it will **not** be overwritten. /}
+{SAFE If transformer exists on server and stored definition (name, transform function) is the same as the one that was send, then it will **not** be overwritten. /}
 
 ### Using assembly scanner
 
-All classes that inherit from `AbstractTransformerCreationTask` can be deployed at once using one of `IndexCreation.CreateIndexes` methods.
+All classes that inherit from `AbstractTransformerCreationTask` can be deployed at once using one of `IndexCreation.CreateIndexes` method overloads.
 
 {CODE transformers_4@Transformers/Creating.cs /}
 
 Underneath, the `IndexCreation` will call `Execute` methods for each of found transformers (and indexes).
 
-{WARNING `IndexCreation.CreateIndexes` will also deploy all classes that inherit from `AbstractIndexCreationTask`. /}
+{WARNING `IndexCreation.CreateIndexes` will also deploy all classes that inherit from `AbstractIndexCreationTask` (more about it [here](../indexes/creating-and-deploying)). /}
 
 ### Example
 
@@ -59,7 +59,7 @@ Underneath, the `IndexCreation` will call `Execute` methods for each of found tr
 
 Another way to create transformer is to use low-level `PutTransformer` command from `DatabaseCommands`. API reference for this command can be found [here](../client-api/commands/transformers/put).
 
-The advanatge of this approach is that you can define transformer name as you feel fit, but you loose all other possibilities when `AbstractTransformerCreationTask` is used.
+The advantage of this approach is that you can define transformer name as you feel fit, but you loose all other possibilities when `AbstractTransformerCreationTask` is used.
 
 {CODE transformers_6@Transformers/Creating.cs /}
 
