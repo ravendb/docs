@@ -1,8 +1,11 @@
-﻿namespace Raven.Documentation.Parser
+﻿using System.Collections.Concurrent;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Raven.Documentation.Parser
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Linq;
 	using System.Net.Http;
 
 	using Raven.Documentation.Parser.Data;
@@ -12,20 +15,38 @@
 	{
 		private readonly ParserOptions _options;
 
-		private readonly HttpClient _client;
-
 		public DocumentationValidator(ParserOptions options)
 		{
-			_client = new HttpClient();
 			_options = options;
 		}
 
 		public IEnumerable<PageLinksValidationResult> ValidateLinks(IList<DocumentationPage> pages)
 		{
-			return pages.Select(page => ValidatePageLinks(page, pages));
+			var results = new ConcurrentBag<PageLinksValidationResult>();
+
+			var p = new List<DocumentationPage>[2];
+
+			var half = pages.Count / 2;
+			p[0] = pages.Take(half).ToList();
+			p[1] = pages.Skip(half).ToList();
+
+			Parallel.For(
+				0,
+				2,
+				i =>
+				{
+					using (var client = new HttpClient())
+					{
+						var pagesToCheck = p[i];
+						foreach (var page in pagesToCheck)
+							results.Add(ValidatePageLinks(client, page, pages));
+					}
+				});
+
+			return results;
 		}
 
-		private PageLinksValidationResult ValidatePageLinks(DocumentationPage page, IList<DocumentationPage> pages)
+		private PageLinksValidationResult ValidatePageLinks(HttpClient client, DocumentationPage page, IList<DocumentationPage> pages)
 		{
 			var result = new PageLinksValidationResult(page.Key, page.Language, page.Version);
 
@@ -48,7 +69,7 @@
 					if (string.IsNullOrEmpty(href) == false)
 					{
 						uri = href.StartsWith("http") ? new Uri(href, UriKind.Absolute) : new Uri(currentUri + href, UriKind.Absolute);
-						isValid = ValidatePageLink(uri, pages);
+						isValid = ValidatePageLink(client, uri, pages);
 					}
 
 					result.Links[string.Format("[{0}][{1}]", link.InnerText, uri)] = isValid;
@@ -62,13 +83,13 @@
 			return result;
 		}
 
-		private bool ValidatePageLink(Uri uri, IEnumerable<DocumentationPage> pages)
+		private static bool ValidatePageLink(HttpClient client, Uri uri, IEnumerable<DocumentationPage> pages)
 		{
 			try
 			{
 				var url = uri.AbsoluteUri;
 
-				var response = _client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result;
+				var response = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result;
 				return response.IsSuccessStatusCode;
 			}
 			catch (Exception)
