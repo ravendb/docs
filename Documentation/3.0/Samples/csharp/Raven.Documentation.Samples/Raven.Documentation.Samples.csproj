@@ -259,6 +259,7 @@
     <Compile Include="Glossary\Glossary.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
+    <Compile Include="Indexes\Creating.cs" />
     <Compile Include="Indexes\CustomizingResultsOrder.cs" />
     <Compile Include="Indexes\DynamicFields.cs" />
     <Compile Include="Indexes\IndexingHierarchicalData.cs" />
