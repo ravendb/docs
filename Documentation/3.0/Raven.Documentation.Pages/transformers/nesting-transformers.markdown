@@ -12,3 +12,4 @@ When you have more complex transformations and do not want to repeat code in eac
 - [Loading documents](../transformers/loading-documents)
 - [Including documents](../transformers/including-documents)
 - [Passing parameters](../transformers/passing-parameters)
+- [Transforming hierarchical data](../transformers/transforming-hierarchical-data)

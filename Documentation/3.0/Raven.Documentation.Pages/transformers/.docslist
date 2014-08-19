@@ -5,3 +5,5 @@ loading-documents.markdown	Loading documents
 including-documents.markdown	Including documents
 passing-parameters.markdown	Passing parameters
 nesting-transformers.markdown	Nesting transformers
+transforming-hierarchical-data.markdown	Transforming hierarchical data
+converting-to-json-and-accessing-metadata.markdown	Converting to JSON and accessing Metadata

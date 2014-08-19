@@ -6,11 +6,11 @@ Transformers have been introduced in RavenDB 2.5 as a substitution to TransformR
 
 If we want to transform our query or load results we need to perform few steps.
 
-- first we need to create a transformer. One way to create it is to use `AbstractTransformerCreationTask`, but there other ways and you can read about them [here](../transformers/creating).
+- first we need to create a transformer. One way to create it is to use `AbstractTransformerCreationTask`, but there other ways and you can read about them [here](../transformers/creating-and-deploying).
 
 {CODE transformers_1@Transformers/WhatAreTransformers.cs /}
 
-- since transformers work server-side next logic step would be to send it to the server. More information about how to deploy transformers can be found [here](../transformers/creating).
+- since transformers work server-side next logic step would be to send it to the server. More information about how to deploy transformers can be found [here](../transformers/creating-and-deploying).
 
 {CODE transformers_2@Transformers/WhatAreTransformers.cs /}
 
