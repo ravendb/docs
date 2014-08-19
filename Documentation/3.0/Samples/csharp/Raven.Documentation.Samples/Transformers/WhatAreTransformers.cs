@@ -5,7 +5,7 @@ using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.Transformers
+namespace Raven.Documentation.Samples.Transformers
 {
 	public class WhatAreTransformers
 	{
