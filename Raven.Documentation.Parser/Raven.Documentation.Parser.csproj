@@ -69,8 +69,10 @@
     <Compile Include="DocumentationValidator.cs" />
     <Compile Include="Helpers\CategoryHelper.cs" />
     <Compile Include="Helpers\CodeBlockHelper.cs" />
+    <Compile Include="Helpers\DocListFileHelper.cs" />
     <Compile Include="Helpers\FileExtensionHelper.cs" />
     <Compile Include="Helpers\HtmlHelper.cs" />
+    <Compile Include="Helpers\LegacyBlockHelper.cs" />
     <Compile Include="Helpers\NoteBlockHelper.cs" />
     <Compile Include="Helpers\PanelBlockHelper.cs" />
     <Compile Include="Helpers\PrefixHelper.cs" />

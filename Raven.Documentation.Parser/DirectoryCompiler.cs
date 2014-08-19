@@ -2,10 +2,8 @@
 {
 	using System.Collections.Generic;
 	using System.Diagnostics;
-	using System.Globalization;
 	using System.IO;
 	using System.Linq;
-	using System.Text.RegularExpressions;
 
 	using Raven.Documentation.Parser.Data;
 	using Raven.Documentation.Parser.Helpers;
@@ -16,8 +14,7 @@
 
 		private readonly ParserOptions _options;
 
-		static readonly Regex DocsListLine = new Regex(@"^([\w\-/\.]{2,})\t(.+)$", RegexOptions.Compiled | RegexOptions.Multiline);
-
+		
 		public DirectoryCompiler(DocumentCompiler documentCompiler, ParserOptions options)
 		{
 			_documentCompiler = documentCompiler;
@@ -48,7 +45,7 @@
 			if (File.Exists(docListFilePath) == false)
 				yield break;
 
-			foreach (var item in ParseDocListFile(docListFilePath))
+			foreach (var item in DocListFileHelper.ParseDocListFile(docListFilePath))
 			{
 				if (!item.IsFolder)
 					continue;
@@ -70,7 +67,7 @@
 			if (File.Exists(docListFilePath) == false)
 				yield break;
 
-			foreach (var item in ParseDocListFile(docListFilePath))
+			foreach (var item in DocListFileHelper.ParseDocListFile(docListFilePath))
 			{
 				var tableOfContentsItem = new TableOfContents.TableOfContentsItem
 					                          {
@@ -97,34 +94,13 @@
 			return _documentCompiler.Compile(fileInfo, page, documentationVersion);
 		}
 
-		private static IEnumerable<FolderItem> ParseDocListFile(string docListFilePath)
-		{
-			var contents = File.ReadAllText(docListFilePath);
-
-			var matches = DocsListLine.Matches(contents);
-			foreach (Match match in matches)
-			{
-				var name = match.Groups[1].Value.Trim();
-				var description = match.Groups[2].Value.Trim();
-				var isFolder = name.StartsWith("/");
-				var item = new FolderItem(isFolder)
-				{
-					Language = Language.All,
-					Description = description,
-					Name = isFolder ? name.Substring(1, name.Length - 1) : name.Substring(0, name.Length - Constants.MarkdownFileExtension.Length)
-				};
-
-				yield return item;
-			}
-		}
-
 		private IEnumerable<DocumentationPage> CompileDocumentationDirectory(string directory, string documentationVersion)
 		{
 			var docListFilePath = Path.Combine(directory, Constants.DocListFileName);
 			if (File.Exists(docListFilePath) == false)
 				yield break;
 
-			foreach (var item in ParseDocListFile(docListFilePath))
+			foreach (var item in DocListFileHelper.ParseDocListFile(docListFilePath))
 			{
 				if (item.IsFolder)
 				{
