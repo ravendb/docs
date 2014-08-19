@@ -242,7 +242,7 @@
     <None Include="indexes\using-analyzers.markdown" />
     <None Include="indexes\using-dynamic-fields.markdown" />
     <None Include="indexes\using-term-vectors.markdown" />
-    <None Include="indexes\what-is-index.markdown" />
+    <None Include="indexes\what-are-indexes.markdown" />
     <None Include="server\.docslist" />
     <None Include="server\administration\.docslist" />
     <None Include="server\administration\backup-and-restore.markdown" />
