@@ -117,8 +117,7 @@
     <None Include="client-api\how-to\.docslist" />
     <None Include="client-api\how-to\integrate-with-excel.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.dotnet.markdown" />
-    <None Include="client-api\how-to\setup-aggresive-caching.markdown" />
-    <None Include="client-api\how-to\setup-sharding.markdown" />
+    <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
     <None Include="client-api\how-to\work-with-authentication.markdown" />
     <None Include="client-api\listeners\.docslist" />
     <None Include="client-api\listeners\what-are-conflict-listeners-and-how-to-work-with-them.dotnet.markdown" />
@@ -342,6 +341,17 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="client-api\how-to\images\excel_connections.png" />
+    <Content Include="client-api\how-to\images\excel_connections_dialog_1.png" />
+    <Content Include="client-api\how-to\images\excel_connections_dialog_2.png" />
+    <Content Include="client-api\how-to\images\excel_from_text.png" />
+    <Content Include="client-api\how-to\images\excel_from_text_dialog.png" />
+    <Content Include="client-api\how-to\images\excel_from_text_results.png" />
+    <Content Include="client-api\how-to\images\excel_from_text_select.png" />
+    <Content Include="client-api\how-to\images\excel_from_text_wizard_1.png" />
+    <Content Include="client-api\how-to\images\excel_from_text_wizard_2.png" />
+    <Content Include="client-api\how-to\images\excel_result.png" />
+    <Content Include="client-api\how-to\images\excel_transformer.png" />
     <Content Include="server\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\bundles\images\sql_replication_studio.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />
