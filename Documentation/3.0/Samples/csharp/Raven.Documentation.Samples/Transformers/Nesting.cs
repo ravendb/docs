@@ -26,7 +26,7 @@ namespace Raven.Documentation.Samples.Transformers
 					orders =>
 					from order in orders
 					let employee = LoadDocument<Employee>(order.Employee)
-					select TransfromWith("Employees/FirstAndLastName", employee);
+					select TransformWith("Employees/FirstAndLastName", employee);
 			}
 		}
 		#endregion
