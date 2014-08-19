@@ -328,12 +328,14 @@
     <None Include="studio\example-2.markdown" />
     <None Include="studio\example.markdown" />
     <None Include="transformers\.docslist" />
+    <None Include="transformers\transforming-hierarchical-data.markdown" />
     <None Include="transformers\including-documents.markdown" />
     <None Include="transformers\nesting-transformers.markdown" />
     <None Include="transformers\passing-parameters.markdown" />
     <None Include="transformers\loading-documents.markdown" />
     <None Include="transformers\creating-and-deploying.markdown" />
     <None Include="transformers\basic-transformations.markdown" />
+    <None Include="transformers\converting-to-json-and-accessing-metadata.markdown" />
     <None Include="transformers\what-are-transformers.markdown" />
   </ItemGroup>
   <ItemGroup>

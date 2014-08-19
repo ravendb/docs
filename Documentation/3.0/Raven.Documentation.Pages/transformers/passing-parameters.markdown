@@ -19,3 +19,4 @@ To access passed parameters from within a transformer use on of the two availabl
 - [Loading documents](../transformers/loading-documents)
 - [Including documents](../transformers/including-documents)
 - [Nesting transformers](../transformers/nesting-transformers)
+- [Transforming hierarchical data](../transformers/transforming-hierarchical-data)

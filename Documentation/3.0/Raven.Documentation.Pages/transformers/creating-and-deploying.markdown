@@ -4,7 +4,7 @@
 Transformers can be created and send to server in couple of ways, starting from using low-level [commands](../transformers/creating-and-deploying#using-commands) to creating [custom classes](../transformers/creating#using-abstracttransformercreationtask) and sending them individually or even scanning an assembly.
 {PANEL/}
 
-{PANEL:using AbstractTransformerCreationTask}
+{PANEL:**using AbstractTransformerCreationTask**}
 
 Special abstract class has been created for strongly-typed transformer creation called `AbstractTransformerCreationTask`. 
 
@@ -55,7 +55,7 @@ Underneath, the `IndexCreation` will call `Execute` methods for each of found tr
 
 {PANEL/}
 
-{PANEL:using Commands}
+{PANEL:**using Commands**}
 
 Another way to create transformer is to use low-level `PutTransformer` command from `DatabaseCommands`. API reference for this command can be found [here](../client-api/commands/transformers/put).
 
