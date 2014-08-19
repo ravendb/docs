@@ -2,7 +2,6 @@
 {
 	using System;
 	using System.Collections.Generic;
-	using System.Globalization;
 	using System.IO;
 	using System.Linq;
 
@@ -36,6 +35,7 @@
 				_parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, _options.ImagesUrl, documentationVersion, tag);
 
 				var content = File.ReadAllText(file.FullName);
+				content = TransformLegacyBlocks(file, content);
 				content = _parser.Transform(content);
 				content = TransformBlocks(content, documentationVersion);
 
@@ -147,6 +147,11 @@
 			content = PanelBlockHelper.GeneratePanelBlocks(content);
 
 			return content;
+		}
+
+		private string TransformLegacyBlocks(FileInfo file, string content)
+		{
+			return LegacyBlockHelper.GenerateLegacyBlocks(Path.GetDirectoryName(file.FullName), content);
 		}
 	}
 }
