@@ -1,11 +1,11 @@
-﻿namespace Raven.Documentation.Parser
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+
+using Raven.Documentation.Parser.Data;
+
+namespace Raven.Documentation.Parser
 {
-	using System;
-	using System.Globalization;
-	using System.IO;
-
-	using Raven.Documentation.Parser.Data;
-
 	public class ParserOptions
 	{
 		private string _pathToDocumentationDirectory;
@@ -14,6 +14,7 @@
 		{
 			PathToDocumentationDirectory = "..\\..\\..\\Documentation";
 			RootUrl = "";
+			VersionsToParse = new List<string>();
 		}
 
 		public string PathToDocumentationDirectory
@@ -49,5 +50,7 @@
 		public string RootUrl { get; set; }
 
 		public string ImagesUrl { get; set; }
+
+		public List<string> VersionsToParse { get; set; }
 	}
 }

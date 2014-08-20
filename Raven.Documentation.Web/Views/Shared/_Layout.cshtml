@@ -28,9 +28,17 @@
 		<div class="row">
 			<div class="col-sm-9">
 				@if (Html.IsDebug())
-				{
-					@Html.ActionLink("Generate docs", MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key }, new { @class = "btn btn-danger" })
-					@Html.Raw("&nbsp;")
+                {
+                    <div class="btn-group">
+                        @Html.ActionLink("Generate docs for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-danger" })
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Generate docs for all versions", MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = true }, null)</li>
+                        </ul>
+                    </div>
 					@Html.ActionLink("Validate links", MVC.Docs.ActionNames.Validate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, new { @class = "btn btn-warning", target = "_blank" })
 				}
 				<div class="pull-right chooser">

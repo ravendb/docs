@@ -194,6 +194,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string language = "language";
             public readonly string version = "version";
             public readonly string key = "key";
+            public readonly string all = "all";
         }
         static readonly ActionParamsClass_Welcome s_params_Welcome = new ActionParamsClass_Welcome();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -341,16 +342,17 @@ namespace Raven.Documentation.Web.Controllers
         }
 
         [NonAction]
-        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string key);
+        partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string key, bool all);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Generate(string language, string version, string key)
+        public override System.Web.Mvc.ActionResult Generate(string language, string version, string key, bool all)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
-            GenerateOverride(callInfo, language, version, key);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "all", all);
+            GenerateOverride(callInfo, language, version, key, all);
             return callInfo;
         }
 
