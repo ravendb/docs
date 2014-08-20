@@ -118,7 +118,7 @@
     <None Include="client-api\how-to\integrate-with-excel.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.dotnet.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
-    <None Include="client-api\how-to\work-with-authentication.markdown" />
+    <None Include="client-api\how-to\work-with-authentication.dotnet.markdown" />
     <None Include="client-api\listeners\.docslist" />
     <None Include="client-api\listeners\what-are-conflict-listeners-and-how-to-work-with-them.dotnet.markdown" />
     <None Include="client-api\listeners\what-are-conversion-listeners-and-how-to-work-with-them.dotnet.markdown" />
