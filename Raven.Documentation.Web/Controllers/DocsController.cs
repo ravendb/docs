@@ -72,15 +72,19 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Search, new SearchModel(pages, CurrentLanguage));
 		}
 
-		public virtual ActionResult Validate(string language, string version)
+		public virtual ActionResult Validate(string language, string version, bool all)
 		{
 			if (DebugHelper.IsDebug() == false)
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
 
-			var pages = DocumentSession
+			var query = DocumentSession
 				.Query<DocumentationPage>()
-				.Take(1024)
-				.ToList();
+				.Take(1024);
+
+			if (all == false) 
+				query = query.Where(x => x.Version == CurrentVersion);
+
+			var pages = query.ToList();
 
 			var options = new ParserOptions
 						{
