@@ -160,7 +160,7 @@ namespace Raven.Documentation.Web.Controllers
 			DocumentSession.SaveChanges();
 
 			if (string.IsNullOrEmpty(key))
-				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+				return RedirectToAction(MVC.Docs.ActionNames.Welcome, MVC.Docs.Name, new { language = language, version = version });
 
 			while (true)
 			{

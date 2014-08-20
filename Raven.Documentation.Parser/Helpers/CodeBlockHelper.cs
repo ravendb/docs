@@ -199,15 +199,17 @@ namespace Raven.Documentation.Parser.Helpers
 		private static string NormalizeContent(string content)
 		{
 			content = content
+				.Replace("</p>\n<p>", "\n")
 				.Replace("<", "&lt;")
 				.Replace(">", "&gt;");
 
 			content = content
-				.TrimEnd('\t')
+				.TrimStart(' ')
+				.TrimEnd('\t', ' ')
 				.TrimEnd(Environment.NewLine.ToCharArray())
 				.TrimStart(Environment.NewLine.ToCharArray());
 
-			var line = content.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
+			var line = content.Split(new[] { Environment.NewLine, "\n" }, StringSplitOptions.None);
 			var firstLineSpaces = GetFirstLineSpaces(line.FirstOrDefault());
 			var firstLineSpacesLength = firstLineSpaces.Length;
 			var formattedLines = line
