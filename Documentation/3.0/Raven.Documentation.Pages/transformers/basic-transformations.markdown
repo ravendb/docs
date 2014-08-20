@@ -33,7 +33,7 @@ Probably `dynamic` is not the best return type, so of course projections to conc
 
 {CODE transformers_6@Transformers/Basics.cs /}
 
-So our final transformer looks like:
+Our final transformer looks like:
 
 {CODE transformers_7@Transformers/Basics.cs /}
 

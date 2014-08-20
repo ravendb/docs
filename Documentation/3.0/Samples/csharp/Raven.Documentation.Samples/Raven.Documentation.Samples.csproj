@@ -271,6 +271,7 @@
     <Compile Include="Indexes\IndexingHierarchicalData.cs" />
     <Compile Include="Indexes\IndexingPolymorphicData.cs" />
     <Compile Include="Indexes\IndexingRelatedDocuments.cs" />
+    <Compile Include="Indexes\Map.cs" />
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
     <Compile Include="Indexes\Querying\HandlingDocumentRelationships.cs" />
