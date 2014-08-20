@@ -1,50 +1,45 @@
 ﻿namespace Raven.Documentation.Parser
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.Globalization;
-    using System.IO;
-    using System.Linq;
+	using System.Collections.Generic;
+	using System.IO;
+	using System.Linq;
 
-    using MarkdownDeep;
+	using MarkdownDeep;
 
-    using Raven.Documentation.Parser.Data;
+	using Raven.Documentation.Parser.Data;
 
-    public class DocumentationParser
-    {
-	    private readonly ParserOptions _options;
+	public class DocumentationParser
+	{
+		private readonly ParserOptions _options;
 
-	    private Markdown _parser;
+		private readonly DirectoryCompiler _directoryCompiler;
 
-        private DocumentCompiler _documentCompiler;
+		public DocumentationParser(ParserOptions options)
+		{
+			_options = options;
 
-        private readonly DirectoryCompiler _directoryCompiler;
+			var parser = new Markdown
+							 {
+								 AutoHeadingIDs = true,
+								 ExtraMode = true,
+								 NoFollowLinks = false,
+								 SafeMode = false,
+								 HtmlClassTitledImages = "figure text-center",
+								 UrlRootLocation = options.RootUrl
+							 };
 
-        public DocumentationParser(ParserOptions options)
-        {
-	        _options = options;
-	        _parser = new Markdown
-                          {
-                              AutoHeadingIDs = true,
-                              ExtraMode = true,
-                              NoFollowLinks = false,
-                              SafeMode = false,
-                              HtmlClassTitledImages = "figure text-center",
-                              UrlRootLocation = options.RootUrl
-                          };
+			var documentCompiler = new DocumentCompiler(parser, options);
+			_directoryCompiler = new DirectoryCompiler(documentCompiler, options);
+		}
 
-            _documentCompiler = new DocumentCompiler(_parser, options);
-            _directoryCompiler = new DirectoryCompiler(_documentCompiler, options);
-        }
-
-        public IEnumerable<DocumentationPage> Parse()
-        {
-            var documentationDirectories = Directory.GetDirectories(_options.PathToDocumentationDirectory);
-            return documentationDirectories
-                .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .SelectMany(_directoryCompiler.Compile);
-        }
+		public IEnumerable<DocumentationPage> Parse()
+		{
+			var documentationDirectories = Directory.GetDirectories(_options.PathToDocumentationDirectory);
+			return documentationDirectories
+				.Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
+				.Where(documentationDirectory => _options.VersionsToParse.Count == 0 || _options.VersionsToParse.Contains(documentationDirectory.Name))
+				.SelectMany(_directoryCompiler.Compile);
+		}
 
 		public IEnumerable<TableOfContents> GenerateTableOfContents()
 		{
@@ -53,5 +48,5 @@
 				.Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
 				.SelectMany(_directoryCompiler.GenerateTableOfContents);
 		}
-    }
+	}
 }

@@ -96,16 +96,21 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Validate, results);
 		}
 
-		public virtual ActionResult Generate(string language, string version, string key)
+		public virtual ActionResult Generate(string language, string version, string key, bool all)
 		{
 			if (DebugHelper.IsDebug() == false)
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
+
+			var versionsToParse = new List<string>();
+			if (all == false)
+				versionsToParse.Add(CurrentVersion);
 
 			var parser =
 				new DocumentationParser(
 					new ParserOptions
 						{
 							PathToDocumentationDirectory = GetDocumentationDirectory(),
+							VersionsToParse = versionsToParse,
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
 							ImagesUrl = GetImagesUrl()
 						});
