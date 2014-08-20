@@ -54,6 +54,10 @@ Underneath, the `IndexCreation` will call `Execute` methods for each of found in
 
 {WARNING `IndexCreation.CreateIndexes` will also deploy all classes that inherit from `AbstractTransformerCreationTask` (more about it [here](../transformers/creating-and-deploying)). /}
 
+#### Example
+
+{CODE indexes_8@Indexes/Creating.cs /}
+
 <hr />
 
 ### using Commands
