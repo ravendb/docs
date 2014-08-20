@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 using Raven.Abstractions.Indexing;
@@ -8,6 +9,60 @@ using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
 {
+	namespace Raven.Documentation.CodeSamples.Transformers.Foo
+	{
+		class Foo
+		{
+			#region indexes_8
+			public class Orders_Totals : AbstractIndexCreationTask<Order>
+			{
+				public class Result
+				{
+					public string Employee { get; set; }
+
+					public string Company { get; set; }
+
+					public decimal Total { get; set; }
+				}
+
+				public Orders_Totals()
+				{
+					Map = orders => from order in orders
+							select new
+							{
+								order.Employee,
+								order.Company,
+								Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+							};
+				}
+			}
+
+			public static void Main(string[] args)
+			{
+				using (var store = new DocumentStore
+				{
+					Url = "http://localhost:8080",
+					DefaultDatabase = "Northwind"
+				})
+				{
+					store.Initialize();
+
+					new Orders_Totals().Execute(store);
+
+					using (var session = store.OpenSession())
+					{
+						IList<Order> orders = session
+							.Query<Orders_Totals.Result, Orders_Totals>()
+							.Where(x => x.Total > 100)
+							.OfType<Order>()
+							.ToList();
+					}
+				}
+			}
+			#endregion
+		}
+	}
+
 	public class Creating
 	{
 		#region indexes_1
@@ -57,12 +112,12 @@ namespace Raven.Documentation.Samples.Indexes
 				#region indexes_6
 				var builder = new IndexDefinitionBuilder<Order>();
 				builder.Map = orders => from order in orders
-								select new
-								{
-									order.Employee,
-									order.Company,
-									Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
-								};
+										select new
+										{
+											order.Employee,
+											order.Company,
+											Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+										};
 
 				store
 					.DatabaseCommands
