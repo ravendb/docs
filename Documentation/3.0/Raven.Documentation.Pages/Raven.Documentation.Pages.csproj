@@ -214,6 +214,9 @@
     <None Include="glossary\transformers\.docslist" />
     <None Include="glossary\transformers\transformer-definition.markdown" />
     <None Include="indexes\.docslist" />
+    <None Include="indexes\multi-map-indexes.markdown" />
+    <None Include="indexes\map-reduce-indexes.markdown" />
+    <None Include="indexes\map-indexes.markdown" />
     <None Include="indexes\indexing-basics.markdown" />
     <None Include="indexes\boosting.markdown" />
     <None Include="indexes\creating-and-deploying.markdown" />

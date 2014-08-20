@@ -2,9 +2,12 @@
 what-are-indexes.markdown	[TODO] What are indexes?
 creating-and-deploying.markdown	Creating and deploying indexes
 indexing-basics.markdown	Indexing basics
-creating-spatial-indexes.markdown	[TODO] Creating spatial indexes
-stale-indexes.markdown	[TODO] Stale indexes
+map-indexes.markdown	Map indexes
+multi-map-indexes.markdown	[TODO] Multi-Map indexes
+map-reduce-indexes.markdown	[TODO] Map-Reduce indexes
 indexing-related-documents.markdown	[TODO] Indexing related documents
+stale-indexes.markdown	[TODO] Stale indexes
+creating-spatial-indexes.markdown	[TODO] Creating spatial indexes
 indexing-hierarchical-data.markdown	[TODO] Indexing hierarchical data
 indexing-polymorphic-data.markdown	[TODO] Indexing polymorphic data
 boosting.markdown	[TODO] Boosting
