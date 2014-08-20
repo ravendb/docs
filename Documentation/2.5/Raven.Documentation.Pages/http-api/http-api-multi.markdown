@@ -5,11 +5,11 @@
 We can address documents directly by using their key (in the following example, the key is 'users/ayende'):
 
 {CODE-START:json /}
-    > curl http://localhost:8080/docs/users/ayende
+curl http://localhost:8080/docs/users/ayende
 
-    {
-      "name": "ayende"
-    }
+{
+    "name": "ayende"
+}
 {CODE-END /}
 
 But while that is useful, there are often scenarios where we want to get more than a single document. In order to avoid the common SELECT N+1 issues, RavenDB supports the ability to get multiple documents in a single remote call.
@@ -17,16 +17,16 @@ But while that is useful, there are often scenarios where we want to get more th
 We load the database with the following two documents:
 
 {CODE-START:json /}
-     > curl -X PUT http://localhost:8080/docs/users/ayende -d "{ name: 'ayende'}"
-    {"Key":"users/ayende","ETag":"7f9cd674-4c6f-11df-8ec2-001fd08ec235"}
-    > curl -X PUT http://localhost:8080/docs/users/oren -d "{ name: 'oren'}"
-    {"Key":"users/oren","ETag":"7f9cd675-4c6f-11df-8ec2-001fd08ec235"}
+curl -X PUT http://localhost:8080/docs/users/ayende -d "{ name: 'ayende'}"
+{"Key":"users/ayende","ETag":"7f9cd674-4c6f-11df-8ec2-001fd08ec235"}
+curl -X PUT http://localhost:8080/docs/users/oren -d "{ name: 'oren'}"
+{"Key":"users/oren","ETag":"7f9cd675-4c6f-11df-8ec2-001fd08ec235"}
 {CODE-END /}
 
 And now, in order to get them both in a single query, we use:
 
 {CODE-START:json /}
-> curl -X POST http://localhost:8080/queries -d "['users/ayende','users/oren']"
+curl -X POST http://localhost:8080/queries -d "['users/ayende','users/oren']"
 {
 "Results":
 	[
@@ -63,9 +63,9 @@ The *Results* array has documents that we asked for, while the *Includes* array 
 For example, let's modify `users/ayende` by adding `location` property which is a reference to `locations/1` document:
 
 {CODE-START:json /}
-> curl -X PUT http://localhost:8080/docs/locations/1 -d "{ country: 'Israel', city: 'Hadera' }"
+curl -X PUT http://localhost:8080/docs/locations/1 -d "{ country: 'Israel', city: 'Hadera' }"
    
-> curl -X PUT http://localhost:8080/docs/users/ayende -d "{ name: 'ayende', location: 'locations/1' }"
+curl -X PUT http://localhost:8080/docs/users/ayende -d "{ name: 'ayende', location: 'locations/1' }"
 {CODE-END /}
 
 Now let's perform the following request:
@@ -122,7 +122,7 @@ Note that now the *Includes* array is not empty and contains the `locations/1` d
 Important: If you request a non existing key, the request is ignored. In other words, the *Results* of this request and the previous ones are identical.
 
 {CODE-START:json /}
-> curl -X POST http://localhost:8080/queries -d "['users/ayende','does not exists', 'users/oren']"
+curl -X POST http://localhost:8080/queries -d "['users/ayende','does not exists', 'users/oren']"
 {
 "Results":
 	[
@@ -158,7 +158,7 @@ Aside from missing documents, which are ignored, the order of the documents in t
 Besides requesting by using POST to get multiple documents you can also use HTTP GET method. Then create the request as follows:
 
 {CODE-START:json /}
-> curl -X GET http://localhost:8080/queries?id=users/ayende"&"id=users/oren
+curl -X GET http://localhost:8080/queries?id=users/ayende"&"id=users/oren
 {CODE-END /}
 
 ## Set based operations
@@ -210,11 +210,11 @@ Set based updates work very similarly to set based deletes. They require an inde
 And then issue the following command:
 
 {CODE-START:json /}
-PATCH http://localhost:8080/bulk_docs/UsersByLastLoginDate?query=LastLoginDate:[NULL TO 20100527]
+curl -X PATCH http://localhost:8080/bulk_docs/UsersByLastLoginDate?query=LastLoginDate:[NULL TO 20100527]
 
-    [
-       { "Type": "Set", "Name": "IsActive", "Value": false
-    ]
+[
+    { "Type": "Set", "Name": "IsActive", "Value": false
+]
 {CODE-END /}
 
 This is the equivalent for:
@@ -239,59 +239,59 @@ Request batching in RavenDB is handled using the '/bulk_docs' endpoint, which ac
 Below you can see an example of the the operation format:
 
 {CODE-START:json /}
-    [
+[
+    {
+        Method: "PUT",
+        Document:
         {
-            Method: "PUT",
-            Document:
-            {
-                name: "BatchPut1_Name"
-            },
-            Metadata:
-            {
-                info: "BatchPut1_Info"
-            },
-            Key: "BatchPut1"
+            name: "BatchPut1_Name"
         },
+        Metadata:
         {
-            Method: "PUT",
-            Document:
-           {
-               name: "BatchPut2_Name"
-           },
-           Metadata:
-           {
-               info: "BatchPut2_Info"
-           },
-            Key: "BatchPut2"
+            info: "BatchPut1_Info"
         },
+        Key: "BatchPut1"
+    },
+    {
+        Method: "PUT",
+        Document:
         {
-            Method: "DELETE",
-            Key: "BatchPut1"
+            name: "BatchPut2_Name"
         },
+        Metadata:
         {
-            Method: "DELETE",
-            Key: "NonExistent"
-        }
-    ]
+            info: "BatchPut2_Info"
+        },
+        Key: "BatchPut2"
+    },
+    {
+        Method: "DELETE",
+        Key: "BatchPut1"
+    },
+    {
+        Method: "DELETE",
+        Key: "NonExistent"
+    }
+]
 {CODE-END /}
     
 This can be executed using curl with the following syntax:
 
 {CODE-START:json /}
-    > curl http://localhost:8080/bulk_docs -X POST -d "[ { Method:'PUT', Document:{  name:'BatchPut1_Name' }, Metadata:{  info:'BatchPut1_Info' },Key:'BatchPut1' }, 
+    curl http://localhost:8080/bulk_docs -X POST -d "[ { Method:'PUT', Document:{  name:'BatchPut1_Name' }, Metadata:{  info:'BatchPut1_Info' },Key:'BatchPut1' }, 
                                                        { Method:'PUT', Document:{  name:'BatchPut2_Name' }, Metadata:{  }, Key:'BatchPut2' } ]"
-    [
-     {
-         "Etag":"4c06db4e-4c86-11df-8ec2-001fd08ec235",
-         "Method":"PUT",
-         "Key":"BatchPut1"
-     },
-     {
-         "Etag":"4c06db4f-4c86-11df-8ec2-001fd08ec235",
-         "Method":"PUT",
-         "Key":"BatchPut2"
-     }
-    ]
+[
+    {
+        "Etag":"4c06db4e-4c86-11df-8ec2-001fd08ec235",
+        "Method":"PUT",
+        "Key":"BatchPut1"
+    },
+    {
+        "Etag":"4c06db4f-4c86-11df-8ec2-001fd08ec235",
+        "Method":"PUT",
+        "Key":"BatchPut2"
+    }
+]
 {CODE-END /}
 
 ###Concurrency
