@@ -292,6 +292,7 @@
     <Compile Include="Server\Bundles\Compression.cs" />
     <Compile Include="Server\Bundles\Encryption.cs" />
     <Compile Include="Server\Bundles\Expiration.cs" />
+    <Compile Include="Server\Bundles\MoreLikeThis.cs" />
     <Compile Include="Server\Bundles\PeriodicExport.cs" />
     <Compile Include="Server\Bundles\ScriptedIndexResults.cs" />
     <Compile Include="Server\Bundles\SqlReplication.cs" />

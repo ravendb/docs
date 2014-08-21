@@ -3,6 +3,7 @@ cascade-delete.markdown	Cascade Delete
 compression.markdown	Compression
 encryption.markdown	Encryption
 expiration.markdown	Expiration
+more-like-this.markdown	More Like This
 periodic-export.markdown	Periodic Export
 quotas.markdown	Quotas
 replication.markdown	Replication
