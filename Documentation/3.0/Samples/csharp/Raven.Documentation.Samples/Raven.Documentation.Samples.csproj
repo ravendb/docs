@@ -315,6 +315,7 @@
     <Compile Include="Transformers\Nesting.cs" />
     <Compile Include="Transformers\Parameters.cs" />
     <Compile Include="Transformers\Recurse.cs" />
+    <Compile Include="Transformers\Subcollections.cs" />
     <Compile Include="Transformers\WhatAreTransformers.cs" />
   </ItemGroup>
   <ItemGroup>

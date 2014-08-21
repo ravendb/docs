@@ -317,6 +317,7 @@
     <None Include="studio\example-2.markdown" />
     <None Include="studio\example.markdown" />
     <None Include="transformers\.docslist" />
+    <None Include="transformers\dealing-with-subcollections.markdown" />
     <None Include="transformers\transforming-hierarchical-data.markdown" />
     <None Include="transformers\including-documents.markdown" />
     <None Include="transformers\nesting-transformers.markdown" />
