@@ -113,7 +113,6 @@
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.dotnet.markdown" />
     <None Include="client-api\creating-document-store.dotnet.markdown" />
     <None Include="client-api\faq\.docslist" />
-    <None Include="client-api\faq\how-document-store-handles-replication.markdown" />
     <None Include="client-api\how-to\.docslist" />
     <None Include="client-api\how-to\integrate-with-excel.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.dotnet.markdown" />
@@ -331,6 +330,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="client-api\faq\how-are-document-ids-created.markdown" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
     <Content Include="client-api\how-to\images\excel_connections_dialog_1.png" />
     <Content Include="client-api\how-to\images\excel_connections_dialog_2.png" />
