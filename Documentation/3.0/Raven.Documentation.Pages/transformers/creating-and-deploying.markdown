@@ -12,7 +12,7 @@ There are certain benefits of using it:
 
 - **strongly-typed syntax**
 - ability to deploy it easily
-- ability to deploy it using assembly scanner (more about it later)
+- ability to deploy it using assembly scanner (more about that later)
 - ability to pass transformer as generic type is various methods without having to hardcode string-based names
 
 Disadvanage of this is approach is that transformer names are auto-generated from type name and cannot be changed, but there are certain naming conventions that can be followed that will help shape up the name (more about it later).
