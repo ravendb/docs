@@ -4,7 +4,7 @@ using System.Linq;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 
-namespace Raven.Documentation.CodeSamples.Indexes
+namespace Raven.Documentation.Samples.Indexes
 {
 	public class IndexingPolymorphicData
 	{
