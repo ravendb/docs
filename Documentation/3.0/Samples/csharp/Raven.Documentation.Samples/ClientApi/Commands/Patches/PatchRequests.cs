@@ -2,7 +2,7 @@
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Patches
+namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
 {
 	public class PatchRequests
     {
