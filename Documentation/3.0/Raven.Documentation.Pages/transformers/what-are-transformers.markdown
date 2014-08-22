@@ -1,6 +1,11 @@
 # What are transformers?
 
-Transformers have been introduced in RavenDB 2.5 as a substitution to TransformResults feature available back then. The easiest explanation of Transformers is that there are a **LINQ-based server-side projection functions** with the ability to load external documents, include additional results, even make decisions based on passed parameters and many more.
+The easiest explanation of Transformers is that there are a **LINQ-based server-side projection functions** with the ability to load external documents, include additional results, even make decisions based on passed parameters and many more.
+
+{INFO:Transformers and the session}
+Because you are working with projections, and not with the documents directly, 
+they are _not_ tracked by the session and won't be saved back to the database if you call `SaveChanges`.
+{INFO/}
 
 ## Basic example
 

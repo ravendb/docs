@@ -5,50 +5,46 @@ using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 
-namespace Raven.Documentation.CodeSamples.Indexes
+namespace Raven.Documentation.Samples.Indexes
 {
-	public class Post
+	#region indexes_1
+	public class BlogPost
 	{
-		public Post()
-		{
-			Comments = new List<Comment>();
-		}
+		public string Author { get; set; }
 
-		public string Id { get; set; }
+		public string Title { get; set; }
 
-		public string Name { get; set; }
+		public string Text { get; set; }
 
-		public IList<Comment> Comments { get; set; }
+		public List<BlogPostComment> Comments { get; set; }
 	}
 
-	public class Comment
+	public class BlogPostComment
 	{
-		public Comment()
-		{
-			Comments = new List<Comment>();
-		}
-
-		public string Id { get; set; }
-
 		public string Author { get; set; }
 
 		public string Text { get; set; }
 
-		public IList<Comment> Comments { get; set; }
+		public List<BlogPostComment> Comments { get; set; }
 	}
+	#endregion
 
-	#region indexing_hierarchies_1
-	public class SampleRecurseIndex : AbstractIndexCreationTask<Post>
+	#region indexes_2
+	public class BlogPosts_ByCommentAuthor : AbstractIndexCreationTask<BlogPost>
 	{
-		public SampleRecurseIndex()
+		public class Result
+		{
+			public string Author { get; set; }
+		}
+
+		public BlogPosts_ByCommentAuthor()
 		{
 			Map = posts => from post in posts
-						   from comment in Recurse(post, x => x.Comments)
-						   select new
-						   {
-							   Author = comment.Author,
-							   Text = comment.Text
-						   };
+					from comment in Recurse(post, x => x.Comments)
+					select new
+					{
+						Author = comment.Author
+					};
 		}
 	}
 
@@ -60,22 +56,39 @@ namespace Raven.Documentation.CodeSamples.Indexes
 		{
 			using (var store = new DocumentStore())
 			{
-				#region indexing_hierarchies_2
-				new SampleRecurseIndex().Execute(store);
-				#endregion
-
-				#region indexing_hierarchies_3
-				store.DatabaseCommands.PutIndex("SampleRecurseIndex", new IndexDefinition
+				#region indexes_3
+				store.DatabaseCommands.PutIndex("BlogPosts/ByCommentAuthor", new IndexDefinition
 				{
 					Map = @"from post in docs.Posts
-							from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.Comments))
-							select new
-							{
-								Author = comment.Author,
-								Text = comment.Text
-							}"
+						from comment in Recurse(post, (Func<dynamic, dynamic>)(x => x.Comments))
+						select new
+						{
+							Author = comment.Author
+						}"
 				});
 				#endregion
+
+				using (var session = store.OpenSession())
+				{
+					#region indexes_4
+					IList<BlogPost> results = session
+						.Query<BlogPosts_ByCommentAuthor.Result, BlogPosts_ByCommentAuthor>()
+						.Where(x => x.Author == "Ayende Rahien")
+						.OfType<BlogPost>()
+						.ToList();
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region indexes_5
+					IList<BlogPost> results = session
+						.Advanced
+						.DocumentQuery<BlogPost, BlogPosts_ByCommentAuthor>()
+						.WhereEquals("Author", "Ayende Rahien")
+						.ToList();
+					#endregion
+				}
 			}
 		}
 	}
