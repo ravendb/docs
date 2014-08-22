@@ -7,6 +7,9 @@ using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
 {
+	using Abstractions.Indexing;
+	using Client.Indexes;
+
 	public class IndexingBasics
 	{
 		public IndexingBasics()
@@ -55,5 +58,51 @@ namespace Raven.Documentation.Samples.Indexes
 				#endregion
 			}
 		}
+
+		#region raven_by_entity_name
+		public class RavenDocumentsByEntityName : AbstractIndexCreationTask
+		{
+			public override bool IsMapReduce
+			{
+				get { return false; }
+			}
+
+			public override string IndexName
+			{
+				get { return "Raven/DocumentsByEntityName"; }
+			}
+
+			public override IndexDefinition CreateIndexDefinition()
+			{
+				return new IndexDefinition
+				{
+					Map = @"from doc in docs 
+							let Tag = doc[""@metadata""][""Raven-Entity-Name""]
+							select new 
+							{ 
+								Tag, 
+								LastModified = (DateTime)doc[""@metadata""][""Last-Modified""] 
+							};",
+					Indexes =
+					{
+						{"Tag", FieldIndexing.NotAnalyzed},
+						{"LastModified", FieldIndexing.NotAnalyzed},
+					},
+					Stores =
+					{
+						{"Tag", FieldStorage.No},
+						{"LastModified", FieldStorage.No}
+					},
+					TermVectors =
+					{
+						{"Tag", FieldTermVector.No},
+						{"LastModified", FieldTermVector.No}
+					},
+
+					DisableInMemoryIndexing = true
+				};
+			}
+		}
+		#endregion
 	}
 }

@@ -45,6 +45,13 @@ We urge you to read more about `Map` indexes [here]().
 More detailed information about `Map-Reduce` indexes can be found [here]().
 {INFO/}
 
+###Default index
+
+Each RavenDB database comes with a built-in index called `Raven/DocumentsByEntityName`. Its purpose is to index all documents by using two metadata fields: `Raven-Entity-Name`
+and `Last-Modified` (if they are present). Thanks to this we can query for documents that belong only to the given [collection](../client-api/faq/what-is-a-collection) or by specifying the modification date.
+
+{CODE raven_by_entity_name@Indexes/IndexingBasics.cs /}
+
 ## Related articles
 
 TODO
