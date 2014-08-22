@@ -343,6 +343,7 @@
     <Content Include="client-api\how-to\images\excel_from_text_wizard_2.png" />
     <Content Include="client-api\how-to\images\excel_result.png" />
     <Content Include="client-api\how-to\images\excel_transformer.png" />
+    <Content Include="indexes\images\polymorphic_indexes_faq.png" />
     <Content Include="server\bundles\images\authorization_bundle_faq.png" />
     <Content Include="server\bundles\images\sql_replication_studio.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />

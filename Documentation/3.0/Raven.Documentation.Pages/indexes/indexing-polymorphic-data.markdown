@@ -1,6 +1,6 @@
 # Indexing polymorphic data
 
-By default, RavenDB indexes operate only on a specific entity type, or a Collection, and it ignores the inheritance hierarchy when it does so.
+By default, RavenDB indexes operate only on a specific entity type, or a `Collection`, and it ignores the inheritance hierarchy when it does so.
 
 For example, let us assume that we have the following inheritance hierarchy:
 
@@ -11,15 +11,15 @@ If we saved a `Cat`, it would have an Entity-Name of "Cats" and if we saved a `D
 If we wanted to index cats by name, we would write:
 
 {CODE-BLOCK:csharp}
-    from cat in docs.Cats
-    select new { cat.Name }
+from cat in docs.Cats
+select new { cat.Name }
 {CODE-BLOCK/}
 
 And for dogs:
 
 {CODE-BLOCK:csharp}
-    from dog in docs.Dogs
-    select new { dog.Name }
+from dog in docs.Dogs
+select new { dog.Name }
 {CODE-BLOCK/}
 
 This works, but each index would only give us results for the animal it has been defined on. But what if we wanted to query across all animals?
@@ -34,21 +34,21 @@ And query it like this:
 
 {CODE multi_map_2@Indexes\IndexingPolymorphicData.cs /}
 
-You can also use the Linq provider if your objects implement an interface, IAnimal for instance:
+You can also use the LINQ provider if your objects implement an interface, `IAnimal` for instance:
 
 {CODE multi_map_3@Indexes\IndexingPolymorphicData.cs /}
 
 ## Other ways
 
-Another option would be to modify the way we generate the Entity-Name for subclasses of Animal, like so:
+Another option would be to modify the way we generate the Entity-Name for subclasses of `Animal`, like so:
 
 {CODE other_ways_1@Indexes\IndexingPolymorphicData.cs /}
 
 Using this method, we can now index on all animals using:
 
 {CODE-BLOCK:csharp}
-    from animal in docs.Animals
-    select new { animal.Name }
+from animal in docs.Animals
+select new { animal.Name }
 {CODE-BLOCK/}
 
 But what happen when you don't want to modify the entity name of an entity?
@@ -56,12 +56,12 @@ But what happen when you don't want to modify the entity name of an entity?
 You can create a polymorphic index using:
 
 {CODE-BLOCK:csharp}
-     from animal in docs.WhereEntityIs("Cats", "Dogs")
-     select new { animal.Name }
+from animal in docs.WhereEntityIs("Cats", "Dogs")
+select new { animal.Name }
 {CODE-BLOCK/}
 
 That would generate an index that would match both Cats and Dogs.
 
-#### Related articles
+## Related articles
 
 TODO
