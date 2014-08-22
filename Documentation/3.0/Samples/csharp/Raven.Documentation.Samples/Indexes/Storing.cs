@@ -2,60 +2,57 @@
 using System.Linq;
 
 using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.Indexes
+namespace Raven.Documentation.Samples.Indexes
 {
 	public class Storing
 	{
-		public class Post
-		{
-			public Post()
-			{
-				this.Comments = new List<Comment>();
-			}
-
-			public string Id { get; set; }
-
-			public string Name { get; set; }
-
-			public IList<Comment> Comments { get; set; }
-		}
-
-		public class Comment
-		{
-			public Comment()
-			{
-				this.Comments = new List<Comment>();
-			}
-
-			public string Id { get; set; }
-
-			public string Author { get; set; }
-
-			public string Text { get; set; }
-
-			public IList<Comment> Comments { get; set; }
-		}
-
 		#region storing_1
-		public class StoresIndex : AbstractIndexCreationTask<BlogPost, BlogPost>
+		public class Employees_ByFirstAndLastName : AbstractIndexCreationTask<Employee>
 		{
-			public StoresIndex()
+			public Employees_ByFirstAndLastName()
 			{
-				Map = posts => from doc in posts
-							   select new
-										  {
-											  doc.Tags,
-											  doc.Content
-										  };
+				Map = employees => from employee in employees
+							select new
+							{
+								employee.FirstName,
+								employee.LastName
+							};
 
-				Stores.Add(x => x.Title, FieldStorage.Yes);
-
-				Indexes.Add(x => x.Tags, FieldIndexing.NotAnalyzed);
-				Indexes.Add(x => x.Comments, FieldIndexing.No);
+				Stores.Add(x => x.FirstName, FieldStorage.Yes);
+				Stores.Add(x => x.LastName, FieldStorage.Yes);
 			}
 		}
 		#endregion
+
+		public Storing()
+		{
+			using (var store = new DocumentStore())
+			{
+				#region storing_2
+				store
+					.DatabaseCommands
+					.PutIndex(
+						"Employees_ByFirstAndLastName",
+						new IndexDefinition
+						{
+							Map = @"from employee in docs.Employees
+									select new
+									{
+										employee.FirstName,
+										employee.LastName
+									}",
+							Stores = new Dictionary<string, FieldStorage>
+							{
+								{ "FirstName", FieldStorage.Yes }, 
+								{ "LastName", FieldStorage.Yes }
+							}
+						});
+				#endregion
+			}
+		}
 	}
 }

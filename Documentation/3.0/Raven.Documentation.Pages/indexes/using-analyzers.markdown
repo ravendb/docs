@@ -1,4 +1,9 @@
-﻿# Analyzers
+﻿TODO: write about `FieldIndexing`.
+and `FieldIndexing.Default` in Indexes
+Setting `FieldIndexing.No` causes values to not be available in where clauses when querying (similarly to not being present in the original projection). `FieldIndexing.NotAnalyzed` causes whole properties to be treated as a single token and matches must be exact, similarly to using a KeywordAnalyzer on this field. The latter is useful for product Ids, for example. `FieldIndexing.Analyzed` allows to perform full text search operations against the field. `FieldIndexing.Default` will index the field as a single term, in lower case.
+
+
+# Analyzers
 
 The indexes each RavenDB server instance uses to facilitate fast queries are powered by Lucene, the full-text search engine.
 
