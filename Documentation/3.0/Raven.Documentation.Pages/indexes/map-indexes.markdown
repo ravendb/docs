@@ -13,7 +13,7 @@ Easiest answer to this question is: practically anything. You can:
 - [index partial field data](../indexes/map-indexes#indexing-partial-field-data)
 - [index nested data](../indexes/map-indexes#indexing-nested-data)
 - [index fields from related documents]()
-- [index fields from multiple collections](../indexes/multi-map-indexes)
+- [index fields from multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
 - ...and so on. 
 
 Various articles in this part of documentation will describe possibilities in detail.
@@ -98,7 +98,7 @@ If document relationship is represented by document Id, you can use `LoadDocumen
 
 ## Indexing multiple collections
 
-Please read our dedicated article about `Multi-Map` indexes that can be found [here](../indexes/multi-map-indexes).
+Please read our dedicated article about `Multi-Map` indexes that can be found [here](../indexes/indexing-polymorphic-data#multi-map-indexes).
 
 ## Related articles
 

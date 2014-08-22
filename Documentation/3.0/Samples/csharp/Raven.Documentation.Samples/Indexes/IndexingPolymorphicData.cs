@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Client.Document;
 using Raven.Client.Indexes;
@@ -8,18 +9,15 @@ namespace Raven.Documentation.CodeSamples.Indexes
 	public class IndexingPolymorphicData
 	{
 		#region multi_map_1
-		public class AnimalsIndex : AbstractMultiMapIndexCreationTask
+		public class Animals_ByName : AbstractMultiMapIndexCreationTask
 		{
-			public AnimalsIndex()
+			public Animals_ByName()
 			{
-				AddMap<Cat>(cats => from c in cats
-									select new { c.Name });
+				AddMap<Cat>(cats => from c in cats select new { c.Name });
 
-				AddMap<Dog>(dogs => from d in dogs
-									select new { d.Name });
+				AddMap<Dog>(dogs => from d in dogs select new { d.Name });
 			}
 		}
-
 		#endregion
 
 		public void MultiMapIndexes()
@@ -29,13 +27,21 @@ namespace Raven.Documentation.CodeSamples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region multi_map_2
-					var results = session.Advanced.LuceneQuery<object>("AnimalsIndex").WhereEquals("Name", "Mitzy");
-
+					var results = session
+						.Advanced
+						.DocumentQuery<object, Animals_ByName>()
+						.WhereEquals("Name", "Mitzy")
+						.ToList();
 					#endregion
+				}
 
+				using (var session = store.OpenSession())
+				{
 					#region multi_map_3
-					session.Query<IAnimal>("AnimalsIndex").Where(x => x.Name == "Mitzy");
-
+					IList<IAnimal> results = session
+						.Query<IAnimal, Animals_ByName>()
+						.Where(x => x.Name == "Mitzy")
+						.ToList();
 					#endregion
 				}
 			}
@@ -44,7 +50,7 @@ namespace Raven.Documentation.CodeSamples.Indexes
 		public void OtherWays()
 		{
 			#region other_ways_1
-			var documentStore = new DocumentStore()
+			var store = new DocumentStore()
 			{
 				Conventions =
 				{
@@ -56,7 +62,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 					}
 				}
 			};
-
 			#endregion
 		}
 
