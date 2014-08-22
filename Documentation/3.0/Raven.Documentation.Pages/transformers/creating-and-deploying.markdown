@@ -12,16 +12,18 @@ There are certain benefits of using it:
 
 - **strongly-typed syntax**
 - ability to deploy it easily
-- ability to deploy it using assembly scanner (more about it later)
+- ability to deploy it using assembly scanner (more about that later)
 - ability to pass transformer as generic type is various methods without having to hardcode string-based names
 
-Disadvanage of this is approach is that transformer names are auto-generated from type name and cannot be changed, but there are certain naming conventions that can be followed that will help shape up the name (more about it later).
+By default the transformer names are auto-generated from type name. You can change that if you really want to (override the `TransformerName` property), but usage of that tends to be rare. See more later in this page.
 
-{NOTE We recommend creating and using transformers in this form due to its simplicity, many benefits and minor amount of disadvantages. /}
+Using this approach means that you are limited to following the strongly typed rules, while server transformers aren't limited to that. But that is rarely an issue unless you write a transformer to cover multiple types without a common ancestor.
+
+{NOTE We recommend creating and using transformers in this form due to its simplicity, many benefits and few disadvantages. /}
 
 ### Naming conventions
 
-Actually there is only one naming conventions: each `_` in class name will be translated to `/` in transformer name.
+Actually there is only one naming conventions: each `_` in class name will be translated to `/` in transformer name. If you want to customize the transformer name, you can do that by overriding the `TransformerName` property.
 
 e.g.
 
@@ -63,7 +65,12 @@ The advantage of this approach is that you can define transformer name as you fe
 
 {CODE transformers_6@Transformers/Creating.cs /}
 
-Probably one of the worst things with this approach is the lack of strongly-typed definition. It can be partially addressed by creating `TransformerDefinition` from class that implements `AbstractTransformerCreationTask` by invoking `CreateTransformerDefinition` method.
+This approach lack any strongly-typed definition gurantees, but the good thing about this is that we aren't limited by the type system. In this case, we can
+execute this transformer on any type that has a Name property. Note that in practice, you _can_ use any transformer on any type. They execute on the server
+and have no concept of your user defined types. However, it is usually easier to look at untyped transformers and see that they can operate on all types, 
+than to look at a typed transformer and understand that it can operate on types other than what it is defined for.
+
+TransformerDefinition can also be partially addressed by creating `TransformerDefinition` from class that implements `AbstractTransformerCreationTask` by invoking `CreateTransformerDefinition` method.
 
 {CODE transformers_7@Transformers/Creating.cs /}
 
