@@ -88,10 +88,9 @@ namespace Raven.Documentation.Samples.Transformers
 				#region transformers_6
 				store
 					.DatabaseCommands
-					.PutTransformer("Orders/Company", new TransformerDefinition
+					.PutTransformer("ComboBox/Results", new TransformerDefinition
 					{
-						Name = "Orders/Company",
-						TransformResults = "from result in results select result.Company"
+						TransformResults = "from doc in results select new { doc.Id, doc.Name }"
 					});
 				#endregion
 
