@@ -111,6 +111,8 @@
     <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docslist" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.dotnet.markdown" />
+    <None Include="client-api\configuration\.docslist" />
+    <None Include="client-api\configuration\conventions.dotnet.markdown" />
     <None Include="client-api\creating-document-store.dotnet.markdown" />
     <None Include="client-api\faq\.docslist" />
     <None Include="client-api\faq\what-is-a-collection.markdown" />

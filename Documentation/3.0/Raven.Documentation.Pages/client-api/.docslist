@@ -9,5 +9,6 @@ setting-up-connection-string.markdown	Setting up connection string
 /listeners	Listeners
 /bundles	Bundles
 /concurrency Concurrency
+/configuration	Configuration
 /how-to	How to...
 /faq	FAQ
