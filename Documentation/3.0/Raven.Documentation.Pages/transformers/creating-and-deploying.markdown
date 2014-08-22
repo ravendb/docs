@@ -15,9 +15,11 @@ There are certain benefits of using it:
 - ability to deploy it using assembly scanner (more about that later)
 - ability to pass transformer as generic type is various methods without having to hardcode string-based names
 
-Disadvanage of this is approach is that transformer names are auto-generated from type name and cannot be changed, but there are certain naming conventions that can be followed that will help shape up the name (more about it later).
+By default the transformer names are auto-generated from type name. You can change that if you really want to (override the `TransformerName` property), but usage of that tends to be rare. See more later in this page.
 
-{NOTE We recommend creating and using transformers in this form due to its simplicity, many benefits and minor amount of disadvantages. /}
+Using this approach means that you are limited to following the strongly typed rules, while server transformers aren't limited to that. But that is rarely an issue unless you write a transformer to cover multiple types without a common ancestor.
+
+{NOTE We recommend creating and using transformers in this form due to its simplicity, many benefits and few disadvantages. /}
 
 ### Naming conventions
 
