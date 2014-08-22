@@ -23,7 +23,7 @@ Using this approach means that you are limited to following the strongly typed r
 
 ### Naming conventions
 
-Actually there is only one naming conventions: each `_` in class name will be translated to `/` in transformer name.
+Actually there is only one naming conventions: each `_` in class name will be translated to `/` in transformer name. If you want to customize the transformer name, you can do that by overriding the `TransformerName` property.
 
 e.g.
 
@@ -65,7 +65,12 @@ The advantage of this approach is that you can define transformer name as you fe
 
 {CODE transformers_6@Transformers/Creating.cs /}
 
-Probably one of the worst things with this approach is the lack of strongly-typed definition. It can be partially addressed by creating `TransformerDefinition` from class that implements `AbstractTransformerCreationTask` by invoking `CreateTransformerDefinition` method.
+This approach lack any strongly-typed definition gurantees, but the good thing about this is that we aren't limited by the type system. In this case, we can
+execute this transformer on any type that has a Name property. Note that in practice, you _can_ use any transformer on any type. They execute on the server
+and have no concept of your user defined types. However, it is usually easier to look at untyped transformers and see that they can operate on all types, 
+than to look at a typed transformer and understand that it can operate on types other than what it is defined for.
+
+TransformerDefinition can also be partially addressed by creating `TransformerDefinition` from class that implements `AbstractTransformerCreationTask` by invoking `CreateTransformerDefinition` method.
 
 {CODE transformers_7@Transformers/Creating.cs /}
 
