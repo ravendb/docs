@@ -2,6 +2,7 @@
 
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Documentation.Samples;
 
 namespace Raven.Documentation.CodeSamples.Indexes.Querying
 {

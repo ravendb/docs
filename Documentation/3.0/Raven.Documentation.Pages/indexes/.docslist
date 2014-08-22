@@ -11,7 +11,7 @@ indexing-polymorphic-data.markdown	Indexing polymorphic data
 customizing-results-order.markdown	Customizing results order
 creating-spatial-indexes.markdown	[TODO] Creating spatial indexes
 boosting.markdown	Boosting
-using-analyzers.markdown	[TODO] Analyzers
+using-analyzers.markdown	Analyzers
 storing-data-in-index.markdown	Storing data in index
 using-term-vectors.markdown	[TODO] Term Vectors
 using-dynamic-fields.markdown	[TODO] Dynamic Fields
