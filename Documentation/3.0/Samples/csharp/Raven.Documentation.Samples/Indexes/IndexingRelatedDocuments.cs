@@ -80,7 +80,7 @@ namespace Raven.Documentation.Samples.Indexes
 			using (var store = new DocumentStore())
 			{
 				#region indexing_related_documents_3
-				store.DatabaseCommands.PutIndex("Products_ByCategoryName", new IndexDefinition
+				store.DatabaseCommands.PutIndex("Products/ByCategoryName", new IndexDefinition
 				{
 					Map = @"from product in products
 						select new
@@ -102,7 +102,7 @@ namespace Raven.Documentation.Samples.Indexes
 				}
 
 				#region indexing_related_documents_6
-				store.DatabaseCommands.PutIndex("Authors_ByNameAndBooks", new IndexDefinition
+				store.DatabaseCommands.PutIndex("Authors/ByNameAndBooks", new IndexDefinition
 				{
 					Map = @"from author in docs.Authors
 						select new
