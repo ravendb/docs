@@ -1,19 +1,23 @@
 ﻿# Indexing Related Documents
 
-To extend indexing capabilities and simplify many scenarios, we have introduced the possibility to index related documents. 
-For start, lets consider a simple `Customer - Invoice` scenario where you want to lookup for an `Invoice` by `Customer Name`.
+To extend indexing capabilities and simplify many scenarios, we have introduced the possibility to index related documents.
 
-{CODE indexing_related_documents_1@Indexes\IndexingRelatedDocuments.cs /}
+## Example I
+
+For start, lets consider a simple `Product - Category` scenario where you want to lookup for a `Product` by `Category Name`.
 
 Without this feature, the index that had to be created would be a fairly complex multiple map-reduce index and this is why the `LoadDocument` function was introduced.
 
-{CODE indexing_related_documents_2@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:AbstractIndexCreationTask indexing_related_documents_2@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB:csharp:Commands indexing_related_documents_3@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TABS/}
 
-Alternative way is to use `PutIndex` command:
+Now we will be able to search for invoices using `Category Name` as a parameter:
 
-{CODE indexing_related_documents_3@Indexes\IndexingRelatedDocuments.cs /}
+{CODE indexing_related_documents_7@Indexes\IndexingRelatedDocuments.cs /}
 
-Now we will be able to search for invoices using `Customer Name` as a parameter.
+## Example II
 
 Our next scenario will show us that indexing more complex relationships is also trivial. Lets consider a case:
 
@@ -21,15 +25,18 @@ Our next scenario will show us that indexing more complex relationships is also 
 
 Now to create an index with `Author Name` and list of `Book Names` we need to create it as follows:
 
-{CODE indexing_related_documents_5@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:AbstractIndexCreationTask indexing_related_documents_5@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TAB:csharp:Commands indexing_related_documents_6@Indexes\IndexingRelatedDocuments.cs /}
+{CODE-TABS/}
 
-or
+{CODE indexing_related_documents_8@Indexes\IndexingRelatedDocuments.cs /}
 
-{CODE indexing_related_documents_6@Indexes\IndexingRelatedDocuments.cs /}
+## Remarks
 
-{NOTE Indexes will be updated automatically when related documents will change. /}
+{INFO Indexes will be updated automatically when related documents will change. /}
 
-{NOTE Using `LoadDocument` adds a loaded document to tracking list. This may cause very expensive calculations to occur especially when multiple documents are tracking the same document. /}
+{WARNING Using `LoadDocument` adds a loaded document to tracking list. This may cause very expensive calculations to occur especially when multiple documents are tracking the same document. /}
 
 #### Related articles
 

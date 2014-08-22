@@ -1,11 +1,10 @@
-﻿using Raven.Client.Document;
-using Raven.Documentation.CodeSamples.Indexes.Foo;
-using Raven.Documentation.CodeSamples.Orders;
-
-using System;
+﻿using System;
 using System.Linq;
 
-namespace Raven.Documentation.CodeSamples.Indexes.Querying
+using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
+
+namespace Raven.Documentation.Samples.Indexes.Querying
 {
 	public class HandlingDocumentRelationships
 	{
@@ -16,6 +15,13 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 			public Referral Refferal { get; set; }
 			public LineItem[] LineItems { get; set; }
 			public double TotalPrice { get; set; }
+		}
+
+		public class Customer
+		{
+			public string Id { get; set; }
+
+			public string Name { get; set; }
 		}
 
 		private class Referral

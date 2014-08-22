@@ -1,12 +1,12 @@
-﻿using Raven.Abstractions.Indexing;
+﻿using System.Collections.Generic;
+using System.Linq;
+
+using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 
-using System.Collections.Generic;
-using System.Linq;
-
-namespace Raven.Documentation.CodeSamples.Indexes
+namespace Raven.Documentation.Samples.Indexes
 {
 	public class CustomizingResultsOrder
 	{
@@ -24,7 +24,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 				Sort(x => x.UnitsInStock, SortOptions.Int);
 			}
 		}
-
 		#endregion
 
 		#region static_sorting2
@@ -52,7 +51,8 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			using (var session = store.OpenSession())
 			{
 				#region static_sorting3
-				List<Product> products = session.Query<Product>()
+				IList<Product> results = session
+					.Query<Product>()
 					.OrderBy(product => product.UnitsInStock)
 					.ToList();
 				#endregion
