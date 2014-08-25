@@ -114,6 +114,10 @@
     <None Include="client-api\configuration\.docslist" />
     <None Include="client-api\configuration\conventions.dotnet.markdown" />
     <None Include="client-api\creating-document-store.dotnet.markdown" />
+    <None Include="client-api\document-identifiers\.docslist" />
+    <None Include="client-api\document-identifiers\beware-of.markdown" />
+    <None Include="client-api\document-identifiers\hilo-algorithm.markdown" />
+    <None Include="client-api\document-identifiers\working-with-document-ids.markdown" />
     <None Include="client-api\faq\.docslist" />
     <None Include="client-api\faq\what-is-a-collection.markdown" />
     <None Include="client-api\how-to\.docslist" />

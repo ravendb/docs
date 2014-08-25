@@ -4,6 +4,7 @@ setting-up-default-database.markdown	Setting up default database
 setting-up-connection-string.markdown	Setting up connection string
 /commands	Commands
 /session	Session
+/document-identifiers	Document identifiers
 /bulk-insert	Bulk Insert
 /changes	Changes API
 /listeners	Listeners

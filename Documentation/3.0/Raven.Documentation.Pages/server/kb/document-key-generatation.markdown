@@ -44,4 +44,4 @@ This approach is recommended for most scenarios, since it produces keys that are
 
 #### Related articles
 
-TODO -> Conventions -> id generation article
+- [Working with document identifiers](../../client-api/document-identifiers/working-with-document-ids)
