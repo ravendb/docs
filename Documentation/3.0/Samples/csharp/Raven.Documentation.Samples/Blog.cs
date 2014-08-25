@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Raven.Documentation.CodeSamples
+namespace Raven.Documentation.Samples
 {
 	public class BlogPost
 	{
