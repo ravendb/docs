@@ -7,51 +7,50 @@ using Raven.Client.Indexes;
 
 namespace Raven.Documentation.Samples.Indexes
 {
-	#region indexes_1
-	public class BlogPost
-	{
-		public string Author { get; set; }
-
-		public string Title { get; set; }
-
-		public string Text { get; set; }
-
-		public List<BlogPostComment> Comments { get; set; }
-	}
-
-	public class BlogPostComment
-	{
-		public string Author { get; set; }
-
-		public string Text { get; set; }
-
-		public List<BlogPostComment> Comments { get; set; }
-	}
-	#endregion
-
-	#region indexes_2
-	public class BlogPosts_ByCommentAuthor : AbstractIndexCreationTask<BlogPost>
-	{
-		public class Result
-		{
-			public string Author { get; set; }
-		}
-
-		public BlogPosts_ByCommentAuthor()
-		{
-			Map = posts => from post in posts
-					from comment in Recurse(post, x => x.Comments)
-					select new
-					{
-						Author = comment.Author
-					};
-		}
-	}
-
-	#endregion
-
 	public class IndexingHierarchicalData
 	{
+		#region indexes_1
+		public class BlogPost
+		{
+			public string Author { get; set; }
+
+			public string Title { get; set; }
+
+			public string Text { get; set; }
+
+			public List<BlogPostComment> Comments { get; set; }
+		}
+
+		public class BlogPostComment
+		{
+			public string Author { get; set; }
+
+			public string Text { get; set; }
+
+			public List<BlogPostComment> Comments { get; set; }
+		}
+		#endregion
+
+		#region indexes_2
+		public class BlogPosts_ByCommentAuthor : AbstractIndexCreationTask<BlogPost>
+		{
+			public class Result
+			{
+				public string Author { get; set; }
+			}
+
+			public BlogPosts_ByCommentAuthor()
+			{
+				Map = posts => from post in posts
+							   from comment in Recurse(post, x => x.Comments)
+							   select new
+							   {
+								   Author = comment.Author
+							   };
+			}
+		}
+		#endregion
+
 		public void Sample()
 		{
 			using (var store = new DocumentStore())
