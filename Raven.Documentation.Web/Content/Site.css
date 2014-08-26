@@ -48,6 +48,12 @@ div#search div#accordion .panel-collapse > .list-group .list-group-item:first-ch
   border-top-right-radius: 0;
   border-top-left-radius: 0;
 }
+#sidebar div.panel.panel-article.selected > div.panel-heading {
+  border-right: 4px solid #d9534f;
+}
+#sidebar div.panel.panel-article > div.panel-heading {
+  background-color: #fafafa !important;
+}
 #sidebar .fa {
   margin-right: 10px;
 }
@@ -108,3 +114,4 @@ div#search div#accordion .panel-collapse > .list-group .list-group-item:first-ch
 div.container div.chooser {
   margin-right: 10px;
 }
+/*# sourceMappingURL=Site.css.map */

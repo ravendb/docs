@@ -5,15 +5,15 @@ indexing-basics.markdown	Indexing basics
 map-indexes.markdown	Map indexes
 map-reduce-indexes.markdown	[TODO] Map-Reduce indexes
 stale-indexes.markdown	Stale indexes
+customizing-results-order.markdown	Customizing results order
 indexing-related-documents.markdown	Indexing related documents
 indexing-hierarchical-data.markdown	Indexing hierarchical data
 indexing-polymorphic-data.markdown	Indexing polymorphic data
-customizing-results-order.markdown	Customizing results order
-creating-spatial-indexes.markdown	[TODO] Creating spatial indexes
+indexing-spatial-data.markdown	Indexing spatial data
 boosting.markdown	Boosting
 using-analyzers.markdown	Analyzers
 storing-data-in-index.markdown	Storing data in index
-using-term-vectors.markdown	[TODO] Term Vectors
-using-dynamic-fields.markdown	[TODO] Dynamic Fields
+using-term-vectors.markdown	Term Vectors
+using-dynamic-fields.markdown	Dynamic Fields
 
 

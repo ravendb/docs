@@ -4,9 +4,10 @@
 
 To create an index and enable Term Vectors on a specific field we can create index using `AbstractIndexCreationTask` and specify term vectors there or define our term vectors in `IndexDefinition` (directly or using `IndexDefinitionBuilder`).
 
-{CODE term_vectors_1@Indexes\TermVectors.cs /}
-
-{CODE term_vectors_2@Indexes\TermVectors.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:AbstractIndexCreationTask term_vectors_1@Indexes\TermVectors.cs /}
+{CODE-TAB:csharp:Commands term_vectors_2@Indexes\TermVectors.cs /}
+{CODE-TABS/}
 
 The available Term Vector options are:
 
