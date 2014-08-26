@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Abstractions.Indexing;
 using Raven.Client;
@@ -6,7 +7,7 @@ using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Client.Spatial;
 
-namespace Raven.Documentation.CodeSamples.Indexes
+namespace Raven.Documentation.Samples.Indexes
 {
 	namespace Foo
 	{
@@ -18,7 +19,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 
 			public CartesianSpatialOptionsFactory Cartesian;
 		}
-
 		#endregion
 
 		public interface GeographySpatialOptionsFactory
@@ -32,7 +32,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			SpatialOptions GeohashPrefixTreeIndex(int maxTreeLevel, SpatialUnits circleRadiusUnits = SpatialUnits.Kilometers);
 
 			SpatialOptions QuadPrefixTreeIndex(int maxTreeLevel, SpatialUnits circleRadiusUnits = SpatialUnits.Kilometers);
-
 			#endregion
 		}
 
@@ -50,7 +49,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			SpatialCriteria Within(object shape);
 
 			SpatialCriteria WithinRadiusOf(double radius, double x, double y);
-
 			#endregion
 		}
 
@@ -60,7 +58,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			SpatialOptions BoundingBoxIndex();
 
 			SpatialOptions QuadPrefixTreeIndex(int maxTreeLevel, SpatialBounds bounds);
-
 			#endregion
 		}
 
@@ -76,12 +73,10 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			object SpatialGenerate(string fieldName, string shapeWKT, SpatialSearchStrategy strategy);
 
 			object SpatialGenerate(string fieldName, string shapeWKT, SpatialSearchStrategy strategy, int maxTreeLevel);
-
 			#endregion
 
 			#region spatial_search_5
 			IDocumentQueryCustomization RelatesToShape(string fieldName, string shapeWKT, SpatialRelation rel);
-
 			#endregion
 		}
 
@@ -91,7 +86,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			GeohashPrefixTree,
 			QuadPrefixTree,
 		}
-
 		#endregion
 
 		#region spatial_search_7
@@ -107,7 +101,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			/// </summary>
 			Nearby
 		}
-
 		#endregion
 	}
 
@@ -119,9 +112,9 @@ namespace Raven.Documentation.CodeSamples.Indexes
 	}
 
 	#region spatial_search_enhancements_8
-	public class SpatialDoc_Index : AbstractIndexCreationTask<SpatialDoc>
+	public class SpatialDoc_ByShapeAndPoint : AbstractIndexCreationTask<SpatialDoc>
 	{
-		public SpatialDoc_Index()
+		public SpatialDoc_ByShapeAndPoint()
 		{
 			Map = docs => from spatial in docs
 						  select new
@@ -134,7 +127,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			Spatial(x => x.Point, options => options.Cartesian.BoundingBoxIndex());
 		}
 	}
-
 	#endregion
 
 	#region spatial_search_enhancements_1
@@ -146,7 +138,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 
 		public string WKT { get; set; }
 	}
-
 	#endregion
 
 	#region spatial_search_1
@@ -160,13 +151,12 @@ namespace Raven.Documentation.CodeSamples.Indexes
 
 		public double Longitude { get; set; }
 	}
-
 	#endregion
 
 	#region spatial_search_2
-	public class Events_SpatialIndex : AbstractIndexCreationTask<Event>
+	public class Events_ByNameAndCoordinates : AbstractIndexCreationTask<Event>
 	{
-		public Events_SpatialIndex()
+		public Events_ByNameAndCoordinates()
 		{
 			Map = events => from e in events
 							select new
@@ -176,13 +166,12 @@ namespace Raven.Documentation.CodeSamples.Indexes
 							};
 		}
 	}
-
 	#endregion
 
 	#region spatial_search_enhancements_2
-	public class EventsWithWKT_SpatialIndex : AbstractIndexCreationTask<EventWithWKT>
+	public class EventsWithWKT_ByNameAndWKT : AbstractIndexCreationTask<EventWithWKT>
 	{
-		public EventsWithWKT_SpatialIndex()
+		public EventsWithWKT_ByNameAndWKT()
 		{
 			Map = events => from e in events
 							select new
@@ -194,7 +183,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 			Spatial(x => x.WKT, options => options.Geography.Default());
 		}
 	}
-
 	#endregion
 
 	public class SpatialIndexes
@@ -206,37 +194,51 @@ namespace Raven.Documentation.CodeSamples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region spatial_search_3
-					session.Query<Event, Events_SpatialIndex>()
-						   .Customize(x => x.WithinRadiusOf(
-							   fieldName: "Coordinates",
-							   radius: 10,
-							   latitude: 32.1234,
-							   longitude: 23.4321))
-						   .ToList();
+					IList<Event> results = session
+						.Query<Event, Events_ByNameAndCoordinates>()
+						.Customize(x => x
+							.WithinRadiusOf(
+								fieldName: "Coordinates",
+								radius: 10,
+								latitude: 32.1234,
+								longitude: 23.4321))
+						.ToList();
 					#endregion
+				}
 
+				using (var session = store.OpenSession())
+				{
 					#region spatial_search_8
-					session.Advanced.LuceneQuery<Event, Events_SpatialIndex>()
-						   .WithinRadiusOf(fieldName: "Coordinates", radius: 10, latitude: 32.1234, longitude: 23.4321)
-						   .ToList();
-
+					IList<Event> results = session
+						.Advanced
+						.DocumentQuery<Event, Events_ByNameAndCoordinates>()
+						.WithinRadiusOf(
+							fieldName: "Coordinates",
+							radius: 10,
+							latitude: 32.1234,
+							longitude: 23.4321)
+						.ToList();
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region spatial_search_4
-					session.Query<Event, Events_SpatialIndex>()
-							.Customize(x => x.RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
-							.ToList();
-
+					IList<Event> results = session
+						.Query<Event, Events_ByNameAndCoordinates>()
+						.Customize(x => x.RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
+						.ToList();
 					#endregion
+				}
 
+				using (var session = store.OpenSession())
+				{
 					#region spatial_search_9
-					session.Advanced.LuceneQuery<Event, Events_SpatialIndex>()
-						   .RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within)
-						   .ToList();
-
+					IList<Event> results = session
+						.Advanced
+						.DocumentQuery<Event, Events_ByNameAndCoordinates>()
+						.RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within)
+						.ToList();
 					#endregion
 
 					#region spatial_search_enhancements_6
@@ -247,7 +249,6 @@ namespace Raven.Documentation.CodeSamples.Indexes
 					};
 
 					session.Store(new SpatialDoc { Shape = point });
-
 					#endregion
 
 					#region spatial_search_enhancements_7
@@ -258,20 +259,23 @@ namespace Raven.Documentation.CodeSamples.Indexes
 					session.Store(new SpatialDoc { Point = new { lat = 45d, lng = -10d } });
 					session.Store(new SpatialDoc { Point = new { Lat = 45d, Long = -10d } });
 					session.Store(new SpatialDoc { Point = "geo:45.0,-10.0;u=2.0" }); // Geo URI
-
 					#endregion
+				}
 
+				using (var session = store.OpenSession())
+				{
 					object someWktShape = null;
 
 					#region spatial_search_enhancements_9
-					session.Query<SpatialDoc, SpatialDoc_Index>()
+					session
+						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Spatial(x => x.Shape, criteria => criteria.WithinRadiusOf(500, 30, 30))
 						.ToList();
 
-					session.Query<SpatialDoc, SpatialDoc_Index>()
+					session
+						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Spatial(x => x.Shape, criteria => criteria.Intersects(someWktShape))
 						.ToList();
-
 					#endregion
 				}
 			}
