@@ -126,12 +126,7 @@ namespace Raven.Documentation.Web.Controllers
 
 			DocumentStore
 				.DatabaseCommands
-				.DeleteByIndex("Raven/DocumentsByEntityName", new IndexQuery { Query = "Tag:DocumentationPages" })
-				.WaitForCompletion();
-
-			DocumentStore
-				.DatabaseCommands
-				.DeleteByIndex("Raven/DocumentsByEntityName", new IndexQuery { Query = "Tag:TableOfContents" })
+				.DeleteByIndex("Raven/DocumentsByEntityName", new IndexQuery { Query = "Tag:DocumentationPages OR Tag:TableOfContents" })
 				.WaitForCompletion();
 
 			foreach (var page in parser.Parse())
