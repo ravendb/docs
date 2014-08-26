@@ -4,7 +4,7 @@ using System.Linq;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 
-namespace Raven.Documentation.CodeSamples.Indexes
+namespace Raven.Documentation.Samples.Indexes
 {
 	public class DynamicFields
 	{
@@ -23,20 +23,24 @@ namespace Raven.Documentation.CodeSamples.Indexes
 		#endregion
 
 		#region dynamic_fields_2
-		public class Product_ByAttribute : AbstractIndexCreationTask<Product>
+		public class Products_ByAttribute : AbstractIndexCreationTask<Product>
 		{
-			public Product_ByAttribute()
+			public class Result
+			{
+				public string Color { get; set; }
+			}
+
+			public Products_ByAttribute()
 			{
 				Map = products => from p in products
-								  select new
-								  {
-									  _ = p.Attributes
-										 .Select(attribute =>
-											 CreateField(attribute.Name, attribute.Value, false, true))
-								  };
+							select new
+							{
+								_ = p.Attributes
+									.Select(attribute => 
+										CreateField(attribute.Name, attribute.Value, false, true))
+							};
 			}
 		}
-
 		#endregion
 
 		public void Dynamic()
@@ -46,10 +50,22 @@ namespace Raven.Documentation.CodeSamples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region dynamic_fields_3
-					var products = session.Advanced.LuceneQuery<Product>("Product/ByAttribute")
+					IList<Product> results = session
+						.Advanced
+						.DocumentQuery<Product, Products_ByAttribute>()
 						.WhereEquals("Color", "Red")
 						.ToList();
+					#endregion
+				}
 
+				using (var session = store.OpenSession())
+				{
+					#region dynamic_fields_4
+					IList<Product> results = session
+						.Query<Products_ByAttribute.Result, Products_ByAttribute>()
+						.Where(x => x.Color == "Red")
+						.OfType<Product>()
+						.ToList();
 					#endregion
 				}
 			}

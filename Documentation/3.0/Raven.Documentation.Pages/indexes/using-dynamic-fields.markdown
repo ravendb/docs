@@ -1,6 +1,6 @@
 # Dynamic fields
 
-While strongly typed entities are well processed by Linq expressions, some scenarios demand the use of dynamic properties. To support searching in object graphs that cannot have their entire structure be declared upfront, RavenDB exposes the following low-level API for creating fields from within index definitions.
+While strongly typed entities are well processed by LINQ expressions, some scenarios demand the use of dynamic properties. To support searching in object graphs that cannot have their entire structure be declared upfront, RavenDB exposes the following low-level API for creating fields from within index definitions.
 
 With this feature, you can search for documents even with properties which were created on the fly. For example, consider a `Product` object that is declared as follows:
 
@@ -18,14 +18,17 @@ The call to `CreateField(...)` will generate index fields based on the propertie
 
 Obviously, this index can have more attributes defined in it for indexing, just like any other ordinary index.
 
-{INFO Field options like Store.NO and Index.ANALYZED are configurable also with dynamic fields. /}
+{INFO Field options like `FieldStorage.No` and `FieldIndexing.Analyzed` are configurable also with dynamic fields. /}
 
-After creating the index, we can easily look for documents using the attribute name as a field to look on, as if it was a real object property. Since it is not really a property, there is no Linq support for it, hence it can only be queried using the `LuceneQuery<>()` API:
+After creating the index, we can easily look for documents using the attribute name as a field to look on, as if it was a real object property.
 
-{CODE dynamic_fields_3@Indexes\DynamicFields.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Query dynamic_fields_4@Indexes\DynamicFields.cs /}
+{CODE-TAB:csharp:DocumentQuery dynamic_fields_3@Indexes\DynamicFields.cs /}
+{CODE-TABS/}
 
-This will also work for numeric values, so range queries or searches with numeric operators like `WhereGreaterThan()` will work as well.
+This will also work for numeric values, so range queries or searches with numeric operators like `WhereGreaterThan()` for `DocumentQuery` will work as well.
 
-#### Related articles
+## Related articles
 
 TODO
