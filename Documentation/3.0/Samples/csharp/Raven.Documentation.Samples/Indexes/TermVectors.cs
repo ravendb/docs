@@ -6,9 +6,8 @@ using System.Linq.Expressions;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
-using Raven.Documentation.Samples;
 
-namespace Raven.Documentation.CodeSamples.Indexes
+namespace Raven.Documentation.Samples.Indexes
 {
 	namespace Foo
 	{
@@ -47,26 +46,19 @@ namespace Raven.Documentation.CodeSamples.Indexes
 	public class TermVectors
 	{
 		#region term_vectors_1
-		public class SampleIndexWithTermVectors : AbstractIndexCreationTask<BlogPost, BlogPost>
+		public class BlogPosts_ByTagsAndContent : AbstractIndexCreationTask<BlogPost>
 		{
-			public SampleIndexWithTermVectors()
+			public BlogPosts_ByTagsAndContent()
 			{
 				Map = users => from doc in users
-							   select new
-										  {
-											  doc.Tags,
-											  doc.Content
-										  };
+						select new
+						{
+							doc.Tags,
+							doc.Content
+						};
 
-				Indexes = new Dictionary<Expression<Func<BlogPost, object>>, FieldIndexing>
-					          {
-						          { x => x.Content, FieldIndexing.Analyzed }
-					          };
-
-				TermVectors = new Dictionary<Expression<Func<BlogPost, object>>, FieldTermVector>
-					              {
-						              { x => x.Content, FieldTermVector.WithPositionsAndOffsets }
-					              };
+				Indexes.Add(x => x.Content, FieldIndexing.Analyzed);
+				TermVectors.Add(x => x.Content, FieldTermVector.WithPositionsAndOffsets);
 			}
 		}
 		#endregion
@@ -79,23 +71,23 @@ namespace Raven.Documentation.CodeSamples.Indexes
 				store
 					.DatabaseCommands
 					.PutIndex(
-						"SampleIndexWithTermVectors",
-						new IndexDefinitionBuilder<BlogPost, BlogPost>
+						"BlogPosts/ByTagsAndContent",
+						new IndexDefinitionBuilder<BlogPost>
 						{
 							Map = users => from doc in users
-										   select new
-													   {
-														   doc.Tags,
-														   doc.Content
-													   },
+									select new
+									{
+										doc.Tags,
+										doc.Content
+									},
 							Indexes =
-								{
-									{ x => x.Content, FieldIndexing.Analyzed }
-								},
+							{
+								{ x => x.Content, FieldIndexing.Analyzed }
+							},
 							TermVectors =
-								{
-									{ x => x.Content, FieldTermVector.WithPositionsAndOffsets }
-								}
+							{
+								{ x => x.Content, FieldTermVector.WithPositionsAndOffsets }
+							}
 						});
 				#endregion
 			}
