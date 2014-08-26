@@ -105,11 +105,9 @@
 
 			#endregion
 
-			/*
 			#region commands_identity_set
 			store.DatabaseCommands.SeedIdentityFor("products", 42);
 			#endregion
-			 */
 		} 
 	}
 }
