@@ -128,6 +128,7 @@
 			for (int index = 0; index < tableOfContents.Items.Count; index++)
 			{
 				var item = tableOfContents.Items[index];
+				var containsKey = ContainsKey(item, key, 2);
 				if (item.IsFolder)
 				{
 					var id = "collapse" + index;
@@ -146,12 +147,10 @@
 							break;
 					}
 
-					builder.AppendLine(string.Format("<span class='fa fa-folder-o'></span><span>{0}</span>", item.Title));
+					builder.AppendLine(string.Format("<span class='fa fa-folder-o'></span><span><strong>{0}</strong></span>", item.Title));
 					builder.AppendLine("</a>");
 					builder.AppendLine("</h4>");
 					builder.AppendLine("</div>");
-
-					var containsKey = ContainsKey(item, key, 2);
 
 					builder.AppendLine(string.Format("<div id='{0}' class='panel-collapse collapse {1}'>", id, containsKey ? "in" : string.Empty));
 					builder.AppendLine("<ul class='list-group'>");
@@ -165,7 +164,7 @@
 
 				var link = htmlHelper.ActionLink(item.Title, MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { key = item.Key }, null).ToHtmlString();
 
-				builder.AppendLine("<div class='panel panel-default'>");
+				builder.AppendLine(string.Format("<div class='panel panel-default panel-article {0}'>", containsKey ? "selected" : string.Empty));
 				builder.AppendLine("<div class='panel-heading'>");
 				builder.AppendLine("<h4 class='panel-title'>");
 				builder.AppendLine(string.Format("<span class='fa fa-file-text-o'></span>{0}", link));
