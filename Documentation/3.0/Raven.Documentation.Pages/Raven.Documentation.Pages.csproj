@@ -225,13 +225,14 @@
     <None Include="indexes\indexing-basics.markdown" />
     <None Include="indexes\boosting.markdown" />
     <None Include="indexes\creating-and-deploying.markdown" />
-    <None Include="indexes\creating-spatial-indexes.markdown" />
+    <None Include="indexes\indexing-spatial-data.markdown" />
     <None Include="indexes\customizing-results-order.markdown" />
     <None Include="indexes\indexes-error-handling.markdown" />
     <None Include="indexes\indexing-hierarchical-data.markdown" />
     <None Include="indexes\indexing-polymorphic-data.markdown" />
     <None Include="indexes\indexing-related-documents.markdown" />
     <None Include="indexes\querying\.docslist" />
+    <None Include="indexes\querying\spatial.markdown" />
     <None Include="indexes\querying\basics.markdown" />
     <None Include="indexes\querying\dynamic-aggregation.markdown" />
     <None Include="indexes\querying\faceted-search.markdown" />
