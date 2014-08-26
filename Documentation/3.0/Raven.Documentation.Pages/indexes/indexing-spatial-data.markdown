@@ -1,8 +1,8 @@
-﻿# Spatial Search
+﻿# Indexing spatial data
 
 To support the ability to retrieve the data based on spatial coordinates, the spatial search has been introduced.
 
-## Creating Indexes
+## Creating indexes
 
 To take an advantage of the spatial search, first we need to create an index with a spatial field. To mark field as the spatial field, we need to use `SpatialGenerate` method:
 
@@ -36,39 +36,39 @@ where under `options` we got access to our geography and cartesian factories:
 
 {CODE spatial_search_enhancements_3@Indexes\SpatialIndexes.cs /}
 
-`GeographySpatialOptionsFactory`:   
-
-{CODE spatial_search_enhancements_4@Indexes\SpatialIndexes.cs /}
-
-`CartesianSpatialOptionsFactory`:   
-
-{CODE spatial_search_enhancements_5@Indexes\SpatialIndexes.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:GeographySpatialOptionsFactory spatial_search_enhancements_4@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:CartesianSpatialOptionsFactory spatial_search_enhancements_5@Indexes\SpatialIndexes.cs /}
+{CODE-TABS/}
 
 ## Spatial search strategies
 
-I. GeohashPrefixTree
-
+{PANEL:GeohashPrefixTree}
 Geohash is a latitude/longitude representation system that describes earth as a grid with 32 cells, assigning to each grid cell an alphanumeric character. Each grid cell is divided further into 32 smaller chunks and each chunk has also an alphanumeric character assigned and so on.
 
 E.g. The location of a 'New York' in United States is represented by following geohash: [DR5REGY6R](http://geohash.org/dr5regy6r) and it represents the `40.7144 -74.0060` coordinates. Removing characters from the end of geohash will decrease the precision level.
 
 More information about geohash uses, decoding algorithm and limitations can be found [here](http://en.wikipedia.org/wiki/Geohash).
+{PANEL/}
 
-II. QuadPrefixTree
-
+{PANEL:QuadPrefixTree}
 QuadTree represents earth as a grid with exactly four cells and similarly to geohash, each grid cell (sometimes called bucket) has a letter assigned and is divided further into 4 more cells and so on.
 
 More information about QuadTree can be found [here](http://en.wikipedia.org/wiki/Quadtree).
+{PANEL/}
 
-{NOTE `GeohashPrefixTree` is a default `SpatialSearchStrategy`. Doing any changes to the strategy after index has been created will trigger re-indexation process. /}
+{PANEL:BoundingBox}
+More information about BoundingBox can be found [here](http://en.wikipedia.org/wiki/Minimum_bounding_rectangle).
+{PANEL/}
 
-III. [BoundingBox](http://en.wikipedia.org/wiki/Minimum_bounding_rectangle)
+{WARNING `GeohashPrefixTree` is a default `SpatialSearchStrategy`. Doing any changes to the strategy after index has been created will trigger re-indexation process. /}
 
 ### Precision
 
 By default the precision level (`maxTreeLevel`) for GeohashPrefixTree is set to **9** and for QuadPrefixTree the value is **23**, which means that the coordinates are represented by a 9 or 23 character string. The difference exists, because the `QuadTree` representation would be much less precise if the level would be the same.
 
-A. Geohash precision values (from [http://unterbahn.com](http://unterbahn.com/2009/11/metric-dimensions-of-geohash-partitions-at-the-equator/)).
+{PANEL:Geohash precision values}
+Source: [http://unterbahn.com](http://unterbahn.com/2009/11/metric-dimensions-of-geohash-partitions-at-the-equator/)
 
 | Level | E-W distance at equator | N-S distance at equator |
 |:----- |:------------------------|:------------------------|
@@ -85,7 +85,9 @@ A. Geohash precision values (from [http://unterbahn.com](http://unterbahn.com/20
 | 2     | ~1252km                 | ~626km                  |
 | 1     | ~5018km                 | ~5018km                 |
 
-B. Quadtree precision values
+{PANEL/}
+
+{PANEL:Quadtree precision values}
 
 | Level | Distance at equator |
 |:-------|:-------------------|
@@ -120,47 +122,7 @@ B. Quadtree precision values
 | 2      | ~7996km            |
 | 1      | ~15992km           |
 
-## Search
-
-Beside the `Event` class let us add `SpatialDoc` with a corresponding index to show how to do a strongly-typed spatial query using `Spatial` method.
-
-{CODE spatial_search_enhancements_8@Indexes\SpatialIndexes.cs /}
-
-{CODE spatial_search_enhancements_9@Indexes\SpatialIndexes.cs /}
-
-The methods available under `criteria` are:   
-
-{CODE spatial_search_enhancements_a@Indexes\SpatialIndexes.cs /}
-
-### Radius search
-
-The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search we will use `WithinRadiusOf` method that is a part of query customizations.
-
-{CODE spatial_search_3@Indexes\SpatialIndexes.cs /}
-
-The method can be used also when using `LuceneQuery`.
-
-{CODE spatial_search_8@Indexes\SpatialIndexes.cs /}
-
-#### Advanced search
-
-The `WithinRadiusOf` method is a wrapper around `RelatesToShape` method.
-
-{CODE spatial_search_5@Indexes\SpatialIndexes.cs /}
-
-{CODE spatial_search_7@Indexes\SpatialIndexes.cs /}
-
-where first parameter is a name of the field containing the shape to use for filtering, next one is a shape in [WKT](http://en.wikipedia.org/wiki/Well-known_text) format and the last one is a spatial relation type.
-
-So to perform a radius search from the above example and use `RelatesToShape` method, we do as follows
-
-{CODE spatial_search_4@Indexes\SpatialIndexes.cs /}
-
-or when we want to use `LuceneQuery` then
-
-{CODE spatial_search_9@Indexes\SpatialIndexes.cs /}
-
-{WARNING From RavenDB 2.0 the distance by default is measured in **kilometers** in contrast to the miles used in previous versions. /}
+{PANEL/}
 
 ## Format support
 
@@ -178,6 +140,22 @@ To integrate with other spatial libraries, the document store must be configured
 
 Examples of such converters can be found at [Simon Bartlett's github repository page](https://github.com/sibartlett/RavenDB.Client.Spatial).
 
-#### Related articles
+## Example
+
+Let's assume that we have a `SpatialDoc` with a corresponding index available:
+
+{CODE spatial_search_enhancements_8@Indexes\SpatialIndexes.cs /}
+
+To find all results that are **within radius of** or **intersect** specified shape query as follows:
+
+{CODE spatial_search_enhancements_9@Indexes\SpatialIndexes.cs /}
+
+{INFO You can read more about **spatial search** in a **dedicated querying article** available [here](../indexes/querying/spatial). /}
+
+## Remarks
+
+{WARNING From RavenDB 2.0 the distance by default is measured in **kilometers** in contrast to the miles used in previous versions. /}
+
+## Related articles
 
 TODO

@@ -8,6 +8,7 @@ using Raven.Client.Document;
 using Raven.Client.Linq;
 using Raven.Client.Spatial;
 using Raven.Documentation.CodeSamples.Indexes;
+using Raven.Documentation.Samples.Indexes;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {
@@ -70,7 +71,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// where 'Shape' (spatial field) is within 10 kilometers radius
 					// from 32.1234 latitude and 23.4321 longitude coordinates
 					var results = session
-						.Query<SpatialDoc, SpatialDoc_Index>()
+						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Spatial(x => x.Shape, criteria => criteria.WithinRadiusOf(10, 32.1234, 23.4321))
 						.ToList();
 					#endregion
@@ -84,7 +85,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// from 32.1234 latitude and 23.4321 longitude coordinates
 					// this equals to WithinRadiusOf(10, 32.1234, 23.4321)
 					var results = session
-						.Query<SpatialDoc, SpatialDoc_Index>()
+						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Customize(x => x.RelatesToShape("Shape", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
 						.ToList();
 					#endregion
@@ -98,7 +99,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// from 32.1234 latitude and 23.4321 longitude coordinates
 					// sort results by distance from origin point
 					var results = session
-						.Query<SpatialDoc, SpatialDoc_Index>()
+						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Customize(x => x.SortByDistance())
 						.Spatial(x => x.Shape, criteria => criteria.WithinRadiusOf(10, 32.1234, 23.4321))
 						.ToList();
@@ -112,7 +113,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// where 'Shape' (spatial field) is within 10 kilometers radius
 					// from 32.1234 latitude and 23.4321 longitude coordinates
 					var results = session
-						.Query<SpatialDoc, SpatialDoc_Index>()
+						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Customize(x => x.WithinRadiusOf("Shape", 10, 32.1234, 23.4321))
 						.ToList();
 					#endregion
