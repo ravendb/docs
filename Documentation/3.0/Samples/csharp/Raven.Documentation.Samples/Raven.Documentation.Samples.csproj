@@ -280,6 +280,7 @@
     <Compile Include="Indexes\Map.cs" />
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
+    <Compile Include="Indexes\Querying\Filtering.cs" />
     <Compile Include="Indexes\Querying\HandlingDocumentRelationships.cs" />
     <Compile Include="Indexes\Querying\Highlights.cs" />
     <Compile Include="Indexes\Querying\Intersection.cs" />
