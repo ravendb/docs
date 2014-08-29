@@ -1,10 +1,8 @@
 ﻿# Filtering
 
-One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of way to to this, and they all depend on type of query you want to use ([Query](), [DocumentQuery](), low-level [Command]()). Following example demonstrates how to add a simple conditions to query using all those methods.
+One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query]() from basic session operations, [DocumentQuery]() from advanced session operations or low-level [Command]()). Following example demonstrates how to add a simple conditions to query using all those methods.
 
 ## Where
-
-### Example I
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_0_1@Indexes\Querying\Filtering.cs /}
@@ -13,7 +11,7 @@ One of the most basic functionalities when it comes to querying is the ability t
 {CODE-TAB:csharp:Index filtering_0_4@Indexes\Querying\Filtering.cs /}
 {CODE-TABS/}
 
-### Example II - numeric property
+## Where - numeric property
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_1_1@Indexes\Querying\Filtering.cs /}
@@ -22,7 +20,7 @@ One of the most basic functionalities when it comes to querying is the ability t
 {CODE-TAB:csharp:Index filtering_1_4@Indexes\Querying\Filtering.cs /}
 {CODE-TABS/}
 
-### Example III - nested property
+## Where - nested property
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_2_1@Indexes\Querying\Filtering.cs /}
@@ -31,7 +29,7 @@ One of the most basic functionalities when it comes to querying is the ability t
 {CODE-TAB:csharp:Index filtering_2_4@Indexes\Querying\Filtering.cs /}
 {CODE-TABS/}
 
-### Where + Any
+## Where + Any
 
 `Any` is useful when you have a collection of items (e.g. `Order` contains `OrderLines`) and you want to filter out based on a values from this collection. For example, let's retrieve all orders that contain a `OrderLine` with a given product.
 
@@ -42,7 +40,7 @@ One of the most basic functionalities when it comes to querying is the ability t
 {CODE-TAB:csharp:Index filtering_3_4@Indexes\Querying\Filtering.cs /}
 {CODE-TABS/}
 
-### Where + In
+## Where + In
 
 When you want to check single value against multiple values `In` operator can become handy. E.g. to retrieve all employees that `FirstName` is either `Robert` or `Nancy` we can issue following query:
 
@@ -51,6 +49,40 @@ When you want to check single value against multiple values `In` operator can be
 {CODE-TAB:csharp:DocumentQuery filtering_4_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Commands filtering_4_3@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_0_4@Indexes\Querying\Filtering.cs /}
+{CODE-TABS/}
+
+{WARNING:Important}
+Remember to add `Raven.Client.Linq` namespace to usings if you want to use `In` extension method.
+{WARNING/}
+
+## Where + ContainsAny
+
+To check if enumeration contains **any** of the values from a specified collection you can use `ContainsAny` method.
+
+Let's assume that we want to return all `BlogPosts` that contain any of the specified `Tags`.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query filtering_5_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_5_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:Commands filtering_5_3@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:Index filtering_5_4@Indexes\Querying\Filtering.cs /}
+{CODE-TABS/}
+
+{WARNING:Important}
+Remember to add `Raven.Client.Linq` namespace to usings if you want to use `In` extension method.
+{WARNING/}
+
+## Where + ContainsAll
+
+To check if enumeration contains **all** of the values from a specified collection you can use `ContainsAll` method.
+
+Let's assume that we want to return all `BlogPosts` that contain all of the specified `Tags`.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query filtering_6_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_6_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:Commands filtering_6_3@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:Index filtering_5_4@Indexes\Querying\Filtering.cs /}
 {CODE-TABS/}
 
 {WARNING:Important}

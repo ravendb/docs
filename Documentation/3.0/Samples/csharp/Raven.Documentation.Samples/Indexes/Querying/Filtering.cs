@@ -57,18 +57,26 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 		#region filtering_3_4
 		public class Order_ByOrderLines_ProductName : AbstractIndexCreationTask<Order>
 		{
-			public class Result
-			{
-				public string ProductName { get; set; }
-			}
-
 			public Order_ByOrderLines_ProductName()
 			{
 				Map = orders => from order in orders
-								from line in order.Lines
 								select new
 								{
-									ProductName = line.ProductName
+									Lines_ProductName = order.Lines.Select(x => x.ProductName)
+								};
+			}
+		}
+		#endregion
+
+		#region filtering_5_4
+		public class BlogPosts_ByTags : AbstractIndexCreationTask<BlogPost>
+		{
+			public BlogPosts_ByTags()
+			{
+				Map = posts => from post in posts
+							   select new
+								{
+									post.Tags
 								};
 			}
 		}
@@ -189,9 +197,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				{
 					#region filtering_3_1
 					IList<Order> results = session
-						.Query<Order_ByOrderLines_ProductName.Result, Order_ByOrderLines_ProductName>()	// query 'Order/ByOrderLinesCount' index
-						.Where(x => x.ProductName == "Teatime Chocolate Biscuits")			// filtering predicates
-						.OfType<Order>()								// change result type to 'Order'
+						.Query<Order, Order_ByOrderLines_ProductName>()					// query 'Order/ByOrderLines/ProductName' index
+						.Where(x => x.Lines.Any(l => l.ProductName == "Teatime Chocolate Biscuits"))	// filtering predicates
 						.ToList();									// materialize query by sending it to server for processing
 					#endregion
 				}
@@ -201,10 +208,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region filtering_3_2
 					IList<Order> results = session
 						.Advanced
-						.DocumentQuery<Order_ByOrderLines_ProductName.Result, Order_ByOrderLines_ProductName>()	// query 'Order/ByOrderLinesCount' index
-						.WhereEquals(x => x.ProductName, "Teatime Chocolate Biscuits")				// filtering predicates
-						.OfType<Order>()									// change result type to 'Order' (cheated in Query to get strongly-typed syntax)
-						.ToList();										// materialize query by sending it to server for processing
+						.DocumentQuery<Order, Order_ByOrderLines_ProductName>()		// query 'Order/ByOrderLines/ProductName' index
+						.WhereEquals("Lines,ProductName", "Teatime Chocolate Biscuits")	// filtering predicates
+						.ToList();							// materialize query by sending it to server for processing
 					#endregion
 				}
 
@@ -215,7 +221,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Order/ByOrderLinesCount",
 						new IndexQuery
 						{
-							Query = "ProductName:\"Teatime Chocolate Biscuits\""
+							Query = "Lines,ProductName:\"Teatime Chocolate Biscuits\""
 						});
 				#endregion
 			}
@@ -251,6 +257,76 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						new IndexQuery
 						{
 							Query = "@in<FirstName>:(Robert, Nancy)"
+						});
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region filtering_5_1
+					IList<BlogPost> results = session
+						.Query<BlogPost, BlogPosts_ByTags>()					// query 'BlogPosts/ByTags' index
+						.Where(x => x.Tags.ContainsAny(new[] { "Development", "Research" }))	// filtering predicates (remember to add `Raven.Client.Linq` namespace to usings)
+						.ToList();								// materialize query by sending it to server for processing
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region filtering_5_2
+					IList<BlogPost> results = session
+						.Advanced
+						.DocumentQuery<BlogPost, BlogPosts_ByTags>()			// query 'BlogPosts/ByTags' index
+						.ContainsAny("Tags", new[] { "Development", "Research" })	// filtering predicates
+						.ToList();							// materialize query by sending it to server for processing
+					#endregion
+				}
+
+				#region filtering_5_3
+				QueryResult result = store
+					.DatabaseCommands
+					.Query(
+						"BlogPosts/ByTags",
+						new IndexQuery
+						{
+							Query = "(Tags:Development OR Tags:Research)"
+						});
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region filtering_6_1
+					IList<BlogPost> results = session
+						.Query<BlogPost, BlogPosts_ByTags>()					// query 'BlogPosts/ByTags' index
+						.Where(x => x.Tags.ContainsAll(new[] { "Development", "Research" }))	// filtering predicates (remember to add `Raven.Client.Linq` namespace to usings)
+						.ToList();								// materialize query by sending it to server for processing
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region filtering_6_2
+					IList<BlogPost> results = session
+						.Advanced
+						.DocumentQuery<BlogPost, BlogPosts_ByTags>()			// query 'BlogPosts/ByTags' index
+						.ContainsAll("Tags", new[] { "Development", "Research" })	// filtering predicates
+						.ToList();							// materialize query by sending it to server for processing
+					#endregion
+				}
+
+				#region filtering_6_3
+				QueryResult result = store
+					.DatabaseCommands
+					.Query(
+						"BlogPosts/ByTags",
+						new IndexQuery
+						{
+							Query = "(Tags:Development AND Tags:Research)"
 						});
 				#endregion
 			}
