@@ -2,11 +2,40 @@
 
 Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic, optimizing hardware usage, or just because no user can handle huge amounts of data at once anyway.
 
-RavenDB makes it very easy to work with paging. In fact, with large data sets, it makes it mandatory (see: Safe By Default).
+{SAFE If not specified, page size **on client side** is set to **128**. /}
 
-It is as simple as specifying a page size and passing a starting point. Using Linq from the Client API, it looks like this:
+{SAFE If not specified, maximum page size **on server side** is set to **1024** and can be altered using `Raven/MaxPageSize` setting (more information [here]()). /}
 
-{CODE paging_1@Indexes\Querying\Paging.cs /}
+## Example I - safe by default
+
+All of the bellow queries will return up to **128** results due to the client default page size value.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query paging_0_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:DocumentQuery paging_0_2@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Commands paging_0_3@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Index paging_0_4@Indexes\Querying\Paging.cs /}
+{CODE-TABS/}
+
+All of the bellow queries will return up to **1024** results due to the server default max page size value.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query paging_1_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:DocumentQuery paging_1_2@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Commands paging_1_3@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Index paging_0_4@Indexes\Querying\Paging.cs /}
+{CODE-TABS/}
+
+## Example II - basic paging
+
+Let's assume that our page size is `10` and we want to retrieve 3rd page. To do this we need to issue following query:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query paging_2_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:DocumentQuery paging_2_2@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Commands paging_2_3@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Index paging_0_4@Indexes\Querying\Paging.cs /}
+{CODE-TABS/}
 
 ## Finding the total results count when paging
 
