@@ -112,7 +112,11 @@
     <None Include="client-api\concurrency\.docslist" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.dotnet.markdown" />
     <None Include="client-api\configuration\.docslist" />
-    <None Include="client-api\configuration\conventions.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\identifier-generation\.docslist" />
+    <None Include="client-api\configuration\conventions\identifier-generation\global.markdown" />
+    <None Include="client-api\configuration\conventions\.docslist" />
+    <None Include="client-api\configuration\conventions\identifier-generation\type-specific.markdown" />
+    <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
     <None Include="client-api\creating-document-store.dotnet.markdown" />
     <None Include="client-api\document-identifiers\.docslist" />
     <None Include="client-api\document-identifiers\beware-of.markdown" />
