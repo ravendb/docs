@@ -146,26 +146,15 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				using (var session = store.OpenSession())
 				{
-					#region paging_1
-					// assuming a page size of 10, this is how will retrieve the 3rd page:
-					var results = session
-						.Query<Order>()
-						.Skip(20) 
-						.Take(10) // Take posts in the page size
-						.ToArray(); // execute the query
-					#endregion
-				}
-
-				using (var session = store.OpenSession())
-				{
-					#region paging_2
+					#region paging_3_1
 					RavenQueryStatistics stats;
-					var results = session
-						.Query<Order>()
-						.Statistics(out stats)
-						.Where(x => x.Freight > 10)
+					IList<Product> results = session
+						.Query<Product, Products_ByUnitsInStock>()
+						.Statistics(out stats)				// fill query statistics
+						.Where(x => x.UnitsInStock > 10)
+						.Skip(20)
 						.Take(10)
-						.ToArray();
+						.ToList();
 
 					var totalResults = stats.TotalResults;
 					#endregion
@@ -173,33 +162,168 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 				using (var session = store.OpenSession())
 				{
-					#region paging_3
+					#region paging_3_2
 					RavenQueryStatistics stats;
+					IList<Product> results = session
+						.Advanced
+						.DocumentQuery<Product, Products_ByUnitsInStock>()
+						.Statistics(out stats)					// fill query statistics
+						.WhereGreaterThan(x => x.UnitsInStock, 10)
+						.Skip(20)
+						.Take(10)
+						.ToList();
+
+					var totalResults = stats.TotalResults;
+					#endregion
+				}
+			}
+
+			using (var store = new DocumentStore())
+			{
+				#region paging_3_3
+				QueryResult result = store
+					.DatabaseCommands
+					.Query(
+						"Products/ByUnitsInStock",
+						new IndexQuery
+						{
+							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Start = 20,
+							PageSize = 10
+						});
+
+				var totalResults = result.TotalResults;
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region paging_4_1
+					RavenQueryStatistics stats;
+					IList<Product> results;
 
 					// get the first page
-					var results = session
-						.Query<BlogPost>()
+					results = session
+						.Query<Product, Products_ByUnitsInStock>()
 						.Statistics(out stats)
-						.Skip(0 * 10) // retrieve results for the first page
-						.Take(10) // page size is 10
-						.Where(x => x.Category == "RavenDB")
+						.Skip(0 * 10)					// retrieve results for the first page
+						.Take(10)					// page size is 10
+						.Where(x => x.UnitsInStock > 10)
 						.Distinct()
-						.ToArray();
+						.ToList();
 
 					var totalResults = stats.TotalResults;
 					var skippedResults = stats.SkippedResults;
 
 					// get the second page
 					results = session
-						.Query<BlogPost>()
+						.Query<Product, Products_ByUnitsInStock>()
 						.Statistics(out stats)
-						.Skip((1 * 10) + skippedResults) // retrieve results for the second page, taking into account skipped results
-						.Take(10) // page size is 10
-						.Where(x => x.Category == "RavenDB")
+						.Skip((1 * 10) + skippedResults)		// retrieve results for the second page, taking into account skipped results
+						.Take(10)					// page size is 10
+						.Where(x => x.UnitsInStock > 0)
 						.Distinct()
-						.ToArray();
+						.ToList();
 
 					// and so on...
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region paging_4_2
+					RavenQueryStatistics stats;
+					IList<Product> results;
+
+					// get the first page
+					results = session
+						.Advanced
+						.DocumentQuery<Product, Products_ByUnitsInStock>()
+						.Statistics(out stats)
+						.Skip(0 * 10)					// retrieve results for the first page
+						.Take(10)					// page size is 10
+						.WhereGreaterThan(x => x.UnitsInStock, 10)
+						.Distinct()
+						.ToList();
+
+					var totalResults = stats.TotalResults;
+					var skippedResults = stats.SkippedResults;
+
+					// get the second page
+					results = session
+						.Advanced
+						.DocumentQuery<Product, Products_ByUnitsInStock>()
+						.Statistics(out stats)
+						.Skip((1 * 10) + skippedResults)		// retrieve results for the second page, taking into account skipped results
+						.Take(10)					// page size is 10
+						.WhereGreaterThan(x => x.UnitsInStock, 10)
+						.Distinct()
+						.ToList();
+
+					// and so on...
+					#endregion
+				}
+			}
+
+			using (var store = new DocumentStore())
+			{
+				#region paging_4_3
+				// get the first page
+				QueryResult result = store
+					.DatabaseCommands
+					.Query(
+						"Products/ByUnitsInStock",
+						new IndexQuery
+						{
+							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Start = 0 * 10,				// retrieve results for the first page
+							PageSize = 10				// page size is 10
+						});
+
+				var totalResults = result.TotalResults;
+				var skippedResults = result.SkippedResults;
+
+				// get the second page
+				result = store
+					.DatabaseCommands
+					.Query(
+						"Products/ByUnitsInStock",
+						new IndexQuery
+						{
+							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Start = (1 * 10) + skippedResults,		// retrieve results for the first page
+							PageSize = 10					// page size is 10
+						});
+
+				// and so on...
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region paging_5_1
+					var pagingInformation = new RavenPagingInformation();
+					IList<Product> results = session
+						.Advanced
+						.LoadStartingWith<Product>(
+							"products/",				// all documents starting with 'products/'
+							"1*|2*",				// rest of the key must begin with "1" or "2" e.g. employees/10, employees/25
+							0 * 25,					// skip 0 records (page 1)
+							25,					// take up to 25
+							pagingInformation: pagingInformation);	// fill `RavenPagingInformation` with operation data
+
+					results = session
+						.Advanced
+						.LoadStartingWith<Product>(
+							"products/",				// all documents starting with 'products/'
+							"1*|2*",				// rest of the key must begin with "1" or "2" e.g. employees/10, employees/25
+							1 * 25,					// skip 25 records (page 2)
+							25,					// take up to 25
+							pagingInformation: pagingInformation);	// since this is a next page to 'page 1' and we are passing 'RavenPagingInformation' that was filled during 'page 1' retrieval, rapid pagination will take place
 					#endregion
 				}
 			}
