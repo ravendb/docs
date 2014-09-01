@@ -31,7 +31,7 @@ To properly perform the revert conversion that is from a JSON result into a .NET
 
 ###FindTypeTagName and FindDynamicTagName
 
-Entity objects that share a common tag name belong to the same [collection](../../faq/what-is-a-collection) on the server side. Tag names (collection names) are also used
+Entity objects that share a common tag name belong to the same [collection](../../faq/what-is-a-collection) on the server side. Tag names are also used
 to build document keys. There are two functions that the client uses to determine the collection name. The fist one is used for standard objects with well defined type:
 
 {CODE find_type_tagname@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
@@ -39,6 +39,16 @@ to build document keys. There are two functions that the client uses to determin
 The second one is dedicated for dynamic objects:
 
 {CODE find_dynamic_tag_name@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
+
+###TransformTypeTagNameToDocumentKeyPrefix
+
+Actually tag names determined by recent described convention functions aren't directly used as prefixes in document keys. There is a convention function called `TransformTypeTagNameToDocumentKeyPrefix`,
+which takes the collection name and produces the prefix:
+
+{CODE transform_tag_name_to_prefix@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
+
+Its default behavior is that for a tag which contains one upper character just convert it to lower case string, e.g. `Users` would be transformed into `users`. For tag names that contain more
+upper characters will not change anything, e.g. for the tag name: `LineItems`, would output the following prefix: `LineItems`.
 
 ###FindIdentityProperty
 

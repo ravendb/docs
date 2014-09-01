@@ -70,6 +70,11 @@
 			#endregion
 				string.Empty;
 
+			#region transform_tag_name_to_prefix
+			Conventions.TransformTypeTagNameToDocumentKeyPrefix = tagName => // transform the tag name to the prefix of a key, e.g. [prefix]/12
+				#endregion
+				string.Empty;
+
 			#region find_identity_property
 			Conventions.FindIdentityProperty = memberInfo => memberInfo.Name == "Id";
 			#endregion
