@@ -288,6 +288,7 @@
     <Compile Include="Indexes\Querying\Intersection.cs" />
     <Compile Include="Indexes\Querying\Paging.cs" />
     <Compile Include="Indexes\Querying\Searching.cs" />
+    <Compile Include="Indexes\Querying\Sorting.cs" />
     <Compile Include="Indexes\Querying\Suggestions.cs" />
     <Compile Include="Indexes\SpatialIndexes.cs" />
     <Compile Include="Indexes\StaleIndexes.cs" />
