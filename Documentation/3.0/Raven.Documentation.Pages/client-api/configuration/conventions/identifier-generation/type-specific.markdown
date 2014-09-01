@@ -8,7 +8,7 @@ There are two methods to satisfy that:
 
 ####RegisterIdConvention
 
-{CODE register_id_convention_method@ClientApi\Configuration\Conventions.cs /}
+{CODE register_id_convention_method@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
 The conventions registered by this medhod are used for operations performed in a synchronous manner.
 
@@ -25,7 +25,7 @@ Current `DocumentConvention` instance.
 
 ####RegisterAsyncIdConvention
 
-{CODE register_id_convention_method_async@ClientApi\Configuration\Conventions.cs /}
+{CODE register_id_convention_method_async@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
 The conventions registered by this medhod are used for operations performed in an asynchronous manner.
 
@@ -56,15 +56,15 @@ Let's say that you want to use semantic identifiers for `Employee` objects. Inst
 (for simplicity let us not consider the uniqueness of such keys). What you need to do is to create the convention that will combine the `employee` prefix, `LastName` and `FirstName` 
 properties of an employee.
 
-{CODE eployees_custom_convention@ClientApi\Configuration\Conventions.cs /}
+{CODE eployees_custom_convention@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
 If you want to register your convention for async operations then use the second method:
 
-{CODE eployees_custom_async_convention@ClientApi\Configuration\Conventions.cs /}
+{CODE eployees_custom_async_convention@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
 Now when you store a new entity:
 
-{CODE eployees_custom_convention_example@ClientApi\Configuration\Conventions.cs /}
+{CODE eployees_custom_convention_example@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
 the client will associate with it `employees/Bond/James` identifier.
 
@@ -76,8 +76,8 @@ Registered conventions are inheritance-aware, so all types that can be assigned 
 
 If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, then both types will use it:
 
-{CODE eployees_custom_convention_inheritance@ClientApi\Configuration\Conventions.cs /}
+{CODE eployees_custom_convention_inheritance@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
 If we register two conventions, one for `Employee` and second for `EmployeeManager` then they will be picked for their specific types.
 
-{CODE custom_convention_inheritance_2@ClientApi\Configuration\Conventions.cs /}
+{CODE custom_convention_inheritance_2@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
