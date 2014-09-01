@@ -41,13 +41,18 @@ Let's assume that our page size is `10` and we want to retrieve 3rd page. To do 
 
 While paging you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
 
-{CODE paging_2@Indexes\Querying\Paging.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Query paging_3_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:DocumentQuery paging_3_2@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Commands paging_3_3@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Index paging_0_4@Indexes\Querying\Paging.cs /}
+{CODE-TABS/}
 
 While the query will return with just 10 results, `totalResults` will hold the total number of matching documents.
 
 ## Paging through tampered results
 
-For some queries, RavenDB will skip over some results internally, and by that invalidate the `TotalResults` value. For example when executing a Distinct query, `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
+For some queries, server will skip over some results internally, and by that invalidate the `TotalResults` value. For example when executing a Distinct query, `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
 
 Whenever `SkippedResults` is greater than 0 it implies that we skipped over some results in the index.
     
@@ -55,8 +60,21 @@ In order to do proper paging in those scenarios, you should use the `SkippedResu
 
 For example, assuming a page size of 10:
 
-{CODE paging_3@Indexes\Querying\Paging.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Query paging_4_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:DocumentQuery paging_4_2@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Commands paging_4_3@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Index paging_0_4@Indexes\Querying\Paging.cs /}
+{CODE-TABS/}
 
-#### Related articles
+## Increasing StartsWith performance
+
+All `StartsWith` operations (e.g. [LoadStartingWith]() and [Stream]() from advanced session operations or [StartsWith]() and [Stream]() from low-level commands) contain a `RavenPagingInformation` parameter that can be used to increase the performance of a StartsWith operation when **next page** is requested.
+
+To do this we need to pass same instance of `RavenPagingInformation` to the identical operation. The client will use information contained in this object to increase the performance (only if next page is requested).
+
+{CODE paging_5_1@Indexes\Querying\Paging.cs /}
+
+## Related articles
 
 TODO
