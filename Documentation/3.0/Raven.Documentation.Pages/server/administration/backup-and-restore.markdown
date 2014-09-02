@@ -59,22 +59,51 @@ You can check the status of the backup by querying the document with the key: "R
 
 {WARNING The backup of an encrypted database contains the encryption key (`Raven/Encryption/Key`) as a plain text. This is required to make RavenDB able to restore the backup on a different machine. /}
 
-## How to restore a database
+## How to restore a database?
 
-Restoring a database is an offline operation, it cannot operate on a running instance of RavenDB.
+### Restoring SYSTEM database
 
-In embedded mode, you can initiate the restore operation by calling `Raven.Database.Actions.MaintenanceActions.Restore()`, or through the command line:
+Restoring a **system** database is an **offline operation**, it cannot operate on a running instance of RavenDB.
 
 {CODE-BLOCK:plain}
-    Raven.Server.exe -src [backup location] -dest [restore location] -restore
+    Raven.Server.exe --restore-source=[backup location] --restore-destination=[restore location] --restore-system-database
 {CODE-BLOCK/}
+
+- `restore-source=PATH` - path to a folder where database backup is present.
+- `restore-destination=PATH` - path to a folder where database will be restored.
+- _(Optional)_ `restore-defrag` - indicates if database should be defragmented after restore.
+- `restore-system-database` - marks that SYSTEM database will be restored.
     
-If the restore location doesn't exists, RavenDB will create it.
+{INFO Unlike backups, **system** database restores are fully synchronous. /}
 
-You cannot restore to an existing database data directory, the restore operation will fail if it detects that the restore operation will overwrite existing data. If you need to restore to an existing database data directory, shutdown the database instance and delete the data directory.
+{INFO:Embedded mode}
+In embedded mode, you can initiate the restore operation by calling `Raven.Database.Actions.MaintenanceActions.Restore()` or by using `Raven.Server.exe` restore functions described above.
+{INFO/}
 
-Unlike backups, restores are fully synchronous.
+### Restoring non-SYSTEM database
 
-#### Related articles
+Restoring a **non-SYSTEM** database is an **online operation**, it means that the destination server must be running.
+
+{CODE-BLOCK:plain}
+    Raven.Server.exe --restore-source=[backup location] --restore-database=[URL to destination server]
+{CODE-BLOCK/}
+
+- `restore-source=PATH` - path to a folder where database backup is present (on destination server).
+- _(Optional)_ `restore-destination=PATH` - path to a folder where database will be restored (on destination server). If not specified it will be located in default data directory.
+- _(Optional)_ `restore-defrag` - indicates if databases should be defragmented after restore.
+- _(Optional)_ `restore-database-name=NAME` - the name of the new database. If not specified, it will be extracted from backup.
+- `restore-database=URL` - marks that non-SYSTEM database will be restored and sets the URL to the destination server.
+
+### Remarks
+
+{INFO If the restore location doesn't exists, server will create it. /}
+
+{WARNING:Warning}
+You cannot restore to an existing database data directory, the restore operation will fail if it detects that the restore operation will overwrite existing data.
+
+If you need to restore to an existing database data directory, shutdown the database instance and delete the data directory.
+{WARNING/}
+
+## Related articles
 
 TODO
