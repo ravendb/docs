@@ -3,9 +3,9 @@
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Linq;
-using Raven.Documentation.CodeSamples.Indexes.Querying;
+using Raven.Documentation.Samples.Indexes.Querying;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToUseIntersect
 	{
@@ -28,7 +28,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 					// return all T-shirts that are manufactured by 'Raven'
 					// and contain both 'Small Blue' and 'Large Gray' types
 					var tshirts = session
-							.Query<TShirt>("TShirtIndex")
+							.Query<TShirt, TShirts_ByManufacturerColorSizeAndReleaseYear>()
 							.Where(x => x.Manufacturer == "Raven")
 							.Intersect()
 							.Where(x => x.Types.Any(t => t.Color == "Blue" && t.Size == "Small"))
