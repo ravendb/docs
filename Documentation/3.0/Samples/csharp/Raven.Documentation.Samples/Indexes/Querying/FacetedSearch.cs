@@ -110,7 +110,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Cameras/ByManufacturerModelCostDateOfListingAndMegapixels",
 						new IndexQuery
 						{
-							Query = "Cost_Range:{Dx100 TO Dx300}"
+							Query = "Cost_Range:[Dx100 TO Dx300]"
 						},
 						"facets/CameraFacets");
 				#endregion
