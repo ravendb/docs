@@ -6,28 +6,25 @@ using Raven.Abstractions.Indexing;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.Indexes.Querying
+namespace Raven.Documentation.Samples.Indexes.Querying
 {
 	public class Suggestions
 	{
-		#region user_class
-		public class User
+		#region suggestions_1
+		public class Products_ByName : AbstractIndexCreationTask<Product>
 		{
-			public string Id { get; set; }
-			public string FullName { get; set; }
-		}
-		#endregion
-
-		#region index_def
-		public class Users_ByFullName : AbstractIndexCreationTask<User>
-		{
-			public Users_ByFullName()
+			public Products_ByName()
 			{
-				Map = users => from user in users
-							   select new { user.FullName };
+				Map = products => from product in products
+								  select new
+									{
+										product.Name
+									};
 
-				Indexes.Add(x => x.FullName, FieldIndexing.Analyzed);
+				Indexes.Add(x => x.Name, FieldIndexing.Analyzed);	// (optional) splitting name into multiple tokens
+				Suggestion(x => x.Name);				// configuring suggestions
 			}
 		}
 		#endregion
@@ -38,14 +35,16 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 			{
 				using (var session = store.OpenSession())
 				{
-					#region query
-					var query = session.Query<User, Users_ByFullName>().Where(x => x.FullName == "johne");
+					#region suggestions_2
+					var query = session
+						.Query<Product, Products_ByName>()
+						.Where(x => x.Name == "chaig");
 
-					var user = query.FirstOrDefault();
+					var product = query.FirstOrDefault();
 					#endregion
 
-					#region query_suggestion
-					if (user == null)
+					#region suggestions_3
+					if (product == null)
 					{
 						SuggestionQueryResult suggestionResult = query.Suggest();
 
@@ -59,40 +58,49 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 					#endregion
 
 					#region query_suggestion_with_options
-
-					session.Query<User, Users_ByFullName>()
-						   .Suggest(new SuggestionQuery()
-						   {
-							   Field = "FullName",
-							   Term = "johne",
-							   Accuracy = 0.4f,
-							   MaxSuggestions = 5,
-							   Distance = StringDistanceTypes.JaroWinkler,
-							   Popularity = true,
-						   });
+					session
+						.Query<Product, Products_ByName>()
+						.Suggest(
+							new SuggestionQuery
+							{
+								Field = "Name",
+								Term = "chaig",
+								Accuracy = 0.4f,
+								MaxSuggestions = 5,
+								Distance = StringDistanceTypes.JaroWinkler,
+								Popularity = true
+							});
 					#endregion
 
 					#region document_store_suggestion
-					store.DatabaseCommands.Suggest("Users/ByFullName", new SuggestionQuery()
-					{
-						Field = "FullName",
-						Term = "johne"
-					});
-
+					store
+						.DatabaseCommands
+						.Suggest(
+							"Products/ByName",
+							new SuggestionQuery
+							{
+								Field = "Name",
+								Term = "chaig",
+								Accuracy = 0.4f,
+								MaxSuggestions = 5,
+								Distance = StringDistanceTypes.JaroWinkler,
+								Popularity = true
+							});
 					#endregion
 
 					#region query_suggestion_over_multiple_words
-
-					SuggestionQueryResult resultsByMultipleWords = session.Query<User, Users_ByFullName>()
-						   .Suggest(new SuggestionQuery()
-						   {
-							   Field = "FullName",
-							   Term = "<<johne davi>>",
-							   Accuracy = 0.4f,
-							   MaxSuggestions = 5,
-							   Distance = StringDistanceTypes.JaroWinkler,
-							   Popularity = true,
-						   });
+					SuggestionQueryResult resultsByMultipleWords =
+						session
+						.Query<Product, Products_ByName>()
+						.Suggest(new SuggestionQuery
+						{
+							Field = "Name",
+							Term = "<<chaig tof>>",
+							Accuracy = 0.4f,
+							MaxSuggestions = 5,
+							Distance = StringDistanceTypes.JaroWinkler,
+							Popularity = true,
+						});
 
 					Console.WriteLine("Did you mean?");
 
