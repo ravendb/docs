@@ -4,19 +4,10 @@ When displaying a large amount of data, often paging is used to make viewing the
 
 ![Facets](images\CNET_faceted_search_2.jpg)
 
+<br />
 To achieve this in RavenDB, lets say you have a document like this:
 
-{CODE-BLOCK:json}
-{ 
-    DateOfListing: "2000-09-01T00:00:00.0000000+01:00" 
-    Manufacturer: "Jessops" 
-    Model: "blah" 
-    Cost: 717.502206059872 
-    Zoom: 9 
-    Megapixels: 10.4508949012733 
-    ImageStabiliser: false 
-}
-{CODE-BLOCK/}
+{CODE camera@Faceted.cs /}
 
 ## Step 1
 
@@ -24,7 +15,7 @@ You need to setup your facet definitions and store them in RavenDB as a document
 
 {CODE step_1@Indexes\Querying\FacetedSearch.cs /}
 
-This tells RavenDB that you would like to get the following facets.
+This tells RavenDB that you would like to get the following facets:
 
 * For the **Manufacturer** field look at the documents and return a count for each unique Term found
 * For the **Cost** field, return the count of the following ranges:
@@ -47,17 +38,16 @@ Next you need to create an index to work against, this can be setup like so:
 
 ## Step 3
 
-Finally you can write the following code and you get back the data below.
+Finally you can write the following code and you get back the data below:
 
-{CODE step_3@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Query step_3_0@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:DocumentQuery step_3_1@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Commands step_3_2@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Index step_1@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TABS/}
 
-This is equivalent to hitting the following Url:
-
-{CODE-BLOCK:plain}
-http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_Range:[Dx100 TO Dx300.0]
-{CODE-BLOCK/}
-
-{NOTE The data returned represents the count of the faceted data that satisfies the query `Where(x => x.Cost >= 100 && x.Cost <= 300 )` /}
+The data below represents the sample faceted data that satisfies above query:
 
 {CODE-BLOCK:json}
 {
@@ -114,10 +104,10 @@ http://localhost:8080/facets/CameraCost?facetDoc=facets/CameraFacets&query=Cost_
 }
 {CODE-BLOCK/}
 
-###Stale results
+### Stale results
 
-The faceted search does not take into account a stealeness of an index. You can't wait for non stale results by customize you query by one of `WaitForNonStaleResultsXXX` method.
+The faceted search does not take into account a stealeness of an index. You can't wait for non stale results by customizing your query with one of `WaitForNonStaleResultsXXX` method.
 
-#### Related articles
+## Related articles
 
 TODO

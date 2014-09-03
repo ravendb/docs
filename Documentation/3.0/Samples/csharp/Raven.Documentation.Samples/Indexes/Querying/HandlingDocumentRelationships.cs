@@ -252,7 +252,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Orders/ByTotalPrice",
 						new IndexQuery
 						{
-							Query = "TotalPrice:{Ix100 TO NULL}"
+							Query = "TotalPrice_Range:{Ix100 TO NULL}"
 						},
 						includes: new[] { "CustomerId" });
 
@@ -466,7 +466,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Order2s/ByTotalPrice",
 						new IndexQuery
 						{
-							Query = "TotalPrice:{Ix100 TO NULL}"
+							Query = "TotalPrice_Range:{Ix100 TO NULL}"
 						},
 						includes: new[] { "CustomerId" });
 

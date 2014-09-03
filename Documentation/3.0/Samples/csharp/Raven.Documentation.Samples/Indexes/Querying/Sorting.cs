@@ -73,7 +73,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}"
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}"
 						});
 				#endregion
 			}
@@ -110,7 +110,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							SortedFields = new[]
 							{
 								new SortedField("-UnitsInStock")
@@ -151,7 +151,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							SortedFields = new[]
 							{
 								new SortedField(Constants.RandomFieldName + ";" + Guid.NewGuid())
@@ -192,7 +192,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							SortedFields = new[]
 							{
 								new SortedField(Constants.TemporaryScoreValue) // Temp-Index-Score

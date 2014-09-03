@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
+using Raven.Documentation.Samples;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
 {

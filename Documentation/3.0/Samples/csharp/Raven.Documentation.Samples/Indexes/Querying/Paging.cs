@@ -58,7 +58,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}"
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}"
 						});
 				#endregion
 			}
@@ -95,7 +95,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							PageSize = 9999
 						});
 				#endregion
@@ -135,7 +135,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							Start = 20,	// skip 2 pages worth of products
 							PageSize = 10	// take up to 10 products
 						});
@@ -187,7 +187,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							Start = 20,
 							PageSize = 10
 						});
@@ -277,7 +277,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							Start = 0 * 10,				// retrieve results for the first page
 							PageSize = 10				// page size is 10
 						});
@@ -292,7 +292,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Products/ByUnitsInStock",
 						new IndexQuery
 						{
-							Query = "UnitsInStock:{Ix10 TO NULL}",
+							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							Start = (1 * 10) + skippedResults,		// retrieve results for the first page
 							PageSize = 10					// page size is 10
 						});
