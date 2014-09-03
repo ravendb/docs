@@ -1,77 +1,58 @@
-﻿#Suggestions
+﻿# Suggestions
 
-RavenDB indexing mechanism in built upon Lucene engine that has a great suggestions feature. This capability has been also introduced to RavenDB and will allow a significant improvement of search functionalities enhancing the overall user experience of the application.
-Let's consider an example where the users have the option to look for other users by full name. The index and query would look as follow:
+RavenDB indexing mechanism in built upon Lucene engine that has a great suggestions feature. This capability has been also introduced to RavenDB and allows a significant improvement of search functionalities enhancing the overall user experience of the application.
 
-{CODE user_class@Indexes\Querying\Suggestions.cs /}
-{CODE index_def@Indexes\Querying\Suggestions.cs /}
-{CODE query@Indexes\Querying\Suggestions.cs /}
+Let's consider an example where the users have the option to look for products by their name. The index and query would look as follow:
 
-If in the database there is the following collection of users:
+{CODE suggestions_1@Indexes\Querying\Suggestions.cs /}
 
-{CODE-BLOCK:json}
-// users/1
-{
-	"Name": "John Smith"
-}
-// users/2
-{
-	"Name": "Jack Johnson"
-}
-// users/3
-{
-	"Name": "Robery Jones"
-}
-// users/4
-{
-	"Name": "David Jones"
-}
-{CODE-BLOCK/}
-then our sample query will not find any user. Then we can ask RavenDB for help by using:
+{CODE suggestions_2@Indexes\Querying\Suggestions.cs /}
 
-{CODE query_suggestion@Indexes\Querying\Suggestions.cs /}
+If our database have `Northwind` samples deployed then it will not return any results, but we can ask RavenDB for help by using:
+
+{CODE suggestions_3@Indexes\Querying\Suggestions.cs /}
 
 It will produce the suggestions:
 
-	Did you mean?
-			john
-			jones
-			johnson
+    Did you mean?
+        chang
+        chai
 
 The `Suggest` method is an extension contained in `Raven.Client` namespace. It also has an overload that takes one parameter - `SuggestionQuery` that allows
 you to specify the suggesion query options:
 
 * *Field* - the name of the field that you want to find suggestions in,
 * *Term* - the provided by user search term,
-* *MaxSuggestions* - the number of suggestions to return (default: 15),
+* *MaxSuggestions* - the number of suggestions to return (default: `15`),
 * *Distance* - the enum that indicates what string distance algorithm should be used: [JaroWinkler](http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance), [Levenshtein](http://en.wikipedia.org/wiki/Levenshtein_distance) (default) or [NGram](http://webdocs.cs.ualberta.ca/~kondrak/papers/spire05.pdf),
 * *Accuracy* - the minimal accuracy required from a string distance for a suggestion match (default: 0.0),
 * *Popularity* - determines whether the returned terms should be in order of popularity (default: false).
 
-{CODE query_suggestion_with_options@Indexes\Querying\Suggestions.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Query query_suggestion_with_options@Indexes\Querying\Suggestions.cs /}
+{CODE-TAB:csharp:Commands document_store_suggestion@Indexes\Querying\Suggestions.cs /}
+{CODE-TAB:csharp:Index suggestions_1@Indexes\Querying\Suggestions.cs /}
+{CODE-TABS/}
 
-The suggestion mechanism is also accessible from the document store:
+## Suggest over multiple words
 
-{CODE document_store_suggestion@Indexes\Querying\Suggestions.cs /}
-
-##Suggest over multiple words
-
-RavenDB allows you to perform a suggestion query over multiple words. In order to use this functionalify you have to pass words that you are looking for
-in *Term* by using special RavenDB syntax (more details [here](../../advanced/full-query-syntax#suggestions-over-multiple-words)):
+RavenDB allows you to perform a suggestion query over multiple words. In order to use this functionalify you have to pass words that you are looking for in *Term* by using special RavenDB syntax (more details [here](../../advanced/full-query-syntax#suggestions-over-multiple-words)):
 
 {CODE query_suggestion_over_multiple_words@Indexes\Querying\Suggestions.cs /}
 
 This will produce the results:
 
-	Did you mean?
-        john
-        jones
-        johnson
-        david
-        jack
+    Did you mean?
+        chai
+        chang
+        chartreuse
+        chef
+        tofu
 
-{NOTE Suggestions does not take advantage  of [the encryption bundle](../../../server/extending/bundles/encryption). You should never use this feature on information that should be encrypted, because then you have a risk of storing sensitive data on a disk in unsecured manner. /}
+## Remarks
 
-#### Related articles
+{WARNING Suggestions does not take advantage of [the encryption bundle](../../../server/extending/bundles/encryption). You should never use this feature on information that should be encrypted, because then you have a risk of storing sensitive data on a disk in unsecured manner. /}
+
+## Related articles
 
 TODO
