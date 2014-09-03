@@ -7,6 +7,7 @@ using Raven.Abstractions.Indexing;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Documentation.Samples;
 
 namespace Raven.Documentation.CodeSamples.Indexes.Querying
 {
@@ -37,23 +38,19 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 		}
 
 		#region highlights_1
-		public class SearchItem
+		public class BlogPosts_ByContent : AbstractIndexCreationTask<BlogPost>
 		{
-			public string Id { get; set; }
-
-			public string Text { get; set; }
-		}
-
-		public class ContentSearchIndex : AbstractIndexCreationTask<SearchItem>
-		{
-			public ContentSearchIndex()
+			public BlogPosts_ByContent()
 			{
-				Map = (docs => from doc in docs
-							   select new { doc.Text });
+				Map = posts => from post in posts
+							   select new
+								{
+									post.Content
+								};
 
-				Index(x => x.Text, FieldIndexing.Analyzed);
-				Store(x => x.Text, FieldStorage.Yes);
-				TermVector(x => x.Text, FieldTermVector.WithPositionsAndOffsets);
+				Index(x => x.Content, FieldIndexing.Analyzed);
+				Store(x => x.Content, FieldStorage.Yes);
+				TermVector(x => x.Content, FieldTermVector.WithPositionsAndOffsets);
 			}
 		}
 		#endregion
@@ -67,10 +64,12 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 					#region highlights_2
 					FieldHighlightings highlightings;
 
-					var results = session.Advanced.LuceneQuery<SearchItem>("ContentSearchIndex")
-									 .Highlight("Text", 128, 1, out highlightings)
-									 .Search("Text", "raven")
-									 .ToArray();
+					var results = session
+						.Advanced
+						.DocumentQuery<BlogPost, BlogPosts_ByContent>()
+						.Highlight("Content", 128, 1, out highlightings)
+						.Search("Content", "raven")
+						.ToArray();
 
 					var builder = new StringBuilder()
 						.AppendLine("<ul>");
@@ -93,11 +92,13 @@ namespace Raven.Documentation.CodeSamples.Indexes.Querying
 					#region highlights_5
 					FieldHighlightings highlightings;
 
-					var results = session.Advanced.LuceneQuery<SearchItem>("ContentSearchIndex")
-									 .Highlight("Text", 128, 1, out highlightings)
-									 .SetHighlighterTags("**", "**")
-									 .Search("Text", "raven")
-									 .ToArray();
+					var results = session
+						.Advanced
+						.DocumentQuery<BlogPost, BlogPosts_ByContent>()
+						.Highlight("Content", 128, 1, out highlightings)
+						.SetHighlighterTags("**", "**")
+						.Search("Content", "raven")
+						.ToArray();
 					#endregion
 				}
 			}
