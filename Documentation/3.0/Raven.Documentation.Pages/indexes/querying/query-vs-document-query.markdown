@@ -1,4 +1,4 @@
-﻿#Query and LuceneQuery
+﻿# Query vs DocumentQuery
 
 You might be wondering why does the RavenDB client offer two ways of querying by exposing `Query` as well as `LuceneQuery` methods and what are
 differences between them. `LuceneQuery` is the lower level API that we use to query RavenDB but it does not support LINQ - the mandatory data access
@@ -15,7 +15,7 @@ While in the most cases the usage of `Query` is enough, easier to create and rec
 
 For example dynamic querying as is shown below:
 
-{CODE dynamic_query_1@ClientApi\Querying\QueryAndLuceneQuery.cs /}
+{CODE dynamic_query_1@Indexes\Querying\QueryAndLuceneQuery.cs /}
 
 will cause that the following [dynamic index](../../http-api/indexes/dynamic-indexes) will be created on a server:
 
@@ -25,7 +25,7 @@ will cause that the following [dynamic index](../../http-api/indexes/dynamic-ind
 
 You can go even futher and create the dynamic query where its result is also `dynamic`:
 
-{CODE dynamic_query_2@ClientApi\Querying\QueryAndLuceneQuery.cs /}
+{CODE dynamic_query_2@Indexes\Querying\QueryAndLuceneQuery.cs /}
 
 This will create the following map/reduce dynamic index on a server:
 
@@ -46,7 +46,7 @@ This will create the following map/reduce dynamic index on a server:
 `LuceneQuery` is mutable while `Query` is immutable. It means that you might get different
 results if you try to *reuse* a query. The usage of `Query` method like in the following example:
 
-{CODE immutable_query@ClientApi\Querying\QueryAndLuceneQuery.cs /}
+{CODE immutable_query@Indexes\Querying\QueryAndLuceneQuery.cs /}
 
 will cause that the queries will be translared into following Lucene-syntax queries:
 
@@ -58,7 +58,7 @@ will cause that the queries will be translared into following Lucene-syntax quer
 
 The similar usage of `LuceneQuery`:
 
-{CODE mutable_lucene_query@ClientApi\Querying\QueryAndLuceneQuery.cs /}
+{CODE mutable_lucene_query@Indexes\Querying\QueryAndLuceneQuery.cs /}
 
 `luceneQuery - Name:A*` (before creating `ageQuery`)
 
@@ -74,4 +74,8 @@ The example above shows an another difference between querying methods. Note tha
 in the final Lucene query when using `Query` method. In case of `LuceneQuery` usage the Lucene query has no operator between query conditions what means
 that `OR` will be used. This is the default operator of Lucene engine. You are able to change that by using `UsingDefaultOperator`:
 
-{CODE default_operator@ClientApi\Querying\QueryAndLuceneQuery.cs /}
+{CODE default_operator@Indexes\Querying\QueryAndLuceneQuery.cs /}
+
+## Related articles
+
+TODO
