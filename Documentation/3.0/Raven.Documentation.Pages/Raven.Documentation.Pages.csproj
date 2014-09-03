@@ -247,7 +247,7 @@
     <None Include="indexes\querying\intersection.markdown" />
     <None Include="indexes\querying\paging.markdown" />
     <None Include="indexes\querying\projections.markdown" />
-    <None Include="indexes\querying\query-and-lucene-query.markdown" />
+    <None Include="indexes\querying\query-vs-document-query.markdown" />
     <None Include="indexes\querying\searching.markdown" />
     <None Include="indexes\querying\sorting.markdown" />
     <None Include="indexes\querying\suggestions.markdown" />
