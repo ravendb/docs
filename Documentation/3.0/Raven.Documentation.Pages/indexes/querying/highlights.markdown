@@ -61,6 +61,6 @@ Default `<b></b>` tags are coloured and colours are returned in following order:
 - <span style="border-left: 10px solid powderblue">&nbsp;</span>powderblue
 {NOTE/}
 
-#### Related articles
+## Related articles
 
 TODO

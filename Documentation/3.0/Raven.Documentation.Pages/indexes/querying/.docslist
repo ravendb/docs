@@ -7,9 +7,9 @@ projections.markdown	[TODO] Projections
 searching.markdown	Searching
 intersection.markdown	Intersection
 suggestions.markdown	Suggestions
-highlights.markdown	[TODO] Highlights
+highlights.markdown	Highlights
 spatial.markdown	[TODO] Spatial
-faceted-search.markdown	[TODO] Faceted search
+faceted-search.markdown	Faceted search
 dynamic-aggregation.markdown	[TODO] Dynamic aggregation
 query-vs-document-query.markdown	[TODO] Query vs DocumentQuery
 full-query-syntax.markdown	[TODO] Full query syntax
