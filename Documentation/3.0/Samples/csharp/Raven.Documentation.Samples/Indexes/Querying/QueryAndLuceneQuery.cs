@@ -23,19 +23,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				using (var session = store.OpenSession())
 				{
-					#region dynamic_query_1
-					var users = session.Advanced
-							 .LuceneQuery<Company>()
-							 .Where("Employees,Name:John").ToList();
-					#endregion
-
-					#region dynamic_query_2
-					var tagsBycount = session.Advanced.LuceneQuery<dynamic>()
-					                         .GroupBy(AggregationOperation.Count, "Tags,Count")
-					                         .OrderBy("Tags,Count")
-					                         .ToArray();
-					#endregion
-
 					#region immutable_query
 					var query = session.Query<User>().Where(x => x.Name.StartsWith("A"));
 
@@ -45,17 +32,25 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#endregion
 
 					#region mutable_lucene_query
-					var luceneQuery = session.Advanced.LuceneQuery<User>().WhereStartsWith(x => x.Name, "A");
+					var documentQuery = session
+						.Advanced
+						.DocumentQuery<User>()
+						.WhereStartsWith(x => x.Name, "A");
 
-					var ageLuceneQuery = luceneQuery.WhereGreaterThan(x => x.Age, 21);
+					var ageDocumentQuery = documentQuery
+						.WhereGreaterThan(x => x.Age, 21);
 
-					var eyeLuceneQuery = luceneQuery.WhereEquals(x => x.EyeColor, "blue");
+					var eyeDocumentQuery = documentQuery
+						.WhereEquals(x => x.EyeColor, "blue");
 
-					// here all of the lucene query variables are the same references
+					// here all of the DocumentQuery variables are the same references
 					#endregion
 
 					#region default_operator
-					session.Advanced.LuceneQuery<User>().UsingDefaultOperator(QueryOperator.And);
+					session
+						.Advanced
+						.DocumentQuery<User>()
+						.UsingDefaultOperator(QueryOperator.And);
 					#endregion
 				}
 			}
