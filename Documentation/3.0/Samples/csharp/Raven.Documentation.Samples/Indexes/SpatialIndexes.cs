@@ -264,16 +264,22 @@ namespace Raven.Documentation.Samples.Indexes
 
 				using (var session = store.OpenSession())
 				{
-					object someWktShape = null;
-
 					#region spatial_search_enhancements_9
-					session
+					IList<SpatialDoc> results = session
 						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Spatial(x => x.Shape, criteria => criteria.WithinRadiusOf(500, 30, 30))
 						.ToList();
+					#endregion
+				}
 
-					session
-						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
+				using (var session = store.OpenSession())
+				{
+					object someWktShape = null;
+
+					#region spatial_search_enhancements_1_0
+					IList<SpatialDoc> results = session
+						.Advanced
+						.DocumentQuery<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Spatial(x => x.Shape, criteria => criteria.Intersects(someWktShape))
 						.ToList();
 					#endregion
