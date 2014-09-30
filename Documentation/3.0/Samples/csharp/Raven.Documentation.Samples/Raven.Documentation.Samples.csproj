@@ -277,6 +277,8 @@
     <Compile Include="Indexes\IndexingPolymorphicData.cs" />
     <Compile Include="Indexes\IndexingRelatedDocuments.cs" />
     <Compile Include="Indexes\Map.cs" />
+    <Compile Include="Indexes\MapReduceIndexes.cs" />
+    <Compile Include="Indexes\Querying\Basics.cs" />
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
     <Compile Include="Indexes\Querying\Filtering.cs" />
@@ -284,6 +286,7 @@
     <Compile Include="Indexes\Querying\Highlights.cs" />
     <Compile Include="Indexes\Querying\Intersection.cs" />
     <Compile Include="Indexes\Querying\Paging.cs" />
+    <Compile Include="Indexes\Querying\Projections.cs" />
     <Compile Include="Indexes\Querying\QueryAndLuceneQuery.cs" />
     <Compile Include="Indexes\Querying\Searching.cs" />
     <Compile Include="Indexes\Querying\Sorting.cs" />
