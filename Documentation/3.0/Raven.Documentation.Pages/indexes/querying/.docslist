@@ -8,7 +8,7 @@ searching.markdown	Searching
 intersection.markdown	Intersection
 suggestions.markdown	Suggestions
 highlights.markdown	Highlights
-spatial.markdown	[TODO] Spatial
+spatial.markdown	Spatial
 faceted-search.markdown	Faceted search
 dynamic-aggregation.markdown	Dynamic aggregation
 query-vs-document-query.markdown	Query vs DocumentQuery

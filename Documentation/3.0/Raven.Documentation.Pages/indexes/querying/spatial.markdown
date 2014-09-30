@@ -1,12 +1,16 @@
 ﻿# Spatial
 
-Beside the `Event` class let us add `SpatialDoc` with a corresponding index to show how to do a strongly-typed spatial query using `Spatial` method.
+{INFO This article focuses only on **querying** side of spatial search. If you want to read how to index spatial data, click [here](). /}
 
-{CODE spatial_search_enhancements_8@Indexes\SpatialIndexes.cs /}
+To perform a spatial search you can use `Spatial` method:
 
-{CODE spatial_search_enhancements_9@Indexes\SpatialIndexes.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Query spatial_search_enhancements_9@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:DocumentQuery spatial_search_enhancements_1_0@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_search_enhancements_8@Indexes\SpatialIndexes.cs /}
+{CODE-TABS/}
 
-The methods available under `criteria` are:   
+Under `criteria` following methods are available:
 
 {CODE spatial_search_enhancements_a@Indexes\SpatialIndexes.cs /}
 
@@ -17,6 +21,7 @@ The most basic usage and probably most common one is to search for all points or
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_search_3@Indexes\SpatialIndexes.cs /}
 {CODE-TAB:csharp:DocumentQuery spatial_search_8@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_search_2@Indexes\SpatialIndexes.cs /}
 {CODE-TABS/}
 
 ## Advanced search
@@ -34,9 +39,10 @@ So to perform a radius search from the above example and use `RelatesToShape` me
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_search_4@Indexes\SpatialIndexes.cs /}
 {CODE-TAB:csharp:DocumentQuery spatial_search_9@Indexes\SpatialIndexes.cs /}
+{CODE-TAB:csharp:Index spatial_search_2@Indexes\SpatialIndexes.cs /}
 {CODE-TABS/}
 
-{WARNING From RavenDB 2.0 the distance by default is measured in **kilometers** in contrast to the miles used in previous versions. /}
+{WARNING Distance in RavenDB by default is measured in **kilometers**. /}
 
 ## Related articles
 
