@@ -12,7 +12,7 @@ Easiest answer to this question is: practically anything. You can:
 - [combined multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
 - [index partial field data](../indexes/map-indexes#indexing-partial-field-data)
 - [index nested data](../indexes/map-indexes#indexing-nested-data)
-- [index fields from related documents]()
+- [index fields from related documents](../indexes/indexing-related-documents)
 - [index fields from multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
 - ...and so on. 
 
@@ -94,7 +94,7 @@ If our document contains nested data, e.g. `Employee` contains `Address`. You ca
 
 {CODE indexes_1_5@Indexes/Map.cs /}
 
-If document relationship is represented by document Id, you can use `LoadDocument` method to retrieve such a document. More about it can be read [here]().
+If document relationship is represented by document Id, you can use `LoadDocument` method to retrieve such a document. More about it can be read [here](../indexes/indexing-related-documents).
 
 ## Indexing multiple collections
 

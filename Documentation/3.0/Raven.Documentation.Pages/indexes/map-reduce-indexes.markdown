@@ -6,7 +6,7 @@ For a more in-depth look at how map reduce works, read this post: [Map-Reduce a 
 
 ## Creating
 
-When it comes to index creation, the only difference between simple indexes and map-reduce ones is an additional reduce function defined in index definition. So to deploy an index we need to create a definition and deploy it using one of the ways described in [creating and deploying]() article. Please check any of the examples below for a sample map-reduce index.
+When it comes to index creation, the only difference between simple indexes and map-reduce ones is an additional reduce function defined in index definition. So to deploy an index we need to create a definition and deploy it using one of the ways described in [creating and deploying](../indexes/creating-and-deploying) article. Please check any of the examples below for a sample map-reduce index.
 
 ## Applications
 
