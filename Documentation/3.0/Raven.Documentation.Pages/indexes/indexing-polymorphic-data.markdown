@@ -64,4 +64,8 @@ That would generate an index that would match both Cats and Dogs.
 
 ## Related articles
 
-TODO
+- [Indexing : Basics](../indexes/indexing-basics)
+- [Indexing related documents](../indexes/indexing-related-documents)
+- [Indexing spatial data](../indexes/indexing-spatial-data)
+- [Indexing hierarchical data](../indexes/indexing-hierarchical-data)
+- [Querying : Basics](../indexes/querying/basics)

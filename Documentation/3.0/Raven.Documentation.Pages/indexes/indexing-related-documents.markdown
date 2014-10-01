@@ -38,6 +38,10 @@ Now to create an index with `Author Name` and list of `Book Names` we need to cr
 
 {WARNING Using `LoadDocument` adds a loaded document to tracking list. This may cause very expensive calculations to occur especially when multiple documents are tracking the same document. /}
 
-#### Related articles
+## Related articles
 
-TODO
+- [Indexing : Basics](../indexes/indexing-basics)
+- [Indexing hierarchical data](../indexes/indexing-hierarchical-data)
+- [Indexing spatial data](../indexes/indexing-spatial-data)
+- [Indexing polymorphic data](../indexes/indexing-polymorphic-data)
+- [Querying : Basics](../indexes/querying/basics)

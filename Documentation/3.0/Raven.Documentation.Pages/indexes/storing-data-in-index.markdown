@@ -19,4 +19,7 @@ By default, tokens are saved to the index as _Indexed and Analyzed_ but not _Sto
 
 ## Related articles
 
-TODO
+- [Boosting](../indexes/boosting)
+- [Analyzers](../indexes/using-analyzers)
+- [Term Vectors](../indexes/using-term-vectors)
+- [Dynamic Fields](../indexes/using-dynamic-fields)

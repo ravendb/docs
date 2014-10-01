@@ -19,6 +19,10 @@ Next step is to perform a query against that index:
 
 {INFO Boosting is also available when using `Search` method. You can read more about it [here](../indexes/querying/searching#boosting). /}
 
-#### Related articles
+## Related articles
 
-TODO
+- [Querying : Searching](../indexes/querying/searching)
+- [Analyzers](../indexes/using-analyzers)
+- [Storing data in index](../indexes/storing-data-in-index)
+- [Term Vectors](../indexes/using-term-vectors)
+- [Dynamic Fields](../indexes/using-dynamic-fields)

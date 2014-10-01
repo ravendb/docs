@@ -99,6 +99,6 @@ The only thing that can be done with a disabled index is to either delete it or 
 
 There is no way to "resume" a disabled index.
 
-#### Related articles
+## Related articles
 
 TODO
