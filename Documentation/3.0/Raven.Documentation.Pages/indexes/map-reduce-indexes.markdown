@@ -10,7 +10,7 @@ When it comes to index creation, the only difference between simple indexes and 
 
 ## Applications
 
-The applications of such indexes are many, but most common is a calculation.
+The applications of such indexes are many, but most common is calculation.
 
 ### Example I - counting
 
@@ -26,3 +26,36 @@ and issue a query:
 {CODE-TABS/}
 
 Above query will return one result for _Seafood_ with the appropriate number of products from that category.
+
+### Example II - average
+
+In this example we will count average product price for each category. First we need to create an index:
+
+{CODE map_reduce_1_0@Indexes\MapReduceIndexes.cs /}
+
+and issue a query:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query map_reduce_1_1@Indexes\MapReduceIndexes.cs /}
+{CODE-TAB:csharp:DocumentQuery map_reduce_1_2@Indexes\MapReduceIndexes.cs /}
+{CODE-TABS/}
+
+### Example III - complex calculations
+
+This example will illustrate how we can put some calculations inside index and is based on one of the indexes available in sample database (`Product/Sales`).
+
+Let's assume that we want to know how many times product was ordered and how much we earned for it. To do this we need to define following index:
+
+{CODE map_reduce_2_0@Indexes\MapReduceIndexes.cs /}
+
+and issue a query:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query map_reduce_2_1@Indexes\MapReduceIndexes.cs /}
+{CODE-TAB:csharp:DocumentQuery map_reduce_2_2@Indexes\MapReduceIndexes.cs /}
+{CODE-TABS/}
+
+## Related articles
+
+TODO
+
