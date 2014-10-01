@@ -42,7 +42,7 @@ Before moving further, please note that property values of objects passed to pro
 
 **Example** 
 
-If we would [store]() `FirstName` and `LastName` in index that was queried, then above transformer would use values from index directly, without loading them from database.  
+If we would [store](../indexes/storing-data-in-index) `FirstName` and `LastName` in index that was queried, then above transformer would use values from index directly, without loading them from database.  
 {WARNING/}
 
 ## Projecting single property
