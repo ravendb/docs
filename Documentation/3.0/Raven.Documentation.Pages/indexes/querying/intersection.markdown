@@ -28,4 +28,4 @@ Above query will return `tshirts/1` and `tshirts/4` as a result. Document `tshir
 
 ## Related articles
 
-TODO
+- [Client API : Session : How to use intersect?](../../client-api/session/querying/how-to-use-intersect)

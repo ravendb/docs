@@ -97,4 +97,7 @@ Remember to add `Raven.Client.Linq` namespace to usings if you want to use `In` 
 
 ## Related articles
 
-TODO
+- [Indexing : Basics](../../indexes/indexing-basics)
+- [Querying : Basics](../../indexes/querying/basics)
+- [Querying : Paging](../../indexes/querying/paging)
+- [Querying : Sorting](../../indexes/querying/sorting)

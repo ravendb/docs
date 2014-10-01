@@ -237,4 +237,5 @@ For most cases where denormalization is not an option, Includes are probably the
 
 ## Related articles
 
-TODO
+- [Indexing : Basics](../../indexes/indexing-basics)
+- [Querying : Basics](../../indexes/querying/basics)

@@ -199,4 +199,5 @@ Default `EscapeQueryOptions` value for **DocumentQuery** is `EscapeQueryOptions.
 
 ## Related articles
 
-TODO
+- [Indexing : Boosting](../../indexes/boosting)
+- [Client API : Session : How to use search?](../../client-api/session/querying/how-to-use-search)

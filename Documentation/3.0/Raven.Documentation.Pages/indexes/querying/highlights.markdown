@@ -1,8 +1,8 @@
-﻿#Highlights
+﻿# Highlights
 
 Another feature called `Highlights` has been added to RavenDB to enhance the search UX.
 
-##Usage
+## Usage
 
 Lets consider a class and index as follows:   
 
@@ -18,7 +18,7 @@ Now to use Highlights we just need to use one of the `Highlight` query extension
 
 This will return the list of results and for each result we will be displaying first found fragment with the length up to 128 characters.
 
-##Customization
+## Customization
 
 {CODE highlights_3@Indexes\Querying\Highlights.cs /}
 
@@ -63,4 +63,4 @@ Default `<b></b>` tags are coloured and colours are returned in following order:
 
 ## Related articles
 
-TODO
+- [Client API : Session : How to use highlighting?](../../client-api/session/querying/how-to-use-highlighting)

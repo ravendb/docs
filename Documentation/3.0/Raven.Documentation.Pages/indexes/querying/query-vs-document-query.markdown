@@ -45,4 +45,6 @@ that `OR` will be used. This is the default operator of Lucene engine. You are a
 
 ## Related articles
 
-TODO
+- [Querying : Basics](../../indexes/querying/basics)
+- [Client API : Session : How to query?](../../client-api/session/querying/how-to-query)
+- [Client API : Session : How to use lucene in queries?](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries)

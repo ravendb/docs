@@ -110,4 +110,5 @@ The faceted search does not take into account a stealeness of an index. You can'
 
 ## Related articles
 
-TODO
+- [Querying : Dynamic aggregation](../../indexes/querying/dynamic-aggregation)
+- [Client API : Session : How to perform a faceted search?](../../client-api/session/querying/how-to-perform-a-faceted-search)

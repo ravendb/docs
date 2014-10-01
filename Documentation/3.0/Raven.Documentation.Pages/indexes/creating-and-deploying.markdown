@@ -109,5 +109,5 @@ To reduce the server load, if auto-indexes are not queried for a certain amount 
 ## Related articles
 
 - [What are indexes?](../indexes/what-are-indexes)
-- [Indexing basics](../indexes/indexing-basics)
+- [Indexing : Basics](../indexes/indexing-basics)
 - [Querying : Basics](../indexes/querying/basics)
