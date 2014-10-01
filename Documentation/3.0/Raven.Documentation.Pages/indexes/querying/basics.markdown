@@ -74,4 +74,9 @@ To take a full control over your queries, we introduced a `DocumentQuery` method
 
 ## Related articles
 
-TODO
+- [Indexing : Basics](../../indexes/indexing-basics)
+- [Querying : Filtering](../../indexes/querying/filtering)
+- [Querying : Paging](../../indexes/querying/paging)
+- [Querying : Handling document relationships](../../indexes/querying/handling-document-relationships)
+- [Client API : What is a document store?](../../client-api/what-is-a-document-store)
+- [Client API : Opening a session](../../client-api/session/opening-a-session)

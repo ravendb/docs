@@ -46,4 +46,5 @@ So to perform a radius search from the above example and use `RelatesToShape` me
 
 ## Related articles
 
-TODO
+- [Indexes : Indexing spatial data](../../indexes/indexing-spatial-data)
+- [Client API : Session : How to query a spatial index?](../../client-api/session/querying/how-to-query-a-spatial-index)

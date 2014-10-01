@@ -55,4 +55,4 @@ This will produce the results:
 
 ## Related articles
 
-TODO
+- [Client API : Session : How to work with suggestions?](../../client-api/session/querying/how-to-work-with-suggestions)

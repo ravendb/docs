@@ -42,4 +42,4 @@ Another example is an aggregation on different fields based on same facet:
 
 ## Related articles
 
-TODO
+- [Querying : Faceted search](../../indexes/querying/faceted-search)
