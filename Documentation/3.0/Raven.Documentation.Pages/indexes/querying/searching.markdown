@@ -26,7 +26,7 @@ Eventually all queries are always transformed into a Lucene query. The query lik
 
 {SAFE An attempt to use `string.Contains()` method as condition of `Where` closure, will throw `NotSupportedException`. That is because the search term like \*<em>term</em>* (note wildcards at the beginning and at the end) can cause performance issues. Due to Raven's *safe-by-default* paradigm such operation is forbidden. If you really want to achieve this case, you will find more details in one of the next section below. /}
 
-{INFO Note that that results of a query might be different depending on [an analyzer](../static-indexes/configuring-index-options) that was applied./}
+{INFO Note that that results of a query might be different depending on [an analyzer](../../indexes/using-analyzers) that was applied./}
 
 <hr />
 
@@ -157,7 +157,7 @@ the `EscapeQueryOptions` parameter. It's the enum that can have one of the follo
 * AllowAllWildcards,
 * RawQuery.
 
-By default all special characters contained in the query will be escaped (`EscapeAll`) when [Query]() from session is used. However you can add a bit more of flexibility to your searching mechanism.
+By default all special characters contained in the query will be escaped (`EscapeAll`) when [Query](../client-api/session/querying/how-to-query) from session is used. However you can add a bit more of flexibility to your searching mechanism.
 `EscapeQueryOptions.AllowPostfixWildcard` enables searching against a field by using search term that ends with wildcard character:
 
 {CODE-TABS}

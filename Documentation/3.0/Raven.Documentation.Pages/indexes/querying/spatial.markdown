@@ -1,6 +1,6 @@
 ﻿# Spatial
 
-{INFO This article focuses only on **querying** side of spatial search. If you want to read how to index spatial data, click [here](). /}
+{INFO This article focuses only on **querying** side of spatial search. If you want to read how to index spatial data, click [here](../../indexes/indexing-spatial-data). /}
 
 To perform a spatial search you can use `Spatial` method:
 

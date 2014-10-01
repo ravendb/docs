@@ -1,6 +1,6 @@
 ﻿# Filtering
 
-One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query]() from basic session operations, [DocumentQuery]() from advanced session operations or low-level [Command]()). Following example demonstrates how to add a simple conditions to query using all those methods.
+One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query](../../client-api/session/querying/how-to-query) from basic session operations, [DocumentQuery](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries) from advanced session operations or low-level [Command](../../client-api/commands/querying/how-to-query-a-database)). Following example demonstrates how to add a simple conditions to query using all those methods.
 
 ## Where
 
@@ -93,7 +93,7 @@ Remember to add `Raven.Client.Linq` namespace to usings if you want to use `In` 
 
 {INFO Underneath, `Query` and `DocumentQuery` are converting predicates to `IndexQuery` class so they can issue a query from **low-level command method**. /}
 
-{SAFE By default **page size is set to 128** if not specified, so above queries will not return more than 128 results. You can read more about paging [here](). /}
+{SAFE By default **page size is set to 128** if not specified, so above queries will not return more than 128 results. You can read more about paging [here](../../indexes/querying/paging). /}
 
 ## Related articles
 
