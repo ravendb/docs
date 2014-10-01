@@ -4,7 +4,7 @@ Paging, or pagination, is the process of splitting a dataset into pages, reading
 
 {SAFE If not specified, page size **on client side** is set to **128**. /}
 
-{SAFE If not specified, maximum page size **on server side** is set to **1024** and can be altered using `Raven/MaxPageSize` setting (more information [here]()). /}
+{SAFE If not specified, maximum page size **on server side** is set to **1024** and can be altered using `Raven/MaxPageSize` setting (more information [here](../../server/configuration/configuration-options)). /}
 
 ## Example I - safe by default
 
@@ -69,7 +69,7 @@ For example, assuming a page size of 10:
 
 ## Increasing StartsWith performance
 
-All `StartsWith` operations (e.g. [LoadStartingWith]() and [Stream]() from advanced session operations or [StartsWith]() and [Stream]() from low-level commands) contain a `RavenPagingInformation` parameter that can be used to increase the performance of a StartsWith operation when **next page** is requested.
+All `StartsWith` operations (e.g. [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith) and [Stream](../../client-api/session/querying/how-to-stream-query-results) from advanced session operations or [StartsWith](../../client-api/commands/documents/get#startswith) and [Stream](../../client-api/commands/documents/stream) from low-level commands) contain a `RavenPagingInformation` parameter that can be used to increase the performance of a StartsWith operation when **next page** is requested.
 
 To do this we need to pass same instance of `RavenPagingInformation` to the identical operation. The client will use information contained in this object to increase the performance (only if next page is requested).
 

@@ -1,6 +1,6 @@
 ﻿# Dynamic aggregation
 
-This feature is an another way to do aggregations and in contrast to [Map-Reduce]() indexes, it allows to create much more complex queries. It gives you more options for reporting applications, dynamic selection and complex aggregation with additional filtering. 
+This feature is an another way to do aggregations and in contrast to [Map-Reduce](../../indexes/map-reduce-indexes) indexes, it allows to create much more complex queries. It gives you more options for reporting applications, dynamic selection and complex aggregation with additional filtering. 
 
 When working with a map/reduce index we are able to do only limited amount of queries. Let's imagine a sample SQL query:
 
@@ -28,7 +28,7 @@ The _Orders/All_ index used in the query is a simple map-only index. The only di
 
 ## Extended faceted search
 
-Under the covers this is [a faceted search](../faceted-search) with an extended support for doing aggregations. For example you can aggregate ranges:
+Under the covers this is [a faceted search](../../indexes/querying/faceted-search) with an extended support for doing aggregations. For example you can aggregate ranges:
 
 {CODE dynamic_aggregation_range@Indexes\Querying\DynamicAggregation.cs /}
 

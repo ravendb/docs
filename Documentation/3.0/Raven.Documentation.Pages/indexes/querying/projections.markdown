@@ -2,10 +2,10 @@
 
 There are couple a couple of ways to perform projections in RavenDB:
 
-- simple projections using [Select]()
-- using [ProjectFromIndexFieldsInto]()
-- using [OfType (As)]()
-- using transformer with [TransformWith]()
+- simple projections using [Select](../../indexes/querying/projections#select---basic-projections)
+- using [ProjectFromIndexFieldsInto](../../indexes/querying/projections#projectfromindexfieldsinto)
+- using [OfType (As)](../../indexes/querying/projections#oftype-as)
+- using transformer with [TransformWith](../../indexes/querying/projections#transformwith)
 
 ## Select - basic projections
 
@@ -47,11 +47,11 @@ This method uses reflection to extract all public fields and properties to fetch
 
 ## OfType (As)
 
-`OfType` or `As` is a client-side projection. You can read more about it [here]().
+`OfType` or `As` is a client-side projection. You can read more about it [here](../../client-api/session/querying/how-to-perform-projection#oftype-as---simple-projection).
 
 ## TransformWith
 
-Detailed article about transformer basics can be found [here]().
+Detailed article about transformer basics can be found [here](../../transformers/what-are-transformers).
 
 ## Related articles
 
