@@ -36,4 +36,7 @@ In general, you can sort using `Raven.Database.Indexing.Collation.Cultures.<two-
 
 ## Related articles
 
-TODO
+- [Map indexes](../indexes/map-indexes)
+- [What are indexes?](../indexes/what-are-indexes)
+- [Querying : Basics](../indexes/querying/basics)
+- [Querying : Sorting](../indexes/querying/sorting)

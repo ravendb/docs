@@ -46,4 +46,5 @@ All queries in the store would behave as if `WaitForNonStaleResultsAsOfLastWrite
 
 ## Related articles
 
-TODO
+- [What are indexes?](../indexes/indexes/what-are-indexes)
+- [Indexing : Basics](../indexes/indexing-basics)

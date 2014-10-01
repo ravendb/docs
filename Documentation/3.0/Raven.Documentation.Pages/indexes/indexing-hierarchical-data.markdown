@@ -22,4 +22,8 @@ This will index all the comments in the thread, regardless of their location in 
 
 ## Related articles
 
-TODO
+- [Indexing : Basics](../indexes/indexing-basics)
+- [Indexing related documents](../indexes/indexing-related-documents)
+- [Indexing spatial data](../indexes/indexing-spatial-data)
+- [Indexing polymorphic data](../indexes/indexing-polymorphic-data)
+- [Querying : Basics](../indexes/querying/basics)

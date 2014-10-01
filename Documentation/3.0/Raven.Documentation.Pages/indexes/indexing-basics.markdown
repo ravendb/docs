@@ -54,4 +54,8 @@ and `Last-Modified` (if they are present). Thanks to this we can query for docum
 
 ## Related articles
 
-TODO
+- [Map indexes](../indexes/map-indexes)
+- [Stale indexes](../indexes/stale-indexes)
+- [What are indexes?](../indexes/what-are-indexes)
+- [Creating and deploying indexes](../indexes/creating-and-deploying)
+- [Querying : Basics](../indexes/querying/basics)

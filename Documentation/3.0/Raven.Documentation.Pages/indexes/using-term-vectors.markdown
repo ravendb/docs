@@ -13,6 +13,9 @@ The available Term Vector options are:
 
 {CODE term_vectors_3@Indexes\TermVectors.cs /}
 
-#### Related articles
+## Related articles
 
-TODO
+- [Boosting](../indexes/boosting)
+- [Analyzers](../indexes/using-analyzers)
+- [Storing data in index](../indexes/storing-data-in-index)
+- [Dynamic Fields](../indexes/using-dynamic-fields)

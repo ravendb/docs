@@ -57,5 +57,8 @@ and issue a query:
 
 ## Related articles
 
-TODO
+- [Indexing related documents](../indexes/indexing-related-documents)
+- [Map-Reduce indexes](../indexes/map-reduce-indexes)
+- [Creating and deploying indexes](../indexes/creating-and-deploying)
+- [Querying : Basics](../indexes/querying/basics)
 

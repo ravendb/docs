@@ -83,4 +83,8 @@ If you want to disable indexing on a particular field, use `FieldIndexing.No` op
 
 ## Related articles
 
-TODO
+- [Server : Analyzer Generators](../server/plugins/analyzer-generators)
+- [Boosting](../indexes/boosting)
+- [Storing data in index](../indexes/storing-data-in-index)
+- [Term Vectors](../indexes/using-term-vectors)
+- [Dynamic Fields](../indexes/using-dynamic-fields)

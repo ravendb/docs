@@ -108,4 +108,6 @@ To reduce the server load, if auto-indexes are not queried for a certain amount 
 
 ## Related articles
 
-TODO
+- [What are indexes?](../indexes/what-are-indexes)
+- [Indexing basics](../indexes/indexing-basics)
+- [Querying : Basics](../indexes/querying/basics)

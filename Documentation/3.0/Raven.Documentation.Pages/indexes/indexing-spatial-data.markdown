@@ -158,4 +158,4 @@ To find all results that are **within radius of** or **intersect** specified sha
 
 ## Related articles
 
-TODO
+- [Querying : Spatial](../indexes/querying/spatial)

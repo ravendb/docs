@@ -31,4 +31,7 @@ This will also work for numeric values, so range queries or searches with numeri
 
 ## Related articles
 
-TODO
+- [Boosting](../indexes/boosting)
+- [Analyzers](../indexes/using-analyzers)
+- [Storing data in index](../indexes/storing-data-in-index)
+- [Term Vectors](../indexes/using-term-vectors)
