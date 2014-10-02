@@ -12,13 +12,13 @@ There are two methods to satisfy that:
 
 The conventions registered by this medhod are used for operations performed in a synchronous manner.
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **func** | Func<string, IDatabaseCommands, TEntity, string> | Identifier generation function for given database name (`string`), commands object (`IDatabaseCommands`) and entity object (`TEntity`). |
 
-func
-:   Type: Func<string, IDatabaseCommands, TEntity, string>   
-Identifier generation function for given database name (`string`), commands object (`IDatabaseCommands`) and entity object (`TEntity`).
-
-**Return Value**
+| Return Value | |
+| ------------- | ----- |
+| DocumentConvention | Current `DocumentConvention` instance. |
 
 Type: DocumentConvention   
 Current `DocumentConvention` instance.
@@ -29,16 +29,13 @@ Current `DocumentConvention` instance.
 
 The conventions registered by this medhod are used for operations performed in an asynchronous manner.
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **func** | Func<string, IAsyncDatabaseCommands, TEntity, Task&lt;string&gt;> | Identifier generation function that supplies a result in async way for given database name (`string`), async commands object (`IAsyncDatabaseCommands`) and entity object (`TEntity`). |
 
-func
-:   Type: Func<string, IAsyncDatabaseCommands, TEntity, Task&lt;string&gt;>   
-Identifier generation function that supplies a result in async way for given database name (`string`), async commands object (`IAsyncDatabaseCommands`) and entity object (`TEntity`).
-
-**Return Value**
-
-Type: DocumentConvention   
-Current `DocumentConvention` instance.
+| Return Value | |
+| ------------- | ----- |
+| DocumentConvention | Current `DocumentConvention` instance. |
 
 {INFO:Database name parameter}
 The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database 
