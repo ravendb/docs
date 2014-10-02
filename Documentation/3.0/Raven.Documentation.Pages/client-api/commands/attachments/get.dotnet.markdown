@@ -12,16 +12,13 @@ There are few methods that allow you to download attachments from a database:
 
 {CODE get_1_0@ClientApi\Commands\Attachments\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of the attachment you want to download |
 
-key
-:   Type: string   
-key of the attachment you want to download
-
-**Return Value**
-
-Type: [Attachment](../../../glossary/json/attachment)   
-Object that represents attachment.
+| Return Value | |
+| ------------- | ----- |
+| [Attachment](../../../glossary/json/attachment) | Object that represents attachment. |
 
 ### Example
 
@@ -35,30 +32,21 @@ Object that represents attachment.
 
 {CODE get_2_0@ClientApi\Commands\Attachments\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | Indicates how many attachments should be skipped. |
+| **startEtag** | Etag | ETag from which to start |
+| **batchSize** | int | maximum number of attachment that will be downloaded |
 
-start
-:   Type: int   
-Indicates how many attachments should be skipped.
-
-startEtag
-:   Type: Etag   
-ETag from which to start
-
-batchSize
-:   Type: int   
-maximum number of attachment that will be downloaded   
-
-**Return Value**
-
-Type: [AttachmentInformation](../../../glossary/json/attachment-information)   
-Object that represents attachment metadata information.
+| Return Value | |
+| ------------- | ----- |
+| [AttachmentInformation](../../../glossary/json/attachment-information) | Object that represents attachment metadata information. |
 
 ### Example
 
 {CODE get_2_1@ClientApi\Commands\Attachments\Get.cs /}
 
-#### Related articles
+## Related articles
 
 - [How to **get** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
 - [PutAttachment](../../../client-api/commands/attachments/put)  

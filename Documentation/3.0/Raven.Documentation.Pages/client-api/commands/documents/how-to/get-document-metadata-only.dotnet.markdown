@@ -6,22 +6,19 @@
 
 {CODE head_1@ClientApi\Commands\Documents\HowTo\Head.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of a document to get metadata for |
 
-key
-:   Type: string   
-key of a document to get metadata for
-
-**Return Value**
-
-Type: [JsonDocumentMetadata](../../../../glossary/json/json-document-metadata)   
-Metadata information for document with given key.
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocumentMetadata](../../../../glossary/json/json-document-metadata) | Metadata information for document with given key. |
 
 ## Example
 
 {CODE head_2@ClientApi\Commands\Documents\HowTo\Head.cs /}
 
-#### Related articles
+## Related articles
 
 - [Get](../../../../client-api/commands/documents/get)  
 - [Put](../../../../client-api/commands/documents/put)  

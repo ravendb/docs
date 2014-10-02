@@ -14,16 +14,13 @@ There are few methods that allow you to retrieve documents from a database:
 
 {CODE get_1_0@ClientApi\Commands\Documents\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of the document you want to retrieve |
 
-key
-:   Type: string   
-key of the document you want to retrieve  
-
-**Return Value**
-
-Type: [JsonDocument](../../../glossary/json/json-document)   
-Object representing retrieved document.
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json/json-document) | Object representing retrieved document. |
 
 ### Example
 
@@ -39,39 +36,22 @@ Object representing retrieved document.
 
 {CODE get_2_0@ClientApi\Commands\Documents\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keys** | string[] | array of keys of the documents you want to retrieve |
+| **includes** | string[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
+| **transformer** | string | name of a transformer that should be used to transform the results |
+| **transformerParameters** | Dictionary<string, RavenJToken> | inputs (parameters) that will can be used by transformer |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |
 
-keys
-:   Type: string[]   
-array of keys of the documents you want to retrieve 
-
-includes
-:   Type: string[]   
-array of paths in documents in which server should look for a 'referenced' document (check example)  
-
-transformer
-:   Type: string   
-name of a transformer that should be used to transform the results    
-
-transformerParameters
-:   Type: Dictionary<string, RavenJToken>   
-inputs (parameters) that will can be used by transformer
-
-metadataOnly
-:   Type: bool   
-specifies if only document metadata should be returned
-
-**Return Value**
+<hr />
 
 {CODE multiloadresult@Common.cs /}
 
-Results
-:   Type: List<RavenJObject>   
-list of documents in **exact** same order as in **keys** parameter
-
-Includes
-:   Type: List<RavenJObject>   
-list of documents that were found in specified paths that were passed in **includes** parameter     
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Results** | List<RavenJObject> | list of documents in **exact** same order as in **keys** parameter |
+| **Includes** | List<RavenJObject> | list of documents that were found in specified paths that were passed in **includes** parameter |  
 
 ### Example I
 
@@ -95,24 +75,15 @@ list of documents that were found in specified paths that were passed in **inclu
 
 {CODE get_3_0@ClientApi\Commands\Documents\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | int | number of documents that should be skipped  |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |  
 
-start
-:   Type: int   
-number of documents that should be skipped 
-
-pageSize
-:   Type: int   
-maximum number of documents that will be retrieved 
-
-metadataOnly
-:   Type: bool   
-specifies if only document metadata should be returned   
-
-**Return Value**
-
-Type: [JsonDocument](../../../glossary/json/json-document)   
-Object representing retrieved document.
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json/json-document) | Object representing retrieved document. |
 
 ### Example
 
@@ -128,48 +99,21 @@ Object representing retrieved document.
 
 {CODE get_4_0@ClientApi\Commands\Documents\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **keyPrefix** | string | prefix for which documents should be returned |
+| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side  |
+| **metadataOnly** | bool | specifies if only document metadata should be returned |
+| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **transformer** | string | name of a transformer that should be used to transform the results |
+| **transformerParameters** | Dictionary<string, RavenJToken> | inputs (parameters) that will can be used by transformer |
 
-keyPrefix
-:   Type: string   
-prefix for which documents should be returned 
-
-matches
-:   Type: string   
-pipe ('|') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters)  
-
-start
-:   Type: int   
-number of documents that should be skipped 
-
-pageSize
-:   Type: int   
-maximum number of documents that will be retrieved
-
-pagingInformation
-:   Type: RavenPagingInformation   
-used to perform rapid pagination on server side 
-
-metadataOnly
-:   Type: bool   
-specifies if only document metadata should be returned   
-
-exclude
-:   Type: string   
-pipe ('|') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters)       
-
-transformer
-:   Type: string   
-name of a transformer that should be used to transform the results  
-
-transformerParameters
-:   Type: Dictionary<string, RavenJToken>      
-inputs (parameters) that will can be used by transformer   
-
-**Return Value**
-
-Type: [JsonDocument](../../../glossary/json/json-document)   
-Object representing retrieved document.
+| Return Value | |
+| ------------- | ----- |
+| [JsonDocument](../../../glossary/json/json-document) | Object representing retrieved document. |
 
 ### Example I
 
@@ -185,7 +129,7 @@ Object representing retrieved document.
 
 {PANEL/}
 
-#### Related articles
+## Related articles
 
 - [How to **get** document **metadata** only?](../../../client-api/commands/documents/how-to/get-document-metadata-only)  
 - [Put](../../../client-api/commands/documents/put)  

@@ -6,41 +6,27 @@
 
 {CODE put_1@ClientApi\Commands\Documents\Put.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | unique key under which document will be stored |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
+| **document** | RavenJObject | document data |
+| **metadata** | RavenJObject | document metadata |
 
-key
-:   Type: string   
-unique key under which document will be stored
-
-etag
-:   Type: Etag   
-current document etag, used for concurrency checks (`null` to skip check) 
-
-document
-:   Type: RavenJObject   
-document data
-
-metadata
-:   Type: RavenJObject   
-document metadata
-
-**Return Value**
+<hr />
 
 {CODE putresult@Common.cs /}
 
-Key
-:   Type: string   
-unique key under which document was stored  
-
-ETag
-:   Type: Etag   
-stored document etag 
+| Return Value | | |
+| ------------- | ------------- | ----- |
+| **Key** | string | unique key under which document was stored |
+| **Etag** | Etag | stored document etag |
 
 ## Example
 
 {CODE put_3@ClientApi\Commands\Documents\Put.cs /}
 
-#### Related articles
+## Related articles
 
 - [Get](../../../client-api/commands/documents/get)  
 - [Delete](../../../client-api/commands/documents/delete)  

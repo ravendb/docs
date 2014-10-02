@@ -6,19 +6,13 @@ To send **multiple operations** in a **single request**, reducing the number of 
 
 {CODE batch_1@ClientApi\Commands\Batches\Batch.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| An array of following commands:<br />- [PutCommandData](../../../glossary/client-api/commands/put-command-data)<br />- [DeleteCommandData](../../../glossary/client-api/commands/delete-command-data)<br />- [PatchCommandData](../../../glossary/client-api/commands/patch-command-data)<br />- [ScriptedPatchCommandData](../../../glossary/client-api/commands/scripted-patch-command-data) | ICommandData | Commands to process. |
 
-An array of following commands:
-
-- [PutCommandData](../../../glossary/client-api/commands/put-command-data)
-- [DeleteCommandData](../../../glossary/client-api/commands/delete-command-data)
-- [PatchCommandData](../../../glossary/client-api/commands/patch-command-data)
-- [ScriptedPatchCommandData](../../../glossary/client-api/commands/scripted-patch-command-data)
-
-**Return Value**
-
-Type: [BatchResult](../../../glossary/client-api/commands/batch-result)[]   
-An array of batch results matching **exactly** the order of commands send.
+| Return Value | |
+| ------------- | ----- |
+| [BatchResult](../../../glossary/client-api/commands/batch-result)[] | An array of batch results matching **exactly** the order of commands send. |
 
 ## Example
 
@@ -32,7 +26,7 @@ If an ETag is specified in the command, that ETag is compared to the current ETa
 
 All the operations in the batch will succeed or fail as a transaction. Other users will not be able to see any of the changes until the entire batch completes.
 
-#### Related articles
+## Related articles
 
 - [Put](../../../client-api/commands/documents/put)   
 - [Delete](../../../client-api/commands/documents/delete)   
