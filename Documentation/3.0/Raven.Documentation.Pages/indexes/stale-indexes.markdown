@@ -26,7 +26,7 @@ Note that in the sample above a time-out of 5 seconds was specified. While you c
 
 ## Setting cut-off point
 
-Even when using `WaitForNonStaleResults` with a time-out like shown above, it is still possible to get back stale results - for example when a very lengthy indexing task is executing. A better approach to make sure you are working with non-stale results is to use a cut-off point and tell the server to use that as a base:
+A better approach to make sure you are working with non-stale results is to use a cut-off point and tell the server to use that as the point the database should index to:
 
 {CODE stale3@Indexes\StaleIndexes.cs /}
 
