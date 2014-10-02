@@ -6,28 +6,16 @@
 
 {CODE get_terms_1@ClientApi\Commands\Indexes\HowTo\GetTerms.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | string | Name of an index |
+| **field** | string | Index field |
+| **fromValue** | string | Starting point for a query, used for paging |
+| **pageSize** | int | Maximum number of terms that will be returned |
 
-index
-:   Type: string   
-Name of an index
-
-field
-:   Type: string   
-Index field
-
-fromValue
-:   Type: string   
-Starting point for a query, used for paging
-
-pageSize
-:   Type: int   
-Maximum number of terms that will be returned
-
-**Return Value**
-
-Type: string[]   
-Array of index terms.
+| Return Value | |
+| ------------- | ----- |
+| string[] | Array of index terms. |
 
 ## Example
 

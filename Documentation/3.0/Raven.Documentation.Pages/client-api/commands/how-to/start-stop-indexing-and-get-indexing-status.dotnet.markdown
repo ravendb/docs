@@ -5,7 +5,7 @@ Following commands have been created to enable user to toggle indexing and retri
 - [StopIndexing]()   
 - [GetIndexingStatus]()
 
-## StartIndexing
+{PANEL:StartIndexing}
 
 This methods starts indexing, if it was previously stopped.
 
@@ -17,7 +17,9 @@ This methods starts indexing, if it was previously stopped.
 
 {CODE start_indexing_2@ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs /}
 
-## StopIndexing
+{PANEL/}
+
+{PANEL:StopIndexing}
 
 This methods stops indexing, if it was running.
 
@@ -29,7 +31,9 @@ This methods stops indexing, if it was running.
 
 {CODE stop_indexing_2@ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs /}
 
-## GetIndexingStatus
+{PANEL/}
+
+{PANEL:GetIndexingStatus}
 
 This methods retrieves current status of the indexing.
 
@@ -37,15 +41,16 @@ This methods retrieves current status of the indexing.
 
 {CODE get_indexing_status_1@ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs /}
 
-**Return Value**
-
-Type: string   
-`"Indexing"` if the indexing is running, `"Paused"` otherwise.
+| Return Value | |
+| ------------- | ----- |
+| string | `"Indexing"` if the indexing is running, `"Paused"` otherwise. |
 
 ### Example
 
 {CODE get_indexing_status_2@ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs /}
 
-#### Related articles
+{PANEL/}
+
+## Related articles
 
 - [How to **create** or **delete database**?](../../../client-api/commands/how-to/create-delete-database)   

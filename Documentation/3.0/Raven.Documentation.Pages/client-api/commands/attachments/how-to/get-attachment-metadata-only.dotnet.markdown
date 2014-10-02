@@ -4,7 +4,7 @@ There are few methods that allow you to download attachment metadata from a data
 - [Head](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#head)   
 - [GetAttachmentHeadersStartingWith](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#getattachmentheadersstartingwith)   
 
-## Head
+{PANEL:**Head**}
 
 **Head** can be used to download attachment metadata for a single attachment.
 
@@ -24,7 +24,9 @@ There are few methods that allow you to download attachment metadata from a data
 
 {CODE head_1_1@ClientApi\Commands\Attachments\HowTo\Head.cs /}
 
-## GetAttachmentHeadersStartingWith
+{PANEL/}
+
+{PANEL:**GetAttachmentHeadersStartingWith**}
 
 **GetAttachmentHeadersStartingWith** can be used to download attachment metadata for a multiple attachments.
 
@@ -45,6 +47,8 @@ There are few methods that allow you to download attachment metadata from a data
 ### Example
 
 {CODE head_2_1@ClientApi\Commands\Attachments\HowTo\Head.cs /}
+
+{PANEL/}
 
 ## Remarks
 

@@ -5,7 +5,7 @@ This article will describe following commands (and extensions) that enable you t
 - [DeleteDatabase]()   
 - [EnsureDatabaseExists]()   
 
-## CreateDatabase
+{PANEL:**CreateDatabase**}
 
 This method is used to create a new database on a server.
 
@@ -13,17 +13,17 @@ This method is used to create a new database on a server.
 
 {CODE create_database_1@ClientApi\Commands\HowTo\CreateDeleteDatabase.cs /}
 
-**Parameters**
-
-databaseDocument
-:   Type: [DatabaseDocument]()   
-A document containing all configuration options for new database (e.g. active bundles, name/id, path to data)
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseDocument** | [DatabaseDocument]() | A document containing all configuration options for new database (e.g. active bundles, name/id, path to data) |
 
 ### Example
 
 {CODE create_database_2@ClientApi\Commands\HowTo\CreateDeleteDatabase.cs /}
 
-## DeleteDatabase
+{PANEL/}
+
+{PANEL:**DeleteDatabase**}
 
 This method is used to delete a database from a server, with a possibility to remove all data from hard drive.
 
@@ -31,21 +31,18 @@ This method is used to delete a database from a server, with a possibility to re
 
 {CODE delete_database_1@ClientApi\Commands\HowTo\CreateDeleteDatabase.cs /}
 
-**Parameters**
-
-dbName
-:   Type: string   
-Name of a database to delete
-
-hardDelete
-:   Type: bool   
-Should all data be removed (data files, indexing files, etc.). Default: `false`
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **dbName** | string | Name of a database to delete |
+| **hardDelete** | bool | Should all data be removed (data files, indexing files, etc.). Default: `false` |
 
 ### Example
 
 {CODE delete_database_2@ClientApi\Commands\HowTo\CreateDeleteDatabase.cs /}
 
-## EnsureDatabaseExists - extension method
+{PANEL/}
+
+{PANEL:**EnsureDatabaseExists - extension method**}
 
 This extension method creates database on a server with **default configuration and indexes** if that database does not exist.
 
@@ -55,21 +52,18 @@ This extension method creates database on a server with **default configuration 
 
 {CODE ensure_database_exists_1@ClientApi\Commands\HowTo\CreateDeleteDatabase.cs /}
 
-**Parameters**
-
-name
-:   Type: string   
-Name of a database that will be created if it does not exist
-
-ignoreFailures
-:   Type: bool   
-Ignore any exceptions that could occured during database creation. Default: `false`
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | Name of a database that will be created if it does not exist |
+| **ignoreFailures** | bool | Ignore any exceptions that could occured during database creation. Default: `false` |
 
 ### Example
 
 {CODE ensure_database_exists_3@ClientApi\Commands\HowTo\CreateDeleteDatabase.cs /}
 
-#### Related articles
+{PANEL/}
+
+## Related articles
 
 - [How to **switch** commands to different **database**?](../../../client-api/commands/how-to/switch-commands-to-a-different-database)   
 - [How to get database and server **statistics**?](../../../client-api/commands/how-to/get-database-and-server-statistics)   

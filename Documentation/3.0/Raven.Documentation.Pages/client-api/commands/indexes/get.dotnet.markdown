@@ -5,7 +5,7 @@ There are few methods that allow you to retrieve index from a database:
 - [GetIndexes](../../../client-api/commands/indexes/get#getindexes)   
 - [GetIndexNames](../../../client-api/commands/indexes/get#getindexnames)   
 
-## GetIndex
+{PANEL:GetIndex}
 
 **GetIndex** is used to retrieve an index definition from a database.
 
@@ -13,22 +13,21 @@ There are few methods that allow you to retrieve index from a database:
 
 {CODE get_1_0@ClientApi\Commands\Indexes\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index |
 
-name
-:   Type: string   
-name of an index
-
-**Return Value**
-
-Type: [IndexDefinition](../../../glossary/indexes/index-definition)   
-Instance of IndexDefinition repesenting index.
+| Return Value | |
+| ------------- | ----- |
+| [IndexDefinition](../../../glossary/indexes/index-definition) | Instance of IndexDefinition repesenting index. |
 
 ### Example
 
 {CODE get_1_1@ClientApi\Commands\Indexes\Get.cs /}
 
-## GetIndexes
+{PANEL/}
+
+{PANEL:GetIndexes}
 
 **GetIndexes** is used to retrieve multiple index definitions from a database.
 
@@ -36,53 +35,45 @@ Instance of IndexDefinition repesenting index.
 
 {CODE get_2_0@ClientApi\Commands\Indexes\Get.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | string | Number of documents that should be skipped |
+| **pageSize** | int | Maximum number of documents that will be retrieved  |
 
-start
-:   Type: string   
-Number of documents that should be skipped
-
-pageSize
-:   Type: int   
-Maximum number of documents that will be retrieved  
-
-**Return Value**
-
-Type: [IndexDefinition](../../../glossary/indexes/index-definition)   
-Instance of IndexDefinition repesenting index.
+| Return Value | |
+| ------------- | ----- |
+| [IndexDefinition](../../../glossary/indexes/index-definition) | Instance of IndexDefinition repesenting index. |
 
 ### Example
 
 {CODE get_2_1@ClientApi\Commands\Indexes\Get.cs /}
 
-## GetIndexNames
+{PANEL/}
 
-**GetIndexes** is used to retrieve multiple index names from a database.
+{PANEL:GetIndexNames}
+
+**GetIndexNames** is used to retrieve multiple index names from a database.
 
 ### Syntax
 
 {CODE get_3_0@ClientApi\Commands\Indexes\Get.cs /}
 
-**Parameters**  
- 
-start
-:   Type: string   
-Number of documents that should be skipped
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **start** | string | Number of documents that should be skipped |
+| **pageSize** | int | Maximum number of documents that will be retrieved |
 
-pageSize
-:   Type: int   
-Maximum number of documents that will be retrieved  
-
-**Return Value**
-
-Type: string[]   
-This methods returns an array of index **name** as a result.
+| Return Value | |
+| ------------- | ----- |
+| string[] | This methods returns an array of index **name** as a result. |
 
 ### Example
 
 {CODE get_3_1@ClientApi\Commands\Indexes\Get.cs /}
 
-#### Related articles
+{PANEL/}
+
+## Related articles
 
 - [PutIndex](../../../client-api/commands/indexes/put)  
 - [DeleteIndex](../../../client-api/commands/indexes/delete)  

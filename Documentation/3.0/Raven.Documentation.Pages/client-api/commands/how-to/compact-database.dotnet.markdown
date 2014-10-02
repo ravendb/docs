@@ -6,11 +6,9 @@ To compact database, please use `CompactDatabase` command available in `GlobalAd
 
 {CODE compact_1@ClientApi\Commands\HowTo\Compact.cs /}
 
-**Parameters**
-
-databaseName
-:   Type: string   
-Name of a database to compact
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **databaseName** | string | Name of a database to compact |
 
 ## Example
 
@@ -22,7 +20,7 @@ Currently **only esent** storage supports compaction.
 
 Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
 
-#### Related articles
+## Related articles
 
 - [How to **create** or **delete database**?](../../../client-api/commands/how-to/create-delete-database)     
 - [How to get database and server **statistics**?](../../../client-api/commands/how-to/get-database-and-server-statistics)   

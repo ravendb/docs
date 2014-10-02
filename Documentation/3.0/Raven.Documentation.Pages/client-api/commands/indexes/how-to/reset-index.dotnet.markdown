@@ -6,11 +6,9 @@
 
 {CODE reset_index_1@ClientApi\Commands\Indexes\HowTo\ResetIndex.cs /}
 
-**Parameters**   
-
-name
-:   Type: string   
-name of an index to reset
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | string | name of an index to reset |
 
 ## Example
 

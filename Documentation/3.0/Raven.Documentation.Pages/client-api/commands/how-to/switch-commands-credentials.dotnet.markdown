@@ -6,16 +6,13 @@ By default, commands available directly in store are working with credentials th
 
 {CODE with_1@ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **credentialsForSession** | ICredentials | credentials that should be used by new commands |
 
-credentialsForSession
-:   Type: ICredentials   
-credentials that should be used by new commands
-
-**Return Value**
-
-Type: IDatabaseCommands   
-New instance of commands that will use given credentials.
+| Return Value | |
+| ------------- | ----- |
+| IDatabaseCommands | New instance of commands that will use given credentials. |
 
 ## Example
 
