@@ -14,6 +14,6 @@ Above example demonstrates how to create new database called `CompressedDB` with
 
 {WARNING Activating **compression** bundle is only supported for **new databases**. Activating or disabling compression on an already existing database will cause DB malfunction. /}
 
-#### Related articles
+## Related articles
 
 TODO

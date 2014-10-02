@@ -24,7 +24,7 @@ The Auth Bundle performs the following function:
 
 The most important assumption that the Auth Bundle makes that we can trust the client not to lie about whose user it is executing a certain operation. That one assumes the following deployment scenario:
 
-![Figure 1: Authorization](images\authorization_docs.png)
+![Figure 1: Authorization](images\authorization_bundle_faq.png)
 
 In other words, only the application server can talk to the RavenDB server and the application server is running trusted code. To be clear, this design does not apply if users can connect directly to the database and lie about who they are. 
 
@@ -118,6 +118,6 @@ While documents queried using an index will be filtered according to the securit
 
 For much the same reason, the result of map/reduce indexes cannot be secured, and will have no filtering applied to them.
 
-#### Related articles
+## Related articles
 
 TODO

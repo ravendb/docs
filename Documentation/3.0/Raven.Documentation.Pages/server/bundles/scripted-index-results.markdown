@@ -39,6 +39,6 @@ Now if you take a look at the documents from the companies collection after orde
 }
 {CODE-BLOCK/}
 
-#### Related articles
+## Related articles
 
 TODO

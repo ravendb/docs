@@ -68,6 +68,6 @@ You can then access past revisions of a document using the following code:
 
 {CODE versioning_4@Server\Bundles\Versioning.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

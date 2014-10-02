@@ -34,6 +34,6 @@ Configure the following values by adding entries to your [server configuration](
 	The soft limit before which we will warn about the document limit quota.   
 	_Default:_ Int64.MaxValue
 
-#### Related articles
+## Related articles
 
 TODO
