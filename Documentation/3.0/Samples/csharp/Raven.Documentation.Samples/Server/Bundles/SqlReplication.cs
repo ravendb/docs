@@ -15,11 +15,17 @@ namespace Raven.Documentation.CodeSamples.Server.Bundles
 
 			public bool Disabled { get; set; }
 
+			public bool ParameterizeDeletesDisabled { get; set; }
+			public bool ForceSqlServerQueryRecompile { get; set; }
+			public bool PerformTableQuatation { get; set; }
+
 			public string RavenEntityName { get; set; }
 			public string Script { get; set; }
-
 			public string FactoryName { get; set; }
+
 			public string ConnectionString { get; set; }
+
+			public string PredefinedConnectionStringSettingName { get; set; }
 			public string ConnectionStringName { get; set; }
 			public string ConnectionStringSettingName { get; set; }
 
@@ -29,6 +35,7 @@ namespace Raven.Documentation.CodeSamples.Server.Bundles
 		public class SqlReplicationTable
 		{
 			public string TableName { get; set; }
+
 			public string DocumentKeyColumn { get; set; }
 		}
 		#endregion
