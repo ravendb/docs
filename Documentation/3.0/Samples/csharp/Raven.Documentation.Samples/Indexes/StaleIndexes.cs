@@ -38,7 +38,7 @@ namespace Raven.Documentation.Samples.Indexes
 					var results = session.Query<Product>()
 						.Statistics(out stats)
 						.Where(x => x.PricePerUser > 10)
-						.Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(5)))
+						.Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(5)))
 						.ToList();
 					#endregion
 				}
