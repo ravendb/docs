@@ -1,4 +1,4 @@
-﻿#HiLo algorithm
+﻿# HiLo algorithm
 
 The HiLo algorithm is an efficient solution used by [a session](../session/what-is-a-session-and-how-does-it-work) to generate numeric parts of identifiers. In other words it is
 responsible for providing numeric values that are combined with collection names to create keys like `orders/10`, `products/93` etc. 
@@ -22,7 +22,7 @@ The `Max` property means the maximum possible number that has been used by any c
 
 This way the client is able to generate a range of numbers that it can use to generate identifiers.
 
-###Replication scenario
+## Replication scenario
 
 The usage of [a replication](../../server/scaling-out/replication/how-replication-works) doesn't influence the algorithm of a document ID generation. However in a Master/Master replication scenario it might be useful 
 to add a server specific prefix to generated document identifiers. This would help to protect against conflicts of document IDs between the replicating servers. 

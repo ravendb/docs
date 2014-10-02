@@ -6,22 +6,19 @@ To find similar or related documents use **MoreLikeThis** method from commands.
 
 {CODE more_like_this_1@ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [MoreLikeThisQuery]() | A more like this query definition that will be executed |
 
-query
-:   Type: [MoreLikeThisQuery]()   
-A more like this query definition that will be executed
-
-**Return Value**
-
-Type: [MultiLoadResult]()   
-Instance of MultiLoadResult containing query `Results` and `Includes` (if any).
+| Return Value | |
+| ------------- | ----- |
+| [MultiLoadResult]() | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
 
 ## Example
 
 {CODE more_like_this_2@ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.cs /}
 
-#### Related articles
+## Related articles
 
 - [Full RavenDB query syntax](../../../Indexes/full-query-syntax)   
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)   

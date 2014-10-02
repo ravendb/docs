@@ -18,6 +18,6 @@ By default, commands available directly in store are working with credentials th
 
 {CODE with_2@ClientApi\Commands\HowTo\SwitchCommandsCredentials.cs /}
 
-#### Related articles
+## Related articles
 
 - [How to **switch** commands to a different **database**?](../../../client-api/commands/how-to/switch-commands-to-a-different-database)   

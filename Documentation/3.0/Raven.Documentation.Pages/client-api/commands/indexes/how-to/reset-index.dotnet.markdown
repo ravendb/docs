@@ -14,7 +14,7 @@
 
 {CODE reset_index_2@ClientApi\Commands\Indexes\HowTo\ResetIndex.cs /}
 
-#### Related articles
+## Related articles
 
 - [GetIndex](../../../../client-api/commands/indexes/get)  
 - [PutIndex](../../../../client-api/commands/indexes/put)  

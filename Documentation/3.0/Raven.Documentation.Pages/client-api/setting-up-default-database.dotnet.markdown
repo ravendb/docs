@@ -14,6 +14,6 @@
 
 {NOTE By default value of `DefaultDatabase` property in `DocumentStore` is `null` which means that actions will be executed on `<system>` database. /}
 
-#### Related articles
+## Related articles
 
 TODO

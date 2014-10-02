@@ -1,6 +1,6 @@
-﻿#Beware of ...
+﻿# Beware of ...
 
-##Numeric identifiers
+## Numeric identifiers
 
 RavenDB was designed to work with string document identifiers. On the server side every document has a unique string key assigned. However identifiers of entities stored 
 by the client can be modeled as numbers. RavenDB client has support for such aproach and is able to perform a necessary conversion 
@@ -13,7 +13,7 @@ However internally in a database these documents still have string identifiers a
 you have a difference between the client-side model and actual data in database. The client is able to handle that however such components as indexes and transformes
 that are defined on the client side but executed on the database side cannot work with such approach without issues. 
 
-##Unsequential identifiers
+## Unsequential identifiers
 
 [The key generation conventions]() give to you a great flexibility in creating custom identifiers for documents. You are able to assign to a document every key as you can imagine. 
 Everything is going to work correctly however you have to be aware that some kind of identifiers might cause performance issues when number of documents with 

@@ -79,7 +79,7 @@ There are following commands that can be used to perform administrative tasks on
 - [StartIndexing](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
 - [GetIndexingStatus](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
 
-#### Related articles
+## Related articles
 
 - [How to **switch** commands to a different **database**?](../../client-api/commands/how-to/switch-commands-to-a-different-database)   
 - [How to **switch** commands **credentials**?](../../client-api/commands/how-to/switch-commands-to-a-different-database)   

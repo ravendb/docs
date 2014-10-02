@@ -14,7 +14,7 @@ Query results can be transformed on server-side by passing the name and paramete
 
 {CODE query_transformer_3@ClientApi\Commands\Transformers\HowTo\TransformQueryResults.cs /}
 
-#### Related articles
+## Related articles
 
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)   
 - [How to **stream query** results?](../../../client-api/commands/querying/how-to-stream-query-results)

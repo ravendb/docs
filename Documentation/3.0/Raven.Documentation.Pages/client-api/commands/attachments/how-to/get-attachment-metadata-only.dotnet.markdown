@@ -54,7 +54,7 @@ There are few methods that allow you to download attachment metadata from a data
 
 **Data** property in `Attachment` will return empty stream for above methods.
 
-#### Related articles
+## Related articles
 
 - [How to **update** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/update-attachment-metadata-only)  
 - [PutAttachment](../../../client-api/commands/attachments/put)  

@@ -35,6 +35,6 @@ The following are samples of a few RavenDB connection strings:
 
 {CODE connection_string_2@ClientApi\SetupConnectionString.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

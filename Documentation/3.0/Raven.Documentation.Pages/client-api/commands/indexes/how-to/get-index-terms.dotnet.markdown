@@ -21,7 +21,7 @@
 
 {CODE get_terms_2@ClientApi\Commands\Indexes\HowTo\GetTerms.cs /}
 
-#### Related articles
+## Related articles
 
 - [How to **reset index**?](../../../../client-api/commands/indexes/how-to/reset-index)   
 - [How to **get index merge suggestions**?](../../../../client-api/commands/indexes/how-to/get-index-merge-suggestions)   
