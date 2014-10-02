@@ -6,31 +6,22 @@ Use **StreamQuery** method to stream results of a selected index according to a 
 
 {CODE stream_query_1@ClientApi\Commands\Querying\HowToStreamQueryResults.cs /}
 
-index
-:   Type: string   
-A name of an index to query
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | string | A name of an index to query |
+| **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
+| **queryHeaderInfo** | [QueryHeaderInformation ](../../../glossary/client-api/query-header-information) | Information about performed query |
 
-query
-:   Type: [IndexQuery]()   
-A query definition containing all information required to query a specified index.
-
-queryHeaderInfo
-:   Type: [QueryHeaderInformation ](../../../glossary/client-api/query-header-information)   
-Information about performed query
-
-**Return Value**    
-
-Type: IEnumerator`<RavenJObject>`   
-Enumerator with query results
-
-Type: [QueryHeaderInformation ](../../../glossary/client-api/query-header-information)   
-Information about performed query
+| Return Value | |
+| ------------- | ----- |
+| IEnumerator`<RavenJObject>` | Enumerator with query results |
+| [QueryHeaderInformation ](../../../glossary/client-api/query-header-information) | Information about performed query |
 
 ## Example
 
 {CODE stream_query_2@ClientApi\Commands\Querying\HowToStreamQueryResults.cs /}
 
-#### Related articles
+## Related articles
 
 - [Full RavenDB query syntax](../../../indexes/full-query-syntax) 
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)

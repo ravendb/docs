@@ -12,6 +12,6 @@ Worth knowing is that factory might not always be accessible. To check if docume
 
 {INFO `ForDatabase`, `Docs` extensions and many others are a part of url extensions available in `Raven.Client.Connection` namespace. /}
 
-#### Related articles
+## Related articles
 
 TODO

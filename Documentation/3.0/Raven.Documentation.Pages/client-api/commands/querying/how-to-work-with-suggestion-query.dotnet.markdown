@@ -6,26 +6,20 @@ To take advantage of a suggestion feature use **Suggest** method from commands.
 
 {CODE suggest_1@ClientApi\Commands\Querying\HowToWorkWithSuggestionQuery.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | string | A name of an index to query. |
+| **suggestionQuery** | [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
 
-index
-:   Type: string  
-A name of an index to query.
-
-suggestionQuery
-:   Type: [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query)   
-A suggestion query definition containing all information required to query a specified index.
-
-**Return Value**
-
-Type: [SuggestionQueryResult]()  
-Result containing array of all suggestions for executed query
+| Return Value | |
+| ------------- | ----- |
+| [SuggestionQueryResult]() | Result containing array of all suggestions for executed query |
 
 ## Example
 
 {CODE suggest_2@ClientApi\Commands\Querying\HowToWorkWithSuggestionQuery.cs /}
 
-#### Related articles
+## Related articles
 
 - [Full RavenDB query syntax](../../../indexes/full-query-syntax)   
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)   
