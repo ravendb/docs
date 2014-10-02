@@ -5,7 +5,7 @@ Following methods allow you to subscribe to index changes:
 - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
 - [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
 
-## ForIndex
+{PANEL:ForIndex}
 
 Index changes for one index can be observed using `ForIndex` method.
 
@@ -13,29 +13,27 @@ Index changes for one index can be observed using `ForIndex` method.
 
 {CODE index_changes_1@ClientApi\Changes\HowToSubscribeToIndexChanges.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index for which notifications will be processed. |
 
-indexName
-:   Type: string   
-Name of an index for which notifications will be processed.
-
-**Return value**
-
-Type: IObservableWithTask<[IndexChangeNotification](../../glossary/client-api/changes/index-change-notification)>   
-Observable that allows to add subscribtions to notifications for index with given name.
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask<[IndexChangeNotification](../../glossary/client-api/changes/index-change-notification)> | Observable that allows to add subscribtions to notifications for index with given name. |
 
 ### Example
 
 {CODE index_changes_2@ClientApi\Changes\HowToSubscribeToIndexChanges.cs /}
 
-## ForAllIndexes
+{PANEL/}
+
+{PANEL:ForAllIndexes}
 
 Index changes for all indexex can be observed using `ForAllIndexes` method.
 
-**Return value**
-
-Type: IObservableWithTask<[IndexChangeNotification](../../glossary/client-api/changes/index-change-notification)>   
-Observable that allows to add subscribtions to notifications for all indexes.
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask<[IndexChangeNotification](../../glossary/client-api/changes/index-change-notification)> | Observable that allows to add subscribtions to notifications for all indexes. |
 
 ### Syntax
 
@@ -45,10 +43,12 @@ Observable that allows to add subscribtions to notifications for all indexes.
 
 {CODE index_changes_4@ClientApi\Changes\HowToSubscribeToIndexChanges.cs /}
 
+{PANEL/}
+
 ## Remarks
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
-#### Related articles
+## Related articles
 
 TODO

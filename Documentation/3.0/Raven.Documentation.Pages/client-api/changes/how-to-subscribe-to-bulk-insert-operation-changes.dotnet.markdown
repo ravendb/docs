@@ -6,16 +6,13 @@
 
 {CODE bulk_insert_changes_1@ClientApi\Changes\HowToSubscribeToBulkInsertChanges.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **operationId** | Guid | Id of bulk insert operation, generated when bulk insert operation is created. |
 
-operationId
-:   Type: Guid   
-Id of bulk insert operation, generated when bulk insert operation is created.
-
-**Return value**
-
-Type: IObservableWithTask<[BulkInsertChangeNotification](../../glossary/client-api/changes/bulk-insert-change-notification)>   
-Observable that allows to add subscribtions to notifications for bulk insert operation with given id.
+| ReturnValue | |
+| ------------- | ----- |
+| IObservableWithTask<[BulkInsertChangeNotification](../../glossary/client-api/changes/bulk-insert-change-notification)> | Observable that allows to add subscribtions to notifications for bulk insert operation with given id. |
 
 ## Example
 
@@ -25,6 +22,6 @@ Observable that allows to add subscribtions to notifications for bulk insert ope
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
-#### Related articles
+## Related articles
 
 TODO

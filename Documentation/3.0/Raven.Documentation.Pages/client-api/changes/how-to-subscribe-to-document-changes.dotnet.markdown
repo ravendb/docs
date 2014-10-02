@@ -8,7 +8,7 @@ Following methods allow you to subscribe to document changes:
 - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
 - [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
 
-## ForDocument
+{PANEL:ForDocument}
 
 Single document changes can be observed using `ForDocument` method.
 
@@ -16,22 +16,21 @@ Single document changes can be observed using `ForDocument` method.
 
 {CODE document_changes_1@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docId** | string | Id of a document for which notifications will be processed. |
 
-docId
-:   Type: string   
-Id of a document for which notifications will be processed.
-
-**Return value**
-
-Type: IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)>   
-Observable that allows to add subscribtions to notifications for given document.
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document. |
 
 ### Example
 
 {CODE document_changes_2@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-## ForDocumentsInCollection
+{PANEL/}
+
+{PANEL:ForDocumentsInCollection}
 
 To observe all document changes in particular collection use `ForDocumentInCollection` method. This method filters documents by `Raven-Entity-Name` metadata property value.
 
@@ -39,16 +38,13 @@ To observe all document changes in particular collection use `ForDocumentInColle
 
 {CODE document_changes_3@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **collectionName** | string | Name of document collection for which notifications will be processed. |
 
-collectionName
-:   Type: string   
-Name of document collection for which notifications will be processed.
-
-**Return value**
-
-Type: IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)>   
-Observable that allows to add subscribtions to notifications for given document collection name.
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document collection name. |
 
 {INFO Overload with `TEntity` type uses `Conventions.GetTypeTagName` to get collection name. /}
 
@@ -60,7 +56,9 @@ or
 
 {CODE document_changes_5@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-## ForDocumentsOfType
+{PANEL/}
+
+{PANEL:ForDocumentsOfType}
 
 To observe all document changes for given type use `ForDocumentsOfType` method. This method filters documents by `Raven-Clr-Type` metadata property value.
 
@@ -68,16 +66,13 @@ To observe all document changes for given type use `ForDocumentsOfType` method. 
 
 {CODE document_changes_6@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **typeName** or **type** | string or Type | Name of type or type for which notifications will be processed. If default conventions are used then full type name without version information should be passed. See `Raven.Client.Document.ReflectionUtil.GetFullNameWithoutVersionInformation`. |
 
-typeName or type
-:   Type: string or Type   
-Name of type or type for which notifications will be processed. If default conventions are used then full type name without version information should be passed. See `Raven.Client.Document.ReflectionUtil.GetFullNameWithoutVersionInformation`.
-
-**Return value**
-
-Type: IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)>   
-Observable that allows to add subscribtions to notifications for given document type name.
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document type name. |
 
 {INFO Overloads with `TEntity` type or `Type` uses `Conventions.FindClrTypeName` to get type name. /}
 
@@ -89,7 +84,9 @@ or
 
 {CODE document_changes_8@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-## ForDocumentsStartingWith
+{PANEL/}
+
+{PANEL:ForDocumentsStartingWith}
 
 To observe all document changes for documents with Id that contains given prefix use `ForDocumentsStartingWith` method.
 
@@ -97,22 +94,21 @@ To observe all document changes for documents with Id that contains given prefix
 
 {CODE document_changes_9@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **docIdPrefix** | string | Document Id prefix for which notifications will be processed. |
 
-docIdPrefix
-:   Type: string   
-Document Id prefix for which notifications will be processed.
-
-**Return value**
-
-Type: IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)>   
-Observable that allows to add subscribtions to notifications for given document Id prefix.
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document Id prefix. |
 
 ## Example
 
 {CODE document_changes_1_0@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-## ForAllDocuments
+{PANEL/}
+
+{PANEL:ForAllDocuments}
 
 To observe all document changes use `ForAllDocuments` method.
 
@@ -120,20 +116,21 @@ To observe all document changes use `ForAllDocuments` method.
 
 {CODE document_changes_1_1@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
-**Return value**
-
-Type: IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)>   
-Observable that allows to add subscribtions to notifications for all documents.
+| Return Value | |
+| ------------- | ----- |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for all documents. |
 
 ## Example
 
 {CODE document_changes_1_2@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
+{PANEL/}
+
 ## Remarks
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
-#### Related articles
+## Related articles
 
 TODO
 
