@@ -6,19 +6,11 @@
 
 {CODE update_1@ClientApi\Commands\Attachments\HowTo\Update.cs /}
 
-**Parameters**   
-
-key
-:   Type: string   
- key under which attachment is stored
-
-etag
-:   Type: bool   
-current attachment etag, used for concurrency checks (`null` to skip check) 
-
-metadata
-:   Type: RavenJObject   
-attachment metadata
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key under which attachment is stored |
+| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
+| **metadata** | RavenJObject | attachment metadata |
 
 ## Example
 

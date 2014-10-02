@@ -6,41 +6,21 @@
 
 {CODE stream_1@ClientApi\Commands\Documents\Stream.cs /}
 
-**Parameters**   
-
-fromEtag
-:   Type: Etag   
-ETag of a document from which stream should start (mutually exclusive with 'startsWith')   
-
-startsWith
-:   Type: string   
-prefix for which documents should be streamed (mutually exclusive with 'fromEtag')   
-
-matches
-:   Type: string   
-pipe ('|') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters)
-
-start
-:   Type: int   
-number of documents that should be skipped   
-
-pageSize
-:   Type: int   
-maximum number of documents that will be retrieved
-
-exclude
-:   Type: string   
-pipe ('|') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters)       
-
-pagingInformation
-:   Type: RavenPagingInformation   
-used to perform rapid pagination on server side      
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fromEtag** | Etag | ETag of a document from which stream should start (mutually exclusive with 'startsWith') |
+| **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
+| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **start** | int | number of documents that should be skipped |
+| **pageSize** | int | maximum number of documents that will be retrieved |
+| **exclude** | int | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
 
 ## Example
 
 {CODE stream_2@ClientApi\Commands\Documents\Stream.cs /}
 
-#### Related articles
+## Related articles
 
 - [How to use **startsWith**, **matches** and **exclude**?](../../../client-api/commands/documents/get#startswith)  
 - [Get](../../../client-api/commands/documents/get)  

@@ -12,16 +12,13 @@ There are few methods that allow you to download attachment metadata from a data
 
 {CODE head_1_0@ClientApi\Commands\Attachments\HowTo\Head.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | key of the attachment you want to download metadata for |
 
-key
-:   Type: string   
-key of the attachment you want to download metadata for
-
-**Return Value**
-
-Type: [Attachment](../../../glossary/json/attachment)   
-Object that represents attachment.
+| Return Value | |
+| ------------- | ----- |
+| [Attachment](../../../glossary/json/attachment) | Object that represents attachment. |
 
 ### Example
 
@@ -35,24 +32,15 @@ Object that represents attachment.
 
 {CODE head_2_0@ClientApi\Commands\Attachments\HowTo\Head.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **idPrefix** | string | prefix for which attachments should be returned |
+| **start** | int | number of attachments that should be skipped |
+| **pageSize** | int | maximum number of attachments that will be returned |
 
-idPrefix
-:   Type: string   
-prefix for which attachments should be returned
-
-start
-:   Type: int   
-number of attachments that should be skipped
-
-pageSize
-:   Type: int   
-maximum number of attachments that will be returned
-
-**Return Value**
-
-Type: [AttachmentInformation](../../../glossary/json/attachment-information)   
-Object that represents attachment metadata information.
+| Return Value | |
+| ------------- | ----- |
+| [AttachmentInformation](../../../glossary/json/attachment-information) | Object that represents attachment metadata information. |
 
 ### Example
 

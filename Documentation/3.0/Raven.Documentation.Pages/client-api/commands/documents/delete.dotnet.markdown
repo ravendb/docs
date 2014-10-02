@@ -6,21 +6,16 @@
 
 {CODE delete_1@ClientApi\Commands\Documents\Delete.cs /}
 
-**Parameters**   
-
-key
-:   Type: string   
-Key of a document to delete
-
-etag
-:   Type: Etag   
-current document etag, used for concurrency checks (`null` to skip check)   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **key** | string | Key of a document to delete |
+| **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
 
 ## Example
 
 {CODE delete_2@ClientApi\Commands\Documents\Delete.cs /}
 
-#### Related articles
+## Related articles
 
 - [Get](../../../client-api/commands/documents/get)  
 - [Put](../../../client-api/commands/documents/put)  
