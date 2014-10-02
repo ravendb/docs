@@ -6,16 +6,13 @@
 
 {CODE full_url_1@ClientApi\Commands\HowTo\FullUrl.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentKey** | string | Key of a document for which full url will be returned |
 
-documentKey
-:   Type: string   
-Key of a document for which full url will be returned
-
-**Return Value**
-
-Type: string   
-Full url for a given document key
+| Return Value | |
+| ------------- | ----- |
+| string | Full url for a given document key |
 
 ## Example I
 

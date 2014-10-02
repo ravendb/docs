@@ -2,7 +2,7 @@
 
 There are two types of statistics available. First type of statistics returns server-wide information, the second one returns statistics for particular database.
 
-## Database statistics
+{PANEL:Database statistics}
 
 Database statistics can be downloaded using `GetStatistics` method in commands.
 
@@ -10,16 +10,17 @@ Database statistics can be downloaded using `GetStatistics` method in commands.
 
 {CODE database_statistics_1@ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs /}
 
-**Return Value**
-
-Type: [DatabaseStatistics](../../../glossary/client-api/database-statistics)   
-Current statistics for a database that commands work on
+| Return Value | |
+| ------------- | ----- |
+| [DatabaseStatistics](../../../glossary/client-api/database-statistics) | Current statistics for a database that commands work on |
 
 ### Example
 
 {CODE database_statistics_2@ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs /}
 
-## Server statistics
+{PANEL/}
+
+{PANEL:Server statistics}
 
 Server statistics can be downloaded using `GetStatistics` method in `GlobalAdmin` commands.
 
@@ -27,15 +28,16 @@ Server statistics can be downloaded using `GetStatistics` method in `GlobalAdmin
 
 {CODE server_statistics_1@ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs /}
 
-**Return Value**
-
-Type: [AdminStatistics](../../../glossary/client-api/admin-statistics)      
-Current statistics for a server
+| Return Value | |
+| ------------- | ----- |
+| [AdminStatistics](../../../glossary/client-api/admin-statistics) | Current statistics for a server |
 
 ### Example
 
 {CODE server_statistics_2@ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs /}
 
-#### Related articles
+{PANEL/}
+
+## Related articles
 
 - [How to **switch** commands to different **database**?](../../../client-api/commands/how-to/switch-commands-to-a-different-database)   

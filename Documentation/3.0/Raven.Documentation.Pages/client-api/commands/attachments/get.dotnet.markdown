@@ -4,7 +4,7 @@ There are few methods that allow you to download attachments from a database:
 - [GetAttachment](../../../client-api/commands/attachments/get#getattachment)   
 - [GetAttachments](../../../client-api/commands/attachments/get#getattachments)   
 
-## GetAttachment
+{PANEL:**GetAttachment**}
 
 **GetAttachment** can be used to download a single attachment.
 
@@ -24,7 +24,8 @@ There are few methods that allow you to download attachments from a database:
 
 {CODE get_1_1@ClientApi\Commands\Attachments\Get.cs /}
 
-## GetAttachments
+{PANEL/}
+{PANEL:GetAttachments}
 
 **GetAttachment** can be used to download attachment information for multiple attachments.
 
@@ -45,6 +46,8 @@ There are few methods that allow you to download attachments from a database:
 ### Example
 
 {CODE get_2_1@ClientApi\Commands\Attachments\Get.cs /}
+
+{PANEL/}
 
 ## Related articles
 

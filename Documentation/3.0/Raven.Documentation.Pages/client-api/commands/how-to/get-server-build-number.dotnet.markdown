@@ -2,29 +2,23 @@
 
 To check with what version of server commands are working use `GetBuildNumber` command from `GlobalAdmin`.
 
-##Syntax
+## Syntax
 
 {CODE build_number_1@ClientApi\Commands\HowTo\BuildNumber.cs /}
 
-**Return Value**
-
-Type: [BuildNumber]()   
-Information about current product (server) version and build number.
+<hr />
 
 {CODE buildnumber@Common.cs /}
 
-ProductVersion
-:   Type: string   
-String representing current product version e.g. `"3.0.0 / 6dce79a"`
+| Return Value | BuildNumber | Information about current product (server) version and build number. |
+| ------------- | ------------- | ----- |
+| **ProductVersion** | string | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
+| **BuildVersion** | string | String indicating current build version e.g. `"3260"` |
 
-BuildVersion
-:   Type: string   
-String indicating current build version e.g. `"3260"`
-
-##Example
+## Example
 
 {CODE build_number_2@ClientApi\Commands\HowTo\BuildNumber.cs /}
 
-##Remarks
+## Remarks
 
 `BuildVersion` for custom builds is `"13"`

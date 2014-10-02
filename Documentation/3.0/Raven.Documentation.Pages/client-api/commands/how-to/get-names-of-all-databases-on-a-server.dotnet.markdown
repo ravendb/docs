@@ -2,29 +2,23 @@
 
 To download all available database names from a server, use `GetDatabaseNames` command from `GlobalAdmin`.
 
-##Syntax
+## Syntax
 
 {CODE get_database_names_1@ClientApi\Commands\HowTo\GetDatabaseNames.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **pageSize** | int | Maximum number of records that will be downloaded |
+| **start** | int | Number of records that should be skipped. Default: `0` |
 
-pageSize
-:   Type: int   
-Maximum number of records that will be downloaded
+| Return Value | |
+| ------------- | ----- |
+| string[] | Names of all databases on a server |
 
-start
-:   Type: int   
-Number of records that should be skipped. Default: `0`
-
-**Return Value**
-
-Type: string[]   
-Names of all databases on a server
-
-##Example
+## Example
 
 {CODE get_database_names_2@ClientApi\Commands\HowTo\GetDatabaseNames.cs /}
 
-#### Related articles
+## Related articles
 
 - [How to **create** or **delete database**?](../../../client-api/commands/how-to/create-delete-database)   
