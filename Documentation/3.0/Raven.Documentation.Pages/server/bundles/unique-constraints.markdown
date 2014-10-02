@@ -70,6 +70,6 @@ To check document against the database use:
 
 {INFO Thanks to Felipe Leusin for contributing the code and Matt Warren for helping in setting up and testing. /}
 
-#### Related articles
+## Related articles
 
 TODO

@@ -37,6 +37,6 @@ So, as the end result of above:
 
 {NOTE It is your responsibility to backup the encryption key, because there is no way to recover data without it. /}
 
-#### Related articles
+## Related articles
 
 TODO

@@ -13,6 +13,6 @@ As you can see, all we need to do is set the `Raven-Expiration-Date` property on
 
 {WARNING When master-master [replication](../../scaling-out/replication) is set between servers then the Expiration bundle should be turned on **ONLY** on **one** server, otherwise conflicts will occur. /}
 
-#### Related articles
+## Related articles
 
 TODO
