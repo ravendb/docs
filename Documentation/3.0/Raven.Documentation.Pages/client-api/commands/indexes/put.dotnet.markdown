@@ -36,9 +36,7 @@ To help users create their indexes, `IndexDefinitionBuilder` was created that en
 
 ### Syntax
 
-{CODE put_2_0@ClientApi\Commands\Indexes\Put.cs /}
-
-**Parameters**   
+{CODE put_2_0@ClientApi\Commands\Indexes\Put.cs /}  
 
 | Parameters | | |
 | ------------- | ------------- | ----- |

@@ -11,16 +11,13 @@ which is an implementation of a common `IDatabaseChanges` interface.
 
 {CODE changes_1@ClientApi\Changes\WhatIsChangesApi.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **database** | string | Name of database to open changes API for. If `null`, default database configured in DocumentStore will be used. |
 
-database
-:   Type: string   
-Name of database to open changes API for. If `null`, default database configured in DocumentStore will be used.
-
-**Return value**
-
-Type: IDocumentChanges   
-Instance implementing IDocumentChanges interface appropriate to store type.
+| Return value | |
+| ------------- | ----- |
+| IDocumentChanges | Instance implementing IDocumentChanges interface appropriate to store type. |
 
 ## Connection properties
 
@@ -62,6 +59,6 @@ In order to end subscribtion (stop listening for particular notifications) you m
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
-#### Related articles
+## Related articles
 
 TODO

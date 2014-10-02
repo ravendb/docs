@@ -6,10 +6,9 @@ Replication conflicts, for both documents and attachments, can be tracked by usi
 
 {CODE replication_conflicts_changes_1@ClientApi\Changes\HowToSubscribeToReplicationConflictsChanges.cs /}
 
-**Return value**
-
-Type: IObservableWithTask<[ReplicationConflictNotification](../../glossary/client-api/changes/replication-conflict-notification)>   
-Observable that allows to add subscribtions to notifications for all replicaton conflicts.
+| Return value | |
+| ------------- | ----- |
+| IObservableWithTask<[ReplicationConflictNotification](../../glossary/client-api/changes/replication-conflict-notification)> | Observable that allows to add subscribtions to notifications for all replicaton conflicts. |
 
 ## Example
 
@@ -23,6 +22,6 @@ In RavenDB client you have an opportunity to register [conflict listeners](../..
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
-#### Related articles
+## Related articles
 
 TODO
