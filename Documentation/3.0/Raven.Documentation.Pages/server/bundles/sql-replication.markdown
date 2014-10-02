@@ -40,14 +40,14 @@ First we need to setup our MSSQL by creating a database with two tables. In our 
 CREATE TABLE [dbo].[OrderLines]
 (
 	[Id] int identity primary key,
-	[OrderId] [nvarchar](50) NOT NULL,
+	[OrderId] [nvarchar] (50) NOT NULL,
 	[Qty] [int] NOT NULL,
-	[Product] [nvarchar](255) NOT NULL,
+	[Product] [nvarchar] (255) NOT NULL,
 	[Cost] [int] NOT NULL
 )
 CREATE TABLE [dbo].[Orders]
 (
-	[Id] [nvarchar](50) NOT NULL,
+	[Id] [nvarchar] (50) NOT NULL,
 	[OrderLinesCount] [int] NOT NULL,
 	[TotalCost] [int] NOT NULL
 )
@@ -59,6 +59,18 @@ Last step is to insert a document with our configuration. This can be done using
 
 {CODE sql_replication_3@Server\Bundles\SqlReplication.cs /}
 
-#### Related articles
+### Using Studio
+
+In Studio the configuration page is found under **Settings -> SQL Replication**.
+
+![Figure 1: How to setup SQL Replication using Studio?](images\sql_replication_studio.png)
+
+## Remarks
+
+{INFO:Information}
+The script will be called once for each document in the source document collection, with `this` representing the document, and the document id available as `documentId`. Call `replicateTo<TableName>()` (e.g. `replicateToOrders`) for each row you want to write to the database.
+{INFO/}
+
+## Related articles
 
 TODO
