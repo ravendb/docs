@@ -75,6 +75,6 @@ Execute the following steps on every cluster node:
  3. Failover succeeded  
 ![Figure 5.3: FCM Configuration](images\05FailureSimulation_FailoverSuccess_2012.jpg)
 
-#### Related articles
+## Related articles
 
 TODO

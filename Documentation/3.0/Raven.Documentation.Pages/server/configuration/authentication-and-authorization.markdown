@@ -122,6 +122,6 @@ The returned results vary on the current authentication type:
 }
 {CODE-BLOCK/}
 
-#### Related articles
+## Related articles
 
 TODO

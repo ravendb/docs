@@ -77,7 +77,7 @@ More details about conflicts are here: [dealing with replication conflicts](../.
 
 {WARNING If master-master replication is set up and [Expiration bundle](../../extending/bundles/expiration) is used on more than one server then the conflicts will occur. To solve this, use expiration bundle only on one server /}
 
-#### Related articles
+## Related articles
 
 TODO
 

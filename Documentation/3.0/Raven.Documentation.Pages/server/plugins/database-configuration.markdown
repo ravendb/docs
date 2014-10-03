@@ -8,6 +8,6 @@ To alter database configuration you can edit the configuration document (more ab
 
 {CODE plugins_5_1@Server\Plugins.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

@@ -7,6 +7,6 @@ Checks can be turned on by setting `UseOptimisticConcurrency` property from `Adv
 
 {CODE optimistic_concurrency_1@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

@@ -40,6 +40,6 @@ You don't have to do anything when you upgrade RavenDB to migrate the stored dat
 
 {NOTE If you have secondary node running **constantly** (hot backup), you do **need a license**. /}
 
-#### Related articles
+## Related articles
 
 TODO

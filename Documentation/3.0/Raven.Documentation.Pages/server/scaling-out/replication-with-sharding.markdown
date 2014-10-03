@@ -24,6 +24,6 @@ Another option is to use sharding primarily as a mean of reducing load on the se
 
 Even during normal operation, it puts each node under higher stress, since it needs to handle both normal operation and replicated operations.
 
-#### Related articles
+## Related articles
 
 TODO

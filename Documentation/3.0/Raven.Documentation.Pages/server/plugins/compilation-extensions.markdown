@@ -18,6 +18,6 @@ Now we can use our `Palindrome` in our index definition.
 
 {CODE plugins_6_3@Server\Plugins.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

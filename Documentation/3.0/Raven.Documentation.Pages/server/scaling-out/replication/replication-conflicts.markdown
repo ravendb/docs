@@ -37,6 +37,6 @@ If this code detects conflict, it will give the user the choice of which of the 
 
 {NOTE Document Conflict listeners can be used to perform an automatical conflict resolution. More about them can be found [here](../../../client-api/advanced/client-side-listeners#document-conflict-listener). /}
 
-#### Related articles
+## Related articles
 
 TODO

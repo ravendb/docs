@@ -20,6 +20,6 @@ You can set the following configuration options in the Raven.Server.exe.config f
 
 Running in this configuration is useful when you just want to try things out, for production permanent deployment, it is recommended to use the Service or IIS modes.
 
-#### Related articles
+## Related articles
 
 TODO

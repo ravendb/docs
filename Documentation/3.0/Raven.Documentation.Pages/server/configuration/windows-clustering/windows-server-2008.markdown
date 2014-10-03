@@ -81,6 +81,6 @@ Execute the following steps on every cluster node:
  3. Failover succeeded  
 ![Figure 5.3: FMC Configuration](images\05FailureSimulation_FailoverSuccess.jpg)
 
-#### Related articles
+## Related articles
 
 TODO

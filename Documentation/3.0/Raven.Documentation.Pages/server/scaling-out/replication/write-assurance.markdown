@@ -22,6 +22,6 @@ Then the default parameters that will be used:
 * *database* - default database of the document store,
 * *replicas* - 2 destination servers.
 
-#### Related articles
+## Related articles
 
 TODO

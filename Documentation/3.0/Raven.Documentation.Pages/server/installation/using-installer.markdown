@@ -92,6 +92,6 @@ The list of RavenDB specific properties:
 * <em>SERVICE_NAME</em> - default: RavenDB
 * <em>SERVICE_PORT</em> - default: 8080
 
-#### Relates articles
+## Relates articles
 
 TODO

@@ -88,7 +88,7 @@ From the HTTP API perspective, it can be accomplished by calling the following a
 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk
 {CODE-BLOCK/}
 
-#### Related articles
+## Related articles
 
 TODO
 

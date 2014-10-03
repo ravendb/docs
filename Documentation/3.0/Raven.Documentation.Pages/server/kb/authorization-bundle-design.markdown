@@ -114,6 +114,6 @@ I think that it should be pretty obvious by now how the Authorization Bundle mak
 
 That is pretty much as detailed as I want things to be at this stage. Thoughts?
 
-#### Related articles
+## Related articles
 
 TODO

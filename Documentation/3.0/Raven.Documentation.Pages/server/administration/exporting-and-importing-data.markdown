@@ -193,6 +193,6 @@ Smuggler communicates with server using the HTTP protocol, which means that it c
 
 {INFO During **import** Smuggler is using [bulk insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation). /}
 
-#### Related articles
+## Related articles
 
 TODO

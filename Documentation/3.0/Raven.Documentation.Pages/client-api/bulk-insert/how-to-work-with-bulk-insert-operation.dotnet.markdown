@@ -29,6 +29,6 @@ There are several limitations to the API:
 
 {CODE bulk_inserts_4@ClientApi\BulkInsert\BulkInserts.cs /}
 
-#### Related articles
+## Related articles
 
 TODO
