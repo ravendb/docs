@@ -10,7 +10,7 @@ When it comes to index creation, the only difference between simple indexes and 
 
 ## Applications
 
-The applications of such indexes are many, but most common is calculation.
+The applications of such indexes are many, but most common is aggregation of data from multiple documents.
 
 ### Example I - counting
 
