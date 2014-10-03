@@ -16,16 +16,13 @@ Second method is a equivalent of doing
 
 {CODE open_session_3@ClientApi\Session\OpeningSession.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **options** | [OpenSessionOptions]() | Options **containing** information such as **name of database** on which session will work and **credentials** that will be used. |
 
-options
-:   Type: [OpenSessionOptions]()   
-Options **containing** information such as **name of database** on which session will work and **credentials** that will be used.
-
-**Return Value**
-
-Type: [IDocumentSession]()   
-Instance of a session object that implements `IDocumentSession` interface.
+| Return Value | |
+| ------------- | ----- |
+| [IDocumentSession]() | Instance of a session object that implements `IDocumentSession` interface. |
 
 ## Example I
 
@@ -39,6 +36,6 @@ Instance of a session object that implements `IDocumentSession` interface.
 
 Always remember to release session allocated resources after usage by invoking `Dispose` method or wrapping session object in `using` statement.
 
-#### Related articles
+## Related articles
 
 TODO

@@ -6,23 +6,15 @@ Query results can be streamed using `Stream` method from `Advanced` session oper
 
 {CODE stream_1@ClientApi\Session\Querying\HowToStream.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query) or [IDocumentQuery](../../../client-api/session/querying/how-to-use-lucene-in-queries) | Query to stream results for. |
+| **queryHeaderInformation** | [QueryHeaderInformation](../../../glossary/client-api/query-header-information) | Information about performed query. |
 
-query
-:   Type: [IQueryable](../../../client-api/session/querying/how-to-query) or [IDocumentQuery](../../../client-api/session/querying/how-to-use-lucene-in-queries)   
-Query to stream results for.
-
-queryHeaderInformation
-:   Type: [QueryHeaderInformation](../../../glossary/client-api/query-header-information)   
-Information about performed query.
-
-**Return value**
-
-Type: IEnumerator<[StreamResult]()>   
-Enumerator with entities.
-
-Type: [QueryHeaderInformation](../../../glossary/client-api/query-header-information)   
-Information about performed query.
+| Return Value | |
+| ------------- | ----- |
+| IEnumerator<[StreamResult]()> | Enumerator with entities. |
+| [QueryHeaderInformation](../../../glossary/client-api/query-header-information) | Information about performed query. |
 
 ## Example I
 
@@ -32,6 +24,6 @@ Information about performed query.
 
 {CODE stream_3@ClientApi\Session\Querying\HowToStream.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

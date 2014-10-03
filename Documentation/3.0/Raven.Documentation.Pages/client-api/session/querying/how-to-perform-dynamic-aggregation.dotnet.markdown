@@ -6,20 +6,14 @@ Dynamic aggregation can be performed using `AggregateBy` method. Internally such
 
 {CODE aggregate_1@ClientApi\Session\Querying\HowToPerformDynamicAggregation.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **path** | string or Expression<Func&lt;TResult&gt;> | Path (or expression from which path will be extracted) to field on which aggregation will be performed. |
+| **displayName** | string | User defined friendly name for aggregation. If `null`, field name will be used. |
 
-path
-:   Type: string or Expression<Func&lt;TResult&gt;>       
-Path (or expression from which path will be extracted) to field on which aggregation will be performed.
-
-displayName
-:   Type: string   
-User defined friendly name for aggregation. If `null`, field name will be used.
-
-**Return value**
-
-Type: [DynamicAggregationQuery](../../../glossary/client-api/querying/dynamic-aggregation-query)&lt;TResult&gt;   
-Query containing aggregation methods.
+| Return Value | |
+| ------------- | ----- |
+| [DynamicAggregationQuery](../../../glossary/client-api/querying/dynamic-aggregation-query)&lt;TResult&gt; | Query containing aggregation methods. |
 
 ## Example I - summing
 
@@ -45,6 +39,6 @@ Query containing aggregation methods.
 
 {CODE aggregate_7@ClientApi\Session\Querying\HowToPerformDynamicAggregation.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

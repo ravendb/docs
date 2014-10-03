@@ -6,20 +6,14 @@ Lucene can be used directly by using `DocumentQuery` method from advanced sessio
 
 {CODE document_query_1@ClientApi\Session\Querying\Lucene\HowToUseLucene.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index to perform query on |
+| **isMapReduce** | bool | Indicates if queried index is a map/reduce index (modifies how we treat identifier properties). |
 
-indexName
-:   Type: string   
-Name of an index to perform query on
-
-isMapReduce
-:   Type: bool   
-Indicates if queried index is a map/reduce index (modifies how we treat identifier properties).
-
-**Return Value**
-
-Type: IDocumentQuery   
-Instance implementing IDocumentQuery interface containing additional query methods and extensions.
+| Return Value | |
+| ------------- | ----- |
+| **IDocumentQuery** | Instance implementing IDocumentQuery interface containing additional query methods and extensions. |
 
 ## Example I - Basic
 
@@ -106,6 +100,6 @@ Available custom methods and extensions:
 
 By default, if `page size` is not specified, the value will be set to `128`. This is part of **Safe-by-Default** approach.
 
-#### Related articles
+## Related articles
 
 TODO

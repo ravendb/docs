@@ -10,6 +10,6 @@ Pending session operations e.g. `Store`, `Delete` and many others will not be se
 
 {CODE saving_changes_2@ClientApi\Session\SavingChanges.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

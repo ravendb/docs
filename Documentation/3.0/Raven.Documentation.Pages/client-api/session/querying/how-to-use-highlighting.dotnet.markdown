@@ -6,41 +6,23 @@
 
 {CODE highlight_1@ClientApi\Session\Querying\HowToUseHighlighting.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **fieldName** | string | Name of a field to highlight. |
+| **fragmentLength** | int | Maximum length of text fragments that will be returned. |
+| **fragmentCount** | int | Maximum number of fragments that will be returned. |
+| **fragmentsField** | string | Field in returned results containing highlight fragments (mutually exclusive with 'highlightings'). |
+| **highlightings** | [FieldHighlightings](../../../glossary/client-api/querying/field-highlightings) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
 
-fieldName
-:   Type: string   
-Name of a field to highlight.
-
-fragmentLength
-:   Type: int   
-Maximum length of text fragments that will be returned.
-
-fragmentCount
-:   Type: int   
-Maximum number of fragments that will be returned.
-
-fragmentsField
-:   Type: string   
-Field in returned results containing highlight fragments (mutually exclusive with 'highlightings').
-
-highlightings
-:   Type: [FieldHighlightings](../../../glossary/client-api/querying/field-highlightings)     
-Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField').
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
-
-highlightings
-:   Type: [FieldHighlightings](../../../glossary/client-api/querying/field-highlightings)   
-Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField').
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+| [FieldHighlightings](../../../glossary/client-api/querying/field-highlightings) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
 
 ## Example
 
 {CODE highlight_2@ClientApi\Session\Querying\HowToUseHighlighting.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

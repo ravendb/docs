@@ -20,24 +20,16 @@ Fourth overload stores entity in session with given id and forces concurrency ch
 
 {CODE store_entities_4@ClientApi\Session\StoringEntities.cs /}
 
-**Parameters**
-
-entity
-:   Type: object   
-Entity that will be stored
-
-etag
-:   Type: Etag   
-Current entity etag, used for concurrency checks (`null` to skip check)   
-
-id
-:   Type: string   
-Entity will be stored under this key, (`null` to generate automatically)  
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Entity that will be stored |
+| **etag** | Etag | Current entity etag, used for concurrency checks (`null` to skip check) |
+| **id** | string | Entity will be stored under this key, (`null` to generate automatically) |
 
 ## Example
 
 {CODE store_entities_5@ClientApi\Session\StoringEntities.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

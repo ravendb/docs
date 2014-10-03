@@ -6,15 +6,14 @@ To return only documents that match **all** provided sub-queries we have introdu
 
 {CODE intersect_1@ClientApi\Session\Querying\HowToUseIntersect.cs /}
 
-**Return Value**
-
-Type: IRavenQueryable   
-Instance implementing IRavenQueryable interface containing additional query methods and extensions.
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
 
 ## Example
 
 {CODE intersect_2@ClientApi\Session\Querying\HowToUseIntersect.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

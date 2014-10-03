@@ -6,16 +6,13 @@ Query statistics can provide important information about query e.g. duration, to
 
 {CODE stats_1@ClientApi\Session\Querying\HowToGetQueryStatistics.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **stats** | [RavenQueryStatistics](../../../glossary/client-api/raven-query-statistics) | Statistics for query. |
 
-stats
-:   Type: [RavenQueryStatistics](../../../glossary/client-api/raven-query-statistics)      
-Statistics for query.
-
-**Return Value**
-
-Type: [RavenQueryStatistics](../../../glossary/client-api/raven-query-statistics)   
-Statistics for query.
+| Return Value | |
+| ------------- | ----- |
+| [RavenQueryStatistics](../../../glossary/client-api/raven-query-statistics) | Statistics for query. |
 
 ## Example
 
