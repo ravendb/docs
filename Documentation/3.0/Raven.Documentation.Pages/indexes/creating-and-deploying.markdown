@@ -18,11 +18,9 @@ There are a couple of ways to create `static index` and send it to server, we ca
 
 ### using AbstractIndexCreationTask
 
-If you are interested in having a **strongly-typed syntax** during index creation, have an **ability to deploy indexes using assembly scanner** or **do not hard-code index names in every query**, then `AbstractIndexCreationTask` should be your choice. 
+If you are interested in having a **strongly-typed syntax** during index creation, have an **ability to deploy indexes using assembly scanner** or **avoid hard-coding index names in every query**, then `AbstractIndexCreationTask` should be your choice. 
 
-Drawback of this choice is that index names are auto-generated from type name and cannot be changed, but certain naming conventions can be followed to shape up index name (more about it later).
-
-{NOTE We recommend creating and using indexes in this form due to its simplicity, many benefits and minor amount of disadvantages. /}
+{NOTE We recommend creating and using indexes in this form due to its simplicity, many benefits and few disadvantages. /}
 
 #### Naming conventions
 
@@ -76,9 +74,7 @@ The benefit of this approach is that you can choose the name as you feel fit and
 
 #### Remarks
 
-{SAFE If index exists on server and stored definition is the same as the one that was send, then it will not be overwritten, which implies that indexed data will not be deleted and indexation will not start from scratch. /}
-
-{INFO Commands approach is not recommended and should be used only if needed. /}
+{INFO Commands or `IndexDefinitionBuilder` approaches are not recommended and should be used only if you can't do that by inheriting from `AbstractIndexCreationTask`. /}
 
 {PANEL/}
 
@@ -103,6 +99,8 @@ By default, `Raven/CreateAutoIndexesForAdHocQueriesIfNeeded` configuration optio
 ### Auto indexes and indexing prioritization
 
 To reduce the server load, if auto-indexes are not queried for a certain amount of time defined in `Raven/TimeToWaitBeforeMarkingAutoIndexAsIdle` setting (1 hour by default), then they will be marked as `Idle`. You can read more about implications of marking index as `Idle` [here](../server/administration/index-administration#index-prioritization).
+
+If this is disabled, you'll have to manually ensure that all queries have covering indexes. This is _not_ a recommended configuration.
 
 {PANEL/}
 
