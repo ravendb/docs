@@ -2,7 +2,7 @@
 
 Single entity can be checked for changes using [HasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both `HasChanges` property and `WhatChanged` method are available in `Advanced` session operations.
 
-## HasChanges
+{PANEL:HasChanges}
 
 Property indicates if session contains any changes. That is if there are any new, changed or deleted entities.
 
@@ -14,7 +14,9 @@ Property indicates if session contains any changes. That is if there are any new
 
 {CODE what_changed_2@ClientApi\Session\HowTo\WhatChanged.cs /}
 
-## WhatChanged
+{PANEL/}
+
+{PANEL:WhatChanged}
 
 Method returns all changes for each entity stored within session. Including name of the field/property that changed, its old and new value and change type. 
 
@@ -22,10 +24,9 @@ Method returns all changes for each entity stored within session. Including name
 
 {CODE what_changed_3@ClientApi\Session\HowTo\WhatChanged.cs /}
 
-**Return Value**
-
-Type: IDictionary<string, [DocumentsChanges]()[]>   
-Dictionary containing list of changes per document key.
+| ReturnValue | |
+| ------------- | ----- |
+| IDictionary<string, [DocumentsChanges]()[]> | Dictionary containing list of changes per document key. |
 
 ### Example I
 
@@ -35,6 +36,8 @@ Dictionary containing list of changes per document key.
 
 {CODE what_changed_5@ClientApi\Session\HowTo\WhatChanged.cs /}
 
-#### Related articles
+{PANEL/}
+
+## Related articles
 
 TODO

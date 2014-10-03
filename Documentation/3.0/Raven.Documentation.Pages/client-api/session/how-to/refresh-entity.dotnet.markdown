@@ -6,11 +6,9 @@ To update entity with latest changes from server `Refresh` method from `Advanced
 
 {CODE refresh_1@ClientApi\Session\HowTo\Refresh.cs /}
 
-**Parameters**
-
-entity
-:   Type: T   
-Instance of an entity that will be refreshed
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | T | Instance of an entity that will be refreshed |
 
 ## Example
 
@@ -20,6 +18,6 @@ Instance of an entity that will be refreshed
 
 Refreshing transient entity (not attached) or entity that was deleted on server-side will result in `InvalidOperationException`.
 
-#### Related articles
+## Related articles
 
 TODO

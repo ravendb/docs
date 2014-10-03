@@ -11,16 +11,14 @@ Implications of setting entity as read-only are as follows:
 
 {CODE mark_as_readonly_1@ClientApi\Session\HowTo\MarkAsReadonly.cs /}
 
-**Parameters**
-
-entity
-:   Type: object   
-Instance of an entity that will be marked as read-only.
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of an entity that will be marked as read-only. |
 
 ## Example
 
 {CODE mark_as_readonly_2@ClientApi\Session\HowTo\MarkAsReadonly.cs /}
 
-#### Related articles
+## Related articles
 
 TODO
