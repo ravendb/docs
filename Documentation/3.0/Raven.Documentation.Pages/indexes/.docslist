@@ -10,6 +10,7 @@ indexing-related-documents.markdown	Indexing related documents
 indexing-hierarchical-data.markdown	Indexing hierarchical data
 indexing-polymorphic-data.markdown	Indexing polymorphic data
 indexing-spatial-data.markdown	Indexing spatial data
+converting-to-json-and-accessing-metadata.markdown	[TODO] Converting to JSON and accessing Metadata
 boosting.markdown	Boosting
 using-analyzers.markdown	Analyzers
 storing-data-in-index.markdown	Storing data in index
