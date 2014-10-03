@@ -124,6 +124,6 @@ This index works on the [following index](http://ayende.com/blog/4530/raven-even
 
 This is nice if we want to keep a record of all the changes to the index. Note that we also change the document to store the snapshot key for this particular version.   
 
-#### Related articles
+## Related articles
 
 TODO 

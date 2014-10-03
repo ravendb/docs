@@ -26,6 +26,6 @@ Raven.Server.exe /uninstallSSL=PathToCertificate==CertificatePassword
 
 {NOTE The Studio might not work in some browsers (e.g. Firefox and Chrome) if the domain that certificate was issued for does not match the domain you are using it for. /}   
 
-#### Related articles
+## Related articles
 
 TODO

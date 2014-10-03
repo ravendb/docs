@@ -13,6 +13,6 @@ Rename the license file to License.xml and put it in the bin folder where RavenD
 
 {NOTE Each instance of RavenDB outside of the development machines must be registered with a license. /}
 
-#### Related articles
+## Related articles
 
 TODO

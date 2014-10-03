@@ -11,6 +11,6 @@ By default, **logging is turned off**, but it can be easily enabled by creating 
 
 {INFO To make it even easier for you, we have included `NLog.Ignored.config` file in Server directory inside distribution package that just need to be renamed. /}
 
-#### Related articles
+## Related articles
 
 TODO

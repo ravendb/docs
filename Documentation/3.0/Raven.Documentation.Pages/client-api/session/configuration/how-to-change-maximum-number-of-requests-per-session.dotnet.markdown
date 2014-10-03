@@ -16,6 +16,6 @@ To change maximum number of requests for all sessions (on particular store) the 
 
 {CODE max_requests_2@ClientApi\Session\Configuration\MaxRequests.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

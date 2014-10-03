@@ -303,7 +303,7 @@ where
 * **DatabaseId** - unique Id for database
 * **SupportsDtc** - indicates if database (transactional storage) supports DTC transactions    
 
-#### Related articles
+## Related articles
 
 TODO
 

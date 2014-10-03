@@ -61,6 +61,6 @@ If you're using the `DefaultShardResolutionStrategy` than in this case it'll mak
 
 In summary, sharding is a great feature to have and with RavenDB you get this supported natively and easily.
 
-#### Related articles
+## Related articles
 
 TODO

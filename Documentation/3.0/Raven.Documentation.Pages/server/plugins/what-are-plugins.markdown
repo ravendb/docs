@@ -16,6 +16,6 @@ Under `Raven.Database.Plugins` namespace various interfaces and classes can be f
 * [**Analyzer Generators**](../../../server/extending/plugins/analyzer-generators) - entry point for creating custom analyzers
 * [**Database configuration**](../../../server/extending/plugins/database-configuration) - entry point for altering database configuration
 
-#### Related articles
+## Related articles
 
 TODO

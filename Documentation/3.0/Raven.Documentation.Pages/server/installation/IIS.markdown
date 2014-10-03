@@ -109,6 +109,6 @@ Our current implementation due to limitations in IIS does not cover WebSite rest
 
 Microsoft KB article about ASP.NET Partial Trust and application isolation - [http://support.microsoft.com/kb/2698981](http://support.microsoft.com/kb/2698981)
 
-#### Related articles
+## Related articles
 
 TODO

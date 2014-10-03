@@ -42,6 +42,6 @@ SAVE 'users/' -> will assign 'users/2'
 
 This approach is recommended for most scenarios, since it produces keys that are human readable. 
 
-#### Related articles
+## Related articles
 
 - [Working with document identifiers](../../client-api/document-identifiers/working-with-document-ids)

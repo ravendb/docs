@@ -12,6 +12,6 @@ where:
 
 {CODE plugins_7_1@Server\Plugins.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

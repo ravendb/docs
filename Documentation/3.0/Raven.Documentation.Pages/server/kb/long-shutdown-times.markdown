@@ -17,6 +17,6 @@ Notice that the number of databases that have to be processed using above algori
 
 {NOTE When long-running shutdown will take place, the appropriate information will be put into the log. /}
 
-#### Related articles
+## Related articles
 
 TODO

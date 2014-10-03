@@ -24,6 +24,6 @@ A destination RavenDB instance uses history of a replicated document to detect i
 
 In RavenDB there is a concept of tombstone that represent a deleted document. Every document delete operation entails to store a tombstone document. This mechanism is used by the replication and it works only if the replication bundle is active. The stored tombstone documents are used to reflect a delete document operation on a destination database. Although the tombstones are created in a different storage area than the documents they are sill included in database statistics, that's why the document count does not decrease after a delete if the replication is enabled.
 
-#### Related articles
+## Related articles
 
 TODO
