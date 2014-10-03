@@ -6,28 +6,16 @@ To execute facet query using session `Query` method use `ToFacets` extension. Th
 
 {CODE facet_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facets** | List<[Facet]()> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`). |
+| **start** | int | number of results that should be skipped. Default: `0`. |
+| **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
 
-facets
-:   Type: List<[Facet]()>   
-List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`).
-
-facetSetupDoc
-:   Type: string   
-Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`).
-
-start
-:   Type: int   
-number of results that should be skipped. Default: `0`. 
-
-pageSize
-:   Type: int   
-maximum number of results that will be retrieved. Default: `null`.
-
-**Return Value**
-
-Type: [FacetResults]()   
-Facet query results with query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters.
+| Return Value | |
+| ------------- | ----- |
+| [FacetResults]() | Facet query results with query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ## Example I
 
@@ -41,33 +29,21 @@ Facet query results with query `Duration` and list of `Results` - one entry for 
 
 {CODE facet_4@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **facets** | List<[Facet]()> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`). |
+| **start** | int | number of results that should be skipped. Default: `0`. |
+| **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
 
-facets
-:   Type: List<[Facet]()>   
-List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`).
-
-facetSetupDoc
-:   Type: string   
-Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`).
-
-start
-:   Type: int   
-number of results that should be skipped. Default: `0`. 
-
-pageSize
-:   Type: int   
-maximum number of results that will be retrieved. Default: `null`.
-
-**Return Value**
-
-Type: [FacetQuery]()   
-Instance of FacetQuery containing all options set in `Query`. Can be used with `MultiFacetedSearch` from `Advanced` session operations or with `Commands` directly.
+| Return Value | |
+| ------------- | ----- |
+| [FacetQuery]() | Instance of FacetQuery containing all options set in `Query`. Can be used with `MultiFacetedSearch` from `Advanced` session operations or with `Commands` directly. |
 
 ### Example
 
 {CODE facet_5@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

@@ -21,131 +21,139 @@ Following query customization options are available in `IDocumentQueryCustomizat
 - [WaitForNonStaleResultsAsOfNow](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasofnow)
 - [WithinRadiusOf](../../../client-api/session/querying/how-to-customize-query#withinradiusof)
 
-## BeforeQueryExecution
+{PANEL:BeforeQueryExecution}
 
 Allows you to modify the index query just before it is executed.
 
 {CODE customize_1_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**   
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Action<[IndexQuery]()> | Action that will modify IndexQuery. |
 
-action
-:   Type: Action<[IndexQuery]()>   
-Action that will modify IndexQuery.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## Highlight
+{PANEL/}
+
+{PANEL:Highlight}
 
 Please check our dedicated [article](../../../client-api/session/querying/how-to-use-highlighting).
 
-## Include
+{PANEL/}
+
+{PANEL:Include}
 
 Please check our dedicated [article]().
 
-## NoCaching
+{PANEL/}
+
+{PANEL:NoCaching}
 
 By default, queries are cached. To disable query caching use `NoCaching` customization.
 
 {CODE customize_2_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_2_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## NoTracking
+{PANEL/}
+
+{PANEL:NoTracking}
 
 To disable entity tracking by `Session` use `NoTracking`. Usage of this option will prevent holding query results in memory.
 
 {CODE customize_3_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_3_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## RandomOrdering
+{PANEL/}
+
+{PANEL:RandomOrdering}
 
 To order results randomly use `RandomOrdering` method.
 
 {CODE customize_4_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **seed** | string | Seed used for ordering. Useful when repeatable random queries are needed. |
 
-seed
-:   Type: string   
-Seed used for ordering. Useful when repeatable random queries are needed.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_4_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## RelatesToShape
+{PANEL/}
+
+{PANEL:RelatesToShape}
 
 Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index).
 
-## SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer
+{PANEL/}
+
+{PANEL:SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer}
 
 If set to true, multiple index entries will be send from the same document (assuming the index project them) to the result transformer function. Otherwise, those entries will be consolidate an the transformer will be called just once for each document in the result set.
 
 {CODE customize_5_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **val** | bool | Indicates if multiple index entries can be send from the same document to result transformer. |
 
-val
-:   Type: bool   
-Indicates if multiple index entries can be send from the same document to result transformer.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_5_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## SetHighlighterTags
+{PANEL/}
+
+{PANEL:SetHighlighterTags}
 
 Please check our dedicated [article](../../../client-api/session/querying/how-to-use-highlighting).
 
-## ShowTimings
+{PANEL/}
+
+{PANEL:ShowTimings}
 
 By default, detailed timings (duration of Lucene search, loading documents, transforming results) in queries are turned off, this is due to small overhead that calculation of such timings produces.
 
 {CODE customize_6_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_6_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## SortByDistance
+{PANEL/}
+
+{PANEL:SortByDistance}
 
 Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index).
 
@@ -153,28 +161,29 @@ Please check our dedicated [article](../../../client-api/session/querying/how-to
 
 Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index).
 
-## TransformResults
+{PANEL/}
+
+{PANEL:TransformResults}
 
 `TransformResults` is a **client-side** function that allows any transformations on query results.
 
 {CODE customize_7_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **resultsTransformer** | Func<IndexQuery, IEnumerable&lt;object&gt;, IEnumerable&lt;object&gt;> | Transformation function. |
 
-resultsTransformer
-:   Type: Func<IndexQuery, IEnumerable&lt;object&gt;, IEnumerable&lt;object&gt;>   
-Transformation function.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_7_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## WaitForNonStaleResults
+{PANEL/}
+
+{PANEL:WaitForNonStaleResults}
 
 {NOTE This methods should be used only for testing purposes and are considered **EXPERT ONLY** /}
 
@@ -182,47 +191,39 @@ Queries can be 'instructed' to wait for non-stale results for specified amount o
 
 {CODE customize_8_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. Default: 15 seconds. |
 
-waitTimeout
-:   Type: TimeSpan   
-Time to wait for index to return non-stale results. Default: 15 seconds.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_8_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## WaitForNonStaleResultsAsOf
+{PANEL/}
+
+{PANEL:WaitForNonStaleResultsAsOf}
 
 Queries can be 'instructed' to wait for non-stale results as of cutoff DateTime or Etag for specified amount of time using `WaitForNonStaleResultsAsOf` method.
 
 {CODE customize_9_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **cutOff** | DateTime | Minimum modified date of last indexed document. If last indexed document modified date is greater than this value the results are considered non-stale. |
+| **cutOffEtag** | Etag | Minimum Etag of last indexed document. If last indexed document etag is greater than this value the results are considered non-stale. |
+| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. Default: 15 seconds. |
 
-cutOff
-:   Type: DateTime   
-Minimum modified date of last indexed document. If last indexed document modified date is greater than this value the results are considered non-stale.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
-cutOffEtag
-:   Type: Etag   
-Minimum Etag of last indexed document. If last indexed document etag is greater than this value the results are considered non-stale.
+{PANEL/}
 
-waitTimeout
-:   Type: TimeSpan   
-Time to wait for index to return non-stale results. Default: 15 seconds.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
-
-## WaitForNonStaleResultsAsOfLastWrite
+{PANEL:WaitForNonStaleResultsAsOfLastWrite}
 
 Queries can be 'instructed' to wait for non-stale results as of last write made by any session belonging to the current DocumentStore using `WaitForNonStaleResultsAsOfLastWrite` method.
 
@@ -230,46 +231,46 @@ This method internally uses `WaitForNonStaleResultsAsOf` and passes last written
 
 {CODE customize_10_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. Default: 15 seconds. |
 
-waitTimeout
-:   Type: TimeSpan   
-Time to wait for index to return non-stale results. Default: 15 seconds.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_10_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## WaitForNonStaleResultsAsOfNow
+{PANEL/}
+
+{PANEL:WaitForNonStaleResultsAsOfNow}
 
 `WaitForNonStaleResultsAsOfNow` internally uses `WaitForNonStaleResultsAsOf` and passes `DateTime.Now` to `cutOff` parameter.
 
 {CODE customize_11_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. Default: 15 seconds. |
 
-waitTimeout
-:   Type: TimeSpan   
-Time to wait for index to return non-stale results. Default: 15 seconds.
-
-**Return Value**
-
-Type: IDocumentQueryCustomization   
-Returns self for easier method chaining.
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 ### Example
 
 {CODE customize_11_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
-## WithinRadiusOf
+{PANEL/}
+
+{PANEL:WithinRadiusOf}
 
 Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index).
 
-#### Related articles
+{PANEL/}
+
+## Related articles
 
 TODO

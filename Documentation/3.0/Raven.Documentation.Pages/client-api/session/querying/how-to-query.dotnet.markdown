@@ -6,20 +6,14 @@ Database can be queried using LINQ-enabled `Query` method with few custom extens
 
 {CODE query_1_0@ClientApi\Session\Querying\HowToQuery.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | Name of an index to perform query on |
+| **isMapReduce** | bool | Indicates if queried index is a map/reduce index (modifies how we treat identifier properties). |
 
-indexName
-:   Type: string   
-Name of an index to perform query on
-
-isMapReduce
-:   Type: bool   
-Indicates if queried index is a map/reduce index (modifies how we treat identifier properties).
-
-**Return Value**
-
-Type: IRavenQueryable   
-Instance implementing IRavenQueryable interface containing additional query methods and extensions.
+| Return Value | |
+| ------------- | ----- |
+| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
 
 ## Remarks
 
@@ -82,6 +76,6 @@ Available custom methods and extensions:
 - ToListAsync
 - [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries)
 
-#### Related articles
+## Related articles
 
 TODO

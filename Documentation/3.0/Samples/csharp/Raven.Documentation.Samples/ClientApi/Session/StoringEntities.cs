@@ -33,12 +33,12 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				{
 					#region store_entities_5
 					// generate Id automatically
-					// with new empty database and default conventions: 'employee/1'
+					// when database is new and empty database and conventions are not changed: 'employee/1'
 					session.Store(new Employee
-						              {
-							              FirstName = "John", 
-										  LastName = "Doe"
-						              });
+					{
+						FirstName = "John",
+						LastName = "Doe"
+					});
 
 					// send all pending operations to server, in this case only `Put` operation
 					session.SaveChanges();
