@@ -6,11 +6,9 @@ We can clear all session operations and stop tracking of all entities by using [
 
 {CODE evict_1@ClientApi\Session\HowTo\Evict.cs /}
 
-**Parameters**
-
-entity
-:   Type: T   
-Instance of an entity that will be evicted
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | T | Instance of an entity that will be evicted |
 
 ## Example I
 
@@ -20,6 +18,6 @@ Instance of an entity that will be evicted
 
 {CODE evict_3@ClientApi\Session\HowTo\Evict.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

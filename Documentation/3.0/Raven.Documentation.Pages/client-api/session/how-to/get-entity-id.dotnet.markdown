@@ -6,16 +6,13 @@ Entities does not have to contain Id property or field. In case of such an entit
 
 {CODE get_document_id_1@ClientApi\Session\HowTo\GetDocumentId.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of an entity for which Id will be returned |
 
-entity
-:   Type: object  
-Instance of an entity for which Id will be returned
-
-**Return Value**
-
-Type: string   
-Returns Id for specified entity. Method may return `null` if `entity` is **null, isn't tracked or Id will be generated on the server**.
+| Return Value | |
+| ------------- | ----- |
+| string | Returns Id for specified entity. Method may return `null` if `entity` is **null, isn't tracked or Id will be generated on the server**. |
 
 ## Example
 
@@ -23,6 +20,6 @@ Returns Id for specified entity. Method may return `null` if `entity` is **null,
 
 {CODE get_document_id_2@ClientApi\Session\HowTo\GetDocumentId.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

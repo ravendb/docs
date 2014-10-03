@@ -6,16 +6,13 @@
 
 {CODE get_entity_url_1@ClientApi\Session\HowTo\GetEntityUrl.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **entity** | object | Instance of an entity for which url will be returned. |
 
-entity
-:   Type: object   
-Instance of an entity for which url will be returned.
-
-**Return Value**
-
-Type: string   
-Full url for a given `entity`.
+| Return Value | |
+| ------------- | ----- |
+| string | Full url for a given `entity`. |
 
 ## Example
 
@@ -25,4 +22,6 @@ Full url for a given `entity`.
 
 If the entity is transient (not attached) this method will throw `InvalidOperationException`.
 
-#### Related articles
+## Related articles
+
+TODO

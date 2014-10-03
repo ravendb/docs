@@ -25,6 +25,6 @@ To execute all pending lazy operations use `ExecuteAllPendingLazyOperations` met
 
 {CODE lazy_2@ClientApi\Session\HowTo\Lazy.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

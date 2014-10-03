@@ -6,24 +6,15 @@
 
 {CODE more_like_this_1@ClientApi\Session\HowTo\MoreLikeThis.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **index** | string | Name of an index on which query will be executed. |
+| **documentId** | string | Id of a document for which similarities will be searched. |
+| **parameters** | [MoreLikeThisQuery]() | A more like this query definition that will be executed. |
 
-index
-:   Type: string   
-Nmae of an index on which query will be executed.
-
-documentId
-:   Type: string   
-Id of a document for which similarities will be searched.
-
-parameters
-:   Type: [MoreLikeThisQuery]()   
-A more like this query definition that will be executed.
-
-**Return Value**
-
-Type: TResult[]   
-Array of similar documents returned as entities.
+| Return Value | |
+| ------------- | ----- |
+| TResult[] | Array of similar documents returned as entities. |
 
 ## Example
 
@@ -35,4 +26,6 @@ Do not forget to add following **using** statement which contains necessary exte
 
 {CODE more_like_this_3@ClientApi\Session\HowTo\MoreLikeThis.cs /}
 
-#### Related articles
+## Related articles
+
+TODO

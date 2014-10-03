@@ -6,21 +6,18 @@ When document is downloaded from server it contains various metadata information
 
 {CODE get_etag_1@ClientApi\Session\HowTo\GetEtag.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which etag will be returned. |
 
-instance
-:   Type: T  
-Instance of an entity for which etag will be returned.
-
-**Return Value**
-
-Type: Etag   
-Returns current etag for an entity. If the `instance` is transient it will load document from server and attach entity and its metadata to session.
+| Return Value | |
+| ------------- | ----- |
+| ETag | Returns current etag for an entity. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
 
 ## Example
 
 {CODE get_etag_2@ClientApi\Session\HowTo\GetEtag.cs /}
 
-#### Related articles
+## Related articles
 
 TODO

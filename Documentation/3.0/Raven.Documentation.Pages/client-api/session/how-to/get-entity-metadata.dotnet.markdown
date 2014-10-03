@@ -6,21 +6,18 @@ When document is downloaded from server it contains various metadata information
 
 {CODE get_metadata_1@ClientApi\Session\HowTo\GetMetadata.cs /}
 
-**Parameters**
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **instance** | T | Instance of an entity for which metadata will be returned. |
 
-instance
-:   Type: T  
-Instance of an entity for which metadata will be returned.
-
-**Return Value**
-
-Type: [RavenJObject]()   
-Returns entity metadata. If the `instance` is transient it will load document from server and attach entity and its metadata to session.
+| Return Value | |
+| ------------- | ----- |
+| [RavenJObject]() | Returns entity metadata. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
 
 ## Example
 
 {CODE get_metadata_2@ClientApi\Session\HowTo\GetMetadata.cs /}
 
-#### Related articles
+## Related articles
 
 TODO
