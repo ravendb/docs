@@ -1,6 +1,6 @@
 ﻿# What are indexes?
 
-Indexes are server-side functions that define using which fields (and what values) document can be searched on and are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoid costly table scans operations, however implication of this choice is that results might be stale (you can read more about staleness implications and the ways to handle it [here]()).
+Indexes are server-side functions that define using which fields (and what values) document can be searched on and are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoid costly table scans operations, however implication of this choice is that results might be stale (you can read more about staleness implications and the ways to handle it [here](../indexes/stale-indexes)).
 
 The core of every index is its mapping function with LINQ-like syntax and the result of such a mapping is converted to [Lucene](http://lucene.apache.org/) index entry, which is persisted for future use to avoid reindexation each time when query is issued and to achieve fast response times.
 
