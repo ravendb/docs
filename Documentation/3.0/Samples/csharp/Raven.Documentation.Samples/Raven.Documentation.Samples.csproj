@@ -278,6 +278,7 @@
     <Compile Include="Indexes\IndexingRelatedDocuments.cs" />
     <Compile Include="Indexes\Map.cs" />
     <Compile Include="Indexes\MapReduceIndexes.cs" />
+    <Compile Include="Indexes\Metadata.cs" />
     <Compile Include="Indexes\Querying\Basics.cs" />
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
