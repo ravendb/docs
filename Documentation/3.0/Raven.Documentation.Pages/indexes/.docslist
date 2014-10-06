@@ -3,6 +3,7 @@ what-are-indexes.markdown	[TODO] What are indexes?
 creating-and-deploying.markdown	Creating and deploying indexes
 indexing-basics.markdown	Indexing basics
 map-indexes.markdown	Map indexes
+multi-map-indexes.markdown	Multi-Map indexes
 map-reduce-indexes.markdown	Map-Reduce indexes
 stale-indexes.markdown	Stale indexes
 customizing-results-order.markdown	Customizing results order
