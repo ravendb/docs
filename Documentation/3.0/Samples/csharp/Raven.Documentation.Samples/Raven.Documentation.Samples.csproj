@@ -279,6 +279,7 @@
     <Compile Include="Indexes\Map.cs" />
     <Compile Include="Indexes\MapReduceIndexes.cs" />
     <Compile Include="Indexes\Metadata.cs" />
+    <Compile Include="Indexes\MultiMap.cs" />
     <Compile Include="Indexes\Querying\Basics.cs" />
     <Compile Include="Indexes\Querying\DynamicAggregation.cs" />
     <Compile Include="Indexes\Querying\FacetedSearch.cs" />
@@ -296,6 +297,7 @@
     <Compile Include="Indexes\StaleIndexes.cs" />
     <Compile Include="Indexes\Storing.cs" />
     <Compile Include="Indexes\TermVectors.cs" />
+    <Compile Include="Indexes\WhatAreIndexes.cs" />
     <Compile Include="Northwind.cs" />
     <Compile Include="Server\Administration\ExportImport.cs" />
     <Compile Include="Server\Bundles\Authorization.cs" />
