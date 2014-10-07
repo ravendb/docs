@@ -165,8 +165,12 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 1 minute
 
 * **Raven/DisableInMemoryIndexing**   
-	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IdexDefinition](../../client-api/querying/static-indexes/defining-static-index).    
+	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IndexDefinition](../../client-api/querying/static-indexes/defining-static-index).    
 	_Default:_ false
+
+* **Raven/Indexing/FlushIndexToDiskSizeInMb**   
+    Number of megabytes after which indexes are flushed to a disk.   
+    _Default:_ 5
 
 ### Data settings:
 
@@ -464,6 +468,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/MaxNumberOfStoredCommitPoints** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MinIndexingTimeIntervalToStoreCommitPoint** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DisableInMemoryIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Indexing/FlushIndexToDiskSizeInMb** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
