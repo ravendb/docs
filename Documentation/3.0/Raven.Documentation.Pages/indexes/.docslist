@@ -11,6 +11,7 @@ indexing-related-documents.markdown	Indexing related documents
 indexing-hierarchical-data.markdown	Indexing hierarchical data
 indexing-polymorphic-data.markdown	Indexing polymorphic data
 indexing-spatial-data.markdown	Indexing spatial data
+indexing-linq-extensions.markdown	Indexing LINQ extensions
 converting-to-json-and-accessing-metadata.markdown	Converting to JSON and accessing Metadata
 boosting.markdown	Boosting
 using-analyzers.markdown	Analyzers

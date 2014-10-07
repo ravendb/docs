@@ -225,6 +225,7 @@
     <None Include="glossary\transformers\transformer-definition.markdown" />
     <None Include="indexes\.docslist" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
+    <None Include="indexes\indexing-linq-extensions.markdown" />
     <None Include="indexes\map-reduce-indexes.markdown" />
     <None Include="indexes\map-indexes.markdown" />
     <None Include="indexes\indexing-basics.markdown" />
@@ -347,6 +348,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="server\kb\document-key-generatation.markdown" />
+    <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
     <Content Include="client-api\how-to\images\excel_connections_dialog_1.png" />
     <Content Include="client-api\how-to\images\excel_connections_dialog_2.png" />
