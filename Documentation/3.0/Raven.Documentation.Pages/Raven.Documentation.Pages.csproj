@@ -277,7 +277,9 @@
     <None Include="server\bundles\quotas.markdown" />
     <None Include="server\bundles\replication.markdown" />
     <None Include="server\bundles\scripted-index-results.markdown" />
-    <None Include="server\bundles\sql-replication.markdown" />
+    <None Include="server\bundles\sql-replication\.docslist" />
+    <None Include="server\bundles\sql-replication\setup-postgre-sql.markdown" />
+    <None Include="server\bundles\sql-replication\basics.markdown" />
     <None Include="server\bundles\unique-constraints.markdown" />
     <None Include="server\bundles\versioning.markdown" />
     <None Include="server\configuration\.docslist" />
@@ -358,12 +360,14 @@
     <Content Include="client-api\how-to\images\excel_transformer.png" />
     <Content Include="indexes\images\polymorphic_indexes_faq.png" />
     <Content Include="indexes\querying\images\CNET_faceted_search_2.jpg" />
+    <Content Include="server\administration\images\index-administration-studio-priority.png" />
     <Content Include="server\administration\images\index-administration-studio.png" />
     <Content Include="server\bundles\images\authorization_bundle_faq.png" />
-    <Content Include="server\bundles\images\sql_replication_studio.png" />
+    <Content Include="server\bundles\sql-replication\images\sql_replication_studio.png" />
     <Content Include="server\bundles\images\versioned_docs.png" />
     <Content Include="server\bundles\images\versioned_docs_2.png" />
     <Content Include="server\bundles\images\versioned_docs_3.png" />
+    <Content Include="server\configuration\images\authentication-windows.png" />
     <Content Include="server\configuration\images\delete.png" />
     <Content Include="server\configuration\images\tick.png" />
     <Content Include="server\configuration\windows-clustering\images\01CreateCluster.jpg" />
