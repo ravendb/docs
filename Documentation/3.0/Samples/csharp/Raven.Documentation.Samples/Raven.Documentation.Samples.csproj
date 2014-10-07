@@ -274,6 +274,7 @@
     <Compile Include="Indexes\DynamicFields.cs" />
     <Compile Include="Indexes\IndexingBasics.cs" />
     <Compile Include="Indexes\IndexingHierarchicalData.cs" />
+    <Compile Include="Indexes\IndexingLinqExtensions.cs" />
     <Compile Include="Indexes\IndexingPolymorphicData.cs" />
     <Compile Include="Indexes\IndexingRelatedDocuments.cs" />
     <Compile Include="Indexes\Map.cs" />
