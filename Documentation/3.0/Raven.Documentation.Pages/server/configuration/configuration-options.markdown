@@ -53,7 +53,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Format:_ HH:MM:SS   
 	_Default:_ depends on system polling interval   
 
-* **Raven/MemoryLimitForProcessing**   
+* **Raven/MemoryLimitForProcessing** (previously Raven/MemoryLimitForIndexing)   
     Maximum number of megabytes that can be used by database to control the maximum size of the processing batches. Default: 1024 or 75% percent of available memory.   
     _Default:_ 1024 or 75% percent of available memory if 1GB is not available    
 
