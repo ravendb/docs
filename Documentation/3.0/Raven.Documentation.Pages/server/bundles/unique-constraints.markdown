@@ -1,10 +1,12 @@
 # Bundle : Unique Constraints
 
-## Premise
+{PANEL}
 
 This bundle aims to allow the user to implement unique constraints in the objects (useful for properties like email or social security number).
 
-## How it works
+{PANEL/}
+
+{PANEL:**How it works?**}
 
 The bundle works both in the server (using a PutTrigger and a DeleteTrigger) and in the client (using a `DocumentStoreListener` and providing extension methods on `IDocumentSession`).
 
@@ -13,6 +15,8 @@ When a document is stored in the database it generates "dummy" documents with fo
 ### UniqueConstraintsStoreListener
 
 The listener works by using reflection when the document is stored on the database and generating metadata regarding it's unique constraints. The reflection result is cached in a `ConcurrentDictionary` to help with performance.
+
+<hr />
 
 ### UniqueConstraintSessionExtensions
 
@@ -26,21 +30,29 @@ Allows to load a document by it's UniqueConstraint, returning null if the docume
 
 Checks a document to see if it's constraints are available in the server. It returns a `UniqueConstraintCheckResult` containing the loaded docs and what property they are responsible for.
 
+<hr />
+
 ### UniqueConstraintsPutTrigger
 
 The put trigger acts whenever it finds a document being inserted with constraints metadata. It checks for existing documents in the constraints. If any existing document is found, it returns a VetoResult.Deny informing the conflicting fields. This would need to be checked on the client-side using a try block for the OperationVetoedException.
 
 If a document is being updated the trigger updates the generated constraint document.
 
+<hr />
+
 ### UniqueConstraintsDeleteTrigger
 
 The delete trigger acts whenever it find a document being delete with constraints metadata and deletes the referenced constraint documents.
 
-## Usage
+{PANEL/}
+
+{PANEL:Usage}
 
 ### Server side
 
 Drop the `Raven.Bundles.UniqueContraints` assembly in the Plugins directory.
+
+<hr />
 
 ### Client side
 
@@ -56,7 +68,7 @@ To define unique constraint on a property use `UniqueConstraint` attribute as sh
 
 {CODE unique_constraints_4@Server\Bundles\UniqueConstraints.cs /}
 
-### Extension methods
+#### Extension methods
 
 To check if a value is available for use:
 
@@ -65,6 +77,8 @@ To check if a value is available for use:
 To check document against the database use:
 
 {CODE unique_constraints_3@Server\Bundles\UniqueConstraints.cs /}
+
+{PANEL/}
 
 ## Remarks
 

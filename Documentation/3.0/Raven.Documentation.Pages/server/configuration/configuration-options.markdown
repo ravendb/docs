@@ -535,9 +535,12 @@ Many of the configuration options described in section above can be used both in
 | **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Prefetcher/MaximumSizeAllowedToFetchFromStorage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 
-{NOTE **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database. /}
+{INFO:Information}
 
-{NOTE **Raven/Encryption** settings can only be provided when database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption). /}
+- **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database.
+- **Raven/Encryption** settings can only be provided when database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption).
+
+{INFO/}
 
 ## Related articles
 
