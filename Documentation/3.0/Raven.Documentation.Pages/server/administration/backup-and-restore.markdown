@@ -13,6 +13,8 @@ RavenDB relies on OS services to manage data storage and backup. Those services 
 
 If you are looking to move a database content between different Operating System versions, you should use the [Import / Export](../server/administration/exporting-and-importing) function, done using Raven.Smuggler.
 
+<hr />
+
 ### Initiating a backup
 
 When running in embedded mode, all you need is to call the method `DocumentDatabase.Maintenance.StartBackup()`.
@@ -22,6 +24,8 @@ If running in a client/server mode, you can use Raven.Backup.exe to perform manu
 If running from IIS, make sure to enable Windows Authentication for RavenDB's IIS application.
 
 Only one backup operation may run at any given time.
+
+<hr />
 
 ### Using the Raven.Backup utility
 
@@ -46,9 +50,16 @@ Parameters are as follows:
 * _(Optional)_ `timeout` - Timeout (in milliseconds) to use for requestes.
 * _(Optional)_ `username`, `password`, `domain`, `api-key` - credentials used when authentication is requred.
 
-{NOTE Backups are not supported for Embedded databases. /}
+#### Remarks
 
-{NOTE `Raven.Backup.exe` has to be run with administrative privileges. /}
+{INFO:Information}
+
+- Backups are not supported for Embedded databases when `Raven.Backup.exe` is used.
+- `Raven.Backup.exe` has to be run with administrative privileges.
+
+{INFO/}
+
+<hr />
 
 ### Using Client API
 
@@ -74,12 +85,15 @@ Restoring a **system** database is an **offline operation**, it cannot operate o
 - `restore-destination=PATH` - path to a folder where database will be restored.
 - _(Optional)_ `restore-defrag` - indicates if database should be defragmented after restore.
 - `restore-system-database` - marks that SYSTEM database will be restored.
-    
-{INFO Unlike backups, **system** database restores are fully synchronous. /}
+ 
+{INFO:Information}
 
-{INFO:Embedded mode}
-In embedded mode, you can initiate the restore operation by calling `Raven.Database.Actions.MaintenanceActions.Restore()` or by using `Raven.Server.exe` restore functions described above.
+- Unlike backups, **system** database restores are fully synchronous.
+- In embedded mode, you can initiate the restore operation by calling `Raven.Database.Actions.MaintenanceActions.Restore()` or by using `Raven.Server.exe` restore functions described above.
+
 {INFO/}
+
+<hr />
 
 ### Restoring non-SYSTEM database
 
@@ -97,16 +111,17 @@ Restoring a **non-SYSTEM** database is an **online operation**, it means that th
 - _(Optional)_ `restore-no-wait` - Return immediately without waiting for a restore to complete.
 - _(Optional)_ `restore-start-timeout=TIMEOUT` - The maximum timeout in seconds to wait for another restore to complete. Default: 15 seconds.
 
-{INFO By default, restore will wait for operation to complete. This behavior can be altered by using `--restore-no-wait` option. /}
-
 ### Remarks
 
-{INFO If the restore location doesn't exists, server will create it. /}
+{INFO:Information}
+
+- If the restore location doesn't exists, server will create it.
+- By default, **non-SYSTEM** restore will wait for operation to complete. This behavior can be altered by using `--restore-no-wait` option.
+
+{INFO/}
 
 {WARNING:Warning}
-You cannot restore to an existing database data directory, the restore operation will fail if it detects that the restore operation will overwrite existing data.
-
-If you need to restore to an existing database data directory, shutdown the database instance and delete the data directory.
+You cannot restore to an existing database data directory, the restore operation will fail if it detects that the restore operation may overwrite existing data. If you need to restore to an existing database data directory, shutdown the database instance and delete the data directory.
 {WARNING/}
 
 {DANGER Simultaneous restore operations are forbidden. /}
