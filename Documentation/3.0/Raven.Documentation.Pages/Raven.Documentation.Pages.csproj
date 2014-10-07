@@ -256,6 +256,8 @@
     <None Include="indexes\querying\suggestions.markdown" />
     <None Include="indexes\stale-indexes.markdown" />
     <None Include="indexes\storing-data-in-index.markdown" />
+    <None Include="indexes\troubleshooting\.docslist" />
+    <None Include="indexes\troubleshooting\debugging-index-errors.markdown" />
     <None Include="indexes\using-analyzers.markdown" />
     <None Include="indexes\using-dynamic-fields.markdown" />
     <None Include="indexes\using-term-vectors.markdown" />
