@@ -40,7 +40,7 @@ By default all windows users and groups have access to all the databases, but th
 
 Above example gives a read-only access to `Northwind` to `IIS AppPool\DefaultAppPool`. Similar effect can be achieved using the Studio and editing `system` database settings.
 
-![Figure 1: `Windows Authentication` settings](images/authentication_1.PNG)
+![Figure 1: `Windows Authentication` settings](images/authentication-windows.png)
 
 ### Allow to login by using an account with a blank password
 
