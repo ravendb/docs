@@ -15,7 +15,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 <configuration> 
   <appSettings> 
     <add key="Raven/Port" value="*"/> 
-    <add key="Raven/DataDir" value="~\Data"/> 
+    <add key="Raven/DataDir" value="~\Databases\System"/> 
     <add key="Raven/AnonymousAccess" value="Get" /> 
   </appSettings> 
         <runtime> 
@@ -315,7 +315,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 ## Voron settings
 
 * **Raven/Voron/AllowIncrementalBackups**   
-    Defaults to false. If you want to use incremental backups, you need to turn this to true, but then journal files will not be deleted on backup.  
+    If you want to use incremental backups, you need to turn this to true, but then journal files will not be deleted after applying them to the data file. They will be deleted only after a successful backup. Default: false.     
     _Default_: false  
 
 * **Raven/Voron/TempPath**   
@@ -327,7 +327,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default_: 4   
 
 * **Raven/Voron/InitialSize**   
-    You can use this setting to specify an initial file size for data file (in bytes).
+    You can use this setting to specify an initial file size for data file (in bytes).   
+
+* **Raven/Voron/MaxScratchBufferSize**   
+    The maximum scratch buffer (modified data by active transactions) size that can be used by Voron. The value is in megabytes..
+    _Default_: 512
 
 ### Tenants
 
@@ -509,6 +513,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/Voron/TempPath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Voron/MaxBufferPoolSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Voron/InitialSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Voron/MaxScratchBufferSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Tenants/MaxIdleTimeForTenantDatabase** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Tenants/FrequnecyToCheckForIdleDatabases** | ![No](images\delete.png) | ![Yes](images\tick.png) |
