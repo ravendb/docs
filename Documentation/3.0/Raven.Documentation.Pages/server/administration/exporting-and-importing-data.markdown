@@ -9,9 +9,9 @@ Raven.Smuggler is distributed in both the:
 
 Using the Smuggler utility is necessary when trying to move a RavenDB Data folder between servers.
 
-{WARNING Copying `Data` folder between servers or even within a single server instance is not supported and can result in various server errors. /}
+{DANGER Copying `Data` folder between servers or even within a single server instance is not supported and can result in various server errors. /}
 
-## Exporting to file
+{PANEL:**Exporting to file**}
 
 To Export data, use this command:
 
@@ -35,7 +35,9 @@ If **Replication is turned on in your source database**, it is **recommended** t
     Raven.Smuggler out http://localhost:8080 dump.ravendump --databases=Northwind --negative-metadata-filter:@id=Raven/Replication/Destinations
 {CODE-BLOCK/}
 
-## Importing from file
+{/PANEL}
+
+{PANEL**Importing from file**}
 
 {CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 dump.ravendump --database=NewNorthwind
@@ -43,9 +45,12 @@ If **Replication is turned on in your source database**, it is **recommended** t
 
 This command will import all the indexes, transformers, documents and attachments from the file to the `NewNorthwind` database.
 
-{NOTE Import does **not support** database creation. If destination database does not exist error message will be shown. /}
+{INFO:Information}
 
-{NOTE Import will **overwrite** any existing documents in the destination database. /}
+- Import does **not support** database creation. If destination database does not exist error message will be shown.
+- Import will **overwrite** any existing documents in the destination database.
+
+{INFO/}
 
 You can continue using that RavenDB instance while data is being imported to it.
 
@@ -58,7 +63,9 @@ This can be done using the following command:
     Raven.Smuggler in http://localhost:8080 dump.ravendump --database=NewNorthwind --negative-metadata-filter:@id=Raven/Replication/Destinations --negative-metadata-filter:@id=Raven/Backup/Periodic/Setup --negative-metadata-filter:@id=Raven/Backup/Periodic/Status --negative-metadata-filter:@id=Raven/Replication/VersionHilo
 {CODE-BLOCK/}
 
-## Incremental Export and Import
+{PANEL/}
+
+{PANEL:**Incremental Export and Import**}
 
 With the incremental export operation we can use in order to backup the database incrementally, on each export, we will only take the export the documents create or updated
 since the last export.
@@ -86,7 +93,9 @@ or
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location
 {CODE-BLOCK/}
 
-## Moving data between two databases
+{PANEL/}
+
+{PANEL:**Moving data between two databases**}
 
 To move data directly between two instances (or different databases in same instance) use `between` option in following manner:
 
@@ -94,7 +103,9 @@ To move data directly between two instances (or different databases in same inst
     Raven.Smuggler between http://localhost:8080 http://localhost:8080 --database=Northwind --database2=NewNorthwind folder_location
 {CODE-BLOCK/}
 
-## Command line options
+{PANEL/}
+
+{PANEL:**Command line options**}
 
 You can tweak the export/import process with the following parameters:
 
@@ -120,7 +131,9 @@ You can tweak the export/import process with the following parameters:
  - limit: Reads at most VALUE documents/attachments.
  - help: You can use the help option in order to print the built-in options documentation.
 
-## Filtering
+{PANEL/}
+
+{PANEL:**Filtering**}
 
 To filter out documents we introduced few filtering options that can be used during import or export process.
 
@@ -129,7 +142,9 @@ To filter out documents we introduced few filtering options that can be used dur
 3. `metadata-filter` is similar to `filter`, but works on document metadata properties.   
 4. `negative-metadata-filter` filters out documents that does NOT match given metadata property.   
 
-## Transforms
+{PANEL/}
+
+{PANEL:**Transforms**}
 
 Transforms can be used to modify or filter out documents, but only work during the import process. The scripts must use JavaScript syntax and be in following format:   
 
@@ -165,7 +180,9 @@ function(doc) {
 }
 {CODE-BLOCK/}
 
-## SmugglerApi
+{PANEL/}
+
+{PANEL:**SmugglerApi**}
 
 Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerApi` class (in order to use this class you need to reference the `Raven.Smuggler.exe`).
 
@@ -181,17 +198,24 @@ Alternatively, if you prefer to do export/import from code rather than from the 
 
 {CODE smuggler_api_3@Server\Administration\ExportImport.cs /}
 
-## DataDumper
+{PANEL/}
+
+{PANEL:**DataDumper**}
 
 Smuggler communicates with server using the HTTP protocol, which means that it can't communicate with Embedded instance as long as `UseEmbeddedHttpServer` is set to `false` (which is a default value). If embedded http server can't be started then `DataDumper` (found in `Raven.Database.Smuggler` namespace in `Raven.Database.dll`) can be used to import or export data.
 
 {CODE smuggler_api_4@Server\Administration\ExportImport.cs /}
 
+{PANEL/}
+
 ## Remarks
 
-{INFO During **export** Smuggler is using [document streaming](../../client-api/commands/documents/stream). To maintain backward compatibility, Smuggler will detect from what version it exports the documents and adjust behavior accordingly. /}
+{INFO:Information}
 
-{INFO During **import** Smuggler is using [bulk insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation). /}
+- During **export** Smuggler is using [document streaming](../../client-api/commands/documents/stream). To maintain backward compatibility, Smuggler will detect from what version it exports the documents and adjust behavior accordingly.
+- During **import** Smuggler is using [bulk insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation).
+
+{INFO/}
 
 ## Related articles
 
