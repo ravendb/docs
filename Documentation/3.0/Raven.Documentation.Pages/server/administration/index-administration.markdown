@@ -8,7 +8,7 @@ An index usually need to be reset because it has reached its error quota and bee
 
 You can reset an index by using either [Client API](../../client-api/commands/indexes/how-to/reset-index) or **Studio**.
 
-![Figure 1: Reset and delete index options in the Studio](images/index-lock-unlock-ui.png)
+![Figure 1: Reset and delete index options in the Studio](images/index-administration-studio.png)
 
 ## Deleting an index
 
@@ -35,7 +35,7 @@ The available modes are:
 
 In the studio this options are available on the Indexes page:
 
-![Figure 2: Index lock / unlock](images/index-lock-unlock-ui.png)
+![Figure 2: Index lock / unlock](images/index-administration-studio.png)
 
 ## Index Prioritization
 
@@ -71,7 +71,7 @@ In order to set the priority of the index to idle for example, you can either cr
 
 or use the studio. If so you need to go to _Indexes_ and _Edit_ selected index and there set up the priority:
 
-![Figure 3: Index priority](images/index-priority.png)
+![Figure 3: Index priority](images/index-administration-studio-priority.png)
 
 All of the time settings used by RavenDB to automatically manage the priorities of indexes you will find on the [configuration options page](../../server/configuration/configuration-options) (look for options that starts with <em>TimeToWaitBefore</em>). 
 
