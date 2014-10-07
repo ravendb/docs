@@ -18,5 +18,6 @@ using-analyzers.markdown	Analyzers
 storing-data-in-index.markdown	Storing data in index
 using-term-vectors.markdown	Term Vectors
 using-dynamic-fields.markdown	Dynamic Fields
+/troubleshooting	Troubleshooting
 
 
