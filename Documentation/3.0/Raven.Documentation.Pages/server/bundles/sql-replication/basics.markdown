@@ -71,6 +71,12 @@ In Studio the configuration page is found under **Settings -> SQL Replication**.
 The script will be called once for each document in the source document collection, with `this` representing the document, and the document id available as `documentId`. Call `replicateTo<TableName>()` (e.g. `replicateToOrders`) for each row you want to write to the database.
 {INFO/}
 
+{WARNING:Performance}
+
+For performance reasons, it is advisable to have a secondary (or primary) index for document key in SQL Tables (in the example above for `Orders.Id` and `OrderLines.OrderId`). Otherwise, especially at scale, performance degradation may occur.
+
+{WARNING/}
+
 ## Related articles
 
 TODO
