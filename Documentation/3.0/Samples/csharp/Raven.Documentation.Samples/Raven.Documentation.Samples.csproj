@@ -177,6 +177,7 @@
     <Compile Include="ClientApi\Commands\Indexes\HowTo\GetTerms.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\IndexHasChanged.cs" />
     <Compile Include="ClientApi\Commands\Indexes\HowTo\ResetIndex.cs">
       <SubType>Code</SubType>
     </Compile>

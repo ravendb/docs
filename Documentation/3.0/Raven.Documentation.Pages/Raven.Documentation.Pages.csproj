@@ -91,6 +91,7 @@
     <None Include="client-api\commands\indexes\how-to\.docslist" />
     <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.dotnet.markdown" />
     <None Include="client-api\commands\indexes\how-to\get-index-terms.dotnet.markdown" />
+    <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.markdown" />
     <None Include="client-api\commands\indexes\how-to\reset-index.dotnet.markdown" />
     <None Include="client-api\commands\indexes\put.dotnet.markdown" />
     <None Include="client-api\commands\patches\.docslist" />
