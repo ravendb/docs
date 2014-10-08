@@ -64,7 +64,7 @@ When the replication bundle encountered a failure when replicating to a server, 
 Yes, you can. You can edit the Raven/Replication/Destinations document in the replicating instance to add the new node, and the Replication Bundle will immediately start replicating to that server.
 
 ## What about timeouts?
-By default, the replication bundle have a timeout of 500 ms. You can control that by specifying "Raven/Replication/ReplicationRequestTimeout" in the configuration file <appSettings/> section.
+By default, the replication bundle have a timeout of 60 seconds. You can control that by specifying "Raven/Replication/ReplicationRequestTimeout" in the configuration file <appSettings/> section.
 
 The default value assumes servers that are near one another, for replication over the WAN, you would likely want to add additional time. Please note that timeout failures for the replication bundle counts as failures, and the replication bundle will reduce the number of replication attempts against a node that fails often.
 
