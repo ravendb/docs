@@ -41,7 +41,7 @@ namespace Raven.Documentation.Parser
 				case Language.Csharp:
 					return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "csharp", "Raven.Documentation.Samples");
 				case Language.Java:
-					return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "java", "Raven.Documentation.Samples");
+					return Path.Combine(PathToDocumentationDirectory, documentationVersion, "Samples", "java", "src", "test", "java", "net", "ravendb");
 				default:
 					throw new NotSupportedException(language.ToString());
 			}
