@@ -118,6 +118,10 @@
     <None Include="client-api\configuration\conventions\.docslist" />
     <None Include="client-api\configuration\conventions\identifier-generation\type-specific.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
+    <None Include="client-api\setting-up-connection-string.java.markdown" />
+    <None Include="client-api\setting-up-default-database.java.markdown" />
+    <None Include="client-api\creating-document-store.java.markdown" />
+    <None Include="client-api\what-is-a-document-store.java.markdown" />
     <None Include="client-api\creating-document-store.dotnet.markdown" />
     <None Include="client-api\document-identifiers\.docslist" />
     <None Include="client-api\document-identifiers\beware-of.markdown" />
