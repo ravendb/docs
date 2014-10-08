@@ -110,6 +110,7 @@ There are few methods that allow you to retrieve documents from a database:
 | **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
 | **transformer** | string | name of a transformer that should be used to transform the results |
 | **transformerParameters** | Dictionary<string, RavenJToken> | parameters that will can be passed to transformer |
+| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |

@@ -19,7 +19,8 @@
 				int start = 0,
 				int pageSize = int.MaxValue,
 				string exclude = null,
-				RavenPagingInformation pagingInformation = null);
+				RavenPagingInformation pagingInformation = null,
+				string skipAfter = null);
 			#endregion
 		}
 
