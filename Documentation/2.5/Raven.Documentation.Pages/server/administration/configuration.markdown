@@ -163,6 +163,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IdexDefinition](../../client-api/querying/static-indexes/defining-static-index).    
 	_Default:_ false
 
+* **Raven/MemoryLimitForIndexing**      
+    Maximum number of megabytes that can be used by database to control the maximum size of the processing batches. Default: 1024 or 75% percent of available memory.   
+    _Default:_ 1024 or 75% percent of available memory if 1GB is not available    
+
 ### Data settings:
 
 * **Raven/RunInMemory**  
@@ -406,6 +410,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/MaxNumberOfStoredCommitPoints** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MinIndexingTimeIntervalToStoreCommitPoint** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DisableInMemoryIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MemoryLimitForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
