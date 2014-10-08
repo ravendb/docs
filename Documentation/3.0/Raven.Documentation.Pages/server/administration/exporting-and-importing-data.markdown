@@ -142,6 +142,14 @@ To filter out documents we introduced few filtering options that can be used dur
 3. `metadata-filter` is similar to `filter`, but works on document metadata properties.   
 4. `negative-metadata-filter` filters out documents that does NOT match given metadata property.   
 
+{INFO:Multiple value support}
+
+Comma has been introduced to support multiple values e.g. `--filter=Name=John,Greg` will export all documents with `Name` equal to `John` or `Greg`. 
+
+If you want to use comma in your filter then wrap the value in `'` e.g. `--filter=Name='John, the Second',Greg` will export all documents with `Name` equal to `John, the Second` and `Greg`.
+
+{INFO/}
+
 {PANEL/}
 
 {PANEL:**Transforms**}
