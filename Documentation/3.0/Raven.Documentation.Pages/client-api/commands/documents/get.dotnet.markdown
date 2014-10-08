@@ -50,8 +50,8 @@ There are few methods that allow you to retrieve documents from a database:
 
 | Return Value | | |
 | ------------- | ------------- | ----- |
-| **Results** | List<RavenJObject> | list of documents in **exact** same order as in **keys** parameter |
-| **Includes** | List<RavenJObject> | list of documents that were found in specified paths that were passed in **includes** parameter |  
+| **Results** | List&lt;RavenJObject&gt; | list of documents in **exact** same order as in **keys** parameter |
+| **Includes** | List&lt;RavenJObject&gt; | list of documents that were found in specified paths that were passed in **includes** parameter |
 
 ### Example I
 

@@ -8,7 +8,7 @@ public class CreatingDocumentStore {
   public CreatingDocumentStore() throws Exception {
     //region document_store_creation
     try (IDocumentStore store = new DocumentStore("http://localhost:8080").initialize()) {
-
+      // ...
     }
     //endregion
   }

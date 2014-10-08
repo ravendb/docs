@@ -65,6 +65,9 @@
     <None Include="client-api\commands\attachments\put.dotnet.markdown" />
     <None Include="client-api\commands\batches\.docslist" />
     <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.dotnet.markdown" />
+    <None Include="client-api\commands\documents\get.java.markdown" />
+    <None Include="client-api\commands\documents\put.java.markdown" />
+    <None Include="client-api\commands\what-are-commands.java.markdown" />
     <None Include="client-api\commands\documents\.docslist" />
     <None Include="client-api\commands\documents\delete.dotnet.markdown" />
     <None Include="client-api\commands\documents\get.dotnet.markdown" />
