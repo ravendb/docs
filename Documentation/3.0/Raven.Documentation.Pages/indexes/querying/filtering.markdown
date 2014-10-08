@@ -69,7 +69,7 @@ Let's assume that we want to return all `BlogPosts` that contain any of the spec
 {CODE-TABS/}
 
 {WARNING:Important}
-Remember to add `Raven.Client.Linq` namespace to usings if you want to use `In` extension method.
+Remember to add `Raven.Client.Linq` namespace to usings if you want to use `ContainsAny` extension method.
 {WARNING/}
 
 ## Where + ContainsAll
@@ -86,7 +86,7 @@ Let's assume that we want to return all `BlogPosts` that contain all of the spec
 {CODE-TABS/}
 
 {WARNING:Important}
-Remember to add `Raven.Client.Linq` namespace to usings if you want to use `In` extension method.
+Remember to add `Raven.Client.Linq` namespace to usings if you want to use `ContainsAll` extension method.
 {WARNING/}
 
 ## Remarks
