@@ -15,6 +15,7 @@
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **exclude** | int | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
 | **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
+| **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 ## Example
 

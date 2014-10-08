@@ -110,7 +110,7 @@ There are few methods that allow you to retrieve documents from a database:
 | **exclude** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) (default: `null`) |
 | **transformer** | String | name of a transformer that should be used to transform the results (default: `null`) |
 | **transformerParameters** | Map<String, RavenJToken> | inputs (parameters) that will can be used by transformer (default: `null`) |
-| **skipAfter** | String | skips document fetching after given key (default: `null`) |
+| **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |

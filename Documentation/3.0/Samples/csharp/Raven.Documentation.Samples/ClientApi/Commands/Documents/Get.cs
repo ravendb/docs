@@ -38,7 +38,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 				bool metadataOnly = false,
 				string exclude = null,
 				string transformer = null,
-				Dictionary<string, RavenJToken> transformerParameters = null);
+				Dictionary<string, RavenJToken> transformerParameters = null,
+				string skipAfter = null);
 			#endregion
 		}
 
