@@ -83,6 +83,8 @@
     <None Include="client-api\commands\indexes\how-to\get-index-terms.java.markdown" />
     <None Include="client-api\commands\indexes\how-to\reset-index.java.markdown" />
     <None Include="client-api\commands\indexes\put.java.markdown" />
+    <None Include="client-api\commands\querying\how-to-stream-query-results.java.markdown" />
+    <None Include="client-api\commands\querying\how-to-query-a-database.java.markdown" />
     <None Include="client-api\commands\what-are-commands.java.markdown" />
     <None Include="client-api\commands\documents\.docslist" />
     <None Include="client-api\commands\documents\delete.dotnet.markdown" />
