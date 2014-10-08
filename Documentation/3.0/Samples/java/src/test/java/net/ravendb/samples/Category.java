@@ -1,6 +1,8 @@
 package net.ravendb.samples;
 
+import com.mysema.query.annotations.QueryEntity;
 
+@QueryEntity
 public class Category {
   private String id;
   private String name;

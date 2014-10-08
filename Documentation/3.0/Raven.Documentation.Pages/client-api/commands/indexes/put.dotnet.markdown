@@ -16,7 +16,7 @@ There are few methods that allow you to insert index into a database:
 | ------------- | ------------- | ----- |
 | **name** | string | Name of an index |
 | **indexDef** | [IndexDefinition](../../../glossary/indexes/index-definition) | Definition of an index |
-| **overwrite** | bool | Indicates if index can be overwritten (if 'false' then exception will be thrown if index exists) |
+| **overwrite** | bool | Indicates if index can be overwritten (if `false` then exception will be thrown if index exists) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -42,7 +42,7 @@ To help users create their indexes, `IndexDefinitionBuilder` was created that en
 | ------------- | ------------- | ----- |
 | **name** | string | Name of an index |
 | **indexDef** | IndexDefinitionBuilder<TDocument, TReduceResult> | strongly-typed index definition |
-| **overwrite** | bool | Indicates if index can be overwritten (if 'false' then exception will be thrown if index exists) |
+| **overwrite** | bool | Indicates if index can be overwritten (if `false` then exception will be thrown if index exists) |
 
 | Return Value | |
 | ------------- | ----- |
