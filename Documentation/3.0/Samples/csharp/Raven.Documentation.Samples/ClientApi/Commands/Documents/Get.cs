@@ -20,7 +20,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 				string[] ids,
 				string[] includes,
 				string transformer = null,
-				Dictionary<string, RavenJToken> queryInputs = null,
+				Dictionary<string, RavenJToken> transformerParameters = null,
 				bool metadataOnly = false);
 			#endregion
 
@@ -38,7 +38,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
 				bool metadataOnly = false,
 				string exclude = null,
 				string transformer = null,
-				Dictionary<string, RavenJToken> queryInputs = null);
+				Dictionary<string, RavenJToken> transformerParameters = null);
 			#endregion
 		}
 
