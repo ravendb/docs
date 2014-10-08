@@ -422,6 +422,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Number of seconds after which replication will stop reading documents/attachments from disk.
     _Default:_ 30
 
+* **Raven/Replication/ReplicationRequestTimeout**   
+    Number of milliseconds before replication requests will timeout.
+    _Default:_ 60 * 1000
+
 ### Prefetcher
 
 * **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout**   
@@ -541,6 +545,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/Encryption/FIPS** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Replication/FetchingFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Replication/ReplicationRequestTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Prefetcher/MaximumSizeAllowedToFetchFromStorage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
