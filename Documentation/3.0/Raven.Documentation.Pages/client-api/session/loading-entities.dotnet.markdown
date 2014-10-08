@@ -144,7 +144,13 @@ Entities can be streamed from server using one of the following `Stream` methods
 
 ### Remarks
 
-Entities loaded using `Stream` will be transient (not attached to session).
+{INFO Entities loaded using `Stream` will be transient (not attached to session). /}
+
+{WARNING:Caution}
+
+**fromEtag** does not do any filtrations on server-side based on the specified in streaming function return type (e.g. `Employee`) and will return all documents from given Etag even if their `Raven-Clr-Type` does not match the return type, which may cause potential casting errors. Set return type to `object`, `dynamic` or `RavenJObject` to address situation when documents with different types might be returned.
+
+{WARNING/}
 
 {PANEL/}
 
