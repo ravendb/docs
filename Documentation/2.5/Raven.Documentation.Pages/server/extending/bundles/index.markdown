@@ -16,7 +16,7 @@ The following bundles are available out of the box, to extend RavenDB's capabili
 * [Periodic Backup](periodic-backup) - configure backups.
 * [Scripted Index Results](scripted-index-results) - attach custom scripts to index.
 
-{INFO Built-in bundles can be selectively added to a specific database using `Raven/ActiveBundles` property in the database document. The documentation describing how to manage database configuration documents can be found [here](../../multiple-databases). /}
+{INFO Built-in bundles can be selectively added to a specific database using `Raven/ActiveBundles` property in the database document. The documentation describing how to manage database configuration documents can be found [here](../../administration/configuration). /}
 
 ## Custom
 
