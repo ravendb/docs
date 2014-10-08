@@ -1,12 +1,12 @@
 # Attachments : How to get attachment metadata only?
 
 There are few methods that allow you to download attachment metadata from a database:   
-- [Head](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#head)   
+- [HeadAttachment](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#head)   
 - [GetAttachmentHeadersStartingWith](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#getattachmentheadersstartingwith)   
 
-{PANEL:**Head**}
+{PANEL:**HeadAttachment**}
 
-**Head** can be used to download attachment metadata for a single attachment.
+**HeadAttachment** can be used to download attachment metadata for a single attachment.
 
 ### Syntax
 
