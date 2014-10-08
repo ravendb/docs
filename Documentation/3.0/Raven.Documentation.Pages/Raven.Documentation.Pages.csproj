@@ -57,6 +57,11 @@
     <None Include="client-api\changes\what-is-changes-api.dotnet.markdown" />
     <None Include="client-api\commands\.docslist" />
     <None Include="client-api\commands\attachments\.docslist" />
+    <None Include="client-api\commands\attachments\how-to\update-attachment-metadata-only.java.markdown" />
+    <None Include="client-api\commands\attachments\how-to\get-attachment-metadata-only.java.markdown" />
+    <None Include="client-api\commands\attachments\put.java.markdown" />
+    <None Include="client-api\commands\attachments\get.java.markdown" />
+    <None Include="client-api\commands\attachments\delete.java.markdown" />
     <None Include="client-api\commands\attachments\delete.dotnet.markdown" />
     <None Include="client-api\commands\attachments\get.dotnet.markdown" />
     <None Include="client-api\commands\attachments\how-to\.docslist" />
@@ -71,6 +76,13 @@
     <None Include="client-api\commands\documents\delete.java.markdown" />
     <None Include="client-api\commands\documents\get.java.markdown" />
     <None Include="client-api\commands\documents\put.java.markdown" />
+    <None Include="client-api\commands\indexes\delete.java.markdown" />
+    <None Include="client-api\commands\indexes\get.java.markdown" />
+    <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.dotnet.markdown" />
+    <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.java.markdown" />
+    <None Include="client-api\commands\indexes\how-to\get-index-terms.java.markdown" />
+    <None Include="client-api\commands\indexes\how-to\reset-index.java.markdown" />
+    <None Include="client-api\commands\indexes\put.java.markdown" />
     <None Include="client-api\commands\what-are-commands.java.markdown" />
     <None Include="client-api\commands\documents\.docslist" />
     <None Include="client-api\commands\documents\delete.dotnet.markdown" />
@@ -98,7 +110,7 @@
     <None Include="client-api\commands\indexes\how-to\.docslist" />
     <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.dotnet.markdown" />
     <None Include="client-api\commands\indexes\how-to\get-index-terms.dotnet.markdown" />
-    <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.markdown" />
+    <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.java.markdown" />
     <None Include="client-api\commands\indexes\how-to\reset-index.dotnet.markdown" />
     <None Include="client-api\commands\indexes\put.dotnet.markdown" />
     <None Include="client-api\commands\patches\.docslist" />
