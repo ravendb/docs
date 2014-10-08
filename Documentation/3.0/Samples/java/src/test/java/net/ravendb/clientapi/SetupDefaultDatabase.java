@@ -9,6 +9,7 @@ import net.ravendb.client.document.DocumentStore;
 
 public class SetupDefaultDatabase {
 
+  @SuppressWarnings("unused")
   public SetupDefaultDatabase() throws Exception {
     //region default_database_1
     // without specifying `DefaultDb`
