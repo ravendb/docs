@@ -83,6 +83,12 @@ RavenDB isn't a typical web site because it needs to be running at all times. In
        <application path="/Raven" serviceAutoStartEnabled="true" />
 {CODE-BLOCK/}
 
+{INFO:Remember}
+
+If `startMode` is set to `AlwaysRunning` for proper IIS behavior the _Application Initialization Module_ needs to be installed on IIS.
+
+{INFO/}
+
 ## HTTP Error 503
 
 You may hit an HTTP Error 503 - "The service is unavailable" - when deploying to IIS, with nothing written to the Event Log.
