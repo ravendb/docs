@@ -316,6 +316,7 @@
     <None Include="server\configuration\configuration-options.markdown" />
     <None Include="server\configuration\enabling-fips-compliant-encryption-algorithms.markdown" />
     <None Include="server\configuration\enabling-ssl.markdown" />
+    <None Include="server\configuration\storage-engines.markdown" />
     <None Include="server\configuration\license-registration.markdown" />
     <None Include="server\configuration\windows-clustering\.docslist" />
     <None Include="server\configuration\windows-clustering\windows-server-2008.markdown" />
@@ -375,6 +376,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
     <None Include="server\kb\document-key-generatation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />

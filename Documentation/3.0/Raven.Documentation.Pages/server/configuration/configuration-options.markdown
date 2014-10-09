@@ -183,7 +183,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ ~\Data  
 
 * **Raven/StorageEngine** or **Raven/StorageTypeName**   
-    What storage type to use (see: RavenDB Storage engines)  
+    What storage type to use (see: [Storage Engines](../../server/server/configuration/storage-engines))  
     _Allowed values:_ esent, voron   
     _Default:_ esent  
 
