@@ -375,6 +375,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
     <None Include="server\kb\document-key-generatation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
