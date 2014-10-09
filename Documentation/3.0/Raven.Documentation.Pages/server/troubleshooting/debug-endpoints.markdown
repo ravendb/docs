@@ -37,6 +37,8 @@
 | admin/detailed-storage-breakdown | GET | | Returns storage report (e.g. number of documents, indexes, attachments and other storage-dependant statistics). | |
 | | | | |
 | build/version | GET | | Returns product and build version. | Y |
+| | | | |
+| indexes/{index_name} ?op=forceWriteToDisk | POST | - _index_name_ - index name | Force in-memory auto-index persistance. | |
 
 ## Studio
 

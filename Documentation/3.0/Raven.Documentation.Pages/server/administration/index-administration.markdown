@@ -78,11 +78,7 @@ All of the time settings used by RavenDB to automatically manage the priorities 
 
 ## Persistence of an auto index
 
-When auto indexes are created then they are kept in memory until they won't reach a given size from the configuration. You can force to write indexed data to a disk by using _Make index persisted_ option:
-
-![Figure 4: Persist index](images/index-persist.png)
-
-From the HTTP API perspective, it can be accomplished by calling the following address:
+When auto indexes are created then they are kept in memory until they won't reach a given size from the configuration. You can force to write indexed data to a disk by executing:
 
 {CODE-BLOCK:plain}
 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk
@@ -91,4 +87,3 @@ From the HTTP API perspective, it can be accomplished by calling the following a
 ## Related articles
 
 TODO
-
