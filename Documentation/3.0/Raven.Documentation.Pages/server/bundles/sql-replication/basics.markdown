@@ -73,7 +73,7 @@ The script will be called once for each document in the source document collecti
 
 {WARNING:Performance}
 
-For performance reasons, it is advisable to have a secondary (or primary) index for document key in SQL Tables (in the example above for `Orders.Id` and `OrderLines.OrderId`). Otherwise, especially at scale, performance degradation may occur.
+For performance reasons, it is required to have a secondary (or primary) index for document key in SQL Tables (in the example above for `Orders.Id` and `OrderLines.OrderId`). Otherwise, especially at scale, performance degradation may occur.
 
 {WARNING/}
 
