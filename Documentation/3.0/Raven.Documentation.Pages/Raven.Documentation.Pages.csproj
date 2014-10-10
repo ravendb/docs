@@ -77,6 +77,17 @@
     <None Include="client-api\commands\documents\delete.java.markdown" />
     <None Include="client-api\commands\documents\get.java.markdown" />
     <None Include="client-api\commands\documents\put.java.markdown" />
+    <None Include="client-api\commands\how-to\compact-database.java.markdown" />
+    <None Include="client-api\commands\how-to\get-names-of-all-databases-on-a-server.java.markdown" />
+    <None Include="client-api\commands\how-to\get-server-build-number.java.markdown" />
+    <None Include="client-api\commands\how-to\get-full-url-for-a-document.java.markdown" />
+    <None Include="client-api\commands\how-to\start-backup-restore-operations.java.markdown" />
+    <None Include="client-api\commands\how-to\get-database-and-server-statistics.java.markdown" />
+    <None Include="client-api\commands\how-to\create-delete-database.java.markdown" />
+    <None Include="client-api\commands\how-to\start-stop-indexing-and-get-indexing-status.java.markdown" />
+    <None Include="client-api\commands\how-to\disable-caching.java.markdown" />
+    <None Include="client-api\commands\how-to\switch-commands-credentials.java.markdown" />
+    <None Include="client-api\commands\how-to\switch-commands-to-a-different-database.java.markdown" />
     <None Include="client-api\commands\indexes\delete.java.markdown" />
     <None Include="client-api\commands\indexes\get.java.markdown" />
     <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.dotnet.markdown" />
@@ -84,6 +95,8 @@
     <None Include="client-api\commands\indexes\how-to\get-index-terms.java.markdown" />
     <None Include="client-api\commands\indexes\how-to\reset-index.java.markdown" />
     <None Include="client-api\commands\indexes\put.java.markdown" />
+    <None Include="client-api\commands\patches\how-to-use-javascript-to-patch-your-documents.java.markdown" />
+    <None Include="client-api\commands\patches\how-to-work-with-patch-requests.java.markdown" />
     <None Include="client-api\commands\querying\how-to-work-with-morelikethis-query.java.markdown" />
     <None Include="client-api\commands\querying\how-to-work-with-suggestion-query.java.markdown" />
     <None Include="client-api\commands\querying\how-to-work-with-facet-query.java.markdown" />
