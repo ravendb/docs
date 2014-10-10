@@ -57,8 +57,9 @@
       <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3470-Unstable\lib\net45\Raven.Database.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Smuggler">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3470-Unstable\tools\Raven.Smuggler.exe</HintPath>
+    <Reference Include="Raven.Smuggler, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3491-Unstable\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />

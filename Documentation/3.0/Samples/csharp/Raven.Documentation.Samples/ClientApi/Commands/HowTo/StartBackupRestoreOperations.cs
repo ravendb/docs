@@ -1,4 +1,5 @@
 ﻿using Raven.Abstractions.Data;
+using Raven.Client.Connection;
 using Raven.Client.Document;
 
 namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
@@ -16,7 +17,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 			#endregion
 
 			#region backup_restore_2
-			void StartRestore(RestoreRequest restoreRequest);
+            Operation StartRestore(RestoreRequest restoreRequest);
 			#endregion
 		}
 
