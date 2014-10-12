@@ -9,75 +9,75 @@ They are available in **[DocumentStore](../../client-api/what-is-a-document-stor
 ### Document commands
 
 There are following commands that can be used to manipulate documents:   
-- [Put](../../client-api/commands/documents/put)   
-- [Get](../../client-api/commands/documents/get)   
-- [GetDocuments](../../client-api/commands/documents/get)   
-- MultiGet   
-- [StartsWith](../../client-api/commands/documents/get)    
-- [Head](../../client-api/commands/documents/how-to/get-document-metadata-only)   
-- [Delete](../../client-api/commands/documents/delete)   
-- [DeleteByIndex](../../client-api/commands/documents/how-to/delete-or-update-documents-using-index)   
-- [UpdateByIndex](../../client-api/commands/documents/how-to/delete-or-update-documents-using-index)   
-- [StreamDocs](../../client-api/commands/documents/stream)
+- [put](../../client-api/commands/documents/put)   
+- [get](../../client-api/commands/documents/get)   
+- [getDocuments](../../client-api/commands/documents/get)   
+- multiGet   
+- [startsWith](../../client-api/commands/documents/get)    
+- [head](../../client-api/commands/documents/how-to/get-document-metadata-only)   
+- [delete](../../client-api/commands/documents/delete)   
+- [deleteByIndex](../../client-api/commands/documents/how-to/delete-or-update-documents-using-index)   
+- [updateByIndex](../../client-api/commands/documents/how-to/delete-or-update-documents-using-index)   
+- [streamDocs](../../client-api/commands/documents/stream)
 
 ### Index commands
 
 There are following commands that can be used to manipulate indexes:   
-- [PutIndex](../../client-api/commands/indexes/put)   
-- [GetIndex](../../client-api/commands/indexes/get)   
-- [GetIndexes](../../client-api/commands/indexes/get)   
-- [GetIndexNames](../../client-api/commands/indexes/get)   
-- [GetIndexMergeSuggestions](../../client-api/commands/indexes/how-to/get-index-merge-suggestions)   
-- [DeleteIndex](../../client-api/commands/indexes/delete)   
-- [ResetIndex](../../client-api/commands/indexes/how-to/reset-index)   
+- [putIndex](../../client-api/commands/indexes/put)   
+- [getIndex](../../client-api/commands/indexes/get)   
+- [getIndexes](../../client-api/commands/indexes/get)   
+- [getIndexNames](../../client-api/commands/indexes/get)   
+- [getIndexMergeSuggestions](../../client-api/commands/indexes/how-to/get-index-merge-suggestions)   
+- [deleteIndex](../../client-api/commands/indexes/delete)   
+- [resetIndex](../../client-api/commands/indexes/how-to/reset-index)   
 
 ### Transformer commands
 
 There are following commands that can be used to manipulate transformers:   
-- [PutTransformer](../../client-api/commands/transformers/put)   
-- [GetTransformer](../../client-api/commands/transformers/get)   
-- [GetTransformers](../../client-api/commands/transformers/get)   
-- [DeleteTransformer](../../client-api/commands/transformers/delete)   
+- [putTransformer](../../client-api/commands/transformers/put)   
+- [getTransformer](../../client-api/commands/transformers/get)   
+- [getTransformers](../../client-api/commands/transformers/get)   
+- [deleteTransformer](../../client-api/commands/transformers/delete)   
 
 ### Attachment commands
 
 There are following commands that can be used to manipulate attachments:   
-- [PutAttachment](../../client-api/commands/attachments/put)   
-- [GetAttachment](../../client-api/commands/attachments/get)   
-- [GetAttachments](../../client-api/commands/attachments/get)   
-- [HeadAttachment](../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
-- [GetAttachmentHeadersStartingWith](../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
-- [DeleteAttachment](../../client-api/commands/attachments/delete)  
-- [UpdateAttachmentMetadata](../../client-api/commands/attachments/how-to/update-attachment-metadata-only)   
+- [putAttachment](../../client-api/commands/attachments/put)   
+- [getAttachment](../../client-api/commands/attachments/get)   
+- [getAttachments](../../client-api/commands/attachments/get)   
+- [headAttachment](../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
+- [getAttachmentHeadersStartingWith](../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
+- [deleteAttachment](../../client-api/commands/attachments/delete)  
+- [updateAttachmentMetadata](../../client-api/commands/attachments/how-to/update-attachment-metadata-only)   
 
 ### Patch commands
 
 There are following commands that can be used to patch:   
-- [Patch](../../client-api/commands/patches/how-to-work-with-patch-requests)   
+- [patch](../../client-api/commands/patches/how-to-work-with-patch-requests)   
 
 ### Query commands
 
 There are following commands that can be used to query:   
-- [Query](../../client-api/commands/querying/how-to-query-a-database)   
-- [StreamQuery](../../client-api/commands/querying/how-to-stream-query-results)   
+- [query](../../client-api/commands/querying/how-to-query-a-database)   
+- [streamQuery](../../client-api/commands/querying/how-to-stream-query-results)   
 
 ### Batch commands
 
 There are following commands that can be used to send commands in a batch:   
-- [Batch](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)   
+- [batch](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)   
 
 ### Administrative commands
 
 There are following commands that can be used to perform administrative tasks on a server:   
-- [CreateDatabase](../../client-api/commands/how-to/create-delete-database)   
-- [DeleteDatabase](../../client-api/commands/how-to/create-delete-database)   
-- [CompactDatabase](../../client-api/commands/how-to/compact-database)   
-- [GetStatistics](../../client-api/commands/how-to/get-database-and-server-statistics)   
-- [StartBackup](../../client-api/commands/how-to/start-backup-restore-operations)   
-- [StartRestore](../../client-api/commands/how-to/start-backup-restore-operations)   
-- [StopIndexing](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
-- [StartIndexing](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
-- [GetIndexingStatus](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
+- [createDatabase](../../client-api/commands/how-to/create-delete-database)   
+- [deleteDatabase](../../client-api/commands/how-to/create-delete-database)   
+- [compactDatabase](../../client-api/commands/how-to/compact-database)   
+- [getStatistics](../../client-api/commands/how-to/get-database-and-server-statistics)   
+- [startBackup](../../client-api/commands/how-to/start-backup-restore-operations)   
+- [startRestore](../../client-api/commands/how-to/start-backup-restore-operations)   
+- [stopIndexing](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
+- [startIndexing](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
+- [getIndexingStatus](../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status)   
 
 ## Related articles
 
