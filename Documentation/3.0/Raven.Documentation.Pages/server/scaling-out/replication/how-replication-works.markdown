@@ -75,7 +75,11 @@ Resolving a conflict is easy, you just need to PUT a new version of the document
 
 More details about conflicts are here: [dealing with replication conflicts](../../../server/scaling-out/replication/handling-conflicts).
 
-{WARNING If master-master replication is set up and [Expiration bundle](../../extending/bundles/expiration) is used on more than one server then the conflicts will occur. To solve this, use expiration bundle only on one server /}
+## Replication & other bundles
+
+{WARNING:Expiration}
+If master-master replication is set up and [Expiration bundle](../../extending/bundles/expiration) is used on more than one server then the conflicts will occur. To solve this, use expiration bundle only on one server.
+{WARNING/}
 
 ## Related articles
 
