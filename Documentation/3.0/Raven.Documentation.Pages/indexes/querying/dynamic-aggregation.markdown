@@ -40,6 +40,10 @@ Another example is an aggregation on different fields based on same facet:
 
 {CODE dynamic_aggregation_different_fieldss@Indexes\Querying\DynamicAggregation.cs /}
 
+## Remarks
+
+{WARNING `AggregateBy` only supports aggregation by single field, if you want to aggregate by a multiple fields you need to emit a single field that contains all values.   /}
+
 ## Related articles
 
 - [Querying : Faceted search](../../indexes/querying/faceted-search)
