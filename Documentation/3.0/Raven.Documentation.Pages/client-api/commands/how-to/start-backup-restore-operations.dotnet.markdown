@@ -25,7 +25,7 @@ To start or restore backup use `StartBackup` or `StartRestore` operations respec
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **restoreRequest** | [RestoreRequest]() | Restore information |
+| **restoreRequest** | [DatabaseRestoreRequest]() | Restore information |
 
 ## Example
 
