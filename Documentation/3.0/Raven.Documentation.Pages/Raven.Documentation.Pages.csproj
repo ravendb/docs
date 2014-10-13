@@ -400,6 +400,7 @@
     <None Include="server\scaling-out\sharding\.docslist" />
     <None Include="server\scaling-out\sharding\how-to-setup-sharding.markdown" />
     <None Include="server\troubleshooting\.docslist" />
+    <None Include="server\troubleshooting\recording-traffic-using-fiddlercap.markdown" />
     <None Include="server\troubleshooting\debug-endpoints.markdown" />
     <None Include="server\troubleshooting\enabling-logging.markdown" />
     <None Include="server\troubleshooting\running-in-debug-mode.markdown" />
