@@ -17,7 +17,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 			#endregion
 
 			#region backup_restore_2
-            Operation StartRestore(RestoreRequest restoreRequest);
+            Operation StartRestore(DatabaseRestoreRequest restoreRequest);
 			#endregion
 		}
 
@@ -41,7 +41,7 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
 					.DatabaseCommands
 					.GlobalAdmin
 					.StartRestore(
-						new RestoreRequest
+						new DatabaseRestoreRequest
 							{
 								BackupLocation = @"C:\temp\backup\Northwind\",
 								DatabaseLocation = @"~\Databases\NewNorthwind\",

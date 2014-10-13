@@ -391,6 +391,8 @@ namespace Raven.Documentation.CodeSamples.Glossary
 
 			public int CountOfIndexes { get; set; }
 
+			public int CountOfResultTransformers { get; set; }
+
 			public int InMemoryIndexingQueueSize { get; set; }
 
 			public long ApproximateTaskCount { get; set; }
@@ -409,25 +411,15 @@ namespace Raven.Documentation.CodeSamples.Glossary
 
 			public IndexStats[] Indexes { get; set; }
 
-			public ServerError[] Errors { get; set; }
+			public IndexingError[] Errors { get; set; }
 
-			public TriggerInfo[] Triggers { get; set; }
-
-			public IEnumerable<ExtensionsLog> Extensions { get; set; }
-
-			public ActualIndexingBatchSize[] ActualIndexingBatchSize { get; set; }
+			public IndexingBatchInfo[] IndexingBatchInfo { get; set; }
 
 			public FutureBatchStats[] Prefetches { get; set; }
 
 			public Guid DatabaseId { get; set; }
 
 			public bool SupportsDtc { get; set; }
-
-			public class TriggerInfo
-			{
-				public string Type { get; set; }
-				public string Name { get; set; }
-			}
 		}
 		#endregion
 
