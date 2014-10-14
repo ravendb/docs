@@ -53,6 +53,12 @@ This will produce the results:
 
 {WARNING Suggestions does not take advantage of the [encryption bundle](../../server/bundles/encryption). You should never use this feature on information that should be encrypted, because then you have a risk of storing sensitive data on a disk in unsecured manner. /}
 
+{WARNING:Increased indexing time}
+
+Indexes with turned on suggestions tend to use much more CPU power than other indexes, this can impact indexing speed (querying is not impacted).
+
+{WARNING/}
+
 ## Related articles
 
 - [Client API : Session : How to work with suggestions?](../../client-api/session/querying/how-to-work-with-suggestions)
