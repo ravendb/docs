@@ -19,9 +19,26 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				Map = products => from product in products
 								  select new
-									{
-										UnitsInStock = product.UnitsInStock
-									};
+								  {
+									  UnitsInStock = product.UnitsInStock
+								  };
+			}
+		}
+		#endregion
+
+		#region paging_6_0
+		public class Orders_ByOrderLines_ProductName : AbstractIndexCreationTask<Order>
+		{
+			public Orders_ByOrderLines_ProductName()
+			{
+				Map = orders => from order in orders
+								from line in order.Lines
+								select new
+								{
+									Product = line.ProductName
+								};
+
+				MaxIndexOutputsPerDocument = 1024;
 			}
 		}
 		#endregion
@@ -203,31 +220,25 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region paging_4_1
 					RavenQueryStatistics stats;
 					IList<Product> results;
+					var pageNumber = 0;
+					var pageSize = 10;
+					var skippedResults = 0;
 
-					// get the first page
-					results = session
-						.Query<Product, Products_ByUnitsInStock>()
-						.Statistics(out stats)
-						.Skip(0 * 10)					// retrieve results for the first page
-						.Take(10)					// page size is 10
-						.Where(x => x.UnitsInStock > 10)
-						.Distinct()
-						.ToList();
+					do
+					{
+						results = session
+							.Query<Product, Products_ByUnitsInStock>()
+							.Statistics(out stats)
+							.Skip((pageNumber * pageSize) + skippedResults)
+							.Take(pageSize)
+							.Where(x => x.UnitsInStock > 10)
+							.Distinct()
+							.ToList();
 
-					var totalResults = stats.TotalResults;
-					var skippedResults = stats.SkippedResults;
-
-					// get the second page
-					results = session
-						.Query<Product, Products_ByUnitsInStock>()
-						.Statistics(out stats)
-						.Skip((1 * 10) + skippedResults)		// retrieve results for the second page, taking into account skipped results
-						.Take(10)					// page size is 10
-						.Where(x => x.UnitsInStock > 0)
-						.Distinct()
-						.ToList();
-
-					// and so on...
+						skippedResults += stats.SkippedResults;
+						pageNumber++;
+					}
+					while (results.Count > 0);
 					#endregion
 				}
 
@@ -236,33 +247,26 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region paging_4_2
 					RavenQueryStatistics stats;
 					IList<Product> results;
+					var pageNumber = 0;
+					var pageSize = 10;
+					var skippedResults = 0;
 
-					// get the first page
-					results = session
-						.Advanced
-						.DocumentQuery<Product, Products_ByUnitsInStock>()
-						.Statistics(out stats)
-						.Skip(0 * 10)					// retrieve results for the first page
-						.Take(10)					// page size is 10
-						.WhereGreaterThan(x => x.UnitsInStock, 10)
-						.Distinct()
-						.ToList();
+					do
+					{
+						results = session
+							.Advanced
+							.DocumentQuery<Product, Products_ByUnitsInStock>()
+							.Statistics(out stats)
+							.Skip((pageNumber * pageSize) + skippedResults)
+							.Take(pageSize)
+							.WhereGreaterThan(x => x.UnitsInStock, 10)
+							.Distinct()
+							.ToList();
 
-					var totalResults = stats.TotalResults;
-					var skippedResults = stats.SkippedResults;
-
-					// get the second page
-					results = session
-						.Advanced
-						.DocumentQuery<Product, Products_ByUnitsInStock>()
-						.Statistics(out stats)
-						.Skip((1 * 10) + skippedResults)		// retrieve results for the second page, taking into account skipped results
-						.Take(10)					// page size is 10
-						.WhereGreaterThan(x => x.UnitsInStock, 10)
-						.Distinct()
-						.ToList();
-
-					// and so on...
+						skippedResults += stats.SkippedResults;
+						pageNumber++;
+					}
+					while (results.Count > 0);
 					#endregion
 				}
 			}
@@ -270,34 +274,110 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			using (var store = new DocumentStore())
 			{
 				#region paging_4_3
-				// get the first page
-				QueryResult result = store
-					.DatabaseCommands
-					.Query(
-						"Products/ByUnitsInStock",
-						new IndexQuery
-						{
-							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
-							Start = 0 * 10,				// retrieve results for the first page
-							PageSize = 10				// page size is 10
-						});
+				QueryResult result;
+				var pageNumber = 0;
+				var pageSize = 10;
+				var skippedResults = 0;
 
-				var totalResults = result.TotalResults;
-				var skippedResults = result.SkippedResults;
+				do
+				{
+					result = store
+						.DatabaseCommands
+						.Query(
+							"Products/ByUnitsInStock",
+							new IndexQuery
+							{
+								Query = "UnitsInStock_Range:{Ix10 TO NULL}",
+								Start = (pageNumber * pageSize) + skippedResults,
+								PageSize = pageSize,
+								IsDistinct = true
+							});
 
-				// get the second page
-				result = store
-					.DatabaseCommands
-					.Query(
-						"Products/ByUnitsInStock",
-						new IndexQuery
-						{
-							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
-							Start = (1 * 10) + skippedResults,		// retrieve results for the first page
-							PageSize = 10					// page size is 10
-						});
+					skippedResults += result.SkippedResults;
+					pageNumber++;
+				}
+				while (result.Results.Count > 0);
+				#endregion
+			}
 
-				// and so on...
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region paging_6_1
+					RavenQueryStatistics stats;
+					IList<Order> results;
+					var pageNumber = 0;
+					var pageSize = 10;
+					var skippedResults = 0;
+
+					do
+					{
+						results = session
+							.Query<Order, Orders_ByOrderLines_ProductName>()
+							.Statistics(out stats)
+							.Skip((pageNumber * pageSize) + skippedResults)
+							.Take(pageSize)
+							.ToList();
+
+						skippedResults += stats.SkippedResults;
+						pageNumber++;
+					}
+					while (results.Count > 0);
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region paging_6_2
+					RavenQueryStatistics stats;
+					IList<Order> results;
+					var pageNumber = 0;
+					var pageSize = 10;
+					var skippedResults = 0;
+
+					do
+					{
+						results = session
+							.Advanced
+							.DocumentQuery<Order, Orders_ByOrderLines_ProductName>()
+							.Statistics(out stats)
+							.Skip((pageNumber * pageSize) + skippedResults)
+							.Take(pageSize)
+							.ToList();
+
+						skippedResults += stats.SkippedResults;
+						pageNumber++;
+					}
+					while (results.Count > 0);
+					#endregion
+				}
+			}
+
+			using (var store = new DocumentStore())
+			{
+				#region paging_6_3
+				QueryResult result;
+				var pageNumber = 0;
+				var pageSize = 10;
+				var skippedResults = 0;
+
+				do
+				{
+					result = store
+						.DatabaseCommands
+						.Query(
+							"Orders/ByOrderLines/ProductName",
+							new IndexQuery
+							{
+								Start = (pageNumber * pageSize) + skippedResults,
+								PageSize = pageSize
+							});
+
+					skippedResults += result.SkippedResults;
+					pageNumber++;
+				}
+				while (result.Results.Count > 0);
 				#endregion
 			}
 

@@ -52,19 +52,26 @@ While the query will return with just 10 results, `totalResults` will hold the t
 
 ## Paging through tampered results
 
-For some queries, server will skip over some results internally, and by that invalidate the `TotalResults` value. For example when executing a Distinct query, `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
+For some queries, server will skip over some results internally, and by that invalidate the `TotalResults` value e.g. when executing a Distinct query or index produces multiple index entries per document, `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
 
 Whenever `SkippedResults` is greater than 0 it implies that we skipped over some results in the index.
     
-In order to do proper paging in those scenarios, you should use the `SkippedResults` when telling RavenDB how many documents to skip. In other words, for each page the starting point should be `.Skip(currentPage * pageSize + SkippedResults)`.
+In order to do proper paging in those scenarios, you should use the `SkippedResults` when telling RavenDB how many documents to skip. In other words, for each page the starting point should be `.Skip((currentPage * pageSize) + SkippedResults)`.
 
-For example, assuming a page size of 10:
+For example, let's page through all the results:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_4_1@Indexes\Querying\Paging.cs /}
 {CODE-TAB:csharp:DocumentQuery paging_4_2@Indexes\Querying\Paging.cs /}
 {CODE-TAB:csharp:Commands paging_4_3@Indexes\Querying\Paging.cs /}
 {CODE-TAB:csharp:Index paging_0_4@Indexes\Querying\Paging.cs /}
+{CODE-TABS/}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query paging_6_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:DocumentQuery paging_6_2@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Commands paging_6_3@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Index paging_6_0@Indexes\Querying\Paging.cs /}
 {CODE-TABS/}
 
 ## Increasing StartsWith performance
