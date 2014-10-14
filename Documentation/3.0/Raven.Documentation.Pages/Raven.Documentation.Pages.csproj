@@ -409,8 +409,7 @@
     <None Include="start\getting-started.markdown" />
     <None Include="start\whats-new.markdown" />
     <None Include="studio\.docslist" />
-    <None Include="studio\example-2.markdown" />
-    <None Include="studio\example.markdown" />
+    <None Include="studio\accessing-studio.markdown" />
     <None Include="transformers\.docslist" />
     <None Include="transformers\dealing-with-subcollections.markdown" />
     <None Include="transformers\transforming-hierarchical-data.markdown" />
@@ -429,6 +428,10 @@
   <ItemGroup>
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
+    <Content Include="studio\images\accessing-studio-database-selection.png" />
+    <Content Include="studio\images\accessing-studio-first-run.png" />
+    <Content Include="studio\images\accessing-studio-nav-bottom.png" />
+    <Content Include="studio\images\accessing-studio-nav.png" />
     <None Include="server\kb\document-key-generatation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />

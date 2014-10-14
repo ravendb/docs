@@ -98,12 +98,6 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Studio()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Studio);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Server()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Server);
@@ -143,7 +137,6 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Index = "Index";
             public readonly string Start = "Start";
             public readonly string Client = "Client";
-            public readonly string Studio = "Studio";
             public readonly string Server = "Server";
             public readonly string Glossary = "Glossary";
             public readonly string Articles = "Articles";
@@ -159,7 +152,6 @@ namespace Raven.Documentation.Web.Controllers
             public const string Index = "Index";
             public const string Start = "Start";
             public const string Client = "Client";
-            public const string Studio = "Studio";
             public const string Server = "Server";
             public const string Glossary = "Glossary";
             public const string Articles = "Articles";
@@ -229,15 +221,6 @@ namespace Raven.Documentation.Web.Controllers
         public ActionParamsClass_Client ClientParams { get { return s_params_Client; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Client
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_Studio s_params_Studio = new ActionParamsClass_Studio();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Studio StudioParams { get { return s_params_Studio; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Studio
         {
             public readonly string version = "version";
             public readonly string language = "language";
@@ -407,19 +390,6 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             ClientOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void StudioOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Studio(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Studio);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            StudioOverride(callInfo, version, language);
             return callInfo;
         }
 
