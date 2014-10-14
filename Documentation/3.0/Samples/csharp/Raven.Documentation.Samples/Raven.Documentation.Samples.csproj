@@ -58,6 +58,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3491-Unstable\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
+    <Reference Include="Raven.Tests.Helpers">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3491-Unstable\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Core" />
@@ -321,6 +324,7 @@
     <Compile Include="Server\ScalingOut\Replication\WriteAssurance.cs" />
     <Compile Include="Server\ScalingOut\Sharding\HowToSetupSharding.cs" />
     <Compile Include="Server\Troubleshooting\EnablingLogging.cs" />
+    <Compile Include="Server\Troubleshooting\Support.cs" />
     <Compile Include="Transformers\Basics.cs" />
     <Compile Include="Transformers\Creating.cs" />
     <Compile Include="Transformers\Including.cs" />

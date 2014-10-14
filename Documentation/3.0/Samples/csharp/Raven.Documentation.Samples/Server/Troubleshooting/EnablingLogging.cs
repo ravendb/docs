@@ -1,4 +1,4 @@
-﻿namespace Raven.Documentation.CodeSamples.Server.Troubleshooting
+﻿namespace Raven.Documentation.Samples.Server.Troubleshooting
 {
 	public class EnablingLogging
 	{
