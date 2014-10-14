@@ -1,4 +1,4 @@
-package net.ravendb.samples;
+package net.ravendb.samples.northwind;
 
 
 public class OrderLine {

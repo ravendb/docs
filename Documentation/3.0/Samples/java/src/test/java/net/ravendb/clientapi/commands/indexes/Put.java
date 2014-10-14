@@ -5,7 +5,7 @@ import net.ravendb.abstractions.indexing.IndexDefinition;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.IndexDefinitionBuilder;
-import net.ravendb.samples.QOrder;
+import net.ravendb.samples.northwind.QOrder;
 
 
 public class Put {
