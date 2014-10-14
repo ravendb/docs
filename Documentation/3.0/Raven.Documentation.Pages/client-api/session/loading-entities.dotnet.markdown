@@ -100,6 +100,7 @@ To load multiple entities that contain common prefix use `LoadStartingWith` meth
 | **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
 | **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
 | **configure** | Action<[ILoadConfiguration]()> | Additional configuration that should be used during operation e.g. transformer parameters can be added. |
+| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -133,6 +134,7 @@ Entities can be streamed from server using one of the following `Stream` methods
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
+| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
