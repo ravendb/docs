@@ -160,6 +160,12 @@
     <None Include="client-api\configuration\conventions\.docslist" />
     <None Include="client-api\configuration\conventions\identifier-generation\type-specific.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
+    <None Include="client-api\session\querying\how-to-perform-queries-lazily.java.markdown" />
+    <None Include="client-api\session\querying\how-to-use-intersect.java.markdown" />
+    <None Include="client-api\session\querying\how-to-perform-projection.java.markdown" />
+    <None Include="client-api\session\querying\how-to-get-query-statistics.java.markdown" />
+    <None Include="client-api\session\querying\how-to-perform-dynamic-aggregation.java.markdown" />
+    <None Include="client-api\session\querying\how-to-query-a-spatial-index.java.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-multifaceted-search.java.markdown" />
     <None Include="client-api\session\querying\how-to-perform-a-faceted-search.java.markdown" />
     <None Include="client-api\session\querying\how-to-use-transformers-in-queries.java.markdown" />
