@@ -5,7 +5,7 @@ import net.ravendb.abstractions.data.PutResult;
 import net.ravendb.abstractions.json.linq.RavenJObject;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
-import net.ravendb.samples.Category;
+import net.ravendb.samples.northwind.Category;
 
 
 public class Put {

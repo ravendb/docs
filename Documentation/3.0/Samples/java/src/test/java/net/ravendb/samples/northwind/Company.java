@@ -1,14 +1,17 @@
-package net.ravendb.samples;
+package net.ravendb.samples.northwind;
 
+import com.mysema.query.annotations.QueryEntity;
 
-public class Supplier {
+@QueryEntity
+public class Company {
+
   private String id;
-  private Contact contact;
+  private String externalId;
   private String name;
+  private Contact contact;
   private Address address;
   private String phone;
   private String fax;
-  private String homePage;
 
   public String getId() {
     return id;
@@ -18,12 +21,12 @@ public class Supplier {
     this.id = id;
   }
 
-  public Contact getContact() {
-    return contact;
+  public String getExternalId() {
+    return externalId;
   }
 
-  public void setContact(Contact contact) {
-    this.contact = contact;
+  public void setExternalId(String externalId) {
+    this.externalId = externalId;
   }
 
   public String getName() {
@@ -32,6 +35,14 @@ public class Supplier {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public Contact getContact() {
+    return contact;
+  }
+
+  public void setContact(Contact contact) {
+    this.contact = contact;
   }
 
   public Address getAddress() {
@@ -58,12 +69,6 @@ public class Supplier {
     this.fax = fax;
   }
 
-  public String getHomePage() {
-    return homePage;
-  }
 
-  public void setHomePage(String homePage) {
-    this.homePage = homePage;
-  }
 
 }

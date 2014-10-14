@@ -1,4 +1,4 @@
-package net.ravendb.samples;
+package net.ravendb.samples.northwind;
 
 import java.util.Date;
 import java.util.List;
