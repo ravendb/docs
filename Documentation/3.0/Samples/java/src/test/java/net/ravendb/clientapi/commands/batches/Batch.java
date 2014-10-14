@@ -10,8 +10,8 @@ import net.ravendb.abstractions.data.BatchResult;
 import net.ravendb.abstractions.json.linq.RavenJObject;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
-import net.ravendb.samples.Product;
-import net.ravendb.samples.Supplier;
+import net.ravendb.samples.northwind.Product;
+import net.ravendb.samples.northwind.Supplier;
 
 
 public class Batch {
