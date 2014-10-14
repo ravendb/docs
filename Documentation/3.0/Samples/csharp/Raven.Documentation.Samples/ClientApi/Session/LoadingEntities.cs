@@ -78,7 +78,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				int start = 0,
 				int pageSize = 25,
 				string exclude = null,
-				RavenPagingInformation pagingInformation = null);
+				RavenPagingInformation pagingInformation = null,
+				string skipAfter = null);
 
 			TResult[] LoadStartingWith<TTransformer, TResult>(
 				string keyPrefix,
@@ -87,7 +88,8 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				int pageSize = 25,
 				string exclude = null,
 				RavenPagingInformation pagingInformation = null,
-				Action<ILoadConfiguration> configure = null);
+				Action<ILoadConfiguration> configure = null,
+				string skipAfter = null);
 			#endregion
 
 			#region loading_entities_5_0
@@ -95,14 +97,16 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 				Etag fromEtag,
 				int start = 0,
 				int pageSize = int.MaxValue,
-				RavenPagingInformation pagingInformation = null);
+				RavenPagingInformation pagingInformation = null,
+				string skipAfter = null);
 
 			IEnumerator<StreamResult<T>> Stream<T>(
 				string startsWith,
 				string matches = null,
 				int start = 0,
 				int pageSize = int.MaxValue,
-				RavenPagingInformation pagingInformation = null);
+				RavenPagingInformation pagingInformation = null,
+				string skipAfter = null);
 			#endregion
 
 			#region loading_entities_6_0
