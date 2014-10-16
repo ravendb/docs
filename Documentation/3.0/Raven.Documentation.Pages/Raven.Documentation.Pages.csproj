@@ -182,6 +182,7 @@
     <None Include="client-api\session\how-to\clear-a-session.java.markdown" />
     <None Include="client-api\session\how-to\check-if-entity-has-changed.java.markdown" />
     <None Include="client-api\session\how-to\check-if-there-are-any-changes-on-a-session.java.markdown" />
+    <None Include="client-api\session\how-to\use-morelikethis.java.markdown" />
     <None Include="client-api\session\how-to\mark-entity-as-readonly.java.markdown" />
     <None Include="client-api\session\how-to\get-entity-url.java.markdown" />
     <None Include="client-api\session\how-to\get-entity-etag.java.markdown" />
