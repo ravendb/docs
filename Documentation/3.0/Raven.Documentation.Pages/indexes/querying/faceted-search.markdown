@@ -11,7 +11,13 @@ To achieve this in RavenDB, lets say you have a document like this:
 
 ## Step 1
 
-You need to setup your facet definitions and store them in RavenDB as a document, like so:
+Create an index to work against, this can be setup like so:
+
+{CODE step_2@Indexes\Querying\FacetedSearch.cs /}
+
+## Step 2
+
+Next you need to setup your facet definitions:
 
 {CODE step_1@Indexes\Querying\FacetedSearch.cs /}
 
@@ -29,12 +35,6 @@ This tells RavenDB that you would like to get the following facets:
  * 3.0 <= Megapixels <= 7.0
  * 7.0 <= Megapixels <= 10.0
  * Megapixels >= 10.0
-
-## Step 2
-
-Next you need to create an index to work against, this can be setup like so:
-
-{CODE step_2@Indexes\Querying\FacetedSearch.cs /}
 
 ## Step 3
 
@@ -103,6 +103,19 @@ The data below represents the sample faceted data that satisfies above query:
    ]
 }
 {CODE-BLOCK/}
+
+### Storing facets
+
+Alternatively, if you do not have to change your facets dynamically, you can store your facets as `FacetSetup` document and pass the document Id instead of the list each time:
+
+{CODE step_4_0@Indexes\Querying\FacetedSearch.cs /}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query step_4_1@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:DocumentQuery step_4_2@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Commands step_4_3@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Index step_1@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TABS/}
 
 ### Stale results
 
