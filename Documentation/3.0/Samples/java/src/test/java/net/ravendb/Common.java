@@ -4,11 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import net.ravendb.abstractions.data.Etag;
-import net.ravendb.abstractions.data.PatchCommandType;
-import net.ravendb.abstractions.data.PatchRequest;
 import net.ravendb.abstractions.json.linq.RavenJObject;
 import net.ravendb.abstractions.json.linq.RavenJToken;
-
 
 public class Common {
 
