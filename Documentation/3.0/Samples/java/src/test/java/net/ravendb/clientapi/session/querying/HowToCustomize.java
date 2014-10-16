@@ -22,10 +22,12 @@ import net.ravendb.samples.northwind.QEmployee;
 
 
 public class HowToCustomize {
+  @SuppressWarnings("unused")
   private class Employees_NoLastName extends AbstractTransformerCreationTask {
     // ...
   }
 
+  @SuppressWarnings("unused")
   private interface IFoo {
     //region customize_1_0
     public IDocumentQueryCustomization beforeQueryExecution(Action1<IndexQuery> action);
