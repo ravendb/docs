@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 
 using Raven.Abstractions.Data;
 using Raven.Client;
@@ -16,14 +18,14 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			public Cameras_ByManufacturerModelCostDateOfListingAndMegapixels()
 			{
 				Map = cameras => from camera in cameras
-							select new
-							{
-								camera.Manufacturer,
-								camera.Model,
-								camera.Cost,
-								camera.DateOfListing,
-								camera.Megapixels
-							};
+								 select new
+								 {
+									 camera.Manufacturer,
+									 camera.Model,
+									 camera.Cost,
+									 camera.DateOfListing,
+									 camera.Megapixels
+								 };
 			}
 		}
 		#endregion
@@ -35,40 +37,39 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region step_1
-
 					var facets = new List<Facet>
-						             {
-							            new Facet
-								        {
-											Name = "Manufacturer"
-								        },
-							            new Facet
-								        {
-											Name = "Cost_Range",
-											Mode = FacetMode.Ranges,
-											Ranges =
-											{
-												"[NULL TO Dx200.0]",
-												"[Dx200.0 TO Dx400.0]",
-												"[Dx400.0 TO Dx600.0]",
-												"[Dx600.0 TO Dx800.0]",
-												"[Dx800.0 TO NULL]"
-											}
-								        },
-							            new Facet
-								        {
-											Name = "Megapixels_Range",
-											Mode = FacetMode.Ranges,
-											Ranges =
-											{
-												"[NULL TO Dx3.0]",
-												"[Dx3.0 TO Dx7.0]",
-												"[Dx7.0 TO Dx10.0]",
-												"[Dx10.0 TO NULL]"
-											}
-								        }
-						             };
+					{
+						new Facet
+						{
+							Name = "Manufacturer"
+						},
+						new Facet<Camera>
+						{
+							Name = x => x.Cost,
+							Ranges =
+							{
+								x => x.Cost < 200m,
+								x => x.Cost > 200m && x.Cost < 400m,
+								x => x.Cost > 400m && x.Cost < 600m,
+								x => x.Cost > 600m && x.Cost < 800m,
+								x => x.Cost > 800m
+							}
+						},
+						new Facet<Camera>
+						{
+							Name = x => x.Megapixels,
+							Ranges =
+							{
+								x => x.Megapixels < 3.0,
+								x => x.Megapixels > 3.0 && x.Megapixels < 7.0,
+								x => x.Megapixels > 7.0 && x.Megapixels < 10.0,
+								x => x.Megapixels > 10.0
+							}
+						}
+					};
+					#endregion
 
+					#region step_4_0
 					session.Store(new FacetSetup { Id = "facets/CameraFacets", Facets = facets });
 					#endregion
 				}
@@ -81,7 +82,57 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				using (var session = store.OpenSession())
 				{
+					var facets = new List<Facet>();
+
 					#region step_3_0
+					FacetResults facetResults = session
+						.Query<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
+						.Where(x => x.Cost >= 100 && x.Cost <= 300)
+						.ToFacets(facets);
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					var facets = new List<Facet>();
+
+					#region step_3_1
+					FacetResults facetResults = session
+						.Advanced
+						.DocumentQuery<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
+						.WhereBetweenOrEqual(x => x.Cost, 100, 300)
+						.ToFacets(facets);
+					#endregion
+				}
+			}
+
+			using (var store = new DocumentStore())
+			{
+				var facets = new List<Facet>();
+
+				#region step_3_2
+				FacetResults facetResults = store
+					.DatabaseCommands
+					.GetFacets(
+						"Cameras/ByManufacturerModelCostDateOfListingAndMegapixels",
+						new IndexQuery
+						{
+							Query = "Cost_Range:[Dx100 TO Dx300]"
+						},
+						facets);
+				#endregion
+			}
+		}
+
+		public void Step4()
+		{
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					var facets = new List<Facet>();
+
+					#region step_4_1
 					FacetResults facetResults = session
 						.Query<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
 						.Where(x => x.Cost >= 100 && x.Cost <= 300)
@@ -91,7 +142,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 				using (var session = store.OpenSession())
 				{
-					#region step_3_1
+					var facets = new List<Facet>();
+
+					#region step_4_2
 					FacetResults facetResults = session
 						.Advanced
 						.DocumentQuery<Camera, Cameras_ByManufacturerModelCostDateOfListingAndMegapixels>()
@@ -103,7 +156,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 			using (var store = new DocumentStore())
 			{
-				#region step_3_2
+				var facets = new List<Facet>();
+
+				#region step_4_3
 				FacetResults facetResults = store
 					.DatabaseCommands
 					.GetFacets(
