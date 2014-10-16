@@ -113,7 +113,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 							Query = "UnitsInStock_Range:{Ix10 TO NULL}",
 							SortedFields = new[]
 							{
-								new SortedField("-UnitsInStock")
+								new SortedField("-UnitsInStock_Range")
 							}
 						});
 				#endregion

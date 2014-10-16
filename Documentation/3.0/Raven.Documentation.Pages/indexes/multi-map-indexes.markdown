@@ -1,6 +1,6 @@
 # Multi-Map indexes
 
-Multi-Map indexes allows you to index data from multiple collections e.g. polymorphic data (check [example]()) or any common data between types.
+Multi-Map indexes allows you to index data from multiple collections e.g. polymorphic data (check [example](../indexes/indexing-polymorphic-data)) or any common data between types.
 
 ## AddMap & AddMapForAll
 
