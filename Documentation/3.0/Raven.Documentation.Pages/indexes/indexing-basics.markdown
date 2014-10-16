@@ -31,9 +31,9 @@ By the end, all of the above queries will execute [Query command](../client-api/
 
 ## Type of indexes
 
-You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying)), but more interesing division is by functionality and in this case we have `Map` and `Map-Reduce` indexes.
+You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying)), but more interesting division is by functionality and in this case we have `Map` and `Map-Reduce` indexes.
 
-`Map` indexes (sometimes refered as simple indexes) contain one (or more) mapping functions that indicate which fields from documents should be indexed (in other words they indicate which documents can be searched by which fields).
+`Map` indexes (sometimes referred as simple indexes) contain one (or more) mapping functions that indicate which fields from documents should be indexed (in other words they indicate which documents can be searched by which fields).
 
 On the other hand there are `Map-Reduce` indexes that allow complex aggregations to be performed in two-step process. First by selecting appropriate records (using Map function), then by applying specified reduce function to these records to produce smaller set of results.
 

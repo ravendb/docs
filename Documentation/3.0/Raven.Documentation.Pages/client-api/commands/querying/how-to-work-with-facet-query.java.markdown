@@ -51,7 +51,7 @@ Sending multiple facet queries is achievable by using `GetMultiFacets` method.
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResult]()[] | List of results, each maching position of a FacetQuery in `facetedQueries` parameter. |
+| [FacetResult]()[] | List of results, each matching position of a FacetQuery in `facetedQueries` parameter. |
 
 ### Example
 

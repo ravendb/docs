@@ -19,7 +19,7 @@ It will produce the suggestions:
         chai
 
 The `Suggest` method is an extension contained in `Raven.Client` namespace. It also has an overload that takes one parameter - `SuggestionQuery` that allows
-you to specify the suggesion query options:
+you to specify the suggestion query options:
 
 * *Field* - the name of the field that you want to find suggestions in,
 * *Term* - the provided by user search term,

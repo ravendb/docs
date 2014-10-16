@@ -156,7 +156,7 @@ Entities can be streamed from server using one of the following `stream` methods
 
 {PANEL:IsLoaded}
 
-To check if entity is attached to sessiong, e.g. has been loaded previously, use `isLoaded` method from `advanced()` session operations.
+To check if entity is attached to session, e.g. has been loaded previously, use `isLoaded` method from `advanced()` session operations.
 
 {CODE:java loading_entities_6_0@ClientApi\Session\LoadingEntities.java /}
 

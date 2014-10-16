@@ -1,3 +1,3 @@
-# Bundle : Unique Contraints : How to work with unique constraints bundle?
+# Bundle : Unique Constraints : How to work with unique constraints bundle?
 
 TODO

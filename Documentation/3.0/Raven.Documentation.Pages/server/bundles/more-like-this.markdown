@@ -30,8 +30,8 @@ By passing in an object of type MoreLikeThisQuery the More Like This default can
 + **Boost** - Boost terms in query based on score. Using this option may give more exact results by boosting the terms found by their score. The default is false.
 + **BoostFactor** - Factor that is used during term boosting. Default: 1.   
 + **IndexName** - Name of an index to use in operation.   
-+ **DocumentId** - The id of a document that will be used as the basis for comparision.   
-+ **MapGroupFields** - The values for the mapping group fields that will be used as the basis for comparision.   
++ **DocumentId** - The id of a document that will be used as the basis for comparison.   
++ **MapGroupFields** - The values for the mapping group fields that will be used as the basis for comparison.   
 + **MaximumNumberOfTokensParsed** - The maximum number of tokens to parse in each example document field that is not stored with TermVector support. The default is 5000.
 + **MaximumWordLength** - Ignore words greater than this length or if 0 then this has no effect. The default is 0.
 + **MaximumQueryTerms** - Return a Query with no more than this many terms. The default is 25.
@@ -42,7 +42,7 @@ By passing in an object of type MoreLikeThisQuery the More Like This default can
 + **MinimumWordLength** - Ignore words less than this length or if 0 then this has no effect. The default is 0.
 + **StopWordsDocumentId** - the document ID that contains the set of stop words (see below).
 + **ResultsTransformer** - name of a transformer that will be used.
-+ **TransformerParameters** - parametetrs that will be passed to transformer.
++ **TransformerParameters** - parameters that will be passed to transformer.
 
 ## Stop Words
 

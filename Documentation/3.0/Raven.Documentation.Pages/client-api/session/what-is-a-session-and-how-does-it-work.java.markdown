@@ -31,7 +31,7 @@ By default, RavenDB will not allow operations that might compromise the stabilit
 
 The first one is obvious - unbounded result sets are dangerous, and have been the cause of many failures in RDBMS based systems - unless a result-size has been specified, RavenDB will automatically limit the size of the returned result set.
 
-The second example is less immediate, and should never be reached if RavenDB is being utilized correctly - remote calls are expensive, and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other mis-use of the RavenDB session.
+The second example is less immediate, and should never be reached if RavenDB is being utilized correctly - remote calls are expensive, and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other misuse of the RavenDB session.
 
 ## Related articles
 

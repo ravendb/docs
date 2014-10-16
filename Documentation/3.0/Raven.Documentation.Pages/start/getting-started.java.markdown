@@ -3,7 +3,7 @@
 RavenDB Client is available as snapshot in daily-builds S3 maven repository.
 
 {WARNING:Important}
-Embedding repositories in pom is not good practise, however allows quick start. Please consider moving repositories into `~/.m2/settings.xml`.
+Embedding repositories in pom is not good practice, however allows quick start. Please consider moving repositories into `~/.m2/settings.xml`.
 More information can be found [here](http://maven.apache.org/guides/mini/guide-multiple-repositories.html). 
 {WARNING/}
 
@@ -67,7 +67,7 @@ Sample pom:
 Please notice that plugins section contains `net.ravendb.querydsl.RavenDBAnnotationProcessor`. 
 As Java doesn't have LINQ, all definitions of indexes/transformers must be created using strings.
  Alternatively you can use studio to create indexes/transformers. However you can use QueryDSL for 
-strongly-typed quering. In order to use QueryDSL you have to mark your entities with `@QueryEntity` 
+strongly-typed querying. In order to use QueryDSL you have to mark your entities with `@QueryEntity` 
 annotation and enable code generation in `pom.xml`. 
 
 {CODE-BLOCK:java}

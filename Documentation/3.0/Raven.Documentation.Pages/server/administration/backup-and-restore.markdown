@@ -47,8 +47,8 @@ Parameters are as follows:
 * _(Optional)_ `nowait` - By default the utility will ping the server and wait until backup is done, specifying this flag will make the utility return immediately after the backup process has started.
 * _(Optional)_ `readkey` - Specifying this flag will make the utility wait for key press before exiting.
 * _(Optional)_ `incremental` - When specified, the backup process will be incremental when done to a folder where a previous backup lies. If `dest` is an empty folder, or it does not exist, a full backup will be created. For incremental backups to work, the configuration option `Raven/Esent/CircularLog` has to be set to false.
-* _(Optional)_ `timeout` - Timeout (in milliseconds) to use for requestes.
-* _(Optional)_ `username`, `password`, `domain`, `api-key` - credentials used when authentication is requred.
+* _(Optional)_ `timeout` - Timeout (in milliseconds) to use for requests.
+* _(Optional)_ `username`, `password`, `domain`, `api-key` - credentials used when authentication is required.
 
 #### Remarks
 

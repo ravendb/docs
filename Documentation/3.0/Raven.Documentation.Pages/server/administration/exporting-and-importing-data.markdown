@@ -56,7 +56,7 @@ You can continue using that RavenDB instance while data is being imported to it.
 
 ### Importing and Replication
 
-Note that if you have either the replication bundle or the periodic backup bunlde active on the database, it is recommened that you'll filter out the following documents when doing an import: `Raven/Replication/Destinations`, `Raven/Replication/VersionHilo`, `Raven/Backup/Periodic/Setup`, `Raven/Backup/Periodic/Status`.  
+Note that if you have either the replication bundle or the periodic backup bundle active on the database, it is recommended that you'll filter out the following documents when doing an import: `Raven/Replication/Destinations`, `Raven/Replication/VersionHilo`, `Raven/Backup/Periodic/Setup`, `Raven/Backup/Periodic/Status`.  
 This can be done using the following command: 
 
 {CODE-BLOCK:plain}

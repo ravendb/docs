@@ -1,6 +1,6 @@
 ﻿#What are conventions?
 
-Conventions gives you an ability to customize the Client Api behavior. They are accessible from `DocumentStore` object:
+Conventions gives you an ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
 
 {CODE conventions_1@ClientApi\Configuration\Conventions\WhatAreConventions.cs /}
 

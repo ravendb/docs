@@ -32,7 +32,7 @@ then we could define our field using `Spatial` method in `AbstractIndexCreationT
 
 {CODE spatial_search_enhancements_2@Indexes\SpatialIndexes.cs /}
 
-where under `options` we got access to our geography and cartesian factories:   
+where under `options` we got access to our geography and Cartesian factories:   
 
 {CODE spatial_search_enhancements_3@Indexes\SpatialIndexes.cs /}
 

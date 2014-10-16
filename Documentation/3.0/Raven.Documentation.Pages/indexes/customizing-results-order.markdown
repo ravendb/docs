@@ -14,7 +14,7 @@ The index outlined above will allow sorting by value on the number of units in s
 
 The default `SortOptions` value is `String`. Appropriate values available for all numeric types (`Byte`, `Double`, `Float`, `Int`, `Long` and `Short`).
 
-{NOTE Specifing the `Sort` in the index definition won't make results from this index be ordered unless you call `OrderBy` on the query itself. /}
+{NOTE Specifying the `Sort` in the index definition won't make results from this index be ordered unless you call `OrderBy` on the query itself. /}
 
 ### Example
 
@@ -22,7 +22,7 @@ In the following query we are using the `OrderBy` method in order to indicate th
 
 {CODE static_sorting3@Indexes\CustomizingResultsOrder.cs /}
 
-So, by default it will sort on `UnitsInStock` as it was a string. By specifing `Sort(x => x.UnitsInStock, SortOptions.Int)` in the index definition, we inidicate that the sort order should be in a numerical order. 
+So, by default it will sort on `UnitsInStock` as it was a string. By specifying `Sort(x => x.UnitsInStock, SortOptions.Int)` in the index definition, we indicate that the sort order should be in a numerical order. 
 
 ## Collation support
 

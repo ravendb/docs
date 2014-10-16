@@ -1,6 +1,6 @@
 # Session : Deleting entities
 
-Entities can be marked for deletion by using `Delete` method, but will not be removed from server untill `SaveChanges` is called.
+Entities can be marked for deletion by using `Delete` method, but will not be removed from server until `SaveChanges` is called.
 
 ## Syntax
 

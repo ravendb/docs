@@ -23,7 +23,7 @@ where:
 * **AllowPut** is used to `grant` or `deny` the put operation.   
 * **OnPut** is used to perform any logic just before the document is saved to the disk.   
 * **AfterPut** is used to perform any logic after the document was inserted but still in the same transaction as in `OnPut` method.   
-* **AfterCommit** is used to perform any logic `after` the transaction was commited.    
+* **AfterCommit** is used to perform any logic `after` the transaction was committed.    
 * **Initialize** and **SecondStageInit** are used in trigger initialization process.   
 
 ### Example - Security trigger
@@ -47,7 +47,7 @@ where:
 * **AllowDelete** is used to `grant` or `deny` the delete operation.   
 * **OnDelete** is used to perform any logic just before the document is deleted.   
 * **AfterDelete** is used to perform any logic after the document has been deleted but still in the same transaction as in `OnDelete` method.   
-* **AfterCommit** is used to perform any logic `after` the transaction was commited.    
+* **AfterCommit** is used to perform any logic `after` the transaction was committed.    
 * **Initialize** and **SecondStageInit** are used in trigger initialization process.   
 
 ### Example - Cascading deletes
@@ -77,7 +77,7 @@ where:
 
 {CODE plugins_1_1@Server\Plugins.cs /}
 
-In the example above, we only let the owner of a document to read it. You can see that a Read trigger can deny the read to the user (returning an error to the user) or ignoring the read (hiding the presence of the document). You can also make decisions based on wheter that specific document was requested, or if the document was read as part of a query.
+In the example above, we only let the owner of a document to read it. You can see that a Read trigger can deny the read to the user (returning an error to the user) or ignoring the read (hiding the presence of the document). You can also make decisions based on whether that specific document was requested, or if the document was read as part of a query.
 
 ### Example - Linking document on the server side
 
@@ -117,8 +117,8 @@ where:
 
 where:   
 * **OnIndexEntryDeleted** is executed when index entry is being removed from the index. The provided key may represent an already deleted document.    
-* **OnIndexEntryCreated** is executed when specified document with a given key is being inserted. The changes to the provided lucene document will be writen to the Lucene index.    
-* **AnErrorOccured** is used to notify the batcher that an error occured.   
+* **OnIndexEntryCreated** is executed when specified document with a given key is being inserted. The changes to the provided lucene document will be written to the Lucene index.    
+* **AnErrorOccured** is used to notify the batcher that an error occurred.   
 
 ### Example - Creating static snapshot from the indexed document
 

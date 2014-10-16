@@ -65,7 +65,7 @@ The advantage of this approach is that you can define transformer name as you fe
 
 {CODE transformers_6@Transformers/Creating.cs /}
 
-This approach lack any strongly-typed definition gurantees, but the good thing about this is that we aren't limited by the type system. In this case, we can
+This approach lack any strongly-typed definition guarantees, but the good thing about this is that we aren't limited by the type system. In this case, we can
 execute this transformer on any type that has a Name property. Note that in practice, you _can_ use any transformer on any type. They execute on the server
 and have no concept of your user defined types. However, it is usually easier to look at untyped transformers and see that they can operate on all types, 
 than to look at a typed transformer and understand that it can operate on types other than what it is defined for.

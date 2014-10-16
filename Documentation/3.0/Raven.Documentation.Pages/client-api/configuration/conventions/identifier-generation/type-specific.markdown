@@ -10,7 +10,7 @@ There are two methods to satisfy that:
 
 {CODE register_id_convention_method@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
-The conventions registered by this medhod are used for operations performed in a synchronous manner.
+The conventions registered by this method are used for operations performed in a synchronous manner.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -27,7 +27,7 @@ Current `DocumentConvention` instance.
 
 {CODE register_id_convention_method_async@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
-The conventions registered by this medhod are used for operations performed in an asynchronous manner.
+The conventions registered by this method are used for operations performed in an asynchronous manner.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
