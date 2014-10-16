@@ -119,7 +119,7 @@ Alternatively, if you do not have to change your facets dynamically, you can sto
 
 ### Stale results
 
-The faceted search does not take into account a stealeness of an index. You can't wait for non stale results by customizing your query with one of `WaitForNonStaleResultsXXX` method.
+The faceted search does not take into account a staleness of an index. You can't wait for non stale results by customizing your query with one of `WaitForNonStaleResultsXXX` method.
 
 ## Related articles
 

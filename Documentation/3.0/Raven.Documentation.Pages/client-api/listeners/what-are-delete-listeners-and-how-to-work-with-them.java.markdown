@@ -7,6 +7,6 @@ The interface contains only one method that is invoked before the delete request
 
 ##Example
 
-To prevent anyone from deleting documents we can create `preventDeleteListener` with can be implementated as follows:
+To prevent anyone from deleting documents we can create `preventDeleteListener` with can be implemented as follows:
 
 {CODE:java document_delete_example@ClientApi\Listeners\Delete.java /}

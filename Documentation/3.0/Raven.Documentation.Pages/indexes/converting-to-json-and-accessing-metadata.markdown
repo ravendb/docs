@@ -1,4 +1,4 @@
-# Converting to JSON and accesing metadata
+# Converting to JSON and accessing metadata
 
 Entities passed to index can be converted to JSON using `AsDocument` method, there is also a possibility to access metadata for a specified object using `MetadataFor` method.
 

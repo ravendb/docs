@@ -26,7 +26,7 @@ Everything else remains the same. Note that unlike other databases, there isn't 
 
 **Note:** You can access the **Studio** for the specified database by browsing to: http://localhost:8080/databases/northwind
 
-From the client API, you can create (if it doesn not exist) database in following way (more methods [here](../../client-api/commands/how-to/create-delete-database)):
+From the client API, you can create (if it does not exist) database in following way (more methods [here](../../client-api/commands/how-to/create-delete-database)):
 
 {CODE multiple_databases_2@Server\Configuration/MultipleDatabases.cs /}
 

@@ -11,7 +11,7 @@ Use **Query** method to fetch results of a selected index according to a specifi
 | **index** | string | A name of an index to query |
 | **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
 | **includes** | string[] | An array of relative paths that specify related documents ids which should be included to query result. |
-| **metadataOnly** | bool | True if returned documents should include only metadata withoud a document body. |
+| **metadataOnly** | bool | True if returned documents should include only metadata without a document body. |
 | **indexEntriesOnly** | bool | True if query results should contains only [index entries](../../../glossary/indexing#index-entry). |
 
 | Return Value | |

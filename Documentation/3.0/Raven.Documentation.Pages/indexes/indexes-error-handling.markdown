@@ -1,6 +1,6 @@
 # Error handling in Indexes
 
-Indexes in RavenDB are user provided Linq queries running on top of dynamic JSON data model. There is a wide space for errors here, either because of malformed index definition or missing / corrupt data on the JSON document itself.
+Indexes in RavenDB are user provided LINQ queries running on top of dynamic JSON data model. There is a wide space for errors here, either because of malformed index definition or missing / corrupt data on the JSON document itself.
 
 ## Index compilation errors
 

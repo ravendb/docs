@@ -2,7 +2,7 @@
 
 By default, each found document in index is passed once to the transformer, in most cases this is a valid assumption, but there are cases when this behavior needs to be changed.
 
-The best example is when one document produces multiple index entires which are stored and we want to extract them from index and pass to transformer. Default behavior would filter-out duplicates (by duplicates we mean index entries that originate from same document) so only one result would be transformed. To address this situation the `SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer` configuration option has been introduced.
+The best example is when one document produces multiple index entries which are stored and we want to extract them from index and pass to transformer. Default behavior would filter-out duplicates (by duplicates we mean index entries that originate from same document) so only one result would be transformed. To address this situation the `SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer` configuration option has been introduced.
 
 ## Example
 

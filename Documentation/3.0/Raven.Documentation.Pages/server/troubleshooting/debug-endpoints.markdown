@@ -30,7 +30,7 @@
 | debug/info-package | GET | | Creates debug info package that contains detailed information about the database (e.g. replication information, statistics, queries, requests, hardware information, etc.) | |
 | debug/transactions | GET | | Returns information about current DTC transactions. | |
 | | | | |
-| admin/stats | GET | | Returns server-wide statistics (e.g. server name, uptime, memory statistis, loaded databases information). More [here](../../server/administration/statistics). | |
+| admin/stats | GET | | Returns server-wide statistics (e.g. server name, uptime, memory statistics, loaded databases information). More [here](../../server/administration/statistics). | |
 | admin/gc | GET | | Starts the garbage collection process. | |
 | admin/loh-compaction | GET | | Starts the garbage collection with LOH compaction process. | |
 | admin/debug/info-package | GET | - _(Optional)_ stacktrace - indicates if stacktraces should be included in package (may freeze server for some time to gather them). | Returns debug info package for all loaded databases. |
@@ -38,7 +38,7 @@
 | | | | |
 | build/version | GET | | Returns product and build version. | Y |
 | | | | |
-| indexes/{index_name} ?op=forceWriteToDisk | POST | - _index_name_ - index name | Force in-memory auto-index persistance. | |
+| indexes/{index_name} ?op=forceWriteToDisk | POST | - _index_name_ - index name | Force in-memory auto-index persistence. | |
 
 ## Studio
 

@@ -19,7 +19,7 @@ There are few methods that allow you to retrieve index from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [IndexDefinition](../../../glossary/indexes/index-definition) | Instance of IndexDefinition repesenting index. |
+| [IndexDefinition](../../../glossary/indexes/index-definition) | Instance of IndexDefinition representing index. |
 
 ### Example
 

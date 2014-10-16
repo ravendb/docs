@@ -55,7 +55,7 @@ This extension method creates database on a server with **default configuration 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **name** | string | Name of a database that will be created if it does not exist |
-| **ignoreFailures** | bool | Ignore any exceptions that could occured during database creation. Default: `false` |
+| **ignoreFailures** | bool | Ignore any exceptions that could occurred during database creation. Default: `false` |
 
 ### Example
 

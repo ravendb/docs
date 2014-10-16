@@ -24,7 +24,7 @@ The configuration of the RavenDB service is straight-forward. You only have to p
 
 ##IIS Application configuration
 
-The configuration of RavenDB run on IIS requires you to go throught a few screens. 
+The configuration of RavenDB run on IIS requires you to go through a few screens. 
 
 ###Web site
 In the first dialog you need to enter a web site configuration. You have here two possibilities:
@@ -84,7 +84,7 @@ Below there is a command which installs RavenDB as a windows service:
 
 The list of RavenDB specific properties:
 
-* <em>RAVEN_INSTALLATION_TYPE</em> - available options: SERVICE or IIS (quiet mode instalation on IIS is not recommended)
+* <em>RAVEN_INSTALLATION_TYPE</em> - available options: SERVICE or IIS (quiet mode installation on IIS is not recommended)
 * <em>RAVEN_TARGET_ENVIRONMENT</em> - available options: PRODUCTION (default), DEVELOPMENT
 * <em>RAVEN_LICENSE_FILE_PATH</em> - a full path to the license file
 * <em>RAVEN_DATA_DIR</em> - data directory (default: ~\Data)

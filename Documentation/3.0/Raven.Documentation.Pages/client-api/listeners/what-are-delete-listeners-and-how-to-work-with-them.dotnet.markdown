@@ -7,6 +7,6 @@ The interface contains only one method that is invoked before the delete request
 
 ##Example
 
-To prevent anyone from deleting documents we can create `PreventDeleteListener` with can be implementated as follows:
+To prevent anyone from deleting documents we can create `PreventDeleteListener` with can be implemented as follows:
 
 {CODE document_delete_example@ClientApi\Listeners\Delete.cs /}

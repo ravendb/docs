@@ -25,7 +25,7 @@ the CLR type of an entity is defined by `FindClrTypeName` convention:
 
 {CODE find_type_name@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
-To properly perform the revert conversion that is from a JSON result into a .NET object we need to retrieve the CLR type from `Raven-Clr-Type` medatada:
+To properly perform the revert conversion that is from a JSON result into a .NET object we need to retrieve the CLR type from `Raven-Clr-Type` metadata:
 
 {CODE find_clr_type@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
@@ -52,8 +52,8 @@ upper characters will not change anything, e.g. for the tag name: `LineItems`, w
 
 ###FindIdentityProperty
 
-The client must know where in your entity an identifier is stored to be properlt able to transform it into JSON document. It uses `FindIdentityProperty` convention for that. The default and very common convention is that a property
-named `Id` is the indentifier, so it is the default one:
+The client must know where in your entity an identifier is stored to be property able to transform it into JSON document. It uses `FindIdentityProperty` convention for that. The default and very common convention is that a property
+named `Id` is the identifier, so it is the default one:
 
 {CODE find_identity_property@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 

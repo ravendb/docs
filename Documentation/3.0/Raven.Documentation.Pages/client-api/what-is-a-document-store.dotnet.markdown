@@ -8,7 +8,7 @@ The document store object has single URL address that points to RavenDB server, 
 There are three types of the document store objects, all of them implement common `IDocumentStore` interface:
 
 * `DocumentStore` acts against a remote server via HTTP requests,
-* `EmbeddableDocumentStore` interacts with a RavenDB storange embedded in a user's application by making direct calls to a database (see [RavenDB Embedded mode](../server/installation/embedded))
+* `EmbeddableDocumentStore` interacts with a RavenDB embedded storage in a user's application by making direct calls to a database (see [RavenDB Embedded mode](../server/installation/embedded))
 * `ShardedDocumentStore` works against a sharded RavenDB database (see [How to setup sharding](../client-api/how-to/setup-sharding)).
 
 The document store ensures access to the following client API features:
@@ -17,6 +17,6 @@ The document store ensures access to the following client API features:
 * [Commands](../client-api/commands/what-are-commands)
 * [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation)
 * [Changes API](../client-api/changes/what-is-changes-api)
-* Conventions
+* [Conventions]()
 * [Listeners](../client-api/listeners/what-are-listeners)
 * [Aggressive cache](../client-api/how-to/setup-aggresive-caching)
