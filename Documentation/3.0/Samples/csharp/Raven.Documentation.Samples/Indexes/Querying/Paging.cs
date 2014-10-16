@@ -391,7 +391,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Advanced
 						.LoadStartingWith<Product>(
 							"products/",				// all documents starting with 'products/'
-							"1*|2*",				// rest of the key must begin with "1" or "2" e.g. employees/10, employees/25
+							"1*|2*",				// rest of the key must begin with "1" or "2" e.g. products/10, products/25
 							0 * 25,					// skip 0 records (page 1)
 							25,					// take up to 25
 							pagingInformation: pagingInformation);	// fill `RavenPagingInformation` with operation data
@@ -400,7 +400,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Advanced
 						.LoadStartingWith<Product>(
 							"products/",				// all documents starting with 'products/'
-							"1*|2*",				// rest of the key must begin with "1" or "2" e.g. employees/10, employees/25
+							"1*|2*",				// rest of the key must begin with "1" or "2" e.g. products/10, products/25
 							1 * 25,					// skip 25 records (page 2)
 							25,					// take up to 25
 							pagingInformation: pagingInformation);	// since this is a next page to 'page 1' and we are passing 'RavenPagingInformation' that was filled during 'page 1' retrieval, rapid pagination will take place
