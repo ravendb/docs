@@ -36,5 +36,5 @@ To do an CSV Export you need to select a collection from the left side of the sc
 
 ## Editing documents
 
-Selecting single document or click on its Id will navigate you to [Document Edit View]().
+Selecting single document or click on its Id will navigate you to [Document Edit View](../../../studio/overview/documents/document-edit-view).
 

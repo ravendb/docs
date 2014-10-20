@@ -531,6 +531,11 @@
     <Content Include="studio\images\accessing-studio-first-run.png" />
     <Content Include="studio\images\accessing-studio-nav-bottom.png" />
     <Content Include="studio\images\accessing-studio-nav.png" />
+    <Content Include="studio\overview\documents\images\document-edit-view-action-bar.png" />
+    <Content Include="studio\overview\documents\images\document-edit-view-data-tab.png" />
+    <Content Include="studio\overview\documents\images\document-edit-view-document-key.png" />
+    <Content Include="studio\overview\documents\images\document-edit-view-metadata-tab.png" />
+    <Content Include="studio\overview\documents\images\document-edit-view-metadata.png" />
     <Content Include="studio\overview\documents\images\documents-view-collections.png" />
     <Content Include="studio\overview\documents\images\documents-view-delete-collection.png" />
     <Content Include="studio\overview\documents\images\documents-view-export-to-csv.png" />
