@@ -544,6 +544,14 @@
     <Content Include="studio\overview\documents\images\patch-view-action-bar.png" />
     <Content Include="studio\overview\documents\images\patch-view-script.png" />
     <Content Include="studio\overview\documents\images\patch-view-test.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-action-bar.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-edit.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-menu-1.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-menu-2.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-menu-copy.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-menu-delete.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-menu-reset.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-query.png" />
     <None Include="server\kb\document-key-generatation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
