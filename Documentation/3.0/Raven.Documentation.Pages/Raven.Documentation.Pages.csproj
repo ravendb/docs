@@ -541,6 +541,9 @@
     <Content Include="studio\overview\documents\images\documents-view-export-to-csv.png" />
     <Content Include="studio\overview\documents\images\documents-view-select-all-collection.png" />
     <Content Include="studio\overview\documents\images\documents-view-select-all.png" />
+    <Content Include="studio\overview\documents\images\patch-view-action-bar.png" />
+    <Content Include="studio\overview\documents\images\patch-view-script.png" />
+    <Content Include="studio\overview\documents\images\patch-view-test.png" />
     <None Include="server\kb\document-key-generatation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
