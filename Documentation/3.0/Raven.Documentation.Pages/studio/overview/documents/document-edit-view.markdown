@@ -6,13 +6,13 @@ Whenever you want to edit a document (e.g. by click on Id in [Documents View](..
 
 Action Bar contains following buttons:
 
-- Save - save document on server (enabled when changes are detected),
-- Refresh - loads document from server,
-- Format - adjusts JSON formatting,
-- New Line Mode - toggles new line visibility,
-- Auto-Collapse - toggles if nested complex properties should be collapsed,
-- Delete - deletes document from server,
-- Pager - pages through documents
+- `Save` - save document on server (enabled when changes are detected),
+- `Refresh` - loads document from server,
+- `Format` - adjusts JSON formatting,
+- `New Line Mode` - toggles new line visibility,
+- `Auto-Collapse` - toggles if nested complex properties should be collapsed,
+- `Delete` - deletes document from server,
+- `Pager` - pages through documents
 
 ![Figure 1. Studio. Document Edit View. Action Bar.](images/document-edit-view-action-bar.png)  
 

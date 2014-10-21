@@ -6,11 +6,11 @@ This view lists all available indexes in current database and gives you the abil
 
 Action Bar on this View contains following capabilities:
 
-- New Index - redirects to [Index Edit View]() where you can create new index,
-- Query - redirects to [Query View](),
-- Collapse - collapses all indexes,
-- Paste - create quickly index by pasting [IndexDefinition](),
-- Delete - remove idle/disabled/abandoned/all indexes
+- `New Index` - redirects to [Index Edit View]() where you can create new index,
+- `Query` - redirects to [Query View](),
+- `Collapse` - collapses all indexes,
+- `Paste` - create quickly index by pasting [IndexDefinition](),
+- `Delete` - remove idle/disabled/abandoned/all indexes
 
 ![Figure 0. Studio. Indexes View. Action Bar.](images/indexes-view-action-bar.png)  
 
