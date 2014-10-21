@@ -6,11 +6,11 @@ Single documents, entire collections or query results can be patched using this 
 
 Action bar contains following buttons:
 
-- Patch type selector (single document, collection or index),
-- Test - you can test your patch here, without modifying actual data,
-- Save - patch script can be saved for later using this action,
-- Load - saved patch scripts can be loaded using this action,
-- Patch - execute patch on actual data
+- `Patch type selector` (single document, collection or index),
+- `Test` - you can test your patch here, without modifying actual data,
+- `Save` - patch script can be saved for later using this action,
+- `Load` - saved patch scripts can be loaded using this action,
+- `Patch` - execute patch on actual data
 
 ![Figure 1. Studio. Patch View. Action Bar.](images/patch-view-action-bar.png)  
 
