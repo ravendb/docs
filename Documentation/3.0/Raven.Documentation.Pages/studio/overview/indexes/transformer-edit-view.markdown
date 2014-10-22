@@ -1,14 +1,14 @@
-# Indexes : Transformer Edit View
+# Indexes : Transformers Edit View
 
-This view lists all available transformers in the current database and gives you the ability to create new ones and edit or delete existing ones.
+This view allows adding new transformers or editing existing ones.
 
 ## Action Bar
 
-Action Bar contains following buttons:
+Action Bar allows to perform the following functions:
 
-- `New Transformer` - redirects to [Transformer Edit View]() where you can create a new transformer,
-- `Collapse` - collapses all transformers,
-- `Paste` - create quickly transformer by pasting [TransformerDefinition](),
-- `Delete` - removes **all** transformers from database
+- `Save` - saving transformers on the server,
+- `Format` - reformatting and simplifying, if possible, transformer's function
+- `Refresh` (__edit only__) - refreshing transformer's definition from the server
+- `Delete` (__edit only__) - deleting transformers
 
-![Figure 0. Studio. Transformers View. Action Bar.](images/transformers-view-action-bar.png)  
+{INFO Remember that changing the name of existing transformer creates a new one, **without** deleting the original. /}
