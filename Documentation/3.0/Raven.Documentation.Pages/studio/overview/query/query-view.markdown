@@ -48,6 +48,6 @@ Query results, as in the case of static querying, will be displayed in `Results`
 
 ![Figure 7. Studio. Dynamic queries.](images/query_view-dynamic_queries-7.png)
 
-{WARNING Remember that running dynamic query may create an dynamic index, which can always be viewed using the [Indexes View](). /}
+{WARNING Remember that running dynamic query may create a dynamic index, which can always be viewed using the [Indexes View](). /}
 
 ![Figure 8. Studio. Dynamic queries.](images/query_view-dynamic_queries-8.png)
