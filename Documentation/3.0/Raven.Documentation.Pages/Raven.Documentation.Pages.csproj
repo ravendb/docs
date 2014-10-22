@@ -481,7 +481,9 @@
     <None Include="studio\overview\documents\patch-view.markdown" />
     <None Include="studio\overview\documents\documents-view.markdown" />
     <None Include="studio\overview\indexes\.docslist" />
+    <None Include="studio\overview\indexes\index-edit-view.markdown" />
     <None Include="studio\overview\indexes\indexes-view.markdown" />
+    <None Include="studio\overview\indexes\transformer-edit-view.markdown" />
     <None Include="studio\overview\indexes\transformers-view.markdown" />
     <None Include="studio\overview\query\.docslist" />
     <None Include="studio\overview\query\query-view.markdown" />
@@ -544,6 +546,7 @@
     <Content Include="studio\overview\documents\images\patch-view-action-bar.png" />
     <Content Include="studio\overview\documents\images\patch-view-script.png" />
     <Content Include="studio\overview\documents\images\patch-view-test.png" />
+    <Content Include="studio\overview\indexes\images\index-edit-view-action-bar.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-action-bar.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-edit.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-menu-1.png" />
@@ -552,6 +555,16 @@
     <Content Include="studio\overview\indexes\images\indexes-view-menu-delete.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-menu-reset.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-query.png" />
+    <Content Include="studio\overview\query\images\query_view-1.png" />
+    <Content Include="studio\overview\query\images\query_view-dynamic_queries-5.png" />
+    <Content Include="studio\overview\query\images\query_view-dynamic_queries-6.png" />
+    <Content Include="studio\overview\query\images\query_view-dynamic_queries-7.png" />
+    <Content Include="studio\overview\query\images\query_view-dynamic_queries-8.png" />
+    <Content Include="studio\overview\query\images\query_view-quering_static_index-2.png" />
+    <Content Include="studio\overview\query\images\query_view-quering_static_index-3.png" />
+    <Content Include="studio\overview\query\images\query_view-quering_static_index-4.png" />
+    <Content Include="studio\overview\indexes\images\transformers_view-action_bar-1.png" />
+    <Content Include="studio\overview\indexes\images\transformers_view-transformer_list-2.png" />
     <None Include="server\kb\document-key-generatation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
