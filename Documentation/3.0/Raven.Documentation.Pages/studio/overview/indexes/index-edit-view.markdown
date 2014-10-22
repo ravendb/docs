@@ -10,8 +10,8 @@ Following actions are available on bar:
 - `Add` - you can add another [mapping]() or [reducing]() function, define field or spatial field and set max index outputs,
 - `Priority` - ability to change index priority. More [here](),
 - `Format` - perform code formatting for mapping and reducing functions,
-- `Query` (_edit only_) - redirects to [Query View](),
-- `Terms` (_edit only_) - redirects to `Terms View` where you an view current index terms,
+- `Query` - _edit only_ - redirects to [Query View](),
+- `Terms` - _edit only_ - redirects to `Terms View` where you an view current index terms,
 - `Copy` - opens dialog, where you can copy index definition
 - `Generate C#` - creates index definition class in C#,
 - `Refresh` - fetches index definition from server,

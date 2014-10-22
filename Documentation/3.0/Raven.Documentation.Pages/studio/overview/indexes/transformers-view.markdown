@@ -9,7 +9,7 @@ Action Bar contains the following buttons:
 - `New Transformer` - redirects to [Transformer Edit View]() where you can add a new transformer,
 - `Collapse` - collapses all transformers,
 - `Paste` - quickly creates transformer by pasting [TransformerDefinition](),
-- `Delete` - deletes **all** transformers from database
+- `Delete` - deletes **ALL** transformers from database
 
 ![Figure 1. Studio. Transformers View. Action Bar.](images/transformers_view-action_bar-1.png)  
 
