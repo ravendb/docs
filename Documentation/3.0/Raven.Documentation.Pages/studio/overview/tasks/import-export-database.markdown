@@ -1,15 +1,11 @@
 ﻿# Tasks : Import & Export Database
 
-{PANEL}
-
 Import and Export Tabs enable fast data moving between databases. For data export, the following tools can be used:
 
 - [Smuggler](),
 - Export Database Tab from Studio (which uses Smuggler underneath)
 
-{PANEL/}
-
-{PANEL:Export}
+## Export
 
 ![Figure 1. Tasks. Import and Export Database Tab.](images/tasks-import_and_export_database_tab-1.png)
 
@@ -21,9 +17,9 @@ To change default options you need to choose desired options in `General` tab or
 
 ![Figure 3. Tasks. Export Database Tab. Advanced Tab.](images/tasks-export_database_tab-advanced-3.png)
 
-{PANEL/}
+<hr />
 
-{PANEL:Import}
+## Import
 
 Import follows the same procedure as export. You can click the `Choose file` button to choose a file you need and import will start automatically, with default options. Import options can be changed in `General` or `Advanced` tab and this must be done prior choosing the file for import.
 
@@ -32,5 +28,3 @@ Import follows the same procedure as export. You can click the `Choose file` but
 ![Figure 5. Tasks. Import Database Tab. Advanced Tab.](images/tasks-import_database_tab-advanced-5.png)
 
 {DANGER Importing will overwrite any existing documents, indexes and transformers. /} 
-
-{PANEL/}
