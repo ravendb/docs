@@ -1,4 +1,4 @@
-import-export-database-tab.markdown	[TODO] Import & Export Database Tab
-toggle-indexing-tab.markdown	[TODO] Toggle Indexing Tab
-create-sample-data-tab.markdown	[TODO] Create Sample Data Tab
-csv-import-tab.markdown	[TODO] CSV Import Tab
+import-export-database.markdown	Import & Export Database
+toggle-indexing.markdown	Toggle Indexing
+create-sample-data.markdown	Create Sample Data
+csv-import.markdown	CSV Import
