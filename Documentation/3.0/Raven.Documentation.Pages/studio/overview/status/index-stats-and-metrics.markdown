@@ -12,14 +12,8 @@
 
 ![Figure 2. Studio. Status. Metrics. Request counter.](images/metrics-request_counter-2.png)
 
-<hr />
-
 ![Figure 3. Studio. Status. Metrics. Indexing performance.](images/metrics-indexing_performance-3.png)
 
-<hr />
-
 ![Figure 4. Studio. Status. Metrics. Index batch size.](images/metrics-index_batch_size-4.png)
-
-<hr />
 
 ![Figure 5. Studio. Status. Metrics. Metrics prefetches.](images/metrics-prefetches-5.png)
