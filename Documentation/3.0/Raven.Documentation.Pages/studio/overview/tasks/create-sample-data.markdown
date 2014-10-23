@@ -10,10 +10,6 @@ Generated database contains **1 059 documents** organized in **8 collections**, 
 
 ![Figure 2. Tasks. Create Sample Data Tab. Documents view.](images/tasks-create_sample_data_tab-documents_view-2.png)
 
-<hr />
-
 ![Figure 3. Tasks. Create Sample Data Tab. Indexes view.](images/tasks-create_sample_data_tab-indexes_view-3.png)
-
-<hr />
 
 ![Figure 4. Tasks. Create Sample Data Tab. Transformers view.](images/tasks-create_sample_data_tab-transformers_view-4.png) 
