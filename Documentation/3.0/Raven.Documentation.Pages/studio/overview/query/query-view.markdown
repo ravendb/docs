@@ -1,12 +1,8 @@
 # Query : Query View
 
-{PANEL}
-
 This view allows running queries for already existing indexes (click [here]() to read about static indexes) and running dynamic queries, which can create a new dynamic index (click [here]() to read more about dynamic indexes)
 
-{PANEL/}
-
-{PANEL:Action Bar}
+## Action Bar
 
 Action Bar consists of the following:
 
@@ -24,9 +20,9 @@ Action Bar consists of the following:
 
 ![Figure 1. Studio. Query View.](images/query_view-1.png)
 
-{PANEL/}
+<hr />
 
-{PANEL:Querying Static Index}
+## Querying Static Index
 
 The first step while running queries is choosing an appropriate index from the list of available indexes.
 
@@ -40,9 +36,9 @@ After running the query using `Execute` from `Action Bar`, query results will be
 
 ![Figure 4. Studio. Querying Static Index.](images/query_view-quering_static_index-4.png)
 
-{PANEL/}
+<hr />
 
-{PANEL:Dynamic queries}
+## Dynamic queries
 
 To run a dynamic query, you need to choose a suitable collection from the list first (e.g. dynamic/Products).
 
@@ -59,5 +55,3 @@ Query results, as in the case of static querying, will be displayed in `Results`
 {WARNING Remember that running dynamic query may create a dynamic index, which can always be viewed using the [Indexes View](). /}
 
 ![Figure 8. Studio. Dynamic queries.](images/query_view-dynamic_queries-8.png)
-
-{PANEL/}
