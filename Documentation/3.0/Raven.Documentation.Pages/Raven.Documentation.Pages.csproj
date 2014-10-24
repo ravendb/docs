@@ -597,6 +597,16 @@
     <Content Include="studio\overview\tasks\images\tasks-import_database_tab-advanced-5.png" />
     <Content Include="studio\overview\tasks\images\tasks-import_database_tab-general-4.png" />
     <Content Include="studio\overview\tasks\images\tasks-toggle_indexing_tab-1.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-create-database.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-documents.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-master-create-database-1.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-master-create-database-2.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-master-documents-1.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-master-setup-replication-1.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-master-setup-replication-2.png" />
+    <Content Include="studio\walkthroughs\images\replication-master-replication-settings.png" />
+    <Content Include="studio\walkthroughs\images\replication-slave-create-database.png" />
+    <Content Include="studio\walkthroughs\images\replication-slave-documents.png" />
     <None Include="server\kb\document-key-generatation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
