@@ -14,6 +14,7 @@ RavenDB supports two storage engines and each database can be created with a dif
 ### Limitations
 
 - no support for DTC transactions
+- no support for [compaction](../../client-api/commands/how-to/compact-database)
 
 ### Requirements
 

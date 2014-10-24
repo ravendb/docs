@@ -528,8 +528,10 @@
   <ItemGroup>
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
+    <Content Include="studio\images\accessing-studio-basic-auth.png" />
     <Content Include="studio\images\accessing-studio-database-selection.png" />
     <Content Include="studio\images\accessing-studio-first-run.png" />
+    <Content Include="studio\images\accessing-studio-has-api-key.png" />
     <Content Include="studio\images\accessing-studio-nav-bottom.png" />
     <Content Include="studio\images\accessing-studio-nav.png" />
     <Content Include="studio\overview\documents\images\document-edit-view-action-bar.png" />
