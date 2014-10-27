@@ -28,17 +28,27 @@ This view can also be accessed by pressing on `Databases` link from top navigati
 
 To access manage your server you need to visit `Databases View` and click on `Manage Your Server` button.
 
+![Figure 3. Studio. Selecting database.](images/accessing-studio-database-selection.png)  
+
+<hr />
+
+## Accessing System database
+
+To access `<system>` database please go to `Manage Your Server` section and click on `To System Database` button available in left pane.
+
+![Figure 4. Studio. Selecting database.](images/accessing-studio-system-database.png) 
+
 <hr />
 
 ## Navigation
 
 If the database have been selected, then top navigation bar will be filled with following menu items that will navigate your to various parts of the Studio.
 
-![Figure 3. Studio. Top navigation bar.](images/accessing-studio-nav.png)  
+![Figure 5. Studio. Top navigation bar.](images/accessing-studio-nav.png)  
 
 On the other hand, the bottom navigation bar contains information about server build number, license and basic statistics for selected database.
 
-![Figure 4. Studio. Bottom navigation bar.](images/accessing-studio-nav-bottom.png)  
+![Figure 6. Studio. Bottom navigation bar.](images/accessing-studio-nav-bottom.png)  
 
 <hr />
 
@@ -46,11 +56,11 @@ On the other hand, the bottom navigation bar contains information about server b
 
 If server requires [authentication](), it may ask you to provide valid windows credentials or API Key. If you will just open up Studio without adding anything to the URL (e.g. `http://localhost:8080/`) windows authentication will be assumed and following screen will appear (different browsers might display slightly different dialogs):
 
-![Figure 5. Studio. Basic Authentication.](images/accessing-studio-basic-auth.png)  
+![Figure 7. Studio. Basic Authentication.](images/accessing-studio-basic-auth.png)  
 
 If you want to authorize yourself using the API Key, you must add `#api-key=<api_key_here>` hash tag e.g. `http://localhost:8080/studio/index.html#api-key=key\ThisIsMySecret` or if you do not want to provide API Key in the URL, you can add `#has-api-key`, so the Studio will open up a dialog where you can enter your key, before any Studio-Server communication:
 
-![Figure 5. Studio. Has API Key.](images/accessing-studio-has-api-key.png)  
+![Figure 8. Studio. Has API Key.](images/accessing-studio-has-api-key.png)  
 
 
 
