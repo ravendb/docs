@@ -490,8 +490,13 @@
     <None Include="studio\overview\query\query-view.markdown" />
     <None Include="studio\overview\query\reporting-view.markdown" />
     <None Include="studio\overview\settings\.docslist" />
-    <None Include="studio\overview\settings\custom-functions-tab.markdown" />
-    <None Include="studio\overview\settings\database-settings-tab.markdown" />
+    <None Include="studio\overview\settings\periodic-export.markdown" />
+    <None Include="studio\overview\settings\versioning.markdown" />
+    <None Include="studio\overview\settings\sql-replication.markdown" />
+    <None Include="studio\overview\settings\replication.markdown" />
+    <None Include="studio\overview\settings\quotas.markdown" />
+    <None Include="studio\overview\settings\custom-functions.markdown" />
+    <None Include="studio\overview\settings\database-settings.markdown" />
     <None Include="studio\overview\status\.docslist" />
     <None Include="studio\overview\status\gather-debug-info.markdown" />
     <None Include="studio\overview\status\debug.markdown" />
