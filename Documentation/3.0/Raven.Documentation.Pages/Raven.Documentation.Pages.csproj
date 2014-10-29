@@ -588,6 +588,13 @@
     <Content Include="studio\overview\query\images\query_view-quering_static_index-4.png" />
     <Content Include="studio\overview\indexes\images\transformers_view-action_bar-1.png" />
     <Content Include="studio\overview\indexes\images\transformers_view-transformer_list-2.png" />
+    <Content Include="studio\overview\settings\images\custom-functions-1.png" />
+    <Content Include="studio\overview\settings\images\custom-functions-2.png" />
+    <Content Include="studio\overview\settings\images\settings-database_settings-1.png" />
+    <Content Include="studio\overview\settings\images\settings-periodic_export-1.png" />
+    <Content Include="studio\overview\settings\images\settings-quotas-1.png" />
+    <Content Include="studio\overview\settings\images\settings-versioning_default_options-1.png" />
+    <Content Include="studio\overview\settings\images\settings-versioning_setup-2.png" />
     <Content Include="studio\overview\status\images\debug-endpoints-studio-1.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_counter-2.png" />
