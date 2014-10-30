@@ -1,6 +1,6 @@
 # Commands : Documents : Stream
 
-**StreamDocs** is used to stream documents from a database that match given criteria.
+**StreamDocs** is used to stream documents which match chosen criteria from a database.
 
 ## Syntax
 
@@ -14,7 +14,7 @@
 | **start** | int | number of documents that should be skipped |
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **exclude** | int | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side |
 | **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 ## Example

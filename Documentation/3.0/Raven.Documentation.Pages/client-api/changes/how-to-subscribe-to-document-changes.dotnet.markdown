@@ -68,7 +68,7 @@ To observe all document changes for given type use `ForDocumentsOfType` method. 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **typeName** or **type** | string or Type | Name of type or type for which notifications will be processed. If default conventions are used then full type name without version information should be passed. See `Raven.Client.Document.ReflectionUtil.GetFullNameWithoutVersionInformation`. |
+| **typeName** or **type** | string or Type | Name of type or type for which notifications will be processed. If default conventions are used, the full type name without version information should be passed. See `Raven.Client.Document.ReflectionUtil.GetFullNameWithoutVersionInformation`. |
 
 | Return Value | |
 | ------------- | ----- |

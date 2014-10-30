@@ -1,6 +1,6 @@
 # Commands : Indexes : How to get index merge suggestions?
 
-**GetIndexMergeSuggestions** will retrieve all suggestions for index merging.
+**GetIndexMergeSuggestions** will retrieve all suggestions for an index merging.
 
 ## Syntax
 

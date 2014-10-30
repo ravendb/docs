@@ -1,4 +1,4 @@
-# Commands : What are commands?
+# Commands : What are the commands?
 
 Commands are a set of low level operations that can be used to manipulate data and change configuration on a server.
 
@@ -8,7 +8,7 @@ They are available in **[DocumentStore](../../client-api/what-is-a-document-stor
 
 ### Document commands
 
-There are following commands that can be used to manipulate documents:   
+The following commands can be used to manipulate documents:   
 - [Put](../../client-api/commands/documents/put)   
 - [Get](../../client-api/commands/documents/get)   
 - [GetDocuments](../../client-api/commands/documents/get)   
@@ -22,7 +22,7 @@ There are following commands that can be used to manipulate documents:
 
 ### Index commands
 
-There are following commands that can be used to manipulate indexes:   
+The following commands can be used to manipulate indexes:   
 - [PutIndex](../../client-api/commands/indexes/put)   
 - [GetIndex](../../client-api/commands/indexes/get)   
 - [GetIndexes](../../client-api/commands/indexes/get)   
@@ -33,7 +33,7 @@ There are following commands that can be used to manipulate indexes:
 
 ### Transformer commands
 
-There are following commands that can be used to manipulate transformers:   
+The following commands can be used to manipulate transformers:   
 - [PutTransformer](../../client-api/commands/transformers/put)   
 - [GetTransformer](../../client-api/commands/transformers/get)   
 - [GetTransformers](../../client-api/commands/transformers/get)   
@@ -41,7 +41,7 @@ There are following commands that can be used to manipulate transformers:
 
 ### Attachment commands
 
-There are following commands that can be used to manipulate attachments:   
+The following commands can be used to manipulate attachments:   
 - [PutAttachment](../../client-api/commands/attachments/put)   
 - [GetAttachment](../../client-api/commands/attachments/get)   
 - [GetAttachments](../../client-api/commands/attachments/get)   
@@ -52,23 +52,23 @@ There are following commands that can be used to manipulate attachments:
 
 ### Patch commands
 
-There are following commands that can be used to patch:   
+The following commands can be used to patch:   
 - [Patch](../../client-api/commands/patches/how-to-work-with-patch-requests)   
 
 ### Query commands
 
-There are following commands that can be used to query:   
+The following commands can be used to query:   
 - [Query](../../client-api/commands/querying/how-to-query-a-database)   
 - [StreamQuery](../../client-api/commands/querying/how-to-stream-query-results)   
 
 ### Batch commands
 
-There are following commands that can be used to send commands in a batch:   
+The following commands can be used to send commands in a batch:   
 - [Batch](../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)   
 
 ### Administrative commands
 
-There are following commands that can be used to perform administrative tasks on a server:   
+The following commands can be used to perform administrative tasks on a server:   
 - [CreateDatabase](../../client-api/commands/how-to/create-delete-database)   
 - [DeleteDatabase](../../client-api/commands/how-to/create-delete-database)   
 - [CompactDatabase](../../client-api/commands/how-to/compact-database)   

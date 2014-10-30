@@ -8,15 +8,15 @@ Transformers core is its projection function. It is a LINQ-based function with t
 
 ## Basics
 
-For start, let's create a projection that will return only `FirstName` and `LastName` from each returned `Employee` from `Northwind` database.
+To start, let's create a projection that will return only `FirstName` and `LastName` from each returned `Employee` from `Northwind` database.
 
 - first, let's start creating a transformer `Employees/FirstAndLastName`
 
 {CODE transformers_1@Transformers/Basics.cs /}
 
-You probably noticed that we're passing `Employee` as a generic parameter to `AbstractTransformerCreationTask`, by doing this our transformation function will have a strongly-typed syntax.
+You probably noticed that we're passing `Employee` as a generic parameter to `AbstractTransformerCreationTask`. By doing this our transformation function will have a strongly-typed syntax.
 
-- next step is to create a transformation itself, to do it we need to set the `TransformResults` property with our function in **parameterless constructor**.
+- next step is to create a transformation itself and to do it we need to set the `TransformResults` property with our function in **parameterless constructor**.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query-syntax transformers_2@Transformers/Basics.cs /}
@@ -27,7 +27,7 @@ You probably noticed that we're passing `Employee` as a generic parameter to `Ab
 
 {CODE transformers_4@Transformers/Basics.cs /}
 
-Probably `dynamic` is not the best return type, so of course projections to concrete types are supported:
+Probably `dynamic` is not the best return type so, obviously, projections to concrete types are supported:
 
 {CODE transformers_5@Transformers/Basics.cs /}
 
@@ -47,7 +47,7 @@ If we would [store](../indexes/storing-data-in-index) `FirstName` and `LastName`
 
 ## Projecting single property
 
-You do not have to create new objects each time, when only single property is needed all you need to do is select that property:
+You do not have to create new objects each time: when only single property is required, all you need to do is select that property:
 
 {CODE transformers_8@Transformers/Basics.cs /}
 

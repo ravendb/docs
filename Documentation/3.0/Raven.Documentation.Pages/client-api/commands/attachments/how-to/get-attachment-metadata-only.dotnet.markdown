@@ -52,7 +52,7 @@ There are few methods that allow you to download attachment metadata from a data
 
 ## Remarks
 
-**Data** property in `Attachment` will return empty stream for above methods.
+**Data** property in `Attachment` will return empty stream for the above methods.
 
 ## Related articles
 

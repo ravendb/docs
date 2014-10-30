@@ -6,7 +6,7 @@ There are few methods that allow you to insert index into a database:
 
 {PANEL:PutIndex}
 
-**PutIndex** is used to insert an index into database.
+**PutIndex** is used to insert an index into a database.
 
 ### Syntax
 
@@ -16,7 +16,7 @@ There are few methods that allow you to insert index into a database:
 | ------------- | ------------- | ----- |
 | **name** | String | Name of an index |
 | **indexDef** | [IndexDefinition](../../../glossary/indexes/index-definition) | Definition of an index |
-| **overwrite** | boolean | Indicates if index can be overwritten (if `false` then exception will be thrown if index exists) |
+| **overwrite** | boolean | Indicates if an index could be overwritten (if `false` then exception will be thrown if index exists) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -30,7 +30,7 @@ There are few methods that allow you to insert index into a database:
 
 {PANEL:PutIndex - using IndexDefinitionBuilder}
 
-**PutIndex** is used to insert an index into database. 
+**PutIndex** is used to insert an index into a database. 
 
 To help users create their indexes, `IndexDefinitionBuilder` was created that enables users to create indexes using QueryDSL expressions syntax. 
 
@@ -42,7 +42,7 @@ To help users create their indexes, `IndexDefinitionBuilder` was created that en
 | ------------- | ------------- | ----- |
 | **name** | String | Name of an index |
 | **indexDef** | IndexDefinitionBuilder | index definition |
-| **overwrite** | bool | Indicates if index can be overwritten (if `false` then exception will be thrown if index exists) |
+| **overwrite** | bool | Indicates if an index could be overwritten (if `false` then exception will be thrown if index exists) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -56,9 +56,9 @@ To help users create their indexes, `IndexDefinitionBuilder` was created that en
 
 ## Remarks
 
-If **overwrite** is set to **true** and `IndexDefinition` haven't changed, no action will be taken on server-side and no indexing data will be lost.
+If **overwrite** is set to **true** and `IndexDefinition` has not changed, no action will be taken on server-side and no indexing data will be lost.
 
-{SAFE By default, **PutIndex** methods does **not allow** indexes to be **overwritten**, because this causes all previous indexing data to be lost, which in many cases is not desired. /}
+{SAFE By default, **PutIndex** method does **not allow** indexes to be **overwritten** because this causes all previous indexing data to be lost, which is not desired in many cases. /}
 
 ## Related articles
 

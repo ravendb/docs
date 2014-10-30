@@ -4,7 +4,7 @@ There are two types of statistics available. First type of statistics returns se
 
 {PANEL:Database statistics}
 
-Database statistics can be downloaded using `getStatistics` method in commands.
+Database statistics can be downloaded using `getStatistics` method in the commands.
 
 ### Syntax
 

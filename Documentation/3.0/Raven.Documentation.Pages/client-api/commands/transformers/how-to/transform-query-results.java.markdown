@@ -1,6 +1,6 @@
 # Commands : Transformers : How to transform query results using transformer?
 
-Query results can be transformed on server-side by passing the name and parameters (if necessary) of a transformer along with the query. Following examples will demonstrate how to do this using commands.
+Query results can be transformed on the server-side by passing the name and parameters (if necessary) of a transformer, along with the query. The following examples will demonstrate how to do this using commands:
 
 ## Example I
 

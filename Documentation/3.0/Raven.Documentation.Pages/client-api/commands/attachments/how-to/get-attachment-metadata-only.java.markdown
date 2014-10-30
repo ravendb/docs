@@ -52,7 +52,7 @@ There are few methods that allow you to download attachment metadata from a data
 
 ## Remarks
 
-**getData()**  in `Attachment` will throw for above methods.
+**getData()**  in `Attachment` will throw for the above methods.
 
 ## Related articles
 

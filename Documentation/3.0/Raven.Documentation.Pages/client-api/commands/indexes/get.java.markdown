@@ -1,6 +1,6 @@
 # Commands : Indexes : Get
 
-There are few methods that allow you to retrieve index from a database:   
+There are few methods that allow you to retrieve an index from a database:   
 - [GetIndex](../../../client-api/commands/indexes/get#getindex)   
 - [GetIndexes](../../../client-api/commands/indexes/get#getindexes)   
 - [GetIndexNames](../../../client-api/commands/indexes/get#getindexnames)   

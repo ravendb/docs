@@ -1,6 +1,6 @@
 # Commands : Querying : How to work with Suggestion query?
 
-To take advantage of a suggestion feature use **Suggest** method from commands.
+To take advantage of a suggestion feature use the **Suggest** method from the commands.
 
 ## Syntax
 
@@ -13,7 +13,7 @@ To take advantage of a suggestion feature use **Suggest** method from commands.
 
 | Return Value | |
 | ------------- | ----- |
-| [SuggestionQueryResult]() | Result containing array of all suggestions for executed query |
+| [SuggestionQueryResult]() | Result containing an array of all suggestions for executed query |
 
 ## Example
 

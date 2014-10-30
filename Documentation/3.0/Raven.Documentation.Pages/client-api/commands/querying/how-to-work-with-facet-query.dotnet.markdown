@@ -6,7 +6,7 @@ There are two methods that allow you to send a Facet query to a database:
 
 {PANEL:GetFacets}
 
-There are two overloads for a **GetFacets** method and the only difference between them is a source of facets. In one facets are passed as a parameter, in the other user must provide a `key` to a `facet setup` document.
+There are two overloads for the **GetFacets** method and the only difference between them is a source of the facets. In one facets are passed as a parameter, in the other user must provide a `key` to a `facet setup` document.
 
 ### Syntax
 
@@ -25,7 +25,7 @@ There are two overloads for a **GetFacets** method and the only difference betwe
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResults]() | Facet query results containing query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults]() | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ### Example I
 
@@ -47,11 +47,11 @@ Sending multiple facet queries is achievable by using `GetMultiFacets` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facetedQueries** | [FacetQuery]()[] | List of faceted queries that will be executed on server-side. |
+| **facetedQueries** | [FacetQuery]()[] | List of the faceted queries that will be executed on the server-side. |
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResult]()[] | List of results, each matching position of a FacetQuery in `facetedQueries` parameter. |
+| [FacetResult]()[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
 
 ### Example
 

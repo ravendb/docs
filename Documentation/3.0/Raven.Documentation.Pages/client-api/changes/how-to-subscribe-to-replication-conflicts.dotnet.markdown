@@ -1,6 +1,6 @@
 # Changes API : How to subscribe to replication conflicts?
 
-Replication conflicts, for both documents and attachments, can be tracked by using `ForAllReplicationConflicts` method available in changes API.
+Replication conflicts, for both documents and attachments, can be tracked using `ForAllReplicationConflicts` method available in changes API.
 
 ## Syntax
 
@@ -16,7 +16,7 @@ Replication conflicts, for both documents and attachments, can be tracked by usi
 
 ## Automatic document conflict resolution
 
-In RavenDB client you have an opportunity to register [conflict listeners](../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered then the client will automatically resolve the conflict right after the arrival of the notification.
+In RavenDB client you have an opportunity to register [conflict listeners](../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them) which are used to resolve conflicted document. However this can happen only if you get the conflicted document. The ability to subscribe to the replication conflicts gives the client more power. Now if you listen to the conflicts and have any conflict listener registered, the client will automatically resolve the conflict right after the arrival of the notification.
 
 ## Remarks
 

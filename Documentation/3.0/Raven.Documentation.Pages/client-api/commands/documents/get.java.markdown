@@ -20,7 +20,7 @@ There are few methods that allow you to retrieve documents from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [JsonDocument](../../../glossary/json/json-document) | Object representing retrieved document. |
+| [JsonDocument](../../../glossary/json/json-document) | Object representing the retrieved document. |
 
 ### Example
 
@@ -41,7 +41,7 @@ There are few methods that allow you to retrieve documents from a database:
 | **keys** | String[] | array of keys of the documents you want to retrieve |
 | **includes** | String[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
 | **transformer** | String | name of a transformer that should be used to transform the results (default: `null`) |
-| **transformerParameters** | Map<string, RavenJToken> | inputs (parameters) that will can be used by transformer (default: `null`) |
+| **transformerParameters** | Map<string, RavenJToken> | inputs (parameters) that will be used by transformer (default: `null`) |
 | **metadataOnly** | boolean | specifies if only document metadata should be returned (default: `false`) |
 
 <hr />
@@ -105,11 +105,11 @@ There are few methods that allow you to retrieve documents from a database:
 | **matches** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side (default: `null`) |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side (default: `null`) |
 | **metadataOnly** | boolean | specifies if only document metadata should be returned (default : `false`) |
 | **exclude** | String | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) (default: `null`) |
 | **transformer** | String | name of a transformer that should be used to transform the results (default: `null`) |
-| **transformerParameters** | Map<String, RavenJToken> | inputs (parameters) that will can be used by transformer (default: `null`) |
+| **transformerParameters** | Map<String, RavenJToken> | inputs (parameters) that will be used by transformer (default: `null`) |
 | **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |

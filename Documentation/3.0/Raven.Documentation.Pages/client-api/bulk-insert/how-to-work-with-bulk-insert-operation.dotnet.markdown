@@ -19,8 +19,8 @@ One of the features that is particularly useful when inserting large amount of d
 
 There are several limitations to the API:
 
-* Entity **Id** must be provided at the client side. The client by default will use the HiLo generator in order to generate the **Id**.
-* Transactions are per batch, not per operation and DTC transactions are not supported.
+* Entity **Id** must be provided by the client. The client by default will use the HiLo generator in order to generate the **Id**.
+* Transactions are per batch, not per operation, and DTC transactions are not supported.
 * Documents inserted using bulk-insert will not raise notifications. More about `Changes API` can be found [here](../changes-api).
 * Document Updates and Reference Checking must be explicitly turned on (see `BulkInsertOptions`).
 * `AfterCommit` method in `Put Triggers` will be not executed in contrast to `AllowPut`, `AfterPut` and `OnPut`.
