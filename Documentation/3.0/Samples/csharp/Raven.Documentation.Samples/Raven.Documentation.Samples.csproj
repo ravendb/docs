@@ -325,6 +325,7 @@
     <Compile Include="Server\ScalingOut\Sharding\HowToSetupSharding.cs" />
     <Compile Include="Server\Troubleshooting\EnablingLogging.cs" />
     <Compile Include="Server\Troubleshooting\Support.cs" />
+    <Compile Include="Start\GettingStarted.cs" />
     <Compile Include="Transformers\Basics.cs" />
     <Compile Include="Transformers\Creating.cs" />
     <Compile Include="Transformers\Including.cs" />
