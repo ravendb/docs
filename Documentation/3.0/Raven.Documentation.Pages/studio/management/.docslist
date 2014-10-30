@@ -1,10 +1,9 @@
-api-keys.markdown	[TODO] API Keys
-windows-authentication.markdown	[TODO] Windows Authentication
-backup-database.markdown	[TODO] Backup Database
-compact-database.markdown	[TODO] Compact Database
-restore-database.markdown	[TODO] Restore Database
-admin-logs.markdown	[TODO] Admin Logs
-traffic-watch.markdown	[TODO] Traffic Watch
-gather-debug-info.markdown	[TODO] Gather Debug Info
-io-test.markdown	[TODO] IO Test
-studio-config.markdown	[TODO] Studio Config
+api-keys.markdown	[SCREEN] API Keys
+windows-authentication.markdown	Windows Authentication
+backup-restore-database.markdown	Backup & Restore Database
+compact-database.markdown	Compact Database
+admin-logs.markdown	Admin Logs
+traffic-watch.markdown	[SCREEN] Traffic Watch
+gather-debug-info.markdown	[SCREEN] Gather Debug Info
+io-test.markdown	IO Test
+studio-config.markdown	Studio Config
