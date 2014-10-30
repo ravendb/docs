@@ -1,11 +1,11 @@
 stats.markdown	Stats
-index-stats-and-metrics.markdown	Index Stats & Metrics
+index-stats-and-metrics.markdown	[SCREEN] Index Stats & Metrics
 logs.markdown	Logs
 running-tasks.markdown	[TODO] Running Tasks
-alerts.markdown	[TODO] Alerts
-index-errors.markdown	[TODO] Index Errors
-replication-stats.markdown	[TODO] Replication Stats
-user-info.markdown	[TODO] User Info
+alerts.markdown	[SCREEN] Alerts
+index-errors.markdown	Index Errors
+replication-stats.markdown	Replication Stats
+user-info.markdown	User Info
 map-reduce-visualizer.markdown	[TODO] Map-Reduce Visualizer
-debug.markdown	[TODO] Debug
-gather-debug-info.markdown	[TODO] Gather Debug Info
+debug.markdown	Debug
+gather-debug-info.markdown	[SCREEN] Gather Debug Info
