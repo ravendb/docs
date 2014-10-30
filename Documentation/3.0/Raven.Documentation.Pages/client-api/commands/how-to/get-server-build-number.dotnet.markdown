@@ -1,6 +1,6 @@
 # Commands : How to get server build number?
 
-To check with what version of server commands are working use `GetBuildNumber` command from `GlobalAdmin`.
+To check with what version of server commands you are working use `GetBuildNumber` command from `GlobalAdmin`.
 
 ## Syntax
 

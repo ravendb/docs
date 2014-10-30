@@ -2,12 +2,11 @@
 
 The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
 You are able to subscribe to events for all documents or indexes as well as to indicate a particular one that you are interested in. 
-This mechanism lets you to notify users if something has changed without the need to do any expensive pooling. 
+This mechanism lets you notify users if something has changed without the need to do any expensive pooling. 
 
 ## Accessing Changes API
 
-The changes subscription is accessible by a document store. Depending on the type of the store you use (`DocumentStore`, `ShardedDocumentStore` or `EmbeddableDocumentStore`) you will get an appropriate instance
-which is an implementation of a common `IDatabaseChanges` interface.
+The changes subscription is accessible by a document store. Depending on the type of the store you use (`DocumentStore`, `ShardedDocumentStore` or `EmbeddableDocumentStore`) you will get an appropriate instance which is an implementation of a common `IDatabaseChanges` interface.
 
 {CODE changes_1@ClientApi\Changes\WhatIsChangesApi.cs /}
 

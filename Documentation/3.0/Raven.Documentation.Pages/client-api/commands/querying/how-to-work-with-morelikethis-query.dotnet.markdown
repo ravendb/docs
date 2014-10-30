@@ -1,6 +1,6 @@
 # Commands : Querying : How to work with MoreLikeThis query?
 
-To find similar or related documents use **MoreLikeThis** method from commands.
+To find similar or related documents use the **MoreLikeThis** method from the commands.
 
 ## Syntax
 

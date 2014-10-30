@@ -35,9 +35,9 @@ There are few methods that allow you to download attachments from a database:
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **start** | int | Indicates how many attachments should be skipped. |
+| **start** | int | Indicates how many attachments should be skipped |
 | **startEtag** | Etag | ETag from which to start |
-| **batchSize** | int | maximum number of attachment that will be downloaded |
+| **batchSize** | int | maximum number of attachments that will be downloaded |
 
 | Return Value | |
 | ------------- | ----- |

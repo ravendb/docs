@@ -1,6 +1,6 @@
 # Commands : How to create or delete database?
 
-This article will describe following commands (and extensions) that enable you to manage databases on a server:   
+This article will describe the following commands (and extensions) that enable you to manage databases on a server:   
 - [CreateDatabase]()   
 - [DeleteDatabase]()   
 - [EnsureDatabaseExists]()   
@@ -25,7 +25,7 @@ This method is used to create a new database on a server.
 
 {PANEL:**DeleteDatabase**}
 
-This method is used to delete a database from a server, with a possibility to remove all data from hard drive.
+This method is used to delete a database from a server, with a possibility to remove all the data from hard drive.
 
 ### Syntax
 
@@ -55,7 +55,7 @@ This extension method creates database on a server with **default configuration 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **name** | string | Name of a database that will be created if it does not exist |
-| **ignoreFailures** | bool | Ignore any exceptions that could occurred during database creation. Default: `false` |
+| **ignoreFailures** | bool | Ignore any exceptions that could heve occurred during database creation. Default: `false` |
 
 ### Example
 

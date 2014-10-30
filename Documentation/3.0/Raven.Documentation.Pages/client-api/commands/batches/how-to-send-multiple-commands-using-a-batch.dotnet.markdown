@@ -20,7 +20,7 @@ To send **multiple operations** in a **single request**, reducing the number of 
 
 ## Concurrency
 
-If an ETag is specified in the command, that ETag is compared to the current ETag on the document on the server. If the ETag does not match, a 409 Conflict status code will be returned from the server, causing a **ConcurrencyException** to be thrown. In such a case, the entire operation fails and non of the updates that were tried will succeed.
+If an ETag is specified in the command, that ETag is compared to the current ETag on the document on the server. If the ETag does not match, a 409 Conflict status code will be returned from the server, causing a **ConcurrencyException** to be thrown. In such a case, the entire operation fails and non of the updates that were attempted will succeed.
 
 ## Transactions
 

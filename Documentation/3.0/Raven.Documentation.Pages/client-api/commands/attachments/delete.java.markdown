@@ -1,6 +1,6 @@
 # Attachments : Delete
 
-**DeleteAttachment** is used to remove a attachment from a database.
+**DeleteAttachment** is used to remove an attachment from a database.
 
 ## Syntax
 

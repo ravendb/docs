@@ -1,6 +1,6 @@
 # Commands : Patches: How to use JavaScript to patch your documents?
 
-**Patch** command is used to perform partial document updates without having to load, modify and save full documents. This is usually useful for updating denormalized data in entities.
+**Patch** command is used to perform partial document updates without having to load, modify, and save a full document. This is usually useful for updating denormalized data in entities.
 
 ## Syntax
 
@@ -12,7 +12,7 @@
 
 ## Methods, objects and variables
 
-Before we will move to the examples, let's look at the methods, objects and variables available:
+Before we will move to the examples, let's look at the methods, objects, and variables available:
 
 | ------ |:------:| ------ |
 | `__document_id` | variable | Id for current document |

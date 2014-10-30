@@ -20,7 +20,7 @@ There are few methods that allow you to retrieve documents from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [JsonDocument](../../../glossary/json/json-document) | Object representing retrieved document. |
+| [JsonDocument](../../../glossary/json/json-document) | Object representing the retrieved document. |
 
 ### Example
 
@@ -41,7 +41,7 @@ There are few methods that allow you to retrieve documents from a database:
 | **keys** | string[] | array of keys of the documents you want to retrieve |
 | **includes** | string[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
 | **transformer** | string | name of a transformer that should be used to transform the results |
-| **transformerParameters** | Dictionary<string, RavenJToken> | parameters that will can be passed to transformer |
+| **transformerParameters** | Dictionary<string, RavenJToken> | parameters that will be passed to transformer |
 | **metadataOnly** | bool | specifies if only document metadata should be returned |
 
 <hr />
@@ -105,11 +105,11 @@ There are few methods that allow you to retrieve documents from a database:
 | **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side  |
+| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side  |
 | **metadataOnly** | bool | specifies if only document metadata should be returned |
 | **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
 | **transformer** | string | name of a transformer that should be used to transform the results |
-| **transformerParameters** | Dictionary<string, RavenJToken> | parameters that will can be passed to transformer |
+| **transformerParameters** | Dictionary<string, RavenJToken> | parameters that will be passed to transformer |
 | **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |
