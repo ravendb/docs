@@ -8,7 +8,7 @@ This bundle is built-in into server and client and do not need any installation.
 
 ## Setup
 
-In order for More Like This to work it must have access to the text in the index, therefore, the index being queried needs to [store]() the fields or store [term vectors]() for those fields.
+In order for More Like This to work it must have access to the text in the index, therefore, the index being queried needs to [store](../../indexes/storing-data-in-index) the fields or store [term vectors](../../indexes/using-term-vectors) for those fields.
 
 {CODE more_like_this_4@Server\Bundles\MoreLikeThis.cs /}
 

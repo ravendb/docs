@@ -7,6 +7,6 @@ This view displays the statistics for a current database. Here you can find info
 - list of Stale indexes,
 - statistics for respective indexes
 
-Learn more about information available in this view [here]().
+Learn more about information available in this view [here](../../../server/administration/statistics).
 
 ![Figure 1. Studio. Status Stats.](images/status_stats-1.png)

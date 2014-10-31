@@ -6,7 +6,7 @@ This view lists all available transformers in the current database and gives you
 
 Action Bar contains following buttons:
 
-- `New Transformer` - redirects to [Transformer Edit View]() where you can create a new transformer,
+- `New Transformer` - redirects to [Transformer Edit View](../../../studio/overview/indexes/transformer-edit-view) where you can create a new transformer,
 - `Collapse` - collapses all transformers,
 - `Paste` - quickly creates transformer by pasting [TransformerDefinition](),
 - `Delete` - removes **all** transformers from database

@@ -6,8 +6,8 @@ This view lists all available indexes in a current database and gives you the ab
 
 Action Bar in this View contains the following capabilities:
 
-- `New Index` - redirects to [Index Edit View]() where you can create a new index,
-- `Query` - redirects to [Query View](),
+- `New Index` - redirects to [Index Edit View](../../../studio/overview/indexes/index-edit-view) where you can create a new index,
+- `Query` - redirects to [Query View](../../../studio/overview/query/query-view),
 - `Collapse All` - collapses all indexes,
 - `Paste` - quickly creates index by pasting [IndexDefinition](),
 - `Index Merge Suggestions` - retrieves all suggestions for an index merging,
@@ -19,7 +19,7 @@ Action Bar in this View contains the following capabilities:
 
 {PANEL:Querying}
 
-After clicking on an index name you will be navigated to the `Query View`. To read more about querying in Studio, please visit [this]() article.
+After clicking on an index name you will be navigated to the `Query View`. To read more about querying in Studio, please visit [this](../../../studio/overview/query/query-view) article.
 
 ![Figure 1. Studio. Indexes View. Query.](images/indexes-view-query.png)  
 
@@ -27,7 +27,7 @@ After clicking on an index name you will be navigated to the `Query View`. To re
 
 {PANEL:Editing}
 
-To edit index just press the `Edit` button available for each index. This will navigate you to the `Index Edit View` about which you can read [here]().
+To edit index just press the `Edit` button available for each index. This will navigate you to the `Index Edit View` about which you can read [here](../../../studio/overview/indexes/index-edit-view).
 
 ![Figure 2. Studio. Indexes View. Edit.](images/indexes-view-edit.png)  
 

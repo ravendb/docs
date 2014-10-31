@@ -28,6 +28,10 @@ Before we will move to the examples, let's look at the methods, objects, and var
 | `RemoveWhere(...)` | Array.prototype | wrapper for [_.remove](https://lodash.com/docs#remove) returning Array for easier chaining |
 | `Remove(...)` | Array.prototype | wrapper for [_.pull](https://lodash.com/docs#pull) returning Array for easier chaining |
 
+## Custom functions
+
+Beside built-in functions, custom ones can be introduced. Please visit [this](../../../studio/overview/settings/custom-functions) page if you want to know how to add custom functions.
+
 ## Example I
 
 {CODE patch_2@ClientApi\Commands\Patches\Javascript.cs /}
@@ -70,4 +74,5 @@ Before we will move to the examples, let's look at the methods, objects, and var
 
 ## Related articles
 
-[How to work with **patch requests**?](../../../client-api/commands/patches/how-to-work-with-patch-requests) 
+- [How to work with **patch requests**?](../../../client-api/commands/patches/how-to-work-with-patch-requests) 
+- [Studio : How to add **custom functions**?](../../../studio/overview/settings/custom-functions)

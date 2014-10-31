@@ -4,7 +4,7 @@ Documents view gives you the overview of all documents available in a specific d
 
 ## Document collections
 
-On the left side of the screen, you will see all the available [collections](../../client-api/faq/what-is-a-collection) for the current database. Each collection will be represented by a different color and number of documents that belong to it.
+On the left side of the screen, you will see all the available [collections](../../../client-api/faq/what-is-a-collection) for the current database. Each collection will be represented by a different color and number of documents that belong to it.
 
 ![Figure 1. Studio. Documents View. Document Collections.](images/documents-view-collections.png)  
 

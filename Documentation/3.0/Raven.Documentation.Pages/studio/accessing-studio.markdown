@@ -10,7 +10,7 @@ When you just deployed your server and there are no databases, following screen 
 
 ![Figure 1. Studio. First run. Creating database.](images/accessing-studio-first-run.png)  
 
-Here you can create your first database by specifying its name, list of active bundles (optionally) or more advanced settings like [storage engine]() or various paths.
+Here you can create your first database by specifying its name, list of active bundles (optionally) or more advanced settings like [storage engine](../server/configuration/storage-engines) or various paths.
 
 <hr />
 
@@ -54,7 +54,7 @@ On the other hand, the bottom navigation bar contains information about server b
 
 ## Studio & Authentication
 
-If server requires [authentication](), it may ask you to provide valid windows credentials or API Key. If you will just open up Studio without adding anything to the URL (e.g. `http://localhost:8080/`) windows authentication will be assumed and following screen will appear (different browsers might display slightly different dialogs):
+If server requires [authentication](../server/configuration/authentication-and-authorization), it may ask you to provide valid windows credentials or API Key. If you will just open up Studio without adding anything to the URL (e.g. `http://localhost:8080/`) windows authentication will be assumed and following screen will appear (different browsers might display slightly different dialogs):
 
 ![Figure 7. Studio. Basic Authentication.](images/accessing-studio-basic-auth.png)  
 

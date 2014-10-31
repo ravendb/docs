@@ -7,10 +7,10 @@ Whenever you want to add new or edit existing index you will be redirected to `I
 Following actions are available on bar:
 
 - `Save` - saves index on server (if index existed and definition changed, then previous indexing data will be lost),
-- `Add` - you can add another [mapping]() or [reducing]() function, define field or spatial field, and set max index outputs,
-- `Priority` - ability to change index priority. More [here](),
+- `Add` - you can add another [mapping](../../../indexes/map-indexes) or [reducing](../../../indexes/map-reduce-indexes) function, define field or spatial field, and set max index outputs,
+- `Priority` - ability to change index priority. More [here](../../../server/administration/index-administration#index-prioritization),
 - `Format` - perform code formatting for mapping and reducing functions,
-- `Query` - _edit only_ - redirects to [Query View](),
+- `Query` - _edit only_ - redirects to [Query View](../../../studio/overview/query/query-view),
 - `Terms` - _edit only_ - redirects to `Terms View` where you an view current index terms,
 - `Copy` - opens dialog, where you can copy index definition
 - `Generate C#` - creates index definition class in C#,

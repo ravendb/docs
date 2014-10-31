@@ -15,9 +15,12 @@ namespace Raven.Documentation.Parser
 	{
 		private readonly ParserOptions _options;
 
-		public DocumentationValidator(ParserOptions options)
+		private Language _currentLanguage;
+
+		public DocumentationValidator(ParserOptions options, Language currentLanguage)
 		{
 			_options = options;
+			_currentLanguage = currentLanguage;
 		}
 
 		public IEnumerable<PageLinksValidationResult> ValidateLinks(IList<DocumentationPage> pages)
@@ -48,14 +51,14 @@ namespace Raven.Documentation.Parser
 
 		private PageLinksValidationResult ValidatePageLinks(HttpClient client, DocumentationPage page, IList<DocumentationPage> pages)
 		{
-			var result = new PageLinksValidationResult(page.Key, page.Language, page.Version);
+			var result = new PageLinksValidationResult(page.Key, page.Language == Language.All ? _currentLanguage : page.Language, page.Version);
 
 			var htmlDocument = HtmlHelper.ParseHtml(page.HtmlContent);
 			var links = htmlDocument.DocumentNode.SelectNodes("//a[@href]");
 			if (links == null)
 				return result;
 
-			var currentUri = new Uri(_options.RootUrl + page.Key + "/");
+			var currentUri = new Uri(_options.RootUrl + page.Key + "/../");
 
 			foreach (var link in links)
 			{
@@ -89,8 +92,15 @@ namespace Raven.Documentation.Parser
 			{
 				var url = uri.AbsoluteUri;
 
-				var response = client.SendAsync(new HttpRequestMessage(HttpMethod.Head, url)).Result;
-				return response.IsSuccessStatusCode;
+				var response = client.SendAsync(new HttpRequestMessage(HttpMethod.Get, url)).Result;
+				if (response.IsSuccessStatusCode == false) 
+					return false;
+
+				var content = response.Content.ReadAsStringAsync().Result;
+				if (content.Contains("The article you are looking for does not exist."))
+					return false;
+
+				return true;
 			}
 			catch (Exception)
 			{
