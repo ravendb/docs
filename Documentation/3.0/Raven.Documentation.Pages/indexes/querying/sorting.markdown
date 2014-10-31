@@ -1,6 +1,6 @@
 ﻿# Sorting
 
-{NOTE This article focuses only on querying side of the sorting. If you are interested in reading how to create indexes and change default sorting behavior go [here](). /}
+{NOTE This article focuses only on querying side of the sorting. If you are interested in reading how to create indexes and change default sorting behavior go [here](../../indexes/customizing-results-order). /}
 
 ## Basics
 
@@ -41,7 +41,7 @@ When query is issued, each index entry is scored by Lucene (you can read more ab
 
 ## Random ordering
 
-If you want to randomize the order of your results each time the query is executed you can use `RandomOrdering` method (API reference [here]()):
+If you want to randomize the order of your results each time the query is executed you can use `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_3_1@Indexes\Querying\Sorting.cs /}

@@ -56,4 +56,4 @@ Detailed article about transformer basics can be found [here](../../transformers
 ## Related articles
 
 - [Client API : Session : How to perform projection?](../../client-api/session/querying/how-to-perform-projection)
-- [Transformers : What are transformers?](../../csharp/transformers/what-are-transformers)
+- [Transformers : What are transformers?](../../transformers/what-are-transformers)

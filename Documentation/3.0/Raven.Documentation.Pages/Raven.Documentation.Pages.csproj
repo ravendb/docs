@@ -161,7 +161,7 @@
     <None Include="client-api\commands\transformers\put.dotnet.markdown" />
     <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docslist" />
-    <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.dotnet.markdown" />
+    <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
     <None Include="client-api\configuration\.docslist" />
     <None Include="client-api\configuration\conventions\identifier-generation\.docslist" />
     <None Include="client-api\configuration\conventions\identifier-generation\global.markdown" />
@@ -639,7 +639,7 @@
     <Content Include="studio\walkthroughs\images\replication-master-replication-settings.png" />
     <Content Include="studio\walkthroughs\images\replication-slave-create-database.png" />
     <Content Include="studio\walkthroughs\images\replication-slave-documents.png" />
-    <None Include="server\kb\document-key-generatation.markdown" />
+    <None Include="server\kb\document-key-generation.markdown" />
     <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
     <Content Include="client-api\how-to\images\excel_connections_dialog_1.png" />
