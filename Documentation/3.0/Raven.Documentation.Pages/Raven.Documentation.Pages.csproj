@@ -593,8 +593,14 @@
     <Content Include="studio\overview\settings\images\settings-database_settings-1.png" />
     <Content Include="studio\overview\settings\images\settings-periodic_export-1.png" />
     <Content Include="studio\overview\settings\images\settings-quotas-1.png" />
+    <Content Include="studio\overview\settings\images\settings-sql_replication-1.png" />
+    <Content Include="studio\overview\settings\images\settings-sql_replication-2.png" />
     <Content Include="studio\overview\settings\images\settings-versioning_default_options-1.png" />
     <Content Include="studio\overview\settings\images\settings-versioning_setup-2.png" />
+    <Content Include="studio\overview\settings\images\settings_replication-1.png" />
+    <Content Include="studio\overview\settings\images\settings_replication-2.png" />
+    <Content Include="studio\overview\settings\images\settings_replication-3.png" />
+    <Content Include="studio\overview\settings\images\settings_replication-4.png" />
     <Content Include="studio\overview\status\images\debug-endpoints-studio-1.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_counter-2.png" />
