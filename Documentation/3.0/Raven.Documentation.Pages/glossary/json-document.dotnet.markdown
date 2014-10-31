@@ -1,6 +1,6 @@
 ﻿# Glossary : JsonDocument
 
-## Properties
+### Properties
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
@@ -12,13 +12,13 @@
 | **NonAuthoritativeInformation** | bool? | indicates if document is non authoritative (modified by uncommited transaction) |
 | **TempIndexScore** | float? | ranking of document in query |
 
-## Methods
+### Methods
 
 | Signature | Description |
 | --------- | ----------- |
 | **RavenJObject ToJson()** | Translate the json document to a RavenJObject | 
 
-## Articles
+### Articles
 
 - [Client API : Commands : Documents : Get](../client-api/commands/documents/get#get)
 - [Client API : Commands : Documents : GetDocuments](../client-api/commands/documents/get#getdocuments)
