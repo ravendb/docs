@@ -1,6 +1,6 @@
 # Settings : Replication
 
-Here you can edit  the following [replication]() settings:
+Here you can edit the following [replication](../../../server/scaling-out/replication/how-replication-works) settings:
 
 - Client failover behavior - client can decide which failover behavior to use by default (`Let client decide`) or the failover behavior can be enforced by a server, with the following options:
 	- `Allow reads from secondaries`,
@@ -32,6 +32,6 @@ Here you can edit  the following [replication]() settings:
 		
 ![Figure 3. Settings. Replication. Replication Destination.](images/settings_replication-3.png)
 
-- Server HiLo prefix - read more about it [here]()
+- Server HiLo prefix - read more about it [here](../../../client-api/bundles/how-client-integrates-with-replication-bundle#custom-document-id-generation)
 
 ![Figure 4. Settings. Replication. Server Hilo Prefix.](images/settings_replication-4.png)

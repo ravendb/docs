@@ -14,7 +14,7 @@ When sending a support ticket, it is good to include as much information about t
     - To add a screenshot to your capture, press the +Screenshot button inside FiddlerCap.
     - Inside FiddlerCap, click the **2. Stop Capture** button.
     - Click the **3. Save Capture** button. Save the .SAZ file to your desktop.
-3. Debug Info Package. RavenDB supports creating a info package (statistics, queries, requests, hardware information, etc.) that can be database scoped or server scoped. [Database scoped package]() can be created in: `Studio -> Status -> Gather Debug Info`, for [server scoped package]() go to `Studio -> Manage Your Server -> Gather Debug Info`.
+3. Debug Info Package. RavenDB supports creating a info package (statistics, queries, requests, hardware information, etc.) that can be database scoped or server scoped. [Database scoped package](../../studio/overview/status/gather-debug-info) can be created in: `Studio -> Status -> Gather Debug Info`, for [server scoped package](../../studio/management/gather-debug-info) go to `Studio -> Manage Your Server -> Gather Debug Info`.
 4. [Server logs](../../server/troubleshooting/enabling-logging)
 5. [Statistics](../../server/administration/statistics)
 6. Unit test

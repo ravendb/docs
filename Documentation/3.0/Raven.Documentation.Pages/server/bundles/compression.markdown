@@ -6,7 +6,7 @@ To reduce the cost of I/O operations and reduce the size of the database on disk
 
 To activate compression server-wide just add `Compression` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with compression bundle turned on using API or Studio.
 
-How to create a database with compression enabled using Studio can be found [here](../../../studio/bundles/compression).
+How to create a database with compression enabled using Studio can be found [here]().
 
 {CODE compression_1@Server\Bundles\Compression.cs /}
 

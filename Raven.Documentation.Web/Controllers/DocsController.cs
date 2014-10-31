@@ -93,7 +93,7 @@ namespace Raven.Documentation.Web.Controllers
 							ImagesUrl = GetImagesUrl()
 						};
 
-			var results = new DocumentationValidator(options)
+			var results = new DocumentationValidator(options, CurrentLanguage)
 				.ValidateLinks(pages)
 				.ToList();
 
