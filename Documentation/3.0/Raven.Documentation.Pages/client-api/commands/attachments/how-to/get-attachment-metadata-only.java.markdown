@@ -18,7 +18,7 @@ There are few methods that allow you to download attachment metadata from a data
 
 | Return Value | |
 | ------------- | ----- |
-| [Attachment](../../../glossary/json/attachment) | Object that represents attachment. |
+| [Attachment](../../../glossary/attachment) | Object that represents attachment. |
 
 ### Example
 
@@ -42,7 +42,7 @@ There are few methods that allow you to download attachment metadata from a data
 
 | Return Value | |
 | ------------- | ----- |
-| List&lt;[AttachmentInformation](../../../glossary/json/attachment-information)&gt; | Object that represents attachment metadata information. |
+| List&lt;[AttachmentInformation](../../../glossary/attachment-information)&gt; | Object that represents attachment metadata information. |
 
 ### Example
 

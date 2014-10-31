@@ -10,12 +10,12 @@ Use **StreamQuery** method to stream results of a selected index according to a 
 | ------------- | ------------- | ----- |
 | **index** | String | A name of an index to query |
 | **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
-| **queryHeaderInfo** | Reference&lt;[QueryHeaderInformation ](../../../glossary/client-api/query-header-information)&gt; | Information about performed query |
+| **queryHeaderInfo** | Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information)&gt; | Information about performed query |
 
 | Return Value | |
 | ------------- | ----- |
 | IEnumerator`<RavenJObject>` | Enumerator with query results |
-| Reference&lt;[QueryHeaderInformation ](../../../glossary/client-api/query-header-information)&gt; | Information about performed query |
+| Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information)&gt; | Information about performed query |
 
 ## Example
 

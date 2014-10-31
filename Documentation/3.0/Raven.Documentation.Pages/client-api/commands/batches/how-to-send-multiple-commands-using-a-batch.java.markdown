@@ -8,11 +8,11 @@ To send **multiple operations** in a **single request**, reducing the number of 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| An array of following commands:<br />- [PutCommandData](../../../glossary/client-api/commands/put-command-data)<br />- [DeleteCommandData](../../../glossary/client-api/commands/delete-command-data)<br />- [PatchCommandData](../../../glossary/client-api/commands/patch-command-data)<br />- [ScriptedPatchCommandData](../../../glossary/client-api/commands/scripted-patch-command-data) | ICommandData | Commands to process. |
+| An array of following commands:<br />- [PutCommandData](../../../glossary/put-command-data)<br />- [DeleteCommandData](../../../glossary/client-api/commands/delete-command-data)<br />- [PatchCommandData](../../../glossary/client-api/commands/patch-command-data)<br />- [ScriptedPatchCommandData](../../../glossary/client-api/commands/scripted-patch-command-data) | ICommandData | Commands to process. |
 
 | Return Value | |
 | ------------- | ----- |
-| [BatchResult](../../../glossary/client-api/commands/batch-result)[] | An array of batch results matching **exactly** the order of commands send. |
+| [BatchResult](../../../glossary/batch-result)[] | An array of batch results matching **exactly** the order of commands send. |
 
 ## Example
 

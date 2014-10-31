@@ -14,7 +14,7 @@ Spatial indexes can be queried using `spatial` method which contains full spectr
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | Path<?> | Path to spatial field. |
-| **clause** | [SpatialCriteria](../../../glossary/client-api/querying/spatial-criteria-factory) | Spatial criteria that will be executed on given spatial field from `path` parameter. |
+| **clause** | [SpatialCriteria](../../../glossary/spatial-criteria-factory) | Spatial criteria that will be executed on given spatial field from `path` parameter. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -36,7 +36,7 @@ Spatial indexes can be queried using `spatial` method which contains full spectr
 | ------------- | ------------- | ----- |
 | **fieldName** | String | Spatial field name. |
 | **shapeWKT** | String | [WKT](http://en.wikipedia.org/wiki/Well-known_text) formatted shape. |
-| **rel** | [SpatialRelation](../../../glossary/client-api/querying/spatial-relation) | Spatial relation to check. |
+| **rel** | [SpatialRelation](../../../glossary/spatial-relation) | Spatial relation to check. |
 
 | Return Value | |
 | ------------- | ----- |

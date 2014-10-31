@@ -9,12 +9,12 @@ Query results can be streamed using `stream` method from `advanced()` session op
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **query** | [IQueryable](../../../client-api/session/querying/how-to-query) or [IDocumentQuery](../../../client-api/session/querying/how-to-use-lucene-in-queries) | Query to stream results for. |
-| **queryHeaderInformation** | [QueryHeaderInformation](../../../glossary/client-api/query-header-information) | Information about performed query. |
+| **queryHeaderInformation** | [QueryHeaderInformation](../../../glossary/query-header-information) | Information about performed query. |
 
 | Return Value | |
 | ------------- | ----- |
 | CloseableIterator&lt;StreamResult&lt;T&gt;&gt; | Iterator with entities. |
-| [QueryHeaderInformation](../../../glossary/client-api/query-header-information) | Information about performed query. |
+| [QueryHeaderInformation](../../../glossary/query-header-information) | Information about performed query. |
 
 ## Example I
 

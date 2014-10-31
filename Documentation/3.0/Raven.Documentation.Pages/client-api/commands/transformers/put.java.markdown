@@ -9,7 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **name** | String | name of a transformer |
-| **transformerDef** | [TransformerDefinition](../../../glossary/transformers/transformer-definition) | definition of a transformer |
+| **transformerDef** | [TransformerDefinition](../../../glossary/transformer-definition) | definition of a transformer |
 
 | Return Value | |
 | ------------- | ----- |
