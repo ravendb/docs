@@ -127,7 +127,7 @@ You can tweak the export/import process with the following parameters:
  - api-key: The API-key to use, when using OAuth.
  - incremental: States usage of incremental operations.
  - wait-for-indexing: Wait until all indexing activity has been completed (import only).
- - excludeexpired: Excludes expired documents created by the [expiration bundle](../extending/bundles/expiration).    
+ - excludeexpired: Excludes expired documents created by the [expiration bundle](../../server/bundles/expiration).    
  - limit: Reads at most VALUE documents/attachments.
  - help: You can use the help option in order to print the built-in options documentation.
 

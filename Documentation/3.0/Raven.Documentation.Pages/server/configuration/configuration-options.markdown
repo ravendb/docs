@@ -165,7 +165,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 1 minute
 
 * **Raven/DisableInMemoryIndexing**   
-	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IndexDefinition](../../client-api/querying/static-indexes/defining-static-index).    
+	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IndexDefinition]().    
 	_Default:_ false
 
 * **Raven/Indexing/FlushIndexToDiskSizeInMb**   
@@ -183,7 +183,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ ~\Data  
 
 * **Raven/StorageEngine** or **Raven/StorageTypeName**   
-    What storage type to use (see: [Storage Engines](../../server/server/configuration/storage-engines))  
+    What storage type to use (see: [Storage Engines](../../server/configuration/storage-engines))  
     _Allowed values:_ esent, voron   
     _Default:_ esent  
 
@@ -399,7 +399,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The password for the OAuth certificate.  
 	_Default:_ none
 
-### [Encryption](../extending/bundles/encryption)
+### [Encryption](../../server/bundles/encryption)
 
 * **Raven/Encryption/Algorithm**     
 	[AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) value. Additionaly provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class.     
@@ -439,7 +439,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 ##Availability of configuration options
 
-Many of the configuration options described in section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this page](../../server/multiple-databases).
+Many of the configuration options described in section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this](../../server/administration/multiple-databases) page.
 
 | Configuration option | Database | Global |
 |:---------------------|:--------:|:------:|

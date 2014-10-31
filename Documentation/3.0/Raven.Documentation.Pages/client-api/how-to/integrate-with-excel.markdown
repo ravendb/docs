@@ -3,7 +3,7 @@
 A very common use case for many application is to expose data to users as an Excel file. RavenDB has a dedicated support that allows to directly consume data stored in a database by Excel application. 
 The integration of Excel with the data store is achieved by [query streaming](../session/querying/how-to-stream-query-results) and an appropriate output formatting understandable by Excel (Comma Separated Values).
 
-In order to take advantage of this feature you need to specify [an index](../../indexes/what-is-index) that you want to query, a query itself and optionally [a result transformer](../../transformers/what-are-transformers) if you need to change the shape of results.
+In order to take advantage of this feature you need to specify [an index](../../indexes/what-are-indexes) that you want to query, a query itself and optionally [a result transformer](../../transformers/what-are-transformers) if you need to change the shape of results.
 You have you also explicitly tell RavenDB to format results in Excel format.
 
 The generic HTTP request will have the following address:
