@@ -1,7 +1,7 @@
 database-settings.markdown	Database Settings
 quotas.markdown	Quotas
-replication.markdown	[TODO] Replication
-sql-replication.markdown	[TODO] SQL Replication
+replication.markdown	Replication
+sql-replication.markdown	SQL Replication
 versioning.markdown	[SCREEN] Versioning
 periodic-export.markdown	[SCREEN] Periodic Export
 custom-functions.markdown	Custom Functions

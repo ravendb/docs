@@ -20,7 +20,7 @@ Now, we will focus on distribution package (if you want to read about installer 
 
 In package there is a file `Start.cmd` which will start server as a console application (aka [debug mode](../server/troubleshooting/running-in-debug-mode)) which is great for development or trying out various functionalities, but not suitable for production release. When server has started, [the Studio](../studio/accessing-studio) will be available at `http://localhost:<port>//`, by default RavenDB is configured to use 8080 port or next available if it is taken.
 
-{INFO If you want to install RavenDB as a service please visit [this]() article. There is also a possibility to install it on [IIS](../server/installation/iis) or run it as [embedded](../server/installation/embedded) instance. /}
+{INFO If you want to install RavenDB as a service please visit [this](../server/installation/as-a-service) article. There is also a possibility to install it on [IIS](../server/installation/iis) or run it as [embedded](../server/installation/embedded) instance. /}
 
 <hr />
 
@@ -40,6 +40,8 @@ Please read following articles if you want to get more details:
 
 - [What is a session and how does it work?](../client-api/session/what-is-a-session-and-how-does-it-work) and [Opening a session](../client-api/session/opening-a-session)
 - [What are commands?](../client-api/commands/what-are-commands)
+
+<hr />
 
 ## Examples
 
@@ -69,6 +71,8 @@ To satisfy queries, indexes must be used. In short words, index is a server-side
 This example assumes that your database contains `Northwind` sample data. If you are not sure how to deploy it, please visit [this](../studio/overview/tasks/create-sample-data) article.
 
 {CODE start_2@Start/GettingStarted.cs /}
+
+<hr />
 
 ## Few words about the documentation
 
