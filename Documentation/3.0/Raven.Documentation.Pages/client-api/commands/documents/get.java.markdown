@@ -20,7 +20,7 @@ There are few methods that allow you to retrieve documents from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [JsonDocument](../../../glossary/json/json-document) | Object representing the retrieved document. |
+| [JsonDocument](../../../glossary/json-document) | Object representing the retrieved document. |
 
 ### Example
 
@@ -83,7 +83,7 @@ There are few methods that allow you to retrieve documents from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [JsonDocument](../../../glossary/json/json-document) | Object representing retrieved document. |
+| [JsonDocument](../../../glossary/json-document) | Object representing retrieved document. |
 
 ### Example
 
@@ -114,7 +114,7 @@ There are few methods that allow you to retrieve documents from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [JsonDocument](../../../glossary/json/json-document) | Object representing retrieved document. |
+| [JsonDocument](../../../glossary/json-document) | Object representing retrieved document. |
 
 ### Example I
 

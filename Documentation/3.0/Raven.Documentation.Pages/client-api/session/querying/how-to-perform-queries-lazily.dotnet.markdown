@@ -44,7 +44,7 @@ or
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
+| **query** | [SuggestionQuery](../../../glossary/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
 
 | Return Value | |
 | ------------- | ----- |

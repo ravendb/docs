@@ -51,7 +51,7 @@ To setup a failover using a [connection string](../../client-api/setting-up-conn
 
 Failover
 :   Type: string in predefined format   
-:   Format: JSON that can be deserialized to [ReplicationDestination](../../glossary/bundles/replication-destination) with optional database name separated with JSON using pipe ('|') e.g. `Northwind|{ ... }`      
+:   Format: JSON that can be deserialized to [ReplicationDestination](../../glossary/replication-destination) with optional database name separated with JSON using pipe ('|') e.g. `Northwind|{ ... }`      
 Failover server definition.
 
 Example:

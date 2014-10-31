@@ -8,7 +8,7 @@ Session `Query` method contains extensions (`Suggest`) that allow you to use sug
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
+| **query** | [SuggestionQuery](../../../glossary/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
 
 | Return Value | |
 | ------------- | ----- |

@@ -9,7 +9,7 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | string | A name of an index to query. |
-| **suggestionQuery** | [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
+| **suggestionQuery** | [SuggestionQuery](../../../glossary/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
 
 | Return Value | |
 | ------------- | ----- |
