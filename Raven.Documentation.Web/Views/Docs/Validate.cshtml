@@ -1,9 +1,27 @@
 ﻿@model List<Raven.Documentation.Parser.Data.PageLinksValidationResult>
 @{
-    ViewBag.Title = "Validate";
+	ViewBag.Title = "Validate";
+}
+@section scripts {
+	<script type="text/javascript">
+		$('#btnHideValidLinks').click(function () {
+			$(".text-success").hide();
+			$(".body-content div:has(> ul):not(:has(> ul > li:visible))").hide();
+		});
+
+		$('#btnShowValidLinks').click(function () {
+			$(".text-success").show();
+			$(".body-content div:has(> ul):not(:has(> ul > li:visible))").show();
+		});
+	</script>
 }
 
-<h2>Validation Report</h2>
+<h2>Link Validation Report</h2>
+
+<button id="btnHideValidLinks" class="btn btn-primary">Hide all valid links</button>
+<button id="btnShowValidLinks" class="btn btn-success">Show all valid links</button>
+
+<hr />
 
 @foreach (var result in Model)
 {
