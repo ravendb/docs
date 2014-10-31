@@ -11,8 +11,8 @@ For start, you need to have a RavenDB server running and there are couple of way
 
 Now, we will focus on distribution package (if you want to read about installer go [here](../server/installation/using-installer)). The package contains following directories:
 
-- `Backup` - contains [Raven.Backup](server/administration/backup-and-restore) utility for doing backups,
-- `Bundles` - contains all non built-in [plugins](../plugins/what-are-plugins) e.g. [Authorization](../server/bundles/authorization) or [Encryption](../server/bundles/encryption),
+- `Backup` - contains [Raven.Backup](../server/administration/backup-and-restore) utility for doing backups,
+- `Bundles` - contains all non built-in [plugins](../server/plugins/what-are-plugins) e.g. [Authorization](../server/bundles/authorization) or [Encryption](../server/bundles/encryption),
 - `Client` - contains all .NET client libraries needed for development,
 - `Server` - contains all server files (including configuration files such as [Raven.Server.exe.config](../server/configuration/configuration-options))
 - `Smuggler` - contains utility for [importing and exporting](../server/administration/exporting-and-importing-data) data between servers,

@@ -18,5 +18,5 @@
 
 ## Related articles
 
-- [How to **get** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
-- [PutAttachment](../../../client-api/commands/attachments/put)  
+- [How to **get** attachment **metadata** only?](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
+- [PutAttachment](../../../../client-api/commands/attachments/put)  

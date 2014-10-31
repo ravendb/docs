@@ -62,6 +62,6 @@ If **overwrite** is set to **true** and `IndexDefinition` has not changed, no ac
 
 ## Related articles
 
-- [How to **reset index**?](../../../client-api/commands/indexes/reset-index)  
+- [How to **reset index**?](../../../client-api/commands/indexes/how-to/reset-index)  
 - [GetIndex](../../../client-api/commands/indexes/get)  
 - [DeleteIndex](../../../client-api/commands/indexes/delete)  

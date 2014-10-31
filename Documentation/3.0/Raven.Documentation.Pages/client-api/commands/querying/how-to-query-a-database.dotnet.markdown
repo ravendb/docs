@@ -32,5 +32,5 @@ If a model of your documents is such that they reference others and you want to 
 
 ## Related articles
 
-- [Full RavenDB query syntax](../../../Indexes/full-query-syntax) 
+- [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax) 
 - [How to **stream query** results?](../../../client-api/commands/querying/how-to-stream-query-results)

@@ -157,7 +157,7 @@ the `EscapeQueryOptions` parameter. It's the enum that can have one of the follo
 * AllowAllWildcards,
 * RawQuery.
 
-By default all special characters contained in the query will be escaped (`EscapeAll`) when [Query](../client-api/session/querying/how-to-query) from session is used. However you can add a bit more of flexibility to your searching mechanism.
+By default all special characters contained in the query will be escaped (`EscapeAll`) when [Query](../../client-api/session/querying/how-to-query) from session is used. However you can add a bit more of flexibility to your searching mechanism.
 `EscapeQueryOptions.AllowPostfixWildcard` enables searching against a field by using search term that ends with wildcard character:
 
 {CODE-TABS}

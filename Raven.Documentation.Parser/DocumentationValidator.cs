@@ -72,6 +72,15 @@ namespace Raven.Documentation.Parser
 					if (string.IsNullOrEmpty(href) == false)
 					{
 						uri = href.StartsWith("http") ? new Uri(href, UriKind.Absolute) : new Uri(currentUri + href, UriKind.Absolute);
+						var indexOfHash = uri.AbsoluteUri.IndexOf("#", StringComparison.InvariantCultureIgnoreCase);
+						if (indexOfHash != -1)
+						{
+							var potentialGuid = uri.AbsoluteUri.Substring(indexOfHash + 1);
+							Guid guid;
+							if (Guid.TryParse(potentialGuid, out guid))
+								continue;
+						}
+
 						isValid = ValidatePageLink(client, uri, pages);
 					}
 

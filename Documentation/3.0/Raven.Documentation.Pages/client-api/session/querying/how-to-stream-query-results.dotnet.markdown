@@ -8,7 +8,7 @@ Query results can be streamed using `Stream` method from `Advanced` session oper
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [IQueryable](../../../client-api/session/querying/how-to-query) or [IDocumentQuery](../../../client-api/session/querying/how-to-use-lucene-in-queries) | Query to stream results for. |
+| **query** | [IQueryable](../../../client-api/session/querying/how-to-query) or [IDocumentQuery](../../../client-api/session/querying/lucene/how-to-use-lucene-in-queries) | Query to stream results for. |
 | **queryHeaderInformation** | [QueryHeaderInformation](../../../glossary/query-header-information) | Information about performed query. |
 
 | Return Value | |

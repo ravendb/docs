@@ -23,5 +23,5 @@ Use **StreamQuery** method to stream results of a selected index according to a 
 
 ## Related articles
 
-- [Full RavenDB query syntax](../../../indexes/full-query-syntax) 
+- [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax) 
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)

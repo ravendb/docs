@@ -61,6 +61,6 @@ Sending multiple facet queries is achievable by using `GetMultiFacets` method.
 
 ## Related articles
 
-- [Full RavenDB query syntax](../../../Indexes/full-query-syntax)   
+- [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax)   
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)   
 - [How to **stream query** results?](../../../client-api/commands/querying/how-to-stream-query-results)   
