@@ -16,7 +16,7 @@ How to create a database with quotas enabled using Studio can be found [here](..
 
 ## Configuration
 
-Configure the following values by adding entries to your [server configuration](../../server/administration/configuration) or [database settings](../../server/administration/multiple-databases):
+Configure the following values by adding entries to your [server configuration](../../server/configuration/configuration-options) or [database settings](../../server/administration/multiple-databases):
 
 * **Raven/Quotas/Size/HardLimitInKB**
 	The hard limit after which we refuse any additional writes.   

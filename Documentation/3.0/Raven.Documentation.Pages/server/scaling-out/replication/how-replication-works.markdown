@@ -73,12 +73,12 @@ In a replicating system, it is possible that two writes to the same document wil
 
 Resolving a conflict is easy, you just need to PUT a new version of the document. On PUT, the Replication Bundle will consider the conflict resolved.
 
-More details about conflicts are here: [dealing with replication conflicts](../../../server/scaling-out/replication/handling-conflicts).
+More details about conflicts are here: [dealing with replication conflicts](../../../server/scaling-out/replication/replication-conflicts).
 
 ## Replication & other bundles
 
 {WARNING:Expiration}
-If master-master replication is set up and [Expiration bundle](../../extending/bundles/expiration) is used on more than one server then the conflicts will occur. To solve this, use expiration bundle only on one server.
+If master-master replication is set up and [Expiration bundle](../../../server/bundles/expiration) is used on more than one server then the conflicts will occur. To solve this, use expiration bundle only on one server.
 {WARNING/}
 
 ## Related articles

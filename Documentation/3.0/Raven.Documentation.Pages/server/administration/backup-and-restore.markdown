@@ -11,7 +11,7 @@ Backups can be performed while the database in online and accepting requests (in
 
 RavenDB relies on OS services to manage data storage and backup. Those services are forward compatible (if you backup on Windows XP you can restore on Windows 7) but not  backward compatible (if you backup on Windows 2008 you cannot restore on Windows 2003).
 
-If you are looking to move a database content between different Operating System versions, you should use the [Import / Export](../server/administration/exporting-and-importing) function, done using Raven.Smuggler.
+If you are looking to move a database content between different Operating System versions, you should use the [Import / Export](../../server/administration/exporting-and-importing-data) function, done using Raven.Smuggler.
 
 <hr />
 

@@ -8,9 +8,9 @@ Periodic exports are leveraging the concept of incremental exports available in 
 
 ## Activating bundle
 
-To activate bundle globally just add `PeriodicExport` to the `Raven/ActiveBundles` in appropriate configuration file. More about setting up configuration can be found [here](../Administration/configuration).
+To activate bundle globally just add `PeriodicExport` to the `Raven/ActiveBundles` in appropriate configuration file. More about setting up configuration can be found [here](../../server/configuration/configuration-options).
 
-If you wish to setup periodic export per database, then add `PeriodicExport` to the list of database active bundles or use the [Studio](../../studio/bundles/periodicbackup).
+If you wish to setup periodic export per database, then add `PeriodicExport` to the list of database active bundles or use the [Studio](../../studio/overview/settings/periodic-export).
 
 Bundle can also be activated during database creation process.
 
