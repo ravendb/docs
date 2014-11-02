@@ -300,6 +300,7 @@
     <None Include="glossary\bulk-insert-operation.java.markdown" />
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
     <None Include="glossary\bulk-insert-options.java.markdown" />
+    <None Include="glossary\facet-results.dotnet.markdown" />
     <None Include="glossary\database-statistics.dotnet.markdown" />
     <None Include="glossary\database-statistics.java.markdown" />
     <None Include="glossary\delete-command-data.dotnet.markdown" />
