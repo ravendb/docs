@@ -25,7 +25,7 @@ There are two overloads for the **GetFacets** method and the only difference bet
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResults]() | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults](../../../glossary/facet-results) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ### Example I
 
@@ -51,7 +51,7 @@ Sending multiple facet queries is achievable by using `GetMultiFacets` method.
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResult]()[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
+| [FacetResult](../../../glossary/facet-results#facetresult)[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
 
 ### Example
 
