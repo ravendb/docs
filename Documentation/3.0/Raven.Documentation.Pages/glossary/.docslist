@@ -9,6 +9,7 @@ database-statistics.markdown	DatabaseStatistics
 delete-command-data.markdown	DeleteCommandData
 document-change-notification.markdown	DocumentChangeNotification
 dynamic-aggregation-query.markdown	DynamicAggregationQuery
+facet-results.markdown	FacetResults
 field-highlightings.markdown	FieldHighlightings
 index-change-notification.markdown	IndexChangeNotification
 json-document-metadata.markdown	JsonDocumentMetadata

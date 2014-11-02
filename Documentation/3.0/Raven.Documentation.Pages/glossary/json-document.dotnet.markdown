@@ -16,7 +16,7 @@
 
 | Signature | Description |
 | --------- | ----------- |
-| **RavenJObject ToJson()** | Translate the json document to a RavenJObject | 
+| **RavenJObject ToJson()** | Translate the json document to a RavenJObject |
 
 ### Articles
 

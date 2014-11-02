@@ -1,15 +1,9 @@
 ﻿# Glossary : TransformerDefinition
 
-{CODE transformer_definition@Glossary/Glossary.cs /}
+### Properties
 
-TransformResults
-:   Type: string   
-function that will convert (transform) results 
-
-TransformerId
-:   Type: int   
-internal transformer Id
-
-Name
-:   Type: string   
-transformer name  
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **TransformResults** | string | The translator function |
+| **TransfomerId** | int | Transformer identifier |
+| **Name** | string | Transformer name |

@@ -1,19 +1,13 @@
 ﻿# Glossary : JsonDocumentMetadata
 
-{CODE json_document_metadata@Glossary/Glossary.cs /}
 
-Metadata
-:   Type: RavenJObject   
-Document metadata
+### Properties
 
-Etag
-:   Type: Etag   
-Document ETag
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Metadata** | RavenJObject | Document metadata |
+| **Key** | string | Document Etag |
+| **NonAuthoritativeInformation** | bool? | A value indicating whether this document is non authoritative (modified by uncommitted transaction). |
+| **Etag** | Etag | Document ETag |
+| **LastModified** | DateTime? | Last modified date of document |
 
-Key
-:   Type: string   
-Document key
-
-Metadata
-:   Type: DateTime?   
-Last modified date of document 
