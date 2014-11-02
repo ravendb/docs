@@ -1,28 +1,30 @@
 ﻿# Glossary : BulkInsertOperation
 
-{CODE bulk_insert_operation@Glossary\Glossary.cs /}
+### Related delegates
 
-OnBeforeEntityInsert
-:   Type: event   
-`event` that will be raised before entity will be processed.
+| Signature |
+| ----------|
+| **delegate void BeforeEntityInsert(string id, RavenJObject data, RavenJObject metadata)** |
 
-IsAborted
-:   Type: property   
-`property` indicates if operation has aborted.
+### Properties
 
-Abort
-:   Type: method   
-`method` used to abort the operation.
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **IsAborted** | bool | indicates if operation has aborted. |
+| **OperationId** | Guid | Unique operation Id. |
 
-OperationId
-:   Type: property   
-Unique operation Id.
+### Methods
 
-Report
-:   Type: event   
-`event` that will be raised every time a batch has finished processing and after the whole operation.
+| Signature | Description |
+| ----------| ----- |
+| **void Abort()** | Abort the operation |
+| **void Store(object entity)** | store the entity, identifier will be generated automatically on client-side |
+| **void Store(object entity, string id)** | store the entity, with `id` parameter to explicitly declare the entity identifier |
+| **void Dispose()** | Dispose an object |
 
-Store
-:   Type: method   
-`method` used to store the entity, with optional `id` parameter to explicitly declare the entity identifier (will be generated automatically on client-side when overload without `id` will be used).
+### Events
 
+| Signature | Description |
+| ----------| ----- |
+| **BeforeEntityInsert OnBeforeEntityInsert** | will be raised before entity will be processed |
+| **Action&lt;string&gt; Report** |  will be raised every time a batch has finished processing and after the whole operation |

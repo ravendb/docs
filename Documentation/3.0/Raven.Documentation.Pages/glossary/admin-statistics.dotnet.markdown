@@ -7,9 +7,9 @@
 | **ServerName** | string | The name of the server |
 | **TotalNumberOfRequests** | int | Total number of requests that was made to server |
 | **Uptime** | TimeSpan | Server uptime |
-| **Memory** | AdminMemoryStatistics | Admin memory statistics (described below) |
-| **LoadedDatabases** | IEnumerable&lt;LoadedDatabaseStatistics&gt; | Information about loaded databases (described below) |
-| **LoadedFilesystems** | IEnumerable&lt;FileSystemStats&gt; | Information about loaded filesystes (described below) |
+| **Memory** | [AdminMemoryStatistics](../glossary/admin-statistics#adminmemorystatistics) | Admin memory statistics (described below) |
+| **LoadedDatabases** | IEnumerable&lt;[LoadedDatabaseStatistics](../glossary/admin-statistics#loadeddatabasestatistics)&gt; | Information about loaded databases (described below) |
+| **LoadedFilesystems** | IEnumerable&lt;[FileSystemStats](../glossary/admin-statistics#filesystemstats)&gt; | Information about loaded filesystes (described below) |
 
 <hr />
 

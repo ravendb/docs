@@ -9,6 +9,16 @@
 | **Key** | string | The key of the document |
 | **Metadata** | RavenJObject | The updated metadata |
 | **AdditionalData** | RavenJObject | The updated Additional Data |
-| **PatchResult** | [PatchResult?]() | The result of a PATCH operation |
+| **PatchResult** | [PatchResult](../glossary/batch-result#patchresult-enum)? | The result of a PATCH operation |
 | **Deleted** | bool? | true if the document was deleted, false if it did not exist. |
 
+# PatchResult (enum)
+
+### Members
+
+| Name | Description |
+| ---- | ----- |
+| **DocumentDoesNotExists** | The document does not exists, operation was a no-op |
+| **Patched** | Document was properly patched |
+| **Tested** | Document was properly tested |
+| **NotModified** | Neither document body not metadata was changed during patch operation |

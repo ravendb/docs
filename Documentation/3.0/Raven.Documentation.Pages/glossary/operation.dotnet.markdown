@@ -1,7 +1,8 @@
 ﻿# Glossary : Operation
 
-{CODE operation@Glossary/Glossary.cs /}
+### Methods
 
-WaitForCompletion
-:   Type: method   
-returns state of an operation
+| Signature | Description |
+| ----------| ----- |
+| **RavenJToken WaitForCompletion()** | Waits for operation to complete and returns status |
+| **Task&lt;RavenJToken&gt; WaitForCompletionAsync()** | Asynchronously waits for operation to complete and returns status |

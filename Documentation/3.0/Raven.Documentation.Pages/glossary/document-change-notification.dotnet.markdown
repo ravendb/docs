@@ -1,5 +1,31 @@
 ﻿# Glossary : DocumentChangeNotification
 
-{CODE document_change_notification@Glossary/Glossary.cs /}
+### General
 
-{CODE document_change_types@Glossary/Glossary.cs /}
+This class extends `EventArgs`.
+
+### Properties
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **Type** | [DocumentChangeTypes](../glossary/document-change-notification#documentchangetypes-enum-flags) | Document change type enum |
+| **Id** | string | Document identifier |
+| **CollectionName** | string | Document's collection name |
+| **TypeName** | string | Type name |
+| **Etag** | Etag | Etag |
+| **Message** | string | Notification payload |
+
+# DocumentChangeTypes (enum flags)
+
+### Members
+
+| Name | Value |
+| ---- | ----- |
+| **None** | `0` |
+| **Put** | `1` |
+| **Delete** | `2` |
+| **BulkInsertStarted** | `4` |
+| **BulkInsertEnded** | `8` |
+| **BulkInsertError** | `16` |
+| **Common** | `Put & Delete` |
+
