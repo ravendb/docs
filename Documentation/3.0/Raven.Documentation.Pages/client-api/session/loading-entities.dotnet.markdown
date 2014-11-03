@@ -19,7 +19,7 @@ The most basic way to load single entity is to use one of `Load` methods.
 | ------------- | ------------- | ----- |
 | **id** | string or ValueType | Identifier of a document that will be loaded. |
 | **transformer or transformerType** | string or Type | Name or type of a transformer to use on a loaded document. |
-| **configure** | Action<[ILoadConfiguration]()> | Additional configuration that should be used during operation e.g. transformer parameters can be added. |
+| **configure** | Action<ILoadConfiguration> | Additional configuration that should be used during operation e.g. transformer parameters can be added. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -47,7 +47,7 @@ When there is a 'relationship' between documents, then those documents can be lo
 
 | Return Value | |
 | ------------- | ----- |
-| [ILoaderWithInclude]() | `Include` method by itself does not materialize any requests, but returns loader containing methods such as `Load`. |
+| ILoaderWithInclude | `Include` method by itself does not materialize any requests, but returns loader containing methods such as `Load`. |
 
 ### Example I
 
@@ -69,7 +69,7 @@ To load multiple entities at once use one of the following `Load` overloads.
 | ------------- | ------------- | ----- |
 | **ids** | IEnumerable<string> or IEnumerable<ValueType> or ValueType[] | Enumerable or array of Ids that should be loaded. |
 | **transformer or transformerType** | string or Type | Name or type of a transformer to use on a loaded documents. |
-| **configure** | Action<[ILoadConfiguration]()> | Additional configuration that should be used during operation e.g. transformer parameters can be added. |
+| **configure** | Action<ILoadConfiguration> | Additional configuration that should be used during operation e.g. transformer parameters can be added. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -99,7 +99,7 @@ To load multiple entities that contain common prefix use `LoadStartingWith` meth
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
 | **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **configure** | Action<[ILoadConfiguration]()> | Additional configuration that should be used during operation e.g. transformer parameters can be added. |
+| **configure** | Action<ILoadConfiguration> | Additional configuration that should be used during operation e.g. transformer parameters can be added. |
 | **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |
@@ -138,7 +138,7 @@ Entities can be streamed from server using one of the following `Stream` methods
 
 | Return Value | |
 | ------------- | ----- |
-| IEnumerator<[StreamResult]()> | Enumerator with entities. |
+| IEnumerator<[StreamResult](../../glossary/stream-result)> | Enumerator with entities. |
 
 ### Example I
 

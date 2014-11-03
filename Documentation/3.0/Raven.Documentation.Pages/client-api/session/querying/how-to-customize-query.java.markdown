@@ -29,7 +29,7 @@ Allows you to modify the index query just before it is executed.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Action1<[IndexQuery]()> | Action that will modify IndexQuery. |
+| **action** | Action1<[IndexQuery](../../../glossary/index-query)> | Action that will modify IndexQuery. |
 
 | Return Value | |
 | ------------- | ----- |

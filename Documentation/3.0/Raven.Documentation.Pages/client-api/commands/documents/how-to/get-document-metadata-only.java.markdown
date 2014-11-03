@@ -12,7 +12,7 @@
 
 | Return Value | |
 | ------------- | ----- |
-| [JsonDocumentMetadata](../../../../glossary/json/json-document-metadata) | Metadata information for document with given key. |
+| [JsonDocumentMetadata](../../../../glossary/json-document-metadata) | Metadata information for document with given key. |
 
 ## Example
 

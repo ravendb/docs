@@ -165,7 +165,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 1 minute
 
 * **Raven/DisableInMemoryIndexing**   
-	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IndexDefinition]().    
+	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IndexDefinition](../../glossary/index-definition).    
 	_Default:_ false
 
 * **Raven/Indexing/FlushIndexToDiskSizeInMb**   

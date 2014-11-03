@@ -9,7 +9,7 @@ Use **StreamQuery** method to stream results of a selected index according to a 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | string | A name of an index to query |
-| **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
+| **query** | [IndexQuery](../../../glossary/index-query) | A query definition containing all information required to query a specified index. |
 | **queryHeaderInfo** | [QueryHeaderInformation ](../../../glossary/query-header-information) | Information about performed query |
 
 | Return Value | |

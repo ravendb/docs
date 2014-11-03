@@ -2,10 +2,10 @@
 
 Operations can be deferred till `SaveChanges` is called by using `Defer` method in `Advanced` session operations. There are four types of commands that can be deferred:
 
-- [PutCommandData]()
-- [DeleteCommandData]()
-- [PatchCommandData]()
-- [ScriptedPatchCommandData]()
+- [PutCommandData](../../../glossary/put-command-data)
+- [DeleteCommandData](../../../glossary/delete-command-data)
+- [PatchCommandData](../../../glossary/patch-command-data)
+- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data)
 
 ## Syntax
 
@@ -13,7 +13,7 @@ Operations can be deferred till `SaveChanges` is called by using `Defer` method 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| [ICommandData]()[] | Array of commands implementing `ICommandData` interface. |
+| ICommandData[] | Array of commands implementing `ICommandData` interface. |
 
 ## Example
 

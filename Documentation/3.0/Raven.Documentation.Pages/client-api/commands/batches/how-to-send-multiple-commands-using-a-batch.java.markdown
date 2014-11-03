@@ -8,7 +8,7 @@ To send **multiple operations** in a **single request**, reducing the number of 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| An array of following commands:<br />- [PutCommandData](../../../glossary/put-command-data)<br />- [DeleteCommandData](../../../glossary/client-api/commands/delete-command-data)<br />- [PatchCommandData](../../../glossary/client-api/commands/patch-command-data)<br />- [ScriptedPatchCommandData](../../../glossary/client-api/commands/scripted-patch-command-data) | ICommandData | Commands to process. |
+| An array of following commands:<br />- [PutCommandData](../../../glossary/put-command-data)<br />- [DeleteCommandData](../../../glossary/delete-command-data)<br />- [PatchCommandData](../../../glossary/patch-command-data)<br />- [ScriptedPatchCommandData](../../../glossary/scripted-patch-command-data) | ICommandData | Commands to process. |
 
 | Return Value | |
 | ------------- | ----- |

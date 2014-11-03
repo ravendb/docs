@@ -17,15 +17,15 @@ There are few overloads for the **GetFacets** method and the main difference bet
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | String | A name of an index to query |
-| **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
-| **facets** | List<[Facet]()> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`). |
+| **query** | [IndexQuery](../../../glossary/index-query) | A query definition containing all information required to query a specified index. |
+| **facets** | List<[Facet](../../../glossary/facet)> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. |
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResults]() | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults](../../../glossary/facet-results) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ### Example I
 
@@ -47,11 +47,11 @@ Sending multiple facet queries is achievable by using `GetMultiFacets` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facetedQueries** | [FacetQuery]()[] | List of the faceted queries that will be executed on the server-side. |
+| **facetedQueries** | [FacetQuery](../../../glossary/facet-query)[] | List of the faceted queries that will be executed on the server-side. |
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResult]()[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
+| [FacetResult](../../../glossary/facet-results#facetresult)[] | List of the results, each matching position of a FacetQuery in  the `facetedQueries` parameter. |
 
 ### Example
 
