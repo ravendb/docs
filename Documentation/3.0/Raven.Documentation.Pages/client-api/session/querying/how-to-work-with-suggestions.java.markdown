@@ -12,7 +12,7 @@ Session `query` allows you to use suggestion feature.
 
 | Return Value | |
 | ------------- | ----- |
-| [SuggestionQueryResult]() | Result containing array of all suggestions for executed query. |
+| [SuggestionQueryResult](../../../glossary/suggestion-query-result) | Result containing array of all suggestions for executed query. |
 
 ## Example
 

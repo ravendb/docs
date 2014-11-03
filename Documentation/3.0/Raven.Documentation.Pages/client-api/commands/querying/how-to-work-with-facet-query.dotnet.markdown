@@ -17,9 +17,9 @@ There are two overloads for the **GetFacets** method and the only difference bet
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | string | A name of an index to query |
-| **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
-| **facets** | List<[Facet]()> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`). |
+| **query** | [IndexQuery](../../../glossary/index-query) | A query definition containing all information required to query a specified index. |
+| **facets** | List<[Facet](../../../glossary/facet)> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. |
 
@@ -47,7 +47,7 @@ Sending multiple facet queries is achievable by using `GetMultiFacets` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facetedQueries** | [FacetQuery]()[] | List of the faceted queries that will be executed on the server-side. |
+| **facetedQueries** | [FacetQuery](../../../glossary/facet-query)[] | List of the faceted queries that will be executed on the server-side. |
 
 | Return Value | |
 | ------------- | ----- |

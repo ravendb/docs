@@ -9,14 +9,14 @@ Use **Query** method to fetch results of a selected index according to a specifi
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | String | A name of an index to query |
-| **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
+| **query** | [IndexQuery](../../../glossary/index-query) | A query definition containing all information required to query a specified index. |
 | **includes** | String[] | An array of relative paths that specify related documents ids which should be included in a query result. (default: `null`) |
 | **metadataOnly** | boolean | True if returned documents should include only metadata without a document body. (default: `false`) |
 | **indexEntriesOnly** | boolean | True if query results should contain only [index entries](../../../glossary/indexing#index-entry). (default: `false`) |
 
 | Return Value | |
 | ------------- | ----- |
-| [QueryResult]() | Object which represents results of a specified query. |
+| [QueryResult](../../../glossary/query-result) | Object which represents results of a specified query. |
 
 ## Example I
 

@@ -8,11 +8,11 @@ To find similar or related documents use the **MoreLikeThis** method from comman
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [MoreLikeThisQuery]() | A more like this query definition that will be executed |
+| **query** | [MoreLikeThisQuery](../../../glossary/more-like-this-query) | A more like this query definition that will be executed |
 
 | Return Value | |
 | ------------- | ----- |
-| [MultiLoadResult]() | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
+| [MultiLoadResult](../../../glossary/multi-load-result) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
 
 ## Example
 

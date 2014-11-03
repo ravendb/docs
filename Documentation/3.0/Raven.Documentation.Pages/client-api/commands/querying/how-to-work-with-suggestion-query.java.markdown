@@ -13,7 +13,7 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 
 | Return Value | |
 | ------------- | ----- |
-| [SuggestionQueryResult]() | Result containing an array of all suggestions for executed query |
+| [SuggestionQueryResult](../../../glossary/suggestion-query-result) | Result containing an array of all suggestions for executed query |
 
 ## Example
 

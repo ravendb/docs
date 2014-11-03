@@ -8,11 +8,11 @@ Multiple [Facet queries](../../../client-api/session/querying/how-to-perform-a-f
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **queries** | params [FacetQuery]() | Array of FacetQueries that will be executed on server. |
+| **queries** | params [FacetQuery](../../../glossary/facet-query) | Array of FacetQueries that will be executed on server. |
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResult]()[] | Array of FacetResults. Each matching its FacetQuery position from `queries` parameter. |
+| [FacetResult](../../../glossary/facet-results#facetresult)[] | Array of FacetResults. Each matching its FacetQuery position from `queries` parameter. |
 
 ## Example
 

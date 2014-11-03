@@ -8,14 +8,14 @@ To execute facet query using session `query` method use `toFacets` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facets** | List<[Facet]()> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`). |
+| **facets** | List<[Facet](../../../glossary/facet)> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResults]() | Facet query results with query `duration` and list of `results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults](../../../glossary/facet-results) | Facet query results with query `duration` and list of `results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ## Example I
 
@@ -32,14 +32,14 @@ To execute facet query using session `query` method use `toFacets` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facets** | List<[Facet]()> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`). |
+| **facets** | List<[Facet](../../../glossary/facet)> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | String | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. | 
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetQuery]() | Instance of FacetQuery containing all options set in `query`. Can be used with `multiFacetedSearch` from `advanced` session operations or with `commands` directly. |
+| [FacetQuery](../../../glossary/facet-query) | Instance of FacetQuery containing all options set in `query`. Can be used with `multiFacetedSearch` from `advanced` session operations or with `commands` directly. |
 
 ### Example
 

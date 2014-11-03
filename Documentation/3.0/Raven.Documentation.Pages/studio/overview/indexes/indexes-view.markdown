@@ -9,7 +9,7 @@ Action Bar in this View contains the following capabilities:
 - `New Index` - redirects to [Index Edit View](../../../studio/overview/indexes/index-edit-view) where you can create a new index,
 - `Query` - redirects to [Query View](../../../studio/overview/query/query-view),
 - `Collapse All` - collapses all indexes,
-- `Paste` - quickly creates index by pasting [IndexDefinition](),
+- `Paste` - quickly creates index by pasting [IndexDefinition](../../../glossary/index-definition),
 - `Index Merge Suggestions` - retrieves all suggestions for an index merging,
 - `Delete` - removes idle/disabled/abandoned/all indexes
 

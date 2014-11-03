@@ -15,7 +15,7 @@ This method is used to create a new database on a server.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **databaseDocument** | [DatabaseDocument]() | A document containing all configuration options for new database (e.g. active bundles, name/id, path to data) |
+| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document) | A document containing all configuration options for new database (e.g. active bundles, name/id, path to data) |
 
 ### Example
 

@@ -48,7 +48,7 @@ or
 
 | Return Value | |
 | ------------- | ----- |
-| Lazy<[SuggestionQueryResult]()> | Lazy query initializer containing array of all suggestions for executed query. |
+| Lazy<[SuggestionQueryResult](../../../glossary/suggestion-query-result)> | Lazy query initializer containing array of all suggestions for executed query. |
 
 ### Example
 
@@ -62,14 +62,14 @@ or
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facets** | List<[Facet]()> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup]() (mutually exclusive with `facets`). |
+| **facets** | List<[Facet](../../../glossary/facet)> | List of facets required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | string | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup) (mutually exclusive with `facets`). |
 | **start** | int | number of results that should be skipped. Default: `0`. |
 | **pageSize** | int | maximum number of results that will be retrieved. Default: `null`. |
 
 | Return Value | |
 | ------------- | ----- |
-| Lazy<[FacetResults]()> | Lazy query initializer containing Facet query results with query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| Lazy<[FacetResults](../../../glossary/facet-results)> | Lazy query initializer containing Facet query results with query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ### Example
 
