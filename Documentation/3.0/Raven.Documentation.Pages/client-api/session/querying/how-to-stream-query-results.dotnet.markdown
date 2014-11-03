@@ -13,7 +13,7 @@ Query results can be streamed using `Stream` method from `Advanced` session oper
 
 | Return Value | |
 | ------------- | ----- |
-| IEnumerator<[StreamResult]()> | Enumerator with entities. |
+| IEnumerator<[StreamResult](../../../glossary/stream-result)> | Enumerator with entities. |
 | [QueryHeaderInformation](../../../glossary/query-header-information) | Information about performed query. |
 
 ## Example I

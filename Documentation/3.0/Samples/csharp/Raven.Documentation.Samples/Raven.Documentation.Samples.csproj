@@ -268,7 +268,6 @@
     <Compile Include="ClientApi\SetupDefaultDatabase.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Faceted.cs" />
-    <Compile Include="Glossary\Glossary.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
     <Compile Include="Indexes\Creating.cs" />
