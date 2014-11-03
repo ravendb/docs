@@ -15,6 +15,8 @@
 | **Disabled** | bool | Controls if replication to this destination is disabled in both client and server. |
 | **ClientVisibleUrl** | string | The Client URL of the replication destination |
 
+<hr />
+
 # TransitiveReplicationOptions (enum)
 
 ### Members

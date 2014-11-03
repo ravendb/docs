@@ -1,6 +1,5 @@
 ﻿# Glossary : JsonDocumentMetadata
 
-
 ### Properties
 
 | Name | Type | Description |

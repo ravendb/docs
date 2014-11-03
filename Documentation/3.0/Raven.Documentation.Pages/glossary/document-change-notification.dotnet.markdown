@@ -15,6 +15,8 @@ This class extends `EventArgs`.
 | **Etag** | Etag | Etag |
 | **Message** | string | Notification payload |
 
+<hr />
+
 # DocumentChangeTypes (enum flags)
 
 ### Members
