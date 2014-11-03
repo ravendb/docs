@@ -11,7 +11,7 @@
 | **Accuracy** | float? | The accuracy |
 | **Popularity** | bool | Whatever to return the terms in order of popularity |
 
-
+<hr />
 
 # StringDistanceTypes (enum)
 

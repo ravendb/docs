@@ -12,6 +12,8 @@ This class extends `EventArgs`.
 | **Name** | string | Index name |
 | **Etag** | Etag | Index Etag |
 
+<hr />
+
 # IndexChangeTypes (enum flags)
 
 ### Members

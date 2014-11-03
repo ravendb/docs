@@ -15,6 +15,8 @@
 | **TermSortMode** | [FacetTermSortMode](../glossary/facet#facettermsortmode-enum) | The facet term sorting mode |
 | **IncludeRemainingTerms** | bool | whether to include remaining terms |
 
+<hr />
+
 # FacetMode (enum)
 
 ### Members
@@ -23,6 +25,8 @@
 | ---- | ----- |
 | **Default** |  Default facet mode |
 | **Ranges** | Create facets using supplied ranges |
+
+<hr />
 
 # FacetAggregation (enum flags)
 
@@ -36,6 +40,8 @@
 | **Min** | `4` |
 | **Average** | `8` |
 | **Sum** | `16` |
+
+<hr />
 
 # FacetTermSortMode (enum)
 

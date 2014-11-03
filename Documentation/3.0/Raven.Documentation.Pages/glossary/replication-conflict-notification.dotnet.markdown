@@ -14,6 +14,8 @@ This class extends `EventArgs`.
 | **OperationType** | [ReplicationOperationTypes](../glossary/replication-conflict-notification#replicationoperationtypes-enum-flags) | Operation Type (described below) |
 | **Conflicts** | string[] | Identifier of conflicted versions |
 
+<hr />
+
 # ReplicationConflictTypes (enum flags)
 
 ### Members
@@ -23,6 +25,8 @@ This class extends `EventArgs`.
 | **None** | `0` |
 | **DocumentReplicationConflict** | `1` |
 | **AttachmentReplicationConflict** | `2` |
+
+<hr />
 
 # ReplicationOperationTypes (enum flags)
 

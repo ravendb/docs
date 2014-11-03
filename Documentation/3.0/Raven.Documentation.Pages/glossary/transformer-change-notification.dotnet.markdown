@@ -1,6 +1,5 @@
 ﻿# Glossary : TransformerChangeNotification
 
-
 ### General
 
 This class extends `EventArgs`.
@@ -11,6 +10,8 @@ This class extends `EventArgs`.
 | ------------- | ------------- | ----- |
 | **Type** | [TransformerChangeTypes](../glossary/transformer-change-notification#transformerchangetypes-enum) | Change type |
 | **Name** | string | Transformer name |
+
+<hr />
 
 # TransformerChangeTypes (enum)
 

@@ -11,6 +11,8 @@
 | **SpatialCriteria Within(object shape)** | Matches elements within given shape |
 | **SpatialCriteria WithinRadiusOf(double radius, double x, double y)** | Matches elements within given radius with center point in (x,y) |
 
+<hr />
+
 # SpatialCriteria
 
 ### Properties

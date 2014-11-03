@@ -47,7 +47,7 @@
 | **Metrics** | [DatabaseMetrics](../glossary/admin-statistics#databasemetrics) | Metrics Details |
 | **StorageStats** | [StorageStats](../glossary/admin-statistics#storagestats) | Storage Details |
 
-<hr />		 
+<hr />
 
 # FileSystemStats
 
@@ -82,7 +82,6 @@
 | **ReplicationDurationMeter** | Dictionary&lt;string, MeterData&gt;  | Replication duration statistics |
 | **ReplicationBatchSizeHistogram** | Dictionary&lt;string, HistogramData&gt; | Replication batch size histogram |
 | **ReplicationDurationHistogram** | Dictionary&lt;string, HistogramData&gt; | Replication duration histogram |
-
 
 <hr />
 
@@ -136,6 +135,8 @@
 | **FileETag** | Guid | File etag |
 | **DestinationUrl** | string | Destination url |
 | **Type** | [SynchornizationType](../glossary/admin-statistics#synchronizationtype-enum) | Synchronization type |
+
+<hr />
 
 # SynchronizationType (enum)
 
