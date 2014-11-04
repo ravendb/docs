@@ -344,21 +344,24 @@
     <None Include="indexes\indexing-related-documents.markdown" />
     <None Include="indexes\multi-map-indexes.markdown" />
     <None Include="indexes\querying\.docslist" />
-    <None Include="indexes\querying\spatial.markdown" />
-    <None Include="indexes\querying\basics.markdown" />
-    <None Include="indexes\querying\dynamic-aggregation.markdown" />
-    <None Include="indexes\querying\faceted-search.markdown" />
-    <None Include="indexes\querying\filtering.markdown" />
-    <None Include="indexes\querying\full-query-syntax.markdown" />
-    <None Include="indexes\querying\handling-document-relationships.markdown" />
-    <None Include="indexes\querying\highlights.markdown" />
-    <None Include="indexes\querying\intersection.markdown" />
-    <None Include="indexes\querying\paging.markdown" />
-    <None Include="indexes\querying\projections.markdown" />
-    <None Include="indexes\querying\query-vs-document-query.markdown" />
-    <None Include="indexes\querying\searching.markdown" />
-    <None Include="indexes\querying\sorting.markdown" />
-    <None Include="indexes\querying\suggestions.markdown" />
+    <None Include="indexes\querying\basics.dotnet.markdown" />
+    <None Include="indexes\querying\basics.java.markdown" />
+    <None Include="indexes\querying\dynamic-aggregation.dotnet.markdown" />
+    <None Include="indexes\querying\faceted-search.dotnet.markdown" />
+    <None Include="indexes\querying\filtering.dotnet.markdown" />
+    <None Include="indexes\querying\filtering.java.markdown" />
+    <None Include="indexes\querying\full-query-syntax.dotnet.markdown" />
+    <None Include="indexes\querying\handling-document-relationships.dotnet.markdown" />
+    <None Include="indexes\querying\highlights.dotnet.markdown" />
+    <None Include="indexes\querying\intersection.dotnet.markdown" />
+    <None Include="indexes\querying\paging.dotnet.markdown" />
+    <None Include="indexes\querying\paging.java.markdown" />
+    <None Include="indexes\querying\projections.dotnet.markdown" />
+    <None Include="indexes\querying\query-vs-document-query.dotnet.markdown" />
+    <None Include="indexes\querying\searching.dotnet.markdown" />
+    <None Include="indexes\querying\sorting.dotnet.markdown" />
+    <None Include="indexes\querying\spatial.dotnet.markdown" />
+    <None Include="indexes\querying\suggestions.dotnet.markdown" />
     <None Include="indexes\stale-indexes.markdown" />
     <None Include="indexes\storing-data-in-index.markdown" />
     <None Include="indexes\troubleshooting\.docslist" />
@@ -506,6 +509,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="indexes\querying\images\CNET_faceted_search_2.jpg" />
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
     <Content Include="studio\images\accessing-studio-basic-auth.png" />
@@ -640,7 +644,6 @@
     <Content Include="client-api\how-to\images\excel_result.png" />
     <Content Include="client-api\how-to\images\excel_transformer.png" />
     <Content Include="indexes\images\polymorphic_indexes_faq.png" />
-    <Content Include="indexes\querying\images\CNET_faceted_search_2.jpg" />
     <Content Include="server\administration\images\index-administration-studio-priority.png" />
     <Content Include="server\administration\images\index-administration-studio.png" />
     <Content Include="server\bundles\images\authorization_bundle_faq.png" />
