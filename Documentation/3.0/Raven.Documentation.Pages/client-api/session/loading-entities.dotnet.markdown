@@ -2,12 +2,12 @@
 
 There are various methods with many overloads that allow user to download a documents from database and convert them to entities. This article will cover following methods:
 
-- [Load]()
-- [Load with Includes]()
-- [Load - multiple entities]()
-- [LoadStartingWith]()
-- [Stream]()
-- [IsLoaded]()
+- [Load](../../client-api/session/loading-entities#load)
+- [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
+- [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
+- [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
+- [Stream](../../client-api/session/loading-entities#stream)
+- [IsLoaded](../../client-api/session/loading-entities#isloaded)
 
 {PANEL:Load}
 
