@@ -1,7 +1,7 @@
 # Creating and deploying transformers
 
 {PANEL}
-Transformers can be created and send to a server in a couple of ways, starting from the low-level [commands](../transformers/creating-and-deploying#using-commands), to creating [custom classes](../transformers/creating#using-abstracttransformercreationtask) and sending them individually, or even scanning an assembly.
+Transformers can be created and send to a server in a couple of ways, starting from the low-level [commands](../transformers/creating-and-deploying#using-commands), to creating [custom classes](../transformers/creating-and-deploying#using-abstracttransformercreationtask) and sending them individually, or even scanning an assembly.
 {PANEL/}
 
 {PANEL:**using AbstractTransformerCreationTask**}

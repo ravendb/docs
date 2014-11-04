@@ -49,7 +49,7 @@ Please check our dedicated [article](../../../client-api/session/querying/how-to
 
 {PANEL:Include}
 
-Please check our dedicated [article]().
+Please check our dedicated [article](../../../indexes/querying/handling-document-relationships).
 
 {PANEL/}
 
