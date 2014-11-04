@@ -1,6 +1,6 @@
 ﻿<#
 /*
-T4MVC Version 3.9.2
+T4MVC Version 3.10.0
 Find latest version and documentation at http://mvccontrib.codeplex.com/wikipage?title=T4MVC
 Discuss on StackOverflow or on Codeplex (https://t4mvc.codeplex.com/discussions)
 
@@ -134,7 +134,14 @@ internal partial class T4MVC_<#=resultType.UniqueName #> : <#=resultType.FullNam
 namespace <#=settings.LinksNamespace #>
 {
 <#
-foreach (string folder in settings.StaticFilesFolders.Concat(GetStaticFilesViewFolders())) {
+var inAreas = Areas
+	.Where(a => !string.IsNullOrEmpty(a.Name))
+	.SelectMany(a => settings.StaticFilesFolders.Select(b => settings.AreasFolder + "\\" + a.Name + "\\" + b));
+
+foreach (string folder in settings.StaticFilesFolders
+	.Concat(GetStaticFilesViewFolders())
+	.Concat(inAreas)
+	) {
     ProcessStaticFiles(Project, folder);
 }
 #>
