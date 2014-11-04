@@ -1,20 +1,20 @@
 # Installation : Using installer
 
-Since version 2.5 the installation of RavenDB can be accomplished by using a GUI installer. The setup wizard will guide you through an installation process where you just need to
+Since version 2.5, the installation of RavenDB can be accomplished with a GUI installer. The setup wizard will guide you through an installation process where you just need to
 select the type of an installation and provide configuration options.
 
 ![Figure 1: Welcome screen](images/installer_welcome_screen.png)
 
 ##Target environment
 
-You need to choose what kind of the environment you are targeting. The licensing requirements are different depending on the selected option:
+You need to choose what kind of the environment you are targeting. The licensing requirements are different depending on the options selected:
 
 * Production / Test - you have to provide a valid license in next step,
 * Development - no license is required.
 
 ##Installation type
 
-You can install the RavenDB either as a Windows service or as IIS application. Next steps will guide you through a configuration of a chosen deployment strategy. 
+You can install RavenDB either as a Windows service or as an IIS application. Next steps will guide you through a configuration of the chosen deployment strategy. 
 
 ##Windows Service configuration
 
@@ -27,7 +27,7 @@ The configuration of the RavenDB service is straight-forward. You only have to p
 The configuration of RavenDB run on IIS requires you to go through a few screens. 
 
 ###Web site
-In the first dialog you need to enter a web site configuration. You have here two possibilities:
+In the first dialog you need to enter a website configuration. You have two possibilities here:
 
 * Create a new web site
 * Use an existing one
@@ -36,17 +36,17 @@ If you choose first option you will need to fill up the following fields:
 
 ![Figure 3: New IIS site configuration](images/installer_iis_new_site.png)
 
-If you decided to use the already existing site you just need to choose which one:
+If you decide to use the already existing site you just need to choose which one:
 
 ![Figure 4: Existing IIS site](images/installer_iis_existing_site.png)
 
-The _Virtual Directory_ field can be empty. Then it means that RavenDB will be installed at the root of the web site.
+The _Virtual Directory_ field can be empty. This means that RavenDB will be installed at the root of the web site.
 
-Optionally you can select a checkbox to configure a custom application pool for RavenDB application instead of using the default one configured for the web site.
+Optionally, you can select a checkbox to configure a custom application pool for RavenDB application instead of using the one confugured by default for the web site.
 
 ###Application Pool (optional)
 
-This optional dialog (shown when the checkbox on the previous screen was selected) allows you to set up a custom application pool. As previously you can either create a new or use an existing one.
+This optional dialog (shown when the checkbox on the previous screen was selected) allows you to set up a custom application pool. As previously, you can either create a new or use an existing one.
 
 ![Figure 5: Application Pool](images/installer_iis_application_pool.png)
 
@@ -62,8 +62,7 @@ Uninstallation can be accomplished by _Programs and Features_ in _Control Panel_
 
 ##Quiet mode installation from command line
 
-The RavenDB installer can also be run from a command line with administrative privileges. In order to do that you will have to specify all required installation
-settings. The following command shows the dialog with available options:
+The RavenDB installer can also be run from a command line with administrative privileges. In order to do that you will have to specify all required installation settings. The following command shows the dialog with available options:
 
 {CODE-BLOCK:json}
 	ravendb-[version].exe -help

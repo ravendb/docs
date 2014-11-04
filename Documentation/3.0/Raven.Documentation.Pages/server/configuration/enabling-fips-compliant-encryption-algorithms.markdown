@@ -2,15 +2,15 @@
 
 {INFO This feature requires a valid **enterprise** license. /}
 
-By default, RavenDB server and client are not using [FIPS compliant](http://technet.microsoft.com/en-us/library/cc180745.aspx) encryption algorithms, in order to turn it on please refer to the appropriate sections found below.
+By default, RavenDB server and client are not using [FIPS compliant](http://technet.microsoft.com/en-us/library/cc180745.aspx) encryption algorithms. In order to turn it on, please refer to the appropriate sections below.
 
 ## Enabling FIPS encryption algorithms on server
 
 {WARNING:Warning}
 
 - `Raven/Encryption/FIPS` is a **global setting** and it **applies to all databases** on a server.
-- `Raven/Encryption/FIPS` **must** be set before any database was created (including `<system>`).
-- Databases created with `Raven/Encryption/FIPS` turned off (default) will not work on other server with 'FIPS' turned on (and vice versa). They must be exported and imported.
+- `Raven/Encryption/FIPS` **must** be set before any database creation (including `<system>`).
+- Databases created with `Raven/Encryption/FIPS` turned off (default) will not work on other servers with 'FIPS' turned on (and vice versa). They must be exported and imported.
 
 {WARNING/}
 

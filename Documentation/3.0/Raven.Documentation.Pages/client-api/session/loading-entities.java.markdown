@@ -2,12 +2,12 @@
 
 There are various methods with many overloads that allow user to download a documents from database and convert them to entities. This article will cover following methods:
 
-- [load]()
-- [load with Includes]()
-- [load - multiple entities]()
-- [loadStartingWith]()
-- [stream]()
-- [isLoaded]()
+- [load](../../client-api/session/loading-entities#load)
+- [load with Includes](../../client-api/session/loading-entities#load-with-includes)
+- [load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
+- [loadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
+- [stream](../../client-api/session/loading-entities#stream)
+- [isLoaded](../../client-api/session/loading-entities#isloaded)
 
 {PANEL:Load}
 
@@ -47,7 +47,7 @@ When there is a 'relationship' between documents, then those documents can be lo
 
 | Return Value | |
 | ------------- | ----- |
-| [ILoaderWithInclude]() | `include` method by itself does not materialize any requests, but returns loader containing methods such as `load`. |
+| ILoaderWithInclude | `include` method by itself does not materialize any requests, but returns loader containing methods such as `load`. |
 
 ### Example I
 
