@@ -11,7 +11,6 @@
 			#region conventions_1
 			DocumentConvention conventions = store.Conventions;
 			#endregion
-
-		} 
+		}
 	}
 }
