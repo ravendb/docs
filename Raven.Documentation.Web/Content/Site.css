@@ -117,4 +117,8 @@ div.container div.chooser {
 div.figure {
   padding-bottom: 1em;
 }
+div#article pre {
+  -ms-word-wrap: normal;
+  word-wrap: normal;
+}
 /*# sourceMappingURL=Site.css.map */

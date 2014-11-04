@@ -12,7 +12,7 @@ When document is downloaded from server it contains various metadata information
 
 | Return Value | |
 | ------------- | ----- |
-| [RavenJObject]() | Returns entity metadata. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
+| RavenJObject | Returns entity metadata. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
 
 ## Example
 

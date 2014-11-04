@@ -1,6 +1,6 @@
 ﻿# Settings : Quotas
 
-If the [Quotas]() bundle is chosen, in Settings section additional configuration settings for this bundle appear. You can introduce some changes in the following:
+If the [Quotas](../../../server/bundles/quotas) bundle is chosen, in Settings section additional configuration settings for this bundle appear. You can introduce some changes in the following:
 
 - maximum size of the database (MB),
 - warning limit threshold (MB); when it is reached, a warning about database size appears,

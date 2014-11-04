@@ -50,12 +50,6 @@ This optional dialog (shown when the checkbox on the previous screen was selecte
 
 ![Figure 5: Application Pool](images/installer_iis_application_pool.png)
 
-##Performance counters
-
-The next screen is to configure permissions of the application pool user to the [performance counters access](../administration/perf-counters). This is needed to ensure that RavenDB hosted by IIS will be able to create its own counters and provide performance stats there.
-
-![Figure 6: Performance counters](images/installer_iis_performance_counters.png)
-
 ##Upgrade
 
 The RavenDB installer supports upgrades. The previously used settings (like a service name or an installation path) will be recovered by the wizard. The installation process first will 

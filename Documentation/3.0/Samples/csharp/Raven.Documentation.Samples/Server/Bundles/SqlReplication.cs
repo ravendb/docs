@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.Server.Bundles
+namespace Raven.Documentation.Samples.Server.Bundles
 {
 	public class SqlReplication
 	{
@@ -44,14 +45,52 @@ namespace Raven.Documentation.CodeSamples.Server.Bundles
 		public class Order
 		{
 			public string Id { get; set; }
-			public List<OrderLine> OrderLines { get; set; }
+
+			public string Company { get; set; }
+
+			public string Employee { get; set; }
+
+			public DateTime OrderedAt { get; set; }
+
+			public DateTime RequireAt { get; set; }
+
+			public DateTime? ShippedAt { get; set; }
+
+			public Address ShipTo { get; set; }
+
+			public string ShipVia { get; set; }
+
+			public decimal Freight { get; set; }
+
+			public List<OrderLine> Lines { get; set; }
 		}
 
 		public class OrderLine
 		{
 			public string Product { get; set; }
+
+			public string ProductName { get; set; }
+
+			public decimal PricePerUnit { get; set; }
+
 			public int Quantity { get; set; }
-			public int Cost { get; set; }
+
+			public decimal Discount { get; set; }
+		}
+
+		public class Address
+		{
+			public string Line1 { get; set; }
+
+			public string Line2 { get; set; }
+
+			public string City { get; set; }
+
+			public string Region { get; set; }
+
+			public string PostalCode { get; set; }
+
+			public string Country { get; set; }
 		}
 		#endregion
 
@@ -86,23 +125,24 @@ namespace Raven.Documentation.CodeSamples.Server.Bundles
 						Script = @"
 							var orderData = {
 								Id: documentId,
-								OrderLinesCount: this.OrderLines.length,
+								OrderLinesCount: this.Lines.length,
 								TotalCost: 0
 							};
 
-							replicateToOrders(orderData);
-
-							for (var i = 0; i < this.OrderLines.length; i++) {
-								var line = this.OrderLines[i];
-								orderData.TotalCost += line.Cost;
+							for (var i = 0; i < this.Lines.length; i++) {
+								var line = this.Lines[i];
+								var lineCost = ((line.Quantity * line.PricePerUnit) * (1 - line.Discount));
+								orderData.TotalCost += lineCost;
 
 								replicateToOrderLines({
 									OrderId: documentId,
 									Qty: line.Quantity,
 									Product: line.Product,
-									Cost: line.Cost
+									Cost: lineCost
 								});
-							}"
+							}
+							
+							replicateToOrders(orderData);"
 					});
 
 					#endregion

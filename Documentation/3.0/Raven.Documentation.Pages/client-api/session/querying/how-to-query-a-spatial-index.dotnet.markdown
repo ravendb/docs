@@ -14,7 +14,7 @@ Spatial indexes can be queried using `Spatial` method which contains full spectr
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | Expression<Func&lt;TResult, object&gt;> | Path to spatial field. |
-| **clause** | Func<[SpatialCriteriaFactory](../../../glossary/client-api/querying/spatial-criteria-factory), SpatialCriteria> | Spatial criteria that will be executed on given spatial field from `path` parameter. |
+| **clause** | Func<[SpatialCriteriaFactory](../../../glossary/spatial-criteria-factory), SpatialCriteria> | Spatial criteria that will be executed on given spatial field from `path` parameter. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -36,7 +36,7 @@ Spatial indexes can be queried using `Spatial` method which contains full spectr
 | ------------- | ------------- | ----- |
 | **fieldName** | string | Spatial field name. |
 | **shapeWKT** | string | [WKT](http://en.wikipedia.org/wiki/Well-known_text) formatted shape. |
-| **rel** | [SpatialRelation](../../../glossary/client-api/querying/spatial-relation) | Spatial relation to check. |
+| **rel** | [SpatialRelation](../../../glossary/spatial-relation) | Spatial relation to check. |
 
 | Return Value | |
 | ------------- | ----- |

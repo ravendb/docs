@@ -43,21 +43,6 @@
 				new[] { "Raven.Documentation.Web.Controllers" });
 
 			routes.MapRouteLowerCase(
-				"GettingStarted",
-				"getting-started/{version}/{language}",
-				new
-				{
-					controller = MVC.Docs.Name,
-					action = MVC.Docs.ActionNames.Start
-				},
-				new
-				{
-					version = "1.0|2.0|2.5|3.0",
-					language = "csharp|java|http"
-				},
-				new[] { "Raven.Documentation.Web.Controllers" });
-
-			routes.MapRouteLowerCase(
 				"Routes",
 				"{action}/{version}/{language}",
 				new

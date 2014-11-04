@@ -1,6 +1,6 @@
 # Query : Query View
 
-This view allows running queries for already existing indexes (click [here]() to read about static indexes) and running dynamic queries, which can create a new dynamic index (click [here]() to read more about dynamic indexes)
+This view allows running queries for already existing indexes (click [here](../../../indexes/creating-and-deploying#static-indexes) to read about static indexes) and running dynamic queries, which can create a new dynamic index (click [here](../../../indexes/creating-and-deploying#auto-indexes) to read more about dynamic indexes)
 
 ## Action Bar
 
@@ -9,10 +9,10 @@ Action Bar consists of the following:
 - `Execute` - runs the queries,
 - `Add` - adds a transformer or sort option to the query,
 - `Settings` - converts implicit operators, toggle field showing or index entries,
-- `Edit` - takes you directly to [Index Edit View]() where you can edit the index,
+- `Edit` - takes you directly to [Index Edit View](../../../studio/overview/indexes/index-edit-view) where you can edit the index,
 - `Choose columns` - allows you to choose columns which will be displayed in `Results`,
 - `Export CSV` - exports results to CSV file,
-- `Indexing performance statistics` - takes you to [Indexing Performance Chart]() to view statistics,
+- `Indexing performance statistics` - takes you to [Indexing Performance Chart](../../../studio/overview/status/index-stats-and-metrics) to view statistics,
 - `Recent Queries` - contains a list of recently ran queries,
 - `Terms` - navigates to index terms view,
 - `Query Stats` - opens a window with statistics for the current query,
@@ -52,6 +52,6 @@ Query results, as in the case of static querying, will be displayed in `Results`
 
 ![Figure 7. Studio. Dynamic queries.](images/query_view-dynamic_queries-7.png)
 
-{WARNING Remember that running dynamic query may create a dynamic index, which can always be viewed using the [Indexes View](). /}
+{WARNING Remember that running dynamic query may create a dynamic index, which can always be viewed using the [Indexes View](../../../studio/overview/indexes/indexes-view). /}
 
 ![Figure 8. Studio. Dynamic queries.](images/query_view-dynamic_queries-8.png)

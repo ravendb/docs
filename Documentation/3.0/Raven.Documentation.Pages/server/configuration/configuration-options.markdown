@@ -165,7 +165,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 1 minute
 
 * **Raven/DisableInMemoryIndexing**   
-	Prevent all newly created indexes from being kept in memory. In order to set this option for an index you need to specify it in its [IndexDefinition](../../client-api/querying/static-indexes/defining-static-index).    
+	Prevent all newly created indexes from being kept in memory. In order to set this option for an index you need to specify it in its [IndexDefinition](../../glossary/index-definition).    
 	_Default:_ false
 
 * **Raven/Indexing/FlushIndexToDiskSizeInMb**   
@@ -183,7 +183,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ ~\Data  
 
 * **Raven/StorageEngine** or **Raven/StorageTypeName**   
-    What storage type to use (see: [Storage Engines](../../server/server/configuration/storage-engines))  
+    What storage type to use (see: [Storage Engines](../../server/configuration/storage-engines))  
     _Allowed values:_ esent, voron   
     _Default:_ esent  
 
@@ -212,12 +212,16 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ true  
 
 * **Raven/UseSsl**   
-    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service.**
+    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service.**   
+    _Default:_ false   
+
+* **Raven/IgnoreSslCertificateErrors**   
+    When set to *true*, RavenDB will ignore **all** SSL certificate validation errors. More [here](../../server/configuration/enabling-ssl#ignoring-ssl-errors).   
     _Default:_ false   
 
 * **Raven/AccessControlAllowOrigin**   
     Configures the server to send Access-Control-Allow-Origin header with the specified value. If this value isn't specified, all the access control settings are ignored.   
-    _Allowed values:_ null (don't send the header), *, http://example.org,   
+    _Allowed values:_ null (don't send the header), `*`, http://example.org,   
 	_Default:_ none (if this value isn't specified, all the access control settings are ignored)  
 
 * **Raven/AccessControlMaxAge**   
@@ -331,7 +335,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/Voron/MaxScratchBufferSize**   
     The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).
-    _Default_: 512
+    _Default_: 1024
 
 ### Tenants
 
@@ -399,7 +403,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The password for the OAuth certificate.  
 	_Default:_ none
 
-### [Encryption](../extending/bundles/encryption)
+### [Encryption](../../server/bundles/encryption)
 
 * **Raven/Encryption/Algorithm**     
 	[AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) value. Additionaly provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class.     
@@ -439,7 +443,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 ##Availability of configuration options
 
-Many of the configuration options described in the section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this page](../../server/multiple-databases).
+Many of the configuration options described in the section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this](../../server/administration/multiple-databases) page.
 
 | Configuration option | Database | Global |
 |:---------------------|:--------:|:------:|
@@ -486,6 +490,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/HostName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Port** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/UseSSL** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/IgnoreSslCertificateErrors** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/VirtualDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/HttpCompression** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AccessControlAllowOrigin** | ![No](images\delete.png) | ![Yes](images\tick.png) |

@@ -8,9 +8,9 @@ All transformer changes can be tracked using `forAllTransformers` method.
 
 | Return value | |
 | ------------- | ----- |
-| IObservable<[TransformerChangeNotification](../../glossary/client-api/changes/transformer-change-notification)> | Observable that allows to add subscribtions to notifications for all transformers. |
+| IObservable<[TransformerChangeNotification](../../glossary/transformer-change-notification)> | Observable that allows to add subscribtions to notifications for all transformers. |
 
-Type: IObservable<[TransformerChangeNotification](../../glossary/client-api/changes/transformer-change-notification)>   
+Type: IObservable<[TransformerChangeNotification](../../glossary/transformer-change-notification)>   
 Observable that allows to add subscribtions to notifications for all transformers.
 
 ## Example

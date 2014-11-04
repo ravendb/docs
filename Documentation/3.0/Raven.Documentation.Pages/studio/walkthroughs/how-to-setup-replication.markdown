@@ -16,7 +16,8 @@ To setup a master-slave replication, this is to replicate documents from one dat
 
 ![Figure 1. Studio. Replication. Master. Create database.](images/replication-master-create-database.png)  
 
-- to setup replication, we need to go to our [Replication Settings View]() and add new replication destination using the `Add destination` button. Here we need to provide information such as the URL of the destination server (`http://localhost:8082/`) and the name of the database there (`Northwind-Backup`).
+- to setup replication, we need to go to our [Replication Settings View](../../studio/overview/settings/replication) and add new replication destination using `Add destination` button. Here we need to provide such information like the URL of the destination server (`http://localhost:8082/`) and name of the database there (`Northwind-Backup`).
+- to setup replication, we need to go to our [Replication Settings View](../../studio/overview/settings/replication) and add new replication destination using the `Add destination` button. Here we need to provide information such as the URL of the destination server (`http://localhost:8082/`) and the name of the database there (`Northwind-Backup`).
 
 ![Figure 2. Studio. Replication. Master. Setup Replication.](images/replication-master-replication-settings.png)  
 
@@ -36,7 +37,8 @@ To setup a master-slave replication, this is to replicate documents from one dat
 
 ### Test
 
-- on the slave server go to [Documents View]() and, if all went well, all documents from the master server should be there. Note that replication process might take some time.
+- on slave server go to [Documents View](../../studio/overview/documents/documents-view) and if all went well, all documents from master server should be there. Worth noting is that replication process might take some time.
+- on the slave server go to [Documents View](../../studio/overview/documents/documents-view) and, if all went well, all documents from the master server should be there. Note that replication process might take some time.
 
 ![Figure 5. Studio. Replication. Slave. Documents.](images/replication-slave-documents.png)  
 
@@ -48,11 +50,11 @@ To setup a master-master replication, this is to replicate documents from one da
 
 ### Configuring the first master server
 
-- first, we need to have a database that we want to replicate to another server. This database **must** have a replication bundle enabled. Let's call it `Northwind-Master-1` and fill it up with [sample data]().
+- first, we need to have a database that we want to replicate to another server. This database **must** have a replication bundle enabled. Let's call it `Northwind-Master-1` and fill it up with [sample data](../../studio/overview/tasks/create-sample-data).
 
 ![Figure 6. Studio. Replication. Master. Create database.](images/replication-master-master-create-database-1.png)  
 
-- to setup a replication, we need to go to our [Replication Settings View]() and add a new replication destination using the `Add destination` button. Here we need to provide information such as the URL of the destination server (`http://localhost:8082/`) and the name of the database there (`Northwind-Master-2`).
+- to setup a replication, we need to go to our [Replication Settings View](../../studio/overview/settings/replication) and add a new replication destination using the `Add destination` button. Here we need to provide information such as the URL of the destination server (`http://localhost:8082/`) and the name of the database there (`Northwind-Master-2`).
 
 ![Figure 7. Studio. Replication. Master. Setup Replication.](images/replication-master-master-setup-replication-1.png)  
 
@@ -66,13 +68,13 @@ To setup a master-master replication, this is to replicate documents from one da
 
 ![Figure 9. Studio. Replication. Master. Create database.](images/replication-master-master-create-database-2.png)  
 
-- setup a replication to your first master server by going into [Replication Settings View]() and adding new replication destination. In our example we need to use `http://localhost:8081/` as a server URL and `Northwind-Master-1`.
+- setup a replication to your first master server by going into [Replication Settings View](../../studio/overview/settings/replication) and adding new replication destination. In our example we need to use `http://localhost:8081/` as a server URL and `Northwind-Master-1`.
 
 ![Figure 10. Studio. Replication. Master. Setup Replication.](images/replication-master-master-setup-replication-2.png)  
 
 ### Test
 
-- one of the masters (let's say 8082) creates [sample data](),
+- one of the masters (let's say 8082) creates [sample data](../../studio/overview/tasks/create-sample-data),
 - go to the 8081 server and wait for the documents from 8082 (it might take some time),
 - change any value on 8081 and check corresponding document on the 8082 (it might take some time)
 

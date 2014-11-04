@@ -9,11 +9,11 @@ One of the features that is particularly useful when inserting large amount of d
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **database** | string | Name of database for which bulk operation should be performed. If `null` then `DefaultDatabase` from DocumentStore will be used. |
-| **options** | [BulkInsertOptions](../../glossary/client-api/bulk-insert/bulk-insert-options) | Bulk operations options that should be used. |
+| **options** | [BulkInsertOptions](../../glossary/bulk-insert-options) | Bulk operations options that should be used. |
 
 | Return Value | |
 | ------------- | ----- |
-| [BulkInsertOperation](../../glossary/client-api/bulk-insert/bulk-insert-operation) | Instance of BulkInsertOperation used for interaction. |
+| [BulkInsertOperation](../../glossary/bulk-insert-operation) | Instance of BulkInsertOperation used for interaction. |
 
 ## Limitations
 
@@ -21,7 +21,7 @@ There are several limitations to the API:
 
 * Entity **Id** must be provided by the client. The client by default will use the HiLo generator in order to generate the **Id**.
 * Transactions are per batch, not per operation, and DTC transactions are not supported.
-* Documents inserted using bulk-insert will not raise notifications. More about `Changes API` can be found [here](../changes-api).
+* Documents inserted using bulk-insert will not raise notifications. More about `Changes API` can be found [here](../../client-api/changes/what-is-changes-api).
 * Document Updates and Reference Checking must be explicitly turned on (see `BulkInsertOptions`).
 * `AfterCommit` method in `Put Triggers` will be not executed in contrast to `AllowPut`, `AfterPut` and `OnPut`.
 

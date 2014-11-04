@@ -9,11 +9,11 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | string | A name of an index to query. |
-| **suggestionQuery** | [SuggestionQuery](../../../glossary/client-api/querying/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
+| **suggestionQuery** | [SuggestionQuery](../../../glossary/suggestion-query) | A suggestion query definition containing all information required to query a specified index. |
 
 | Return Value | |
 | ------------- | ----- |
-| [SuggestionQueryResult]() | Result containing an array of all suggestions for executed query |
+| [SuggestionQueryResult](../../../glossary/suggestion-query-result) | Result containing an array of all suggestions for executed query |
 
 ## Example
 
@@ -21,6 +21,6 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 
 ## Related articles
 
-- [Full RavenDB query syntax](../../../indexes/full-query-syntax)   
+- [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax)   
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)   
 - [How to **stream query** results?](../../../client-api/commands/querying/how-to-stream-query-results)   

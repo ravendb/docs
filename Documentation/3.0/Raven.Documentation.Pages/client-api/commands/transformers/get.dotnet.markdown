@@ -18,7 +18,7 @@ There are few methods that allow you to retrieve transformers from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [TransformerDefinition](../../../glossary/transformers/transformer-definition) | Instance of TransformerDefinition representing transformer. |
+| [TransformerDefinition](../../../glossary/transformer-definition) | Instance of TransformerDefinition representing transformer. |
 
 ### Example
 
@@ -41,7 +41,7 @@ There are few methods that allow you to retrieve transformers from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [TransformerDefinition](../../../glossary/transformers/transformer-definition) | Instance of TransformerDefinition representing a transformer. |
+| [TransformerDefinition](../../../glossary/transformer-definition) | Instance of TransformerDefinition representing a transformer. |
 
 ### Example
 

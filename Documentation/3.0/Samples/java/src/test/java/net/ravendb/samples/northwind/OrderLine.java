@@ -1,6 +1,8 @@
 package net.ravendb.samples.northwind;
 
+import com.mysema.query.annotations.QueryEntity;
 
+@QueryEntity
 public class OrderLine {
 
   private String product;

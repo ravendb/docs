@@ -8,7 +8,7 @@
 
 | Return Value | |
 | ------------- | ----- |
-| [IndexMergeResults](../../../../glossary/indexes/index-merge-results) | Merge suggestions for indexes. |
+| [IndexMergeResults](../../../../glossary/index-merge-results) | Merge suggestions for indexes. |
 
 ## Example
 

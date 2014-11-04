@@ -89,7 +89,7 @@
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
-    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+	@Scripts.Render("~/bundles/prism")
     @RenderSection("scripts", required: false)
     <script type="text/javascript">
         $('#article li.list-group-item.folder > span').click(function () {

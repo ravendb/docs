@@ -12,11 +12,11 @@ A soft limit is defined by the hard-limit minus the soft-limit margin, both are 
 
 To activate compression server-wide, simply add the `Quotas` to the `Raven/ActiveBundles` configuration in the global configuration file, or setup a new database with a compression bundle turned on using API or the Studio.
 
-To learn how to create a database with quotas enabled using the Studio click [here](../../../studio/bundles/quotas).
+To learn how to create a database with quotas enabled using the Studio click [here](../../studio/overview/settings/quotas).
 
 ## Configuration
 
-Configure the following values by adding entries to your [server configuration](../../administration/configuration) or [database settings](../../multiple-databases):
+Configure the following values by adding entries to your [server configuration](../../server/configuration/configuration-options) or [database settings](../../server/administration/multiple-databases):
 
 * **Raven/Quotas/Size/HardLimitInKB**
 	The hard limit after which we refuse any additional writes.   

@@ -18,11 +18,11 @@ Second method is a equivalent of doing
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | [OpenSessionOptions]() | Options **containing** information such as **name of database** on which session will work and **credentials** that will be used. |
+| **options** | [OpenSessionOptions](../../glossary/open-session-options) | Options **containing** information such as **name of database** on which session will work and **credentials** that will be used. |
 
 | Return Value | |
 | ------------- | ----- |
-| [IDocumentSession]() | Instance of a session object that implements `IDocumentSession` interface. |
+| IDocumentSession | Instance of a session object that implements `IDocumentSession` interface. |
 
 ## Example I
 

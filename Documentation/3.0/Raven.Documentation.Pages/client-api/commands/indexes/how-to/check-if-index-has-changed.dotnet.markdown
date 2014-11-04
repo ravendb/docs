@@ -9,7 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **name** | string | name of an index to check |
-| **indexDef** | [IndexDefinition](../../../../glossary/indexes/index-definition) | index definition |
+| **indexDef** | [IndexDefinition](../../../../glossary/index-definition) | index definition |
 
 | Return Value | |
 | ------------- | ----- |

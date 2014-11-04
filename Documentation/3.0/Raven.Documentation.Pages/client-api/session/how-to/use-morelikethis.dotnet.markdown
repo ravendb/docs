@@ -10,7 +10,7 @@
 | ------------- | ------------- | ----- |
 | **index** | string | Name of an index on which query will be executed. |
 | **documentId** | string | Id of a document for which similarities will be searched. |
-| **parameters** | [MoreLikeThisQuery]() | A more like this query definition that will be executed. |
+| **parameters** | [MoreLikeThisQuery](../../../glossary/more-like-this-query) | A more like this query definition that will be executed. |
 
 | Return Value | |
 | ------------- | ----- |

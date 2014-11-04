@@ -11,7 +11,7 @@ As you can see, all we need to do is to set the `Raven-Expiration-Date` property
 
 {NOTE The date must be UTC, not local time. /}
 
-{WARNING When master-master [replication](../../scaling-out/replication) is set between servers, the Expiration bundle should be turned on **ONLY** on **one** server, otherwise conflicts will occur. /}
+{WARNING When master-master [replication](../../server/scaling-out/replication/how-replication-works) is set between servers, the Expiration bundle should be turned on **ONLY** on **one** server, otherwise conflicts will occur. /}
 
 ## Related articles
 

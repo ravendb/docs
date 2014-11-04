@@ -15,7 +15,7 @@ There are few methods that allow you to insert index into a database:
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **name** | string | Name of an index |
-| **indexDef** | [IndexDefinition](../../../glossary/indexes/index-definition) | Definition of an index |
+| **indexDef** | [IndexDefinition](../../../glossary/index-definition) | Definition of an index |
 | **overwrite** | bool | Indicates if an index could be overwritten (if `false` then exception will be thrown if index exists) |
 
 | Return Value | |
@@ -62,6 +62,6 @@ If **overwrite** is set to **true** and `IndexDefinition` has not changed, no ac
 
 ## Related articles
 
-- [How to **reset index**?](../../../client-api/commands/indexes/reset-index)  
+- [How to **reset index**?](../../../client-api/commands/indexes/how-to/reset-index)  
 - [GetIndex](../../../client-api/commands/indexes/get)  
 - [DeleteIndex](../../../client-api/commands/indexes/delete)  

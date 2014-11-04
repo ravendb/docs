@@ -1,6 +1,6 @@
 # Session : Querying : How to perform dynamic aggregation?
 
-Dynamic aggregation can be performed using `AggregateBy` method. Internally such aggregation is an extended [faceted search]().
+Dynamic aggregation can be performed using `AggregateBy` method. Internally such aggregation is an extended [faceted search](../../../client-api/session/querying/how-to-perform-a-faceted-search).
 
 ## Syntax
 
@@ -13,7 +13,7 @@ Dynamic aggregation can be performed using `AggregateBy` method. Internally such
 
 | Return Value | |
 | ------------- | ----- |
-| [DynamicAggregationQuery](../../../glossary/client-api/querying/dynamic-aggregation-query)&lt;TResult&gt; | Query containing aggregation methods. |
+| [DynamicAggregationQuery](../../../glossary/dynamic-aggregation-query)&lt;TResult&gt; | Query containing aggregation methods. |
 
 ## Example I - summing
 
