@@ -42,6 +42,6 @@
 
 ## Studio
 
-Most of the endpoints can be accessed from Studio by accessing `Debug` section in `Status` tab.
+Most of the endpoints can be accessed from the Studio by accessing the `Debug` section in  the `Status` tab.
 
 ![Figure 1: Studio : Debug Endpoints](images\debug-endpoints-studio.png)

@@ -2,13 +2,13 @@
 
 ## Server statistics
 
-One of the options available for the RavenDB administrators is a capability of retrieving database statistics for the server. The statistics are available at `/admin/stats` endpoint or by Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
+One of the options available for the RavenDB administrators enables them to retrive database statistics for the server. The statistics are available at `/admin/stats` endpoint or by the Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
 
 {CODE-BLOCK:json}
 	curl -X GET "http://localhost:8080/admin/stats"
 {CODE-BLOCK/}
 
-Document with following format is retrieved:
+Document with the following format is retrieved:
 
 {CODE-BLOCK:json}
     {
@@ -137,8 +137,8 @@ where
    * **IndexStorageHumaneSize** - number of bytes taken by index storage in a more readable form
    * **TotalDatabaseSize** - total number of bytes taken by both data and index storages
    * **TotalDatabaseHumaneSize** - total number of bytes taken by both data and index storages in a more readable form
-   * **CountOfDocuments** - number of documents in database
-   * **CountOfAttachments** - number of attachments in database
+   * **CountOfDocuments** - number of documents in a database
+   * **CountOfAttachments** - number of attachments in a database
 * **Metrics**
     * **DocsWritesPerSecond** - number of document writes per second
     * **IndexedPerSecond** - number of indexed documents per second
@@ -150,7 +150,7 @@ where
 
 ## Database statistics
 
-To obtain database statistics one must use `/stats` endpoint or access them by Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
+To obtain the database statistics you have to use `/stats` endpoint or access them by the Client API (details [here](../../client-api/commands/how-to/get-database-and-server-statistics)).
 
 {CODE-BLOCK:json}
 	curl -X GET "http://localhost:8080/stats" //statistics for 'system' database

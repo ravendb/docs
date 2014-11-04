@@ -1,6 +1,6 @@
 # Troubleshooting : Sending support ticket
 
-When sending a support ticket, it is good to include as much information about the issue as you can. Following article will describe what can be send along with the issue description to let us better understand your problem.
+When sending a support ticket, it is good to include as much information about the issue as you can. The following article describes what can be send along with the issue description to let us better understand your problem.
 
 1. Server and client version
 2. Web Traffic logs. We recommend using a [FiddlerCap](http://www.telerik.com/fiddler/fiddlercap) recorder which will create a SAZ file that we can analyze further:
@@ -21,13 +21,13 @@ When sending a support ticket, it is good to include as much information about t
 
 ## Writing unit tests
 
-The NuGet package have been created for easier RavenDB test creation and can be downloaded [here](http://www.nuget.org/packages/RavenDB.Tests.Helpers/).
+The NuGet package has been created for easier RavenDB test creation and can be downloaded [here](http://www.nuget.org/packages/RavenDB.Tests.Helpers/).
 
 The package contains base class (`RavenTestBase`) with various methods useful for test creation:
 
-- `NewDocumentStore` - method that creates new EmbeddableDocumentStore.
-- `NewRemoteDocumentStore` - method that creates new DocumentStore and starts Server.
-- `WaitForIndexing` - waits for indexing to complete for all indexes.
+- `NewDocumentStore` - method that creates a new EmbeddableDocumentStore.
+- `NewRemoteDocumentStore` - method that creates a new DocumentStore and starts the Server.
+- `WaitForIndexing` - waits for the indexing to complete for all indexes.
 - ...and many more
 
 {CODE support_1@Server/Troubleshooting/Support.cs/}

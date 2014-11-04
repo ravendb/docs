@@ -7,9 +7,9 @@ The `AbstractDocumentCodec` and `AbstractIndexCodec` classes have been introduce
 {CODE plugins_3_1@Server\Plugins.cs /}
 
 where:   
-* **Encode** is executed when given document/index is written.   
-* **Decode** is executed when provided document/index is read.    
-* **Initialize** and **SecondStageInit** are used in trigger initialization process.   
+* **Encode** is executed when the given document/index is written.   
+* **Decode** is executed when the provided document/index is read.    
+* **Initialize** and **SecondStageInit** are used to trigger initialization process.   
 
 ## Example - Compression
 

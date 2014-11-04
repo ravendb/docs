@@ -8,7 +8,7 @@ After referencing the `Raven.Database.dll` from your project, all that is left t
 
 ## HTTP access
 
-By default you don't have an external access to RavenDB, so if you want to use the **Studio** to look at what the database is doing, or to use the REST API, you can't. Other features relying on being able to communicate over HTTP (like replication) will be disabled too.
+By default you don't have an external access to RavenDB, so you cannot use the **Studio** to look at what the database is doing, or to use the REST API. Other features relying on being able to communicate over HTTP (like replication) will be disabled too.
 
 RavenDB can be run in an embedded mode with HTTP enabled. To do that, you will just need to set another flag when initializing the embedded document store:
 
@@ -16,11 +16,11 @@ RavenDB can be run in an embedded mode with HTTP enabled. To do that, you will j
 
 Note that you may want to call `NonAdminHttp.EnsureCanListenToWhenInNonAdminContext(port)` to ensure that you can open the HTTP server without requiring administrator privileges.
 
-Once you initialized the document store, you can access directly the Studio, execute replication scenarios, etc.
+Once you initialized the document store, you can access the Studio directly, execute replication scenarios, etc.
 
 ## Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration) page for the complete info.
 
 ## Related articles
 

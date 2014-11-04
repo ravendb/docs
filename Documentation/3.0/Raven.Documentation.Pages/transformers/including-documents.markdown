@@ -1,6 +1,6 @@
 # Including documents
 
-You may have read about [includes]() earlier, if not, note that 'includes' gives you the ability to side-load additional documents in single server call. Transformers also contain this powerful feature and you can take leverage of it by using `Include` method.
+You may have read about [includes]() earlier, if not, note that 'includes' option gives you the ability to side-load additional documents in a single server call. Transformers also contain this powerful feature and you can take advantage of it by using `Include` method.
 
 {CODE transformers_1@Transformers/Including.cs /}
 
