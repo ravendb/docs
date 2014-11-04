@@ -65,6 +65,10 @@ In Studio the configuration page is found under **Settings -> SQL Replication**.
 
 ![Figure 1: How to setup SQL Replication using Studio?](images\sql_replication_studio.png)
 
+## Custom functions in Script
+
+In `Script` beside [built-in functions](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables), custom ones can be introduced. Please visit [this](../../../studio/overview/settings/custom-functions) page if you want to know how to add custom functions.
+
 ## Remarks
 
 {INFO:Information}
