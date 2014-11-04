@@ -163,10 +163,14 @@
     <None Include="client-api\concurrency\.docslist" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
     <None Include="client-api\configuration\.docslist" />
+    <None Include="client-api\configuration\conventions\caching.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\identifier-generation\.docslist" />
-    <None Include="client-api\configuration\conventions\identifier-generation\global.markdown" />
+    <None Include="client-api\configuration\conventions\identifier-generation\global.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\.docslist" />
-    <None Include="client-api\configuration\conventions\identifier-generation\type-specific.markdown" />
+    <None Include="client-api\configuration\conventions\misc.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\querying.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\identifier-generation\type-specific.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.java.markdown" />

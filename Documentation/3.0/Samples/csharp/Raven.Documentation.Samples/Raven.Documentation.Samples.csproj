@@ -211,8 +211,12 @@
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Configuration\Conventions\Caching.cs" />
     <Compile Include="ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs" />
     <Compile Include="ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs" />
+    <Compile Include="ClientApi\Configuration\Conventions\Misc.cs" />
+    <Compile Include="ClientApi\Configuration\Conventions\Querying.cs" />
+    <Compile Include="ClientApi\Configuration\Conventions\RequestHandling.cs" />
     <Compile Include="ClientApi\Configuration\Conventions\WhatAreConventions.cs" />
     <Compile Include="ClientApi\CreatingDocumentStore.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\BewareOf.cs" />
