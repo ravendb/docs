@@ -43,9 +43,7 @@ namespace Raven.Documentation.Parser.Helpers
 			content = NormalizeContent(content);
 
 			var builder = new StringBuilder();
-			builder.AppendLine(string.Format("<pre class='prettyprint {0}'>", ConvertLanguageToCssClass(language)));
-			builder.AppendLine(content);
-			builder.AppendLine("</pre>");
+			builder.AppendLine(string.Format("<pre class='line-numbers'><code class='{0}'>{1}</code></pre>", ConvertLanguageToCssClass(language), content));
 			return builder.ToString();
 		}
 
@@ -58,20 +56,21 @@ namespace Raven.Documentation.Parser.Helpers
 			var section = values[0];
 			var file = values[1];
 
+			string content;
 			var builder = new StringBuilder();
-			builder.AppendLine(string.Format("<pre class='prettyprint {0}'>", ConvertLanguageToCssClass(language)));
 			switch (language)
 			{
 				case Language.Csharp:
-					builder.AppendLine(ExtractSectionFromCsharpFile(section, Path.Combine(samplesDirectory, file)));
+					content = ExtractSectionFromCsharpFile(section, Path.Combine(samplesDirectory, file));
 					break;
 				case Language.Java:
-					builder.AppendLine(ExtractSectionFromJavaFile(section, Path.Combine(samplesDirectory, file)));
+					content = ExtractSectionFromJavaFile(section, Path.Combine(samplesDirectory, file));
 					break;
 				default:
 					throw new NotSupportedException(language.ToString());
 			}
-			builder.AppendLine("</pre>");
+
+			builder.AppendLine(string.Format("<pre class='line-numbers'><code class='{0}'>{1}</code></pre>", ConvertLanguageToCssClass(language), content));
 
 			return builder.ToString();
 		}
@@ -109,9 +108,7 @@ namespace Raven.Documentation.Parser.Helpers
 			{
 				var tab = tabs[index];
 				builder.AppendLine(string.Format("<div class='tab-pane code-tab {1}' id='{0}'>", tab.Id, index == 0 ? "active" : string.Empty));
-				builder.AppendLine(string.Format("<pre class='prettyprint {0}'>", ConvertLanguageToCssClass(tab.Language)));
-				builder.AppendLine(tab.Content);
-				builder.AppendLine("</pre>");
+				builder.AppendLine(string.Format("<pre class='line-numbers'><code class='{0}'>{1}</code></pre>", ConvertLanguageToCssClass(tab.Language), tab.Content));
 				builder.AppendLine("</div>");
 			}
 			builder.AppendLine("</div>");
@@ -237,11 +234,11 @@ namespace Raven.Documentation.Parser.Helpers
 			switch (language)
 			{
 				case Language.Csharp:
-					return "lang-cs";
+					return "language-csharp";
 				case Language.Java:
-					return "lang-java";
+					return "language-java";
 				case Language.Http:
-					return "lang-js";
+					return "language-javascript";
 				default:
 					throw new NotSupportedException(language.ToString());
 			}
@@ -252,17 +249,17 @@ namespace Raven.Documentation.Parser.Helpers
 			switch (language)
 			{
 				case CodeBlockLanguage.Csharp:
-					return "lang-cs";
+					return "language-csharp";
 				case CodeBlockLanguage.Java:
-					return "lang-java";
+					return "language-java";
 				case CodeBlockLanguage.Http:
-					return "lang-js";
+					return "language-javascript";
 				case CodeBlockLanguage.Json:
-					return "lang-json";
+					return "language-javascript";
 				case CodeBlockLanguage.Plain:
-					return string.Empty;
+					return "language-none";
 				case CodeBlockLanguage.Xml:
-					return "lang-xml";
+					return "language-http";
 				default:
 					throw new NotSupportedException(language.ToString());
 			}
