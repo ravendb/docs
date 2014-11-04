@@ -1,4 +1,4 @@
-﻿# Status : Index Errors
+# Status : Index Errors
 
 Here we can view all indexing errors that occurred during indexation. Alerts are listed by date of occurrence in a system, starting with the most recent ones.
 
@@ -26,5 +26,7 @@ Note that server will mark index as `Invalid` if a considerable amount of errors
 To check `Invalid` indexes you can go directly to [Indexes View](../../overview/indexes/indexes-view).
 
 ![Figure 3. Studio. Status. Index Errors. Invalid indexes.](images/status-index_errors-3.png)
+
+![Figure 4. Studio. Status. Index Errors. Invalid indexes.](images/status-index_errors-4.png)
 
 {SAFE/}

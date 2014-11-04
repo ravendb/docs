@@ -41,7 +41,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ 5 minutes   
 
 * **Raven/MemoryCacheLimitMegabytes**
-	The max size in MB for the internal document cache inside RavenDB server.   
+	The max size (in megabytes) for the internal document cache inside RavenDB server.   
 	_Default:_ 50% of the total system memory minus the size of the Esent cache.  
 
 * **Raven/MemoryCacheLimitPercentage**
@@ -60,34 +60,34 @@ This is the standard app.config XML file. The `appSettings` section is where the
 ### Index settings
 
 * **Raven/IndexStoragePath**  
-    The path for the indexes on disk. Useful if you want to store the indexes on another HDD for performance reasons.  
+    The path for the indexes on a disk. Useful if you want to store the indexes on another HDD for performance reasons.  
     _Default:_ ~/Data/Indexes
 
 * **Raven/MaxIndexWritesBeforeRecreate**   
-    The number of writes before index writer will be recreated (to save memory).     
+    The number of writes before the index writer will be recreated (to save memory).     
     _Default:_ 256 * 1024    
 
 * **Raven/MaxNumberOfParallelIndexTasks**  
-    The number of indexing tasks that can be run in parallel. There is usually one or two indexing tasks for each index.   
+    The number of the indexing tasks that can be run in parallel. There is usually one or two indexing tasks for each index.   
 	_Default:_ the number of processors in the current machine
     
 * **Raven/MaxNumberOfItemsToIndexInSingleBatch**   
-	The max number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.   
+	The max number of items that will be indexed in a single batch. Larger batch size results in faster indexing, but higher memory usage.   
 	_Default:_ 128 * 1024 for 64-bit and 16 * 1024 for 32-bit  
 	_Minimum:_ 128
 
 * **Raven/MaxNumberOfItemsToReduceInSingleBatch**   
-	The max number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.   
+	The max number of items that will be indexed in a single batch. Larger batch size results in faster indexing, but higher memory usage.   
 	_Default:_ 1/2 * `Raven/MaxNumberOfItemsToIndexInSingleBatch`
 	_Minimum:_ 128
 
 * **Raven/MaxNumberOfItemsToPreFetchForIndexing**   
-	The max number of items that will be prefetched for indexing. Larger batch size result in faster indexing, but higher memory usage.   
+	The max number of items that will be prefetched for indexing. Larger batch size results in faster indexing, but higher memory usage.   
 	_Default:_ 128 * 1024 for 64-bit and 16 * 1024 for 32-bit  
 	_Minimum:_ 128
 
 * **Raven/InitialNumberOfItemsToIndexInSingleBatch**   
-	The number of items that will be indexed in a single batch. Larger batch size result in faster indexing, but higher memory usage.    
+	The number of items that will be indexed in a single batch. Larger batch size results in faster indexing, but higher memory usage.    
     _Default:_ 512 for 64-bit and 256 for 32-bit  
 
 * **Raven/AvailableMemoryForRaisingIndexBatchSizeLimit**   
@@ -104,40 +104,40 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 5 minutes 
 
 * **Raven/TimeToWaitBeforeRunningIdleIndexes**   
-	Time that server is waiting before running idle indices.   
+	The time for which the server is waiting before running idle indexes.   
 	_Default:_ 10 minutes    
 
 * **Raven/TimeToWaitBeforeMarkingAutoIndexAsIdle**   
-	Time that server will wait before marking auto index as idle.    
+	The time for which the server is waiting before marking auto index as idle.    
 	_Default:_ 1 hour   
 
 * **Raven/TimeToWaitBeforeRunningAbandonedIndexes**   
-	Time that server will wait before running abandoned indices.      
+	The time for which the server is waiting before running abandoned indexes.      
 	_Default:_ 3 hours    
 
 * **Raven/TimeToWaitBeforeMarkingIdleIndexAsAbandoned**   
-	Time that server will wait before marking idle indices as abandoned.   
+	The time for which the server is waiting before marking idle indexes as abandoned.   
 	_Default:_ 72 hours   
 
 * **Raven/TaskScheduler**   
 	The TaskScheduler type to use for executing indexing.   
 
 * **Raven/NewIndexInMemoryMaxMB**   
-    The max size in MB of a new index held in memory. When the index exceeds that value, it will be using a disk rather than memory for indexing.   
+    The max size (in megabytes) of a new index held in memory. When the index exceeds that value, it will be using a disk rather than memory for indexing.   
     _Default:_ 64 MB   
     _Minimum:_ 1 MB  
     _Maximum:_ 1024 MB   
 
 * **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded**   
-	Whatever we allow creation of auto indexes on dynamic queries.   
+	Whether we allow creation of auto indexes on dynamic queries.   
 	_Default:_ true
 
 * **Raven/SkipCreatingStudioIndexes**   
-	Control whatever the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   
+	Control whether the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   
 	_Default:_ false
 
 * **Raven/LimitIndexesCapabilities**   
-	Control whatever RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).   
+	Control whether RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).   
 	_Default:_ false
 
 * **Raven/CompiledIndexCacheDirectory**   
@@ -153,7 +153,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ false
 
 * **Raven/MaxIndexCommitPointStoreTimeInterval**  
-	Maximum time interval for storing commit points for map indexes when new items were added. The commit points are used to restore index if unclean shutdown was detected.   
+	Maximum time interval for storing commit points for map indexes when new items were added. The commit points are used to restore index if the unclean shutdown was detected.   
 	_Default:_ 5 minutes
 
 * **Raven/MaxNumberOfStoredCommitPoints**  
@@ -161,11 +161,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 5
 
 * **Raven/MinIndexingTimeIntervalToStoreCommitPoint**  
-	Minimum interval between between successive indexing that will allow to store a  commit point.    
+	Minimum interval between successive indexing that will allow storing a commit point.    
 	_Default:_ 1 minute
 
 * **Raven/DisableInMemoryIndexing**   
-	Prevent all new created indexes from being kept in memory. In order to set this option per index you need to specify it in its [IndexDefinition](../../glossary/index-definition).    
+	Prevent all newly created indexes from being kept in memory. In order to set this option for an index you need to specify it in its [IndexDefinition](../../glossary/index-definition).    
 	_Default:_ false
 
 * **Raven/Indexing/FlushIndexToDiskSizeInMb**   
@@ -175,7 +175,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 ### Data settings:
 
 * **Raven/RunInMemory**   
-    Whatever the database should run purely in memory. When running in memory, nothing is written to disk and if the server is restarted all data will be lost. This is mostly useful for testing.   
+    Whether the database should run purely in memory. When running in memory, nothing is written on a disk and if the server is restarted, all data will be lost. Useful mostly for testing.   
     _Default:_ false  
 
 * **Raven/DataDir**  
@@ -212,12 +212,16 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ true  
 
 * **Raven/UseSsl**   
-    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service.**
+    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service.**   
+    _Default:_ false   
+
+* **Raven/IgnoreSslCertificateErrors**   
+    When set to *true*, RavenDB will ignore **all** SSL certificate validation errors. More [here](../../server/configuration/enabling-ssl#ignoring-ssl-errors).   
     _Default:_ false   
 
 * **Raven/AccessControlAllowOrigin**   
     Configures the server to send Access-Control-Allow-Origin header with the specified value. If this value isn't specified, all the access control settings are ignored.   
-    _Allowed values:_ null (don't send the header), *, http://example.org,   
+    _Allowed values:_ null (don't send the header), `*`, http://example.org,   
 	_Default:_ none (if this value isn't specified, all the access control settings are ignored)  
 
 * **Raven/AccessControlMaxAge**   
@@ -233,7 +237,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ none
 
 * **Raven/Headers/Ignore**   
-    Semicolon separated list of headers that server should ignore. e.g. Header-To-Ignore-1;Header-To-Ignore-2
+    Semicolon separated list of the headers that server should ignore. e.g. Header-To-Ignore-1;Header-To-Ignore-2
     _Default:_ `null`
 
 ### Misc settings
@@ -254,11 +258,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
 ### Bundles
 
 * **Raven/ActiveBundles**   
-	Semicolon separated list of bundles names, such as: 'Replication;Versioning'. If the value is not specified, none of the bundles are installed.   
+	Semicolon separated list of the bundles' names, such as: 'Replication;Versioning'. If the value is not specified, none of the bundles are installed.   
 	_Default:_ none
 
 * **Raven/BundlesSearchPattern**   
-	Allow to limit the loaded plugins by specifying a search pattern, such as Raven.*.dll. Multiple values can be specified, separated by a semicolon (;).   
+	Allows limiting the loaded plugins by specifying a search pattern, such as Raven.*.dll. Multiple values can be specified, separated by a semicolon (;).   
 
 * **Raven/PluginsDirectory**    
     The location of the plugins directory for this database.   
@@ -267,21 +271,21 @@ This is the standard app.config XML file. The `appSettings` section is where the
 ### Studio
 
 * **Raven/WebDir**   
-    The location of the web directory for known files that makes up the RavenDB internal website.   
+    The location of the web directory for the known files that make up the RavenDB internal website.   
     _Default:_ ~/Raven/WebUI
 
 * **Raven/RedirectStudioUrl**   
-	The url to redirect the user to when then try to access the local studio.   
+	The url to redirect users to when they try to access the local Studio.   
 
 ### Esent settings
 
 * **Raven/Esent/CacheSizeMax**    
-    The size in MB of the Esent page cache, which is the default storage engine.   
+    The size (in megabytes) of the Esent page cache, which is the default storage engine.   
     _Default:_ 256 for 32-bit and 25% of total system memory for 64-bit  
 	_Minimum:_ 256 for 32-bit and 1024 for 64-bit  
 
 * **Raven/Esent/MaxVerPages**   
-    The maximum size of version store (in memory modified data) available. The value is in megabytes.   
+    The maximum size (in megabytes) of a version store (in memory modified data) available.   
     _Default:_ 512  
 
 * **Raven/Esent/PreferredVerPages**   
@@ -289,11 +293,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ 472  
 
 * **Raven/Esent/DbExtensionSize**   
-    The size that the database file will be enlarged with when the file is full. The value is in megabytes. Lower values will result in smaller file size, but slower performance.    
+    The size (in megabytes) that the database file will be enlarged to when the file is full. Lower values will result in smaller file size, but slower performance.    
     _Default:_ 8  
 
 * **Raven/Esent/LogFileSize**   
-    The size of the database log file. The value is in megabytes.    
+    The size (in megabytes) of the database log file.  
     _Default:_ 64  
 
 * **Raven/Esent/LogBuffers**   
@@ -301,7 +305,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ 8192  
 
 * **Raven/Esent/MaxCursors**   
-    The maximum number of cursors allowed concurrently.  
+    The maximum number of the concurrently allowed cursors.  
     _Default:_ 2048  
     
 * **Raven/Esent/LogsPath**   
@@ -309,7 +313,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default_: ~/Data/Logs  
 
 * **Raven/Esent/CircularLog**   
-    Whatever circular logs will be used, defaults to true. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
+    Whatever circular logs will be used, it is true by default. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
     _Default_: true  
 
 ## Voron settings
@@ -319,28 +323,28 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default_: false  
 
 * **Raven/Voron/TempPath**   
-    You can use this setting to specify a different path to temporary files. By default it is empty, which means that temporary files will be created at same location as data file.  
+    You can use this setting to specify different paths to temporary files. By default it is empty, which means that temporary files will be created at the same location as data file.  
     _Default_: `null`  
 
 * **Raven/Voron/MaxBufferPoolSize**   
-    You can use this setting to specify a maximum buffer pool size that can be used for transactional storage (in gigabytes). By default it is 4. Minimum value is 2.  
+    You can use this setting to specify the maximum buffer pool size that can be used for transactional storage (in gigabytes). By default it is 4. Minimum value is 2.  
     _Default_: 4   
 
 * **Raven/Voron/InitialSize**   
     You can use this setting to specify an initial file size for data file (in bytes).   
 
 * **Raven/Voron/MaxScratchBufferSize**   
-    The maximum scratch buffer (modified data by active transactions) size that can be used by Voron. The value is in megabytes..
-    _Default_: 512
+    The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).
+    _Default_: 1024
 
 ### Tenants
 
 * **Raven/Tenants/MaxIdleTimeForTenantDatabase**   
-	The time in seconds to allow a tenant database to be idle. Value is in seconds.   
+	The time (in seconds) for which a tenant database is allowed to be idle.   
 	_Default:_ 900
 
 * **Raven/Tenants/FrequnecyToCheckForIdleDatabases**   
-	The time in seconds to check for an idle tenant database. Value is in seconds.   
+	The time (in seconds) after which a check for an idle tenant database should be run.  
 	_Default:_ 60
 
 ### Quotas
@@ -358,7 +362,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ Int64.MaxValue
 
 * **Raven/Quotas/Documents/SoftLimit**   
-	The soft limit before which we will warn about the document limit quota.   
+	The soft limit before which we will warn about the document's limit quota.   
 	_Default:_ Int64.MaxValue
 
 ### JavaScript parser
@@ -368,16 +372,16 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 10000
 
 * **Raven/AdditionalStepsForScriptBasedOnDocumentSize**   
-	Number that will expand `Raven/MaxStepsForScript` based on a document size. Formula is as follows: MaxStepsForScript = `Raven/MaxStepsForScript` + (documentSize * `Raven/AdditionalStepsForScriptBasedOnDocumentSize`)
+	Number that will expand `Raven/MaxStepsForScript`, based on a document size. Formula is as follows: MaxStepsForScript = `Raven/MaxStepsForScript` + (documentSize * `Raven/AdditionalStepsForScriptBasedOnDocumentSize`)
 	_Default:_ 5
 
 ### [Authorization & Authentication](../../server/configuration/authentication-and-authorization)
 
 * **Raven/AnonymousAccess**   
-	Determines what actions an anonymous user can do. Get - read only, All - read & write, None - allows access to only authenticated users, Admin - all (including administrative actions).   
+	Determines what actions an anonymous user can perform. Get - read only, All - read & write, None - allows access only to authenticated users, Admin - all (including administrative actions).   
 	_Default:_ Get
 
-{WARNING If your database instance does not have a valid license then `Admin` is the only available option to set. In a commercial system it should not be used. It is only for testing and development purposes, since it grants to **ANY** user administrative rights.  /}
+{WARNING If your database instance does not have a valid license, then the `Admin` is the only available option to set. In a commercial system it should not be used. It is used only for testing and development purposes, since it grants administrative rights to **ANY** user.  /}
 
 * **Raven/AllowLocalAccessWithoutAuthorization**   
 	If set local request don't require authentication.   
@@ -406,7 +410,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ "System.Security.Cryptography.AesManaged, System.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"    
 
 * **Raven/Encryption/Key**    
-	Key used for encryption purposes with minimum length of 8 characters, base64 encoded.    
+	Key used for encryption purposes, with minimum length of 8 characters, base64 encoded.    
 
 * **Raven/Encryption/EncryptIndexes**    
 	Boolean value indicating if the indexes should be encrypted.  
@@ -439,7 +443,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 ##Availability of configuration options
 
-Many of the configuration options described in section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this](../../server/administration/multiple-databases) page.
+Many of the configuration options described in the section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this](../../server/administration/multiple-databases) page.
 
 | Configuration option | Database | Global |
 |:---------------------|:--------:|:------:|
@@ -486,6 +490,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/HostName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Port** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/UseSSL** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/IgnoreSslCertificateErrors** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/VirtualDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/HttpCompression** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AccessControlAllowOrigin** | ![No](images\delete.png) | ![Yes](images\tick.png) |
@@ -552,8 +557,8 @@ Many of the configuration options described in section above can be used both in
 
 {INFO:Information}
 
-- **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database.
-- **Raven/Encryption** settings can only be provided when database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption).
+- **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new databases.
+- **Raven/Encryption** settings can only be provided when a database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption).
 
 {INFO/}
 

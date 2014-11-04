@@ -71,7 +71,7 @@
 			var builder = new StringBuilder();
 			builder.AppendLine("<ul class='nav navbar-nav'>");
 
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Getting started", MVC.Docs.ActionNames.Start, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Getting started", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "start/getting-started" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Indexes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "indexes/what-are-indexes" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Transformers", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "transformers/what-are-transformers" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
@@ -81,6 +81,7 @@
 			builder.AppendLine("<li class='dropdown'>");
 			builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");
 			builder.AppendLine("<ul class='dropdown-menu' role='menu'>");
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Samples, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Glossary", MVC.Docs.ActionNames.Glossary, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
 			builder.AppendLine("</ul>");
 			builder.AppendLine("</li>");

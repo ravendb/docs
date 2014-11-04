@@ -1,6 +1,6 @@
 # Installation : Running as a service
 
-RavenDB supports running as a system service, creating its own HTTP server and processing all requests internally.
+RavenDB supports running as a system service, creating its own HTTP server, and processing all requests internally.
 
 ## Installing the RavenDB service
 
@@ -20,7 +20,7 @@ The server storage and indexes will not be deleted when the server is uninstalle
 
 ## Server Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration) page for the complete info.
 
 ## Related articles
 

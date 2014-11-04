@@ -1,6 +1,6 @@
 # Nesting transformers
 
-When you have more complex transformations and you do not want to repeat code in each transformer to do the exact same transformation, you can use transformer nesting feature by invoking `TransfromWith` in your projection function.
+When you have more complex transformations and you do not want to repeat the code in each transformer to do the exact same transformation, you can use transformer nesting feature by invoking the `TransfromWith` in your projection function.
 
 {CODE transformers_1@Transformers/Nesting.cs /}
 

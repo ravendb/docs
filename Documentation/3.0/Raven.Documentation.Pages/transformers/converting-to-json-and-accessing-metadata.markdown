@@ -1,6 +1,6 @@
 # Converting to JSON and accessing metadata
 
-Entities passed to transformer can be converted to JSON using `AsDocument` method; there is also a possibility to access metadata for a specified object using `MetadataFor` method.
+Entities passed to a transformer can be converted to JSON using the `AsDocument` method; there is also a possibility to access metadata for a specified object using `MetadataFor` method.
 
 ## AsDocument - converting to JSON
 

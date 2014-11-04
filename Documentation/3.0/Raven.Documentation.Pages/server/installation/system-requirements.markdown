@@ -12,9 +12,9 @@
 
 ### Recommended requirements
 
-* 4 GB of RAM (more is better)
-* 2 GHz Quad core (more is better)
-* 50 GB of disk space (more is better)
+* 4 GB of RAM (the more, the better)
+* 2 GHz Quad core (the more, the better)
+* 50 GB of disk space (the more, the better)
 * Note that splitting the db across multiple physical HDs is also recommended
 * 64 bit OS
 * .NET 4.5 (or higher)
@@ -33,7 +33,7 @@ Those are the _absolute minimum requirements_ for it to run. Please note that th
 
 ## Remarks
 
-If you have any questions regarding deployment, please [contact us](http://ravendb.net/contact).
+If you have any questions regarding deployment, please [contact us](http://ravendb.net/support).
 
 ## Related articles
 

@@ -25,7 +25,7 @@ or
 
 This command will export all indexes, transformers, documents and attachments from `Northwind` database to a file named `dump.ravendump`.
 
-The dump file will also include documents that were added during the export process, so you can make changes while the export is executing.
+The dump file will also include documents that were added during the export process, so you can make changes while the export is being executed.
 
 ### Exporting and Replication
 
@@ -43,20 +43,20 @@ If **Replication is turned on in your source database**, it is **recommended** t
     Raven.Smuggler in http://localhost:8080 dump.ravendump --database=NewNorthwind
 {CODE-BLOCK/}
 
-This command will import all the indexes, transformers, documents and attachments from the file to the `NewNorthwind` database.
+This command will import all the indexes, transformers, documents, and attachments from the file to the `NewNorthwind` database.
 
 {INFO:Information}
 
-- Import does **not support** database creation. If destination database does not exist error message will be shown.
-- Import will **overwrite** any existing documents in the destination database.
+- Import does **not support** database creation. If a destination database does not exist, an error message will appear.
+- Import will **overwrite** any existing documents in a destination database.
 
 {INFO/}
 
-You can continue using that RavenDB instance while data is being imported to it.
+You can continue using this RavenDB instance while data is being imported to it.
 
 ### Importing and Replication
 
-Note that if you have either the replication bundle or the periodic backup bundle active on the database, it is recommended that you'll filter out the following documents when doing an import: `Raven/Replication/Destinations`, `Raven/Replication/VersionHilo`, `Raven/Backup/Periodic/Setup`, `Raven/Backup/Periodic/Status`.  
+Note that if you have either the replication bundle or the periodic backup bundle active on a database, it is recommended that you'll filter out the following documents when doing an import: `Raven/Replication/Destinations`, `Raven/Replication/VersionHilo`, `Raven/Backup/Periodic/Setup`, `Raven/Backup/Periodic/Status`.  
 This can be done using the following command: 
 
 {CODE-BLOCK:plain}
@@ -67,29 +67,39 @@ This can be done using the following command:
 
 {PANEL:**Incremental Export and Import**}
 
-With the incremental export operation we can use in order to backup the database incrementally, on each export, we will only take the export the documents create or updated
+With the incremental export operation we can use in order to backup the database incrementally, on each export, we will get to export only the documents created or updated
 since the last export.
 
-To export data with incremental we can use 2 options.  
-If it is the first run and the folder does not exist yet use (you can continue to use this command every time):
+To export data incrementally we can use two options:
+
+
+- If it is the first run and the folder does not exist yet, use:
 
 {CODE-BLOCK:plain}
     Raven.Smuggler out http://localhost:8080 --database=Northwind folder_location --incremental
 {CODE-BLOCK/}
 
-If you ran the command before or you created the folder earlier you can use:
+Note that this cammand can be used every time.
+
+
+
+- If you ran the command before or you created the folder earlier, you can use:
 
 {CODE-BLOCK:plain}
     Raven.Smuggler out http://localhost:8080 --database=Northwind folder_location
 {CODE-BLOCK/}
 
-In order to import date that was exported with incremental operation, you can use either of the following:
+To import data that was exported incrementally, you can use either of the following:
 
-{CODE-BLOCK:plain}
+
+
+- {CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location --incremental
 {CODE-BLOCK/}
-or
-{CODE-BLOCK:plain}
+
+
+
+- {CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location
 {CODE-BLOCK/}
 
@@ -97,7 +107,7 @@ or
 
 {PANEL:**Moving data between two databases**}
 
-To move data directly between two instances (or different databases in same instance) use `between` option in following manner:
+To move data directly between two instances (or different databases in the same instance) use  the `between` option in following manner:
 
 {CODE-BLOCK:plain}
     Raven.Smuggler between http://localhost:8080 http://localhost:8080 --database=Northwind --database2=NewNorthwind folder_location
@@ -116,17 +126,17 @@ You can tweak the export/import process with the following parameters:
  - negative-metadata-filter: Filter documents NOT matching a metadata property. Usage example: `--negative-metadata-filter=Raven-Entity-Name=Posts`.
  - transform: Transform documents using a given script (import only).   
  - transform-file: Transform documents using a given script file (import only).   
- - max-steps-for-transform-script: Maximum number of steps that transform script can have (import only).
+ - max-steps-for-transform-script: Maximum number of steps that a transform script can have (import only).
  - timeout: The timeout (in milliseconds) to use for requests.
  - batch-size: The batch size for requests.
  - chunk-size: The number of documents to import before new connection will be opened.
- - database: The database to operate on. If no specified, the operations will be on the default database.
- - username: The username to use when the database requires the client to authenticate.
- - password: The password to use when the database requires the client to authenticate.
- - domain: The domain to use when the database requires the client to authenticate.
- - api-key: The API-key to use, when using OAuth.
+ - database: The database to operate on. If not specified, the operations will be performed on a default database.
+ - username: A username to use when a database requires client authentication.
+ - password: A password to use when a database requires client authentication.
+ - domain: A domain to use when a database requires client authentication.
+ - api-key: An API-key to use, when using OAuth.
  - incremental: States usage of incremental operations.
- - wait-for-indexing: Wait until all indexing activity has been completed (import only).
+ - wait-for-indexing: Wait until all indexing activities have been completed (import only).
  - excludeexpired: Excludes expired documents created by the [expiration bundle](../../server/bundles/expiration).    
  - limit: Reads at most VALUE documents/attachments.
  - help: You can use the help option in order to print the built-in options documentation.
@@ -135,18 +145,18 @@ You can tweak the export/import process with the following parameters:
 
 {PANEL:**Filtering**}
 
-To filter out documents we introduced few filtering options that can be used during import or export process.
+To filter out documents, we introduced a few filtering options that can be used during an import or export process.
 
-1. `filter` is used to filter documents based on a property. E.g. if we want to export all documents with property `Name` and value `John` then we must apply command as follows: `--filter=Name=John` .   
-2. `negative-filter` is an opposite to `filter` and will filter documents that does NOT match the given property.  
-3. `metadata-filter` is similar to `filter`, but works on document metadata properties.   
-4. `negative-metadata-filter` filters out documents that does NOT match given metadata property.   
+1. `filter` is used to filter documents according to their properties. E.g. if we want to export all documents with a property `Name` and value `John`, we have to apply command as follows: `--filter=Name=John` .   
+2. `negative-filter` is a countertype to `filter` and will filter documents that do NOT match the given property.  
+3. `metadata-filter` is similar to `filter` but works on the document's metadata properties.   
+4. `negative-metadata-filter` filters out documents that do NOT match given metadata property.   
 
 {INFO:Multiple value support}
 
-Comma has been introduced to support multiple values e.g. `--filter=Name=John,Greg` will export all documents with `Name` equal to `John` or `Greg`. 
+Comma has been introduced to support multiple values e.g. `--filter=Name=John,Greg` will export all documents with a `Name` equal to `John` or `Greg`. 
 
-If you want to use comma in your filter then wrap the value in `'` e.g. `--filter=Name='John, the Second',Greg` will export all documents with `Name` equal to `John, the Second` and `Greg`.
+If you want to use comma in your filter, wrap the value in `'` e.g. `--filter=Name='John, the Second',Greg` will export all documents with a `Name` equal to `John, the Second` and `Greg`.
 
 {INFO/}
 
@@ -154,7 +164,7 @@ If you want to use comma in your filter then wrap the value in `'` e.g. `--filte
 
 {PANEL:**Transforms**}
 
-Transforms can be used to modify or filter out documents, but only work during the import process. The scripts must use JavaScript syntax and be in following format:   
+Transforms can be used to modify or filter out documents, but they work only during the import process. The scripts have to use JavaScript syntax and be in following format:   
 
 {CODE-BLOCK:json}
 function(doc) {
@@ -162,11 +172,11 @@ function(doc) {
 }
 {CODE-BLOCK/}
 
-where `doc` will contain our document with it's metadata under `@metadata` property.
+where `doc` will contain our document with its metadata under the `@metadata` property.
 
 #### Change scripts:   
 
-E.g. To change document property `Name` value to the new one, the following script can be used:   
+E.g. To change document's property `Name` value to a new one, the following script can be used:   
 
 {CODE-BLOCK:json}
 function(doc) {
@@ -177,7 +187,7 @@ function(doc) {
 
 #### Filter scripts:    
 
-If we return `null` then the document will be filtered out.   
+If we return `null`, the document will be filtered out.   
 
 {CODE-BLOCK:json}
 function(doc) {
@@ -210,7 +220,7 @@ Alternatively, if you prefer to do export/import from code rather than from the 
 
 {PANEL:**DataDumper**}
 
-Smuggler communicates with server using the HTTP protocol, which means that it can't communicate with Embedded instance as long as `UseEmbeddedHttpServer` is set to `false` (which is a default value). If embedded http server can't be started then `DataDumper` (found in `Raven.Database.Smuggler` namespace in `Raven.Database.dll`) can be used to import or export data.
+A smuggler communicates with a server using the HTTP protocol, meaning that it cannot communicate with Embedded instance as long as the `UseEmbeddedHttpServer` is set to `false` (which is a default value). If embedded http server cannot be started, the `DataDumper` (found in `Raven.Database.Smuggler` namespace in `Raven.Database.dll`) can be used to import or export data.
 
 {CODE smuggler_api_4@Server\Administration\ExportImport.cs /}
 
@@ -220,8 +230,8 @@ Smuggler communicates with server using the HTTP protocol, which means that it c
 
 {INFO:Information}
 
-- During **export** Smuggler is using [document streaming](../../client-api/commands/documents/stream). To maintain backward compatibility, Smuggler will detect from what version it exports the documents and adjust behavior accordingly.
-- During **import** Smuggler is using [bulk insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation).
+- During **export** the Smuggler is using [document streaming](../../client-api/commands/documents/stream). To maintain backward compatibility, the Smuggler will detect from what version it exports the documents, and adjust its behavior accordingly.
+- During **import**  the Smuggler is using [bulk insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation).
 
 {INFO/}
 

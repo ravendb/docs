@@ -1,26 +1,24 @@
 # Administration : Index administration
 
-RavenDB indexes can be administrated easily from the consumer end using either code or the studio.
+RavenDB indexes can be administrated easily by the user with a code or the Studio.
 
 ## Resetting an index
 
-An index usually need to be reset because it has reached its error quota and been disabled. Resetting an index means forcing RavenDB to re-index all documents matched by the index definition, which can be a very lengthy process.
+An index usually needs to be reset as it reached its error quota and was disabled. Resetting an index means forcing RavenDB to re-index all documents matched by the index definition, which can be a very lengthy process.
 
-You can reset an index by using either [Client API](../../client-api/commands/indexes/how-to/reset-index) or **Studio**.
+You can reset an index using either [Client API](../../client-api/commands/indexes/how-to/reset-index) or  the**Studio**.
 
 ![Figure 1: Reset and delete index options in the Studio](images/index-administration-studio.png)
 
 ## Deleting an index
 
-You can delete an index by using either [Client API](../../client-api/commands/indexes/delete) or **Studio** (please refer to the image above).
+You can delete an index by using either [Client API](../../client-api/commands/indexes/delete) or the **Studio** (please refer to the image above).
 
 ## Index locking
 
-This feature allows you to change an index definition on the production server. You can lock an index for changes, either in such a way that gives you the ability ignore changes to this index
-or by raising an error when someone tries to modify the index. You can update the index definition on the server, next update it on the codebase and deploy the application to match them. While the index is locked
-at any time when `IndexCreation.CreateIndexes()` on start up is called will not revert the change that you did.
+This feature allows you to change an index definition on the production server. Index locking hes two possible results: either any changes introduced to the locked index will be ignored, or  an error will be raised when someone tries to modify the index. You can update the index definition on the server, next update it on the codebase, and finally deploy the application to match them. While the index is locked, at any time when `IndexCreation.CreateIndexes()` on start up is called, the changes you've introduces will not be reverted.
 
-It is important to note that this is not a security feature, you can unlock the index at any time.
+It is important to note that this is not a security feature, and you can unlock an index at any time.
 
 To lock the index you need to create a HTTP call:
 {CODE-BLOCK:plain}
@@ -33,7 +31,7 @@ The available modes are:
 * LockedIgnore
 * LockedError
 
-In the studio this options are available on the Indexes page:
+In the Studio this options are available on the Indexes page:
 
 ![Figure 2: Index lock / unlock](images/index-administration-studio.png)
 
@@ -42,43 +40,38 @@ In the studio this options are available on the Indexes page:
 RavenDB's index can have a priority that controls how much power of the indexing process it is allowed to consume. The database automatically manages indexes and the default logic 
 is as follows:
 
-* An auto index can be set to idle if it has not been queried for a time
-* An index that was automatically set to idle will be set to normal on its first query.
+* An auto index can be set to idle if it has not been queried for some time
+* An index that was automatically set to idle will be set to normal on its first query
 
-However an index priority can be forced by the user. There are five available values that you can set:
+However, an index priority can be forced by the user. There are four available values that you can set:
 
 * Normal
 * Idle
 * Disabled
 * Abandoned
 
-What do these priorities actually mean? The idle index will not be indexed by RavenDB during the normal course of things. Only when the database is idle 
-for a period of time (by default, about 10 minutes with no writes) will we actually get it indexing. Idle indexing will continue indexing as long as there 
-is no other activity that require their resources. When that happens, they will complete their current run and continue to wait for the database to become idle again.
+What do these priorities actually mean? The idle index will not be indexed by RavenDB during the normal course of action. Only when the database is idle for a given period of time (by default, about 10 minutes with no writes) will we actually get it indexing. In this case indexing will continue as long as there are no other activities that require resources. If such activities appear, indexing will complete its current run and continue waiting for the database to become idle again.
 
-The disabled index will use no system resources and will never take part in the indexing. This is mostly there so you can manually shut down a single index. 
-For example, maybe it is a very expensive one and you want to stop it while you are doing an import.
+The disabled index will use no system resources and will never take part in the indexing. This option is available so you can manually shut down a single index, for example when the index very expensive, and the system would be more effectife if you shut it down while doing an import.
 
-Even idle indexes can take some system resources, so we have added another level beyond that, the abandoned index is one that has not been queried in 72 hours.
-At that point, RavenDB is going to avoid indexing it even during idle periods. It will still get indexed, but only if there has been a long enough time passed 
-since the last time it was indexed.
+Even idle indexes can take some of the system's resources, so there is yet another option available, namely the abandoned index. An index is abandoned if it has not been queried in the last 72 hours. Currently, RavenDB avoids indexing it even during the idle periods, yet it will get indexed eventually, if enough time has passed since the last indexation.
 
-In order to set the priority of the index to idle for example, you can either create a HTTP request like following:
+For example, in order to set an index priority to idle, you can either create a HTTP request like the following:
 
 {CODE-BLOCK:plain}
 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?priority=Idle
 {CODE-BLOCK/}
 
-or use the studio. If so you need to go to _Indexes_ and _Edit_ selected index and there set up the priority:
+or use the Studio. If you choose the latter, go to _Indexes_, _Edit_ selected index, and set up the priority there:
 
 ![Figure 3: Index priority](images/index-administration-studio-priority.png)
 
-All of the time settings used by RavenDB to automatically manage the priorities of indexes you will find on the [configuration options page](../../server/configuration/configuration-options) (look for options that starts with <em>TimeToWaitBefore</em>). 
+You can find all of the time settings used by RavenDB to automatically manage the priorities of indexes in the [configuration options page](../../server/configuration/configuration-options) (look for options that starts with <em>TimeToWaitBefore</em>). 
 
 
 ## Persistence of an auto index
 
-When auto indexes are created then they are kept in memory until they won't reach a given size from the configuration. You can force to write indexed data to a disk by executing:
+When auto indexes are created, they are kept in a memory until they reach a given size, specified in the configuration. You can force writing indexed data on a disk by executing:
 
 {CODE-BLOCK:plain}
 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk

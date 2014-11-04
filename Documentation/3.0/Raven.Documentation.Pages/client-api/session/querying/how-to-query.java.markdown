@@ -49,7 +49,7 @@ Available custom methods and extensions:
 - [AsProjection](../../../client-api/session/querying/how-to-perform-projection)
 - [CountLazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [Customize](../../../client-api/session/querying/how-to-customize-query)
-- [Include]()
+- [Include](../../../indexes/querying/handling-document-relationships)
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [OrderByScore]()

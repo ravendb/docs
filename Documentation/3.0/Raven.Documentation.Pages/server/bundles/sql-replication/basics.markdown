@@ -30,7 +30,7 @@ where:
 
 ## Example
 
-Let us consider a simple scenario, where we have an `Order` with `OrderLines` and we want to setup a replication to MSSQL.
+Let us consider a simple scenario, where we have an `Order` with `OrderLines` (from `Northwind`) and we want to setup a replication to MSSQL.
 
 {CODE sql_replication_2@Server\Bundles\SqlReplication.cs /}
 
@@ -43,13 +43,13 @@ CREATE TABLE [dbo].[OrderLines]
 	[OrderId] [nvarchar] (50) NOT NULL,
 	[Qty] [int] NOT NULL,
 	[Product] [nvarchar] (255) NOT NULL,
-	[Cost] [int] NOT NULL
+	[Cost] [decimal] (18,2) NOT NULL
 )
 CREATE TABLE [dbo].[Orders]
 (
 	[Id] [nvarchar] (50) NOT NULL,
 	[OrderLinesCount] [int] NOT NULL,
-	[TotalCost] [int] NOT NULL
+	[TotalCost] [decimal] (18,2) NOT NULL
 )
 {CODE-BLOCK/}
 
@@ -64,6 +64,10 @@ Last step is to insert a document with our configuration. This can be done using
 In Studio the configuration page is found under **Settings -> SQL Replication**.
 
 ![Figure 1: How to setup SQL Replication using Studio?](images\sql_replication_studio.png)
+
+## Custom functions in Script
+
+In `Script` beside [built-in functions](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables), custom ones can be introduced. Please visit [this](../../../studio/overview/settings/custom-functions) page if you want to know how to add custom functions.
 
 ## Remarks
 

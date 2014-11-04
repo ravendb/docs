@@ -26,7 +26,7 @@ RavenDB supports two storage engines and each database can be created with a dif
 
 {PANEL:**Using Studio**}
 
-To change storage engine in Studio, during database creation go to `Advanced Settings` and change `Storage Engine` according to your needs.
+In order to change a storage engine in the Studio, while you are creating a database, go to `Advanced Settings` and change `Storage Engine` according to your needs.
 
 ![Figure 1: Creating database and changing Storage Engine](images/create-database-select-engine-studio.png)
 

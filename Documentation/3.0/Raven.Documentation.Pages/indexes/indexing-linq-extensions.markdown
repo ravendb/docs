@@ -1,6 +1,6 @@
-﻿# Indexing LINQ extensions
+# Indexing LINQ extensions
 
-Various indexing LINQ extensions are available to enhance the usability and reduce the complexity of indexing functions. The available extensions are:
+Various indexing LINQ extensions are available to enhance the usability and reduce the complexity of the indexing functions. The available extensions are:
 
 - [StripHtml](../indexes/indexing-linq-extensions#striphtml)
 - [Boost](../indexes/indexing-linq-extensions#boost)
@@ -39,13 +39,13 @@ You can read more about boosting [here](../indexes/boosting).
 
 {PANEL:**WhereEntityIs**}
 
-`WhereEntityIs` can be used to check if given `Raven-Entity-Name` value in metadata for given document matches any of the given values. This can be useful when indexing polymorphic data. Please visit dedicated article to get more information (or click [here](../indexes/indexing-polymorphic-data#other-ways)).
+`WhereEntityIs` can be used to check if given `Raven-Entity-Name` value in metadata for the given document matches any of the given values. This can be useful when indexing polymorphic data. Please visit dedicated article to get more information (or click [here](../indexes/indexing-polymorphic-data#other-ways)).
 
 {PANEL/}
 
 {PANEL:**IfEntityIs**}
 
-`IfEntityIs` is similar to `WhereEntityIs`, but it checks only against one value.
+`IfEntityIs` is similar to `WhereEntityIs`, yet it checks only against one value.
 
 {PANEL/}
 

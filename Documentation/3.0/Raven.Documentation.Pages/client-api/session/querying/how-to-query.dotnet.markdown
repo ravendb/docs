@@ -55,7 +55,7 @@ Available custom methods and extensions:
 - [Customize](../../../client-api/session/querying/how-to-customize-query)
 - FirstAsync
 - FirstOrDefaultAsync
-- [Include]()
+- [Include](../../../indexes/querying/handling-document-relationships)
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
