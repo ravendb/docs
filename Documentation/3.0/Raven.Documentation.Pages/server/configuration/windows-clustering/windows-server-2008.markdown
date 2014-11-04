@@ -14,11 +14,11 @@ In order to ensure RavenDB high availability you can run it on a failover cluste
 
 Execute the following steps on every cluster node:
 
-1. If RavenDB isn't installed as a service follow [this link](../../../server/installation/as-a-service) in order to do it
+1. If RavenDB isn't installed as a service, follow [this link](../../../server/installation/as-a-service) in order to do it
 2. Stop RavenDB service by executing the following command on the command line: Raven.Server.exe /stop
 3. In the Raven.Server.exe.config file set up Raven/DataDir to the SAN
 
-*Note*: A failover cluster will take care of working RavenDB. If the failure take place on one of the cluster nodes then a failover cluster will start RavenDB service immediately. So it's important that RavenDB instance on every node should use the same data directory placed on the SAN. 
+*Note*: A failover cluster will take care of working RavenDB. If the failure takes place on one of the cluster nodes, then a failover cluster will start RavenDB service immediately. So it's important that RavenDB instance on every node should use the same data directory placed on the SAN. 
 
 ##Creating failover cluster
 

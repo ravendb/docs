@@ -1,6 +1,6 @@
 # Plugins : Analyzer Generators
 
-To add your custom analyzer, one must implement the `AbstractAnalyzerGenerator` class and provide logic when your custom analyzer should be used.
+To add a custom analyzer, one must implement the `AbstractAnalyzerGenerator` class and provide logic when your custom analyzer should be used.
 
 {CODE plugins_7_0@Server\Plugins.cs /}
 

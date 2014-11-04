@@ -1,21 +1,22 @@
 # Indexes : Index Edit View
 
-Whenever you want to add new or edit existing index you will be redirected to `Index Edit View`. This view helps you shape the index definition by providing code-completion, formatters, C# code generator, and more.
+Whenever you want to add a new one or edit an existing index, you will be redirected to the `Index Edit View`. This view helps you shape the index definition by providing code-completion, formatters, C# code generator, and more.
 
 ## Action Bar
 
-Following actions are available on bar:
+The following actions are available in the Action Bar:
 
-- `Save` - saves index on server (if index existed and definition changed, then previous indexing data will be lost),
-- `Add` - you can add another [mapping]() or [reducing]() function, define field or spatial field, and set max index outputs,
-- `Priority` - ability to change index priority. More [here](),
+- `Save` - saves an index on a server (if the index existed and the definition changed, then previous indexing data will be lost),
+- `Add` - you can add another [mapping]() or [reducing]() function, define field, or spatial field, and determine max index outputs,
+- `Priority` - ability to change an index priority. More [here](),
 - `Format` - perform code formatting for mapping and reducing functions,
-- `Query` - _edit only_ - redirects to [Query View](),
-- `Terms` - _edit only_ - redirects to `Terms View` where you an view current index terms,
-- `Copy` - opens dialog, where you can copy index definition
-- `Generate C#` - creates index definition class in C#,
-- `Refresh` - fetches index definition from server,
-- `Delete` - removes index
+- `Query` - _edit only_ - redirects to the [Query View](),
+- `Terms` - _edit only_ - redirects to the `Terms View` where you can view current index terms,
+- `Copy` - opens a dialog where you can copy an index definition,
+- `Generate C#` - creates an index definition class in C#,
+- `Refresh` - fetches an index definition from the server,
+- `Delete` - removes an index
 
 ![Figure 1. Studio. Index Edit View. Action Bar.](images/index-edit-view-action-bar.png)  
 
+![Figure 2. Studio. Index Edit View.](images/index-edit-view-action-bar-2.png)  

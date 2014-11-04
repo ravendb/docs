@@ -1,8 +1,8 @@
 # Indexing polymorphic data
 
-By default, RavenDB indexes operate only on a specific entity type, or a `Collection`, and it ignores the inheritance hierarchy when it does so.
+By default, RavenDB indexes operate only on a specific entity type, or a `Collection`, and it ignores the inheritance hierarchy.
 
-For example, let us assume that we have the following inheritance hierarchy:
+For example, let's assume that we have the following inheritance hierarchy:
 
 ![Figure 1: Polymorphic indexes](images/polymorphic_indexes_faq.png)
 
@@ -22,7 +22,7 @@ from dog in docs.Dogs
 select new { dog.Name }
 {CODE-BLOCK/}
 
-This works, but each index would only give us results for the animal it has been defined on. But what if we wanted to query across all animals?
+Although it works, each index would only give us results for the animal it has been defined on. But what if we wanted to query across all animals?
 
 ## Multi-map indexes
 
@@ -40,7 +40,7 @@ You can also use the LINQ provider if your objects implement an interface, `IAni
 
 ## Other ways
 
-Another option would be to modify the way we generate the Entity-Name for subclasses of `Animal`, like so:
+Another option would be to modify the way we generate the Entity-Name for subclasses of `Animal`, like this:
 
 {CODE other_ways_1@Indexes\IndexingPolymorphicData.cs /}
 
@@ -51,7 +51,7 @@ from animal in docs.Animals
 select new { animal.Name }
 {CODE-BLOCK/}
 
-But what happen when you don't want to modify the entity name of an entity?
+But what happens when you don't want to modify the entity name of an entity itself?
 
 You can create a polymorphic index using:
 
@@ -60,7 +60,7 @@ from animal in docs.WhereEntityIs("Cats", "Dogs")
 select new { animal.Name }
 {CODE-BLOCK/}
 
-That would generate an index that would match both Cats and Dogs.
+It will generate an index that matches both Cats and Dogs.
 
 ## Related articles
 

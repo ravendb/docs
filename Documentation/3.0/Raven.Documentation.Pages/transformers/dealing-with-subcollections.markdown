@@ -1,8 +1,8 @@
 # Dealing with subcollections
 
-By default, each document found in index is passed to the transformer once. In most cases this is a valid assumption, but there are cases when this behavior needs to be changed.
+By default, each document found in an index is passed to the transformer once. In most cases this is a valid assumption, but there are cases when this behavior needs to be changed.
 
-The best example is when one document produces multiple index entries which are stored and we want to extract them from index and pass to the transformer. Default behavior would filter-out duplicates (by duplicates we mean index entries that originate from the same document) so only one result would be transformed. To address this situation the `SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer` configuration option has been introduced.
+The best example is when one document produces multiple index entries which are stored and we want to extract them from an index and pass to the transformer. Default behavior would filter-out duplicates (by duplicates we mean index entries that originate from the same document) so only one result would be transformed. To address this situation the `SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer` configuration option has been introduced.
 
 ## Example
 

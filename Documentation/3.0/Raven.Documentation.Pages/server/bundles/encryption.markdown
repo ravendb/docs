@@ -23,19 +23,19 @@ All settings can be overridden per database during the database creation process
 
 Above example demonstrates how to create `EncryptedDB` with active encryption and with non-default encryption algorithm.
 
-{NOTE All encryption settings can only be provided when database is being created. Changing them later will cause DB malfunction. /}
+{NOTE All encryption settings can only be provided when a database is being created. Changing them later will cause DB malfunction. /}
 
 ## Encryption key management
 
-In RavenDB, we have two types of configurations. Server-wide, which is usually located at the `App.config` file and database specific, which is located at the System database. For the `App.config` file, we provide support for encrypting the file using [DPAPI](http://en.wikipedia.org/wiki/Data_Protection_API), using the standard .NET config file encryption system. For database specific values, we provide our own support for encrypting the values using DPAPI.
+In RavenDB, we have two types of configuration: server-wide configuration, which is usually located at the `App.config` file and a database specific configuration, which is located at the System database. For the `App.config` file, we provide support for encrypting the file using [DPAPI](http://en.wikipedia.org/wiki/Data_Protection_API), using the standard .NET config file encryption system. For the database specific values, we provide our own support for encrypting the values using DPAPI.
 
-So, as the end result of above:    
-*	Your documents and indexes are encrypted when they are on disk using strong encryption.    
-*	You can use a server wide or database specific key for the encryption.   
+So, as the consequences of the above:    
+*	Your documents and indexes are encrypted when they are on a disk using strong encryption.    
+*	You can use a a server wide or database specific key for the encryption.   
 *	Your encryption key is guarded using DPAPI.   
-*	The data is safely encrypted on disk, and the OS guarantee that no one can access the encryption key.   
+*	The data is safely encrypted on a disk, and the OS guarantees that no one can access the encryption key.   
 
-{NOTE It is your responsibility to backup the encryption key, because there is no way to recover data without it. /}
+{NOTE It is your responsibility to backup the encryption key, as there is no way to recover data without it. /}
 
 ## Remarks
 

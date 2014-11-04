@@ -6,21 +6,21 @@
 
 To replicate from Embedded instance to another HTTP-enabled server instance you need to:
 
-- enable `Replication` bundle on a database e.g. you can create new database with following code:
+- enable `Replication` bundle on a database e.g. you can create new database with the following code:
 
 {CODE from_embedded_server_1@Server\ScalingOut\Replication\FromEmbeddedServer.cs /}
 
-- setup a replication by creating `ReplicationDestinations` document with appropriate settings.
+- setup a replication by creating the `ReplicationDestinations` document with appropriate settings.
 
 {CODE from_embedded_server_2@Server\ScalingOut\Replication\FromEmbeddedServer.cs /}
 
 ## Replicating **to** Embedded instance
 
-Replication requires HTTP endpoints on destination server to be running, but by default, when Embedded instance is used, internal HTTP-server is disabled. To turn it on initialize `EmbeddableDocumentStore` with `UseEmbeddedHttpServer` set to `true` (you can read more [here](../../../server/installation/embedded)).
+Replication requires HTTP endpoints on destination server to be running, yet, by default, when  an Embedded instance is used, internal HTTP-server is disabled. To turn it on initialize `EmbeddableDocumentStore` with `UseEmbeddedHttpServer` set to `true` (you can read more [here](../../../server/installation/embedded)).
 
 {CODE from_embedded_server_3@Server\ScalingOut\Replication\FromEmbeddedServer.cs /}
 
-And now you can replicate to the embedded instance, not just from it.
+Now you can replicate to an embedded instance, not just from it.
 
 ## Related articles
 

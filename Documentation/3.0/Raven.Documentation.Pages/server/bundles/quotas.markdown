@@ -2,17 +2,17 @@
 
 The Quotas Bundle is helpful when you want to restrict the size of a database. By setting a hard limit and a soft margin, the bundle will make sure you never exceed the space you designate for it to use.
 
-The database size is calculated based on the Esent or Voron data files (excluding the logs), plus the space the indexes are taking on disk.
+The database size is calculated based on the Esent or Voron data files (excluding the logs), plus the space the indexes are taking on a disk.
 
-Once the hard limit has reached, no additional documents will be let in the document store. However, indexing operations _will_ resume normal operation even if that means the database size will go way over the hard limit. This is by design, to make sure the database is fully operational even when the hard limit has been met.
+Once the hard limit has been reached, no additional documents will be let in the document store. However, indexing operations _will_ resume normal operation, even if it means that the database size will go way over the hard limit. It is so by design, to make sure that the database is fully operational, even when the hard limit has been reached.
 
-A soft limit is defined by the hard-limit minus the soft-limit margin, both are configurable. The first time the soft limit has been met, a warning will appear under `Raven/WarningMessages` with the `Size Quota` prefix.
+A soft limit is defined by the hard-limit minus the soft-limit margin, both are configurable. The first time the soft limit is reached, a warning  under `Raven/WarningMessages` with the `Size Quota` prefix appears.
 
 ## Installation
 
-To activate compression server-wide just add `Quotas` to `Raven/ActiveBundles` configuration in global configuration file or setup new database with compression bundle turned on using API or Studio.
+To activate compression server-wide, simply add the `Quotas` to the `Raven/ActiveBundles` configuration in the global configuration file, or setup a new database with a compression bundle turned on using API or the Studio.
 
-How to create a database with quotas enabled using Studio can be found [here](../../../studio/bundles/quotas).
+To learn how to create a database with quotas enabled using the Studio click [here](../../../studio/bundles/quotas).
 
 ## Configuration
 

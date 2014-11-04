@@ -22,7 +22,7 @@ Let's assume that we have a following `Category` where we store Id of a parent r
 
 {CODE transformers_1@Transformers/Recurse.cs /}
 
-Now, to extract category name, and names of all parent categories, and names of all parent categories for those parents, and so on, we can mix our `Recurse` method with `LoadDocument`.
+Now, to extract category name, names of all parent categories, and names of all parent categories for those parents, and so on, we can mix our `Recurse` method with `LoadDocument`.
 
 {CODE transformers_2@Transformers/Recurse.cs /}
 
