@@ -83,3 +83,11 @@ The documentation has been divided into few sections:
 - in `Client API` you can find API reference with basic examples for most of the methods available in client, also there is a lot of theory for how things work on client side
 - `Server` contains information about administration, maintenance, configuration, installation and troubleshooting of the server,
 - `Studio` - go here if you want to check what can be done using Studio
+
+<hr />
+
+## Samples
+
+Following sample applications are available:
+
+- [MVC Starter Kit](../samples/mvc-starter-kit)
