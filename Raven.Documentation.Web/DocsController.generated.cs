@@ -86,12 +86,6 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Start()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Start);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Client()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Client);
@@ -107,6 +101,12 @@ namespace Raven.Documentation.Web.Controllers
         public virtual System.Web.Mvc.ActionResult Glossary()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Glossary);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Samples()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Samples);
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -135,10 +135,10 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Generate = "Generate";
             public readonly string Welcome = "Welcome";
             public readonly string Index = "Index";
-            public readonly string Start = "Start";
             public readonly string Client = "Client";
             public readonly string Server = "Server";
             public readonly string Glossary = "Glossary";
+            public readonly string Samples = "Samples";
             public readonly string Articles = "Articles";
         }
 
@@ -150,10 +150,10 @@ namespace Raven.Documentation.Web.Controllers
             public const string Generate = "Generate";
             public const string Welcome = "Welcome";
             public const string Index = "Index";
-            public const string Start = "Start";
             public const string Client = "Client";
             public const string Server = "Server";
             public const string Glossary = "Glossary";
+            public const string Samples = "Samples";
             public const string Articles = "Articles";
         }
 
@@ -207,15 +207,6 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string language = "language";
             public readonly string version = "version";
         }
-        static readonly ActionParamsClass_Start s_params_Start = new ActionParamsClass_Start();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Start StartParams { get { return s_params_Start; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Start
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
         static readonly ActionParamsClass_Client s_params_Client = new ActionParamsClass_Client();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Client ClientParams { get { return s_params_Client; } }
@@ -239,6 +230,15 @@ namespace Raven.Documentation.Web.Controllers
         public ActionParamsClass_Glossary GlossaryParams { get { return s_params_Glossary; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Glossary
+        {
+            public readonly string version = "version";
+            public readonly string language = "language";
+        }
+        static readonly ActionParamsClass_Samples s_params_Samples = new ActionParamsClass_Samples();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Samples SamplesParams { get { return s_params_Samples; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Samples
         {
             public readonly string version = "version";
             public readonly string language = "language";
@@ -269,6 +269,7 @@ namespace Raven.Documentation.Web.Controllers
                 public readonly string Indexes = "Indexes";
                 public readonly string NotDocumented = "NotDocumented";
                 public readonly string NotFound = "NotFound";
+                public readonly string Samples = "Samples";
                 public readonly string Search = "Search";
                 public readonly string Server = "Server";
                 public readonly string Start = "Start";
@@ -283,6 +284,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Indexes = "~/Views/Docs/Indexes.cshtml";
             public readonly string NotDocumented = "~/Views/Docs/NotDocumented.cshtml";
             public readonly string NotFound = "~/Views/Docs/NotFound.cshtml";
+            public readonly string Samples = "~/Views/Docs/Samples.cshtml";
             public readonly string Search = "~/Views/Docs/Search.cshtml";
             public readonly string Server = "~/Views/Docs/Server.cshtml";
             public readonly string Start = "~/Views/Docs/Start.cshtml";
@@ -368,19 +370,6 @@ namespace Raven.Documentation.Web.Controllers
         }
 
         [NonAction]
-        partial void StartOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Start(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Start);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            StartOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
         partial void ClientOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
 
         [NonAction]
@@ -416,6 +405,19 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             GlossaryOverride(callInfo, version, language);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SamplesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Samples(string version, string language)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Samples);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            SamplesOverride(callInfo, version, language);
             return callInfo;
         }
 
