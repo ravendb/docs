@@ -210,7 +210,7 @@ namespace Raven.Documentation.Parser.Helpers
 			var firstLineSpaces = GetFirstLineSpaces(line.FirstOrDefault());
 			var firstLineSpacesLength = firstLineSpaces.Length;
 			var formattedLines = line
-				.Select(l => string.Format("    {0}", l.Substring(l.Length < firstLineSpacesLength ? 0 : firstLineSpacesLength)));
+				.Select(l => string.Format("{0}", l.Substring(l.Length < firstLineSpacesLength ? 0 : firstLineSpacesLength)));
 
 			return string.Join(Environment.NewLine, formattedLines);
 		}
@@ -259,7 +259,7 @@ namespace Raven.Documentation.Parser.Helpers
 				case CodeBlockLanguage.Plain:
 					return "language-none";
 				case CodeBlockLanguage.Xml:
-					return "language-http";
+					return "language-none";
 				default:
 					throw new NotSupportedException(language.ToString());
 			}

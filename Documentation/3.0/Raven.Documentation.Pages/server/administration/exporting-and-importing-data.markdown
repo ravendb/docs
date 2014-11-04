@@ -35,9 +35,9 @@ If **Replication is turned on in your source database**, it is **recommended** t
     Raven.Smuggler out http://localhost:8080 dump.ravendump --databases=Northwind --negative-metadata-filter:@id=Raven/Replication/Destinations
 {CODE-BLOCK/}
 
-{/PANEL}
+{PANEL/}
 
-{PANEL**Importing from file**}
+{PANEL:**Importing from file**}
 
 {CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 dump.ravendump --database=NewNorthwind
@@ -72,7 +72,6 @@ since the last export.
 
 To export data incrementally we can use two options:
 
-
 - If it is the first run and the folder does not exist yet, use:
 
 {CODE-BLOCK:plain}
@@ -80,8 +79,6 @@ To export data incrementally we can use two options:
 {CODE-BLOCK/}
 
 Note that this cammand can be used every time.
-
-
 
 - If you ran the command before or you created the folder earlier, you can use:
 
@@ -91,15 +88,13 @@ Note that this cammand can be used every time.
 
 To import data that was exported incrementally, you can use either of the following:
 
-
-
-- {CODE-BLOCK:plain}
+{CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location --incremental
 {CODE-BLOCK/}
 
+or
 
-
-- {CODE-BLOCK:plain}
+{CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location
 {CODE-BLOCK/}
 
