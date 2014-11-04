@@ -26,6 +26,12 @@ Raven.Server.exe /uninstallSSL=PathToCertificate==CertificatePassword
 
 {NOTE The Studio might not work in some browsers (e.g. Firefox and Chrome) if the domain that certificate was issued for does not match the domain you are using it for. /}   
 
+## Ignoring SSL errors
+
+In RavenDB, we have added an option to ignore all SSL certificate validation errors. By default, `Raven/IgnoreSslCertificateErrors` configuration option is set to **false**, but it can be changed if needed.
+
+{DANGER We do not recommend enabling `Raven/IgnoreSslCertificateErrors` due to safety reasons. Enabling this option is done at your own risk. /}
+
 ## Related articles
 
 TODO
