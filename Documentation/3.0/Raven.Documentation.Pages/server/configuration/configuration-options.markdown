@@ -330,8 +330,8 @@ This is the standard app.config XML file. The `appSettings` section is where the
     You can use this setting to specify an initial file size for data file (in bytes).   
 
 * **Raven/Voron/MaxScratchBufferSize**   
-    The maximum scratch buffer (modified data by active transactions) size that can be used by Voron. The value is in megabytes..
-    _Default_: 512
+    The maximum scratch buffer (modified data by active transactions) size that can be used by Voron. The value is in megabytes.   
+    _Default_: 1024
 
 ### Tenants
 
