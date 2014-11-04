@@ -23,7 +23,7 @@ When our index is saved, we can see errors that occurred in `Index Errors` view.
 Note that server will mark index as `Invalid` if a considerable amount of errors connected to a single index is detected. The server will not process such index any longer.
 
 
-To check `Invalid` indexes you can go directly to [Indexes View]().
+To check `Invalid` indexes you can go directly to [Indexes View](../../overview/indexes/indexes-view).
 
 ![Figure 3. Studio. Status. Index Errors. Invalid indexes.](images/status-index_errors-3.png)
 

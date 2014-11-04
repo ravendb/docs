@@ -9,7 +9,7 @@ To start or restore backup use `StartBackup` or `StartRestore` operations respec
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **backupLocation** | string | Path to directory where backup will be stored. |
-| **databaseDocument** | [DatabaseDocument]() | Database configuration document that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.<br />**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
+| **databaseDocument** | [DatabaseDocument](../../../glossary/database-document) | Database configuration document that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.<br />**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
 | **incremental** | bool | Indicates if backup is incremental. |
 | **databaseName** | string | Name of a database that will be backed up. |
 
@@ -25,7 +25,7 @@ To start or restore backup use `StartBackup` or `StartRestore` operations respec
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **restoreRequest** | [DatabaseRestoreRequest]() | Restore information |
+| **restoreRequest** | [DatabaseRestoreRequest](../../../glossary/database-restore-request) | Restore information |
 
 ## Example
 

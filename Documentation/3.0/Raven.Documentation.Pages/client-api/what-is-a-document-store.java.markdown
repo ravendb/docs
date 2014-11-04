@@ -13,6 +13,6 @@ The document store ensures access to the following client API features:
 * [Commands](../client-api/commands/what-are-commands)
 * [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation)
 * [Changes API](../client-api/changes/what-is-changes-api)
-* [Conventions]()
+* [Conventions](../client-api/configuration/conventions/what-are-conventions)
 * [Listeners](../client-api/listeners/what-are-listeners)
-* [Aggressive cache](../client-api/how-to/setup-aggresive-caching)
+* [Aggressive cache](../client-api/how-to/setup-aggressive-caching)

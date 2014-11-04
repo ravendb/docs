@@ -25,7 +25,7 @@ To issue a batch-delete command you need to specify an index and a query to be s
 
 | Return Value | |
 | ------------- | ----- |
-| [Operation](../../../../glossary/client-api/operation) | Object that allows waiting for operation to complete. |
+| [Operation](../../../../glossary/operation) | Object that allows waiting for operation to complete. |
 
 ### Remarks
 
@@ -53,7 +53,7 @@ Performing a mass-update is exactly the same as making a mass-delete, but this t
 
 | Return Value | |
 | ------------- | ----- |
-| [Operation](../../../../glossary/client-api/operation) | Object that allows waiting for operation to complete. |
+| [Operation](../../../../glossary/operation) | Object that allows waiting for operation to complete. |
 
 ### Example
 
@@ -77,7 +77,7 @@ Mass-update can also be executed with JavaScript patch.
 
 | Return Value | |
 | ------------- | ----- |
-| [Operation](../../../../glossary/client-api/operation) | Object that allows waiting for operation to complete. |
+| [Operation](../../../../glossary/operation) | Object that allows waiting for operation to complete. |
 
 ### Example
 

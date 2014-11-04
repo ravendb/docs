@@ -8,11 +8,11 @@ Query statistics can provide important information about query e.g. duration, to
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **stats** | [RavenQueryStatistics](../../../glossary/client-api/raven-query-statistics) | Statistics for query. |
+| **stats** | [RavenQueryStatistics](../../../glossary/raven-query-statistics) | Statistics for query. |
 
 | Return Value | |
 | ------------- | ----- |
-| [RavenQueryStatistics](../../../glossary/client-api/raven-query-statistics) | Statistics for query. |
+| [RavenQueryStatistics](../../../glossary/raven-query-statistics) | Statistics for query. |
 
 ## Example
 

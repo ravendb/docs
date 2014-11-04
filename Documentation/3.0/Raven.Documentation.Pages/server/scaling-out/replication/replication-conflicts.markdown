@@ -35,8 +35,9 @@ The Client API fully supports working with such scenarios, as the following code
 
 If this code detects a conflict, it will let the user choose which of the conflicting versions to keep. A more sophisticated approach would be to attempt going through an actual merge based on the business meaning of the document.
 
-{NOTE Document Conflict listeners can be used to perform an automatic conflict resolution. More about it can be found [here](../../../client-api/advanced/client-side-listeners#document-conflict-listener). /}
+{NOTE Document Conflict listeners can be used to perform an automatic conflict resolution. More about it can be found [here](../../../client-api/listeners/what-are-conflict-listeners-and-how-to-work-with-them). /}
 
 ## Related articles
 
-TODO
+- [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
+- TODO

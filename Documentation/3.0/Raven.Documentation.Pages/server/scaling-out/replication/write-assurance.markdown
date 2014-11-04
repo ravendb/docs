@@ -24,4 +24,5 @@ Then the default parameters that will be used are as follows:
 
 ## Related articles
 
-TODO
+- [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
+- TODO

@@ -3,6 +3,8 @@
 	using System.Text;
 	using System.Text.RegularExpressions;
 
+	using HtmlAgilityPack;
+
 	public class PanelBlockHelper
 	{
 		private static readonly Regex PanelBlockWithTitleFinder = new Regex(@"{PANEL:(.+?)}(.*?){PANEL/}", RegexOptions.Compiled | RegexOptions.Singleline);
@@ -40,7 +42,10 @@
 
 		private static string ConvertTilteToId(string title)
 		{
-			var parts = title.Split(new[] { ' ' });
+			var htmlDocument = new HtmlDocument();
+			htmlDocument.LoadHtml(title);
+
+			var parts = htmlDocument.DocumentNode.InnerText.Split(new[] { ' ' });
 			return string.Join("-", parts).ToLowerInvariant();
 		}
 	}

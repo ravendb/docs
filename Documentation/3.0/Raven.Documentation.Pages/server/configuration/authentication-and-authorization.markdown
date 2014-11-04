@@ -4,7 +4,7 @@ RavenDB comes with a built-in authentication functionality and it supports two t
 * [Windows Authentication](../../server/configuration/authentication-and-authorization#windows-authentication)   
 * [OAuth Authentication](../../server/configuration/authentication-and-authorization#oauth-authentication)   
 
-Appropriate authentication type is chosen by examining incoming request headers. By default all actions except read-only are being authenticated. To determine which actions will be authenticated, please refer to [Raven/AnonymousAccess](../server/configuration/configuration-options#authorization--authentication) configuration setting.
+Appropriate authentication type is chosen by examining incoming request headers. By default all actions except read-only are being authenticated. To determine which actions will be authenticated, please refer to [Raven/AnonymousAccess](../../server/configuration/configuration-options#authorization--authentication) configuration setting.
 
 ## Security system - OSS vs commercial use
 

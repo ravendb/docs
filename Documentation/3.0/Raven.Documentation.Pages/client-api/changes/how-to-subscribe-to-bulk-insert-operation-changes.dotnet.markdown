@@ -12,7 +12,7 @@
 
 | ReturnValue | |
 | ------------- | ----- |
-| IObservableWithTask<[BulkInsertChangeNotification](../../glossary/client-api/changes/bulk-insert-change-notification)> | Observable that allows to add subscribtions to notifications for bulk insert operation with given id. |
+| IObservableWithTask<[BulkInsertChangeNotification](../../glossary/bulk-insert-change-notification)> | Observable that allows to add subscribtions to notifications for bulk insert operation with given id. |
 
 ## Example
 

@@ -1,8 +1,8 @@
 # Attachments : How to get attachment metadata only?
 
 There are few methods that allow you to download attachment metadata from a database:   
-- [HeadAttachment](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#head)   
-- [GetAttachmentHeadersStartingWith](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#getattachmentheadersstartingwith)   
+- [HeadAttachment](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#head)   
+- [GetAttachmentHeadersStartingWith](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#getattachmentheadersstartingwith)   
 
 {PANEL:**HeadAttachment**}
 
@@ -18,7 +18,7 @@ There are few methods that allow you to download attachment metadata from a data
 
 | Return Value | |
 | ------------- | ----- |
-| [Attachment](../../../glossary/json/attachment) | Object that represents attachment. |
+| [Attachment](../../../../glossary/attachment) | Object that represents attachment. |
 
 ### Example
 
@@ -42,7 +42,7 @@ There are few methods that allow you to download attachment metadata from a data
 
 | Return Value | |
 | ------------- | ----- |
-| List&lt;[AttachmentInformation](../../../glossary/json/attachment-information)&gt; | Object that represents attachment metadata information. |
+| List&lt;[AttachmentInformation](../../../../glossary/attachment-information)&gt; | Object that represents attachment metadata information. |
 
 ### Example
 
@@ -56,6 +56,6 @@ There are few methods that allow you to download attachment metadata from a data
 
 ## Related articles
 
-- [How to **update** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/update-attachment-metadata-only)  
-- [PutAttachment](../../../client-api/commands/attachments/put)  
-- [GetAttachment](../../../client-api/commands/attachments/get)  
+- [How to **update** attachment **metadata** only?](../../../../client-api/commands/attachments/how-to/update-attachment-metadata-only)  
+- [PutAttachment](../../../../client-api/commands/attachments/put)  
+- [GetAttachment](../../../../client-api/commands/attachments/get)  

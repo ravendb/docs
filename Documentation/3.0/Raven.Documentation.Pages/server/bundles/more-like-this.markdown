@@ -1,4 +1,4 @@
-# Bundle : MoreLikeThis
+﻿# Bundle : MoreLikeThis
 
 More Like This returns a list of similar documents that are related to a given document. This feature can be used, for example, when viewing an article. Many news sites show a list of the related articles at the bottom of the page. To accomplish this, the RavenDB More Like This uses the More Like This from the Lucene contrib project. To find out more about the algorithm, please read Aaron Johnson excellent blog post that is available [here](http://cephas.net/blog/2008/03/30/how-morelikethis-works-in-lucene/).
 
@@ -8,7 +8,7 @@ This bundle is built-in into a server and client and does not need any installat
 
 ## Setup
 
-In order to work, More Like This requires access to the text in the index, therefore, the index being queried needs to [store]() the fields or store the [term vectors]() for those fields.
+In order to work, More Like This requires access to the text in the index, therefore, the index being queried needs to [store](../../indexes/storing-data-in-index) the fields or store the [term vectors](../../indexes/using-term-vectors) for those fields.
 
 {CODE more_like_this_4@Server\Bundles\MoreLikeThis.cs /}
 

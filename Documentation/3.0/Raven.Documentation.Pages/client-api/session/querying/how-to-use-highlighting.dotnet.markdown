@@ -12,12 +12,12 @@
 | **fragmentLength** | int | Maximum length of text fragments that will be returned. |
 | **fragmentCount** | int | Maximum number of fragments that will be returned. |
 | **fragmentsField** | string | Field in returned results containing highlight fragments (mutually exclusive with 'highlightings'). |
-| **highlightings** | [FieldHighlightings](../../../glossary/client-api/querying/field-highlightings) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
+| **highlightings** | [FieldHighlightings](../../../glossary/field-highlightings) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
 
 | Return Value | |
 | ------------- | ----- |
 | IDocumentQueryCustomization | Returns self for easier method chaining. |
-| [FieldHighlightings](../../../glossary/client-api/querying/field-highlightings) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
+| [FieldHighlightings](../../../glossary/field-highlightings) | Instance of a FieldHighlightings that contains the highlight fragments for each returned result (mutually exclusive with 'fragmentsField'). |
 
 ## Example
 

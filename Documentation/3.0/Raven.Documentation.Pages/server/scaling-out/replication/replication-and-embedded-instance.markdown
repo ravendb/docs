@@ -24,4 +24,5 @@ Now you can replicate to an embedded instance, not just from it.
 
 ## Related articles
 
-TODO
+- [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
+- TODO

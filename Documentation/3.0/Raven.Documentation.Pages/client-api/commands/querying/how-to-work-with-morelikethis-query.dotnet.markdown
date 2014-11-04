@@ -8,11 +8,11 @@ To find similar or related documents use the **MoreLikeThis** method from the co
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | [MoreLikeThisQuery]() | A more like this query definition that will be executed |
+| **query** | [MoreLikeThisQuery](../../../glossary/more-like-this-query) | A more like this query definition that will be executed |
 
 | Return Value | |
 | ------------- | ----- |
-| [MultiLoadResult]() | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
+| [MultiLoadResult](../../../glossary/multi-load-result) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
 
 ## Example
 
@@ -20,6 +20,6 @@ To find similar or related documents use the **MoreLikeThis** method from the co
 
 ## Related articles
 
-- [Full RavenDB query syntax](../../../Indexes/full-query-syntax)   
+- [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax)   
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)   
 - [How to **stream query** results?](../../../client-api/commands/querying/how-to-stream-query-results)   

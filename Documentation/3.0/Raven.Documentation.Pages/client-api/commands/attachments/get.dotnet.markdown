@@ -18,7 +18,7 @@ There are few methods that allow you to download attachments from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [Attachment](../../../glossary/json/attachment) | Object that represents attachment. |
+| [Attachment](../../../glossary/attachment) | Object that represents attachment. |
 
 ### Example
 
@@ -41,7 +41,7 @@ There are few methods that allow you to download attachments from a database:
 
 | Return Value | |
 | ------------- | ----- |
-| [AttachmentInformation](../../../glossary/json/attachment-information) | Object that represents attachment metadata information. |
+| [AttachmentInformation](../../../glossary/attachment-information) | Object that represents attachment metadata information. |
 
 ### Example
 

@@ -22,7 +22,7 @@ Single document changes can be observed using `forDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document. |
+| IObservable<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document. |
 
 ### Example
 
@@ -44,7 +44,7 @@ To observe all document changes in particular collection use `forDocumentInColle
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document collection name. |
+| IObservable<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document collection name. |
 
 {INFO Overload with `Class` uses `Conventions.getTypeTagName` to get collection name. /}
 
@@ -72,7 +72,7 @@ To observe all document changes for given type use `forDocumentsOfType` method. 
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document type name. |
+| IObservable<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document type name. |
 
 {INFO Overload with `Class` uses `Conventions.findClrTypeName` to get type name. /}
 
@@ -100,7 +100,7 @@ To observe all document changes for documents with Id that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document Id prefix. |
+| IObservable<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document Id prefix. |
 
 ## Example
 
@@ -118,7 +118,7 @@ To observe all document changes use `forAllDocuments` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservable<[DocumentChangeNotification](../../glossary/client-api/changes/document-change-notification)> | Observable that allows to add subscribtions to notifications for all documents. |
+| IObservable<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for all documents. |
 
 ## Example
 

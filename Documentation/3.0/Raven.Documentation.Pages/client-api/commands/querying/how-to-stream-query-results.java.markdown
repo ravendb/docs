@@ -9,13 +9,13 @@ Use **StreamQuery** method to stream results of a selected index according to a 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **index** | String | A name of an index to query |
-| **query** | [IndexQuery]() | A query definition containing all information required to query a specified index. |
-| **queryHeaderInfo** | Reference&lt;[QueryHeaderInformation ](../../../glossary/client-api/query-header-information)&gt; | Information about performed query |
+| **query** | [IndexQuery](../../../glossary/index-query) | A query definition containing all information required to query a specified index. |
+| **queryHeaderInfo** | Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information)&gt; | Information about performed query |
 
 | Return Value | |
 | ------------- | ----- |
 | IEnumerator`<RavenJObject>` | Enumerator with query results |
-| Reference&lt;[QueryHeaderInformation ](../../../glossary/client-api/query-header-information)&gt; | Information about performed query |
+| Reference&lt;[QueryHeaderInformation ](../../../glossary/query-header-information)&gt; | Information about performed query |
 
 ## Example
 
@@ -23,5 +23,5 @@ Use **StreamQuery** method to stream results of a selected index according to a 
 
 ## Related articles
 
-- [Full RavenDB query syntax](../../../indexes/full-query-syntax) 
+- [Full RavenDB query syntax](../../../indexes/querying/full-query-syntax) 
 - [How to **query** a **database**?](../../../client-api/commands/querying/how-to-query-a-database)

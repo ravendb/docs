@@ -2,11 +2,11 @@
 
 ###DocumentKeyGenerator
 
-You can setup a custom key generation strategy by supplying a custom function `DocumentKeyGenerator`. By default a session uses [the HiLo algorithm](../../document-identifiers/hilo-algorithm) for both sync and async API usage:
+You can setup a custom key generation strategy by supplying a custom function `DocumentKeyGenerator`. By default a session uses [the HiLo algorithm](../../../../client-api/document-identifiers/hilo-algorithm) for both sync and async API usage:
 
 {CODE key_generator_hilo@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
-However if you want the session to use [an identity key generation strategy](../../document-identifiers/working-with-document-ids#identity-ids) by default, you can overwrite this convention in the following manner:
+However if you want the session to use [an identity key generation strategy](../../../../client-api/document-identifiers/working-with-document-ids#identity-ids) by default, you can overwrite this convention in the following manner:
 
 {CODE key_generator_identityKeys@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
@@ -30,7 +30,7 @@ To properly perform the revert conversion that is from a JSON result into a .NET
 
 ###FindTypeTagName and FindDynamicTagName
 
-Entity objects that share a common tag name belong to the same [collection](../../faq/what-is-a-collection) on the server side. Tag names are also used to build document keys. There are two functions that the client uses to determine the collection name. The fist one is used for standard objects with well defined type:
+Entity objects that share a common tag name belong to the same [collection](../../../../client-api/faq/what-is-a-collection) on the server side. Tag names are also used to build document keys. There are two functions that the client uses to determine the collection name. The fist one is used for standard objects with well defined type:
 
 {CODE find_type_tagname@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
@@ -70,7 +70,7 @@ You can overwrite it by using `IdentityPartsSeparator` convention. Its default d
 
 ###IdentityTypeConvertors
 
-RavenDB is designed to work with string identifiers. However it has the support for numeric and Guid ids. To be more exact it is able to work with `Int32`, `Int64` and `Guid` identifiers,
+RavenDB is designed to work with string identifiers. However it has the support for numeric and GUID ids. To be more exact it is able to work with `Int32`, `Int64` and `Guid` identifiers,
 because it has dedicated converters for them:
 
 {CODE identity_type_convertors@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
@@ -90,7 +90,7 @@ we look for the last part of the identifier after `IdentityPartsSeparator`:
 
 ###FindFullDocumentKeyFromNonStringIdentifier
 
-Sometimes the client needs to know the full id of the documentwhat which will be stored for an entity with non-sting identifier. We can use the following function:
+Sometimes the client needs to know the full id of the document that will be stored for an entity with non-sting identifier. We can use the following function:
 
 {CODE find_full_doc_key_from_non_string_identifier@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
