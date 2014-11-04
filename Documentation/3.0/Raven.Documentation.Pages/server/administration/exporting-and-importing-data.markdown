@@ -200,9 +200,9 @@ function(doc) {
 
 {PANEL/}
 
-{PANEL:**SmugglerApi**}
+{PANEL:**SmugglerDatabaseApi**}
 
-Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerApi` class (in order to use this class you need to reference the `Raven.Smuggler.exe`).
+Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerDatabaseApi` class (in order to use this class you need to reference the `Raven.Smuggler.exe`).
 
 ### Exporting
 
@@ -218,9 +218,9 @@ Alternatively, if you prefer to do export/import from code rather than from the 
 
 {PANEL/}
 
-{PANEL:**DataDumper**}
+{PANEL:**DatabaseDataDumper**}
 
-A smuggler communicates with a server using the HTTP protocol, meaning that it cannot communicate with Embedded instance as long as the `UseEmbeddedHttpServer` is set to `false` (which is a default value). If embedded http server cannot be started, the `DataDumper` (found in `Raven.Database.Smuggler` namespace in `Raven.Database.dll`) can be used to import or export data.
+A smuggler communicates with a server using the HTTP protocol, meaning that it cannot communicate with Embedded instance as long as the `UseEmbeddedHttpServer` is set to `false` (which is a default value). If embedded http server cannot be started, the `DatabaseDataDumper` (found in `Raven.Database.Smuggler` namespace in `Raven.Database.dll`) can be used to import or export data.
 
 {CODE smuggler_api_4@Server\Administration\ExportImport.cs /}
 
