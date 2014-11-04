@@ -212,12 +212,16 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ true  
 
 * **Raven/UseSsl**   
-    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service.**
+    Enable/disable SSL.   **Note: this only applies when RavenDB is run as a windows service.**   
+    _Default:_ false   
+
+* **Raven/IgnoreSslCertificateErrors**   
+    When set to *true*, RavenDB will ignore **all** SSL certificate validation errors. More [here](../../server/configuration/enabling-ssl#ignoring-ssl-errors).   
     _Default:_ false   
 
 * **Raven/AccessControlAllowOrigin**   
     Configures the server to send Access-Control-Allow-Origin header with the specified value. If this value isn't specified, all the access control settings are ignored.   
-    _Allowed values:_ null (don't send the header), *, http://example.org,   
+    _Allowed values:_ null (don't send the header), `*`, http://example.org,   
 	_Default:_ none (if this value isn't specified, all the access control settings are ignored)  
 
 * **Raven/AccessControlMaxAge**   
@@ -486,6 +490,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/HostName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Port** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/UseSSL** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/IgnoreSslCertificateErrors** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/VirtualDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/HttpCompression** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AccessControlAllowOrigin** | ![No](images\delete.png) | ![Yes](images\tick.png) |
