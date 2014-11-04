@@ -83,5 +83,5 @@ If master-master replication is set up and [Expiration bundle](../../../server/b
 
 ## Related articles
 
-TODO
+- [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
 

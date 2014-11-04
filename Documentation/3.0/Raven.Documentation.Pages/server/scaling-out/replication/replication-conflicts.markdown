@@ -39,4 +39,4 @@ If this code detects conflict, it will give the user the choice of which of the 
 
 ## Related articles
 
-TODO
+- [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
