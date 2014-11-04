@@ -567,6 +567,7 @@
     <Content Include="studio\overview\settings\images\custom-functions-2.png" />
     <Content Include="studio\overview\settings\images\settings-database_settings-1.png" />
     <Content Include="studio\overview\settings\images\settings-periodic_export-1.png" />
+    <Content Include="studio\overview\settings\images\settings-periodic_export-azure-2.png" />
     <Content Include="studio\overview\settings\images\settings-quotas-1.png" />
     <Content Include="studio\overview\settings\images\settings-sql_replication-1.png" />
     <Content Include="studio\overview\settings\images\settings-sql_replication-2.png" />
@@ -585,7 +586,9 @@
     <Content Include="studio\overview\status\images\status-replication_stats-1.png" />
     <Content Include="studio\overview\status\images\status-replication_stats-replication_topology-2.png" />
     <Content Include="studio\overview\status\images\status-user_info-1.png" />
+    <Content Include="studio\overview\status\images\status_gather-debug-info-1.png" />
     <Content Include="studio\overview\status\images\status_logs-1.png" />
+    <Content Include="studio\overview\status\images\status_running_tasks-1.png" />
     <Content Include="studio\overview\status\images\status_stats-1.png" />
     <Content Include="studio\overview\status\images\tasks-create_sample_data_tab-1.png" />
     <Content Include="studio\overview\status\images\tasks-create_sample_data_tab-documents_view-2.png" />
