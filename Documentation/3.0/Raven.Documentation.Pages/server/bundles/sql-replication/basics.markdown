@@ -30,7 +30,7 @@ where:
 
 ## Example
 
-Let us consider a simple scenario, where we have an `Order` with `OrderLines` and we want to setup a replication to MSSQL.
+Let us consider a simple scenario, where we have an `Order` with `OrderLines` (from `Northwind`) and we want to setup a replication to MSSQL.
 
 {CODE sql_replication_2@Server\Bundles\SqlReplication.cs /}
 
@@ -43,13 +43,13 @@ CREATE TABLE [dbo].[OrderLines]
 	[OrderId] [nvarchar] (50) NOT NULL,
 	[Qty] [int] NOT NULL,
 	[Product] [nvarchar] (255) NOT NULL,
-	[Cost] [int] NOT NULL
+	[Cost] [decimal] (18,2) NOT NULL
 )
 CREATE TABLE [dbo].[Orders]
 (
 	[Id] [nvarchar] (50) NOT NULL,
 	[OrderLinesCount] [int] NOT NULL,
-	[TotalCost] [int] NOT NULL
+	[TotalCost] [decimal] (18,2) NOT NULL
 )
 {CODE-BLOCK/}
 
