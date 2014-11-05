@@ -9,7 +9,10 @@
 		private interface IFoo
 		{
 			#region delete_by_index_1
-			Operation DeleteByIndex(string indexName, IndexQuery queryToDelete, bool allowStale = false);
+			Operation DeleteByIndex(
+				string indexName,
+				IndexQuery queryToDelete,
+				BulkOperationOptions options = null);
 			#endregion
 
 			#region update_by_index_1
@@ -17,7 +20,7 @@
 				string indexName,
 				IndexQuery queryToUpdate,
 				PatchRequest[] patchRequests,
-				bool allowStale = false);
+				BulkOperationOptions options = null);
 			#endregion
 
 			#region update_by_index_3
@@ -25,7 +28,7 @@
 				string indexName,
 				IndexQuery queryToUpdate,
 				ScriptedPatchRequest patch,
-				bool allowStale = false);
+				BulkOperationOptions options = null);
 			#endregion
 		}
 
