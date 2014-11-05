@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.mysema.query.annotations.QueryEntity;
 
+
+//region blog_post
 @QueryEntity
 public class BlogPost {
 
@@ -71,5 +73,5 @@ public class BlogPost {
   public void setComments(List<BlogComment> comments) {
     this.comments = comments;
   }
-
 }
+//endregion
