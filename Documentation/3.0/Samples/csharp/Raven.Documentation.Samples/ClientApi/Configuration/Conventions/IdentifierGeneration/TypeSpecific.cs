@@ -120,7 +120,7 @@
 			#endregion
 
 			#region id_generation_on_load_2
-			store.Conventions.RegisterIdLoadConvention<EntityWithIntegerId, int /*TODO remove int after updating packages*/>(id => "ewi/" + id);
+			store.Conventions.RegisterIdLoadConvention<EntityWithIntegerId>(id => "ewi/" + id);
 
 			using (var session = store.OpenSession())
 			{
