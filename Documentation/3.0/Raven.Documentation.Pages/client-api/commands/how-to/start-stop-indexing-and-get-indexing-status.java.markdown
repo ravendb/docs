@@ -1,9 +1,9 @@
 # Commands : How to start or stop indexing and get indexing status?
 
 Following commands have been created to enable user to toggle indexing and retrieve indexing status:   
-- [StartIndexing]()   
-- [StopIndexing]()   
-- [GetIndexingStatus]()
+- [StartIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status#startindexing)   
+- [StopIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status#stopindexing)   
+- [GetIndexingStatus](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status#getindexingstatus)
 
 {PANEL:StartIndexing}
 

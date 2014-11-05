@@ -15,23 +15,21 @@ namespace Raven.Documentation.CodeSamples.Server.Administration
 			// to dump.raven file
 			// from Northwind database
 			// found on http://localhost:8080 server
-			var smugglerApi = new SmugglerApi
+			var smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
 			{
-				SmugglerOptions =
-				{
-					OperateOnTypes = ItemType.Documents | ItemType.Indexes | ItemType.Attachments | ItemType.Transformers,
-					Incremental = false
-				}
-			};
+				OperateOnTypes =
+					ItemType.Documents | ItemType.Indexes | ItemType.Attachments | ItemType.Transformers,
+				Incremental = false
+			});
 
-			var exportOptions = new SmugglerExportOptions
+			var exportOptions = new SmugglerExportOptions<RavenConnectionStringOptions>
 			{
 				ToFile = "dump.raven",
 				From = new RavenConnectionStringOptions
-							{
-								DefaultDatabase = "Northwind",
-								Url = "http://localhost:8080"
-							}
+				{
+					DefaultDatabase = "Northwind",
+					Url = "http://localhost:8080"
+				}
 			};
 
 			await smugglerApi.ExportData(exportOptions);
@@ -45,26 +43,23 @@ namespace Raven.Documentation.CodeSamples.Server.Administration
 			// from dump.raven file
 			// to NewNorthwind database (must exist)
 			// found on http://localhost:8080 server
-			var smugglerApi = new SmugglerApi
+			var smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
 			{
-				SmugglerOptions =
-				{
-					OperateOnTypes = ItemType.Documents,
-					Incremental = false
-				}
-			};
+				OperateOnTypes = ItemType.Documents,
+				Incremental = false
+			});
 
-			var importOptions = new SmugglerImportOptions
+			var importOptions = new SmugglerImportOptions<RavenConnectionStringOptions>
 			{
 				FromFile = "dump.raven",
 				To = new RavenConnectionStringOptions
-							{
-								DefaultDatabase = "NewNorthwind",
-								Url = "http://localhost:8080"
-							}
+				{
+					DefaultDatabase = "NewNorthwind",
+					Url = "http://localhost:8080"
+				}
 			};
 
-			await smugglerApi.ImportData(importOptions);
+			await smugglerApi.ImportData(importOptions, null);
 			#endregion
 		}
 
@@ -76,17 +71,14 @@ namespace Raven.Documentation.CodeSamples.Server.Administration
 			// found on http://localhost:8080
 			// and import them to NewNorthwind
 			// found on the same server
-			var smugglerApi = new SmugglerApi
+			var smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
 			{
-				SmugglerOptions =
-				{
-					OperateOnTypes = ItemType.Documents | ItemType.Indexes,
-					Incremental = false
-				}
-			};
+				OperateOnTypes = ItemType.Documents | ItemType.Indexes,
+				Incremental = false
+			});
 
 			await smugglerApi.Between(
-				new SmugglerBetweenOptions
+				new SmugglerBetweenOptions<RavenConnectionStringOptions>
 				{
 					From = new RavenConnectionStringOptions
 					{
@@ -112,20 +104,19 @@ namespace Raven.Documentation.CodeSamples.Server.Administration
 			{
 				store.Initialize();
 
-				var dataDumper = new DataDumper(store.DocumentDatabase)
-				{
-					SmugglerOptions =
-						{
-							OperateOnTypes = ItemType.Documents | ItemType.Indexes | ItemType.Attachments | ItemType.Transformers,
-							Incremental = false
-						}
-				};
+				var dataDumper = new DatabaseDataDumper(
+					store.DocumentDatabase,
+					new SmugglerDatabaseOptions
+					{
+						OperateOnTypes = ItemType.Documents | ItemType.Indexes | ItemType.Attachments | ItemType.Transformers,
+						Incremental = false
+					});
 
-				var exportOptions = new SmugglerExportOptions
-										{
-											From = new EmbeddedRavenConnectionStringOptions(),
-											ToFile = "dump.raven"
-										};
+				var exportOptions = new SmugglerExportOptions<RavenConnectionStringOptions>
+				{
+					From = new EmbeddedRavenConnectionStringOptions(),
+					ToFile = "dump.raven"
+				};
 
 				await dataDumper.ExportData(exportOptions);
 			}

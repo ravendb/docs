@@ -9,7 +9,10 @@
 		private interface IFoo
 		{
 			#region delete_by_index_1
-			Operation DeleteByIndex(string indexName, IndexQuery queryToDelete, bool allowStale = false);
+			Operation DeleteByIndex(
+				string indexName,
+				IndexQuery queryToDelete,
+				BulkOperationOptions options = null);
 			#endregion
 
 			#region update_by_index_1
@@ -17,7 +20,7 @@
 				string indexName,
 				IndexQuery queryToUpdate,
 				PatchRequest[] patchRequests,
-				bool allowStale = false);
+				BulkOperationOptions options = null);
 			#endregion
 
 			#region update_by_index_3
@@ -25,7 +28,7 @@
 				string indexName,
 				IndexQuery queryToUpdate,
 				ScriptedPatchRequest patch,
-				bool allowStale = false);
+				BulkOperationOptions options = null);
 			#endregion
 		}
 
@@ -40,10 +43,13 @@
 					.DeleteByIndex(
 						"Raven/DocumentsByEntityName",
 						new IndexQuery
-							{
-								Query = "Tag:Employees"
-							},
-						allowStale: false);
+						{
+							Query = "Tag:Employees"
+						},
+						new BulkOperationOptions
+						{
+							AllowStale = false
+						});
 
 				operation.WaitForCompletion();
 				#endregion
@@ -58,19 +64,22 @@
 					.UpdateByIndex(
 						"Raven/DocumentsByEntityName",
 						new IndexQuery
-							{
-								Query = "Tag:Employees"
-							},
+						{
+							Query = "Tag:Employees"
+						},
 						new[]
+						{
+							new PatchRequest
 							{
-								new PatchRequest
-									{
-										Type = PatchCommandType.Set, 
-										Name = "FirstName", 
-										Value = "Patched Name"
-									}
-							},
-						allowStale: false);
+								Type = PatchCommandType.Set, 
+								Name = "FirstName", 
+								Value = "Patched Name"
+							}
+						},
+						new BulkOperationOptions
+						{
+							AllowStale = false
+						});
 
 				operation.WaitForCompletion();
 				#endregion
@@ -89,10 +98,13 @@
 							Query = "Tag:Employees"
 						},
 						new ScriptedPatchRequest
-							{
-								Script = @"this.FirstName = 'Patched Name';"
-							},
-						allowStale: false);
+						{
+							Script = @"this.FirstName = 'Patched Name';"
+						},
+						new BulkOperationOptions
+						{
+							AllowStale = false
+						});
 
 				operation.WaitForCompletion();
 				#endregion

@@ -35,9 +35,9 @@ If **Replication is turned on in your source database**, it is **recommended** t
     Raven.Smuggler out http://localhost:8080 dump.ravendump --databases=Northwind --negative-metadata-filter:@id=Raven/Replication/Destinations
 {CODE-BLOCK/}
 
-{/PANEL}
+{PANEL/}
 
-{PANEL**Importing from file**}
+{PANEL:**Importing from file**}
 
 {CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 dump.ravendump --database=NewNorthwind
@@ -72,7 +72,6 @@ since the last export.
 
 To export data incrementally we can use two options:
 
-
 - If it is the first run and the folder does not exist yet, use:
 
 {CODE-BLOCK:plain}
@@ -80,8 +79,6 @@ To export data incrementally we can use two options:
 {CODE-BLOCK/}
 
 Note that this cammand can be used every time.
-
-
 
 - If you ran the command before or you created the folder earlier, you can use:
 
@@ -91,15 +88,13 @@ Note that this cammand can be used every time.
 
 To import data that was exported incrementally, you can use either of the following:
 
-
-
-- {CODE-BLOCK:plain}
+{CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location --incremental
 {CODE-BLOCK/}
 
+or
 
-
-- {CODE-BLOCK:plain}
+{CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location
 {CODE-BLOCK/}
 
@@ -200,9 +195,9 @@ function(doc) {
 
 {PANEL/}
 
-{PANEL:**SmugglerApi**}
+{PANEL:**SmugglerDatabaseApi**}
 
-Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerApi` class (in order to use this class you need to reference the `Raven.Smuggler.exe`).
+Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerDatabaseApi` class (in order to use this class you need to reference the `Raven.Smuggler.exe`).
 
 ### Exporting
 
@@ -218,9 +213,9 @@ Alternatively, if you prefer to do export/import from code rather than from the 
 
 {PANEL/}
 
-{PANEL:**DataDumper**}
+{PANEL:**DatabaseDataDumper**}
 
-A smuggler communicates with a server using the HTTP protocol, meaning that it cannot communicate with Embedded instance as long as the `UseEmbeddedHttpServer` is set to `false` (which is a default value). If embedded http server cannot be started, the `DataDumper` (found in `Raven.Database.Smuggler` namespace in `Raven.Database.dll`) can be used to import or export data.
+A smuggler communicates with a server using the HTTP protocol, meaning that it cannot communicate with Embedded instance as long as the `UseEmbeddedHttpServer` is set to `false` (which is a default value). If embedded http server cannot be started, the `DatabaseDataDumper` (found in `Raven.Database.Smuggler` namespace in `Raven.Database.dll`) can be used to import or export data.
 
 {CODE smuggler_api_4@Server\Administration\ExportImport.cs /}
 
