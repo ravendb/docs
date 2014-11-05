@@ -520,6 +520,7 @@
   <ItemGroup>
     <Content Include="indexes\querying\images\CNET_faceted_search_2.jpg" />
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
+    <Content Include="server\installation\images\installer_destination_and_paths.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
     <Content Include="studio\images\accessing-studio-basic-auth.png" />
     <Content Include="studio\images\accessing-studio-database-selection.png" />
