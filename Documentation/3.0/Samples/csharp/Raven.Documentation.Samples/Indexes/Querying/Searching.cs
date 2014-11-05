@@ -82,29 +82,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 		}
 		#endregion
 
-		private interface IHighlights<T>
-		{
-			#region highlights_3
-			IDocumentQuery<T> Highlight(
-				string fieldName,
-				int fragmentLength,
-				int fragmentCount,
-				out FieldHighlightings highlightings);
-
-			IDocumentQuery<T> Highlight<TValue>(
-				Expression<Func<T, TValue>> propertySelector,
-				int fragmentLength,
-				int fragmentCount,
-				out FieldHighlightings highlightings);
-
-			#endregion
-
-			#region highlights_4
-			IDocumentQuery<T> SetHighlighterTags(string preTag, string postTag);
-
-			IDocumentQuery<T> SetHighlighterTags(string[] preTags, string[] postTags);
-			#endregion
-		}
 
 		#region highlights_1
 		public class SearchItem
