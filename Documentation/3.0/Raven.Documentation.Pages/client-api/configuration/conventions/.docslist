@@ -1,2 +1,6 @@
 what-are-conventions.markdown	What are conventions?
 /identifier-generation	Identifier generation
+querying.markdown	Querying
+caching.markdown	Caching
+request-handling.markdown	Request handling
+misc.markdown	Misc

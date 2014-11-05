@@ -1,9 +1,9 @@
 # Commands : How to create or delete database?
 
 This article will describe the following commands that enable you to manage databases on a server:   
-- [CreateDatabase]()   
-- [DeleteDatabase]()   
-- [EnsureDatabaseExists]()   
+- [CreateDatabase](../../../client-api/commands/how-to/create-delete-database#createdatabase)   
+- [DeleteDatabase](../../../client-api/commands/how-to/create-delete-database#deletedatabase)   
+- [EnsureDatabaseExists](../../../client-api/commands/how-to/create-delete-database#ensuredatabaseexists---extension-method)   
 
 {PANEL:**CreateDatabase**}
 

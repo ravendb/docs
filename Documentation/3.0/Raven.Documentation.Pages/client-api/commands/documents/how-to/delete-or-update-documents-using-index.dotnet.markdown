@@ -21,7 +21,7 @@ To issue a batch-delete command you need to specify an index and a query to be s
 | ------------- | ------------- | ----- |
 | **indexName** | string | name of an index to perform a query on |
 | **queryToDelete** | IndexQuery | query that will be performed |
-| **allowStale** | bool | can operation be performed on a stale index |
+| **options** | BulkOperationOptions  | various operation options e.g. `AllowStale` or `MaxOpsPerSec` |
 
 | Return Value | |
 | ------------- | ----- |
@@ -48,8 +48,8 @@ Performing a mass-update is exactly the same as making a mass-delete, but this t
 | ------------- | ------------- | ----- |
 | **indexName** | string | name of an index to perform a query on |
 | **queryToUpdate** | IndexQuery | query that will be performed |
-| **allowStale** | bool | can operation be performed on a stale index |
 | **patchRequests** | PatchRequest[]  | array of patches that will be executed on a query results |
+| **options** | BulkOperationOptions | various operation options e.g. `AllowStale` or `MaxOpsPerSec` |
 
 | Return Value | |
 | ------------- | ----- |
@@ -72,8 +72,8 @@ Mass-update can also be executed with JavaScript patch.
 | ------------- | ------------- | ----- |
 | **indexName** | string | name of an index to perform a query on |
 | **queryToUpdate** | IndexQuery | query that will be performed |
-| **allowStale** | bool | can operation be performed on a stale index |
 | **patch** | ScriptedPatchRequest  | JavaScript patch that will be executed on query results |
+| **options** | BulkOperationOptions | various operation options e.g. `AllowStale` or `MaxOpsPerSec` |
 
 | Return Value | |
 | ------------- | ----- |

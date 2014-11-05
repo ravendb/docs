@@ -163,10 +163,14 @@
     <None Include="client-api\concurrency\.docslist" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
     <None Include="client-api\configuration\.docslist" />
+    <None Include="client-api\configuration\conventions\caching.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\identifier-generation\.docslist" />
-    <None Include="client-api\configuration\conventions\identifier-generation\global.markdown" />
+    <None Include="client-api\configuration\conventions\identifier-generation\global.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\.docslist" />
-    <None Include="client-api\configuration\conventions\identifier-generation\type-specific.markdown" />
+    <None Include="client-api\configuration\conventions\misc.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\querying.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\identifier-generation\type-specific.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.java.markdown" />
@@ -346,6 +350,9 @@
     <None Include="indexes\querying\.docslist" />
     <None Include="indexes\querying\basics.dotnet.markdown" />
     <None Include="indexes\querying\basics.java.markdown" />
+    <None Include="indexes\querying\projections.java.markdown" />
+    <None Include="indexes\querying\handling-document-relationships.java.markdown" />
+    <None Include="indexes\querying\sorting.java.markdown" />
     <None Include="indexes\querying\dynamic-aggregation.dotnet.markdown" />
     <None Include="indexes\querying\faceted-search.dotnet.markdown" />
     <None Include="indexes\querying\filtering.dotnet.markdown" />
