@@ -33,6 +33,27 @@ The most basic way to load single entity is to use one of `Load` methods.
 
 {CODE loading_entities_1_2@ClientApi\Session\LoadingEntities.cs /}
 
+### Non string identifiers
+
+The above examples show how to load a document by its string key. What if a type of your entity's identifier is not a string? You need to use an overload of the `Load` method that takes a parameter which type is `ValueType`. 
+
+### Example III
+
+If you have an entity where an identifier is an integer number:
+
+{CODE class_with_interger_id@ClientApi\Session\LoadingEntities.cs /}
+
+you can load it by specifying an integer value as the identifier:
+
+{CODE loading_entities_1_3@ClientApi\Session\LoadingEntities.cs /}
+
+####Converting to string identifier
+
+Even if the identifier is a string, you can use the `Load<T>(ValueType)` overload. The client is aware of the [ID generation conventions](../configuration/conventions/identifier-generation/global) (collectionName/number),
+so you could load the entity with key `employees/1` by using the code:
+
+{CODE loading_entities_1_4@ClientApi\Session\LoadingEntities.cs /}
+
 {PANEL/}
 
 {PANEL:Load with Includes}

@@ -20,12 +20,26 @@
 			DocumentConvention RegisterAsyncIdConvention<TEntity>(Func<string, IAsyncDatabaseCommands, TEntity,
 														Task<string>> func);
 			#endregion
+
+			#region register_id_load
+			DocumentConvention RegisterIdLoadConvention<TEntity>(Func<ValueType, string> func);
+			#endregion
 		}
 
 		public class EmployeeManager : Employee
 		{
 
 		}
+
+		#region class_with_interger_id
+		public class EntityWithIntegerId
+		{
+			public int Id { get; set; }
+			/*
+			...
+			*/
+		}
+		#endregion
 
 		public TypeSpecific()
 		{
@@ -97,6 +111,20 @@
 				});
 
 				session.SaveChanges();
+			}
+			#endregion
+
+			#region id_generation_on_load_1
+			store.Conventions.RegisterIdConvention<EntityWithIntegerId>(
+					(databaseName, commands, entity) => "ewi/" + entity.Id);
+			#endregion
+
+			#region id_generation_on_load_2
+			store.Conventions.RegisterIdLoadConvention<EntityWithIntegerId, int /*TODO remove int after updating packages*/>(id => "ewi/" + id);
+
+			using (var session = store.OpenSession())
+			{
+				var entity = session.Load<EntityWithIntegerId>(1); // will load 'ewi/1' document
 			}
 			#endregion
 		}
