@@ -1,12 +1,12 @@
 # Multi-Map indexes
 
-Multi-Map indexes allows you to index data from multiple collections e.g. polymorphic data (check [example](../indexes/indexing-polymorphic-data)) or any common data between types.
+Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data)) or any common data between types.
 
 ## AddMap & AddMapForAll
 
 `AddMap` method is used to map fields from a single collection e.g. `Dogs`. On the other hand, `AddMapForAll` gives you the ability to specify what fields will be indexed from base class. 
 
-Let's assume that we have a `Dog` and `Cat` classes and both of them inherit from `Animal`:
+Let's assume that we have a `Dog` and a `Cat` classes, and both of them inherit from the `Animal`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Dog multi_map_1@Indexes/MultiMap.cs /}
@@ -30,11 +30,11 @@ Now we can define our index using `AddMap` or `AddMapForAll` in the following wa
 
 ## Indexing polymorphic data
 
-Please read more in our dedicated article about indexing polymorphic data. This article can be found [here](../indexes/indexing-polymorphic-data).
+Please read more in our dedicated article on indexing polymorphic data. This article can be found [here](../indexes/indexing-polymorphic-data).
 
 ## Searching across multiple collections
 
-Another great application of Multi-Map indexes is smart-search. Imagine that you want to search for products, companies or employees by their name. To do it, you need to define following index:
+Another great application of Multi-Map indexes is smart-search. Imagine that you want to search for products, companies, or employees by their name. In order to do it, you need to define  the following index:
 
 {CODE multi_map_1_0@Indexes\MultiMap.cs /}
 
@@ -44,7 +44,7 @@ and query it using:
 
 ## Remarks
 
-{INFO Remember that all map functions **must** output objects with **identical** shape (field names must match). /}
+{INFO Remember that all map functions **must** output objects with **identical** shape (field names have to match). /}
 
 ## Related articles
 
