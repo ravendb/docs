@@ -350,6 +350,9 @@
     <None Include="indexes\querying\.docslist" />
     <None Include="indexes\querying\basics.dotnet.markdown" />
     <None Include="indexes\querying\basics.java.markdown" />
+    <None Include="indexes\querying\projections.java.markdown" />
+    <None Include="indexes\querying\handling-document-relationships.java.markdown" />
+    <None Include="indexes\querying\sorting.java.markdown" />
     <None Include="indexes\querying\dynamic-aggregation.dotnet.markdown" />
     <None Include="indexes\querying\faceted-search.dotnet.markdown" />
     <None Include="indexes\querying\filtering.dotnet.markdown" />
