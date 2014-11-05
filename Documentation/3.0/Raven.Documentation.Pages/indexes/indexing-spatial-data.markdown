@@ -1,4 +1,4 @@
-﻿# Indexing spatial data
+# Indexing spatial data
 
 To support the ability to retrieve the data based on spatial coordinates, the spatial search has been introduced.
 
@@ -14,21 +14,21 @@ where:
 
 *	**fieldName** is a name of the field containing the shape to use for filtering (if the overload with no `fieldName` is used, then the name is set to default value: `__spatial`)          
 *	**lat/lng** are latitude/longitude coordinates   
-*	**shapeWKT** is a shape in [WKT](http://en.wikipedia.org/wiki/Well-known_text) format    
+*	**shapeWKT** is a shape in the [WKT](http://en.wikipedia.org/wiki/Well-known_text) format    
 *	**strategy** is a spatial search strategy (default: `GeohashPrefixTree`)
-*	**maxTreeLevel** is a integer that indicates the maximum number of levels to be used in `PrefixTree` and controls the precision of shape representation (**9** for `GeohashPrefixTree` and **23** for `QuadPrefixTree`)      
+*	**maxTreeLevel** is a integer that indicates the maximum number of levels to be used in the `PrefixTree` and controls the precision of shape representation (**9** for `GeohashPrefixTree` and **23** for `QuadPrefixTree`)      
 
-In our example we will use `Event` class and very simple index defined below.
+In our example we will use `Event` class and a very simple index defined below.
 
 {CODE spatial_search_1@Indexes\SpatialIndexes.cs /}
 
 {CODE spatial_search_2@Indexes\SpatialIndexes.cs /}
 
-If our `Event` would contain the WKT property already:   
+If our `Event` contains the WKT property already:   
 
 {CODE spatial_search_enhancements_1@Indexes\SpatialIndexes.cs /}
 
-then we could define our field using `Spatial` method in `AbstractIndexCreationTask`:   
+then can define our field using the `Spatial` method in the `AbstractIndexCreationTask`:   
 
 {CODE spatial_search_enhancements_2@Indexes\SpatialIndexes.cs /}
 
@@ -44,9 +44,9 @@ where under `options` we got access to our geography and Cartesian factories:
 ## Spatial search strategies
 
 {PANEL:GeohashPrefixTree}
-Geohash is a latitude/longitude representation system that describes earth as a grid with 32 cells, assigning to each grid cell an alphanumeric character. Each grid cell is divided further into 32 smaller chunks and each chunk has also an alphanumeric character assigned and so on.
+Geohash is a latitude/longitude representation system that describes earth as a grid with 32 cells, assigning an alphanumeric character to each grid cell. Each grid cell is further divided into 32 smaller chunks, and each chunk has an alphanumeric character assigned as well, and so on.
 
-E.g. The location of a 'New York' in United States is represented by following geohash: [DR5REGY6R](http://geohash.org/dr5regy6r) and it represents the `40.7144 -74.0060` coordinates. Removing characters from the end of geohash will decrease the precision level.
+E.g. The location of 'New York' in the United States is represented by the following geohash: [DR5REGY6R](http://geohash.org/dr5regy6r) and it represents the `40.7144 -74.0060` coordinates. Removing characters from the end of geohash will decrease the precision level.
 
 More information about geohash uses, decoding algorithm and limitations can be found [here](http://en.wikipedia.org/wiki/Geohash).
 {PANEL/}

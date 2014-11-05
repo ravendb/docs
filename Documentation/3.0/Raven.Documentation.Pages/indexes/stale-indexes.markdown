@@ -1,10 +1,10 @@
-﻿# Stale indexes
+# Stale indexes
 
-RavenDB performs data indexing in a background thread, which is executed whenever new data comes in or existing data is updated. Running this as a background thread allows the server to respond quickly even when large amounts of data have changed, however in that case you may query stale indexes.
+RavenDB performs data indexing in a background thread, which is executed whenever the new data comes in or the existing data is updated. Running this as a background thread allows the server to respond quickly, even when the large amounts of data have been changed, however in that case you may query stale indexes.
 
-The notion of stale indexes comes from an observation deep in RavenDB's design, assuming that the user should never suffer from assigning the server big tasks. As far as RavenDB is concerned, it is better to be stale than offline, and as such it will return results to queries even if it knows they may not be as up-to-date as possible.
+The notion of stale indexes comes from the close observation of the way RavenDB is designed and the assumption that the user should never suffer from assigning big tasks to a server. As far as RavenDB is concerned, it is better to be stale than offline, and as such it will return results to queries even if it knows they may not be as up-to-date as possible.
 
-And indeed, RavenDB returns quickly for every client request, even if involves re-indexing hundreds of thousands of documents. And since the previous request has returned so quickly, the next query can be made a millisecond after that and results will be returned, but they will be marked as `Stale`.
+Indeed, RavenDB returns quickly each client request, even if it involves re-indexing hundreds of thousands of documents. And since the previous request has returned so quickly, the next query can be made a millisecond after that, and the results will be returned, although they will be marked as `Stale`.
 
 ## Checking for stale results
 
@@ -12,9 +12,9 @@ As part of the response when an index is queried, a property is attached indicat
 
 {CODE stale1@Indexes\StaleIndexes.cs /}
 
-When `IsStale` is true, that means someone probably added or changed a `Product`, and the indexes haven't had time to fully update before we queried.
+When `IsStale` is true, that means someone probably added or changed a `Product`, and the indexes didn't have enough time to fully update before our query.
 
-For most cases you don't really care about that, however there are scenarios where you cannot work with data that could be stale.
+In most cases you don't need to worry about it, however there are scenarios where you cannot work with possibly stale data.
 
 ## Explicitly waiting for non-stale results
 
@@ -22,7 +22,7 @@ When it is a requirement to get non-stale results back from a query, it is possi
 
 {CODE stale2@Indexes\StaleIndexes.cs /}
 
-Note that in the sample above a time-out of 5 seconds was specified. While you can ask RavenDB to wait indefinitely until there are non-stale results, this should only be used in unit-testing, and never in a real-world application, unless you are 100% sure you understand the implications, and that is what you want to have.
+Note that in the sample above a time-out of 5 seconds was specified. While you can ask RavenDB to wait indefinitely long until there are non-stale results, this should only be used in unit-testing, and never in a real-world application, unless you are 100% sure you understand the implications and it is what you actually demand.
 
 ## Setting cut-off point
 
@@ -30,14 +30,14 @@ A better approach to make sure you are working with non-stale results is to use 
 
 {CODE stale3@Indexes\StaleIndexes.cs /}
 
-This will make sure that you get the latest results up to that point in time. All pending tasks for changes occurred after this cut-off point will not be considered. And like before, a time-out can be set on that as well.
+This will make sure that you get the latest results up to that point in time. All pending tasks for changes that occurred after this cut-off point will not be considered. And just as before, a time-out can be set as well.
 
-`WaitForNonStaleResultsAsOfNow` is also available, which is equivalent of calling `WaitForNonStaleResultsAsOf(DateTime.Now)`.
+`WaitForNonStaleResultsAsOfNow` is also available; it is equivalent of calling `WaitForNonStaleResultsAsOf(DateTime.Now)`.
 
-Another option is to use `WaitForNonStaleResultsAsOfLastWrite`, which does exactly what it says it do. It tracks the last write by the application, and uses that as the cutoff point. This is usually recommended if you are working on machines where clock synchronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, it uses the etag values for the writes.
+Another option is to use `WaitForNonStaleResultsAsOfLastWrite`, which does exactly what it says, namely, it tracks the last write by the application, and uses that as the cutoff point. This is usually recommended if you are working on the machines where clock synchronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, but etag values for the writes.
 
 {INFO:Convention}
-You can also setup the document store to always wait for the last write, like so:
+You can also setup the document store to always wait for the last write, like this:
 
 {CODE stale4@Indexes\StaleIndexes.cs /}
 
