@@ -1,6 +1,6 @@
 # Installation : Using installer
 
-Since version 2.5, the installation of RavenDB can be accomplished with a GUI installer. The setup wizard will guide you through an installation process where you just need to
+The installation of RavenDB can be accomplished with a GUI installer. The setup wizard will guide you through an installation process where you just need to
 select the type of an installation and provide configuration options.
 
 ![Figure 1: Welcome screen](images/installer_welcome_screen.png)
@@ -40,15 +40,28 @@ If you decide to use the already existing site you just need to choose which one
 
 ![Figure 4: Existing IIS site](images/installer_iis_existing_site.png)
 
-The _Virtual Directory_ field can be empty. This means that RavenDB will be installed at the root of the web site.
+The _Virtual directory_ field can be empty. This means that RavenDB will be installed at the root of the web site.
 
-Optionally, you can select a checkbox to configure a custom application pool for RavenDB application instead of using the one confugured by default for the web site.
+Optionally, you can select a checkbox to configure a custom application pool for RavenDB application instead of using the one configured by default for the web site.
 
 ###Application Pool (optional)
 
 This optional dialog (shown when the checkbox on the previous screen was selected) allows you to set up a custom application pool. As previously, you can either create a new or use an existing one.
 
 ![Figure 5: Application Pool](images/installer_iis_application_pool.png)
+
+##Installation destination and RavenDB paths
+
+In the last wizard's step you can change the destination folder of the installation as well as customize the RavenDB's path. You can set:
+
+* Data directory
+* Indexes directory
+* Logs directory (for both storages - Esent and Voron)
+
+The modifications made to these paths will affect web.config / Raven.Server.exe.config file and set the relevant settings there during the installation process.
+
+![Figure 4: Installation dest and custom paths](images/installer_destination_and_paths.png)
+
 
 ##Upgrade
 
@@ -80,7 +93,8 @@ The list of RavenDB specific properties:
 * <em>RAVEN_TARGET_ENVIRONMENT</em> - available options: PRODUCTION (default), DEVELOPMENT
 * <em>RAVEN_LICENSE_FILE_PATH</em> - a full path to the license file
 * <em>RAVEN_DATA_DIR</em> - data directory (default: ~\Data)
-* <em>RAVEN_INDEX_DIR</em> - indexes location (default: ~\Data\Indexes)
+* <em>RAVEN_INDEX_DIR</em> - indexes location (default: empty - together with tenant db's data)
+* <em>RAVEN_STORAGE_LOGS_DIR</em> - logs location (default: empty - together with tenant db's data)
 * <em>SERVICE_NAME</em> - default: RavenDB
 * <em>SERVICE_PORT</em> - default: 8080
 
