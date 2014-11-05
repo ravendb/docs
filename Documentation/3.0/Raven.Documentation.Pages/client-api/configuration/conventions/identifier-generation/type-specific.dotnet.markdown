@@ -76,3 +76,37 @@ If we create a new class `EmployeeManager` that will derive from our `Employee` 
 If we register two conventions, one for `Employee` and the second for `EmployeeManager` then they will be picked for their specific types.
 
 {CODE custom_convention_inheritance_2@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
+
+##Loading entities with customized IDs by non string identifiers
+
+The RavenDB client supports identifiers that aren't strings. There is a dedicated overload of `Load` method which accepts value types to handle [that](../../../session/loading-entities#non-string-identifiers).
+However if you decide to register a custom convention for an entity that has non string id then you will experience problems with the usage of this `Load<T>(ValueType)` method overload because
+by default such call will try to load a document with the key `collectionNameBasedOnType/valueTypeValue`.
+
+In order to handle such case you need to use the following convention:
+
+{CODE register_id_load@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **func** | Func<ValueType, string> |Function that transforms the value type identifier provided into `Load<TEntity>(ValueType)`. It has to be consistent with the registered convention for the type `TEntity`. |
+
+| Return Value | |
+| ------------- | ----- |
+| DocumentConvention | Current `DocumentConvention` instance. |
+
+###Example
+
+If you have an entity where the identifier is not a string:
+
+{CODE class_with_interger_id@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
+
+and you registered the custom id conventions for it:
+
+{CODE id_generation_on_load_1@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
+
+then you need to register the same customization by using `RegisterIdLoadConvention`:
+
+{CODE id_generation_on_load_2@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
+

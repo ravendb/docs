@@ -17,6 +17,16 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 		{
 		}
 
+		#region class_with_interger_id
+		public class EntityWithIntegerId
+		{
+			public int Id { get; set; }
+			/*
+			...
+			*/
+		}
+		#endregion
+
 		private interface IFoo
 		{
 			#region loading_entities_1_0
@@ -134,6 +144,21 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session
 					var employee = session.Load<Employees_NoLastName, Employee>("employees/1");
 					#endregion
 				}
+
+				using (var session = store.OpenSession())
+				{
+					#region loading_entities_1_3
+					var entity = session.Load<EntityWithIntegerId>(1);
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region loading_entities_1_4
+					var employee = session.Load<Employee>(1);
+					#endregion
+				}
+				
 
 				using (var session = store.OpenSession())
 				{
