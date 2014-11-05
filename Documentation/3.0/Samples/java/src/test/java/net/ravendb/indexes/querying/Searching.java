@@ -29,7 +29,7 @@ public class Searching {
        "     user.Name           " +
        " }; ";
 
-      indexes.put(u.name, FieldIndexing.ANALYZED);
+      index(u.name, FieldIndexing.ANALYZED);
     }
   }
   //endregion
@@ -45,7 +45,7 @@ public class Searching {
        "     user.Hobbies        " +
        " }; ";
 
-      indexes.put(u.hobbies, FieldIndexing.ANALYZED);
+      index(u.hobbies, FieldIndexing.ANALYZED);
     }
   }
   //endregion
@@ -62,8 +62,8 @@ public class Searching {
        "     user.Hobbies        " +
        " }; ";
 
-      indexes.put(u.name, FieldIndexing.ANALYZED);
-      indexes.put(u.hobbies, FieldIndexing.ANALYZED);
+      index(u.name, FieldIndexing.ANALYZED);
+      index(u.hobbies, FieldIndexing.ANALYZED);
     }
   }
   //endregion
@@ -81,8 +81,8 @@ public class Searching {
         "     user.Hobbies        " +
         " }; ";
 
-       indexes.put(u.name, FieldIndexing.ANALYZED);
-       indexes.put(u.hobbies, FieldIndexing.ANALYZED);
+      index(u.name, FieldIndexing.ANALYZED);
+      index(u.hobbies, FieldIndexing.ANALYZED);
     }
   }
   //endregion
