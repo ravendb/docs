@@ -1,6 +1,6 @@
 package net.ravendb.samples;
 
-
+//region blog_comment
 public class BlogComment {
   private String title;
   private String content;
@@ -8,17 +8,14 @@ public class BlogComment {
   public String getTitle() {
     return title;
   }
-
   public void setTitle(String title) {
     this.title = title;
   }
-
   public String getContent() {
     return content;
   }
-
   public void setContent(String content) {
     this.content = content;
   }
-
 }
+//endregion
