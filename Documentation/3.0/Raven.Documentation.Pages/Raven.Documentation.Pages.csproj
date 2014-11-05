@@ -610,6 +610,7 @@
     <Content Include="studio\overview\status\images\status-user_info-1.png" />
     <Content Include="studio\overview\status\images\status_gather-debug-info-1.png" />
     <Content Include="studio\overview\status\images\status_logs-1.png" />
+    <Content Include="studio\overview\status\images\status_map-reduce-1.png" />
     <Content Include="studio\overview\status\images\status_running_tasks-1.png" />
     <Content Include="studio\overview\status\images\status_stats-1.png" />
     <Content Include="studio\overview\status\images\tasks-create_sample_data_tab-1.png" />
