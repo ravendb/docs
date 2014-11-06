@@ -29,7 +29,7 @@ Only one backup operation may run at any given time.
 
 ### Using the Raven.Backup utility
 
-The utility `Raven.Backup.exe` is available from the `/Tools` folder in both the distribution and nuget packages.
+The utility `Raven.Backup.exe` is available from the `/Backup` folder in the ZIP package.
 
 Usage example:
 
