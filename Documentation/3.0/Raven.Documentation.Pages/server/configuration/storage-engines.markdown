@@ -22,6 +22,8 @@ RavenDB supports two storage engines and each database can be created with a dif
 - .NET 4.5 or higher
 - [Hotfix](http://support.microsoft.com/kb/2731284) for Windows 7 and Windows Server 2008 R2
 
+{INFO You can watch [Level 400 - Diving into Voron](https://www.youtube.com/watch?v=yJqOEqqUfUA) talk by Oren Eini if you are interested in details about Voron. /}
+
 {PANEL/}
 
 {PANEL:**Using Studio**}
