@@ -28,7 +28,16 @@ namespace Raven.Documentation.CodeSamples.ClientApi.Session.Configuration
 					}
 
 					product.Name = "Better Name";
-					session.SaveChanges(); // throws ConcurrencyException
+					session.SaveChanges(); // will throw ConcurrencyException
+				}
+				#endregion
+
+				#region optimistic_concurrency_2
+				store.Conventions.DefaultUseOptimisticConcurrency = true;
+
+				using (var session = store.OpenSession())
+				{
+					var isSessionUsingOptimisticConcurrency = session.Advanced.UseOptimisticConcurrency; // will return true
 				}
 				#endregion
 			}

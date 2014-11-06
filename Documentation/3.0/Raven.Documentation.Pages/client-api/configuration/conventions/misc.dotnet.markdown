@@ -38,3 +38,9 @@ It determines if C# `enum` types should be saved as integers or strings and inst
 
 {CODE save_enums_as_integers@ClientApi\Configuration\Conventions\Misc.cs /}
 
+###DefaultUseOptimisticConcurrency
+
+This convention allows to enable optimistic concurrency for all opened sessions. More about optimistic concurrency you will find [here](../../session/configuration/how-to-enable-optimistic-concurrency).
+By default concurrency checks are turned off:
+
+{CODE use_optimistic_concurrency_by_default@ClientApi\Configuration\Conventions\Misc.cs /}
