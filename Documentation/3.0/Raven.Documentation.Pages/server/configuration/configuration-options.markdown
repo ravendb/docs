@@ -172,6 +172,18 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Number of megabytes after which indexes are flushed to a disk.   
     _Default:_ 5
 
+* **Raven/MaxSimpleIndexOutputsPerDocument**   
+	Limits the number of map outputs that a simple index is allowed to create for a one source document. If a map operation applied to the one document
+	produces more outputs than this number then an index definition will be considered as a suspicious, the indexing of this document will be skipped and
+	the appropriate error message will be added to the indexing errors.   
+	_Default:_ 15. In order to disable this check set value to -1.
+
+* **Raven/MaxMapReduceIndexOutputsPerDocument**   
+	Limits the number of map outputs that a map-reduce index is allowed to create for a one source document. If a map operation applied to the one document
+	produces more outputs than this number then an index definition will be considered as a suspicious, the indexing of this document will be skipped and
+	the appropriate error message will be added to the indexing errors.   
+    _Default:_ 50. In order to disable this check set value to -1.
+
 ### Data settings:
 
 * **Raven/RunInMemory**   
