@@ -56,7 +56,7 @@ You can continue using this RavenDB instance while data is being imported to it.
 
 ### Importing and Replication
 
-Note that if you have either the replication bundle or the periodic backup bundle active on a database, it is recommended that you'll filter out the following documents when doing an import: `Raven/Replication/Destinations`, `Raven/Replication/VersionHilo`, `Raven/Backup/Periodic/Setup`, `Raven/Backup/Periodic/Status`.  
+Note that if you have either the replication bundle or the periodic export bundle active on a database, it is recommended that you'll filter out the following documents when doing an import: `Raven/Replication/Destinations`, `Raven/Replication/VersionHilo`, `Raven/Backup/Periodic/Setup`, `Raven/Backup/Periodic/Status`.  
 This can be done using the following command: 
 
 {CODE-BLOCK:plain}
@@ -97,6 +97,10 @@ or
 {CODE-BLOCK:plain}
     Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location
 {CODE-BLOCK/}
+
+### Incremental exports and deletions
+
+{WARNING `Raven.Smuggler` does not support exporting deletions for incremental backups. If you want to backup whole database use [Raven.Backup](../../server/administration/backup-and-restore) utility or [Periodic Export](../../server/bundles/periodic-export) bundle. /}
 
 {PANEL/}
 
