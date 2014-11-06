@@ -37,6 +37,10 @@
 			#region save_enums_as_integers
 			Conventions.SaveEnumsAsIntegers = false;
 			#endregion
+
+			#region use_optimistic_concurrency_by_default
+			Conventions.DefaultUseOptimisticConcurrency = false;
+			#endregion
 		} 
 	}
 }
