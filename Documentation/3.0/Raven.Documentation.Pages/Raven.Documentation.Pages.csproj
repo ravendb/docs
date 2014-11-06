@@ -334,6 +334,7 @@
     <None Include="glossary\transformer-definition.dotnet.markdown" />
     <None Include="indexes\.docslist" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
+    <None Include="indexes\fanout-indexes.markdown" />
     <None Include="indexes\indexing-linq-extensions.markdown" />
     <None Include="indexes\map-reduce-indexes.markdown" />
     <None Include="indexes\map-indexes.markdown" />

@@ -6,6 +6,7 @@ map-indexes.markdown	Map indexes
 multi-map-indexes.markdown	Multi-Map indexes
 map-reduce-indexes.markdown	Map-Reduce indexes
 stale-indexes.markdown	Stale indexes
+fanout-indexes.markdown	Fanout indexes
 customizing-results-order.markdown	Customizing results order
 indexing-related-documents.markdown	Indexing related documents
 indexing-hierarchical-data.markdown	Indexing hierarchical data

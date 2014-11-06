@@ -291,6 +291,7 @@
     <Compile Include="Indexes\Creating.cs" />
     <Compile Include="Indexes\CustomizingResultsOrder.cs" />
     <Compile Include="Indexes\DynamicFields.cs" />
+    <Compile Include="Indexes\FanoutIndexes.cs" />
     <Compile Include="Indexes\IndexingBasics.cs" />
     <Compile Include="Indexes\IndexingHierarchicalData.cs" />
     <Compile Include="Indexes\IndexingLinqExtensions.cs" />
