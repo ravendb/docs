@@ -1,6 +1,6 @@
 # Embedded
 
-RavenDB makes it very easy to be embedded within your application. The first step is to reference the embedded client, either via nuget (package name: RavenDB-Embedded) or by taking the files from the build zip.
+RavenDB makes it very easy to be embedded within your application. The first step is to reference the embedded client, either via nuget (package name: RavenDB.Embedded) or by taking the files from the build zip.
 
 After referencing the embedded client from your project, all that is left to do is initializing:
 
