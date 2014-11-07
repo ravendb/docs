@@ -29,7 +29,7 @@ Given this setup work, we can now query using:
 
 {CODE-START:json /}
     curl http://localhost:8080/indexes/usersByHomeState?query=HomeState:California
-    
+    &nbsp;
     {
           "Results":[
                 {
@@ -52,7 +52,7 @@ This gives us all the documents where the home state is California. The same que
 
 {CODE-START:json /}
     curl http://localhost:8080/indexes/usersByHomeState?query=HomeState:Maryland
-
+	&nbsp;
     {
           "Results":[
                 {
@@ -98,7 +98,7 @@ But while just getting the documents matching a particular query is useful, we c
 
 {CODE-START:json /}
     curl "http://localhost:8080/indexes/usersByHomeState?query=HomeState:Maryland&amp;fetch=HomeState&amp;fetch=Name"
-    
+    &nbsp;
     {
           "Results":[
                 {
@@ -133,7 +133,7 @@ Next up, we would like to get the results sorted by the name. We can use the sor
 
 {CODE-START:json /}
     curl "http://localhost:8080/indexes/usersByHomeState?query=HomeState:Maryland&amp;fetch=HomeState&amp;fetch=Name&amp;sort=Name"
-    
+    &nbsp;
     {
           "Results":[
                 {
@@ -161,7 +161,7 @@ As you can see, we are now sorting by Name ascending. We can reverse the sort or
 
 {CODE-START:json /}
     curl "http://localhost:8080/indexes/usersByHomeState?query=HomeState:Maryland&amp;fetch=HomeState&amp;fetch=Name&amp;sort=-Name"
-    
+    &nbsp;
     {
           "Results":[
                 {
@@ -189,41 +189,42 @@ Sorting results works without fetching, as well:
 
 {CODE-START:json /}
     curl "http://localhost:8080/indexes/usersByHomeState?query=HomeState:Maryland&amp;sort=Name"
-
-          "Results":[
-                {
-                      "Name":"Bob",
-                      "HomeState":"Maryland",
-                      "ObjectType":"User",
-                      "@metadata":{
-                            "Content-Type":"application/x-www-form-urlencoded",
-                            "@id":"bob",
-                            "@etag":"17b3f1f9-4c79-11df-8ec2-001fd08ec235"
-                      }
-                },
-                {
-                      "Name":"Mary",
-                      "HomeState":"Maryland",
-                      "ObjectType":"User",
-                      "@metadata":{
-                            "Content-Type":"application/x-www-form-urlencoded",
-                            "@id":"mary",
-                            "@etag":"17b3f1fc-4c79-11df-8ec2-001fd08ec235"
-                      }
-                },
-                {
-                      "Name":"Paul",
-                      "HomeState":"Maryland",
-                      "ObjectType":"User",
-                      "@metadata":{
-                            "Content-Type":"application/x-www-form-urlencoded",
-                            "@id":"paul",
-                            "@etag":"17b3f1fb-4c79-11df-8ec2-001fd08ec235"
-                      }
-                }
-          ],
-          "IsStale":false,
-          "TotalResults":3
+	&nbsp;
+	{
+        "Results":[
+            {
+                    "Name":"Bob",
+                    "HomeState":"Maryland",
+                    "ObjectType":"User",
+                    "@metadata":{
+                        "Content-Type":"application/x-www-form-urlencoded",
+                        "@id":"bob",
+                        "@etag":"17b3f1f9-4c79-11df-8ec2-001fd08ec235"
+                    }
+            },
+            {
+                    "Name":"Mary",
+                    "HomeState":"Maryland",
+                    "ObjectType":"User",
+                    "@metadata":{
+                        "Content-Type":"application/x-www-form-urlencoded",
+                        "@id":"mary",
+                        "@etag":"17b3f1fc-4c79-11df-8ec2-001fd08ec235"
+                    }
+            },
+            {
+                    "Name":"Paul",
+                    "HomeState":"Maryland",
+                    "ObjectType":"User",
+                    "@metadata":{
+                        "Content-Type":"application/x-www-form-urlencoded",
+                        "@id":"paul",
+                        "@etag":"17b3f1fb-4c79-11df-8ec2-001fd08ec235"
+                    }
+            }
+        ],
+        "IsStale":false,
+        "TotalResults":3
     }
 {CODE-END /}
 
@@ -232,7 +233,7 @@ When the number of results gets too big, we need to page through them. This is d
 
 {CODE-START:json /}
     curl "http://localhost:8080/indexes/usersByHomeState?query=HomeState:\[Illinois%20TO%20Maryland\]&amp;sort=Name&amp;start=0&amp;pageSize=2"
-    
+    &nbsp;
     {
           "Results":[
                 {
@@ -272,7 +273,7 @@ You can see that the TotalResults value indicate that we have more results, we c
 
 {CODE-START:json /}
     curl "http://localhost:8080/indexes/usersByHomeState?query=HomeState:\[Illinois%20TO%20Maryland\]&amp;sort=Name&amp;start=2&amp;pageSize=2"
-    
+    &nbsp;
     {
           "Results":[
                 {
@@ -307,15 +308,17 @@ All in all, this is pretty easy thing to do.
 If you have worked with Lucene before, you are probably familiar with the need to tweak the index using the Field.Store and Field.Index parameters. Extensive discussion on the meaning of those values are beyond the scope of this document, but   Raven allows you to define them using the following syntax:
 
 {CODE-START:json /}
-    {
-          "Map":"from  doc  in  docs\r\nwhere  doc.ObjectType==\"User\"\r\nselect  new  {  doc.HomeState,  doc.Name  }",
-          "Stores":{
-                "HomeState":"Yes"
-          },
-          "Indexes":{
-                "Name":"NoNorms"
-          }
-    }
+
+{
+	"Map":"from doc in docs\r\nwhere  doc.ObjectType==\"User\"\r\nselect  new  {  doc.HomeState,  doc.Name  }",
+	"Stores":{
+		"HomeState":"Yes"
+	},
+	"Indexes":{
+		"Name":"NoNorms"
+	}
+}
+
 {CODE-END /}
 
 The valid values for Stores are:
