@@ -24,11 +24,11 @@ To install this bundle please drop a `Raven.Bundles.IndexReplication.dll` into `
 Because the Index Replication bundle needs to connect to a relational database, it needs the appropriate connection string. To avoid security concerns, specifying the appropriate connection strings is done in the app.config file in the <connectionStrings/> element, like so:
 
 {CODE-START:xml/}
-    <connectionStrings>  
-    	<add name="Reports" 
-            providerName="System.Data.SqlClient"   
-            connectionString="Data Source=.\sqlexpress;Initial Catalog=QuestionReports;Integrated Security=SSPI;"/>  
-    </connectionStrings>
+<connectionStrings>
+    <add name="Reports"
+        providerName="System.Data.SqlClient"
+        connectionString="Data Source=.\sqlexpress;Initial Catalog=QuestionReports;Integrated Security=SSPI;"/>
+</connectionStrings>
 {CODE-END/}
 
 Using this approach, you can [encrypt the connectionStrings section](http://msdn.microsoft.com/en-us/library/zhhddkxy.aspx) and avoid have a connection string in plain text.

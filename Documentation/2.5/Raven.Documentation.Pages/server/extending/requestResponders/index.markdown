@@ -8,7 +8,7 @@ For example, let us assume that you have a burning desire to know what is the si
 The next step is compiling this and dropping the dll into the Plugins directory. With that, we can issue:
 
 {CODE-START:plain /}
-    > curl -X GET http://localhost:8080/docsize/bobs_address
+    curl -X GET http://localhost:8080/docsize/bobs_address
 {CODE-END /}
 
 Assuming there is a document with an id of "bobs_address", RavenDB will respond with the contents of that document and an HTTP 200 OK response code:

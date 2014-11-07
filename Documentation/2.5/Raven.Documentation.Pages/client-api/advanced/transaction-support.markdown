@@ -55,7 +55,7 @@ You can see that RavenDB does indeed send a transaction identifier and its timeo
     Host: 127.0.0.1:8081
     Content-Length: 300
     Expect: 100-continue
-
+&nbsp;
     [
       {
         "Key": "blogs/1",

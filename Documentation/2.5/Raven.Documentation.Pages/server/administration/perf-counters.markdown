@@ -16,7 +16,7 @@ The access to the performance counters requires an administrator privileges, whi
 the counters mechanism you have to setup the permissions for the user. You can accomplish it by using `Raven.Server.exe`:
 
 {CODE-START:json /}
-   > Raven.Server.exe /user=USERNAME /setup-perf-counters
+Raven.Server.exe /user=USERNAME /setup-perf-counters
 {CODE-END /}
 
 After executing this command, the specified user will be added to the Performance Monitoring Group what will give him the read/write privileges to the performance counters. 

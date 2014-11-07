@@ -5,7 +5,7 @@
 One of the options available for the RavenDB administrators is a capability of retrieving database statistics for the server. The statistics are available at `/admin/stats` endpoint.
 
 {CODE-START:json /}
-   > curl -X GET "http://localhost:8080/admin/stats"
+   curl -X GET "http://localhost:8080/admin/stats"
 {CODE-END /}
 
 Document with following format is retrieved:
@@ -51,8 +51,8 @@ where
 To obtain database statistics one must use `/stats` endpoint.
 
 {CODE-START:json /}
-   > curl -X GET "http://localhost:8080/stats" //statistics for 'system' database
-   > curl -X GET "http://localhost:8080/databases/ExampleDB/stats" //statistics for 'ExampleDB' database
+   curl -X GET "http://localhost:8080/stats" //statistics for 'system' database
+   curl -X GET "http://localhost:8080/databases/ExampleDB/stats" //statistics for 'ExampleDB' database
 {CODE-END /}
 
 Executing one of the above actions will end up in getting a document in the following format:

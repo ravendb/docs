@@ -5,11 +5,11 @@ RavenDB offers an ability to debug indexes. You can look into internal indexing 
 Let's create sample indexes that we will use in describing particular debugging options below. First let's put some documents in database named *DB*: 
 
 {CODE-START:json /}
-   > curl -X PUT http://localhost:8080/databases/DB/docs/users/1 -d "{ 'FirstName':'Daniel', 'LastName':'Johnson', 'Age':25, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
-   > curl -X PUT http://localhost:8080/databases/DB/docs/users/2 -d "{ 'FirstName':'David', 'LastName':'Williams', 'Age':20, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
-   > curl -X PUT http://localhost:8080/databases/DB/docs/users/3 -d "{ 'FirstName':'Daniel', 'LastName':'Brown', 'Age':35, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
-   > curl -X PUT http://localhost:8080/databases/DB/docs/users/4 -d "{ 'FirstName':'David', 'LastName':'Davis', 'Age':45, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
-   > curl -X PUT http://localhost:8080/databases/DB/docs/users/5 -d "{ 'FirstName':'Bob', 'LastName':'Davis', 'Age':20, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
+   curl -X PUT http://localhost:8080/databases/DB/docs/users/1 -d "{ 'FirstName':'Daniel', 'LastName':'Johnson', 'Age':25, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
+   curl -X PUT http://localhost:8080/databases/DB/docs/users/2 -d "{ 'FirstName':'David', 'LastName':'Williams', 'Age':20, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
+   curl -X PUT http://localhost:8080/databases/DB/docs/users/3 -d "{ 'FirstName':'Daniel', 'LastName':'Brown', 'Age':35, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
+   curl -X PUT http://localhost:8080/databases/DB/docs/users/4 -d "{ 'FirstName':'David', 'LastName':'Davis', 'Age':45, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
+   curl -X PUT http://localhost:8080/databases/DB/docs/users/5 -d "{ 'FirstName':'Bob', 'LastName':'Davis', 'Age':20, '@metadata' : {'Raven-Entity-Name': 'Users'} }" --header "Raven-Entity-Name:Users"
 {CODE-END /}
 
 and create two indexes:
@@ -17,14 +17,14 @@ and create two indexes:
 Map only
 
 {CODE-START:json /}
-   > curl -X PUT http://localhost:8080/databases/DB/indexes/UsersByFirstName 
+   curl -X PUT http://localhost:8080/databases/DB/indexes/UsersByFirstName 
 		-d "{ Map: 'from user in docs.Users select new {user.FirstName}' }"
 {CODE-END /}
 
 Map Reduce
 
 {CODE-START:json /}
-   > curl -X PUT http://localhost:8080/databases/DB/indexes/AvgUsersAge 
+   curl -X PUT http://localhost:8080/databases/DB/indexes/AvgUsersAge 
 	-d "{ Map: 'from user in docs.Users select new { user.FirstName, AvgAge = user.Age, Count = 1 }', 
 		  Reduce: 'from result in results group result by new { result.FirstName } into g let ageSum = g.Sum(x => x.AvgAge) let count = g.Sum(x => x.Count) select new { g.Key.FirstName, AvgAge = ageSum / count, Count = count } '
 		}"
@@ -35,7 +35,7 @@ Map Reduce
 To retrieve basic info about the index you can get its statistics. Accomplish it by creating the HTTP GET request with *debug=stats* parameter:
 
 {CODE-START:json /}
-   > curl -X GET http://localhost:8080/databases/DB/indexes/UsersByFirstName?debug=stats
+   curl -X GET http://localhost:8080/databases/DB/indexes/UsersByFirstName?debug=stats
 {CODE-END /}
 
 The output will provide you with the following info:
@@ -64,7 +64,7 @@ The output will provide you with the following info:
 By default querying indexes will result in documents that match the criteria. For the query:
 
 {CODE-START:json /}
-   > curl -X GET 
+   curl -X GET 
 		http://localhost:8080/databases/DB/indexes/UsersByFirstName?query=FirstName:Daniel
 {CODE-END /}
 
@@ -91,7 +91,7 @@ Raven will return the results:
 Instead of that you can show raw index entries. To achieve that add *debug=entries* parameter to the query string:
 
 {CODE-START:json /}
-   > curl -X GET 
+   curl -X GET 
 		http://localhost:8080/databases/DB/indexes/UsersByFirstName?query=FirstName:Daniel"&"debug=entries
 {CODE-END /}
 
@@ -120,7 +120,7 @@ Note that each single result has only two positions: indexed field and document 
 You can see the results of documents mapping according to the map definition of the index. Add *debug=map* and *key* parameter that determine the mapped field to the query string:
 
 {CODE-START:json /}
-   > curl -X GET -g 'http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=map&key={\"FirstName\":\"David\"}'
+   curl -X GET -g 'http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=map&key={\"FirstName\":\"David\"}'
 {CODE-END /}
 
 In result you will get raw, mapped items of the index:
@@ -173,7 +173,7 @@ If you miss the *key* parameter the response message will produce the list of av
 The same way you are able to see reduced index results. You have to use *debug=reduce* option and apart from *key* additionally you need to pass *level* to say what step of reducing process you are interested in.
 
 {CODE-START:json /}
-   > curl -X GET -g 'http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=reduce&key={\"FirstName\":\"David\"}&level=2'
+curl -X GET -g 'http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=reduce&key={\"FirstName\":\"David\"}&level=2'
 {CODE-END /}
 
 The output:
@@ -218,8 +218,7 @@ The output:
 Another option related to a map/reduce index is to get at a runtime the stats about all the keys in the index. To see the reduce keys and their number of their occurrence use *debug=keys* option:
 
 {CODE-START:json /}
-   > curl -X GET 
-	http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=keys
+curl -X GET http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=keys
 {CODE-END /}
 
 {CODE-START:json /}
@@ -247,13 +246,11 @@ Another option related to a map/reduce index is to get at a runtime the stats ab
 Sometimes you might want to be interested how much reduce work is still left to do. To get that information you can use *debug=schedules* option:
 
 {CODE-START:json /}
-   > curl -X GET 
-	http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=schedules
+curl -X GET http://localhost:8080/databases/DB/indexes/AvgUsersAge?debug=schedules
 {CODE-END /}
 
 {CODE-START:json /}
 {
-
     "Count": 2,
     "Results": [
         {
@@ -279,6 +276,5 @@ RavenDB offers a feature called [live projections](../../client-api/querying/han
 Sometimes you might want to see index result without applying transformation. Then you need to use *skipTransformResults=true* option:
 
 {CODE-START:json /}
-   > curl -X GET 
-	http://localhost:8080/databases/DB/indexes/IndexWithTransformation?skipTransformResults=true
+curl -X GET http://localhost:8080/databases/DB/indexes/IndexWithTransformation?skipTransformResults=true
 {CODE-END /}
