@@ -65,6 +65,7 @@
     <None Include="client-api\changes\what-is-changes-api.dotnet.markdown" />
     <None Include="client-api\commands\.docslist" />
     <None Include="client-api\commands\attachments\.docslist" />
+    <None Include="client-api\commands\attachments\put.http.markdown" />
     <None Include="client-api\commands\attachments\how-to\update-attachment-metadata-only.java.markdown" />
     <None Include="client-api\commands\attachments\how-to\get-attachment-metadata-only.java.markdown" />
     <None Include="client-api\commands\attachments\put.java.markdown" />
@@ -102,6 +103,13 @@
     <None Include="client-api\commands\how-to\disable-caching.java.markdown" />
     <None Include="client-api\commands\how-to\switch-commands-credentials.java.markdown" />
     <None Include="client-api\commands\how-to\switch-commands-to-a-different-database.java.markdown" />
+    <None Include="client-api\commands\indexes\delete.http.markdown" />
+    <None Include="client-api\commands\indexes\get.http.markdown" />
+    <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.http.markdown" />
+    <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.http.markdown" />
+    <None Include="client-api\commands\indexes\how-to\get-index-terms.http.markdown" />
+    <None Include="client-api\commands\indexes\how-to\reset-index.http.markdown" />
+    <None Include="client-api\commands\indexes\put.http.markdown" />
     <None Include="client-api\commands\indexes\delete.java.markdown" />
     <None Include="client-api\commands\indexes\get.java.markdown" />
     <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.dotnet.markdown" />
@@ -176,8 +184,10 @@
     <None Include="client-api\configuration\conventions\misc.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\querying.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\identifier-generation\type-specific.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\replication.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
+    <None Include="client-api\how-to\enable-profiling.dotnet.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.java.markdown" />
     <None Include="client-api\how-to\work-with-authentication.java.markdown" />
