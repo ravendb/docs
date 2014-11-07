@@ -1,9 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Attachments.HowTo
-{
-	using Raven.Abstractions.Data;
-	using Raven.Client.Document;
-	using Raven.Json.Linq;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using Raven.Json.Linq;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments.HowTo
+{
 	public class Update
 	{
 		private interface IFoo

@@ -1,8 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Listeners
-{
-	using System;
-	using Json.Linq;
+﻿using System;
 
+using Raven.Json.Linq;
+
+namespace Raven.Documentation.Samples.ClientApi.Listeners
+{
 	public class Delete
 	{
 		#region document_delete_interface

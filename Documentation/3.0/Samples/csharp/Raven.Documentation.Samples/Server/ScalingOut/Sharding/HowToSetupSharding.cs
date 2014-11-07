@@ -6,7 +6,7 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Shard;
 
-namespace Raven.Documentation.CodeSamples.Server.ScalingOut.Sharding
+namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 {
 	public class HowToSetupSharding
 	{

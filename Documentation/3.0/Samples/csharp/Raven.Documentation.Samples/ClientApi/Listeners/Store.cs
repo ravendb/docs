@@ -1,10 +1,10 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Listeners
-{
-	using System;
-	using System.Collections.Generic;
-	using System.Linq;
-	using Json.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+using Raven.Json.Linq;
+
+namespace Raven.Documentation.Samples.ClientApi.Listeners
+{
 	public class Store
 	{
 		#region document_store_interface

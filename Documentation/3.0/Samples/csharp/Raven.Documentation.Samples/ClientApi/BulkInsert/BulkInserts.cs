@@ -2,7 +2,7 @@
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.BulkInsert
+namespace Raven.Documentation.Samples.ClientApi.BulkInsert
 {
 	public class BulkInserts
 	{

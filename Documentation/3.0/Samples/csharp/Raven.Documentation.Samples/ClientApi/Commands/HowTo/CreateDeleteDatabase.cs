@@ -1,11 +1,15 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client.Connection;
 using Raven.Client.Document;
+
 #region ensure_database_exists_2
-using Raven.Client.Extensions; // required namespace in usings
+
+// required namespace in usings
 #endregion
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
+using Raven.Documentation.CodeSamples;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 {
 	static class Foo
 	{

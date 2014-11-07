@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.Server.ScalingOut.Replication
+namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 {
 	public class WriteAssurance
 	{

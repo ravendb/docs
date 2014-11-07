@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
+﻿using System.Linq;
 using System.Text;
 
 using Raven.Client;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToUseHighlighting
 	{

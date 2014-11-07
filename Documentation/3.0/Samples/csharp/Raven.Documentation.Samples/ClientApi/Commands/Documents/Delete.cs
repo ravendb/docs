@@ -1,8 +1,8 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
-{
-	using Raven.Abstractions.Data;
-	using Raven.Client.Document;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
+{
 	public class Delete
 	{
 		private interface IFoo

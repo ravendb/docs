@@ -7,10 +7,9 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Linq;
 using Raven.Client.Spatial;
-using Raven.Documentation.CodeSamples.Indexes;
 using Raven.Documentation.Samples.Indexes;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToQuerySpatialIndex
 	{

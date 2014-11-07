@@ -5,7 +5,7 @@ using Raven.Client.Connection;
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.Server.Configuration
+namespace Raven.Documentation.Samples.Server.Configuration
 {
 	public class Authentication
 	{

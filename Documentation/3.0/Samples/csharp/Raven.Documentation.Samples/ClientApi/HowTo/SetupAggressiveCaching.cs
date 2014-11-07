@@ -1,10 +1,11 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.HowTo
-{
-	using System;
-	using System.Linq;
-	using Client.Document;
-	using Orders;
+﻿using System;
+using System.Linq;
 
+using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
+
+namespace Raven.Documentation.Samples.ClientApi.HowTo
+{
 	public class SetupAggressiveCaching
 	{
 		public SetupAggressiveCaching()

@@ -1,10 +1,10 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
+﻿using System.Net;
+
+using Raven.Client.Connection;
+using Raven.Client.Document;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 {
-	using System.Net;
-
-	using Raven.Client.Connection;
-	using Raven.Client.Document;
-
 	public class SwitchCommandsCredentials
 	{
 		private interface IFoo

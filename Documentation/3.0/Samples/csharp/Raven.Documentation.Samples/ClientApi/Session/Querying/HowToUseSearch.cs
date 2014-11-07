@@ -4,7 +4,7 @@ using System.Linq;
 using Raven.Client;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToUseSearch
 	{

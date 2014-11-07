@@ -5,7 +5,7 @@ using Raven.Client.Changes;
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Changes
+namespace Raven.Documentation.Samples.ClientApi.Changes
 {
 	public class HowToSubscribeToDocumentChanges
 	{

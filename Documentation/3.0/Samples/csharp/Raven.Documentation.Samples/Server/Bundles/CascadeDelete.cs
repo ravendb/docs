@@ -1,7 +1,7 @@
 ﻿using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.Server.Bundles
+namespace Raven.Documentation.Samples.Server.Bundles
 {
 	public class CascadeDelete
 	{

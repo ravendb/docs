@@ -4,7 +4,7 @@ using Raven.Bundles.Authorization.Model;
 using Raven.Client.Authorization;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.Server.Bundles
+namespace Raven.Documentation.Samples.Server.Bundles
 {
 	public class Authorization
 	{

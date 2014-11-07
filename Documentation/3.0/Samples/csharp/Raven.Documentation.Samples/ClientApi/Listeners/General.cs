@@ -1,9 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Listeners
-{
-	using Client.Document;
-	using Client.Listeners;
-	using Json.Linq;
+﻿using Raven.Client.Document;
+using Raven.Client.Listeners;
+using Raven.Json.Linq;
 
+namespace Raven.Documentation.Samples.ClientApi.Listeners
+{
 	public class General
 	{
 		public class SampleDocumentStoreListener : IDocumentStoreListener

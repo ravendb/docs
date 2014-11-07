@@ -4,7 +4,7 @@ using Raven.Abstractions.Data;
 using Raven.Client.Changes;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Changes
+namespace Raven.Documentation.Samples.ClientApi.Changes
 {
 	public class HowToSubscribeToReplicationConflictsChanges
 	{

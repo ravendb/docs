@@ -6,7 +6,7 @@ using Raven.Documentation.CodeSamples.Orders;
 
 using Xunit;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 {
 	public class WhatChanged
 	{

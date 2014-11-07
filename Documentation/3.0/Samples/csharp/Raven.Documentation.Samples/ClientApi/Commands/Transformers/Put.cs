@@ -1,8 +1,8 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Transformers
-{
-	using Raven.Abstractions.Indexing;
-	using Raven.Client.Document;
+﻿using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers
+{
 	public class Put
 	{
 		private interface IFoo

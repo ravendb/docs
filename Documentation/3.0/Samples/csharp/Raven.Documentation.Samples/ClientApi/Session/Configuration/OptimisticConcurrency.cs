@@ -1,7 +1,7 @@
 ﻿using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Configuration
+namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
 {
 	public class OptimisticConcurrency
 	{

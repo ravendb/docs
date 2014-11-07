@@ -1,14 +1,13 @@
-﻿using Raven.Documentation.CodeSamples.Orders;
+﻿using System.Collections.Generic;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Batches
+using Raven.Abstractions.Commands;
+using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
+using Raven.Json.Linq;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
 {
-	using System.Collections.Generic;
-
-	using Raven.Abstractions.Commands;
-	using Raven.Abstractions.Data;
-	using Raven.Client.Document;
-	using Raven.Json.Linq;
-
 	public class Batch
 	{
 		private interface IFoo

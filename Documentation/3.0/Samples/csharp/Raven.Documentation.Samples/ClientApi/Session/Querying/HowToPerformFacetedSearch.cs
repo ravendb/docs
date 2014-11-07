@@ -3,9 +3,8 @@
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
-using Raven.Documentation.Samples;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToPerformFacetedSearch
 	{

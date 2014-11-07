@@ -1,10 +1,11 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.HowTo
-{
-	using System.Collections.Generic;
-	using System.Net;
-	using Abstractions.Data;
-	using Client.Document;
+﻿using System.Collections.Generic;
+using System.Net;
 
+using Raven.Abstractions.Data;
+using Raven.Client.Document;
+
+namespace Raven.Documentation.Samples.ClientApi.HowTo
+{
 	public class WorkWithAuthentication
 	{
 		public WorkWithAuthentication()

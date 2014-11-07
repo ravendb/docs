@@ -1,9 +1,12 @@
 ﻿using Raven.Client.Document;
+using Raven.Client.Extensions;
+
 #region multiple_databases_2
-using Raven.Client.Extensions; // required namespace in usings
+
+// required namespace in usings
 #endregion
 
-namespace Raven.Documentation.CodeSamples.Server.Configuration
+namespace Raven.Documentation.Samples.Server.Configuration
 {
 	public class MultipleDatabases
 	{

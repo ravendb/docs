@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 {
 	public class FullUrl
 	{

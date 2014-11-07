@@ -1,7 +1,7 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Transformers.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers.HowTo
 {
 	public class TransformQueryResults
 	{

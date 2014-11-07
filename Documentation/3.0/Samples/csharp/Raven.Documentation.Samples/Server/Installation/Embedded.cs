@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Embedded;
 
-namespace Raven.Documentation.CodeSamples.Server.Installation
+namespace Raven.Documentation.Samples.Server.Installation
 {
 	public class Embedded
 	{

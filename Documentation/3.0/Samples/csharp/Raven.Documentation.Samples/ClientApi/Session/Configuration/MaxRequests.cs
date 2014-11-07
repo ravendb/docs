@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Configuration
+namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
 {
 	public class MaxRequests
 	{

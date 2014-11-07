@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 {
 	public class GetDocumentId
 	{

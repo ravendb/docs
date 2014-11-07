@@ -1,14 +1,11 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Attachments
+﻿using System.IO;
+
+using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using Raven.Json.Linq;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments
 {
-	using System.IO;
-	using System.Linq;
-
-	using Raven.Abstractions.Data;
-	using Raven.Abstractions.Indexing;
-	using Raven.Client.Document;
-	using Raven.Client.Indexes;
-	using Raven.Json.Linq;
-
 	public class Put
 	{
 		private interface IFoo
