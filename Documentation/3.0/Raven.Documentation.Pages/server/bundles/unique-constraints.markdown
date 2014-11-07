@@ -18,20 +18,6 @@ The listener works by using reflection when the document is stored in the databa
 
 <hr />
 
-### UniqueConstraintSessionExtensions
-
-The bundle provides two extension methods for `IDocumentSession`.
-
-#### LoadByUniqueConstraint
-
-Allows loading a document by its UniqueConstraint, returning null if the document doesn't exists.
-
-#### CheckForUniqueConstraints
-
-Checks a document to see if its constraints are available on the server. It returns a `UniqueConstraintCheckResult` containing the loaded docs and properties they are responsible for.
-
-<hr />
-
 ### UniqueConstraintsPutTrigger
 
 The put trigger acts whenever it finds a document being inserted with metadata constraints. It checks for existing documents in the constraints. If any existing document is found, it returns a VetoResult.Deny, informing the conflicting fields. This has to be checked on the client-side, using a try block for the OperationVetoedException.
@@ -46,37 +32,9 @@ The delete trigger acts whenever it finds a document being deleted with constrai
 
 {PANEL/}
 
-{PANEL:Usage}
-
-### Server side
+{PANEL:Installation}
 
 Drop the `Raven.Bundles.UniqueContraints` assembly in the Plugins directory.
-
-<hr />
-
-### Client side
-
-To use the Unique Constraint features on Client side you need to reference `Raven.Client.UniqueConstraints` assembly.
-
-{CODE using@Server\Bundles\UniqueConstraints.cs /}
-
-When creating the DocumentStore, you'll need to register the `UniqueConstraintsStoreListener` in the store, as follows:
-
-{CODE unique_constraints_1@Server\Bundles\UniqueConstraints.cs /}
-
-To define a unique constraint on a property use the `UniqueConstraint` attribute as shown below:
-
-{CODE unique_constraints_4@Server\Bundles\UniqueConstraints.cs /}
-
-#### Extension methods
-
-To check if a value is available for use:
-
-{CODE unique_constraints_2@Server\Bundles\UniqueConstraints.cs /}
-
-To check a document against the database use:
-
-{CODE unique_constraints_3@Server\Bundles\UniqueConstraints.cs /}
 
 {PANEL/}
 
@@ -86,4 +44,4 @@ To check a document against the database use:
 
 ## Related articles
 
-TODO
+* [How to work with unique constraints bundle?](../../client-api/bundles/how-to-work-with-unique-constraints-bundle)

@@ -93,19 +93,6 @@ To use the Auth Bundle on the client side, you need to reference the following:
 
 and import the "Raven.Client.Authorization" namespace to include the authorization extension methods.
 
-## Usage
-The Auth Bundle usage on the client side is limited to three methods:
-
-* SetAuthorizationFor - which sets up permissions and tags for a specific document.
-* GetAuthorizationFor - which allows you to read what permission and tags were set on a specific document.
-* SecureFor - setup which user and operation are being performed.
-
-For example, here is the code for authorization hospitalization:
-
-{CODE authorization3@Server\Bundles\Authorization.cs /}
-
-If the user doesn't have the permissions to authorize hospitalization, an error will be raised when the change to the database in the SaveChanges call is persistent.
-
 ## Applying permissions
 The responses for denying an operation are worth noting:
 
@@ -120,4 +107,5 @@ For much the same reason, the results of map/reduce indexes cannot be secured, a
 
 ## Related articles
 
-TODO
+
+* [How to work with authorization bundle?](../../client-api/bundles/how-to-work-with-authorization-bundle)
