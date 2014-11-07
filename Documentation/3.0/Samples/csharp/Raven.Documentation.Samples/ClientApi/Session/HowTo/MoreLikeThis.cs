@@ -1,10 +1,12 @@
-﻿using Raven.Abstractions.Data;
-#region more_like_this_3
+﻿#region more_like_this_3
+
+using Raven.Abstractions.Data;
 using Raven.Client.Bundles.MoreLikeThis;
-#endregion
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
+#endregion
+
+namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 {
 	public class MoreLikeThis
 	{

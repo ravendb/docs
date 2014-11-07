@@ -1,7 +1,7 @@
 ﻿using Raven.Client.Bundles.Versioning;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.Server.Bundles
+namespace Raven.Documentation.Samples.Server.Bundles
 {
 	public class Versioning
 	{

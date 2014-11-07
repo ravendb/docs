@@ -1,7 +1,7 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Querying
+namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 {
 	public class HowToWorkWithMoreLikeThisQuery
 	{

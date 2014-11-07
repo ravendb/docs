@@ -1,9 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Indexes.HowTo
+﻿using System.Collections.Generic;
+
+using Raven.Client.Document;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes.HowTo
 {
-	using System.Collections.Generic;
-
-	using Raven.Client.Document;
-
 	public class GetTerms
 	{
 		private interface IFoo

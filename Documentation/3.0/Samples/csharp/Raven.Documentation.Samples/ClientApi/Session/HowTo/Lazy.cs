@@ -5,7 +5,7 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 {
 	public class Lazy
 	{

@@ -1,7 +1,7 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands
-{
-	using Raven.Client.Document;
+﻿using Raven.Client.Document;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands
+{
 	public class WhatAreCommands
     {
 		public WhatAreCommands()

@@ -1,11 +1,11 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Patches
+﻿using System.Collections.Generic;
+
+using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using Raven.Json.Linq;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
 {
-	using System.Collections.Generic;
-
-	using Raven.Abstractions.Data;
-	using Raven.Client.Document;
-	using Raven.Json.Linq;
-
 	public class JavaScript
 	{
 		private interface IFoo

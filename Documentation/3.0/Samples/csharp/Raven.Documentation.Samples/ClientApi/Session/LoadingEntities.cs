@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
 
 using Raven.Abstractions.Data;
@@ -9,7 +8,7 @@ using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session
+namespace Raven.Documentation.Samples.ClientApi.Session
 {
 	public class LoadingEntities
 	{

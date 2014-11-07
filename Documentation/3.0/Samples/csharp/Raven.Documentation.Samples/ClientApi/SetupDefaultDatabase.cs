@@ -1,7 +1,7 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi
+namespace Raven.Documentation.Samples.ClientApi
 {
 	public class SetupDefaultDatabase
 	{

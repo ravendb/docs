@@ -5,7 +5,7 @@ using Raven.Json.Linq;
 
 using Xunit;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 {
 	public class DisableCaching
 	{

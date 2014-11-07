@@ -11,7 +11,7 @@ using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.Server.Bundles
+namespace Raven.Documentation.Samples.Server.Bundles
 {
 	#region index_def
 	public class Orders_ByCompany : AbstractIndexCreationTask<Order, Orders_ByCompany.Result>

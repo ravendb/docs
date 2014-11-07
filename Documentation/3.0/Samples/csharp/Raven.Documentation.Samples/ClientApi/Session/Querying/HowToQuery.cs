@@ -5,7 +5,7 @@ using Raven.Client.Indexes;
 using Raven.Client.Linq;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToQuery
 	{

@@ -5,7 +5,7 @@ using Raven.Client;
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Documents
+namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 {
 	public class Get
 	{

@@ -4,9 +4,8 @@ using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
-using Raven.Documentation.Samples;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToPerformQueriesLazily
 	{

@@ -1,7 +1,7 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Indexes.HowTo
-{
-	using Raven.Client.Document;
+﻿using Raven.Client.Document;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes.HowTo
+{
 	public class ResetIndex
 	{
 		private interface IFoo

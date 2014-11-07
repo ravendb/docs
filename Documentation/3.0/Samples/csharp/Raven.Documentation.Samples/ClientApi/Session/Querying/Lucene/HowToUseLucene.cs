@@ -5,7 +5,7 @@ using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying.Lucene
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Lucene
 {
 	public class HowToUseLucene
 	{

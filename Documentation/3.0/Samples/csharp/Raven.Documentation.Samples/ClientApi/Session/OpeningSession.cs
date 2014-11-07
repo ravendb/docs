@@ -1,7 +1,7 @@
 ﻿using Raven.Client;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session
+namespace Raven.Documentation.Samples.ClientApi.Session
 {
 	public class OpeningSession
 	{

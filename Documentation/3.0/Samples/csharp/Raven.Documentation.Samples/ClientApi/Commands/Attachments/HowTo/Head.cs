@@ -1,13 +1,10 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Attachments.HowTo
+﻿using System.Collections.Generic;
+
+using Raven.Abstractions.Data;
+using Raven.Client.Document;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments.HowTo
 {
-	using System.Collections.Generic;
-
-	using Raven.Abstractions.Data;
-	using Raven.Client;
-	using Raven.Client.Document;
-	using Raven.Database.Data;
-	using Raven.Json.Linq;
-
 	public class Head
 	{
 		private interface IFoo

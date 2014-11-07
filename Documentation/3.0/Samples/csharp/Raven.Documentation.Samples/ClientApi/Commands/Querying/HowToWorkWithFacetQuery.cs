@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 
+using Raven.Abstractions.Data;
+using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Querying
+namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 {
-	using Abstractions.Data;
-	using Client.Document;
-
 	public class HowToWorkWithFacetQuery
 	{
 		private interface IFoo

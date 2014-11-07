@@ -1,10 +1,9 @@
 ﻿using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Indexes.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes.HowTo
 {
-    using Raven.Client.Document;
-
-    public class IndexHasChanged
+	public class IndexHasChanged
 	{
 		private interface IFoo
 		{

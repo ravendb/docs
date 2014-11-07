@@ -1,7 +1,7 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Transformers
-{
-	using Raven.Client.Document;
+﻿using Raven.Client.Document;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers
+{
 	public class Delete
 	{
 		private interface IFoo

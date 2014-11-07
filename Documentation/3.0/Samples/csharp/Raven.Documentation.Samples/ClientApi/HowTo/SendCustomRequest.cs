@@ -1,7 +1,7 @@
 ﻿using Raven.Client.Connection;
 using Raven.Client.Document;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.HowTo
+namespace Raven.Documentation.Samples.ClientApi.HowTo
 {
 	public class SendCustomRequest
 	{

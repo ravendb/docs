@@ -1,10 +1,11 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.HowTo
-{
-	using System;
-	using Client.Connection.Profiling;
-	using Client.Document;
-	using Orders;
+﻿using System;
 
+using Raven.Client.Connection.Profiling;
+using Raven.Client.Document;
+using Raven.Documentation.CodeSamples.Orders;
+
+namespace Raven.Documentation.Samples.ClientApi.HowTo
+{
 	public class EnableProfiling
 	{
 		public EnableProfiling()

@@ -7,7 +7,7 @@ using Raven.Documentation.CodeSamples.Orders;
 
 using Xunit;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session.Querying
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
 	public class HowToUseTransformers
 	{

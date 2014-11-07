@@ -2,7 +2,7 @@
 using Raven.Abstractions.Replication;
 using Raven.Client.Embedded;
 
-namespace Raven.Documentation.CodeSamples.Server.ScalingOut.Replication
+namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 {
 	public class FromEmbeddedServer
 	{

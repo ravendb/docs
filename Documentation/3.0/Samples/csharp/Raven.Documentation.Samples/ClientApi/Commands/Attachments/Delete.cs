@@ -1,14 +1,8 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Attachments
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments
 {
-	using System.IO;
-	using System.Linq;
-
-	using Raven.Abstractions.Data;
-	using Raven.Abstractions.Indexing;
-	using Raven.Client.Document;
-	using Raven.Client.Indexes;
-	using Raven.Json.Linq;
-
 	public class Delete
 	{
 		private interface IFoo

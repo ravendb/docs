@@ -4,7 +4,7 @@ using Raven.Client.Embedded;
 using Raven.Database.Smuggler;
 using Raven.Smuggler;
 
-namespace Raven.Documentation.CodeSamples.Server.Administration
+namespace Raven.Documentation.Samples.Server.Administration
 {
 	public class ExportImport
 	{

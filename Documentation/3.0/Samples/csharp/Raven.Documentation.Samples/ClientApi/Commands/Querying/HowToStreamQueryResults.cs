@@ -4,7 +4,7 @@ using Raven.Abstractions.Data;
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Querying
+namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 {
 	public class HowToStreamQueryResults
 	{

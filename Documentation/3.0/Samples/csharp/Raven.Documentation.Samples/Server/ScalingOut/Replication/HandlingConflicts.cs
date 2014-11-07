@@ -6,7 +6,7 @@ using Raven.Client.Document;
 using Raven.Client.Exceptions;
 using Raven.Imports.Newtonsoft.Json;
 
-namespace Raven.Documentation.CodeSamples.Server.ScalingOut.Replication
+namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 {
 	public class HandlingConflicts
 	{

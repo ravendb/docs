@@ -1,13 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Attachments
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
+using Raven.Database.Data;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments
 {
-	using System.Collections.Generic;
-
-	using Raven.Abstractions.Data;
-	using Raven.Client;
-	using Raven.Client.Document;
-	using Raven.Database.Data;
-	using Raven.Json.Linq;
-
 	public class Get
 	{
 		private interface IFoo

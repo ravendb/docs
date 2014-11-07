@@ -22,7 +22,7 @@ using Raven.Server;
 
 using Attachment = Raven.Abstractions.Data.Attachment;
 
-namespace Raven.Documentation.CodeSamples.Server
+namespace Raven.Documentation.Samples.Server
 {
 	namespace Foo
 	{

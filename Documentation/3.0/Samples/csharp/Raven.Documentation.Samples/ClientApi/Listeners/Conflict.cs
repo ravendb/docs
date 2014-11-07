@@ -1,8 +1,9 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Listeners
-{
-	using System.Linq;
-	using Abstractions.Data;
+﻿using System.Linq;
 
+using Raven.Abstractions.Data;
+
+namespace Raven.Documentation.Samples.ClientApi.Listeners
+{
 	public class Conflict
 	{
 		#region document_conflict_listener

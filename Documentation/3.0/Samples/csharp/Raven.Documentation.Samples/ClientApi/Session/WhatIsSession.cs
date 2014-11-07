@@ -5,7 +5,7 @@ using Raven.Documentation.CodeSamples.Orders;
 
 using Xunit;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Session
+namespace Raven.Documentation.Samples.ClientApi.Session
 {
 	public class WhatIsSession
 	{

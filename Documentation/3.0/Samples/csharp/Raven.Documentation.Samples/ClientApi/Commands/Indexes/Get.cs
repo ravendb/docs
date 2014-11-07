@@ -1,8 +1,8 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Indexes
-{
-	using Raven.Abstractions.Indexing;
-	using Raven.Client.Document;
+﻿using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes
+{
 	public class Get
 	{
 		private interface IFoo

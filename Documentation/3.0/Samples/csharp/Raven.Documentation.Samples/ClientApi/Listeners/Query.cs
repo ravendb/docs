@@ -1,7 +1,7 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Listeners
-{
-	using Client;
+﻿using Raven.Client;
 
+namespace Raven.Documentation.Samples.ClientApi.Listeners
+{
 	public class Query
 	{
 		#region document_query_listener

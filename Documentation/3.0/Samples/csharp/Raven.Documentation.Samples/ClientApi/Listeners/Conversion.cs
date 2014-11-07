@@ -1,7 +1,7 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Listeners
-{
-	using Json.Linq;
+﻿using Raven.Json.Linq;
 
+namespace Raven.Documentation.Samples.ClientApi.Listeners
+{
 	public class Conversion
 	{
 		#region document_conversion_interface

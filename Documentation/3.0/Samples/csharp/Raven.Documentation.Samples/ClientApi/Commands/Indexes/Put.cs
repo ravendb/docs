@@ -1,13 +1,12 @@
-﻿using Raven.Documentation.CodeSamples.Orders;
+﻿using System.Linq;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Indexes
+using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
+using Raven.Client.Indexes;
+using Raven.Documentation.CodeSamples.Orders;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes
 {
-	using System.Linq;
-
-	using Raven.Abstractions.Indexing;
-	using Raven.Client.Document;
-	using Raven.Client.Indexes;
-
 	public class Put
 	{
 		private interface IFoo

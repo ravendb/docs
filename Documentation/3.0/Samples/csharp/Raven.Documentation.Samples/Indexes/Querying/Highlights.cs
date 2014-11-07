@@ -7,9 +7,8 @@ using Raven.Abstractions.Indexing;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
-using Raven.Documentation.Samples;
 
-namespace Raven.Documentation.CodeSamples.Indexes.Querying
+namespace Raven.Documentation.Samples.Indexes.Querying
 {
 	public class Highlights
 	{

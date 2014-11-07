@@ -5,7 +5,7 @@ using Raven.Abstractions.Replication;
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
-namespace Raven.Documentation.CodeSamples.ClientApi.Bundles
+namespace Raven.Documentation.Samples.ClientApi.Bundles
 {
 	public class HowClientIntegratesWithReplicationBundle
 	{

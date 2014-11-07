@@ -1,8 +1,8 @@
-﻿namespace Raven.Documentation.CodeSamples.ClientApi.Commands.Querying
-{
-	using Abstractions.Data;
-	using Client.Document;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
 
+namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
+{
 	public class HowToQueryDatabase
 	{
 		private interface IFoo
