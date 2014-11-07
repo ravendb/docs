@@ -187,6 +187,7 @@
     <None Include="client-api\configuration\conventions\replication.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
+    <None Include="client-api\how-to\enable-profiling.dotnet.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.java.markdown" />
     <None Include="client-api\how-to\work-with-authentication.java.markdown" />

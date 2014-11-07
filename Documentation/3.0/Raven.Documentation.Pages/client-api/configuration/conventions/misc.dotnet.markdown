@@ -2,7 +2,7 @@
 
 ###DisableProfiling
 
-Disable all profiling support which has been enabled by the `DocumentStore.InitializeProfiling()` call.
+Disable all [profiling support](../../how-to/enable-profiling) which has been enabled by the `DocumentStore.InitializeProfiling()` call.
 
 {CODE disable_profiling@ClientApi\Configuration\Conventions\Misc.cs /}
 
