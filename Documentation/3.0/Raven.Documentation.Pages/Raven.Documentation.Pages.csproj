@@ -79,6 +79,12 @@
     <None Include="client-api\commands\batches\.docslist" />
     <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.java.markdown" />
     <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.dotnet.markdown" />
+    <None Include="client-api\commands\documents\how-to\delete-or-update-documents-using-index.http.markdown" />
+    <None Include="client-api\commands\documents\how-to\get-document-metadata-only.http.markdown" />
+    <None Include="client-api\commands\documents\stream.http.markdown" />
+    <None Include="client-api\commands\documents\delete.http.markdown" />
+    <None Include="client-api\commands\documents\get.http.markdown" />
+    <None Include="client-api\commands\documents\put.http.markdown" />
     <None Include="client-api\commands\documents\how-to\delete-or-update-documents-using-index.java.markdown" />
     <None Include="client-api\commands\documents\how-to\get-document-metadata-only.java.markdown" />
     <None Include="client-api\commands\documents\stream.java.markdown" />
