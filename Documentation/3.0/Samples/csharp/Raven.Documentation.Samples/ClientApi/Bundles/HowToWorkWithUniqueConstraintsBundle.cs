@@ -1,11 +1,10 @@
-﻿#region using
-
+﻿
 using Raven.Client.Document;
+#region using
 using Raven.Client.UniqueConstraints;
-
 #endregion
 
-namespace Raven.Documentation.Samples.Server.Bundles
+namespace Raven.Documentation.Samples.ClientApi.Bundles
 {
 	public class UniqueConstraints
 	{
