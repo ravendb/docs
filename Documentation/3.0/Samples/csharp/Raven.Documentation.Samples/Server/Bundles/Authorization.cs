@@ -8,7 +8,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 {
 	public class Authorization
 	{
-		private class Patient
+		internal class Patient
 		{
 			public void AuthorizeHospitalization()
 			{
