@@ -1,3 +1,0 @@
-﻿# Windows Clustering
-
-{FILES-LIST/}
