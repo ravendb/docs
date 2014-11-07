@@ -52,10 +52,12 @@
                 }
                 <div class="pull-right chooser">
                     <span>Version </span>
-                    <div class="btn-group">
-                        @Html.VersionLink("2.5", (string)ViewBag.CurrentVersion, Language.Csharp)
-                        @Html.VersionLink("3.0", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
-                    </div>
+	                <div class="btn-group">
+		                @Html.VersionLink("1.0", (string)ViewBag.CurrentVersion, Language.Csharp)
+		                @Html.VersionLink("2.0", (string)ViewBag.CurrentVersion, Language.Csharp)
+		                @Html.VersionLink("2.5", (string)ViewBag.CurrentVersion, Language.Csharp)
+		                @Html.VersionLink("3.0", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
+	                </div>
                 </div>
                 @if (ViewBag.CurrentVersion == "3.0")
                 {
