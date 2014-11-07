@@ -176,6 +176,7 @@
     <None Include="client-api\configuration\conventions\misc.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\querying.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\identifier-generation\type-specific.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\replication.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
