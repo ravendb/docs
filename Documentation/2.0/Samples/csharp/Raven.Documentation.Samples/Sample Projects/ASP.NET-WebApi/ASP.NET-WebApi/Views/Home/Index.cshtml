@@ -1,0 +1,54 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@section head {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            // Send an AJAX request
+            $.getJSON("api/sample/",
+            function (data) {
+                // On success, 'data' contains a list of products.
+                $.each(data, function (key, val) {
+
+                    // Format the text to display.
+                    var str = val;
+
+                    // Add a list item for the product.
+                    $('<li/>', { html: str })
+                    .appendTo($('#items'));
+                });
+            });
+        });
+
+        function add() {
+            var name = $('#itemName').val();
+
+            $.ajax({
+                url: "api/sample",
+                cache: false,
+                type: 'PUT',
+                data: JSON.stringify({ Name: name }),
+                contentType: 'application/json; charset=utf-8',
+                statusCode: {
+                    201 /*Created*/: function (data) {
+                        $('<li/>', { html: name })
+                            .appendTo($('#items'));
+                        $("#itemName").val("");
+                    }
+                }
+            });
+        }
+        </script>
+}
+<div class="main-content">
+    <div>
+        <h1>All items</h1>
+        <ul id="items" />
+    </div>
+    <form method="POST">
+        <label for="itemName">Name:</label>
+        <input type="text" id="itemName" size="5" />
+        <input type="button" value="Add" onclick="add();" />
+        <p id="item" />
+    </form>
+</div>
