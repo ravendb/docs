@@ -236,6 +236,7 @@
     <Compile Include="ClientApi\DocumentIdentifiers\BewareOf.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\HiLoAlgorithm.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs" />
+    <Compile Include="ClientApi\HowTo\EnableProfiling.cs" />
     <Compile Include="ClientApi\HowTo\SendCustomRequest.cs" />
     <Compile Include="ClientApi\HowTo\SetupAggressiveCaching.cs" />
     <Compile Include="ClientApi\HowTo\WorkWithAuthentication.cs" />
