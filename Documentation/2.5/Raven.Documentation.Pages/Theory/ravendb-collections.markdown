@@ -20,9 +20,9 @@ Probably the most important role for collections is their use in indexes. RavenD
 For example, this index definition:
 
 {CODE-START:json /}
-	{
-		'Map' : 'from post in docs.Posts select new { post.Title, post.PostedAt};'
-	}
+{
+	'Map' : 'from post in docs.Posts select new { post.Title, post.PostedAt};'
+}
 {CODE-END /}
     
 
@@ -30,12 +30,12 @@ More formally, Raven filters the selected documents based on the name of the col
 The index definition above is equivalent to the following index definition:
 
 {CODE-START:json /}
-	{
-		'Map' : 'from doc in docs  
-				where doc["@metadata"]["Raven-Entity-Name"] == "Posts"  
-				let post = doc  
-				select new { post.Title, post.PostedAt };'
-	}
+{
+	'Map' : 'from doc in docs
+			where doc["@metadata"]["Raven-Entity-Name"] == "Posts"
+			let post = doc
+			select new { post.Title, post.PostedAt };'
+}
 {CODE-END /}
 
 Using collections in this manner significantly simplifies the index definition and is strongly recommended.
@@ -45,31 +45,31 @@ Using collections in this manner significantly simplifies the index definition a
 By default, RavenDB defines the index 'Raven/DocumentsByEntityName' as follows:
 
 {CODE-START:json /}
-	{  
-		'Map' : 'from doc in docs 
-					let Tag = doc["@metadata"]["Raven-Entity-Name"]
-					select new { Tag, LastModified = (DateTime)doc["@metadata"]["Last-Modified"] };'  
-	}
+{
+	'Map' : 'from doc in docs
+				let Tag = doc["@metadata"]["Raven-Entity-Name"]
+				select new { Tag, LastModified = (DateTime)doc["@metadata"]["Last-Modified"] };'
+}
 {CODE-END /}
 
 This allows querying for documents based on their entity name using:
 
 {CODE-START:json /}
-	http://localhost:8080/indexes/Raven/DocumentsByEntityName?query=Tag:Users
-
-	{
-		"Results":[ 
-			{
-				"Name":"Ayende",
-				"@metadata":{
-				"Raven-Entity-Name":"Users",
-				"@id":"users/ayende",
-				"@etag":"ecdb775b-4c96-11df-8ec2-001fd08ec235"
-				}
+http://localhost:8080/indexes/Raven/DocumentsByEntityName?query=Tag:Users
+&nbsp;
+{
+	"Results":[
+		{
+			"Name":"Ayende",
+			"@metadata":{
+			"Raven-Entity-Name":"Users",
+			"@id":"users/ayende",
+			"@etag":"ecdb775b-4c96-11df-8ec2-001fd08ec235"
 			}
-		],  
-		"IsStale":false,  
-		"TotalResults":1  
-	}
+		}
+	],
+	"IsStale":false,
+	"TotalResults":1
+}
 {CODE-END /}
 
