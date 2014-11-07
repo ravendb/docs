@@ -12,7 +12,7 @@ You can reset an index in one of the following ways:
 {CODE reset_index@Server\Administration\IndexAdministration.cs /}
 * Using the HTTP API, by issuing a HTTP call to the index with RESET as the method name: 
 {CODE-START:plain /}
-    > curl -X RESET http://localhost:8080/databases/DB1/indexes/indexName
+    curl -X RESET http://localhost:8080/databases/DB1/indexes/indexName
 {CODE-END /}
 
 This operation can be also easily accomplished from the studio. You can right click on a index name and select an action:
@@ -25,7 +25,7 @@ You can delete an index by calling:
 {CODE delete_index@Server\Administration\IndexAdministration.cs /}
 from the client API. Alternatively you can make a HTTP request:
 {CODE-START:plain /}
-    > curl -X DELETE http://localhost:8080/databases/DB1/indexes/indexName
+    curl -X DELETE http://localhost:8080/databases/DB1/indexes/indexName
 {CODE-END /}
 
 The same way like performing the index reset operation you can delete the index using the studio (see the image above).
@@ -40,7 +40,7 @@ It is important to note that this is not a security feature, you can unlock the 
 
 To lock the index you need to create a HTTP call:
 {CODE-START:plain /}
-    > curl -X POST http://localhost:8080/databases/DB1/indexes/indexName?op=lockModeChange&mode=LockedIgnore
+    curl -X POST http://localhost:8080/databases/DB1/indexes/indexName?op=lockModeChange&mode=LockedIgnore
 {CODE-END /}
 
 The available modes are:
@@ -82,7 +82,7 @@ since the last time it was indexed.
 In order to set the priority of the index to idle for example, you can either create a HTTP request like following:
 
 {CODE-START:plain /}
-> curl -X POST local:8080/databases/DB1/indexes/set-priority/IndexName?priority=Idle
+curl -X POST local:8080/databases/DB1/indexes/set-priority/IndexName?priority=Idle
 {CODE-END /}
 
 or use the studio. If so you need to go to _Indexes_ and _Edit_ selected index and there set up the priority:
@@ -101,6 +101,6 @@ When auto indexes are created then they are kept in memory until they won't reac
 From the HTTP API perspective, it can be accomplished by calling the following address:
 
  {CODE-START:plain /}
-> curl -X POST http://localhost:8080/databases/DB1/indexes/IndexName?op=forceWriteToDisk
+curl -X POST http://localhost:8080/databases/DB1/indexes/IndexName?op=forceWriteToDisk
 {CODE-END /}
 

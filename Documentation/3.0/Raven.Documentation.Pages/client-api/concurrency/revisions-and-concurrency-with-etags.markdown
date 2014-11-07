@@ -9,7 +9,7 @@ Every document in RavenDB has a corresponding e-tag (entity tag). This e-tag is 
 When you want to update a document, you can specify the e-tag of the document you were working with in the `If-Match` element of the header. For example, using the cURL utility to build the request: 
 
 {CODE-START:plain /}
-	> curl --header "If-Match:dd62a2e0-2744-11df-a9ff-001c251ced36" -X PUT http://localhost:8080/docs/bobs_address -d "{ FirstName : 'Bob', LastName: 'Smith', Address: '5 Elm St.' }"
+curl --header "If-Match:dd62a2e0-2744-11df-a9ff-001c251ced36" -X PUT http://localhost:8080/docs/bobs_address -d "{ FirstName : 'Bob', LastName: 'Smith', Address: '5 Elm St.' }"
 {CODE-END /}
 
 If the e-tag specified in the header matches the current e-tag of the document in RavenDB, then this update will go through successfully.
@@ -39,7 +39,7 @@ In each case, before any operation is made, the etag from the client is compared
 If you don't have the current etag of the document and you want to prevent an operation on a document that was changed by someone else, you can use an empty etag which is `Guid.Empty`:
 
 {CODE-START:plain /}
-	> curl --header "If-Match:00000000-0000-0000-0000-000000000000" -X PUT http://localhost:8080/docs/bobs_address -d "{ FirstName : 'Bob', LastName: 'Smith', Address: '5 Elm St.' }"
+curl --header "If-Match:00000000-0000-0000-0000-000000000000" -X PUT http://localhost:8080/docs/bobs_address -d "{ FirstName : 'Bob', LastName: 'Smith', Address: '5 Elm St.' }"
 {CODE-END /}
 
 ### False concurrent access error

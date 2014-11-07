@@ -10,7 +10,7 @@ To integrate with Excel application we will need following items:
 To query a database for `Product` using our `Raven/DocumentsByEntityName` index then transforming the results with `Products/ForExcel` transformer and formating them to excel we need to visit following url:   
 
 {CODE-START:plain /}
-    > curl -X GET http://localhost:8080/streams/query/Raven/DocumentsByEntityName?query=Tag:Products&resultsTransformer=Products/ForExcel&format=excel
+curl -X GET http://localhost:8080/streams/query/Raven/DocumentsByEntityName?query=Tag:Products&resultsTransformer=Products/ForExcel&format=excel
 {CODE-END /}
 
 ![Query results](images\excel_result.png)

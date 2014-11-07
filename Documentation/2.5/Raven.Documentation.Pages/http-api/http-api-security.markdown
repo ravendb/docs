@@ -6,9 +6,9 @@ Any method that would normally be used to authenticate and secure access to a gi
 By default such anonymous users can GET any documents they want, but not modify or add any documents or indexes. This option is called "Get". The other options are to grant anonymous users all privileges on the database ("All") or no access at all ("None"). You can set which option you prefer in the app.config as follows: 
 
 {CODE-START:xml /}
-    <appSettings>  
-         <add key="Raven/AnonymousAccess" value="All"/>  
-    </appSettings>
+	<appSettings>
+		<add key="Raven/AnonymousAccess" value="All" />
+	</appSettings>
 {CODE-END /}
 
 By default, while running the server in debug mode, anonymous users are granted Get access.

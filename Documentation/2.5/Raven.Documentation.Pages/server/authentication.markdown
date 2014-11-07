@@ -20,24 +20,22 @@ When action (request) needs to be authenticated and no other authentication meth
 By default all windows users and groups have access to all the databases, but this can be easily changed by editing `Raven/Authorization/WindowsSettings` document in `system` database. The document consists of list of users and groups that contain the list of accessible databases. For example this document could look like this:
 
 {CODE-START:json /}
-
+{
+	"RequiredGroups": [],
+	"RequiredUsers": [
 	{
-	  "RequiredGroups": [],
-	  "RequiredUsers": [
-		{
-		  "Name": "IIS AppPool\\DefaultAppPool",
-		  "Enabled": true,
-		  "Databases": [
+		"Name": "IIS AppPool\\DefaultAppPool",
+		"Enabled": true,
+		"Databases": [
 			{
-			  "Admin": false,
-			  "TenantId": "ExampleDB",
-			  "ReadOnly": true
+				"Admin": false,
+				"TenantId": "ExampleDB",
+				"ReadOnly": true
 			}
-		  ]
-		}
-	  ]
+		]
 	}
-
+	]
+}
 {CODE-END /}
 
 Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultAppPool`. Similar effect can be achieved using the Studio and editing `system` database settings.
@@ -49,13 +47,13 @@ Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultApp
 By default Windows Authentication does not allow to use an account that have a blank password. However if you really need this you can disable this Windows security policy by using:
 
 {CODE-START:json /}
-   > Raven.Server.exe /allow-blank-password-use
+Raven.Server.exe /allow-blank-password-use
 {CODE-END /}
 
 It will disable the following policy _Limit local account use of blank passwords to console logon only_ on your Windows machine. In order to revert your changes you can use:
 
 {CODE-START:json /}
-   > Raven.Server.exe /deny-blank-password-use
+Raven.Server.exe /deny-blank-password-use
 {CODE-END /}
 
 to get back into the default setting.
@@ -87,41 +85,41 @@ The returned results vary on the current authentication type:
 * **Anonymous**      
 
 {CODE-START:json /}
-    {
-      "Remark": "Using anonymous user"
-    }
+{
+    "Remark": "Using anonymous user"
+}
 {CODE-END /}
 
 * **Windows Authentication** with full access to all databases:    
 
 {CODE-START:json /}
-    {
-      "Remark": "Using windows auth",
-	  "User": "RavenUser",
-	  "IsAdmin": "True"
-    }
+{
+    "Remark": "Using windows auth",
+	"User": "RavenUser",
+	"IsAdmin": "True"
+}
 {CODE-END /}
 
 * **Windows Authentication** with restricted access:   
 
 {CODE-START:json /}
-    {
-      "Remark": "Using windows auth",
-	  "User": "RavenUser",
-	  "IsAdmin": "False",
-	  "AdminDatabases": [],
-      "ReadOnlyDatabases": [ "ExampleReadOnlyDB" ],
-      "ReadWriteDatabases": [ "ExampleReadWriteDB" ]
-    }
+{
+    "Remark": "Using windows auth",
+	"User": "RavenUser",
+	"IsAdmin": "False",
+	"AdminDatabases": [],
+    "ReadOnlyDatabases": [ "ExampleReadOnlyDB" ],
+    "ReadWriteDatabases": [ "ExampleReadWriteDB" ]
+}
 {CODE-END /}
 
 * **OAuth Authentication**:    
 
 {CODE-START:json /}
-    {
-      "Remark": "Using OAuth",
-	  "User": "RavenUser",
-	  "IsAdmin": "False",
-	  "TokenBody": "<token_here>"
-    }
+{
+    "Remark": "Using OAuth",
+	"User": "RavenUser",
+	"IsAdmin": "False",
+	"TokenBody": "<token_here>"
+}
 {CODE-END /}

@@ -280,6 +280,7 @@
     <Content Include="Appendixes\Images\profiling_mvc_application_2.png" />
     <Content Include="Appendixes\Images\profiling_mvc_application_3.png" />
     <Content Include="client-api\advanced\images\CNET_faceted_search_2.jpg" />
+    <Content Include="client-api\images\CNET_faceted_search_2.jpg" />
     <Content Include="client-api\querying\images\polymorphic_indexes_faq.png" />
     <Content Include="faq\images\denormalized_references_faq.png" />
     <Content Include="http-api\images\excel_connections.png" />

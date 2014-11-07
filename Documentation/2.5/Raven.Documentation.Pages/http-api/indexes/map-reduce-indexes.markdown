@@ -11,16 +11,16 @@ For a more in-depth look at how map reduce works, read this post: [Map / Reduce 
 Map reduce indexes are created in the same way as simple indexes, just with a reduce function specified as well:
 
 {CODE-START:json /}
-    curl -X PUT http://localhost:8080/indexes/byEmail -d "{ Map: 'from doc in docs where doc.email != null select new {doc.email, count = 1 };' ,
+curl -X PUT http://localhost:8080/indexes/byEmail -d "{ Map: 'from doc in docs where doc.email != null select new {doc.email, count = 1 };' ,
      Reduce: 'from result in results group result by result.email into g select new { email = g.Key, count = g.Sum(x=>x.count)  } '}"
 {CODE-END /}
 
 On a successful index create, RavenDB will respond with a HTTP 201 Created response code, and a JSON acknowledgment of the index just created:
 
 {CODE-START:json /}
-    HTTP/1.1 201 Created
-    
-    {"index":"byEmail"}
+HTTP/1.1 201 Created
+&nbsp;
+{"index":"byEmail"}
 {CODE-END /}
 
 ##Querying a Map Reduce Index
@@ -28,16 +28,16 @@ On a successful index create, RavenDB will respond with a HTTP 201 Created respo
 Querying a Map Reduce is done the same way as with a simple index. Assuming we've previously added a document such as:
 
 {CODE-START:json /}
-    > curl http://localhost:8080/docs/ayende1 -X PUT "{ _id: 'ayende',email: 'ayende@ayende.com', projects: [ 'rhino mocks','nhibernate','rhino service bus','raven db' ] }"
-    > curl http://localhost:8080/docs/ayende2 -X PUT "{ _id: 'ayende',email: 'ayende@ayende.com', projects: [ 'rhino mocks','nhibernate','rhino service bus','raven db' ] }"
+curl http://localhost:8080/docs/ayende1 -X PUT "{ _id: 'ayende',email: 'ayende@ayende.com', projects: [ 'rhino mocks','nhibernate','rhino service bus','raven db' ] }"
+curl http://localhost:8080/docs/ayende2 -X PUT "{ _id: 'ayende',email: 'ayende@ayende.com', projects: [ 'rhino mocks','nhibernate','rhino service bus','raven db' ] }"
 {CODE-END /}
 
 Then a query of the "byEmail" map reduce index would look like:
 
 {CODE-START:json /}
-    > curl -X GET http://localhost:8080/indexes/byEmail?query=email:ayende@ayende.com
-    
-    {"Results":[{"email":"ayende@ayende.com","count":"2"}],"IsStale":false,"TotalResults":1}
+curl -X GET http://localhost:8080/indexes/byEmail?query=email:ayende@ayende.com
+&nbsp;
+{"Results":[{"email":"ayende@ayende.com","count":"2"}],"IsStale":false,"TotalResults":1}
 {CODE-END /}
 
 ##Paging Results & Deleting

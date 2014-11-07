@@ -10,38 +10,38 @@ Automatic indexes have their age, and that is tracked internally by RavenDB. If 
 The following examples assume the following document structure is in place:
 
 {CODE-START:json /}
+{
+    Id: "blogs/1"
+    Title: "one",
+    Content: "I like ravens",
+    Category: "Ravens",
+    Tags:
     {
-        Id: "blogs/1"
-        Title: "one",
-        Content: "I like ravens",
-        Category: "Ravens",
-        Tags:
-        {
-            Name: "birds"
-        }
+        Name: "birds"
     }
-    
+}
+&nbsp;
+{
+    Id: "blogs/2"
+    Title: "two",
+    Content: "",
+    Category: "Ravens",
+    Tags:
     {
-        Id: "blogs/2"
-        Title: "two",
-        Content: "",
-        Category: "Ravens",
-        Tags:
-        {
-           Name: "birds"
-        }
+        Name: "birds"
     }
-    
+}
+&nbsp;
+{
+    Id: "blogs/2"
+    Title: "two",
+    Content: "I like rhinos",
+    Category: "Rhinos",
+    Tags:
     {
-        Id: "blogs/2"
-        Title: "two",
-        Content: "I like rhinos",
-        Category: "Rhinos",
-        Tags:
-        {
-           Name: "mammals"
-        }
+        Name: "mammals"
     }
+}
 {CODE-END /}
 
 ## Querying simple properties
@@ -49,7 +49,7 @@ The following examples assume the following document structure is in place:
 We can perform a query for all the documents with a category of “Ravens” by making a call to the ordinary indexes endpoint like so:
 
 {CODE-START:plain /}
-    > curl -X GET http://localhost:8080/indexes/dynamic?query=Category:Ravens
+    curl -X GET http://localhost:8080/indexes/dynamic?query=Category:Ravens
 {CODE-END /}
 
 This call returns the same structure as ordinary indexes, and accepts all of the usual arguments.
@@ -57,7 +57,7 @@ This call returns the same structure as ordinary indexes, and accepts all of the
 Multiple properties can be queried like so:
 
 {CODE-START:plain /}
-    > curl -X GET http://localhost:8080/indexes/dynamic?query=Category:Ravens AND Title:one
+    curl -X GET http://localhost:8080/indexes/dynamic?query=Category:Ravens AND Title:one
 {CODE-END /}
 
 ## Querying simple properties
@@ -65,7 +65,7 @@ Multiple properties can be queried like so:
 Unlike when querying an index which is flattened, dynamic indexes take in the full path to the properties being compared
 
 {CODE-START:plain /}
-    > curl -X GET http://localhost:8080/indexes/dynamic?query=Content.Length:[00000000 TO NULL]
+    curl -X GET http://localhost:8080/indexes/dynamic?query=Content.Length:[00000000 TO NULL]
 {CODE-END /}
 
 ##Querying collection properties
@@ -73,7 +73,7 @@ Unlike when querying an index which is flattened, dynamic indexes take in the fu
 Special syntax is used to query collections, instead of a period to denote property access, a comma is used to indicate an array is being accessed.
 
 {CODE-START:plain /}
-    > curl -X GET http://localhost:8080/indexes/dynamic?query=Tags,Name:mammals
+    curl -X GET http://localhost:8080/indexes/dynamic?query=Tags,Name:mammals
 {CODE-END /}
 
 This is equivalent to "find all the blogs with the tag of mammals".
@@ -83,15 +83,15 @@ This is equivalent to "find all the blogs with the tag of mammals".
 Let's assume the following document is stored in RavenDB:
 
 {CODE-START:json /}
-    {
-      "Title": "RavenDB Indexing",
-      "Author": { "Id": "users/ayende", "Name": "Ayende" },
-      "Tags": ["Indexing", "AdHoc"],
-      "Images": [
-         { "Url": "/static/ayende-on-beach.jpg", "Title": "Ayende's on the Beach" },
-         { "Url": "/static/arava.jpg", "Title": "Arava with a bone" },
-      ]
-    }
+{
+    "Title": "RavenDB Indexing",
+    "Author": { "Id": "users/ayende", "Name": "Ayende" },
+    "Tags": ["Indexing", "AdHoc"],
+    "Images": [
+        { "Url": "/static/ayende-on-beach.jpg", "Title": "Ayende's on the Beach" },
+        { "Url": "/static/arava.jpg", "Title": "Arava with a bone" },
+    ]
+}
 {CODE-END /}
 
 We will show the appropriate Linq query and the actual Lucene query generated for each example:
