@@ -2,7 +2,7 @@
 
 ###DisableProfiling
 
-Disable all profiling support which has been enabled by the `DocumentStore.InitializeProfiling()` call.
+Disable all [profiling support](../../how-to/enable-profiling) which has been enabled by the `DocumentStore.InitializeProfiling()` call.
 
 {CODE disable_profiling@ClientApi\Configuration\Conventions\Misc.cs /}
 
@@ -11,20 +11,6 @@ Disable all profiling support which has been enabled by the `DocumentStore.Initi
 It determines whether RavenDB client should automatically enlist in distributed transactions or not. Default: `true`.
 
 {CODE enlist_in_dist_tx@ClientApi\Configuration\Conventions\Misc.cs /}
-
-###FailoverBehavior
-
-This conventions tells the client how it should behave in a replicated environment when the primary node is unreachable and need to failover to secondary node(s). Detailed description you will
-find [here](../../bundles/how-client-integrates-with-replication-bundle).
-
-{CODE failover_behavior@ClientApi\Configuration\Conventions\Misc.cs /}
-
-###ReplicationInformerFactory
-
-This is called to provide replication behavior for the client. You can customize this to inject your own replication / failover logic by implementing `IDocumentStoreReplicationInformer`.
-
-{CODE replication_informer@ClientApi\Configuration\Conventions\Misc.cs /}
-
 
 ###MaxNumberOfRequestsPerSession
 
