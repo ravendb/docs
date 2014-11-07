@@ -17,7 +17,7 @@ If the e-tag specified in the header matches the current e-tag of the document i
 If the document was updated by someone else before you, then the e-tag's won't match and RavenDB will return a conflict error: 
 
 {CODE-START:plain /}
-    HTTP/1.1 409 Conflict  
+    HTTP/1.1 409 Conflict
     &nbsp;
     {"url":"/docs/bobs_address","actualETag":"dd62a2e0-2744-11df-a9ff-001c251ced36","expectedETag":"ac6ca153-2745-11df-a9ff-001c251ced36",
          "error":"PUT attempted on document 'bobs_address' using a non current etag"}
