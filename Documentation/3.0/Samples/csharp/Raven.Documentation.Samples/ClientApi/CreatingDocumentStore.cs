@@ -22,7 +22,7 @@
 		#region document_store_holder
 		public class DocumentStoreHolder
 		{
-			private static Lazy<IDocumentStore> store = new Lazy<IDocumentStore>();
+			private static Lazy<IDocumentStore> store = new Lazy<IDocumentStore>(CreateStore);
 
 			public static IDocumentStore Store
 			{
