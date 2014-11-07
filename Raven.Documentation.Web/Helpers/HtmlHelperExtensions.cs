@@ -55,12 +55,17 @@
 		{
 			var mode = GetMode(version);
 
-			switch (mode)
+			if (mode == DocumentationMode.Normal)
+				return GenerateNavigationFor30(htmlHelper, language);
+
+			switch (version)
 			{
-				case DocumentationMode.Normal:
-					return GenerateNavigationFor30(htmlHelper, language);
-				case DocumentationMode.Legacy:
-					return GenerateNavigationFor25(htmlHelper, language);
+				case "2.5":
+					return GenerateNavigationFor25Or20(htmlHelper, language, version);
+				case "2.0":
+					return GenerateNavigationFor25Or20(htmlHelper, language, version);
+				//case "1.0":
+				//	return GenerateNavigationFor10(htmlHelper, language);
 			}
 
 			return null;
@@ -91,24 +96,27 @@
 			return new MvcHtmlString(builder.ToString());
 		}
 
-		private static MvcHtmlString GenerateNavigationFor25(HtmlHelper htmlHelper, Language language)
+		private static MvcHtmlString GenerateNavigationFor25Or20(HtmlHelper htmlHelper, Language language, string version)
 		{
+			if (version != "2.5" && version != "2.0")
+				throw new NotSupportedException("Version " + version + " is not supported.");
+
 			var builder = new StringBuilder();
 			builder.AppendLine("<ul class='nav navbar-nav'>");
 
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Intro", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "intro" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Theory", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "theory" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink(".NET Client API", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "client-api" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("HTTP API", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "http-api" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server side", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "server" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "studio" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Intro", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "intro" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Theory", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "theory" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink(".NET Client API", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "client-api" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("HTTP API", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "http-api" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server side", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "server" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "studio" }, null)));
 
 			builder.AppendLine("<li class='dropdown'>");
 			builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");
 			builder.AppendLine("<ul class='dropdown-menu' role='menu'>");
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Appendixes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "appendixes" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("FAQ", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "faq" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "2.5", key = "samples" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Appendixes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "appendixes" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("FAQ", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "faq" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "samples" }, null)));
 			builder.AppendLine("</ul>");
 			builder.AppendLine("</li>");
 
