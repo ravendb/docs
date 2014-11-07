@@ -28,19 +28,30 @@ namespace RavenCodeSamples.ClientApi.Querying
 	#endregion
 
 	#region intersection_2
-	public class TShirtIndex : AbstractIndexCreationTask<TShirt>
+	public class TShirts_ByManufacturerColorSizeAndReleaseYear : AbstractIndexCreationTask<TShirt>
 	{
-		public TShirtIndex()
+		public class Result
 		{
-			this.Map = tshirts => from tshirt in tshirts
-								  from type in tshirt.Types
-								  select new
-									  {
-										  Manufacturer = tshirt.Manufacturer,
-										  Color = type.Color,
-										  Size = type.Size,
-										  ReleaseYear = tshirt.ReleaseYear
-									  };
+			public string Manufacturer { get; set; }
+
+			public string Color { get; set; }
+
+			public string Size { get; set; }
+
+			public int ReleaseYear { get; set; }
+		}
+
+		public TShirts_ByManufacturerColorSizeAndReleaseYear()
+		{
+			Map = tshirts => from tshirt in tshirts
+							 from type in tshirt.Types
+							 select new
+								 {
+									 Manufacturer = tshirt.Manufacturer,
+									 Color = type.Color,
+									 Size = type.Size,
+									 ReleaseYear = tshirt.ReleaseYear
+								 };
 		}
 	}
 
@@ -109,21 +120,31 @@ namespace RavenCodeSamples.ClientApi.Querying
 					#endregion
 
 					#region intersection_4
-					session.Query<TShirt>("TShirtIndex")
-						   .Where(x => x.Manufacturer == "Raven")
-						   .Intersect()
-						   .Where(x => x.Types.Any(t => t.Color == "Blue" && t.Size == "Small"))
-						   .Intersect()
-						   .Where(x => x.Types.Any(t => t.Color == "Gray" && t.Size == "Large"))
-						   .ToList();
-
+					session
+						.Query<TShirts_ByManufacturerColorSizeAndReleaseYear.Result, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+						.Where(x => x.Manufacturer == "Raven")
+						.Intersect()
+						.Where(x => x.Color == "Blue" && x.Size == "Small")
+						.Intersect()
+						.Where(x => x.Color == "Gray" && x.Size == "Large")
+						.OfType<TShirt>()
+						.ToList();
 					#endregion
 
 					#region intersection_5
-					session.Advanced.LuceneQuery<TShirt>("TShirtIndex")
-						   .Where("Manufacturer:Raven INTERSECT Color:Blue AND Size:Small INTERSECT Color:Gray AND Size:Large")
-						   .ToList();
-
+					session
+						.Advanced
+						.LuceneQuery<TShirt, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+						.WhereEquals("Manufacturer", "Raven")
+						.Intersect()
+						.WhereEquals("Color", "Blue")
+						.AndAlso()
+						.WhereEquals("Size", "Small")
+						.Intersect()
+						.WhereEquals("Color", "Gray")
+						.AndAlso()
+						.WhereEquals("Size", "Large")
+						.ToList();
 					#endregion
 				}
 			}
