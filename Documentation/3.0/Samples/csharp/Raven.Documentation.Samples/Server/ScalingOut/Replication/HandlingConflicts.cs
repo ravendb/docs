@@ -39,7 +39,13 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 						}
 
 						var select = int.Parse(Console.ReadLine());
+
 						var resolved = list[select];
+						resolved.Metadata.Remove("Raven-Replication-Conflict-Document");
+						resolved.Metadata.Remove("Raven-Replication-Conflict");
+						resolved.Metadata.Remove("@id");
+						resolved.Metadata.Remove("@etag");
+
 						store.DatabaseCommands.Put("users/ayende", null, resolved.DataAsJson, resolved.Metadata);
 					}
 				}
