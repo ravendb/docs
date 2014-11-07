@@ -1,1 +1,0 @@
-# Client API : How to work with authentication?

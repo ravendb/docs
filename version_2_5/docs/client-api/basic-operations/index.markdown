@@ -1,3 +1,0 @@
-﻿# Basic Operations
-
-{FILES-LIST/}

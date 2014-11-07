@@ -1,9 +1,0 @@
-/commands	Commands
-/changes	Changes API
-/querying	Querying
-/bulk-insert	Bulk Insert
-operation.markdown	Operation
-query-header-information.markdown	QueryHeaderInformation
-raven-query-statistics.markdown	RavenQueryStatistics
-database-statistics.markdown	DatabaseStatistics
-admin-statistics.markdown	AdminStatistics

@@ -1,3 +1,0 @@
-﻿#Samples
-
-{FILES-LIST /}
