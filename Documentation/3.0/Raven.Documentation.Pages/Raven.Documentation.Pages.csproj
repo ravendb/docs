@@ -65,6 +65,7 @@
     <None Include="client-api\changes\what-is-changes-api.dotnet.markdown" />
     <None Include="client-api\commands\.docslist" />
     <None Include="client-api\commands\attachments\.docslist" />
+    <None Include="client-api\commands\attachments\put.http.markdown" />
     <None Include="client-api\commands\attachments\how-to\update-attachment-metadata-only.java.markdown" />
     <None Include="client-api\commands\attachments\how-to\get-attachment-metadata-only.java.markdown" />
     <None Include="client-api\commands\attachments\put.java.markdown" />
