@@ -110,6 +110,7 @@
     <Compile Include="Blog.cs" />
     <Compile Include="ClientApi\BulkInsert\BulkInserts.cs" />
     <Compile Include="ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs" />
+    <Compile Include="ClientApi\Bundles\HowToWorkWithAuthorizationBundle.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToBulkInsertChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToDocumentChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToIndexChanges.cs" />
@@ -333,7 +334,7 @@
     <Compile Include="Server\Bundles\PeriodicExport.cs" />
     <Compile Include="Server\Bundles\ScriptedIndexResults.cs" />
     <Compile Include="Server\Bundles\SqlReplication.cs" />
-    <Compile Include="Server\Bundles\UniqueConstraints.cs" />
+    <Compile Include="ClientApi\Bundles\HowToWorkWithUniqueConstraintsBundle.cs" />
     <Compile Include="Server\Bundles\Versioning.cs" />
     <Compile Include="Server\Configuration\Authentication.cs" />
     <Compile Include="Server\Configuration\MultipleDatabases.cs" />
