@@ -23,15 +23,16 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers
 						"Order/Statistics",
 						new TransformerDefinition
 						{
-							TransformResults = @"from order in orders
+							TransformResults = @"from order in results
 												select new
 												{
 													order.OrderedAt,
 													order.Status,
 													order.CustomerId,
-													CustomerName = LoadDocument<Customer>(order.CustomerId).Name,
+													CustomerName = LoadDocument(order.CustomerId).Name,
 													LinesCount = order.Lines.Count
-												}"
+												}",
+                            Name = "Order/Statistics"
 						});
 				#endregion
 			}

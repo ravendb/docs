@@ -133,6 +133,10 @@
     <None Include="client-api\commands\querying\how-to-work-with-facet-query.java.markdown" />
     <None Include="client-api\commands\querying\how-to-stream-query-results.java.markdown" />
     <None Include="client-api\commands\querying\how-to-query-a-database.java.markdown" />
+    <None Include="client-api\commands\transformers\delete.http.markdown" />
+    <None Include="client-api\commands\transformers\get.http.markdown" />
+    <None Include="client-api\commands\transformers\how-to\transform-query-results.http.markdown" />
+    <None Include="client-api\commands\transformers\put.http.markdown" />
     <None Include="client-api\commands\transformers\delete.java.markdown" />
     <None Include="client-api\commands\transformers\get.java.markdown" />
     <None Include="client-api\commands\transformers\how-to\transform-query-results.java.markdown" />
