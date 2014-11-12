@@ -6,15 +6,15 @@ RavenDB in its core is a document database, and as such it is feature complete a
 
 The following bundles are available out of the box, to extend RavenDB's capabilities in several common scenarios:
 
-* [Compression](compression) - reduces the cost of I\O operations and data size on disk.
-* [Encryption](encryption) - enables data encryption.
-* [Expiration](expiration) - removes expired documents automatically.
-* [Quotas](quotas) - to put size limits on a database.
-* [Replication](../../scaling-out/replication) - provides a way to replicate data between servers.
-* [SQL Replication](sql-replication) - replicates a RavenDB documents to SQL Server.
-* [Versioning](versioning) - automatic versioning of documents upon updates or deletes.
-* [Periodic Backup](periodic-backup) - configure backups.
-* [Scripted Index Results](scripted-index-results) - attach custom scripts to index.
+* [Compression](../../server/extending/bundles/compression) - reduces the cost of I\O operations and data size on disk.
+* [Encryption](../../server/extending/bundles/encryption) - enables data encryption.
+* [Expiration](../../server/extending/bundles/expiration) - removes expired documents automatically.
+* [Quotas](../../server/extending/bundles/quotas) - to put size limits on a database.
+* [Replication](../../server/scaling-out/replication) - provides a way to replicate data between servers.
+* [SQL Replication](../../server/extending/bundles/sql-replication) - replicates a RavenDB documents to SQL Server.
+* [Versioning](../../server/extending/bundles/versioning) - automatic versioning of documents upon updates or deletes.
+* [Periodic Backup](../../server/extending/bundles/periodic-backup) - configure backups.
+* [Scripted Index Results](../../server/extending/bundles/scripted-index-results) - attach custom scripts to index.
 
 {INFO Built-in bundles can be selectively added to a specific database using `Raven/ActiveBundles` property in the database document. The documentation describing how to manage database configuration documents can be found [here](../../administration/configuration). /}
 
@@ -22,10 +22,10 @@ The following bundles are available out of the box, to extend RavenDB's capabili
 
 Beside the built-in bundles in RavenDB distribution package you can find other bundles that need to be placed in `Plugins` directory (see below for more information):
 
-* [Authorization](authorization) - allows to manage user groups, roles and permissions.
-* [Cascade Delete](cascade-delete)
-* [Index Replication](index-replication)
-* [Unique Constraints](unique-constraints) - adds the ability to define unique constraints to RavenDB documents.
+* [Authorization](../../server/extending/bundles/authorization) - allows to manage user groups, roles and permissions.
+* [Cascade Delete](../../server/extending/bundles/cascade-delete)
+* [Index Replication](../../server/extending/bundles/index-replication)
+* [Unique Constraints](../../server/extending/bundles/unique-constraints) - adds the ability to define unique constraints to RavenDB documents.
 
 ### Installing a custom bundle
 

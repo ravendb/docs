@@ -1,8 +1,8 @@
 ﻿# Authentication & Authorization
 
 RavenDB comes with a built-in authentication functionality and it supports two types of authentication:    
-* [Windows Authentication](authentication/#windows-authentication)   
-* [OAuth Authentication](authentication/#oauth-authentication)   
+* [Windows Authentication](../server/authentication#windows-authentication)   
+* [OAuth Authentication](../server/authentication#oauth-authentication)   
 
 Appropriate authentication type is chosen by examining incoming request headers and by default all actions except read-only are being authenticated. To determine which actions will be authenticated please refer to [Raven/AnonymousAccess](administration/configuration#authorization--authentication) configuration setting.
 

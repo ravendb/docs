@@ -84,7 +84,7 @@ At the top right you have several buttons:
 - **Add Sort By**: Add option to sort the results:  
 ![Indexes Fig 18](Images/studio_indexes_18.PNG)  
 
-- **Add Transformer**: Adds a possibility to use a [Transformer](../client-api/querying/result-transformation/result-transformers) on the results:  
+- **Add Transformer**: Adds a possibility to use a [Transformer](../client-api/querying/results-transformation/result-transformers) on the results:  
 ![Indexes Fig 18](Images/studio_indexes_18_1.PNG)  
 
 - **Query Options**: In here you can select if the default operator is OR/AND (default is OR), and if to show fields and index entries.  

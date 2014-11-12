@@ -5,8 +5,8 @@ On the bottom of each screen various statistics on the database are shown:
 
 In here you can see:  
 
-- Number of [documents](http://ravendb.net/doc/studio/documents)
-- Number of [indexes](http://ravendb.net/docs/studio/indexes)
+- Number of [documents](../studio/documents)
+- Number of [indexes](../studio/indexes)
 - Number of stale indexes
 - Number of errors
 - Number of triggers
