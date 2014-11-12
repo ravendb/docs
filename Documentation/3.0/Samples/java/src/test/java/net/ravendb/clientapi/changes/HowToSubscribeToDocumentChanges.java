@@ -109,7 +109,7 @@ public class HowToSubscribeToDocumentChanges {
 
     try (IDocumentStore store = new DocumentStore()) {
       //region document_changes_8
-      String typeName = store.getConventions().getFindClrTypeName().find(Employee.class);
+      String typeName = store.getConventions().getFindJavaClassName().find(Employee.class);
       Closeable subscription = store
         .changes()
         .forDocumentsOfType(typeName)
