@@ -470,4 +470,4 @@ Many of the configuration options described in section above can be used both in
 
 {NOTE **Raven/ActiveBundles** can be changed after database has been created, but any changes may cause unexpected stability issues and are HIGHLY unrecommended. Please activate bundles only when creating new database. /}
 
-{NOTE **Raven/Encryption** settings can only be provided when database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption). /}
+{NOTE **Raven/Encryption** settings can only be provided when database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../../server/extending/bundles/encryption). /}
