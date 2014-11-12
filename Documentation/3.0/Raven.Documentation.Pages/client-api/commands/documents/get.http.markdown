@@ -32,7 +32,7 @@ curl \
 
 | Headers | Required | |
 | --------| ------- | --- |
-| `If-None-Match` | No |  Used to pass document `Etag` |
+| **If-None-Match** | No |  Used to pass document `Etag` |
 
 ### Response
 
@@ -119,8 +119,8 @@ curl \
 
 | Return Value | |
 | ------------- | ------------- |
-| Results | List of requested documents |
-| Includes | List of included documents |
+| **Results** | List of requested documents |
+| **Includes** | List of included documents |
 
 <hr />
 
