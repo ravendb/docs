@@ -62,7 +62,7 @@ This endpoint accepts [IndexQuery](../../../glossary/index-query) object. All po
 
 {PANEL:GetMultiFacets}
 
-Sending multiple facet queries is achievable by using `GetMultiFacets` method.
+Sending multiple facet queries is achievable by using `/facets/multisearch` endpoint.
 
 ### Syntax
 
