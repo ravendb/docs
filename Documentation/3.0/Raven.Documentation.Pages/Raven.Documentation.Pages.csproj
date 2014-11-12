@@ -82,6 +82,7 @@
     <None Include="client-api\commands\attachments\how-to\update-attachment-metadata-only.dotnet.markdown" />
     <None Include="client-api\commands\attachments\put.dotnet.markdown" />
     <None Include="client-api\commands\batches\.docslist" />
+    <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.http.markdown" />
     <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.java.markdown" />
     <None Include="client-api\commands\batches\how-to-send-multiple-commands-using-a-batch.dotnet.markdown" />
     <None Include="client-api\commands\documents\how-to\delete-or-update-documents-using-index.http.markdown" />
