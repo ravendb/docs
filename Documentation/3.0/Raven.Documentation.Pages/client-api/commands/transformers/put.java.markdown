@@ -1,6 +1,6 @@
 # Commands : Transformers : Put
 
-**PutTransformer** is used to remove a transformer from a database.
+**PutTransformer** is used to add a transformer to a database.
 
 ## Syntax
 
