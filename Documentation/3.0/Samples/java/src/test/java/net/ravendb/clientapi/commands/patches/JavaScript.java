@@ -93,9 +93,9 @@ public class JavaScript {
       //endregion
 
       //region patch_7
-      // accessing metadata (added ClrType property with value from @metadata)
+      // accessing metadata (added JavaClass property with value from @metadata)
       store.getDatabaseCommands().patch("employees/1",
-        new ScriptedPatchRequest("this.ClrType = this['@metadata']['Raven-Clr-Type'];")
+        new ScriptedPatchRequest("this.JavaClass = this['@metadata']['Raven-Java-Type'];")
       );
       //endregion
 
