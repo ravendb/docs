@@ -25,7 +25,7 @@ curl \
 {CODE-BLOCK/}
 
 {SAFE:IndexQuery parameters}
-This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All possible [IndexQuery](../../../../glossary/index-query) parameters are listed [here](../../../../client-api/commands/querying/how-to-query-a-database)
+This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All possible [IndexQuery](../../../../glossary/index-query) parameters are listed [here](../../../../client-api/commands/querying/how-to-query-a-database#indexquery-parameters)
 {SAFE/}
 
 ### Request
@@ -82,7 +82,7 @@ curl \
 {CODE-BLOCK/}
 
 {SAFE:IndexQuery parameters}
-This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All possible [IndexQuery](../../../../glossary/index-query) parameters are listed [here](../../../../client-api/commands/querying/how-to-query-a-database)
+This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All possible [IndexQuery](../../../../glossary/index-query) parameters are listed [here](../../../../client-api/commands/querying/how-to-query-a-database#indexquery-parameters)
 {SAFE/}
 
 ### Request
@@ -95,7 +95,7 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 | Payload |
 | ------- |
-| List of patch requests |
+| Array of patch requests |
 
 ### Response
 
@@ -139,7 +139,7 @@ curl \
 {CODE-BLOCK/}
 
 {SAFE:IndexQuery parameters}
-This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All possible [IndexQuery](../../../../glossary/index-query) parameters are listed [here](../../../../client-api/commands/querying/how-to-query-a-database)
+This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All possible [IndexQuery](../../../../glossary/index-query) parameters are listed [here](../../../../client-api/commands/querying/how-to-query-a-database#indexquery-parameters)
 {SAFE/}
 
 ### Request

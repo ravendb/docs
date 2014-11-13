@@ -39,7 +39,19 @@ curl \
 {CODE-BLOCK:json}
 curl -X GET "http://localhost:8080/databases/NorthWind/transformers/Order/Statistics"
 < HTTP/1.1 200 OK
-{"Transformer":{"TransformResults":"from order in results select new {     order.OrderedAt,     order.Status,     order.CustomerId,     CustomerName = LoadDocument(order.CustomerId).Name,     LinesCount = order.Lines.Count }","TransfomerId":2,"Name":"Order/Statistics"}}
+{
+	"Transformer":
+	{
+		"TransformResults":"from order in results select new { 
+		    order.OrderedAt,     
+			order.Status,     
+			order.CustomerId,     
+			CustomerName = LoadDocument(order.CustomerId).Name,     
+			LinesCount = order.Lines.Count }",
+		"TransfomerId":2,
+		"Name":"Order/Statistics"
+	}
+}
 {CODE-BLOCK/}
 
 {PANEL/}

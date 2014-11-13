@@ -18,7 +18,7 @@ curl \
 
 | Header | Required | Description |
 | --------| ------- | --- |
-| **etag** | No | current attachment etag, used for concurrency checks |
+| **If-None-Match** | No | current attachment etag, used for concurrency checks |
 
 ### Response
 

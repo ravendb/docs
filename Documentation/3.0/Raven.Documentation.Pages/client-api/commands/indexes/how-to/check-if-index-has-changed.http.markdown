@@ -8,6 +8,7 @@
 curl \
 	http://{serverName}/databases/{databaseName}/indexes/{indexName}?op=hasChanged \
 	-X POST
+	-d @indexDefinition.txt
 {CODE-BLOCK/}
 
 ### Request
