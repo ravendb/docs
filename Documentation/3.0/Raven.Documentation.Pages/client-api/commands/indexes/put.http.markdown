@@ -14,19 +14,19 @@
 | ------- |
 | [Index Definition](../../../glossary/index-definition) |
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | Name of an index |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `201` | Created |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ----- |
-| String | Index **name** |
+| **Index** | Index **name** |
 
 ### Example
 

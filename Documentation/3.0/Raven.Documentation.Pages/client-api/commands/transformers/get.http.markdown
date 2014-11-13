@@ -16,17 +16,17 @@ There are few methods that allow you to retrieve transformers from a database:
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **transformerName** | Yes |   transformer name |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | [TransformerDefinition](../../../glossary/transformer-definition)  |
 
@@ -55,18 +55,18 @@ curl -X GET "http://localhost:8080/databases/NorthWind/transformers/Order/Statis
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **start** | No | number of documents that should be skipped  |
 | **pageSize** | No | maximum number of transformers that will be retrieved |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | array of [TransformerDefinition](../../../glossary/transformer-definition)  |
 

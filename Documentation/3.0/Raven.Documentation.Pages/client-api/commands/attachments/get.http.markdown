@@ -16,21 +16,21 @@ There are few methods that allow you to download attachments from a database:
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **key** | Yes | key of the attachment you want to download |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | attachment stream |
 
-| Header | |
+| Header | Description |
 | -------- | - |
 | **ETag** | attachment ETag |
 | any header | metadata |
@@ -62,19 +62,19 @@ here goes payload
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **start** | yes | Indicates how many attachments should be skipped |
-| **etag** | yes | ETag from which to start |
-| **pageSize** | yes | maximum number of attachments that will be downloaded |
+| **start** | Yes | Indicates how many attachments should be skipped |
+| **etag** | Yes | ETag from which to start |
+| **pageSize** | Yes | maximum number of attachments that will be downloaded |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | list of AttachmentInformation |
 

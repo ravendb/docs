@@ -2,8 +2,6 @@
 
 **DeleteIndex** is used to remove an index from a database.
 
-
-
 ### Syntax
 
 {CODE-BLOCK:json}
@@ -12,13 +10,13 @@
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description  |
 | ------------- | -- | ---- |
 | **indexName** | Yes | name of an index to delete |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `204` | No content |
 

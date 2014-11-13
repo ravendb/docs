@@ -14,7 +14,7 @@
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required |  Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | Name of an index |
 | **field** | Yes | Index field |
@@ -23,13 +23,13 @@
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| payload | list of strings |
+| payload | array of strings |
 
 <hr />
 

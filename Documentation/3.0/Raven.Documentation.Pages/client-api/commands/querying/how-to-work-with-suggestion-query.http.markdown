@@ -4,7 +4,6 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 
 ## Syntax
 
-
 {CODE-BLOCK:json}
 
   curl -X GET http://{serverName}/databases/{databaseName}/suggest/{indexName}? \
@@ -18,27 +17,27 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **index** | yes | A name of an index to query. |
-| **term** | yes | term used to compute suggestions |
-| **field** | yes | field used for suggestions |
-| **max** | no | maximum number of suggestions |
-| **popularity** | no | sort results by popularity |
-| **distance** | no | method used for computing distance |
-| **accuracy** | no | accuracy level |
+| **index** | Yes | A name of an index to query. |
+| **term** | Yes | term used to compute suggestions |
+| **field** | Yes | field used for suggestions |
+| **max** | No | maximum number of suggestions |
+| **popularity** | No | sort results by popularity |
+| **distance** | No | method used for computing distance |
+| **accuracy** | No | accuracy level |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| Suggestions | array of suggestions |
+| **Suggestions** | array of suggestions |
 
-| Header | |
+| Header | Description |
 | -------- | - |
 | **ETag** | index etag |
 

@@ -10,22 +10,22 @@
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **key** | Yes |  key under which attachment is stored |
 
-| Headers | Required | |
+| Header | Required | Description |
 | --------| ------- | --- |
 | any header | No |  metadata |
-| etag | No | current attachment etag, used for concurrency checks |
+| **If-None-Match** | No | current attachment etag, used for concurrency checks |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | etag |
 

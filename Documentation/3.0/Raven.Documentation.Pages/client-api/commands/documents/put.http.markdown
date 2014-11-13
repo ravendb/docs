@@ -22,7 +22,7 @@ curl \
 
 ### Request
 
-| Method | |
+| Method | Description |
 | -------| - |
 | `POST` | document key isn't passed in url and is auto-generated on server side |
 | `PUT` | document key is passed in url |
@@ -31,24 +31,24 @@ curl \
 | ------- |
 | Json document data |
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **key** | for `PUT` | unique key under which document will be stored |
 
-| Headers | Required | |
+| Header | Required | Description |
 | --------| ------- | --- |
 | **If-None-Match** | No |  Used to pass document `Etag` |
 | Any other header | No | Used to pass document metadata |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK - for `POST` |
 | `201` | Created - for `PUT` |
 | `409` | When concurrency exception occurred |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | **Key** | unique key under which document was stored |
 | **Etag** | stored document etag |

@@ -18,19 +18,19 @@ There are few methods that allow you to retrieve an index from a database:
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required |  Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | Name of an index |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| payload | [IndexDefinition](../../../glossary/index-definition) json |
+| **Index** | [IndexDefinition](../../../glossary/index-definition) json |
 
 <hr />
 
@@ -60,18 +60,18 @@ curl -X GET "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals?def
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **start** | No | Number of documents that should be skipped |
 | **pageSize** | No | Maximum number of documents that will be retrieved  |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | Array of [IndexDefinition](../../../glossary/index-definition) |
 
@@ -106,7 +106,7 @@ curl -X GET "http://localhost:8080/databases/NorthWind/indexes/?start=0&pageSize
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **start** | No | Number of documents that should be skipped |
 | **pageSize** | No | Maximum number of documents that will be retrieved |
@@ -114,11 +114,11 @@ curl -X GET "http://localhost:8080/databases/NorthWind/indexes/?start=0&pageSize
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | list of strings: index names |
 

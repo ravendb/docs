@@ -31,7 +31,7 @@ This endpoint accepts [IndexQuery](../../../glossary/index-query) object. All po
 
 ### Request
 
-| Method | |
+| Method | Description |
 | -------| - |
 | `GET` | serialized facets length < 1024 |
 | `PUT` | serialized facets length > 1024 (pass facets as payload) |
@@ -40,21 +40,21 @@ This endpoint accepts [IndexQuery](../../../glossary/index-query) object. All po
 | ------- |
 | Facets data (for `GET` only) |
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **indexName** | yes | A name of an index to query |
-| **facets** | yes | Serialized list of [facets](../../../glossary/facet) required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
-| **facetSetupDoc** | yes | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup) (mutually exclusive with `facets`). |
-| **start** | int | number of results that should be skipped.|
-| **pageSize** | int | maximum number of results that will be retrieved. |
+| **indexName** | Yes | A name of an index to query |
+| **facets** | Yes | Serialized list of [facets](../../../glossary/facet) required to perform a facet query (mutually exclusive with `facetSetupDoc`). |
+| **facetSetupDoc** | Yes | Document key that contains predefined [FacetSetup](../../../glossary/facet-setup) (mutually exclusive with `facets`). |
+| **start** | No | number of results that should be skipped.|
+| **pageSize** | No | maximum number of results that will be retrieved. |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ----- |
 | [FacetResults](../../../glossary/facet-results) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
@@ -79,13 +79,13 @@ Sending multiple facet queries is achievable by using `/facets/multisearch` endp
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| Results | list of [FacetResults](../../../glossary/facet-results) |
+| **Results** | list of [FacetResults](../../../glossary/facet-results) |
 
 {PANEL/}
 

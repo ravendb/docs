@@ -17,22 +17,22 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description  |
 | ------------- | -- | ---- |
-| **indexName** | yes | A name of an index to query |
-| **include** | no | An array of relative paths that specify related documents ids which should be included in a query result. |
-| **metadataOnly** | no | True if returned documents should include only metadata without a document body. |
+| **indexName** | Yes | A name of an index to query |
+| **include** | No | An array of relative paths that specify related documents ids which should be included in a query result. |
+| **metadataOnly** | No | True if returned documents should include only metadata without a document body. |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| Results | List of requested documents |
-| Includes | List of included documents |
+| **Results** | List of requested documents |
+| **Includes** | List of included documents |
 
 ## Example I
 

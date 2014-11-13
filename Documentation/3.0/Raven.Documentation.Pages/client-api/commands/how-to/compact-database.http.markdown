@@ -10,19 +10,19 @@ To compact a database, please use compact endpoint.
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **databaseName** | Yes | Name of a database to compact |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| OperationId | Operation id |
+| **OperationId** | Operation id |
 
 ## Example
 

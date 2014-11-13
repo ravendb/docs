@@ -16,19 +16,19 @@
 | ------- |
 |  [TransformerDefinition](../../../glossary/transformer-definition) |
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description  |
 | ------------- | -- | ---- |
 | **transformerName** | Yes | name of a transformer |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `201` | Created |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| Transformer | Transformer **name**. |
+| **Transformer** | Transformer **name**. |
 
 ## Example
 

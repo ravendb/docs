@@ -21,13 +21,13 @@ To find similar or related documents use the **/morelikethis/** endpoint.
 	&minWordLen={minWordLen} \
 	&stopWords={stopWords} \
 	&resultsTransformer={resultsTransformer} \
-	&tp-{param1}={value1}
+	&tp-{param}={value}
 	&include={include}
 {CODE-BLOCK/}
 
 ### Request
 
-| Query parameters | Required | Multiple allowed | |
+| Query parameter | Required | Multiple allowed | Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | No | A name of an index to query. |
 | **documentId** | Yes | No | Document id to be used for more like this |
@@ -44,20 +44,20 @@ To find similar or related documents use the **/morelikethis/** endpoint.
 | **minWordLen** | No | No | Minimum word length |
 | **stopWords** | No | No | Name of document which contains stop words |
 | **resultsTransformer** | No | No | Result transformer to use |
-| {param1}={value1} | No | Yes | Transformer parameters |
+| {param}={value} | No | Yes | Transformer parameters |
 | **include** | No | No | Include paths |
 
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| Results | List of requested documents |
-| Includes | List of included documents |
+| **Results** | List of requested documents |
+| **Includes** | List of included documents |
 
 ## Example
 

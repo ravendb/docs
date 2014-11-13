@@ -21,13 +21,13 @@ This method is used to create a new database on a server.
 | ------- |
 | [DatabaseDocument](../../../glossary/database-document) |
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **databaseName** | Yes | Name of a database to created |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
@@ -54,14 +54,14 @@ This method is used to delete a database from a server, with a possibility to re
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description  |
 | ------------- | -- | ---- |
 | **databaseName** | Yes | Name of a database to delete |
 | **hardDelete** | No | Should all data be removed (data files, indexing files, etc.). Default: `false` |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `204` | No Content |
 

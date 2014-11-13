@@ -14,19 +14,19 @@
 | ------- |
 | Attachment data |
 
-| Headers | Required | |
+| Header | Required | Description |
 | --------| ------- | --- |
-| Etag | No | current attachment etag, used for concurrency checks |
+| **Etag** | No | current attachment etag, used for concurrency checks |
 | any header | No |  Metadata |
 
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `201` | Created |
 
-| Header | |
+| Header | Description |
 | -------- | - |
 | **ETag** | Attachment ETag |
 

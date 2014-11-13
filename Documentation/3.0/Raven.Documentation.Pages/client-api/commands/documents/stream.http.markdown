@@ -18,7 +18,7 @@
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **etag** | No | ETag of a document from which stream should start (mutually exclusive with 'startsWith') |
 | **startsWith** | No | prefix for which documents should be streamed (mutually exclusive with 'etag') |
@@ -28,20 +28,20 @@
 | **start** | No | number of documents that should be skipped |
 | **pageSize** | No | maximum number of documents that will be retrieved |
 
-| Headers | Required | |
+| Header | Required | Description |
 | --------| ------- | --- |
 | **Single-Use-Auth-Token** | No | Required if authentication is enabled. |
 
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| Results | list of json documents |
+| **Results** | list of json documents |
 
 <hr />
 

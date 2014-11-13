@@ -17,7 +17,7 @@ This methods starts indexing, if it was previously stopped.
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `204` | No Content |
 
@@ -42,7 +42,7 @@ This methods stops indexing, if it was running.
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `204` | No Content |
 
@@ -67,13 +67,13 @@ This methods retrieves current status of the indexing.
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| IndexingStatus| `Indexing` or `Paused` |
+| **IndexingStatus** | `Indexing` or `Paused` |
 
 
 ### Example
