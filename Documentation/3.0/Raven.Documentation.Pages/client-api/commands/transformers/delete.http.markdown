@@ -5,7 +5,9 @@
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X DELETE http://{serverName}/databases/{databaseName}/transformers/{transformerName}
+curl \
+	http://{serverName}/databases/{databaseName}/transformers/{transformerName} \
+	-X DELETE
 {CODE-BLOCK/}
 
 ### Request
@@ -19,6 +21,8 @@
 | Status code | Description |
 | ----------- | - |
 | `204` | No content |
+
+<hr />
 
 ## Example
 

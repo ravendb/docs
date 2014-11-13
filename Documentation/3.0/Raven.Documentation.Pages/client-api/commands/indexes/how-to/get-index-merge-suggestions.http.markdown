@@ -5,7 +5,9 @@
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/debug/suggest-index-merge
+curl \
+	http://{serverName}/databases/{databaseName}/debug/suggest-index-merge \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Response
@@ -28,7 +30,6 @@ curl -X GET "http://localhost:8080/databases/NorthWind/debug/suggest-index-merge
 {"Unmergables":{"Raven/DocumentsByEntityName":"Cannot merge indexes that are using a let clause",
 "Orders/ByCompany":"Cannot merge map/reduce indexes","Product/Sales":"Cannot merge map/reduce indexes"},
 "Suggestions":[{"CanMerge":["Orders/Total2s","Orders/Totals"],"Collection":"Orders","MergedIndex":  {mergedIndexDefinition} }]}
-
 {CODE-BLOCK/}
 
 

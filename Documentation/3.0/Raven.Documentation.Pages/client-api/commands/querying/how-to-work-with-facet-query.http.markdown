@@ -11,17 +11,21 @@ There are few overloads for the **GetFacets** method and the main difference bet
 ### Syntax
 
 {CODE-BLOCK:json}
-curl -X GET http://{serverName}/databases/{databaseName}/facets/{indexName}? \
-	&facetDoc={facetSetupDoc} \
-	&facetStart={start} \
-	&facetPageSize={pageSize} \
-	&facets={facets}
-	[Other indexQuery parameters]
+curl \
+	http://{serverName}/databases/{databaseName}/facets/{indexName}? \
+		&facetDoc={facetSetupDoc} \
+		&facetStart={start} \
+		&facetPageSize={pageSize} \
+		&facets={facets}
+		[Other indexQuery parameters] \
+	-X GET 
 &nbsp;
-curl -X POST http://{serverName}/databases/{databaseName}/facets/{indexName}? \
-	&facetStart={start} \
-	&facetPageSize={pageSize} \
-	[Other indexQuery parameters]
+curl \
+	http://{serverName}/databases/{databaseName}/facets/{indexName}? \
+		&facetStart={start} \
+		&facetPageSize={pageSize} \
+		[Other indexQuery parameters] \
+	-X POST \
 	-d @facets.txt
 {CODE-BLOCK/}
 
@@ -67,7 +71,9 @@ Sending multiple facet queries is achievable by using `/facets/multisearch` endp
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/databases/{databaseName}/facets/multisearch
+curl \
+	http://{serverName}/databases/{databaseName}/facets/multisearch \
+	-X POST \
 	-d @facets.txt
 {CODE-BLOCK/}
 

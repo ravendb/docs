@@ -5,11 +5,13 @@
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/terms/{indexName}? \
-	field={field} \
-	&pageSize={pageSize} \
-	&start={start} \
-	&fromValue={fromValue}
+curl \
+	http://{serverName}/databases/{databaseName}/terms/{indexName}? \
+		field={field} \
+		&pageSize={pageSize} \
+		&start={start} \
+		&fromValue={fromValue} \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Request

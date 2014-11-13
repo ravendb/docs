@@ -5,24 +5,26 @@ To find similar or related documents use the **/morelikethis/** endpoint.
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/morelikethis/? \
-	&index={indexName} \
-	&docId={documentId} \
-	&fields={field} \
-	&boost={boost} \ 
-	&boostFactor={boostFactor} \
-	&maxQueryTerms={maxQueryTerms} \
-	&maxNumTokens={maxNumTokens} \
-	&maxWordLen={maxWordLen} \
-	&minDocFreq={minDocFreq} \
-	&maxDocFreq={maxDocFreq} \
-	&maxDocFreqPct={maxDocFreqPct} \
-	&minTermFreq={minTermFreq} \
-	&minWordLen={minWordLen} \
-	&stopWords={stopWords} \
-	&resultsTransformer={resultsTransformer} \
-	&tp-{param}={value}
-	&include={include}
+curl \
+	http://{serverName}/databases/{databaseName}/morelikethis/? \
+		&index={indexName} \
+		&docId={documentId} \
+		&fields={field} \
+		&boost={boost} \ 
+		&boostFactor={boostFactor} \
+		&maxQueryTerms={maxQueryTerms} \
+		&maxNumTokens={maxNumTokens} \
+		&maxWordLen={maxWordLen} \
+		&minDocFreq={minDocFreq} \
+		&maxDocFreq={maxDocFreq} \
+		&maxDocFreqPct={maxDocFreqPct} \
+		&minTermFreq={minTermFreq} \
+		&minWordLen={minWordLen} \
+		&stopWords={stopWords} \
+		&resultsTransformer={resultsTransformer} \
+		&tp-{param}={value} \
+		&include={include} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -58,6 +60,8 @@ To find similar or related documents use the **/morelikethis/** endpoint.
 | ------------- | ------------- |
 | **Results** | List of requested documents |
 | **Includes** | List of included documents |
+
+<hr />
 
 ## Example
 

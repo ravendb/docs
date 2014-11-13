@@ -3,7 +3,9 @@
 {PANEL:StartBackup}
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/databases/{databaseName}/admin/backup?incremental={incremental}
+curl \
+	http://{serverName}/databases/{databaseName}/admin/backup?incremental={incremental} \
+	-X POST 
 {CODE-BLOCK/}
 
 ### Request
@@ -23,6 +25,8 @@
 | ----------- | - |
 | `201` | OK |
 
+<hr />
+
 ### Example
 
 {CODE-BLOCK:json}
@@ -37,7 +41,9 @@ curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental
 
 
 {CODE-BLOCK:json} 
-  curl -X POST http://{serverName}/admin/restore
+curl \
+	http://{serverName}/admin/restore \
+	-X POST
 {CODE-BLOCK/}
 
 ### Request
@@ -55,6 +61,8 @@ curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental
 | Return Value | Description |
 | ------------- | ------------- |
 | **OperationId** | Operation id |
+
+<hr />
 
 ## Example
 

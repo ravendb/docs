@@ -11,7 +11,9 @@ There are few methods that allow you to download attachments from a database:
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/static/{key}
+curl \
+	http://{serverName}/databases/{databaseName}/static/{key} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -35,6 +37,8 @@ There are few methods that allow you to download attachments from a database:
 | **ETag** | attachment ETag |
 | any header | metadata |
 
+<hr />
+
 ### Example
 
 {CODE-BLOCK:json}
@@ -54,10 +58,12 @@ here goes payload
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/static/? \
-	&pageSize={pageSize} \
-	&etag={etag} \
-	&start={start}
+curl \
+	http://{serverName}/databases/{databaseName}/static/? \
+		&pageSize={pageSize} \
+		&etag={etag} \
+		&start={start} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -77,6 +83,8 @@ here goes payload
 | Return Value | Description |
 | ------------- | ------------- |
 | payload | list of AttachmentInformation |
+
+<hr />
 
 ### Example
 

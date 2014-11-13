@@ -5,7 +5,9 @@ To send **multiple operations** in a **single request**, reducing the number of 
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/databases/{databaseName}/bulk_docs
+curl \
+	http://{serverName}/databases/{databaseName}/bulk_docs \
+	-X POST \
 	-d @commands.txt
 {CODE-BLOCK/}
 
@@ -25,8 +27,9 @@ To send **multiple operations** in a **single request**, reducing the number of 
 | ------------- | ------------- |
 | [BatchResult](../../../glossary/batch-result)[] | An array of batch results matching **exactly** the order of commands send. |
 
-## Example
+<hr />
 
+## Example
 
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/databases/NorthWind/bulk_docs" 

@@ -12,7 +12,9 @@ This methods starts indexing, if it was previously stopped.
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/databases/{databaseName}/admin/StartIndexing
+curl \
+	http://{serverName}/databases/{databaseName}/admin/StartIndexing \
+	-X POST 
 {CODE-BLOCK/}
 
 ### Response
@@ -20,6 +22,8 @@ This methods starts indexing, if it was previously stopped.
 | Status code | Description |
 | ----------- | - |
 | `204` | No Content |
+
+<hr />
 
 ### Example
 
@@ -37,7 +41,9 @@ This methods stops indexing, if it was running.
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/databases/{databaseName}/admin/StopIndexing
+curl \
+	http://{serverName}/databases/{databaseName}/admin/StopIndexing \
+	-X POST 
 {CODE-BLOCK/}
 
 ### Response
@@ -45,6 +51,8 @@ This methods stops indexing, if it was running.
 | Status code | Description |
 | ----------- | - |
 | `204` | No Content |
+
+<hr />
 
 ### Example
 
@@ -75,6 +83,7 @@ This methods retrieves current status of the indexing.
 | ------------- | ------------- |
 | **IndexingStatus** | `Indexing` or `Paused` |
 
+<hr />
 
 ### Example
 

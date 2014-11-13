@@ -3,7 +3,9 @@
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/?pageSize={pageSize}&start={start}
+curl \
+	http://{serverName}/databases/?pageSize={pageSize}&start={start} \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Request
@@ -22,6 +24,8 @@
 | Return Value | Description |
 | ------------- | ------------- |
 | payload | array of database names |
+
+<hr />
 
 ## Example
 

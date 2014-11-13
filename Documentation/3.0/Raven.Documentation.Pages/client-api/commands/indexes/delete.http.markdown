@@ -5,7 +5,9 @@
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X DELETE http://{serverName}/databases/{databaseName}/indexes/{indexName}
+curl \
+	http://{serverName}/databases/{databaseName}/indexes/{indexName} \
+	-X DELETE 
 {CODE-BLOCK/}
 
 ### Request
@@ -28,7 +30,6 @@ Delete index `Orders/Totals`.
 
 {CODE-BLOCK:json}
 curl -X DELETE "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals" 
-&nbsp;
 < HTTP/1.1 204 No Content
 {CODE-BLOCK/}
 

@@ -5,7 +5,9 @@
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/databases/{databaseName}/indexes/{indexName}?op=hasChanged
+curl \
+	http://{serverName}/databases/{databaseName}/indexes/{indexName}?op=hasChanged \
+	-X POST
 {CODE-BLOCK/}
 
 ### Request
@@ -32,7 +34,6 @@
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals?op=hasChanged" 
 	-d @indexDefinition.txt
-&nbsp;
 < HTTP/1.1 200 OK
 {"Name":"Orders/Totals","Changed":false}
 {CODE-BLOCK/}

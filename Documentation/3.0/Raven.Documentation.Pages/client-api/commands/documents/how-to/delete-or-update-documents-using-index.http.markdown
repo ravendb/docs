@@ -16,10 +16,12 @@ To issue a batch-delete command you need to specify an index and a query to be s
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X DELETE http://{serverName}/databases/{databaseName}/bulk_docs/{indexName}? \
-	query={query}&
-	allowStale={allowStale}
-	[Other indexQuery parameters]
+curl \ 
+	http://{serverName}/databases/{databaseName}/bulk_docs/{indexName}? \
+		query={query}& \
+		allowStale={allowStale} \
+		[Other indexQuery parameters] \
+	-X DELETE 
 {CODE-BLOCK/}
 
 {SAFE:IndexQuery parameters}
@@ -50,6 +52,8 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 {NOTE `DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception. /}
 
+<hr />
+
 ### Example
 
 Remove all documents from 'Shops' collection
@@ -68,10 +72,12 @@ Performing a mass-update is exactly the same as making a mass-delete, but this t
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X PATCH http://{serverName}/databases/{databaseName}/bulk_docs/{indexName}? \
-	query={query}&
-	allowStale={allowStale}
-	[Other indexQuery parameters]
+curl \
+	http://{serverName}/databases/{databaseName}/bulk_docs/{indexName}? \
+		query={query}& \
+		allowStale={allowStale} \
+		[Other indexQuery parameters] \
+	-X PATCH \
 	-d @patchs.txt
 {CODE-BLOCK/}
 
@@ -101,6 +107,7 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 | ------------- | ------------- |
 | **OperationId** | Operation id |
 
+<hr />
 
 ### Example
 
@@ -121,12 +128,13 @@ Mass-update can also be executed with JavaScript patch.
 
 ### Syntax
 
-
 {CODE-BLOCK:json}
-  curl -X EVAL http://{serverName}/databases/{databaseName}/bulk_docs/{indexName}? \
-	query={query}&
-	allowStale={allowStale}
-	[Other indexQuery parameters]
+curl \
+	http://{serverName}/databases/{databaseName}/bulk_docs/{indexName}? \
+		query={query}& \
+		allowStale={allowStale} \
+		[Other indexQuery parameters] \
+	-X EVAL \
 	-d @jsScript.txt
 {CODE-BLOCK/}
 
@@ -156,6 +164,7 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 | ------------- | ------------- |
 | **OperationId** | Operation id |
 
+<hr />
 
 ### Example
 

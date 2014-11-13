@@ -5,10 +5,12 @@ Use **Query** method to fetch results of a selected index according to a specifi
 ## Syntax
 
 {CODE-BLOCK:json}
-   curl -X GET http://{serverName}/databases/{databaseName}/indexes/{indexName}? \
-	&metadata-only={metadataOnly} \
-	&include={include} \
-	[Other indexQuery parameters]
+curl \
+	http://{serverName}/databases/{databaseName}/indexes/{indexName}? \
+		&metadata-only={metadataOnly} \
+		&include={include} \
+		[Other indexQuery parameters] \
+	-X GET
 {CODE-BLOCK/}
 
 {SAFE:IndexQuery parameters}
@@ -33,6 +35,8 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 | ------------- | ------------- |
 | **Results** | List of requested documents |
 | **Includes** | List of included documents |
+
+<hr />
 
 ## Example I
 

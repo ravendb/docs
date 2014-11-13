@@ -5,14 +5,15 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 ## Syntax
 
 {CODE-BLOCK:json}
-
-  curl -X GET http://{serverName}/databases/{databaseName}/suggest/{indexName}? \
-	&term={term} \
-	&field={field} \
-	&max={max} \
-	&popularity={popularity} \
-	&distance={distance} \
-	&accuracy={accuracy}
+curl \
+	http://{serverName}/databases/{databaseName}/suggest/{indexName}? \
+		&term={term} \
+		&field={field} \
+		&max={max} \
+		&popularity={popularity} \
+		&distance={distance} \
+		&accuracy={accuracy} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -40,6 +41,8 @@ To take advantage of a suggestion feature use the **Suggest** method from the co
 | Header | Description |
 | -------- | - |
 | **ETag** | index etag |
+
+<hr />
 
 ## Example
 

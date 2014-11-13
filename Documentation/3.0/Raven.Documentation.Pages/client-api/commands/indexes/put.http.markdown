@@ -6,7 +6,9 @@
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X PUT http://{serverName}/databases/{databaseName}/indexes/{indexName}?definition=yes \
+curl \
+	http://{serverName}/databases/{databaseName}/indexes/{indexName}?definition=yes \
+	-X PUT \
 	-d @indexDefinition.txt
 {CODE-BLOCK/}
 
@@ -27,6 +29,8 @@
 | Return Value | Description |
 | ------------- | ----- |
 | **Index** | Index **name** |
+
+<hr />
 
 ### Example
 
@@ -51,7 +55,6 @@ curl -X PUT "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals?def
 	\"Map\":\" from order in docs.Orders  select new  {     order.Employee,    order.Company,    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))}\", \
 	\"IsCompiled\":false, \
 	\"IsMapReduce\":false} "
-&nbsp;
 < HTTP/1.1 201 Created
 {"Index":"Orders/Totals"}
 {CODE-BLOCK/}

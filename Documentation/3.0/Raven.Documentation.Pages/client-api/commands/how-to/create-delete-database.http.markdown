@@ -11,7 +11,9 @@ This method is used to create a new database on a server.
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X PUT http://{serverName}/admin/databases/{databaseName}	
+curl \
+	http://{serverName}/admin/databases/{databaseName} \
+	-X PUT \
 	-d @databaseDocument.txt
 {CODE-BLOCK/}
 
@@ -31,6 +33,8 @@ This method is used to create a new database on a server.
 | ----------- | - |
 | `200` | OK |
 
+<hr />
+
 ### Example
 
 {CODE-BLOCK:json}
@@ -48,8 +52,10 @@ This method is used to delete a database from a server, with a possibility to re
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X DELETE http://{serverName}/admin/databases/{databaseName}	\
-	&hard-delete={hardDelete}
+curl \
+	http://{serverName}/admin/databases/{databaseName} \
+		&hard-delete={hardDelete} \
+	-X DELETE
 {CODE-BLOCK/}
 
 ### Request
@@ -64,6 +70,8 @@ This method is used to delete a database from a server, with a possibility to re
 | Status code | Description |
 | ----------- | - |
 | `204` | No Content |
+
+<hr />
 
 ### Example
 
