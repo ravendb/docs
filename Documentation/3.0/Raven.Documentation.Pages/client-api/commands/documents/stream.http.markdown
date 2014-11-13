@@ -6,14 +6,16 @@
 ### Syntax
 
 {CODE-BLOCK:json}
- curl -X GET http://{serverName}/databases/{databaseName}/streams/docs? \
-	etag={etag}& \
-	startsWith={startsWith}& \
-	matches={matches}& \
-	exclude={exclude}& \
-	skipAfter={skipAfter}& \
-	start={start}& \
-	pageSize={pageSize}
+ curl \
+	http://{serverName}/databases/{databaseName}/streams/docs? \
+		etag={etag}& \
+		startsWith={startsWith}& \
+		matches={matches}& \
+		exclude={exclude}& \
+		skipAfter={skipAfter}& \
+		start={start}& \
+		pageSize={pageSize} \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Request

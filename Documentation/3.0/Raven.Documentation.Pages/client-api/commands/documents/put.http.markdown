@@ -53,6 +53,8 @@ curl \
 | **Key** | unique key under which document was stored |
 | **Etag** | stored document etag |
 
+<hr />
+
 ## Examples
 
 Put document under key `items/1` with  `CreatedBy` and `ItemOwner` in metadata.

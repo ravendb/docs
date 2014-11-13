@@ -6,7 +6,10 @@
 ### Syntax
 
 {CODE-BLOCK:json}
- curl -X HEAD  http://{serverName}/databases/{databaseName}/docs/{key}
+curl \ 
+	http://{serverName}/databases/{databaseName}/docs/{key} \
+	-X HEAD 
+
 {CODE-BLOCK/}
 
 ### Request

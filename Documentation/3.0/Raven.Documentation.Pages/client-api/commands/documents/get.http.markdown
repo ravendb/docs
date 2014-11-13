@@ -16,12 +16,12 @@ There are few methods that allow you to retrieve documents from a database:
 curl \
 	http://{serverUrl}/databases/{databaseName}/docs?id={key}  \
 	-X GET \
-    --header "If-None-Match:{etag}" 
+	--header "If-None-Match:{etag}" 
 &nbsp;
 curl \
 	http://{serverUrl}/databases/{databaseName}/docs/{key}  \
 	-X GET \
-    --header "If-None-Match:{etag}" 
+	--header "If-None-Match:{etag}" 
 {CODE-BLOCK/}
 
 ### Request
@@ -52,6 +52,7 @@ curl \
 | **&#95;&#95;document_id** | Document id |
 | **Last-Modified** | Date of last modification |
 
+<hr />
 
 ### Example
 
@@ -77,22 +78,22 @@ curl -X GET http://localhost:8080/docs/user/100
 
 {CODE-BLOCK:json}
 curl \
- http://{serverUrl}/databases/{databaseName}/queries/? \
-	metadata-only={metadataOnly}& \
-	include={includePath}& \
-	transformer={transformerName}& \
-	tp-{param}={value}& \
-	id={documentKey} \
- -X GET
+	http://{serverUrl}/databases/{databaseName}/queries/? \
+		metadata-only={metadataOnly}& \
+		include={includePath}& \
+		transformer={transformerName}& \
+		tp-{param}={value}& \
+		id={documentKey} \
+	-X GET
 &nbsp;
 curl \
- http://{serverUrl}/databases/{databaseName}/queries/? \
-	metadata-only={metadataOnly}& \
-	include={includePath}& \
-	transformer={transformerName}& \
-	tp-{param}={value}& \
-	id={documentKey} \
- -X POST
+	http://{serverUrl}/databases/{databaseName}/queries/? \
+		metadata-only={metadataOnly}& \
+		include={includePath}& \
+		transformer={transformerName}& \
+		tp-{param}={value}& \
+		id={documentKey} \
+	-X POST
 {CODE-BLOCK/}
 
 ### Request
@@ -160,6 +161,7 @@ curl -X GET "http://localhost:8080/databases/NorthWind/queries/?include=Category
 }
 {CODE-BLOCK/}
 
+<hr />
 
 ### Example III - missing documents
 
@@ -188,10 +190,10 @@ curl -X GET "http://localhost:8080/databases/NorthWind/queries/?&include=Categor
 {CODE-BLOCK:json}
 curl \
 	http://{serverUrl}/databases/{databaseName}/docs? \
-    start={start}&  \
-	pageSize={pageSize}& \
-	metadata-only={metadataOnly}
- -X GET
+		start={start}&  \
+		pageSize={pageSize}& \
+		metadata-only={metadataOnly}
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -231,16 +233,18 @@ curl -X GET "http://localhost:8080/databases/NorthWind/docs?start=0&pageSize=32"
 ### Syntax
 
 {CODE-BLOCK:json}
- curl -X GET http://{serverName}/databases/{databaseName}/docs? \
-	startsWith={startsWith}& \
-	matches={matches}& \
-	exclude={exclude}& \
-	start={start}& \
-	pageSize={pageSize}& \
-	metadata-only={metadata}& \
-	skipAfter={skipAfter}& \
-	transformer={transformer}& \
-	tp-{param}={value}
+curl  \
+	http://{serverName}/databases/{databaseName}/docs? \
+		startsWith={startsWith}& \
+		matches={matches}& \
+		exclude={exclude}& \
+		start={start}& \
+		pageSize={pageSize}& \
+		metadata-only={metadata}& \
+		skipAfter={skipAfter}& \
+		transformer={transformer}& \
+		tp-{param}={value} \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Request

@@ -5,7 +5,9 @@ To compact a database, please use compact endpoint.
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/admin/compact?database={databaseName}
+curl \
+	http://{serverName}/admin/compact?database={databaseName} \
+	-X POST
 {CODE-BLOCK/}
 
 ### Request
@@ -23,6 +25,8 @@ To compact a database, please use compact endpoint.
 | Return Value | Description |
 | ------------- | ------------- |
 | **OperationId** | Operation id |
+
+<hr />
 
 ## Example
 

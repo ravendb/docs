@@ -5,7 +5,9 @@ To check with what version of server you are working use `build/version` endpoin
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/build/version
+curl \
+	http://{serverName}/databases/{databaseName}/build/version \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Response
@@ -18,6 +20,8 @@ To check with what version of server you are working use `build/version` endpoin
 | ------------- | ------------- |
 | **ProductVersion** | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
 | **BuildVersion** |  String indicating current build version e.g. `"3260"` |
+
+<hr />
 
 ## Example
 

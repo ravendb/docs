@@ -9,11 +9,12 @@ There are few methods that allow you to retrieve an index from a database:
 
 **GetIndex** is used to retrieve an index definition from a database.
 
-
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/indexes/{indexName?definition=yes
+curl \
+	http://{serverName}/databases/{databaseName}/indexes/{indexName}?definition=yes \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Request
@@ -53,9 +54,11 @@ curl -X GET "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals?def
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/indexes/ \
-	&start={start} \
-	&pageSize={pageSize} 
+curl \
+	http://{serverName}/databases/{databaseName}/indexes/ \
+		&start={start} \
+		&pageSize={pageSize} \
+	-X GET 
 {CODE-BLOCK/}
 
 ### Request
@@ -83,7 +86,6 @@ Get up to 10 index definitions
 
 {CODE-BLOCK:json}
 curl -X GET "http://localhost:8080/databases/NorthWind/indexes/?start=0&pageSize=10"
-&nbsp;
 < HTTP/1.1 200 OK
 [ indexDefinition, indexDefinition, ... ]
 {CODE-BLOCK/}
@@ -98,10 +100,12 @@ curl -X GET "http://localhost:8080/databases/NorthWind/indexes/?start=0&pageSize
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/indexes/? \
-	namesOnly=true \
-	&start={start} \
-	&pageSize={pageSize}
+curl \
+	http://{serverName}/databases/{databaseName}/indexes/? \
+		namesOnly=true \
+		&start={start} \
+		&pageSize={pageSize} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request

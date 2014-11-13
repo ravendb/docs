@@ -4,17 +4,18 @@
 
 ## Syntax
 
-
 {CODE-BLOCK:json}
-  curl -X PUT http://{serverName}/databases/{databaseName}/transformers/{transformerName}
-	-d @transformerDefiniton
+curl \
+	http://{serverName}/databases/{databaseName}/transformers/{transformerName} \
+	-X PUT \
+	-d @transformerDefiniton.txt
 {CODE-BLOCK/}
 
 ### Request
 
 | Payload |
 | ------- |
-|  [TransformerDefinition](../../../glossary/transformer-definition) |
+| [TransformerDefinition](../../../glossary/transformer-definition) |
 
 | Query parameter | Required | Description  |
 | ------------- | -- | ---- |
@@ -29,6 +30,8 @@
 | Return Value | Description |
 | ------------- | ------------- |
 | **Transformer** | Transformer **name**. |
+
+<hr />
 
 ## Example
 

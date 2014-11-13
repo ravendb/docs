@@ -12,7 +12,9 @@ There are few methods that allow you to download attachment metadata from a data
 
 
 {CODE-BLOCK:json}
-  curl -X HEAD http://{serverName}/databases/{databaseName}/static/{key}
+curl \
+	http://{serverName}/databases/{databaseName}/static/{key} \
+	-X HEAD
 {CODE-BLOCK/}
 
 ### Request
@@ -31,6 +33,8 @@ There are few methods that allow you to download attachment metadata from a data
 | -------- | - |
 | any header | attachment metadata |
 
+<hr />
+
 ### Example
 
 {CODE-BLOCK:json}
@@ -48,12 +52,13 @@ curl -X HEAD "http://localhost:8080/databases/sample/static/sea.jpg"
 
 ### Syntax
 
-
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/static? \
-	&startsWith={startsWith}  \
-	&start={start} \
-	&pageSize={pageSize}
+curl \
+	http://{serverName}/databases/{databaseName}/static? \
+		&startsWith={startsWith}  \
+		&start={start} \
+		&pageSize={pageSize} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -74,6 +79,7 @@ curl -X HEAD "http://localhost:8080/databases/sample/static/sea.jpg"
 | ------------- | ------------- |
 | payload | list of [AttachmentInformation](../../../../glossary/attachment-information) |
 
+<hr />
 
 ### Example
 

@@ -11,7 +11,9 @@ There are few methods that allow you to retrieve transformers from a database:
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/transformers/{transformerName}
+curl \
+	http://{serverName}/databases/{databaseName}/transformers/{transformerName} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -29,6 +31,8 @@ There are few methods that allow you to retrieve transformers from a database:
 | Return Value | Description |
 | ------------- | ------------- |
 | payload | [TransformerDefinition](../../../glossary/transformer-definition)  |
+
+<hr />
 
 ### Example
 
@@ -48,9 +52,11 @@ curl -X GET "http://localhost:8080/databases/NorthWind/transformers/Order/Statis
 
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/transformers? \
-	&start={start} \
-	&pageSize={pageSize}
+curl \
+	http://{serverName}/databases/{databaseName}/transformers? \
+		&start={start} \
+		&pageSize={pageSize} \
+	-X GET
 {CODE-BLOCK/}
 
 ### Request
@@ -70,8 +76,9 @@ curl -X GET "http://localhost:8080/databases/NorthWind/transformers/Order/Statis
 | ------------- | ------------- |
 | payload | array of [TransformerDefinition](../../../glossary/transformer-definition)  |
 
-### Example
+<hr />
 
+### Example
 
 {CODE-BLOCK:json}
 curl -X GET "http://localhost:8080/databases/NorthWind/transformers?start=0&pageSize=10"

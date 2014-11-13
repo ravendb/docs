@@ -5,7 +5,9 @@
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X DELETE http://{serverName}/databases/{databaseName}/static/{key}
+curl \
+	http://{serverName}/databases/{databaseName}/static/{key} \
+	-X DELETE
 {CODE-BLOCK/}
 
 ### Request
@@ -23,6 +25,8 @@
 | Status code | Description |
 | ----------- | - |
 | `204` | No content |
+
+<hr />
 
 ## Example
 

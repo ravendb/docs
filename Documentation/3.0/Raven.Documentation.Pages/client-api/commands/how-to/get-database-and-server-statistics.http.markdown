@@ -7,7 +7,9 @@ There are two types of statistics available. First type of statistics returns se
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/databases/{databaseName}/stats
+curl \
+	http://{serverName}/databases/{databaseName}/stats \
+	-X GET
 {CODE-BLOCK/}
 
 ### Response
@@ -27,7 +29,9 @@ There are two types of statistics available. First type of statistics returns se
 ### Syntax
 
 {CODE-BLOCK:json}
-  curl -X GET http://{serverName}/admin/stats
+curl \
+	http://{serverName}/admin/stats \
+	-X GET
 {CODE-BLOCK/}
 
 ### Response

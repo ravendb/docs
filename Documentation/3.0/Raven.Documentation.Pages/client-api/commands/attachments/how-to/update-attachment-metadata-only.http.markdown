@@ -5,7 +5,9 @@
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X POST http://{serverName}/databases/{databaseName}/static/{key}
+curl \
+	http://{serverName}/databases/{databaseName}/static/{key} \
+	-X POST
 {CODE-BLOCK/}
 
 ### Request
@@ -29,8 +31,9 @@
 | ------------- | ------------- |
 | payload | etag |
 
-## Example
+<hr />
 
+## Example
 
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/databases/sample/static/sea.jpg" \

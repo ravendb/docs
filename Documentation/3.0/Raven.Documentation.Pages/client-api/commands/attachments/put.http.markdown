@@ -5,7 +5,9 @@
 ## Syntax
 
 {CODE-BLOCK:json}
-  curl -X PUT http://{serverName}/databases/{databaseName}/static/{attachmentName}
+curl \
+	http://{serverName}/databases/{databaseName}/static/{attachmentName} \
+	-X PUT
 {CODE-BLOCK/}
 
 ### Request
