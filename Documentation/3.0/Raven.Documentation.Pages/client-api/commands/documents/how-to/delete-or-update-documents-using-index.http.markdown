@@ -28,7 +28,7 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | name of an index to perform a query on |
 | **query** | Yes | query that will be performed |
@@ -36,13 +36,13 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| OperationId | Operation id |
+| **OperationId** | Operation id |
 
 <hr />
 
@@ -56,7 +56,6 @@ Remove all documents from 'Shops' collection
 
 {CODE-BLOCK:json}
 curl -X DELETE "http://localhost:8080/databases/NorthWind/bulk_docs/Raven/DocumentsByEntityName?&query=Tag%3AShops&allowStale=false" 
-&nbsp;
 < HTTP/1.1 200 OK
 {"OperationId":1}
 {CODE-BLOCK/}
@@ -82,7 +81,7 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | name of an index to perform a query on |
 | **query** | Yes | query that will be performed |
@@ -94,13 +93,13 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| OperationId | Operation id |
+| **OperationId** | Operation id |
 
 
 ### Example
@@ -137,7 +136,7 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | name of an index to perform a query on |
 | **query** | Yes | query that will be performed |
@@ -149,13 +148,13 @@ This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| OperationId | Operation id |
+| **OperationId** | Operation id |
 
 
 ### Example

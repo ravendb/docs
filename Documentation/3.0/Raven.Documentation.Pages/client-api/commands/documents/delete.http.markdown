@@ -5,22 +5,24 @@
 ### Syntax
 
 {CODE-BLOCK:json}
- curl -X DELETE http://{serverName}/databases/{databaseName}/docs/{key}
+ curl \
+	http://{serverName}/databases/{databaseName}/docs/{key} \
+	-X DELETE
 {CODE-BLOCK/}
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **key** | Yes | Key of a document to be deleted |
 
-| Headers | Required | |
+| Header | Required | Description |
 | --------| ------- | --- |
 | **Etag** | No |  current document etag, used for concurrency checks |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `204` | No content |
 
@@ -32,7 +34,6 @@ Delete document `products/9999`.
 
 {CODE-BLOCK:json}
 curl -X DELETE "http://localhost:8080/databases/NorthWind/docs/products%2F9999" 
-&nbsp;
 < HTTP/1.1 204 No Content
 {CODE-BLOCK/}
 

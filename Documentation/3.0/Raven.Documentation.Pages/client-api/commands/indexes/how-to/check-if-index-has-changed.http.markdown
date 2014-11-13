@@ -16,11 +16,11 @@
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | **Name** | index name |
 | **Changed** | true/false |

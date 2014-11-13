@@ -10,11 +10,11 @@ To check with what version of server you are working use `build/version` endpoin
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | **ProductVersion** | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
 | **BuildVersion** |  String indicating current build version e.g. `"3260"` |

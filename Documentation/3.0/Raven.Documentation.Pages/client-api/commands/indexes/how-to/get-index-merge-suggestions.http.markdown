@@ -10,11 +10,11 @@
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | [IndexMergeResults](../../../../glossary/index-merge-results) |
 

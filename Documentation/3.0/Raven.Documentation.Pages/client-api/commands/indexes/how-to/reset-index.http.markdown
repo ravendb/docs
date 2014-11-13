@@ -11,13 +11,13 @@
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required |  Description |
 | ------------- | -- | ---- |
 | **indexName** | Yes | name of an index to reset |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 

@@ -8,18 +8,18 @@
 
 ### Request
 
-| Payload | |
+| Payload | Description |
 | ------- | - | 
 | **BackupLocation** | Location of backup |
 | **DatabaseDocument** | [DatabaseDocument](../../../glossary/database-document) that will be stored with backup in 'Database.Document' file. Pass `null` to use the one from `<system>` database.<br />**WARNING**: Database configuration document may contain sensitive data which will be decrypted and stored in backup. |
 
-| Query parameters | Required | | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **incremental** | No | Indicates if backup is incremental. |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `201` | OK |
 
@@ -48,13 +48,13 @@ curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| OperationId | Operation id |
+| **OperationId** | Operation id |
 
 ## Example
 

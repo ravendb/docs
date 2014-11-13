@@ -4,26 +4,23 @@
 
 ## Syntax
 
-
 {CODE-BLOCK:json}
   curl -X DELETE http://{serverName}/databases/{databaseName}/transformers/{transformerName}
 {CODE-BLOCK/}
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **transformerName** | Yes | name of a transformer |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `204` | No content |
 
 ## Example
-
-
 
 {CODE-BLOCK:json}
 curl -X DELETE "http://localhost:8080/databases/NorthWind/transformers/Order/Statistics" 

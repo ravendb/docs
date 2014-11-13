@@ -17,17 +17,17 @@ There are few methods that allow you to download attachment metadata from a data
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **key** | Yes | key of the attachment you want to download metadata for |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Header | |
+| Header | Description |
 | -------- | - |
 | any header | attachment metadata |
 
@@ -58,21 +58,21 @@ curl -X HEAD "http://localhost:8080/databases/sample/static/sea.jpg"
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **idPrefix** | yes | prefix for which attachments should be returned |
-| **start** | no | number of attachments that should be skipped |
-| **pageSize** | no | maximum number of attachments that will be returned |
+| **idPrefix** | Yes | prefix for which attachments should be returned |
+| **start** | No | number of attachments that should be skipped |
+| **pageSize** | No | maximum number of attachments that will be returned |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
-| payload | list of AttachmentInformation |
+| payload | list of [AttachmentInformation](../../../../glossary/attachment-information) |
 
 
 ### Example

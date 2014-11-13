@@ -11,18 +11,18 @@
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **key** | Yes | key of a document to get metadata for |
 
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Header | |
+| Header | Description |
 | -------- | - |
 | anyHeader | Metadata of document is returned as response headers |
 

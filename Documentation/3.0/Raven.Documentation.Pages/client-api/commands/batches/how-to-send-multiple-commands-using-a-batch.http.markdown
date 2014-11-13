@@ -17,11 +17,11 @@ To send **multiple operations** in a **single request**, reducing the number of 
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | [BatchResult](../../../glossary/batch-result)[] | An array of batch results matching **exactly** the order of commands send. |
 

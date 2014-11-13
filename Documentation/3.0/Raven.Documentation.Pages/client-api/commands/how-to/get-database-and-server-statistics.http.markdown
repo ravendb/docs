@@ -12,11 +12,11 @@ There are two types of statistics available. First type of statistics returns se
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | [DatabaseStatistics](../../../glossary/database-statistics) | Current statistics for a database that commands work on |
 
@@ -32,11 +32,11 @@ There are two types of statistics available. First type of statistics returns se
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | [AdminStatistics](../../../glossary/admin-statistics) | Current statistics for a server |
 

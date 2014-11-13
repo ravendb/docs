@@ -10,17 +10,17 @@
 
 ### Request
 
-| Query parameters | Required |  |
+| Query parameter | Required |  Description |
 | ------------- | -- | ---- |
 | **key** | Yes | key of an attachment to delete |
 
-| Headers | Required | |
+| Header | Required | Description |
 | --------| ------- | --- |
 | **etag** | No | current attachment etag, used for concurrency checks |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `204` | No content |
 

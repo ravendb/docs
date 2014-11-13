@@ -8,18 +8,18 @@
 
 ### Request
 
-| Query parameters | Required | |
+| Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **pageSize** | int | Maximum number of records that will be downloaded |
-| **start** | int | Number of records that should be skipped. Default: `0` |
+| **pageSize** | No | Maximum number of records that will be downloaded |
+| **start** | No | Number of records that should be skipped. Default: `0` |
 
 ### Response
 
-| Status code | |
+| Status code | Description |
 | ----------- | - |
 | `200` | OK |
 
-| Return Value | |
+| Return Value | Description |
 | ------------- | ------------- |
 | payload | array of database names |
 
