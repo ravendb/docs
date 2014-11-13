@@ -28,7 +28,7 @@ curl \
 
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **key** | Yes | unique key under which document will be stored |
+| **key** | Yes | unique key under which document is stored |
 
 | Header | Required | Description |
 | --------| ------- | --- |
@@ -108,7 +108,7 @@ curl \
 | **id** | Yes | Yes | document id to load |
 | **include** | No | Yes | include paths |
 | **transformer** | No | No | transformerName to use |
-| tp-{param} | No | Yes | Transformer paramater |
+| tp-{param} | No | Yes | Transformer parameter |
 | **metadata-only** | No | No | Fetch only metadata |
 
 ### Response

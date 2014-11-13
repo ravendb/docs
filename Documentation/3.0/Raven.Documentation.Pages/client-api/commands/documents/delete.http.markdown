@@ -18,7 +18,7 @@
 
 | Header | Required | Description |
 | --------| ------- | --- |
-| **Etag** | No |  current document etag, used for concurrency checks |
+| **If-None-Match** | No |  current document etag, used for concurrency checks |
 
 ### Response
 

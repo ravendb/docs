@@ -6,7 +6,7 @@ This article will describe the following commands that enable you to manage data
 
 {PANEL:**CreateDatabase**}
 
-This method is used to create a new database on a server.
+Used to create a new database on a server.
 
 ### Syntax
 
@@ -47,7 +47,7 @@ curl -X PUT "http://localhost:8080/admin/databases/NewDatabase" \
 
 {PANEL:**DeleteDatabase**}
 
-This method is used to delete a database from a server, with a possibility to remove all the data from hard drive.
+Used to delete a database from a server, with a possibility to remove all the data from hard drive.
 
 ### Syntax
 

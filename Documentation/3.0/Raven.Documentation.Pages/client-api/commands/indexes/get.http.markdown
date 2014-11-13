@@ -42,7 +42,37 @@ Get `Orders/Totals` index.
 {CODE-BLOCK:json}
 curl -X GET "http://localhost:8080/databases/NorthWind/indexes/Orders/Totals?definition=yes"
 < HTTP/1.1 200 OK
-{"Index":{"IndexId":6,"Name":"Orders/Totals","LockMode":"Unlock","Map":" from order in docs.Orders  select new  {     order.Employee,    order.Company,    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))}","Maps":[" from order in docs.Orders  select new  {     order.Employee,    order.Company,    Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))}"],"Reduce":null,"IsMapReduce":false,"IsCompiled":false,"Stores":{},"Indexes":{},"SortOptions":{},"Analyzers":{},"Fields":["Total","__document_id","Employee","Company"],"Suggestions":{},"TermVectors":{},"SpatialIndexes":{},"InternalFieldsMapping":null,"MaxIndexOutputsPerDocument":null,"Type":"Map","DisableInMemoryIndexing":false}}
+{"Index":
+	{"IndexId":6,
+	"Name":"Orders/Totals",
+	"LockMode":"Unlock",
+	"Map":" from order in docs.Orders  
+		select new  {    
+			order.Employee,    
+			order.Company,    
+			Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))}",
+	"Maps":[
+		" from order in docs.Orders  select new  {     
+			order.Employee,    
+			order.Company,    
+			Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))}"],
+	"Reduce":null,
+	"IsMapReduce":false,
+	"IsCompiled":false,
+	"Stores":{},
+	"Indexes":{},
+	"SortOptions":{},
+	"Analyzers":{},
+	"Fields":["Total","__document_id","Employee","Company"],
+	"Suggestions":{},
+	"TermVectors":{},
+	"SpatialIndexes":{},
+	"InternalFieldsMapping":null,
+	"MaxIndexOutputsPerDocument":null,
+	"Type":"Map",
+	"DisableInMemoryIndexing":false
+	}
+}
 {CODE-BLOCK/}
 
 {PANEL/}

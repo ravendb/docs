@@ -30,7 +30,7 @@ curl \
 {CODE-BLOCK/}
 
 {SAFE:IndexQuery parameters}
-This endpoint accepts [IndexQuery](../../../glossary/index-query) object. All possible [IndexQuery](../../../glossary/index-query) parameters are listed [here](../../../client-api/commands/querying/how-to-query-a-database)
+This endpoint accepts [IndexQuery](../../../glossary/index-query) object. All possible [IndexQuery](../../../glossary/index-query) parameters are listed [here](../../../client-api/commands/querying/how-to-query-a-database#indexquery-parameters)
 {SAFE/}
 
 ### Request
@@ -60,7 +60,7 @@ This endpoint accepts [IndexQuery](../../../glossary/index-query) object. All po
 
 | Return Value | Description |
 | ------------- | ----- |
-| [FacetResults](../../../glossary/facet-results) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults](../../../glossary/facet-results) | Facet query results containing query `Duration` and a list of `Results` - one entry for each term/range as specified in [FacetSetup](../../../glossary/facet-setup) document or passed in parameters. |
 
 {PANEL/}
 

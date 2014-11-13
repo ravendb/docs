@@ -1,13 +1,13 @@
 # Commands : How to start or stop indexing and get indexing status?
 
-Following commands have been created to enable user to toggle indexing and retrieve indexing status:   
+Following endpoints have been created to enable user to toggle indexing and retrieve indexing status:   
 - [StartIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status#startindexing)   
 - [StopIndexing](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status#stopindexing)   
 - [GetIndexingStatus](../../../client-api/commands/how-to/start-stop-indexing-and-get-indexing-status#getindexingstatus)
 
 {PANEL:StartIndexing}
 
-This methods starts indexing, if it was previously stopped.
+Starts indexing, if it was previously stopped.
 
 ### Syntax
 
@@ -36,7 +36,7 @@ curl -X POST "http://localhost:8080/databases/NorthWind/admin/StartIndexing"
 
 {PANEL:StopIndexing}
 
-This methods stops indexing, if it was running.
+Stops indexing, if it was running.
 
 ### Syntax
 
@@ -65,7 +65,7 @@ curl -X POST "http://localhost:8080/databases/NorthWind/admin/StopIndexing"
 
 {PANEL:GetIndexingStatus}
 
-This methods retrieves current status of the indexing.
+Retrieves current status of the indexing.
 
 ### Syntax
 

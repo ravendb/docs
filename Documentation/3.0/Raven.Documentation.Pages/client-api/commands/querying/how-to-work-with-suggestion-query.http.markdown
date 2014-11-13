@@ -1,6 +1,6 @@
 # Commands : Querying : How to work with Suggestion query?
 
-To take advantage of a suggestion feature use the **Suggest** method from the commands.
+To take advantage of a suggestion feature use the **Suggest** endpoint.
 
 ## Syntax
 
