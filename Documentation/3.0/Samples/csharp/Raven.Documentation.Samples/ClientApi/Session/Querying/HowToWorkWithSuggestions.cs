@@ -33,7 +33,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region suggest_2
-					var suggestions = session
+					SuggestionQueryResult suggestions = session
 						.Query<Employee, Employees_ByFullName>()
 						.Suggest(
 							new SuggestionQuery

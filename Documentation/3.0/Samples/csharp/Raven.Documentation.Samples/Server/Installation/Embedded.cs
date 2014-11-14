@@ -7,7 +7,7 @@ namespace Raven.Documentation.Samples.Server.Installation
 		public void InitEmbeddedSample()
 		{
 			#region embedded_1
-			var store = new EmbeddableDocumentStore
+			EmbeddableDocumentStore store = new EmbeddableDocumentStore
 			{
 				DataDirectory = "Data"
 			};
@@ -17,7 +17,7 @@ namespace Raven.Documentation.Samples.Server.Installation
 		public void InitEmbeddedHttpSample()
 		{
 			#region embedded_2
-			var store = new EmbeddableDocumentStore
+			EmbeddableDocumentStore store = new EmbeddableDocumentStore
 			{
 				DataDirectory = "Data",
 				UseEmbeddedHttpServer = true

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Client;
 using Raven.Client.Document;
@@ -27,7 +28,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					#region intersect_2
 					// return all T-shirts that are manufactured by 'Raven'
 					// and contain both 'Small Blue' and 'Large Gray' types
-					var tshirts = session
+					List<TShirt> tshirts = session
 							.Query<TShirt, TShirts_ByManufacturerColorSizeAndReleaseYear>()
 							.Where(x => x.Manufacturer == "Raven")
 							.Intersect()

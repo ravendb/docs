@@ -12,7 +12,7 @@
 			using (var session = store.OpenSession())
 			{
 				#region session_value_types
-				var employee = session.Load<Employee>(9); // get "employees/9"
+				Employee employee = session.Load<Employee>(9); // get "employees/9"
 
 				session.Delete<Employee>(12); // delete "employees/12"
 				#endregion

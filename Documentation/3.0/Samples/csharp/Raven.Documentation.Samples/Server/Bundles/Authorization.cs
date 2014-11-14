@@ -84,7 +84,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 
 					#region authorization3
 					session.SecureFor("Authorization/Users/DrHowser", "Hospitalization/Authorize");
-					var mary = session.Load<Patient>("Patients/MaryMallon");
+					Patient mary = session.Load<Patient>("Patients/MaryMallon");
 					mary.AuthorizeHospitalization();
 					session.SaveChanges();
 

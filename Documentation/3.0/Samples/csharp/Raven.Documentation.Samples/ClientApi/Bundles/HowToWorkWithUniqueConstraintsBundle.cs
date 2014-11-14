@@ -35,7 +35,7 @@ namespace Raven.Documentation.Samples.ClientApi.Bundles
 				using (var session = store.OpenSession())
 				{
 					#region unique_constraints_2
-					var existingUser = session
+					User existingUser = session
 						.LoadByUniqueConstraint<User>(x => x.Email, "john@gmail.com");
 					#endregion
 				}
@@ -43,8 +43,8 @@ namespace Raven.Documentation.Samples.ClientApi.Bundles
 				using (var session = store.OpenSession())
 				{
 					#region unique_constraints_3
-					var user = new User { Name = "John", Email = "john@gmail.com" };
-					var checkResult = session.CheckForUniqueConstraints(user);
+					User user = new User { Name = "John", Email = "john@gmail.com" };
+					UniqueConstraintCheckResult<User> checkResult = session.CheckForUniqueConstraints(user);
 
 					// returns whether its constraints are available
 					if (checkResult.ConstraintsAreFree())
@@ -53,7 +53,7 @@ namespace Raven.Documentation.Samples.ClientApi.Bundles
 					}
 					else
 					{
-						var existingUser = checkResult.DocumentForProperty(x => x.Email);
+						User existingUser = checkResult.DocumentForProperty(x => x.Email);
 					}
 					#endregion
 				}

@@ -130,7 +130,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_1_1
-					var employee = session.Load<Employee>("employees/1");
+					Employee employee = session.Load<Employee>("employees/1");
 					#endregion
 				}
 
@@ -140,21 +140,21 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					// loading 'employees/1'
 					// and transforming result using 'Employees_NoLastName' transformer
 					// which returns 'LastName' as 'null'
-					var employee = session.Load<Employees_NoLastName, Employee>("employees/1");
+					Employee employee = session.Load<Employees_NoLastName, Employee>("employees/1");
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_1_3
-					var entity = session.Load<EntityWithIntegerId>(1);
+					EntityWithIntegerId entity = session.Load<EntityWithIntegerId>(1);
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_1_4
-					var employee = session.Load<Employee>(1);
+					Employee employee = session.Load<Employee>(1);
 					#endregion
 				}
 				
@@ -164,11 +164,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					#region loading_entities_2_1
 					// loading 'products/1'
 					// including document found in 'Supplier' property
-					var product = session
+					Product product = session
 						.Include<Product>(x => x.Supplier)
 						.Load<Product>("products/1");
 
-					var supplier = session.Load<Address>(product.Supplier); // this will not make server call
+					Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
 					#endregion
 				}
 
@@ -177,20 +177,20 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					#region loading_entities_2_2
 					// loading 'products/1'
 					// including document found in 'Supplier' property
-					var product = session
+					Product product = session
 						.Include("Supplier")
 						.Load<Product>("products/1");
 
-					var supplier = session.Load<Address>(product.Supplier); // this will not make server call
+					Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_3_1
-					var employees = session.Load<Employee>(new List<string> { "employees/1", "employees/2" });
-					var employee1 = employees[0];
-					var employee2 = employees[1];
+					Employee[] employees = session.Load<Employee>(new List<string> { "employees/1", "employees/2" });
+					Employee employee1 = employees[0];
+					Employee employee2 = employees[1];
 					#endregion
 				}
 
@@ -200,10 +200,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					// loading 'employees/1' and 'employees/2'
 					// and transforming results using 'Employees_NoLastName' transformer
 					// which returns 'LastName' as 'null'
-					var employees = session
+					Employee[] employees = session
 						.Load<Employees_NoLastName, Employee>(new List<string> { "employees/1", "employees/2" });
-					var employee1 = employees[0];
-					var employee2 = employees[1];
+					Employee employee1 = employees[0];
+					Employee employee2 = employees[1];
 					#endregion
 				}
 
@@ -211,7 +211,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 				{
 					#region loading_entities_4_1
 					// return up to 128 entities with Id that starts with 'employees'
-					var result = session
+					Employee[] result = session
 						.Advanced
 						.LoadStartingWith<Employee>("employees", null, 0, 128);
 					#endregion
@@ -222,7 +222,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					#region loading_entities_4_2
 					// return up to 128 entities with Id that starts with 'employees/' 
 					// and rest of the key begins with "1" or "2" e.g. employees/10, employees/25
-					var result = session
+					Employee[] result = session
 						.Advanced
 						.LoadStartingWith<Employee>("employees/", "1*|2*", 0, 128);
 					#endregion
@@ -235,7 +235,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					// and rest of the Id have length of 3, begins and ends with "1" 
 					// and contains any character at 2nd position e.g. employees/101, employees/1B1
 					// and transform results using 'Employees_NoLastName' transformer
-					var result = session
+					Employee[] result = session
 						.Advanced
 						.LoadStartingWith<Employees_NoLastName, Employee>("employees/", "1?1", 0, 128);
 					#endregion
@@ -244,10 +244,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_5_1
-					var enumerator = session.Advanced.Stream<Employee>(null, "employees/");
+					IEnumerator<StreamResult<Employee>> enumerator = session.Advanced.Stream<Employee>(null, "employees/");
 					while (enumerator.MoveNext())
 					{
-						var employee = enumerator.Current;
+						StreamResult<Employee> employee = enumerator.Current;
 					}
 					#endregion
 				}
@@ -255,8 +255,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_6_1
-					var isLoaded = session.Advanced.IsLoaded("employees/1"); // false
-					var employee = session.Load<Employee>("employees/1");
+					bool isLoaded = session.Advanced.IsLoaded("employees/1"); // false
+					Employee employee = session.Load<Employee>("employees/1");
 					isLoaded = session.Advanced.IsLoaded("employees/1"); // true
 					#endregion
 				}

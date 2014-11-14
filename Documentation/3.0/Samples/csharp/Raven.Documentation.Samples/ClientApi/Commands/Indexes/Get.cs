@@ -25,15 +25,15 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes
 			using (var store = new DocumentStore())
 			{
 				#region get_1_1
-				var index = store.DatabaseCommands.GetIndex("Orders/Totals");
+				IndexDefinition index = store.DatabaseCommands.GetIndex("Orders/Totals");
 				#endregion
 
 				#region get_2_1
-				var indexes = store.DatabaseCommands.GetIndexes(0, 10);
+				IndexDefinition[] indexes = store.DatabaseCommands.GetIndexes(0, 10);
 				#endregion
 
 				#region get_3_1
-				var indexNames = store.DatabaseCommands.GetIndexNames(0, 10);
+				string[] indexNames = store.DatabaseCommands.GetIndexNames(0, 10);
 				#endregion
 			}
 		}

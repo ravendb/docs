@@ -53,10 +53,10 @@ namespace Raven.Documentation.Samples.Transformers
 						.TransformWith<Products_NameCategoryAndSupplier, Products_NameCategoryAndSupplier.Result>()
 						.First();
 
-					var numberOfRequests = session.Advanced.NumberOfRequests;
+					int numberOfRequests = session.Advanced.NumberOfRequests;
 
-					var category = session.Load<Category>(result.Category); // no server call
-					var supplier = session.Load<Supplier>(result.Supplier); // no server call
+					Category category = session.Load<Category>(result.Category); // no server call
+					Supplier supplier = session.Load<Supplier>(result.Supplier); // no server call
 
 					Assert.Equal(numberOfRequests, session.Advanced.NumberOfRequests);
 					#endregion

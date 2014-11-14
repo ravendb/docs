@@ -3,6 +3,7 @@ using System.Linq;
 using System.Threading.Tasks;
 
 using Raven.Abstractions.Indexing;
+using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
@@ -39,7 +40,7 @@ namespace Raven.Documentation.Samples.Indexes
 
 			public static void Main(string[] args)
 			{
-				using (var store = new DocumentStore
+				using (DocumentStore store = new DocumentStore
 				{
 					Url = "http://localhost:8080",
 					DefaultDatabase = "Northwind"
@@ -49,7 +50,7 @@ namespace Raven.Documentation.Samples.Indexes
 
 					new Orders_Totals().Execute(store);
 
-					using (var session = store.OpenSession())
+					using (IDocumentSession session = store.OpenSession())
 					{
 						IList<Order> orders = session
 							.Query<Orders_Totals.Result, Orders_Totals>()
@@ -110,7 +111,7 @@ namespace Raven.Documentation.Samples.Indexes
 				#endregion
 
 				#region indexes_6
-				var builder = new IndexDefinitionBuilder<Order>();
+				IndexDefinitionBuilder<Order> builder = new IndexDefinitionBuilder<Order>();
 				builder.Map = orders => from order in orders
 										select new
 										{
@@ -127,7 +128,7 @@ namespace Raven.Documentation.Samples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region indexes_7
-					var employees = session
+					List<Employee> employees = session
 						.Query<Employee>()
 						.Where(x => x.FirstName == "Robert" && x.LastName == "King")
 						.ToList();

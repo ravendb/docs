@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Raven.Client;
@@ -18,7 +19,7 @@ namespace Raven.Documentation.Samples.Indexes
 				{
 					#region stale1
 					RavenQueryStatistics stats;
-					var results = session.Query<Product>()
+					List<Product> results = session.Query<Product>()
 						.Statistics(out stats)
 						.Where(x => x.PricePerUser > 10)
 						.ToList();
@@ -35,7 +36,7 @@ namespace Raven.Documentation.Samples.Indexes
 
 					#region stale2
 					RavenQueryStatistics stats;
-					var results = session.Query<Product>()
+					List<Product> results = session.Query<Product>()
 						.Statistics(out stats)
 						.Where(x => x.PricePerUser > 10)
 						.Customize(x => x.WaitForNonStaleResultsAsOfNow(TimeSpan.FromSeconds(5)))
@@ -47,7 +48,7 @@ namespace Raven.Documentation.Samples.Indexes
 				{
 					#region stale3
 					RavenQueryStatistics stats;
-					var results = session.Query<Product>()
+					Product[] results = session.Query<Product>()
 						.Statistics(out stats)
 						.Where(x => x.PricePerUser > 10)
 						.Customize(x => x.WaitForNonStaleResultsAsOf(new DateTime(2014, 5, 1, 10, 0, 0, 0)))

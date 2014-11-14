@@ -20,7 +20,7 @@ namespace Raven.Documentation.Samples.ClientApi.BulkInsert
 			using (var store = new DocumentStore())
 			{
 				#region bulk_inserts_4
-				using (var bulkInsert = store.BulkInsert())
+				using (BulkInsertOperation bulkInsert = store.BulkInsert())
 				{
 					for (int i = 0; i < 1000 * 1000; i++)
 					{

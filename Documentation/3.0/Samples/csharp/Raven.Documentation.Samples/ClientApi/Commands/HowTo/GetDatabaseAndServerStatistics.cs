@@ -24,14 +24,14 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region database_statistics_2
-				var statistics = store.DatabaseCommands.GetStatistics();
+				DatabaseStatistics statistics = store.DatabaseCommands.GetStatistics();
 				#endregion
 			}
 
 			using (var store = new DocumentStore())
 			{
 				#region server_statistics_2
-				var serverStatistics = store
+				AdminStatistics serverStatistics = store
 					.DatabaseCommands
 					.GlobalAdmin
 					.GetStatistics();

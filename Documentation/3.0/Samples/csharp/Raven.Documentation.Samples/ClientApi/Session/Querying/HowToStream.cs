@@ -34,15 +34,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region stream_2
-					var query = session
+					IQueryable<Employee> query = session
 						.Query<Employee>()
 						.Where(x => x.FirstName == "Robert");
 
-					var results = session.Advanced.Stream(query);
+					IEnumerator<StreamResult<Employee>> results = session.Advanced.Stream(query);
 
 					while (results.MoveNext())
 					{
-						var employee = results.Current;
+						StreamResult<Employee> employee = results.Current;
 					}
 					#endregion
 				}
@@ -50,17 +50,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region stream_3
-					var query = session
+					IDocumentQuery<Employee> query = session
 						.Advanced
 						.DocumentQuery<Employee>()
 						.WhereEquals(x => x.FirstName, "Robert");
 
 					QueryHeaderInformation queryHeaderInformation;
-					var results = session.Advanced.Stream(query, out queryHeaderInformation);
+					IEnumerator<StreamResult<Employee>> results = session.Advanced.Stream(query, out queryHeaderInformation);
 
 					while (results.MoveNext())
 					{
-						var employee = results.Current;
+						StreamResult<Employee> employee = results.Current;
 					}
 					#endregion
 				}

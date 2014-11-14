@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 using Raven.Abstractions.Data;
 using Raven.Client;
@@ -51,7 +52,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				{
 					#region facet_2
 					// passing facets directly
-					var facets = session.Query<Camera>()
+					FacetResults facets = session.Query<Camera>()
 						.ToFacets(
 							new List<Facet>
 								{
@@ -86,8 +87,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 										}
 								});
 
-					var duration = facets.Duration;
-					var results = facets.Results;
+					TimeSpan duration = facets.Duration;
+					Dictionary<string, FacetResult> results = facets.Results;
 					#endregion
 				}
 
@@ -135,30 +136,30 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
 					session.SaveChanges();
 
-					var facets = session
+					FacetResults facets = session
 						.Query<Camera>("Camera/Costs")
 						.ToFacets("facets/CameraFacets");
 
-					var duration = facets.Duration;
-					var results = facets.Results;
+					TimeSpan duration = facets.Duration;
+					Dictionary<string, FacetResult> results = facets.Results;
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region facet_5
-					var facetQuery1 = session.Query<Camera>()
+					FacetQuery facetQuery1 = session.Query<Camera>()
 						.ToFacetQuery("facets/CameraFacets1");
 
-					var facetQuery2 = session.Query<Camera>()
+					FacetQuery facetQuery2 = session.Query<Camera>()
 						.ToFacetQuery("facets/CameraFacets2");
 
-					var results = session
+					FacetResults[] results = session
 						.Advanced
 						.MultiFacetedSearch(facetQuery1, facetQuery2);
 
-					var facetResults1 = results[0];
-					var facetResults2 = results[1];
+					FacetResults facetResults1 = results[0];
+					FacetResults facetResults2 = results[1];
 					#endregion
 				}
 			}

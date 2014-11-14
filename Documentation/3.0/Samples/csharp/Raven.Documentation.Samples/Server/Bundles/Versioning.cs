@@ -1,4 +1,5 @@
-﻿using Raven.Client.Bundles.Versioning;
+﻿using Raven.Client;
+using Raven.Client.Bundles.Versioning;
 using Raven.Client.Document;
 
 namespace Raven.Documentation.Samples.Server.Bundles
@@ -19,7 +20,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 		{
 			using (var store = new DocumentStore())
 			{
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
 					#region versioning1
 					session.Store(new
@@ -40,19 +41,19 @@ namespace Raven.Documentation.Samples.Server.Bundles
 				}
 
 				#region versioning3
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
 					session.Store(new User { Name = "Ayende Rahien" });
 					session.SaveChanges();
 				}
 				#endregion
 
-				var loan = new Loan { Id = "loans/1" };
+				Loan loan = new Loan { Id = "loans/1" };
 
 				using (var session = store.OpenSession())
 				{
 					#region versioning_4
-					var pastRevisions = session
+					Loan[] pastRevisions = session
 						.Advanced
 						.GetRevisionsFor<Loan>(loan.Id, 0, 25);
 					#endregion

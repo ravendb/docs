@@ -19,9 +19,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region get_entity_url_2
-					var employee = session.Load<Employee>("employees/1");
+					Employee employee = session.Load<Employee>("employees/1");
 					// http://localhost:8080/databases/Northwind/docs/employees/1
-					var url = session.Advanced.GetDocumentUrl(employee);
+					string url = session.Advanced.GetDocumentUrl(employee);
 					#endregion
 				}
 			}

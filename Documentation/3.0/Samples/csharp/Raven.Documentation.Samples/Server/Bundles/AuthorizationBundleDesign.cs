@@ -1,5 +1,7 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
+using Raven.Client;
 using Raven.Client.Authorization;
 using Raven.Client.Document;
 using Raven.Client.Linq;
@@ -17,12 +19,12 @@ namespace Raven.Documentation.Samples.Server.Bundles
 
 		public void ContextUser()
 		{
-			var department = "SampleDepartment";
+			string department = "SampleDepartment";
 
 			using (var store = new DocumentStore())
 			{
 				#region authorization_bundle_design_1
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
 					session.SecureFor("raven/authorization/users/8458", "/Operations/Debt/Finalize");
 
@@ -31,7 +33,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 									 orderby debt.Amount
 									 select debt;
 
-					var debts = debtsQuery.Take(25).ToList();
+					List<Debt> debts = debtsQuery.Take(25).ToList();
 
 					// do something with the debts
 				}

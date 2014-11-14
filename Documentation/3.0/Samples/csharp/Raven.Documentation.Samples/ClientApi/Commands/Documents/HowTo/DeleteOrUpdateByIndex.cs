@@ -38,7 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents.HowTo
 			{
 				#region delete_by_index_2
 				// remove all documents from 'Employees' collection
-				var operation = store
+				Operation operation = store
 					.DatabaseCommands
 					.DeleteByIndex(
 						"Raven/DocumentsByEntityName",
@@ -59,7 +59,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents.HowTo
 			{
 				#region update_by_index_2
 				// Set property 'FirstName' for all documents in collection 'Employees' to 'Patched Name'
-				var operation = store
+				Operation operation = store
 					.DatabaseCommands
 					.UpdateByIndex(
 						"Raven/DocumentsByEntityName",
@@ -89,7 +89,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents.HowTo
 			{
 				#region update_by_index_4
 				// Set property 'FirstName' for all documents in collection 'Employees' to 'Patched Name'
-				var operation = store
+				Operation operation = store
 					.DatabaseCommands
 					.UpdateByIndex(
 						"Raven/DocumentsByEntityName",

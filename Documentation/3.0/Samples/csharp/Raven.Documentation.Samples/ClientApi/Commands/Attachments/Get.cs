@@ -1,4 +1,6 @@
-﻿using Raven.Abstractions.Data;
+﻿using System.IO;
+
+using Raven.Abstractions.Data;
 using Raven.Client.Document;
 using Raven.Database.Data;
 
@@ -22,18 +24,18 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments
 			using (var store = new DocumentStore())
 			{
 				#region get_1_1
-				var attachment = store
+				Attachment attachment = store
 					.DatabaseCommands
 					.GetAttachment("albums/holidays/sea.jpg"); // null if does not exist
 
-				var data = attachment.Data();
+				Stream data = attachment.Data();
 				#endregion
 			}
 
 			using (var store = new DocumentStore())
 			{
 				#region get_2_1
-				var attachments = store
+				AttachmentInformation[] attachments = store
 					.DatabaseCommands
 					.GetAttachments(start: 0, startEtag: Etag.Empty, pageSize: 10);
 				#endregion

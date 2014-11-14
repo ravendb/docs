@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 
 using Raven.Abstractions.Data;
+using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Linq;
 using Raven.Documentation.CodeSamples.Orders;
@@ -24,23 +25,23 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region immutable_query
-					var query = session.Query<User>().Where(x => x.Name.StartsWith("A"));
+					IRavenQueryable<User> query = session.Query<User>().Where(x => x.Name.StartsWith("A"));
 
-					var ageQuery = query.Where(x => x.Age > 21);
+					IRavenQueryable<User> ageQuery = query.Where(x => x.Age > 21);
 
-					var eyeQuery = query.Where(x => x.EyeColor == "blue");
+					IRavenQueryable<User> eyeQuery = query.Where(x => x.EyeColor == "blue");
 					#endregion
 
 					#region mutable_lucene_query
-					var documentQuery = session
+					IDocumentQuery<User> documentQuery = session
 						.Advanced
 						.DocumentQuery<User>()
 						.WhereStartsWith(x => x.Name, "A");
 
-					var ageDocumentQuery = documentQuery
+					IDocumentQuery<User> ageDocumentQuery = documentQuery
 						.WhereGreaterThan(x => x.Age, 21);
 
-					var eyeDocumentQuery = documentQuery
+					IDocumentQuery<User> eyeDocumentQuery = documentQuery
 						.WhereEquals(x => x.EyeColor, "blue");
 
 					// here all of the DocumentQuery variables are the same references

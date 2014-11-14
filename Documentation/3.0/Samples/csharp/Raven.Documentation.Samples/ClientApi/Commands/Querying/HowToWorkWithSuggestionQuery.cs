@@ -20,7 +20,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 			{
 				#region suggest_2
 				// Get suggestions for 'johne' using 'FullName' field in 'Users/ByFullName' index
-				var result = store
+				SuggestionQueryResult result = store
 					.DatabaseCommands
 					.Suggest(
 						"Users/ByFullName",
@@ -33,7 +33,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 
 				Console.WriteLine("Did you mean?");
 
-				foreach (var suggestion in result.Suggestions)
+				foreach (string suggestion in result.Suggestions)
 				{
 					Console.WriteLine("\t{0}", suggestion);
 				}

@@ -29,7 +29,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region get_document_id_2
-					var commentId = session
+					string commentId = session
 						.Advanced
 						.GetDocumentId(comment); // e.g. comments/1
 					#endregion

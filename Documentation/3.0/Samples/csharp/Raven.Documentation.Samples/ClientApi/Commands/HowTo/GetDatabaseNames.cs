@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region get_database_names_2
-				var databaseNames = store
+				string[] databaseNames = store
 					.DatabaseCommands
 					.GlobalAdmin
 					.GetDatabaseNames(0, 10);

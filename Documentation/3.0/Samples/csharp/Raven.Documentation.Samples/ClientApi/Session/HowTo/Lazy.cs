@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 						.Lazily
 						.Load<Employee>("employees/1");
 
-					var employee = employeeLazy.Value; // load operation will be executed here
+					Employee employee = employeeLazy.Value; // load operation will be executed here
 					#endregion
 				}
 
@@ -34,7 +34,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 
 					session.Advanced.Eagerly.ExecuteAllPendingLazyOperations(); // query will be executed here
 
-					var employees = employeesLazy.Value;
+					IEnumerable<Employee> employees = employeesLazy.Value;
 					#endregion
 				}
 			}

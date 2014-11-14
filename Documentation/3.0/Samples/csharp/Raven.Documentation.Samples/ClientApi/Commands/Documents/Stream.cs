@@ -29,10 +29,10 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 			using (var store = new DocumentStore())
 			{
 				#region stream_2
-				var enumerator = store.DatabaseCommands.StreamDocs(null, "products/");
+				IEnumerator<RavenJObject> enumerator = store.DatabaseCommands.StreamDocs(null, "products/");
 				while (enumerator.MoveNext())
 				{
-					var document = enumerator.Current;
+					RavenJObject document = enumerator.Current;
 				}
 				#endregion
 			}

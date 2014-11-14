@@ -36,11 +36,11 @@
 			DocumentConvention Conventions = store.Conventions;
 
 			#region key_generator_hilo
-			var hiLoGenerator = new MultiDatabaseHiLoGenerator(32);
+			MultiDatabaseHiLoGenerator hiLoGenerator = new MultiDatabaseHiLoGenerator(32);
 			Conventions.DocumentKeyGenerator = (dbName, databaseCommands, entity) =>
 								hiLoGenerator.GenerateDocumentKey(dbName, databaseCommands, Conventions, entity);
 
-			var asyncHiLoGenerator = new AsyncMultiDatabaseHiLoKeyGenerator(32);
+			AsyncMultiDatabaseHiLoKeyGenerator asyncHiLoGenerator = new AsyncMultiDatabaseHiLoKeyGenerator(32);
 			Conventions.AsyncDocumentKeyGenerator = (dbName, commands, entity) =>
 								asyncHiLoGenerator.GenerateDocumentKeyAsync(dbName, commands, Conventions, entity);
 			#endregion

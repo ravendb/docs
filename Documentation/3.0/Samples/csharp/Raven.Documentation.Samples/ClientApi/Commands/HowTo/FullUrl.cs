@@ -17,7 +17,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			{
 				#region full_url_2
 				// http://localhost:8080/databases/Northwind/docs/employees/1
-				var url = store.DatabaseCommands.UrlFor("employees/1");
+				string url = store.DatabaseCommands.UrlFor("employees/1");
 				#endregion
 			}
 
@@ -25,7 +25,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			{
 				#region full_url_3
 				// http://localhost:8080/docs/employees/1
-				var url = store.DatabaseCommands.ForSystemDatabase().UrlFor("employees/1");
+				string url = store.DatabaseCommands.ForSystemDatabase().UrlFor("employees/1");
 				#endregion
 			}
 		}

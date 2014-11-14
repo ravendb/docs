@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Client.Document;
 using Raven.Client.Indexes;
@@ -33,7 +34,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				{
 					#region query_1_1
 					// load up to 128 entities from 'Employees' collection
-					var employees = session
+					List<Employee> employees = session
 						.Query<Employee>()
 						.ToList();
 					#endregion
@@ -44,7 +45,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					#region query_1_2
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
-					var employees = session
+					List<Employee> employees = session
 						.Query<Employee>()
 						.Where(x => x.FirstName == "Robert")
 						.ToList();
@@ -56,7 +57,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					#region query_1_3
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
-					var employees = from employee in session.Query<Employee>()
+					IRavenQueryable<Employee> employees = from employee in session.Query<Employee>()
 								 where employee.FirstName == "Robert"
 								 select employee;
 					#endregion
@@ -68,7 +69,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var employees = from employee in session.Query<Employee>("My/Custom/Index")
+					IRavenQueryable<Employee> employees = from employee in session.Query<Employee>("My/Custom/Index")
 								 where employee.FirstName == "Robert"
 								 select employee;
 					#endregion
@@ -80,7 +81,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var employees = from employee in session.Query<Employee, MyCustomIndex>()
+					IRavenQueryable<Employee> employees = from employee in session.Query<Employee, MyCustomIndex>()
 								 where employee.FirstName == "Robert"
 								 select employee;
 					#endregion

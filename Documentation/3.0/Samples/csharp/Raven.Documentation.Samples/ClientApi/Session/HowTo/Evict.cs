@@ -19,13 +19,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region evict_2
-					var employee1 = new Employee
+					Employee employee1 = new Employee
 						              {
 							              FirstName = "John", 
 										  LastName = "Doe"
 						              };
 
-					var employee2 = new Employee
+					Employee employee2 = new Employee
 						              {
 							              FirstName = "Joe", 
 										  LastName = "Shmoe"
@@ -43,7 +43,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region evict_3
-					var employee = session.Load<Employee>("employees/1"); // loading from server
+					Employee employee = session.Load<Employee>("employees/1"); // loading from server
 					employee = session.Load<Employee>("employees/1"); // no server call
 					session.Advanced.Evict(employee);
 					employee = session.Load<Employee>("employees/1"); // loading from server

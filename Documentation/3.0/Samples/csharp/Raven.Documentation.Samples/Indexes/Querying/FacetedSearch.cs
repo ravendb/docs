@@ -37,7 +37,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region step_1
-					var facets = new List<Facet>
+					List<Facet> facets = new List<Facet>
 					{
 						new Facet
 						{
@@ -82,7 +82,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				using (var session = store.OpenSession())
 				{
-					var facets = new List<Facet>();
+					List<Facet> facets = new List<Facet>();
 
 					#region step_3_0
 					FacetResults facetResults = session
@@ -94,7 +94,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 				using (var session = store.OpenSession())
 				{
-					var facets = new List<Facet>();
+					List<Facet> facets = new List<Facet>();
 
 					#region step_3_1
 					FacetResults facetResults = session
@@ -108,7 +108,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 			using (var store = new DocumentStore())
 			{
-				var facets = new List<Facet>();
+				List<Facet> facets = new List<Facet>();
 
 				#region step_3_2
 				FacetResults facetResults = store
@@ -130,7 +130,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				using (var session = store.OpenSession())
 				{
-					var facets = new List<Facet>();
+					List<Facet> facets = new List<Facet>();
 
 					#region step_4_1
 					FacetResults facetResults = session
@@ -142,7 +142,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 				using (var session = store.OpenSession())
 				{
-					var facets = new List<Facet>();
+					List<Facet> facets = new List<Facet>();
 
 					#region step_4_2
 					FacetResults facetResults = session
@@ -156,7 +156,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 			using (var store = new DocumentStore())
 			{
-				var facets = new List<Facet>();
+				List<Facet> facets = new List<Facet>();
 
 				#region step_4_3
 				FacetResults facetResults = store

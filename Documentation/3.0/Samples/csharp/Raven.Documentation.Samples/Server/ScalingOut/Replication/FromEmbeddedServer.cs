@@ -1,5 +1,6 @@
 ﻿using Raven.Abstractions.Data;
 using Raven.Abstractions.Replication;
+using Raven.Client;
 using Raven.Client.Embedded;
 
 namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
@@ -27,7 +28,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 				#endregion
 
 				#region from_embedded_server_2
-				using (var session = store.OpenSession("Northwind"))
+				using (IDocumentSession session = store.OpenSession("Northwind"))
 				{
 					session.Store(new ReplicationDocument
 					{
@@ -48,7 +49,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 		public void Sample()
 		{
 			#region from_embedded_server_3
-			var store = new EmbeddableDocumentStore
+			EmbeddableDocumentStore store = new EmbeddableDocumentStore
 				            {
 					            UseEmbeddedHttpServer = true
 				            };
