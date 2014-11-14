@@ -173,7 +173,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Take(10)
 						.ToList();
 
-					var totalResults = stats.TotalResults;
+					int totalResults = stats.TotalResults;
 					#endregion
 				}
 
@@ -190,7 +190,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Take(10)
 						.ToList();
 
-					var totalResults = stats.TotalResults;
+					int totalResults = stats.TotalResults;
 					#endregion
 				}
 			}
@@ -209,7 +209,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 							PageSize = 10
 						});
 
-				var totalResults = result.TotalResults;
+				int totalResults = result.TotalResults;
 				#endregion
 			}
 
@@ -220,9 +220,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region paging_4_1
 					RavenQueryStatistics stats;
 					IList<Product> results;
-					var pageNumber = 0;
-					var pageSize = 10;
-					var skippedResults = 0;
+					int pageNumber = 0;
+					int pageSize = 10;
+					int skippedResults = 0;
 
 					do
 					{
@@ -247,9 +247,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region paging_4_2
 					RavenQueryStatistics stats;
 					IList<Product> results;
-					var pageNumber = 0;
-					var pageSize = 10;
-					var skippedResults = 0;
+					int pageNumber = 0;
+					int pageSize = 10;
+					int skippedResults = 0;
 
 					do
 					{
@@ -275,9 +275,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				#region paging_4_3
 				QueryResult result;
-				var pageNumber = 0;
-				var pageSize = 10;
-				var skippedResults = 0;
+				int pageNumber = 0;
+				int pageSize = 10;
+				int skippedResults = 0;
 
 				do
 				{
@@ -307,9 +307,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region paging_6_1
 					RavenQueryStatistics stats;
 					IList<Order> results;
-					var pageNumber = 0;
-					var pageSize = 10;
-					var skippedResults = 0;
+					int pageNumber = 0;
+					int pageSize = 10;
+					int skippedResults = 0;
 
 					do
 					{
@@ -332,9 +332,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region paging_6_2
 					RavenQueryStatistics stats;
 					IList<Order> results;
-					var pageNumber = 0;
-					var pageSize = 10;
-					var skippedResults = 0;
+					int pageNumber = 0;
+					int pageSize = 10;
+					int skippedResults = 0;
 
 					do
 					{
@@ -358,9 +358,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				#region paging_6_3
 				QueryResult result;
-				var pageNumber = 0;
-				var pageSize = 10;
-				var skippedResults = 0;
+				int pageNumber = 0;
+				int pageSize = 10;
+				int skippedResults = 0;
 
 				do
 				{

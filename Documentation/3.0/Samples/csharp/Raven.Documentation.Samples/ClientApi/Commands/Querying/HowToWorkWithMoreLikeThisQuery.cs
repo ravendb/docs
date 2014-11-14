@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 				#region more_like_this_2
 				// Search for similar documents to 'articles/1'
 				// using 'Articles/MoreLikeThis' index and search only field 'Body'
-				var result = store
+				MultiLoadResult result = store
 					.DatabaseCommands
 					.MoreLikeThis(
 						new MoreLikeThisQuery

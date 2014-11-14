@@ -50,7 +50,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 				//		3.0 <= Megapixels <= 7.0
 				//		7.0 <= Megapixels <= 10.0
 				//		Megapixels >= 10.0
-				var facetResults = store
+				FacetResults facetResults = store
 					.DatabaseCommands
 					.GetFacets(
 						"Camera/Costs",
@@ -88,9 +88,9 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 								}
 							});
 
-				var manufacturerResults = facetResults.Results["Manufacturer"];
-				var costResults = facetResults.Results["Cost_Range"];
-				var megapixelResults = facetResults.Results["Megapixels_Range"];
+				FacetResult manufacturerResults = facetResults.Results["Manufacturer"];
+				FacetResult costResults = facetResults.Results["Cost_Range"];
+				FacetResult megapixelResults = facetResults.Results["Megapixels_Range"];
 				#endregion
 			}
 
@@ -152,20 +152,20 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 						}),
 					new RavenJObject());
 
-				var facetResults = store
+				FacetResults facetResults = store
 					.DatabaseCommands
 					.GetFacets("Camera/Costs", new IndexQuery(), "facets/CameraFacets");
 
-				var manufacturerResults = facetResults.Results["Manufacturer"];
-				var costResults = facetResults.Results["Cost_Range"];
-				var megapixelResults = facetResults.Results["Megapixels_Range"];
+				FacetResult manufacturerResults = facetResults.Results["Manufacturer"];
+				FacetResult costResults = facetResults.Results["Cost_Range"];
+				FacetResult megapixelResults = facetResults.Results["Megapixels_Range"];
 				#endregion
 			}
 
 			using (var store = new DocumentStore())
 			{
 				#region get_facets_6
-				var facetResults = store
+				FacetResults[] facetResults = store
 					.DatabaseCommands
 					.GetMultiFacets(
 						new[]
@@ -190,9 +190,9 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 							}
 						});
 
-				var facetResults1 = facetResults[0].Results;
-				var facetResults2 = facetResults[1].Results;
-				var facetResults3 = facetResults[2].Results;
+				Dictionary<string, FacetResult> facetResults1 = facetResults[0].Results;
+				Dictionary<string, FacetResult> facetResults2 = facetResults[1].Results;
+				Dictionary<string, FacetResult> facetResults3 = facetResults[2].Results;
 				#endregion
 			}
 		}

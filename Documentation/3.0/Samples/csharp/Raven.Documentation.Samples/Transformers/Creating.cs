@@ -95,7 +95,7 @@ namespace Raven.Documentation.Samples.Transformers
 				#endregion
 
 				#region transformers_7
-				var definition = new Orders_Company().CreateTransformerDefinition();
+				TransformerDefinition definition = new Orders_Company().CreateTransformerDefinition();
 				store
 					.DatabaseCommands
 					.PutTransformer("Orders/Company", definition);

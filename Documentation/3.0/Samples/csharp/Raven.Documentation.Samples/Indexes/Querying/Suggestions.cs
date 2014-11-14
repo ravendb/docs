@@ -36,11 +36,11 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region suggestions_2
-					var query = session
+					IQueryable<Product> query = session
 						.Query<Product, Products_ByName>()
 						.Where(x => x.Name == "chaig");
 
-					var product = query.FirstOrDefault();
+					Product product = query.FirstOrDefault();
 					#endregion
 
 					#region suggestions_3
@@ -50,7 +50,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 						Console.WriteLine("Did you mean?");
 
-						foreach (var suggestion in suggestionResult.Suggestions)
+						foreach (string suggestion in suggestionResult.Suggestions)
 						{
 							Console.WriteLine("\t{0}", suggestion);
 						}
@@ -104,7 +104,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 					Console.WriteLine("Did you mean?");
 
-					foreach (var suggestion in resultsByMultipleWords.Suggestions)
+					foreach (string suggestion in resultsByMultipleWords.Suggestions)
 					{
 						Console.WriteLine("\t{0}", suggestion);
 					}

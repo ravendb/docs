@@ -24,7 +24,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 			{
 				#region stream_query_2
 				QueryHeaderInformation queryHeaderInfo;
-				var enumerator = store
+				IEnumerator<RavenJObject> enumerator = store
 					.DatabaseCommands
 					.StreamQuery(
 						"Orders/Totals",
@@ -36,7 +36,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 
 				while (enumerator.MoveNext())
 				{
-					var order = enumerator.Current;
+					RavenJObject order = enumerator.Current;
 				}
 				#endregion
 			}

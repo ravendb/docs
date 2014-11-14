@@ -33,7 +33,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 
 				#region get_indexing_status_2
 				store.DatabaseCommands.Admin.StopIndexing();
-				var status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Paused"
+				string status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Paused"
 				store.DatabaseCommands.Admin.StartIndexing();
 				status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Indexing"
 				#endregion

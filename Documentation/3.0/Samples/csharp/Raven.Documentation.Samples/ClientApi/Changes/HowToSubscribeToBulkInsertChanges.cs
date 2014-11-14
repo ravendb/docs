@@ -22,9 +22,9 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region bulk_insert_changes_2
-				using (var bulkInsert = store.BulkInsert())
+				using (BulkInsertOperation bulkInsert = store.BulkInsert())
 				{
-					var subscribtion = store
+					IDisposable subscribtion = store
 						.Changes()
 						.ForBulkInsert(bulkInsert.OperationId)
 						.Subscribe(change =>

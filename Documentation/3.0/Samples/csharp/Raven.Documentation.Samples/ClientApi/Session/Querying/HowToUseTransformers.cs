@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Client.Document;
 using Raven.Client.Indexes;
@@ -63,7 +64,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// return up to 128 entities from 'Products' collection
 					// transform results using 'Products_Name' transformer
 					// which returns only 'Name' property, rest will be 'null'
-					var results = session
+					List<Product> results = session
 						.Query<Product>()
 						.Where(x => x.Name == "Chocolade")
 						.TransformWith<Products_Name, Product>()
@@ -77,7 +78,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// return 1 entity from 'Products' collection
 					// transform results using 'Products_WithCategoryAndSupplier' transformer
 					// project results to 'ProductWithCategoryAndSupplier' class
-					var product = session
+					ProductWithCategoryAndSupplier product = session
 						.Query<Product>()
 						.Where(x => x.Name == "Chocolade")
 						.TransformWith<Products_WithCategoryAndSupplier, ProductWithCategoryAndSupplier>()

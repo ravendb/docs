@@ -20,8 +20,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region get_etag_2
-					var employee = session.Load<Employee>("employees/1");
-					var etag = session.Advanced.GetEtagFor(employee);
+					Employee employee = session.Load<Employee>("employees/1");
+					Etag etag = session.Advanced.GetEtagFor(employee);
 					#endregion
 				}
 			}

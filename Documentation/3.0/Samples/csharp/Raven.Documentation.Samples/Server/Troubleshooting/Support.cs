@@ -1,5 +1,7 @@
 ﻿using System.Linq;
 
+using Raven.Client;
+using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 using Raven.Tests.Helpers;
@@ -28,11 +30,11 @@ namespace Raven.Documentation.Samples.Server.Troubleshooting
 			[Fact]
 			public void SampleTestMethod()
 			{
-				using (var store = NewRemoteDocumentStore())
+				using (DocumentStore store = NewRemoteDocumentStore())
 				{
 					new Employees_ByFirstName().Execute(store);
 
-					using (var session = store.OpenSession())
+					using (IDocumentSession session = store.OpenSession())
 					{
 						session.Store(new Employee
 						{
@@ -45,7 +47,7 @@ namespace Raven.Documentation.Samples.Server.Troubleshooting
 
 					WaitForIndexing(store);
 
-					using (var session = store.OpenSession())
+					using (IDocumentSession session = store.OpenSession())
 					{
 						var employees = session
 							.Query<Employee, Employees_ByFirstName>()

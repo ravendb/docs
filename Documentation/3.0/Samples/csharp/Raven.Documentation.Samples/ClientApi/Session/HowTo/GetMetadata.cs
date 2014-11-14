@@ -20,8 +20,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region get_metadata_2
-					var employee = session.Load<Employee>("employees/1");
-					var metadata = session.Advanced.GetMetadataFor(employee);
+					Employee employee = session.Load<Employee>("employees/1");
+					RavenJObject metadata = session.Advanced.GetMetadataFor(employee);
 					#endregion
 				}
 			}

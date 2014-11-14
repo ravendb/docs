@@ -28,7 +28,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					// if UseOptimisticConcurrency is set to 'true' (default 'false')
 					// this 'Delete' method will use loaded 'employees/1' etag for concurrency check
 					// and might throw ConcurrencyException
-					var employee = session.Load<Employee>("employees/1");
+					Employee employee = session.Load<Employee>("employees/1");
 					session.Delete(employee);
 					session.SaveChanges();
 					#endregion

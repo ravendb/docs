@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Client;
 using Raven.Client.Document;
@@ -64,7 +65,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					#region projection_2
 					// request 'FirstName' and 'LastName' from server
 					// and project it to 'EmployeeFirstAndLastName'
-					var results = session
+					List<EmployeeFirstAndLastName> results = session
 						.Query<Employee>()
 						.Select(x => new EmployeeFirstAndLastName
 						{
@@ -81,7 +82,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// request all public fields/properties available 
 					// in 'EmployeeFirstAndLastName' ('FirstName' and 'LastName')
 					// and project it to instance of this class
-					var results = session
+					List<EmployeeFirstAndLastName> results = session
 						.Query<Employee>()
 						.ProjectFromIndexFieldsInto<EmployeeFirstAndLastName>()
 						.ToList();
@@ -94,7 +95,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// query index 'Products_BySupplierName' 
 					// return documents from collection 'Products' that have a supplier 'Norske Meierier'
 					// project them to 'Products'
-					var results = session
+					List<Product> results = session
 						.Query<Products_BySupplierName.Result, Products_BySupplierName>()
 						.Where(x => x.Name == "Norske Meierier")
 						.OfType<Product>()

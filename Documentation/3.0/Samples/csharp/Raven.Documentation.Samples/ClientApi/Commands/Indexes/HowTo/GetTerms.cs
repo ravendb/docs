@@ -22,7 +22,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region get_terms_2
-				var terms = store
+				IEnumerable<string> terms = store
 					.DatabaseCommands
 					.GetTerms("Orders/Totals", "Company", null, 128);
 				#endregion

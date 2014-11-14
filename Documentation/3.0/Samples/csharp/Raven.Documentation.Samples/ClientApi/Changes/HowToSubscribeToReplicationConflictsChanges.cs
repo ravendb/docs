@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region replication_conflicts_changes_2
-				var subscribtion = store.Changes()
+				IDisposable subscribtion = store.Changes()
 					.ForAllReplicationConflicts()
 					.Subscribe(conflict =>
 					{

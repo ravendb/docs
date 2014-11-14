@@ -20,18 +20,18 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region multi_facet_2
-					var facetQuery1 = session.Query<Camera>()
+					FacetQuery facetQuery1 = session.Query<Camera>()
 						.ToFacetQuery("facets/CameraFacets1");
 
-					var facetQuery2 = session.Query<Camera>()
+					FacetQuery facetQuery2 = session.Query<Camera>()
 						.ToFacetQuery("facets/CameraFacets2");
 
-					var results = session
+					FacetResults[] results = session
 						.Advanced
 						.MultiFacetedSearch(facetQuery1, facetQuery2);
 
-					var facetResults1 = results[0];
-					var facetResults2 = results[1];
+					FacetResults facetResults1 = results[0];
+					FacetResults facetResults2 = results[1];
 					#endregion
 				}
 			}

@@ -265,7 +265,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region search_5_0
-					var users = session
+					List<User> users = session
 						.Query<User, Users_ByNameAndHobbies>()
 						.Search(x => x.Name, "Adam")
 						.Search(x => x.Hobbies, "sport")
@@ -276,7 +276,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region search_5_1
-					var users = session
+					List<User> users = session
 						.Advanced
 						.DocumentQuery<User, Users_ByNameAndHobbies>()
 						.Search(x => x.Name, "Adam")

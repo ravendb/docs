@@ -21,13 +21,13 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers
 			using (var store = new DocumentStore())
 			{
 				#region get_1_1
-				var transformer = store
+				TransformerDefinition transformer = store
 					.DatabaseCommands
 					.GetTransformer("Order/Statistics"); // returns null if does not exist
 				#endregion
 
 				#region get_2_1
-				var transformers = store
+				TransformerDefinition[] transformers = store
 					.DatabaseCommands
 					.GetTransformers(0, 128);
 				#endregion

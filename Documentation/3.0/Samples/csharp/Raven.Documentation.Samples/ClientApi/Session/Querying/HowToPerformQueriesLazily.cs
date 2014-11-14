@@ -1,6 +1,9 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
@@ -71,48 +74,48 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region lazy_2
-					var employeesLazy = session
+					Lazy<IEnumerable<Employee>> employeesLazy = session
 						.Query<Employee>()
 						.Where(x => x.FirstName == "Robert")
 						.Lazily();
 
-					var employees = employeesLazy.Value; // query will be executed here
+					IEnumerable<Employee> employees = employeesLazy.Value; // query will be executed here
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region lazy_5
-					var countLazy = session
+					Lazy<int> countLazy = session
 						.Query<Employee>()
 						.Where(x => x.FirstName == "Robert")
 						.CountLazily();
 
-					var count = countLazy.Value; // query will be executed here
+					int count = countLazy.Value; // query will be executed here
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region lazy_7
-					var suggestLazy = session
+					Lazy<SuggestionQueryResult> suggestLazy = session
 						.Query<Employee>()
 						.SuggestLazy();
 
-					var suggest = suggestLazy.Value; // query will be executed here
-					var suggestions = suggest.Suggestions;
+					SuggestionQueryResult suggest = suggestLazy.Value; // query will be executed here
+					string[] suggestions = suggest.Suggestions;
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region lazy_9
-					var facetsLazy = session
+					Lazy<FacetResults> facetsLazy = session
 						.Query<Camera>("Camera/Costs")
 						.ToFacetsLazy("facets/CameraFacets");
 
-					var facets = facetsLazy.Value; // query will be executed here
-					var results = facets.Results;
+					FacetResults facets = facetsLazy.Value; // query will be executed here
+					Dictionary<string, FacetResult> results = facets.Results;
 					#endregion
 				}
 			}
@@ -125,12 +128,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region lazy_3
-					var employeesLazy = session
+					Lazy<Task<IEnumerable<Employee>>> employeesLazy = session
 						.Query<Employee>()
 						.Where(x => x.FirstName == "Robert")
 						.LazilyAsync();
 
-					var employees = await employeesLazy.Value; // query will be executed here
+					IEnumerable<Employee> employees = await employeesLazy.Value; // query will be executed here
 					#endregion
 				}
 			}

@@ -17,7 +17,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers
 			using (var store = new DocumentStore())
 			{
 				#region put_2
-				var transformerName = store
+				string transformerName = store
 					.DatabaseCommands
 					.PutTransformer(
 						"Order/Statistics",

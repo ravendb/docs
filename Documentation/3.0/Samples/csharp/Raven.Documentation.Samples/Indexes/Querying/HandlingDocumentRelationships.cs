@@ -6,6 +6,7 @@ using Raven.Abstractions.Data;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
+using Raven.Json.Linq;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
 {
@@ -167,8 +168,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "orders/1234" }, includes: new[] { "CustomerId" });
 
-				var order = result.Results[0];
-				var customer = result.Includes[0];
+				RavenJObject order = result.Results[0];
+				RavenJObject customer = result.Includes[0];
 				#endregion
 			}
 
@@ -181,7 +182,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Include<Order>(x => x.CustomerId)
 						.Load("orders/1234", "orders/4321");
 
-					foreach (var order in orders)
+					foreach (Order order in orders)
 					{
 						// this will not require querying the server!
 						Customer customer = session.Load<Customer>(order.CustomerId);
@@ -197,8 +198,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "orders/1234", "orders/4321" }, includes: new[] { "CustomerId" });
 
-				var orders = result.Results;
-				var customers = result.Includes;
+				List<RavenJObject> orders = result.Results;
+				List<RavenJObject> customers = result.Includes;
 				#endregion
 			}
 
@@ -214,7 +215,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Where(x => x.TotalPrice > 100)
 						.ToList();
 
-					foreach (var order in orders)
+					foreach (Order order in orders)
 					{
 						// this will not require querying the server!
 						Customer customer = session
@@ -233,7 +234,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.WhereGreaterThan(x => x.TotalPrice, 100)
 						.ToList();
 
-					foreach (var order in orders)
+					foreach (Order order in orders)
 					{
 						// this will not require querying the server!
 						Customer customer = session
@@ -256,8 +257,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						},
 						includes: new[] { "CustomerId" });
 
-				var orders = result.Results;
-				var customers = result.Includes;
+				List<RavenJObject> orders = result.Results;
+				List<RavenJObject> customers = result.Includes;
 				#endregion
 			}
 
@@ -270,7 +271,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Include<Order>(x => x.SupplierIds)
 						.Load("orders/1234");
 
-					foreach (var supplierId in order.SupplierIds)
+					foreach (Guid supplierId in order.SupplierIds)
 					{
 						// this will not require querying the server!
 						Supplier supplier = session.Load<Supplier>(supplierId);
@@ -286,8 +287,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "orders/1234" }, includes: new[] { "SupplierIds" });
 
-				var order = result.Results[0];
-				var customer = result.Includes[0];
+				RavenJObject order = result.Results[0];
+				RavenJObject customer = result.Includes[0];
 				#endregion
 			}
 
@@ -300,9 +301,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Include<Order>(x => x.SupplierIds)
 						.Load("orders/1234", "orders/4321");
 
-					foreach (var order in orders)
+					foreach (Order order in orders)
 					{
-						foreach (var supplierId in order.SupplierIds)
+						foreach (Guid supplierId in order.SupplierIds)
 						{
 							// this will not require querying the server!
 							Supplier supplier = session.Load<Supplier>(supplierId);
@@ -319,8 +320,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "orders/1234", "orders/4321" }, includes: new[] { "SupplierIds" });
 
-				var orders = result.Results;
-				var customers = result.Includes;
+				List<RavenJObject> orders = result.Results;
+				List<RavenJObject> customers = result.Includes;
 				#endregion
 			}
 
@@ -357,8 +358,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "orders/1234" }, includes: new[] { "Refferal.CustomerId" });
 
-				var order = result.Results[0];
-				var customer = result.Includes[0];
+				RavenJObject order = result.Results[0];
+				RavenJObject customer = result.Includes[0];
 				#endregion
 			}
 
@@ -371,7 +372,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Include<Order>(x => x.LineItems.Select(li => li.ProductId))
 						.Load("orders/1234");
 
-					foreach (var lineItem in order.LineItems)
+					foreach (LineItem lineItem in order.LineItems)
 					{
 						// this will not require querying the server!
 						Product product = session.Load<Product>(lineItem.ProductId);
@@ -387,8 +388,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "orders/1234" }, includes: new[] { "LineItems.,ProductId" });
 
-				var order = result.Results[0];
-				var product = result.Includes[0];
+				RavenJObject order = result.Results[0];
+				RavenJObject product = result.Includes[0];
 				#endregion
 			}
 
@@ -414,8 +415,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "order2s/1234" }, includes: new[] { "CustomerId" });
 
-				var order = result.Results[0];
-				var customer = result.Includes[0];
+				RavenJObject order = result.Results[0];
+				RavenJObject customer = result.Includes[0];
 				#endregion
 			}
 
@@ -430,7 +431,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Where(x => x.TotalPrice > 100)
 						.ToList();
 
-					foreach (var order in orders)
+					foreach (Order2 order in orders)
 					{
 						// this will not require querying the server!
 						Customer2 customer = session.Load<Customer2>(order.CustomerId);
@@ -448,7 +449,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.WhereGreaterThan(x => x.TotalPrice, 100)
 						.ToList();
 
-					foreach (var order in orders)
+					foreach (Order2 order in orders)
 					{
 						// this will not require querying the server!
 						Customer2 customer = session.Load<Customer2>(order.CustomerId);
@@ -470,8 +471,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						},
 						includes: new[] { "CustomerId" });
 
-				var orders = result.Results;
-				var customers = result.Includes;
+				List<RavenJObject> orders = result.Results;
+				List<RavenJObject> customers = result.Includes;
 				#endregion
 			}
 
@@ -484,7 +485,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						.Include<Order2, Supplier>(x => x.SupplierIds)
 						.Load("order2s/1234");
 
-					foreach (var supplierId in order.SupplierIds)
+					foreach (Guid supplierId in order.SupplierIds)
 					{
 						// this will not require querying the server!
 						Supplier supplier = session.Load<Supplier>(supplierId);
@@ -500,8 +501,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "order2s/1234" }, includes: new[] { "SupplierIds" });
 
-				var order = result.Results[0];
-				var suppliers = result.Includes;
+				RavenJObject order = result.Results[0];
+				List<RavenJObject> suppliers = result.Includes;
 				#endregion
 			}
 
@@ -527,8 +528,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "order2s/1234" }, includes: new[] { "Refferal.CustomerId" });
 
-				var order = result.Results[0];
-				var customer = result.Includes[0];
+				RavenJObject order = result.Results[0];
+				RavenJObject customer = result.Includes[0];
 				#endregion
 			}
 
@@ -537,11 +538,11 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes_8_10
-					var order = session
+					Order2 order = session
 						.Include<Order2, Product>(x => x.LineItems.Select(li => li.ProductId))
 						.Load("orders/1234");
 
-					foreach (var lineItem in order.LineItems)
+					foreach (LineItem lineItem in order.LineItems)
 					{
 						// this will not require querying the server!
 						Product product = session.Load<Product>(lineItem.ProductId);
@@ -557,8 +558,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "order2s/1234" }, includes: new[] { "LineItems.,ProductId" });
 
-				var order = result.Results[0];
-				var products = result.Includes;
+				RavenJObject order = result.Results[0];
+				List<RavenJObject> products = result.Includes;
 				#endregion
 			}
 
@@ -567,12 +568,12 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				using (var session = store.OpenSession())
 				{
 					#region includes_9_0
-					var order = session
+					Order3 order = session
 						.Include<Order3, Customer>(x => x.Customer.Id)
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var customer = session.Load<Customer>(order.Customer.Id);
+					Customer customer = session.Load<Customer>(order.Customer.Id);
 					#endregion
 				}
 			}
@@ -584,8 +585,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					.DatabaseCommands
 					.Get(ids: new[] { "orders/1234" }, includes: new[] { "Customer.Id" });
 
-				var order = result.Results[0];
-				var customer = result.Includes[0];
+				RavenJObject order = result.Results[0];
+				RavenJObject customer = result.Includes[0];
 				#endregion
 			}
 		}

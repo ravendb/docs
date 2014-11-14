@@ -1,5 +1,6 @@
 ﻿using System;
 
+using Raven.Client;
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
@@ -19,8 +20,8 @@ namespace Raven.Documentation.Samples.Server.Bundles
 				var user = new User();
 
 				#region expiration1
-				var expiry = DateTime.UtcNow.AddMinutes(5);
-				using (var session = store.OpenSession())
+				DateTime expiry = DateTime.UtcNow.AddMinutes(5);
+				using (IDocumentSession session = store.OpenSession())
 				{
 					session.Store(user);
 					session.Advanced.GetMetadataFor(user)["Raven-Expiration-Date"] = new RavenJValue(expiry);

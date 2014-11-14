@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.Samples.ClientApi.Configuration.Conventions.IdentifierGeneration
+﻿using Raven.Client;
+
+namespace Raven.Documentation.Samples.ClientApi.Configuration.Conventions.IdentifierGeneration
 {
 	using System;
 	using System.Threading.Tasks;
@@ -57,7 +59,7 @@
 			#endregion
 
 			#region eployees_custom_convention_example
-			using (var session = store.OpenSession())
+			using (IDocumentSession session = store.OpenSession())
 			{
 				session.Store(new Employee
 				{
@@ -70,7 +72,7 @@
 			#endregion
 
 			#region eployees_custom_convention_inheritance
-			using (var session = store.OpenSession())
+			using (IDocumentSession session = store.OpenSession())
 			{
 				session.Store(new Employee // employees/Smith/Adam
 				{
@@ -96,7 +98,7 @@
 			store.Conventions.RegisterIdConvention<EmployeeManager>(
 				(dbname, commands, employee) => string.Format("managers/{0}/{1}", employee.LastName, employee.FirstName));
 
-			using (var session = store.OpenSession())
+			using (IDocumentSession session = store.OpenSession())
 			{
 				session.Store(new Employee // employees/Smith/Adam
 				{
@@ -122,9 +124,9 @@
 			#region id_generation_on_load_2
 			store.Conventions.RegisterIdLoadConvention<EntityWithIntegerId>(id => "ewi/" + id);
 
-			using (var session = store.OpenSession())
+			using (IDocumentSession session = store.OpenSession())
 			{
-				var entity = session.Load<EntityWithIntegerId>(1); // will load 'ewi/1' document
+				EntityWithIntegerId entity = session.Load<EntityWithIntegerId>(1); // will load 'ewi/1' document
 			}
 			#endregion
 		}

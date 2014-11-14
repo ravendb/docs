@@ -12,7 +12,7 @@ namespace Raven.Documentation.Samples.Server.Configuration
 		public Authentication()
 		{
 			#region authentication_4
-			var store = new DocumentStore
+			DocumentStore store = new DocumentStore
 			{
 				ApiKey = "sample/ThisIsMySecret",
 				Url = "http://localhost:8080/"
@@ -47,7 +47,7 @@ namespace Raven.Documentation.Samples.Server.Configuration
 			using (var store = new DocumentStore())
 			{
 				#region authentication_5
-				var json = store
+				RavenJToken json = store
 					.JsonRequestFactory
 					.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(null, store.Url + "/debug/user-info", "GET", store.DatabaseCommands.PrimaryCredentials, store.Conventions))
 					.ReadResponseJson();

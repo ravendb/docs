@@ -1,4 +1,5 @@
-﻿using Raven.Client.Document;
+﻿using Raven.Client;
+using Raven.Client.Document;
 using Raven.Client.Extensions;
 
 #region multiple_databases_2
@@ -20,7 +21,7 @@ namespace Raven.Documentation.Samples.Server.Configuration
 					.GlobalAdmin
 					.EnsureDatabaseExists("Northwind");
 
-				using (var northwindSession = store.OpenSession("Northwind"))
+				using (IDocumentSession northwindSession = store.OpenSession("Northwind"))
 				{
 					// ...
 				}

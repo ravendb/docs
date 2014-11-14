@@ -21,11 +21,11 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region for_database_3
-				var commands = store.DatabaseCommands.ForDatabase("otherDatabase");
+				IDatabaseCommands commands = store.DatabaseCommands.ForDatabase("otherDatabase");
 				#endregion
 
 				#region for_database_4
-				var systemCommands = store.DatabaseCommands.ForSystemDatabase();
+				IDatabaseCommands systemCommands = store.DatabaseCommands.ForSystemDatabase();
 				#endregion
 			}
 		}
