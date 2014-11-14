@@ -21,4 +21,3 @@ Query statistics can provide important information about query e.g. duration, to
 ## Related articles
 
 - [How to **show** detailed **timings** in query statistics?](../../../client-api/session/querying/how-to-customize-query#showtimings)
-- TODO

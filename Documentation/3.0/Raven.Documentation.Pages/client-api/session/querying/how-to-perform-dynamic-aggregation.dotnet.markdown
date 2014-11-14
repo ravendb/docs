@@ -41,4 +41,4 @@ Dynamic aggregation can be performed using `AggregateBy` method. Internally such
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Dynamic aggregation](../../../indexes/querying/dynamic-aggregation)   

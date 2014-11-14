@@ -13,3 +13,7 @@ To disable caching in Commands use `DisableAllCaching` method.
 ## Example
 
 {CODE disable_caching_2@ClientApi\Commands\HowTo\DisableCaching.cs /}
+
+## Related articles
+
+- [Conventions related to caching](../../configuration/conventions/caching)  

@@ -1,4 +1,4 @@
-# Session : Querying : How to use lucene in queries?
+# Session : Querying : How to use Lucene in queries?
 
 Lucene can be used directly by using `DocumentQuery` method from advanced session operations. It allows us to acquire low-level access to query structure which gives more flexibility.
 
@@ -102,4 +102,4 @@ By default, if `page size` is not specified, the value will be set to `128`. Thi
 
 ## Related articles
 
-TODO
+- [Query vs DocumentQuery](../../../../indexes/querying/query-vs-document-query)

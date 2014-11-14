@@ -25,4 +25,4 @@
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Highlights](../../../indexes/querying/highlights)

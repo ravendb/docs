@@ -17,7 +17,3 @@ We can clear all session operations and stop tracking of all entities by using [
 ## Example II
 
 {CODE:java evict_3@ClientApi\Session\HowTo\Evict.java /}
-
-## Related articles
-
-TODO

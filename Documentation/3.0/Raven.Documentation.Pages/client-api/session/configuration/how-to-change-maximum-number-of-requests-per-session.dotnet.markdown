@@ -15,7 +15,3 @@ To change maximum number of requests in a single session just manipulate `MaxNum
 To change maximum number of requests for all sessions (on particular store) the `MaxNumberOfRequestsPerSession` property from DocumentStore `Conventions` must be changed.
 
 {CODE max_requests_2@ClientApi\Session\Configuration\MaxRequests.cs /}
-
-## Related articles
-
-TODO

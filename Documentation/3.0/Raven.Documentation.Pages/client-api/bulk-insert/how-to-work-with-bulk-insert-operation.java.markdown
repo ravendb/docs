@@ -31,4 +31,4 @@ There are several limitations to the API:
 
 ## Related articles
 
-TODO
+- [How to subscribe to bulk insert operation changes?](../changes/how-to-subscribe-to-bulk-insert-operation-changes)

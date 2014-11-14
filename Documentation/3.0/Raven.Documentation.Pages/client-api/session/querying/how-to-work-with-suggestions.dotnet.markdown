@@ -20,4 +20,4 @@ Session `Query` method contains extensions (`Suggest`) that allow you to use sug
 
 ## Related articles
 
-TODO
+- [Indexes : Suggestions](../../../indexes/querying/suggestions)

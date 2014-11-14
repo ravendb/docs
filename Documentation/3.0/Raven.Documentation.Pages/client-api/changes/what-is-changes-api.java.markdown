@@ -53,6 +53,3 @@ In order to end subscribtion (stop listening for particular notifications) you m
 
 {CODE:java changes_2@ClientApi\Changes\WhatIsChangesApi.java /}
 
-## Related articles
-
-TODO

@@ -22,7 +22,7 @@ Single document changes can be observed using `ForDocument` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document. |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscriptions to notifications for given document. |
 
 ### Example
 
@@ -44,7 +44,7 @@ To observe all document changes in particular collection use `ForDocumentInColle
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document collection name. |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscriptions to notifications for given document collection name. |
 
 {INFO Overload with `TEntity` type uses `Conventions.GetTypeTagName` to get collection name. /}
 
@@ -72,7 +72,7 @@ To observe all document changes for given type use `ForDocumentsOfType` method. 
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document type name. |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscriptions to notifications for given document type name. |
 
 {INFO Overloads with `TEntity` type or `Type` uses `Conventions.FindClrTypeName` to get type name. /}
 
@@ -100,7 +100,7 @@ To observe all document changes for documents with Id that contains given prefix
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for given document Id prefix. |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscriptions to notifications for given document Id prefix. |
 
 ## Example
 
@@ -118,7 +118,7 @@ To observe all document changes use `ForAllDocuments` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscribtions to notifications for all documents. |
+| IObservableWithTask<[DocumentChangeNotification](../../glossary/document-change-notification)> | Observable that allows to add subscriptions to notifications for all documents. |
 
 ## Example
 
@@ -129,9 +129,4 @@ To observe all document changes use `ForAllDocuments` method.
 ## Remarks
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
-
-## Related articles
-
-TODO
-
 

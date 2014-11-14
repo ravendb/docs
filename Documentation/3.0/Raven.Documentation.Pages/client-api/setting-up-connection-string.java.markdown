@@ -23,4 +23,4 @@ The following are samples of a few RavenDB connection strings:
 
 ## Related articles
 
-TODO
+- [How to setup a default database?](./setting-up-default-database)

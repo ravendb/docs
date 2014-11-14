@@ -17,7 +17,3 @@ When document is downloaded from server it contains various metadata information
 ## Example
 
 {CODE get_metadata_2@ClientApi\Session\HowTo\GetMetadata.cs /}
-
-## Related articles
-
-TODO

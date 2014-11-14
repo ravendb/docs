@@ -20,4 +20,4 @@ Session `query` allows you to use suggestion feature.
 
 ## Related articles
 
-TODO
+- [Indexes : Suggestions](../../../indexes/querying/suggestions)

@@ -24,4 +24,4 @@ In RavenDB client you have an opportunity to register [conflict listeners](../..
 
 ## Related articles
 
-TODO
+- [Server : Replication : Conflicts](../../server/scaling-out/replication/replication-conflicts)

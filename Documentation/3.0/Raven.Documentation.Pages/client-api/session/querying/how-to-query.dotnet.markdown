@@ -15,9 +15,8 @@ Database can be queried using LINQ-enabled `Query` method with few custom extens
 | ------------- | ----- |
 | IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
 
-## Remarks
 
-By default, if `page size` is not specified, the value will be set to `128`. This is part of **Safe-by-Default** approach.
+{SAFE The default value of a page size for a query is `128` results. In order to retrieve a different number of results in a single query use `.Take(pageSize)` method. /}
 
 ## Example I - Basic
 
@@ -78,4 +77,5 @@ Available custom methods and extensions:
 
 ## Related articles
 
-TODO
+- [What are indexes?](../../../indexes/what-are-indexes)   
+- [Indexes : Querying: Basics](../../../indexes/querying/basics)  

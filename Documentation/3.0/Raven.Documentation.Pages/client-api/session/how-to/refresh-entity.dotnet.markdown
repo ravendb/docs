@@ -17,7 +17,3 @@ To update entity with latest changes from server `Refresh` method from `Advanced
 ## Remarks
 
 Refreshing transient entity (not attached) or entity that was deleted on server-side will result in `InvalidOperationException`.
-
-## Related articles
-
-TODO

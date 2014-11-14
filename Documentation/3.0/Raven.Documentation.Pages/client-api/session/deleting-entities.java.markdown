@@ -20,4 +20,5 @@ Entities can be marked for deletion by using `delete` method, but will not be re
 
 ## Related articles
 
-TODO
+- [Opening a session](./opening-a-session)  
+- [Loading entities](./loading-entities)  

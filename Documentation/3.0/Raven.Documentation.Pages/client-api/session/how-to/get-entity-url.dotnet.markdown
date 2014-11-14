@@ -21,7 +21,3 @@
 ## Remarks
 
 If the entity is transient (not attached) this method will throw `InvalidOperationException`.
-
-## Related articles
-
-TODO

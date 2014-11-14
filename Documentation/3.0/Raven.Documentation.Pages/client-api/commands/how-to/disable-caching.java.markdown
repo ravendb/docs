@@ -13,3 +13,7 @@ To disable caching in Commands use `disableAllCaching` method.
 ## Example
 
 {CODE:java disable_caching_2@ClientApi\Commands\HowTo\DisableCaching.java /}
+
+## Related articles
+
+- [Conventions related to caching](../../configuration/conventions/caching)  

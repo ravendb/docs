@@ -16,4 +16,4 @@ by using the convention `DefaultUseOptimisticConcurrency`.
 
 ## Related articles
 
-TODO
+- [Revisions and Concurrency with E-Tags](../../concurrency/revisions-and-concurrency-with-etags)
