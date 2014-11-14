@@ -17,7 +17,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region merge_suggestions_2
-				var suggestions = store.DatabaseCommands.GetIndexMergeSuggestions();
+				IndexMergeResults suggestions = store.DatabaseCommands.GetIndexMergeSuggestions();
 				#endregion
 			}
 		}

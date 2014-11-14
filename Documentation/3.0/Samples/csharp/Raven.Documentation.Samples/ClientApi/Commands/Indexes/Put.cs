@@ -29,7 +29,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes
 			using (var store = new DocumentStore())
 			{
 				#region put_1_1
-				var indexName = store
+				string indexName = store
 					.DatabaseCommands
 					.PutIndex(
 						"Orders/Totals",
@@ -49,7 +49,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes
 			using (var store = new DocumentStore())
 			{
 				#region put_2_1
-				var indexName = store
+				string indexName = store
 					.DatabaseCommands
 					.PutIndex(
 						"Orders/Totals",

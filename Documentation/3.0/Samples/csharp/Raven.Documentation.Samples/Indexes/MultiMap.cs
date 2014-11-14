@@ -186,7 +186,7 @@ namespace Raven.Documentation.Samples.Indexes
 						.ProjectFromIndexFieldsInto<Smart_Search.Projection>()
 						.ToList();
 
-					foreach (var result in results)
+					foreach (Smart_Search.Projection result in results)
 					{
 						Console.WriteLine(result.Collection + ": " + result.DisplayName);
 						// Companies: Laughing Bacchus Wine Cellars

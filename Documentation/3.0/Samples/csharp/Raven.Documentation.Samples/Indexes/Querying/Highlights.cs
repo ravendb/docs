@@ -63,23 +63,23 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region highlights_2
 					FieldHighlightings highlightings;
 
-					var results = session
+					BlogPost[] results = session
 						.Advanced
 						.DocumentQuery<BlogPost, BlogPosts_ByContent>()
 						.Highlight("Content", 128, 1, out highlightings)
 						.Search("Content", "raven")
 						.ToArray();
 
-					var builder = new StringBuilder()
+					StringBuilder builder = new StringBuilder()
 						.AppendLine("<ul>");
 
-					foreach (var result in results)
+					foreach (BlogPost result in results)
 					{
-						var fragments = highlightings.GetFragments(result.Id);
+						string[] fragments = highlightings.GetFragments(result.Id);
 						builder.AppendLine(string.Format("<li>{0}</li>", fragments.First()));
 					}
 
-					var ul = builder
+					string ul = builder
 						.AppendLine("</ul>")
 						.ToString();
 
@@ -91,7 +91,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#region highlights_5
 					FieldHighlightings highlightings;
 
-					var results = session
+					BlogPost[] results = session
 						.Advanced
 						.DocumentQuery<BlogPost, BlogPosts_ByContent>()
 						.Highlight("Content", 128, 1, out highlightings)

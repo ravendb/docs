@@ -46,7 +46,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 					#region more_like_this_2
 					// Search for similar articles to 'articles/1'
 					// using 'Articles/MoreLikeThis' index and search only field 'Body'
-					var articles = session
+					Article[] articles = session
 						.Advanced
 						.MoreLikeThis<Article>(
 							"Articles/MoreLikeThis",

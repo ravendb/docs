@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 
+using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
 
@@ -47,14 +48,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// sum up all order prices
 					// for each customer
 					// where price is higher than 500
-					var aggregationResults = session.Query<Order>("Orders/All")
+					FacetResults aggregationResults = session.Query<Order>("Orders/All")
 						.Where(x => x.TotalPrice > 500)
 						.AggregateBy(x => x.CustomerId)
 							.SumOn(x => x.TotalPrice)
 						.ToList();
 
-					var customerAggregation = aggregationResults.Results["CustomerId"];
-					var sum = customerAggregation.Values[0].Sum;
+					FacetResult customerAggregation = aggregationResults.Results["CustomerId"];
+					double? sum = customerAggregation.Values[0].Sum;
 					#endregion
 				}
 
@@ -64,14 +65,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// count all orders
 					// for each customer
 					// where price is higher than 500
-					var aggregationResults = session.Query<Order>("Orders/All")
+					FacetResults aggregationResults = session.Query<Order>("Orders/All")
 						.Where(x => x.TotalPrice > 500)
 						.AggregateBy(x => x.CustomerId)
 							.CountOn(x => x.TotalPrice)
 						.ToList();
 
-					var customerAggregation = aggregationResults.Results["CustomerId"];
-					var count = customerAggregation.Values[0].Count;
+					FacetResult customerAggregation = aggregationResults.Results["CustomerId"];
+					int? count = customerAggregation.Values[0].Count;
 					#endregion
 				}
 
@@ -81,14 +82,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// count price average for orders
 					// for each customer
 					// where price is higher than 500
-					var aggregationResults = session.Query<Order>("Orders/All")
+					FacetResults aggregationResults = session.Query<Order>("Orders/All")
 						.Where(x => x.TotalPrice > 500)
 						.AggregateBy(x => x.CustomerId)
 							.AverageOn(x => x.TotalPrice)
 						.ToList();
 
-					var customerAggregation = aggregationResults.Results["CustomerId"];
-					var average = customerAggregation.Values[0].Average;
+					FacetResult customerAggregation = aggregationResults.Results["CustomerId"];
+					double? average = customerAggregation.Values[0].Average;
 					#endregion
 				}
 
@@ -98,23 +99,23 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// count max and min price for orders
 					// for each customer
 					// where price is higher than 500
-					var aggregationResults = session.Query<Order>("Orders/All")
+					FacetResults aggregationResults = session.Query<Order>("Orders/All")
 						.Where(x => x.TotalPrice > 500)
 						.AggregateBy(x => x.CustomerId)
 							.MinOn(x => x.TotalPrice)
 							.MaxOn(x => x.TotalPrice)
 						.ToList();
 
-					var customerAggregation = aggregationResults.Results["CustomerId"];
-					var min = customerAggregation.Values[0].Min;
-					var max = customerAggregation.Values[0].Max;
+					FacetResult customerAggregation = aggregationResults.Results["CustomerId"];
+					double? min = customerAggregation.Values[0].Min;
+					double? max = customerAggregation.Values[0].Max;
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region aggregate_6
-					var aggregationResults = session.Query<Order>("Orders/All")
+					FacetResults aggregationResults = session.Query<Order>("Orders/All")
 						.AggregateBy(x => x.CustomerId)
 							.AddRanges(x => x.TotalPrice < 100)
 							.AddRanges(x => x.TotalPrice >= 100 && x.TotalPrice < 500)
@@ -122,11 +123,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 							.AddRanges(x => x.TotalPrice >= 1000)
 						.ToList();
 
-					var customerAggregation = aggregationResults.Results["CustomerId"];
-					var range1 = customerAggregation.Values.First(x => x.Range == "[NULL to Dx100]");
-					var range2 = customerAggregation.Values.First(x => x.Range == "{Dx100 to Dx500]");
-					var range3 = customerAggregation.Values.First(x => x.Range == "{Dx500 to Dx1000]");
-					var range4 = customerAggregation.Values.First(x => x.Range == "{Dx1000 to NULL]");
+					FacetResult customerAggregation = aggregationResults.Results["CustomerId"];
+					FacetValue range1 = customerAggregation.Values.First(x => x.Range == "[NULL to Dx100]");
+					FacetValue range2 = customerAggregation.Values.First(x => x.Range == "{Dx100 to Dx500]");
+					FacetValue range3 = customerAggregation.Values.First(x => x.Range == "{Dx500 to Dx1000]");
+					FacetValue range4 = customerAggregation.Values.First(x => x.Range == "{Dx1000 to NULL]");
 					#endregion
 				}
 
@@ -137,18 +138,18 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// for each customer
 					// count price average for all orders
 					// for each company
-					var aggregationResults = session.Query<Order>("Orders/All")
+					FacetResults aggregationResults = session.Query<Order>("Orders/All")
 						.AggregateBy(x => x.CustomerId)
 							.SumOn(x => x.TotalPrice)
 						.AndAggregateOn(x => x.CompanyId)
 							.AverageOn(x => x.TotalPrice)
 						.ToList();
 
-					var customerAggregation = aggregationResults.Results["CustomerId"];
-					var companyAggregation = aggregationResults.Results["CompanyId"];
+					FacetResult customerAggregation = aggregationResults.Results["CustomerId"];
+					FacetResult companyAggregation = aggregationResults.Results["CompanyId"];
 
-					var sum = customerAggregation.Values[0].Sum;
-					var average = companyAggregation.Values[0].Average;
+					double? sum = customerAggregation.Values[0].Sum;
+					double? average = companyAggregation.Values[0].Average;
 					#endregion
 				}
 			}

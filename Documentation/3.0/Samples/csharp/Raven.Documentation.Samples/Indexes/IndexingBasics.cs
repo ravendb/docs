@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Abstractions.Data;
 using Raven.Client.Document;
@@ -19,7 +20,7 @@ namespace Raven.Documentation.Samples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region indexes_1
-					var employees = from employee in session.Query<Employee>("Employees/ByFirstName")
+					IRavenQueryable<Employee> employees = from employee in session.Query<Employee>("Employees/ByFirstName")
 									where employee.FirstName == "Robert"
 									select employee;
 					#endregion
@@ -28,7 +29,7 @@ namespace Raven.Documentation.Samples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region indexes_2
-					var employees = session
+					List<Employee> employees = session
 						.Query<Employee>("Employees/ByFirstName")
 						.Where(x => x.FirstName == "Robert")
 						.ToList();
@@ -38,7 +39,7 @@ namespace Raven.Documentation.Samples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region indexes_3
-					var employees = session
+					List<Employee> employees = session
 						.Advanced
 						.DocumentQuery<Employee>("Employees/ByFirstName")
 						.WhereEquals(x => x.FirstName, "Robert")

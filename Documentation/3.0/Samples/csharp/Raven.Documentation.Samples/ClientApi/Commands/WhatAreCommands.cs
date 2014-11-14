@@ -1,4 +1,6 @@
-﻿using Raven.Client.Document;
+﻿using Raven.Client.Connection;
+using Raven.Client.Connection.Async;
+using Raven.Client.Document;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands
 {
@@ -9,8 +11,8 @@ namespace Raven.Documentation.Samples.ClientApi.Commands
 			using (var store = new DocumentStore())
 			{
 				#region what_are_commands_1
-					var commands = store.DatabaseCommands;
-	var asyncCommands = store.AsyncDatabaseCommands;
+				IDatabaseCommands commands = store.DatabaseCommands;
+				IAsyncDatabaseCommands asyncCommands = store.AsyncDatabaseCommands;
 				#endregion
 			}
         }

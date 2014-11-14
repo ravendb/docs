@@ -48,24 +48,24 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 			using (var store = new DocumentStore())
 			{
 				#region get_1_2
-				var document = store.DatabaseCommands.Get("products/1"); // null if does not exist
+				JsonDocument document = store.DatabaseCommands.Get("products/1"); // null if does not exist
 				#endregion
 
 				#region get_2_2
-				var resultsWithoutIncludes = store
+				MultiLoadResult resultsWithoutIncludes = store
 					.DatabaseCommands
 					.Get(new[] { "products/1", "products/2" }, null);
 				#endregion
 
 				#region get_2_3
-				var resultsWithIncludes = store
+				MultiLoadResult resultsWithIncludes = store
 					.DatabaseCommands
 					.Get(
 						new[] { "products/1", "products/2" },
 						new[] { "Category" });
 
-				var results = resultsWithIncludes.Results; // products/1, products/2
-				var includes = resultsWithIncludes.Includes; // categories/1
+				List<RavenJObject> results = resultsWithIncludes.Results; // products/1, products/2
+				List<RavenJObject> includes = resultsWithIncludes.Includes; // categories/1
 				#endregion
 			}
 		}
@@ -76,14 +76,14 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 			{
 				#region get_2_4
 				// assuming that 'products/9999' does not exist
-				var resultsWithIncludes = store
+				MultiLoadResult resultsWithIncludes = store
 					.DatabaseCommands
 					.Get(
 						new[] { "products/1", "products/9999", "products/3" },
 						null);
 
-				var results = resultsWithIncludes.Results; // products/1, null, products/3
-				var includes = resultsWithIncludes.Includes; // empty
+				List<RavenJObject> results = resultsWithIncludes.Results; // products/1, null, products/3
+				List<RavenJObject> includes = resultsWithIncludes.Includes; // empty
 				#endregion
 			}
 		}
@@ -93,7 +93,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 			using (var store = new DocumentStore())
 			{
 				#region get_3_1
-				var documents = store.DatabaseCommands.GetDocuments(0, 10, metadataOnly: false);
+				JsonDocument[] documents = store.DatabaseCommands.GetDocuments(0, 10, metadataOnly: false);
 				#endregion
 			}
 		}
@@ -104,7 +104,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 			{
 				#region get_4_1
 				// return up to 128 documents with key that starts with 'products'
-				var result = store.DatabaseCommands.StartsWith("products", null, 0, 128);
+				JsonDocument[] result = store.DatabaseCommands.StartsWith("products", null, 0, 128);
 				#endregion
 			}
 
@@ -113,7 +113,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 				#region get_4_2
 				// return up to 128 documents with key that starts with 'products/' 
 				// and rest of the key begins with "1" or "2" e.g. products/10, products/25
-				var result = store.DatabaseCommands.StartsWith("products/", "1*|2*", 0, 128); 
+				JsonDocument[] result = store.DatabaseCommands.StartsWith("products/", "1*|2*", 0, 128); 
 				#endregion
 			}
 
@@ -123,7 +123,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 				// return up to 128 documents with key that starts with 'products/' 
 				// and rest of the key have length of 3, begins and ends with "1" 
 				// and contains any character at 2nd position e.g. products/101, products/1B1
-				var result = store.DatabaseCommands.StartsWith("products/", "1?1", 0, 128);
+				JsonDocument[] result = store.DatabaseCommands.StartsWith("products/", "1?1", 0, 128);
 				#endregion
 			}
 		}

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 
 using Raven.Client;
 using Raven.Client.Document;
@@ -35,7 +36,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Lucene
 				{
 					#region document_query_2
 					// load up to 128 entities from 'Employees' collection
-					var employees = session
+					List<Employee> employees = session
 						.Advanced
 						.DocumentQuery<Employee>()
 						.ToList();
@@ -47,7 +48,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Lucene
 					#region document_query_3
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
-					var employees = session
+					List<Employee> employees = session
 						.Advanced
 						.DocumentQuery<Employee>()
 						.WhereEquals(x => x.FirstName, "Robert")
@@ -61,7 +62,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Lucene
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var employees = session
+					List<Employee> employees = session
 						.Advanced
 						.DocumentQuery<Employee>("My/Custom/Index")
 						.WhereEquals(x => x.FirstName, "Robert")
@@ -75,7 +76,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.Lucene
 					// load up to 128 entities from 'Employees' collection
 					// where FirstName equals 'Robert'
 					// using 'My/Custom/Index'
-					var employees = session
+					List<Employee> employees = session
 						.Advanced
 						.DocumentQuery<Employee, MyCustomIndex>()
 						.WhereEquals("FirstName", "Robert")

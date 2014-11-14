@@ -22,7 +22,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
 			using (var store = new DocumentStore())
 			{
 				#region batch_2
-				var results = store
+				BatchResult[] results = store
 					.DatabaseCommands
 					.Batch(new ICommandData[]
 						       {

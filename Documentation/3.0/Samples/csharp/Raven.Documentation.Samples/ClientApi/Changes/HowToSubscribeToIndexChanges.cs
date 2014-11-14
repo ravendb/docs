@@ -26,7 +26,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region index_changes_2
-				var subscribtion = store
+				IDisposable subscribtion = store
 					.Changes()
 					.ForIndex("Orders/All")
 					.Subscribe(
@@ -72,7 +72,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region index_changes_4
-				var subscribtion = store
+				IDisposable subscribtion = store
 					.Changes()
 					.ForAllIndexes()
 					.Subscribe(change => Console.WriteLine("{0} on index {1}", change.Type, change.Name));

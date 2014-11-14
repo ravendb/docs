@@ -13,29 +13,29 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 		public HowToSetupSharding()
 		{
 			#region store
-			var shards = new Dictionary<string, IDocumentStore>
+			Dictionary<string, IDocumentStore> shards = new Dictionary<string, IDocumentStore>
 			             	{
 			             		{"Asia", new DocumentStore {Url = "http://localhost:8080"}},
 			             		{"Middle East", new DocumentStore {Url = "http://localhost:8081"}},
 			             		{"America", new DocumentStore {Url = "http://localhost:8082"}},
 			             	};
 
-			var shardStrategy = new ShardStrategy(shards)
+			ShardStrategy shardStrategy = new ShardStrategy(shards)
 				.ShardingOn<Company>(company => company.Region)
 				.ShardingOn<Invoice>(x => x.CompanyId);
 
-			var store = new ShardedDocumentStore(shardStrategy)
+			IDocumentStore store = new ShardedDocumentStore(shardStrategy)
 				.Initialize();
 			#endregion
 
 			#region SaveEntities
-			using (var session = store.OpenSession())
+			using (IDocumentSession session = store.OpenSession())
 			{
-				var asian = new Company { Name = "Company 1", Region = "Asia" };
+				Company asian = new Company { Name = "Company 1", Region = "Asia" };
 				session.Store(asian);
-				var middleEastern = new Company { Name = "Company 2", Region = "Middle-East" };
+				Company middleEastern = new Company { Name = "Company 2", Region = "Middle-East" };
 				session.Store(middleEastern);
-				var american = new Company { Name = "Company 3", Region = "America" };
+				Company american = new Company { Name = "Company 3", Region = "America" };
 				session.Store(american);
 
 				session.Store(new Invoice { CompanyId = american.Id, Amount = 3, IssuedAt = DateTime.Today.AddDays(-1) });
@@ -46,15 +46,15 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 			#endregion
 
 			#region Query
-			using (var session = store.OpenSession())
+			using (IDocumentSession session = store.OpenSession())
 			{
 				//get all, should automagically retrieve from each shard
-				var allCompanies = session.Query<Company>()
+				Company[] allCompanies = session.Query<Company>()
 					.Customize(x => x.WaitForNonStaleResultsAsOfNow())
 					.Where(company => company.Region == "Asia")
 					.ToArray();
 
-				foreach (var company in allCompanies)
+				foreach (Company company in allCompanies)
 					Console.WriteLine(company.Name);
 			}
 			#endregion
@@ -64,7 +64,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 
 		public void Sample()
 		{
-			var shards = new Dictionary<string, IDocumentStore>
+			Dictionary<string, IDocumentStore> shards = new Dictionary<string, IDocumentStore>
 			             	{
 			             		{"Asia", new DocumentStore {Url = "http://localhost:8080"}},
 			             		{"Middle East", new DocumentStore {Url = "http://localhost:8081"}},
@@ -72,7 +72,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 			             	};
 
 			#region sharding_1
-			var shardStrategy = new ShardStrategy(shards)
+			ShardStrategy shardStrategy = new ShardStrategy(shards)
 				.ShardingOn<Company>(company => company.Region)
 				.ShardingOn<Invoice>(x => x.CompanyId);
 			#endregion
@@ -100,7 +100,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 		{
 			public string GenerateShardIdFor(object entity, ITransactionalDocumentSession sessionMetadata)
 			{
-				var company = entity as Company;
+				Company company = entity as Company;
 				if (company != null)
 				{
 					return company.Region;
@@ -114,7 +114,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 				return "Asia";
 
 				// Or we can store the metadata on each of the shads itself, so each shards will have its own HiLo document:
-				var company = entity as Company;
+				Company company = entity as Company;
 				if (company != null)
 				{
 					return company.Region;

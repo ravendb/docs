@@ -40,22 +40,22 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				{
 					#region highlight_2
 					FieldHighlightings highlightings = null;
-					var results = session
+					SearchItem[] results = session
 						.Query<SearchItem>("ContentSearchIndex")
 						.Customize(x => x.Highlight("Text", 128, 1, out highlightings))
 						.Search(x => x.Text, "raven")
 						.ToArray();
 
-					var builder = new StringBuilder()
+					StringBuilder builder = new StringBuilder()
 						.AppendLine("<ul>");
 
-					foreach (var result in results)
+					foreach (SearchItem result in results)
 					{
-						var fragments = highlightings.GetFragments(result.Id);
+						string[] fragments = highlightings.GetFragments(result.Id);
 						builder.AppendLine(string.Format("<li>{0}</li>", fragments.First()));
 					}
 
-					var ul = builder
+					string ul = builder
 						.AppendLine("</ul>")
 						.ToString();
 					#endregion

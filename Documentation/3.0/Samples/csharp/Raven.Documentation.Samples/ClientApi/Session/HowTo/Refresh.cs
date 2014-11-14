@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region refresh_2
-					var employee = session.Load<Employee>("employees/1");
+					Employee employee = session.Load<Employee>("employees/1");
 					Assert.Equal("Doe", employee.LastName);
 
 					// LastName changed to 'Shmoe'

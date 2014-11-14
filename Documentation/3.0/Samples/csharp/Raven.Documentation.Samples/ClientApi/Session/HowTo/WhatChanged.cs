@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Raven.Abstractions.Data;
+using Raven.Client;
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 
@@ -26,7 +27,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region what_changed_2
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
 					Assert.False(session.Advanced.HasChanges);
 
@@ -41,7 +42,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				#endregion
 
 				#region what_changed_4
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
 					session.Store(new Employee
 					{
@@ -49,23 +50,23 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 						LastName = "Doe"
 					});
 
-					var changes = session.Advanced.WhatChanged();
-					var employeeChanges = changes["employees/1"];
-					var change = employeeChanges[0].Change; // DocumentsChanges.ChangeType.DocumentAdded
+					IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+					DocumentsChanges[] employeeChanges = changes["employees/1"];
+					DocumentsChanges.ChangeType change = employeeChanges[0].Change; // DocumentsChanges.ChangeType.DocumentAdded
 				}
 				#endregion
 
 				#region what_changed_5
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
-					var employee = session.Load<Employee>("employees/1"); // 'Joe Doe'
+					Employee employee = session.Load<Employee>("employees/1"); // 'Joe Doe'
 					employee.FirstName = "John";
 					employee.LastName = "Shmoe";
 
-					var changes = session.Advanced.WhatChanged();
-					var employeeChanges = changes["employees/1"];
-					var change1 = employeeChanges[0]; // DocumentsChanges.ChangeType.FieldChanged
-					var change2 = employeeChanges[1]; // DocumentsChanges.ChangeType.FieldChanged
+					IDictionary<string, DocumentsChanges[]> changes = session.Advanced.WhatChanged();
+					DocumentsChanges[] employeeChanges = changes["employees/1"];
+					DocumentsChanges change1 = employeeChanges[0]; // DocumentsChanges.ChangeType.FieldChanged
+					DocumentsChanges change2 = employeeChanges[1]; // DocumentsChanges.ChangeType.FieldChanged
 				}
 				#endregion
 			}

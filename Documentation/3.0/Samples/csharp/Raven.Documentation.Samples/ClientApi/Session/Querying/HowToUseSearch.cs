@@ -41,7 +41,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region search_2
-					var users = session
+					List<User> users = session
 						.Query<User>("Users/ByNameAndHobbies")
 						.Search(x => x.Name, "Adam")
 						.Search(x => x.Hobbies, "sport")
@@ -52,7 +52,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				using (var session = store.OpenSession())
 				{
 					#region search_3
-					var users = session
+					List<User> users = session
 						.Query<User>("Users/ByHobbies")
 						.Search(x => x.Hobbies, "I love sport", boost: 10)
 						.Search(x => x.Hobbies, "but also like reading books", boost: 5)

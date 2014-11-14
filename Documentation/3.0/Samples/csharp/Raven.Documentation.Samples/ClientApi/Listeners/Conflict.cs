@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 
 using Raven.Abstractions.Data;
 
@@ -22,7 +23,7 @@ namespace Raven.Documentation.Samples.ClientApi.Listeners
 				JsonDocument[] conflictedDocs,
 				out JsonDocument resolvedDocument)
 			{
-				var maxDate = conflictedDocs.Max(x => x.LastModified);
+				DateTime? maxDate = conflictedDocs.Max(x => x.LastModified);
 				resolvedDocument = conflictedDocs
 									.FirstOrDefault(x => x.LastModified == maxDate);
 

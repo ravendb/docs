@@ -26,7 +26,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region head_1_1
-				var attachment = store
+				Attachment attachment = store
 					.DatabaseCommands
 					.HeadAttachment("albums/holidays/sea.jpg"); // null if does not exist
 				#endregion
@@ -35,7 +35,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region head_2_1
-				var attachments = store
+				IEnumerable<Attachment> attachments = store
 					.DatabaseCommands
 					.GetAttachmentHeadersStartingWith("albums/holidays/", 0, 10);
 				#endregion

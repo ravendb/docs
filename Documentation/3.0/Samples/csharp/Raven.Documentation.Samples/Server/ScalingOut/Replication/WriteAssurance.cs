@@ -7,6 +7,7 @@
 using System;
 using System.Threading.Tasks;
 
+using Raven.Abstractions.Data;
 using Raven.Client.Document;
 using Raven.Json.Linq;
 
@@ -29,11 +30,11 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 					await session.StoreAsync(user);
 					await session.SaveChangesAsync();
 
-					var userEtag = session
+					Etag userEtag = session
 						.Advanced
 						.GetEtagFor(user);
 
-					var replicas = await store
+					int replicas = await store
 						.Replication
 						.WaitAsync(etag: userEtag, timeout: TimeSpan.FromMinutes(1), replicas: 1);
 					#endregion

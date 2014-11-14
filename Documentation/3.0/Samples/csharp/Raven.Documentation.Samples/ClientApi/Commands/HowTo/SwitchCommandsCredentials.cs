@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region with_2
-				var commands = store
+				IDatabaseCommands commands = store
 					.DatabaseCommands
 					.With(new NetworkCredential("otherUserName", "otherPassword"));
 				#endregion

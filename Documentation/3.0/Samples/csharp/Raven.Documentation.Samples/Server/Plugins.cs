@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net.Mail;
 using System.Threading;
@@ -16,6 +17,7 @@ using Raven.Client.Document;
 using Raven.Database;
 using Raven.Database.Config;
 using Raven.Database.Data;
+using Raven.Database.Indexing;
 using Raven.Database.Plugins;
 using Raven.Json.Linq;
 using Raven.Server;
@@ -137,7 +139,7 @@ namespace Raven.Documentation.Samples.Server
 		{
 			public override VetoResult AllowPut(string key, RavenJObject document, RavenJObject metadata, TransactionInformation transactionInformation)
 			{
-				var doc = Database.Documents.Get(key, transactionInformation);
+				JsonDocument doc = Database.Documents.Get(key, transactionInformation);
 				if (doc == null) // new document
 					return VetoResult.Allowed;
 
@@ -216,7 +218,7 @@ namespace Raven.Documentation.Samples.Server
 		{
 			public override void OnDelete(string key, TransactionInformation txInfo)
 			{
-				var document = Database.Documents.Get(key, txInfo);
+				JsonDocument document = Database.Documents.Get(key, txInfo);
 				if (document == null)
 					return;
 
@@ -344,12 +346,12 @@ namespace Raven.Documentation.Samples.Server
 		{
 			public override void OnRead(string key, RavenJObject document, RavenJObject metadata, ReadOperation operation, TransactionInformation transactionInformation)
 			{
-				var linkName = metadata.Value<string>("Raven-Link-Name");
-				var link = metadata.Value<string>("Raven-Link");
+				string linkName = metadata.Value<string>("Raven-Link-Name");
+				string link = metadata.Value<string>("Raven-Link");
 				if (link == null)
 					return;
 
-				var linkedDocument = Database.Documents.Get(link, transactionInformation);
+				JsonDocument linkedDocument = Database.Documents.Get(link, transactionInformation);
 				document.Add(linkName, linkedDocument.ToJson());
 			}
 		}
@@ -379,13 +381,13 @@ namespace Raven.Documentation.Samples.Server
 				if (indexName != SpecificIndexName)
 					return query;
 
-				var customQuery = new PrefixQuery(new Term("CustomField", "CustomPrefix"));
+				PrefixQuery customQuery = new PrefixQuery(new Term("CustomField", "CustomPrefix"));
 
 				return new BooleanQuery
-					{
-						{ query, Occur.MUST },
-						{ customQuery, Occur.MUST}
-					};
+				{
+					{ query, Occur.MUST },
+					{ customQuery, Occur.MUST}
+				};
 			}
 		}
 
@@ -445,10 +447,10 @@ namespace Raven.Documentation.Samples.Server
 				if (indexName != "Aggregates/ShoppingCart")
 					return;
 
-				var shoppingCart = RavenJObject.Parse(document.GetField("Aggregate").StringValue);
-				var shoppingCartId = document.GetField("Id").StringValue;
+				RavenJObject shoppingCart = RavenJObject.Parse(document.GetField("Aggregate").StringValue);
+				string shoppingCartId = document.GetField("Id").StringValue;
 
-				var result = database.Documents.Put("shoppingcarts/" + shoppingCartId + "/snapshots/", null, shoppingCart, new RavenJObject(), null);
+				PutResult result = database.Documents.Put("shoppingcarts/" + shoppingCartId + "/snapshots/", null, shoppingCart, new RavenJObject(), null);
 				document.Add(new Field("Snapshot", result.Key, Field.Store.YES, Field.Index.NOT_ANALYZED));
 			}
 		}
@@ -579,11 +581,11 @@ namespace Raven.Documentation.Samples.Server
 			int workCounter;
 			public void BackgroundTask()
 			{
-				var name = GetType().Name;
-				var context = Database.WorkContext;
+				string name = GetType().Name;
+				WorkContext context = Database.WorkContext;
 				while (context.DoWork)
 				{
-					var foundWork = false;
+					bool foundWork = false;
 					try
 					{
 						foundWork = HandleWork();
@@ -617,13 +619,13 @@ namespace Raven.Documentation.Samples.Server
 		{
 			public void Execute(RavenDbServer server)
 			{
-				var message = new MailMessage("ravendb@myhost.com", "admin@myhost.com")
+				MailMessage message = new MailMessage("ravendb@myhost.com", "admin@myhost.com")
 				{
 					Subject = "RavenDB server started.",
 					Body = "Start at: " + DateTime.Now.ToShortDateString()
 				};
 
-				using (var smtpClient = new SmtpClient("mail.myhost.com"))
+				using (SmtpClient smtpClient = new SmtpClient("mail.myhost.com"))
 				{
 					smtpClient.Send(message);
 				}
@@ -641,16 +643,16 @@ namespace Raven.Documentation.Samples.Server
 				if (database.Name != SpecificDatabaseName)
 					return;
 
-				using (var cts = new CancellationTokenSource())
+				using (CancellationTokenSource cts = new CancellationTokenSource())
 				{
 					bool stale;
-					var queryResults = database.Queries.QueryDocumentIds(
+					IEnumerable<string> queryResults = database.Queries.QueryDocumentIds(
 						"Notifications/Temp",
 						new IndexQuery(),
 						CancellationTokenSource.CreateLinkedTokenSource(database.WorkContext.CancellationToken, cts.Token),
 						out stale);
 
-					foreach (var documentId in queryResults)
+					foreach (string documentId in queryResults)
 					{
 						database.Documents.Delete(documentId, null, null);
 					}
@@ -665,10 +667,10 @@ namespace Raven.Documentation.Samples.Server
 		{
 			protected override bool HandleWork()
 			{
-				var queryResults = Database.Queries.Query("Notifications/Temp", new IndexQuery(), Database.WorkContext.CancellationToken);
-				foreach (var document in queryResults.Results)
+				QueryResultWithIncludes queryResults = Database.Queries.Query("Notifications/Temp", new IndexQuery(), Database.WorkContext.CancellationToken);
+				foreach (RavenJObject document in queryResults.Results)
 				{
-					var id = ((RavenJObject)document["@metadata"]).Value<string>("@id");
+					string id = ((RavenJObject)document["@metadata"]).Value<string>("@id");
 					Database.Documents.Delete(id, null, null);
 				}
 
@@ -716,15 +718,15 @@ namespace Raven.Documentation.Samples.Server
 				if (string.IsNullOrEmpty(word))
 					return true;
 
-				var min = 0;
-				var max = word.Length - 1;
+				int min = 0;
+				int max = word.Length - 1;
 				while (true)
 				{
 					if (min > max)
 						return true;
 
-					var a = word[min];
-					var b = word[max];
+					char a = word[min];
+					char b = word[max];
 					if (char.ToLower(a) != char.ToLower(b))
 						return false;
 

@@ -207,8 +207,8 @@ namespace Raven.Documentation.Samples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region indexes_1_3
-					var startDate = new DateTime(1963, 1, 1);
-					var endDate = startDate.AddYears(1).AddMilliseconds(-1);
+					DateTime startDate = new DateTime(1963, 1, 1);
+					DateTime endDate = startDate.AddYears(1).AddMilliseconds(-1);
 					IList<Employee> employees = session
 						.Query<Employees_ByBirthday.Result, Employees_ByBirthday>()
 						.Where(x => x.Birthday >= startDate && x.Birthday <= endDate)

@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region mark_as_readonly_2
-					var employee = session.Load<Employee>("employees/1");
+					Employee employee = session.Load<Employee>("employees/1");
 					session.Advanced.MarkReadOnly(employee);
 					session.SaveChanges();
 					#endregion

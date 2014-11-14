@@ -27,7 +27,7 @@ namespace Raven.Documentation.Samples.Indexes
 				using (var session = store.OpenSession())
 				{
 					#region multi_map_2
-					var results = session
+					List<object> results = session
 						.Advanced
 						.DocumentQuery<object, Animals_ByName>()
 						.WhereEquals("Name", "Mitzy")
@@ -50,7 +50,7 @@ namespace Raven.Documentation.Samples.Indexes
 		public void OtherWays()
 		{
 			#region other_ways_1
-			var store = new DocumentStore()
+			DocumentStore store = new DocumentStore()
 			{
 				Conventions =
 				{

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -69,7 +70,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// return all matching entities
 					// where 'Shape' (spatial field) is within 10 kilometers radius
 					// from 32.1234 latitude and 23.4321 longitude coordinates
-					var results = session
+					List<SpatialDoc> results = session
 						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Spatial(x => x.Shape, criteria => criteria.WithinRadiusOf(10, 32.1234, 23.4321))
 						.ToList();
@@ -83,7 +84,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// where 'Shape' (spatial field) is within 10 kilometers radius
 					// from 32.1234 latitude and 23.4321 longitude coordinates
 					// this equals to WithinRadiusOf(10, 32.1234, 23.4321)
-					var results = session
+					List<SpatialDoc> results = session
 						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Customize(x => x.RelatesToShape("Shape", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
 						.ToList();
@@ -97,7 +98,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// where 'Shape' (spatial field) is within 10 kilometers radius
 					// from 32.1234 latitude and 23.4321 longitude coordinates
 					// sort results by distance from origin point
-					var results = session
+					List<SpatialDoc> results = session
 						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Customize(x => x.SortByDistance())
 						.Spatial(x => x.Shape, criteria => criteria.WithinRadiusOf(10, 32.1234, 23.4321))
@@ -111,7 +112,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					// return all matching entities
 					// where 'Shape' (spatial field) is within 10 kilometers radius
 					// from 32.1234 latitude and 23.4321 longitude coordinates
-					var results = session
+					List<SpatialDoc> results = session
 						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
 						.Customize(x => x.WithinRadiusOf("Shape", 10, 32.1234, 23.4321))
 						.ToList();

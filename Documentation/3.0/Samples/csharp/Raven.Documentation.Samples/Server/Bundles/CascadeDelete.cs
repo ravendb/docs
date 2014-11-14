@@ -1,4 +1,5 @@
-﻿using Raven.Client.Document;
+﻿using Raven.Client;
+using Raven.Client.Document;
 using Raven.Json.Linq;
 
 namespace Raven.Documentation.Samples.Server.Bundles
@@ -17,7 +18,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 				var parent = new User();
 
 				#region cascadedelete1
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
 					session.Store(parent);
 					session.Advanced.GetMetadataFor(parent)["Raven-Cascade-Delete-Documents"] = RavenJToken.FromObject(new[] { "childId1", "childId2" });
