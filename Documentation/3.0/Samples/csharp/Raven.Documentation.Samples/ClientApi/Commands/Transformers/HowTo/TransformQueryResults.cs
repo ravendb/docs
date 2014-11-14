@@ -1,5 +1,8 @@
-﻿using Raven.Abstractions.Data;
+﻿using System.Collections.Generic;
+
+using Raven.Abstractions.Data;
 using Raven.Client.Document;
+using Raven.Json.Linq;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers.HowTo
 {
@@ -12,7 +15,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers.HowTo
 				#region query_transformer_1
 				// query for all orders with 'Company' equal to 'companies/1' using 'Orders/Totals' index
 				// and transform results using 'Order/Statistics' transformer
-				var result = store
+				QueryResult result = store
 					.DatabaseCommands
 					.Query(
 						"Orders/Totals",
@@ -31,7 +34,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers.HowTo
 				// and transform results using 'Order/Statistics' transformer
 				// stream the results
 				QueryHeaderInformation queryHeaderInfo;
-				var result = store
+				IEnumerator<RavenJObject> result = store
 					.DatabaseCommands
 					.StreamQuery(
 						"Orders/Totals",
@@ -51,7 +54,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers.HowTo
 				// using 'Articles/MoreLikeThis' index, search only field 'Body'
 				// and transform results using 'Articles/NoComments' transformer
 				QueryHeaderInformation queryHeaderInfo;
-				var result = store
+				MultiLoadResult result = store
 					.DatabaseCommands
 					.MoreLikeThis(
 						new MoreLikeThisQuery

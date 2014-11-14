@@ -19,8 +19,8 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 					#region has_changed_2
-					var employee = session.Load<Employee>("employees/1");
-					var hasChanged = session.Advanced.HasChanged(employee); // false
+					Employee employee = session.Load<Employee>("employees/1");
+					bool hasChanged = session.Advanced.HasChanged(employee); // false
 					employee.LastName = "Shmoe";
 					hasChanged = session.Advanced.HasChanged(employee); // true
 					#endregion

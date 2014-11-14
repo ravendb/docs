@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 
 
 			#region windows_auth_setup
-			var windowsAuthStore = new DocumentStore()
+			DocumentStore windowsAuthStore = new DocumentStore
 			{
 				Credentials = new NetworkCredential("user", "password", "domain")
 			};
@@ -43,7 +43,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 			;
 
 			#region api_key_setup
-			var oAuthStore = new DocumentStore()
+			DocumentStore oAuthStore = new DocumentStore
 			{
 				ApiKey = "NorthwindAdminAccess/MySecret"
 			};

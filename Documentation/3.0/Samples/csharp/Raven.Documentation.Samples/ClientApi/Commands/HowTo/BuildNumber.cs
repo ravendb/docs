@@ -1,8 +1,9 @@
-﻿using Raven.Client.Document;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 {
-	public class BuildNumber
+	public class BuildNumber2
 	{
 		private interface IFoo
 		{
@@ -11,12 +12,12 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			#endregion
 		}
 
-		public BuildNumber()
+		public BuildNumber2()
 		{
 			using (var store = new DocumentStore())
 			{
 				#region build_number_2
-				var buildNumber = store
+				BuildNumber buildNumber = store
 					.DatabaseCommands
 					.GlobalAdmin
 					.GetBuildNumber();

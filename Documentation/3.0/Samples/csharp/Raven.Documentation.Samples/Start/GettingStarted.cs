@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.Samples.Start
+﻿using System.Collections.Generic;
+
+namespace Raven.Documentation.Samples.Start
 {
 	using System.Linq;
 
@@ -24,7 +26,7 @@
 
 				using (IDocumentSession session = store.OpenSession()) // opens a session that will work in context of 'DefaultDatabase'
 				{
-					var employee = new Employee
+					Employee employee = new Employee
 					{
 						FirstName = "John",
 						LastName = "Doe"
@@ -37,7 +39,7 @@
 
 					// Session implements Unit of Work pattern,
 					// therefore employee instance would be the same and no server call will be made
-					var loadedEmployee = session.Load<Employee>(employeeId);
+					Employee loadedEmployee = session.Load<Employee>(employeeId);
 					Assert.Equal(employee, loadedEmployee);
 				}
 			}
@@ -85,7 +87,7 @@
 
 				using (IDocumentSession session = store.OpenSession()) // opens a session that will work in context of 'DefaultDatabase'
 				{
-					var employees = session.Query<Employee, Employees_ByFirstNameAndLastName>() // returning object of type Employee, using Employees/ByFirstNameAndLastName index
+					List<Employee> employees = session.Query<Employee, Employees_ByFirstNameAndLastName>() // returning object of type Employee, using Employees/ByFirstNameAndLastName index
 						.Where(x => x.FirstName == "Robert") // predicates (can only use fields that index defines, so FirstName, LastName or both)
 						.ToList(); // materializing query - sending to server
 				}

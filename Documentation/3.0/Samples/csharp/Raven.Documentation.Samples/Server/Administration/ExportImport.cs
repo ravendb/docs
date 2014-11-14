@@ -15,14 +15,14 @@ namespace Raven.Documentation.Samples.Server.Administration
 			// to dump.raven file
 			// from Northwind database
 			// found on http://localhost:8080 server
-			var smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
+			SmugglerDatabaseApi smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
 			{
 				OperateOnTypes =
 					ItemType.Documents | ItemType.Indexes | ItemType.Attachments | ItemType.Transformers,
 				Incremental = false
 			});
 
-			var exportOptions = new SmugglerExportOptions<RavenConnectionStringOptions>
+			SmugglerExportOptions<RavenConnectionStringOptions> exportOptions = new SmugglerExportOptions<RavenConnectionStringOptions>
 			{
 				ToFile = "dump.raven",
 				From = new RavenConnectionStringOptions
@@ -43,13 +43,13 @@ namespace Raven.Documentation.Samples.Server.Administration
 			// from dump.raven file
 			// to NewNorthwind database (must exist)
 			// found on http://localhost:8080 server
-			var smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
+			SmugglerDatabaseApi smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
 			{
 				OperateOnTypes = ItemType.Documents,
 				Incremental = false
 			});
 
-			var importOptions = new SmugglerImportOptions<RavenConnectionStringOptions>
+			SmugglerImportOptions<RavenConnectionStringOptions> importOptions = new SmugglerImportOptions<RavenConnectionStringOptions>
 			{
 				FromFile = "dump.raven",
 				To = new RavenConnectionStringOptions
@@ -71,7 +71,7 @@ namespace Raven.Documentation.Samples.Server.Administration
 			// found on http://localhost:8080
 			// and import them to NewNorthwind
 			// found on the same server
-			var smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
+			SmugglerDatabaseApi smugglerApi = new SmugglerDatabaseApi(new SmugglerDatabaseOptions
 			{
 				OperateOnTypes = ItemType.Documents | ItemType.Indexes,
 				Incremental = false
@@ -97,7 +97,7 @@ namespace Raven.Documentation.Samples.Server.Administration
 		public async void Sample3()
 		{
 			#region smuggler_api_4
-			using (var store = new EmbeddableDocumentStore
+			using (EmbeddableDocumentStore store = new EmbeddableDocumentStore
 								   {
 									   DefaultDatabase = "Northwind"
 								   })
@@ -112,7 +112,7 @@ namespace Raven.Documentation.Samples.Server.Administration
 						Incremental = false
 					});
 
-				var exportOptions = new SmugglerExportOptions<RavenConnectionStringOptions>
+				SmugglerExportOptions<RavenConnectionStringOptions> exportOptions = new SmugglerExportOptions<RavenConnectionStringOptions>
 				{
 					From = new EmbeddedRavenConnectionStringOptions(),
 					ToFile = "dump.raven"

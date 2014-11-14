@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region changes_2
-				var subscribtion = store
+				IDisposable subscribtion = store
 					.Changes()
 					.ForAllDocuments()
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));

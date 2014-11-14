@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes.HowTo
 		{
 			using (var store = new DocumentStore())
 			{
-                var indexDefinition = new IndexDefinition();
+                IndexDefinition indexDefinition = new IndexDefinition();
                 #region index_has_changed_2
                 store.DatabaseCommands.IndexHasChanged("Orders/Totals", indexDefinition);
 				#endregion

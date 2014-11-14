@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Raven.Client.Document;
@@ -31,7 +32,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 					#region aggressive_cache_load
 					using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
 					{
-						var user = session.Load<Order>("orders/1");
+						Order user = session.Load<Order>("orders/1");
 					}
 					#endregion
 				}
@@ -41,7 +42,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 					#region aggressive_cache_query
 					using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
 					{
-						var users = session.Query<Order>().ToList();
+						List<Order> users = session.Query<Order>().ToList();
 					}
 					#endregion
 

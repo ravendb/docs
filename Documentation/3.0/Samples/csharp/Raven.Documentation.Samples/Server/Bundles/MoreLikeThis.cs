@@ -45,7 +45,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 					string key = "articles/1";
 
 					#region more_like_this_1
-					var list = session.Advanced.MoreLikeThis<Article, Articles_ByArticleBody>(key);
+					Article[] list = session.Advanced.MoreLikeThis<Article, Articles_ByArticleBody>(key);
 					#endregion
 				}
 
@@ -54,7 +54,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 					string key = "articles/1";
 
 					#region more_like_this_2
-					var list = session.Advanced.MoreLikeThis<Article, Articles_ByArticleBody>(new MoreLikeThisQuery
+					Article[] list = session.Advanced.MoreLikeThis<Article, Articles_ByArticleBody>(new MoreLikeThisQuery
 					{
 						DocumentId = key,
 						Fields = new[] { "ArticleBody" }

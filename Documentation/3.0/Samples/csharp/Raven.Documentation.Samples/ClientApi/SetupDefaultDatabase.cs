@@ -1,4 +1,6 @@
 ﻿using Raven.Abstractions.Data;
+using Raven.Client;
+using Raven.Client.Connection;
 using Raven.Client.Document;
 
 namespace Raven.Documentation.Samples.ClientApi
@@ -12,19 +14,19 @@ namespace Raven.Documentation.Samples.ClientApi
 			// created `DatabaseCommands` or opened `Sessions`
 			// will work on `<system>` database by default
 			// if no database is passed explicitly
-			using (var store = new DocumentStore
+			using (IDocumentStore store = new DocumentStore
 				                   {
 					                   Url = "http://localhost:8080/"
 				                   }.Initialize())
 			{
-				var commands = store.DatabaseCommands;
-				using (var session = store.OpenSession())
+				IDatabaseCommands commands = store.DatabaseCommands;
+				using (IDocumentSession session = store.OpenSession())
 				{
 					// ...
 				}
 
-				var northwindCommands = commands.ForDatabase("Northwind");
-				using (var northwindSession = store.OpenSession("Northwind"))
+				IDatabaseCommands northwindCommands = commands.ForDatabase("Northwind");
+				using (IDocumentSession northwindSession = store.OpenSession("Northwind"))
 				{
 					// ...
 				}
@@ -36,26 +38,26 @@ namespace Raven.Documentation.Samples.ClientApi
 			// created `DatabaseCommands` or opened `Sessions`
 			// will work on `Northwind` database by default
 			// if no database is passed explicitly
-			using (var store = new DocumentStore
+			using (IDocumentStore store = new DocumentStore
 			{
 				Url = "http://localhost:8080/",
 				DefaultDatabase = "Northwind"
 			}.Initialize())
 			{
-				var northwindCommands = store.DatabaseCommands;
-				using (var northwindSession = store.OpenSession())
+				IDatabaseCommands northwindCommands = store.DatabaseCommands;
+				using (IDocumentSession northwindSession = store.OpenSession())
 				{
 					// ...
 				}
 
-				var adventureWorksCommands = northwindCommands.ForDatabase("AdventureWorks");
-				using (var adventureWorksSession = store.OpenSession("AdventureWorks"))
+				IDatabaseCommands adventureWorksCommands = northwindCommands.ForDatabase("AdventureWorks");
+				using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks"))
 				{
 					// ...
 				}
 
-				var systemCommands = northwindCommands.ForSystemDatabase();
-				using (var systemSession = store.OpenSession(Constants.SystemDatabase))
+				IDatabaseCommands systemCommands = northwindCommands.ForSystemDatabase();
+				using (IDocumentSession systemSession = store.OpenSession(Constants.SystemDatabase))
 				{
 					// ..
 				}

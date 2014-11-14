@@ -18,8 +18,8 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Attachments.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region update_2
-				var attachment = store.DatabaseCommands.Head("albums/holidays/sea.jpg");
-				var metadata = attachment.Metadata;
+				JsonDocumentMetadata attachment = store.DatabaseCommands.Head("albums/holidays/sea.jpg");
+				RavenJObject metadata = attachment.Metadata;
 				metadata["Description"] = "Holidays 2012";
 
 				store

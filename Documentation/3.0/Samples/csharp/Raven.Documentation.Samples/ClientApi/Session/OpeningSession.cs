@@ -36,14 +36,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 				#endregion
 
 				#region open_session_4
-				using (var session = store.OpenSession())
+				using (IDocumentSession session = store.OpenSession())
 				{
 					// code here
 				}
 				#endregion
 
 				#region open_session_5
-				using (var session = store.OpenAsyncSession())
+				using (IAsyncDocumentSession session = store.OpenAsyncSession())
 				{
 					// async code here
 				}

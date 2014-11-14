@@ -1,5 +1,8 @@
-﻿using Raven.Abstractions.Data;
+﻿using System.Collections.Generic;
+
+using Raven.Abstractions.Data;
 using Raven.Client.Document;
+using Raven.Json.Linq;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 {
@@ -29,7 +32,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 					Query = "Company:companies/1"
 				});
 
-				var users = result.Results; // documents resulting from this query - orders
+				List<RavenJObject> users = result.Results; // documents resulting from this query - orders
 				#endregion
 
 				#region query_database_3
@@ -41,7 +44,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 						"Employee"
 					});
 
-				var referencedDocs = result.Includes; // included documents - companies and employees
+				List<RavenJObject> referencedDocs = result.Includes; // included documents - companies and employees
 				#endregion
 			}
 		} 
