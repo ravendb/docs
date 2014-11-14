@@ -247,6 +247,7 @@
     <Compile Include="ClientApi\Listeners\General.cs" />
     <Compile Include="ClientApi\Listeners\Query.cs" />
     <Compile Include="ClientApi\Listeners\Store.cs" />
+    <Compile Include="ClientApi\Session\Configuration\CustomizeCollectionAssignmentForEntities.cs" />
     <Compile Include="ClientApi\Session\Configuration\MaxRequests.cs" />
     <Compile Include="ClientApi\Session\Configuration\OptimisticConcurrency.cs" />
     <Compile Include="ClientApi\Session\DeletingEntities.cs" />
