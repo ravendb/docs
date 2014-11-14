@@ -10,23 +10,7 @@ However if you want the session to use [an identity key generation strategy](../
 
 {CODE key_generator_identityKeys@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
-###FindClrTypeName and FindClrType
-
-In metadata of all documents stored in a database you can find the following property which specifies the client-side type. For instance:
-
-{CODE-BLOCK:json}
-{
-    "Raven-Clr-Type": "Orders.Shipper, Northwind"
-}
-{CODE-BLOCK/}
-
-This property is used by RavenDB client to perform a conversion between .NET object and JSON document stored in a database. A function responsible for retrieving the CLR type of an entity is defined by `FindClrTypeName` convention:
-
-{CODE find_type_name@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
-
-To properly perform the revert conversion that is from a JSON result into a .NET object we need to retrieve the CLR type from `Raven-Clr-Type` metadata:
-
-{CODE find_clr_type@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
+Function `GetTypeTagName` will use either the convention specified in `FindTypeTagName` (see below) or its default implementation.
 
 ###FindTypeTagName and FindDynamicTagName
 
@@ -45,6 +29,25 @@ Actually, tag names determined by recently described convention functions aren't
 {CODE transform_tag_name_to_prefix@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
 Its default behavior is that for a tag which contains one upper character it simply converts it to lower case string, e.g. `Users` would be transformed into `users`. For tag names containing more upper characters there will be no change, e.g. the tag name: `LineItems` would output the following prefix: `LineItems`.
+
+###FindClrTypeName and FindClrType
+
+In metadata of all documents stored in a database you can find the following property which specifies the client-side type. For instance:
+
+{CODE-BLOCK:json}
+{
+    "Raven-Clr-Type": "Orders.Shipper, Northwind"
+}
+{CODE-BLOCK/}
+
+This property is used by RavenDB client to perform a conversion between .NET object and JSON document stored in a database. A function responsible for retrieving the CLR type of an entity is defined by `FindClrTypeName` convention:
+
+{CODE find_type_name@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
+
+To properly perform the revert conversion that is from a JSON result into a .NET object we need to retrieve the CLR type from `Raven-Clr-Type` metadata:
+
+{CODE find_clr_type@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
+
 
 ###FindIdentityProperty
 
