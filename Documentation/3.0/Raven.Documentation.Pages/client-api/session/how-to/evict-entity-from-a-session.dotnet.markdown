@@ -17,7 +17,3 @@ We can clear all session operations and stop tracking of all entities by using [
 ## Example II
 
 {CODE evict_3@ClientApi\Session\HowTo\Evict.cs /}
-
-## Related articles
-
-TODO

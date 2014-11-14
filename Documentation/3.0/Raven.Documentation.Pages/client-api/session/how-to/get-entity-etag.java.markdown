@@ -17,7 +17,3 @@ When document is downloaded from server it contains various metadata information
 ## Example
 
 {CODE:java get_etag_2@ClientApi\Session\HowTo\GetEtag.java /}
-
-## Related articles
-
-TODO

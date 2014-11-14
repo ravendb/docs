@@ -27,4 +27,4 @@ To execute all pending lazy operations use `executeAllPendingLazyOperations` met
 
 ## Related articles
 
-TODO
+- [How to perform queries lazily?](../querying/how-to-perform-queries-lazily)

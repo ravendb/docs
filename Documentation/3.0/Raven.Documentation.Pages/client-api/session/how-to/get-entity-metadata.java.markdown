@@ -17,7 +17,3 @@ When document is downloaded from server it contains various metadata information
 ## Example
 
 {CODE:java get_metadata_2@ClientApi\Session\HowTo\GetMetadata.java /}
-
-## Related articles
-
-TODO

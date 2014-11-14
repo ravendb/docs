@@ -48,4 +48,4 @@ To execute facet query using session `query` method use `toFacets` method.
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)   

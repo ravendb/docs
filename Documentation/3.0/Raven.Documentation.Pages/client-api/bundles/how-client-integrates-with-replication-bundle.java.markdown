@@ -125,3 +125,7 @@ The *ServerPrefix* value will be fetch in the same request as the current *HiLo*
 For example storing a first `User` object will cause that its ID will be `Users/NorthServer/1`.
 
 {PANEL/}
+
+## Related articles
+
+- [Server : Replication](../../server/scaling-out/replication/how-replication-works)

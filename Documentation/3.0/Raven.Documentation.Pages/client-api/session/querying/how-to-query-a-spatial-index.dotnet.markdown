@@ -94,4 +94,5 @@ To sort by distance from origin point use `SortByDistance` method.
 
 ## Related articles
 
-TODO
+- [Indexes : Indexing spatial data](../../../indexes/indexing-spatial-data)   
+- [Indexes : Querying : Spatial](../../../indexes/querying/spatial)   

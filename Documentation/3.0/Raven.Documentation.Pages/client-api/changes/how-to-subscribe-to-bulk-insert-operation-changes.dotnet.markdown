@@ -24,4 +24,4 @@
 
 ## Related articles
 
-TODO
+- [How to work with bulk insert operation?](../bulk-insert/how-to-work-with-bulk-insert-operation)

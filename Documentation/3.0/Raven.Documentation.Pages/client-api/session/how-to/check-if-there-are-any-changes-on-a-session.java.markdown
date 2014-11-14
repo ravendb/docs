@@ -40,4 +40,4 @@ Method returns all changes for each entity stored within session. Including name
 
 ## Related articles
 
-TODO
+- [How to check if entity has changed?](./check-if-entity-has-changed)

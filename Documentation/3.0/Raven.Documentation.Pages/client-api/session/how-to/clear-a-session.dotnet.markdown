@@ -9,7 +9,3 @@ To clear session state, that is to stop tracking entities and remove all pending
 ## Example
 
 {CODE clear_2@ClientApi\Session\HowTo\Clear.cs /}
-
-## Related articles
-
-TODO

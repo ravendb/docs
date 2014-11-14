@@ -44,7 +44,3 @@ Index changes for all indexex can be observed using `forAllIndexes` method.
 {CODE:java index_changes_4@ClientApi\Changes\HowToSubscribeToIndexChanges.java /}
 
 {PANEL/}
-
-## Related articles
-
-TODO
