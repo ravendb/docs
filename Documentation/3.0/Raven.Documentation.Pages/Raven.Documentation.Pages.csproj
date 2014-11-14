@@ -201,6 +201,14 @@
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
     <None Include="client-api\configuration\.docslist" />
     <None Include="client-api\configuration\conventions\caching.dotnet.markdown" />
+    <None Include="client-api\configuration\conventions\caching.java.markdown" />
+    <None Include="client-api\configuration\conventions\misc.java.markdown" />
+    <None Include="client-api\configuration\conventions\request-handling.java.markdown" />
+    <None Include="client-api\configuration\conventions\replication.java.markdown" />
+    <None Include="client-api\configuration\conventions\querying.java.markdown" />
+    <None Include="client-api\configuration\conventions\identifier-generation\type-specific.java.markdown" />
+    <None Include="client-api\configuration\conventions\identifier-generation\global.java.markdown" />
+    <None Include="client-api\configuration\conventions\what-are-conventions.java.markdown" />
     <None Include="client-api\configuration\conventions\identifier-generation\.docslist" />
     <None Include="client-api\configuration\conventions\identifier-generation\global.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\.docslist" />
@@ -209,7 +217,7 @@
     <None Include="client-api\configuration\conventions\identifier-generation\type-specific.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\replication.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
-    <None Include="client-api\configuration\conventions\what-are-conventions.markdown" />
+    <None Include="client-api\configuration\conventions\what-are-conventions.dotnet.markdown" />
     <None Include="client-api\how-to\enable-profiling.dotnet.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.java.markdown" />

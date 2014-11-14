@@ -14,7 +14,7 @@ Function `GetTypeTagName` will use either the convention specified in `FindTypeT
 
 ###FindTypeTagName and FindDynamicTagName
 
-Entity objects that share a common tag name belong to the same [collection](../../../../client-api/faq/what-is-a-collection) on the server side. Tag names are also used to build document keys. There are two functions that the client uses to determine the collection name. The fist one is used for standard objects with well defined type:
+Entity objects that share a common tag name belong to the same [collection](../../../../client-api/faq/what-is-a-collection) on the server side. Tag names are also used to build document keys. There are two functions that the client uses to determine the collection name. The first one is used for standard objects with well defined type:
 
 {CODE find_type_tagname@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs /}
 
