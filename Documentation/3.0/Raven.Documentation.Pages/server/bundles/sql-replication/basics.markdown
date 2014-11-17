@@ -19,14 +19,19 @@ The document format is as follows:
 
 {CODE sql_replication_1@Server\Bundles\SqlReplication.cs /}
 
-where:   
-* **Id** is a document identifier   
-* **Name** is a configuration name   
-* **Disabled** marks replication as enabled/disabled   
-* **RavenEntityName** contains a name of entities that will be replicated   
-* **Script** contains a replication script   
-* **FactoryName**, **ConnectionString**, **ConnectionStringName** and **ConnectionStringSettingName** are used to provide connection strings to destination DB in various ways   
-* **SqlReplicationTables** is a list of tables to which the documents will be replicated   
+where:  
+
+| ------ | ------ |
+| **Id** | document identifier |
+| **Name** | configuration name |
+| **Disabled** | marks replication as enabled/disabled |
+| **ParameterizeDeletesDisabled** | disabled the parameterization of deletes |
+| **ForceSqlServerQueryRecompile** | forces statement recompilation on SQL Server |
+| **PerformTableQuatation** | toggles table name quotation |
+| **RavenEntityName** | name of entities (collection) that will be replicated |
+| **Script** | replication script |
+| **FactoryName**<br />**ConnectionString**<br />**ConnectionStringName**<br />**ConnectionStringSettingName**<br />**PredefinedConnectionStringSettingName** | used to provide connection strings to destination DB in various ways |
+| **SqlReplicationTables** | list of tables to which the documents will be replicated |
 
 ## Example
 
@@ -68,6 +73,12 @@ In Studio the configuration page is found under **Settings -> SQL Replication**.
 ## Custom functions in Script
 
 In `Script` beside [built-in functions](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables), custom ones can be introduced. Please visit [this](../../../studio/overview/settings/custom-functions) page if you want to know how to add custom functions.
+
+There also also two additional functions created specifically for SQL Replication:
+
+| ------ |:------:| ------ |
+| `varchar(value, size = 50)` | method | Defines parameter type as `varchar` with ability to specify its size (50 if not specified). |
+| `nVarchar(value, size = 50)` | method | Defines parameter type as `nvarchar` with ability to specify its size (50 if not specified). |
 
 ## Remarks
 
