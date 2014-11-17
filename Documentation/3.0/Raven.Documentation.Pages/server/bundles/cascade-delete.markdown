@@ -18,7 +18,3 @@ When the "parent" document is deleted, the documents with "childId1" and "childI
 
 1. The `Raven-Cascade-Delete-Documents` and `Raven-Cascade-Delete-Attachment` collections are independent from each other; a document can specify any number (from zero up) of the documents or attachments to be cascade deleted.
 2. Cascade Delete works only within a single node. If you have a sharded data set, cascading will not delete documents / attachments that are located on other nodes.
-
-## Related articles
-
-TODO

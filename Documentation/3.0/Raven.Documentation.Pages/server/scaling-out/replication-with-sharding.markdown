@@ -26,4 +26,5 @@ Even during normal operations, it puts each node under higher stress, since it n
 
 ## Related articles
 
-TODO
+- [How replication works?](./replication/how-replication-works)
+- [How to setup sharding?](./sharding/how-to-setup-sharding)

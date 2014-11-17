@@ -58,6 +58,3 @@ In order to end subscribtion (stop listening for particular notifications) you m
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
 
-## Related articles
-
-TODO

@@ -32,4 +32,4 @@ Fourth overload stores entity in session with given id and forces concurrency ch
 
 ## Related articles
 
-TODO
+- [Saving changes](./saving-changes)  

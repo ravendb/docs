@@ -252,7 +252,3 @@ This method internally uses `waitForNonStaleResultsAsOf` and passes last written
 Please check our dedicated [article](../../../client-api/session/querying/how-to-query-a-spatial-index).
 
 {PANEL/}
-
-## Related articles
-
-TODO

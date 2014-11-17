@@ -9,3 +9,7 @@ The reason we have document query listeners is to apply query customizations glo
 If we want to disable caching of all query results, you can implement `DisableCachingQueryListener` which will add `noCaching` customization to each performed query.
 
 {CODE:java document_query_example@ClientApi\Listeners\Query.java /}
+
+## Related articles
+
+- [Indexes : Querying : Basics](../../indexes/querying/basics)

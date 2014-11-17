@@ -25,4 +25,4 @@ Then the default parameters that will be used are as follows:
 ## Related articles
 
 - [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
-- TODO
+- [Client API : Replication : How client integrates with replication bundle?](../../../client-api/bundles/how-client-integrates-with-replication-bundle)

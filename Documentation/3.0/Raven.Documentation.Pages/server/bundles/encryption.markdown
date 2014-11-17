@@ -42,7 +42,3 @@ So, as the consequences of the above:
 {WARNING:Encryption & Backups} 
 The backup of an encrypted database contains the encryption key (`Raven/Encryption/Key`) as a plain text. This is required to make RavenDB able to restore the backup on a different machine.
 {WARNING/}
-
-## Related articles
-
-TODO

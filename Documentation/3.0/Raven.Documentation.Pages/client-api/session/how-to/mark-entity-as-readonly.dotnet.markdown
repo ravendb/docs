@@ -18,7 +18,3 @@ Implications of setting entity as read-only are as follows:
 ## Example
 
 {CODE mark_as_readonly_2@ClientApi\Session\HowTo\MarkAsReadonly.cs /}
-
-## Related articles
-
-TODO

@@ -46,4 +46,4 @@ To execute facet query using session `Query` method use `ToFacets` extension. Th
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)   

@@ -30,4 +30,4 @@ Loading document inside transformer and projecting results to different type.
 
 ## Related articles
 
-TODO 
+- [What are transformers?](../../../transformers/what-are-transformers)   

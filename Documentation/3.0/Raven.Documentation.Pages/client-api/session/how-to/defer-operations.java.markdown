@@ -18,7 +18,3 @@ Operations can be deferred till `saveChanges` is called by using `defer` method 
 ## Example
 
 {CODE:java defer_2@ClientApi\Session\HowTo\Defer.java /}
-
-## Related articles
-
-TODO

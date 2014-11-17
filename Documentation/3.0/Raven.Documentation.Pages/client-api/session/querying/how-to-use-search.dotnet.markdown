@@ -28,5 +28,5 @@ More complex text searching can be achieved by using `Search` extension method. 
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Searching](../../../indexes/querying/searching)
 

@@ -20,3 +20,7 @@ The document store ensures access to the following client API features:
 * [Conventions](../client-api/configuration/conventions/what-are-conventions)
 * [Listeners](../client-api/listeners/what-are-listeners)
 * [Aggressive cache](../client-api/how-to/setup-aggressive-caching)
+
+## Related articles
+
+- [How to create a document store?](./creating-document-store)

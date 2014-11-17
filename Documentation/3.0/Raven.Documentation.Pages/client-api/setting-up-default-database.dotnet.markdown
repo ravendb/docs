@@ -16,4 +16,4 @@
 
 ## Related articles
 
-TODO
+- [How to setup connection string?](./setting-up-connection-string)

@@ -20,4 +20,4 @@ To check if specific entity differs from the one downloaded from server `hasChan
 
 ## Related articles
 
-TODO
+- [How to check if there are any changes on a session?](./check-if-there-are-any-changes-on-a-session)

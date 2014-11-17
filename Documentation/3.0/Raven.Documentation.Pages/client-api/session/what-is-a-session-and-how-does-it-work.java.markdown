@@ -35,4 +35,4 @@ The second example is less immediate, and should never be reached if RavenDB is 
 
 ## Related articles
 
-TODO
+- [Opening a session](./opening-a-session)  

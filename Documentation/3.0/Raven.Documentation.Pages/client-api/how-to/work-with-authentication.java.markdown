@@ -26,3 +26,7 @@ you should create the `DocumentStore` as below to have the admin access to the `
 ## Connection string
 
 The Api Key can be also specified in the connection string. Look [here](../setting-up-connection-string) for more details.
+
+##Related articles
+
+- [Server : Configuration : Authentication & Authorization](../../server/configuration/authentication-and-authorization)

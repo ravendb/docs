@@ -83,4 +83,4 @@ Execute the following steps on every cluster node:
 
 ## Related articles
 
-TODO
+ - [Windows Clustering on Windows Server 2012](./windows-server-2012)

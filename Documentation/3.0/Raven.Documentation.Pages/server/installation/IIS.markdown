@@ -121,4 +121,4 @@ Microsoft KB article about ASP.NET Partial Trust and application isolation - [ht
 
 ## Related articles
 
-TODO
+ - [Using installer](./using-installer)

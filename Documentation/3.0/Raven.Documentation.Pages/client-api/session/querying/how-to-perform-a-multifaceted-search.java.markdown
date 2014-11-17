@@ -20,4 +20,4 @@ Multiple [Facet queries](../../../client-api/session/querying/how-to-perform-a-f
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)   

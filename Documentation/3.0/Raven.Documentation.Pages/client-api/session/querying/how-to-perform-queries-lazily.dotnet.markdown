@@ -79,4 +79,4 @@ or
 
 ## Related articles
 
-TODO
+- [How to perform operations lazily?](../how-to/perform-operations-lazily)
