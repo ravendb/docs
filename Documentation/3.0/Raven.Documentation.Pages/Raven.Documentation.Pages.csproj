@@ -390,7 +390,8 @@
     <None Include="indexes\creating-and-deploying.markdown" />
     <None Include="indexes\indexing-spatial-data.markdown" />
     <None Include="indexes\customizing-results-order.markdown" />
-    <None Include="indexes\indexes-error-handling.markdown" />
+    <None Include="indexes\troubleshooting\.docslist" />
+    <None Include="indexes\troubleshooting\debugging-index-errors.markdown" />
     <None Include="indexes\indexing-hierarchical-data.markdown" />
     <None Include="indexes\indexing-polymorphic-data.markdown" />
     <None Include="indexes\indexing-related-documents.markdown" />
@@ -427,8 +428,6 @@
     <None Include="indexes\querying\suggestions.dotnet.markdown" />
     <None Include="indexes\stale-indexes.markdown" />
     <None Include="indexes\storing-data-in-index.markdown" />
-    <None Include="indexes\troubleshooting\.docslist" />
-    <None Include="indexes\troubleshooting\debugging-index-errors.markdown" />
     <None Include="indexes\using-analyzers.markdown" />
     <None Include="indexes\using-dynamic-fields.markdown" />
     <None Include="indexes\using-term-vectors.markdown" />

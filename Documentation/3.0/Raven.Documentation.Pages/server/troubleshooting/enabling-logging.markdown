@@ -10,7 +10,3 @@ By default, **logging is turned off**, but it can be easily enabled by creating 
 ## Remarks
 
 {INFO To make it even easier for you, we have included `NLog.Ignored.config` file which just needs to be renamed in the Server directory, inside the distribution package. /}
-
-## Related articles
-
-TODO

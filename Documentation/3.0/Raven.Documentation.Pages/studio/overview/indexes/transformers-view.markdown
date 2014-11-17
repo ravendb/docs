@@ -11,4 +11,4 @@ Action Bar contains following buttons:
 - `Paste` - quickly creates transformer by pasting [TransformerDefinition](../../../glossary/transformer-definition),
 - `Delete` - removes **all** transformers from database
 
-![Figure 0. Studio. Transformers View. Action Bar.](images/transformers-view-action-bar.png)  
+![Figure 0. Studio. Transformers View. Action Bar.](images/transformers_view-action_bar-1.png)  

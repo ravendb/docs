@@ -19,7 +19,3 @@ You can set the following configuration options in the Raven.Server.exe.config f
 * Raven/MaxPageSize - The maximum number of results a Raven query can return (overrides any page size set by the client). The default is 1024.
 
 Running in this configuration is useful when you want simply to try things out. For the production permanent deployment, it is recommended to use the Service or IIS modes.
-
-## Related articles
-
-TODO

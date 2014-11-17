@@ -85,4 +85,5 @@ If a master-master replication is set up and the [Expiration bundle](../../../se
 
 - [Studio : Walkthrough : How to setup replication?](../../../studio/walkthroughs/how-to-setup-replication)
 - [Client API : Replication : How client integrates with replication bundle?](../../../client-api/bundles/how-client-integrates-with-replication-bundle)
+- [KB : Replication : Advanced replication details](../../kb/advanced-replication-details)
 
