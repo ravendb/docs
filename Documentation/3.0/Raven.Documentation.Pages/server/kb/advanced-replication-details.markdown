@@ -26,4 +26,4 @@ In RavenDB there is a concept of tombstone that represents a deleted document. E
 
 ## Related articles
 
-TODO
+- [Replication](../scaling-out/replication/how-replication-works)
