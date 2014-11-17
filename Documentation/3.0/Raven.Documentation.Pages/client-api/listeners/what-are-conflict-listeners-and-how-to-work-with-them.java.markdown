@@ -10,3 +10,7 @@ To create your own listener of this type, just implement IDocumentConflictListen
 This example shows how to create an automatic conflict resolver by using `IDocumentConflictListener`, which will pick the newest item from the list of conflicted documents:
 
 {CODE:java document_conflict_example@ClientApi\Listeners\Conflict.java /}
+
+## Related articles
+
+- [Server : Replication : Conflicts](../../server/scaling-out/replication/replication-conflicts)

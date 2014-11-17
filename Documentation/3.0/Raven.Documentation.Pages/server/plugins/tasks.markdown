@@ -22,7 +22,3 @@ where:
 ## Example - Perform a cleanup task every six hours
 
 {CODE plugins_4_4@Server\Plugins.cs /}
-
-## Related articles
-
-TODO

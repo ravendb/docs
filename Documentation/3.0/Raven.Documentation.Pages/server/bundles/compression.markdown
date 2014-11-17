@@ -13,7 +13,3 @@ More on how to create a database with compression enabled using the Studio [here
 The above example demonstrates how to create a new database called `CompressedDB` with  the `Compression` bundle enabled.
 
 {WARNING Activating the **compression** bundle is only supported for **new databases**. Activating or disabling compression on an already existing database will cause DB malfunction. /}
-
-## Related articles
-
-TODO

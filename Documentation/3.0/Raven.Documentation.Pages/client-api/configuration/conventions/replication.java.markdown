@@ -14,7 +14,7 @@ This is called to provide replication behavior for the client. You can customize
 {CODE:java replication_informer@ClientApi\Configuration\Conventions\Replication.java /}
 
 
-##IndexAndTransformerReplicationMode
+###IndexAndTransformerReplicationMode
 
 It allows to change the replication mode for index and transformer definitions when they are created (or changed) by the client code (`AbstractIndexCreationTask.execute` / `AbstractTransformerCreationTask.execute`). The possible values are:
 

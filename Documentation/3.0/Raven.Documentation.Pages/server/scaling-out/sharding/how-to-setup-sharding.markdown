@@ -60,7 +60,3 @@ Now we can do operations like `Query`, `Load`, or `LuceneQuery`, and the actual 
 If you're using the `DefaultShardResolutionStrategy`, it'll make a request just to the "Asia" shard.
 
 To sum up, sharding is a great feature and RavenDB provides you with the inbuilt, easy support for it.
-
-## Related articles
-
-TODO

@@ -110,3 +110,8 @@ then you need to register the same customization by using `RegisterIdLoadConvent
 
 {CODE id_generation_on_load_2@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
+##Related articles
+
+- [Document key generatation](../../../../server/kb/document-key-generation)
+- [Working with document identifiers](../../../document-identifiers/working-with-document-ids)
+- [Global identifier generation conventions](./global)

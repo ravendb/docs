@@ -37,7 +37,3 @@ Now, if you take a look at the documents from the companies collection after ord
 	}
 }
 {CODE-BLOCK/}
-
-## Related articles
-
-TODO

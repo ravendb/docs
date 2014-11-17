@@ -83,6 +83,6 @@ If a master-master replication is set up and the [Expiration bundle](../../../se
 
 ## Related articles
 
-- [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
-- TODO
+- [Studio : Walkthrough : How to setup replication?](../../../studio/walkthroughs/how-to-setup-replication)
+- [Client API : Replication : How client integrates with replication bundle?](../../../client-api/bundles/how-client-integrates-with-replication-bundle)
 

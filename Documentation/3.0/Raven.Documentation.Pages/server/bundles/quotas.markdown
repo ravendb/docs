@@ -33,7 +33,3 @@ Configure the following values by adding entries to your [server configuration](
 * **Raven/Quotas/Documents/SoftLimit**
 	The soft limit before which we will warn about the document limit quota.   
 	_Default:_ Int64.MaxValue
-
-## Related articles
-
-TODO

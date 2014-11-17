@@ -21,3 +21,8 @@ In addition to the use of notifications, the aggressive cache also revalidates t
 This behavior is configurable by the following convention:
 
 {CODE:java should_save_changes_force_aggressive_cache_check@ClientApi\Configuration\Conventions\Caching.java /}
+
+##Related articles
+
+- [Commands : How to disable caching?](../../commands/how-to/disable-caching)
+- [How to setup aggressive caching?](../../how-to/setup-aggressive-caching)

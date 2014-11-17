@@ -236,4 +236,4 @@ A smuggler communicates with a server using the HTTP protocol, meaning that it c
 
 ## Related articles
 
-TODO
+- [Studio : Tasks : Import & Export Database](../../studio/overview/tasks/import-export-database)

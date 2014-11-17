@@ -95,3 +95,10 @@ Sometimes the client needs to know the full id of the document that will be stor
 {CODE:java find_full_doc_key_from_non_string_identifier@ClientApi\Configuration\Conventions\IdentifierGeneration\Global.java /}
 
 to find the full key based on the type of a document and the value type identifier.
+
+##Related articles
+
+- [Document key generatation](../../../../server/kb/document-key-generation)
+- [Working with document identifiers](../../../document-identifiers/working-with-document-ids)
+- [What is a collection?](../../../faq/what-is-a-collection)
+- [Type-specific identifier generation](./type-specific)

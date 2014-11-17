@@ -50,4 +50,8 @@ If we register two conventions, one for `Employee` and the second for `EmployeeM
 {CODE:java custom_convention_inheritance_2@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.java /}
 
 
+##Related articles
 
+- [Document key generatation](../../../../server/kb/document-key-generation)
+- [Working with document identifiers](../../../document-identifiers/working-with-document-ids)
+- [Global identifier generation conventions](./global)

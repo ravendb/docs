@@ -136,4 +136,5 @@ The backup of an encrypted database contains the encryption key (`Raven/Encrypti
 
 ## Related articles
 
-TODO
+- [Client API : Commands : How to start backup or restore operations?](../../client-api/commands/how-to/start-backup-restore-operations)
+- [Studio : Manage Your Server : Backup & Restore Database](../../studio/management/backup-restore-database)

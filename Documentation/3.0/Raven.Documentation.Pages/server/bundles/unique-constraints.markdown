@@ -44,4 +44,4 @@ Drop the `Raven.Bundles.UniqueContraints` assembly in the Plugins directory.
 
 ## Related articles
 
-* [How to work with unique constraints bundle?](../../client-api/bundles/how-to-work-with-unique-constraints-bundle)
+* [Client API : How to work with unique constraints bundle?](../../client-api/bundles/how-to-work-with-unique-constraints-bundle)

@@ -53,7 +53,3 @@ Next, we need to create a backup setup document under the `Raven/Backup/Periodic
 ## Remarks
 
 Amazon AWS and Azure Storage related properties in the `PeriodicExportSetup` document **exclude** each other. Server will always upload export to one location, and the location will be picked in the following order: `GlacierVaultName`, `S3BucketName`, `AzureStorageContainer`.
-
-## Related articles
-
-TODO
