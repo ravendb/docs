@@ -20,3 +20,7 @@ Everything is going to work well, yet you have to be aware that some kind of ide
 Using non-sequential data as the document key (e.g. created by hash functions or GUID) is not recommended. In such case you might be experiencing a declining 
 performance while searching for an existing documents and inserting new ones. If your intention is to use custom identifiers and you expect that the very high number 
 of such documents might be saved in your database, then we suggest you make use of incremented identifiers in order to ensure the good performance.
+
+## GetSortKey
+
+`GetSortKey` result is not stable and should **not** be used to make a case sensitive Id unique.
