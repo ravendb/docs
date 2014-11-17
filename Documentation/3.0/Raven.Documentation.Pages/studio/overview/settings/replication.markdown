@@ -11,7 +11,7 @@ Here you can edit the following [replication](../../../server/scaling-out/replic
 
 ![Figure 1. Settings. Replication. Client failover behavior.](images/settings_replication-1.png)
 	
-- Conflict resolution:
+- Conflict resolution - server can automatically resolve any occured conflicts based on predefined strategies:
 	- `None` (default),
 	- `Resolve to local`,
 	- `Resolve to remove`,
