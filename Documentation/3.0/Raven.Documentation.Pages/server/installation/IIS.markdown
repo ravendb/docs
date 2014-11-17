@@ -111,6 +111,10 @@ To handle the problematic IIS behavior we have redesigned the RavenDB startup pr
 
 Our current implementation, due to limitations in IIS, does not cover WebSite restart scenario when long-running requests are in progress and might cause file access errors. When this problem occurs, the only solution is to **restart** the **IIS** server.
 
+## IIS Application Request Routing (IIS ARR)
+
+It has been confirmed that caching on RavenDB Server Farm causes unexpected errors and should be disabled for proper operation.
+
 ## References
 
 Microsoft KB article about ASP.NET Partial Trust and application isolation - [http://support.microsoft.com/kb/2698981](http://support.microsoft.com/kb/2698981)
