@@ -27,3 +27,6 @@ The default `JsonContractResolver` used by RavenDB will serialize all properties
 
 {CODE:java custom_json_contract_resolver@ClientApi\Configuration\Conventions\RequestHandling.java /}
 
+##Related articles
+
+- [How to send custom request using HttpJsonRequestFactory?](../../how-to/send-custom-request-using-httpjsonrequestfactory)

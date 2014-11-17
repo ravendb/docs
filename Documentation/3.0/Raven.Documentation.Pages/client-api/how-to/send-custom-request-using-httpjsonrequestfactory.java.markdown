@@ -10,4 +10,4 @@ Worth knowing is that factory might not always be accessible. To check if docume
 
 ## Related articles
 
-TODO
+- [Conventions related to request handling](../configuration/conventions/request-handling)

@@ -15,7 +15,3 @@ In order to register an instance of RavenDB with a license, you can:
 	_Default:_ ~\license.xml
 
 {NOTE Each instance of RavenDB outside of the development machines has to be registered with a license. /}
-
-## Related articles
-
-TODO

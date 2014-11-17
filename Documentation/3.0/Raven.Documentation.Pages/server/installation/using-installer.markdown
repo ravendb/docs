@@ -97,7 +97,3 @@ The list of RavenDB specific properties:
 * <em>RAVEN_STORAGE_LOGS_DIR</em> - logs location (default: empty - together with tenant db's data)
 * <em>SERVICE_NAME</em> - default: RavenDB
 * <em>SERVICE_PORT</em> - default: 8080
-
-## Relates articles
-
-TODO

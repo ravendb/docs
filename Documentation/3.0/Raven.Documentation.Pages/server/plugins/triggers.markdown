@@ -133,7 +133,3 @@ This index works on the [following index](http://ayende.com/blog/4530/raven-even
 This is useful if we want to keep a record of all the changes introduced to the index. Note that we also change the document to store the snapshot key for this particular version.   
 
 {PANEL/}
-
-## Related articles
-
-TODO 

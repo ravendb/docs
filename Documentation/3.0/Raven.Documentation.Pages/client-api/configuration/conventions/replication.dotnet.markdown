@@ -14,7 +14,7 @@ This is called to provide replication behavior for the client. You can customize
 {CODE replication_informer@ClientApi\Configuration\Conventions\Replication.cs /}
 
 
-##IndexAndTransformerReplicationMode
+###IndexAndTransformerReplicationMode
 
 It allows to change the replication mode for index and transformer definitions when they are created (or changed) by the client code (`AbstractIndexCreationTask.Execute` / `AbstractTransformerCreationTask.Execute`). It is an enum type with `[Flags]` attribute applied. The possible values are:
 

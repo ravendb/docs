@@ -76,7 +76,3 @@ When auto indexes are created, they are kept in a memory until they reach a give
 {CODE-BLOCK:plain}
 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk
 {CODE-BLOCK/}
-
-## Related articles
-
-TODO

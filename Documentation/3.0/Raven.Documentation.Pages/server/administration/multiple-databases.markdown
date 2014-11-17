@@ -62,4 +62,4 @@ This allows RavenDB to manage large numbers of databases, because at any given t
 
 ## Related articles
 
-TODO
+- [Client API : Commands : How to switch command to a different database?](../../client-api/commands/how-to/switch-commands-to-a-different-database)

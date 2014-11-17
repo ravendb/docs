@@ -23,7 +23,3 @@ FIPS compliant encryption algorithms on client can be turned on by setting `Rave
 ## Remarks
 
 {NOTE Encryption algorithms used by server and client must match. /}
-
-## Related articles
-
-TODO

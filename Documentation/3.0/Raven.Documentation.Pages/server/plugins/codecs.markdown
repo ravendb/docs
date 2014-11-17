@@ -18,7 +18,3 @@ where:
 ## Example - Encryption
 
 {CODE plugins_3_3@Server\Plugins.cs /}
-
-## Related articles
-
-TODO

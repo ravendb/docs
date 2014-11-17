@@ -20,4 +20,4 @@ Now we can use our `Palindrome` in our index definition.
 
 ## Related articles
 
-TODO
+- [Indexes : Creating and deploying indexes](../../indexes/creating-and-deploying)
