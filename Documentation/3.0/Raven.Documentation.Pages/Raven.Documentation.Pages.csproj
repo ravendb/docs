@@ -635,6 +635,7 @@
     <Content Include="studio\overview\query\images\query_view-quering_static_index-4.png" />
     <Content Include="studio\overview\indexes\images\transformers_view-action_bar-1.png" />
     <Content Include="studio\overview\indexes\images\transformers_view-transformer_list-2.png" />
+    <Content Include="studio\overview\query\images\reporting_view_1.png" />
     <Content Include="studio\overview\settings\images\custom-functions-1.png" />
     <Content Include="studio\overview\settings\images\custom-functions-2.png" />
     <Content Include="studio\overview\settings\images\settings-database_settings-1.png" />
