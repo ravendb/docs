@@ -69,6 +69,12 @@ In Studio the configuration page is found under **Settings -> SQL Replication**.
 
 In `Script` beside [built-in functions](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables), custom ones can be introduced. Please visit [this](../../../studio/overview/settings/custom-functions) page if you want to know how to add custom functions.
 
+There also also two additional functions created specifically for SQL Replication:
+
+| ------ |:------:| ------ |
+| `varchar(value, size = 50)` | method | Defines parameter type as `varchar` with ability to specify its size (50 if not specified). |
+| `nVarchar(value, size = 50)` | method | Defines parameter type as `nvarchar` with ability to specify its size (50 if not specified). |
+
 ## Remarks
 
 {INFO:Information}
