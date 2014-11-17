@@ -75,4 +75,4 @@ In some situations query execution must be delayed. To cover such scenario `lazi
 
 ## Related articles
 
-TODO
+- [How to perform operations lazily?](../how-to/perform-operations-lazily)

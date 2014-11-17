@@ -573,7 +573,3 @@ Many of the configuration options described in the section above can be used bot
 - **Raven/Encryption** settings can only be provided when a database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption).
 
 {INFO/}
-
-## Related articles
-
-TODO

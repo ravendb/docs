@@ -77,4 +77,4 @@ Execute the following steps on every cluster node:
 
 ## Related articles
 
-TODO
+ - [Windows Clustering on Windows Server 2008](./windows-server-2008)

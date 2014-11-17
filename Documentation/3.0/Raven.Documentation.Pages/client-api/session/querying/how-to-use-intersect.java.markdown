@@ -16,4 +16,4 @@ To return only documents that match **all** provided sub-queries we have introdu
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Intersection](../../../indexes/querying/intersection)

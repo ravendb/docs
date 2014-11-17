@@ -38,4 +38,4 @@ Always remember to release session allocated resources after usage by invoking `
 
 ## Related articles
 
-TODO
+- [What is a session and how does it work?](./what-is-a-session-and-how-does-it-work)  

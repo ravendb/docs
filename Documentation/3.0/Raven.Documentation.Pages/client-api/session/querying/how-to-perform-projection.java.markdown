@@ -33,4 +33,4 @@ Detailed article about using transformers with queries can be found [here](../..
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Projections](../../../indexes/querying/projections)

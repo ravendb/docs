@@ -14,4 +14,4 @@ where:
 
 ## Related articles
 
-TODO
+- [Indexes : Analyzers](../../indexes/using-analyzers)

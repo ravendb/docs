@@ -18,7 +18,3 @@ Implications of setting entity as read-only are as follows:
 ## Example
 
 {CODE:java mark_as_readonly_2@ClientApi\Session\HowTo\MarkAsReadonly.java /}
-
-## Related articles
-
-TODO

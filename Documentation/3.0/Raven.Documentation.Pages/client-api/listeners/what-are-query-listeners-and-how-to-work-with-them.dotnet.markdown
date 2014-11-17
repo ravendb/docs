@@ -9,3 +9,7 @@ The reason we have document query listeners is to apply query customizations glo
 If we want to disable caching of all query results, you can implement `DisableCachingQueryListener` which will add `NoCaching` customization to each performed query.
 
 {CODE document_query_example@ClientApi\Listeners\Query.cs /}
+
+## Related articles
+
+- [Indexes : Querying : Basics](../../indexes/querying/basics)

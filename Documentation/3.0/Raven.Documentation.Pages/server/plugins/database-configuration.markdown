@@ -10,4 +10,4 @@ To alter database configuration you can edit the configuration document (more ab
 
 ## Related articles
 
-TODO
+- [Configuration : Options](../configuration/configuration-options)

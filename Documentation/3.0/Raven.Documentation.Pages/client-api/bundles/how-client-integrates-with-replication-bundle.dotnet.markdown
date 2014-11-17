@@ -9,7 +9,7 @@ RavenDB's Client API is aware of the replication mechanism offered by the server
 * Detecting that an instance is replicating to another set of instances.
 * When that instance is down, the client will be automatically shifted to other instances.
 
-This is caused by a failover mechanism which is turned in a document stored by default. The the client can load a replication document from `/docs/Raven/Replication/Destinations` to learn what replication instances to use if the failover occurred.
+This is caused by a failover mechanism which is turned in a document stored by default. The client can load a replication document from `/docs/Raven/Replication/Destinations` to learn what replication instances to use if the failover occurred.
 
 {NOTE The client by default creates requests for the replication document even if the server does not have the replication bundle enabled. In this case, the request for `/docs/Raven/Replication/Destinations` results in  `404` in server logs./}
 
@@ -135,3 +135,7 @@ The *ServerPrefix* value will be fetch in the same request as the current *HiLo*
 For example storing a first `User` object will cause that its ID will be `Users/NorthServer/1`.
 
 {PANEL/}
+
+## Related articles
+
+- [Server : Replication](../../server/scaling-out/replication/how-replication-works)

@@ -57,4 +57,4 @@ This extension method uses reflection to extract all public fields and propertie
 
 ## Related articles
 
-TODO
+- [Indexes : Querying : Projections](../../../indexes/querying/projections)

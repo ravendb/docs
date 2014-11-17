@@ -176,4 +176,4 @@ To check if entity is attached to session, e.g. has been loaded previously, use 
 
 ## Related articles
 
-TODO
+- [Opening a session](./opening-a-session)  

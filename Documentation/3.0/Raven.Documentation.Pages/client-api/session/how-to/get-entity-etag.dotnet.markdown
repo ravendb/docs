@@ -17,7 +17,3 @@ When document is downloaded from server it contains various metadata information
 ## Example
 
 {CODE get_etag_2@ClientApi\Session\HowTo\GetEtag.cs /}
-
-## Related articles
-
-TODO

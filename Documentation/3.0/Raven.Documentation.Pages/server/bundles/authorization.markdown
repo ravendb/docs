@@ -108,4 +108,4 @@ For much the same reason, the results of map/reduce indexes cannot be secured, a
 ## Related articles
 
 
-* [How to work with authorization bundle?](../../client-api/bundles/how-to-work-with-authorization-bundle)
+* [Client API : How to work with authorization bundle?](../../client-api/bundles/how-to-work-with-authorization-bundle)

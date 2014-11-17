@@ -60,4 +60,4 @@ The document ID is then set in the `MoreLikeThisQueryParameters`.
 
 ## Related articles
 
-TODO
+- [Client API : Session : How to use MoreLikeThis?](../../client-api/session/how-to/use-morelikethis)

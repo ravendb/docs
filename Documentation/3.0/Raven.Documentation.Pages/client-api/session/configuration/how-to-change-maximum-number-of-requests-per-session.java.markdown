@@ -15,7 +15,3 @@ To change maximum number of requests in a single session just manipulate `maxNum
 To change maximum number of requests for all sessions (on particular store) the `maxNumberOfRequestsPerSession` property from DocumentStore `conventions` must be changed.
 
 {CODE:java max_requests_2@ClientApi\Session\Configuration\MaxRequests.java /}
-
-## Related articles
-
-TODO

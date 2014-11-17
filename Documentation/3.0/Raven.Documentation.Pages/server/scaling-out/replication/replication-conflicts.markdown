@@ -39,5 +39,6 @@ If this code detects a conflict, it will let the user choose which of the confli
 
 ## Related articles
 
-- [Studio : **Walkthrough : How to setup replication?**](../../../studio/walkthroughs/how-to-setup-replication)
-- TODO
+- [Studio : Walkthrough : How to setup replication?](../../../studio/walkthroughs/how-to-setup-replication)
+- [Client API : Replication : How client integrates with replication bundle?](../../../client-api/bundles/how-client-integrates-with-replication-bundle)
+- [Client API : Changes API : How to subscribe to replication conflicts?](../../../client-api/changes/how-to-subscribe-to-replication-conflicts)

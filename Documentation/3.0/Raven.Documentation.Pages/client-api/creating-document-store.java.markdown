@@ -18,3 +18,9 @@ Because the document store is a heavyweight object, it should be only one instan
 initialization looks like below:
 
 {CODE:java document_store_holder@ClientApi\CreatingDocumentStore.java /}
+
+## Related articles
+
+- [What is a document store?](./what-is-a-document-store)
+- [How to setup a default database?](./setting-up-default-database)
+- [How to setup connection string?](./setting-up-connection-string)
