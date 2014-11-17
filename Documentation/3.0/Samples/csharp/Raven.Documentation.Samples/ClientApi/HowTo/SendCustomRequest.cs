@@ -20,12 +20,14 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 					.Doc(key); // /docs/employees/1
 
 				IDatabaseCommands commands = store.DatabaseCommands;
-				HttpJsonRequest request = store
+				using (HttpJsonRequest request = store
 					.JsonRequestFactory
-					.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, "GET", commands.PrimaryCredentials, store.Conventions));
-
-				RavenJToken json = request.ReadResponseJson();
-				JsonDocument jsonDocument = SerializationHelper.DeserializeJsonDocument(key, json, request.ResponseHeaders, request.ResponseStatusCode);
+					.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, "GET", commands.PrimaryCredentials, store.Conventions)))
+				{
+					RavenJToken json = request.ReadResponseJson();
+					JsonDocument jsonDocument = SerializationHelper
+						.DeserializeJsonDocument(key, json, request.ResponseHeaders, request.ResponseStatusCode);
+				}
 				#endregion
 			}
 		}
