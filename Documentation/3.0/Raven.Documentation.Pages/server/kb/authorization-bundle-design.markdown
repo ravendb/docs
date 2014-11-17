@@ -116,4 +116,4 @@ That is pretty much as detailed as I want things to be at this stage. Thoughts?
 
 ## Related articles
 
-TODO
+- [Bundle: Authorization](../bundles/authorization)
