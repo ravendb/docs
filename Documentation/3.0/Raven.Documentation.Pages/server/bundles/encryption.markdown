@@ -37,8 +37,30 @@ So, as the consequences of the above:
 
 {NOTE It is your responsibility to backup the encryption key, as there is no way to recover data without it. /}
 
-## Remarks
+## Encryption & Backups
 
-{WARNING:Encryption & Backups} 
-The backup of an encrypted database contains the encryption key (`Raven/Encryption/Key`) as a plain text. This is required to make RavenDB able to restore the backup on a different machine.
-{WARNING/}
+{DANGER:Important}
+
+By default, backup of an encrypted database **contains the encryption key (`Raven/Encryption/Key`) as a plain text** in `Database.Document` file found in backup. This is required to make RavenDB able to restore the backup on a different machine. 
+
+To not include any confidential database settings, please issue a backup request manually with filled database document.
+
+### Backup & Restore
+
+1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startbackup) with empty [DatabaseDocument](../../../glossary/database-document) specified:
+
+{CODE-BLOCK:json}
+curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental=false" \
+ -d "{\"BackupLocation\":\"c:\\temp\\backup\\Northwind\\\",\"DatabaseDocument\":{\"SecuredSettings\":{},\"Settings\":{},\"Disabled\":false,\"Id\":null}}"
+{CODE-BLOCK/}
+
+2. Notice that `Database.Document` found in `c:\temp\backup\Northwind\` contains exactly the same information that you send in your request, which means that your database cannot be restored until you specify `Raven/Encryption/Key` in this document.
+
+3. After filling `Raven/Encryption/Key` in your `Database.Document` you can issue a [restore request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startrestore):
+
+{CODE-BLOCK:json}
+curl -X POST "http://localhost:8080/admin/restore" \
+ -d "{\"DatabaseName\":\"NewNorthwind\",\"BackupLocation\":\"c:\\temp\\backup\\Northwind\\\",\"IndexesLocation\":null,\"RestoreStartTimeout\":null,\"DatabaseLocation\":\"~\\Databases\\NewNorthwind\\\",\"Defrag\":false,\"JournalsLocation\":null}"
+{CODE-BLOCK/}
+
+{DANGER/}

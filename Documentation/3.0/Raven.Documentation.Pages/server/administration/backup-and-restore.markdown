@@ -131,7 +131,7 @@ You cannot restore to an existing database data directory, as the restore operat
 ## Bundles
 
 {WARNING:Encryption & Backup} 
-The backup of an encrypted database contains the encryption key (`Raven/Encryption/Key`) as a plain text. This is required to make RavenDB able to restore the backup on a different machine.
+The backup of an encrypted database contains the encryption key (`Raven/Encryption/Key`) as a plain text. This is required to make RavenDB able to restore the backup on a different machine, but this behavior can be changed. Please visit [this](../../server/bundles/encryption#encryption--backups) article if you are interested in this subject.
 {WARNING/}
 
 ## Related articles
