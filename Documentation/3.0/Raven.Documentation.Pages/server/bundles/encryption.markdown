@@ -4,7 +4,7 @@ The encryption bundle introduces data encryption to RavenDB. By default it uses 
 
 ## Configuration
 
-If you want to setup new database with encryption bundle using the Studio, then please refer to [this]() page.
+If you want to setup new database with encryption bundle using the Studio, then please refer to [this](../../studio/walkthroughs/how-to-setup-encryption) page.
 
 Three possible configuration options are:   
 * **Raven/Encryption/Algorithm** with [AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) as a value. Additionally provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class    
