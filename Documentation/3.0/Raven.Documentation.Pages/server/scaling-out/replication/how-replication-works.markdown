@@ -75,6 +75,16 @@ Resolving a conflict is easy, you just need to PUT a new version of the document
 
 More details about conflicts can be found here: [dealing with replication conflicts](../../../server/scaling-out/replication/replication-conflicts).
 
+## Reenabling replication
+
+If you want to re-replicate certain documents, best way is to use [Patching API](../../../studio/overview/documents/patch-view) where you can specify which documents will be patched (this will modify documents and trigger the replication on those modified). Since you can't specify an empty patch, the easiest way to achieve this result is to modify it's metadata e.g.
+
+{CODE-BLOCK:json}
+
+this["@metadata"]["Temp-Force-Change"] = true;
+
+{CODE-BLOCK/}
+
 ## Replication & other bundles
 
 {WARNING:Expiration}
