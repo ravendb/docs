@@ -522,6 +522,7 @@
     <None Include="studio\management\api-keys.markdown" />
     <None Include="studio\overview\.docslist" />
     <None Include="studio\overview\documents\.docslist" />
+    <None Include="studio\overview\documents\conflicts-view.markdown" />
     <None Include="studio\overview\documents\document-edit-view.markdown" />
     <None Include="studio\overview\documents\patch-view.markdown" />
     <None Include="studio\overview\documents\documents-view.markdown" />
@@ -603,6 +604,11 @@
     <Content Include="studio\management\images\manage_your_server-traffic-watch-2.png" />
     <Content Include="studio\management\images\manage_your_server-windows_authentication-group-2.png" />
     <Content Include="studio\management\images\manage_your_server-windows_authentication-user-1.png" />
+    <Content Include="studio\overview\documents\images\conflicts_view_1.png" />
+    <Content Include="studio\overview\documents\images\conflicts_view_2.png" />
+    <Content Include="studio\overview\documents\images\conflicts_view_3.png" />
+    <Content Include="studio\overview\documents\images\conflicts_view_4.png" />
+    <Content Include="studio\overview\documents\images\conflicts_view_5.png" />
     <Content Include="studio\overview\documents\images\document-edit-view-action-bar.png" />
     <Content Include="studio\overview\documents\images\document-edit-view-data-tab.png" />
     <Content Include="studio\overview\documents\images\document-edit-view-document-key.png" />
@@ -637,6 +643,10 @@
     <Content Include="studio\overview\indexes\images\transformers_view-action_bar-1.png" />
     <Content Include="studio\overview\indexes\images\transformers_view-transformer_list-2.png" />
     <Content Include="studio\overview\query\images\reporting_view_1.png" />
+    <Content Include="studio\overview\query\images\reporting_view_2.png" />
+    <Content Include="studio\overview\query\images\reporting_view_3.png" />
+    <Content Include="studio\overview\query\images\reporting_view_4.png" />
+    <Content Include="studio\overview\query\images\reporting_view_5.png" />
     <Content Include="studio\overview\settings\images\custom-functions-1.png" />
     <Content Include="studio\overview\settings\images\custom-functions-2.png" />
     <Content Include="studio\overview\settings\images\settings-database_settings-1.png" />
