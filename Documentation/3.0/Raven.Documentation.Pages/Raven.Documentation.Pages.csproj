@@ -504,6 +504,7 @@
     <None Include="server\troubleshooting\enabling-logging.markdown" />
     <None Include="server\troubleshooting\running-in-debug-mode.markdown" />
     <None Include="start\.docslist" />
+    <None Include="start\playground-server.markdown" />
     <None Include="start\about-examples.markdown" />
     <None Include="start\getting-started.java.markdown" />
     <None Include="start\getting-started.dotnet.markdown" />
@@ -582,6 +583,11 @@
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\installation\images\installer_destination_and_paths.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
+    <Content Include="start\images\linqpad-1.png" />
+    <Content Include="start\images\linqpad-2.png" />
+    <Content Include="start\images\linqpad-3.png" />
+    <Content Include="start\images\linqpad-4.png" />
+    <Content Include="start\images\linqpad-5.png" />
     <Content Include="studio\images\accessing-studio-basic-auth.png" />
     <Content Include="studio\images\accessing-studio-database-selection.png" />
     <Content Include="studio\images\accessing-studio-first-run.png" />
