@@ -218,6 +218,7 @@
     <None Include="client-api\configuration\conventions\replication.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.dotnet.markdown" />
+    <None Include="client-api\faq\transaction-support.markdown" />
     <None Include="client-api\how-to\enable-profiling.dotnet.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.java.markdown" />
@@ -264,6 +265,9 @@
     <None Include="client-api\session\deleting-entities.java.markdown" />
     <None Include="client-api\session\storing-entities.java.markdown" />
     <None Include="client-api\session\opening-a-session.java.markdown" />
+    <None Include="client-api\session\transaction-support\.docslist" />
+    <None Include="client-api\session\transaction-support\standard-transactions.markdown" />
+    <None Include="client-api\session\transaction-support\dtc-transactions.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.java.markdown" />
     <None Include="client-api\setting-up-connection-string.java.markdown" />
     <None Include="client-api\setting-up-default-database.java.markdown" />

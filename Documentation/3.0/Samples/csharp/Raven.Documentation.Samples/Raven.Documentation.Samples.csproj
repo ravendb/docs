@@ -96,6 +96,7 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\..\..\..\..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -284,6 +285,7 @@
     <Compile Include="ClientApi\Session\Querying\Lucene\HowToUseLucene.cs" />
     <Compile Include="ClientApi\Session\SavingChanges.cs" />
     <Compile Include="ClientApi\Session\StoringEntities.cs" />
+    <Compile Include="ClientApi\Session\TransactionSupport\DtcTransactions.cs" />
     <Compile Include="ClientApi\Session\WhatIsSession.cs" />
     <Compile Include="ClientApi\SetupConnectionString.cs" />
     <Compile Include="ClientApi\SetupDefaultDatabase.cs" />

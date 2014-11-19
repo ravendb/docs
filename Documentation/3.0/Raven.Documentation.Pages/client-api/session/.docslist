@@ -5,5 +5,6 @@ deleting-entities.markdown	Deleting entities
 loading-entities.markdown	Loading entities
 saving-changes.markdown	Saving changes
 /querying	Querying
+/transaction-support	Transaction support
 /configuration	Configuration
 /how-to	How to...
