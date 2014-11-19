@@ -91,3 +91,7 @@ The documentation has been divided into few sections:
 The following sample applications are available:
 
 - [MVC Starter Kit](../samples/mvc-starter-kit)
+
+## Playground Server
+
+Please visit [this](../start/playground-server) dedicated article if you are interested in this topic.
