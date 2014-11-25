@@ -1,6 +1,6 @@
 # What's new
 
-{PANEL:3.0.XXXX - 2014/XX/XX}
+{PANEL:3.0.3525 - 2014/11/25}
 
 ### Server
 
