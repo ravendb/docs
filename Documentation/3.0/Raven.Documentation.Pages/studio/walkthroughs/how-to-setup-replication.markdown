@@ -16,7 +16,6 @@ To setup a master-slave replication, this is to replicate documents from one dat
 
 ![Figure 1. Studio. Replication. Master. Create database.](images/replication-master-create-database.png)  
 
-- to setup replication, we need to go to our [Replication Settings View](../../studio/overview/settings/replication) and add new replication destination using `Add destination` button. Here we need to provide such information like the URL of the destination server (`http://localhost:8082/`) and name of the database there (`Northwind-Backup`).
 - to setup replication, we need to go to our [Replication Settings View](../../studio/overview/settings/replication) and add new replication destination using the `Add destination` button. Here we need to provide information such as the URL of the destination server (`http://localhost:8082/`) and the name of the database there (`Northwind-Backup`).
 
 ![Figure 2. Studio. Replication. Master. Setup Replication.](images/replication-master-replication-settings.png)  
@@ -37,7 +36,6 @@ To setup a master-slave replication, this is to replicate documents from one dat
 
 ### Test
 
-- on slave server go to [Documents View](../../studio/overview/documents/documents-view) and if all went well, all documents from master server should be there. Worth noting is that replication process might take some time.
 - on the slave server go to [Documents View](../../studio/overview/documents/documents-view) and, if all went well, all documents from the master server should be there. Note that replication process might take some time.
 
 ![Figure 5. Studio. Replication. Slave. Documents.](images/replication-slave-documents.png)  
