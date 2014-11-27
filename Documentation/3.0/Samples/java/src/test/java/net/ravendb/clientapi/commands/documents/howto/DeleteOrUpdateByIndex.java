@@ -38,7 +38,7 @@ public class DeleteOrUpdateByIndex {
       //region delete_by_index_2
       // remove all documents from 'Employees' collection
       Operation operation = store.getDatabaseCommands()
-        .deleteByIndex("Raven/DocumentsByEntityName", new IndexQuery("Tag:Employees"), false);
+        .deleteByIndex("Raven/DocumentsByEntityName", new IndexQuery("Tag:Employees"));
 
       operation.waitForCompletion();
       //endregion
@@ -52,8 +52,7 @@ public class DeleteOrUpdateByIndex {
       Operation operation = store.getDatabaseCommands().updateByIndex(
         "Raven/DocumentsByEntityName",
         new IndexQuery("Tag:Employees"),
-        new PatchRequest[] { patchRequest },
-        false);
+        new PatchRequest[] { patchRequest });
 
       operation.waitForCompletion();
       //endregion
@@ -65,8 +64,7 @@ public class DeleteOrUpdateByIndex {
       Operation operation = store.getDatabaseCommands().updateByIndex(
         "Raven/DocumentsByEntityName",
         new IndexQuery("Tag:Employees"),
-        new ScriptedPatchRequest("this.FirstName = 'Patched Name';"),
-        false);
+        new ScriptedPatchRequest("this.FirstName = 'Patched Name';"));
 
       operation.waitForCompletion();
       //endregion

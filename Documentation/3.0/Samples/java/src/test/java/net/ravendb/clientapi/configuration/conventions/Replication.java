@@ -11,6 +11,7 @@ import net.ravendb.client.document.DocumentConvention;
 import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.document.FailoverBehavior;
 import net.ravendb.client.document.FailoverBehaviorSet;
+import net.ravendb.client.document.IndexAndTransformerReplicationMode;
 
 
 public class Replication {
