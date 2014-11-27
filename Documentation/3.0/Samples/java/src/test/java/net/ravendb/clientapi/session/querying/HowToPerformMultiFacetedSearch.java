@@ -5,7 +5,7 @@ import net.ravendb.abstractions.data.FacetResults;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
-import net.ravendb.tests.faceted.Camera;
+import net.ravendb.samples.Camera;
 
 
 public class HowToPerformMultiFacetedSearch {

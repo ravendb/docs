@@ -11,8 +11,8 @@ import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.AbstractIndexCreationTask;
-import net.ravendb.tests.faceted.Camera;
-import net.ravendb.tests.faceted.QCamera;
+import net.ravendb.samples.Camera;
+import net.ravendb.samples.QCamera;
 
 
 public class FacetedSearch {

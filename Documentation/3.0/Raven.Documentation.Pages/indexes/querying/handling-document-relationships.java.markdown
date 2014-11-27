@@ -210,6 +210,46 @@ The class parameter to `include` specifies which document collection the referen
 
 <hr />
 
+
+### Dictionary includes
+
+Dictionary keys and values can also be used when doing includes. Consider following scenario:
+
+{CODE:java person_1@Indexes\Querying\HandlingDocumentRelationships.java /}
+
+{CODE:java includes_10_0@Indexes\Querying\HandlingDocumentRelationships.java /}
+
+Now we want to include all documents that are under dictionary values:
+
+{CODE-TABS}
+{CODE-TAB:java:Session includes_10_1@Indexes\Querying\HandlingDocumentRelationships.java /}
+{CODE-TAB:java:Commands includes_10_2@Indexes\Querying\HandlingDocumentRelationships.java /}
+{CODE-TABS/}
+
+You can also include values from dictionary keys:
+
+{CODE-TABS}
+{CODE-TAB:java:Session includes_10_3@Indexes\Querying\HandlingDocumentRelationships.java /}
+{CODE-TAB:java:Commands includes_10_4@Indexes\Querying\HandlingDocumentRelationships.java /}
+{CODE-TABS/}
+
+#### Complex types
+
+If values in dictionary are more complex e.g.
+
+{CODE:java person_2@Indexes\Querying\HandlingDocumentRelationships.java /}
+
+{CODE:java includes_11_0@Indexes\Querying\HandlingDocumentRelationships.java /}
+
+We can do includes on specific properties also:
+
+{CODE-TABS}
+{CODE-TAB:java:Session includes_11_1@Indexes\Querying\HandlingDocumentRelationships.java /}
+{CODE-TAB:java:Commands includes_11_2@Indexes\Querying\HandlingDocumentRelationships.java /}
+{CODE-TABS/}
+
+<hr />
+
 ## Combining Approaches
 
 It is possible to combine the above techniques. Using the `DenormalizedCustomer` from above and creating an order that uses it:

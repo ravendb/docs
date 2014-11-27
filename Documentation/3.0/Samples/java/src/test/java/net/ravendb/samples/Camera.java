@@ -3,6 +3,9 @@ package net.ravendb.samples;
 import java.util.Date;
 import java.util.List;
 
+import com.mysema.query.annotations.QueryEntity;
+
+@QueryEntity
 //region camera
 public class Camera {
   private int id;

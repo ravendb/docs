@@ -1,7 +1,5 @@
 package net.ravendb.samples.northwind;
 
-
-
 public class Supplier {
   private String id;
   private Contact contact;

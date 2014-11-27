@@ -13,9 +13,9 @@ import net.ravendb.abstractions.data.SuggestionQueryResult;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
+import net.ravendb.samples.Camera;
 import net.ravendb.samples.northwind.Employee;
 import net.ravendb.samples.northwind.QEmployee;
-import net.ravendb.tests.faceted.Camera;
 
 
 public class HowToPerformQueriesLazily {
