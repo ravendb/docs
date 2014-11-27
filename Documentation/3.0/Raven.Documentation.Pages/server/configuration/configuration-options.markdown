@@ -15,6 +15,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 <configuration> 
   <appSettings> 
     <add key="Raven/Port" value="*"/> 
+    <add key="Raven/DataDir/Legacy" value="~\Database\System"/> 
     <add key="Raven/DataDir" value="~\Databases\System"/> 
     <add key="Raven/AnonymousAccess" value="Get" /> 
   </appSettings> 
@@ -193,6 +194,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/DataDir**  
     The path for the database directory. Can use ~\ as the root, in which case the path will start from the server base directory.  
     _Default:_ ~\Data  
+
+* **Raven/DataDir/Legacy**  
+    The path for the legacy database directory (prior 3.0). Can use ~\ as the root, in which case the path will start from the server base directory.  
+    _Default:_ null  
 
 * **Raven/StorageEngine** or **Raven/StorageTypeName**   
     What storage type to use (see: [Storage Engines](../../server/configuration/storage-engines))  
