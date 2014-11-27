@@ -204,6 +204,43 @@ The samples above can be re-written as follows:
 
 The second parameter to the generic `Include<T, TInclude>` specifies which document collection the reference is pointing to. RavenDB will combine the name of the collection with the value of the reference property to find the full identifier of the referenced document. For example, from the first example, if the value of the `Order.CustomerId` property is `56`, client will include the document with an Id of `customer2s/56` from the database. The `Session.Load<Customer2>()` method will be passed the value `56` and will look for then load the document `customer2s/56` from the session cache.
 
+### Dictionary includes
+
+Dictionary keys and values can also be used when doing includes. Consider following scenario:
+
+{CODE person_1@Indexes\Querying\HandlingDocumentRelationships.cs /}
+
+{CODE includes_10_0@Indexes\Querying\HandlingDocumentRelationships.cs /}
+
+Now we want to include all documents that are under dictionary values:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Session includes_10_1@Indexes\Querying\HandlingDocumentRelationships.cs /}
+{CODE-TAB:csharp:Commands includes_10_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
+{CODE-TABS/}
+
+You can also include values from dictionary keys:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Session includes_10_3@Indexes\Querying\HandlingDocumentRelationships.cs /}
+{CODE-TAB:csharp:Commands includes_10_4@Indexes\Querying\HandlingDocumentRelationships.cs /}
+{CODE-TABS/}
+
+#### Complex types
+
+If values in dictionary are more complex e.g.
+
+{CODE person_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
+
+{CODE includes_11_0@Indexes\Querying\HandlingDocumentRelationships.cs /}
+
+We can do includes on specific properties also:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Session includes_11_1@Indexes\Querying\HandlingDocumentRelationships.cs /}
+{CODE-TAB:csharp:Commands includes_11_2@Indexes\Querying\HandlingDocumentRelationships.cs /}
+{CODE-TABS/}
+
 <hr />
 
 ## Combining Approaches

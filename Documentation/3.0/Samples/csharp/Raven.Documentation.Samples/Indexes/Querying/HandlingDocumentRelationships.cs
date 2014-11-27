@@ -8,6 +8,8 @@ using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 using Raven.Json.Linq;
 
+using Xunit;
+
 namespace Raven.Documentation.Samples.Indexes.Querying
 {
 	public class HandlingDocumentRelationships
@@ -140,6 +142,33 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			public LineItem[] LineItems { get; set; }
 
 			public double TotalPrice { get; set; }
+		}
+		#endregion
+
+		#region person_1
+		public class Person
+		{
+			public string Id { get; set; }
+
+			public string Name { get; set; }
+
+			public Dictionary<string, string> Attributes { get; set; }
+		}
+		#endregion
+
+		#region person_2
+		public class PersonWithAttribute
+		{
+			public string Id { get; set; }
+
+			public string Name { get; set; }
+
+			public Dictionary<string, Attribute> Attributes { get; set; }
+		}
+
+		public class Attribute
+		{
+			public string Ref { get; set; }
 		}
 		#endregion
 
@@ -587,6 +616,148 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 				RavenJObject order = result.Results[0];
 				RavenJObject customer = result.Includes[0];
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region includes_10_0
+					session.Store(
+						new Person
+						{
+							Id = "people/1",
+							Name = "John Doe",
+							Attributes = new Dictionary<string, string>
+							{
+								{ "Mother", "people/2" },
+								{ "Father", "people/3" }
+							}
+						});
+
+					session.Store(
+						new Person
+						{
+							Id = "people/2",
+							Name = "Helen Doe",
+							Attributes = new Dictionary<string, string>()
+						});
+
+					session.Store(
+						new Person
+						{
+							Id = "people/3",
+							Name = "George Doe",
+							Attributes = new Dictionary<string, string>()
+						});
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region includes_10_1
+					var person = session
+						.Include<Person>(x => x.Attributes.Values)
+						.Load("people/1");
+
+					var mother = session
+						.Load<Person>(person.Attributes["Mother"]);
+
+					var father = session
+						.Load<Person>(person.Attributes["Father"]);
+
+					Assert.Equal(1, session.Advanced.NumberOfRequests);
+					#endregion
+				}
+
+				#region includes_10_2
+				var result = store
+					.DatabaseCommands
+					.Get(new[] { "people/1" }, new[] { "Attributes.$Values" });
+
+				var include1 = result.Includes[0];
+				var include2 = result.Includes[1];
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region includes_10_3
+					var person = session
+						.Include<Person>(x => x.Attributes.Keys)
+						.Load("people/1");
+					#endregion
+				}
+
+				#region includes_10_4
+				var result = store
+					.DatabaseCommands
+					.Get(new[] { "people/1" }, new[] { "Attributes.$Keys" });
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region includes_11_0
+					session.Store(
+						new PersonWithAttribute
+						{
+							Id = "people/1",
+							Name = "John Doe",
+							Attributes = new Dictionary<string, Attribute>
+							{
+								{ "Mother", new Attribute { Ref = "people/2" } },
+								{ "Father", new Attribute { Ref = "people/3" } }
+							}
+						});
+
+					session.Store(
+						new Person
+						{
+							Id = "people/2",
+							Name = "Helen Doe",
+							Attributes = new Dictionary<string, string>()
+						});
+
+					session.Store(
+						new Person
+						{
+							Id = "people/3",
+							Name = "George Doe",
+							Attributes = new Dictionary<string, string>()
+						});
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region includes_11_1
+					var person = session
+						.Include<PersonWithAttribute>(x => x.Attributes.Values.Select(v => v.Ref))
+						.Load("people/1");
+
+					var mother = session
+						.Load<Person>(person.Attributes["Mother"].Ref);
+
+					var father = session
+						.Load<Person>(person.Attributes["Father"].Ref);
+
+					Assert.Equal(1, session.Advanced.NumberOfRequests);
+					#endregion
+				}
+
+				#region includes_11_2
+				var result = store
+					.DatabaseCommands
+					.Get(new[] { "people/1" }, new[] { "Attributes.$Values,Ref" });
+
+				var include1 = result.Includes[0];
+				var include2 = result.Includes[1];
 				#endregion
 			}
 		}
