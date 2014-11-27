@@ -1,6 +1,20 @@
 # Getting started
 
-RavenDB Client is available as a snapshot in daily-builds S3 maven repository.
+## Stable releases
+
+Simply put ravendb dependency to your pom:
+
+{CODE-BLOCK:xml}
+&lt;dependency&gt;
+  &lt;groupId&gt;net.ravendb&lt;/groupId&gt;
+  &lt;artifactId&gt;ravendb-client&lt;/artifactId&gt;
+  &lt;version&gt;3.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+{CODE-BLOCK/}
+
+## Unstable releases
+
+RavenDB Client Unstable is available as snapshot in daily-builds S3 maven repository.
 
 {WARNING:Important}
 Embedding repositories in pom is not a good practice, although it allows a quick start. Please consider moving repositories into `~/.m2/settings.xml`.

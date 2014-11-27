@@ -115,11 +115,11 @@ public class LoadingEntities {
 
     public <TResult, TTransformer extends AbstractTransformerCreationTask> TResult[] loadStartingWith(Class<TResult> clazz, Class<TTransformer> transformerClass,
       String keyPrefix, String matches, int start, int pageSize, String exclude,
-      RavenPagingInformation pagingInformation, Action1<ILoadConfiguration> configure);
+      RavenPagingInformation pagingInformation, LoadConfigurationFactory configure);
 
     public <TResult, TTransformer extends AbstractTransformerCreationTask> TResult[] loadStartingWith(Class<TResult> clazz, Class<TTransformer> transformerClass,
       String keyPrefix, String matches, int start, int pageSize, String exclude,
-      RavenPagingInformation pagingInformation, Action1<ILoadConfiguration> configure, String skipAfter);
+      RavenPagingInformation pagingInformation, LoadConfigurationFactory configure, String skipAfter);
     //endregion
 
     //region loading_entities_5_0
