@@ -138,6 +138,7 @@ You can tweak the export/import process with the following parameters:
  - wait-for-indexing: Wait until all indexing activities have been completed (import only).
  - excludeexpired: Excludes expired documents created by the [expiration bundle](../../server/bundles/expiration).    
  - limit: Reads at most VALUE documents/attachments.
+ - strip-replication-information: Remove all replication information from metadata (import only). 
  - help: You can use the help option in order to print the built-in options documentation.
 
 {PANEL/}
