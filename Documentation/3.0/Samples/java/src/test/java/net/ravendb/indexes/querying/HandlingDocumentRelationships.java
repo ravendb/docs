@@ -1,8 +1,12 @@
 package net.ravendb.indexes.querying;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import com.mysema.query.annotations.QueryEntity;
@@ -10,6 +14,7 @@ import com.mysema.query.annotations.QueryEntity;
 import net.ravendb.abstractions.data.IndexQuery;
 import net.ravendb.abstractions.data.MultiLoadResult;
 import net.ravendb.abstractions.data.QueryResult;
+import net.ravendb.abstractions.extensions.ExpressionExtensions;
 import net.ravendb.abstractions.json.linq.RavenJObject;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
@@ -17,7 +22,7 @@ import net.ravendb.client.document.DocumentQueryCustomizationFactory;
 import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.AbstractIndexCreationTask;
 import net.ravendb.samples.northwind.Product;
-import net.ravendb.tests.queries.IncludesTest.Supplier;
+import net.ravendb.samples.northwind.Supplier;
 
 
 public class HandlingDocumentRelationships {
@@ -310,6 +315,76 @@ public class HandlingDocumentRelationships {
     }
   }
   //endregion
+
+  //region person_1
+  @QueryEntity
+  public static class Person {
+    private String id;
+    private String name;
+    private Map<String, String> attributes;
+
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
+    public String getName() {
+      return name;
+    }
+    public void setName(String name) {
+      this.name = name;
+    }
+    public Map<String, String> getAttributes() {
+      return attributes;
+    }
+    public void setAttributes(Map<String, String> attributes) {
+      this.attributes = attributes;
+    }
+  }
+  //endregion
+
+
+  //region person_2
+  @QueryEntity
+  public static class PersonWithAttribute {
+    private String id;
+    private String name;
+    private Map<String, Attribute> attributes;
+
+    public String getId() {
+      return id;
+    }
+    public void setId(String id) {
+      this.id = id;
+    }
+    public String getName() {
+      return name;
+    }
+    public void setName(String name) {
+      this.name = name;
+    }
+    public Map<String, Attribute> getAttributes() {
+      return attributes;
+    }
+    public void setAttributes(Map<String, Attribute> attributes) {
+      this.attributes = attributes;
+    }
+  }
+
+  @QueryEntity
+  public static class Attribute {
+    private String ref;
+
+    public String getRef() {
+      return ref;
+    }
+    public void setRef(String ref) {
+      this.ref = ref;
+    }
+  }
+  //endregion
+
 
   @SuppressWarnings("unused")
   public void Includes() throws Exception {
@@ -718,5 +793,131 @@ public class HandlingDocumentRelationships {
       //endregion
     }
 
+    try (IDocumentStore store = new DocumentStore()) {
+      try (IDocumentSession session = store.openSession()) {
+        //region includes_10_0
+        Map<String, String> attributes = new HashMap<String, String>();
+        Person child = new Person();
+        child.setId("people/1");
+        child.setName("John Doe");
+        attributes.put("Mother", "people/2");
+        attributes.put("Father", "people/3");
+        child.setAttributes(attributes);
+        session.store(child);
+
+        Person mother = new Person();
+        mother.setId("people/2");
+        mother.setName("Helen Doe");
+        mother.setAttributes(new HashMap<String, String>());
+        session.store(mother);
+
+        Person father = new Person();
+        father.setId("people/3");
+        father.setName("George Doe");
+        father.setAttributes(new HashMap<String, String>());
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region includes_10_1
+        QHandlingDocumentRelationships_Person p = QHandlingDocumentRelationships_Person.person;
+        Person person = session
+          .include(p.attributes.values())
+          .load(Person.class, "people/1");
+
+        Person mother = session
+          .load(Person.class, person.getAttributes().get("Mother"));
+
+        Person father = session
+          .load(Person.class, person.getAttributes().get("Father"));
+
+        assertEquals(1, session.advanced().getNumberOfRequests());
+        //endregion
+      }
+
+      //region includes_10_2
+      MultiLoadResult result = store
+        .getDatabaseCommands()
+        .get(new String[] { "people/1"}, new String[] { "Attributes.$Values"});
+
+      RavenJObject include1 = result.getIncludes().get(0);
+      RavenJObject include2 = result.getIncludes().get(1);
+      //endregion
+    }
+
+    try (IDocumentStore store = new DocumentStore()) {
+      try (IDocumentSession session = store.openSession()) {
+        //region includes_10_3
+        QHandlingDocumentRelationships_Person p = QHandlingDocumentRelationships_Person.person;
+        Person person = session
+          .include(p.attributes.keys())
+          .load(Person.class, "people/1");
+        //endregion
+      }
+
+      //region includes_10_4
+      store.getDatabaseCommands()
+        .get(new String[] { "people/1"}, new String[] { "Attributes.$Keys" });
+      //endregion
+    }
+
+    try (IDocumentStore store = new DocumentStore()) {
+      try (IDocumentSession session = store.openSession()) {
+        //region includes_11_0
+        Attribute motherAttr = new Attribute();
+        motherAttr.setRef("people/2");
+
+        Attribute fatherAttr = new Attribute();
+        fatherAttr.setRef("people/3");
+
+        Map<String, Attribute> attributes = new HashMap<String, HandlingDocumentRelationships.Attribute>();
+        attributes.put("Mother", motherAttr);
+        attributes.put("Father", fatherAttr);
+
+        PersonWithAttribute person = new PersonWithAttribute();
+        person.setId("people/1");
+        person.setName("John Doe");
+        person.setAttributes(attributes);
+        session.store(person);
+
+        Person mother = new Person();
+        mother.setId("people/2");
+        mother.setName("Helen Doe");
+        mother.setAttributes(new HashMap<String, String>());
+        session.store(mother);
+
+        Person father = new Person();
+        father.setId("people/3");
+        father.setName("George Doe");
+        father.setAttributes(new HashMap<String, String>());
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region includes_11_1
+        QHandlingDocumentRelationships_PersonWithAttribute p =
+          QHandlingDocumentRelationships_PersonWithAttribute.personWithAttribute;
+        PersonWithAttribute person = session
+          .include(p.attributes.values().select().ref)
+          .load(PersonWithAttribute.class, "people/1");
+
+        Person mother = session
+          .load(Person.class, person.getAttributes().get("Mother").getRef());
+
+        Person father = session
+          .load(Person.class, person.getAttributes().get("Father").getRef());
+
+        assertEquals(1, session.advanced().getNumberOfRequests());
+        //endregion
+      }
+
+      //region includes_11_2
+      MultiLoadResult result = store.getDatabaseCommands()
+        .get(new String[] { "people/1"}, new String[] { "Attributes.$Values,Ref" });
+
+      RavenJObject include1 = result.getIncludes().get(0);
+      RavenJObject include2 = result.getIncludes().get(1);
+      //endregion
+    }
   }
 }
