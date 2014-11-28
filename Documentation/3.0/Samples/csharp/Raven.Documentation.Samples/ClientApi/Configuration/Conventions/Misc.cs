@@ -30,6 +30,10 @@
 			#region use_optimistic_concurrency_by_default
 			Conventions.DefaultUseOptimisticConcurrency = false;
 			#endregion
+
+			#region prettify_generated_linq_expressions
+			Conventions.PrettifyGeneratedLinqExpressions = true;
+			#endregion
 		} 
 	}
 }

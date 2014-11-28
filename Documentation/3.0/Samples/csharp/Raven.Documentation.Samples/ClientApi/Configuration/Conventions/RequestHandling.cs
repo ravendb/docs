@@ -38,6 +38,10 @@
 			#region json_contract_resolver
 			Conventions.JsonContractResolver = new CustomJsonContractResolver();
 			#endregion
+
+			#region preserve_doc_props_not_found_on_model
+			Conventions.PreserveDocumentPropertiesNotFoundOnModel = true;
+			#endregion
 		} 
 	}
 
