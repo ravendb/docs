@@ -1,6 +1,6 @@
-﻿# Manage Your Server : Compact Database
+﻿# Manage Your Server : Compact
 
-Here you can easily compact data by choosing an appropriate database.
+Here you can easily compact data by choosing an appropriate database or a file system.
 
 {WARNING:Warning}
 

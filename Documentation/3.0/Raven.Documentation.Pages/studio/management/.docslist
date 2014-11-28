@@ -1,7 +1,7 @@
 api-keys.markdown	API Keys
 windows-authentication.markdown	Windows Authentication
-backup-restore-database.markdown	Backup & Restore Database
-compact-database.markdown	Compact Database
+backup-restore.markdown	Backup & Restore
+compact.markdown	Compact
 admin-logs.markdown	Admin Logs
 traffic-watch.markdown	Traffic Watch
 gather-debug-info.markdown	Gather Debug Info
