@@ -160,109 +160,167 @@ curl -X GET "http://localhost:8080/databases/Northwind/stats" //statistics for '
 Executing one of the above actions will end up in getting a document in the following format:
 
 {CODE-BLOCK:json}
-    {
-      "LastDocEtag": "01000000-0000-0001-0000-000000000423",
-      "LastAttachmentEtag": "00000000-0000-0000-0000-000000000000",
-      "CountOfIndexes": 4,
-      "InMemoryIndexingQueueSize": 0,
-      "ApproximateTaskCount": 0,
-      "CountOfDocuments": 1059,
-      "CountOfAttachments": 0,
-      "StaleIndexes": [],
-      "CurrentNumberOfItemsToIndexInSingleBatch": 512,
-      "CurrentNumberOfItemsToReduceInSingleBatch": 256,
-      "DatabaseTransactionVersionSizeInMB": 0.00,
-      "Indexes": [
-        {
-          "Id": 1,
-          "PublicName": "Raven/DocumentsByEntityName",
-          "IndexingAttempts": 1051,
-          "IndexingSuccesses": 1051,
-          "IndexingErrors": 0,
-          "LastIndexedEtag": "01000000-0000-0001-0000-000000000423",
-          "LastIndexedTimestamp": "2014-08-07T08:16:11.0641827Z",
-          "LastQueryTimestamp": "2014-08-07T08:17:22.0162553Z",
-          "TouchCount": 0,
-          "Priority": "Normal",
-          "ReduceIndexingAttempts": null,
-          "ReduceIndexingSuccesses": null,
-          "ReduceIndexingErrors": null,
-          "LastReducedEtag": null,
-          "LastReducedTimestamp": null,
-          "CreatedTimestamp": "2014-08-07T08:15:59.1742983Z",
-          "LastIndexingTime": "2014-08-07T08:16:12.2413413Z",
-          "IsOnRam": "false",
-          "LockMode": "Unlock",
-          "ForEntityName": [],
-          "Performance": [],
-          "DocsCount": 1051
-        },
-        {
-          "Id": 2,
-          "PublicName": "Orders/ByCompany",
-          "IndexingAttempts": 830,
-          "IndexingSuccesses": 830,
-          "IndexingErrors": 0,
-          "LastIndexedEtag": "01000000-0000-0001-0000-000000000423",
-          "LastIndexedTimestamp": "2014-08-07T08:16:11.0641827Z",
-          "LastQueryTimestamp": null,
-          "TouchCount": 0,
-          "Priority": "Normal",
-          "ReduceIndexingAttempts": 169,
-          "ReduceIndexingSuccesses": 169,
-          "ReduceIndexingErrors": 0,
-          "LastReducedEtag": "06000000-0000-0001-0000-0000000000BE",
-          "LastReducedTimestamp": "2014-08-07T08:16:12.3323461Z",
-          "CreatedTimestamp": "2014-08-07T08:16:10.4691466Z",
-          "LastIndexingTime": "2014-08-07T08:16:12.3373439Z",
-          "IsOnRam": "false",
-          "LockMode": "Unlock",
-          "ForEntityName": [
-            "Orders"
-          ],
-          "Performance": [],
-          "DocsCount": 89
-        },
-        {
-          "Id": 3,
-          "PublicName": "Orders/Totals",
-          ...
-        },
-        {
-          "Id": 4,
-          "PublicName": "Product/Sales",
-          ...
-        }
-      ],
-      "Errors": [],
-      "Triggers": null,
-      "Extensions": null,
-      "IndexingBatchInfo": [],
-      "Prefetches": [],
-      "DatabaseId": "b7746a76-1c84-483d-a219-cc154108bb2b",
-      "SupportsDtc": false
-    }
+	{
+	  "StorageEngine": "Esent",
+	  "LastDocEtag": "01000000-0000-0001-0000-000000000423",
+	  "LastAttachmentEtag": "00000000-0000-0000-0000-000000000000",
+	  "CountOfIndexes": 4,
+	  "CountOfResultTransformers": 1,
+	  "InMemoryIndexingQueueSizes": [
+		0
+	  ],
+	  "ApproximateTaskCount": 0,
+	  "CountOfDocuments": 1059,
+	  "CountOfAttachments": 0,
+	  "StaleIndexes": [],
+	  "CurrentNumberOfItemsToIndexInSingleBatch": 1024,
+	  "CurrentNumberOfItemsToReduceInSingleBatch": 1024,
+	  "DatabaseTransactionVersionSizeInMB": 0.09,
+	  "Indexes": [
+		{
+		  "Id": 1,
+		  "Name": "Raven/DocumentsByEntityName",
+		  "IndexingAttempts": 1051,
+		  "IndexingSuccesses": 1051,
+		  "IndexingErrors": 0,
+		  "LastIndexedEtag": "01000000-0000-0001-0000-000000000423",
+		  "IndexingLag": 0,
+		  "LastIndexedTimestamp": "2014-11-28T09:39:20.6516199Z",
+		  "LastQueryTimestamp": "2014-11-28T09:39:20.2775050Z",
+		  "TouchCount": 0,
+		  "Priority": "Normal",
+		  "ReduceIndexingAttempts": null,
+		  "ReduceIndexingSuccesses": null,
+		  "ReduceIndexingErrors": null,
+		  "LastReducedEtag": null,
+		  "LastReducedTimestamp": null,
+		  "CreatedTimestamp": "2014-11-28T09:39:13.6699995Z",
+		  "LastIndexingTime": "2014-11-28T09:39:24.5560252Z",
+		  "IsOnRam": "false",
+		  "LockMode": "LockedIgnore",
+		  "ForEntityName": [],
+		  "Performance": [
+			{
+			  "Operation": "Index",
+			  "ItemsCount": 512,
+			  "InputCount": 512,
+			  "OutputCount": 507,
+			  "Started": "2014-11-28T09:39:21.0626773Z",
+			  "Completed": "2014-11-28T09:39:24.4020158Z",
+			  "Duration": "00:00:03.3393385",
+			  "DurationMilliseconds": 3339.34,
+			  "LoadDocumentCount": 0,
+			  "LoadDocumentDurationMs": 0,
+			  "WritingDocumentsToLuceneDurationMs": 90,
+			  "LinqExecutionDurationMs": 1604,
+			  "FlushToDiskDurationMs": 0,
+			  "WaitingTimeSinceLastBatchCompleted": "00:00:00"
+			},
+			...
+		  ],
+		  "DocsCount": 1051,
+		  "IsInvalidIndex": false
+		},
+		{
+		  "Id": 2,
+		  "Name": "Orders/ByCompany",
+		  ...
+		},
+		{
+		  "Id": 3,
+		  "Name": "Orders/Totals",
+		  ...
+		},
+		{
+		  "Id": 4,
+		  "Name": "Product/Sales",
+		  ...
+		}
+	  ],
+	  "Errors": [],
+	  "IndexingBatchInfo": [
+		{
+		  "BatchType": "Standard",
+		  "IndexesToWorkOn": [
+			"Raven/DocumentsByEntityName",
+			"Orders/ByCompany",
+			"Orders/Totals",
+			"Product/Sales"
+		  ],
+		  "TotalDocumentCount": 512,
+		  "TotalDocumentSize": 302597,
+		  "StartedAt": "2014-11-28T09:39:20.8126319Z",
+		  "TotalDuration": "00:00:03.6083852",
+		  "TimeSinceFirstIndexInBatchCompleted": "00:00:00.1770095",
+		  "PerformanceStats": {
+			"Raven/DocumentsByEntityName": {
+			  "Operation": "Index",
+			  "ItemsCount": 512,
+			  "InputCount": 512,
+			  "OutputCount": 507,
+			  "Started": "2014-11-28T09:39:21.0626773Z",
+			  "Completed": "2014-11-28T09:39:24.4020158Z",
+			  "Duration": "00:00:03.3393385",
+			  "DurationMilliseconds": 3339.34,
+			  "LoadDocumentCount": 0,
+			  "LoadDocumentDurationMs": 0,
+			  "WritingDocumentsToLuceneDurationMs": 90,
+			  "LinqExecutionDurationMs": 1604,
+			  "FlushToDiskDurationMs": 0,
+			  "WaitingTimeSinceLastBatchCompleted": "00:00:00"
+			},
+			"Orders/ByCompany": {
+			  ...
+			},
+			"Orders/Totals": {
+			  ...
+			},
+			"Product/Sales": {
+			  ...
+			}
+		  }
+		},
+		...
+	  ],
+	  "Prefetches": [
+		{
+		  "Timestamp": "2014-11-28T09:39:20.7856472Z",
+		  "Duration": "00:00:01.4209922",
+		  "Size": 512,
+		  "Retries": 0,
+		  "PrefetchingUser": "Indexer"
+		},
+		...
+	  ],
+	  "DatabaseId": "e9c73b04-c787-496a-abf7-7dbef8dde431",
+	  "SupportsDtc": true
+	}
 {CODE-BLOCK/}
 
 where
 
+* **StorageEngine** - configured storage engine used by the database (Esent or Voron)
 * **LastDocEtag** - last added document Etag   
 * **LastAttachmentEtag** - last added attachment Etag   
 * **CountOfIndexes** - number of indexes in database   
+* **CountOfResultTransformers** - number of transformers in database
 * **ApproximateTaskCount** - approximate number of current database tasks   
+* **InMemoryIndexingQueueSizes** - number of docs in prefetching queues used by indexer
 * **CountOfDocuments** - number of documents in database   
 * **CountOfAttachments** - number of attachments in database
 * **StaleIndexes** - index names of stale indexes   
 * **CurrentNumberOfItemsToIndexInSingleBatch** - initial value is 512 for 64-bit systems and 256 for 32-bit. Depending on the load can be auto-adjusted. Used by database indexer.   
 * **CurrentNumberOfItemsToReduceInSingleBatch** - initial value is 512 for 64-bit systems and 256 for 32-bit. Depending on the load can be auto-adjusted. Used by database reducer.     
+* **DatabaseTransactionVersionSizeInMB** - current size (in MB) of Esent's version store (in memory modified data, relevant for Esent storage only, it returns -1 for Voron)
 * **Indexes**    
    * **Id** - index identifier
-   * **PublicName** - index name
+   * **Name** - index name
    * **IndexingAttempts** - number of indexing attempts    
    * **IndexingSuccesses** - number of indexing successes   
    * **IndexingErrors** - number of indexing errors  
    * **LastIndexedEtag** - GUID representing last indexed Etag  
-   * **LastIndexedTimestamp** - last indexing timestamp  
+   * **IndexingLag** - lag between the last indexed etag and the last document etag in the database
+   * **LastIndexedTimestamp** - timestamp of last indexed document
    * **LastQueryTimestamp** - last query timestamp 
    * **TouchCount** - number of index touches used to calculate index Etag properly,  
    * **Priority** - controls how much indexing processing resources index can consume. More information [here](../../server/administration/index-administration#index-prioritization).
@@ -272,34 +330,51 @@ where
    * **LastReducedEtag** - GUID representing last reduced Etag. Null if not applicable.     
    * **LastReducedTimestamp** - last reduce timestamp       
    * **CreatedTimestamp** - indicates when index was created
+   * **LastIndexingTime** - time of last indexing run
    * **IsOnRam** - indicates if index is stored only in memory (new and small indexes are stored in memory at first)
    * **LockMode** - indicates what is the current lock mode for index. More information [here](../../server/administration/index-administration#index-locking).
-   * **Performance** - index performance information      
-      * **Operation** - operation type:
-         * `Map` or `Reduce Level level_number` for Map-Reduce indexes
-         * `Index` for Map-only indexes       
-      * **OutputCount** - number of documents indexed      
-      * **InputCount**   
-         * for `Map` and `Index` operations this is a number of documents sent for processing   
-         * for `Reduce Level level_number` operation this is a number of documents that came from `Map` operation.   
-      * **Duration** - operation duration      
-      * **Started** - operation start time    
-      * **DurationInMilliseconds** - duration in milliseconds     
-    * **DocsCount** - number of indexes documents
+   * **ForEntityName** - names of relevant collections that index processes
+   * **Performance** - index performance information
+		* **Operation** - operation type:
+			* `Map` or `Reduce Level level_number` for Map-Reduce indexes
+			* `Index` for Map-only indexes
+		* **ItemsCount** - number of documents in processed batch
+		* **InputCount**   
+			* for `Map` and `Index` operations this is a number of documents sent for processing   
+			* for `Reduce Level level_number` operation this is a number of documents that came from `Map` operation.   
+		* **OutputCount** - number of produced index entries
+		* **Started** - operation start time    
+		* **Completed** - operation complete time
+		* **Duration** - operation duration 
+		* **DurationInMilliseconds** - duration in milliseconds
+		* **LoadDocumentCount** - number of loaded documents by using [`LoadDocument`](../../indexes/indexing-related-documents) call
+		* **LoadDocumentDurationMs** - total duration of loading documents in milliseconds
+		* **WritingDocumentsToLuceneDurationMs** - time spent on writing documents to Lucene index
+		* **LinqExecutionDurationMs** - time executing Linq statement (Map or Reduce definition)
+		* **FlushToDiskDurationMs** - time calling Flush on the index writer
+		* **WaitingTimeSinceLastBatchCompleted** - time between the completion of a previous batch and a start of the current one
+   * **DocsCount** - number of indexes documents
+   * **IsInvalidIndex** - `true` if index index is invalid, otherwise `false`
 * **Errors**
    * **Index** - name of index that caused error    
    * **Error** - error message    
    * **Timestamp** - error timestamp   
    * **Document** - key of document that caused error     
 * **IndexingBatchInfo**   
+   * **BatchType** - `Standard` for usual index processing or `Precomputed` for optimized processing of new indexes
+   * **IndexesToWorkOn** - indexes that were selected to be processed in this batch
    * **TotalDocumentCount** - number of documents in batch   
    * **TotalDocumentSize** - size of documents in batch
-   * **Timestamp** - batch size report timestamp        
+   * **StartedAt** - time of a batch start
+   * **TotalDuration** - total batch duration (all indexes processed)
+   * **TimeSinceFirstIndexInBatchCompleted** - time between time when first index in batch completed and completion time of the whole batch
+   * **PerformanceStats** - performance stats for particular indexes (see Indexes.Performance description)
 * **Prefetches** - prefetched indexing statistics        
    * **Timestamp** - prefetching start time     
    * **Duration** - prefetching duration      
    * **Size** - number of documents prefetched      
    * **Retries** - number of prefetching retries  
+   * **PrefetchingUser** - prefetching user name
 * **DatabaseId** - unique Id for database
 * **SupportsDtc** - indicates if database (transactional storage) supports DTC transactions    
 
