@@ -24,3 +24,9 @@ This convention allows to enable optimistic concurrency for all opened sessions.
 By default concurrency checks are turned off:
 
 {CODE:java use_optimistic_concurrency_by_default@ClientApi\Configuration\Conventions\Misc.java /}
+
+###PrettifyGeneratedLinqExpressions
+
+It determines if it should attempt to prettify the generated Linq expressions in definitions of indexes and transformers (used by the following classes: `AbstractIndexCreationTask`, `AbstractMultiMapIndexCreationTask`, `AbstractTransformerCreationTask` and `IndexDefinitionBuilder`).
+
+// TODO java-sample

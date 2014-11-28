@@ -27,6 +27,13 @@ The default `JsonContractResolver` used by RavenDB will serialize all properties
 
 {CODE:java custom_json_contract_resolver@ClientApi\Configuration\Conventions\RequestHandling.java /}
 
+###PreserveDocumentPropertiesNotFoundOnModel
+
+Controls whatever properties that were not de-serialized to an object properties will be preserved 
+during saving a document again. If `false`, those properties will be removed when the document will be saved. Default: `true`.
+
+// TODO java-sample
+
 ##Related articles
 
 - [How to send custom request using HttpJsonRequestFactory?](../../how-to/send-custom-request-using-httpjsonrequestfactory)
