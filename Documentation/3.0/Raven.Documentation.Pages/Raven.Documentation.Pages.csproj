@@ -348,6 +348,7 @@
     <None Include="glossary\bulk-insert-change-notification.dotnet.markdown" />
     <None Include="glossary\bulk-insert-operation.dotnet.markdown" />
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
+    <None Include="glossary\bulk-operation-options.dotnet.markdown" />
     <None Include="glossary\stream-result.dotnet.markdown" />
     <None Include="glossary\database-restore-request.dotnet.markdown" />
     <None Include="glossary\open-session-options.dotnet.markdown" />

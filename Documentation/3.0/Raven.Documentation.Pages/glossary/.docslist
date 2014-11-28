@@ -2,6 +2,7 @@ admin-statistics.markdown	AdminStatistics
 attachment-information.markdown	AttachmentInformation
 attachment.markdown	Attachment
 batch-result.markdown	BatchResult
+bulk-operation-options.markdown	BulkOperationOptions
 bulk-insert-change-notification.markdown	BulkInsertChangeNotification
 bulk-insert-operation.markdown	BulkInsertOperation
 bulk-insert-options.markdown	BulkInsertOptions
