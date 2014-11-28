@@ -16,17 +16,17 @@ Here you can create your first database by specifying its name, list of active b
 
 ## Selecting database
 
-If your server contains one or more databases, the database creation windows will not show up. Instead, you will be navigated to a database selection screen, where you can see all your databases, disable or even delete them.
+If your server contains one or more databases, the database creation windows will not show up. Instead, you will be navigated to a database selection screen, where you can see all your databases (and file systems), disable or even delete them.
 
 ![Figure 2. Studio. Selecting database.](images/accessing-studio-database-selection.png)  
 
-This view can also be accessed by pressing on `Databases` link from top navigation bar.
+This view can also be accessed by pressing on `Resources` link from top navigation bar.
 
 <hr />
 
 ## Manage Your Server
 
-To access manage your server you need to visit `Databases View` and click on `Manage Your Server` button.
+To access manage your server you need to visit `Databases and  File Systems View` and click on `Manage Your Server` button.
 
 ![Figure 3. Studio. Selecting database.](images/accessing-studio-database-selection.png)  
 

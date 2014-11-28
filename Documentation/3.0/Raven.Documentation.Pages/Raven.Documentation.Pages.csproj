@@ -520,8 +520,8 @@
     <None Include="studio\management\gather-debug-info.markdown" />
     <None Include="studio\management\traffic-watch.markdown" />
     <None Include="studio\management\admin-logs.markdown" />
-    <None Include="studio\management\compact-database.markdown" />
-    <None Include="studio\management\backup-restore-database.markdown" />
+    <None Include="studio\management\compact.markdown" />
+    <None Include="studio\management\backup-restore.markdown" />
     <None Include="studio\management\io-test.markdown" />
     <None Include="studio\management\windows-authentication.markdown" />
     <None Include="studio\management\api-keys.markdown" />
