@@ -1,0 +1,26 @@
+{
+  "IndexId": 2,
+  "Name": "Auto/TableOfContents/ByCategory",
+  "LockMode": "Unlock",
+  "Map": "from doc in docs.TableOfContents\r\nselect new { Category = doc.Category }",
+  "Maps": [
+    "from doc in docs.TableOfContents\r\nselect new { Category = doc.Category }"
+  ],
+  "Reduce": null,
+  "IsMapReduce": false,
+  "IsCompiled": false,
+  "Stores": {},
+  "Indexes": {},
+  "SortOptions": {},
+  "Analyzers": {},
+  "Fields": [],
+  "Suggestions": {},
+  "TermVectors": {},
+  "SpatialIndexes": {},
+  "InternalFieldsMapping": {
+    "Category": "Category"
+  },
+  "MaxIndexOutputsPerDocument": null,
+  "Type": "Auto",
+  "DisableInMemoryIndexing": false
+}

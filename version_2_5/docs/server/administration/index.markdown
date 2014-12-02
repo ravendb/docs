@@ -1,3 +1,0 @@
-﻿# Server Administration
-
-{FILES-LIST/}

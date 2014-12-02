@@ -1,0 +1,27 @@
+{
+  "IndexId": 1,
+  "Name": "Raven/DocumentsByEntityName",
+  "LockMode": "Unlock",
+  "Map": "from doc in docs \r\nlet Tag = doc[\"@metadata\"][\"Raven-Entity-Name\"]\r\nselect new { Tag, LastModified = (DateTime)doc[\"@metadata\"][\"Last-Modified\"] };",
+  "Maps": [
+    "from doc in docs \r\nlet Tag = doc[\"@metadata\"][\"Raven-Entity-Name\"]\r\nselect new { Tag, LastModified = (DateTime)doc[\"@metadata\"][\"Last-Modified\"] };"
+  ],
+  "Reduce": null,
+  "IsMapReduce": false,
+  "IsCompiled": false,
+  "Stores": {},
+  "Indexes": {
+    "Tag": "NotAnalyzed",
+    "LastModified": "NotAnalyzed"
+  },
+  "SortOptions": {},
+  "Analyzers": {},
+  "Fields": [],
+  "Suggestions": {},
+  "TermVectors": {},
+  "SpatialIndexes": {},
+  "InternalFieldsMapping": null,
+  "MaxIndexOutputsPerDocument": null,
+  "Type": "Map",
+  "DisableInMemoryIndexing": true
+}

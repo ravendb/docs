@@ -1,0 +1,26 @@
+{
+  "IndexId": 3,
+  "Name": "Auto/DocumentationPages/ByKey",
+  "LockMode": "Unlock",
+  "Map": "from doc in docs.DocumentationPages\r\nselect new { Key = doc.Key }",
+  "Maps": [
+    "from doc in docs.DocumentationPages\r\nselect new { Key = doc.Key }"
+  ],
+  "Reduce": null,
+  "IsMapReduce": false,
+  "IsCompiled": false,
+  "Stores": {},
+  "Indexes": {},
+  "SortOptions": {},
+  "Analyzers": {},
+  "Fields": [],
+  "Suggestions": {},
+  "TermVectors": {},
+  "SpatialIndexes": {},
+  "InternalFieldsMapping": {
+    "Key": "Key"
+  },
+  "MaxIndexOutputsPerDocument": null,
+  "Type": "Auto",
+  "DisableInMemoryIndexing": false
+}

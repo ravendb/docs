@@ -1,0 +1,24 @@
+/querying	Querying
+what-are-indexes.markdown	What are indexes?
+creating-and-deploying.markdown	Creating and deploying indexes
+indexing-basics.markdown	Indexing basics
+map-indexes.markdown	Map indexes
+multi-map-indexes.markdown	Multi-Map indexes
+map-reduce-indexes.markdown	Map-Reduce indexes
+stale-indexes.markdown	Stale indexes
+fanout-indexes.markdown	Fanout indexes
+customizing-results-order.markdown	Customizing results order
+indexing-related-documents.markdown	Indexing related documents
+indexing-hierarchical-data.markdown	Indexing hierarchical data
+indexing-polymorphic-data.markdown	Indexing polymorphic data
+indexing-spatial-data.markdown	Indexing spatial data
+indexing-linq-extensions.markdown	Indexing LINQ extensions
+converting-to-json-and-accessing-metadata.markdown	Converting to JSON and accessing Metadata
+boosting.markdown	Boosting
+using-analyzers.markdown	Analyzers
+storing-data-in-index.markdown	Storing data in index
+using-term-vectors.markdown	Term Vectors
+using-dynamic-fields.markdown	Dynamic Fields
+/troubleshooting	Troubleshooting
+
+

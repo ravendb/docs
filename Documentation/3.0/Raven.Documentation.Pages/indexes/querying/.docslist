@@ -1,0 +1,15 @@
+basics.markdown	Basics
+filtering.markdown	Filtering
+paging.markdown	Paging
+sorting.markdown	Sorting
+handling-document-relationships.markdown	Handling document relationships
+projections.markdown	Projections
+searching.markdown	Searching
+intersection.markdown	Intersection
+suggestions.markdown	Suggestions
+highlights.markdown	Highlights
+spatial.markdown	Spatial
+faceted-search.markdown	Faceted search
+dynamic-aggregation.markdown	Dynamic aggregation
+query-vs-document-query.markdown	Query vs DocumentQuery
+full-query-syntax.markdown	Full query syntax

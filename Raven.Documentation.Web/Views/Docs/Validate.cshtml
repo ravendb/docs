@@ -1,0 +1,52 @@
+﻿@model List<Raven.Documentation.Parser.Data.PageLinksValidationResult>
+@{
+	ViewBag.Title = "Validate";
+}
+@section scripts {
+	<script type="text/javascript">
+		$('#btnHideValidLinks').click(function () {
+			$(".text-success").hide();
+			$(".body-content div:has(> ul):not(:has(> ul > li:visible))").hide();
+		});
+
+		$('#btnShowValidLinks').click(function () {
+			$(".text-success").show();
+			$(".body-content div:has(> ul):not(:has(> ul > li:visible))").show();
+		});
+	</script>
+}
+
+<h2>Link Validation Report</h2>
+
+<button id="btnHideValidLinks" class="btn btn-primary">Hide all valid links</button>
+<button id="btnShowValidLinks" class="btn btn-success">Show all valid links</button>
+
+<hr />
+
+@foreach (var result in Model)
+{
+	if (result.Links.Count == 0)
+	{
+		continue;
+	}
+
+	<div>
+		@Html.ActionLink(string.Format("[{0}] {1}", result.PageVersion, result.PageKey), MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = result.PageLanguage, version = result.PageVersion, key = result.PageKey }, null)
+		<ul>
+			@foreach (var link in result.Links)
+			{
+				if (link.Value)
+				{
+					<li class="text-success">@link.Key</li>
+				}
+				else
+				{
+					<li class="text-danger">@link.Key</li>
+				}
+			}
+		</ul>
+	</div>
+}
+
+
+
