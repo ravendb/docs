@@ -1,1 +1,0 @@
-﻿# Stale indexes

@@ -1,0 +1,102 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RavenDB Documentation - @ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+</head>
+<body>
+    <div class="navbar navbar-inverse">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("Docs", MVC.Docs.ActionNames.Welcome, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                @Html.GenerateNavigation((Language)ViewBag.CurrentLanguage, (string)ViewBag.CurrentVersion)
+            </div>
+        </div>
+    </div>
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-sm-9">
+                @if (Html.IsDebug())
+                {
+                    <div class="btn-group">
+                        @Html.ActionLink("Generate docs for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-danger" })
+                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Generate docs for all versions", MVC.Docs.ActionNames.Generate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = true }, null)</li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        @Html.ActionLink("Validate links for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.Validate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-warning", target = "_blank" })
+                        <button type="button" class="btn btn-warning dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Validate links for all versions", MVC.Docs.ActionNames.Validate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = true }, new { target = "_blank" })</li>
+                        </ul>
+                    </div>
+                }
+                <div class="pull-right chooser">
+                    <span>Version </span>
+	                <div class="btn-group">
+		                @Html.VersionLink("1.0", (string)ViewBag.CurrentVersion, Language.Csharp)
+		                @Html.VersionLink("2.0", (string)ViewBag.CurrentVersion, Language.Csharp)
+		                @Html.VersionLink("2.5", (string)ViewBag.CurrentVersion, Language.Csharp)
+		                @Html.VersionLink("3.0", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
+	                </div>
+                </div>
+                @if (ViewBag.CurrentVersion == "3.0")
+                {
+                    <div class="pull-right chooser">
+                        <span>Code samples </span>
+                        <div class="btn-group">
+                            @Html.LanguageLink(Language.Csharp, ViewContext)
+                            @Html.LanguageLink(Language.Java, ViewContext)
+                            @Html.LanguageLink(Language.Http, ViewContext)
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col-sm-3">
+                <div class="pull-right">
+                    @using (Html.BeginForm(MVC.Docs.ActionNames.Search, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, FormMethod.Post, null))
+                    {
+                        <div class="input-group">
+                            @Html.TextBox("value", string.Empty, new { required = "required", @class = "form-control", placeholder = "How to..." })
+                            <span class="input-group-btn">
+                                <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+                            </span>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        <hr />
+        @RenderBody()
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+	@Scripts.Render("~/bundles/prism")
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        $('#article li.list-group-item.folder > span').click(function () {
+            $(this).parent().toggleClass('out');
+        });
+    </script>
+</body>
+</html>

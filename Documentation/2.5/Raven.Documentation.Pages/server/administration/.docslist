@@ -1,0 +1,10 @@
+license-registration.markdown	License Registration
+configuration.markdown	Configuration options
+index-administration.markdown	Index Administration
+backup-restore.markdown	Backup & Restore
+export-import.markdown	Exporting and Importing data
+upgrade.markdown	Doing upgrade
+/windows-clustering	Windows Clustering
+statistics.markdown	Statistics
+perf-counters.markdown	Performance Counters
+long-shutdown-times.markdown	Long shutdown times

@@ -1,0 +1,37 @@
+﻿using Raven.Abstractions.Indexing;
+using Raven.Client.Document;
+
+namespace Raven.Documentation.Samples.ClientApi.Commands.Transformers
+{
+	public class Get
+	{
+		private interface IFoo
+		{
+			#region get_1_0
+			TransformerDefinition GetTransformer(string name);
+			#endregion
+
+			#region get_2_0
+			TransformerDefinition[] GetTransformers(int start, int pageSize);
+			#endregion
+		}
+
+		public Get()
+		{
+			using (var store = new DocumentStore())
+			{
+				#region get_1_1
+				TransformerDefinition transformer = store
+					.DatabaseCommands
+					.GetTransformer("Order/Statistics"); // returns null if does not exist
+				#endregion
+
+				#region get_2_1
+				TransformerDefinition[] transformers = store
+					.DatabaseCommands
+					.GetTransformers(0, 128);
+				#endregion
+			}
+		}
+	}
+}
