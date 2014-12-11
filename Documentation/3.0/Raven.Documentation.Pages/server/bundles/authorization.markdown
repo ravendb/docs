@@ -88,7 +88,6 @@ To install the Auth Bundle on the server side, simply place the Raven.Bundles.Au
 
 To use the Auth Bundle on the client side, you need to reference the following:
 
-* Raven.Bundles.Authorization.dll
 * Raven.Client.Authorization.dll
 
 and import the "Raven.Client.Authorization" namespace to include the authorization extension methods.
