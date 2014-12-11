@@ -1,5 +1,6 @@
 package net.ravendb.clientapi.commands.documents.howto;
 
+import net.ravendb.abstractions.data.BulkOperationOptions;
 import net.ravendb.abstractions.data.IndexQuery;
 import net.ravendb.abstractions.data.PatchCommandType;
 import net.ravendb.abstractions.data.PatchRequest;
@@ -17,19 +18,19 @@ public class DeleteOrUpdateByIndex {
     //region delete_by_index_1
     public Operation deleteByIndex(String indexName, IndexQuery queryToDelete);
 
-    public Operation deleteByIndex(String indexName, IndexQuery queryToDelete, boolean allowStale);
+    public Operation deleteByIndex(String indexName, IndexQuery queryToDelete, BulkOperationOptions options);
     //endregion
 
     //region update_by_index_1
     public Operation updateByIndex(String indexName, IndexQuery queryToUpdate, PatchRequest[] patchRequests);
 
-    public Operation updateByIndex(String indexName, IndexQuery queryToUpdate, PatchRequest[] patchRequests, boolean allowStale);
+    public Operation updateByIndex(String indexName, IndexQuery queryToUpdate, PatchRequest[] patchRequests, BulkOperationOptions options);
     //endregion
 
     //region update_by_index_3
     public Operation updateByIndex(String indexName, IndexQuery queryToUpdate, ScriptedPatchRequest patch);
 
-    public Operation updateByIndex(String indexName, IndexQuery queryToUpdate, ScriptedPatchRequest patch, boolean allowStale);
+    public Operation updateByIndex(String indexName, IndexQuery queryToUpdate, ScriptedPatchRequest patch, BulkOperationOptions options);
     //endregion
   }
 
