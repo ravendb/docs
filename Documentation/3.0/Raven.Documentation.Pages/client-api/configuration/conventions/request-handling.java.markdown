@@ -32,7 +32,7 @@ The default `JsonContractResolver` used by RavenDB will serialize all properties
 Controls whatever properties that were not de-serialized to an object properties will be preserved 
 during saving a document again. If `false`, those properties will be removed when the document will be saved. Default: `true`.
 
-// TODO java-sample
+{CODE:java preserve_doc_props_not_found_on_model@ClientApi\Configuration\Conventions\RequestHandling.java /}
 
 ##Related articles
 

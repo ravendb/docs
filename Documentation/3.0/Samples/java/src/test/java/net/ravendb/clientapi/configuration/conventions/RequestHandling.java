@@ -50,6 +50,9 @@ public class RequestHandling {
     conventions.setJsonContractResolver(new CustomJsonContractResolver());
     //endregion
 
+    //region preserve_doc_props_not_found_on_model
+    conventions.setPreserveDocumentPropertiesNotFoundOnModel(true);
+    //endregion
 
   }
 
@@ -64,4 +67,6 @@ public class RequestHandling {
 
   }
   //endregion
+
+
 }
