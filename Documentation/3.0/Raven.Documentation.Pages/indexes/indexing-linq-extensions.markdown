@@ -7,6 +7,7 @@ Various indexing LINQ extensions are available to enhance the usability and redu
 - [Reverse](../indexes/indexing-linq-extensions#reverse)
 - [IfEntityIs](../indexes/indexing-linq-extensions#ifentityis)
 - [WhereEntityIs](../indexes/indexing-linq-extensions#whereentityis)
+- [ParseInt, ParseLong, ParseDecimal, ParseDouble, ParseSingle](../indexes/indexing-linq-extensions#parsing-numbers)
 
 {PANEL:**StripHtml**}
 
@@ -46,6 +47,26 @@ You can read more about boosting [here](../indexes/boosting).
 {PANEL:**IfEntityIs**}
 
 `IfEntityIs` is similar to `WhereEntityIs`, yet it checks only against one value.
+
+{PANEL/}
+
+{PANEL:**Parsing numbers**}
+
+String values can be safely parsed to `int`, `long`, `decimal`, `double` and `single` using appropriate methods:
+
+- ParseInt,
+- ParseLong,
+- ParseDecimal,
+- ParseDouble,
+- ParseSingle
+
+There are two overrides for each method, first one returning default value in case of parsing failure, second one accepting value that should be returned when failure occurs.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Index indexes_6@Indexes/IndexingLinqExtensions.cs /}
+{CODE-TAB:csharp:Item indexes_7@Indexes/IndexingLinqExtensions.cs /}
+{CODE-TAB:csharp:Example indexes_8@Indexes/IndexingLinqExtensions.cs /}
+{CODE-TABS/}
 
 {PANEL/}
 

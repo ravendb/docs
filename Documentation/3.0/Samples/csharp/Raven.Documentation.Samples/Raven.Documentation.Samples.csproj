@@ -41,33 +41,28 @@
       <HintPath>..\..\..\..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3528\lib\net45\Raven.Abstractions.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3544-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Authorization">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.3.0.3528\lib\net45\Raven.Client.Authorization.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.3.0.3544-Unstable\lib\net45\Raven.Client.Authorization.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.Lightweight">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3528\lib\net45\Raven.Client.Lightweight.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3544-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Client.UniqueConstraints">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.3.0.3528\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.3.0.3544-Unstable\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Database">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3528\lib\net45\Raven.Database.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3544-Unstable\lib\net45\Raven.Database.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Server">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3528\tools\Raven.Server.exe</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3544-Unstable\lib\net45\Raven.Server.exe</HintPath>
     </Reference>
     <Reference Include="Raven.Smuggler">
       <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3528\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="Raven.Tests.Helpers">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3528\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3544-Unstable\lib\net45\Raven.Tests.Helpers.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
