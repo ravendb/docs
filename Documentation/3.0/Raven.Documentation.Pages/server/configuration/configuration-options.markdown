@@ -17,7 +17,9 @@ This is the standard app.config XML file. The `appSettings` section is where the
     <add key="Raven/Port" value="*"/> 
     <add key="Raven/DataDir/Legacy" value="~\Database\System"/> 
     <add key="Raven/DataDir" value="~\Databases\System"/> 
-    <add key="Raven/AnonymousAccess" value="Get" /> 
+	<add key="Raven/AnonymousAccess" value="Get" /> 
+	<add key="Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse" value="false" />
+	<add key="Raven/AccessControlAllowOrigin" value="*" />
   </appSettings> 
         <runtime> 
                 <loadFromRemoteSources enabled="true"/> 
@@ -265,6 +267,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/LicensePath**   
 	The path to the license file for RavenDB.   
 	_Default:_ ~\license.xml
+
+* **Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse**   
+	Indicates if `Raven/AnonymousAccess` can be set to `Admin` when commercial license is registered.   
+	_Default:_ false
 
 * **Raven/ServerName**   
 	Name of the server that will show up on `/admin/stats` endpoint.   
@@ -518,6 +524,7 @@ Many of the configuration options described in the section above can be used bot
 | &nbsp; |||
 | **Raven/License** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/LicensePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/ServerName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/ClusterName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
