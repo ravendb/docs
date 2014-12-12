@@ -386,6 +386,7 @@
     <None Include="glossary\transformer-change-notification.dotnet.markdown" />
     <None Include="glossary\transformer-definition.dotnet.markdown" />
     <None Include="indexes\.docslist" />
+    <None Include="indexes\testing-indexes.markdown" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
     <None Include="indexes\fanout-indexes.markdown" />
     <None Include="indexes\indexing-linq-extensions.markdown" />
@@ -601,6 +602,9 @@
     <Content Include="studio\images\accessing-studio-nav-bottom.png" />
     <Content Include="studio\images\accessing-studio-nav.png" />
     <Content Include="studio\images\accessing-studio-system-database.png" />
+    <Content Include="indexes\images\testing-indexes-1.png" />
+    <Content Include="indexes\images\testing-indexes-2.png" />
+    <Content Include="indexes\images\testing-indexes-3.png" />
     <Content Include="studio\management\images\manage_your_server-admin_logs-configure_connection-1.png" />
     <Content Include="studio\management\images\manage_your_server-api-keys-1.png" />
     <Content Include="studio\management\images\manage_your_server-backup_database-1.png" />

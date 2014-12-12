@@ -187,6 +187,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	the appropriate error message will be added to the indexing errors.   
     _Default:_ 50. In order to disable this check set value to -1.
 
+* **Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes**   
+	Maximum number of items that will be passed to [test indexes](../../indexes/testing-indexes)   
+	_Default:_ 512
+
 ### Data settings:
 
 * **Raven/RunInMemory**   
@@ -504,6 +508,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/MinIndexingTimeIntervalToStoreCommitPoint** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DisableInMemoryIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Indexing/FlushIndexToDiskSizeInMb** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
