@@ -51,7 +51,7 @@ Note: 3rd Party packages are not officially supported by Hibernating Rhinos. Con
 - [RavenDB.Bundles.Revisions](http://nuget.org/packages/RavenDB.Bundles.Revisions)
 - [RavenDB.Client.ContextualListeners](http://nuget.org/packages/RavenDB.Client.ContextualListeners)
 
-Contact the [group](groups.google.com/group/ravendb) if you would like your extension listed here.
+Contact the [group](http://groups.google.com/group/ravendb) if you would like your extension listed here.
 
 ## Nuget Unstable Builds
 

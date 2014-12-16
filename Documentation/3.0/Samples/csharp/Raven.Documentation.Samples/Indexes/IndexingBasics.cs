@@ -21,8 +21,8 @@ namespace Raven.Documentation.Samples.Indexes
 				{
 					#region indexes_1
 					IRavenQueryable<Employee> employees = from employee in session.Query<Employee>("Employees/ByFirstName")
-									where employee.FirstName == "Robert"
-									select employee;
+														  where employee.FirstName == "Robert"
+														  select employee;
 					#endregion
 				}
 
@@ -78,29 +78,28 @@ namespace Raven.Documentation.Samples.Indexes
 				return new IndexDefinition
 				{
 					Map = @"from doc in docs 
-							let Tag = doc[""@metadata""][""Raven-Entity-Name""]
 							select new 
 							{ 
-								Tag, 
-								LastModified = (DateTime)doc[""@metadata""][""Last-Modified""] 
+								Tag = doc[""@metadata""][""Raven-Entity-Name""], 
+								LastModified = (DateTime)doc[""@metadata""][""Last-Modified""],
+								LastModifiedTicks = ((DateTime)doc[""@metadata""][""Last-Modified""]).Ticks 
 							};",
+
 					Indexes =
 					{
-						{"Tag", FieldIndexing.NotAnalyzed},
-						{"LastModified", FieldIndexing.NotAnalyzed},
-					},
-					Stores =
-					{
-						{"Tag", FieldStorage.No},
-						{"LastModified", FieldStorage.No}
-					},
-					TermVectors =
-					{
-						{"Tag", FieldTermVector.No},
-						{"LastModified", FieldTermVector.No}
+						{ "Tag", FieldIndexing.NotAnalyzed },
+						{ "LastModified", FieldIndexing.NotAnalyzed },
+						{ "LastModifiedTicks", FieldIndexing.NotAnalyzed }
 					},
 
-					DisableInMemoryIndexing = true
+					SortOptions =
+					{
+						{ "LastModified",SortOptions.String },
+						{ "LastModifiedTicks", SortOptions.Long }
+					},
+
+					DisableInMemoryIndexing = true,
+					LockMode = IndexLockMode.LockedIgnore,
 				};
 			}
 		}

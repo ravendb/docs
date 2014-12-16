@@ -1,5 +1,23 @@
 # What's new
 
+{PANEL:Upcoming}
+
+### Server
+
+- preventing, by default, unrestricted access (`Raven/AnonymousAccess` set to `Admin`) to server when license is used. More [here](../server/configuration/license-registration).
+
+#### Configuration
+
+- added `Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes`
+- added `Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse`
+
+#### Indexes
+
+- test indexes. More [here](../indexes/testing-indexes),
+- added safe number parsing methods. More [here](../indexes/indexing-linq-extensions#parsing-numbers),
+
+{PANEL/}
+
 {PANEL:3.0.3525 - 2014/11/25}
 
 ### Server

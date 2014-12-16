@@ -22,7 +22,7 @@ It is important to note that this is not a security feature, and you can unlock 
 
 To lock the index you need to create a HTTP call:
 {CODE-BLOCK:plain}
- 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=lockModeChange&mode=LockedIgnore
+ 	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=lockModeChange&mode=LockedIgnore -d ''
 {CODE-BLOCK/}
 
 The available modes are:
@@ -59,7 +59,7 @@ Even idle indexes can take some of the system's resources, so there is yet anoth
 For example, in order to set an index priority to idle, you can either create a HTTP request like the following:
 
 {CODE-BLOCK:plain}
-	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?priority=Idle
+	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?priority=Idle -d ''
 {CODE-BLOCK/}
 
 or use the Studio. If you choose the latter, go to _Indexes_, _Edit_ selected index, and set up the priority there:
@@ -74,5 +74,5 @@ You can find all of the time settings used by RavenDB to automatically manage th
 When auto indexes are created, they are kept in a memory until they reach a given size, specified in the configuration. You can force writing indexed data on a disk by executing:
 
 {CODE-BLOCK:plain}
-	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk
+	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?op=forceWriteToDisk -d ''
 {CODE-BLOCK/}

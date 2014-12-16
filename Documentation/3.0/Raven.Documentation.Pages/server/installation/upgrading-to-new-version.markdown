@@ -42,3 +42,7 @@ You don't have to do anything when you upgrade RavenDB to migrate the stored dat
 - If you have secondary node running **constantly** (hot backup), you do **need a license**.
 
 {INFO/}
+
+## Related articles
+
+- [Client API : Backward compatibility](../../client-api/faq/backward-compatibility)
