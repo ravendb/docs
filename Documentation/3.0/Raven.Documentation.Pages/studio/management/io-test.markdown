@@ -2,10 +2,9 @@
 
 You can use this view to test the speed of reading or writing (or reading and writing simultaneously) of the data from the disk.
 
-![Figure 1. Manage Your Server. IO Test.](images/manage_your_server-IO_test-reading_writing-1.png)
+IO Test has two modes: **simple** and **batch**. 
 
-
-To test disk performance, you need to provide the following:
+To test disk performance in **simple** mode, you need to provide the following:
 
 - temporary record path (a folder has to exist already),
 - file size,
@@ -16,7 +15,16 @@ To test disk performance, you need to provide the following:
 - runtime of the operation,
 - chunk size
 
-![Figure 2. Manage Your Server. IO Test.](images/manage_your_server-IO_test-options-2.png)
+![Figure 1. Manage Your Server. IO Test.](images/manage_your_server-IO_test-reading_writing-1.png)
+
+To test disk performance in **batch** mode, you need to provide the following:
+
+- Number of documents
+- Size of documents
+- Number of documents in batch
+- Wait between batches (ms)
+
+![Figure 2. Manage Your Server. IO Test.](images/manage_your_server-IO_test-options-4.png)
 
 When the test is complete, the results including an average speed of reading and writing, disk throughput and latency are displayed.
 
