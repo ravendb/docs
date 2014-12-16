@@ -18,12 +18,27 @@ Now to use Highlights we just need to use one of the `Highlight` query extension
 
 This will return the list of results and for each result we will be displaying first found fragment with the length up to 128 characters.
 
+### Highlights + Projections
+
+Highlights can also be accessed when projections are performed.
+
+{CODE highlights_6@Indexes\Querying\Highlights.cs /}
+
+### Highlights + Map-Reduce
+
+Highlights can be accessed when performing queries on map-reduce indexes.
+
+{CODE highlights_7@Indexes\Querying\Highlights.cs /}
+
+{CODE highlights_8@Indexes\Querying\Highlights.cs /}
+
 ## Customization
 
 {CODE highlights_3@Indexes\Querying\Highlights.cs /}
 
 where:   
 * **fieldName** or **propertySelector** is used to mark a field/property for highlight.   
+* **fieldKeyName** or **keyPropertySelector** is used to mark a field/property key for highlight.   
 * **fragmentLength** this is the maximum length of text fragments that will be returned.   
 * **fragmentCount** this is the maximum number of fragments that will be returned.   
 * **highlightings** this will return an instance of a `FieldHighlightings` that contains the highlight fragments for each returned result.       
