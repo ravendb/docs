@@ -1,11 +1,14 @@
 stats.markdown	Stats
-index-stats-and-metrics.markdown	Index Stats & Metrics
+indexing.markdown	Indexing
+request-tracking.markdown	Request Tracking
 logs.markdown	Logs
 running-tasks.markdown	Running Tasks
 alerts.markdown	Alerts
 index-errors.markdown	Index Errors
 replication-stats.markdown	Replication Stats
+sql-replication-stats.markdown	Sql Replication Stats
 user-info.markdown	User Info
 map-reduce-visualizer.markdown	Map-Reduce Visualizer
 debug.markdown	Debug
+storage.markdown	Storage
 gather-debug-info.markdown	Gather Debug Info
