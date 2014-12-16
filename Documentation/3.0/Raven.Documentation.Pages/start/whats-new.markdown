@@ -16,6 +16,12 @@
 - test indexes. More [here](../indexes/testing-indexes),
 - added safe number parsing methods. More [here](../indexes/indexing-linq-extensions#parsing-numbers),
 
+<hr />
+
+### Client API
+
+- added `PreserveDocumentPropertiesNotFoundOnModel` convention. More [here](../client-api/configuration/conventions/request-handling#preservedocumentpropertiesnotfoundonmodel).
+
 {PANEL/}
 
 {PANEL:3.0.3525 - 2014/11/25}
