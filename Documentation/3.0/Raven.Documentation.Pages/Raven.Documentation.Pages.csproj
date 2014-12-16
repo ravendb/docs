@@ -562,7 +562,6 @@
     <None Include="studio\overview\status\alerts.markdown" />
     <None Include="studio\overview\status\running-tasks.markdown" />
     <None Include="studio\overview\status\logs.markdown" />
-    <None Include="studio\overview\status\REMOVEindex-stats-and-metrics.markdown" />
     <None Include="studio\overview\status\stats.markdown" />
     <None Include="studio\overview\tasks\.docslist" />
     <None Include="studio\overview\tasks\csv-import.markdown" />
