@@ -37,8 +37,8 @@ There are few methods that allow you to retrieve an index from a database:
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **start** | String | Number of documents that should be skipped |
-| **pageSize** | int | Maximum number of documents that will be retrieved  |
+| **start** | String | Number of indexes that should be skipped |
+| **pageSize** | int | Maximum number of indexes that will be retrieved  |
 
 | Return Value | |
 | ------------- | ----- |
@@ -60,8 +60,8 @@ There are few methods that allow you to retrieve an index from a database:
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **start** | String | Number of documents that should be skipped |
-| **pageSize** | int | Maximum number of documents that will be retrieved |
+| **start** | String | Number of index names that should be skipped |
+| **pageSize** | int | Maximum number of index names that will be retrieved |
 
 | Return Value | |
 | ------------- | ----- |

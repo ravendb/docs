@@ -11,7 +11,9 @@ public class StartStopIndexingAndGetIndexingStatus {
   @SuppressWarnings("unused")
   private interface IFoo {
     //region start_indexing_1
-    public void startIndexing();
+	public void startIndexing();
+	
+	public void startIndexing(Integer maxNumberOfParallelIndexTasks);
     //endregion
 
     //region stop_indexing_1
@@ -25,11 +27,11 @@ public class StartStopIndexingAndGetIndexingStatus {
 
   public StartStopIndexingAndGetIndexingStatus() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
-      //region start_indexing_2
+      //region stop_indexing_2
       store.getDatabaseCommands().getAdmin().stopIndexing();
       //endregion
 
-      //region stop_indexing_2
+      //region start_indexing_2
       store.getDatabaseCommands().getAdmin().startIndexing();
       //endregion
 

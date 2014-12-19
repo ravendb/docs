@@ -14,7 +14,7 @@
 
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **key** | Yes | Key of a document to be deleted |
+| **key** | Yes | key of a document to be deleted |
 
 | Header | Required | Description |
 | --------| ------- | --- |

@@ -161,6 +161,7 @@
     <Compile Include="ClientApi\Commands\HowTo\GetDatabaseAndServerStatistics.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\GetDatabaseConfiguration.cs" />
     <Compile Include="ClientApi\Commands\HowTo\GetDatabaseNames.cs">
       <SubType>Code</SubType>
     </Compile>

@@ -13,9 +13,16 @@ Starts indexing, if it was previously stopped.
 
 {CODE-BLOCK:json}
 curl \
-	http://{serverName}/databases/{databaseName}/admin/StartIndexing \
+	http://{serverName}/databases/{databaseName}/admin/startIndexing? \
+	&concurrency={concurrency} \
 	-X POST 
 {CODE-BLOCK/}
+
+### Request
+
+| Query parameter | Required | Description |
+| ------------- | -- | ---- |
+| **concurrency** | No | if set then maximum number of parallel indexing tasks will be set to this value |
 
 ### Response
 
