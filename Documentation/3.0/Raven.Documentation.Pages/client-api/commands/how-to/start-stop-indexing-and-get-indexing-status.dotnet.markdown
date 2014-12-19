@@ -13,6 +13,10 @@ This methods starts indexing, if it was previously stopped.
 
 {CODE start_indexing_1@ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs /}
 
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **maxNumberOfParallelIndexTasks** | int? | if set then maximum number of parallel indexing tasks will be set to this value |
+
 ### Example
 
 {CODE start_indexing_2@ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs /}

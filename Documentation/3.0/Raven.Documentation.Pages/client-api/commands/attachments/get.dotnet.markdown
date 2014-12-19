@@ -27,7 +27,7 @@ There are few methods that allow you to download attachments from a database:
 {PANEL/}
 {PANEL:GetAttachments}
 
-**GetAttachment** can be used to download attachment information for multiple attachments.
+**GetAttachments** can be used to download attachment information for multiple attachments.
 
 ### Syntax
 

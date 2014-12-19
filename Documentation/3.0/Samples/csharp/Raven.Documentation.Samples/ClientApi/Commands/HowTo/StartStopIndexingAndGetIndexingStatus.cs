@@ -7,7 +7,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 		private interface IFoo
 		{
 			#region start_indexing_1
-			void StartIndexing();
+			void StartIndexing(int? maxNumberOfParallelIndexTasks = null);
 			#endregion
 
 			#region stop_indexing_1
@@ -24,11 +24,11 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region start_indexing_2
-				store.DatabaseCommands.Admin.StopIndexing();
+				store.DatabaseCommands.Admin.StartIndexing();
 				#endregion
 
 				#region stop_indexing_2
-				store.DatabaseCommands.Admin.StartIndexing();
+				store.DatabaseCommands.Admin.StopIndexing();
 				#endregion
 
 				#region get_indexing_status_2

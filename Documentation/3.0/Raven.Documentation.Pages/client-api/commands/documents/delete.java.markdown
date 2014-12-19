@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **key** | String | Key of a document to be deleted |
+| **key** | String | key of a document to be deleted |
 | **etag** | Etag | current document etag, used for concurrency checks (`null` to skip check) |
 
 ## Example

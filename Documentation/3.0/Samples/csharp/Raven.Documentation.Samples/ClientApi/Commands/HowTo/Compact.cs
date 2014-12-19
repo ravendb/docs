@@ -1,4 +1,5 @@
-﻿using Raven.Client.Document;
+﻿using Raven.Client.Connection;
+using Raven.Client.Document;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 {
@@ -7,7 +8,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 		private interface IFoo
 		{
 			#region compact_1
-			void CompactDatabase(string databaseName);
+			Operation CompactDatabase(string databaseName);
 			#endregion
 		}
 
@@ -16,10 +17,12 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 			using (var store = new DocumentStore())
 			{
 				#region compact_2
-				store
+				Operation operation = store
 					.DatabaseCommands
 					.GlobalAdmin
 					.CompactDatabase("Northwind");
+
+				operation.WaitForCompletion();
 				#endregion
 			}
 		}
