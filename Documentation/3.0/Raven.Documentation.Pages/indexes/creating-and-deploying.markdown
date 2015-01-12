@@ -104,6 +104,21 @@ If this is disabled, you'll have to manually ensure that all queries have coveri
 
 {PANEL/}
 
+## Remarks
+
+{NOTE: In-memory indexes}
+
+By default, new indexes are created in-memory (can be disabled by changing `Raven/DisableInMemoryIndexing` to `false`) and persisted to disk when one of the following conditions are met:
+
+- index is not [stale](../indexes/stale-indexes) after write,
+- when in-memory size of an index exceeds 64MB (can be altered by changing `Raven/NewIndexInMemoryMaxMB`),
+- when difference between current write time and index creation time exceeds 15 minutes (can be altered by changing `Raven/NewIndexInMemoryMaxTime`),
+- when backup is created,
+- when database is closed,
+- on user request. More info [here](../server/administration/index-administration#persistence-of-an-auto-index).
+
+{NOTE/}
+
 ## Related articles
 
 - [What are indexes?](../indexes/what-are-indexes)
