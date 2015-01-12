@@ -12,6 +12,7 @@
 - added `Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse`
 - added `Raven/IncrementalBackup/AlertTimeoutHours`,
 - added `Raven/IncrementalBackup/RecurringAlertTimeoutDays`
+- added `Raven/NewIndexInMemoryMaxTime`
 
 #### Indexes
 
