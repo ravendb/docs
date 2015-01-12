@@ -10,10 +10,13 @@
 
 - added `Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes`
 - added `Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse`
+- added `Raven/IncrementalBackup/AlertTimeoutHours`,
+- added `Raven/IncrementalBackup/RecurringAlertTimeoutDays`
 
 #### Indexes
 
 - test indexes. More [here](../indexes/testing-indexes),
+- side-by-side indexes. More [here](../indexes/side-by-side-indexes),
 - added safe number parsing methods. More [here](../indexes/indexing-linq-extensions#parsing-numbers),
 
 <hr />

@@ -364,6 +364,16 @@ This is the standard app.config XML file. The `appSettings` section is where the
     The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).
     _Default_: 1024
 
+### Backup
+
+* **Raven/IncrementalBackup/AlertTimeoutHours**   
+    Number of hours after which incremental backup alert will be issued.
+    _Default_: 24
+
+* **Raven/IncrementalBackup/RecurringAlertTimeoutDays**   
+    Number of days after which incremental backup alert will be shown again.
+    _Default_: 7
+
 ### Tenants
 
 * **Raven/Tenants/MaxIdleTimeForTenantDatabase**   
@@ -552,6 +562,9 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Voron/MaxBufferPoolSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Voron/InitialSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Voron/MaxScratchBufferSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/IncrementalBackup/AlertTimeoutHours** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/IncrementalBackup/RecurringAlertTimeoutDays** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Tenants/MaxIdleTimeForTenantDatabase** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Tenants/FrequencyToCheckForIdleDatabases** | ![No](images\delete.png) | ![Yes](images\tick.png) |

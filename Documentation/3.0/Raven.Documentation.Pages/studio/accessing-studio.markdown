@@ -10,7 +10,7 @@ When you just deployed your server and there are no databases, the following scr
 
 ![Figure 1. Studio. First run. Creating database.](images/accessing-studio-first-run.png)  
 
-Here you can create your first database by specifying its name, list of active bundles (optionally) or more advanced settings like [storage engine](../server/configuration/storage-engines) or various paths.
+Here you can create your first database by specifying its name, list of active bundles (optionally) or more advanced settings like [storage engine](../server/configuration/storage-engines), various paths or support for incremental backups.
 
 <hr />
 
