@@ -387,6 +387,7 @@
     <None Include="glossary\transformer-change-notification.dotnet.markdown" />
     <None Include="glossary\transformer-definition.dotnet.markdown" />
     <None Include="indexes\.docslist" />
+    <None Include="indexes\side-by-side-indexes.markdown" />
     <None Include="indexes\testing-indexes.markdown" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
     <None Include="indexes\fanout-indexes.markdown" />
@@ -590,6 +591,9 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="indexes\images\side-by-side-1.png" />
+    <Content Include="indexes\images\side-by-side-2.png" />
+    <Content Include="indexes\images\side-by-side-3.png" />
     <Content Include="indexes\querying\images\CNET_faceted_search_2.jpg" />
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\installation\images\installer_destination_and_paths.png" />

@@ -35,3 +35,7 @@ Test indexes will be removed when:
 - after database restart
 
 {WARNING/}
+
+## Related articles
+
+- [Side-by-Side indexes](../indexes/side-by-side-indexes)
