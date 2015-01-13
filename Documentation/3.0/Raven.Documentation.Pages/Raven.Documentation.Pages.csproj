@@ -99,6 +99,7 @@
     <None Include="client-api\commands\documents\put.java.markdown" />
     <None Include="client-api\commands\how-to\compact-database.java.markdown" />
     <None Include="client-api\commands\how-to\compact-database.http.markdown" />
+    <None Include="client-api\commands\how-to\get-database-configuration.http.markdown" />
     <None Include="client-api\commands\how-to\get-database-configuration.java.markdown" />
     <None Include="client-api\commands\how-to\get-database-configuration.dotnet.markdown" />
     <None Include="client-api\commands\how-to\get-names-of-all-databases-on-a-server.http.markdown" />

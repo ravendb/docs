@@ -19,6 +19,17 @@ When sending a support ticket, it is good to include as much information about t
 5. [Statistics](../../server/administration/statistics)
 6. Unit test
 
+## Using Fiddler with Java API
+
+Copy following code to your application:
+
+{CODE:java fiddler_setup@Server/Troubleshooting/SendingSupportTicket.java /}
+
+And configure fiddler with given DocumentStore:
+
+{CODE:java fiddler_usage@Server/Troubleshooting/SendingSupportTicket.java /}
+
+
 ## Writing unit tests
 
 The NuGet package has been created for easier RavenDB test creation and can be downloaded [here](http://www.nuget.org/packages/RavenDB.Tests.Helpers/).
