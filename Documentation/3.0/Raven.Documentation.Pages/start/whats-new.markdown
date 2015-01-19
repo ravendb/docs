@@ -16,12 +16,18 @@
 - added `Raven/AssembliesDirectory`
 - added `Raven/Replication/IndexAndTransformerReplicationLatency`
 - added `Raven/MaxConcurrentRequestsForDatabaseDuringLoad`
+- added `Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch`
 
 #### Indexes
 
 - test indexes. More [here](../indexes/testing-indexes),
 - side-by-side indexes. More [here](../indexes/side-by-side-indexes),
 - added safe number parsing methods. More [here](../indexes/indexing-linq-extensions#parsing-numbers),
+
+#### Bundles
+
+- `[Replication]` Added the ability to limit maximum received number of items in single replication batch using `Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch` setting,
+- `[Replication]` Source server will take into account low-memory conditions on destination server and adjust batch size
 
 <hr />
 
