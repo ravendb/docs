@@ -10,6 +10,7 @@
 | debug/format-index | POST | - _(Content)_ JSON-array of indexing functions | Simplifies and formats given indexing functions. | |
 | debug/indexing-perf-stats?format={format} | GET | - _format_ - output format: `json` or `csv` (if empty: json) | Indexing performance statistics like duration and input/output count. | |
 | debug/indexing-batch-stats | GET |  | Indexing performance stats shown for indexing batches | |
+| debug/reducing-batch-stats | GET |  | Indexing performance stats shown for reducing batches | |
 | debug/plugins | GET | | Returns active plugins e.g. triggers and startup tasks. | |
 | debug/changes | GET | | Returns Changes API connection details e.g. connection identifier or subscribtion details. | |
 | debug/sql-replication-stats | GET | | Various metrics with SQL Replication performance. | |
