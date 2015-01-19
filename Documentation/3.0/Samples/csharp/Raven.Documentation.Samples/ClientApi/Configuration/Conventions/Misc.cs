@@ -34,6 +34,11 @@
 			#region prettify_generated_linq_expressions
 			Conventions.PrettifyGeneratedLinqExpressions = true;
 			#endregion
+
+			#region index_and_transformer_replication_mode
+			Conventions.IndexAndTransformerReplicationMode = IndexAndTransformerReplicationMode.Indexes
+			                                                 | IndexAndTransformerReplicationMode.Transformers;
+			#endregion
 		} 
 	}
 }
