@@ -15,6 +15,7 @@
 - added `Raven/NewIndexInMemoryMaxTime`
 - added `Raven/AssembliesDirectory`
 - added `Raven/Replication/IndexAndTransformerReplicationLatency`
+- added `Raven/MaxConcurrentRequestsForDatabaseDuringLoad`
 
 #### Indexes
 
