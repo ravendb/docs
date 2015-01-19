@@ -4,18 +4,21 @@
 
 ### Server
 
-- preventing, by default, unrestricted access (`Raven/AnonymousAccess` set to `Admin`) to server when license is used. More [here](../server/configuration/license-registration).
+- preventing, by default, unrestricted access (`Raven/AnonymousAccess` set to `Admin`) to server when license is used. More [here](../server/configuration/license-registration),
+- `[Voron]` added compaction,
+- added Data Subscribtions,
+- performance improvements
 
 #### Configuration
 
-- added `Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes`
-- added `Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse`
+- added `Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes`,
+- added `Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse`,
 - added `Raven/IncrementalBackup/AlertTimeoutHours`,
-- added `Raven/IncrementalBackup/RecurringAlertTimeoutDays`
-- added `Raven/NewIndexInMemoryMaxTime`
-- added `Raven/AssembliesDirectory`
-- added `Raven/Replication/IndexAndTransformerReplicationLatency`
-- added `Raven/MaxConcurrentRequestsForDatabaseDuringLoad`
+- added `Raven/IncrementalBackup/RecurringAlertTimeoutDays`,
+- added `Raven/NewIndexInMemoryMaxTime`,
+- added `Raven/AssembliesDirectory`,
+- added `Raven/Replication/IndexAndTransformerReplicationLatency`,
+- added `Raven/MaxConcurrentRequestsForDatabaseDuringLoad`,
 - added `Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch`
 
 #### Indexes
@@ -23,6 +26,7 @@
 - test indexes. More [here](../indexes/testing-indexes),
 - side-by-side indexes. More [here](../indexes/side-by-side-indexes),
 - added safe number parsing methods. More [here](../indexes/indexing-linq-extensions#parsing-numbers),
+- added the ability to replicate index and transformer definitions.
 
 #### Bundles
 
@@ -33,8 +37,18 @@
 
 ### Client API
 
-- added `PreserveDocumentPropertiesNotFoundOnModel` convention. More [here](../client-api/configuration/conventions/request-handling#preservedocumentpropertiesnotfoundonmodel).
-- **highlights** can be accessed when performing **projection** or querying **map-reduce** index. More [here](../indexes/querying/highlights#highlights--projections).
+- added `PreserveDocumentPropertiesNotFoundOnModel` convention. More [here](../client-api/configuration/conventions/request-handling#preservedocumentpropertiesnotfoundonmodel),
+- **highlights** can be accessed when performing **projection** or querying **map-reduce** index. More [here](../indexes/querying/highlights#highlights--projections),
+- added `IndexAndTransformerReplicationMode` convention that indicates if index and transformer definitions should be replicated when they are created using `AbstractIndexCreationTask` or `AbstractTransformerCreationTask` (true by default),
+- added Data Subscribtion support.
+
+### Studio
+
+- more detailed _indexing performance chart_ available at `Status -> Indexing -> Indexing performance`,
+- added the _persist auto index view_ available at `Status -> Debug -> Persist auto index`,
+- added the _explain replication view_ available at `Status -> Debug -> Explain replication`,
+- added CancellationToken support for various methods in client (e.g. in queries and commands),
+- performance improvements
 
 {PANEL/}
 
