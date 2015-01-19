@@ -7,6 +7,7 @@
 - preventing, by default, unrestricted access (`Raven/AnonymousAccess` set to `Admin`) to server when license is used. More [here](../server/configuration/license-registration),
 - `[Voron]` added compaction,
 - added Data Subscribtions,
+- added _admin/low-memory-notification_ endpoint,
 - performance improvements
 
 #### Configuration
