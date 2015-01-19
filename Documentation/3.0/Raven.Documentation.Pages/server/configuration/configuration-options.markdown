@@ -286,6 +286,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/ClusterName**   
 	Name of the cluster that will show up on `/admin/stats` endpoint.   
 
+* **Raven/AssembliesDirectory**   
+	Path to directory where server will keep extracted assemblies.   
+	_Default:_ ~\Assemblies
+
 ### Bundles
 
 * **Raven/ActiveBundles**   
@@ -547,6 +551,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/ServerName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/ClusterName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/AssembliesDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/ActiveBundles** | ![Yes](images\tick.png)* | ![Yes](images\tick.png) |
 | **Raven/BundlesSearchPattern** | ![No](images\delete.png) | ![Yes](images\tick.png) |
