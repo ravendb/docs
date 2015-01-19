@@ -36,3 +36,17 @@ By default concurrency checks are turned off:
 It determines if it should attempt to prettify the generated Linq expressions in definitions of indexes and transformers (used by the following classes: `AbstractIndexCreationTask`, `AbstractMultiMapIndexCreationTask`, `AbstractTransformerCreationTask` and `IndexDefinitionBuilder`).
 
 {CODE prettify_generated_linq_expressions@ClientApi\Configuration\Conventions\Misc.cs /}
+
+###IndexAndTransformerReplicationMode
+
+This conventions determines if index and transformer definitions should be replicated to destination servers when indexes and transformers are deployed using the `AbstractIndexCreationTask` and `AbstractTransformerCreationTask`. 
+
+Possible values are:
+
+- `None`,
+- `Indexes`,
+- `Transformers`
+
+with default set to `Indexes | Transformers`.
+
+{CODE index_and_transformer_replication_mode@ClientApi\Configuration\Conventions\Misc.cs /}
