@@ -475,6 +475,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Number of milliseconds before replication requests will timeout.
     _Default:_ 60 * 1000
 
+* **Raven/Replication/IndexAndTransformerReplicationLatency**   
+    Amount of seconds between each indexes and transformer definition replication attempt (if such replication is allowed).  
+    _Default:_ 600 seconds
+
 ### Prefetcher
 
 * **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout**   
@@ -603,6 +607,7 @@ Many of the configuration options described in the section above can be used bot
 | &nbsp; |||
 | **Raven/Replication/FetchingFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Replication/ReplicationRequestTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Replication/IndexAndTransformerReplicationLatency** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Prefetcher/MaximumSizeAllowedToFetchFromStorage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
