@@ -267,6 +267,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Semicolon separated list of the headers that server should ignore. e.g. Header-To-Ignore-1;Header-To-Ignore-2
     _Default:_ `null`
 
+* **Raven/MaxConcurrentRequestsForDatabaseDuringLoad**   
+    Maximum number of allowed request to databases that are being loaded before warning messages will be returned.
+    _Default:_ 10
+
 ### Misc settings
 
 * **Raven/License**   
@@ -549,6 +553,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/AccessControlAllowMethods** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AccessControlRequestHeaders** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Headers/Ignore** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/MaxConcurrentRequestsForDatabaseDuringLoad** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/License** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/LicensePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |
