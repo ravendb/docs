@@ -42,6 +42,17 @@ identity value (always incrementing number) from the given range is `1` so its c
 The next attempt to store another `Order` object within the same session will result in creating the `order/2` key. However, this time asking the server about the HiLo document
 will not be necessary because the in-memory range (1 - 32) is enough, so simply the next number will be added as the key suffix.
 
+{INFO:Identity value numeric range generation}
+Each (in code) document store _instance_ handles the generation of the identity value numeric range. The database stores the last requested number while the document store
+_instances_ request ranges and caches the returned range of available identities.
+
+The database has a single document (per collection) which stores the last identity value requested by a document store instance.
+Eg. the document `Raven/HiLo/accounts` has the following value `{ "Max": "4000" }`, then the next range will be `4001 - 4032`, if 32 was range size. 
+(By default, it's 32).
+
+The number of sessions per document store instance play no part in identity value generation.
+{INFO/}
+
 If your intention is to skip the key creation strategy that relays on the collection and HiLo value pair, then you can allow the RavenDB database to assign the Guid identifier
 to the stored document. Then you have to provide the `string.Empty` as the value of the `Id` property:
 
