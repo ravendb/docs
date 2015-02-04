@@ -10,6 +10,8 @@ using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
 {
+	using Abstractions.Indexing;
+
 	public class Paging
 	{
 		#region paging_0_4
@@ -39,6 +41,30 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 								};
 
 				MaxIndexOutputsPerDocument = 1024;
+			}
+		}
+		#endregion
+
+		#region paging_7_0
+		public class Orders_ByStoredProductName : AbstractIndexCreationTask<Order>
+		{
+			public class Result
+			{
+				public string Product { get; set; } 
+			}
+
+			public Orders_ByStoredProductName()
+			{
+				Map = orders => from order in orders
+								from line in order.Lines
+								select new Result
+								{
+									Product = line.ProductName
+								};
+
+				MaxIndexOutputsPerDocument = 1024;
+
+				Store("Product", FieldStorage.Yes);
 			}
 		}
 		#endregion
@@ -404,6 +430,87 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 							1 * 25,					// skip 25 records (page 2)
 							25,					// take up to 25
 							pagingInformation: pagingInformation);	// since this is a next page to 'page 1' and we are passing 'RavenPagingInformation' that was filled during 'page 1' retrieval, rapid pagination will take place
+					#endregion
+				}
+			}
+
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region paging_7_1
+					IList<string> results;
+					int pageNumber = 0;
+					const int pageSize = 10;
+
+					do
+					{
+						results = session
+							.Query<Orders_ByStoredProductName.Result, Orders_ByStoredProductName>()
+							.Select(x => x.Product)
+							.Skip((pageNumber * pageSize))
+							.Take(pageSize)
+							.Distinct()
+							.ToList();
+
+						pageNumber++;
+					}
+					while (results.Count > 0);
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region paging_7_2
+					IList<Orders_ByStoredProductName.Result> results;
+					int pageNumber = 0;
+					const int pageSize = 10;
+
+					do
+					{
+						results = session
+							.Advanced
+							.DocumentQuery<Order, Orders_ByStoredProductName>()
+							.SelectFields<Orders_ByStoredProductName.Result>("Product")
+							.Skip((pageNumber * pageSize))
+							.Take(pageSize)
+							.Distinct()
+							.ToList();
+
+						pageNumber++;
+					}
+					while (results.Count > 0);
+					#endregion
+				}
+
+				{
+					#region paging_7_3
+
+					QueryResult result;
+					int pageNumber = 0;
+					const int pageSize = 10;
+
+					do
+					{
+						result = store
+							.DatabaseCommands
+							.Query(
+								"Orders/ByStoredProductName",
+								new IndexQuery
+								{
+									Start = (pageNumber*pageSize),
+									PageSize = pageSize,
+									IsDistinct = true,
+									FieldsToFetch = new[]
+									{
+										"Product"
+									}
+								});
+
+						pageNumber++;
+					} while (result.Results.Count > 0);
+
 					#endregion
 				}
 			}

@@ -52,9 +52,9 @@ While the query will return with just 10 results, `totalResults` will hold the t
 
 ## Paging through tampered results
 
-For some queries, server will skip over some results internally, and by that invalidate the `TotalResults` value e.g. when executing a Distinct query or index produces multiple index entries per document, `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
+For some queries, server will skip over some results internally, and by that invalidate the `TotalResults` value e.g. when executing a Distinct query or index produces multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
 
-Whenever `SkippedResults` is greater than 0 it implies that we skipped over some results in the index.
+Whenever `SkippedResults` is greater than 0 and a query involved some non-stored fields, it implies that we skipped over some results in the index.
     
 In order to do proper paging in those scenarios, you should use the `SkippedResults` when telling RavenDB how many documents to skip. In other words, for each page the starting point should be `.Skip((currentPage * pageSize) + SkippedResults)`.
 
@@ -73,6 +73,18 @@ For example, let's page through all the results:
 {CODE-TAB:csharp:Commands paging_6_3@Indexes\Querying\Paging.cs /}
 {CODE-TAB:csharp:Index paging_6_0@Indexes\Querying\Paging.cs /}
 {CODE-TABS/}
+
+The situation would be different if a `Distinct` query and a projection applied to stored fields only. Then to get correct results you shouldn't include `SkippedResults`
+into the paging formula. Let's take a look at the example (note the usage of `Store` method in the index definition):
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query paging_7_1@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:DocumentQuery paging_7_2@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Commands paging_7_3@Indexes\Querying\Paging.cs /}
+{CODE-TAB:csharp:Index paging_7_0@Indexes\Querying\Paging.cs /}
+{CODE-TABS/}
+
+
 
 ## Increasing StartsWith performance
 
