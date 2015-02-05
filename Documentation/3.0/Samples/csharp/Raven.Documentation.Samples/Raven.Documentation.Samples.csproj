@@ -242,7 +242,7 @@
     <Compile Include="ClientApi\Configuration\Conventions\RequestHandling.cs" />
     <Compile Include="ClientApi\Configuration\Conventions\WhatAreConventions.cs" />
     <Compile Include="ClientApi\CreatingDocumentStore.cs" />
-    <Compile Include="ClientApi\DataSubscriptions\HowToManageDataSubscriptions.cs" />
+    <Compile Include="ClientApi\DataSubscriptions\DataSubscriptions.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\BewareOf.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\HiLoAlgorithm.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs" />
