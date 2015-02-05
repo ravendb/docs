@@ -41,7 +41,7 @@
 - added `PreserveDocumentPropertiesNotFoundOnModel` convention. More [here](../client-api/configuration/conventions/request-handling#preservedocumentpropertiesnotfoundonmodel),
 - **highlights** can be accessed when performing **projection** or querying **map-reduce** index. More [here](../indexes/querying/highlights#highlights--projections),
 - added `IndexAndTransformerReplicationMode` convention that indicates if index and transformer definitions should be replicated when they are created using `AbstractIndexCreationTask` or `AbstractTransformerCreationTask`. More [here](../client-api/configuration/conventions/misc#indexandtransformerreplicationmode),
-- added Data Subscribtion support.
+- added [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions).
 
 ### Studio
 

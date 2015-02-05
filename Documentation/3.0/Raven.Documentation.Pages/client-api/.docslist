@@ -8,6 +8,7 @@ setting-up-connection-string.markdown	Setting up connection string
 /bulk-insert	Bulk Insert
 /changes	Changes API
 /listeners	Listeners
+/data-subscriptions	Data Subscriptions
 /bundles	Bundles
 /concurrency	Concurrency
 /configuration	Configuration
