@@ -6,10 +6,10 @@ To start a work with this feature you need to create a subscription in the datab
 through subscription channel (collection name, key prefix or property filtering).
 
 When you open the subscription it will send you all documents matching the specified criteria. Documents are sent in batches (its size is configurable along with connection options)
-and once you process them (within the specified time) the whole batch is marked as processed. Documents are always sent in Etag order what means that already processed ones will never be send again within this subscription.
-This way you never miss any document even in the presence of failure - subscription will retry to send documents since the last acknowledged and processed document (by tracking its Etag).
+and once you process them (within the specified time) the whole batch is marked as processed. Documents are always sent in Etag order what means that already processed ones will never be send again over this subscription.
+This also ensures that you never miss any document even in the presence of failure - subscription will retry to send documents from the last acknowledged and processed document (by tracking its Etag).
 
-Every time you open the subscription you will receive all new or changed documents since the last pulling. After you download and process all documents you can still
+Every time you open the subscription you receive all new or changed documents since the last pulling. After you download and process all documents you can still
 keep the subscription open to get new or modified documents. Under the hood the data subscription uses [Changes API](../changes/what-is-changes-api) to be notified about
 any document changes, so it is able to immediately provide subscribers with new documents that match the subscription criteria.
 

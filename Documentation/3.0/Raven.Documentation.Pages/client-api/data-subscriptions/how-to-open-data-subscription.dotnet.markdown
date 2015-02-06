@@ -1,6 +1,6 @@
 ﻿#How to open data subscription?
 
-If you have a subscription identifier you can open it. Together with id you need to specify some details about the subscription connection:
+Having a subscription identifier allows you to open it. Together with id you need to specify some details about the subscription connection:
 
 {CODE open_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -13,8 +13,8 @@ If you have a subscription identifier you can open it. Together with id you need
 | ------------- | ----- |
 | Subscription&lt;RavenJObject&gt; / Subscription&lt;T&gt; | Subscription instance. |
 
-We have two method to open subscription. The first one is to deal with documents of different type - then results are returned as `RavenJObject`s. The second one is strongly typed version
-and will return entities of a given type. 
+We have two method to open subscription. The first one is to deal with documents belonging to different collections - results are returned as `RavenJObject` objects then. The second one returns strongly
+typed subscription where retrieved documents are converted to a given type.
 
 {WARNING: Single subscription consumer at a time allowed}
 There can be only a single open subscription connection per subscription. An attempt to open already being opened subscription will result in throwing an exception.
@@ -23,24 +23,32 @@ There can be only a single open subscription connection per subscription. An att
 Documents are sent to a client in batches. `SubscriptionConnectionOptions` has `BatchOptions` property where you can specify:
 
 * _MaxDocCount_ - max number of docs that can be sent in a single batch (default: 4096),
-* _MaxSize_ - max total batch size in bytes (default: `null` - no limit),
+* _MaxSize_ - max total batch size in bytes (default: null - no size limit),
 * _AcknowledgmentTimeout_ - max time within the subscription needs to confirm that the batch has been successfully processed (default: 1 minute).
 
 Additionally connection options have the following settings:
 
 - _IgnoreSubscribersErrors_ - determines if subscription should ignore errors thrown by subscription handlers (default: false),
-- _ClientAliveNotificationInterval_ - specifies how often the subscription sends heart beats to the server (server keeps the subscriptions open for a given client
- until it sends these alive notifications, default: 2 minutes).
+- _ClientAliveNotificationInterval_ - specifies how often the subscription sends heart beats to the server (server keeps the subscription open until a connected client
+sends these alive notifications - two undelivered notifications would let an another client to connect, default: 2 minutes).
 
 {INFO: Error handling}
-By default the data subscription doesn't allow errors (`IgnoreSubscribersErrors: false`). So if any of the processing handlers fails, you will get the same document 
-over and over until you have successfully processed it. If you set `IgnoreSubscribersErrors` to `true`, it will ignore errors raised by handles.
+By default the data subscription does not allow processing errors (`IgnoreSubscribersErrors: false`). So if any subscription handler fails,
+then it will stop pulling documents and close the subscription connection immediately. If you set `IgnoreSubscribersErrors` to `true`, it will ignore an error raised by a handler and
+keep retrieving next docs.
 {INFO/}
 
+{INFO: Acknowledgment timeout handling}
+Under the scenes, once you have successfully processed a batch, the notification will send a confirmation to the server about it. The server keeps track of the last processed and
+acknowledged document. If subscription handlers don't process the batch within the specified `AcknowledgmentTimeout`, then the server will resend the whole batch again. You will get 
+the same documents over and over until you successfully processed it.
+{INFO/}
+ 
+
 {INFO: Crashing handling}
-Under the scenes, once you have successfully processed a batch, the notification will send a confirmation to the server about it.
-So if there is a crash, we know what documents have been already processed. If you crashed midway, the database will just resend you the relevant documents when you open 
-the subscription again. The data subscription tries to automatically reopen after loosing a connection with the server.
+Tracking the last acknowledged Etag allows the data subscription to handle crashing scenarios. If there is a crash, we know what documents have been already processed. 
+If you crashed midway, the database will just resend you the relevant documents when you open the subscription again. The data subscription automatically
+retries to open the subscription connection every 15 seconds if it get lost.
 {INFO/}
 
 ###Example I
@@ -49,9 +57,20 @@ the subscription again. The data subscription tries to automatically reopen afte
 
 ##Processing documents
 
-The result of opening subscription is `Subscription<T>` object that implements `IObservable` interface, so it means that you can just utilize Reactive Extensions
-and subscribe to the incoming documents to process them. Also you will continue to get them, even for items that were added after you opened the subscription.
+The result of opening subscription is `Subscription<T>` or `Subscription<RavenJObject>` instance. It implements `IObservable` interface, so it means that you can just utilize Reactive Extensions
+and subscribe to the incoming documents in order to process them. Also you will continue to get them, even for items that were added after you opened the subscription, because under the hood the [Changes API](../changes/what-is-changes-api)
+is used to get notifications about any document updates.
 
 ###Example II
 
 {CODE open_3@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+###Example III
+
+You may want to dynamically manage subscription handlers. The returned subscriber object is type of `IDisposable`, in order to detach it from subscription just call `Dispose` on it:
+
+{CODE open_4@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+{NOTE:No subscriber attached}
+The data subscription stops pulling docs if there is no subscriber attached.
+{NOTE/}

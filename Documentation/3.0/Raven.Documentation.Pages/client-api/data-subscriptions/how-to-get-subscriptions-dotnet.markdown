@@ -12,7 +12,7 @@ In order to get info about all existing subscriptions we exposed the following m
 
 | Return value | |
 | ------------- | ----- |
-| List&lt;SubscriptionConfig&gt; | Configurations of existing subscriptions. |
+| List&lt;SubscriptionConfig&gt; | Configurations of existing subscriptions providing such information as: id, criteria, last acknowledged Etag, times of sending last batch and client activity.|
 ##Example
 
 {CODE get_subscriptions_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}

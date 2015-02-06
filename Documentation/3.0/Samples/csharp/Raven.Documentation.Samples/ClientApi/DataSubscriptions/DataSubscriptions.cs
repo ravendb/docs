@@ -72,6 +72,12 @@
 				});
 				#endregion
 
+				#region open_4
+				var subscriber = orders.Subscribe(x => { });
+
+				subscriber.Dispose();
+				#endregion
+
 				#region delete_2
 				store.Subscriptions.Delete(id);
 				#endregion

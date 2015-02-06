@@ -14,20 +14,20 @@ criteria you can pass into `Create` method:
 | ------------- | ----- |
 | long | A data subscription identifier. |
 
-The first one is `SubscriptionCriteria`, it's a standard criteria where you can specify the following filters:
+The first one is `SubscriptionCriteria`, where you can specify the following filters:
 
-* _KeyStartsWith_ - document id must starts with a specified key,
-* _BelongsToAnyCollection_ - list of collection names that a document has to belongs to any,
+* _KeyStartsWith_ - a document id must starts with a specified prefix,
+* _BelongsToAnyCollection_ - list of collections that the subscription deals with,
 * _PropertiesMatch_ - dictionary of field names and related values that a document must have,
 * _PropertiesNotMatch_ - dictionary of field names and related values that a document must not have.
 
-The second type of criteria is `SubscriptionCriteria<T>` where `T` is an entity type. Analogously you can set:
+The second one is generic `SubscriptionCriteria<T>` where `T` is an entity type. Analogously you can set:
 
 * <em>KeyStartsWith</em>,
 * <em>PropertiesMatch</em>,
 * <em>PropertiesNotMatch</em>,
 
-_BelongsToAnyCollection_ will be automatically filled in by a single value based on entity type (see [FindTypeTagName](../configuration/conventions/identifier-generation/global#findtypetagname-and-finddynamictagname) convention).
+_BelongsToAnyCollection_ will be automatically filled in by a single value based on the entity type (see [FindTypeTagName](../configuration/conventions/identifier-generation/global#findtypetagname-and-finddynamictagname) convention).
 
 The execution of `Create` method will create a data subscription in a database and return its identifier (you can see `Raven/Subscriptions/[id]` documents in the database).
 This identifier is needed to open the subscription so you need to keep that information to be able to make use of it later.
@@ -44,5 +44,5 @@ as well as a manager (`employees/managers/1`), anyhow we can be sure that none o
 
 {CODE create_3@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-In this case, give me all the orders, but only those which are handled by `employees/1` employee. Here we used generic type criteria, so we can specify properties filtering in strongly typed way.
-Also we can be sure that all returned documents belong to `Orders` collection (then we will be able to open the strongly typed subscription).
+In this case, it will give us all the orders, but only those which are handled by `employees/1` employee. Here we used generic type criteria, so we can specify properties filtering in strongly typed way.
+Also we can be sure that all returned documents belong to `Orders` collection (so we will be able to open the strongly typed subscription).
