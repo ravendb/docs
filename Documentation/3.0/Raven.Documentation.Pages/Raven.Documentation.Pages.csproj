@@ -562,10 +562,13 @@
     <None Include="studio\overview\settings\custom-functions.markdown" />
     <None Include="studio\overview\settings\database-settings.markdown" />
     <None Include="studio\overview\status\.docslist" />
+    <None Include="studio\overview\status\indexing\.docslist" />
+    <None Include="studio\overview\status\indexing\batch-size-and-prefetches.markdown" />
+    <None Include="studio\overview\status\indexing\index-stats.markdown" />
+    <None Include="studio\overview\status\indexing\indexing-performance.markdown" />
     <None Include="studio\overview\status\storage.markdown" />
     <None Include="studio\overview\status\sql-replication-stats.markdown" />
     <None Include="studio\overview\status\request-tracking.markdown" />
-    <None Include="studio\overview\status\indexing.markdown" />
     <None Include="studio\overview\status\gather-debug-info.markdown" />
     <None Include="studio\overview\status\debug.markdown" />
     <None Include="studio\overview\status\map-reduce-visualizer.markdown" />
@@ -696,8 +699,13 @@
     <Content Include="studio\overview\settings\images\settings_replication-4.png" />
     <Content Include="studio\overview\status\images\debug-endpoints-studio-1.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
-    <Content Include="studio\overview\status\images\metrics-index_batch_size-4.png" />
-    <Content Include="studio\overview\status\images\metrics-prefetches-5.png" />
+    <Content Include="studio\overview\status\images\metrics-request_tracking-1.png" />
+    <Content Include="studio\overview\status\images\status-sql-replication_stats-1.png" />
+    <Content Include="studio\overview\status\images\status-storage-1.png" />
+    <Content Include="studio\overview\status\images\status-storage-2.png" />
+    <Content Include="studio\overview\status\images\status-storage-3.png" />
+    <Content Include="studio\overview\status\indexing\images\metrics-index_batch_size-4.png" />
+    <Content Include="studio\overview\status\indexing\images\metrics-prefetches-5.png" />
     <Content Include="studio\overview\status\images\metrics-request_counter-2.png" />
     <Content Include="studio\overview\status\images\status-alerts-action-bar-1.png" />
     <Content Include="studio\overview\status\images\status-alerts-alert_list-2.png" />
@@ -705,7 +713,7 @@
     <Content Include="studio\overview\status\images\status-index_errors-2.png" />
     <Content Include="studio\overview\status\images\status-index_errors-3.png" />
     <Content Include="studio\overview\status\images\status-index_errors-4.png" />
-    <Content Include="studio\overview\status\images\status-index_stats-1.png" />
+    <Content Include="studio\overview\status\indexing\images\status-index_stats-1.png" />
     <Content Include="studio\overview\status\images\status-replication_stats-1.png" />
     <Content Include="studio\overview\status\images\status-replication_stats-replication_topology-2.png" />
     <Content Include="studio\overview\status\images\status-user_info-1.png" />
@@ -727,6 +735,7 @@
     <Content Include="studio\overview\status\images\tasks-import_database_tab-advanced-5.png" />
     <Content Include="studio\overview\status\images\tasks-import_database_tab-general-4.png" />
     <Content Include="studio\overview\status\images\tasks-toggle_indexing_tab-1.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_1.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-1.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-documents_view-2.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-indexes_view-3.png" />
