@@ -29,6 +29,10 @@ namespace Raven.Documentation.Parser.Data
 		[Description("Getting started")]
 		Start,
 
+		[Prefix("file-system")]
+		[Description("File System")]
+		FileSystem,
+
 		// legacy categories
 
 		[Prefix("intro")]

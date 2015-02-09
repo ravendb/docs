@@ -218,6 +218,15 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Samples, new PageModel(toc));
 		}
 
+		public virtual ActionResult FileSystem(string version, string language)
+		{
+			var toc = DocumentSession
+				.Query<TableOfContents>()
+				.First(x => x.Category == Category.FileSystem && x.Version == CurrentVersion);
+
+			return View(MVC.Docs.Views.FileSystem, new PageModel(toc));
+		}
+
 		public virtual ActionResult Articles(string version, string language, string key)
 		{
 			ViewBag.Key = null;

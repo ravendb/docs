@@ -263,6 +263,7 @@
     <Content Include="Views\Docs\Start.cshtml" />
     <Content Include="Views\Docs\Studio.cshtml" />
     <Content Include="Views\Docs\Samples.cshtml" />
+    <Content Include="Views\Docs\FileSystem.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

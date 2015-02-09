@@ -110,6 +110,12 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult FileSystem()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileSystem);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Articles()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Articles);
@@ -139,6 +145,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Server = "Server";
             public readonly string Glossary = "Glossary";
             public readonly string Samples = "Samples";
+            public readonly string FileSystem = "FileSystem";
             public readonly string Articles = "Articles";
         }
 
@@ -154,6 +161,7 @@ namespace Raven.Documentation.Web.Controllers
             public const string Server = "Server";
             public const string Glossary = "Glossary";
             public const string Samples = "Samples";
+            public const string FileSystem = "FileSystem";
             public const string Articles = "Articles";
         }
 
@@ -243,6 +251,15 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string version = "version";
             public readonly string language = "language";
         }
+        static readonly ActionParamsClass_FileSystem s_params_FileSystem = new ActionParamsClass_FileSystem();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_FileSystem FileSystemParams { get { return s_params_FileSystem; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_FileSystem
+        {
+            public readonly string version = "version";
+            public readonly string language = "language";
+        }
         static readonly ActionParamsClass_Articles s_params_Articles = new ActionParamsClass_Articles();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Articles ArticlesParams { get { return s_params_Articles; } }
@@ -265,6 +282,7 @@ namespace Raven.Documentation.Web.Controllers
             {
                 public readonly string Article = "Article";
                 public readonly string Client = "Client";
+                public readonly string FileSystem = "FileSystem";
                 public readonly string Glossary = "Glossary";
                 public readonly string Indexes = "Indexes";
                 public readonly string NotDocumented = "NotDocumented";
@@ -280,6 +298,7 @@ namespace Raven.Documentation.Web.Controllers
             }
             public readonly string Article = "~/Views/Docs/Article.cshtml";
             public readonly string Client = "~/Views/Docs/Client.cshtml";
+            public readonly string FileSystem = "~/Views/Docs/FileSystem.cshtml";
             public readonly string Glossary = "~/Views/Docs/Glossary.cshtml";
             public readonly string Indexes = "~/Views/Docs/Indexes.cshtml";
             public readonly string NotDocumented = "~/Views/Docs/NotDocumented.cshtml";
@@ -418,6 +437,19 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             SamplesOverride(callInfo, version, language);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void FileSystemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult FileSystem(string version, string language)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileSystem);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            FileSystemOverride(callInfo, version, language);
             return callInfo;
         }
 

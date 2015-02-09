@@ -351,6 +351,10 @@
     <None Include="client-api\setting-up-connection-string.dotnet.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="file-system\.docslist" />
+    <None Include="file-system\server-side\.docslist" />
+    <None Include="file-system\server-side\files-in-ravenfs.markdown" />
+    <None Include="file-system\what-is-raven-fs.markdown" />
     <None Include="glossary\.docslist" />
     <None Include="glossary\admin-statistics.dotnet.markdown" />
     <None Include="glossary\attachment-information.dotnet.markdown" />
@@ -600,9 +604,12 @@
     <None Include="transformers\what-are-transformers.markdown" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="file-system\client-api\" />
+    <Folder Include="file-system\synchronization\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="file-system\images\studio_view.png" />
     <Content Include="indexes\images\side-by-side-1.png" />
     <Content Include="indexes\images\side-by-side-2.png" />
     <Content Include="indexes\images\side-by-side-3.png" />

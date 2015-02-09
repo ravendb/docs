@@ -91,6 +91,8 @@
 			builder.AppendLine("</ul>");
 			builder.AppendLine("</li>");
 
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("File System", MVC.Docs.ActionNames.FileSystem, MVC.Docs.Name, new { language = language, version = "3.0", key = "file-system/what-is-ravenfs" }, null)));
+
 			builder.AppendLine("</ul>");
 
 			return new MvcHtmlString(builder.ToString());
