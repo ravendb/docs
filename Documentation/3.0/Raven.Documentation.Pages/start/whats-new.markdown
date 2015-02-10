@@ -1,6 +1,6 @@
 # What's new
 
-{PANEL:Upcoming}
+{PANEL:3.0.3599 - 2015/02/08}
 
 ### Server
 
