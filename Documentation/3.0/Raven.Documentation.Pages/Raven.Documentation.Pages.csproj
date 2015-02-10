@@ -352,8 +352,9 @@
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="file-system\.docslist" />
+    <None Include="file-system\indexing.markdown" />
     <None Include="file-system\server-side\.docslist" />
-    <None Include="file-system\server-side\files-in-ravenfs.markdown" />
+    <None Include="file-system\files.markdown" />
     <None Include="file-system\what-is-raven-fs.markdown" />
     <None Include="glossary\.docslist" />
     <None Include="glossary\admin-statistics.dotnet.markdown" />
