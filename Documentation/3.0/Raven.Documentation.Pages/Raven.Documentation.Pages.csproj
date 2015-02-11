@@ -352,8 +352,13 @@
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="file-system\.docslist" />
-    <None Include="file-system\server-side\.docslist" />
-    <None Include="file-system\server-side\files-in-ravenfs.markdown" />
+    <None Include="file-system\indexing.markdown" />
+    <None Include="file-system\server\.docslist" />
+    <None Include="file-system\files.markdown" />
+    <None Include="file-system\server\background-tasks.markdown" />
+    <None Include="file-system\server\enabling-rdc.markdown" />
+    <None Include="file-system\synchronization\.docslist" />
+    <None Include="file-system\synchronization\how-synchronization-works.markdown" />
     <None Include="file-system\what-is-raven-fs.markdown" />
     <None Include="glossary\.docslist" />
     <None Include="glossary\admin-statistics.dotnet.markdown" />
@@ -605,11 +610,13 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="file-system\client-api\" />
-    <Folder Include="file-system\synchronization\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="file-system\images\indexing_studio.png" />
     <Content Include="file-system\images\studio_view.png" />
+    <Content Include="file-system\server\images\enable-rdc-windows-7-and-8.png" />
+    <Content Include="file-system\server\images\enable-rdc-windows-server-2012.png" />
     <Content Include="indexes\images\side-by-side-1.png" />
     <Content Include="indexes\images\side-by-side-2.png" />
     <Content Include="indexes\images\side-by-side-3.png" />
