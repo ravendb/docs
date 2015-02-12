@@ -5,7 +5,6 @@ import java.util.Map;
 
 import net.ravendb.abstractions.data.JsonDocument;
 import net.ravendb.abstractions.data.MultiLoadResult;
-import net.ravendb.abstractions.exceptions.ServerClientException;
 import net.ravendb.abstractions.json.linq.RavenJObject;
 import net.ravendb.abstractions.json.linq.RavenJToken;
 import net.ravendb.client.IDocumentStore;
@@ -17,7 +16,7 @@ public class Get {
   @SuppressWarnings("unused")
   private interface IFoo {
     //region get_1_0
-    public JsonDocument get(String key) throws ServerClientException;
+    public JsonDocument get(String key);
     //endregion
 
     //region get_2_0
@@ -37,7 +36,7 @@ public class Get {
     //endregion
 
     //region get_4_0
-    public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize) throws ServerClientException;
+    public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize);
 
     public List<JsonDocument> startsWith(String keyPrefix, String matches, int start, int pageSize, boolean metadataOnly);
 

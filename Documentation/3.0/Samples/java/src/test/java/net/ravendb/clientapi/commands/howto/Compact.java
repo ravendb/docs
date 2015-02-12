@@ -1,6 +1,7 @@
 package net.ravendb.clientapi.commands.howto;
 
 import net.ravendb.client.IDocumentStore;
+import net.ravendb.client.connection.Operation;
 import net.ravendb.client.document.DocumentStore;
 
 

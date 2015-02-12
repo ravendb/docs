@@ -9,6 +9,7 @@ import com.mysema.query.annotations.QueryEntity;
 public class Order {
   private String id;
   private String company;
+  private String employee;
   private Date orderedAt;
   private Date requireAt;
   private Date shippedAt;
@@ -89,5 +90,12 @@ public class Order {
     this.lines = lines;
   }
 
+  public String getEmployee() {
+    return employee;
+  }
+
+  public void setEmployee(String employee) {
+    this.employee = employee;
+  }
 
 }

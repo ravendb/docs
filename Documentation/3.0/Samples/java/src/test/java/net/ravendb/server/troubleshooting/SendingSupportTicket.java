@@ -2,9 +2,7 @@ package net.ravendb.server.troubleshooting;
 
 import net.ravendb.abstractions.basic.EventHandler;
 import net.ravendb.abstractions.connection.WebRequestEventArgs;
-import net.ravendb.abstractions.data.DatabaseStatistics;
 import net.ravendb.client.IDocumentStore;
-import net.ravendb.client.RavenDBAwareTests.FiddlerConfigureRequestHandler;
 import net.ravendb.client.document.DocumentStore;
 
 import org.apache.http.HttpHost;
