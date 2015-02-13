@@ -17,6 +17,11 @@ namespace Raven.Documentation.Samples.ClientApi.Bundles
 				store.Conventions.FailoverBehavior = FailoverBehavior.FailImmediately;
 				#endregion
 
+				#region client_integration_4
+				store.Conventions.FailoverBehavior = FailoverBehavior.ReadFromAllServers 
+					| FailoverBehavior.AllowReadsFromSecondariesAndWritesToSecondaries;
+				#endregion
+
 				#region client_integration_2
 				store
 					.DatabaseCommands
