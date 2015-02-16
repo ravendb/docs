@@ -364,7 +364,9 @@
     <None Include="file-system\server\background-tasks.markdown" />
     <None Include="file-system\server\enabling-rdc.markdown" />
     <None Include="file-system\synchronization\.docslist" />
-    <None Include="file-system\synchronization\how-synchronization-works.markdown" />
+    <None Include="file-system\synchronization\conflicts.markdown" />
+    <None Include="file-system\synchronization\how-it-works.markdown" />
+    <None Include="file-system\synchronization\synchronization-types.markdown" />
     <None Include="file-system\what-is-raven-fs.markdown" />
     <None Include="glossary\.docslist" />
     <None Include="glossary\admin-statistics.dotnet.markdown" />

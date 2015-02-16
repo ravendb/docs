@@ -1,8 +1,8 @@
 ﻿#How file synchronization works?
 
 A synchronization of a single file is a multi-step process. The synchronization is started when a file is modified and it is considered as completed
-if a remote file system confirms that it has the same file on its side. The synchronization is initialized by the file system where the file is changed - *a source*. 
-It pushes all data needed to synchronize the file to the remote file system called *a destination*. One source file system can have multiple destinations. 
+if a remote file system confirms that it has the same file on its side. The synchronization is initialized by a file system where the file is changed - *source*. 
+It pushes all data needed to synchronize the file to a remote file system called *destination*. One source file system can have multiple destinations. 
 
 ##Destinations
 
@@ -52,7 +52,7 @@ for each of them:
 Depending on the determined synchronization work type, different data will be sent to a destination server to synchronize a file.
 {INFO/}
 
-{INFO: Keeping synchronization}
+{INFO: Synchronization limit}
 Each finishing synchronization always attempts to get next file from the synchronization queue in order to synchronize it. This way it performs
 concurrently as many synchronizations as possible according to the limit.
 {INFO/}
@@ -68,34 +68,31 @@ In order to avoid potential deadlocks (e.g. when server restarts in the middle o
 by specifying in `Raven-Synchronization-Lock-Timeout` configuration. If the synchronization limit reaches the timeout value, then accessing the file
 will automatically unlock it. By default the synchronization timeout is 10 minutes.
 
-{INFO: Keeping synchronization}
+{INFO: Transactional locking}
 Checking whether a file is already locked and a lock operation are made in a single transaction. There is no option that two servers
  will synchronize a file with the same name simultaneously. Taking the lock by a first one will prevent from syncing the second one.
 {INFO/}
 
 ##Synchronization aborts
 
-In contrast to a destination system, a source does need to lock a file during the synchronization. You are able to read and modify it. 
-However if any file modification made in the middle of the synchronization, it will abort the active synchronization process and retry it with 
-a new version.
+In contrast to a destination system, a source does not need to lock a file during its synchronization. You are able to read and modify it. 
+However if a modification of currently synchronized file is made, then the active synchronization process will be aborted and retried with
+its new version.
 
 ##Handling failures and restarts
 
-RavenFS has been designated to work with large files, so some synchronizations can take quite a long time. Especially in the case when a new 
-file was uploaded and then the source has to transfer the entire file to destination nodes. It makes that some failures might be caused by
-network problems or restarts of destination servers. The Raven File System ensures that every file change will be reflected on the destination 
-even though any failure happens or the destination won't be available for a long time. In order to make sure that no updates were missed it 
-uses the following mechanisms:
+RavenFS has been designated to work with large files. File synchronizations can take quite a long time, especially if it synchronizes a first file version 
+because then it needs to transfer entire file content to destination nodes. It can happen any synchronization failure meanwhile caused by a network 
+problem or a remote machine restart. Raven File System ensure that both files (source and remote versions) will have eventually the same name, content and metadata
+even in a presence of any failure or temporary unavailability of a destination file system. In order to make sure that no file change is missed, it uses the following mechanisms:
 
+* `Etag` tracking - the successful synchronization stores `Etag` of just synchronized file (provided by a source) on a destination side.
+If the source file system determines which files require to be synchronized, it asks the destination for `Etag` of the last received file from it.
+Any modification of a file increases its `Etag` (`Etags` are sequential), so we just need to synchronize files that have `Etags` greater than the one returned by
+the destination.
 
-TODO arek
+* confirmations - every synchronization must be confirmed. After a synchronization cycle the source file system keeps info about just synchronized files.
+Next synchronization task run starts from asking a destination about status of already accomplished synchronizations. If it answers that a file synchronization
+has failed then a file will be added to the synchronization queue again.
 
-* Tracking last ETag
-Every successful synchronization on the destination side stores an ETag number of already synchronized file. If the source determines what files require the synchronization it asks the destination about last ETag seen from that server. 
-ETags used in RavenFS are sequential, so we just need to synchronize files with greater ETag that last seen.
-
-###Confirmations
-Every synchronization must be confirmed. After a synchronization cycle the source stores what files was synchronized. In next cycle it asks the destination about status of the already acomplished synchronizations. If the synchronization failed the file is synchronized again.
-
-###Periodic running
-The synchronization task runs every 10 minutes.
+* periodic runs - the synchronization task runs every 10 minutes.
