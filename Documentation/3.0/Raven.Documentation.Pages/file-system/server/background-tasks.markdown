@@ -2,7 +2,7 @@
 
 #Async deletes and renames
 
-When a file is removed or renamed then relevant configuration items are created in a file system: `DeleteOp-[filename]` and `RenameOp-[filename]`.
+When a file is removed or renamed then relevant configuration items are created in a file system: `DeleteOp/[FILENAME]` and `RenameOp/[FILENAME]`.
 They are basically markers to indicate that an operation was initiated for a given file. A configuration will be deleted only if a related file operation finishes successfully.
 
 Note that these actions applied to really large files can take a while. Based on the prefixed configuration items the file system is able 

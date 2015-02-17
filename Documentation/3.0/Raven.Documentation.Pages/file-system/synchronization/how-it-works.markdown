@@ -61,11 +61,11 @@ concurrently as many synchronizations as possible according to the limit.
 
 When a destination file system is in the middle of synchronization process of a give file, then it denies to perform any other operation on it.
 An attempt to modify it will result it  `PreconditionFailed (412)` response. Behind the scenes there is a locking mechanism which creates
-`SyncingLock-[filename]` configuration when synchronization starts and as long as it exists, the file is not accessible. 
+`SyncingLock/[FILENAME]` configuration when synchronization starts and as long as it exists, the file is not accessible. 
 The file lock is removed at the end of the file synchronization process. 
 
-In order to avoid potential deadlocks (e.g. when server restarts in the middle of the synchronization) we have timeouts. You can control their value 
-by specifying in `Raven-Synchronization-Lock-Timeout` configuration. If the synchronization limit reaches the timeout value, then accessing the file
+In order to avoid potential deadlocks (e.g. when server restarts in the middle of the synchronization) we have timeout. You can control its value 
+by specifying `SynchronizationLockTimeout` in `Raven/Synchronization/Config`configuration. If the synchronization limit reaches the timeout value, then an attempt to access the file
 will automatically unlock it. By default the synchronization timeout is 10 minutes.
 
 {INFO: Transactional locking}

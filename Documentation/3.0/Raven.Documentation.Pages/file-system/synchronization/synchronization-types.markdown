@@ -57,19 +57,17 @@ An upload of missing file chunks between the source and destination file systems
 The destination server exposes `/synchronization/MultipartProceed` endpoint which accepts only RavenFS specific formatted MIME multipart content. 
 Below there is a sample synchronization request sent by the server (`Content-Type` request header has to be set as `multipart/form-data; boundary=syncing`).
 
-<code>
---syncing   
-Content-Disposition: form-data; Syncing-need-type=seed; Syncing-range-from=0; Syncing-range-to=407029   
-Content-Type: plain/text   
+	--syncing   
+	Content-Disposition: form-data; Syncing-need-type=seed; Syncing-range-from=0; Syncing-range-to=407029   
+	Content-Type: plain/text   
 
---syncing   
-Content-Disposition: file; Syncing-need-type=source; Syncing-range-from=407030; Syncing-range-to=412242   
-Content-Type: application/octet-stream   
+	--syncing   
+	Content-Disposition: file; Syncing-need-type=source; Syncing-range-from=407030; Syncing-range-to=412242   
+	Content-Type: application/octet-stream   
    
-[... data from byte 407030 to 412242 goes here...]   
+	[... data from byte 407030 to 412242 goes here...]   
    
---syncing--
-</code>
+	--syncing--
 
 Note that first seed part is empty because it involves the destination file chunk, it contains only information about byte range that needs to be copied from the existing file.
 The second one is *source* part and it contains a range of file content bytes.
