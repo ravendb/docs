@@ -12,16 +12,6 @@ Used by HiLo algorithm to store "Hi" value. HiLo method is used to generate file
 }
 {CODE-BLOCK/}
 
-##Raven/Sequences/Raven/Etag
-
-A configuration used to generate sequential `Etags`.
-
-{CODE-BLOCK:json}
-{
-    "Value": 3
-}
-{CODE-BLOCK/}
-
 ##Raven/Synchronization/Config
 
 Used to keep synchronization options like:

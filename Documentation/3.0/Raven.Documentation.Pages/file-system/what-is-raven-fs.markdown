@@ -19,7 +19,7 @@ An essential item that you will work with is a file. Besides binary data that ma
 * the first one is provided by the system and internally used by it (for instance: `ETag`),
 * the second one is defined by a user and can contain any information under a custom key.
 
-As it was already mentioned metadata is available for searching. More details about files are stored internally you will find in [Files](files) article.
+As it was already mentioned metadata is available for searching. More details about how files are stored internally you will find in [Files](files) article.
 
 ###Configuration
 
@@ -29,8 +29,8 @@ some configuration settings (i.e. `Raven/Synchronization/Destinations` keeps add
 
 ###Indexing
 
-Files are indexed by default. It allows you to execute the queries against metadata of stored files. Under the hood, the same like in RavenDB, 
-Lucene search engine is used. This allows you to do an efficient search by using file name, its size and metadata.
+Files are indexed by default. It allows you to execute queries against metadata of existing files. Under the hood, the same like in RavenDB, 
+Lucene search engine is used. This allows you to do an efficient search by using a file name, its size and metadata.
 
 ###Synchronization
 
@@ -45,7 +45,7 @@ Once one of the following events happens, then it will automatically start to sy
 
 The synchronization task also runs periodically to handle failures and restart scenarios. Each of the above operations is related with a different kind of
 synchronization work, which is determined by the server in order to minimize the amount of transferred data across the network. For example if you just change
-a file name then there is no need to sent its content, just the destination nodes know what is a new file name. To get more details about implemented synchronization solutions click [here]().
+a file name then there is no need to send its content.  It just need to let the destination file system know what is a new name of the file. To get more details about implemented synchronization solutions click [here]().
 
 ##Management studio
 

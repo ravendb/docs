@@ -1,33 +1,33 @@
 ﻿#Files
 
-RavenFS can stores data by using one of the following storage engines: Esent or Voron. You can choose then at the moment of creating a new file system.
+RavenFS can stores data by using one of the following storage engines: Esent or Voron. You can choose that at the moment of creating a new file system.
 
 ##What is a file?
 
-A file in the file system consists of:
+A file in Raven File System consists of:
 
 * name (full path),
 * total size,
 * uploaded size,
-* metadata - collection of properties associated with a file,
+* metadata,
 * sequence of bytes that make up file content.
 
 ##Pages
 
-Internally each file is divided into multiple pages. A page is a sequence of bytes, its maximum size is 64KB and it has an unique identifier - a pair of hashes calculated on the page's content.
+Internally each file is divided into pages. A page is a sequence of bytes, its maximum size is 64KB and has an unique identifier - a pair of hashes calculated on a page content.
 The concept of pages implicates a few facts:
 
 * stored pages are unique,
 * file content is an ordered list of page references,
-* each page might be a part of multiple files,
-* pages are immutable - once they are written to storage, they cannot be modified (but they can be removed if there is no file referencing this page),
-* occupied disk space is reduced by reusing pages if files share the same information (or even the same file has repeated data patterns).
+* single page might be referenced by multiple files,
+* pages are immutable - once they are written to storage, they cannot be modified (a page is removed if there is no file referencing it),
+* occupied disk space is reduced if files have common information (or even a single file that has repeated data patterns).
 
 ##Directories
 
 In RavenFS directories are just a virtual concept. The directory tree is built upon names of existing files. A file name must be a full path e.g. `/docs/pics/wall.jpg`.
 A directory part of a file name is indexed together with the file metadata what allows you to browse files by catalogs - you just need to query an appropriate index entry field. 
-Note that moving a file between directories is actually implemented as a rename operation.
+Note that moving a file between directories is actually the rename operation.
 
 ##Default metadata
 
@@ -52,13 +52,14 @@ Some properties are defined by RavenFS itself because they are necessary for int
 * `ETag` is an internal file identifier, updated every time if a file is modified. The file is considered as modified when new content is uploaded, a name or its metadata are changed or any of those changes has been synchronized from a remote file system,
 * `Content-MD5` is a hash of file content, calculated on the fly during an upload by using MD5 algorithm,
 * `RavenFS-Size` is a total size of a file,   
-* `Raven-Creation-Date`,  `Raven-Last-Modified` - dates of creation and last modification,
+* `Raven-Creation-Date`,  `Raven-Last-Modified` - dates of creation and last file modification,
 * `Raven-Synchronization-Version` is a number describing a file version in a file system,
 * `Raven-Synchronization-Source` is an unique identifier of an origin file server (where a last file modification has been made),
-* `Raven-Synchronization-History` is a list that consists of previous {`Raven-Synchronization-Version`, `Raven-Synchronization-Source`} pairs, updated every time a file is synchronized between servers.
+* `Raven-Synchronization-History` is a list that consists of previous {`Raven-Synchronization-Version`, `Raven-Synchronization-Source`} pairs,
+ updated every time a file is modified or synchronized between servers.
 
 {INFO: Updating synchronization history}
 `Raven-Synchronization-Version`, `Raven-Synchronization-Source` and `Raven-Synchronization-History` are always updated together.
 Existing `Raven-Synchronization-Version`, `Raven-Synchronization-Source` values are added to the history array (`Raven-Synchronization-History`)
-and get new values then. All of those properties, according to their names, are utilized for synchronization purposes (conflicts handling).
+and new values are assigned. All of those properties, according to their names, are utilized for synchronization purposes (dealing with conflicts).
 {INFO/}
