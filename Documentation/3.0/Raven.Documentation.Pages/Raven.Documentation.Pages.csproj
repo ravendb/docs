@@ -358,6 +358,16 @@
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="file-system\.docslist" />
+    <None Include="file-system\client-api\.docslist" />
+    <None Include="file-system\client-api\commands\.docslist" />
+    <None Include="file-system\client-api\commands\admin\.docslist" />
+    <None Include="file-system\client-api\commands\configurations\.docslist" />
+    <None Include="file-system\client-api\commands\files\.docslist" />
+    <None Include="file-system\client-api\commands\storage\.docslist" />
+    <None Include="file-system\client-api\commands\synchronization\.docslist" />
+    <None Include="file-system\client-api\commands\what-are-commands.markdown" />
+    <None Include="file-system\client-api\creating-files-store.markdown" />
+    <None Include="file-system\client-api\what-is-files-store.markdown" />
     <None Include="file-system\configurations.markdown" />
     <None Include="file-system\indexing.markdown" />
     <None Include="file-system\server\.docslist" />
@@ -619,7 +629,9 @@
     <None Include="transformers\what-are-transformers.markdown" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="file-system\client-api\" />
+    <Folder Include="file-system\client-api\changes-api\" />
+    <Folder Include="file-system\client-api\listeners\" />
+    <Folder Include="file-system\client-api\session\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
