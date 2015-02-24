@@ -8,32 +8,10 @@ They are accessible from `IFilesStore` object by using `AsyncFilesCommands` prop
 
 Note that in contrast to [RavenDB commands](../../../client-api/commands/what-are-commands), RavenFS client exposes only async methods.
 
-##File commands
+##Working with multiple file systems
 
-The following commands can be used to manipulate files:
+By default file commands are executed against `DefaultFileSystem` configured in `FilesStore`. However you can perform command actions on
+an another existing file system. Note that this file system may requite different credentials. Take a look at the example:
 
-TODO arek
+{CODE commands_different_fs@FileSystem\ClientApi\Commands\WhatAreCommands.cs /}
 
-##Configuration commands
-
-The following commands can be used to manage [configuration items](../../configurations):
-
-TODO arek
-
-##Synchronization commands
-
-The following commands can be used to manually perform synchronization actions:
-
-TODO arek
-
-##Storage commands
-
-The following commands can be used to force storage background tasks to run:
-
-TODO arek
-
-##Admin commands
-
-The following commands can be used to execute admin actions:
-
-TODO arek

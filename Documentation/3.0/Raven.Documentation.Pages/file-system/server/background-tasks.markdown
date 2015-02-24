@@ -1,12 +1,12 @@
 ﻿#Background tasks
 
-#Async deletes and renames
+#Renames and deletes
 
 When a file is removed or renamed then relevant configuration items are created in a file system: `DeleteOp/[FILENAME]` and `RenameOp/[FILENAME]`.
-They are basically markers to indicate that an operation was initiated for a given file. A configuration will be deleted only if a related file operation finishes successfully.
+They are basically markers to indicate that an operation was initiated for a given file. The configuration will be deleted only if a related file operation finishes successfully.
 
 Note that these actions applied to really large files can take a while. Based on the prefixed configuration items the file system is able 
-to resume a deletion of a file or its rename if a server was restarted in the middle. There are two background tasks which detect if any operation
+to resume the file deletion or its rename if a server was restarted in the middle. There are two background tasks which detect if any operation
 needs to be retried. They run periodically - every 15 minutes.
 
 #Synchronization

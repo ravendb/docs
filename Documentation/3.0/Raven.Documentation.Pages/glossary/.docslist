@@ -17,6 +17,7 @@ facet-query.markdown	FacetQuery
 facet-results.markdown	FacetResults
 facet-setup.markdown	FacetSetup
 field-highlightings.markdown	FieldHighlightings
+file-header.markdown	FileHeader
 index-change-notification.markdown	IndexChangeNotification
 index-definition.markdown	IndexDefinition
 index-merge-results.markdown	IndexMergeResults

@@ -363,6 +363,19 @@
     <None Include="file-system\client-api\commands\admin\.docslist" />
     <None Include="file-system\client-api\commands\configurations\.docslist" />
     <None Include="file-system\client-api\commands\files\.docslist" />
+    <None Include="file-system\client-api\commands\files\browse\.docslist" />
+    <None Include="file-system\client-api\commands\files\browse\browse.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\get.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\starts-with.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\stream-file-headers.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\delete.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\download.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\metadata\.docslist" />
+    <None Include="file-system\client-api\commands\files\metadata\update-metadata.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\rename.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\search\.docslist" />
+    <None Include="file-system\client-api\commands\files\metadata\get-metadata-for.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\.docslist" />
     <None Include="file-system\client-api\commands\synchronization\.docslist" />
     <None Include="file-system\client-api\commands\what-are-commands.markdown" />
@@ -389,6 +402,7 @@
     <None Include="glossary\bulk-insert-operation.dotnet.markdown" />
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
     <None Include="glossary\bulk-operation-options.dotnet.markdown" />
+    <None Include="glossary\file-header.dotnet.markdown" />
     <None Include="glossary\stream-result.dotnet.markdown" />
     <None Include="glossary\database-restore-request.dotnet.markdown" />
     <None Include="glossary\open-session-options.dotnet.markdown" />
