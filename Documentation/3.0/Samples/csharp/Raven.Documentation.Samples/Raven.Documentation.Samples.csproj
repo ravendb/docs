@@ -294,6 +294,7 @@
     <Compile Include="Common.cs" />
     <Compile Include="Faceted.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Browse.cs" />
+    <Compile Include="FileSystem\ClientApi\Commands\Configurations.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Files.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Metadata.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Search.cs" />

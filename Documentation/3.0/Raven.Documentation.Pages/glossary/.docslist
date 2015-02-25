@@ -6,6 +6,7 @@ bulk-operation-options.markdown	BulkOperationOptions
 bulk-insert-change-notification.markdown	BulkInsertChangeNotification
 bulk-insert-operation.markdown	BulkInsertOperation
 bulk-insert-options.markdown	BulkInsertOptions
+configuration-search-results.markdown	ConfigurationSearchResults
 database-document.markdown	DatabaseDocument
 database-restore-request.markdown	DatabaseRestoreRequest
 database-statistics.markdown	DatabaseStatistics

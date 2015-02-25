@@ -2,7 +2,7 @@
 
 Besides files you can also store non binary data items in RavenFS. It allows you to store JSON formatted items called *configurations*. 
 The usage of .Net Client API allows you to save any object because under the hood it is serialized to JSON. All methods to manage configuration items you will
-find in [configuration commands](TODOarek).
+find in [configuration commands](client-api/commands/configurations/set-key).
 
 ##Example
 

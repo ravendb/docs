@@ -362,6 +362,11 @@
     <None Include="file-system\client-api\commands\.docslist" />
     <None Include="file-system\client-api\commands\admin\.docslist" />
     <None Include="file-system\client-api\commands\configurations\.docslist" />
+    <None Include="file-system\client-api\commands\configurations\delete-key.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\get-key-names.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\get-key.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\search.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\set-key.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\.docslist" />
     <None Include="file-system\client-api\commands\files\browse\.docslist" />
     <None Include="file-system\client-api\commands\files\browse\browse.dotnet.markdown" />
@@ -406,6 +411,7 @@
     <None Include="glossary\bulk-insert-operation.dotnet.markdown" />
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
     <None Include="glossary\bulk-operation-options.dotnet.markdown" />
+    <None Include="glossary\configuration-search-results.dotnet.markdown" />
     <None Include="glossary\file-header.dotnet.markdown" />
     <None Include="glossary\search-results.dotnet.markdown" />
     <None Include="glossary\stream-result.dotnet.markdown" />
