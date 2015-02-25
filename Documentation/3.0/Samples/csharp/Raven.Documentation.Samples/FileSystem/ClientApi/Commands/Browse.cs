@@ -73,7 +73,7 @@
 			#endregion
 
 			#region stream_file_headers_2
-			using (var reader = await store.AsyncFilesCommands.StreamFilesAsync(Etag.Empty))
+			using (var reader = await store.AsyncFilesCommands.StreamFileHeadersAsync(Etag.Empty))
 			{
 				while (await reader.MoveNextAsync())
 				{
