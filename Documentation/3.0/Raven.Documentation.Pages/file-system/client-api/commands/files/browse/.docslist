@@ -2,3 +2,4 @@ browse.markdown	Browse
 get.markdown	Get
 starts-with.markdown	StartsWith
 stream-file-headers.markdown	StreamFileHeaders
+get-directories.markdown	GetDirectories

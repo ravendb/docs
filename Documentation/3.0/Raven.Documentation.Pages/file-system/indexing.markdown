@@ -8,7 +8,7 @@ The file system allows you to search files by using [Lucene query syntax](http:/
 * date of modification,
 * any user defined metadata.
 
-The more files and corresponded metadata you add the more search terms you can use to build your search query. All available search fields you can find by using [Client API](TODO arek). Below there is an explanation of built-in search fields: 
+The more files and corresponded metadata you add the more search terms you can use to build your search query. All available search fields you can find by using [`GetSearchFieldsAsync` method](./client-api/commands/files/search/get-search-fields). Below there is an explanation of built-in search fields: 
 
 Let's assume that we have a file `documents/pictures/wallpaper.jpg`, then default search terms would have the values:
 
@@ -28,7 +28,7 @@ A sample query to find all files under `/documents` directory (or nested) that n
 
 `__directoryName:/documents AND __rfileName:gpj.*  AND __size_numeric:[1048576 TO *]`
 
-The easiest way to search for files from the code is to use either [Client API](../client-api/indexTODO arek) methods.
+The easiest way to search for files from the code is to use [Client API](client-api/commands/files/search/search) methods.
 
 Searching is also supported by studio, where you will find useful predefined search filters:
 

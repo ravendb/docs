@@ -36,6 +36,7 @@ raven-query-statistics.markdown	RavenQueryStatistics
 replication-conflict-notification.markdown	ReplicationConflictNotification
 replication-destination.markdown	ReplicationDestination
 scripted-patch-command-data.markdown	ScriptedPatchCommandData
+search-results.markdown	SearchResults
 spatial-criteria-factory.markdown	SpatialCriteriaFactory
 stream-result.markdown	StreamResult
 suggestion-query.markdown	SuggestionQuery

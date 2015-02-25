@@ -365,6 +365,7 @@
     <None Include="file-system\client-api\commands\files\.docslist" />
     <None Include="file-system\client-api\commands\files\browse\.docslist" />
     <None Include="file-system\client-api\commands\files\browse\browse.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\get-directories.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\get.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\starts-with.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\stream-file-headers.dotnet.markdown" />
@@ -375,6 +376,9 @@
     <None Include="file-system\client-api\commands\files\rename.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\.docslist" />
     <None Include="file-system\client-api\commands\files\metadata\get-metadata-for.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\search\get-search-fields.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\search\search-on-directory.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\search\search.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\.docslist" />
     <None Include="file-system\client-api\commands\synchronization\.docslist" />
@@ -403,6 +407,7 @@
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
     <None Include="glossary\bulk-operation-options.dotnet.markdown" />
     <None Include="glossary\file-header.dotnet.markdown" />
+    <None Include="glossary\search-results.dotnet.markdown" />
     <None Include="glossary\stream-result.dotnet.markdown" />
     <None Include="glossary\database-restore-request.dotnet.markdown" />
     <None Include="glossary\open-session-options.dotnet.markdown" />

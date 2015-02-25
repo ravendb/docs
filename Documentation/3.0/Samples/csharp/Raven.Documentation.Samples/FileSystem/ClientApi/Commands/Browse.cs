@@ -26,6 +26,10 @@
 			#region stream_file_headers_1
 			Task<IAsyncEnumerator<FileHeader>> StreamFileHeadersAsync(Etag fromEtag, int pageSize = int.MaxValue);
 			#endregion
+
+			#region get_directories_1
+			Task<string[]> GetDirectoriesAsync(string from = null, int start = 0, int pageSize = 1024);
+			#endregion
 		}
 
 		public async Task Foo()
@@ -80,6 +84,23 @@
 					FileHeader header = reader.Current;
 				}
 			}
+			#endregion
+
+			Stream content = null;
+
+			#region get_directories_2
+			await store.AsyncFilesCommands.UploadAsync("text-files/txt/a.txt", content);
+			await store.AsyncFilesCommands.UploadAsync("text-files/doc/a.doc", content);
+			await store.AsyncFilesCommands.UploadAsync("text-files/doc/drafts/a.doc", content);
+			await store.AsyncFilesCommands.UploadAsync("image-files/a.jpg", content);
+
+			string[] dirs;
+
+			dirs = await store.AsyncFilesCommands.GetDirectoriesAsync(); // will return "/image-files" and "/text-files"
+
+			dirs = await store.AsyncFilesCommands.GetDirectoriesAsync("/text-files"); // will return "/text-files/doc" and "/text-files/txt"
+
+			dirs = await store.AsyncFilesCommands.GetDirectoriesAsync("/image-files"); // will return empty array
 			#endregion
 		}
 	}
