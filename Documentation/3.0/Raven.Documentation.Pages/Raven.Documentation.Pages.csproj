@@ -389,6 +389,15 @@
     <None Include="file-system\client-api\commands\synchronization\.docslist" />
     <None Include="file-system\client-api\commands\what-are-commands.markdown" />
     <None Include="file-system\client-api\creating-files-store.markdown" />
+    <None Include="file-system\client-api\session\.docslist" />
+    <None Include="file-system\client-api\session\deleting-files.dotnet.markdown" />
+    <None Include="file-system\client-api\session\downloading-files.dotnet.markdown" />
+    <None Include="file-system\client-api\session\loading-files.dotnet.markdown" />
+    <None Include="file-system\client-api\session\opening-session.dotnet.markdown" />
+    <None Include="file-system\client-api\session\querying\.docslist" />
+    <None Include="file-system\client-api\session\renaming-files.dotnet.markdown" />
+    <None Include="file-system\client-api\session\uploading-files.dotnet.markdown" />
+    <None Include="file-system\client-api\session\what-is-a-file-session.markdown" />
     <None Include="file-system\client-api\what-is-files-store.markdown" />
     <None Include="file-system\configurations.markdown" />
     <None Include="file-system\indexing.markdown" />
@@ -656,7 +665,6 @@
   <ItemGroup>
     <Folder Include="file-system\client-api\changes-api\" />
     <Folder Include="file-system\client-api\listeners\" />
-    <Folder Include="file-system\client-api\session\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

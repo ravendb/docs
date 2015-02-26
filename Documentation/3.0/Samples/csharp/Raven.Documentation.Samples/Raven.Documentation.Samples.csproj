@@ -300,6 +300,11 @@
     <Compile Include="FileSystem\ClientApi\Commands\Search.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="FileSystem\ClientApi\CreatingFilesStore.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\DeletingFiles.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\LoadingFiles.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\OpeningSession.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\UploadingFiles.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\WhatIsFilesSession.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
     <Compile Include="Indexes\Creating.cs" />
