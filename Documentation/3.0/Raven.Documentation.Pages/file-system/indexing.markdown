@@ -28,7 +28,7 @@ A sample query to find all files under `/documents` directory (or nested) that n
 
 `__directoryName:/documents AND __rfileName:gpj.*  AND __size_numeric:[1048576 TO *]`
 
-The easiest way to search for files from the code is to use [Client API](client-api/commands/files/search/search) methods.
+The easiest way to search for files from the code is to use Client API methods provided by [commands](client-api/commands/files/search/search) or [a session](client-api/session/querying/basics).
 
 Searching is also supported by studio, where you will find useful predefined search filters:
 

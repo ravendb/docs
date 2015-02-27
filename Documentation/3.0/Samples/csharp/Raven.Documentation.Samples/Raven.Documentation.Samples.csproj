@@ -304,7 +304,11 @@
     <Compile Include="FileSystem\ClientApi\Session\DownloadingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\LoadingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\OpeningSession.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\Querying\Basics.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\Querying\Filtering.cs" />
     <Compile Include="FileSystem\ClientApi\Session\RenamingFiles.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\SavingChanges.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\ChangingMetadata.cs" />
     <Compile Include="FileSystem\ClientApi\Session\UploadingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\WhatIsFilesSession.cs" />
     <Compile Include="Indexes\Analyzers.cs" />

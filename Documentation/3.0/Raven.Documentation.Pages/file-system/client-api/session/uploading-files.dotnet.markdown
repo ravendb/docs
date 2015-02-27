@@ -41,7 +41,8 @@ You can also dynamically generate file content:
 {CODE register_upload_4@FileSystem\ClientApi\Session\UploadingFiles.cs /}
 
 {WARNING: Possible `BadRequestException`}
-If the write action will put fewer bytes than declared then RavenFS will detect this and cancel the upload by throwing `BadRequestException`.
+If the write action will put fewer bytes than declared then RavenFS will detect this and cancel the upload by throwing `BadRequestException`
+when `SaveChangesAsync` is called.
 {WARNING/}
 
 ##Example III
