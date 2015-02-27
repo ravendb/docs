@@ -8,8 +8,8 @@ apply changes to a remote RavenFS server.
 
 {CODE session_usage_1@FileSystem\ClientApi\Session\WhatIsFilesSession.cs /}
 
-All registered modifications are be applied when `SaveChangesAsync` is called. It means that a stream object passed to `RegisterUpload` needs to be
-available to read (must not be disposed) at the moment of `SaveChangesAsync` call.
+All registered modifications are applied when `SaveChangesAsync` is called. It means that a stream object passed to `RegisterUpload` needs to be
+available to read at the moment of `SaveChangesAsync` call (cannot be disposed).
 
 Note that the session does not load files with content. It just retrieves and operates on file headers. If you want to get a file's content you have to
 explicitly download it.
@@ -29,7 +29,7 @@ to the server
 
 {INFO: Applying changes}
 In order to apply changes to the file system, the session uses [commands](../commands/what-are-commands) under the hood. In contrast to [`IDocumentSession`](../../../client-api/session/what-is-a-session-and-how-does-it-work)
-modification operations are not batched. Each registered change is completed as a separate command - implemented as a remote call.
+modification operations are not batched. Each registered change is completed as a separate command, realized as a remote call.
 {INFO/}
 
 {SAFE:MaxNumberOfRequestsPerSession}

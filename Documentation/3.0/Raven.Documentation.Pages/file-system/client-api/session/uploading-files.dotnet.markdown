@@ -9,14 +9,14 @@ a stream object or a write action that is allowed to directly write to a HTTP re
 
 {CODE register_upload_1@FileSystem\ClientApi\Session\UploadingFiles.cs /}
 
-Next two overloads instead of a full path accept `FileHeader` parameter - the underlying type that the session works on.
+Next two overloads instead of a full path accept `FileHeader` object which represents a file in the session.
 
 {CODE register_upload_2@FileSystem\ClientApi\Session\UploadingFiles.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | string | The full file path |
-| **file** | FileHeader | The file represented by `FileHeader` |
+| **file** | [FileHeader](../../../glossary/file-header) | The file represented by `FileHeader` |
 | **stream** | Stream | The file content that will be copied to HTTP request |
 | **fileSize** | long | The declared number of bytes to write in **write** action |
 | **write** | Action&lt;Stream&gt; | The action which writes file content bytes directly to HTTP request stream |
@@ -28,6 +28,11 @@ Next two overloads instead of a full path accept `FileHeader` parameter - the un
 Below code will upload an entire file stored on a local disk to RavenFS:
 
 {CODE register_upload_3@FileSystem\ClientApi\Session\UploadingFiles.cs /}
+
+{INFO: File content}
+The actual upload is made when `SaveChangesAsync` is run. The stream which is file content needs to be available to read at that moment.
+The stream value must not be disposed _before_ the save changes call.
+{INFO/}
 
 ##Example II
 

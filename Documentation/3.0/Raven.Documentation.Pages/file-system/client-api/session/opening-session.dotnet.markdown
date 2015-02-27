@@ -18,7 +18,7 @@ The second overload is a equivalent of doing
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **sessionOptions** | OpenFilesSessionOptions | Options containing information such as a file system name on which session will work and credentials to use. |
+| **sessionOptions** | OpenFilesSessionOptions | Options containing information such as a file system name on which a session will work and credentials to use. |
 
 | Return Value | |
 | ------------- | ------------- |

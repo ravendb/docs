@@ -1,4 +1,4 @@
-﻿#Registering a file delete
+﻿#Registering deletions
 
 In order to register a file delete operation you need to use `RegisterFileDeletion` method.
 
@@ -11,8 +11,12 @@ There are two overloads:
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | string | The full file path |
-| **file** | FileHeader | The file represented by `FileHeader` |
+| **file** | [FileHeader](../../../glossary/file-header) | The file represented by `FileHeader` |
 | **etag** | Etag | Current file ETag, used for concurrency checks (`null` will skip the check) |
+
+{WARNING: FileNotFoundException}
+If the requested file does not exist in the file system then `FileNotFoundException` will be thrown by `SaveChangesAsync`.
+{WARNING/}
 
 ##Example
 

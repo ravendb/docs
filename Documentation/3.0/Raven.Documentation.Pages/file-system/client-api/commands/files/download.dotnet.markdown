@@ -9,7 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **filename** | string | The name of a downloaded file |
-| **metadata** | Reference<RavenJObject> | Reference of metadata object where downloaded file metadata will be placed (if not `null`, default: `null`)  |
+| **metadata** | Reference&lt;RavenJObject&gt; | Reference of metadata object where downloaded file metadata will be placed (if not `null`, default: `null`)  |
 | **from** | long? | The number of the first byte in a range when a partial download is requested |
 | **to** | long? | The number of the last byte in a range when a partial download is requested|
 
@@ -17,7 +17,7 @@
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;Stream&gt;** | A task that represents the asynchronous download operation. The task result is a file's content represented by a readable stream |
+| **Task&lt;Stream&gt;** | A task that represents the asynchronous download operation. The task result is a file's content represented by a readable stream. |
 
 ## Example
 

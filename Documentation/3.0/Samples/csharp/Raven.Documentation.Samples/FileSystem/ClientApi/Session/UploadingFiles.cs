@@ -63,7 +63,7 @@
 
 				if (ravenFile == null || new FileInfo(localFile).LastWriteTime - ravenFile.LastModified > TimeSpan.FromHours(1))
 				{
-					using (Stream content = File.OpenRead(@"C:\intro.avi"))
+					using (Stream content = File.OpenRead(localFile))
 					{
 						session.RegisterUpload(ravenFile, content);
 

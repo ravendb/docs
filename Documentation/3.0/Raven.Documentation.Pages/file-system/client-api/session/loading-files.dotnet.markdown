@@ -14,6 +14,8 @@ There are two overloads of `LoadFileAsync` method used to load a single or multi
 | ------------- | ------------- |
 | **Task&lt;FileHeader&gt;** | The file instance represented by [`FileHeader`]() object or `null` if a file does not exist. |
 
+<br />
+
 {CODE load_file_1@FileSystem\ClientApi\Session\LoadingFiles.cs /}
 
 | Parameters | | |
@@ -22,7 +24,11 @@ There are two overloads of `LoadFileAsync` method used to load a single or multi
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;FileHeader[]&gt;** | The array of file instance represented by [`FileHeader`]() object or `null` if a file does not exist. |
+| **Task&lt;FileHeader[]&gt;** | The array of file instances, each represented by [`FileHeader`]() object or `null` if a file does not exist. |
+
+{INFO: File headers}
+Note that the load method does not download file content. It fetches just a header which is a basic session entity object.
+{INFO/}
 
 
 ##Example I
