@@ -1,6 +1,6 @@
 ﻿#Basics
 
-Another great feature of the session is the querying support. `Query` method is an entry point to build a query that will be used to look
+Another great feature offered by the session is the querying support. `Query` method is an entry point to build a query that will be used to look
 for files on a file system according to specified criteria.
 
 ##Syntax
@@ -22,7 +22,7 @@ In order to get the results you need to materialize the query by using one of th
 * `SingleOrDefaultAsync`
 
 {INFO: Async API}
-The querying API the same like the rest of RavenFS client methods exposes only asynchronous methods that ma.
+The querying API the same like the rest of RavenFS client methods exposes only asynchronous methods.
 {INFO/}
 
 {SAFE: Default page size}

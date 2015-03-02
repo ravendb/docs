@@ -37,6 +37,17 @@
 				#endregion
 			}
 
+			{
+				#region search_3
+				SearchResults results = await store
+					.AsyncFilesCommands
+					.SearchAsync(
+						"AllowRead:Everyone", 
+						new[] { "__key", "-__fileName" } // sort ascending by full path, then by file name in descending order
+					);
+				#endregion
+			}
+
 			MemoryStream stream = null;
 
 			{

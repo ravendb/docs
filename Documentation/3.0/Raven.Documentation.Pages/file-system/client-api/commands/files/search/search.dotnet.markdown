@@ -19,8 +19,18 @@ Use **SearchAsync** method to fetch list of files matching a specified query.
 | ------------- | ------------- |
 | **Task&lt;SearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`SearchResults`](../../../../../glossary/search-results) object which represents results of a specified query. |
 
-## Example
+## Example I
 
 In order to get the list of files that has `Everyone` value under `AllowRead` metadata key, returned in ascending order by a full file name (stored under built-in `__key` field) you need to build the following query:
 
 {CODE search_2@FileSystem\ClientApi\Commands\Search.cs /}
+
+{INFO: Results order}
+There is a convention which determines the ordering type: *ascending* or *descending*.
+The usage of `+` symbol or no prefix before a name of the sorted field means that ascending sorting will be applied. In order to retrieve
+results in descending order you need to add `-` sign before the field name.
+{INFO/}
+
+## Example II
+
+{CODE search_3@FileSystem\ClientApi\Commands\Search.cs /}

@@ -8,7 +8,7 @@ with filtering criteria you can use a bunch of available methods.
 The first method to create a conditional query is `Where` which takes a string parameter. You need to manually define the whole query according
 to [Lucene syntax](http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html), the same like
 for [`SearchAsync` command](../../commands/files/search/search). The advantage of this approach is that you can use full support of
-Lucene search functionality. You can query [built-in RavenFS fields](../../../indexing) as well as file metadata.
+Lucene search functionality. You can query [built-in RavenFS fields](../../../indexing) as well as custom file metadata.
 
 {CODE filtering_1@FileSystem\ClientApi\Session\Querying\Filtering.cs /}
 
