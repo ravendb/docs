@@ -2,7 +2,7 @@
 
 The `SelectFields<T>` method is very similar to [`ProjectFromIndexFieldsInto<T>`](project-from-index-fields-into) but it works with Lucene queries.
 After applying it the query results will become objects of the specified type `T`. The transformation is done server side and the projected fields are retrieved directly from stored index fields, what influences positively time of the query execution.
-It means that an index definition should indicate what field have to be stored inside Lucene index, for example:
+It means that an index definition should indicate what fields have to be stored inside Lucene index, for example:
 
 {CODE index_def@ClientApi\Querying\ResultsTransformation\SelectFields.cs /}
 
