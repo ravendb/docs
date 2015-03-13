@@ -154,6 +154,7 @@
     <None Include="client-api\commands\transformers\get.java.markdown" />
     <None Include="client-api\commands\transformers\how-to\transform-query-results.java.markdown" />
     <None Include="client-api\commands\transformers\put.java.markdown" />
+    <None Include="client-api\commands\what-are-commands.http.markdown" />
     <None Include="client-api\commands\what-are-commands.java.markdown" />
     <None Include="client-api\commands\documents\.docslist" />
     <None Include="client-api\commands\documents\delete.dotnet.markdown" />
