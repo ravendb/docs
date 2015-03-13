@@ -26,7 +26,7 @@ Let's assume that we have a file `documents/pictures/wallpaper.jpg`, then defaul
 
 A sample query to find all files under `/documents` directory (or nested) that name ends with `.jpg` and size is greater or equal than 1MB:
 
-`__directoryName:/documents AND __rfileName:gpj.*  AND __size_numeric:[1048576 TO *]`
+`__directoryName:/documents AND __rfileName:gpj.*  AND __size_numeric:[Lx1048576 TO *]`
 
 The easiest way to search for files from the code is to use Client API methods provided by [commands](client-api/commands/files/search/search) or [a session](client-api/session/querying/basics).
 
