@@ -20,6 +20,7 @@
 			public TableOfContentsItem()
 			{
 				Items = new List<TableOfContentsItem>();
+				Languages = new List<Language>();
 			}
 
 			public string Key { get; set; }
@@ -29,6 +30,8 @@
 			public bool IsFolder { get; set; }
 
 			public List<TableOfContentsItem> Items { get; set; }
+
+			public List<Language> Languages { get; set; }
 		}
 	}
 }

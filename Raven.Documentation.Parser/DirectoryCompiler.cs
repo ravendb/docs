@@ -14,7 +14,7 @@
 
 		private readonly ParserOptions _options;
 
-		
+
 		public DirectoryCompiler(DocumentCompiler documentCompiler, ParserOptions options)
 		{
 			_documentCompiler = documentCompiler;
@@ -51,11 +51,11 @@
 					continue;
 
 				var tableOfContents = new TableOfContents
-					                      {
-						                      Version = documentationVersion,
-						                      Category = CategoryHelper.ExtractCategoryFromPath(item.Name),
-						                      Items = GenerateTableOfContentItems(Path.Combine(directory, item.Name), item.Name).ToList()
-					                      };
+										  {
+											  Version = documentationVersion,
+											  Category = CategoryHelper.ExtractCategoryFromPath(item.Name),
+											  Items = GenerateTableOfContentItems(Path.Combine(directory, item.Name), item.Name).ToList()
+										  };
 
 				yield return tableOfContents;
 			}
@@ -70,16 +70,37 @@
 			foreach (var item in DocListFileHelper.ParseDocListFile(docListFilePath))
 			{
 				var tableOfContentsItem = new TableOfContents.TableOfContentsItem
-					                          {
-						                          Key = keyPrefix + "/" + item.Name, 
+											  {
+												  Key = keyPrefix + "/" + item.Name,
 												  Title = item.Description,
 												  IsFolder = item.IsFolder
-					                          };
+											  };
 
 				if (tableOfContentsItem.IsFolder)
 					tableOfContentsItem.Items = GenerateTableOfContentItems(Path.Combine(directory, item.Name), tableOfContentsItem.Key).ToList();
+				else
+					tableOfContentsItem.Languages = GetLanguagesForTableOfContentsItem(directory, item.Name).ToList();
 
 				yield return tableOfContentsItem;
+			}
+		}
+
+		private static IEnumerable<Language> GetLanguagesForTableOfContentsItem(string directory, string tableOfContentsItemName)
+		{
+			var filePath = Path.Combine(directory, tableOfContentsItemName);
+
+			var allFilePath = filePath + Constants.MarkdownFileExtension;
+			if (File.Exists(allFilePath))
+			{
+				yield return Language.All;
+				yield break;
+			}
+
+			foreach (var languageFileExtension in FileExtensionHelper.GetLanguageFileExtensions())
+			{
+				var languageFilePath = filePath + languageFileExtension.Value + Constants.MarkdownFileExtension;
+				if (File.Exists(languageFilePath))
+					yield return languageFileExtension.Key;
 			}
 		}
 
@@ -123,11 +144,11 @@
 				yield break;
 
 			var indexItem = new FolderItem(isFolder: false)
-				                {
-					                Description = string.Empty,
-					                Language = Language.All,
-					                Name = "index"
-				                };
+								{
+									Description = string.Empty,
+									Language = Language.All,
+									Name = "index"
+								};
 
 			yield return CompileDocumentationPage(indexItem, directory, documentationVersion);
 		}
