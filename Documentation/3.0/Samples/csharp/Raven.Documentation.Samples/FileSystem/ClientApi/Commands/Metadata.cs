@@ -1,6 +1,7 @@
 ﻿namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
 {
 	using System.Threading.Tasks;
+	using Abstractions.Data;
 	using Client.FileSystem;
 	using Json.Linq;
 
@@ -13,7 +14,7 @@
 			#endregion
 
 			#region update_metadata_1
-			Task UpdateMetadataAsync(string filename, RavenJObject metadata);
+			Task UpdateMetadataAsync(string filename, RavenJObject metadata, Etag etag = null);
 			#endregion
 		}
 

@@ -10,6 +10,7 @@
 | ------------- | ------------- | ----- |
 | **currentName** | string | The name of the file that you want to change |
 | **newName** | string | The new file name |
+| **etag** | Etag | The current file etag, used for concurrency checks (`null` skips check) |
 
 <hr />
 

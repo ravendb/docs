@@ -12,7 +12,7 @@
 		private interface IFoo
 		{
 			#region upload_1
-			Task UploadAsync(string filename, Stream source, RavenJObject metadata = null, long? size = null);
+			Task UploadAsync(string filename, Stream source, RavenJObject metadata = null, long? size = null, Etag etag = null);
 			#endregion
 
 			#region download_1
@@ -20,11 +20,11 @@
 			#endregion
 
 			#region rename_1
-			Task RenameAsync(string currentName, string newName);
+			Task RenameAsync(string currentName, string newName, Etag etag = null);
 			#endregion
 
 			#region delete_1
-			Task DeleteAsync(string filename);
+			Task DeleteAsync(string filename, Etag etag = null);
 			#endregion
 		}
 

@@ -9,6 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **filename** | string | The name of a file to delete |
+| **etag** | Etag | The current file etag, used for concurrency checks (`null` skips check) |
 
 <hr />
 

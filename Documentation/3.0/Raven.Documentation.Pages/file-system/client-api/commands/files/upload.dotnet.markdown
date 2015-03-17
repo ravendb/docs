@@ -12,6 +12,7 @@
 | **source** | Stream | The file content |
 | **metadata** | RavenJObject | The file metadata (default: `null`) |
 | **size** | long? | The file size. It is sent in `RavenFS-Size` header to validate number of bytes received on the server side (default: `null` - then `source.Length` value is used). If there is a mismatch between the size reported in the header and the number read bytes on the server side, then `BadRequestException` is thrown |
+| **etag** | Etag | The current file etag, used for concurrency checks (`null` skips check) |
 
 | Return Value | |
 | ------------- | ------------- |

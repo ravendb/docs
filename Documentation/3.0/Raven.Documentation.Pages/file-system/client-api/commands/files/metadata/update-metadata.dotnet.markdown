@@ -10,6 +10,7 @@
 | ------------- | ------------- | ----- |
 | **filename** | string | The modified file name |
 | **metadata** | RavenJObject | New file metadata |
+| **etag** | Etag | The current file etag, used for concurrency checks (`null` skips check) |
 
 <hr />
 
