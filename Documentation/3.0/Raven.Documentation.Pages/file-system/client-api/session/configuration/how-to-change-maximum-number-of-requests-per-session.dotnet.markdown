@@ -1,0 +1,17 @@
+﻿#How to change maximum number of requests per session?
+
+By default, maximum number of requests that session can send to server is **30**. This number, if everything is done correctly, should never be reached. Remote calls are expensive, and the number of remote calls per "session" should be as small as possible. If the limit is reached, then make sure that you don't misuse of the session object.
+
+Nevertheless, if needed, this number can be changed for single session or for all sessions.
+
+## Single session
+
+To change maximum number of requests in a single session just manipulate `MaxNumberOfRequestsPerSession` property value from `Advanced` session operations.
+
+{CODE max_requests_1@FileSystem\ClientApi\Session\Configuration\MaxRequests.cs /}
+
+## All sessions
+
+To change maximum number of requests for all sessions (on particular store) then `MaxNumberOfRequestsPerSession` property from `FilesStore.Conventions` must be changed.
+
+{CODE max_requests_2@FileSystem\ClientApi\Session\Configuration\MaxRequests.cs /}

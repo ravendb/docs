@@ -392,6 +392,9 @@
     <None Include="file-system\client-api\creating-files-store.markdown" />
     <None Include="file-system\client-api\session\.docslist" />
     <None Include="file-system\client-api\session\changing-metadata.dotnet.markdown" />
+    <None Include="file-system\client-api\session\configuration\.docslist" />
+    <None Include="file-system\client-api\session\configuration\how-to-change-maximum-number-of-requests-per-session.dotnet.markdown" />
+    <None Include="file-system\client-api\session\configuration\how-to-enable-optimistic-concurrency.dotnet.markdown" />
     <None Include="file-system\client-api\session\deleting-files.dotnet.markdown" />
     <None Include="file-system\client-api\session\downloading-files.dotnet.markdown" />
     <None Include="file-system\client-api\session\loading-files.dotnet.markdown" />
