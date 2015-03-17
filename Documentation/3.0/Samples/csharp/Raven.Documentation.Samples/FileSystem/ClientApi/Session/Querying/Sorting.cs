@@ -24,7 +24,7 @@
 				{
 					#region sorting_2
 					List<FileHeader> results = await session.Query()
-												.OrderByDescending("Owner") // order descending by custom "Owner" metadata 
+												.OrderByDescending("Owner") // order descending by "Owner" metadata 
 												.ToListAsync();
 					#endregion
 				}

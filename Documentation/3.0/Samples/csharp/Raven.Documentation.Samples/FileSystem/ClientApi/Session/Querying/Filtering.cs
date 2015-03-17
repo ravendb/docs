@@ -27,7 +27,7 @@
 				{
 					#region filtering_2
 					List<FileHeader> results = await session.Query()
-						.WhereBetween(x => x.TotalSize, 1024, 1024 * 1024)
+						.WhereBetween(x => x.TotalSize, 1024 * 1024, 5 * 1024 * 1024) // size has to be > 1KB but < 5KB
 						.ToListAsync();
 					#endregion
 				}
@@ -36,7 +36,7 @@
 				{
 					#region filtering_3
 					List<FileHeader> results = await session.Query()
-						.WhereBetweenOrEqual(x => x.TotalSize, 1024, 1024 * 1024)
+						.WhereBetweenOrEqual("NumberOfDownloads", 5, 10)
 						.ToListAsync();
 					#endregion
 				}
@@ -61,10 +61,21 @@
 
 				using (var session = store.OpenAsyncSession())
 				{
+					Stream stream = null;
+
 					#region filtering_6
+
+					session.RegisterUpload("test.file", stream);
+					session.RegisterUpload("test.fil", stream);
+					session.RegisterUpload("test.fi", stream);
+					session.RegisterUpload("test.f", stream);
+
+					await session.SaveChangesAsync();
+
 					List<FileHeader> results = await session.Query()
-						.WhereGreaterThan(x => x.TotalSize, 1024 * 1024)
+						.WhereGreaterThan(x => x.Name, "test.fi") // will return 'test.fil' and 'test.file'
 						.ToListAsync();
+
 					#endregion
 				}
 
@@ -72,7 +83,7 @@
 				{
 					#region filtering_7
 					List<FileHeader> results = await session.Query()
-						.WhereGreaterThanOrEqual(x => x.TotalSize, 1024 * 1024)
+						.WhereGreaterThanOrEqual("Download-Ratio", 7.3)
 						.ToListAsync();
 					#endregion
 				}
@@ -99,7 +110,7 @@
 				{
 					#region filtering_10
 					List<FileHeader> results = await session.Query()
-						.WhereLessThanOrEqual(x => x.TotalSize, 1024)
+						.WhereLessThanOrEqual("Downloaded", 5)
 						.ToListAsync();
 					#endregion
 				}
@@ -115,62 +126,79 @@
 
 				using (var session = store.OpenAsyncSession())
 				{
-					#region filtering_
+					Stream content = null;
+
+					#region filtering_12
+					session.RegisterUpload("git.bin", content, new RavenJObject()
+					{
+						{"Attributes", new RavenJArray(new object[]{ "r", "w" }) }
+					});
+
+					session.RegisterUpload("svn.bin", content, new RavenJObject()
+					{
+						{"Attributes", new RavenJArray(new object[]{ "w", "x" }) }
+					});
+
+					await session.SaveChangesAsync();
+					#endregion
+				}
+
+				using (var session = store.OpenAsyncSession())
+				{
+					#region filtering_13
 					List<FileHeader> results = await session.Query()
+						.ContainsAll("Attributes", new[] { "r", "w" }) // will return git.bin
 						.ToListAsync();
 					#endregion
 				}
 
 				using (var session = store.OpenAsyncSession())
 				{
-					#region filtering_
+					#region filtering_14
 					List<FileHeader> results = await session.Query()
-
+						.ContainsAny("Attributes", new[] { "r", "x" }) // will return git.bin and svn.bin
 						.ToListAsync();
 					#endregion
 				}
 
 				using (var session = store.OpenAsyncSession())
 				{
-					#region filtering_
+					#region filtering_15
 					List<FileHeader> results = await session.Query()
-
+						.WhereStartsWith(x => x.Name, "readme")
+						.WhereEquals("Copyright", "HR")
 						.ToListAsync();
 					#endregion
 				}
 
 				using (var session = store.OpenAsyncSession())
 				{
-					#region filtering_
+					#region filtering_16
 					List<FileHeader> results = await session.Query()
-
+						.WhereStartsWith(x => x.Name, "readme")
+						.AndAlso()
+						.WhereEquals("Copyright", "HR")
 						.ToListAsync();
 					#endregion
 				}
 
 				using (var session = store.OpenAsyncSession())
 				{
-					#region filtering_
+					#region filtering_17
 					List<FileHeader> results = await session.Query()
-
+						.WhereIn(x => x.Name, new[] { "help.txt", "documentation.doc" })
+						.OrElse()
+						.WhereStartsWith(x => x.Name, "readme")
 						.ToListAsync();
 					#endregion
 				}
 
 				using (var session = store.OpenAsyncSession())
 				{
-					#region filtering_
+					#region filtering_18
 					List<FileHeader> results = await session.Query()
-
-						.ToListAsync();
-					#endregion
-				}
-
-				using (var session = store.OpenAsyncSession())
-				{
-					#region filtering_
-					List<FileHeader> results = await session.Query()
-
+						.OnDirectory("/documents/wallpapers", recursive: true)
+						.WhereEndsWith(x => x.Name, "1920x1080.jpg")
 						.ToListAsync();
 					#endregion
 				}
