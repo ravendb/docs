@@ -388,6 +388,17 @@
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\.docslist" />
     <None Include="file-system\client-api\commands\synchronization\.docslist" />
+    <None Include="file-system\client-api\commands\synchronization\conflicts\.docslist" />
+    <None Include="file-system\client-api\commands\synchronization\conflicts\get.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\conflicts\resolve.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\destinations\.docslist" />
+    <None Include="file-system\client-api\commands\synchronization\destinations\set.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\destinations\get.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\.docslist" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\active.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\finished.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\pending.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\status.dotnet.markdown" />
     <None Include="file-system\client-api\commands\what-are-commands.markdown" />
     <None Include="file-system\client-api\creating-files-store.markdown" />
     <None Include="file-system\client-api\session\.docslist" />
@@ -466,6 +477,8 @@
     <None Include="glossary\scripted-patch-command-data.dotnet.markdown" />
     <None Include="glossary\spatial-criteria-factory.dotnet.markdown" />
     <None Include="glossary\suggestion-query.dotnet.markdown" />
+    <None Include="glossary\synchronization-details.dotnet.markdown" />
+    <None Include="glossary\synchronization-report.dotnet.markdown" />
     <None Include="glossary\transformer-change-notification.dotnet.markdown" />
     <None Include="glossary\transformer-definition.dotnet.markdown" />
     <None Include="indexes\.docslist" />

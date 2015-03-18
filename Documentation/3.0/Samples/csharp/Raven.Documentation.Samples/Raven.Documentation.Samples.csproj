@@ -298,6 +298,7 @@
     <Compile Include="FileSystem\ClientApi\Commands\Files.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Metadata.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Search.cs" />
+    <Compile Include="FileSystem\ClientApi\Commands\Synchronization.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="FileSystem\ClientApi\CreatingFilesStore.cs" />
     <Compile Include="FileSystem\ClientApi\Session\Configuration\MaxRequests.cs" />

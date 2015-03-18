@@ -7,6 +7,7 @@ bulk-insert-change-notification.markdown	BulkInsertChangeNotification
 bulk-insert-operation.markdown	BulkInsertOperation
 bulk-insert-options.markdown	BulkInsertOptions
 configuration-search-results.markdown	ConfigurationSearchResults
+conflict-item.markdown	ConflictItem
 database-document.markdown	DatabaseDocument
 database-restore-request.markdown	DatabaseRestoreRequest
 database-statistics.markdown	DatabaseStatistics
@@ -19,6 +20,7 @@ facet-results.markdown	FacetResults
 facet-setup.markdown	FacetSetup
 field-highlightings.markdown	FieldHighlightings
 file-header.markdown	FileHeader
+file-system-document.markdown	FileSystemDocument
 index-change-notification.markdown	IndexChangeNotification
 index-definition.markdown	IndexDefinition
 index-merge-results.markdown	IndexMergeResults
@@ -42,5 +44,7 @@ spatial-criteria-factory.markdown	SpatialCriteriaFactory
 stream-result.markdown	StreamResult
 suggestion-query.markdown	SuggestionQuery
 suggestion-query-result.markdown	SuggestionQueryResult
+synchronization-details.markdown	SynchronizationDetails
+synchronization-report.markdown	SynchronizationReport
 transformer-change-notification.markdown	TransformerChangeNotification
 transformer-definition.markdown	TransformerDefinition
