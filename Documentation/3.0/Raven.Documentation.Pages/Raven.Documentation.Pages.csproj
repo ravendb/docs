@@ -453,6 +453,7 @@
     <None Include="glossary\conflict-item.dotnet.markdown" />
     <None Include="glossary\file-header.dotnet.markdown" />
     <None Include="glossary\file-system-document.dotnet.markdown" />
+    <None Include="glossary\file-system-restore-request.dotnet.markdown" />
     <None Include="glossary\search-results.dotnet.markdown" />
     <None Include="glossary\stream-result.dotnet.markdown" />
     <None Include="glossary\database-restore-request.dotnet.markdown" />

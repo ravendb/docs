@@ -1,5 +1,5 @@
 manage-filesystems.markdown	Manage file systems
 backup-restore.markdown	Backup and restore
 compaction.markdown	Compaction
-reset-indexes.markdown	Indexes reset
+reset-indexes.markdown	Index reset
 stats.markdown	Statistics
