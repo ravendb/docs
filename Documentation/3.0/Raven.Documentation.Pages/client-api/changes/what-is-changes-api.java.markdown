@@ -32,7 +32,7 @@ public void addConnectionStatusChanged(EventHandler<VoidArgs> handler);
 public void removeConnectionStatusChanges(EventHandler<VoidArgs> handler);
 {CODE-BLOCK/}
 
-## Subscribtions
+## Subscriptions
 
 In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
 

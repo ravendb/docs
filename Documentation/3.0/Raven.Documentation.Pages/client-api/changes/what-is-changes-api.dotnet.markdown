@@ -33,7 +33,7 @@ bool Connected { get; }
 event EventHandler ConnectionStatusChanged
 {CODE-BLOCK/}
 
-## Subscribtions
+## Subscriptions
 
 In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
 

@@ -19,7 +19,7 @@ Index changes for one index can be observed using `forIndex` method.
 
 | Return value | |
 | ------------- | ----- |
-| IObservable<[IndexChangeNotification](../../glossary/index-change-notification)> | Observable that allows to add subscribtions to notifications for index with given name. |
+| IObservable<[IndexChangeNotification](../../glossary/index-change-notification)> | Observable that allows to add subscriptions to notifications for index with given name. |
 
 ### Example
 
@@ -29,11 +29,11 @@ Index changes for one index can be observed using `forIndex` method.
 
 {PANEL:ForAllIndexes}
 
-Index changes for all indexex can be observed using `forAllIndexes` method.
+Index changes for all indexes can be observed using `forAllIndexes` method.
 
 | Return value | |
 | ------------- | ----- |
-| IObservable<[IndexChangeNotification](../../glossary/index-change-notification)> | Observable that allows to add subscribtions to notifications for all indexes. |
+| IObservable<[IndexChangeNotification](../../glossary/index-change-notification)> | Observable that allows to add subscriptions to notifications for all indexes. |
 
 ### Syntax
 

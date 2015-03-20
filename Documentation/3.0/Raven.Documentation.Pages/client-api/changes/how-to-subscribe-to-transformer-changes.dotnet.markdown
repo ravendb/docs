@@ -11,7 +11,7 @@ All transformer changes can be tracked using `ForAllTransformers` method.
 | IObservableWithTask<[TransformerChangeNotification](../../glossary/transformer-change-notification)> | Observable that allows to add subscribtions to notifications for all transformers. |
 
 Type: IObservableWithTask<[TransformerChangeNotification](../../glossary/transformer-change-notification)>   
-Observable that allows to add subscribtions to notifications for all transformers.
+Observable that allows to add subscriptions to notifications for all transformers.
 
 ## Example
 

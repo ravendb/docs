@@ -293,6 +293,7 @@
     <Compile Include="ClientApi\SetupDefaultDatabase.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Faceted.cs" />
+    <Compile Include="FileSystem\ClientApi\ChangesApi\Changes.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Admin.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Browse.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Configurations.cs" />

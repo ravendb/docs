@@ -8,7 +8,7 @@ Replication conflicts, for both documents and attachments, can be tracked by usi
 
 | Return value | |
 | ------------- | ----- |
-| IObservable<[ReplicationConflictNotification](../../glossary/replication-conflict-notification)> | Observable that allows to add subscribtions to notifications for all replication conflicts. |
+| IObservable<[ReplicationConflictNotification](../../glossary/replication-conflict-notification)> | Observable that allows to add subscriptions to notifications for all replication conflicts. |
 
 ## Example
 

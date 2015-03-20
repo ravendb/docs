@@ -8,7 +8,7 @@ Replication conflicts, for both documents and attachments, can be tracked using 
 
 | Return value | |
 | ------------- | ----- |
-| IObservableWithTask<[ReplicationConflictNotification](../../glossary/replication-conflict-notification)> | Observable that allows to add subscribtions to notifications for all replication conflicts. |
+| IObservableWithTask<[ReplicationConflictNotification](../../glossary/replication-conflict-notification)> | Observable that allows to add subscriptions to notifications for all replication conflicts. |
 
 ## Example
 

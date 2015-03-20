@@ -360,6 +360,7 @@
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="file-system\.docslist" />
     <None Include="file-system\client-api\.docslist" />
+    <None Include="file-system\client-api\changes-api\how-to-subscribe-file-changes.dotnet.markdown" />
     <None Include="file-system\client-api\commands\.docslist" />
     <None Include="file-system\client-api\commands\admin\.docslist" />
     <None Include="file-system\client-api\commands\admin\backup-restore.dotnet.markdown" />
@@ -697,7 +698,6 @@
     <None Include="transformers\what-are-transformers.markdown" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="file-system\client-api\changes-api\" />
     <Folder Include="file-system\client-api\listeners\" />
     <Folder Include="Properties\" />
   </ItemGroup>
