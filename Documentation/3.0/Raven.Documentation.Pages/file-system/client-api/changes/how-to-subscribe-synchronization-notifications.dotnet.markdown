@@ -1,5 +1,4 @@
-﻿#How to subscribe to file changes?
-
+﻿#How to subscribe to synchronization notifications?
 
 
 

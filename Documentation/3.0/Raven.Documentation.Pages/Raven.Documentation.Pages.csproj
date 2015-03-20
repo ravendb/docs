@@ -360,7 +360,11 @@
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="file-system\.docslist" />
     <None Include="file-system\client-api\.docslist" />
-    <None Include="file-system\client-api\changes-api\how-to-subscribe-file-changes.dotnet.markdown" />
+    <None Include="file-system\client-api\changes\.docslist" />
+    <None Include="file-system\client-api\changes\how-to-subscribe-conflicts.dotnet.markdown" />
+    <None Include="file-system\client-api\changes\how-to-subscribe-configuration-changes.dotnet.markdown" />
+    <None Include="file-system\client-api\changes\how-to-subscribe-synchronization-notifications.dotnet.markdown" />
+    <None Include="file-system\client-api\changes\how-to-subscribe-file-changes.dotnet.markdown" />
     <None Include="file-system\client-api\commands\.docslist" />
     <None Include="file-system\client-api\commands\admin\.docslist" />
     <None Include="file-system\client-api\commands\admin\backup-restore.dotnet.markdown" />
@@ -452,6 +456,8 @@
     <None Include="glossary\bulk-operation-options.dotnet.markdown" />
     <None Include="glossary\configuration-search-results.dotnet.markdown" />
     <None Include="glossary\conflict-item.dotnet.markdown" />
+    <None Include="glossary\conflict-notification.dotnet.markdown" />
+    <None Include="glossary\file-change-notification.dotnet.markdown" />
     <None Include="glossary\file-header.dotnet.markdown" />
     <None Include="glossary\file-system-document.dotnet.markdown" />
     <None Include="glossary\file-system-restore-request.dotnet.markdown" />
@@ -491,6 +497,7 @@
     <None Include="glossary\suggestion-query.dotnet.markdown" />
     <None Include="glossary\synchronization-details.dotnet.markdown" />
     <None Include="glossary\synchronization-report.dotnet.markdown" />
+    <None Include="glossary\synchronization-update-notification.dotnet.markdown" />
     <None Include="glossary\transformer-change-notification.dotnet.markdown" />
     <None Include="glossary\transformer-definition.dotnet.markdown" />
     <None Include="indexes\.docslist" />
