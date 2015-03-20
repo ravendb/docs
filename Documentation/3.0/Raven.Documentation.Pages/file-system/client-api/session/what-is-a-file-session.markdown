@@ -33,5 +33,5 @@ modification operations are not batched. Each registered change is completed as 
 {INFO/}
 
 {SAFE:MaxNumberOfRequestsPerSession}
-By default the session does not allow to execute more than 30 calls to RavenFS server. More details in [session configuration](TODO arek) options article.
+By default the session does not allow to execute more than 30 calls to RavenFS server. More details in [session configuration](./configuration/how-to-change-maximum-number-of-requests-per-session) options article.
 {SAFE/}

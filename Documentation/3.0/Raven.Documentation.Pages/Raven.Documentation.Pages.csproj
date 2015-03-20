@@ -362,6 +362,11 @@
     <None Include="file-system\client-api\.docslist" />
     <None Include="file-system\client-api\commands\.docslist" />
     <None Include="file-system\client-api\commands\admin\.docslist" />
+    <None Include="file-system\client-api\commands\admin\backup-restore.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\admin\compaction.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\admin\manage-filesystems.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\admin\reset-indexes.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\admin\stats.dotnet.markdown" />
     <None Include="file-system\client-api\commands\configurations\.docslist" />
     <None Include="file-system\client-api\commands\configurations\delete-key.dotnet.markdown" />
     <None Include="file-system\client-api\commands\configurations\get-key-names.dotnet.markdown" />
@@ -387,6 +392,8 @@
     <None Include="file-system\client-api\commands\files\search\search.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\.docslist" />
+    <None Include="file-system\client-api\commands\storage\cleanup.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\storage\retry-renaming.dotnet.markdown" />
     <None Include="file-system\client-api\commands\synchronization\.docslist" />
     <None Include="file-system\client-api\commands\synchronization\conflicts\.docslist" />
     <None Include="file-system\client-api\commands\synchronization\conflicts\get.dotnet.markdown" />
@@ -399,6 +406,7 @@
     <None Include="file-system\client-api\commands\synchronization\monitoring\finished.dotnet.markdown" />
     <None Include="file-system\client-api\commands\synchronization\monitoring\pending.dotnet.markdown" />
     <None Include="file-system\client-api\commands\synchronization\monitoring\status.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\start.dotnet.markdown" />
     <None Include="file-system\client-api\commands\what-are-commands.markdown" />
     <None Include="file-system\client-api\creating-files-store.markdown" />
     <None Include="file-system\client-api\session\.docslist" />
@@ -442,7 +450,9 @@
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
     <None Include="glossary\bulk-operation-options.dotnet.markdown" />
     <None Include="glossary\configuration-search-results.dotnet.markdown" />
+    <None Include="glossary\conflict-item.dotnet.markdown" />
     <None Include="glossary\file-header.dotnet.markdown" />
+    <None Include="glossary\file-system-document.dotnet.markdown" />
     <None Include="glossary\search-results.dotnet.markdown" />
     <None Include="glossary\stream-result.dotnet.markdown" />
     <None Include="glossary\database-restore-request.dotnet.markdown" />

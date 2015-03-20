@@ -157,7 +157,7 @@
 			#region start_4
 
 			DestinationSyncResult[] results = await store.AsyncFilesCommands.Synchronization
-														.SynchronizeAsync();
+														.StartAsync();
 
 			foreach (var destinationSyncResult in results)
 			{

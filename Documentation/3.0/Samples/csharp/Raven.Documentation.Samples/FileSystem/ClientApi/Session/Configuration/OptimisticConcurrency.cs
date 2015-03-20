@@ -42,7 +42,7 @@
 				#endregion
 
 				#region optimistic_concurrency_2 
-				store.Conventions.DefaultUseOptimisticConcurrency = true; //TODO arek
+				store.Conventions.DefaultUseOptimisticConcurrency = true;
 
 				using (IAsyncFilesSession session = store.OpenAsyncSession())
 				{
