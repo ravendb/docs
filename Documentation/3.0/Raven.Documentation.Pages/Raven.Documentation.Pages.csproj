@@ -454,6 +454,7 @@
     <None Include="glossary\bulk-insert-operation.dotnet.markdown" />
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
     <None Include="glossary\bulk-operation-options.dotnet.markdown" />
+    <None Include="glossary\configuration-change-notification.dotnet.markdown" />
     <None Include="glossary\configuration-search-results.dotnet.markdown" />
     <None Include="glossary\conflict-item.dotnet.markdown" />
     <None Include="glossary\conflict-notification.dotnet.markdown" />
