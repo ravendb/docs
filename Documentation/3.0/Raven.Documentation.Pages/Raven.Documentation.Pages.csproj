@@ -414,6 +414,11 @@
     <None Include="file-system\client-api\commands\synchronization\start.dotnet.markdown" />
     <None Include="file-system\client-api\commands\what-are-commands.markdown" />
     <None Include="file-system\client-api\creating-files-store.markdown" />
+    <None Include="file-system\client-api\listeners\.docslist" />
+    <None Include="file-system\client-api\listeners\conflict-listeners.dotnet.markdown" />
+    <None Include="file-system\client-api\listeners\delete-listeners.dotnet.markdown" />
+    <None Include="file-system\client-api\listeners\metadata-change-listeners.dotnet.markdown" />
+    <None Include="file-system\client-api\listeners\what-are-listeners.dotnet.markdown" />
     <None Include="file-system\client-api\session\.docslist" />
     <None Include="file-system\client-api\session\changing-metadata.dotnet.markdown" />
     <None Include="file-system\client-api\session\configuration\.docslist" />
@@ -706,7 +711,6 @@
     <None Include="transformers\what-are-transformers.markdown" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="file-system\client-api\listeners\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>

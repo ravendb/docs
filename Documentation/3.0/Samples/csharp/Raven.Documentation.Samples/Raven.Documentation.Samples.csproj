@@ -304,6 +304,10 @@
     <Compile Include="FileSystem\ClientApi\Commands\Synchronization.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="FileSystem\ClientApi\CreatingFilesStore.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\Conflict.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\Delete.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\General.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\MetadataChange.cs" />
     <Compile Include="FileSystem\ClientApi\Session\Configuration\MaxRequests.cs" />
     <Compile Include="FileSystem\ClientApi\Session\Configuration\OptimisticConcurrency.cs" />
     <Compile Include="FileSystem\ClientApi\Session\DeletingFiles.cs" />
