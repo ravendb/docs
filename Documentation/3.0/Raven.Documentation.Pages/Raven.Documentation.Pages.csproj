@@ -443,6 +443,9 @@
     <None Include="file-system\server\.docslist" />
     <None Include="file-system\files.markdown" />
     <None Include="file-system\server\background-tasks.markdown" />
+    <None Include="file-system\server\bundles\.docslist" />
+    <None Include="file-system\server\bundles\encryption.markdown" />
+    <None Include="file-system\server\bundles\versioning.markdown" />
     <None Include="file-system\server\enabling-rdc.markdown" />
     <None Include="file-system\synchronization\.docslist" />
     <None Include="file-system\synchronization\configurations.markdown" />

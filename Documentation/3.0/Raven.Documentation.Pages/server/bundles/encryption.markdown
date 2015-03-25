@@ -9,6 +9,7 @@ If you want to setup new database with encryption bundle using the Studio, then 
 Three possible configuration options are:   
 * **Raven/Encryption/Algorithm** with [AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) as a value. Additionally provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class    
 * **Raven/Encryption/Key** a key used for encryption purposes with minimum length of 8 characters, base64 encoded    
+* **Raven/Encryption/KeyBitsPreference** the preferred encryption key size in bits 
 * **Raven/Encryption/EncryptIndexes** Boolean value indicating if the indexes should be encrypted. Default: true   
 
 ### Global configuration
@@ -47,20 +48,20 @@ To not include any confidential database settings, please issue a backup request
 
 ### Backup & Restore
 
-1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startbackup) with empty [DatabaseDocument](../../../glossary/database-document) specified:
+1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startbackup) with empty `SecuredSettrings` (where encryption configuration is placed) in [DatabaseDocument](../../../glossary/database-document) specified:
 
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental=false" \
- -d "{\"BackupLocation\":\"c:\\temp\\backup\\Northwind\\\",\"DatabaseDocument\":{\"SecuredSettings\":{},\"Settings\":{},\"Disabled\":false,\"Id\":null}}"
+ -d "{\"BackupLocation\":\"c:\\temp\\backup\\Northwind\",\"DatabaseDocument\":{\"SecuredSettings\":{},\"Settings\":{\"Raven/ActiveBundles\": \"Encryption\"},\"Disabled\":false,\"Id\":null}}"
 {CODE-BLOCK/}
 
 2. Notice that `Database.Document` found in `c:\temp\backup\Northwind\` contains exactly the same information that you send in your request, which means that your database cannot be restored until you specify `Raven/Encryption/Key` in this document.
 
-3. After filling `Raven/Encryption/Key` in your `Database.Document` you can issue a [restore request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startrestore):
+3. After filling `Raven/Encryption/Key`, `Raven/Encryption/Algorithm`, `Raven/Encryption/KeyBitsPreference` and `Raven/Encryption/EncryptIndexes` in your `Database.Document` you can issue a [restore request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startrestore):
 
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/admin/restore" \
- -d "{\"DatabaseName\":\"NewNorthwind\",\"BackupLocation\":\"c:\\temp\\backup\\Northwind\\\",\"IndexesLocation\":null,\"RestoreStartTimeout\":null,\"DatabaseLocation\":\"~\\Databases\\NewNorthwind\\\",\"Defrag\":false,\"JournalsLocation\":null}"
+ -d "{\"DatabaseName\":\"NewNorthwind\",\"BackupLocation\":\"c:\\temp\\backup\\Northwind\",\"IndexesLocation\":null,\"RestoreStartTimeout\":null,\"DatabaseLocation\":\"~\\Databases\\NewNorthwind\\\",\"Defrag\":false,\"JournalsLocation\":null}"
 {CODE-BLOCK/}
 
 {DANGER/}
