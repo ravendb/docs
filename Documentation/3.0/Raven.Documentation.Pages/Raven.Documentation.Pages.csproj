@@ -447,6 +447,7 @@
     <None Include="file-system\server\bundles\encryption.markdown" />
     <None Include="file-system\server\bundles\versioning.markdown" />
     <None Include="file-system\server\enabling-rdc.markdown" />
+    <None Include="file-system\server\exporting-and-importing-data.markdown" />
     <None Include="file-system\studio\.docslist" />
     <None Include="file-system\studio\configurations-view.markdown" />
     <None Include="file-system\studio\files\.docslist" />

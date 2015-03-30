@@ -325,6 +325,7 @@
     <Compile Include="FileSystem\ClientApi\Session\WhatIsFilesSession.cs" />
     <Compile Include="FileSystem\Server\Bundles\Encryption.cs" />
     <Compile Include="FileSystem\Server\Bundles\Versioning.cs" />
+    <Compile Include="FileSystem\Server\ExportImport.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
     <Compile Include="Indexes\Creating.cs" />
