@@ -129,14 +129,14 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
 				#endregion
 
 				#region patch_8
-				// creating new document with auto-assigned key e.g. 'Comments/100'
+				// creating new document with auto-assigned key e.g. 'Comments/100'. Document key will be returned by PutDocument.
 				store
 					.DatabaseCommands
 					.Patch(
 						"employees/1",
 						new ScriptedPatchRequest
 						{
-							Script = @"PutDocument('Comments/', { 'Author': this.LastName }, { });"
+							Script = @"var commentKey = PutDocument('Comments/', { 'Author': this.LastName }, { });"
 						});
 				#endregion
 

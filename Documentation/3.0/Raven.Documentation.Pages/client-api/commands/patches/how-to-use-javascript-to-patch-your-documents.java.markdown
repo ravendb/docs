@@ -17,8 +17,8 @@ Before we will move to the examples, let's look at the methods, objects, and var
 | ------ |:------:| ------ |
 | `__document_id` | variable | Id for current document |
 | `this` | object | Current document (with metadata) |
-| `LoadDocument(key)` | method | Allows document loading |
-| `PutDocument(key, data, metadata)` | method | Allows document putting |
+| `LoadDocument(key)` | method | Allows document loading, increases maximum number of allowed steps in script if `Raven/AdditionalStepsForScriptBasedOnDocumentSize` is set. |
+| `PutDocument(key, data, metadata)` | method | Allows document putting, returns generated key |
 | `_` | object | [Lo-Dash](https://lodash.com/) |
 | `trim()` | string.prototype | trims the string e.g. `this.FirstName.trim()` |
 | `indexOf(...)` | Array.prototype | wrapper for [_.indexOf](https://lodash.com/docs#indexOf) |
