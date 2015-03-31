@@ -1,6 +1,6 @@
-﻿#Commands : GetActiveAsync
+#Commands : GetActiveAsync
 
-**GetActiveAsync** method returns information about active outgoing synchronizations.
+The **GetActiveAsync** method returns the information about the active outgoing synchronizations.
 
 ## Syntax
 
@@ -15,7 +15,7 @@
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;ItemsPage&lt;SynchronizationDetails&gt;&gt;** | A task that represents the asynchronous operation. The task result is `ItemsPage` object that contains number of total results and the list of [`SynchronizationDetails`](../../../../../glossary/synchronization-details) objects that contains info about synchronizations being in progress. |
+| **Task&lt;ItemsPage&lt;SynchronizationDetails&gt;&gt;** | A task that represents the asynchronous operation. The task result is an `ItemsPage` object that contains the number of total results and the list of the [`SynchronizationDetails`](../../../../../glossary/synchronization-details) objects, which contains info about synchronizations being in progress. |
 
 
 ## Example

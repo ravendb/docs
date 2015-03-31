@@ -1,6 +1,6 @@
-﻿#Commands : UpdateMetadataAsync
+#Commands : UpdateMetadataAsync
 
-**UpdateMetadataAsync** is used if you need to change just a file's metadata without any modification of its content.
+**UpdateMetadataAsync** is used if you need to change just the file's metadata without any modification to its content.
 
 ## Syntax
 
@@ -10,7 +10,7 @@
 | ------------- | ------------- | ----- |
 | **filename** | string | The modified file name |
 | **metadata** | RavenJObject | New file metadata |
-| **etag** | Etag | The current file etag, used for concurrency checks (`null` skips check) |
+| **etag** | Etag | The current file Etag, used for concurrency checks (`null` skips check) |
 
 <hr />
 

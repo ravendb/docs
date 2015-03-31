@@ -6,7 +6,7 @@ The versioning bundle will create snapshots for every file, upon every update re
 
 To activate versioning simply add `Versioning` to `Raven/ActiveBundles` configuration in the global configuration file or setup a new file system with the versioning bundle turned on using API or the Studio.
 
-Learn how to create a file system with versioning enabled using the Studio [here](TODO arek).
+Learn how to create a file system with versioning enabled using the Studio [here](../../studio/how-to/how-to-setup-versioning).
 
 ## Configuration
 

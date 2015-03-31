@@ -1,6 +1,6 @@
-﻿#Commands : SetKeyAsync
+#Commands : SetKeyAsync
 
-**SetKeyAsync** is used to store any object as [a configuration item](../../../configurations) under a specified key.
+**SetKeyAsync** is used to store any object as [a configuration item](../../../configurations) under the specified key.
 
 ## Syntax
 
@@ -19,11 +19,10 @@
 
 ## Example
 
-Let's assume that we need to store file descriptions for some files but we don't want to add such information to theirs metadata. The file description
-is represented by `FileDescription` class:
+Let's assume that we need to store file descriptions for some files but we don't want to add such information to their metadata. The file description is represented by the `FileDescription` class:
 
 {CODE set_key_2@FileSystem\ClientApi\Commands\Configurations.cs /}
 
-We can achieve that just by setting such object under a selected key:
+We can achieve that simply by setting such an object under the selected key:
 
 {CODE set_key_3@FileSystem\ClientApi\Commands\Configurations.cs /}

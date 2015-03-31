@@ -1,6 +1,6 @@
-﻿#Commands : GetAsync
+#Commands : GetAsync
 
-**GetAsync** is used to get file headers of selected files.
+**GetAsync** is used to get the file headers of the selected files.
 
 ## Syntax
 
@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **filenames** | string[] | Names of files you want to get headers for. |
+| **filenames** | string[] | Names of the files you want to get headers for. |
 
 <hr />
 

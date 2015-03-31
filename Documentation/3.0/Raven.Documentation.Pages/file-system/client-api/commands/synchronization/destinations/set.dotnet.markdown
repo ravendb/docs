@@ -1,6 +1,6 @@
-﻿#Commands : SetDestinationsAsync}
+#Commands : SetDestinationsAsync}
 
-**SetDestinationsAsync** is used to setup servers where files should be synchronized to.
+**SetDestinationsAsync** is used to setup the servers where files should be synchronized.
 
 ### Syntax
 

@@ -1,6 +1,6 @@
-﻿#Commands : RetryRenamingAsync
+#Commands : RetryRenamingAsync
 
-**RetryRenamingAsync** forces to run a background task that will resume unaccomplished file renames. Read [Background tasks](../../../server/background-tasks) article for details.
+**RetryRenamingAsync** runs a background task that will resume unaccomplished file renames. Read [Background tasks](../../../server/background-tasks) article for details.
 
 ## Syntax
 

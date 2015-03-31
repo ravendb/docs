@@ -1,6 +1,6 @@
-﻿#Commands : GetFinishedAsync
+#Commands : GetFinishedAsync
 
-**GetFinishedAsync** allows to page through [`SynchronizationReports`](../../../../../glossary/synchronization-report) of already accomplished file synchronizations.
+**GetFinishedAsync** allows to page through the [`SynchronizationReports`](../../../../../glossary/synchronization-report) of already accomplished file synchronizations.
 
 ## Syntax
 
@@ -15,7 +15,7 @@
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;ItemsPage&lt;SynchronizationReport&gt;&gt;** | A task that represents the asynchronous operation. The task result is `ItemsPage` object that contains number of total results and the list of `SynchronizationReport` objects for the requested page. |
+| **Task&lt;ItemsPage&lt;SynchronizationReport&gt;&gt;** | A task that represents the asynchronous operation. The task result is an `ItemsPage` object, which contains the number of total results and the list of the `SynchronizationReport` objects for the requested page. |
 
 ## Example
 

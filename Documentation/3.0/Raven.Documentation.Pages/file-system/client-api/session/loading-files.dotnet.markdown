@@ -1,6 +1,6 @@
-﻿#Loading files
+#Loading files
 
-There are two overloads of `LoadFileAsync` method used to load a single or multiple files in a single call.
+There are two overloads of the `LoadFileAsync` method used to load a single or multiple files in a single call.
 
 ##Syntax
 
@@ -12,7 +12,7 @@ There are two overloads of `LoadFileAsync` method used to load a single or multi
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;FileHeader&gt;** | The file instance represented by [`FileHeader`]() object or `null` if a file does not exist. |
+| **Task&lt;FileHeader&gt;** | The file instance represented by the [`FileHeader`]() object or `null` if a file does not exist. |
 
 <br />
 
@@ -20,14 +20,14 @@ There are two overloads of `LoadFileAsync` method used to load a single or multi
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **paths** | IEnumerable&lt;string&gt; | The collection of file paths to load |
+| **paths** | IEnumerable&lt;string&gt; | The collection of the file paths to load |
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;FileHeader[]&gt;** | The array of file instances, each represented by [`FileHeader`]() object or `null` if a file does not exist. |
+| **Task&lt;FileHeader[]&gt;** | The array of file instances, each represented by the[`FileHeader`]() object or `null` if a file does not exist. |
 
 {INFO: File headers}
-Note that the load method does not download file content. It fetches just a header which is a basic session entity object.
+Note that the load method does not download file content. It fetches only the header, which is a basic session entity object.
 {INFO/}
 
 
@@ -37,7 +37,7 @@ Note that the load method does not download file content. It fetches just a head
 
 ##Example II
 
-If you pass multiple paths then the returned array contains headers in exactly the same order as given paths. 
+If you pass multiple paths, the returned array contains headers in exactly the same order as  the given paths. 
 If a file does not exist, the value at the appropriate position in the array will be null.
 
 {CODE load_file_3@FileSystem\ClientApi\Session\LoadingFiles.cs /}

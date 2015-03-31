@@ -1,6 +1,6 @@
-﻿#Sorting
+#Sorting
 
-Indexed values are sorted lexicographically, but sorting is not applied until you request it by using on of the appropriate methods:
+Indexed values are sorted lexicographically, but sorting is not applied until you request it by using one of the appropriate methods:
 
 ##OrderBy
 

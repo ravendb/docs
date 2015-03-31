@@ -1,8 +1,8 @@
-﻿#Getting file systems stats
+#Getting file systems stats
 
 {PANEL: GetNamesAsync}
 
-This method returns names of all existing file system in the server.
+This method returns the names of all existing file systems in the server.
 
 ### Syntax
 

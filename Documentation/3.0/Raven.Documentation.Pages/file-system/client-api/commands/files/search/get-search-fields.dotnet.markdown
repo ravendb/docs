@@ -1,4 +1,4 @@
-﻿#Commands : GetSearchFieldsAsync
+#Commands : GetSearchFieldsAsync
 
 **GetSearchFieldsAsync** is used to retrieve the list of all available field names to build a query.
 
@@ -19,6 +19,6 @@
 
 ## Example
 
-**GetSearchFieldsAsync** method returns all indexed fields - so all keys of built-in metadata (e.g. `ETag`), metadata provided by a user (e.g. `Owner`) and [default indexing fields](../../../../indexing) (e.g `__key` or `__fileName`) will be included.
+**GetSearchFieldsAsync** method returns all the indexed fields, so all the keys of built-in metadata (e.g. `Etag`), metadata provided by a user (e.g. `Owner`) and the [default indexing fields](../../../../indexing) (e.g `__key` or `__fileName`) will be included.
 
 {CODE get_search_fields_2@FileSystem\ClientApi\Commands\Search.cs /}

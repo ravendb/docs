@@ -1,6 +1,6 @@
-﻿#Commands : SearchOnDirectoryAsync
+#Commands : SearchOnDirectoryAsync
 
-**SearchOnDirectoryAsync** method returns files located in a given directory and matching specified file name search pattern. 
+The **SearchOnDirectoryAsync** method returns files located in a given directory and matching specified file name search pattern. 
 
 ## Syntax
 
@@ -10,7 +10,7 @@
 | ------------- | ------------- | ----- |
 | **folder** | string | The directory path to look for files |
 | **options** | FilesSortOptions | It determines the sorting options when returning results |
-| **fileNameSearchPattern** | string | The pattern that a file name must match ('?' any single character, '*' any characters, default: empty string - means that the file name matching is skipped) |
+| **fileNameSearchPattern** | string | The pattern that a file name has to match ('?' any single character, '*' any characters, default: empty string - means that a matching file name is skipped) |
 | **start** | int | The number of files that should be skipped |
 | **pageSize** | int | The maximum number of files that will be returned |
 

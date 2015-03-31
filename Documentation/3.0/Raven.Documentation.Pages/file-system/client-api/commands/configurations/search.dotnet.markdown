@@ -1,6 +1,6 @@
-﻿#Commands : SearchAsync
+#Commands : SearchAsync
 
-**SearchAsync** retrieves names of configurations that starts with a specified prefix.
+**SearchAsync** retrieves the names of configurations that starts with a specified prefix.
 
 ## Syntax
 
@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **prefix** | string | The prefix value that a name of a configuration must starts with |
+| **prefix** | string | The prefix value with which the name of a configuration has to start |
 | **start** | int | The number of results that should be skipped |
 | **pageSize** | int | The maximum number of results that will be returned |
 

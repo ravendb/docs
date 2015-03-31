@@ -1,6 +1,6 @@
-﻿#Commands : GetMetadataForAsync
+#Commands : GetMetadataForAsync
 
-**GetMetadataForAsync** is used to retrieve file metadata.
+**GetMetadataForAsync** is used to retrieve the file's metadata.
 
 ## Syntax
 
@@ -14,7 +14,7 @@
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;RavenJObject&gt;** |  A task that represents the asynchronous metadata download operation. The task result is file metadata. |
+| **Task&lt;RavenJObject&gt;** |  A task that represents the asynchronous metadata download operation. The task result is the file's metadata. |
 
 ## Example
 

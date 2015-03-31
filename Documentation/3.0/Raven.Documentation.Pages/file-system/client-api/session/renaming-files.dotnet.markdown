@@ -1,6 +1,6 @@
-﻿#Registering renames
+#Registering renames
 
-Use `RegisterRename` method to rename a file.
+Use the `RegisterRename` method to rename a file.
 
 ##Syntax
 
@@ -9,17 +9,16 @@ Use `RegisterRename` method to rename a file.
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **sourceFile** | string | The full file path to change|
-| **sourceFile** | [FileHeader](../../../glossary/file-header) | The file that you want to rename represented by `FileHeader` |
+| **sourceFile** | [FileHeader](../../../glossary/file-header) | The file that you want to rename represented by the `FileHeader` |
 | **destinationFile** | string | The new file path |
-| **etag** | Etag | The current file ETag, used for concurrency checks (`null` will skip the check) |
+| **etag** | Etag | The current file Etag, used for concurrency checks (`null` will skip the check) |
 
 {WARNING: FileNotFoundException}
-If the requested file does not exist in the file system then `FileNotFoundException` will be thrown by `SaveChangesAsync`.
+If the requested file does not exist in the file system, the `FileNotFoundException` will be thrown by the `SaveChangesAsync`.
 {WARNING/}
 
 {NOTE: Rename and move}
-Rename and move are basically the same operation. Directories in RavenFS are just a virtual concept which relays on file paths. So if you want
-to move a file into a different "directory" then just rename it.
+Rename and move is basically the same operation. Directories in RavenFS are a virtual concept, which relies on the file paths. So if you want to move a file into a different "directory", simply rename it.
 {NOTE/}
 
 ##Example

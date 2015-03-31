@@ -1,4 +1,4 @@
-﻿#Commands : GetKeyNamesAsync
+#Commands : GetKeyNamesAsync
 
 **GetKeyNamesAsync** retrieves names of all stored configurations.
 
@@ -18,6 +18,6 @@
 
 ## Example
 
-The below code will retrieve first 25 names of existing configurations.
+The below code will retrieve first 25 names of the existing configurations.
 
 {CODE get_key_names_2@FileSystem\ClientApi\Commands\Configurations.cs /}

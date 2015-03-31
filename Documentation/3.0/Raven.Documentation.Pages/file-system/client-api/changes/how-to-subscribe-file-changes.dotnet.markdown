@@ -1,6 +1,6 @@
-﻿#How to subscribe to file changes?
+#How to subscribe to file changes?
 
-In order to retrieve notifications about file changes located in a given directory use `ForFolder` method.
+In order to retrieve the notifications about the file changes located in a given directory use  a `ForFolder` method.
 
 ##Syntax
 

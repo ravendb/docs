@@ -1,6 +1,6 @@
-﻿#Enabling Remote Differential Compression
+#Enabling Remote Differential Compression
 
-File synchronization feature relies on Remote Differential Compression algorithm built-in Windows. You need to enable it to ensure proper work of RavenFS.
+File synchronization feature relies on the Remote Differential Compression algorithm built-in  in Windows. You need to enable it to ensure proper work of RavenFS.
 
 ##Windows Server 2012
 
