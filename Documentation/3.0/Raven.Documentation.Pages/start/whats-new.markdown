@@ -4,9 +4,53 @@
 
 ### Server
 
+- `[JavaScript]` Parser now returns more descriptive errors,
+- `[JavaScript]` `PutDocument` method now returns Id of generated document,
+- `[JavaScript]` Each `LoadDocument` increases maximum number of steps in script using following formula `MaxSteps = MaxSteps + (MaxSteps / 2 + (SerializedSizeOfDocumentOnDisk * AdditionalStepsPerSize))`,
+- Added `debug/rawdocumentbytes` endpoint
+
 #### [Configuration](../server/configuration/configuration-options)
 
-- added [`Raven/WorkingDir`](../server/configuration/configuration-options#data-settings),
+- Added [`Raven/WorkingDir`](../server/configuration/configuration-options#data-settings),
+- Added `Raven/AdditionalStepsForScriptBasedOnDocumentSize` (5 by default),
+- Added `Raven/MaxServicePointIdleTime`,
+- Added `Raven/ImplicitFieldsToFetchFromDocumentMode`,
+- Added `Raven/Replication/ForceReplicationRequestBuffering`
+
+#### Indexes
+
+- `AbstractIndexCreationTask` will add sorting to numerical fields automatically
+
+#### Bundles
+
+- `[Periodic Export]` Added support for remote folders for Amazon S3 and Microsoft Azure,
+- `[SQL Replication]` Renamed `PerformTableQuatation` to `QuoteTables` in `SqlReplicationConfig`,
+- `[SQL Replication]` Added `Insert-only mode` for tables, which will prevent deletes on that table,
+- `[Replication]` Added support for index and transformer deletions
+
+<hr />
+
+### Client API
+
+- Indexes can be deployed side-by-side using `SideBySideExecute` from `AbstractIndexCreationTask`, `SideBySideCreateIndexes` from `IndexCreation` and directly from `DocumentStore` using `SideBySideExecuteIndex`,
+- Added the ability to provide additional query to MoreLikeThis queries,
+- Added `SetIndexLock` to `IDatabaseCommands`,
+- Added `SetIndexPriority` to `IDatabaseCommands`,
+- Index priority can be set through `IndexPriority` property in `IndexDefinition` or `Priority` property in `AbstractIndexCreationTask`,
+
+
+<hr />
+
+### Smuggler
+
+- Added the ability to disable versioning during smuggling using `disable-versioning-during-import` option
+
+### FileSystem
+
+- Added support for @in queries,
+- Added `DeleteByQueryAsync` to `IAsyncFilesCommands`,
+- Added `RegisterDeletionQuery` to `IAsyncFilesSession`,
+- Added `RegisterResultsForDeletion` to `IAsyncFilesQuery`
 
 {PANEL/}
 
