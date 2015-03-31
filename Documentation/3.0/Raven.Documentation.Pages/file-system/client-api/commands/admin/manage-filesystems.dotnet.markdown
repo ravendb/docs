@@ -1,8 +1,8 @@
-﻿#Manage file systems
+#Manage file systems
 
 {PANEL: CreateFileSystemAsync}
 
-This method is used to create a new file system. If the file system already exists then it will throw the exception.
+This method is used to create a new file system. If the file system already exists then it will throw an exception.
 
 ## Syntax
 
@@ -49,8 +49,7 @@ This method creates a new file system or updates the configuration of already ex
 
 {PANEL: EnsureFileSystemExistsAsync}
 
-Instead of calling `CreateOrUpdateFileSystemAsync` method you can also use this one to make sure that file system exists. If there is no such
-file system then it will be created with default settings.
+Instead of calling the `CreateOrUpdateFileSystemAsync` method, you can use this one to make sure that file system exists. If there is no such file system, it will be created with default settings.
 
 {CODE ensure_fs_exists_1@FileSystem\ClientApi\Commands\Admin.cs /}
 

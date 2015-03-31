@@ -1,6 +1,6 @@
-﻿#Commands : DownloadAsync
+#Commands : DownloadAsync
 
-**DownloadAsync** method is used to retrieve a file's content and metadata.
+The **DownloadAsync** method is used to retrieve the file's content and metadata.
 
 ## Syntax
 

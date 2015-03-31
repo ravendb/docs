@@ -1,4 +1,4 @@
-﻿#Commands : ResetIndexes
+#Commands : ResetIndexes
 
 **ResetIndexes** forces RavenFS to rebuild Lucene indexes from scratch.
 
@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **filesystemName** | string | The name of a file system |
+| **filesystemName** | string | The name of the file system |
 
 <hr />
 

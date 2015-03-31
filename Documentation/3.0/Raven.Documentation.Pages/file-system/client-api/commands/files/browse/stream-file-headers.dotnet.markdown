@@ -1,6 +1,6 @@
-﻿#Commands : StreamFileHeadersAsync
+#Commands : StreamFileHeadersAsync
 
-**StreamFileHeadersAsync** is used to stream headers of files which match chosen criteria from a file system.
+**StreamFileHeadersAsync** is used to stream the headers of files which match the criteria chosen from a file system.
 
 ## Syntax
 
@@ -8,14 +8,14 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fromEtag** | Etag | ETag of a file from which stream should start |
+| **fromEtag** | Etag | ETag of a file from which the stream should start |
 | **pageSize** | int | The maximum number of file headers that will be retrieved |
 
 <hr />
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;IAsyncEnumerator&lt;FileHeader&gt;&gt;** | A task that represents the asynchronous operation. The task result is the enumerator of [`FileHeaders`](../../../../../glossary/file-header) objects. |
+| **Task&lt;IAsyncEnumerator&lt;FileHeader&gt;&gt;** | A task that represents the asynchronous operation. The task result is the enumeration of [`FileHeaders`](../../../../../glossary/file-header) objects. |
 
 
 ## Example

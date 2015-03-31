@@ -1,4 +1,4 @@
-﻿#Commands : StartCompact
+#Commands : StartCompact
 
 **StartCompact** initializes the compaction of the indicated file system. This operation makes the file system offline for the time of compaction.
 
@@ -21,6 +21,6 @@
 
 {CODE start_compact_2@FileSystem\ClientApi\Commands\Admin.cs /}
 
-If you needed to wait until the operation finishes then you would have to initialize `DocumentStore` associated with `<system>` database and wait for the operation completion:
+If you need to wait until the operation finishes, you will have to initialize `DocumentStore` associated with `<system>` database and wait for the operation completion:
 
 {CODE start_compact_3@FileSystem\ClientApi\Commands\Admin.cs /}

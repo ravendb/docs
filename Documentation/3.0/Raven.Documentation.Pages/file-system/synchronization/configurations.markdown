@@ -1,10 +1,10 @@
-﻿#Synchronization configurations
+#Synchronization configurations
 
-RavenFS uses configuration items during the file synchronization process. This article describes their meaning and format.
+RavenFS uses the configuration items during the file synchronization process. This article describes their meaning and format.
 
 ##Raven/Synchronization/VersionHilo
 
-Used by HiLo algorithm to store "Hi" value. HiLo method is used to generate file versions stored in metadata.
+Used by HiLo algorithm to store "Hi" value. HiLo method is used to generate file versions stored in the metadata.
 
 {CODE-BLOCK:json}
 {
@@ -14,7 +14,7 @@ Used by HiLo algorithm to store "Hi" value. HiLo method is used to generate file
 
 ##Raven/Synchronization/Config
 
-Used to keep synchronization options like:
+Used to keep synchronization options such as:
 
 * default built-in conflict resolver,
 * max number of concurrent synchronizations performed to a single destination fs,
@@ -51,8 +51,7 @@ The list of destination file servers.
 
 ##Raven/Synchronization/Sources/[SOURCE-FS-ID]
 
-The configuration stored on a destination file system after a successful file synchronization. It is used to keep track already synchronized docs by using
-storing `LastSourceFileEtag` which is an `Etag` of the last synchronized file from a given file system. There is one configuration item per a source file system.
+The configuration stored on a destination file system after a successful file synchronization. It is used to keep track of the already synchronized docs by storing the `LastSourceFileEtag` which is the `Etag` of the last synchronized file from a given file system. There is one configuration item per a source file system.
 
 {CODE-BLOCK:json}
 {
@@ -64,7 +63,7 @@ storing `LastSourceFileEtag` which is an `Etag` of the last synchronized file fr
 
 ##SyncingLock/[FILENAME]
 
-Its existence indicates that a file is currently being locked and it is inaccessible to modify. It exists only if the file is being synchronized.
+Its existence indicates that the file is currently being locked and it is inaccessible to modifications. It exists only if the file is being synchronized.
 
 {CODE-BLOCK:json}
 {
@@ -80,7 +79,7 @@ Its existence indicates that a file is currently being locked and it is inaccess
 
 ##Syncing/[DESTINATION-FS-URL]/[FILENAME]
 
-This configuration is stored on a source file system for every already synchronized file. It is removed if the destination confirms that the synchronization succeeded.
+This configuration is stored on a source file system for every file that was already synchronized. It is removed if the destination confirms that the synchronization succeeded.
 
 {CODE-BLOCK:json}
 {
@@ -93,7 +92,7 @@ This configuration is stored on a source file system for every already synchroni
 
 ##SyncResult/[FILENAME]
 
-This configuration represents a result of the synchronization of a file. It is stored by a destination file system. If any exception is thrown during synchronization, it will be stored in Exception property.
+This configuration represents a result of the file synchronization. It is stored by the destination file system. If any exception is thrown during the synchronization, it will be stored in Exception property.
 BytesTransfered, BytesCopied and NeedListLength are filled up only if the file content has changed.
 
 {CODE-BLOCK:json}

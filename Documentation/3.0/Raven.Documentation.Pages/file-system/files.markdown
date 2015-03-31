@@ -1,10 +1,10 @@
-﻿#Files
+#Files
 
-RavenFS can stores data by using one of the following storage engines: Esent or Voron. You can choose that at the moment of creating a new file system.
+RavenFS can store data by using one of the following storage engines: Esent or Voron. You can choose one of them while creating a new file system.
 
 ##What is a file?
 
-A file in Raven File System consists of:
+A file in the Raven File System consists of:
 
 * name (full path),
 * total size,
@@ -21,12 +21,12 @@ The concept of pages implicates a few facts:
 * file content is an ordered list of page references,
 * single page might be referenced by multiple files,
 * pages are immutable - once they are written to storage, they cannot be modified (a page is removed if there is no file referencing it),
-* occupied disk space is reduced if files have common information (or even a single file that has repeated data patterns).
+* occupied disk space is reduced if files have common information (or even if a single file has repeated data patterns).
 
 ##Directories
 
-In RavenFS directories are just a virtual concept. The directory tree is built upon names of existing files. A file name must be a full path e.g. `/docs/pics/wall.jpg`.
-A directory part of a file name is indexed together with the file metadata what allows you to browse files by catalogs - you just need to query an appropriate index entry field. 
+In the RavenFS directories are just a virtual concept. The directory tree is built upon names of existing files. A file name must be a full path e.g. `/docs/pics/wall.jpg`.
+A directory part of a file name is indexed together with the file metadata, which allows you to browse files by catalogs - you simply need to query an appropriate index entry field. 
 Note that moving a file between directories is actually the rename operation.
 
 ##Default metadata

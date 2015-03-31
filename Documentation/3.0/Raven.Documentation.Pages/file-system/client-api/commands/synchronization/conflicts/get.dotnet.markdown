@@ -1,9 +1,9 @@
-﻿#Commands : GetConflictsAsync
+#Commands : GetConflictsAsync
 
-**GetConflictsAsync** retrieves existing conflict items.
+**GetConflictsAsync** retrieves the existing conflict items.
 
 {INFO: Conflicts location}
-Conflicts always exists on a destination file system.
+Conflicts always exist in a destination file system.
 {INFO/}
 
 ## Syntax
@@ -20,7 +20,7 @@ Conflicts always exists on a destination file system.
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;ItemsPage&lt;ConflictItem&gt;&gt;** | A task that represents the asynchronous get operation. The task result is `ItemsPage` object that contains number of total results and the list of [`ConflictItem`](../../../../../glossary/conflict-item) objects that represent the synchronization conflict. |
+| **Task&lt;ItemsPage&lt;ConflictItem&gt;&gt;** | A task that represents the asynchronous get operation. The task result is the `ItemsPage` object that contains the number of total results and the list of [`ConflictItem`](../../../../../glossary/conflict-item) objects that represent the synchronization conflict. |
 
 
 ## Example

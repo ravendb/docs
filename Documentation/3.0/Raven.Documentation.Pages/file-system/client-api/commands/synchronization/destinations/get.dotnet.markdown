@@ -1,6 +1,6 @@
-﻿#Commands : GetDestinationsAsync
+#Commands : GetDestinationsAsync
 
-**GetDestinationsAsync** is used to retrieve all configured synchronization destinations.
+**GetDestinationsAsync** is used to retrieve all the configured synchronization destinations.
 
 ## Syntax
 

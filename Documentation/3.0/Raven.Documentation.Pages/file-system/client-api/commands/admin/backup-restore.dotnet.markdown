@@ -1,11 +1,11 @@
-﻿#Backup and restore
+#Backup and restore
 
 To start or restore backup use `StartBackup` or `StartRestore` operations respectively.
 
 
 {NOTE: Non blocking operations}
-Execution of `StartBackup` and `StartRestore` methods just starts the requested actions on the server and return immediately. 
-They do not wait for operation to complete.
+Execution of the `StartBackup` and `StartRestore` methods simply starts the requested actions on the server and returns immediately. 
+The `StartBackup` and `StartRestore` methods do not wait for operation to complete.
 {NOTE/}
 
 {PANEL:StartBackup}
@@ -54,7 +54,7 @@ If you are interested in checking the current backup status you can retrieve it 
 
 {CODE start_restore_2@FileSystem\ClientApi\Commands\Admin.cs /}
 
-If you needed to wait until the operation finishes then you would have to initialize `DocumentStore` associated with `<system>` database and wait for the operation completion:
+If you needed to wait until the operation finishes, you would have to initialize `DocumentStore` associated with `<system>` database and wait for the operation completion:
 
 {CODE start_restore_3@FileSystem\ClientApi\Commands\Admin.cs /}
 

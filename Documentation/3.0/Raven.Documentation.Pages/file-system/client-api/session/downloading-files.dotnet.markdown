@@ -1,6 +1,6 @@
-﻿#Downloading files
+#Downloading files
 
-The session exposes `DownloadAsync` method in order to allow you to retrieve file content.
+The session exposes the `DownloadAsync` method to allow you to retrieve the content of a file.
 
 
 ##Syntax
@@ -12,17 +12,17 @@ There are two overloads:
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **path** | string | The full file path |
-| **file** | [FileHeader](../../../glossary/file-header) | The file represented by `FileHeader` |
+| **file** | [FileHeader](../../../glossary/file-header) | The file represented by the `FileHeader` |
 | **metadata** | Reference&lt;RavenJObject&gt; | Metadata of the downloaded file |
 
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;Stream&gt;** |  A task that represents the asynchronous download operation. The task result is a file's content represented by a readable stream. | 
+| **Task&lt;Stream&gt;** |  A task that represents the asynchronous download operation. The task result is the file's content represented by a readable stream. | 
 
 | Exceptions | |
 | ------------- | ------------- |
-| FileNotFoundException | Thrown when the requested file does not exist in the file system. |
+| FileNotFoundException | is thrown when the requested file does not exist in the file system. |
 
 ##Example
 

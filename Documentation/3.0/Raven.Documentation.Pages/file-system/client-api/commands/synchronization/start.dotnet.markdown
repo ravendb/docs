@@ -1,7 +1,6 @@
-﻿#Commands : StartAsync
+#Commands : StartAsync
 
-**StartAsync** method is used to manually force the synchronization to the destinations. It has two overloads that allow to 
-synchronize all files that require that or a specified, single file.
+The **StartAsync** method is used to manually force the synchronization to the destinations. It has two overloads that allow you either to synchronize all the files which require that or to synchronize just one specified file.
 
 {PANEL:Synchronization of all destinations}
 
@@ -16,7 +15,7 @@ synchronize all files that require that or a specified, single file.
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;DestinationSyncResult[]&gt;** | A task that represents the asynchronous synchronization operation. The task result is `ItemsPage` object that contains number of total results and the list of [`ConflictItem`](../../../../../glossary/conflict-item) objects that represent the synchronization conflict. |
+| **Task&lt;DestinationSyncResult[]&gt;** | A task that represents the asynchronous synchronization operation. The task result is an `ItemsPage` object that contains the number of total results and the list of the [`ConflictItem`](../../../../../glossary/conflict-item) objects. which represent the synchronization conflict. |
 
 
 ### Example
@@ -39,7 +38,7 @@ synchronize all files that require that or a specified, single file.
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous file synchronization operation. The task result is [`SynchronizationReport`](../../../../../glossary/synchronization-report).  |
+| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous file synchronization operation. The task result is a [`SynchronizationReport`](../../../../../glossary/synchronization-report).  |
 
 
 ### Example

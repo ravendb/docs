@@ -1,6 +1,6 @@
-﻿#Commands : GetSynchronizationStatusForAsync
+#Commands : GetSynchronizationStatusForAsync
 
-**GetSynchronizationStatusForAsync** returns a report that contains information about the synchronization of a specified file.
+**GetSynchronizationStatusForAsync** returns a report that contains the information about the synchronization of a specified file.
 
 ## Syntax
 
@@ -14,7 +14,7 @@
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous get operation. The task result is [`SynchronizationReport`](../../../../../glossary/synchronization-report). |
+| **Task&lt;SynchronizationReport&gt;** | A task that represents the asynchronous get operation. The task result is an [`SynchronizationReport`](../../../../../glossary/synchronization-report). |
 
 ## Example
 

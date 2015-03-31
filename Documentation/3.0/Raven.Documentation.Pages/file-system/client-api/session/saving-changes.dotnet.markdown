@@ -1,6 +1,6 @@
-﻿#Saving changes
+#Saving changes
 
-Pending registered operations (`RegisterUpload`, `RegisterRename`, `RegisterFileDeletion` or metadata changes) will not be send to server till `SaveChangesAsync` is called.
+Pending registered operations (`RegisterUpload`, `RegisterRename`, `RegisterFileDeletion` or metadata changes) will not be send to the server until  the `SaveChangesAsync` is called.
 
 ##Syntax
 
@@ -13,10 +13,9 @@ Pending registered operations (`RegisterUpload`, `RegisterRename`, `RegisterFile
 
 ##Applying changes
 
-The RavenFS session in contrast to [`IDocumentSession`](../../../client-api/session/what-is-a-session-and-how-does-it-work) does not send
-changes as a batch operation in a single call. Each registered file modification will be executed in a separate request. 
+The RavenFS session, in contrast to the [`IDocumentSession`](../../../client-api/session/what-is-a-session-and-how-does-it-work), does not send changes as a batch operation in a single call. Each registered file modification will be executed in a separate request. 
 
-If an exception occurs when a file change is applied then the exception will be thrown by `SaveChangesAsync` and pending modifications will be canceled.
+If the exception occurs when the file change is applied, the exception will be thrown by the `SaveChangesAsync` and any pending modifications will be canceled.
 
 ##Example
 
