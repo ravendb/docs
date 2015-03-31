@@ -9,14 +9,16 @@ For the `File System Folder`, you can set up the following:
 
 For the `Glacier Vault Name` and `S3 Bucket name`, you can set up the following:
 
-- *AWS access key*,
-- *AWS Secret key*,
+- *Folder Name* (S3 only) - remote folder name, if empty then root folder will be assumed,
+- *AWS Access Key*,
+- *AWS Secret Key*,
 - *AWS Region Endpoint*,
 - *Incremental Backup Interval* (in minutes),
 - *Full Backup Interval* (in minutes)
 
 For the `Azure Storage Container`, you can set up the following:
 
+- *Folder Name* - remote folder name, if empty then root folder will be assumed,
 - *Azure Storage Account*,
 - *Azure Storage Key*,
 - *Incremental Backup Interval* (in minutes),

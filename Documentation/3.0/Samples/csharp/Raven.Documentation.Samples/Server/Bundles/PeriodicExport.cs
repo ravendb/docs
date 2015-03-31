@@ -63,7 +63,8 @@ namespace Raven.Documentation.Samples.Server.Bundles
 									AwsRegionEndpoint = "eu-west-1", // if not specified default is 'us-east-1'
 									GlacierVaultName = "your_glacier_vault_name",
 									IntervalMilliseconds = 60 * 60 * 1000, // 60 minutes
-									S3BucketName = "your_s3_bucket_name"
+									S3BucketName = "your_s3_bucket_name",
+									S3RemoteFolderName = "your_s3_remote_folder_name" // if not specified, then root folder will be assumed
 								}),
 						new RavenJObject());
 				#endregion
@@ -121,6 +122,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 							new PeriodicExportSetup
 							{
 								AzureStorageContainer = "your_container_name",
+								AzureRemoteFolderName = "your_azure_remote_folder_name", // if not specified, then root folder will be assumed
 								IntervalMilliseconds = 60 * 60 * 1000, // 60 minutes
 							}),
 						new RavenJObject());
