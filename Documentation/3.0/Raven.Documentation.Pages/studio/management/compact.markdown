@@ -4,7 +4,6 @@ Here you can easily compact data by choosing an appropriate database or a file s
 
 {WARNING:Warning}
 
-- not all [storage engines](../../server/configuration/storage-engines) support compaction,
 - database will be **offline** during compaction
 
 {WARNING/}

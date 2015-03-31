@@ -414,6 +414,11 @@
     <None Include="file-system\client-api\commands\synchronization\start.dotnet.markdown" />
     <None Include="file-system\client-api\commands\what-are-commands.markdown" />
     <None Include="file-system\client-api\creating-files-store.markdown" />
+    <None Include="file-system\client-api\listeners\.docslist" />
+    <None Include="file-system\client-api\listeners\conflict-listeners.dotnet.markdown" />
+    <None Include="file-system\client-api\listeners\delete-listeners.dotnet.markdown" />
+    <None Include="file-system\client-api\listeners\metadata-change-listeners.dotnet.markdown" />
+    <None Include="file-system\client-api\listeners\what-are-listeners.dotnet.markdown" />
     <None Include="file-system\client-api\session\.docslist" />
     <None Include="file-system\client-api\session\changing-metadata.dotnet.markdown" />
     <None Include="file-system\client-api\session\configuration\.docslist" />
@@ -438,7 +443,23 @@
     <None Include="file-system\server\.docslist" />
     <None Include="file-system\files.markdown" />
     <None Include="file-system\server\background-tasks.markdown" />
+    <None Include="file-system\server\bundles\.docslist" />
+    <None Include="file-system\server\bundles\encryption.markdown" />
+    <None Include="file-system\server\bundles\versioning.markdown" />
     <None Include="file-system\server\enabling-rdc.markdown" />
+    <None Include="file-system\studio\.docslist" />
+    <None Include="file-system\studio\configurations-view.markdown" />
+    <None Include="file-system\studio\files\.docslist" />
+    <None Include="file-system\studio\files\file-edit-view.markdown" />
+    <None Include="file-system\studio\files\files-view.markdown" />
+    <None Include="file-system\studio\search-view.markdown" />
+    <None Include="file-system\studio\status-view.markdown" />
+    <None Include="file-system\studio\synchronization\.docslist" />
+    <None Include="file-system\studio\synchronization\configuration-view.markdown" />
+    <None Include="file-system\studio\synchronization\conflicts-view.markdown" />
+    <None Include="file-system\studio\synchronization\destinations-view.markdown" />
+    <None Include="file-system\studio\tasks\.docslist" />
+    <None Include="file-system\studio\tasks\export-and-import-views.markdown" />
     <None Include="file-system\synchronization\.docslist" />
     <None Include="file-system\synchronization\configurations.markdown" />
     <None Include="file-system\synchronization\conflicts.markdown" />
@@ -454,6 +475,7 @@
     <None Include="glossary\bulk-insert-operation.dotnet.markdown" />
     <None Include="glossary\bulk-insert-options.dotnet.markdown" />
     <None Include="glossary\bulk-operation-options.dotnet.markdown" />
+    <None Include="glossary\configuration-change-notification.dotnet.markdown" />
     <None Include="glossary\configuration-search-results.dotnet.markdown" />
     <None Include="glossary\conflict-item.dotnet.markdown" />
     <None Include="glossary\conflict-notification.dotnet.markdown" />
@@ -705,7 +727,6 @@
     <None Include="transformers\what-are-transformers.markdown" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="file-system\client-api\listeners\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
@@ -713,6 +734,18 @@
     <Content Include="file-system\images\studio_view.png" />
     <Content Include="file-system\server\images\enable-rdc-windows-7-and-8.png" />
     <Content Include="file-system\server\images\enable-rdc-windows-server-2012.png" />
+    <Content Include="file-system\studio\files\images\files-view-create-folder.png" />
+    <Content Include="file-system\studio\files\images\files-view-delete-files.png" />
+    <Content Include="file-system\studio\files\images\files-view-download-file.png" />
+    <Content Include="file-system\studio\files\images\files-view-edit-file.png" />
+    <Content Include="file-system\studio\files\images\files-view-empty-folder.png" />
+    <Content Include="file-system\studio\files\images\files-view-explorer.png" />
+    <Content Include="file-system\studio\files\images\files-view-file-uploaded.png" />
+    <Content Include="file-system\studio\files\images\files-view-upload.png" />
+    <Content Include="file-system\studio\images\search-view-example.png" />
+    <Content Include="file-system\studio\images\search-view-filters.png" />
+    <Content Include="file-system\studio\images\search-view.png" />
+    <Content Include="file-system\studio\synchronization\images\conflicts-view.png" />
     <Content Include="indexes\images\side-by-side-1.png" />
     <Content Include="indexes\images\side-by-side-2.png" />
     <Content Include="indexes\images\side-by-side-3.png" />

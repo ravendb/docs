@@ -14,7 +14,7 @@ In order to retrieve the notifications about the file changes located in a given
 
 | Return Value | |
 | ------------- | ------------- |
-| **IObservableWithTask&lt;FileChangeNotification&gt;** | The observable that allows to add subscriptions to received notifications |
+| **IObservableWithTask&lt;[FileChangeNotification](../../../glossary/file-change-notification)&gt;** | The observable that allows to add subscriptions to received notifications |
 
 ##Example
 

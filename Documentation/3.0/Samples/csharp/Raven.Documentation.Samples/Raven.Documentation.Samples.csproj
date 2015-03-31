@@ -293,7 +293,7 @@
     <Compile Include="ClientApi\SetupDefaultDatabase.cs" />
     <Compile Include="Common.cs" />
     <Compile Include="Faceted.cs" />
-    <Compile Include="FileSystem\ClientApi\ChangesApi\Changes.cs" />
+    <Compile Include="FileSystem\ClientApi\Changes.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Admin.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Browse.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\Configurations.cs" />
@@ -304,6 +304,10 @@
     <Compile Include="FileSystem\ClientApi\Commands\Synchronization.cs" />
     <Compile Include="FileSystem\ClientApi\Commands\WhatAreCommands.cs" />
     <Compile Include="FileSystem\ClientApi\CreatingFilesStore.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\Conflict.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\Delete.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\General.cs" />
+    <Compile Include="FileSystem\ClientApi\Listeners\MetadataChange.cs" />
     <Compile Include="FileSystem\ClientApi\Session\Configuration\MaxRequests.cs" />
     <Compile Include="FileSystem\ClientApi\Session\Configuration\OptimisticConcurrency.cs" />
     <Compile Include="FileSystem\ClientApi\Session\DeletingFiles.cs" />
@@ -319,6 +323,8 @@
     <Compile Include="FileSystem\ClientApi\Session\ChangingMetadata.cs" />
     <Compile Include="FileSystem\ClientApi\Session\UploadingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\WhatIsFilesSession.cs" />
+    <Compile Include="FileSystem\Server\Bundles\Encryption.cs" />
+    <Compile Include="FileSystem\Server\Bundles\Versioning.cs" />
     <Compile Include="Indexes\Analyzers.cs" />
     <Compile Include="Indexes\Boosting.cs" />
     <Compile Include="Indexes\Creating.cs" />
