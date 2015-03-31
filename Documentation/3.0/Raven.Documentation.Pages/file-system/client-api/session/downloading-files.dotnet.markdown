@@ -22,7 +22,7 @@ There are two overloads:
 
 | Exceptions | |
 | ------------- | ------------- |
-| FileNotFoundException | is thrown when the requested file does not exist in the file system. |
+| FileNotFoundException | It is thrown when the requested file does not exist in the file system. |
 
 ##Example
 

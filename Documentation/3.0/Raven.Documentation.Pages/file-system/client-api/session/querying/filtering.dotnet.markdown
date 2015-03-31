@@ -79,7 +79,7 @@ Let's take a look at the example:
 
 {CODE filtering_15@FileSystem\ClientApi\Session\Querying\Filtering.cs /}
 
-If the following query will be sent to the server, then:
+It will send the following query to the server:
 
 `__fileName:readme* Copyright:HR`
 

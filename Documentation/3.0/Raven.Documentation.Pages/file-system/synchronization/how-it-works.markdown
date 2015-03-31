@@ -28,7 +28,7 @@ property to `false`. The easiest way to manipulate the destination servers is to
 
 ##Available topologies
 
-If you setup a file system to synchronize files from one direction to another Raven file system, they will work in the *master/slave* model.
+If you setup a file system to synchronize files in one direction to another Raven file system, they will work in the *master/slave* model.
 Any changes made int the master will be propagated to the destination, but changes made on the slave server will not be reflected to the master.
 
 RavenFS also supports the *master/master* synchronization model. Any file modifications on both file systems will be propagated between them.

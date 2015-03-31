@@ -749,6 +749,12 @@
     <Content Include="file-system\studio\how-to\images\encryption-1.png" />
     <Content Include="file-system\studio\how-to\images\encryption-2.png" />
     <Content Include="file-system\studio\how-to\images\encryption-3.png" />
+    <Content Include="file-system\studio\how-to\images\versioning-1.png" />
+    <Content Include="file-system\studio\how-to\images\versioning-2.png" />
+    <Content Include="file-system\studio\how-to\images\versioning-3.png" />
+    <Content Include="file-system\studio\how-to\images\versioning-4.png" />
+    <Content Include="file-system\studio\how-to\images\versioning-5.png" />
+    <Content Include="file-system\studio\how-to\images\versioning-6.png" />
     <Content Include="file-system\studio\images\search-view-example.png" />
     <Content Include="file-system\studio\images\search-view-filters.png" />
     <Content Include="file-system\studio\images\search-view.png" />

@@ -38,7 +38,7 @@ Once one of the following happens, then it will automatically start to synchroni
 * file renamed,
 * file deleted.
 
-The synchronization task also runs periodically to handle failures and restart scenarios. Each of the operations above is related to a different kind of synchronization work, which is determined by the server in order to minimize the amount of transferred data across the network. For example, if you change the file name alone, there is no need to send the file's content. The destination file system simply needs to know what is the new name of the file. To get more details about implemented synchronization solutions click [here]().
+The synchronization task also runs periodically to handle failures and restart scenarios. Each of the operations above is related to a different kind of synchronization work, which is determined by the server in order to minimize the amount of transferred data across the network. For example, if you change the file name alone, there is no need to send the file's content. The destination file system simply needs to know what is the new name of the file. To get more details about implemented synchronization solutions click [here](./synchronization/how-it-works).
 
 ##Management studio
 

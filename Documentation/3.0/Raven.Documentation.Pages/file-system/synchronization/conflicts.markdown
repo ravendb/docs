@@ -61,6 +61,6 @@ The `Local Version` strategy will incorporate a remote (source) version history 
 If you choose the `Remote Version` then the `Raven-Synchronization-Conflict-Resolution` record will be added to metadata of a file existing on a destination.
 It will be used by a source file system during the next synchronization attempt (periodic run or manual execution forced by the user) to determine that it can overwrite a previously conflicted file.
 
-There is also an option to setup default conflict resolution strategy or introduce a custom conflict resolver. You can find out more about dealing with conflicts using Client API [here](TODOarek).
+There is also an option to setup default conflict resolution strategy or introduce a custom conflict resolver. You can find out more about dealing with conflicts using Client API [here](../client-api/commands/synchronization/conflicts/resolve).
 
 

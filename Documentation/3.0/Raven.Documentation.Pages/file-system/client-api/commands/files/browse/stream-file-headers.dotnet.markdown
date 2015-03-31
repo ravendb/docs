@@ -15,7 +15,7 @@
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;IAsyncEnumerator&lt;FileHeader&gt;&gt;** | A task that represents the asynchronous operation. The task result is the enumeration of [`FileHeaders`](../../../../../glossary/file-header) objects. |
+| **Task&lt;IAsyncEnumerator&lt;FileHeader&gt;&gt;** | A task that represents the asynchronous operation. The task result is the enumerator of [`FileHeaders`](../../../../../glossary/file-header) objects. |
 
 
 ## Example
