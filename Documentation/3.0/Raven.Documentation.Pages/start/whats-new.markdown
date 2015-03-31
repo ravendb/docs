@@ -1,5 +1,15 @@
 # What's new
 
+{PANEL:Upcoming}
+
+### Server
+
+#### [Configuration](../server/configuration/configuration-options)
+
+- added [`Raven/WorkingDir`](../server/configuration/configuration-options#data-settings),
+
+{PANEL/}
+
 {PANEL:3.0.3599 - 2015/02/08}
 
 ### Server
@@ -10,7 +20,7 @@
 - added _admin/low-memory-notification_ endpoint,
 - performance improvements
 
-#### Configuration
+#### [Configuration](../server/configuration/configuration-options)
 
 - added `Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes`,
 - added `Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse`,

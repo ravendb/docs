@@ -197,6 +197,12 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 ### Data settings:
 
+* **Raven/WorkingDir**   
+	Base directory for all relative paths (e.g. `Raven/DataDir`, `Raven/AssembliesDirectory`, `Raven/CompiledIndexCacheDirectory`).   
+	`APPDRIVE` value can be used to point automaticaly to the drive where application lies e.g. `APPDRIVE:\Raven\` may point to `C:\Raven\` if your application is installed on drive `C`.   
+	By default, the `web.config` in distribution package have this value set to `APPDRIVE:\Raven\` due to IIS restart issues.   
+	_Default:_ ~/ (server's working directory).
+
 * **Raven/RunInMemory**   
     Whether the database should run purely in memory. When running in memory, nothing is written on a disk and if the server is restarted, all data will be lost. Useful mostly for testing.   
     _Default:_ false  
@@ -541,6 +547,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NewIndexInMemoryMaxTime** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
+| **Raven/WorkingDir** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/StorageTypeName** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
