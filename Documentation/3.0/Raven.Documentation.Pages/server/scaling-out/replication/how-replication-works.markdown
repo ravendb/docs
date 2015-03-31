@@ -17,7 +17,7 @@ In order to setup a replication, you can create the following documents:
 * `Raven/Replication/Destinations` - List of servers we need to replicate to
 * `Raven/Replication/Sources/[server]` - Information about the data replicated from a particular server
 
-## The destinations document
+## Destinations document
 
 The destination document is saved with an ID of `Raven/Replication/Destinations`, which tells the RavenDB instance where to replicate to. It's format is as follows:
 
@@ -35,6 +35,22 @@ The destination document is saved with an ID of `Raven/Replication/Destinations`
 {CODE-BLOCK/}
 
 With an object containing a url per each instance to replicate to, whenever this document is updated, replication kicks off and starts replicating to the updates destination list.
+
+## Replicating indexes and transformers
+
+By default, Indexes and Transformers are replicated also (including deletions) every 10 minutes (this can be changed using `Raven/Replication/IndexAndTransformerReplicationLatency`). You can disable this behavior using the `SkipIndexReplication` property in `ReplicationDestination` or using Studio.
+
+You can schedule replication of all indexes or transformers to all destinations manually using following commands:
+
+{CODE-BLOCK:plain}
+curl -X POST http://localhost:8080/databases/Northwind/replication/replicate-indexes?op=replicate-all -d ''
+curl -X POST http://localhost:8080/databases/Northwind/replication/replicate-transformers?op=replicate-all -d ''
+{CODE-BLOCK/}
+
+Beside the `?op=replicate-all` operation following operations are available:
+
+- `?op=replicate-all-to-destination` (content of your request must contain a valid ReplicationDestination) - replicates all indexes/transformers to single destination,
+- `?indexName={indexName}` or `?transformerName={transformerName}` - replicates only given index/transformer to all destinations
 
 ## How replication works?
 
