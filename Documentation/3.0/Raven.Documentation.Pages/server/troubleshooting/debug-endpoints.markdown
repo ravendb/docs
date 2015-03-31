@@ -31,6 +31,7 @@
 | debug/identities?start={start}&pageSize={pageSize} | GET | - paging parameters | Returns next identity values for collection types, indexes, transformers, etc. | |
 | debug/info-package | GET | | Creates debug info package that contains detailed information about the database (e.g. replication information, statistics, queries, requests, hardware information, etc.) | |
 | debug/transactions | GET | | Returns information about current DTC transactions. | |
+| debug/raw-doc?id={id} | GET | - _id_ - if of a document | Returns raw document data. | |
 | | | | |
 | admin/stats | GET | | Returns server-wide statistics (e.g. server name, uptime, memory statistics, loaded databases information). More [here](../../server/administration/statistics). | |
 | admin/gc | GET | | Starts the garbage collection process. | |

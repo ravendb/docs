@@ -7,7 +7,7 @@
 - `[JavaScript]` Parser now returns more descriptive errors,
 - `[JavaScript]` `PutDocument` method now returns Id of generated document,
 - `[JavaScript]` Each `LoadDocument` increases maximum number of steps in script using following formula `MaxSteps = MaxSteps + (MaxSteps / 2 + (SerializedSizeOfDocumentOnDisk * AdditionalStepsPerSize))`,
-- Added `debug/rawdocumentbytes` endpoint
+- Added `debug/raw-doc` endpoint
 
 #### [Configuration](../server/configuration/configuration-options)
 
