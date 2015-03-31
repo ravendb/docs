@@ -179,6 +179,7 @@
     <Compile Include="ClientApi\Commands\Indexes\Get.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\ChangeIndexLockMode.cs" />
     <Compile Include="ClientApi\Commands\Indexes\HowTo\GetIndexMergeSuggestions.cs">
       <SubType>Code</SubType>
     </Compile>

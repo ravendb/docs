@@ -30,6 +30,8 @@ The following commands can be used to manipulate indexes:
 - [GetIndexMergeSuggestions](../../client-api/commands/indexes/how-to/get-index-merge-suggestions)   
 - [DeleteIndex](../../client-api/commands/indexes/delete)   
 - [ResetIndex](../../client-api/commands/indexes/how-to/reset-index)   
+- [IndexHasChanged](../../client-api/commands/indexes/how-to/check-if-index-has-changed)   
+- [SetIndexLock](../../client-api/commands/indexes/how-to/change-index-lock-mode)   
 
 ### Transformer commands
 
