@@ -5,7 +5,7 @@ Metadata of stored files are not encrypted, likewise [configuration items](../..
 
 ## Configuration
 
-If you want to setup a new file system with encryption bundle using the Studio, then please refer to [this](TODO arek) page.
+If you want to setup a new file system with encryption bundle using the Studio, then please refer to [this](../../studio/how-to/how-to-setup-encryption) page.
 
 The possible configuration options are:   
 

@@ -139,6 +139,7 @@ You can tweak the export/import process with the following parameters:
  - excludeexpired: Excludes expired documents created by the [expiration bundle](../../server/bundles/expiration).    
  - limit: Reads at most VALUE documents/attachments.
  - strip-replication-information: Remove all replication information from metadata (import only). 
+ - disable-versioning-during-import: Disables versioning for the duration of the import.
  - help: You can use the help option in order to print the built-in options documentation.
 
 {PANEL/}
