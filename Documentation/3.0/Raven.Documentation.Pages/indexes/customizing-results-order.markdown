@@ -10,9 +10,11 @@ Numerical values, on the other hand, are stored as text and therefore require th
 
 {CODE static_sorting1@Indexes\CustomizingResultsOrder.cs /}
 
-The index outlined above will allow sorting by value on the number of units in stock (1, 2, 3, 11, etc) for each `Product`. If we wouldn't specify this option, it would have been sorted lexically (1, 11, 2, 3, etc).
+The index outlined above will allow sorting by value on the number of units in stock (1, 2, 3, 11, etc) for each `Product`. If we would specify SortOptions.String, then values would have been sorted lexically (1, 11, 2, 3, etc).
 
 The default `SortOptions` value is `String`. Appropriate values available for all numeric types (`Byte`, `Double`, `Float`, `Int`, `Long` and `Short`).
+
+{SAFE When index is deployed using `AbstractIndexCreationTask` then all numerical fields in generated index definition will contain appropriate sorting options set.  /}
 
 {NOTE Specifying the `Sort` in the index definition won't make results from this index be ordered unless you call `OrderBy` on the query itself. /}
 

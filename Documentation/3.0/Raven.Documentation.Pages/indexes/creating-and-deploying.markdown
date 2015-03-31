@@ -18,9 +18,11 @@ There are a couple of ways to create `static index` and send it to server, we ca
 
 ### using AbstractIndexCreationTask
 
-If you are interested in having a **strongly-typed syntax** during index creation, have an **ability to deploy indexes using assembly scanner** or **avoid hard-coding index names in every query**, then `AbstractIndexCreationTask` should be your choice. 
+If you are interested in having a **strongly-typed syntax** during index creation, have an **ability to deploy indexes using assembly scanner**, **avoid hard-coding index names in every query** and **do not worry about setting sorting for numerical fields**, then `AbstractIndexCreationTask` should be your choice. 
 
 {NOTE We recommend creating and using indexes in this form due to its simplicity, many benefits and few disadvantages. /}
+
+{SAFE When index is deployed using `AbstractIndexCreationTask` then all numerical fields in generated index definition will contain appropriate sorting options set.  /}
 
 #### Naming conventions
 
