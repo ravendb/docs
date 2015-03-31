@@ -14,7 +14,7 @@
 - Added [`Raven/WorkingDir`](../server/configuration/configuration-options#data-settings),
 - Added `Raven/AdditionalStepsForScriptBasedOnDocumentSize` (5 by default),
 - Added `Raven/MaxServicePointIdleTime`,
-- Added `Raven/ImplicitFieldsToFetchFromDocumentMode`,
+- Added `Raven/ImplicitFetchFieldsFromDocumentMode`,
 - Added `Raven/Replication/ForceReplicationRequestBuffering`
 
 #### Indexes

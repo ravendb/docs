@@ -195,6 +195,13 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Indicates how long can we keep the new index in memory before we have to flush it (timespan).   
 	_Default:_ 15 minutes  
 
+* **Raven/ImplicitFetchFieldsFromDocumentMode**   
+	How FieldsToFetch are extracted from the document. Values:   
+		- Enabled   
+		- DoNothing (fields are not fetched from the document)   
+		- Exception (an exception is thrown if we need to fetch fields from the document itself)   
+	_Default:_ Enabled
+
 ### Data settings:
 
 * **Raven/WorkingDir**   
@@ -276,6 +283,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/MaxConcurrentRequestsForDatabaseDuringLoad**   
     Maximum number of allowed request to databases that are being loaded before warning messages will be returned.
     _Default:_ 10
+
+* **Raven/MaxServicePointIdleTime**   
+    If set, changes the ServicePointManager.MaxServicePointIdleTime to given value.   
+    _Default:_ `null`
 
 ### Misc settings
 
@@ -493,6 +504,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Maximum amount of items that can be send in replication batch to THIS database.  
     _Default:_ 600 seconds
 
+* **Raven/Replication/ForceReplicationRequestBuffering**   
+    Force buffering in replication requests (useful if using windows auth under certain scenarios).  
+    _Default:_ false
+
 ### Prefetcher
 
 * **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout**   
@@ -546,6 +561,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Indexing/FlushIndexToDiskSizeInMb** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NewIndexInMemoryMaxTime** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/ImplicitFetchFieldsFromDocumentMode** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/WorkingDir** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -565,6 +581,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/AccessControlRequestHeaders** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Headers/Ignore** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/MaxConcurrentRequestsForDatabaseDuringLoad** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/MaxServicePointIdleTime** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/License** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/LicensePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |
@@ -625,6 +642,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Replication/ReplicationRequestTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Replication/IndexAndTransformerReplicationLatency** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Replication/ForceReplicationRequestBuffering** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Prefetcher/MaximumSizeAllowedToFetchFromStorage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
