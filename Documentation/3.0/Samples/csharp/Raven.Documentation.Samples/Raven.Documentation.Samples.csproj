@@ -180,6 +180,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClientApi\Commands\Indexes\HowTo\ChangeIndexLockMode.cs" />
+    <Compile Include="ClientApi\Commands\Indexes\HowTo\ChangeIndexPriority.cs" />
     <Compile Include="ClientApi\Commands\Indexes\HowTo\GetIndexMergeSuggestions.cs">
       <SubType>Code</SubType>
     </Compile>

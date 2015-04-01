@@ -120,6 +120,7 @@
     <None Include="client-api\commands\how-to\switch-commands-to-a-different-database.java.markdown" />
     <None Include="client-api\commands\indexes\delete.http.markdown" />
     <None Include="client-api\commands\indexes\get.http.markdown" />
+    <None Include="client-api\commands\indexes\how-to\change-index-priority.dotnet.markdown" />
     <None Include="client-api\commands\indexes\how-to\change-index-lock-mode.dotnet.markdown" />
     <None Include="client-api\commands\indexes\how-to\check-if-index-has-changed.http.markdown" />
     <None Include="client-api\commands\indexes\how-to\get-index-merge-suggestions.http.markdown" />

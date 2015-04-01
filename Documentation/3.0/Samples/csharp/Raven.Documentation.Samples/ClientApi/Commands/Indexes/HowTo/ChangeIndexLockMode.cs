@@ -16,7 +16,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Indexes.HowTo
 		{
 			using (var store = new DocumentStore())
 			{
-				#region #region change_index_lock_2
+				#region change_index_lock_2
 				store.DatabaseCommands.SetIndexLock("Orders/Totals", IndexLockMode.LockedIgnore);
 				#endregion
 			}
