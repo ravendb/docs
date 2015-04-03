@@ -10,3 +10,10 @@ Note that these actions performed on the large files can take a while. Based on 
 #Synchronization
 
 Another background work is the synchronization of the files to destination nodes. It is performed periodically to ensure that all the modifications are  propagated to the destinations, even though one of them was down for a long time. If a destination server wakes up, then our file system will resend all the missing file updates. The synchronization task is run every 10 minutes.
+
+
+## Related articles
+
+- [Commands : CleanUpAsync](../client-api/commands/storage/cleanup)
+- [Commands : RetryRenamingAsync](../client-api/commands/storage/retry-renaming)
+- [Commands : StartAsync](../client-api/commands/synchronization/start)

@@ -44,3 +44,7 @@ The versioning bundle also has a client side part, which you can access by addin
 Then, you can access past revisions of a file using the following code:
 
 {CODE versioning_4@FileSystem\Server\Bundles\Versioning.cs /}
+
+## Related articles
+
+- [Studio : How to enable and setup versioning?](../../studio/how-to/how-to-setup-versioning)

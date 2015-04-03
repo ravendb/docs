@@ -128,7 +128,7 @@
 ### Server
 
 - Voron - new [storage engine](../server/configuration/storage-engines),
-- [RavenFS](http://ayende.com/blog/168323/what-is-new-in-ravendb-3-0-ravenfs),
+- [RavenFS](../file-system/what-is-raven-fs),
 - FIPS encryption support. More [here](../server/configuration/enabling-fips-compliant-encryption-algorithms),
 - low memory notifications,
 - simpler deployment (less files),

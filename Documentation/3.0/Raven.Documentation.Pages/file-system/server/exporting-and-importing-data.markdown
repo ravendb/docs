@@ -75,3 +75,7 @@ Alternatively, if you prefer to do export/import from code rather than from the 
 {CODE smuggler_api_3@FileSystem\Server\ExportImport.cs /}
 
 {PANEL/}
+
+## Related articles
+
+- [Studio : Export and import file system](../studio/tasks/export-and-import-views)

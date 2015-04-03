@@ -13,3 +13,7 @@
 ##Example
 
 {CODE get_destinations_2@FileSystem\ClientApi\Commands\Synchronization.cs /}
+
+## Related articles
+
+- [Synchronization destinations](../../../../synchronization/how-it-works#destinations)

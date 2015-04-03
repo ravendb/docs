@@ -39,3 +39,8 @@ If there are fewer than 1024 files in a file system, the below code will return 
 In this example we will get the first file that has less than 100 bytes or `null` if no such file does not exist.
 
 {CODE query_3@FileSystem\ClientApi\Session\Querying\Basics.cs /}
+
+
+## Related articles
+
+- [Indexing](../../../indexing)

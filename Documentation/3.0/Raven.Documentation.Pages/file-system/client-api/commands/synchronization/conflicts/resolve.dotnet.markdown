@@ -32,3 +32,7 @@ In contrast to the usage of the `CurrentVersion` strategy, the conflict will not
 This operation will simply add an appropriate metadata record to the conflicted file (`Raven-Synchronization-Conflict-Resolution`) to allow the source file system to synchronize its version in next synchronization run (periodic or triggered manually).
 
 {CODE resolve_conflict_3@FileSystem\ClientApi\Commands\Synchronization.cs /}
+
+## Related articles
+
+- [Synchronization conflicts](../../../../synchronization/conflicts)

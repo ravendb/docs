@@ -67,3 +67,7 @@ curl -X POST "http://localhost:8080/admin/fs/restore" \
 {CODE-BLOCK/}
 
 {DANGER/}
+
+## Related articles
+
+- [Studio : How to setup file encryption?](../../studio/how-to/how-to-setup-encryption)

@@ -47,3 +47,7 @@ The **StartAsync** method is used to manually force the synchronization to the d
 
 {PANEL/}
 
+## Related articles
+
+- [How file synchronization works?](../../../synchronization/how-it-works)
+

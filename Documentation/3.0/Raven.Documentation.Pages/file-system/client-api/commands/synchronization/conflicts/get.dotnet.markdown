@@ -26,3 +26,7 @@ Conflicts always exist in a destination file system.
 ## Example
 
 {CODE get_conflicts_2@FileSystem\ClientApi\Commands\Synchronization.cs /}
+
+## Related articles
+
+- [Synchronization conflicts](../../../../synchronization/conflicts)

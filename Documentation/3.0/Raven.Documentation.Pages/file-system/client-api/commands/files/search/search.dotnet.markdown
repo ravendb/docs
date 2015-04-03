@@ -33,3 +33,7 @@ The usage of `+` symbol or no prefix before a name of the sorted field means tha
 ## Example II
 
 {CODE search_3@FileSystem\ClientApi\Commands\Search.cs /}
+
+## Related articles
+
+- [Indexing](../../../../indexing)

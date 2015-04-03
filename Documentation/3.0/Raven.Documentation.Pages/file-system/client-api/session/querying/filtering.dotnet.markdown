@@ -106,3 +106,7 @@ The actual query will be:
 This method is used to indicate the directory where the search should be performed. Additionally, you can determine whether the search operation should be run only against this directory or also its subfolders.
 
 {CODE filtering_18@FileSystem\ClientApi\Session\Querying\Filtering.cs /}
+
+## Related articles
+
+- [Indexing](../../../indexing)

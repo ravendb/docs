@@ -97,3 +97,8 @@ Next synchronization task run starts from asking a destination about status of t
 has failed, the file will be added to the synchronization queue again.
 
 * periodic runs - the synchronization task runs every 10 minutes.
+
+## Related articles
+
+- [Enabling Remote Differential Compression](../server/enabling-rdc)
+

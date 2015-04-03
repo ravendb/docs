@@ -13,3 +13,7 @@ To get ordered results we need to indicate a field name to sort by:
 You can also retrieve results in descending order:
 
 {CODE sorting_2@FileSystem\ClientApi\Session\Querying\Sorting.cs /}
+
+## Related articles
+
+- [Indexing](../../../indexing)

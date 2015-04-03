@@ -16,3 +16,7 @@ It returns the `IFilesStore` object which ensures full access to the manage file
 There should be only one instance of the `IFilesStore` created per application (singleton). The files store is a thread safe object and its typical initialization looks as follows:
 
 {CODE create_fs_2@FileSystem\ClientApi\CreatingFilesStore.cs /}
+
+## Related articles
+
+- [What is a files store?](./what-is-files-store)

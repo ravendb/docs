@@ -23,3 +23,7 @@ The **SearchOnDirectoryAsync** method returns files located in a given directory
 ## Example
 
 {CODE search_on_directory_2@FileSystem\ClientApi\Commands\Search.cs /}
+
+## Related articles
+
+- [Indexing](../../../../indexing)

@@ -12,3 +12,7 @@ The files store ensures the access to the following client API features:
 * Commands
 * Changes API
 * Listeners
+
+## Related articles
+
+- [Creating a files store](./creating-files-store)

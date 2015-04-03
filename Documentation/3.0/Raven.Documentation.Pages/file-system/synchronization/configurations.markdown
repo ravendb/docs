@@ -132,3 +132,8 @@ The conflict is always created on a destination node.
     "RemoteServerUrl": "http://localhost:8080/fs/Northwind"
 }
 {CODE-BLOCK/}
+
+
+## Related articles
+
+- [What are configurations?](../configurations)
