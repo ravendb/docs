@@ -47,10 +47,26 @@
 
 ### FileSystem
 
-- Added support for @in queries,
+- Added support for @in queries (fixed the `WhereIn` method),
 - Added `DeleteByQueryAsync` to `IAsyncFilesCommands`,
 - Added `RegisterDeletionQuery` to `IAsyncFilesSession`,
 - Added `RegisterResultsForDeletion` to `IAsyncFilesQuery`
+- Deleted `progress` parameter of `UploadAsync` method in `IAsyncFilesCommands`,
+- Renamed `StreamFilesAsync` to `StreamFileHeadersAsync` in `IAsyncFilesCommands`,
+- Exposed `Import/Export` options in the Studio,
+- Exposed synchronization settings in the Studio,
+- Added concurrency checks support. Available by providing file Etags or enabling optimistic concurrency (added `DefaultUseOptimisticConcurrency` convention),
+- Added `Take` and `Skip` methods to querying API,
+- Fix: Registered files are tracked by session after `SaveChangesAsync` call,
+- Fix: Metadata update operation creates a file revision when `Versioning Bundle` is enabled,
+- Fix: Creating revisions of synchronized files when `Versioning Bundle` is enabled,
+- Fix: File revisions are not synchronized to destination file systems,
+- Added option `RenameOnReset` to `Versioning Bundle` configuration,
+- Added ability to create `Versioning Bundle` configuration for a specific directory,
+- Added `AbstractSynchronizationTrigger` trigger,
+- Added querying support for numeric metadata fields,
+- Renamed `SynchronizeAsync` to `StartAsync` in `IAsyncFilesSynchronizationCommands`,
+- Added support for smuggling RavenFS configurations
 
 {PANEL/}
 

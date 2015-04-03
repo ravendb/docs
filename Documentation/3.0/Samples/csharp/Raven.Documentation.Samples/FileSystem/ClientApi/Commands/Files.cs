@@ -26,6 +26,10 @@
 			#region delete_1
 			Task DeleteAsync(string filename, Etag etag = null);
 			#endregion
+
+			#region delete_by_query_1
+			Task DeleteByQueryAsync(string query);
+			#endregion
 		}
 
 		public async Task Foo()
@@ -81,6 +85,12 @@
 			#region delete_2
 
 			await store.AsyncFilesCommands.DeleteAsync("/movies/intro.avi");
+			#endregion
+
+			#region delete_by_query_2
+
+			await store.AsyncFilesCommands.DeleteByQueryAsync("__directoryName:/temp AND __level:2");
+
 			#endregion
 		} 
 	}

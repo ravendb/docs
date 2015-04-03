@@ -19,7 +19,7 @@ Let's assume that we have a file `documents/pictures/wallpaper.jpg`, then defaul
 * `__rdirectory` - the *reversed* directory path (to support queries that ends with the wildcard): `serutcip/stnemucod/`
 * `__directoryName` - the list of directories associated with the file: `/documents/pictures`, `/documents`, `/`,
 * `__rdirectoryName` - the list of *reversed* paths of directories associated with the file (to support queries that ends with the wildcard): `serutcip/stnemucod/`, `stnemucod/`, `/`,
-* `__level` - the nesting level: `3`,
+* `__level` - the nesting level: `3` (starts from `1`, which means root `/` directory),
 * `__modified` - the date of the file indexing (the date index format is *yyyy-MM-dd_HH-mm-ss*),
 * `__size` - the file length (in bytes) stored as string (format D20 used),
 * `__size_numeric` - the file length (in bytes) stored as numeric fields, which allows to search by range.
