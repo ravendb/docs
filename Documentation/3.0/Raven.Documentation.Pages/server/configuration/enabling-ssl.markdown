@@ -1,7 +1,6 @@
 # Configuration : Enabling SSL
 
-+{INFO SSL can only be enabled when RavenDB is running as a Windows Service.
-+The certificate has to be installed in the local certificate repository [Certificates - Local Computer\Personal\Certificates] and include the private key (.pfx file), otherwise the following will not work. /}
+{INFO SSL can only be enabled when RavenDB is running as a Windows Service. The certificate has to be installed in the local certificate repository [Certificates - Local Computer\Personal\Certificates] and include the private key (.pfx file), otherwise the following will not work. /}
 
 By default, secure connectivity is disabled. To enable the SSL in RavenDB, you need to do the following:
 

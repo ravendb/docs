@@ -1,13 +1,23 @@
 # What's new
 
-{PANEL:Upcoming}
+{PANEL:3.0.3660 - 2015/04/07}
+
+### Global
+
+- Various performance optimizations across both server and client
 
 ### Server
 
 - `[JavaScript]` Parser now returns more descriptive errors,
 - `[JavaScript]` `PutDocument` method now returns Id of generated document,
 - `[JavaScript]` Each `LoadDocument` increases maximum number of steps in script using following formula `MaxSteps = MaxSteps + (MaxSteps / 2 + (SerializedSizeOfDocumentOnDisk * AdditionalStepsPerSize))`,
-- Added `debug/raw-doc` endpoint
+- Added `debug/raw-doc` endpoint,
+- Prevented high CPU and excessive GC runs under low memory conditions,
+- Avoid leaking resources when failing to create a database,
+- Faster JSON serialization and deserialization,
+- Added backoff strategy for failing periodic exports,
+- Recognize Windows users with admin rights to system database as server admins,
+- Facets can now have very large number of facets
 
 #### [Configuration](../server/configuration/configuration-options)
 
@@ -26,7 +36,7 @@
 - `[Periodic Export]` Added support for remote folders for Amazon S3 and Microsoft Azure,
 - `[SQL Replication]` Renamed `PerformTableQuatation` to `QuoteTables` in `SqlReplicationConfig`,
 - `[SQL Replication]` Added `Insert-only mode` for tables, which will prevent deletes on that table,
-- `[Replication]` Added support for index and transformer deletions
+- `[Replication]` Added support for index and transformer replication (including deletions)
 
 <hr />
 
