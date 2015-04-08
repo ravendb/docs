@@ -28,6 +28,7 @@ public class CreatingDocumentStore {
       return store;
     }
 
+    @SuppressWarnings("hiding")
     private static IDocumentStore createStore() {
       IDocumentStore store = new DocumentStore("http://localhost:8080", "Northwind");
       store.initialize();

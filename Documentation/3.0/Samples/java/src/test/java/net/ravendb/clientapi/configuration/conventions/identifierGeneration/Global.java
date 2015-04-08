@@ -112,6 +112,7 @@ public class Global {
 
     //region find_identity_property
     conventions.setFindIdentityProperty(new IdentityPropertyFinder() {
+      @SuppressWarnings("boxing")
       @Override
       public Boolean find(Field field) {
         return "Id".equals(field.getName());

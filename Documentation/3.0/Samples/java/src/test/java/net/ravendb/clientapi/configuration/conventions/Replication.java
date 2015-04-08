@@ -6,7 +6,6 @@ import net.ravendb.client.connection.IDocumentStoreReplicationInformer;
 import net.ravendb.client.connection.ReplicationInformer;
 import net.ravendb.client.connection.implementation.HttpJsonRequestFactory;
 import net.ravendb.client.delegates.ReplicationInformerFactory;
-import net.ravendb.client.document.ConsistencyOptions;
 import net.ravendb.client.document.DocumentConvention;
 import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.document.FailoverBehavior;

@@ -1,9 +1,7 @@
 package net.ravendb.clientapi.datasubscriptions;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import net.ravendb.abstractions.basic.CleanCloseable;
 import net.ravendb.abstractions.data.SubscriptionBatchOptions;

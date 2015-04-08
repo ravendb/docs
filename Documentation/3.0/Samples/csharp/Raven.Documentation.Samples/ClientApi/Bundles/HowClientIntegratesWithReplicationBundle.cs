@@ -78,7 +78,7 @@ namespace Raven.Documentation.Samples.ClientApi.Bundles
 			using (var store = new DocumentStore())
 			{
 				/*
-				#region client_integration_4
+				#region client_integration_5
 				Url = http://localhost:59233;
 					// Primary server url
 				Failover = { Url:'http://localhost:8078'}; 

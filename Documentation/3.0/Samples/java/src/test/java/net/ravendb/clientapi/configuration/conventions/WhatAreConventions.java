@@ -5,6 +5,7 @@ import net.ravendb.client.document.DocumentStore;
 
 
 public class WhatAreConventions {
+  @SuppressWarnings("unused")
   public WhatAreConventions() {
     DocumentStore store = new DocumentStore();
     //region conventions_1

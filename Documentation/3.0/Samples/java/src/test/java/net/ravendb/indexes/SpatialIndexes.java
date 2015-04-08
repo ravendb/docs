@@ -2,11 +2,8 @@ package net.ravendb.indexes;
 
 import java.util.List;
 
-import com.mysema.query.annotations.QueryEntity;
-
 import net.ravendb.abstractions.basic.UseSharpEnum;
 import net.ravendb.abstractions.indexing.SpatialOptions;
-import net.ravendb.abstractions.indexing.SpatialOptions.SpatialRelation;
 import net.ravendb.abstractions.indexing.SpatialOptions.SpatialUnits;
 import net.ravendb.abstractions.indexing.SpatialOptionsFactory.CartesianSpatialOptionsFactory;
 import net.ravendb.abstractions.indexing.SpatialOptionsFactory.GeographySpatialOptionsFactory;
@@ -18,6 +15,8 @@ import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.AbstractIndexCreationTask;
 import net.ravendb.client.spatial.SpatialCriteria;
 import net.ravendb.client.spatial.SpatialCriteriaFactory;
+
+import com.mysema.query.annotations.QueryEntity;
 
 
 public class SpatialIndexes {

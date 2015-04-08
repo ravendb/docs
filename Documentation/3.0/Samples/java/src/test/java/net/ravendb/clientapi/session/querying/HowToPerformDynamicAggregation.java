@@ -54,7 +54,7 @@ public class HowToPerformDynamicAggregation {
     //endregion
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public HowToPerformDynamicAggregation() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {

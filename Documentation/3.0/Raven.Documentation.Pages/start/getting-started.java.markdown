@@ -8,18 +8,10 @@ Simply put ravendb dependency to your pom:
 &lt;dependency&gt;
   &lt;groupId&gt;net.ravendb&lt;/groupId&gt;
   &lt;artifactId&gt;ravendb-client&lt;/artifactId&gt;
-  &lt;version&gt;3.0.0&lt;/version&gt;
+  &lt;version&gt;3.1.0&lt;/version&gt;
 &lt;/dependency&gt;
 {CODE-BLOCK/}
 
-## Unstable releases
-
-RavenDB Client Unstable is available as snapshot in daily-builds S3 maven repository.
-
-{WARNING:Important}
-Embedding repositories in pom is not a good practice, although it allows a quick start. Please consider moving repositories into `~/.m2/settings.xml`.
-More information can be found [here](http://maven.apache.org/guides/mini/guide-multiple-repositories.html). 
-{WARNING/}
 
 ## Create new maven project
 
@@ -36,7 +28,7 @@ Sample pom:
     &lt;dependency&gt;
       &lt;groupId&gt;net.ravendb&lt;/groupId&gt;
       &lt;artifactId&gt;ravendb-client&lt;/artifactId&gt;
-      &lt;version&gt;3.0.0-SNAPSHOT&lt;/version&gt;
+      &lt;version&gt;3.1.0&lt;/version&gt;
     &lt;/dependency&gt;
   &lt;/dependencies&gt;
 
@@ -63,18 +55,6 @@ Sample pom:
 		&lt;/plugin&gt;
 	&lt;/plugins&gt;
   &lt;/build&gt;
-  &lt;repositories&gt;
-    &lt;repository&gt;
-        &lt;id&gt;snapshots-repo&lt;/id&gt;
-        &lt;url&gt;http://ravendb-maven.s3.amazonaws.com/snapshots/&lt;/url&gt;
-        &lt;releases&gt;
-           &lt;enabled&gt;false&lt;/enabled&gt;
-        &lt;/releases&gt;
-        &lt;snapshots&gt;
-          &lt;enabled&gt;true&lt;/enabled&gt;
-        &lt;/snapshots&gt;
-     &lt;/repository&gt;
-  &lt;/repositories&gt;
 &lt;/project&gt;
 {CODE-BLOCK/}
 
@@ -118,4 +98,29 @@ After doing this you can use strongly-typed syntax.
       .query(Category.class)
       .where(c.name.eq("Candy"))
       .toList();
+{CODE-BLOCK/}
+
+
+## Unstable releases
+
+RavenDB Client Unstable is available as snapshot in daily-builds S3 maven repository.
+
+{WARNING:Important}
+Embedding repositories in pom is not a good practice, although it allows a quick start. Please consider moving repositories into `~/.m2/settings.xml`.
+More information can be found [here](http://maven.apache.org/guides/mini/guide-multiple-repositories.html). 
+{WARNING/}
+
+{CODE-BLOCK:java}
+  &lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;snapshots-repo&lt;/id&gt;
+        &lt;url&gt;http://ravendb-maven.s3.amazonaws.com/snapshots/&lt;/url&gt;
+        &lt;releases&gt;
+           &lt;enabled&gt;false&lt;/enabled&gt;
+        &lt;/releases&gt;
+        &lt;snapshots&gt;
+          &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+     &lt;/repository&gt;
+  &lt;/repositories&gt;
 {CODE-BLOCK/}

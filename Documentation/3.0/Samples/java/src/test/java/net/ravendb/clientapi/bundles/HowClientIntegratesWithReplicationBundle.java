@@ -17,6 +17,13 @@ public class HowClientIntegratesWithReplicationBundle {
       store.getConventions().setFailoverBehavior(FailoverBehaviorSet.of(FailoverBehavior.FAIL_IMMEDIATELY));
       //endregion
 
+      //region client_integration_4
+      store.getConventions().setFailoverBehavior(
+        FailoverBehaviorSet.of(
+          FailoverBehavior.READ_FROM_ALL_SERVERS,
+          FailoverBehavior.ALLOW_READS_FROM_SECONDARIES_AND_WRITES_TO_SECONDARIES));
+      //endregion
+
       //region client_integration_2
       RavenJObject hiloSetup = new RavenJObject();
       hiloSetup.add("ServerPrefix", "NorthServer/");
@@ -50,7 +57,7 @@ public class HowClientIntegratesWithReplicationBundle {
     }
 
     /*
-    //region client_integration_4
+    //region client_integration_5
     Url = http://localhost:59233;
         // Primary server url
     Failover = { Url:'http://localhost:8078'};

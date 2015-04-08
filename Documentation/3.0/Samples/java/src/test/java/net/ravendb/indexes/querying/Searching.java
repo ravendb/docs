@@ -122,7 +122,7 @@ public class Searching {
   }
   //endregion
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public Searching() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {

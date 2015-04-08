@@ -5,6 +5,7 @@ import java.util.List;
 import net.ravendb.abstractions.basic.Reference;
 import net.ravendb.abstractions.data.IndexQuery;
 import net.ravendb.abstractions.data.QueryResult;
+import net.ravendb.abstractions.indexing.FieldStorage;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.RavenPagingInformation;
@@ -33,6 +34,7 @@ public class Paging {
 
   //region paging_6_0
   public static class Orders_ByOrderLines_ProductName extends AbstractIndexCreationTask {
+    @SuppressWarnings("boxing")
     public Orders_ByOrderLines_ProductName() {
       map =
        " from order in docs.Orders " +
@@ -47,7 +49,34 @@ public class Paging {
   }
   //endregion
 
-  @SuppressWarnings("unused")
+  //region paging_7_0
+  public static class Orders_ByStoredProductName extends AbstractIndexCreationTask {
+    public static class Result {
+      private String product;
+      public String getProduct() {
+        return product;
+      }
+      public void setProduct(String product) {
+        this.product = product;
+      }
+    }
+    @SuppressWarnings("boxing")
+    public Orders_ByStoredProductName() {
+      map =
+       " from order in docs.Orders " +
+       " from line in order.Lines       " +
+       " select new                     " +
+       " {                              " +
+       "     Product = line.ProductName " +
+       " };";
+
+       maxIndexOutputsPerDocument = 1024L;
+       store("Product", FieldStorage.YES);
+    }
+  }
+  //endregion
+
+  @SuppressWarnings({"unused", "boxing"})
   public Paging() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {
@@ -375,6 +404,67 @@ public class Paging {
             pagingInformation); // since this is a next page to 'page 1' and we are passing 'RavenPagingInformation' that was filled during 'page 1' retrieval, rapid pagination will take place
         //endregion
       }
+    }
+
+    try (IDocumentStore store = new DocumentStore()) {
+      try (IDocumentSession session = store.openSession()) {
+        //region paging_7_1
+        List<String> results;
+        int pageNumber = 0;
+        int pageSize = 10;
+
+        do {
+          results = session
+             .query(Orders_ByStoredProductName.Result.class, Orders_ByStoredProductName.class)
+             .select(String.class, "Product")
+             .skip(pageSize * pageNumber)
+             .take(pageSize)
+             .distinct()
+             .toList();
+
+          pageNumber++;
+        } while (results.size() > 0);
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region paging_7_2
+        List<Orders_ByStoredProductName.Result> results;
+        int pageNumber = 0;
+        int pageSize = 10;
+
+        do {
+          results = session
+             .advanced()
+             .documentQuery(Order.class, Orders_ByStoredProductName.class)
+             .selectFields(Orders_ByStoredProductName.Result.class, "Product")
+             .skip(pageSize * pageNumber)
+             .take(pageSize)
+             .distinct()
+             .toList();
+
+          pageNumber++;
+        } while (results.size() > 0);
+        //endregion
+      }
+
+      //region paging_7_3
+      QueryResult result;
+      int pageNumber = 0;
+      int pageSize = 10;
+
+      do {
+        IndexQuery query = new IndexQuery();
+        query.setStart(pageNumber * pageSize);
+        query.setPageSize(pageSize);
+        query.setDistinct(true);
+        query.setFieldsToFetch(new String[] { "product" });
+
+        result = store.getDatabaseCommands()
+           .query("Orders/ByStoredProductName", query);
+        pageNumber++;
+      } while (result.getResults().size() > 0);
+      //endregion
     }
   }
 }

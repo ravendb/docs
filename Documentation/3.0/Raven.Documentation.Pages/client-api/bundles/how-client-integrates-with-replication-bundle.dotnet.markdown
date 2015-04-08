@@ -66,7 +66,7 @@ Failover server definition.
 
 Example:
 
-{CODE client_integration_4@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs /}
+{CODE client_integration_5@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs /}
 
 Full example:
 

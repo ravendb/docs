@@ -46,7 +46,7 @@ public class Sorting {
     }
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public Sorting() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {

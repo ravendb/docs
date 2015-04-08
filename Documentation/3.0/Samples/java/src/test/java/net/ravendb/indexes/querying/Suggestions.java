@@ -32,6 +32,7 @@ public class Suggestions {
   }
   //endregion
 
+  @SuppressWarnings("boxing")
   public Suggestions() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {

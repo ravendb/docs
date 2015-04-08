@@ -19,7 +19,7 @@ public class Basics {
     //empty
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public Basics() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
 

@@ -17,6 +17,7 @@ public class SetupAggressiveCaching {
 
       //region should_cache_delegate
       documentStore.getConventions().setShouldCacheRequest(new RequestCachePolicy() {
+        @SuppressWarnings("boxing")
         @Override
         public Boolean shouldCacheRequest(String url) {
           return true;

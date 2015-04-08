@@ -9,21 +9,31 @@ RavenDB's Client API is aware of the replication mechanism offered by the server
 * Detecting that an instance is replicating to another set of instances.
 * When that instance is down, the client will be automatically shifted to other instances.
 
-This is caused by a failover mechanism which is turned in a document stored by default. The clinet can load a replication document from `/docs/Raven/Replication/Destinations` to learn what replication instances to use if the failover occurred.
+This is caused by a failover mechanism which is turned in a document stored by default. The clinet can load a replication document from `/replication/topology` to learn what replication instances to use if the failover occurred.
 
-{NOTE The client by default creates requests for the replication document even if the server does not have the replication bundle enabled. In this case, the request for `/docs/Raven/Replication/Destinations` results in  `404` in server logs./}
+{NOTE The client by default creates requests for the replication document even if the server does not have the replication bundle enabled. In this case, the request for `/replication/topology` results in  `404` in server logs./}
 
 You can turn off the failover behavior by using the document store conventions. In order to do so, use `FailImmediately` option:
 
 {CODE:java client_integration_1@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.java /}
 
+When `FailImmediately` option is used then client will raise exception when primary server is down.
+
 The remaining values of `FailoverBehavior` enumeration are:
 
-* *AllowReadsFromSecondaries* (default),
-* *AllowReadsFromSecondariesAndWritesToSecondaries*,
-* *ReadFromAllServers*.
+* *AllowReadsFromSecondaries* (default) - allow to read from secondary server(s), but immediately fail writes to the secondary server(s)
+* *AllowReadsFromSecondariesAndWritesToSecondaries* - allow reads from and writes to secondary server(s)
+* *ReadFromAllServers* - spread read requests across all servers, instead of doing all the work against master. Write requests will always to to master
 
 They determine the strategy of the failovers if the primary server is down and the environment is configured to replicate between sibling instances.
+
+{NOTE:Mixing}
+
+FailoverBehavior enumeration values are actually flags and can be combined, e.g. to spread all reads across all servers and allow writes to secondaries one can do as follows:
+
+{CODE:java client_integration_4@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.java /}
+
+{NOTE/}
 
 {PANEL/}
 
@@ -54,7 +64,7 @@ Failover server definition.
 
 Example:
 
-{CODE:java client_integration_4@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.java /}
+{CODE:java client_integration_5@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.java /}
 
 {PANEL/}
 

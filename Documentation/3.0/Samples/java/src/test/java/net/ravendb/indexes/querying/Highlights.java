@@ -57,6 +57,52 @@ public class Highlights {
   }
   //endregion
 
+  //region highlights_7
+  public static class BlogPosts_ByCategory_Content extends AbstractIndexCreationTask {
+
+    public static class Result {
+      private String category;
+      private String content;
+
+      public String getCategory() {
+        return category;
+      }
+      public void setCategory(String category) {
+        this.category = category;
+      }
+      public String getContent() {
+        return content;
+      }
+      public void setContent(String content) {
+        this.content = content;
+      }
+    }
+
+    public BlogPosts_ByCategory_Content() {
+      QBlogPost b = QBlogPost.blogPost;
+      map =
+       " from post in posts " +
+       " select new         " +
+       "  {                 " +
+       "      post.Category, " +
+       "      post.Content  " +
+       "  };";
+
+      reduce =
+        " from result in results " +
+        " group result by result.Category into g " +
+        " select new " +
+        " { " +
+        "    Category = g.Key, " +
+        "    Content = string.Join(\" \", g.Select(r => r.Content " +
+        " }";
+      index(b.content, FieldIndexing.ANALYZED);
+      store(b.content, FieldStorage.YES);
+      termVector(b.content, FieldTermVector.WITH_POSITIONS_AND_OFFSETS);
+    }
+  }
+  //endregion
+
   @SuppressWarnings("unused")
   public Highlights() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
@@ -95,6 +141,38 @@ public class Highlights {
           .setHighlighterTags("**", "**")
           .search("Content", "raven")
           .toList();
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region highlights_6
+        Reference<FieldHighlightings> highlightingsRef = new Reference<>();
+
+        List<BlogPosts_ByCategory_Content.Result> results = session
+          .advanced()
+          .documentQuery(BlogPost.class, BlogPosts_ByCategory_Content.class)
+          .highlight("Content", 128, 1, highlightingsRef)
+          .setHighlighterTags("**", "**")
+          .search("Content", "raven")
+          .selectFields(BlogPosts_ByCategory_Content.Result.class)
+          .toList();
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region highlights_8
+        Reference<FieldHighlightings> highlightingsRef = new Reference<>();
+
+        List<BlogPosts_ByCategory_Content.Result> results = session
+          .advanced()
+          .documentQuery(BlogPosts_ByCategory_Content.Result.class, BlogPosts_ByCategory_Content.class)
+          .highlight("Content", "Category", 128, 1, highlightingsRef) // highlighting 'Content', but marking 'Category' as key
+          .setHighlighterTags("**", "**")
+          .search("Content", "raven")
+          .selectFields(BlogPosts_ByCategory_Content.Result.class)
+          .toList();
+
+        String[] newsHighlightings = highlightingsRef.value.getFragments("News"); // get fragments for 'News' category
         //endregion
       }
     }

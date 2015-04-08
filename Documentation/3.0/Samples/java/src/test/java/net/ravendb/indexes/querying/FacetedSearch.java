@@ -34,6 +34,7 @@ public class FacetedSearch {
   }
   //endregion
 
+  @SuppressWarnings("boxing")
   public void step1() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {
@@ -70,7 +71,7 @@ public class FacetedSearch {
     }
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public void step3() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {
@@ -109,7 +110,7 @@ public class FacetedSearch {
     }
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public void step4() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {

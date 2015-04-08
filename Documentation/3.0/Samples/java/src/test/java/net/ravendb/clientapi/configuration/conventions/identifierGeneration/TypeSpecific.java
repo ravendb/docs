@@ -17,7 +17,7 @@ public class TypeSpecific {
   }
 
   public static class EmployeeManager extends Employee {
-
+    // empty by design
   }
 
   //region class_with_interger_id

@@ -18,6 +18,20 @@ Now to use Highlights we just need to use one of the `highlight` query methods. 
 
 This will return the list of results and for each result we will be displaying first found fragment with the length up to 128 characters.
 
+### Highlights + Projections
+
+Highlights can also be accessed when projections are performed.
+
+{CODE:java highlights_6@Indexes\Querying\Highlights.java /}
+
+### Highlights + Map-Reduce
+
+Highlights can be accessed when performing queries on map-reduce indexes.
+
+{CODE:java highlights_7@Indexes\Querying\Highlights.java /}
+
+{CODE:java highlights_8@Indexes\Querying\Highlights.java /}
+
 ## Customization
 
 {CODE:java highlights_3@Indexes\Querying\Highlights.java /}

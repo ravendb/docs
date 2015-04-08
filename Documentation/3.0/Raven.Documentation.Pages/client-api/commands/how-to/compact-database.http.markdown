@@ -38,8 +38,6 @@ curl -X POST "http://localhost:8080/admin/compact?database=NorthWind"
 
 ## Remarks
 
-Currently **only esent** storage supports compaction.
-
 Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
 
 ## Related articles

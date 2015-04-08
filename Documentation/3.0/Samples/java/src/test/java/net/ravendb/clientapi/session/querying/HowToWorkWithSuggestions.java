@@ -25,7 +25,7 @@ public class HowToWorkWithSuggestions {
     // empty
   }
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public HowToWorkWithSuggestions() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {

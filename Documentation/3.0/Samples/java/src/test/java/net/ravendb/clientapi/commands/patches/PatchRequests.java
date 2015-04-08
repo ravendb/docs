@@ -53,6 +53,7 @@ public class PatchRequests {
     //endregion
   }
 
+  @SuppressWarnings("boxing")
   public PatchRequests() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       //region patch_2

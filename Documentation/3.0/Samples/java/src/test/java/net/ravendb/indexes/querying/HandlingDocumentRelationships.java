@@ -9,12 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import com.mysema.query.annotations.QueryEntity;
-
 import net.ravendb.abstractions.data.IndexQuery;
 import net.ravendb.abstractions.data.MultiLoadResult;
 import net.ravendb.abstractions.data.QueryResult;
-import net.ravendb.abstractions.extensions.ExpressionExtensions;
 import net.ravendb.abstractions.json.linq.RavenJObject;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
@@ -23,6 +20,8 @@ import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.AbstractIndexCreationTask;
 import net.ravendb.samples.northwind.Product;
 import net.ravendb.samples.northwind.Supplier;
+
+import com.mysema.query.annotations.QueryEntity;
 
 
 public class HandlingDocumentRelationships {
@@ -386,7 +385,7 @@ public class HandlingDocumentRelationships {
   //endregion
 
 
-  @SuppressWarnings("unused")
+  @SuppressWarnings({"unused", "boxing"})
   public void Includes() throws Exception {
     try (IDocumentStore store = new DocumentStore()) {
       try (IDocumentSession session = store.openSession()) {

@@ -5,15 +5,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-import com.mysema.query.types.Path;
-
 import net.ravendb.abstractions.basic.CloseableIterator;
-import net.ravendb.abstractions.closure.Action1;
 import net.ravendb.abstractions.data.Etag;
 import net.ravendb.abstractions.data.StreamResult;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
-import net.ravendb.client.ILoadConfiguration;
 import net.ravendb.client.LoadConfigurationFactory;
 import net.ravendb.client.RavenPagingInformation;
 import net.ravendb.client.document.DocumentStore;
@@ -23,6 +19,8 @@ import net.ravendb.samples.northwind.Address;
 import net.ravendb.samples.northwind.Employee;
 import net.ravendb.samples.northwind.Product;
 import net.ravendb.samples.northwind.QProduct;
+
+import com.mysema.query.types.Path;
 
 
 public class LoadingEntities {
