@@ -21,22 +21,22 @@
 
 #### [Configuration](../server/configuration/configuration-options)
 
-- Added [`Raven/WorkingDir`](../server/configuration/configuration-options#data-settings),
-- Added `Raven/AdditionalStepsForScriptBasedOnDocumentSize` (5 by default),
-- Added `Raven/MaxServicePointIdleTime`,
-- Added `Raven/ImplicitFetchFieldsFromDocumentMode`,
-- Added `Raven/Replication/ForceReplicationRequestBuffering`
+- Added `Raven/WorkingDir`. More [here](../server/configuration/configuration-options#data-settings),
+- Added `Raven/AdditionalStepsForScriptBasedOnDocumentSize` (5 by default). More [here](../server/configuration/configuration-options#javascript-parser),
+- Added `Raven/MaxServicePointIdleTime`. More [here](../server/configuration/configuration-options#http-settings),
+- Added `Raven/ImplicitFetchFieldsFromDocumentMode`. More [here](../server/configuration/configuration-options#index-settings),
+- Added `Raven/Replication/ForceReplicationRequestBuffering`. More [here](../server/configuration/configuration-options#replication)
 
 #### Indexes
 
-- `AbstractIndexCreationTask` will add sorting to numerical fields automatically
+- [`AbstractIndexCreationTask`](../indexes/creating-and-deploying#using-abstractindexcreationtask) will add sorting to numerical fields automatically
 
 #### Bundles
 
-- `[Periodic Export]` Added support for remote folders for Amazon S3 and Microsoft Azure,
-- `[SQL Replication]` Renamed `PerformTableQuatation` to `QuoteTables` in `SqlReplicationConfig`,
-- `[SQL Replication]` Added `Insert-only mode` for tables, which will prevent deletes on that table,
-- `[Replication]` Added support for index and transformer replication (including deletions)
+- `[Periodic Export]` Added support for remote folders for Amazon S3 and Microsoft Azure. Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Abstractions/Data/PeriodicBackupSetup.cs#L45-L53),
+- `[SQL Replication]` Renamed `PerformTableQuatation` to `QuoteTables` in `SqlReplicationConfig`. Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Database/Bundles/SqlReplication/SqlReplicationConfig.cs#L23-L28),
+- `[SQL Replication]` Added `Insert-only mode` for tables, which will prevent deletes on that table. Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Database/Bundles/SqlReplication/SqlReplicationConfig.cs#L46),
+- `[Replication]` Added support for index and transformer replication (including deletions). Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Abstractions/Replication/ReplicationDestination.cs#L73)
 
 <hr />
 
@@ -44,10 +44,9 @@
 
 - Indexes can be deployed side-by-side using `SideBySideExecute` from `AbstractIndexCreationTask`, `SideBySideCreateIndexes` from `IndexCreation` and directly from `DocumentStore` using `SideBySideExecuteIndex`,
 - Added the ability to provide additional query to MoreLikeThis queries,
-- Added `SetIndexLock` to `IDatabaseCommands`,
-- Added `SetIndexPriority` to `IDatabaseCommands`,
+- Added `SetIndexLock` to `IDatabaseCommands`. More [here](../client-api/commands/indexes/how-to/change-index-lock-mode),
+- Added `SetIndexPriority` to `IDatabaseCommands`. More [here](../client-api/commands/indexes/how-to/change-index-priority),
 - Index priority can be set through `IndexPriority` property in `IndexDefinition` or `Priority` property in `AbstractIndexCreationTask`,
-
 
 <hr />
 
