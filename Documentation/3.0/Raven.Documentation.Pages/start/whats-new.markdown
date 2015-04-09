@@ -33,10 +33,10 @@
 
 #### Bundles
 
-- `[Periodic Export]` Added support for remote folders for Amazon S3 and Microsoft Azure. Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Abstractions/Data/PeriodicBackupSetup.cs#L45-L53),
-- `[SQL Replication]` Renamed `PerformTableQuatation` to `QuoteTables` in `SqlReplicationConfig`. Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Database/Bundles/SqlReplication/SqlReplicationConfig.cs#L23-L28),
-- `[SQL Replication]` Added `Insert-only mode` for tables, which will prevent deletes on that table. Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Database/Bundles/SqlReplication/SqlReplicationConfig.cs#L46),
-- `[Replication]` Added support for index and transformer replication (including deletions). Source [here](https://github.com/ravendb/ravendb/blob/master/Raven.Abstractions/Replication/ReplicationDestination.cs#L73)
+- `[Periodic Export]` Added support for remote folders for Amazon S3 and Microsoft Azure. Source [here](https://github.com/ravendb/ravendb/blob/build-3660/Raven.Abstractions/Data/PeriodicBackupSetup.cs#L45-L53),
+- `[SQL Replication]` Renamed `PerformTableQuatation` to `QuoteTables` in `SqlReplicationConfig`. Source [here](https://github.com/ravendb/ravendb/blob/build-3660/Raven.Database/Bundles/SqlReplication/SqlReplicationConfig.cs#L23-L28),
+- `[SQL Replication]` Added `Insert-only mode` for tables, which will prevent deletes on that table. Source [here](https://github.com/ravendb/ravendb/blob/build-3660/Raven.Database/Bundles/SqlReplication/SqlReplicationConfig.cs#L46),
+- `[Replication]` Added support for index and transformer replication (including deletions). Source [here](https://github.com/ravendb/ravendb/blob/build-3660/Raven.Abstractions/Replication/ReplicationDestination.cs#L73)
 
 <hr />
 
