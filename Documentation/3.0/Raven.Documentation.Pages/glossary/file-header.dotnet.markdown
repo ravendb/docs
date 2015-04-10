@@ -8,6 +8,7 @@ RavenFS client API class contains info about a file.
 | ------------- | ------------- | ----- |
 | **Name** | string | File name |
 | **Metadata** | RavenJObject | File metadata |
+| **OriginalMetadata** | RavenJObject | File metadata used by the session mechanism to track changes |
 | **Etag** | Etag | File `Etag` |
 | **TotalSize** | long | Total file size |
 | **UploadedSize** | long | Number of uploaded bytes |

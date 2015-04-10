@@ -384,21 +384,30 @@
     <None Include="file-system\client-api\commands\configurations\set-key.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\.docslist" />
     <None Include="file-system\client-api\commands\files\browse\.docslist" />
+    <None Include="file-system\client-api\commands\files\browse\get.http.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\browse.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\browse.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\get-directories.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\get.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\starts-with.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\starts-with.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\stream-file-headers.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\delete.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\delete.http.markdown" />
+    <None Include="file-system\client-api\commands\files\download.http.markdown" />
     <None Include="file-system\client-api\commands\files\download.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\metadata\.docslist" />
+    <None Include="file-system\client-api\commands\files\metadata\get-metadata-for.http.markdown" />
+    <None Include="file-system\client-api\commands\files\metadata\update-metadata.http.markdown" />
     <None Include="file-system\client-api\commands\files\metadata\update-metadata.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\rename.http.markdown" />
     <None Include="file-system\client-api\commands\files\rename.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\.docslist" />
     <None Include="file-system\client-api\commands\files\metadata\get-metadata-for.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\get-search-fields.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\search-on-directory.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\search.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\upload.http.markdown" />
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\.docslist" />
     <None Include="file-system\client-api\commands\storage\cleanup.dotnet.markdown" />
@@ -1008,6 +1017,9 @@
     <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_3.png" />
     <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_4.png" />
     <Content Include="server\scaling-out\replication\images\replication_conflicts_docs_5.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
