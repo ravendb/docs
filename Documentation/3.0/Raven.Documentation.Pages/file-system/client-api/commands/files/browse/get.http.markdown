@@ -12,10 +12,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `GET` | The names of files are passed through the URL |
-
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **fileNames** | Yes | One or many names of the files you want to get headers for |

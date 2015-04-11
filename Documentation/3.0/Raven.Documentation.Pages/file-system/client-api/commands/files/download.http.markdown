@@ -14,11 +14,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `GET` | The file name is passed in the URL |
-
-
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **name** | Yes | The name of the file to download |

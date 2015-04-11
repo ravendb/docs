@@ -13,10 +13,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `HEAD` | The file name is passed in the URL |
-
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **name** | Yes | The name of a file|

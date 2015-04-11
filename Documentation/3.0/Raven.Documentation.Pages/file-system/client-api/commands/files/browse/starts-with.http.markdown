@@ -13,10 +13,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `GET` | The prefix name is passed through the URL |
-
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **startsWith** | Yes | The prefix that the returned files need to match |

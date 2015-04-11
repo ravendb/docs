@@ -15,10 +15,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `DELETE` | The file name is passed through the URL |
-
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **name** | Yes | The name of a file to be deleted |
@@ -65,10 +61,6 @@ curl \
 {CODE-BLOCK/}
 
 ### Request
-
-| Method | Description |
-| -------| - |
-| `DELETE` | The search query is passed through the URL |
 
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |

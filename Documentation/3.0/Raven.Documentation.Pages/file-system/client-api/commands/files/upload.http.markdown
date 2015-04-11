@@ -26,10 +26,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `PUT` | The file name is passed in the URL |
-
 | Payload |
 | ------- |
 | The file's content|

@@ -12,10 +12,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `GET` | The paging parameters are passed through the URL |
-
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **start** | Yes | The number of files that will be skipped |

@@ -15,10 +15,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `POST` | The file name is passed in the URL |
-
 | Payload |
 | ------- |
 | Empty |

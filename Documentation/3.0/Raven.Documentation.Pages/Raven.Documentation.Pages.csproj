@@ -384,6 +384,7 @@
     <None Include="file-system\client-api\commands\configurations\set-key.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\.docslist" />
     <None Include="file-system\client-api\commands\files\browse\.docslist" />
+    <None Include="file-system\client-api\commands\files\browse\get-directories.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\get.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\browse.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\browse.dotnet.markdown" />
@@ -391,6 +392,7 @@
     <None Include="file-system\client-api\commands\files\browse\get.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\starts-with.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\starts-with.http.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\stream-file-headers.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\stream-file-headers.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\delete.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\delete.http.markdown" />
@@ -406,6 +408,7 @@
     <None Include="file-system\client-api\commands\files\metadata\get-metadata-for.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\get-search-fields.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\search-on-directory.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\search\search.http.markdown" />
     <None Include="file-system\client-api\commands\files\search\search.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\upload.http.markdown" />
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />

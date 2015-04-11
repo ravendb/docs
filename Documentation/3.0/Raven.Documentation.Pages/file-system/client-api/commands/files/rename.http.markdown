@@ -13,11 +13,6 @@ curl \
 
 ### Request
 
-| Method | Description |
-| -------| - |
-| `PATCH` | The current name and a new one are passed in the URL |
-
-
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
 | **name** | Yes | The name of the file that you want to change |
