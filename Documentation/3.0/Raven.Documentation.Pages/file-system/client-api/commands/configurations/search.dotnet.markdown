@@ -16,7 +16,7 @@
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;ConfigurationSearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`ConfigurationSearchResults`](../../../../../glossary/configuration-search-results) object which represents results of a prefix query. |
+| **Task&lt;ConfigurationSearchResults&gt;** | A task that represents the asynchronous operation. The task result is [`ConfigurationSearchResults`](../../../../glossary/configuration-search-results) object which represents results of a prefix query. |
 
 ## Example
 

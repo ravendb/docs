@@ -18,7 +18,7 @@ Now, we will focus on the distribution package (if you want to read about the in
 - `Smuggler` - contains utility for [importing and exporting](../server/administration/exporting-and-importing-data) data between servers,
 - `Web` - contains all files needed for [IIS deployment](../server/installation/iis)
 
-In the package there is a file `Start.cmd` which will start a server as a console application (aka [debug mode](../server/troubleshooting/running-in-debug-mode)), which is great for development purposes or simply to try out various functionalities, but not for production release. When server has started, [the Studio](../studio/accessing-studio) will be available at `http://localhost:<port>//`. RavenDB is configured by default to use port 8080, or the next available, if this is one is occupied.
+In the package there is a file `Start.cmd` which will start a server as a console application (aka [debug mode](../server/troubleshooting/running-in-debug-mode)), which is great for development purposes or simply to try out various functionalities, but not for production release. When server has started, [the Studio](../studio/accessing-studio) will be available at `http://localhost:<port>/`. RavenDB is configured by default to use port 8080, or the next available, if this is one is occupied.
 
 {INFO If you want to install RavenDB as a service, please visit [this](../server/installation/as-a-service) article. There is also a possibility to install it on [IIS](../server/installation/iis) or run it as an [embedded](../server/installation/embedded) instance. /}
 

@@ -377,10 +377,15 @@
     <None Include="file-system\client-api\commands\admin\reset-indexes.dotnet.markdown" />
     <None Include="file-system\client-api\commands\admin\stats.dotnet.markdown" />
     <None Include="file-system\client-api\commands\configurations\.docslist" />
+    <None Include="file-system\client-api\commands\configurations\delete-key.http.markdown" />
     <None Include="file-system\client-api\commands\configurations\delete-key.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\get-key-names.http.markdown" />
     <None Include="file-system\client-api\commands\configurations\get-key-names.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\get-key.http.markdown" />
     <None Include="file-system\client-api\commands\configurations\get-key.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\search.http.markdown" />
     <None Include="file-system\client-api\commands\configurations\search.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\configurations\set-key.http.markdown" />
     <None Include="file-system\client-api\commands\configurations\set-key.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\.docslist" />
     <None Include="file-system\client-api\commands\files\browse\.docslist" />
@@ -406,7 +411,9 @@
     <None Include="file-system\client-api\commands\files\rename.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\.docslist" />
     <None Include="file-system\client-api\commands\files\metadata\get-metadata-for.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\search\get-search-fields.http.markdown" />
     <None Include="file-system\client-api\commands\files\search\get-search-fields.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\search\search-on-directory.http.markdown" />
     <None Include="file-system\client-api\commands\files\search\search-on-directory.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\search\search.http.markdown" />
     <None Include="file-system\client-api\commands\files\search\search.dotnet.markdown" />
