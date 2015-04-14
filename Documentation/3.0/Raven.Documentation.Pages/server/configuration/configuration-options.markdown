@@ -60,6 +60,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Maximum number of megabytes that can be used by database to control the maximum size of the processing batches. Default: 1024 or 75% percent of available memory.   
     _Default:_ 1024 or 75% percent of available memory if 1GB is not available    
 
+* **Raven/MaxSecondsForTaskToWaitForDatabaseToLoad**   
+	If the database is being loaded for the first time, this value indicates how many seconds will task wait for load completion before throwing exception.   
+    _Default:_ 5   
+
 ### Index settings
 
 * **Raven/IndexStoragePath**  
@@ -372,7 +376,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Whatever circular logs will be used, it is true by default. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
     _Default_: true  
 
-## Voron settings
+### Voron settings
 
 * **Raven/Voron/AllowIncrementalBackups**   
     If you want to use incremental backups, you need to turn this to true, but then journal files will not be deleted after applying them to the data file. They will be deleted only after a successful backup. Default: false.     
