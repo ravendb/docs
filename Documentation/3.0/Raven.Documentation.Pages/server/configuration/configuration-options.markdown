@@ -445,6 +445,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Number that will expand `Raven/MaxStepsForScript`, based on a document size. Formula is as follows: MaxStepsForScript = `Raven/MaxStepsForScript` + (documentSize * `Raven/AdditionalStepsForScriptBasedOnDocumentSize`)
 	_Default:_ 5
 
+* **Raven/AllowScriptsToAdjustNumberOfSteps**   
+	Value indicating if scripts can use `IncreaseNumberOfAllowedStepsBy` function in scripts (more about it [here](../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#example-xi)) to increase the maximum allowed number of steps in script.   
+	_Default:_ false
+
 ### [Authorization & Authentication](../../server/configuration/authentication-and-authorization)
 
 * **Raven/AnonymousAccess**   
