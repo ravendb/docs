@@ -51,7 +51,11 @@ This extension method uses reflection to extract all public fields and propertie
 
 ## Remarks
 
-{NOTE Projections request from server an array of fields to download, if index contains those fields (stores them) they will come directly from index, if not values from document will be used. /}
+{NOTE:Note}
+Projections request from server an array of fields to download, if index contains those fields (stores them) they will come directly from index, if not values from document will be used. You can read more about storing fields [here](../../../indexes/storing-data-in-index).
+
+`Raven/ImplicitFetchFieldsFromDocumentMode` setting can be altered to change the behavior of field fetching. By default it allows fetching fields from document if index is missing them (they are not stored), but this can be changed to skipping those fields or even throwing an exception. Read more about this configuration option [here](../../../server/configuration/configuration-options#index-settings).
+{NOTE/}
 
 {NOTE Projected entities (even named types) are not being tracked by session. /}
 

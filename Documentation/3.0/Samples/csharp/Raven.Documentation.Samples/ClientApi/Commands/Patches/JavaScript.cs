@@ -182,6 +182,27 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
 										});"
 						});
 				#endregion
+
+				#region patch_1_2
+				// increasing maximum number of allowed steps
+				store
+					.DatabaseCommands
+					.Patch(
+						"employees/1",
+						new ScriptedPatchRequest
+						{
+							Script = @"
+										var employee = LoadDocument(differentEmployeeId);
+										if (employee) {
+											IncreaseNumberOfAllowedStepsBy(10);
+											this.FirstName = employee.FirstName;
+										}",
+							Values = new Dictionary<string, object>
+								         {
+									         { "differentEmployeeId", "employees/2" }
+								         }
+						});
+				#endregion
 			}
 		}
 	}

@@ -1,5 +1,17 @@
 # What's new
 
+{PANEL:Upcoming}
+
+### Server
+
+- `[JavaScript]` Added `IncreaseNumberOfAllowedStepsBy` method. More [here](../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables).
+
+#### [Configuration](../server/configuration/configuration-options)
+
+- Added `Raven/AllowScriptsToAdjustNumberOfSteps`. More [here](../server/configuration/configuration-options#javascript-parser).
+
+{PANEL/}
+
 {PANEL:3.0.3660 - 2015/04/07}
 
 ### Global
@@ -53,6 +65,8 @@
 ### Smuggler
 
 - Added the ability to disable versioning during smuggling using `disable-versioning-during-import` option
+
+<hr />
 
 ### FileSystem
 

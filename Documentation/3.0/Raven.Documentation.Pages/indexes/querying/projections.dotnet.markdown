@@ -22,6 +22,8 @@ This will issue a query to a database, requesting only `FirstName` and `LastName
 
 {INFO:Projections and Stored fields}
 If projection function only requires fields that are stored, then document will not be loaded from storage and all data will come from index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
+
+`Raven/ImplicitFetchFieldsFromDocumentMode` setting can be altered to change the behavior of field fetching. By default it allows fetching fields from document if index is missing them (they are not stored), but this can be changed to skipping those fields or even throwing an exception. Read more about this configuration option [here](../../server/configuration/configuration-options#index-settings).
 {INFO/}
 
 So following above rule, if we create index that stores `FirstName` and `LastName` and request only those fields in query, then **data will come from index directly**.
