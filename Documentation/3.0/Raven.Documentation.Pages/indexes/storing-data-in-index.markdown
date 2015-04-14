@@ -15,7 +15,11 @@ By default, tokens are saved to the index as _Indexed and Analyzed_ but not _Sto
 
 {INFO Default value in `Stores` for each field is `FieldStorage.No`. Keep in mind that storing fields will increase disk space required by an index. /}
 
-{INFO If the **projection function requires only the fields that are stored**, then the document will not be loaded from storage and all data will come directly from the index. This can increase query performance (at the cost of disk space used) in the frequent situations when the whole document is not needed. /}
+{INFO:Info}
+If the **projection function requires only the fields that are stored**, then the document will not be loaded from storage and all data will come directly from the index. This can increase query performance (at the cost of disk space used) in the frequent situations when the whole document is not needed.
+
+`Raven/ImplicitFetchFieldsFromDocumentMode` setting can be altered to change the behavior of field fetching. By default it allows fetching fields from document if index is missing them (they are not stored), but this can be changed to skipping those fields or even throwing an exception. Read more about this configuration option [here](../server/configuration/configuration-options#index-settings).
+{INFO/}
 
 ## Related articles
 
