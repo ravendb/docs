@@ -18,6 +18,7 @@
 | **Fields** | string[] | The fields to compare |
 | **DocumentId** | string | The document id to use as the basis for comparison |
 | **IndexName** | string | The name of the index to use for this operation |
+| **AdditionalQuery** | string | An additional query that the matching documents need to also match to be returned |
 | **MapGroupFields** | NameValueCollection | Values for the the mapping group fields to use as the basis for comparison |
 | **ResultsTransformer** | string | The results transformer |
 | **Includes** | string[] | The includes |

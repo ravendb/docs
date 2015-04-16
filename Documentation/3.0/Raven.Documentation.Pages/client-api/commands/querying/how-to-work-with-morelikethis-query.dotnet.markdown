@@ -14,9 +14,13 @@ To find similar or related documents use the **MoreLikeThis** method from the co
 | ------------- | ----- |
 | [MultiLoadResult](../../../glossary/multi-load-result) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
 
-## Example
+## Example I
 
 {CODE more_like_this_2@ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.cs /}
+
+## Example II
+
+{CODE more_like_this_3@ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.cs /}
 
 ## Related articles
 

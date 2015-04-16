@@ -30,6 +30,25 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Querying
 							});
 				#endregion
 			}
+
+			using (var store = new DocumentStore())
+			{
+				#region more_like_this_3
+				// Search for similar documents to 'articles/1'
+				// using 'Articles/MoreLikeThis' index and search only field 'Body'
+				// where article category is 'IT'
+				MultiLoadResult result = store
+					.DatabaseCommands
+					.MoreLikeThis(
+						new MoreLikeThisQuery
+						{
+							IndexName = "Articles/MoreLikeThis",
+							DocumentId = "articles/1",
+							Fields = new[] { "Body" },
+							AdditionalQuery = "Category:IT"
+						});
+				#endregion
+			}
 		}
 	}
 }

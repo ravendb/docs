@@ -52,11 +52,32 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 							"Articles/MoreLikeThis",
 							null,
 							new MoreLikeThisQuery
-								{
-									IndexName = "Articles/MoreLikeThis", 
-									DocumentId = "articles/1", 
-									Fields = new[] { "Body" }
-								});
+							{
+								IndexName = "Articles/MoreLikeThis", 
+								DocumentId = "articles/1", 
+								Fields = new[] { "Body" }
+							});
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region more_like_this_4
+					// Search for similar articles to 'articles/1'
+					// using 'Articles/MoreLikeThis' index and search only field 'Body'
+					// where article category is 'IT'
+					Article[] articles = session
+						.Advanced
+						.MoreLikeThis<Article>(
+							"Articles/MoreLikeThis",
+							null,
+							new MoreLikeThisQuery
+							{
+								IndexName = "Articles/MoreLikeThis",
+								DocumentId = "articles/1",
+								Fields = new[] { "Body" },
+								AdditionalQuery = "Category:IT"
+							});
 					#endregion
 				}
 			}
