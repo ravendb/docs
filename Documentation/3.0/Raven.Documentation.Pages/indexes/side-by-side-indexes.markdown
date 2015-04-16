@@ -10,7 +10,25 @@ This feature enables you to create an index that will be replaced by another one
 
 As you probably know, making any changes in index definition will reset its indexing state and indexing process will start from scratch. This situation can be troublesome when you need to update index (assuming that changes are backward compatibile) on production server without having your application display partial results (due to index reset). This is why side-by-side indexes were introduced.
 
-## Example
+## Deployment
+
+### using AbstractIndexCreationTask
+
+{CODE side_by_side_1@Indexes\SideBySide.cs /}
+
+#### Example
+
+{CODE side_by_side_4@Indexes\SideBySide.cs /}
+
+### using DocumentStore
+
+{CODE side_by_side_1@Indexes\SideBySide.cs /}
+
+#### Example
+
+{CODE side_by_side_3@Indexes\SideBySide.cs /}
+
+### Studio
 
 - first you need to [edit](../studio/overview/indexes/index-edit-view) index. In our example we are picking `Orders/Totals` and we are adding `ShipVia` field.
 

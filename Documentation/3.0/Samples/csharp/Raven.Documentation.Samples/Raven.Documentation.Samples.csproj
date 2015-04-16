@@ -347,6 +347,7 @@
     <Compile Include="Indexes\Querying\Searching.cs" />
     <Compile Include="Indexes\Querying\Sorting.cs" />
     <Compile Include="Indexes\Querying\Suggestions.cs" />
+    <Compile Include="Indexes\SideBySide.cs" />
     <Compile Include="Indexes\SpatialIndexes.cs" />
     <Compile Include="Indexes\StaleIndexes.cs" />
     <Compile Include="Indexes\Storing.cs" />

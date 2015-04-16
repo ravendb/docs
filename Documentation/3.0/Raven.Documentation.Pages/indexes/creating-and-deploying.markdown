@@ -12,7 +12,7 @@ Indexes created explicitly by user are called `static`.
 
 {PANEL:**Static indexes**}
 
-There are a couple of ways to create `static index` and send it to server, we can use low-level [commands](../indexes/creating-and-deploying#using-commands) or create a [custom class](../indexes/creating-and-deploying#using-abstractindexcreationtask). There is also a possibility to [scan an assembly](../indexes/creating-and-deploying#using-assembly-scanner) and deploy all found indexes.
+There are a couple of ways to create `static index` and send it to server, we can use low-level [commands](../indexes/creating-and-deploying#using-commands) or create a [custom class](../indexes/creating-and-deploying#using-abstractindexcreationtask). There is also a possibility to [scan an assembly](../indexes/creating-and-deploying#using-assembly-scanner) and deploy all found indexes or even deploy indexes [side by side](../indexes/side-by-side-indexes).
 
 <hr />
 
