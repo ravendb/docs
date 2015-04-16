@@ -56,13 +56,13 @@ The disabled index will use no system resources and will never take part in the 
 
 Even idle indexes can take some of the system's resources, so there is yet another option available, namely the abandoned index. An index is abandoned if it has not been queried in the last 72 hours. Currently, RavenDB avoids indexing it even during the idle periods, yet it will get indexed eventually, if enough time has passed since the last indexation.
 
-For example, in order to set an index priority to idle, you can either create a HTTP request like the following:
+For example, in order to set an index priority to idle, you can either create a HTTP request like the following
 
 {CODE-BLOCK:plain}
-	curl -X POST http://localhost:8080/databases/Northwind/indexes/Orders/ByCompany?priority=Idle -d ''
+	curl -X POST http://localhost:8080/databases/Northwind/indexes/set-priority/Orders/ByCompany?priority=Idle -d ''
 {CODE-BLOCK/}
 
-or use the Studio. If you choose the latter, go to _Indexes_, _Edit_ selected index, and set up the priority there:
+or change the `Priority` property in `AbstractIndexCreationTask` and [deploy it](../../indexes/creating-and-deploying#using-abstractindexcreationtask). Studio can also be used to and if you choose to use it, go to _Indexes_, _Edit_ selected index, and set up the priority there:
 
 ![Figure 3: Index priority](images/index-administration-studio-priority.png)
 
