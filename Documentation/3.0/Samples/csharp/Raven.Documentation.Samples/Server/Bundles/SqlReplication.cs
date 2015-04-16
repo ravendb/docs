@@ -18,8 +18,8 @@ namespace Raven.Documentation.Samples.Server.Bundles
 
 			public bool ParameterizeDeletesDisabled { get; set; }
 			public bool ForceSqlServerQueryRecompile { get; set; }
-			public bool PerformTableQuatation { get; set; }
 
+			public bool QuoteTables { get; set; }
 			public string RavenEntityName { get; set; }
 			public string Script { get; set; }
 			public string FactoryName { get; set; }
@@ -38,6 +38,8 @@ namespace Raven.Documentation.Samples.Server.Bundles
 			public string TableName { get; set; }
 
 			public string DocumentKeyColumn { get; set; }
+
+			public bool InsertOnlyMode { get; set; }
 		}
 		#endregion
 

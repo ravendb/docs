@@ -27,11 +27,11 @@ where:
 | **Disabled** | marks replication as enabled/disabled |
 | **ParameterizeDeletesDisabled** | disabled the parameterization of deletes |
 | **ForceSqlServerQueryRecompile** | forces statement recompilation on SQL Server |
-| **PerformTableQuatation** | toggles table name quotation |
+| **QuoteTables** | toggles table name quotation |
 | **RavenEntityName** | name of entities (collection) that will be replicated |
 | **Script** | replication script |
 | **FactoryName**<br />**ConnectionString**<br />**ConnectionStringName**<br />**ConnectionStringSettingName**<br />**PredefinedConnectionStringSettingName** | used to provide connection strings to destination DB in various ways |
-| **SqlReplicationTables** | list of tables to which the documents will be replicated |
+| **SqlReplicationTables** | list of tables to which the documents will be replicated, with the ability to turn on append only mode (`InsertOnlyMode`), which will skip any deletions, increasing performance |
 
 ## Example
 
