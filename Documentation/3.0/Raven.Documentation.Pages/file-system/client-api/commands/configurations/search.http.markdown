@@ -26,7 +26,7 @@ curl \
 
 | Return Value | Description |
 | ------------- | ------------- |
-| **JSON** | JSON object representing [configuration search results](../../../../../csharp/glossary/configuration-search-results)|
+| **JSON** | JSON object representing [configuration search results](../../../../glossary/configuration-search-results)|
 
 <hr />
 

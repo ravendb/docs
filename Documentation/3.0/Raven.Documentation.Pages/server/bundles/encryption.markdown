@@ -48,7 +48,7 @@ To not include any confidential database settings, please issue a backup request
 
 ### Backup & Restore
 
-1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startbackup) with empty `SecuredSettrings` (where encryption configuration is placed) in [DatabaseDocument](../../../glossary/database-document) specified:
+1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startbackup) with empty `SecuredSettrings` (where encryption configuration is placed) in [DatabaseDocument](../../glossary/database-document) specified:
 
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental=false" \

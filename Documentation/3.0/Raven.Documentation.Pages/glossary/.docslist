@@ -45,6 +45,7 @@ replication-destination.markdown	ReplicationDestination
 scripted-patch-command-data.markdown	ScriptedPatchCommandData
 search-results.markdown	SearchResults
 spatial-criteria-factory.markdown	SpatialCriteriaFactory
+spatial-relation.markdown	SpatialRelation
 stream-result.markdown	StreamResult
 suggestion-query.markdown	SuggestionQuery
 suggestion-query-result.markdown	SuggestionQueryResult

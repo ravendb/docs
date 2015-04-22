@@ -5,7 +5,7 @@
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **File** | string | File name |
-| **Action** | [FileChangeAction](#filechangeaction-enum) | Document change type enum |
+| **Action** | [FileChangeAction](../glossary/file-change-notification#filechangeaction-enum) | Document change type enum |
 
 <hr />
 

@@ -12,7 +12,7 @@ There are two overloads of the `LoadFileAsync` method used to load a single or m
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;FileHeader&gt;** | The file instance represented by the [`FileHeader`]() object or `null` if a file does not exist. |
+| **Task&lt;FileHeader&gt;** | The file instance represented by the [`FileHeader`](../../../glossary/file-header) object or `null` if a file does not exist. |
 
 <br />
 
@@ -24,7 +24,7 @@ There are two overloads of the `LoadFileAsync` method used to load a single or m
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;FileHeader[]&gt;** | The array of file instances, each represented by the[`FileHeader`]() object or `null` if a file does not exist. |
+| **Task&lt;FileHeader[]&gt;** | The array of file instances, each represented by the[`FileHeader`](../../../glossary/file-header) object or `null` if a file does not exist. |
 
 {INFO: File headers}
 Note that the load method does not download file content. It fetches only the header, which is a basic session entity object.

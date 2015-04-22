@@ -26,7 +26,7 @@ curl \
 
 | Return Value | Description |
 | ------------- | ------------- |
-| **Results** | The array of [file headers](../../../../../../csharp/glossary/file-header) |
+| **Results** | The array of [file headers](../../../../../glossary/file-header) |
 
 <hr />
 

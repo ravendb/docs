@@ -5,7 +5,7 @@
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **Name** | string | The configuration item name |
-| **Action** | [ConfigurationChangeAction](#configurationchangeaction-enum) | The configuration action type enum |
+| **Action** | [ConfigurationChangeAction](../glossary/configuration-change-notification#configurationchangeaction-enum) | The configuration action type enum |
 <hr />
 
 # ConfigurationChangeAction (enum)

@@ -8,9 +8,9 @@
 | **DestinationFileSystemUrl** | string | URL of a destination file system |
 | **SourceFileSystemUrl** | string | URL of a source file system |
 | **SourceServerId** | Guid | The identifier of a source file system |
-| **Type** | [SynchronizationType](#synchronizationtype-enum) | The synchronization type enum |
-| **Action** | [SynchronizationAction](#synchronizationaction-enum) | The synchronization action type enum |
-| **Direction** | [SynchronizationDirection](#synchronizationdirection-enum) | The synchronization direction type enum |
+| **Type** | [SynchronizationType](../glossary/synchronization-update-notification#synchronizationtype-enum) | The synchronization type enum |
+| **Action** | [SynchronizationAction](../glossary/synchronization-update-notification#synchronizationaction-enum) | The synchronization action type enum |
+| **Direction** | [SynchronizationDirection](../glossary/synchronization-update-notification#synchronizationdirection-enum) | The synchronization direction type enum |
 
 
 <hr />

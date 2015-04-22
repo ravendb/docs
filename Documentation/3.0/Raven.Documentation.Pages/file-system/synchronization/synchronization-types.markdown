@@ -4,10 +4,10 @@ The synchronization is triggered by a file modification or executed as a periodi
 RavenFS determines the kind of file differences to figure out what type of work needs to be done. It is implemented by comparing file metadata from both file systems, 
 which means that the source needs to retrieve metadata from the destination before it starts to push any bytes. There are four types of synchronizations:
 
-* [Content update](#content-update)
-* [Metadata update](#metadata-update)
-* [Rename](#rename)
-* [Delete](#delete)
+* [Content update](../../file-system/synchronization/synchronization-types#content-update)
+* [Metadata update](../../file-system/synchronization/synchronization-types#metadata-update)
+* [Rename](../../file-system/synchronization/synchronization-types#rename)
+* [Delete](../../file-system/synchronization/synchronization-types#delete)
 
 
 ##Content update

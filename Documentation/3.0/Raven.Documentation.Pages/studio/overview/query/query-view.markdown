@@ -12,7 +12,7 @@ Action Bar consists of the following:
 - `Edit` - takes you directly to [Index Edit View](../../../studio/overview/indexes/index-edit-view) where you can edit the index,
 - `Choose columns` - allows you to choose columns which will be displayed in `Results`,
 - `Export CSV` - exports results to CSV file,
-- `Indexing performance statistics` - takes you to [Indexing Performance Chart](../../../studio/overview/status/index-stats-and-metrics) to view statistics,
+- `Indexing performance statistics` - takes you to [Indexing Performance Chart](../../../studio/overview/status/indexing/indexing-performance) to view statistics,
 - `Recent Queries` - contains a list of recently ran queries,
 - `Terms` - navigates to index terms view,
 - `Query Stats` - opens a window with statistics for the current query,

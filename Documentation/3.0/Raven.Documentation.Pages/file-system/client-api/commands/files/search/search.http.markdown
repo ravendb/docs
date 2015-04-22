@@ -29,7 +29,7 @@ curl \
 
 | Return Value | Description |
 | ------------- | ------------- |
-| **JSON** | JSON object representing [search results](../../../../../../csharp/glossary/search-results)|
+| **JSON** | JSON object representing [search results](../../../../../glossary/search-results)|
 
 <hr />
 

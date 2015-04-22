@@ -29,7 +29,7 @@ curl \
 
 | Return Value | Description |
 | ------------- | ------------- |
-| **Array** | The response consists of array of [file headers](../../../../../../csharp/glossary/file-header) |
+| **Array** | The response consists of array of [file headers](../../../../../glossary/file-header) |
 
 <hr />
 

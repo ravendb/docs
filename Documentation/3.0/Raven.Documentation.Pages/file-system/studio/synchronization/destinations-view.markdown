@@ -1,6 +1,6 @@
 ﻿#Synchronization destinations view
 
-This page is used to browse and modify synchronization destinations. This page basically presents and allow to edit [Raven/Synchronization/Destinations config](../synchronization/configurations#ravensynchronizationdestinations).
+This page is used to browse and modify synchronization destinations. This page basically presents and allow to edit [Raven/Synchronization/Destinations config](../../synchronization/configurations#ravensynchronizationdestinations).
 
 When you enter the page you will see all configured destination file systems (both enabled and disabled).
 

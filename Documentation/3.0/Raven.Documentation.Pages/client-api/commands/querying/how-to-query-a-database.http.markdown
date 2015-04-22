@@ -14,7 +14,7 @@ curl \
 {CODE-BLOCK/}
 
 {SAFE:IndexQuery parameters}
-This endpoint accepts [IndexQuery](../../../../glossary/index-query) object. All possible [IndexQuery](../../../../glossary/index-query) parameters are listed [here](../../../client-api/commands/querying/how-to-query-a-database#indexquery-parameters)
+This endpoint accepts [IndexQuery](../../../glossary/index-query) object. All possible [IndexQuery](../../../glossary/index-query) parameters are listed [here](../../../client-api/commands/querying/how-to-query-a-database#indexquery-parameters)
 {SAFE/}
 
 ## IndexQuery parameters

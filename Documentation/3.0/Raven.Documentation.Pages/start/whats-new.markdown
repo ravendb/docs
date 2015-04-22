@@ -156,7 +156,7 @@
 - low memory notifications,
 - simpler deployment (less files),
 - using OWIN/Web API,
-- added various [debug endpoints](../server/troubleshooting/debug-endpoints) and [metrics](../studio/overview/status/index-stats-and-metrics)
+- added various [debug endpoints](../server/troubleshooting/debug-endpoints) and [metrics](../studio/overview/status/indexing/indexing-performance)
 
 #### Bundles
 

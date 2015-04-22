@@ -1,6 +1,6 @@
 ﻿#Conflicts view
 
-If two file system are configured to synchronize files to each other (*master/master*) then [conflicts](../synchronization/conflicts) may occur.
+If two file system are configured to synchronize files to each other (*master/master*) then [conflicts](../../synchronization/conflicts) may occur.
 The conflicts view presents the list of conflicted files and allows to resolve them.
 
 ![Figure 1. Studio. Conflicts view](images/conflicts-view.png)  
