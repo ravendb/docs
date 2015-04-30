@@ -1,6 +1,6 @@
 #Commands : GetFinishedAsync
 
-**GetFinishedAsync** allows to page through the [`SynchronizationReports`](../../../../../glossary/synchronization-report) of already accomplished file synchronizations.
+**GetFinishedAsync** allows to page through the [`SynchronizationReports`](../../../../../glossary/synchronization-report) of already accomplished file synchronizations on the destination server.
 
 ## Syntax
 

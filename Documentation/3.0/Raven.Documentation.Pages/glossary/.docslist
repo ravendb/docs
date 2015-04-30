@@ -49,6 +49,7 @@ spatial-relation.markdown	SpatialRelation
 stream-result.markdown	StreamResult
 suggestion-query.markdown	SuggestionQuery
 suggestion-query-result.markdown	SuggestionQueryResult
+synchronization-destination.markdown	SynchronizationDestination
 synchronization-details.markdown	SynchronizationDetails
 synchronization-report.markdown	SynchronizationReport
 synchronization-update-notification.markdown	SynchronizationUpdateNotification

@@ -15,7 +15,7 @@ The **StartAsync** method is used to manually force the synchronization to the d
 
 | Return Value | |
 | ------------- | ------------- |
-| **Task&lt;DestinationSyncResult[]&gt;** | A task that represents the asynchronous synchronization operation. The task result is an `ItemsPage` object that contains the number of total results and the list of the [`ConflictItem`](../../../../glossary/conflict-item) objects, which represent the synchronization conflicts. |
+| **Task&lt;DestinationSyncResult[]&gt;** | A task that represents the asynchronous synchronization operation. The task result is an array of `DestinationSyncResult` object that contains reports about performed operations. |
 
 
 ### Example

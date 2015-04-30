@@ -419,6 +419,12 @@
     <None Include="file-system\client-api\commands\files\search\search.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\upload.http.markdown" />
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\destinations\get.http.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\destinations\set.http.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\active.http.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\finished.http.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\monitoring\status.http.markdown" />
+    <None Include="file-system\client-api\commands\synchronization\start.http.markdown" />
     <None Include="file-system\client-api\sharding.markdown" />
     <None Include="file-system\client-api\commands\storage\.docslist" />
     <None Include="file-system\client-api\commands\storage\cleanup.dotnet.markdown" />
@@ -511,6 +517,7 @@
     <None Include="glossary\file-header.markdown" />
     <None Include="glossary\file-system-document.markdown" />
     <None Include="glossary\file-system-restore-request.markdown" />
+    <None Include="glossary\synchronization-destination.markdown" />
     <None Include="glossary\search-results.markdown" />
     <None Include="glossary\spatial-relation.markdown" />
     <None Include="glossary\stream-result.markdown" />
