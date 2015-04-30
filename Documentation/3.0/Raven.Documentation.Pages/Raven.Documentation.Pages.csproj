@@ -419,6 +419,7 @@
     <None Include="file-system\client-api\commands\files\search\search.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\upload.http.markdown" />
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
+    <None Include="file-system\client-api\sharding.markdown" />
     <None Include="file-system\client-api\commands\storage\.docslist" />
     <None Include="file-system\client-api\commands\storage\cleanup.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\retry-renaming.dotnet.markdown" />

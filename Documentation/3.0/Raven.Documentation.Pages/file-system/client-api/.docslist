@@ -4,3 +4,4 @@ creating-files-store.markdown	Creating a files store
 /session	Session
 /changes	Changes API
 /listeners	Listeners
+sharding.markdown	Sharding

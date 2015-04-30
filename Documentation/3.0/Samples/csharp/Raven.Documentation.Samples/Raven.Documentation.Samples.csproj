@@ -316,6 +316,7 @@
     <Compile Include="FileSystem\ClientApi\Session\ChangingMetadata.cs" />
     <Compile Include="FileSystem\ClientApi\Session\UploadingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\WhatIsFilesSession.cs" />
+    <Compile Include="FileSystem\ClientApi\Sharding.cs" />
     <Compile Include="FileSystem\Server\Bundles\Encryption.cs" />
     <Compile Include="FileSystem\Server\Bundles\Versioning.cs" />
     <Compile Include="FileSystem\Server\ExportImport.cs" />
