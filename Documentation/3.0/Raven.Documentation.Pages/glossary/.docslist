@@ -23,6 +23,7 @@ facet-setup.markdown	FacetSetup
 field-highlightings.markdown	FieldHighlightings
 file-change-notification.markdown	FileChangeNotification
 file-header.markdown	FileHeader
+file-system-backup-request.markdown	FilesystemBackupRequest
 file-system-document.markdown	FileSystemDocument
 file-system-restore-request.markdown	FileSystemRestoreRequest
 index-change-notification.markdown	IndexChangeNotification
