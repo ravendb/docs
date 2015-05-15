@@ -6,7 +6,7 @@
 
 ## Looking for words
 
-In case we want to find all documents with property Text containing some word.
+In case we want to find all documents with property `Text` containing some word.
 
 `
     Text:Word
@@ -14,7 +14,7 @@ In case we want to find all documents with property Text containing some word.
 
 ## Looking for phrases
 
-In case we want to find all documents with property Text containing specified sentence.
+In case we want to find all documents with property `Text` containing specified sentence.
 
 `
     Text:"several words"
@@ -28,10 +28,20 @@ Take a look at these tests.
 
 ## How can I query for a null value?
 
-Let us say that we want to find all users that didn't provide their email. This is the query that we will need to issue:
+Assuming when the document was saved the property's value was null; let us say we want to find all users that didn't provide their `Email`. This is the query that we will need to issue:
 
 `
     Email:[[NULL_VALUE]]
 `
 
-The [[ ]] denotes and NotAnalyzed value, and Raven writes NULL_VALUE to the Lucene index when it encounters a null being indexed.
+The [[ ]] denotes a NotAnalyzed value, and Raven writes `NULL_VALUE` to the Lucene index when it encounters a null being indexed.
+
+## How can I query for a non-null blank or empty string?
+
+Assuming when the document was saved the property's value was a non-null blank/empty string; let us say we want to find all users that didn't provide their `LastName`. In order to query for a non-null blank or empty string we will need to issue:
+
+`
+    LastName: [[EMPTY_STRING]]
+`
+
+The [[ ]] denotes a NotAnalyzed value, and Raven writes `EMPTY_STRING` to the Lucene index when it encounters a non-null empty/blank string being indexed.
