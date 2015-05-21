@@ -22,7 +22,7 @@ It is possible to override the behavior of the Versioning Bundle for a set of do
 
 The naming convention used is `"Raven/Versioning/" + entityName`, where the entity name is the value of the Raven-Entity-Name property on the document.
 
-Conversely, we can also set the default configuration to not version (`Exclude = false`) and configure versioning for each set of the documents individually, by adding a document for each collection that we do want to version.
+Conversely, we can also set the default configuration to not version (`Exclude = true`) and configure versioning for each set of the documents individually, by adding a document for each collection that we do want to version.
 
 ## How it works
 
