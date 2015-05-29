@@ -1,14 +1,39 @@
 # What's new
 
-{PANEL:Upcoming}
+{PANEL:3.0.3690 - 2015/05/22}
 
 ### Server
 
-- `[JavaScript]` Added `IncreaseNumberOfAllowedStepsBy` method. More [here](../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables).
+- `[JavaScript]` Added `IncreaseNumberOfAllowedStepsBy` method. More [here](../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#methods-objects-and-variables),
+- `[JavaScript]` Debug information now contains number of steps that script took,
+- `[Voron]` Less aggresive disk space allocation,
+- Various performance improvements
 
 #### [Configuration](../server/configuration/configuration-options)
 
-- Added `Raven/AllowScriptsToAdjustNumberOfSteps`. More [here](../server/configuration/configuration-options#javascript-parser).
+- Added `Raven/AllowScriptsToAdjustNumberOfSteps`. More [here](../server/configuration/configuration-options#javascript-parser),
+- Added `Raven/Voron/AllowOn32Bits`. More [here](../server/configuration/configuration-options#voron-settings),
+- Added `Raven/PreventSchemaUpdate`. More [here](../server/configuration/configuration-options#data-settings).
+
+#### Bundles
+
+- `[SQL Replication]` Adding new replication will not force others to wait till it catches up with them
+
+### Studio
+
+- Patching now displays metadata,
+- Added the ability to force side-by-side index replacement,
+- Added the ability to create C# class from JSON document,
+- Various fixes and enhancements
+
+### Client API
+
+- added `ToFacetsLazyAsync` extension method to `IQueryable`,
+- conflicts can be automatically resolved by Client API during query operations if there is `IDocumentConflictListener` available
+
+### Installer
+
+- installer now contains `NLog.Ignore.config` for easier logging setup
 
 {PANEL/}
 

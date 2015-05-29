@@ -236,6 +236,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Allowed values:_  Lazy, Safe   
     _Default:_ Safe
 
+* **Raven/PreventSchemaUpdate**   
+	Disabled the automatic storage schema updates for all resources.   
+    _Default:_ false
+
 ### Http settings
 
 * **Raven/HostName**   
@@ -396,6 +400,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/Voron/MaxScratchBufferSize**   
     The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).
     _Default_: 1024
+
+* **Raven/Voron/AllowOn32Bits**   
+    Allows to use Voron storage on servers running in 32-bit mode.   
+    _Default_: false
 
 ### Backup
 
