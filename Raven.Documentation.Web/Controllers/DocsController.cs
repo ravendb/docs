@@ -200,6 +200,15 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Server, new PageModel(toc));
 		}
 
+		public virtual ActionResult UsersIssues(string version, string language)
+		{
+			var toc = DocumentSession
+				.Query<TableOfContents>()
+				.First(x => x.Category == Category.UsersIssues && x.Version == CurrentVersion);
+
+			return View(MVC.Docs.Views.Server, new PageModel(toc));
+		}
+
 		public virtual ActionResult Glossary(string version, string language)
 		{
 			var toc = DocumentSession

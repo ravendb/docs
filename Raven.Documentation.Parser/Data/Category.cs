@@ -33,6 +33,10 @@ namespace Raven.Documentation.Parser.Data
 		[Description("File System")]
 		FileSystem,
 
+		[Prefix("users-issues")]
+		[Description("Users Issues")]
+		UsersIssues,
+
 		// legacy categories
 
 		[Prefix("intro")]
