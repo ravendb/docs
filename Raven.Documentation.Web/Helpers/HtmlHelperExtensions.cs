@@ -88,6 +88,7 @@
 			builder.AppendLine("<ul class='dropdown-menu' role='menu'>");
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Samples, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Glossary", MVC.Docs.ActionNames.Glossary, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Users Issues", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "users-issues/azure-router-timeout" }, null)));
 			builder.AppendLine("</ul>");
 			builder.AppendLine("</li>");
 
@@ -119,6 +120,7 @@
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Appendixes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "appendixes" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("FAQ", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "faq" }, null)));
 			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "samples" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Users Issues", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "users-issues/recreated-node-replication-stop" }, null)));
 			builder.AppendLine("</ul>");
 			builder.AppendLine("</li>");
 
