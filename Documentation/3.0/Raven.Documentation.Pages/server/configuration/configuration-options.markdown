@@ -100,7 +100,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/AvailableMemoryForRaisingIndexBatchSizeLimit**   
 	The minimum amount of memory available for us to double the size of InitialNumberOfItemsToIndexInSingleBatch if we need to.   
 	_Default:_ 50% of total system memory  
-	_Minimum:_ 768
+	_Maximum:_ 768
 
 * **Raven/ResetIndexOnUncleanShutdown**   
 	When the database is shut down rudely, determine whatever to reset the index or to check it. Note that checking the index may take some time on large databases.   
