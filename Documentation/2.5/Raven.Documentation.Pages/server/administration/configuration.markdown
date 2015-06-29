@@ -305,7 +305,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The time in seconds to allow a tenant database to be idle. Value is in seconds.   
 	_Default:_ 900
 
-* **Raven/Tenants/FrequnecyToCheckForIdleDatabases**
+* **Raven/Tenants/FrequencyToCheckForIdleDatabases**
 	The time in seconds to check for an idle tenant database. Value is in seconds.   
 	_Default:_ 60
 
@@ -446,7 +446,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/Esent/CircularLog** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Tenants/MaxIdleTimeForTenantDatabase** | ![No](images\delete.png) | ![Yes](images\tick.png) |
-| **Raven/Tenants/FrequnecyToCheckForIdleDatabases** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Tenants/FrequencyToCheckForIdleDatabases** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Quotas/Size/HardLimitInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Quotas/Size/SoftMarginInKB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
