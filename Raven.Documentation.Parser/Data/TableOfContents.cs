@@ -6,7 +6,7 @@
 	{
 		public TableOfContents()
 		{
-			Items = new List<TableOfContentsItem>();
+			this.Items = new List<TableOfContentsItem>();
 		}
 
 		public string Version { get; set; }
@@ -19,8 +19,8 @@
 		{
 			public TableOfContentsItem()
 			{
-				Items = new List<TableOfContentsItem>();
-				Languages = new List<Language>();
+				this.Items = new List<TableOfContentsItem>();
+				this.Languages = new List<Language>();
 			}
 
 			public string Key { get; set; }

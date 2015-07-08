@@ -21,6 +21,8 @@
 
 	    public string Id { get; set; }
 
+		public string LastCommitSha { get; set; }
+
 		public Language Language { get; set; }
 
 	    public Category Category { get; set; }

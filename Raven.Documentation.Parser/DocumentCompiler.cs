@@ -18,16 +18,20 @@
 
 		private readonly ParserOptions _options;
 
-		public DocumentCompiler(Markdown parser, ParserOptions options)
+		private IProvideLastCommitThatAffectedFile _repoAnalyzer;
+
+		public DocumentCompiler(Markdown parser, ParserOptions options, IProvideLastCommitThatAffectedFile repoAnalyzer)
 		{
 			_parser = parser;
 			_options = options;
+			_repoAnalyzer = repoAnalyzer;
 		}
 
 		public DocumentationPage Compile(FileInfo file, FolderItem page, string documentationVersion)
 		{
 			try
 			{
+				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(file.FullName);
 				var key = ExtractKey(file, page, documentationVersion);
 				var category = CategoryHelper.ExtractCategoryFromPath(key);
 				var images = new HashSet<DocumentationImage>();
@@ -53,7 +57,8 @@
 					TextContent = textContent,
 					Language = page.Language,
 					Category = category,
-					Images = images
+					Images = images,
+					LastCommitSha = lastCommit
 				};
 			}
 			catch (Exception e)
