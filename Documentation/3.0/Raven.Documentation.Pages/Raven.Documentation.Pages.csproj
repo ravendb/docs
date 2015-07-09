@@ -281,6 +281,7 @@
     <None Include="client-api\session\querying\how-to-customize-query.java.markdown" />
     <None Include="client-api\session\querying\how-to-stream-query-results.java.markdown" />
     <None Include="client-api\session\querying\how-to-query.java.markdown" />
+    <None Include="client-api\session\querying\lucene\how-to-use-not-operator.dotnet.markdown" />
     <None Include="client-api\session\querying\lucene\how-to-use-lucene-in-queries.java.markdown" />
     <None Include="client-api\session\saving-changes.java.markdown" />
     <None Include="client-api\session\loading-entities.java.markdown" />

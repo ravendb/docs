@@ -302,6 +302,7 @@
     <Content Include="server\administration\images\delete.png" />
     <Content Include="server\administration\images\tick.png" />
     <Content Include="server\extending\bundles\images\authorization_bundle_faq.png" />
+    <Content Include="server\extending\bundles\images\authorization_docs.png" />
     <Content Include="server\extending\bundles\images\sql_replication_studio.png" />
     <Content Include="server\extending\bundles\images\versioned_docs.png" />
     <Content Include="server\extending\bundles\images\versioned_docs_2.png" />

@@ -364,6 +364,7 @@
     <Content Include="server\deployment\images\installer_welcome_screen.png" />
     <Content Include="server\deployment\images\installer_windows_service.png" />
     <Content Include="server\extending\bundles\images\authorization_bundle_faq.png" />
+    <Content Include="server\extending\bundles\images\authorization_docs.png" />
     <Content Include="server\extending\bundles\images\sql_replication_studio.png" />
     <Content Include="server\extending\bundles\images\versioned_docs.png" />
     <Content Include="server\extending\bundles\images\versioned_docs_2.png" />
