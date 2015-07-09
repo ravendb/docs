@@ -489,6 +489,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The password for the OAuth certificate.  
 	_Default:_ none
 
+* **Raven/ExposeConfigOverTheWire**   
+	Allows to access /debug/config, /debug/request-tracing or /debug/info-package endpoints. Valid values are `Open` or `AdminOnly`.  
+	_Default:_ Open
+
 ### [Encryption](../../server/bundles/encryption)
 
 * **Raven/Encryption/Algorithm**     
@@ -653,6 +657,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/OAuthTokenCertificate** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenCertificatePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenCertificatePassword** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/ExposeConfigOverTheWire** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Encryption/Algorithm** | ![Yes](images\tick.png)** | ![Yes](images\tick.png) |
 | **Raven/Encryption/Key** | ![Yes](images\tick.png)** | ![Yes](images\tick.png) |

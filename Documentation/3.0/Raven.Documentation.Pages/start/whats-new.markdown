@@ -139,7 +139,8 @@
 - added `Raven/Replication/IndexAndTransformerReplicationLatency`,
 - added `Raven/MaxConcurrentRequestsForDatabaseDuringLoad`,
 - added `Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch`,
-- added `Raven/DynamicLoadBalancing`
+- added `Raven/DynamicLoadBalancing`,
+- added `Raven/ExposeConfigOverTheWire`
 
 #### Indexes
 
