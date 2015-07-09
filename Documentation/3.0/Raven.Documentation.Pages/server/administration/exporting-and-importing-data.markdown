@@ -165,6 +165,46 @@ If you want to use comma in your filter, wrap the value in `'` e.g. `--filter=Na
 
 {INFO/}
 
+#### Example I - basics
+
+To export all documents containing property FirstName with value `Robert` we need to execute following command:
+
+{CODE-BLOCK:plain}
+	Raven.Smuggler out http://localhost:8080/ dump.ravendump --database=Northwind --filter=FirstName=Robert --operate-on-types=Documents
+{CODE-BLOCK/}
+
+#### Example II - basics
+
+To export all documents from `Employees` collection and HiLo document for this collection (if exists) following command needs to be executed:
+
+{CODE-BLOCK:plain}
+	Raven.Smuggler out http://localhost:8080/ dump.ravendump --database=Northwind --metadata-filter=Raven-Entity-Name=Employees --operate-on-types=Documents
+{CODE-BLOCK/}
+
+#### Example III - combining filters
+
+To export all documents from `Employees` collection that contain property FirstName with value `Robert` and HiLo document for this collection (if exists) following command needs to be executed:
+
+{CODE-BLOCK:plain}
+	Raven.Smuggler out http://localhost:8080/ dump.ravendump --database=Northwind --filter=FirstName=Robert --metadata-filter=Raven-Entity-Name=Employees --operate-on-types=Documents
+{CODE-BLOCK/}
+
+#### Example IV - multiple filters
+
+Same filter can be used multiple times, but one must remember that document must match all the filters (logical AND), so to export all documents that contain property FirstName with value `Robert` and LastName with value `King` then following command must be executed:
+
+{CODE-BLOCK:plain}
+	Raven.Smuggler out http://localhost:8080/ dump.ravendump --database=Northwind --filter=FirstName=Robert --filter=LastName=King --operate-on-types=Documents
+{CODE-BLOCK/}
+
+#### Example V - importing
+
+Filter can be also used during import and they work the same way as in export. E.g. if we have an export containing whole `Northwind` database and we want to only import documents from `Employees` collection then we must execute following command:
+
+{CODE-BLOCK:plain}
+	Raven.Smuggler in http://localhost:8080/ dump.ravendump --database=NewNorthwind --metadata-filter=Raven-Entity-Name=Employees --operate-on-types=Documents
+{CODE-BLOCK/}
+
 {PANEL/}
 
 {PANEL:**Transforms**}
