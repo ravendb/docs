@@ -6,11 +6,13 @@ The encryption bundle introduces data encryption to RavenDB. By default it uses 
 
 If you want to setup new database with encryption bundle using the Studio, then please refer to [this](../../studio/walkthroughs/how-to-setup-encryption) page.
 
-Three possible configuration options are:   
+Four possible configuration options are:   
 * **Raven/Encryption/Algorithm** with [AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) as a value. Additionally provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class    
 * **Raven/Encryption/Key** a key used for encryption purposes with minimum length of 8 characters, base64 encoded    
 * **Raven/Encryption/KeyBitsPreference** the preferred encryption key size in bits 
 * **Raven/Encryption/EncryptIndexes** Boolean value indicating if the indexes should be encrypted. Default: true   
+
+{WARNING For security reasons all `Raven/Encryption/*` settings should be placed in `SecuredSettings` configuration section. /}
 
 ### Global configuration
 
@@ -48,7 +50,7 @@ To not include any confidential database settings, please issue a backup request
 
 ### Backup & Restore
 
-1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startbackup) with empty `SecuredSettrings` (where encryption configuration is placed) in [DatabaseDocument](../../glossary/database-document) specified:
+1. Issue a [backup request](../../../http/client-api/commands/how-to/start-backup-restore-operations#startbackup) with empty `SecuredSettings` (where encryption configuration is placed) in [DatabaseDocument](../../glossary/database-document) specified:
 
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/databases/Northwind/admin/backup?incremental=false" \

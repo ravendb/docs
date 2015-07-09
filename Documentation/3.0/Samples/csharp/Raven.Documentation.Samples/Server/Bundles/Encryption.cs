@@ -21,15 +21,15 @@ namespace Raven.Documentation.Samples.Server.Bundles
 								Settings =
 									{
 										// ...
-										{ "Raven/ActiveBundles", "Encryption" },
-										{
-											"Raven/Encryption/Algorithm",
-											"System.Security.Cryptography.DESCryptoServiceProvider, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
-										}
+										{ "Raven/ActiveBundles", "Encryption" }
 									},
 								SecuredSettings =
 									{
 										// ...
+										{
+											"Raven/Encryption/Algorithm",
+											"System.Security.Cryptography.DESCryptoServiceProvider, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
+										},
 										{ "Raven/Encryption/Key", "<key_here>" }
 									}
 							});

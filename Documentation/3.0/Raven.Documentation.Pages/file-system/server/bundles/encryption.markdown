@@ -50,7 +50,7 @@ To not include any confidential file system settings, please issue a backup requ
 
 ### Backup & Restore
 
-1. Issue a backup request with empty `SecuredSettrings` (where encryption configuration is placed) in [FileSystemDocument](../../../glossary/file-system-document):
+1. Issue a backup request with empty `SecuredSettings` (where encryption configuration is placed) in [FileSystemDocument](../../../glossary/file-system-document):
 
 {CODE-BLOCK:json}
 curl -X POST "http://localhost:8080/fs/NorthwindFS/admin/backup?incremental=false" \
