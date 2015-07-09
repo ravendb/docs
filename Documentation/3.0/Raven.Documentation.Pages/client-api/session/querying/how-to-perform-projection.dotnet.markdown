@@ -4,7 +4,7 @@ There are a couple types of projections:
 
 - using [Select](../../../client-api/session/querying/how-to-perform-projection#select)
 - using [ProjectFromIndexFieldsInto](../../../client-api/session/querying/how-to-perform-projection#projectfromindexfieldsinto)
-- using [OfType (As)](../../../client-api/session/querying/how-to-perform-projection#oftype-as---simple-projection)
+- using [OfType (As)](../../../client-api/session/querying/how-to-perform-projection#oftype-(as)---simple-projection)
 - using transformer [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries)
 
 {PANEL:Select}
