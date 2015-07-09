@@ -33,42 +33,42 @@ or
 
 {NOTE Functionality of most of the methods matches functionality of their `Query` counterparts and therefore will not be described again. Please refer to appropriate counterpart documentation articles. Links starting with `[Query]` are marking those articles. /}
 
-Available custom methods and extensions:
+Available custom methods and extensions:   
 
-- [AddOrder]()
-- [AfterQueryExecuted]()
-- [AndAlso]()
-- [BeforeQueryExecution]()
-- [Boost]()
-- [CloseSubclause]()
-- [ContainsAll]()
-- [ContainsAny]()
-- [CountLazily]()
-- [Distinct]()
-- [ExplainScores]()
-- [Fuzzy]()
+- AddOrder
+- AfterQueryExecuted
+- AndAlso
+- BeforeQueryExecution
+- Boost
+- CloseSubclause
+- ContainsAll
+- ContainsAny
+- CountLazily
+- Distinct
+- ExplainScores
+- Fuzzy
 - [Query] [GetFacets](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
-- [GetIndexQuery]()
+- GetIndexQuery
 - [Query] [Highlight](../../../../client-api/session/querying/how-to-use-highlighting)
-- [Include]()
-- [Intersect]()
-- [InvokeAfterQueryExecuted]()
+- Include
+- Intersect
+- InvokeAfterQueryExecuted
 - [Query] [Lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily)
-- [NegateNext]()
+- NegateNext
 - [Query] [NoCaching](../../../../client-api/session/querying/how-to-customize-query#nocaching)
 - [Query] [NoTracking](../../../../client-api/session/querying/how-to-customize-query#notracking)
-- [Not]()
-- [OpenSubclause]()
-- [OrElse]()
-- [OrderBy]()
-- [OrderByDescending]()
-- [OrderByScore]()
-- [OrderByScoreDescending]()
-- [Proximity]()
-- [RandomOrdering]()
+- [Not](../../../../client-api/session/querying/lucene/how-to-use-not-operator)
+- OpenSubclause
+- OrElse
+- OrderBy
+- OrderByDescending
+- OrderByScore
+- OrderByScoreDescending
+- Proximity
+- RandomOrdering
 - [Query] [RelatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index)
-- [Search]()
-- [SelectFields]()
+- Search
+- SelectFields
 - [Query] [SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer](../../../../client-api/session/querying/how-to-customize-query#setallowmultipleindexentriesforsamedocumenttoresulttransformer)
 - [Query] [SetHighlighterTags](../../../../client-api/session/querying/how-to-use-highlighting)
 - [Query] [SetResultTransformer](../../../../client-api/session/querying/how-to-use-transformers-in-queries)
@@ -76,24 +76,24 @@ Available custom methods and extensions:
 - [Query] [ShowTimings](../../../../client-api/session/querying/how-to-customize-query#showtimings)
 - [Query] [SortByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 - [Query] [Spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index)
-- [Statistics]()
-- [UsingDefaultField]()
-- [UsingDefaultOperator]()
+- Statistics
+- UsingDefaultField
+- UsingDefaultOperator
 - [Query] [WaitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 - [Query] [WaitForNonStaleResultsAsOf](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasof)
 - [Query] [WaitForNonStaleResultsAsOfLastWrite](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasoflastwrite)
 - [Query] [WaitForNonStaleResultsAsOfNow](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasofnow)
-- [Where]()
-- [WhereBetween]()
-- [WhereBetweenOrEqual]()
-- [WhereEndsWith]()
-- [WhereEquals]()
-- [WhereGreaterThan]()
-- [WhereGreaterThanOrEqual]()
-- [WhereIn]()
-- [WhereLessThan]()
-- [WhereLessThanOrEqual]()
-- [WhereStartsWith]()
+- Where
+- WhereBetween
+- WhereBetweenOrEqual
+- WhereEndsWith
+- WhereEquals
+- WhereGreaterThan
+- WhereGreaterThanOrEqual
+- WhereIn
+- WhereLessThan
+- WhereLessThanOrEqual
+- WhereStartsWith
 - [Query] [WithinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 
 ## Remarks
