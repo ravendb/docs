@@ -64,6 +64,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	If the database is being loaded for the first time, this value indicates how many seconds will task wait for load completion before throwing exception.   
     _Default:_ 5   
 
+* **Raven/DynamicLoadBalancing**   
+	Boolean value indicating if server should tune up its resource usage based on current CPU usage.      
+    _Default:_ true   
+
 ### Index settings
 
 * **Raven/IndexStoragePath**  
@@ -547,6 +551,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/MemoryCacheLimitPercentage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MemoryCacheLimitCheckInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MemoryLimitForProcessing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/DynamicLoadBalancing** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/IndexStoragePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxIndexWritesBeforeRecreate** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |

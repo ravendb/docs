@@ -138,7 +138,8 @@
 - added `Raven/AssembliesDirectory`,
 - added `Raven/Replication/IndexAndTransformerReplicationLatency`,
 - added `Raven/MaxConcurrentRequestsForDatabaseDuringLoad`,
-- added `Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch`
+- added `Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch`,
+- added `Raven/DynamicLoadBalancing`
 
 #### Indexes
 
