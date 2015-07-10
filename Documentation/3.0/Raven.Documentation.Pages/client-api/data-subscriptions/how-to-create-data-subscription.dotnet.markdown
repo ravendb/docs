@@ -29,6 +29,8 @@ The second one is generic `SubscriptionCriteria<T>` where `T` is an entity type.
 
 _BelongsToAnyCollection_ will be automatically filled in by a single value based on the entity type (see [FindTypeTagName](../configuration/conventions/identifier-generation/global#findtypetagname-and-finddynamictagname) convention).
 
+Additionally the criteria object has _StartEtag_ property which sets the etag of the first document that the subscription starts from (in large databases can be used to skip documents that you already know they won't match the given criteria).
+
 The execution of `Create` method will create a data subscription in a database and return its identifier (you can see `Raven/Subscriptions/[id]` documents in the database).
 This identifier is needed to open the subscription so you need to keep that information to be able to make use of it later.
 
