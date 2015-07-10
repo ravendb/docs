@@ -80,7 +80,7 @@
     <Compile Include="Helpers\NoteBlockHelper.cs" />
     <Compile Include="Helpers\PanelBlockHelper.cs" />
     <Compile Include="Helpers\PrefixHelper.cs" />
-    <Compile Include="IProvideLastCommitThatAffectedFile.cs" />
+    <Compile Include="IProvideGitFileInformation.cs" />
     <Compile Include="ParserOptions.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="DirectoryCompiler.cs" />

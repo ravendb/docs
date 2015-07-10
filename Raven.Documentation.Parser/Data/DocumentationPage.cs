@@ -23,6 +23,8 @@
 
 		public string LastCommitSha { get; set; }
 
+		public string RelativePath { get; set; }
+
 		public Language Language { get; set; }
 
 	    public Category Category { get; set; }

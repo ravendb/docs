@@ -18,9 +18,9 @@
 
 		private readonly ParserOptions _options;
 
-		private IProvideLastCommitThatAffectedFile _repoAnalyzer;
+		private IProvideGitFileInformation _repoAnalyzer;
 
-		public DocumentCompiler(Markdown parser, ParserOptions options, IProvideLastCommitThatAffectedFile repoAnalyzer)
+		public DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
 		{
 			_parser = parser;
 			_options = options;
@@ -47,19 +47,21 @@
 
 				var title = ExtractTitle(htmlDocument);
 				var textContent = ExtractTextContent(htmlDocument);
+				var repoRelativePath = _repoAnalyzer.MakeRelativePathInRepository(file.FullName).Replace(@"\", @"/");
 
 				return new DocumentationPage
-				{
-					Key = key,
-					Title = title,
-					Version = documentationVersion,
-					HtmlContent = content,
-					TextContent = textContent,
-					Language = page.Language,
-					Category = category,
-					Images = images,
-					LastCommitSha = lastCommit
-				};
+				       {
+					       Key = key,
+					       Title = title,
+					       Version = documentationVersion,
+					       HtmlContent = content,
+					       TextContent = textContent,
+					       Language = page.Language,
+					       Category = category,
+					       Images = images,
+					       LastCommitSha = lastCommit,
+					       RelativePath = repoRelativePath
+				       };
 			}
 			catch (Exception e)
 			{

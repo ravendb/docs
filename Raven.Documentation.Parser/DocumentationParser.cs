@@ -14,7 +14,7 @@
 
 		private readonly DirectoryCompiler _directoryCompiler;
 
-		public DocumentationParser(ParserOptions options, IProvideLastCommitThatAffectedFile repoAnalyzer)
+		public DocumentationParser(ParserOptions options, IProvideGitFileInformation repoAnalyzer)
 		{
 			_options = options;
 

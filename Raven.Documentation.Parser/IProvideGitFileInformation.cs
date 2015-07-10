@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace Raven.Documentation.Parser
 {
-	public interface IProvideLastCommitThatAffectedFile
+	public interface IProvideGitFileInformation
 	{
 		string GetLastCommitThatAffectedFile(string path);
+
+		string MakeRelativePathInRepository(string toPath);
 	}
 }
