@@ -128,6 +128,15 @@
 			void Release(long id, string database = null);
 			#endregion
 		}
-		
+
+		#region events
+		public delegate void BeforeBatch();
+
+		public delegate bool BeforeAcknowledgment();
+
+		public delegate void AfterAcknowledgment(Etag lastProcessedEtag);
+
+		public delegate void AfterBatch(int documentsProcessed);
+		#endregion
 	}
 }

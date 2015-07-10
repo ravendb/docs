@@ -227,6 +227,7 @@
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\.docslist" />
+    <None Include="client-api\data-subscriptions\events.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.java.markdown" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\how-to-delete-data-subscription.java.markdown" />

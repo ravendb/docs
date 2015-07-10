@@ -30,7 +30,16 @@ Additionally connection options have the following settings:
 
 - _IgnoreSubscribersErrors_ - determines if subscription should ignore errors thrown by subscription handlers (default: false),
 - _ClientAliveNotificationInterval_ - specifies how often the subscription sends heart beats to the server (server keeps the subscription open until a connected client
-sends these alive notifications - two undelivered notifications would let an another client to connect, default: 2 minutes).
+sends these alive notifications - two undelivered notifications would let an another client to connect, default: 2 minutes),
+- _Strategy_ - the enum that represents subscription opening strategy. There are four strategies available:
+
+	- `OpenIfFree` - the client will successfully open a subscription only if there isn't any other currently connected client. Otherwise it will end up with `SubscriptionInUseException`,
+	- `TakeOver` - the connecting client will successfully open a subscription even if there is another active subscription's consumer.
+If the new client takes over the subscription then the existing one will get rejected. 
+The subscription will always be processed by the last connected client.
+	- `ForceAndKeep` - the client opening a subscription with forced strategy set will always get it and keep it open until another client with the same strategy gets connected.
+	- `WaitForFree` - if the client currently cannot open the subscription because it is used by another client then it will subscribe Changes API to be notified about subscription status changes.
+Every time `SubscriptionReleased` notification arrives, it will repeat an attempt to open the subscription. After it succeeds in opening, it will process docs as usual.
 
 {INFO: Error handling}
 By default the data subscription does not allow processing errors (`IgnoreSubscribersErrors: false`). So if any subscription handler fails,
