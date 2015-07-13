@@ -224,7 +224,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/DataDir**  
     The path for the database directory. Can use ~\ as the root, in which case the path will start from the server base directory.  
-    _Default:_ ~\Data  
+    _Default:_ ~\Databases\System  
 
 * **Raven/DataDir/Legacy**  
     The path for the legacy database directory (prior 3.0). Can use ~\ as the root, in which case the path will start from the server base directory.  
