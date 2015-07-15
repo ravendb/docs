@@ -21,6 +21,10 @@ Using non-sequential data as the document key (e.g. created by hash functions or
 performance while searching for an existing documents and inserting new ones. If your intention is to use custom identifiers and you expect that the very high number 
 of such documents might be saved in your database, then we suggest you make use of incremented identifiers in order to ensure the good performance.
 
+## Long document keys
+
+All supported storage engines have limitations when it comes to the length of a key that they can store. Please visit [this page](../../server/configuration/storage-engines) to check those limitations.
+
 ## GetSortKey
 
 `GetSortKey` result is not stable and should **not** be used to make a case sensitive Id unique.

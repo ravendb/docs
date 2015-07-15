@@ -9,10 +9,19 @@ RavenDB supports two storage engines and each database can be created with a dif
 
 {PANEL/}
 
+{PANEL:**Esent**}
+
+### Limitations
+
+- **key size must be less than 2048 bytes in Unicode**
+
+{PANEL/}
+
 {PANEL:**Voron**}
 
 ### Limitations
 
+- **key size must be less than 2024 bytes in UTF8**
 - no support for DTC transactions
 
 ### Requirements
