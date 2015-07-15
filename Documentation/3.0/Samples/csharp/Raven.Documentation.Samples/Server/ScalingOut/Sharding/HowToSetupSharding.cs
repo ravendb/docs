@@ -98,7 +98,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Sharding
 		#region IShardResolutionStrategy
 		public class ShardResolutionByRegion : IShardResolutionStrategy
 		{
-			public string GenerateShardIdFor(object entity, ITransactionalDocumentSession sessionMetadata)
+			public string GenerateShardIdFor(object entity, object owner)
 			{
 				Company company = entity as Company;
 				if (company != null)

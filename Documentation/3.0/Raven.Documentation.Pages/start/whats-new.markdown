@@ -1,5 +1,13 @@
 # What's new
 
+{PANEL:Upcoming}
+
+### Client API
+
+- Added `AbstractScriptedIndexCreationTask`. More [here](../server/bundles/scripted-index-results#example-ii---abstractscriptedindexcreationtask)
+
+{PANEL/}
+
 {PANEL:3.0.3690 - 2015/05/22}
 
 ### Server
@@ -19,6 +27,8 @@
 
 - `[SQL Replication]` Adding new replication will not force others to wait till it catches up with them
 
+<hr />
+
 ### Studio
 
 - Patching now displays metadata,
@@ -26,10 +36,14 @@
 - Added the ability to create C# class from JSON document,
 - Various fixes and enhancements
 
+<hr />
+
 ### Client API
 
 - added `ToFacetsLazyAsync` extension method to `IQueryable`,
 - conflicts can be automatically resolved by Client API during query operations if there is `IDocumentConflictListener` available
+
+<hr />
 
 ### Installer
 
@@ -42,6 +56,8 @@
 ### Global
 
 - Various performance optimizations across both server and client
+
+<hr />
 
 ### Server
 
@@ -162,6 +178,8 @@
 - **highlights** can be accessed when performing **projection** or querying **map-reduce** index. More [here](../indexes/querying/highlights#highlights--projections),
 - added `IndexAndTransformerReplicationMode` convention that indicates if index and transformer definitions should be replicated when they are created using `AbstractIndexCreationTask` or `AbstractTransformerCreationTask`. More [here](../client-api/configuration/conventions/misc#indexandtransformerreplicationmode),
 - added [Data Subscriptions](../client-api/data-subscriptions/what-are-data-subscriptions).
+
+<hr />
 
 ### Studio
 

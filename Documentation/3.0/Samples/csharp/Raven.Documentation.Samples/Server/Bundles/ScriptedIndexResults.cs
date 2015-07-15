@@ -10,42 +10,99 @@ using Raven.Abstractions.Data;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
+using Raven.Documentation.Samples.Server.Bundles.Foo1;
 
 namespace Raven.Documentation.Samples.Server.Bundles
 {
-	#region index_def
-	public class Orders_ByCompany : AbstractIndexCreationTask<Order, Orders_ByCompany.Result>
+	namespace Foo1
 	{
-		public class Result
+		#region index_def
+		public class Orders_ByCompany : AbstractIndexCreationTask<Order, Orders_ByCompany.Result>
 		{
-			public string Company { get; set; }
+			public class Result
+			{
+				public string Company { get; set; }
 
-			public int Count { get; set; }
+				public int Count { get; set; }
 
-			public decimal Total { get; set; }
-		}
+				public decimal Total { get; set; }
+			}
 
-		public Orders_ByCompany()
-		{
-			Map = orders => from order in orders
-							select new
-							{
-								order.Company,
-								Count = 1,
-								Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
-							};
-
-			Reduce = results => from result in results
-								group result by result.Company into g
+			public Orders_ByCompany()
+			{
+				Map = orders => from order in orders
 								select new
 								{
-									Company = g.Key,
-									Count = g.Sum(x => x.Count),
-									Total = g.Sum(x => x.Total)
+									order.Company,
+									Count = 1,
+									Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
 								};
+
+				Reduce = results => from result in results
+									group result by result.Company into g
+									select new
+									{
+										Company = g.Key,
+										Count = g.Sum(x => x.Count),
+										Total = g.Sum(x => x.Total)
+									};
+			}
 		}
+		#endregion
 	}
-	#endregion
+
+	namespace Foo2
+	{
+		#region index_def_2
+		public class Orders_ByCompany : AbstractScriptedIndexCreationTask<Order, Orders_ByCompany.Result>
+		{
+			public class Result
+			{
+				public string Company { get; set; }
+
+				public int Count { get; set; }
+
+				public decimal Total { get; set; }
+			}
+
+			public Orders_ByCompany()
+			{
+				Map = orders => from order in orders
+								select new
+								{
+									order.Company,
+									Count = 1,
+									Total = order.Lines.Sum(l => (l.Quantity * l.PricePerUnit) * (1 - l.Discount))
+								};
+
+				Reduce = results => from result in results
+									group result by result.Company into g
+									select new
+									{
+										Company = g.Key,
+										Count = g.Sum(x => x.Count),
+										Total = g.Sum(x => x.Total)
+									};
+
+				IndexScript = @"
+							var company = LoadDocument(this.Company);
+							if(company == null)
+									return;
+							company.Orders = { Count: this.Count, Total: this.Total };
+							PutDocument(this.Company, company);
+						";
+
+				DeleteScript = @"
+							var company = LoadDocument(key);
+							if(company == null)
+									return;
+							delete company.Orders;
+							PutDocument(key, company);
+						";
+			}
+		}
+		#endregion
+	}
 
 	public class ScriptedIndexResults_Sample
 	{

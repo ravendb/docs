@@ -12,7 +12,7 @@ you need to put a special set up document under the key `Raven/ScriptedIndexResu
 
 {CODE setup_doc@Server\Bundles\ScriptedIndexResults.cs /}
 
-## Example
+## Example I - basics
 
 Let us assume that we have the following index:
 
@@ -37,3 +37,9 @@ Now, if you take a look at the documents from the companies collection after ord
 	}
 }
 {CODE-BLOCK/}
+
+## Example II - AbstractScriptedIndexCreationTask
+
+For easier configuration we have created `AbstractScriptedIndexCreationTask` where you can specify both, index definition and scripted index setup document. Each time the task is executed, it will update (if needed) stored index definition, stored setup document and reset index if any of those changed.
+
+{CODE index_def_2@Server\Bundles\ScriptedIndexResults.cs /}
