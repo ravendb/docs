@@ -9,6 +9,7 @@ using Raven.Client.Connection.Async;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.Samples.Server.Bundles;
+using Raven.Documentation.Samples.Server.Bundles.Foo1;
 
 namespace Raven.Documentation.Samples.Indexes
 {
