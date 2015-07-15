@@ -9,6 +9,6 @@ replication-stats.markdown	Replication Stats
 sql-replication-stats.markdown	Sql Replication Stats
 user-info.markdown	User Info
 map-reduce-visualizer.markdown	Map-Reduce Visualizer
-debug.markdown	Debug
+/debug	Debug
 storage.markdown	Storage
 gather-debug-info.markdown	Gather Debug Info

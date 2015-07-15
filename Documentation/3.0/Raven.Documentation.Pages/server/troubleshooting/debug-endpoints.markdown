@@ -43,6 +43,8 @@
 | build/version | GET | | Returns product and build version. | Y |
 | | | | |
 | indexes/{index_name} ?op=forceWriteToDisk | POST | - _index_name_ - index name | Force in-memory auto-index persistence. | |
+| | | | |
+| replication/explain/{*docId}?destinationUrl={destinationUrl}&databaseName={databaseName} | GET | - _docId_ - Id of a document to check<br />- _destinationUrl_ - destination server URL<br />- _databaseName_ - destination database name | Tries to explain what is the replication status for a given document on a given replication destination e.g. if the document should have been already replicated or will be replicated | |
 
 ## Studio
 

@@ -738,6 +738,8 @@
     <None Include="studio\overview\settings\custom-functions.markdown" />
     <None Include="studio\overview\settings\database-settings.markdown" />
     <None Include="studio\overview\status\.docslist" />
+    <None Include="studio\overview\status\debug\.docslist" />
+    <None Include="studio\overview\status\debug\explain-replication.markdown" />
     <None Include="studio\overview\status\indexing\.docslist" />
     <None Include="studio\overview\status\indexing\batch-size-and-prefetches.markdown" />
     <None Include="studio\overview\status\indexing\index-stats.markdown" />
@@ -746,7 +748,7 @@
     <None Include="studio\overview\status\sql-replication-stats.markdown" />
     <None Include="studio\overview\status\request-tracking.markdown" />
     <None Include="studio\overview\status\gather-debug-info.markdown" />
-    <None Include="studio\overview\status\debug.markdown" />
+    <None Include="studio\overview\status\debug\overview.markdown" />
     <None Include="studio\overview\status\map-reduce-visualizer.markdown" />
     <None Include="studio\overview\status\user-info.markdown" />
     <None Include="studio\overview\status\replication-stats.markdown" />
@@ -900,7 +902,8 @@
     <Content Include="studio\overview\settings\images\settings_replication-2.png" />
     <Content Include="studio\overview\settings\images\settings_replication-3.png" />
     <Content Include="studio\overview\settings\images\settings_replication-4.png" />
-    <Content Include="studio\overview\status\images\debug-endpoints-studio-1.png" />
+    <Content Include="studio\overview\status\debug\images\debug-endpoints-studio-1.png" />
+    <Content Include="studio\overview\status\debug\images\debug-explain-replication-studio.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_tracking-1.png" />
     <Content Include="studio\overview\status\images\status-sql-replication_stats-1.png" />

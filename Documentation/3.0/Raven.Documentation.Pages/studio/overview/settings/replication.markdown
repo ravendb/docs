@@ -59,4 +59,5 @@ Please refer to following [article](../../../client-api/bundles/how-client-integ
 
 ## Related articles
 
+- [Explain replication](../../../studio/overview/status/debug/explain-replication)
 - [Client API : How client integrates with replication bundle?](../../../client-api/bundles/how-client-integrates-with-replication-bundle)
