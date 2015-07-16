@@ -65,7 +65,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Smuggler">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3690\tools\Raven.Smuggler.exe</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3726-Unstable\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="Raven.Tests.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3726-Unstable\lib\net45\Raven.Tests.Helpers.dll</HintPath>
@@ -406,9 +406,6 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="Raven.Studio.Html5.zip">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
