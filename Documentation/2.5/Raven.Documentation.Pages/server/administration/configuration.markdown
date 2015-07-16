@@ -53,6 +53,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Format:_ HH:MM:SS   
 	_Default:_ depends on system polling interval   
 
+* **Raven/MaxSecondsForTaskToWaitForDatabaseToLoad**   
+	If the database is being loaded for the first time, this value indicates how many seconds will task wait for load completion before throwing exception.   
+    _Default:_ 5  
+
 ### Index settings
 
 * **Raven/IndexStoragePath**  
@@ -227,6 +231,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Configures the server to send Access-Control-Request-Headers header with the specified value.   
 	_Default:_ none
 
+* **Raven/MaxConcurrentRequestsForDatabaseDuringLoad**   
+    Maximum number of allowed request to databases that are being loaded before warning messages will be returned.
+    _Default:_ 10
+
 ### Misc settings
 
 * **Raven/License**
@@ -383,6 +391,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/MemoryCacheLimitMegabytes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MemoryCacheLimitPercentage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MemoryCacheLimitCheckInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxSecondsForTaskToWaitForDatabaseToLoad** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/IndexStoragePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxIndexWritesBeforeRecreate** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -426,6 +435,7 @@ Many of the configuration options described in section above can be used both in
 | **Raven/AccessControlMaxAge** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AccessControlAllowMethods** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AccessControlRequestHeaders** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/MaxConcurrentRequestsForDatabaseDuringLoad** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/License** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/LicensePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |

@@ -555,6 +555,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/MemoryCacheLimitPercentage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MemoryCacheLimitCheckInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MemoryLimitForProcessing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxSecondsForTaskToWaitForDatabaseToLoad** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/DynamicLoadBalancing** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/IndexStoragePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
