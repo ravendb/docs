@@ -50,6 +50,25 @@ If you want to randomize the order of your results each time the query is execut
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
 {CODE-TABS/}
 
+## Custom sorting
+
+If you want to sort using your custom algorithm you need create your own sorter that inherits from `IndexEntriesToComparablesGenerator` and deploy it to [plugins](../../server/plugins/what-are-plugins) folder on the server.
+
+{CODE sorting_5_1@Indexes\Querying\Sorting.cs /}
+
+For example, if we want to sort by specified number of characters from an end, and we want to have an ability to specify number of characters explicitly, we can implement our sorter like this:
+
+{CODE sorting_5_2@Indexes\Querying\Sorting.cs /}
+
+And it can be used like this:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query sorting_5_3@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:DocumentQuery sorting_5_4@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Commands sorting_5_5@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Index sorting_5_6@Indexes\Querying\Sorting.cs /}
+{CODE-TABS/}
+
 ## Related articles
 
 - [Indexing : Basics](../../indexes/indexing-basics)

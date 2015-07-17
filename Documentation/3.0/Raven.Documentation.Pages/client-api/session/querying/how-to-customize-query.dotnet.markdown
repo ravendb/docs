@@ -3,6 +3,7 @@
 Following query customization options are available in `IDocumentQueryCustomization` interface:
 
 - [BeforeQueryExecution](../../../client-api/session/querying/how-to-customize-query#beforequeryexecution)
+- [CustomSortUsing](../../../client-api/session/querying/how-to-customize-query#customsortusing)
 - [Highlight](../../../client-api/session/querying/how-to-customize-query#highlight)
 - [Include](../../../client-api/session/querying/how-to-customize-query#include)
 - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
@@ -38,6 +39,23 @@ Allows you to modify the index query just before it is executed.
 ### Example
 
 {CODE customize_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+{PANEL/}
+
+{PANEL:CustomSortUsing}
+
+Allows you to use custom sorter on the server. Dedicated article can be found [here](../../../indexes/querying/sorting#custom-sorting).
+
+{CODE customize_12_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **typeName** | string | AssemblyQualifiedName of a custom sorter available on server-side. |
+| **descending** | bool | indicates if results should be ordered descending or ascending |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 {PANEL/}
 

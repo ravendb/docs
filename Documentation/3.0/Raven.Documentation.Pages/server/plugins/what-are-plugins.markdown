@@ -15,3 +15,4 @@ Under the `Raven.Database.Plugins` namespace, various interfaces and classes tha
 * [**Compilation Extensions**](../../server/plugins/compilation-extensions) - entry point for more complex logic, used to calculate value of the index entry fields.
 * [**Analyzer Generators**](../../server/plugins/analyzer-generators) - entry point for creating custom analyzers
 * [**Database configuration**](../../server/plugins/database-configuration) - entry point for altering database configuration
+* [**Custom sorters**](../../indexes/querying/sorting#custom-sorting)

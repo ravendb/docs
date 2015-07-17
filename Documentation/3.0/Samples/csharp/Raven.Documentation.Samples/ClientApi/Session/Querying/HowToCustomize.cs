@@ -81,6 +81,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
 			IDocumentQueryCustomization WaitForNonStaleResultsAsOfNow(TimeSpan waitTimeout);
 			#endregion
+
+			#region customize_12_0
+			IDocumentQueryCustomization CustomSortUsing(string typeName);
+
+			IDocumentQueryCustomization CustomSortUsing(string typeName, bool descending);
+			#endregion
 		}
 
 		public HowToCustomize()
