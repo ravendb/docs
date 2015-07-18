@@ -14,7 +14,7 @@
 
 		private readonly DirectoryCompiler _directoryCompiler;
 
-		public DocumentationParser(ParserOptions options)
+		public DocumentationParser(ParserOptions options, IProvideGitFileInformation repoAnalyzer)
 		{
 			_options = options;
 
@@ -28,7 +28,7 @@
 								 UrlRootLocation = options.RootUrl
 							 };
 
-			var documentCompiler = new DocumentCompiler(parser, options);
+			var documentCompiler = new DocumentCompiler(parser, options, repoAnalyzer);
 			_directoryCompiler = new DirectoryCompiler(documentCompiler, options);
 		}
 

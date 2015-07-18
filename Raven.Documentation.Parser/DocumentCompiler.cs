@@ -18,16 +18,20 @@
 
 		private readonly ParserOptions _options;
 
-		public DocumentCompiler(Markdown parser, ParserOptions options)
+		private IProvideGitFileInformation _repoAnalyzer;
+
+		public DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
 		{
 			_parser = parser;
 			_options = options;
+			_repoAnalyzer = repoAnalyzer;
 		}
 
 		public DocumentationPage Compile(FileInfo file, FolderItem page, string documentationVersion)
 		{
 			try
 			{
+				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(file.FullName);
 				var key = ExtractKey(file, page, documentationVersion);
 				var category = CategoryHelper.ExtractCategoryFromPath(key);
 				var images = new HashSet<DocumentationImage>();
@@ -43,18 +47,21 @@
 
 				var title = ExtractTitle(htmlDocument);
 				var textContent = ExtractTextContent(htmlDocument);
+				var repoRelativePath = _repoAnalyzer.MakeRelativePathInRepository(file.FullName).Replace(@"\", @"/");
 
 				return new DocumentationPage
-				{
-					Key = key,
-					Title = title,
-					Version = documentationVersion,
-					HtmlContent = content,
-					TextContent = textContent,
-					Language = page.Language,
-					Category = category,
-					Images = images
-				};
+				       {
+					       Key = key,
+					       Title = title,
+					       Version = documentationVersion,
+					       HtmlContent = content,
+					       TextContent = textContent,
+					       Language = page.Language,
+					       Category = category,
+					       Images = images,
+					       LastCommitSha = lastCommit,
+					       RelativePath = repoRelativePath
+				       };
 			}
 			catch (Exception e)
 			{

@@ -19,7 +19,7 @@
 		Http,
 
 		[FileExtension("")]
-		[Description("")]
+		[Description("General")]
 		All
 	}
 }
