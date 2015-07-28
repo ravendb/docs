@@ -12,7 +12,7 @@
 	using Raven.Documentation.Parser.Data;
 	using Raven.Documentation.Parser.Helpers;
 
-	internal class DocumentCompiler
+	public class DocumentCompiler
 	{
 		private readonly Markdown _parser;
 
@@ -31,7 +31,6 @@
 		{
 			try
 			{
-				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(file.FullName);
 				var key = ExtractKey(file, page, documentationVersion);
 				var category = CategoryHelper.ExtractCategoryFromPath(key);
 				var images = new HashSet<DocumentationImage>();
@@ -47,7 +46,16 @@
 
 				var title = ExtractTitle(htmlDocument);
 				var textContent = ExtractTextContent(htmlDocument);
-				var repoRelativePath = _repoAnalyzer.MakeRelativePathInRepository(file.FullName).Replace(@"\", @"/");
+
+				var caseSensitiveFileName = PathHelper.GetProperFilePathCapitalization(file.FullName);
+
+				var fullName = caseSensitiveFileName ?? file.FullName;
+
+				var repoRelativePath = _repoAnalyzer.MakeRelativePathInRepository(fullName);
+
+				var relativeUrl = repoRelativePath.Replace(@"\", @"/");
+
+				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
 				return new DocumentationPage
 				       {
@@ -60,7 +68,7 @@
 					       Category = category,
 					       Images = images,
 					       LastCommitSha = lastCommit,
-					       RelativePath = repoRelativePath
+						   RelativePath = relativeUrl
 				       };
 			}
 			catch (Exception e)

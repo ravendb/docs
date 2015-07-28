@@ -79,6 +79,7 @@
     <Compile Include="Helpers\LegacyBlockHelper.cs" />
     <Compile Include="Helpers\NoteBlockHelper.cs" />
     <Compile Include="Helpers\PanelBlockHelper.cs" />
+    <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\PrefixHelper.cs" />
     <Compile Include="IProvideGitFileInformation.cs" />
     <Compile Include="ParserOptions.cs" />
