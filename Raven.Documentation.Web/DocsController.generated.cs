@@ -4,7 +4,9 @@
 // to the .tt file (i.e. the T4 template) and save it to regenerate this file.
 
 // Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
-#pragma warning disable 1591, 3008, 3009
+// 0108: suppress "Foo hides inherited member Foo. Use the new keyword if hiding was intended." when a controller and its abstract parent are both processed
+// 0114: suppress "Foo.BarController.Baz()' hides inherited member 'Qux.BarController.Baz()'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." when an action (with an argument) overrides an action in a parent controller
+#pragma warning disable 1591, 3008, 3009, 0108, 0114
 #region T4MVC
 
 using System;
@@ -98,6 +100,12 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult UsersIssues()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersIssues);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Glossary()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Glossary);
@@ -143,6 +151,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Index = "Index";
             public readonly string Client = "Client";
             public readonly string Server = "Server";
+            public readonly string UsersIssues = "UsersIssues";
             public readonly string Glossary = "Glossary";
             public readonly string Samples = "Samples";
             public readonly string FileSystem = "FileSystem";
@@ -159,6 +168,7 @@ namespace Raven.Documentation.Web.Controllers
             public const string Index = "Index";
             public const string Client = "Client";
             public const string Server = "Server";
+            public const string UsersIssues = "UsersIssues";
             public const string Glossary = "Glossary";
             public const string Samples = "Samples";
             public const string FileSystem = "FileSystem";
@@ -229,6 +239,15 @@ namespace Raven.Documentation.Web.Controllers
         public ActionParamsClass_Server ServerParams { get { return s_params_Server; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Server
+        {
+            public readonly string version = "version";
+            public readonly string language = "language";
+        }
+        static readonly ActionParamsClass_UsersIssues s_params_UsersIssues = new ActionParamsClass_UsersIssues();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_UsersIssues UsersIssuesParams { get { return s_params_UsersIssues; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_UsersIssues
         {
             public readonly string version = "version";
             public readonly string language = "language";
@@ -415,6 +434,19 @@ namespace Raven.Documentation.Web.Controllers
         }
 
         [NonAction]
+        partial void UsersIssuesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult UsersIssues(string version, string language)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersIssues);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            UsersIssuesOverride(callInfo, version, language);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void GlossaryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
 
         [NonAction]
@@ -471,4 +503,4 @@ namespace Raven.Documentation.Web.Controllers
 }
 
 #endregion T4MVC
-#pragma warning restore 1591, 3008, 3009
+#pragma warning restore 1591, 3008, 3009, 0108, 0114

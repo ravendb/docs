@@ -4,7 +4,9 @@
 // to the .tt file (i.e. the T4 template) and save it to regenerate this file.
 
 // Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
-#pragma warning disable 1591, 3008, 3009
+// 0108: suppress "Foo hides inherited member Foo. Use the new keyword if hiding was intended." when a controller and its abstract parent are both processed
+// 0114: suppress "Foo.BarController.Baz()' hides inherited member 'Qux.BarController.Baz()'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." when an action (with an argument) overrides an action in a parent controller
+#pragma warning disable 1591, 3008, 3009, 0108, 0114
 #region T4MVC
 
 using System;
@@ -112,13 +114,44 @@ namespace Links
         public static readonly string Site_min_css = Url("Site.min.css");
     }
 
+    
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
     public static partial class Bundles
     {
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static partial class Scripts {}
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public static partial class Styles {}
+        public static partial class Scripts 
+        {
+            public static class Assets
+            {
+                public const string _references_js = "~/Scripts/_references.js"; 
+                public const string bootstrap_js = "~/Scripts/bootstrap.js"; 
+                public const string bootstrap_min_js = "~/Scripts/bootstrap.min.js"; 
+                public const string jquery_1_11_1_intellisense_js = "~/Scripts/jquery-1.11.1.intellisense.js"; 
+                public const string jquery_1_11_1_js = "~/Scripts/jquery-1.11.1.js"; 
+                public const string jquery_1_11_1_min_js = "~/Scripts/jquery-1.11.1.min.js"; 
+                public const string jquery_validate_js = "~/Scripts/jquery.validate.js"; 
+                public const string jquery_validate_min_js = "~/Scripts/jquery.validate.min.js"; 
+                public const string jquery_validate_unobtrusive_js = "~/Scripts/jquery.validate.unobtrusive.js"; 
+                public const string jquery_validate_unobtrusive_min_js = "~/Scripts/jquery.validate.unobtrusive.min.js"; 
+                public const string prism_js = "~/Scripts/prism.js"; 
+                public const string respond_js = "~/Scripts/respond.js"; 
+                public const string respond_matchmedia_addListener_js = "~/Scripts/respond.matchmedia.addListener.js"; 
+                public const string respond_matchmedia_addListener_min_js = "~/Scripts/respond.matchmedia.addListener.min.js"; 
+                public const string respond_min_js = "~/Scripts/respond.min.js"; 
+            }
+        }
+        public static partial class Content 
+        {
+            public static class Assets
+            {
+                public const string bootstrap_theme_css = "~/Content/bootstrap-theme.css";
+                public const string bootstrap_theme_min_css = "~/Content/bootstrap-theme.min.css";
+                public const string bootstrap_css = "~/Content/bootstrap.css";
+                public const string bootstrap_min_css = "~/Content/bootstrap.min.css";
+                public const string font_awesome_css = "~/Content/font-awesome.css";
+                public const string font_awesome_min_css = "~/Content/font-awesome.min.css";
+                public const string prism_css = "~/Content/prism.css";
+            }
+        }
     }
 }
 
@@ -152,6 +185,6 @@ internal static class T4MVCHelpers {
 
 
 #endregion T4MVC
-#pragma warning restore 1591, 3008, 3009
+#pragma warning restore 1591, 3008, 3009, 0108, 0114
 
 

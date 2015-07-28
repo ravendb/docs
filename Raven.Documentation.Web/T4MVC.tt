@@ -1,10 +1,10 @@
 ﻿<#
 /*
-T4MVC Version 3.10.0
-Find latest version and documentation at http://mvccontrib.codeplex.com/wikipage?title=T4MVC
-Discuss on StackOverflow or on Codeplex (https://t4mvc.codeplex.com/discussions)
+T4MVC Version 3.15.4
+Find latest version and documentation at https://github.com/T4MVC/T4MVC/wiki/Documentation
+Discuss on StackOverflow or on GitHub (https://github.com/T4MVC/T4MVC/issues)
 
-T4MVC is part of the MvcContrib project, but in a different Codeplex location (http://t4mvc.codeplex.com)
+T4MVC is part of the MvcContrib project, but in a different GitHub site (https://github.com/T4MVC/T4MVC)
 Maintained by David Ebbo, with much feedback from the MVC community (thanks all!)
 david.ebbo@microsoft.com
 http://twitter.com/davidebbo
@@ -12,7 +12,7 @@ http://blog.davidebbo.com/ (previously: http://blogs.msdn.com/davidebb)
 
 Related blog posts: http://blogs.msdn.com/davidebb/archive/tags/T4MVC/default.aspx
 
-Please use in accordance to the MvcContrib license (http://mvccontrib.codeplex.com/license)
+Please use in accordance to the Apache license (http://mvccontrib.codeplex.com/license)
 */
 #>
 <#@ template language="C#" debug="true" hostspecific="true" #>
@@ -45,7 +45,9 @@ Please use in accordance to the MvcContrib license (http://mvccontrib.codeplex.c
 // to the .tt file (i.e. the T4 template) and save it to regenerate this file.
 
 // Make sure the compiler doesn't complain about missing Xml comments and CLS compliance
-#pragma warning disable 1591, 3008, 3009
+// 0108: suppress "Foo hides inherited member Foo. Use the new keyword if hiding was intended." when a controller and its abstract parent are both processed
+// 0114: suppress "Foo.BarController.Baz()' hides inherited member 'Qux.BarController.Baz()'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." when an action (with an argument) overrides an action in a parent controller
+#pragma warning disable 1591, 3008, 3009, 0108, 0114
 #region T4MVC
 
 using System;
@@ -135,23 +137,30 @@ namespace <#=settings.LinksNamespace #>
 {
 <#
 var inAreas = Areas
-	.Where(a => !string.IsNullOrEmpty(a.Name))
-	.SelectMany(a => settings.StaticFilesFolders.Select(b => settings.AreasFolder + "\\" + a.Name + "\\" + b));
+    .Where(a => !string.IsNullOrEmpty(a.Name))
+    .SelectMany(a => settings.StaticFilesFolders.Select(b => settings.AreasFolder + "\\" + a.Name + "\\" + b));
 
 foreach (string folder in settings.StaticFilesFolders
-	.Concat(GetStaticFilesViewFolders())
-	.Concat(inAreas)
-	) {
+    .Concat(GetStaticFilesViewFolders())
+    .Concat(inAreas)
+    ) {
     ProcessStaticFiles(Project, folder);
 }
+
+PushIndent("    ");
 #>
-    [<#= GeneratedCode #>, DebuggerNonUserCode]
-    public static partial class Bundles
-    {
-        [<#= GeneratedCode #>, DebuggerNonUserCode]
-        public static partial class Scripts {}
-        [<#= GeneratedCode #>, DebuggerNonUserCode]
-        public static partial class Styles {}
+
+[<#= GeneratedCode #>, DebuggerNonUserCode]
+public static partial class Bundles
+{
+<#
+            
+        foreach (string folder in settings.StaticFilesFolders.Concat(GetStaticFilesViewFolders())) {
+            ProcessBundles(Project, folder);
+        }
+    
+        PopIndent();
+#>
     }
 }
 
@@ -417,7 +426,7 @@ namespace System.Web.Mvc {
 
 <#manager.StartFooter(); #>
 #endregion T4MVC
-#pragma warning restore 1591, 3008, 3009
+#pragma warning restore 1591, 3008, 3009, 0108, 0114
 <#manager.EndBlock(); #>
 <#settings.SaveChanges(manager); #>
 <#manager.Process(settings.SplitIntoMultipleFiles); #>
@@ -700,8 +709,8 @@ void ProcessControllerType(CodeClass2 type, AreaInfo area, DateTime controllerLa
     if (!IsController(type))
         return;
 
-    // Don't process generic classes (their concrete derived classes will be processed)
-    if (type.IsGeneric)
+    // Only process "processable" controllers
+    if (!IsProcessableController(type))
         return;
 
     //Ignore references to controllers we create
@@ -751,7 +760,11 @@ void ProcessControllerType(CodeClass2 type, AreaInfo area, DateTime controllerLa
     if (type.IsAbstract)
     {
         // If it's abstract, set a flag and don't process action methods (derived classes will)
-        target.IsAbstract = true;
+        if (!HasControllerAttribute(type))
+            target.IsAbstract = true;
+        // ...unless it has the [T4MVC] attribute, then process all the action methods in the controller
+        else
+            ProcessControllerActionMethods(target, type);
     }
     else
     {
@@ -1059,6 +1072,160 @@ IEnumerable<string> GetStaticFilesViewFolders()
     }
 }
 
+// Start of Bundles
+
+void ProcessBundles(Project project, string folder)
+{
+    ProjectItem folderProjectItem = GetProjectItem(project, folder);
+    if (folderProjectItem != null)
+    {
+        var rootPath = "~";
+        if (folder.Contains("\\"))
+        {
+            rootPath += "/" + folder.Replace("\\", "/");
+            rootPath = rootPath.Substring(0, rootPath.LastIndexOf("/"));
+        }
+        ProcessBundleFilesRecursive(folderProjectItem, rootPath);
+    }
+}
+
+void ProcessBundleFilesRecursive(ProjectItem projectItem, string path)
+{
+    int nestedLevel = BuildBundleClassStructureForProvidedPath(path);
+    ProcessBundleFilesRecursive(projectItem, path, new HashSet<String>());
+    for(int i = 0; i < nestedLevel; ++i) 
+    { 
+#>
+}
+<#+
+        PopIndent();
+    }
+}
+
+void ProcessBundleFilesRecursive(ProjectItem projectItem, string path, HashSet<String> nameSet)
+{
+    // The passed in HashSet is to guarantee uniqueness with our parent and siblings
+    string name = SanitizeWithNoConflicts(projectItem.Name, nameSet);
+
+    // This HashSet is to guarantee uniqueness of our direct children
+    // We add our own name to it to avoid class name conflicts (http://mvccontrib.codeplex.com/workitem/7153)
+    var childrenNameSet = new HashSet<String>(StringComparer.OrdinalIgnoreCase);
+
+    childrenNameSet.Add(settings.AssetsNamespace);
+    childrenNameSet.Add(name);
+
+    var files = new List<ProjectItem>();
+
+    if (IsFolder(projectItem))
+    {
+        PushIndent("    ");
+#>
+public static partial class <#=EscapeID(name)#> 
+{
+<#+
+        // Recurse into all the items in the folder
+        foreach (ProjectItem item in projectItem.ProjectItems)
+        {
+            if (IsFolder(item))
+            {
+                ProcessBundleFilesRecursive(
+                    item,
+                    path + "/" + projectItem.Name,
+                    childrenNameSet);
+            }
+
+            if (IsFile(item))
+            {
+                files.Add(item);
+            }
+        }
+
+        BuildBundleConstants(files, path + "/" + projectItem.Name, childrenNameSet);
+#>
+}
+<#+
+        PopIndent();
+    }    
+}
+
+void BuildBundleConstants(List<ProjectItem> projectItems, string path, HashSet<String> childrenNameSet)
+{
+    PushIndent("    ");
+#>
+public static class <#= settings.AssetsNamespace #>
+{
+<#+
+    PushIndent("    ");
+    foreach (var projectItem in projectItems)
+    {
+        // The passed in HashSet is to guarantee uniqueness with our parent and siblings
+        string name = SanitizeWithNoConflicts(projectItem.Name, childrenNameSet);
+
+        if (!settings.ExcludedStaticFileExtensions.Any(extension => projectItem.Name.EndsWith(extension, StringComparison.OrdinalIgnoreCase))) {
+            var bundleAssetPath = String.Format("{0}/{1}", path, projectItem.Name);
+    
+            // if it's a non-minified javascript file
+            if (projectItem.Name.EndsWith(".js")  && !projectItem.Name.Contains("-vsdoc")) 
+            {
+#>
+public const string <#=name#> = "<#=bundleAssetPath#>"; 
+<#+
+            }
+            else if (projectItem.Name.EndsWith(".css")) 
+            { 
+#>
+public const string <#=name#> = "<#=bundleAssetPath#>";
+<#+
+            }
+        } 
+
+        // Non folder items may also have children (virtual folders, Class.cs -> Class.Designer.cs, template output)
+        // Just register them on the same path as their parent item
+        foreach (ProjectItem item in projectItem.ProjectItems)
+        {
+            ProcessBundleFilesRecursive(item, path, childrenNameSet);
+        } 
+    }
+    PopIndent();
+#>
+}
+<#+
+    PopIndent();
+}
+
+int BuildBundleClassStructureForProvidedPath(string path)
+{
+    var folders = path.Split(new char[] {'/', '~'}, StringSplitOptions.RemoveEmptyEntries);
+    var parentFolder = String.Empty;
+    var currentPath = "~";
+    foreach(var folder in folders)
+    {
+        currentPath += "/" + folder;
+        string className = EscapeID(Sanitize(folder));
+        // If the folder name is the same as the parent, add a modifier to avoid class name conflicts
+        // http://mvccontrib.codeplex.com/workitem/7153
+        if (parentFolder == folder)
+        {
+            className += "_";
+        }
+
+        if(!virtualPathesForStaticFiles.Contains(currentPath))
+        {
+            virtualPathesForStaticFiles.Add(currentPath);
+        }
+        
+        PushIndent("    "); 
+#>
+public static partial class <#=className #> 
+{
+<#+
+        parentFolder = folder;
+    }
+    return folders.Length;
+}
+
+// End of Bundles
+
 void ProcessStaticFiles(Project project, string folder)
 {
     ProjectItem folderProjectItem = GetProjectItem(project, folder);
@@ -1234,9 +1401,6 @@ ProjectItem GetProjectItem(ProjectItems items, string subPath)
 
 static bool IsController(CodeClass2 type)
 {
-    // Ignore any class which name doesn't end with "Controller"
-    if (!type.FullName.EndsWith(ControllerSuffix)) return false;
-
     for (; type.FullName != "System.Web.Mvc.Controller"; type = (CodeClass2)type.Bases.Item(1))
     {
         if (type.Bases.Count == 0)
@@ -1255,13 +1419,58 @@ static bool IsAsyncController(CodeClass2 type)
     return true;
 }
 
+static bool IsProcessableController(CodeClass2 type)
+{
+    // try get the [T4MVC] attribute
+    var attribute = GetAttribute(type.Attributes, "System.Web.Mvc.T4MVCAttribute");
+
+    // if [T4MVC(false)] was specified, then ignore this controller
+    if ((attribute != null) && (attribute.Value == "false")) return false;
+
+    // if [T4MVC] or [T4MVC(true)] was specified, then process this controller
+    if ((attribute != null) && (attribute.Value == "" || attribute.Value == "true")) return true;
+
+    // ...else attribute was not specified
+
+    // ignore any class whose name doesn't end with "Controller"
+    if (!type.FullName.EndsWith(ControllerSuffix)) return false;
+
+    // don't process a generic controller (its concrete derived classes will be processed)
+    if (type.IsGeneric)
+        return false;
+
+    return true;
+}
+
+static bool HasControllerAttribute(CodeClass2 type)
+{
+    // try get the [T4MVC] attribute
+    var attribute = GetAttribute(type.Attributes, "System.Web.Mvc.T4MVCAttribute");
+
+    // see whether [T4MVC] or [T4MVC(true)] were specified
+    if (attribute != null)
+        if (attribute.Value == "" || attribute.Value == "true")
+            return true;
+
+    return false;
+}
+
 static string GetVirtualPath(ProjectItem item)
 {
     string fileFullPath = item.get_FileNames(0);
 
-    // Ignore files that are not under the app root (e.g. they could be linked files)
+    // update full path for files that are not under the app root (e.g. they could be linked files)
     if (!fileFullPath.StartsWith(AppRoot, StringComparison.OrdinalIgnoreCase))
-        return null;
+    {
+        try
+        {
+            fileFullPath = ((ProjectItem)item.Collection.Parent).Properties.Item("FullPath").Value.ToString() + item.Name;
+        }
+        catch
+        {
+            return null;
+        }
+    }
 
     // Make a virtual path from the physical path
     return "~/" + fileFullPath.Substring(AppRoot.Length).Replace('\\', '/');
@@ -1277,21 +1486,21 @@ static IEnumerable<CodeFunction2> GetMethods(CodeClass2 codeClass)
 {
     // Only look at regular method (e.g. ignore things like contructors)
     return codeClass.Members.OfType<CodeFunction2>()
-        .Where(f => f.FunctionKind == vsCMFunction.vsCMFunctionFunction);
+        .Where(f => TestFunctionKind(f, vsCMFunction.vsCMFunctionFunction));
 }
 
 // Check if the class has any explicit constructor
 static bool HasExplicitConstructor(CodeClass2 codeClass)
 {
     return codeClass.Members.OfType<CodeFunction2>().Any(
-        f => !f.IsShared && f.FunctionKind == vsCMFunction.vsCMFunctionConstructor);
+        f => !f.IsShared && TestFunctionKind(f, vsCMFunction.vsCMFunctionConstructor));
 }
 
 // Check if the class has a default (i.e. no params) constructor
 static bool HasExplicitDefaultConstructor(CodeClass2 codeClass)
 {
     return codeClass.Members.OfType<CodeFunction2>().Any(
-        f => !f.IsShared && f.FunctionKind == vsCMFunction.vsCMFunctionConstructor && f.Parameters.Count == 0);
+        f => !f.IsShared && TestFunctionKind(f, vsCMFunction.vsCMFunctionConstructor) && f.Parameters.Count == 0);
 }
 
 // Find a method with a given name
@@ -1335,9 +1544,22 @@ static CodeAttribute2 GetAttribute(CodeClass2 type, string attributeType)
     return null;
 }
 
+static bool TestFunctionKind(CodeFunction2 f, vsCMFunction kind)
+{
+    try
+    {
+        return f.FunctionKind == kind;
+    }
+    catch
+    {
+        // FunctionKind blows up in some cases. Just ignore.
+        return false;
+    }
+}
+
 static string UniqueFullName(CodeTypeRef codeType)
 {
-	return UniqueFullName(codeType.CodeType);
+    return UniqueFullName(codeType.CodeType);
 }
 
 static string UniqueFullName(CodeType codeType)
@@ -1379,6 +1601,12 @@ static bool IsFeatureFolderArea(string areaName, ProjectItem areaFolder)
         return settings.FeatureFolderAreas.Contains("*") || settings.FeatureFolderAreas.Contains(areaFolder.Name);
     }
 }
+
+static bool IsFile(ProjectItem item)
+{
+    return (item.Kind == EnvDTE.Constants.vsProjectItemKindPhysicalFile);
+}
+
 
 static string MakeClassName(string ns, string classname)
 {
@@ -1515,8 +1743,13 @@ class ControllerInfo
     {
         get
         {
-            // Trim the Controller suffix
-            return ClassName.Substring(0, ClassName.Length - ControllerSuffix.Length);
+            // remove controller suffix (if it exists)
+            string className = ClassName;
+            if (ClassName.EndsWith(ControllerSuffix)) {
+                className = className.Substring(0, ClassName.Length - ControllerSuffix.Length);
+            }
+
+            return className;
         }
     }
 
@@ -1695,7 +1928,7 @@ class ViewsFolderInfo
         string virtualPath = GetVirtualPath(item);
         if (virtualPath != null)
         {
-	        Views[viewFieldName] = useNonQualifiedViewName ? Path.GetFileNameWithoutExtension(viewName) : virtualPath;
+            Views[viewFieldName] = useNonQualifiedViewName ? Path.GetFileNameWithoutExtension(viewName) : virtualPath;
         }
     }
 
@@ -1883,7 +2116,7 @@ class ResultTypeInfo
 
         // Use the constructor with the least number of parameters
         var ctor = _codeType.CodeType.Members.OfType<CodeFunction2>()
-            .Where(f => f.FunctionKind == vsCMFunction.vsCMFunctionConstructor)
+            .Where(f => TestFunctionKind(f, vsCMFunction.vsCMFunctionConstructor))
             .OrderBy(f => f.Parameters.Count)
             .FirstOrDefault();
         Constructor = new FunctionInfo(ctor);
@@ -1944,6 +2177,7 @@ class MvcSettings : XmlSettings
         this.SupportAsyncActions = false;
         this.UseLowercaseRoutes = false;
         this.LinksNamespace = "Links";
+        this.AssetsNamespace = "Assets";
         this.AddTimestampToStaticLinks = false;
         this.StaticFilesFolders = new XmlStringArray(new string[] {
             "Scripts",
@@ -2013,6 +2247,9 @@ class MvcSettings : XmlSettings
 
     [System.ComponentModel.Description("The namespace that the links are generated in (e.g. \"Links\", as in Links.Content.nerd_jpg)")]
     public string LinksNamespace { get; set; }
+
+    [System.ComponentModel.Description("The namespace that raw URLS used for bundles are generated")]
+    public string AssetsNamespace { get; set; }
 
     [System.ComponentModel.Description("If true, links to static files include a query string containing the file's last change time.\r\nThis way, when the static file changes, the link changes and guarantees that the client will re-request the resource.\r\ne.g. when true, the link looks like: \"/Content/nerd.jpg?2009-09-04T12:25:48\"\r\nSee http://mvccontrib.codeplex.com/workitem/7163 for potential issues with this feature")]
     public bool AddTimestampToStaticLinks { get; set; }
