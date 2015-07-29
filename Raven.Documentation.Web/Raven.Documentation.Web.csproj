@@ -168,6 +168,7 @@
     <Compile Include="Helpers\DebugHelper.cs" />
     <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="Helpers\HtmlHelperExtensions.cs" />
+    <Compile Include="Helpers\NoOpGitFileInformationProvider.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\NotDocumentedModel.cs" />
     <Compile Include="Models\ArticleModel.cs" />

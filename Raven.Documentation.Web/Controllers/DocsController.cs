@@ -117,7 +117,7 @@ namespace Raven.Documentation.Web.Controllers
 							VersionsToParse = versionsToParse,
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
 							ImagesUrl = GetImagesUrl()
-						});
+						}, new NoOpGitFileInformationProvider());
 
 			foreach (var attachment in DocumentStore.DatabaseCommands.GetAttachments(0, Etag.Empty, 1024))
 			{
