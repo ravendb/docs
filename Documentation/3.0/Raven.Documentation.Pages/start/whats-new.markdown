@@ -2,6 +2,17 @@
 
 {PANEL:Upcoming}
 
+### Server
+
+- [Voron] increased scratch buffer size to 6144 MB and added a threshold after which indexing/reducing batch sizes will start decreasing
+
+#### [Configuration](../server/configuration/configuration-options)
+
+- Increased `Raven/Voron/MaxScratchBufferSize` from 1024 to 6144. More [here](../server/configuration/configuration-options#voron-settings),
+- Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](../server/configuration/configuration-options#voron-settings)
+
+<hr />
+
 ### Client API
 
 - Added `AbstractScriptedIndexCreationTask`. More [here](../server/bundles/scripted-index-results#example-ii---abstractscriptedindexcreationtask)

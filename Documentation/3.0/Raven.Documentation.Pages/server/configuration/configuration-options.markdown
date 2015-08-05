@@ -409,6 +409,13 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Allows to use Voron storage on servers running in 32-bit mode.   
     _Default_: false
 
+* **Raven/Voron/ScratchBufferSizeNotificationThreshold**   
+    The minimum number of megabytes after which each scratch buffer size increase will create a notification. Used for indexing batch size tuning.   
+    _Default_:   
+    - 1024 when MaxScratchBufferSize > 1024
+    - 512 when MaxScratchBufferSize > 512
+    - -1 otherwise (disabled)
+
 ### Backup
 
 * **Raven/IncrementalBackup/AlertTimeoutHours**   
@@ -635,6 +642,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Voron/MaxBufferPoolSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Voron/InitialSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Voron/MaxScratchBufferSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Voron/ScratchBufferSizeNotificationThreshold** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/IncrementalBackup/AlertTimeoutHours** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/IncrementalBackup/RecurringAlertTimeoutDays** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
