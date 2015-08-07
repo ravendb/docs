@@ -549,6 +549,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Maximum number of megabytes after which prefetcher will stop reading documents from disk.
     _Default:_ 256
     
+### Maintenance
+
+* **Raven/TombstoneRetentionTime**   
+    Determines how long replication and periodic backup tombstones will be kept by a database. After the specified time they will be automatically purged on next database startup.   
+    _Default:_ 14 days
 
 ##Availability of configuration options
 
@@ -681,6 +686,8 @@ Many of the configuration options described in the section above can be used bot
 | &nbsp; |||
 | **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Prefetcher/MaximumSizeAllowedToFetchFromStorage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/TombstoneRetentionTime** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 
 {INFO:Information}
 
