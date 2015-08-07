@@ -764,6 +764,7 @@
     <None Include="studio\overview\tasks\toggle-indexing.markdown" />
     <None Include="studio\overview\tasks\import-export-database.markdown" />
     <None Include="studio\walkthroughs\.docslist" />
+    <None Include="studio\walkthroughs\how-to-setup-compression.markdown" />
     <None Include="studio\walkthroughs\how-to-setup-encryption.markdown" />
     <None Include="studio\walkthroughs\how-to-setup-replication.markdown" />
     <None Include="transformers\.docslist" />
