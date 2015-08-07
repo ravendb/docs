@@ -667,6 +667,7 @@
     <None Include="server\configuration\windows-clustering\windows-server-2012.markdown" />
     <None Include="server\installation\.docslist" />
     <None Include="server\installation\as-a-service.markdown" />
+    <None Include="server\installation\deployment-considerations.markdown" />
     <None Include="server\installation\embedded.markdown" />
     <None Include="server\installation\IIS.markdown" />
     <None Include="server\installation\system-requirements.markdown" />
