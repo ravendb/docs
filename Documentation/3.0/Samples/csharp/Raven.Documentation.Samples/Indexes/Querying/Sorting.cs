@@ -82,6 +82,30 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 		}
 		#endregion
 
+		#region sorting_6_4
+		public class Products_ByName_Search : AbstractIndexCreationTask<Product>
+		{
+			public class Result
+			{
+				public string Name { get; set; }
+
+				public string NameForSorting { get; set; }
+			}
+
+			public Products_ByName_Search()
+			{
+				Map = products => from product in products
+								  select new
+								  {
+									  Name = product.Name,
+									  NameForSorting = product.Name
+								  };
+
+				Indexes.Add(x => x.Name, FieldIndexing.Analyzed);
+			}
+		}
+		#endregion
+
 		public class Products_ByName : AbstractIndexCreationTask<Product>
 		{
 			public Products_ByName()
@@ -297,6 +321,48 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 							TransformerParameters = new Dictionary<string, RavenJToken>
 							{
 								{ "len", 1 }
+							}
+						});
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region sorting_6_1
+					IList<Product> results = session
+						.Query< Products_ByName_Search.Result, Products_ByName_Search>()
+						.Search(x => x.Name, "Louisiana")
+						.OrderByDescending(x => x.NameForSorting)
+						.OfType<Product>()
+						.ToList();
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region sorting_6_2
+					IList<Product> results = session
+						.Advanced
+						.DocumentQuery<Product, Products_ByName_Search>()
+						.Search("Name", "Louisiana")
+						.OrderByDescending("NameForSorting")
+						.ToList();
+					#endregion
+				}
+
+				#region sorting_6_3
+				QueryResult result = store
+					.DatabaseCommands
+					.Query(
+						"Products/ByName/Search",
+						new IndexQuery
+						{
+							Query = "Name:Louisiana*",
+							SortedFields = new[]
+							{
+								new SortedField("-NameForSorting")
 							}
 						});
 				#endregion

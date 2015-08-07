@@ -81,6 +81,10 @@ If you want to disable indexing on a particular field, use the `FieldIndexing.No
 
 {CODE analyzers_5@Indexes\Analyzers.cs /}
 
+## Ordering when field is Analyzed
+
+When field is marked as Analyzed, sorting must be done using additional field. More [here](../indexes/querying/sorting#ordering-when-field-is-analyzed).
+
 ## Related articles
 
 - [Server : Analyzer Generators](../server/plugins/analyzer-generators)

@@ -50,6 +50,17 @@ If you want to randomize the order of your results each time the query is execut
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
 {CODE-TABS/}
 
+## Ordering when field is Analyzed
+
+When sorting must be done on field that is marked as [Analyzed](../../indexes/using-analyzers) then due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, the solution is to create another field that is not marked as Analyzed and sort by it.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query sorting_6_1@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:DocumentQuery sorting_6_2@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Commands sorting_6_3@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Index sorting_6_4@Indexes\Querying\Sorting.cs /}
+{CODE-TABS/}
+
 ## Custom sorting
 
 If you want to sort using your custom algorithm you need create your own sorter that inherits from `IndexEntriesToComparablesGenerator` and deploy it to [plugins](../../server/plugins/what-are-plugins) folder on the server.
