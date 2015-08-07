@@ -780,6 +780,10 @@
     <None Include="transformers\basic-transformations.markdown" />
     <None Include="transformers\converting-to-json-and-accessing-metadata.markdown" />
     <None Include="transformers\what-are-transformers.markdown" />
+    <None Include="users-issues\.docslist" />
+    <None Include="users-issues\azure-router-timeout.markdown" />
+    <None Include="users-issues\recovering-from-esent-errors.markdown" />
+    <None Include="users-issues\tcp-offloading.markdown" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
