@@ -25,3 +25,10 @@
 
 There are no real performance considerations between running in the IIS mode or running in the Service mode. 
 Both options are supported and the choice is mostly about what is easier for your ops team to support.
+
+
+## Where to put RavenDB data?
+
+- RavenDB data should be be in the fastest drive on the machine.
+- It should put it in the root drive, specifically because that make it more visible and avoid issues such as admin deleting the IIS folder thinking there is nothing in there.
+- Take a look at [data settings](../configuration/configuration-options#data-settings) section of configuration options article to properly configure paths.
