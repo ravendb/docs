@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **name** | string | name of an index to change lock mode to |
+| **name** | string | name of an index to change lock mode for |
 | **lockMode** | IndexLockMode | new index lock mode |
 
 ## Example
@@ -18,3 +18,4 @@
 ## Related articles
 
 - [How to **change index priority**?](../../../../client-api/commands/indexes/how-to/change-index-priority)  
+- [How to **change transformer lock mode**?](../../../../client-api/commands/transformers/how-to/change-transformer-lock-mode)  

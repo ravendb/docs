@@ -41,34 +41,35 @@
       <HintPath>..\..\..\..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3726-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3750-Unstable\lib\net45\Raven.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Authorization, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.3.0.3726-Unstable\lib\net45\Raven.Client.Authorization.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.3.0.3750-Unstable\lib\net45\Raven.Client.Authorization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3726-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.3.0.3750-Unstable\lib\net45\Raven.Client.Lightweight.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.UniqueConstraints, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.3.0.3726-Unstable\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.3.0.3750-Unstable\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Database, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3726-Unstable\lib\net45\Raven.Database.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.3.0.3750-Unstable\lib\net45\Raven.Database.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Server, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3726-Unstable\lib\net45\Raven.Server.exe</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3750-Unstable\lib\net45\Raven.Server.exe</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Smuggler">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3726-Unstable\tools\Raven.Smuggler.exe</HintPath>
+    <Reference Include="Raven.Smuggler, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3750-Unstable\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="Raven.Tests.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3726-Unstable\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3750-Unstable\lib\net45\Raven.Tests.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -220,6 +221,7 @@
     <Compile Include="ClientApi\Commands\Transformers\Get.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Commands\Transformers\HowTo\ChangeTransformerLockMode.cs" />
     <Compile Include="ClientApi\Commands\Transformers\HowTo\TransformQueryResults.cs" />
     <Compile Include="ClientApi\Commands\Transformers\Put.cs">
       <SubType>Code</SubType>

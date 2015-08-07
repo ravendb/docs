@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **name** | string | name of an index to change lock mode to |
+| **name** | string | name of an index to change lock mode for |
 | **lockMode** | IndexLockMode | new index lock mode |
 
 ## Example

@@ -10,7 +10,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **name** | string | name of an index to change lock mode to |
+| **name** | string | name of an index to change priority for |
 | **priority** | IndexingPriority | new index priority |
 
 ## Example
