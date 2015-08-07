@@ -694,6 +694,7 @@
     <None Include="server\scaling-out\replication\write-assurance.markdown" />
     <None Include="server\scaling-out\sharding\.docslist" />
     <None Include="server\scaling-out\sharding\how-to-setup-sharding.markdown" />
+    <None Include="server\scaling-out\sharding\sharding-ops.markdown" />
     <None Include="server\troubleshooting\.docslist" />
     <None Include="server\troubleshooting\sending-support-ticket.markdown" />
     <None Include="server\troubleshooting\debug-endpoints.markdown" />
