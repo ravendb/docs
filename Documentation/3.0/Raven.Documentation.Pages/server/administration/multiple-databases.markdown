@@ -2,14 +2,14 @@
 
 RavenDB originally supports multiple databases. If you want to configure the additional databases, you need to create a document, as usual. RavenDB multi database support was explicitly designed to support multi tenancy scenarios, and RavenDB can easily handle hundreds or thousands of databases on the same instance.
 
-To define a new database you need to create a document with the name "Raven/Databases/[database name]" ant the following contents:
+To define a new database you need to create a document with the name "Raven/Databases/[database name]" and the following contents:
 
 {CODE-BLOCK:json}
 // Raven/Databases/Northwind
 {
     "Settings" : 
     { 
-            "Raven/DataDir": "~/Tenants/Northwind"
+            "Raven/DataDir": "~/Databases/Northwind"
     }
 }
 {CODE-BLOCK/}
@@ -24,7 +24,9 @@ When the document is created, you can access the Northwind database using the sa
 
 Everything else remains unchanged. Note that unlike other databases, there isn't any additional steps that you have to go through. Once the document describing the database is created, RavenDB will create the database as soon as a requests for that database is received.
 
-**Note:** You can access the **Studio** for a specific database with: http://localhost:8080/databases/northwind
+{NOTE: Accessing a database}
+You can access the **Studio** for a specific database with: [http://localhost:8080/studio/index.html#databases/documents?&database=[database name]]().
+{NOTE/}
 
 You can create a new database from the client API in following way:
 
@@ -59,6 +61,12 @@ Each database has to be backed up independently.
 RavenDB's databases were designed with multi tenancy in mind, and are meant to support large number of databases on a single server. In order to do that, RavenDB will keep only the active databases open. If you access a database for the first time, that database will be opened and started, so the next request to that database wouldn't have to pay the cost of opening the database. However, if a database hasn't been accessed for a while, RavenDB will cleanup all resources associated with the database and close it.
 
 This allows RavenDB to manage large numbers of databases, because at any given time, only the active databases are actually taking resources.
+
+## Single instance vs. multiple instances
+
+The reccomendation is having a single server instance running multiple databases, instead of having multiple instances each running a single database.
+Having multiple RavenDB instances on the same box allows fine grained control via service manager / IIS for things like memory / CPU limits,
+however that is usually not needed and requires separate licenses for each instance.
 
 ## Related articles
 

@@ -1,10 +1,9 @@
-﻿using Raven.Client;
-using Raven.Client.Document;
-using Raven.Client.Extensions;
+﻿
 
 #region multiple_databases_2
-
-// required namespace in usings
+// required namespaces in using section
+using Raven.Client;
+using Raven.Client.Document;
 #endregion
 
 namespace Raven.Documentation.Samples.Server.Configuration
