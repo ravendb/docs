@@ -632,6 +632,7 @@
     <None Include="server\.docslist" />
     <None Include="server\administration\.docslist" />
     <None Include="server\administration\backup-and-restore.markdown" />
+    <None Include="server\administration\differences-between-backup-and-export.markdown" />
     <None Include="server\administration\exporting-and-importing-data.markdown" />
     <None Include="server\administration\index-administration.markdown" />
     <None Include="server\administration\migrating-attachments-to-ravenfs.markdown" />
