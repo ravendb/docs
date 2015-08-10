@@ -277,6 +277,7 @@ A smuggler communicates with a server using the HTTP protocol, meaning that it c
 
 - During **export** the Smuggler is using [document streaming](../../client-api/commands/documents/stream). To maintain backward compatibility, the Smuggler will detect from what version it exports the documents, and adjust its behavior accordingly.
 - During **import**  the Smuggler is using [bulk insert operation](../../client-api/bulk-insert/how-to-work-with-bulk-insert-operation).
+- The usage of **disable-versioning-during-import** option disables versioning bundle of the target database for imported docs. In particular that will allow to import existing revisions (without creating new ones) if an export file contains such (the source database had versioning enabled too). 
 
 {INFO/}
 
