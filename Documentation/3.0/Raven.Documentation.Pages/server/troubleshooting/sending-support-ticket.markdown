@@ -19,6 +19,23 @@ When sending a support ticket, it is good to include as much information about t
 5. [Statistics](../../server/administration/statistics)
 6. Unit test
 
+{INFO: Monitoring local traffic }
+The easiest way to monitor traffic sent to `http://localhost` or `http://127.0.0.1` is to provide a machine name instead of **localhost** or **127.0.0.1**.
+For example if your RavenDB server address is `http://localhost:8080` then in an application config file change it to  `http://[machine-name]:8080`. You can also use one of these two aliases instead:  `http://ipv4.fiddler`, `http://localhost.fiddler`.
+
+For an ASP.NET application you can also configure proxy server as follow:
+
+{CODE-START:xml /}
+<system.net>
+  <defaultProxy>
+    <proxy bypassonlocal="False" usesystemdefault="True" proxyaddress="http://127.0.0.1:[port number]" />
+  </defaultProxy>
+</system.net>
+{CODE-END /}
+
+By default Fiddler listens on port `8888` and FiddlerCap on `8889`.
+{INFO/}
+
 ## Using Fiddler with Java API
 
 Copy following code to your application:
