@@ -1,7 +1,7 @@
 ﻿## What host should I use? IIS or Windows Service?
 
 
-### IIS: Best to be used when the RavenDD is publicly accessible on the interwebs
+#### IIS: Best to be used when the RavenDD is publicly accessible on the interwebs
 
 - Pros: 
     - you get the benefits of the IIS management tools, monitoring and tracking abilities,
@@ -15,7 +15,7 @@
     - recycle times (unless settings changed),
     - generally, a bit of work is required to setup.
 
-### Windows Service: Fine if in a private network.
+#### Windows Service: Fine if in a private network.
 
 - Pros:
     - easy to setup - just part of the normal install process,
@@ -29,6 +29,17 @@ Both options are supported and the choice is mostly about what is easier for you
 
 ## Where to put RavenDB data?
 
-- RavenDB data should be be in the fastest drive on the machine.
-- It should put it in the root drive, specifically because that make it more visible and avoid issues such as admin deleting the IIS folder thinking there is nothing in there.
+- RavenDB data should be in the fastest drive on the machine (especially indexes).
+- You should put it in the root drive, specifically because that make it more visible and avoid issues such as admin deleting the IIS folder thinking there is nothing in there.
 - Take a look at [data settings](../configuration/configuration-options#data-settings) section of configuration options article to properly configure paths.
+
+## Resource usage in deployment scenario 
+
+Depending on your needs and available infrastructure you may use a different approaches to setup deployment environments. 
+You have to consider all possible pros and cons, especially with regards to resource usage. Note that CPU, memory and I/O resources are shared between
+RavenDB instances running on the same machine. Such configuration is prone to cause problems because the resources consumed by one instance can impact work of another one.
+For example an error in the test could cause high resource consumption that would impact a production database.
+Of course everything is very specific to your database throughput, power of machine etc. and might be not a problem for you. 
+However to avoid such scenario, the best would be to have all environments on separate servers. The perfect test / staging machine would be identical
+to production. Having identical sets of CPUs, memory and storage in both environments means that you can run performance testing with confidence.
+
