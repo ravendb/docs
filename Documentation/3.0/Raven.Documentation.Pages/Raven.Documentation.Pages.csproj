@@ -631,6 +631,7 @@
     <None Include="samples\mvc-starter-kit.markdown" />
     <None Include="server\.docslist" />
     <None Include="server\administration\.docslist" />
+    <None Include="server\administration\administration-101.markdown" />
     <None Include="server\administration\backup-and-restore.markdown" />
     <None Include="server\administration\differences-between-backup-and-export.markdown" />
     <None Include="server\administration\exporting-and-importing-data.markdown" />

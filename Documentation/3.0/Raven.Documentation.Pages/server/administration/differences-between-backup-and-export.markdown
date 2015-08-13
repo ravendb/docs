@@ -5,7 +5,7 @@ There are two ways to extract data from RavenDB database. You can either [backup
 will satisfy your requirements. This article describes differences between Backup / Restore and Export / Import options.
 
 - Indexes:
-    - Backup contains indexes - definitions and data
+    - Backup contains complete indexes - definitions and data
     - Export doesn't include index data, indexes will be rebuilt after importing based on exported definitions
    
 - Data state:
@@ -23,8 +23,11 @@ will satisfy your requirements. This article describes differences between Backu
 - Speed: 
     - Backup is usually much faster than an export
 
+- Size:
+    - Export is much smaller than backup
+
 {INFO: As an administrator, should I do backups, exports or both to be on the safe site?}
-You should perform backups which allow quickly restore from a failure on the same / similar system.
+You should perform backups which allow quickly restore from a failure on the same system.
 Note that also incremental backups are supported.
 {INFO/}
 

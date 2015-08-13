@@ -5,5 +5,5 @@ RavenDB server can be monitored by [Pandora FMS](http://pandorafms.com/) by usin
 ## Related articles
 
 - [Pandora FMS](http://pandorafms.com/)
-- [Pandora FMS RavenDB pugin - installation and overview](http://blog.pandorafms.org/?p=2620)
+- [Pandora FMS RavenDB plugin - installation and overview](http://blog.pandorafms.org/?p=2620)
 - [Pandora FMS RavenDB plugin - download](http://pandorafms.com/index.php?sec=Library&sec2=repository&lng=en&action=view_PUI&id_PUI=606)
