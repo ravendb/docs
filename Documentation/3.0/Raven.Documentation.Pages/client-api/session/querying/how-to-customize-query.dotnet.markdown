@@ -165,6 +165,13 @@ By default, detailed timings (duration of Lucene search, loading documents, tran
 | ------------- | ----- |
 | IDocumentQueryCustomization | Returns self for easier method chaining. |
 
+Returned timings:
+
+- Query parsing
+- Lucene search
+- Loading documents
+- Transforming results
+
 ### Example
 
 {CODE customize_6_1@ClientApi\Session\Querying\HowToCustomize.cs /}

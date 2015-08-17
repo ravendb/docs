@@ -78,6 +78,10 @@ When there is a 'relationship' between documents, then those documents can be lo
 
 {CODE loading_entities_2_2@ClientApi\Session\LoadingEntities.cs /}
 
+### Example III
+
+{CODE loading_entities_2_3@ClientApi\Session\LoadingEntities.cs /}
+
 {PANEL/}
 
 {PANEL:Load - multiple entities}

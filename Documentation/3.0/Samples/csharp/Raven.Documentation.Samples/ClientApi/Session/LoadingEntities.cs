@@ -10,9 +10,15 @@ using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session
 {
+	using System.Linq;
+
 	public class LoadingEntities
 	{
 		private class Employees_NoLastName : AbstractTransformerCreationTask<Employee>
+		{
+		}
+
+		private class Products_Transformer: AbstractTransformerCreationTask<Product>
 		{
 		}
 
@@ -180,6 +186,20 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					Product product = session
 						.Include("Supplier")
 						.Load<Product>("products/1");
+
+					Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region loading_entities_2_3
+					// loading 'products/1'
+					// including document found in 'Supplier' property
+					// transforming loaded product according to Products_Transformer
+					Product product = session
+						.Include<Product>(x => x.Supplier)
+						.Load<Products_Transformer, Product>("products/1");
 
 					Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
 					#endregion

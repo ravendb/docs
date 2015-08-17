@@ -19,13 +19,15 @@ The first one is `SubscriptionCriteria`, where you can specify the following fil
 * _KeyStartsWith_ - a document id must starts with a specified prefix,
 * _BelongsToAnyCollection_ - list of collections that the subscription deals with,
 * _PropertiesMatch_ - dictionary of field names and related values that a document must have,
-* _PropertiesNotMatch_ - dictionary of field names and related values that a document must not have.
+* _PropertiesNotMatch_ - dictionary of field names and related values that a document must not have,
+* _StartEtag_ - an etag of a document which a subscription is going to consider as already acknowledged and start processing docs with higher etags.
 
 The second one is generic `SubscriptionCriteria<T>` where `T` is an entity type. Analogously you can set:
 
 * <em>KeyStartsWith</em>,
 * <em>PropertiesMatch</em>,
 * <em>PropertiesNotMatch</em>,
+* <em>StartEtag</em>
 
 _BelongsToAnyCollection_ will be automatically filled in by a single value based on the entity type (see [FindTypeTagName](../configuration/conventions/identifier-generation/global#findtypetagname-and-finddynamictagname) convention).
 

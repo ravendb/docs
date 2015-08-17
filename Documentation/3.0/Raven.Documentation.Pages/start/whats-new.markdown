@@ -5,7 +5,7 @@
 ### Server
 
 - [Voron] increased scratch buffer size to 6144 MB and added a threshold after which indexing/reducing batch sizes will start decreasing
-- Changed shutdown sequence - each database / file system waits up to 3 seconds to complete existing requests before they get aborted.
+- Changed shutdown sequence - each database / file system waits up to 3 seconds to complete existing requests before they get aborted
 
 
 #### [Configuration](../server/configuration/configuration-options)
@@ -26,6 +26,10 @@
 - Added `Include<TResult>(Expression<Func<T, object>> path)` to async session
 - Implemented `GetMetadataForAsync<T>(T instance)` in advanced options of async session of `ShardedDocumentStore`
 - `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial)
+- Added `StartEtag` to `SubscriptionCriteria`. More [here](../client-api/data-subscriptions/how-to-create-data-subscription)
+- Added "Query parsing" measure for `ShowTimings` query customization. More [here](../client-api/session/querying/how-to-customize-query#showtimings)
+- Added `TransformerLockMode`. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
+- Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](../client-api/session/loading-entities#example-iii-1) 
 
 <hr />
 
