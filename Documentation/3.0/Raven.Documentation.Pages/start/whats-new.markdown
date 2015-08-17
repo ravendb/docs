@@ -10,6 +10,8 @@
 
 - Increased `Raven/Voron/MaxScratchBufferSize` from 1024 to 6144. More [here](../server/configuration/configuration-options#voron-settings),
 - Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](../server/configuration/configuration-options#voron-settings)
+- Added `Raven/MaxClauseCount`. More [here](../server/configuration/configuration-options#index-settings)
+
 
 <hr />
 
@@ -18,6 +20,7 @@
 - Added `AbstractScriptedIndexCreationTask`. More [here](../server/bundles/scripted-index-results#example-ii---abstractscriptedindexcreationtask),
 - Added `SetTransformerLock` command. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
 - Added `PutIndexes` command. More [here](../client-api/commands/indexes/put#putindexes)
+- Added `Include<TResult>(Expression<Func<T, object>> path)` to async session
 
 {PANEL/}
 

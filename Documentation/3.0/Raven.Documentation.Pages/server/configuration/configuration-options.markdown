@@ -210,6 +210,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 		- Exception (an exception is thrown if we need to fetch fields from the document itself)   
 	_Default:_ Enabled
 
+* **Raven/MaxClauseCount**   
+	Specifies the maximum number of available boolean clauses in an index query.   
+    _Default:_ 1024    
+
 ### Data settings:
 
 * **Raven/WorkingDir**   
