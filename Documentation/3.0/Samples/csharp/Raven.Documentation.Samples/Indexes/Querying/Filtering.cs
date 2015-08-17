@@ -40,6 +40,25 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 		}
 		#endregion
 
+		#region filtering_6_4
+		public class Orders_ByTotalPrice : AbstractIndexCreationTask<Order>
+		{
+			public class Result
+			{
+				public decimal TotalPrice;
+			}
+
+			public Orders_ByTotalPrice()
+			{
+				Map = orders => from order in orders
+								select new
+								{
+									TotalPrice = order.Lines.Sum(x => (x.Quantity * x.PricePerUnit) * (1 - x.Discount))
+								};
+			}
+		}
+		#endregion
+
 		#region filtering_2_4
 		private class Order_ByOrderLinesCount : AbstractIndexCreationTask<Order>
 		{
@@ -152,6 +171,43 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						new IndexQuery
 						{
 							Query = "UnitsInStock_Range:{Ix50 TO NULL}"
+						});
+				#endregion
+			}
+
+			using (var store = new DocumentStore())
+			{
+				using (var session = store.OpenSession())
+				{
+					#region filtering_6_1
+					IList<Order> results = session
+						.Query<Orders_ByTotalPrice.Result, Orders_ByTotalPrice>()
+						.Where(x => x.TotalPrice > 50)
+						.OfType<Order>()
+						.ToList();
+					#endregion
+				}
+
+				using (var session = store.OpenSession())
+				{
+					#region filtering_6_2
+					IList<Order> results = session
+						.Advanced
+						.DocumentQuery<Orders_ByTotalPrice.Result, Orders_ByTotalPrice>()
+						.WhereGreaterThan(x => x.TotalPrice, 50)
+						.OfType<Order>()
+						.ToList();
+					#endregion
+				}
+
+				#region filtering_6_3
+				QueryResult result = store
+					.DatabaseCommands
+					.Query(
+						"Orders/ByTotalPrice",
+						new IndexQuery
+						{
+							Query = "TotalPrice_Range:{Dx50 TO NULL}"
 						});
 				#endregion
 			}
