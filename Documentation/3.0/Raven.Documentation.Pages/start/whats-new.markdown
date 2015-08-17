@@ -5,6 +5,7 @@
 ### Server
 
 - [Voron] increased scratch buffer size to 6144 MB and added a threshold after which indexing/reducing batch sizes will start decreasing
+- Changed shutdown sequence - each database / file system waits up to 3 seconds to complete existing requests before they get aborted.
 
 
 #### [Configuration](../server/configuration/configuration-options)

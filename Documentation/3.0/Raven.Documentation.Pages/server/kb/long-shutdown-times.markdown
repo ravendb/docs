@@ -4,8 +4,9 @@ It is good to be aware of the possibility of a longer-running shutdown. We will 
 
 When RavenDB shuts down, the following operations take place:
 
-* Server no longer accepts new connections and is aborting existing ones   
-* For each loaded database (including `system` database):   
+* Server no longer accepts new connections 
+* For each loaded database (including `system` database) and file system:   
+    * It waits for existing requests to complete (up to 3 seconds), 
 	* Indexing process is getting stopped   
 	* For each index:   
 		* Server waits for current indexing batch to complete    
