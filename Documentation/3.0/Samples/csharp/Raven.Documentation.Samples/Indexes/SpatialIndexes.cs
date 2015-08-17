@@ -11,6 +11,7 @@ namespace Raven.Documentation.Samples.Indexes
 {
 	namespace Foo
 	{
+		using System;
 
 		#region spatial_search_enhancements_3
 		public class SpatialOptionsFactory
@@ -48,7 +49,10 @@ namespace Raven.Documentation.Samples.Indexes
 
 			SpatialCriteria Within(object shape);
 
+			[Obsolete("Order of parameters in this method is inconsistent with the rest of the API (x = longitude, y = latitude). Please use 'WithinRadius'.")]
 			SpatialCriteria WithinRadiusOf(double radius, double x, double y);
+
+			SpatialCriteria WithinRadius(double radius, double latitude, double longitude);
 			#endregion
 		}
 
@@ -267,7 +271,7 @@ namespace Raven.Documentation.Samples.Indexes
 					#region spatial_search_enhancements_9
 					IList<SpatialDoc> results = session
 						.Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
-						.Spatial(x => x.Shape, criteria => criteria.WithinRadiusOf(500, 30, 30))
+						.Spatial(x => x.Shape, criteria => criteria.WithinRadius(500, 30, 30))
 						.ToList();
 					#endregion
 				}
@@ -280,7 +284,7 @@ namespace Raven.Documentation.Samples.Indexes
 					IList<SpatialDoc> results = session
 						.Advanced
 						.DocumentQuery<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
-						.Spatial(x => x.Shape, criteria => criteria.Intersects(someWktShape))
+						.Spatial(x => x.Shape, criteria => criteria.WithinRadius(500, 30, 30))
 						.ToList();
 					#endregion
 				}

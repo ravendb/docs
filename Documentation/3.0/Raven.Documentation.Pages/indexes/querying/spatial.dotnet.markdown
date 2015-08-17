@@ -14,6 +14,10 @@ Under `criteria` following methods are available:
 
 {CODE spatial_search_enhancements_a@Indexes\SpatialIndexes.cs /}
 
+{WARNING:Obsolete method}
+Since version 3.0.3699-Unstable `WithinRadiusOf` method is marked as obsolete because of parameter order inconsistency. Use `WithinRadius` instead.
+{WARNING/}
+
 ## Radius search
 
 The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search we will use `WithinRadiusOf` method that is a part of query customizations.

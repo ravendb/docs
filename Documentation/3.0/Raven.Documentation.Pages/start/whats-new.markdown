@@ -21,6 +21,8 @@
 - Added `SetTransformerLock` command. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
 - Added `PutIndexes` command. More [here](../client-api/commands/indexes/put#putindexes)
 - Added `Include<TResult>(Expression<Func<T, object>> path)` to async session
+- Implemented `GetMetadataForAsync<T>(T instance)` in advanced options of async session of `ShardedDocumentStore`
+- `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial)
 
 {PANEL/}
 
