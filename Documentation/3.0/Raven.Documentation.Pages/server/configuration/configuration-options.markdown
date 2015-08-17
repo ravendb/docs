@@ -214,6 +214,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Specifies the maximum number of available boolean clauses in an index query.   
     _Default:_ 1024    
 
+* **Raven/Indexing/DisableIndexingFreeSpaceThreshold**   
+    Threshold value of available space in megabytes on a disk where indexes are located. If there is less space than specified, it will disable the indexing completely (checks are made every 5 min).
+    If there is just twice as much free space as specified, then a warning will become visible in the studio.
+    _Default:_ 2048. Negative value disables protective free space checks.
+
 ### Data settings:
 
 * **Raven/WorkingDir**   

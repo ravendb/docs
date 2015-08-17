@@ -13,6 +13,7 @@
 - Increased `Raven/Voron/MaxScratchBufferSize` from 1024 to 6144. More [here](../server/configuration/configuration-options#voron-settings),
 - Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](../server/configuration/configuration-options#voron-settings)
 - Added `Raven/MaxClauseCount`. More [here](../server/configuration/configuration-options#index-settings)
+- Added `Raven/Indexing/DisableIndexingFreeSpaceThreshold`. More [here](../server/configuration/configuration-options#index-settings)
 
 
 <hr />
