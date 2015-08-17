@@ -6,6 +6,7 @@
 
 - [Voron] increased scratch buffer size to 6144 MB and added a threshold after which indexing/reducing batch sizes will start decreasing
 
+
 #### [Configuration](../server/configuration/configuration-options)
 
 - Increased `Raven/Voron/MaxScratchBufferSize` from 1024 to 6144. More [here](../server/configuration/configuration-options#voron-settings),
@@ -23,6 +24,12 @@
 - Added `Include<TResult>(Expression<Func<T, object>> path)` to async session
 - Implemented `GetMetadataForAsync<T>(T instance)` in advanced options of async session of `ShardedDocumentStore`
 - `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial)
+
+<hr />
+
+### Studio
+
+- Environment based studio themes. More [here](../studio/management/studio-config)
 
 {PANEL/}
 
