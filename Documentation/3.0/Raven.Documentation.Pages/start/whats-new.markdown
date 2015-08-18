@@ -6,6 +6,11 @@
 
 - [Voron] increased scratch buffer size to 6144 MB and added a threshold after which indexing/reducing batch sizes will start decreasing
 - Changed shutdown sequence - each database / file system waits up to 3 seconds to complete existing requests before they get aborted
+- Fixed creation of future batches  (prefetching mechanism)
+- Changed index priority does not force index reset
+- Handled failures of index resets
+- Fixed loading of startup tasks when hosted in IIS
+- Fixed `Lucene.Net` to properly dispose files in out of disk space scenario
 
 
 #### [Configuration](../server/configuration/configuration-options)
@@ -14,6 +19,11 @@
 - Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](../server/configuration/configuration-options#voron-settings)
 - Added `Raven/MaxClauseCount`. More [here](../server/configuration/configuration-options#index-settings)
 - Added `Raven/Indexing/DisableIndexingFreeSpaceThreshold`. More [here](../server/configuration/configuration-options#index-settings)
+
+### File systems
+
+- Fixed file synchronization mechanism
+- Fixed files handling with `#` character in name
 
 ### Bundles
 
@@ -41,6 +51,7 @@
 - Optimized memory allocation and better performance in [profiling](../client-api/how-to/enable-profiling)
 - Fixed implementations of sync methods to avoid hangs
 - Fixed caching of `HttpClient`
+- Extended IEnumerable implementation of `DynamicList` - more available extensions in an index definition
 
 <hr />
 
@@ -50,6 +61,10 @@
 - Added `Status -> Debug -> Currently indexing`
 - Added IO Test. More [here](../studio/management/io-test)
 - Added License server information. More [here](../studio/management/license-information)
+- Fixed authentication by API keys
+- Fixed inconsistency bug in Query intellisense
+- Exposed option StoreAllFields (Edit index view)
+- Support for pre 3.0 versioning documents
 
 <hr />
 
@@ -60,6 +75,9 @@
 
 ### Smuggler
 - Fixed import of conflicted documents
+
+### Tools
+- Added Traffic recorder and simulator tool
 
 {PANEL/}
 
