@@ -13,6 +13,8 @@ using Raven.Documentation.Samples.Server.Bundles.Foo1;
 
 namespace Raven.Documentation.Samples.Indexes
 {
+	using System.Collections.Generic;
+
 	public class SideBySide
 	{
 		private interface IFoo
@@ -51,6 +53,16 @@ namespace Raven.Documentation.Samples.Indexes
 			Task SideBySideExecuteIndexAsync(
 				AbstractIndexCreationTask indexCreationTask,
 				Etag minimumEtagBeforeReplace = null,
+				DateTime? replaceTimeUtc = null);
+
+			void SideBySideExecuteIndexes(
+				List<AbstractIndexCreationTask> indexCreationTasks, 
+				Etag minimumEtagBeforeReplace = null, 
+				DateTime? replaceTimeUtc = null);
+
+			Task SideBySideExecuteIndexesAsync(
+				List<AbstractIndexCreationTask> indexCreationTasks, 
+				Etag minimumEtagBeforeReplace = null, 
 				DateTime? replaceTimeUtc = null);
 			#endregion
 		}

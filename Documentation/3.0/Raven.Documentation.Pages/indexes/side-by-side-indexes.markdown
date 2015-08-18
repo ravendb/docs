@@ -22,7 +22,11 @@ As you probably know, making any changes in index definition will reset its inde
 
 ### using DocumentStore
 
-{CODE side_by_side_1@Indexes\SideBySide.cs /}
+{CODE side_by_side_2@Indexes\SideBySide.cs /}
+
+{INFO: Execution of multiple side by side indexes}
+Side by side indexes are created as a single request when overloads for multiple indexes are used.
+{INFO/}
 
 #### Example
 

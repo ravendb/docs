@@ -31,6 +31,8 @@
 - Added "Query parsing" measure for `ShowTimings` query customization. More [here](../client-api/session/querying/how-to-customize-query#showtimings)
 - Added `TransformerLockMode`. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
 - Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](../client-api/session/loading-entities#example-iii-1) 
+- `IndexCreation.CreateIndexes` creates indexes in a single request
+- `DocumentStore.SideBySideExecuteIndexes` and `DocumentStore.SideBySideExecuteIndexesAsync` creates side by side indexes in a single request
 
 <hr />
 

@@ -50,7 +50,8 @@ All classes that inherit from `AbstractIndexCreationTask` can be deployed at onc
 
 {CODE indexes_4@Indexes/Creating.cs /}
 
-Underneath, the `IndexCreation` will call `Execute` methods for each of found indexes (and transformers).
+Underneath, the `IndexCreation` will attempt to create all indexes in a single request. If it fails, then it will repeat the execution by calling 
+ `Execute` method one-by-one for each of found indexes in separate requests.
 
 {WARNING `IndexCreation.CreateIndexes` will also deploy all classes that inherit from `AbstractTransformerCreationTask` (more about it [here](../transformers/creating-and-deploying)). /}
 
