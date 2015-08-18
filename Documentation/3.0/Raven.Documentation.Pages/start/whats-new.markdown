@@ -27,6 +27,7 @@
 - Implemented `GetMetadataForAsync<T>(T instance)` in advanced options of async session of `ShardedDocumentStore`
 - `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial)
 - Added `StartEtag` to `SubscriptionCriteria`. More [here](../client-api/data-subscriptions/how-to-create-data-subscription)
+- Added opening strategies to data subscriptions. More [here](../client-api/data-subscriptions/how-to-open-data-subscription)
 - Added "Query parsing" measure for `ShowTimings` query customization. More [here](../client-api/session/querying/how-to-customize-query#showtimings)
 - Added `TransformerLockMode`. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
 - Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](../client-api/session/loading-entities#example-iii-1) 
@@ -36,6 +37,13 @@
 ### Studio
 
 - Environment based studio themes. More [here](../studio/management/studio-config)
+
+<hr />
+
+### Installer
+
+- Added options to check port availability and revoke URL reservation according to provided port number when installing on IIS
+- Added support for IIS 10 detection on Windows 10
 
 {PANEL/}
 
