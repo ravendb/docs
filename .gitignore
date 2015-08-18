@@ -219,3 +219,5 @@ CompiledIndexCache
 Raven
 html-compiled
 Raven.Studio.Html5.zip
+
+!/Documentation/3.0/Raven.Documentation.Pages/studio/overview/status/debug

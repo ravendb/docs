@@ -37,6 +37,7 @@
 ### Studio
 
 - Environment based studio themes. More [here](../studio/management/studio-config)
+- Added `Status -> Debug -> Currently indexing`
 
 <hr />
 
