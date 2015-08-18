@@ -711,6 +711,7 @@
     <None Include="studio\.docslist" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docslist" />
+    <None Include="studio\management\license-information.markdown" />
     <None Include="studio\management\studio-config.markdown" />
     <None Include="studio\management\gather-debug-info.markdown" />
     <None Include="studio\management\traffic-watch.markdown" />
@@ -745,6 +746,7 @@
     <None Include="studio\overview\status\.docslist" />
     <None Include="studio\overview\status\debug\.docslist" />
     <None Include="studio\overview\status\debug\explain-replication.markdown" />
+    <None Include="studio\overview\status\debug\overview.markdown" />
     <None Include="studio\overview\status\indexing\.docslist" />
     <None Include="studio\overview\status\indexing\batch-size-and-prefetches.markdown" />
     <None Include="studio\overview\status\indexing\index-stats.markdown" />
@@ -753,7 +755,6 @@
     <None Include="studio\overview\status\sql-replication-stats.markdown" />
     <None Include="studio\overview\status\request-tracking.markdown" />
     <None Include="studio\overview\status\gather-debug-info.markdown" />
-    <None Include="studio\overview\status\debug\overview.markdown" />
     <None Include="studio\overview\status\map-reduce-visualizer.markdown" />
     <None Include="studio\overview\status\user-info.markdown" />
     <None Include="studio\overview\status\replication-stats.markdown" />

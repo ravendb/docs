@@ -15,6 +15,9 @@
 - Added `Raven/MaxClauseCount`. More [here](../server/configuration/configuration-options#index-settings)
 - Added `Raven/Indexing/DisableIndexingFreeSpaceThreshold`. More [here](../server/configuration/configuration-options#index-settings)
 
+### Bundles
+
+- [Replication] Fixed request buffering issues	
 
 <hr />
 
@@ -28,11 +31,16 @@
 - `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial)
 - Added `StartEtag` to `SubscriptionCriteria`. More [here](../client-api/data-subscriptions/how-to-create-data-subscription)
 - Added opening strategies to data subscriptions. More [here](../client-api/data-subscriptions/how-to-open-data-subscription)
+- Added `BeforeAcknowledgment` and `AfterAcknowledgment` events to data subscription. More [here](../client-api/data-subscriptions/events)
 - Added "Query parsing" measure for `ShowTimings` query customization. More [here](../client-api/session/querying/how-to-customize-query#showtimings)
 - Added `TransformerLockMode`. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
 - Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](../client-api/session/loading-entities#example-iii-1) 
 - `IndexCreation.CreateIndexes` creates indexes in a single request
 - `DocumentStore.SideBySideExecuteIndexes` and `DocumentStore.SideBySideExecuteIndexesAsync` creates side by side indexes in a single request
+- Implemented bulk inserts for `ShardedDocumentStore`
+- Optimized memory allocation and better performance in [profiling](../client-api/how-to/enable-profiling)
+- Fixed implementations of sync methods to avoid hangs
+- Fixed caching of `HttpClient`
 
 <hr />
 
@@ -40,6 +48,8 @@
 
 - Environment based studio themes. More [here](../studio/management/studio-config)
 - Added `Status -> Debug -> Currently indexing`
+- Added IO Test. More [here](../studio/management/io-test)
+- Added License server information. More [here](../studio/management/license-information)
 
 <hr />
 
@@ -47,6 +57,9 @@
 
 - Added options to check port availability and revoke URL reservation according to provided port number when installing on IIS
 - Added support for IIS 10 detection on Windows 10
+
+### Smuggler
+- Fixed import of conflicted documents
 
 {PANEL/}
 
