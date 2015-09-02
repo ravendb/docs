@@ -1,82 +1,105 @@
 # What's new
 
-{PANEL:Upcoming}
+{PANEL:3.0.3785 - 2015/08/31}
 
 ### Server
 
-- [Voron] increased scratch buffer size to 6144 MB and added a threshold after which indexing/reducing batch sizes will start decreasing
-- Changed shutdown sequence - each database / file system waits up to 3 seconds to complete existing requests before they get aborted
-- Fixed creation of future batches  (prefetching mechanism)
-- Changed index priority does not force index reset
-- Handled failures of index resets
-- Fixed loading of startup tasks when hosted in IIS
-- Fixed `Lucene.Net` to properly dispose files in out of disk space scenario
-
+- `[Voron]` increased scratch buffer size to 6144 MB and added a threshold after which indexing/reducing batch sizes will start decreasing,
+- `[Voron]` map/reduce optimizations. We have done major work to optimize how RavenDB uses map/reduce on Voron. As a result, map/reduce performance on Voron has improved tremendously. However, this require a migration step during the first startup,
+- `[Voron]` optimized recovery code heavily to support slow I/O systems on large databases,
+- Changed shutdown sequence - each database / file system waits up to 3 seconds to complete existing requests before they get aborted,
+- Fixed creation of future batches (prefetching mechanism),
+- Changed index priority does not force index reset,
+- Handled failures of index resets,
+- Fixed loading of startup tasks when hosted in IIS,
+- Fixed `Lucene.Net` to properly dispose files in out of disk space scenario,
+- Fixed `Lucene.Net` memory allocation on queries. We have drastically reduced the amount of memory that is allocated per query, and improved the performance of queries substantially
+- Better handling of buffer allocations in websockets, reduces memory fragmentation,
+- Better handling of Take() / Skip() inside an index
+- Many small perf optimizations, memory allocations reductions, object pooling, etc. Drastic reduction in memory allocations on common code paths,
+- Allow only a single index to use the fast precomputation optimization at a time (reduce memory usage if multiple medium sized indexes are changed concurrently),
+- Re-implemented memory statistics checks using native calls to avoid expensive allocations,
+- Provide more detailed information when an index is corrupted,
+- Adding endpoint for stopping/starting just reduce work,
+- Less aggressive changes to the batch size at scale, being more cautious gives us a bit slower perf but more stable system under load,
+- Fixed side-by-side index updates,
+- Allowed to update side-by-side index when it is still running,
+- Fixed .NET 4.6 compilation errors,
+- Fixed an NRE when the index definition was removed forcibly when using dynamic queries,
+- Fixed error handling during disposal causing an exception to escape thread boundary and crashing,
+- Fixed FIPS licensing issue on embedded databases,
+- Fixed a finalizer usage bug causing us to try to read from a closed handle,
+- Prevent corrupted index warning when creating a map-reduce index and indexing is disabled,
+- Preventing code from trying to use disposed internal transactions,
+- Properly dispose of timer instance when shutting down a database using expiration bundle,
+- Prevent an error loading ICSharpCode.NRefactory from killing RavenDB client startup
 
 #### [Configuration](../server/configuration/configuration-options)
 
 - Increased `Raven/Voron/MaxScratchBufferSize` from 1024 to 6144. More [here](../server/configuration/configuration-options#voron-settings),
-- Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](../server/configuration/configuration-options#voron-settings)
-- Added `Raven/MaxClauseCount`. More [here](../server/configuration/configuration-options#index-settings)
+- Added `Raven/Voron/ScratchBufferSizeNotificationThreshold`. More [here](../server/configuration/configuration-options#voron-settings),
+- Added `Raven/MaxClauseCount`. More [here](../server/configuration/configuration-options#index-settings),
 - Added `Raven/Indexing/DisableIndexingFreeSpaceThreshold`. More [here](../server/configuration/configuration-options#index-settings)
 
 ### File systems
 
-- Fixed file synchronization mechanism
+- Fixed file synchronization mechanism,
 - Fixed files handling with `#` character in name
 
 ### Bundles
 
-- [Replication] Fixed request buffering issues	
+- `[Replication]` Fixed request buffering issues	
 
 <hr />
 
 ### Client API
 
 - Added `AbstractScriptedIndexCreationTask`. More [here](../server/bundles/scripted-index-results#example-ii---abstractscriptedindexcreationtask),
-- Added `SetTransformerLock` command. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
-- Added `PutIndexes` command. More [here](../client-api/commands/indexes/put#putindexes)
-- Added `Include<TResult>(Expression<Func<T, object>> path)` to async session
-- Implemented `GetMetadataForAsync<T>(T instance)` in advanced options of async session of `ShardedDocumentStore`
-- `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial)
-- Added `StartEtag` to `SubscriptionCriteria`. More [here](../client-api/data-subscriptions/how-to-create-data-subscription)
-- Added opening strategies to data subscriptions. More [here](../client-api/data-subscriptions/how-to-open-data-subscription)
-- Added `BeforeAcknowledgment` and `AfterAcknowledgment` events to data subscription. More [here](../client-api/data-subscriptions/events)
-- Added "Query parsing" measure for `ShowTimings` query customization. More [here](../client-api/session/querying/how-to-customize-query#showtimings)
-- Added `TransformerLockMode`. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode)
-- Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](../client-api/session/loading-entities#example-iii-1) 
-- `IndexCreation.CreateIndexes` creates indexes in a single request
-- `DocumentStore.SideBySideExecuteIndexes` and `DocumentStore.SideBySideExecuteIndexesAsync` creates side by side indexes in a single request
-- Implemented bulk inserts for `ShardedDocumentStore`
-- Optimized memory allocation and better performance in [profiling](../client-api/how-to/enable-profiling)
-- Fixed implementations of sync methods to avoid hangs
-- Fixed caching of `HttpClient`
+- Added `SetTransformerLock` command. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode),
+- Added `PutIndexes` command. More [here](../client-api/commands/indexes/put#putindexes),
+- Added `Include<TResult>(Expression<Func<T, object>> path)` to async session,
+- Implemented `GetMetadataForAsync<T>(T instance)` in advanced options of async session of `ShardedDocumentStore`,
+- `WithinRadiusOf` marked as obsolete in spatial querying because of the parameter order inconsistency. `WithinRadius` is designated to be used instead. More [here](../indexes/querying/spatial),
+- Added `StartEtag` to `SubscriptionCriteria`. More [here](../client-api/data-subscriptions/how-to-create-data-subscription),
+- Added opening strategies to data subscriptions. More [here](../client-api/data-subscriptions/how-to-open-data-subscription),
+- Added `BeforeAcknowledgment` and `AfterAcknowledgment` events to data subscription. More [here](../client-api/data-subscriptions/events),
+- Added "Query parsing" measure for `ShowTimings` query customization. More [here](../client-api/session/querying/how-to-customize-query#showtimings),
+- Added `TransformerLockMode`. More [here](../client-api/commands/transformers/how-to/change-transformer-lock-mode),
+- Added `Load` overload with transformer to `ILoaderWithInclude`. More [here](../client-api/session/loading-entities#example-iii-1),
+- `IndexCreation.CreateIndexes` creates indexes in a single request,
+- `DocumentStore.SideBySideExecuteIndexes` and `DocumentStore.SideBySideExecuteIndexesAsync` creates side by side indexes in a single request,
+- Implemented bulk inserts for `ShardedDocumentStore`,
+- Optimized memory allocation and better performance in [profiling](../client-api/how-to/enable-profiling),
+- Fixed implementations of sync methods to avoid hangs,
+- Fixed caching of `HttpClient`,
 - Extended IEnumerable implementation of `DynamicList` - more available extensions in an index definition
 
 <hr />
 
 ### Studio
 
-- Environment based studio themes. More [here](../studio/management/studio-config)
-- Added `Status -> Debug -> Currently indexing`
-- Added IO Test. More [here](../studio/management/io-test)
-- Added License server information. More [here](../studio/management/license-information)
-- Fixed authentication by API keys
-- Fixed inconsistency bug in Query intellisense
-- Exposed option StoreAllFields (Edit index view)
+- Environment based studio themes. More [here](../studio/management/studio-config),
+- Added `Status -> Debug -> Currently indexing`,
+- Added IO Test. More [here](../studio/management/io-test),
+- Added License server information. More [here](../studio/management/license-information),
+- Fixed authentication by API keys,
+- Fixed inconsistency bug in Query intellisense,
+- Exposed option StoreAllFields (Edit index view),
 - Support for pre 3.0 versioning documents
 
 <hr />
 
 ### Installer
 
-- Added options to check port availability and revoke URL reservation according to provided port number when installing on IIS
+- Added options to check port availability and revoke URL reservation according to provided port number when installing on IIS,
 - Added support for IIS 10 detection on Windows 10
 
 ### Smuggler
+
 - Fixed import of conflicted documents
 
 ### Tools
+
 - Added Traffic recorder and simulator tool
 
 {PANEL/}
