@@ -639,6 +639,7 @@
     <None Include="server\administration\migrating-attachments-to-ravenfs.markdown" />
     <None Include="server\administration\monitoring\.docslist" />
     <None Include="server\administration\monitoring\pandora-fms.markdown" />
+    <None Include="server\administration\monitoring\request-tracking.markdown" />
     <None Include="server\administration\multiple-databases.markdown" />
     <None Include="server\administration\statistics.markdown" />
     <None Include="server\bundles\.docslist" />
