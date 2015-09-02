@@ -66,7 +66,7 @@
     </Reference>
     <Reference Include="Raven.Smuggler, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3750-Unstable\tools\Raven.Smuggler.exe</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Server.3.0.3752-Unstable\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="Raven.Tests.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.3.0.3752-Unstable\lib\net45\Raven.Tests.Helpers.dll</HintPath>
