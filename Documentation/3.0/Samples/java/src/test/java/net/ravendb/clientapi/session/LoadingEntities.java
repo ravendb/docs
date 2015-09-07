@@ -1,10 +1,6 @@
 package net.ravendb.clientapi.session;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
-
+import com.mysema.query.types.Path;
 import net.ravendb.abstractions.basic.CloseableIterator;
 import net.ravendb.abstractions.data.Etag;
 import net.ravendb.abstractions.data.StreamResult;
@@ -15,17 +11,21 @@ import net.ravendb.client.RavenPagingInformation;
 import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.document.ILoaderWithInclude;
 import net.ravendb.client.indexes.AbstractTransformerCreationTask;
-import net.ravendb.samples.northwind.Address;
-import net.ravendb.samples.northwind.Employee;
-import net.ravendb.samples.northwind.Product;
-import net.ravendb.samples.northwind.QProduct;
+import net.ravendb.samples.northwind.*;
 
-import com.mysema.query.types.Path;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 
 public class LoadingEntities {
 
   public static class Employees_NoLastName extends AbstractTransformerCreationTask {
+    // ...
+  }
+
+  public static class Products_Transformer extends AbstractTransformerCreationTask {
     // ...
   }
 
@@ -182,7 +182,20 @@ public class LoadingEntities {
           .include("Supplier")
           .load(Product.class, "products/1");
 
-        Address supplier = session.load(Address.class, product.getSupplier()); //this will not make server call
+        Supplier supplier = session.load(Supplier.class, product.getSupplier()); //this will not make server call
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region Loading_entities_2_3
+        // loading 'products/1'
+        // including document found in 'supplier' field
+        // transforming loaded product according to Products_Transformer
+        Product product = session
+            .include("Supplier")
+            .load(Products_Transformer.class, Product.class, "products/1", null);
+
+        Supplier supplier = session.load(Supplier.class, product.getSupplier()); //this will not make server call
         //endregion
       }
 

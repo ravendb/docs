@@ -1,11 +1,5 @@
 package net.ravendb.clientapi.session.querying;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang.time.DateUtils;
-
 import net.ravendb.abstractions.basic.Reference;
 import net.ravendb.abstractions.closure.Action1;
 import net.ravendb.abstractions.data.Etag;
@@ -19,6 +13,11 @@ import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.AbstractTransformerCreationTask;
 import net.ravendb.samples.northwind.Employee;
 import net.ravendb.samples.northwind.QEmployee;
+import org.apache.commons.lang.time.DateUtils;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 
 public class HowToCustomize {
@@ -81,6 +80,13 @@ public class HowToCustomize {
     public IDocumentQueryCustomization waitForNonStaleResultsAsOfNow();
 
     public IDocumentQueryCustomization waitForNonStaleResultsAsOfNow(long waitTimeout);
+    //endregion
+
+
+    //region customize_12_0
+    IDocumentQueryCustomization customSortUsing(String typeName);
+
+    IDocumentQueryCustomization customSortUsing(String typeName, boolean descending);
     //endregion
   }
 

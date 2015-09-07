@@ -152,6 +152,7 @@
     <None Include="client-api\commands\querying\how-to-query-a-database.java.markdown" />
     <None Include="client-api\commands\transformers\delete.http.markdown" />
     <None Include="client-api\commands\transformers\get.http.markdown" />
+    <None Include="client-api\commands\transformers\how-to\change-transformer-lock-mode.java.markdown" />
     <None Include="client-api\commands\transformers\how-to\change-transformer-lock-mode.dotnet.markdown" />
     <None Include="client-api\commands\transformers\how-to\transform-query-results.http.markdown" />
     <None Include="client-api\commands\transformers\put.http.markdown" />
@@ -228,6 +229,7 @@
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\.docslist" />
+    <None Include="client-api\data-subscriptions\events.java.markdown" />
     <None Include="client-api\data-subscriptions\events.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.java.markdown" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
@@ -283,6 +285,7 @@
     <None Include="client-api\session\querying\how-to-customize-query.java.markdown" />
     <None Include="client-api\session\querying\how-to-stream-query-results.java.markdown" />
     <None Include="client-api\session\querying\how-to-query.java.markdown" />
+    <None Include="client-api\session\querying\lucene\how-to-use-not-operator.java.markdown" />
     <None Include="client-api\session\querying\lucene\how-to-use-not-operator.dotnet.markdown" />
     <None Include="client-api\session\querying\lucene\how-to-use-lucene-in-queries.java.markdown" />
     <None Include="client-api\session\saving-changes.java.markdown" />

@@ -16,9 +16,13 @@
 | ------------- | ----- |
 | T[] | Array of similar documents returned as entities. |
 
-## Example
+## Example I
 
 {CODE:java more_like_this_2@ClientApi\Session\HowTo\MoreLikeThis.java /}
+
+## Example II
+
+{CODE:java more_like_this_4@ClientApi\Session\HowTo\MoreLikeThis.java /}
 
 ## Related articles
 

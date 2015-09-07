@@ -7,7 +7,6 @@ import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.AbstractIndexCreationTask;
 import net.ravendb.client.indexes.AbstractTransformerCreationTask;
 
-
 public class MoreLikeThis {
 
   @SuppressWarnings("unused")
@@ -47,6 +46,22 @@ public class MoreLikeThis {
 
         Article[] articles = session.advanced()
           .moreLikeThis(Article.class, "Articles/MoreLikeThis", null, moreLikeThisQuery);
+        //endregion
+      }
+    }
+
+    try (IDocumentStore store = new DocumentStore()) {
+      try (IDocumentSession session = store.openSession()) {
+        //region more_like_this_4
+        // Search for similar articles to 'articles/1'
+        // using 'Articles/MoreLikeThis' index and search only field 'Body'
+        // where article category is 'IT'
+        MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+        moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+        moreLikeThisQuery.setDocumentId("articles/1");
+        moreLikeThisQuery.setFields(new String[] { "Body" });
+        moreLikeThisQuery.setAdditionalQuery("Category:IT");
+        session.advanced().moreLikeThis(Article.class, "Articles/MoreLikeThis", null, moreLikeThisQuery);
         //endregion
       }
     }

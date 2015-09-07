@@ -3,6 +3,7 @@
 Following query customization options are available in `IDocumentQueryCustomization` interface:
 
 - [beforeQueryExecution](../../../client-api/session/querying/how-to-customize-query#beforequeryexecution)
+- [customSortUsing](../../../client-api/session/querying/how-to-customize-query#customsortusing)
 - [highlight](../../../client-api/session/querying/how-to-customize-query#highlight)
 - [include](../../../client-api/session/querying/how-to-customize-query#include)
 - [noCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
@@ -38,6 +39,23 @@ Allows you to modify the index query just before it is executed.
 ### Example
 
 {CODE:java customize_1_1@ClientApi\Session\Querying\HowToCustomize.java /}
+
+{PANEL/}
+
+{PANEL:CustomSortUsing}
+
+Allows you to use custom sorter on the server. Dedicated article can be found [here](../../../indexes/querying/sorting#custom-sorting).
+
+{CODE:java customize_12_0@ClientApi\Session\Querying\HowToCustomize.java /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **typeName** | String | AssemblyQualifiedName of a custom sorter available on server-side. |
+| **descending** | boolean | indicates if results should be ordered descending or ascending |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
 
 {PANEL/}
 
@@ -146,6 +164,13 @@ By default, detailed timings (duration of Lucene search, loading documents, tran
 | Return Value | |
 | ------------- | ----- |
 | IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+Returned timings:
+
+- Query parsing
+- Lucene search
+- Loading documents
+- Transforming results
 
 ### Example
 

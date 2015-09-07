@@ -17,8 +17,9 @@ Before we will move to the examples, let's look at the methods, objects, and var
 | ------ |:------:| ------ |
 | `__document_id` | variable | Id for current document |
 | `this` | object | Current document (with metadata) |
-| `LoadDocument(key)` | method | Allows document loading, increases maximum number of allowed steps in script if `Raven/AdditionalStepsForScriptBasedOnDocumentSize` is set. |
+| `LoadDocument(key)` | method | Allows document loading, increases maximum number of allowed steps in script. See `Raven/AdditionalStepsForScriptBasedOnDocumentSize` [here](../../../server/configuration/configuration-options#javascript-parser). |
 | `PutDocument(key, data, metadata)` | method | Allows document putting, returns generated key |
+| `IncreaseNumberOfAllowedStepsBy(number)` | method | Will increase the maximum allowed number of steps in script by given value. Only available if `Raven/AllowScriptsToAdjustNumberOfSteps` is set to `true`. |
 | `_` | object | [Lo-Dash](https://lodash.com/) |
 | `trim()` | string.prototype | trims the string e.g. `this.FirstName.trim()` |
 | `indexOf(...)` | Array.prototype | wrapper for [_.indexOf](https://lodash.com/docs#indexOf) |
@@ -71,6 +72,10 @@ Beside built-in functions, custom ones can be introduced. Please visit [this](..
 ## Example X
 
 {CODE:java patch_1_1@ClientApi\Commands\Patches\Javascript.java /}
+
+## Example XI
+
+{CODE:java patch_1_2@ClientApi\Commands\Patches\Javascript.java /}
 
 ## Related articles
 

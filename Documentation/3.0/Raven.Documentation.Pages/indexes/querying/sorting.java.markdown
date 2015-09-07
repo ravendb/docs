@@ -50,6 +50,36 @@ If you want to randomize the order of your results each time the query is execut
 {CODE-TAB:java:Index sorting_1_4@Indexes\Querying\Sorting.java /}
 {CODE-TABS/}
 
+## Ordering when field is Analyzed
+
+When sorting must be done on field that is marked as [Analyzed](../../indexes/using-analyzers) then due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, the solution is to create another field that is not marked as Analyzed and sort by it.
+
+{CODE-TABS}
+{CODE-TAB:java:Query sorting_6_1@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:DocumentQuery sorting_6_2@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:Commands sorting_6_3@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:Index sorting_6_4@Indexes\Querying\Sorting.java /}
+{CODE-TABS/}
+
+## Custom sorting
+
+If you want to sort using your custom algorithm you need create your own sorter that inherits from `IndexEntriesToComparablesGenerator` and deploy it to [plugins](../../server/plugins/what-are-plugins) folder on the server.
+
+{CODE sorting_5_1@Indexes\Querying\Sorting.cs /}
+
+For example, if we want to sort by specified number of characters from an end, and we want to have an ability to specify number of characters explicitly, we can implement our sorter like this:
+
+{CODE sorting_5_2@Indexes\Querying\Sorting.cs /}
+
+And it can be used like this:
+
+{CODE-TABS}
+{CODE-TAB:java:Query sorting_5_3@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:DocumentQuery sorting_5_4@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:Commands sorting_5_5@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:Index sorting_5_6@Indexes\Querying\Sorting.java /}
+{CODE-TABS/}
+
 ## Related articles
 
 - [Indexing : Basics](../../indexes/indexing-basics)

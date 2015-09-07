@@ -19,9 +19,12 @@ In `SubscriptionCriteria`, where you can specify the following filters:
 * _KeyStartsWith_ - a document id must starts with a specified prefix,
 * _BelongsToAnyCollection_ - list of collections that the subscription deals with,
 * _PropertiesMatch_ - map of field names and related values that a document must have,
-* _PropertiesNotMatch_ - map of field names and related values that a document must not have.
+* _PropertiesNotMatch_ - map of field names and related values that a document must not have,
+* _StartEtag_ - an etag of a document which a subscription is going to consider as already acknowledged and start processing docs with higher etags.
 
 _BelongsToAnyCollection_ will be automatically filled in by a single value based on the entity type (see [findTypeTagName](../configuration/conventions/identifier-generation/global#findtypetagname-and-finddynamictagname) convention), when using override with clazz parameter.
+
+Additionally the criteria object has _StartEtag_ property which sets the etag of the first document that the subscription starts from (in large databases can be used to skip documents that you already know they won't match the given criteria).
 
 The execution of `create` method will create a data subscription in a database and return its identifier (you can see `Raven/Subscriptions/[id]` documents in the database).
 This identifier is needed to open the subscription so you need to keep that information to be able to make use of it later.

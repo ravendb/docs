@@ -3,6 +3,7 @@
 There are few methods that allow you to insert index into a database:   
 - [PutIndex](../../../client-api/commands/indexes/put#putindex)   
 - [PutIndex - using IndexDefinitionBuilder](../../../client-api/commands/indexes/put#putindex---using-indexdefinitionbuilder)   
+- [PutIndexes](../../../client-api/commands/indexes/put#putindexes)  
 
 {PANEL:PutIndex}
 
@@ -59,6 +60,30 @@ To help users create their indexes, `IndexDefinitionBuilder` was created that en
 If **overwrite** is set to **true** and `IndexDefinition` has not changed, no action will be taken on server-side and no indexing data will be lost.
 
 {SAFE By default, **PutIndex** method does **not allow** indexes to be **overwritten** because this causes all previous indexing data to be lost, which is not desired in many cases. /}
+
+
+{PANEL:PutIndexes}
+
+**PutIndexes** creates multiple indexes with specified names, using given index definitions and priorities.
+
+### Syntax
+
+{CODE:java put_indexes_3_0@clientApi\commands\indexes\Put.java /}  
+
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexesToAdd** | IndexToAdd[] | Indexes to create |
+
+
+| Return Value | |
+| ------------- | ----- |
+| string[] | Names of created indexes. |
+
+### Example
+
+{CODE:java put_indexes_3_1@clientApi\commands\indexes\Put.java /}
+{PANEL/}
 
 ## Related articles
 

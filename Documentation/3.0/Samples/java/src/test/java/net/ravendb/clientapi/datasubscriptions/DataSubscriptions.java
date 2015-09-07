@@ -1,9 +1,8 @@
 package net.ravendb.clientapi.datasubscriptions;
 
-import java.util.Date;
-import java.util.List;
-
 import net.ravendb.abstractions.basic.CleanCloseable;
+import net.ravendb.abstractions.basic.EventHandler;
+import net.ravendb.abstractions.basic.VoidArgs;
 import net.ravendb.abstractions.data.SubscriptionBatchOptions;
 import net.ravendb.abstractions.data.SubscriptionConfig;
 import net.ravendb.abstractions.data.SubscriptionConnectionOptions;
@@ -18,6 +17,9 @@ import net.ravendb.client.document.IReliableSubscriptions;
 import net.ravendb.client.document.Subscription;
 import net.ravendb.samples.northwind.Order;
 import net.ravendb.samples.northwind.QOrder;
+
+import java.util.Date;
+import java.util.List;
 
 
 public class DataSubscriptions {
@@ -145,5 +147,25 @@ public class DataSubscriptions {
     void release(long id, String database);
     //endregion
 
+  }
+
+  private interface IEvenets {
+    //region events
+    void addBeforeBatchHandler(EventHandler<VoidArgs> handler);
+
+    void removeBeforeBatchHandler(EventHandler<VoidArgs> handler);
+
+    void addAfterBatchHandler(EventHandler<Subscription.DocumentProcessedEventArgs> handler);
+
+    void removeAfterBatchHandler(EventHandler<Subscription.DocumentProcessedEventArgs> handler);
+
+    void addBeforeAcknowledgmentHandler(EventHandler<VoidArgs> handler);
+
+    void removeBeforeAcknowledgmentHandler(EventHandler<VoidArgs> handler);
+
+    void addAfterAcknowledgmentHandler(EventHandler<Subscription.LastProcessedEtagEventArgs> handler);
+
+    void removeAfterAcknowledgmentHandler(EventHandler<Subscription.LastProcessedEtagEventArgs> handler);
+    //endregion
   }
 }

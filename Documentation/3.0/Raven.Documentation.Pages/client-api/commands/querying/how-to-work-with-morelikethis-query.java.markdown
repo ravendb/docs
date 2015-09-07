@@ -14,9 +14,13 @@ To find similar or related documents use the **MoreLikeThis** method from comman
 | ------------- | ----- |
 | [MultiLoadResult](../../../glossary/multi-load-result) | Instance of MultiLoadResult containing query `Results` and `Includes` (if any). |
 
-## Example
+## Example I
 
 {CODE:java more_like_this_2@ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.java /}
+
+## Example II
+
+{CODE:java more_like_this_3@ClientApi\Commands\Querying\HowToWorkWithMoreLikeThisQuery.java /}
 
 ## Related articles
 

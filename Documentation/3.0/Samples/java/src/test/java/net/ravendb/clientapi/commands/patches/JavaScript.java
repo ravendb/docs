@@ -1,13 +1,14 @@
 package net.ravendb.clientapi.commands.patches;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import com.google.common.collect.ImmutableMap;
 import net.ravendb.abstractions.data.Etag;
 import net.ravendb.abstractions.data.ScriptedPatchRequest;
 import net.ravendb.abstractions.json.linq.RavenJObject;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class JavaScript {
@@ -128,6 +129,19 @@ public class JavaScript {
                                  "           comment.Title = 'New title'; " +
                                  "           return comment; " +
                                  "       });"));
+      //endregion
+
+      //region patch_1_2
+      // increasing maximum number of allowed steps
+      ScriptedPatchRequest patchRequest = new ScriptedPatchRequest();
+      patchRequest.setScript(
+          "var employee = LoadDocument(differentEmployeeId);"
+              + "if (employee) {"
+              + "  IncreaseNumberOfAllowedStepsBy(10);"
+              + "  this.FirstName = employee.FirstName; "
+              + "}");
+      patchRequest.setValues(ImmutableMap.of("differentEmployeeId", (Object) "employees/2"));
+      store.getDatabaseCommands().patch("employees/1", patchRequest);
       //endregion
 
     }

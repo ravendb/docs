@@ -1,7 +1,6 @@
 package net.ravendb.indexes;
 
-import java.util.List;
-
+import com.mysema.query.annotations.QueryEntity;
 import net.ravendb.abstractions.basic.UseSharpEnum;
 import net.ravendb.abstractions.indexing.SpatialOptions;
 import net.ravendb.abstractions.indexing.SpatialOptions.SpatialUnits;
@@ -16,7 +15,7 @@ import net.ravendb.client.indexes.AbstractIndexCreationTask;
 import net.ravendb.client.spatial.SpatialCriteria;
 import net.ravendb.client.spatial.SpatialCriteriaFactory;
 
-import com.mysema.query.annotations.QueryEntity;
+import java.util.List;
 
 
 public class SpatialIndexes {
@@ -66,6 +65,12 @@ public class SpatialIndexes {
 
     public SpatialCriteria within(Object shape);
 
+    public SpatialCriteria withinRadius(double radius, double latitude, double longitude);
+
+    /**
+     * Order of parameters in this method is inconsistent with the rest of the API (x = longitude, y = latitude). Please use 'withinRadius'.
+     */
+    @Deprecated
     public SpatialCriteria withinRadiusOf(double radius, double x, double y);
     //endregion
   }
@@ -286,20 +291,18 @@ public class SpatialIndexes {
         QSpatialIndexes_SpatialDoc s = QSpatialIndexes_SpatialDoc.spatialDoc;
         List<SpatialDoc> results = session
           .query(SpatialDoc.class, SpatialDoc_ByShapeAndPoint.class)
-          .spatial(s.shape, new SpatialCriteriaFactory().withinRadiusOf(500, 30, 30))
+          .spatial(s.shape, new SpatialCriteriaFactory().withinRadius(500, 30, 30))
           .toList();
         //endregion
       }
 
       try (IDocumentSession session = store.openSession()) {
-        Object someWktShape = null;
-
         //region spatial_search_enhancements_1_0
         QSpatialIndexes_SpatialDoc s = QSpatialIndexes_SpatialDoc.spatialDoc;
         List<SpatialDoc> results = session
           .advanced()
           .documentQuery(SpatialDoc.class, SpatialDoc_ByShapeAndPoint.class)
-          .spatial(s.shape, new SpatialCriteriaFactory().intersects(someWktShape))
+          .spatial(s.shape, new SpatialCriteriaFactory().withinRadius(500, 30, 30))
           .toList();
         //endregion
       }

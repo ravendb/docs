@@ -1,12 +1,7 @@
 package net.ravendb.indexes.querying;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.junit.Test;
-
+import com.mysema.query.annotations.QueryEntity;
 import com.mysema.query.types.Order;
-
 import net.ravendb.abstractions.data.IndexQuery;
 import net.ravendb.abstractions.data.QueryResult;
 import net.ravendb.client.IDocumentSession;
@@ -15,12 +10,11 @@ import net.ravendb.client.document.DocumentStore;
 import net.ravendb.client.indexes.AbstractIndexCreationTask;
 import net.ravendb.samples.BlogPost;
 import net.ravendb.samples.QBlogPost;
-import net.ravendb.samples.northwind.Employee;
-import net.ravendb.samples.northwind.Product;
-import net.ravendb.samples.northwind.QEmployee;
-import net.ravendb.samples.northwind.QOrder;
-import net.ravendb.samples.northwind.QOrderLine;
-import net.ravendb.samples.northwind.QProduct;
+import net.ravendb.samples.northwind.*;
+import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 public class Filtering {
@@ -60,6 +54,19 @@ public class Filtering {
        "   {                                  " +
        "       product.UnitsInStock           " +
        "   };                                 ";
+    }
+  }
+  //endregion
+
+  //region filtering_6_4
+  public static class Orders_ByTotalPrice extends AbstractIndexCreationTask {
+    @QueryEntity
+    public static class Result {
+      public double totalPrice;
+    }
+
+    public Orders_ByTotalPrice() {
+      map = "from order in docs.orders select new { TotalPrice = order.Lines.Sum(x => (x.Quantity * x.PricePerUnit) * (1 - x.Discount)) }";
     }
   }
   //endregion
@@ -165,6 +172,29 @@ public class Filtering {
         .getDatabaseCommands()
         .query("Products/ByUnitsInStock",
           new IndexQuery("UnitsInStock_Range:{Ix50 TO NULL}"));
+      //endregion
+    }
+
+    try (IDocumentStore store = new DocumentStore()) {
+      try (IDocumentSession session = store.openSession()) {
+        //region filtering_6_1
+        QFiltering_Orders_ByTotalPrice_Result r = QFiltering_Orders_ByTotalPrice_Result.result;
+        List<Orders_ByTotalPrice.Result> results = session
+            .query(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class).where(r.totalPrice.gt(50)).toList();
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region filtering_6_2
+        QFiltering_Orders_ByTotalPrice_Result r = QFiltering_Orders_ByTotalPrice_Result.result;
+        List<Orders_ByTotalPrice.Result> results = session.advanced()
+            .documentQuery(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
+            .whereGreaterThan(r.totalPrice, 50.0).toList();
+        //endregion
+      }
+
+      //region filtering_6_3
+      store.getDatabaseCommands().query("Orders/ByTotalPrice", new IndexQuery("TotalPrice_Range:{Dx50 TO NULL}"));
       //endregion
     }
 

@@ -1,19 +1,14 @@
 package net.ravendb.clientapi.session.querying;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
-import net.ravendb.abstractions.data.Facet;
-import net.ravendb.abstractions.data.FacetMode;
-import net.ravendb.abstractions.data.FacetQuery;
-import net.ravendb.abstractions.data.FacetResult;
-import net.ravendb.abstractions.data.FacetResults;
-import net.ravendb.abstractions.data.FacetSetup;
+import net.ravendb.abstractions.data.*;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
 import net.ravendb.samples.Camera;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 
 public class HowToPerformFacetedSearch {
@@ -78,7 +73,6 @@ public class HowToPerformFacetedSearch {
         List<Facet> facets = Arrays.asList(facet1, facet2, facet3);
 
         FacetResults facetsResult = session.query(Camera.class).toFacets(facets);
-        //TODO: duration
         Map<String, FacetResult> results = facetsResult.getResults();
         //endregion
       }
@@ -111,7 +105,6 @@ public class HowToPerformFacetedSearch {
         session.saveChanges();
 
         FacetResults facetResults = session.query(Camera.class, "Camera/Costs").toFacets("facets/CameraFacets");
-        //TODO: duration
         Map<String, FacetResult> results = facetResults.getResults();
         //endregion
       }

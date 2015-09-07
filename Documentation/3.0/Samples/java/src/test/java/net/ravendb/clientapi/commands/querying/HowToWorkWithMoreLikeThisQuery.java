@@ -27,5 +27,19 @@ public class HowToWorkWithMoreLikeThisQuery {
       MultiLoadResult result = store.getDatabaseCommands().moreLikeThis(moreLikeThisQuery);
       //endregion
     }
+
+    try (IDocumentStore store = new DocumentStore()) {
+      //region more_like_this_3
+      // Search for similar documents to 'articles/1'
+      // using 'Articles/MoreLikeThis' index and search only field 'Body'
+      // where article category is 'IT'
+      MoreLikeThisQuery moreLikeThisQuery = new MoreLikeThisQuery();
+      moreLikeThisQuery.setIndexName("Articles/MoreLikeThis");
+      moreLikeThisQuery.setDocumentId("articles/1");
+      moreLikeThisQuery.setFields(new String[] { "Body" });
+      moreLikeThisQuery.setAdditionalQuery("Category:IT");
+      MultiLoadResult result = store.getDatabaseCommands().moreLikeThis(moreLikeThisQuery);
+      //endregion
+    }
   }
 }

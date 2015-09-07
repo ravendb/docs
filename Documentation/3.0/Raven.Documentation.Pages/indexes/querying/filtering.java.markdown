@@ -20,6 +20,25 @@ One of the most basic functionalities when it comes to querying is the ability t
 {CODE-TAB:java:Index filtering_1_4@Indexes\Querying\Filtering.java /}
 {CODE-TABS/}
 
+{INFO: The importance of types in queries}
+
+Let's consider the following index and queries:
+
+{CODE-TABS}
+{CODE-TAB:java:Index filtering_6_4@Indexes\Querying\Filtering.java /}
+{CODE-TAB:java:Query filtering_6_1@Indexes\Querying\Filtering.java /}
+{CODE-TAB:java:DocumentQuery filtering_6_2@Indexes\Querying\Filtering.java /}
+{CODE-TAB:java:Commands filtering_6_3@Indexes\Querying\Filtering.java /}
+{CODE-TABS/}
+
+Note that `PricePerUnit` is of type `double` in `Order` entity, so indexed `TotalPrice` value  will be `double` too. In oder to
+properly query such index, we need to preserve types in queries. That is why `Orders_ByTotalPrice.Result.TotalPrice` is `double` and 
+`IndexQuery.Query` has `Dx` prefix specified before the actual value. Types of properties in predicates have to match types of indexed fields.
+
+* More about the need to use `OfType` here, you can find in [projections article](../../client-api/session/querying/how-to-perform-projection#oftype-(as)---simple-projection).
+
+{INFO/}
+
 ## Where - nested property
 
 {CODE-TABS}

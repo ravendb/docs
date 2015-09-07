@@ -57,6 +57,10 @@ When there is a 'relationship' between documents, then those documents can be lo
 
 {CODE:java loading_entities_2_2@ClientApi\Session\LoadingEntities.java /}
 
+### Example III
+
+{CODE:java loading_entities_2_3@ClientApi\Session\LoadingEntities.java /}
+
 {PANEL/}
 
 {PANEL:Load - multiple entities}
