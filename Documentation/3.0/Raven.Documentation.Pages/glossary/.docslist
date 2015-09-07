@@ -30,6 +30,7 @@ index-change-notification.markdown	IndexChangeNotification
 index-definition.markdown	IndexDefinition
 index-merge-results.markdown	IndexMergeResults
 index-query.markdown	IndexQuery
+index-to-add.markdown	IndexToAdd
 json-document-metadata.markdown	JsonDocumentMetadata
 json-document.markdown	JsonDocument
 more-like-this-query.markdown	MoreLikeThisQuery
