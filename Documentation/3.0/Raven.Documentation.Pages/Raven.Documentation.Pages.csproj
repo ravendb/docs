@@ -152,6 +152,7 @@
     <None Include="client-api\commands\querying\how-to-query-a-database.java.markdown" />
     <None Include="client-api\commands\transformers\delete.http.markdown" />
     <None Include="client-api\commands\transformers\get.http.markdown" />
+    <None Include="client-api\commands\transformers\how-to\change-transformer-lock-mode.http.markdown" />
     <None Include="client-api\commands\transformers\how-to\change-transformer-lock-mode.java.markdown" />
     <None Include="client-api\commands\transformers\how-to\change-transformer-lock-mode.dotnet.markdown" />
     <None Include="client-api\commands\transformers\how-to\transform-query-results.http.markdown" />
@@ -534,6 +535,7 @@
     <None Include="glossary\file-system-backup-request.markdown" />
     <None Include="glossary\file-system-document.markdown" />
     <None Include="glossary\file-system-restore-request.markdown" />
+    <None Include="glossary\index-to-add.markdown" />
     <None Include="glossary\synchronization-destination.markdown" />
     <None Include="glossary\search-results.markdown" />
     <None Include="glossary\spatial-relation.markdown" />
