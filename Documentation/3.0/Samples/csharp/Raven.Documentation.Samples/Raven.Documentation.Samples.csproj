@@ -115,6 +115,7 @@
     <Compile Include="ClientApi\Changes\HowToSubscribeToDocumentChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToIndexChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToReplicationConflictsChanges.cs" />
+    <Compile Include="ClientApi\Changes\HowToSubscribeToDataSubscriptionChanges.cs" />
     <Compile Include="ClientApi\Changes\HowToSubscribeToTransformerChanges.cs" />
     <Compile Include="ClientApi\Changes\WhatIsChangesApi.cs" />
     <Compile Include="ClientApi\Commands\Attachments\Delete.cs">

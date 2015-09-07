@@ -47,10 +47,11 @@ In order to retrieve notifications you have to subscribe to server-side events b
 - [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsoftype)
 - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
 - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
+- [ForAllDataSubscriptions](../../client-api/changes/how-to-subscribe-to-data-subscription-changes)
 
 ## Unsubscribing
 
-In order to end subscribtion (stop listening for particular notifications) you must `Dispose` it.
+In order to end subscription (stop listening for particular notifications) you must `Dispose` it.
 
 {CODE changes_2@ClientApi\Changes\WhatIsChangesApi.cs /}
 

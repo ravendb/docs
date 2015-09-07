@@ -10,6 +10,7 @@ configuration-change-notification.markdown	ConfigurationChangeNotification
 configuration-search-results.markdown	ConfigurationSearchResults
 conflict-item.markdown	ConflictItem
 conflict-notification.markdown	ConflictNotification
+data-subscription-change-notification.markdown	DataSubscriptionChangeNotification
 database-document.markdown	DatabaseDocument
 database-restore-request.markdown	DatabaseRestoreRequest
 database-statistics.markdown	DatabaseStatistics

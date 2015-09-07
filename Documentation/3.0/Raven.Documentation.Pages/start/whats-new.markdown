@@ -20,7 +20,7 @@
 - Allow only a single index to use the fast precomputation optimization at a time (reduce memory usage if multiple medium sized indexes are changed concurrently),
 - Re-implemented memory statistics checks using native calls to avoid expensive allocations,
 - Provide more detailed information when an index is corrupted,
-- Adding endpoint for stopping/starting just reduce work,
+- Adding endpoint for stopping/starting just reduce work. More [here](../../http/client-api/commands/how-to/start-stop-reducing),
 - Less aggressive changes to the batch size at scale, being more cautious gives us a bit slower perf but more stable system under load,
 - Fixed side-by-side index updates,
 - Allowed to update side-by-side index when it is still running,

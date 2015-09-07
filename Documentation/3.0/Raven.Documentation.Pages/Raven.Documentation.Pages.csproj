@@ -52,6 +52,7 @@
     <None Include="client-api\bundles\how-to-work-with-unique-constraints-bundle.markdown" />
     <None Include="client-api\changes\.docslist" />
     <None Include="client-api\changes\how-to-subscribe-to-replication-conflicts.java.markdown" />
+    <None Include="client-api\changes\how-to-subscribe-to-data-subscription-changes.dotnet.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-transformer-changes.java.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-bulk-insert-operation-changes.java.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-index-changes.java.markdown" />
@@ -576,6 +577,7 @@
     <None Include="glossary\synchronization-details.markdown" />
     <None Include="glossary\synchronization-report.markdown" />
     <None Include="glossary\synchronization-update-notification.markdown" />
+    <None Include="glossary\data-subscription-change-notification.markdown" />
     <None Include="glossary\transformer-change-notification.markdown" />
     <None Include="glossary\transformer-definition.markdown" />
     <None Include="indexes\.docslist" />
