@@ -107,6 +107,7 @@
     <None Include="client-api\commands\how-to\start-backup-restore-operations.http.markdown" />
     <None Include="client-api\commands\how-to\get-database-and-server-statistics.http.markdown" />
     <None Include="client-api\commands\how-to\create-delete-database.http.markdown" />
+    <None Include="client-api\commands\how-to\start-stop-reducing.http.markdown" />
     <None Include="client-api\commands\how-to\start-stop-indexing-and-get-indexing-status.http.markdown" />
     <None Include="client-api\commands\how-to\get-names-of-all-databases-on-a-server.java.markdown" />
     <None Include="client-api\commands\how-to\get-server-build-number.java.markdown" />

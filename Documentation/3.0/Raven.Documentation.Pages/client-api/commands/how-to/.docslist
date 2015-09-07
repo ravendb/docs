@@ -2,6 +2,7 @@ switch-commands-to-a-different-database.markdown	...switch commands to a differe
 switch-commands-credentials.markdown	...switch commands credentials
 disable-caching.markdown	...disable caching
 start-stop-indexing-and-get-indexing-status.markdown	...start or stop indexing and get indexing status
+start-stop-reducing.markdown	...start or stop reducing
 create-delete-database.markdown	...create or delete database
 compact-database.markdown	...compact database
 get-database-and-server-statistics.markdown	...get database and server statistics

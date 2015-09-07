@@ -8,7 +8,7 @@
 curl \
 	http://{serverName}/databases/{databaseName}/transformers/{transformerName}?op=lockModeChange&mode={lockMode} \
 	-X POST \
-	-d {}
+	-d ""
 {CODE-BLOCK/}
 
 | Payload |
@@ -34,7 +34,7 @@ curl \
 ### Example
 
 {CODE-BLOCK:json}
-curl -X POST "http://localhost:8080/databases/Northwind/transformers/Orders/Company?op=lockModeChange&mode=LockedIgnore" -d {}
+curl -X POST "http://localhost:8080/databases/Northwind/transformers/Orders/Company?op=lockModeChange&mode=LockedIgnore" -d ""
 < HTTP/1.1 201 Created
 {CODE-BLOCK/}
 
