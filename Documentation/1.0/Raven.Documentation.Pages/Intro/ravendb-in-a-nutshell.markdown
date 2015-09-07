@@ -6,8 +6,6 @@ Data in RavenDB is stored **schema-less** as JSON documents, and can be queried 
 
 RavenDB is built for **web-scale**, and is offering **replication** and **sharding** support out-of-the-box.
 
-There's a whole lot more of exciting features - check [RavenDB's features page](http://ravendb.net/features).
-
 ## Using RavenDB
 
 RavenDB consists of a server and a client. The server handles data storage and queries, and the client is what a consumer uses to communicate with the server. There is more than one way to deploy RavenDB in your project:

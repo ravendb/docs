@@ -8,8 +8,6 @@ Internally, RavenDB makes use of indexes which are automatically created based o
 
 RavenDB is built for **web-scale**, and offers **replication** and **sharding** support out-of-the-box.
 
-There are a whole lot more of exciting features - check [RavenDB's features page](http://ravendb.net/features).
-
 ## Using RavenDB
 
 RavenDB consists of two parts - a server and a client. The server handles data storage and queries, and the client is what a consumer uses to communicate with the server. 
