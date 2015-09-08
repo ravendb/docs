@@ -27,6 +27,7 @@
 | debug/tasks | GET | | Returns list of all current database tasks. | |
 | debug/routes | GET | | Returns list of all available endpoints. | Y |
 | debug/currently-indexing | GET | | Returns current indexing operations details (e.g. what indexes are working and what is the current indexing rate) | |
+| debug/remaining-reductions | GET | | Returns information about remaining, scheduled reductions. | |
 | debug/request-tracing | GET | | Returns the list of recent requests with detailed info (e.g. headers, execution type). | |
 | debug/identities?start={start}&pageSize={pageSize} | GET | - paging parameters | Returns next identity values for collection types, indexes, transformers, etc. | |
 | debug/info-package | GET | | Creates debug info package that contains detailed information about the database (e.g. replication information, statistics, queries, requests, hardware information, etc.) | |
@@ -34,6 +35,7 @@
 | debug/raw-doc?id={id} | GET | - _id_ - if of a document | Returns raw document data. | |
 | debug/subscriptions | GET | | Returns information about existing data subscriptions. |
 | | | | |
+| /admin/voron/tree/{name} | GET | - _name_ - a tree name | Returns the state of a Voron tree. |
 | admin/stats | GET | | Returns server-wide statistics (e.g. server name, uptime, memory statistics, loaded databases information). More [here](../../server/administration/statistics). | |
 | admin/gc | GET | | Starts the garbage collection process. | |
 | admin/loh-compaction | GET | | Starts the garbage collection with LOH compaction process. | |
