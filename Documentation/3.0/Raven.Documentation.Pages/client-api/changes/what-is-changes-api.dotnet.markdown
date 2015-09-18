@@ -2,7 +2,7 @@
 
 The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
 You are able to subscribe to events for all documents or indexes as well as to indicate a particular one that you are interested in. 
-This mechanism lets you notify users if something has changed without the need to do any expensive pooling. 
+This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
 
 ## Accessing Changes API
 
