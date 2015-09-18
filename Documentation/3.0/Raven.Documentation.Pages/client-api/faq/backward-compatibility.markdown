@@ -1,8 +1,20 @@
-﻿# Backward compatibility
+# Backward compatibility
 
-When it comes to backward compatibility, in RavenDB we follow the rule that _older clients are compatibile with newer servers, but do not work with older ones._
+When it comes to client server compatibility in RavenDB there are two valid rules. Either:
 
-This means that **2.5 client will work with 3.0 server**, but not with 2.0 server and **3.0 client will NOT work with 2.5 server**.
+ * The server version is within the same Major and Minor range as the client version
+
+**OR**
+
+ * The server version is greater than the client version
+
+Some examples:
+
+ * `2.5` client will work with `3.0` server since server is greater than client
+ * `2.5` client will work with `2.5` server since client and server are in the same Major and Minor range
+ * `3.0.3785` client will work with `3.0.3528` server since client and server are in the same Major and Minor range
+ * `2.5` client will **NOT** work with `2.0` server since client is greater than server
+ * `3.0` client will **NOT** work with `2.5` server since client is greater than server
 
 ## Upgrading
 
