@@ -2,7 +2,7 @@
 
 `Map` indexes (sometimes referred to as simple indexes) contain one (or more) mapping functions that indicate which fields from the documents should be indexed (in other words they indicate which documents can be searched by which fields). 
 
-This **mapping functions** are a the **LINQ-based functions** and can be considered index **core**.
+These **mapping functions** are the **LINQ-based functions** and can be considered to be the indexes **core**.
 
 ## What can be indexed?
 
