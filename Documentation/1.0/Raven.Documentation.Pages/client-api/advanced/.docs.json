@@ -1,0 +1,72 @@
+﻿[
+	{
+		"Path": "transaction-support.markdown",
+		"Name": "Transaction support in RavenDB",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/transaction-support/dtc-transactions"
+			}
+		]
+	},
+	{
+		"Path": "document-metadata.markdown",
+		"Name": "Working with document metadata",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "querying-for-terms.markdown",
+		"Name": "Querying for terms",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/indexes/how-to/get-index-terms"
+			}
+		]
+	},
+	{
+		"Path": "spatial-search.markdown",
+		"Name": "Spatial search",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-query-a-spatial-index"
+			}
+		]
+	},
+	{
+		"Path": "dynamic-fields.markdown",
+		"Name": "Dynamic fields",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/using-dynamic-fields"
+			}
+		]
+	},
+	{
+		"Path": "/databasecommands",
+		"Name": "DatabaseCommands",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands"
+			}
+		]
+	},
+	{
+		"Path": "index-administration.markdown",
+		"Name": "Index Administration",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "server/administration/index-administration"
+			}
+		]
+	},
+	{
+		"Path": "custom-serialization.markdown",
+		"Name": "Custom serialization / deserialization",
+		"Mappings": [ ]
+	}
+]

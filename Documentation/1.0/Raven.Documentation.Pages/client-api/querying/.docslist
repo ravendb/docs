@@ -1,6 +1,0 @@
-using-linq-to-query-ravendb.markdown	Using Linq to query RavenDB indexes
-paging.markdown	Paging
-stale-indexes.markdown	Stale indexes
-/static-indexes	Static indexes
-handling-document-relationships.markdown	Handling document relationships
-polymorphism.markdown	Polymorphism
