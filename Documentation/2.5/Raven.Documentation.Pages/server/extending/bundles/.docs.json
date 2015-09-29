@@ -142,22 +142,22 @@
 		]
 	},
 	{
-		"Path": "indexed-properties.markdown",
-		"Name": "Bundle: Indexed Properties",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/bundles/scripted-index-results"
-			}
-		]
-	},
-	{
 		"Path": "sql-replication.markdown",
 		"Name": "Bundle: SQL Replication",
 		"Mappings": [
 			{
 				"Version": 3.0,
 				"Key": "server/bundles/sql-replication/basics"
+			}
+		]
+	},
+	{
+		"Path": "scripted-index-results.markdown",
+		"Name": "Bundle: Scripted Index Results",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/indexed-properties"
 			}
 		]
 	},

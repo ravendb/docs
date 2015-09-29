@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "createAspNetWebApiProject.markdown",
+		"Name": "ASP.NET WebAPI Sample",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "samples/mvc-starter-kit"
+			}
+		]
+	}
+]

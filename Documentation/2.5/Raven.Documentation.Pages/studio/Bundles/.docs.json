@@ -1,0 +1,102 @@
+﻿[
+	{
+		"Path": "encryption.markdown",
+		"Name": "Bundle: Encryption - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/walkthroughs/how-to-setup-encryption"
+			}
+		]
+	},
+	{
+		"Path": "quotas.markdown",
+		"Name": "Bundle: Quotas - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/settings/quotas"
+			}
+		]
+	},
+	{
+		"Path": "replication.markdown",
+		"Name": "Bundle: Replication - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/settings/replication"
+			}
+		]
+	},
+	{
+		"Path": "replication-walkthrough.markdown",
+		"Name": "Bundle: Replication Walkthrough - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/walkthroughs/how-to-setup-replication"
+			}
+		]
+	},
+	{
+		"Path": "versioning.markdown",
+		"Name": "Bundle: Versioning - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/settings/versioning"
+			}
+		]
+	},
+	{
+		"Path": "authorization.markdown",
+		"Name": "Bundle: Authorization - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/management/api-keys"
+			}
+		]
+	},
+	{
+		"Path": "periodicbackup.markdown",
+		"Name": "Bundle: Periodic Backup - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/settings/periodic-export"
+			}
+		]
+	},
+	{
+		"Path": "compression.markdown",
+		"Name": "Bundle: Compression - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/walkthroughs/how-to-setup-compression"
+			}
+		]
+	},
+	{
+		"Path": "expiration.markdown",
+		"Name": "Bundle: Expiration - Studio",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "sql-replication.markdown",
+		"Name": "Bundle: SQL Replication - Studio",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/sql-replication/basics"
+			}
+		]
+	},
+	{
+		"Path": "scripted-index-results.markdown",
+		"Name": "Bundle: Scripted Index Results - Studio",
+		"Mappings": [ ]
+	}
+]

@@ -1,0 +1,32 @@
+﻿[
+	{
+		"Path": "what-is-raven.markdown",
+		"Name": "What is Raven",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "document-key-generation.markdown",
+		"Name": "Document Key Generation Options",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/document-identifiers/working-with-document-ids"
+			}
+		]
+	},
+	{
+		"Path": "document-structure-design.markdown",
+		"Name": "Document Structure Design Considerations",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "ravendb-collections.markdown",
+		"Name": "Collections",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/faq/what-is-a-collection"
+			}
+		]
+	}
+]

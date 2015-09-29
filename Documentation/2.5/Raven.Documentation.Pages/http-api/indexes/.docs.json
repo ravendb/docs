@@ -1,0 +1,56 @@
+﻿[
+	{
+		"Path": "simple-indexes.markdown",
+		"Name": "Simple Indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "dynamic-indexes.markdown",
+		"Name": "Dynamic Indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "map-reduce-indexes.markdown",
+		"Name": "Map Reduce Indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "stale-indexes.markdown",
+		"Name": "Handling stale indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "debugging.markdown",
+		"Name": "Debugging",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/troubleshooting/debugging-index-errors"
+			}
+		]
+	}
+]

@@ -1,11 +1,31 @@
 ﻿[
 	{
+		"Path": "license-registration.markdown",
+		"Name": "License Registration",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/configuration/license-registration"
+			}
+		]
+	},
+	{
 		"Path": "configuration.markdown",
 		"Name": "Configuration options",
 		"Mappings": [
 			{
 				"Version": 3.0,
 				"Key": "server/configuration/configuration-options"
+			}
+		]
+	},
+	{
+		"Path": "index-administration.markdown",
+		"Name": "Index Administration",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/administration/index-administration"
 			}
 		]
 	},
@@ -40,18 +60,9 @@
 		]
 	},
 	{
-		"Path": "fmc_configuration.markdown",
+		"Path": "/windows-clustering",
 		"Name": "Windows Clustering",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/administration/windows-clustering/fcm_configuration_2012"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/windows-clustering/windows-server-2012"
-			}
-		]
+		"Mappings": [ ]
 	},
 	{
 		"Path": "statistics.markdown",

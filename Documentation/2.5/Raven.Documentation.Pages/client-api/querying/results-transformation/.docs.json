@@ -1,0 +1,52 @@
+﻿[
+	{
+		"Path": "result-transformers.markdown",
+		"Name": "Result Transformers",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "transformers/what-are-transformers"
+			}
+		]
+	},
+	{
+		"Path": "of-type.markdown",
+		"Name": "OfType (As)",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-perform-projection"
+			}
+		]
+	},
+	{
+		"Path": "project-from-index-fields-into.markdown",
+		"Name": "ProjectFromIndexFieldsInto (AsProjection)",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-perform-projection"
+			}
+		]
+	},
+	{
+		"Path": "transform-results.markdown",
+		"Name": "TransformResults",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-customize-query#transformresults"
+			}
+		]
+	},
+	{
+		"Path": "select-fields.markdown",
+		"Name": "SelectFields",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-perform-projection"
+			}
+		]
+	}
+]
