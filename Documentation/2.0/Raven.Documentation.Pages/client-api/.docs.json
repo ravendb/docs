@@ -1,0 +1,97 @@
+﻿[
+	{
+		"Path": "connecting-to-a-ravendb-datastore.markdown",
+		"Name": "Connecting to a RavenDB datastore",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/creating-document-store"
+			}
+		]
+	},
+	{
+		"Path": "/basic-operations",
+		"Name": "Basic operations",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/querying",
+		"Name": "Querying",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/what-are-indexes"
+			}
+		]
+	},
+	{
+		"Path": "working-asynchronously.markdown",
+		"Name": "Working Asynchronously",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "partial-document-updates.markdown",
+		"Name": "Partial document updates using the Patching API",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/patches/how-to-work-with-patch-requests"
+			}
+		]
+	},
+	{
+		"Path": "set-based-operations.markdown",
+		"Name": "Set based operations",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
+			}
+		]
+	},
+	{
+		"Path": "attachments.markdown",
+		"Name": "Attachments",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands#attachment-commands"
+			}
+		]
+	},
+	{
+		"Path": "faceted-search.markdown",
+		"Name": "Faceted search",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/faceted-search"
+			}
+		]
+	},
+	{
+		"Path": "changes-api.markdown",
+		"Name": "Changes API",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/changes/what-is-changes-api"
+			}
+		]
+	},
+	{
+		"Path": "/advanced",
+		"Name": "Advanced topics",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "backward-compatibility.markdown",
+		"Name": "Backward Compatibility",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/faq/backward-compatibility"
+			}
+		]
+	}
+]

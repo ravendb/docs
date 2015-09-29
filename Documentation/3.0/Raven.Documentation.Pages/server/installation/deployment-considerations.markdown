@@ -1,7 +1,6 @@
-﻿## What host should I use? IIS or Windows Service?
+﻿# What host should I use? IIS or Windows Service?
 
-
-#### IIS: Best to be used when the RavenDD is publicly accessible on the interwebs
+## IIS: Best to be used when the RavenDB is publicly accessible on the interwebs
 
 - Pros: 
     - you get the benefits of the IIS management tools, monitoring and tracking abilities,
@@ -15,7 +14,7 @@
     - recycle times (unless settings changed),
     - generally, a bit of work is required to setup.
 
-#### Windows Service: Fine if in a private network.
+## Windows Service: Fine if in a private network.
 
 - Pros:
     - easy to setup - just part of the normal install process,

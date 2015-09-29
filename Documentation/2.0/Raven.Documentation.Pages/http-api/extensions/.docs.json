@@ -1,0 +1,13 @@
+﻿[
+	{
+		"Path": "metadata-only.markdown",
+		"Name": "Metadata only",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	}
+]

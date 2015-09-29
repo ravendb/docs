@@ -1,0 +1,17 @@
+﻿[
+	{
+		"Path": "lucene-indexes-usage.markdown",
+		"Name": "How does RavenDB use Lucene for indexing?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "lucene-score.markdown",
+		"Name": "Lucene Score",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "profiling-mvc-application.markdown",
+		"Name": "Profiling ASP.NET MVC application using RavenProfiler",
+		"Mappings": [ ]
+	}
+]

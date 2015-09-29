@@ -1,0 +1,107 @@
+﻿[
+	{
+		"Path": "working-with-dtc.markdown",
+		"Name": "Working with System.Transactions",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/transaction-support/dtc-transactions"
+			}
+		]
+	},
+	{
+		"Path": "unique-constraints.markdown",
+		"Name": "Creating unique constraints",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/transaction-support/dtc-transactions"
+			}
+		]
+	},
+	{
+		"Path": "slow-response-times.markdown",
+		"Name": "Resolving slow response times",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "skipped-results.markdown",
+		"Name": "What are skipped results?",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/paging#paging-through-tampered-results"
+			}
+		]
+	},
+	{
+		"Path": "polymorphism.markdown",
+		"Name": "Polymorphism in RavenDB",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/indexing-polymorphic-data"
+			}
+		]
+	},
+	{
+		"Path": "lucene-queries-examples.markdown",
+		"Name": "Lucene queries example",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/full-query-syntax"
+			}
+		]
+	},
+	{
+		"Path": "low-memory-footprint.markdown",
+		"Name": "Reducing RavenDB memory footprint",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "indexing-across-entities.markdown",
+		"Name": "How to index across entities?",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/multi-map-indexes"
+			}
+		]
+	},
+	{
+		"Path": "optimizing-referenced-documents-load.markdown",
+		"Name": "Optimizing referenced documents load",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/handling-document-relationships"
+			}
+		]
+	},
+	{
+		"Path": "immutable-entities.markdown",
+		"Name": "Immutable entities with Raven DB",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "denormalized-updates.markdown",
+		"Name": "Updating denormalized data",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
+			}
+		]
+	},
+	{
+		"Path": "denormalized-references.markdown",
+		"Name": "Denormalized References",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "storing-dates.markdown",
+		"Name": "Storing dates in RavenDB",
+		"Mappings": [ ]
+	}
+]

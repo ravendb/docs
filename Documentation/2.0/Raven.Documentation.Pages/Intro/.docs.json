@@ -1,0 +1,67 @@
+﻿[
+	{
+		"Path": "what-is-nosql.markdown",
+		"Name": "What is NoSQL",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "what-is-a-document-database.markdown",
+		"Name": "What is a Document Database",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "ravendb-in-a-nutshell.markdown",
+		"Name": "RavenDB in a nutshell",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "start/getting-started"
+			}
+		]
+	},
+	{
+		"Path": "basic-concepts.markdown",
+		"Name": "Basic concepts",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "start/getting-started"
+			}
+		]
+	},
+	{
+		"Path": "safe-by-default.markdown",
+		"Name": "Safe by default",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "high-performance.markdown",
+		"Name": "High Performance",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/quickstart",
+		"Name": "Quickstart tutorials",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "start/getting-started"
+			}
+		]
+	},
+	{
+		"Path": "system-requirements.markdown",
+		"Name": "System requirements",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/installation/system-requirements"
+			}
+		]
+	},
+	{
+		"Path": "building-from-source.markdown",
+		"Name": "Building from source",
+		"Mappings": [ ]
+	}
+]
