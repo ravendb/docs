@@ -1,0 +1,142 @@
+﻿[
+	{
+		"Path": "quotas.markdown",
+		"Name": "Quotas Bundle",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/quotas"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/quotas"
+			}
+		]
+	},
+	{
+		"Path": "versioning.markdown",
+		"Name": "Versioning Bundle",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/versioning"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/versioning"
+			}
+		]
+	},
+	{
+		"Path": "morelikethis.markdown",
+		"Name": "More Like This",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/morelikethis"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/more-like-this"
+			}
+		]
+	},
+	{
+		"Path": "unique-constraints.markdown",
+		"Name": "Unique Constraints",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/unique-constraints"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/unique-constraints"
+			}
+		]
+	},
+	{
+		"Path": "authorization.markdown",
+		"Name": "Authorization Bundle",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/authorization"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/authorization"
+			}
+		]
+	},
+	{
+		"Path": "authorization-bundle-design.markdown",
+		"Name": "Authorization Bundle Design Notes",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/authorization-bundle-design"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/kb/authorization-bundle-design"
+			}
+		]
+	},
+	{
+		"Path": "cascade-delete.markdown",
+		"Name": "Cascade Delete Bundle",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/cascade-delete"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/cascade-delete"
+			}
+		]
+	},
+	{
+		"Path": "expiration.markdown",
+		"Name": "Expiration Bundle",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/expiration"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/expiration"
+			}
+		]
+	},
+	{
+		"Path": "index-replication.markdown",
+		"Name": "Index Replication Bundle",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/index-replication"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/replication"
+			}
+		]
+	},
+	{
+		"Path": "authentication.markdown",
+		"Name": "Authentication Bundle",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/authentication"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/configuration/authentication-and-authorization"
+			}
+		]
+	}
+]

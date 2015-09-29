@@ -1,0 +1,17 @@
+﻿[
+	{
+		"Path": "/triggers",
+		"Name": "Triggers",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/plugins/triggers"
+			}
+		]
+	},
+	{
+		"Path": "/requestResponders",
+		"Name": "Request Responders",
+		"Mappings": [ ]
+	}
+]

@@ -1,0 +1,52 @@
+﻿[
+	{
+		"Path": "configuration.markdown",
+		"Name": "Configuration options",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/configuration/configuration-options"
+			}
+		]
+	},
+	{
+		"Path": "backup-restore.markdown",
+		"Name": "Backup & Restore",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/administration/backup-and-restore"
+			}
+		]
+	},
+	{
+		"Path": "export-import.markdown",
+		"Name": "Exporting and Importing data",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/administration/exporting-and-importing-data"
+			}
+		]
+	},
+	{
+		"Path": "upgrade.markdown",
+		"Name": "Doing upgrade",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/installation/upgrading-to-new-version"
+			}
+		]
+	},
+	{
+		"Path": "fmc_configuration.markdown",
+		"Name": "Windows Clustering",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/configuration/windows-clustering/windows-server-2012"
+			}
+		]
+	}
+]

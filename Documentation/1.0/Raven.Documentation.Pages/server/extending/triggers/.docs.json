@@ -1,0 +1,58 @@
+﻿[
+	{
+		"Path": "put.markdown",
+		"Name": "PUT",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/plugins/triggers"
+			}
+		]
+	},
+	{
+		"Path": "read.markdown",
+		"Name": "READ",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/plugins/triggers"
+			}
+		]
+	},
+	{
+		"Path": "delete.markdown",
+		"Name": "DELETE",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/plugins/triggers"
+			}
+		]
+	},
+	{
+		"Path": "indexing.markdown",
+		"Name": "Index Update",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/plugins/triggers"
+			}
+		]
+	}
+]

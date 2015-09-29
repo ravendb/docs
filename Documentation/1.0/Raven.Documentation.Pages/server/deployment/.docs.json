@@ -1,0 +1,62 @@
+﻿[
+	{
+		"Path": "as-a-service.markdown",
+		"Name": "Running as a service",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/installation/as-a-service"
+			}
+		]
+	},
+	{
+		"Path": "as-iis-application.markdown",
+		"Name": "Deploying as an IIS application",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/installation/IIS"
+			}
+		]
+	},
+	{
+		"Path": "embedded.markdown",
+		"Name": "Embedded",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/installation/embedded"
+			}
+		]
+	},
+	{
+		"Path": "recommended-configuration.markdown",
+		"Name": "Recommended configuration",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/installation/system-requirements"
+			}
+		]
+	},
+	{
+		"Path": "docs-deploy-debug.markdown",
+		"Name": "Running in Debug mode",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/troubleshooting/running-in-debug-mode"
+			}
+		]
+	},
+	{
+		"Path": "docs-debug-logging.markdown",
+		"Name": "Debug Logging",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/troubleshooting/enabling-logging"
+			}
+		]
+	}
+]

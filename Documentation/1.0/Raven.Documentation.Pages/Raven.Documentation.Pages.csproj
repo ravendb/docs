@@ -42,7 +42,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include=".docslist" />
+    <None Include=".docs.json" />
     <None Include="Appendixes\.docs.json" />
     <None Include="Appendixes\index.markdown" />
     <None Include="Appendixes\lucene-indexes-usage.markdown" />
@@ -134,15 +134,15 @@
     <None Include="Intro\system-requirements.markdown" />
     <None Include="Intro\what-is-a-document-database.markdown" />
     <None Include="Intro\what-is-nosql.markdown" />
-    <None Include="server\.docslist" />
-    <None Include="server\administration\.docslist" />
+    <None Include="server\.docs.json" />
+    <None Include="server\administration\.docs.json" />
     <None Include="server\administration\backup-restore.markdown" />
     <None Include="server\administration\configuration.markdown" />
     <None Include="server\administration\export-import.markdown" />
     <None Include="server\administration\fmc_configuration.markdown" />
     <None Include="server\administration\index.markdown" />
     <None Include="server\administration\upgrade.markdown" />
-    <None Include="server\bundles\.docslist" />
+    <None Include="server\bundles\.docs.json" />
     <None Include="server\bundles\authentication.markdown" />
     <None Include="server\bundles\authorization-bundle-design.markdown" />
     <None Include="server\bundles\authorization.markdown" />
@@ -154,7 +154,7 @@
     <None Include="server\bundles\quotas.markdown" />
     <None Include="server\bundles\unique-constraints.markdown" />
     <None Include="server\bundles\versioning.markdown" />
-    <None Include="server\deployment\.docslist" />
+    <None Include="server\deployment\.docs.json" />
     <None Include="server\deployment\as-a-service.markdown" />
     <None Include="server\deployment\as-iis-application.markdown" />
     <None Include="server\deployment\docs-debug-logging.markdown" />
@@ -162,11 +162,11 @@
     <None Include="server\deployment\embedded.markdown" />
     <None Include="server\deployment\index.markdown" />
     <None Include="server\deployment\recommended-configuration.markdown" />
-    <None Include="server\extending\.docslist" />
+    <None Include="server\extending\.docs.json" />
     <None Include="server\extending\index.markdown" />
-    <None Include="server\extending\requestResponders\.docslist" />
+    <None Include="server\extending\requestResponders\.docs.json" />
     <None Include="server\extending\requestResponders\index.markdown" />
-    <None Include="server\extending\triggers\.docslist" />
+    <None Include="server\extending\triggers\.docs.json" />
     <None Include="server\extending\triggers\delete.markdown" />
     <None Include="server\extending\triggers\index.markdown" />
     <None Include="server\extending\triggers\indexing.markdown" />
@@ -174,16 +174,16 @@
     <None Include="server\extending\triggers\read.markdown" />
     <None Include="server\index.markdown" />
     <None Include="server\multiple-databases.markdown" />
-    <None Include="server\scaling-out\.docslist" />
+    <None Include="server\scaling-out\.docs.json" />
     <None Include="server\scaling-out\index.markdown" />
     <None Include="server\scaling-out\replication-and-sharding.markdown" />
-    <None Include="server\scaling-out\replication\.docslist" />
+    <None Include="server\scaling-out\replication\.docs.json" />
     <None Include="server\scaling-out\replication\from-embedded-server.markdown" />
     <None Include="server\scaling-out\replication\handling-conflicts.markdown" />
     <None Include="server\scaling-out\replication\index.markdown" />
-    <None Include="server\scaling-out\sharding\.docslist" />
+    <None Include="server\scaling-out\sharding\.docs.json" />
     <None Include="server\scaling-out\sharding\index.markdown" />
-    <None Include="studio\.docslist" />
+    <None Include="studio\.docs.json" />
     <None Include="studio\Collections.markdown" />
     <None Include="studio\Documents.markdown" />
     <None Include="studio\index.markdown" />
@@ -192,7 +192,7 @@
     <None Include="studio\multi-database.markdown" />
     <None Include="studio\Statistics.markdown" />
     <None Include="studio\Tasks.markdown" />
-    <None Include="Theory\.docslist" />
+    <None Include="Theory\.docs.json" />
     <None Include="Theory\document-key-generation.markdown" />
     <None Include="Theory\document-structure-design.markdown" />
     <None Include="Theory\index.markdown" />

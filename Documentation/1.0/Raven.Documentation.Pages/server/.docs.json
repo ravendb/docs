@@ -1,0 +1,37 @@
+﻿[
+	{
+		"Path": "/deployment",
+		"Name": "Deployment Strategies",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/administration",
+		"Name": "Server Administration",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/bundles",
+		"Name": "Using the Bundles",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/scaling-out",
+		"Name": "Scaling Out",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "multiple-databases.markdown",
+		"Name": "Multiple Databases",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/administration/multiple-databases"
+			}
+		]
+	},
+	{
+		"Path": "/extending",
+		"Name": "Extending RavenDB",
+		"Mappings": [ ]
+	}
+]
