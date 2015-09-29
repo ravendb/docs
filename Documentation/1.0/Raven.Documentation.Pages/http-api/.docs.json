@@ -1,0 +1,71 @@
+﻿[
+	{
+		"Path": "http-api-single.markdown",
+		"Name": "Single Document Operations",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "http-api-multi.markdown",
+		"Name": "Multi Documents Operations",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "http-api-attachments.markdown",
+		"Name": "Attachments Operations",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "/indexes",
+		"Name": "Indexes",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "http-api-indexes-querying.markdown",
+		"Name": "Querying indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "http-api-comcurrency.markdown",
+		"Name": "Revisions and Concurrency with E-Tags",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "http-api/http-api-concurrency"
+			},
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands",
+				"Language": "Http"
+			}
+		]
+	},
+	{
+		"Path": "http-api-security.markdown",
+		"Name": "Security for Anonymous Access",
+		"Mappings": [ ]
+	}
+]

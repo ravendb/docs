@@ -29,6 +29,10 @@
 		"Name": "Spatial search",
 		"Mappings": [
 			{
+				"Version": 2.0,
+				"Key": "client-api/querying/static-indexes/spatial-search"
+			},
+			{
 				"Version": 3.0,
 				"Key": "client-api/session/querying/how-to-query-a-spatial-index"
 			}

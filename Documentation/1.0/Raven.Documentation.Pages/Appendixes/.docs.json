@@ -1,0 +1,7 @@
+﻿[
+	{
+		"Path": "lucene-indexes-usage.markdown",
+		"Name": "How does RavenDB use Lucene for indexing?",
+		"Mappings": [ ]
+	}
+]

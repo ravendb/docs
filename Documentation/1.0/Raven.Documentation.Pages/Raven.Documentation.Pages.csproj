@@ -43,7 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".docslist" />
-    <None Include="Appendixes\.docslist" />
+    <None Include="Appendixes\.docs.json" />
     <None Include="Appendixes\index.markdown" />
     <None Include="Appendixes\lucene-indexes-usage.markdown" />
     <None Include="client-api\.docs.json" />
@@ -90,7 +90,7 @@
     <None Include="client-api\querying\using-linq-to-query-ravendb.markdown" />
     <None Include="client-api\set-based-operations.markdown" />
     <None Include="client-api\working-asynchronously.markdown" />
-    <None Include="faq\.docslist" />
+    <None Include="faq\.docs.json" />
     <None Include="faq\denormalized-references.markdown" />
     <None Include="faq\denormalized-updates.markdown" />
     <None Include="faq\immutable-entities.markdown" />
@@ -106,7 +106,7 @@
     <None Include="faq\storing-dates.markdown" />
     <None Include="faq\unique-constraints.markdown" />
     <None Include="faq\working-with-dtc.markdown" />
-    <None Include="http-api\.docslist" />
+    <None Include="http-api\.docs.json" />
     <None Include="http-api\http-api-attachments.markdown" />
     <None Include="http-api\http-api-comcurrency.markdown" />
     <None Include="http-api\http-api-indexes-querying.markdown" />
@@ -114,18 +114,18 @@
     <None Include="http-api\http-api-security.markdown" />
     <None Include="http-api\http-api-single.markdown" />
     <None Include="http-api\index.markdown" />
-    <None Include="http-api\indexes\.docslist" />
+    <None Include="http-api\indexes\.docs.json" />
     <None Include="http-api\indexes\dynamic-indexes.markdown" />
     <None Include="http-api\indexes\index.markdown" />
     <None Include="http-api\indexes\map-reduce-indexes.markdown" />
     <None Include="http-api\indexes\simple-indexes.markdown" />
     <None Include="http-api\indexes\stale-indexes.markdown" />
     <None Include="index.markdown" />
-    <None Include="Intro\.docslist" />
+    <None Include="Intro\.docs.json" />
     <None Include="Intro\basic-concepts.markdown" />
     <None Include="Intro\building-from-source.markdown" />
     <None Include="Intro\index.markdown" />
-    <None Include="Intro\quickstart\.docslist" />
+    <None Include="Intro\quickstart\.docs.json" />
     <None Include="Intro\quickstart\adding-ravendb-through-nuget.markdown" />
     <None Include="Intro\quickstart\adding-ravendb-to-your-application.markdown" />
     <None Include="Intro\quickstart\index.markdown" />

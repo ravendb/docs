@@ -1,0 +1,22 @@
+﻿[
+	{
+		"Path": "adding-ravendb-to-your-application.markdown",
+		"Name": "Adding RavenDB to your application",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "start/getting-started"
+			}
+		]
+	},
+	{
+		"Path": "adding-ravendb-through-nuget.markdown",
+		"Name": "Adding RavenDB through NuGet",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "start/getting-started"
+			}
+		]
+	}
+]
