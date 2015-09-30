@@ -1,0 +1,32 @@
+﻿[
+	{
+		"Path": "getting-started.markdown",
+		"Name": "Getting started",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "intro/ravendb-in-a-nutshell"
+			}
+		]
+	},
+	{
+		"Path": "whats-new.markdown",
+		"Name": "What's new",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "intro/what-is-new"
+			}
+		]
+	},
+	{
+		"Path": "playground-server.markdown",
+		"Name": "Playground Server",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "about-examples.markdown",
+		"Name": "About examples",
+		"Mappings": [ ]
+	}
+]

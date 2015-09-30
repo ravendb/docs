@@ -1,0 +1,87 @@
+﻿[
+	{
+		"Path": "stats.markdown",
+		"Name": "Stats",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "studio/statistics"
+			}
+		]
+	},
+	{
+		"Path": "/indexing",
+		"Name": "Indexing",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "request-tracking.markdown",
+		"Name": "Request Tracking",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "logs.markdown",
+		"Name": "Logs",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "studio/logs"
+			}
+		]
+	},
+	{
+		"Path": "running-tasks.markdown",
+		"Name": "Running Tasks",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "alerts.markdown",
+		"Name": "Alerts",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "studio/alerts"
+			}
+		]
+	},
+	{
+		"Path": "index-errors.markdown",
+		"Name": "Index Errors",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "replication-stats.markdown",
+		"Name": "Replication Stats",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "sql-replication-stats.markdown",
+		"Name": "Sql Replication Stats",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "user-info.markdown",
+		"Name": "User Info",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "map-reduce-visualizer.markdown",
+		"Name": "Map-Reduce Visualizer",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/debug",
+		"Name": "Debug",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "storage.markdown",
+		"Name": "Storage",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "gather-debug-info.markdown",
+		"Name": "Gather Debug Info",
+		"Mappings": [ ]
+	}
+]

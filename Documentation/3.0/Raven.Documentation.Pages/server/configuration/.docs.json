@@ -1,0 +1,57 @@
+﻿[
+	{
+		"Path": "/windows-clustering",
+		"Name": "Windows Clustering",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "enabling-ssl.markdown",
+		"Name": "Enabling SSL",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "server/deployment/enabling-ssl"
+			}
+		]
+	},
+	{
+		"Path": "enabling-fips-compliant-encryption-algorithms.markdown",
+		"Name": "Enabling FIPS compliant encryption",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "authentication-and-authorization.markdown",
+		"Name": "Authentication & Authorization",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/authentication"
+			}
+		]
+	},
+	{
+		"Path": "license-registration.markdown",
+		"Name": "License registration",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "server/administration/license-registration"
+			}
+		]
+	},
+	{
+		"Path": "configuration-options.markdown",
+		"Name": "Configuration options",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/administration/configuration"
+			}
+		]
+	},
+	{
+		"Path": "storage-engines.markdown",
+		"Name": "Storage Engines",
+		"Mappings": [ ]
+	}
+]

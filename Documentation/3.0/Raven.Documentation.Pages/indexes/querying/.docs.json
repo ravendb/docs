@@ -1,0 +1,136 @@
+﻿[
+	{
+		"Path": "basics.markdown",
+		"Name": "Basics",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/querying/using-linq-to-query-ravendb"
+			}
+		]
+	},
+	{
+		"Path": "filtering.markdown",
+		"Name": "Filtering",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "paging.markdown",
+		"Name": "Paging",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/querying/paging"
+			}
+		]
+	},
+	{
+		"Path": "sorting.markdown",
+		"Name": "Sorting",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "handling-document-relationships.markdown",
+		"Name": "Handling document relationships",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/querying/handling-document-relationships"
+			}
+		]
+	},
+	{
+		"Path": "projections.markdown",
+		"Name": "Projections",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "searching.markdown",
+		"Name": "Searching",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/querying/static-indexes/searching"
+			}
+		]
+	},
+	{
+		"Path": "intersection.markdown",
+		"Name": "Intersection",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/querying/intersection"
+			}
+		]
+	},
+	{
+		"Path": "suggestions.markdown",
+		"Name": "Suggestions",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/querying/static-indexes/suggestions"
+			}
+		]
+	},
+	{
+		"Path": "highlights.markdown",
+		"Name": "Highlights",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "spatial.markdown",
+		"Name": "Spatial",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/querying/static-indexes/spatial-search"
+			}
+		]
+	},
+	{
+		"Path": "faceted-search.markdown",
+		"Name": "Faceted search",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/faceted-search"
+			}
+		]
+	},
+	{
+		"Path": "dynamic-aggregation.markdown",
+		"Name": "Dynamic aggregation",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "client-api/querying/dynamic-aggregation"
+			}
+		]
+	},
+	{
+		"Path": "query-vs-document-query.markdown",
+		"Name": "Query vs DocumentQuery",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "client-api/querying/query-and-lucene-query"
+			}
+		]
+	},
+	{
+		"Path": "full-query-syntax.markdown",
+		"Name": "Full query syntax",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "faq/lucene-queries-examples"
+			},
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/full-query-syntax"
+			}
+		]
+	}
+]

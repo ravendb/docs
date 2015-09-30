@@ -1,0 +1,67 @@
+﻿[
+	{
+		"Path": "database-settings.markdown",
+		"Name": "Database Settings",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "studio/statistics"
+			}
+		]
+	},
+	{
+		"Path": "quotas.markdown",
+		"Name": "Quotas",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "studio/bundles/quotas"
+			}
+		]
+	},
+	{
+		"Path": "replication.markdown",
+		"Name": "Replication",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "studio/bundles/replication"
+			}
+		]
+	},
+	{
+		"Path": "sql-replication.markdown",
+		"Name": "SQL Replication",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "studio/bundles/sql-replication"
+			}
+		]
+	},
+	{
+		"Path": "versioning.markdown",
+		"Name": "Versioning",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "studio/bundles/versioning"
+			}
+		]
+	},
+	{
+		"Path": "periodic-export.markdown",
+		"Name": "Periodic Export",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "studio/bundles/periodicbackup"
+			}
+		]
+	},
+	{
+		"Path": "custom-functions.markdown",
+		"Name": "Custom Functions",
+		"Mappings": [ ]
+	}
+]

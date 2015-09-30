@@ -1,0 +1,67 @@
+﻿[
+	{
+		"Path": "system-requirements.markdown",
+		"Name": "System requirements",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/deployment/recommended-configuration"
+			}
+		]
+	},
+	{
+		"Path": "as-a-service.markdown",
+		"Name": "Windows Service",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/deployment/as-a-service"
+			}
+		]
+	},
+	{
+		"Path": "IIS.markdown",
+		"Name": "IIS application",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/deployment/as-iis-application"
+			}
+		]
+	},
+	{
+		"Path": "deployment-considerations.markdown",
+		"Name": "Deployment considerations",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "embedded.markdown",
+		"Name": "Embedded",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/deployment/embedded"
+			}
+		]
+	},
+	{
+		"Path": "using-installer.markdown",
+		"Name": "Using installer",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "server/deployment/installer"
+			}
+		]
+	},
+	{
+		"Path": "upgrading-to-new-version.markdown",
+		"Name": "Using installer",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/administration/upgrade"
+			}
+		]
+	}
+]

@@ -1,0 +1,17 @@
+﻿[
+	{
+		"Path": "how-to-setup-sharding.markdown",
+		"Name": "How to setup sharding?",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/scaling-out/sharding"
+			}
+		]
+	},
+	{
+		"Path": "sharding-ops.markdown",
+		"Name": "Sharding Ops",
+		"Mappings": [ ]
+	}
+]

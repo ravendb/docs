@@ -1,0 +1,42 @@
+﻿[
+	{
+		"Path": "/installation",
+		"Name": "Installation",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/configuration",
+		"Name": "Configuration",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/administration",
+		"Name": "Administration",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/scaling-out",
+		"Name": "Scaling out",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/bundles",
+		"Name": "Bundles",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/plugins",
+		"Name": "Plugins",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/troubleshooting",
+		"Name": "Troubleshooting",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/kb",
+		"Name": "Knowledge Base",
+		"Mappings": [ ]
+	}
+]

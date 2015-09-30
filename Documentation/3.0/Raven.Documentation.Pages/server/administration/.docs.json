@@ -1,0 +1,67 @@
+﻿[
+	{
+		"Path": "administration-101.markdown",
+		"Name": "Administration 101",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "multiple-databases.markdown",
+		"Name": "Multiple databases",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/multiple-databases"
+			}
+		]
+	},
+	{
+		"Path": "statistics.markdown",
+		"Name": "Statistics",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "backup-and-restore.markdown",
+		"Name": "Backup & Restore",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/administration/backup-restore"
+			}
+		]
+	},
+	{
+		"Path": "exporting-and-importing-data.markdown",
+		"Name": "Exporting & Importing data",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/administration/export-import"
+			}
+		]
+	},
+	{
+		"Path": "differences-between-backup-and-export.markdown",
+		"Name": "Differences between backup and export",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "migrating-attachments-to-ravenfs.markdown",
+		"Name": "Migrating attachments into RavenFS",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "index-administration.markdown",
+		"Name": "Index administration",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/advanced/index-administration"
+			}
+		]
+	},
+	{
+		"Path": "/monitoring",
+		"Name": "Monitoring",
+		"Mappings": [ ]
+	}
+]

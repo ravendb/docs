@@ -32,7 +32,12 @@
 	{
 		"Path": "advanced-replication-details.markdown",
 		"Name": "Advanced replication details",
-		"Mappings": [ ]
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/kb/advanced-replication-details"
+			}
+		]
 	},
 	{
 		"Path": "write-assurance.markdown",

@@ -1,0 +1,22 @@
+﻿[
+	{
+		"Path": "/replication",
+		"Name": "Replication",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/sharding",
+		"Name": "Sharding",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "replication-with-sharding.markdown",
+		"Name": "Replication with Sharding",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/scaling-out/replication-and-sharding"
+			}
+		]
+	}
+]

@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "debugging-index-errors.markdown",
+		"Name": "Debugging index errors",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/querying/static-indexes/indexes-error-handling"
+			}
+		]
+	}
+]
