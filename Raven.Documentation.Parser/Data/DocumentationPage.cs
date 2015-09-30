@@ -9,6 +9,7 @@
 		public DocumentationPage()
 		{
 			this.Images = new HashSet<DocumentationImage>();
+			this.Mappings = new List<DocumentationMapping>();
 		}
 
         public string Version { get; set; }
@@ -32,6 +33,8 @@
 	    public Category Category { get; set; }
 
 		public HashSet<DocumentationImage> Images { get; set; }
+
+		public List<DocumentationMapping> Mappings { get; set; }
 
 		public string GetUniqueKey()
 		{

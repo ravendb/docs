@@ -2,7 +2,7 @@
 {
     public class Constants
     {
-        public const string DocListFileName = ".docslist";
+        public const string DocumentationFileName = ".docs.json";
 
 	    public const string MarkdownFileExtension = ".markdown";
     }
