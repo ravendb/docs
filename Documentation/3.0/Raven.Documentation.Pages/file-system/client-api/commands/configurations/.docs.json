@@ -1,0 +1,27 @@
+﻿[
+	{
+		"Path": "set-key.markdown",
+		"Name": "SetKey",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "get-key.markdown",
+		"Name": "GetKey",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "delete-key.markdown",
+		"Name": "DeleteKey",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "get-key-names.markdown",
+		"Name": "GetKeyNames",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "search.markdown",
+		"Name": "Search",
+		"Mappings": [ ]
+	}
+]
