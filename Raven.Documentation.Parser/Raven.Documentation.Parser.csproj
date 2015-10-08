@@ -67,6 +67,7 @@
     <Compile Include="Data\Language.cs" />
     <Compile Include="Attributes\PrefixAttribute.cs" />
     <Compile Include="Data\PageLinksValidationResult.cs" />
+    <Compile Include="Data\PageMappingsValidationResult.cs" />
     <Compile Include="Data\TableOfContents.cs" />
     <Compile Include="DocumentationValidator.cs" />
     <Compile Include="Helpers\CategoryHelper.cs" />

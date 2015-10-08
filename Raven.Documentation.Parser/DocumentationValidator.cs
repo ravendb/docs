@@ -81,7 +81,7 @@ namespace Raven.Documentation.Parser
 								continue;
 						}
 
-						isValid = ValidatePageLink(client, uri, pages);
+						isValid = ValidatePageLink(client, uri);
 					}
 
 					result.Links[string.Format("[{0}][{1}]", link.InnerText, uri)] = isValid;
@@ -95,7 +95,7 @@ namespace Raven.Documentation.Parser
 			return result;
 		}
 
-		private static bool ValidatePageLink(HttpClient client, Uri uri, IEnumerable<DocumentationPage> pages)
+		private static bool ValidatePageLink(HttpClient client, Uri uri)
 		{
 			try
 			{
@@ -115,6 +115,68 @@ namespace Raven.Documentation.Parser
 			{
 				return false;
 			}
+		}
+
+		private static readonly string[] MappingVersionsToCheck = new[] { "1.0", "2.0", "2.5", "3.0"};
+
+
+		public IEnumerable<PageMappingsValidationResult> ValidateMappings(IList<DocumentationPage> pages)
+		{
+			var results = new ConcurrentBag<PageMappingsValidationResult>();
+
+			var p = new List<DocumentationPage>[2];
+
+			var half = pages.Count / 2;
+			p[0] = pages.Take(half).ToList();
+			p[1] = pages.Skip(half).ToList();
+
+			Parallel.For(
+				0,
+				2,
+				i =>
+				{
+					using (var client = new HttpClient())
+					{
+						var pagesToCheck = p[i];
+
+						foreach (var page in pagesToCheck)
+						{
+							if (page.Key.EndsWith("/index") || page.Key == "index") // legacy index.markdown files
+								continue;
+
+							var result = new PageMappingsValidationResult(page.Key, page.Language == Language.All ? _currentLanguage : page.Language, page.Version);
+
+							foreach (var versionToCheck in MappingVersionsToCheck.Except(new [] { page.Version }))
+							{
+								var explicitMapping = page.Mappings.FirstOrDefault(x => Math.Abs(x.Version - float.Parse(versionToCheck)) < float.Epsilon);
+								var inheritedMapping = page.Mappings.OrderByDescending(x => x.Version).FirstOrDefault(y => y.Version < float.Parse(versionToCheck));
+
+								Uri uriToCheck;
+
+								var versionSpecificRootUrl = _options.RootUrl.Replace(page.Version, versionToCheck);
+
+								if (explicitMapping != null)
+								{
+									uriToCheck = new Uri(versionSpecificRootUrl + explicitMapping.Key);
+								}
+								else if (inheritedMapping != null)
+								{
+									uriToCheck = new Uri(versionSpecificRootUrl + inheritedMapping.Key);
+								}
+								else
+								{
+									uriToCheck = new Uri(versionSpecificRootUrl + page.Key);
+								}
+
+								result.Mappings.Add(versionToCheck + " " + uriToCheck, ValidatePageLink(client, uriToCheck));
+							}
+							
+							results.Add(result);
+						}
+					}
+				});
+
+			return results;
 		}
 	}
 }

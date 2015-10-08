@@ -70,6 +70,12 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ValidateMappings()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ValidateMappings);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Generate()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
@@ -146,6 +152,7 @@ namespace Raven.Documentation.Web.Controllers
         {
             public readonly string Search = "Search";
             public readonly string Validate = "Validate";
+            public readonly string ValidateMappings = "ValidateMappings";
             public readonly string Generate = "Generate";
             public readonly string Welcome = "Welcome";
             public readonly string Index = "Index";
@@ -163,6 +170,7 @@ namespace Raven.Documentation.Web.Controllers
         {
             public const string Search = "Search";
             public const string Validate = "Validate";
+            public const string ValidateMappings = "ValidateMappings";
             public const string Generate = "Generate";
             public const string Welcome = "Welcome";
             public const string Index = "Index";
@@ -191,6 +199,16 @@ namespace Raven.Documentation.Web.Controllers
         public ActionParamsClass_Validate ValidateParams { get { return s_params_Validate; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Validate
+        {
+            public readonly string language = "language";
+            public readonly string version = "version";
+            public readonly string all = "all";
+        }
+        static readonly ActionParamsClass_ValidateMappings s_params_ValidateMappings = new ActionParamsClass_ValidateMappings();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ValidateMappings ValidateMappingsParams { get { return s_params_ValidateMappings; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ValidateMappings
         {
             public readonly string language = "language";
             public readonly string version = "version";
@@ -313,6 +331,7 @@ namespace Raven.Documentation.Web.Controllers
                 public readonly string Studio = "Studio";
                 public readonly string Transformers = "Transformers";
                 public readonly string Validate = "Validate";
+                public readonly string ValidateMappings = "ValidateMappings";
                 public readonly string Welcome = "Welcome";
             }
             public readonly string Article = "~/Views/Docs/Article.cshtml";
@@ -329,6 +348,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Studio = "~/Views/Docs/Studio.cshtml";
             public readonly string Transformers = "~/Views/Docs/Transformers.cshtml";
             public readonly string Validate = "~/Views/Docs/Validate.cshtml";
+            public readonly string ValidateMappings = "~/Views/Docs/ValidateMappings.cshtml";
             public readonly string Welcome = "~/Views/Docs/Welcome.cshtml";
         }
     }
@@ -363,6 +383,20 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "all", all);
             ValidateOverride(callInfo, language, version, all);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ValidateMappingsOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, bool all);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ValidateMappings(string language, string version, bool all)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ValidateMappings);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "all", all);
+            ValidateMappingsOverride(callInfo, language, version, all);
             return callInfo;
         }
 
