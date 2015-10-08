@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "global.markdown",
+    "Name": "Global",
+    "Mappings": []
+  },
+  {
+    "Path": "type-specific.markdown",
+    "Name": "Type-specific",
+    "Mappings": []
+  }
+]

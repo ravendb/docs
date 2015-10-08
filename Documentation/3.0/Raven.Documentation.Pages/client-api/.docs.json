@@ -1,0 +1,82 @@
+[
+  {
+    "Path": "what-is-a-document-store.markdown",
+    "Name": "What is a document store?",
+    "Mappings": []
+  },
+  {
+    "Path": "creating-document-store.markdown",
+    "Name": "Creating document store",
+    "Mappings": []
+  },
+  {
+    "Path": "setting-up-default-database.markdown",
+    "Name": "Setting up default database",
+    "Mappings": []
+  },
+  {
+    "Path": "setting-up-connection-string.markdown",
+    "Name": "Setting up connection string",
+    "Mappings": []
+  },
+  {
+    "Path": "/commands",
+    "Name": "Commands",
+    "Mappings": []
+  },
+  {
+    "Path": "/session",
+    "Name": "Session",
+    "Mappings": []
+  },
+  {
+    "Path": "/document-identifiers",
+    "Name": "Document identifiers",
+    "Mappings": []
+  },
+  {
+    "Path": "/bulk-insert",
+    "Name": "Bulk Insert",
+    "Mappings": []
+  },
+  {
+    "Path": "/changes",
+    "Name": "Changes API",
+    "Mappings": []
+  },
+  {
+    "Path": "/listeners",
+    "Name": "Listeners",
+    "Mappings": []
+  },
+  {
+    "Path": "/data-subscriptions",
+    "Name": "Data Subscriptions",
+    "Mappings": []
+  },
+  {
+    "Path": "/bundles",
+    "Name": "Bundles",
+    "Mappings": []
+  },
+  {
+    "Path": "/concurrency",
+    "Name": "Concurrency",
+    "Mappings": []
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  },
+  {
+    "Path": "/faq",
+    "Name": "FAQ",
+    "Mappings": []
+  }
+]

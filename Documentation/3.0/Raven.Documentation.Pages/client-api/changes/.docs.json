@@ -1,0 +1,37 @@
+[
+  {
+    "Path": "what-is-changes-api.markdown",
+    "Name": "What is Changes API?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-document-changes.markdown",
+    "Name": "How to subscribe to document changes?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-index-changes.markdown",
+    "Name": "How to subscribe to index changes?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-bulk-insert-operation-changes.markdown",
+    "Name": "How to subscribe to bulk insert operation changes?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-transformer-changes.markdown",
+    "Name": "How to subscribe to transformer changes?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-replication-conflicts.markdown",
+    "Name": "How to subscribe to replication conflicts?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-to-data-subscription-changes.markdown",
+    "Name": "How to subscribe to data subscription changes?",
+    "Mappings": []
+  }
+]

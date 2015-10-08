@@ -6,6 +6,10 @@
 			{
 				"Version": 3.0,
 				"Key": "server/configuration/windows-clustering/windows-server-2008"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/administration/fmc_configuration"
 			}
 		]
 	},
@@ -16,6 +20,10 @@
 			{
 				"Version": 3.0,
 				"Key": "server/configuration/windows-clustering/windows-server-2012"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/administration/fmc_configuration"
 			}
 		]
 	}

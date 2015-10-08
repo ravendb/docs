@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "status.markdown",
+    "Name": "GetSynchronizationStatusFor",
+    "Mappings": []
+  },
+  {
+    "Path": "finished.markdown",
+    "Name": "GetFinished",
+    "Mappings": []
+  },
+  {
+    "Path": "active.markdown",
+    "Name": "GetActive",
+    "Mappings": []
+  },
+  {
+    "Path": "pending.markdown",
+    "Name": "GetPending",
+    "Mappings": []
+  }
+]

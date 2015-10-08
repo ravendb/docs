@@ -1,0 +1,17 @@
+[
+  {
+    "Path": "working-with-document-ids.markdown",
+    "Name": "Working with document ids",
+    "Mappings": []
+  },
+  {
+    "Path": "hilo-algorithm.markdown",
+    "Name": "HiLo algorithm",
+    "Mappings": []
+  },
+  {
+    "Path": "beware-of.markdown",
+    "Name": "Beware of ...",
+    "Mappings": []
+  }
+]

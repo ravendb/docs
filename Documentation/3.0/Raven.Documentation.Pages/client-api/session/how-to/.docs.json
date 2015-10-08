@@ -1,0 +1,67 @@
+[
+  {
+    "Path": "defer-operations.markdown",
+    "Name": "...defer operations",
+    "Mappings": []
+  },
+  {
+    "Path": "perform-operations-lazily.markdown",
+    "Name": "...perform operations lazily",
+    "Mappings": []
+  },
+  {
+    "Path": "clear-a-session.markdown",
+    "Name": "...clear a session",
+    "Mappings": []
+  },
+  {
+    "Path": "evict-entity-from-a-session.markdown",
+    "Name": "...evict entity from a session",
+    "Mappings": []
+  },
+  {
+    "Path": "refresh-entity.markdown",
+    "Name": "...refresh entity",
+    "Mappings": []
+  },
+  {
+    "Path": "get-entity-id.markdown",
+    "Name": "...get entity id",
+    "Mappings": []
+  },
+  {
+    "Path": "get-entity-metadata.markdown",
+    "Name": "...get entity metadata",
+    "Mappings": []
+  },
+  {
+    "Path": "get-entity-etag.markdown",
+    "Name": "...get entity etag",
+    "Mappings": []
+  },
+  {
+    "Path": "get-entity-url.markdown",
+    "Name": "...get entity url",
+    "Mappings": []
+  },
+  {
+    "Path": "check-if-entity-has-changed.markdown",
+    "Name": "...check if entity has changed",
+    "Mappings": []
+  },
+  {
+    "Path": "check-if-there-are-any-changes-on-a-session.markdown",
+    "Name": "...check if there are any changes on a session",
+    "Mappings": []
+  },
+  {
+    "Path": "mark-entity-as-readonly.markdown",
+    "Name": "...mark entity as readonly",
+    "Mappings": []
+  },
+  {
+    "Path": "use-morelikethis.markdown",
+    "Name": "...use MoreLikeThis?",
+    "Mappings": []
+  }
+]

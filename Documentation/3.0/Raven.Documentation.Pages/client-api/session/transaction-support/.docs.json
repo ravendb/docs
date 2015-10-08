@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "standard-transactions.markdown",
+    "Name": "Standard transactions",
+    "Mappings": []
+  },
+  {
+    "Path": "dtc-transactions.markdown",
+    "Name": "DTC transactions",
+    "Mappings": []
+  }
+]

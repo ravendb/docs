@@ -1,0 +1,17 @@
+[
+  {
+    "Path": "how-client-integrates-with-replication-bundle.markdown",
+    "Name": "How client integrates with replication bundle?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-work-with-authorization-bundle.markdown",
+    "Name": "How to work with authorization bundle?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-work-with-unique-constraints-bundle.markdown",
+    "Name": "How to work with unique constraints bundle?",
+    "Mappings": []
+  }
+]

@@ -1,0 +1,52 @@
+[
+  {
+    "Path": "what-is-a-session-and-how-does-it-work.markdown",
+    "Name": "What is a session and how does it work?",
+    "Mappings": []
+  },
+  {
+    "Path": "opening-a-session.markdown",
+    "Name": "Opening a session",
+    "Mappings": []
+  },
+  {
+    "Path": "storing-entities.markdown",
+    "Name": "Storing entities",
+    "Mappings": []
+  },
+  {
+    "Path": "deleting-entities.markdown",
+    "Name": "Deleting entities",
+    "Mappings": []
+  },
+  {
+    "Path": "loading-entities.markdown",
+    "Name": "Loading entities",
+    "Mappings": []
+  },
+  {
+    "Path": "saving-changes.markdown",
+    "Name": "Saving changes",
+    "Mappings": []
+  },
+  {
+    "Path": "/querying",
+    "Name": "Querying",
+    "Mappings": []
+  },
+  {
+    "Path": "/transaction-support",
+    "Name": "Transaction support",
+    "Mappings": []
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  }
+]

@@ -1,0 +1,82 @@
+[
+  {
+    "Path": "/lucene",
+    "Name": "Lucene",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-query.markdown",
+    "Name": "How to query?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-stream-query-results.markdown",
+    "Name": "How to stream query results?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-customize-query.markdown",
+    "Name": "How to customize query?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-use-transformers-in-queries.markdown",
+    "Name": "How to use transformers in queries?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-perform-a-faceted-search.markdown",
+    "Name": "How to perform a faceted search?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-perform-a-multifaceted-search.markdown",
+    "Name": "How to perform a multifaceted search?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-query-a-spatial-index.markdown",
+    "Name": "How to query a spatial index?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-perform-dynamic-aggregation.markdown",
+    "Name": "How to perform dynamic aggregation?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-get-query-statistics.markdown",
+    "Name": "How to get query statistics?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-perform-projection.markdown",
+    "Name": "How to perform projection?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-use-intersect.markdown",
+    "Name": "How to use intersect?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-perform-queries-lazily.markdown",
+    "Name": "How to perform queries lazily?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-work-with-suggestions.markdown",
+    "Name": "How to work with suggestions?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-use-search.markdown",
+    "Name": "How to use search?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-use-highlighting.markdown",
+    "Name": "How to use highlighting?",
+    "Mappings": []
+  }
+]

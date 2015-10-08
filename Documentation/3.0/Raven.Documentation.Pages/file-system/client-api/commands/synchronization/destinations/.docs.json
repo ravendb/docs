@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "get.markdown",
+    "Name": "GetDestinations",
+    "Mappings": []
+  },
+  {
+    "Path": "set.markdown",
+    "Name": "SetDestinations",
+    "Mappings": []
+  }
+]

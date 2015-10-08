@@ -1,0 +1,17 @@
+[
+  {
+    "Path": "what-is-a-collection.markdown",
+    "Name": "What is a collection?",
+    "Mappings": []
+  },
+  {
+    "Path": "transaction-support.markdown",
+    "Name": "Transaction support",
+    "Mappings": []
+  },
+  {
+    "Path": "backward-compatibility.markdown",
+    "Name": "Backward compatibility",
+    "Mappings": []
+  }
+]

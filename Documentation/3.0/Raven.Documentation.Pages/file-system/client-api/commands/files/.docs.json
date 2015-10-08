@@ -1,0 +1,37 @@
+[
+  {
+    "Path": "upload.markdown",
+    "Name": "Upload",
+    "Mappings": []
+  },
+  {
+    "Path": "download.markdown",
+    "Name": "Download",
+    "Mappings": []
+  },
+  {
+    "Path": "rename.markdown",
+    "Name": "Rename",
+    "Mappings": []
+  },
+  {
+    "Path": "delete.markdown",
+    "Name": "Delete",
+    "Mappings": []
+  },
+  {
+    "Path": "/metadata",
+    "Name": "Metadata",
+    "Mappings": []
+  },
+  {
+    "Path": "/browse",
+    "Name": "Browse",
+    "Mappings": []
+  },
+  {
+    "Path": "/search",
+    "Name": "Search",
+    "Mappings": []
+  }
+]
