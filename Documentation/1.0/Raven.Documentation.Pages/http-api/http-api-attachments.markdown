@@ -62,4 +62,4 @@ For a successful delete, RavenDB will respond with an HTTP response code 204 No 
     "HTTP/1.1 204 No Content"
 {CODE-END /}
 
-The only way a delete can fail is if [the etag doesn't match](http://ravendb.net/docs/http-api/http-api-comcurrency?version=1.0), even if the attachment doesn't exist, a delete will still respond with a successful status code.
+The only way a delete can fail is if [the etag doesn't match](http://ravendb.net/docs/http-api/http-api-concurrency?version=1.0), even if the attachment doesn't exist, a delete will still respond with a successful status code.

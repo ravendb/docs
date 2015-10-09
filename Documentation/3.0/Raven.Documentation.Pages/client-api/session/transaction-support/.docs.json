@@ -2,11 +2,21 @@
   {
     "Path": "standard-transactions.markdown",
     "Name": "Standard transactions",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/advanced/transaction-support"			
+			}
+		]
   },
   {
     "Path": "dtc-transactions.markdown",
     "Name": "DTC transactions",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "client-api/advanced/transaction-support#dtc-transactions"			
+			}
+		]
   }
 ]

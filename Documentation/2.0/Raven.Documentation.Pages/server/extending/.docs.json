@@ -23,6 +23,10 @@
 				"Key": "server/extending/triggers"
 			},
 			{
+				"Version": 2.5,
+				"Key": "server/extending/plugins"
+			},
+			{
 				"Version": 3.0,
 				"Key": "server/plugins/triggers"
 			}

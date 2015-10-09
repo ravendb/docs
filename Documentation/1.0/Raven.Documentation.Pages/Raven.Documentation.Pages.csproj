@@ -108,7 +108,7 @@
     <None Include="faq\working-with-dtc.markdown" />
     <None Include="http-api\.docs.json" />
     <None Include="http-api\http-api-attachments.markdown" />
-    <None Include="http-api\http-api-comcurrency.markdown" />
+    <None Include="http-api\http-api-concurrency.markdown" />
     <None Include="http-api\http-api-indexes-querying.markdown" />
     <None Include="http-api\http-api-multi.markdown" />
     <None Include="http-api\http-api-security.markdown" />
@@ -132,7 +132,6 @@
     <None Include="Intro\ravendb-in-a-nutshell.markdown" />
     <None Include="Intro\safe-by-default.markdown" />
     <None Include="Intro\system-requirements.markdown" />
-    <None Include="Intro\what-is-a-document-database.markdown" />
     <None Include="Intro\what-is-nosql.markdown" />
     <None Include="server\.docs.json" />
     <None Include="server\administration\.docs.json" />

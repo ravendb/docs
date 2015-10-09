@@ -2,7 +2,12 @@
 	{
 		"Path": "what-is-raven.markdown",
 		"Name": "What is Raven",
-		"Mappings": [ ]
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "start/getting-started"
+			}
+		]
 	},
 	{
 		"Path": "document-key-generation.markdown",

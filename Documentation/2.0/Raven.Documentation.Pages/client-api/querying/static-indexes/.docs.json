@@ -88,6 +88,10 @@
 				"Key": "client-api/advanced/spatial-search"
 			},
 			{
+				"Version": 2.5,
+				"Key": "client-api/querying/static-indexes/spatial-search"
+			},
+			{
 				"Version": 3.0,
 				"Key": "indexes/querying/spatial"
 			}

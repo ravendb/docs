@@ -7,7 +7,12 @@
   {
     "Path": "setup-aggressive-caching.markdown",
     "Name": "...setup aggressive caching",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/aggressive-caching"
+			}
+		]
   },
   {
     "Path": "send-custom-request-using-httpjsonrequestfactory.markdown",

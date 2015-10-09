@@ -2,6 +2,11 @@
   {
     "Path": "revisions-and-concurrency-with-etags.markdown",
     "Name": "Revisions and concurrency with ETags",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "http-api/http-api-concurrency"
+			}
+		]
   }
 ]

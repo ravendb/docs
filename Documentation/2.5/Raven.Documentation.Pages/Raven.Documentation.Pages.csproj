@@ -165,7 +165,6 @@
     <None Include="Intro\ravendb-in-a-nutshell.markdown" />
     <None Include="Intro\safe-by-default.markdown" />
     <None Include="Intro\system-requirements.markdown" />
-    <None Include="Intro\what-is-a-document-database.markdown" />
     <None Include="Intro\what-is-new.markdown" />
     <None Include="Intro\what-is-nosql.markdown" />
     <None Include="samples\.docs.json" />
@@ -259,6 +258,7 @@
     <None Include="studio\Bundles\scripted-index-results.markdown" />
     <None Include="studio\Bundles\sql-replication.markdown" />
     <None Include="studio\Bundles\Versioning.markdown" />
+    <None Include="studio\Collections.markdown" />
     <None Include="studio\Documents.markdown" />
     <None Include="studio\dynamic-reporting.markdown" />
     <None Include="studio\index.markdown" />

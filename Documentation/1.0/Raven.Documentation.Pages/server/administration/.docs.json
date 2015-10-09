@@ -44,6 +44,10 @@
 		"Name": "Windows Clustering",
 		"Mappings": [
 			{
+				"Version": 2.5,
+				"Key": "server/administration/windows-clustering/fcm_configuration_2008"
+			},
+			{
 				"Version": 3.0,
 				"Key": "server/configuration/windows-clustering/windows-server-2012"
 			}

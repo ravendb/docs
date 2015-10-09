@@ -8,6 +8,10 @@
 				"Key": "server/bundles/quotas"
 			},
 			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/quotas"
+			},
+			{
 				"Version": 3.0,
 				"Key": "server/bundles/quotas"
 			}
@@ -20,6 +24,10 @@
 			{
 				"Version": 1.0,
 				"Key": "server/bundles/versioning"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/versioning"
 			},
 			{
 				"Version": 3.0,
@@ -36,6 +44,10 @@
 				"Key": "server/bundles/morelikethis"
 			},
 			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/morelikethis"
+			},
+			{
 				"Version": 3.0,
 				"Key": "server/bundles/more-like-this"
 			}
@@ -48,6 +60,10 @@
 			{
 				"Version": 1.0,
 				"Key": "server/bundles/unique-constraints"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/unique-constraints"
 			},
 			{
 				"Version": 3.0,
@@ -64,6 +80,10 @@
 				"Key": "server/bundles/authorization"
 			},
 			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/authorization"
+			},
+			{
 				"Version": 3.0,
 				"Key": "server/bundles/authorization"
 			}
@@ -76,6 +96,10 @@
 			{
 				"Version": 1.0,
 				"Key": "server/bundles/authorization-bundle-design"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/authorization-bundle-design"
 			},
 			{
 				"Version": 3.0,
@@ -92,6 +116,10 @@
 				"Key": "server/bundles/cascade-delete"
 			},
 			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/cascade-delete"
+			},
+			{
 				"Version": 3.0,
 				"Key": "server/bundles/cascade-delete"
 			}
@@ -104,6 +132,10 @@
 			{
 				"Version": 1.0,
 				"Key": "server/bundles/expiration"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/expiration"
 			},
 			{
 				"Version": 3.0,
@@ -147,6 +179,10 @@
 		"Mappings": [
 			{
 				"Version": 2.5,
+				"Key": "server/extending/bundles/scripted-index-results"
+			},
+			{
+				"Version": 3.0,
 				"Key": "server/bundles/scripted-index-results"
 			}
 		]
@@ -166,7 +202,11 @@
 		"Name": "Index Replication Bundle",
 		"Mappings": [
 			{
-				"Version": 2.0,
+				"Version": 1.0,
+				"Key": "server/bundles/index-replication"
+			},
+			{
+				"Version": 2.5,
 				"Key": "server/extending/bundles/index-replication"
 			},
 			{

@@ -2,7 +2,12 @@
   {
     "Path": "what-is-changes-api.markdown",
     "Name": "What is Changes API?",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/changes-api"
+			}
+		]
   },
   {
     "Path": "how-to-subscribe-to-document-changes.markdown",

@@ -7,7 +7,12 @@
   {
     "Path": "perform-operations-lazily.markdown",
     "Name": "...perform operations lazily",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/querying/lazy-operations"
+			}
+		]
   },
   {
     "Path": "clear-a-session.markdown",

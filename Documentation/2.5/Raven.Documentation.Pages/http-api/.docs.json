@@ -53,10 +53,6 @@
 		"Name": "Revisions and Concurrency with E-Tags",
 		"Mappings": [
 			{
-				"Version": 1.0,
-				"Key": "http-api/http-api-comcurrency"
-			},
-			{
 				"Version": 3.0,
 				"Key": "client-api/commands/what-are-commands",
 				"Language": "Http"

@@ -102,6 +102,11 @@
 	{
 		"Path": "unbounded-results.markdown",
 		"Name": "Unbounded results",
-		"Mappings": [ ]
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-stream-query-results"
+			}
+		]
 	}
 ]

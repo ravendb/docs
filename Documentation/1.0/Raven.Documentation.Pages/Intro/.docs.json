@@ -5,11 +5,6 @@
 		"Mappings": [ ]
 	},
 	{
-		"Path": "what-is-a-document-database.markdown",
-		"Name": "What is a Document Database",
-		"Mappings": [ ]
-	},
-	{
 		"Path": "ravendb-in-a-nutshell.markdown",
 		"Name": "RavenDB in a nutshell",
 		"Mappings": [

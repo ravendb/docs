@@ -56,6 +56,10 @@
 			{
 				"Version": 1.0,
 				"Key": "client-api/advanced/index-administration"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/administration/index-administration"
 			}
 		]
 	},

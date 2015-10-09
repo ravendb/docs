@@ -7,12 +7,22 @@
 	{
 		"Path": "lucene-indexes-usage.markdown",
 		"Name": "How does RavenDB use Lucene for indexing?",
-		"Mappings": [ ]
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/what-are-indexes"
+			}
+		]
 	},
 	{
 		"Path": "lucene-score.markdown",
 		"Name": "Lucene Score",
-		"Mappings": [ ]
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/sorting#ordering-by-score"
+			}
+		]
 	},
 	{
 		"Path": "profiling-mvc-application.markdown",

@@ -107,7 +107,16 @@ namespace Raven.Documentation.Web.Controllers
 				.Take(int.MaxValue);
 
 			if (all == false)
+			{
 				query = query.Where(x => x.Version == CurrentVersion);
+
+				Language parsedLanguage;
+
+				if (Enum.TryParse(language, true, out parsedLanguage))
+				{
+					query = query.Where(x => x.Language == parsedLanguage || x.Language == Language.All);
+				}
+			}
 
 			var pages = query.ToList();
 

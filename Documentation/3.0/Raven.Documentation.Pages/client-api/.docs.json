@@ -17,7 +17,12 @@
   {
     "Path": "setting-up-connection-string.markdown",
     "Name": "Setting up connection string",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/connecting-to-a-ravendb-datastore#using-a-connection-string"
+			}
+		]
   },
   {
     "Path": "/commands",

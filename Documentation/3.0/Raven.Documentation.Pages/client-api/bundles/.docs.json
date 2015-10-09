@@ -2,7 +2,12 @@
   {
     "Path": "how-client-integrates-with-replication-bundle.markdown",
     "Name": "How client integrates with replication bundle?",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/scaling-out/replication/client-integration"
+			}
+		]
   },
   {
     "Path": "how-to-work-with-authorization-bundle.markdown",

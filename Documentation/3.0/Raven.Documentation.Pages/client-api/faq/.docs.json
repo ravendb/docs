@@ -2,16 +2,31 @@
   {
     "Path": "what-is-a-collection.markdown",
     "Name": "What is a collection?",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "theory/ravendb-collections"
+			}
+		]
   },
   {
     "Path": "transaction-support.markdown",
     "Name": "Transaction support",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/advanced/transaction-support"
+			}
+		]
   },
   {
     "Path": "backward-compatibility.markdown",
     "Name": "Backward compatibility",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/backward-compatibility"
+			}
+		]
   }
 ]

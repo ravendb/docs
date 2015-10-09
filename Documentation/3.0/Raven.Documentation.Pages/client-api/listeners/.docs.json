@@ -2,31 +2,61 @@
   {
     "Path": "what-are-listeners.markdown",
     "Name": "What are listeners?",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/client-side-listeners"
+			}
+		]
   },
   {
     "Path": "what-are-store-listeners-and-how-to-work-with-them.markdown",
     "Name": "Store listeners",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/client-side-listeners"
+			}
+		]
   },
   {
     "Path": "what-are-delete-listeners-and-how-to-work-with-them.markdown",
     "Name": "Delete listeners",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/client-side-listeners"
+			}
+		]
   },
   {
     "Path": "what-are-conversion-listeners-and-how-to-work-with-them.markdown",
     "Name": "Conversion listeners",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/client-side-listeners"
+			}
+		]
   },
   {
     "Path": "what-are-conflict-listeners-and-how-to-work-with-them.markdown",
     "Name": "Conflict listeners",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/client-side-listeners"
+			}
+		]
   },
   {
     "Path": "what-are-query-listeners-and-how-to-work-with-them.markdown",
     "Name": "Query listeners",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/client-side-listeners"
+			}
+		]
   }
 ]

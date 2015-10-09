@@ -117,8 +117,12 @@ namespace Raven.Documentation.Parser
 			}
 		}
 
-		private static readonly string[] MappingVersionsToCheck = new[] { "1.0", "2.0", "2.5", "3.0"};
-
+		private static readonly MappingVersion[] MappingVersionsToCheck = {
+			new MappingVersion { FloatValue = 1.0f, StringValue = "1.0"},
+			new MappingVersion { FloatValue = 2.0f, StringValue = "2.0"},
+            new MappingVersion { FloatValue = 2.5f, StringValue = "2.5"},
+            new MappingVersion { FloatValue = 3.0f, StringValue = "3.0"}
+		};
 
 		public IEnumerable<PageMappingsValidationResult> ValidateMappings(IList<DocumentationPage> pages)
 		{
@@ -146,14 +150,30 @@ namespace Raven.Documentation.Parser
 
 							var result = new PageMappingsValidationResult(page.Key, page.Language == Language.All ? _currentLanguage : page.Language, page.Version);
 
-							foreach (var versionToCheck in MappingVersionsToCheck.Except(new [] { page.Version }))
+							foreach (var versionToCheck in MappingVersionsToCheck.Where(x => x.StringValue != page.Version))
 							{
-								var explicitMapping = page.Mappings.FirstOrDefault(x => Math.Abs(x.Version - float.Parse(versionToCheck)) < float.Epsilon);
-								var inheritedMapping = page.Mappings.OrderByDescending(x => x.Version).FirstOrDefault(y => y.Version < float.Parse(versionToCheck));
+								var explicitMapping = page.Mappings.FirstOrDefault(x => Math.Abs(x.Version - versionToCheck.FloatValue) < float.Epsilon);
+
+								DocumentationMapping inheritedMapping = null;
+
+								if (explicitMapping == null)
+								{
+									if (versionToCheck.FloatValue < float.Parse(page.Version)) // switching from higher to lower version
+									{
+										inheritedMapping =
+											page.Mappings.OrderBy(x => x.Version).LastOrDefault(y => y.Version < versionToCheck.FloatValue);
+									}
+									else if (page.Mappings.Any(x => x.Version >= float.Parse(page.Version)))
+										// when switching from lower to higher version, make sure we don't get too lower mapping
+									{
+										inheritedMapping =
+											page.Mappings.OrderByDescending(x => x.Version).FirstOrDefault(y => y.Version < versionToCheck.FloatValue);
+									}
+								}
 
 								Uri uriToCheck;
 
-								var versionSpecificRootUrl = _options.RootUrl.Replace(page.Version, versionToCheck);
+								var versionSpecificRootUrl = _options.RootUrl.Replace(page.Version, versionToCheck.StringValue);
 
 								if (explicitMapping != null)
 								{
@@ -168,7 +188,7 @@ namespace Raven.Documentation.Parser
 									uriToCheck = new Uri(versionSpecificRootUrl + page.Key);
 								}
 
-								result.Mappings.Add(versionToCheck + " " + uriToCheck, ValidatePageLink(client, uriToCheck));
+								result.Mappings.Add(versionToCheck.StringValue + " " + uriToCheck, ValidatePageLink(client, uriToCheck));
 							}
 							
 							results.Add(result);

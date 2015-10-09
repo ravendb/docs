@@ -2,32 +2,62 @@
   {
     "Path": "what-is-a-session-and-how-does-it-work.markdown",
     "Name": "What is a session and how does it work?",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/understanding-session-object"
+			}
+		]
   },
   {
     "Path": "opening-a-session.markdown",
     "Name": "Opening a session",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/opening-a-session"
+			}
+		]
   },
   {
     "Path": "storing-entities.markdown",
     "Name": "Storing entities",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/saving-new-document"
+			}
+		]
   },
   {
     "Path": "deleting-entities.markdown",
     "Name": "Deleting entities",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/deleting-documents"
+			}
+		]
   },
   {
     "Path": "loading-entities.markdown",
     "Name": "Loading entities",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/loading-editing-existing-document"
+			}
+		]
   },
   {
     "Path": "saving-changes.markdown",
     "Name": "Saving changes",
-    "Mappings": []
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/saving-new-document"
+			}
+		]
   },
   {
     "Path": "/querying",

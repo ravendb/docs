@@ -38,6 +38,10 @@
 				"Key": "server/bundles/authentication"
 			},
 			{
+				"Version": 2.0,
+				"Key": "server/authentication"
+			},
+			{
 				"Version": 3.0,
 				"Key": "server/configuration/authentication-and-authorization"
 			}
