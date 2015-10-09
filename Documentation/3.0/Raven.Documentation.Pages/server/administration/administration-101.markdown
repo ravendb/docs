@@ -43,7 +43,7 @@ RavenDB comes with built-in [authentication and authorization](../configuration/
 Also to protect your data, RavenDB offers [data encryption bundle](../bundles/encryption).
 
 - [Bundle: Authorization](../bundles/authorization)
-- [KB : Bundles : Authorization Bundle Design](../../kb/authorization-bundle-design)
+- [KB : Bundles : Authorization Bundle Design](../kb/authorization-bundle-design)
 - [Studio : Manage Your Server : Windows Authentication](../../studio/management/windows-authentication)
 - [Studio : Walkthroughs : Setting up encryption](../../studio/walkthroughs/how-to-setup-encryption)
 

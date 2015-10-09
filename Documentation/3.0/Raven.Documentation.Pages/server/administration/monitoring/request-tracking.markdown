@@ -66,4 +66,4 @@ You can change the Raven.Traffic behavior using the config parameters below
 
 ## Related articles
 
-- [Studio : Management : Traffic Watch](../../studio/management/traffic-watch)
+- [Studio : Management : Traffic Watch](../../../studio/management/traffic-watch)
