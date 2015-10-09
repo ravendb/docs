@@ -97,7 +97,7 @@ namespace Raven.Documentation.Web.Controllers
 				.ValidateLinks(pages)
 				.ToList();
 
-			return View(MVC.Docs.Views.ValidateMappings, results);
+			return View(MVC.Docs.Views.Validate, results);
 		}
 
 		public virtual ActionResult ValidateMappings(string language, string version, bool all)
