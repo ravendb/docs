@@ -1,0 +1,32 @@
+﻿[
+	{
+		"Path": "/files",
+		"Name": "Files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "search-view.markdown",
+		"Name": "Search view",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/synchronization",
+		"Name": "Synchronization",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/tasks",
+		"Name": "Tasks",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "configurations-view.markdown",
+		"Name": "Configurations view",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/how-to",
+		"Name": "How to ...",
+		"Mappings": [ ]
+	}
+]

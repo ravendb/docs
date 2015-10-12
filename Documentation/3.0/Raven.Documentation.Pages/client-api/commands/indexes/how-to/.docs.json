@@ -1,0 +1,32 @@
+[
+  {
+    "Path": "reset-index.markdown",
+    "Name": "...reset index",
+    "Mappings": []
+  },
+  {
+    "Path": "get-index-terms.markdown",
+    "Name": "...get index terms",
+    "Mappings": []
+  },
+  {
+    "Path": "get-index-merge-suggestions.markdown",
+    "Name": "...get index merge suggestions",
+    "Mappings": []
+  },
+  {
+    "Path": "check-if-index-has-changed.markdown",
+    "Name": "...check if index has changed",
+    "Mappings": []
+  },
+  {
+    "Path": "change-index-lock-mode.markdown",
+    "Name": "...change index lock mode",
+    "Mappings": []
+  },
+  {
+    "Path": "change-index-priority.markdown",
+    "Name": "...change index priority",
+    "Mappings": []
+  }
+]

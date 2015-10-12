@@ -1,0 +1,97 @@
+﻿[
+	{
+		"Path": "using-linq-to-query-ravendb.markdown",
+		"Name": "Using Linq to query RavenDB indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/basics"
+			}
+		]
+	},
+	{
+		"Path": "paging.markdown",
+		"Name": "Paging",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/paging"
+			}
+		]
+	},
+	{
+		"Path": "stale-indexes.markdown",
+		"Name": "Stale indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/stale-indexes"
+			}
+		]
+	},
+	{
+		"Path": "/static-indexes",
+		"Name": "Static indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/creating-and-deploying"
+			}
+		]
+	},
+	{
+		"Path": "handling-document-relationships.markdown",
+		"Name": "Handling document relationships",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/handling-document-relationships"
+			}
+		]
+	},
+	{
+		"Path": "polymorphism.markdown",
+		"Name": "Polymorphism",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/indexing-polymorphic-data"
+			}
+		]
+	},
+	{
+		"Path": "/results-transformation",
+		"Name": "Results transformation",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "lazy-operations.markdown",
+		"Name": "Lazy Operations",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/how-to/perform-operations-lazily"
+			}
+		]
+	},
+	{
+		"Path": "intersection.markdown",
+		"Name": "Intersection",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/intersection"
+			}
+		]
+	},
+	{
+		"Path": "query-and-lucene-query.markdown",
+		"Name": "Query and LuceneQuery",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/query-vs-document-query"
+			}
+		]
+	}
+]

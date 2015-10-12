@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "batch.markdown",
+		"Name": "Batch",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/batches/how-to-send-multiple-commands-using-a-batch"
+			}
+		]
+	}
+]

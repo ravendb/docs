@@ -1,0 +1,52 @@
+﻿@model List<Raven.Documentation.Parser.Data.PageMappingsValidationResult>
+@{
+	ViewBag.Title = "Validate Mappings";
+}
+@section scripts {
+	<script type="text/javascript">
+		$('#btnHideValidMappings').click(function () {
+			$(".text-success").hide();
+			$(".body-content div:has(> ul):not(:has(> ul > li:visible))").hide();
+		});
+
+		$('#btnShowValidMappings').click(function () {
+			$(".text-success").show();
+			$(".body-content div:has(> ul):not(:has(> ul > li:visible))").show();
+		});
+	</script>
+}
+
+<h2>Mapping Validation Report</h2>
+
+<button id="btnHideValidMappings" class="btn btn-primary">Hide all valid mappings</button>
+<button id="btnShowValidMappings" class="btn btn-success">Show all valid mappings</button>
+
+<hr />
+
+@foreach (var result in Model)
+{
+	if (result.Mappings.Count == 0)
+	{
+		continue;
+	}
+
+	<div>
+		@Html.ActionLink(string.Format("[{0}] {1}", result.PageVersion, result.PageKey), MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = result.PageLanguage, version = result.PageVersion, key = result.PageKey }, null)
+		<ul>
+			@foreach (var link in result.Mappings)
+			{
+				if (link.Value)
+				{
+					<li class="text-success">@link.Key</li>
+				}
+				else
+				{
+					<li class="text-danger">@link.Key</li>
+				}
+			}
+		</ul>
+	</div>
+}
+
+
+

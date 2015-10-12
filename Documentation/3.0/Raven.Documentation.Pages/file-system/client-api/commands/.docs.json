@@ -1,0 +1,32 @@
+﻿[
+	{
+		"Path": "what-are-commands.markdown",
+		"Name": "What are commands?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/files",
+		"Name": "Files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/configurations",
+		"Name": "Configurations",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/synchronization",
+		"Name": "Synchronization",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/storage",
+		"Name": "Storage",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/admin",
+		"Name": "Admin",
+		"Mappings": [ ]
+	}
+]

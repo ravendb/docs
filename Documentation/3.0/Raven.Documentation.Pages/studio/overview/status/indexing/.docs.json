@@ -1,0 +1,17 @@
+﻿[
+	{
+		"Path": "indexing-performance.markdown",
+		"Name": "Indexing performance",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "index-stats.markdown",
+		"Name": "Index stats",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "batch-size-and-prefetches.markdown",
+		"Name": "Index batch size and Prefetches",
+		"Mappings": [ ]
+	}
+]

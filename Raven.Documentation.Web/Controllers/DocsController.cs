@@ -100,6 +100,40 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Validate, results);
 		}
 
+		public virtual ActionResult ValidateMappings(string language, string version, bool all)
+		{
+			var query = DocumentSession
+				.Query<DocumentationPage>()
+				.Take(int.MaxValue);
+
+			if (all == false)
+			{
+				query = query.Where(x => x.Version == CurrentVersion);
+
+				Language parsedLanguage;
+
+				if (Enum.TryParse(language, true, out parsedLanguage))
+				{
+					query = query.Where(x => x.Language == parsedLanguage || x.Language == Language.All);
+				}
+			}
+
+			var pages = query.ToList();
+
+			var options = new ParserOptions
+			{
+				PathToDocumentationDirectory = GetDocumentationDirectory(),
+				RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
+				ImagesUrl = GetImagesUrl()
+			};
+
+			var results = new DocumentationValidator(options, CurrentLanguage)
+				.ValidateMappings(pages)
+				.ToList();
+
+			return View(MVC.Docs.Views.ValidateMappings, results);
+		}
+
 		public virtual ActionResult Generate(string language, string version, string key, bool all)
 		{
 			if (DebugHelper.IsDebug() == false)

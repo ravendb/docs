@@ -1,0 +1,218 @@
+﻿[
+	{
+		"Path": "quotas.markdown",
+		"Name": "Bundle: Quotas",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/quotas"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/quotas"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/quotas"
+			}
+		]
+	},
+	{
+		"Path": "versioning.markdown",
+		"Name": "Bundle: Versioning",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/versioning"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/versioning"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/versioning"
+			}
+		]
+	},
+	{
+		"Path": "morelikethis.markdown",
+		"Name": "Bundle: More Like This",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/morelikethis"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/morelikethis"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/more-like-this"
+			}
+		]
+	},
+	{
+		"Path": "unique-constraints.markdown",
+		"Name": "Bundle: Unique Constraints",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/unique-constraints"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/unique-constraints"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/unique-constraints"
+			}
+		]
+	},
+	{
+		"Path": "authorization.markdown",
+		"Name": "Bundle: Authorization",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/authorization"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/authorization"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/authorization"
+			}
+		]
+	},
+	{
+		"Path": "authorization-bundle-design.markdown",
+		"Name": "Bundle: Authorization Bundle Design",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/authorization-bundle-design"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/authorization-bundle-design"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/kb/authorization-bundle-design"
+			}
+		]
+	},
+	{
+		"Path": "cascade-delete.markdown",
+		"Name": "Bundle: Cascade Delete",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/cascade-delete"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/cascade-delete"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/cascade-delete"
+			}
+		]
+	},
+	{
+		"Path": "expiration.markdown",
+		"Name": "Bundle: Expiration",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/expiration"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/expiration"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/expiration"
+			}
+		]
+	},
+	{
+		"Path": "encryption.markdown",
+		"Name": "Bundle: Encryption",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/encryption"
+			}
+		]
+	},
+	{
+		"Path": "compression.markdown",
+		"Name": "Bundle: Compression",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/compression"
+			}
+		]
+	},
+	{
+		"Path": "periodic-backup.markdown",
+		"Name": "Bundle: Periodic Backup",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/periodic-export"
+			}
+		]
+	},
+	{
+		"Path": "indexed-properties.markdown",
+		"Name": "Bundle: Indexed Properties",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/scripted-index-results"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/scripted-index-results"
+			}
+		]
+	},
+	{
+		"Path": "sql-replication.markdown",
+		"Name": "Bundle: SQL Replication",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/sql-replication/basics"
+			}
+		]
+	},
+	{
+		"Path": "index-replication.markdown",
+		"Name": "Index Replication Bundle",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/index-replication"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/index-replication"
+			},
+			{
+				"Version": 3.0,
+				"Key": "server/bundles/replication"
+			}
+		]
+	}
+]

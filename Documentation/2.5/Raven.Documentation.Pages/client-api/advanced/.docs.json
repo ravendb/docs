@@ -1,0 +1,112 @@
+﻿[
+	{
+		"Path": "transaction-support.markdown",
+		"Name": "Transaction support in RavenDB",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/transaction-support/dtc-transactions"
+			}
+		]
+	},
+	{
+		"Path": "document-metadata.markdown",
+		"Name": "Working with document metadata",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "querying-for-terms.markdown",
+		"Name": "Querying for terms",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/indexes/how-to/get-index-terms"
+			}
+		]
+	},
+	{
+		"Path": "dynamic-fields.markdown",
+		"Name": "Dynamic fields",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/using-dynamic-fields"
+			}
+		]
+	},
+	{
+		"Path": "/databasecommands",
+		"Name": "DatabaseCommands",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands"
+			}
+		]
+	},
+	{
+		"Path": "/asyncdatabasecommands",
+		"Name": "AsyncDatabaseCommands",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/commands/what-are-commands"
+			}
+		]
+	},
+	{
+		"Path": "custom-serialization.markdown",
+		"Name": "Custom serialization / deserialization",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "aggressive-caching.markdown",
+		"Name": "Aggressive Caching",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/how-to/setup-aggressive-caching"
+			}
+		]
+	},
+	{
+		"Path": "client-side-listeners.markdown",
+		"Name": "Client-side Listeners",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/listeners/what-are-listeners"
+			}
+		]
+	},
+	{
+		"Path": "bulk-inserts.markdown",
+		"Name": "Bulk inserts",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/bulk-insert/how-to-work-with-bulk-insert-operation"
+			}
+		]
+	},
+	{
+		"Path": "full-query-syntax.markdown",
+		"Name": "Full query syntax",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/querying/full-query-syntax"
+			}
+		]
+	},
+	{
+		"Path": "unbounded-results.markdown",
+		"Name": "Unbounded results",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-stream-query-results"
+			}
+		]
+	}
+]

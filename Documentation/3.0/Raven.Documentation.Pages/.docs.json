@@ -1,0 +1,52 @@
+﻿[
+	{
+		"Path": "/start",
+		"Name": "Getting started",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/indexes",
+		"Name": "Indexes",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/transformers",
+		"Name": "Transformers",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/client-api",
+		"Name": "Client API",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/server",
+		"Name": "Server",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/studio",
+		"Name": "Studio",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/samples",
+		"Name": "Samples",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/glossary",
+		"Name": "Glossary",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/file-system",
+		"Name": "File system",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/users-issues",
+		"Name": "Users Issues",
+		"Mappings": [ ]
+	}
+]

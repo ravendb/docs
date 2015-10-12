@@ -1,0 +1,46 @@
+﻿[
+	{
+		"Path": "document-key-generation.markdown",
+		"Name": "Document key generation",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "theory/document-key-generation"
+			}
+		]
+	},
+	{
+		"Path": "authorization-bundle-design.markdown",
+		"Name": "Bundles : Authorization bundle design notes",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/authorization-bundle-design"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/authorization-bundle-design"
+			}
+		]
+	},
+	{
+		"Path": "advanced-replication-details.markdown",
+		"Name": "Replication : Advanced replication details",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/scaling-out/replication/advanced-replication-details"
+			}
+		]
+	},
+	{
+		"Path": "long-shutdown-times.markdown",
+		"Name": "Server : Long shutdown times",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/administration/long-shutdown-times"
+			}
+		]
+	}
+]

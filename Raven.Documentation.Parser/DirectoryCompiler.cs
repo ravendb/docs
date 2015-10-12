@@ -41,11 +41,11 @@
 
 			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
 
-			var docListFilePath = Path.Combine(directory, Constants.DocListFileName);
-			if (File.Exists(docListFilePath) == false)
+			var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
+			if (File.Exists(docsFilePath) == false)
 				yield break;
 
-			foreach (var item in DocListFileHelper.ParseDocListFile(docListFilePath))
+			foreach (var item in DocumentationFileHelper.ParseFile(docsFilePath))
 			{
 				if (!item.IsFolder)
 					continue;
@@ -63,11 +63,11 @@
 
 		private static IEnumerable<TableOfContents.TableOfContentsItem> GenerateTableOfContentItems(string directory, string keyPrefix)
 		{
-			var docListFilePath = Path.Combine(directory, Constants.DocListFileName);
-			if (File.Exists(docListFilePath) == false)
+			var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
+			if (File.Exists(docsFilePath) == false)
 				yield break;
 
-			foreach (var item in DocListFileHelper.ParseDocListFile(docListFilePath))
+			foreach (var item in DocumentationFileHelper.ParseFile(docsFilePath))
 			{
 				var tableOfContentsItem = new TableOfContents.TableOfContentsItem
 											  {
@@ -104,7 +104,7 @@
 			}
 		}
 
-		private DocumentationPage CompileDocumentationPage(FolderItem page, string directory, string documentationVersion)
+		private DocumentationPage CompileDocumentationPage(FolderItem page, string directory, string documentationVersion, List<DocumentationMapping> mappings)
 		{
 			var path = Path.Combine(directory, page.Name + FileExtensionHelper.GetLanguageFileExtension(page.Language) + Constants.MarkdownFileExtension);
 			var fileInfo = new FileInfo(path);
@@ -112,20 +112,20 @@
 			if (fileInfo.Exists == false)
 				throw new FileNotFoundException(string.Format("Documentaiton file '{0}' not found.", path));
 
-			return _documentCompiler.Compile(fileInfo, page, documentationVersion);
+			return _documentCompiler.Compile(fileInfo, page, documentationVersion, mappings);
 		}
 
-		private IEnumerable<DocumentationPage> CompileDocumentationDirectory(string directory, string documentationVersion)
+		private IEnumerable<DocumentationPage> CompileDocumentationDirectory(string directory, string documentationVersion, List<DocumentationMapping> mappings = null)
 		{
-			var docListFilePath = Path.Combine(directory, Constants.DocListFileName);
-			if (File.Exists(docListFilePath) == false)
+			var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
+			if (File.Exists(docsFilePath) == false)
 				yield break;
 
-			foreach (var item in DocListFileHelper.ParseDocListFile(docListFilePath))
+			foreach (var item in DocumentationFileHelper.ParseFile(docsFilePath))
 			{
 				if (item.IsFolder)
 				{
-					foreach (var page in CompileDocumentationDirectory(Path.Combine(directory, item.Name), documentationVersion))
+					foreach (var page in CompileDocumentationDirectory(Path.Combine(directory, item.Name), documentationVersion, item.Mappings))
 					{
 						yield return page;
 					}
@@ -135,7 +135,7 @@
 
 				foreach (var pageToCompile in GetPages(directory, item))
 				{
-					yield return CompileDocumentationPage(pageToCompile, directory, documentationVersion);
+					yield return CompileDocumentationPage(pageToCompile, directory, documentationVersion, pageToCompile.Mappings);
 				}
 			}
 
@@ -150,7 +150,7 @@
 									Name = "index"
 								};
 
-			yield return CompileDocumentationPage(indexItem, directory, documentationVersion);
+			yield return CompileDocumentationPage(indexItem, directory, documentationVersion, mappings ?? new List<DocumentationMapping>());
 		}
 
 		private static IEnumerable<FolderItem> GetPages(string directory, FolderItem item)

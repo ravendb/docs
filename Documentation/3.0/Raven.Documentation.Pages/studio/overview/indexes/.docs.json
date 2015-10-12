@@ -1,0 +1,32 @@
+﻿[
+	{
+		"Path": "indexes-view.markdown",
+		"Name": "Indexes View",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "studio/indexes"
+			}
+		]
+	},
+	{
+		"Path": "index-edit-view.markdown",
+		"Name": "Index Edit View",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "studio/indexes"
+			}
+		]
+	},
+	{
+		"Path": "transformers-view.markdown",
+		"Name": "Transformers View",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "transformer-edit-view.markdown",
+		"Name": "Transformer Edit View",
+		"Mappings": [ ]
+	}
+]

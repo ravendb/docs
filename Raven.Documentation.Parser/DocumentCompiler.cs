@@ -27,7 +27,7 @@
 			_repoAnalyzer = repoAnalyzer;
 		}
 
-		public DocumentationPage Compile(FileInfo file, FolderItem page, string documentationVersion)
+		public DocumentationPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
 		{
 			try
 			{
@@ -58,18 +58,19 @@
 				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
 				return new DocumentationPage
-				       {
-					       Key = key,
-					       Title = title,
-					       Version = documentationVersion,
-					       HtmlContent = content,
-					       TextContent = textContent,
-					       Language = page.Language,
-					       Category = category,
-					       Images = images,
-					       LastCommitSha = lastCommit,
-						   RelativePath = relativeUrl
-				       };
+				{
+					Key = key,
+					Title = title,
+					Version = documentationVersion,
+					HtmlContent = content,
+					TextContent = textContent,
+					Language = page.Language,
+					Category = category,
+					Images = images,
+					LastCommitSha = lastCommit,
+					RelativePath = relativeUrl,
+					Mappings = mappings.OrderBy(x => x.Version).ToList()
+				};
 			}
 			catch (Exception e)
 			{
@@ -93,10 +94,10 @@
 				tag.attributes["src"] = imagesUrl + newSrc;
 
 				images.Add(new DocumentationImage
-					           {
-								   ImagePath = imagePath,
-								   ImageKey = newSrc
-					           });
+				{
+					ImagePath = imagePath,
+					ImageKey = newSrc
+				});
 			}
 
 			tag.attributes["class"] = "img-responsive img-thumbnail";

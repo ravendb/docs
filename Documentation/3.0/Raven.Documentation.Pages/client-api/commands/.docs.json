@@ -1,0 +1,47 @@
+[
+  {
+    "Path": "what-are-commands.markdown",
+    "Name": "What are commands?",
+    "Mappings": []
+  },
+  {
+    "Path": "/documents",
+    "Name": "Documents",
+    "Mappings": []
+  },
+  {
+    "Path": "/indexes",
+    "Name": "Indexes",
+    "Mappings": []
+  },
+  {
+    "Path": "/attachments",
+    "Name": "Attachments",
+    "Mappings": []
+  },
+  {
+    "Path": "/querying",
+    "Name": "Querying",
+    "Mappings": []
+  },
+  {
+    "Path": "/transformers",
+    "Name": "Transformers",
+    "Mappings": []
+  },
+  {
+    "Path": "/batches",
+    "Name": "Batches",
+    "Mappings": []
+  },
+  {
+    "Path": "/patches",
+    "Name": "Patches",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  }
+]

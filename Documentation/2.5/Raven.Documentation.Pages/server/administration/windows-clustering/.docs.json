@@ -1,0 +1,30 @@
+﻿[
+	{
+		"Path": "fcm_configuration_2008.markdown",
+		"Name": "Windows Server 2008",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/configuration/windows-clustering/windows-server-2008"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/administration/fmc_configuration"
+			}
+		]
+	},
+	{
+		"Path": "fcm_configuration_2012.markdown",
+		"Name": "Windows Server 2012",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/configuration/windows-clustering/windows-server-2012"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/administration/fmc_configuration"
+			}
+		]
+	}
+]

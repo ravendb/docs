@@ -1,0 +1,27 @@
+[
+  {
+    "Path": "how-to-query-a-database.markdown",
+    "Name": "How to query a database?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-stream-query-results.markdown",
+    "Name": "How to stream query results?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-work-with-facet-query.markdown",
+    "Name": "How to work with Facet query?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-work-with-suggestion-query.markdown",
+    "Name": "How to work with Suggestion query?",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-work-with-morelikethis-query.markdown",
+    "Name": "How to work with MoreLikeThis query?",
+    "Mappings": []
+  }
+]

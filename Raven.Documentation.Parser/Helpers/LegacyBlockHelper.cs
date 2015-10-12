@@ -33,12 +33,12 @@ namespace Raven.Documentation.Parser.Helpers
 
 		private static string GenerateFilesList(string pathToDocumentationPage, string directoryName)
 		{
-			var path = Path.Combine(pathToDocumentationPage, Constants.DocListFileName);
+			var path = Path.Combine(pathToDocumentationPage, Constants.DocumentationFileName);
 			if (File.Exists(path) == false)
 				return string.Empty;
 
 			var builder = new StringBuilder();
-			foreach (var item in DocListFileHelper.ParseDocListFile(path))
+			foreach (var item in DocumentationFileHelper.ParseFile(path))
 			{
 				builder.AppendLine(string.Format("* [{0}]({1}/{2})", item.Description, directoryName, item.Name));
 			}

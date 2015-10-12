@@ -1,0 +1,67 @@
+[
+  {
+    "Path": "switch-commands-to-a-different-database.markdown",
+    "Name": "...switch commands to a different database",
+    "Mappings": []
+  },
+  {
+    "Path": "switch-commands-credentials.markdown",
+    "Name": "...switch commands credentials",
+    "Mappings": []
+  },
+  {
+    "Path": "disable-caching.markdown",
+    "Name": "...disable caching",
+    "Mappings": []
+  },
+  {
+    "Path": "start-stop-indexing-and-get-indexing-status.markdown",
+    "Name": "...start or stop indexing and get indexing status",
+    "Mappings": []
+  },
+  {
+    "Path": "start-stop-reducing.markdown",
+    "Name": "...start or stop reducing",
+    "Mappings": []
+  },
+  {
+    "Path": "create-delete-database.markdown",
+    "Name": "...create or delete database",
+    "Mappings": []
+  },
+  {
+    "Path": "compact-database.markdown",
+    "Name": "...compact database",
+    "Mappings": []
+  },
+  {
+    "Path": "get-database-and-server-statistics.markdown",
+    "Name": "...get database and server statistics",
+    "Mappings": []
+  },
+  {
+    "Path": "get-database-configuration.markdown",
+    "Name": "...get database configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "start-backup-restore-operations.markdown",
+    "Name": "...start backup or restore operations",
+    "Mappings": []
+  },
+  {
+    "Path": "get-full-url-for-a-document.markdown",
+    "Name": "...get full url for a document",
+    "Mappings": []
+  },
+  {
+    "Path": "get-server-build-number.markdown",
+    "Name": "...get server build number",
+    "Mappings": []
+  },
+  {
+    "Path": "get-names-of-all-databases-on-a-server.markdown",
+    "Name": "...get names of all databases on a server",
+    "Mappings": []
+  }
+]

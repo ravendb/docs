@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "get.markdown",
+    "Name": "GetConflicts",
+    "Mappings": []
+  },
+  {
+    "Path": "resolve.markdown",
+    "Name": "ResolveConflict",
+    "Mappings": []
+  }
+]

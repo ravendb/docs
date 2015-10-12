@@ -1,0 +1,62 @@
+﻿[
+	{
+		"Path": "defining-static-index.markdown",
+		"Name": "Defining a static index",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/creating-and-deploying"
+			}
+		]
+	},
+	{
+		"Path": "customizing-results-order.markdown",
+		"Name": "Customizing results order using SortOptions",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/customizing-results-order"
+			}
+		]
+	},
+	{
+		"Path": "configuring-index-options.markdown",
+		"Name": "Configuring index options",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/using-analyzers"
+			}
+		]
+	},
+	{
+		"Path": "indexing-hierarchies.markdown",
+		"Name": "Indexing Hierarchical Data",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/indexing-hierarchical-data"
+			}
+		]
+	},
+	{
+		"Path": "live-projections.markdown",
+		"Name": "Live Projections",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "transformers/what-are-transformers"
+			}
+		]
+	},
+	{
+		"Path": "indexes-error-handling.markdown",
+		"Name": "Error handling in Indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "indexes/troubleshooting/debugging-index-errors"
+			}
+		]
+	}
+]

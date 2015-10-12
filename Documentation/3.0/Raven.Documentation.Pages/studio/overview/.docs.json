@@ -1,0 +1,32 @@
+﻿[
+	{
+		"Path": "/documents",
+		"Name": "Documents",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/indexes",
+		"Name": "Indexes",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/query",
+		"Name": "Query",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/tasks",
+		"Name": "Tasks",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/settings",
+		"Name": "Settings",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/status",
+		"Name": "Status",
+		"Mappings": [ ]
+	}
+]

@@ -1,0 +1,42 @@
+﻿[
+	{
+		"Path": "/mvc",
+		"Name": "ASP.NET MVC",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "samples/mvc-starter-kit"
+			}
+		]
+	},
+	{
+		"Path": "/web-api",
+		"Name": "ASP.NET WebAPI",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "samples/mvc-starter-kit"
+			}
+		]
+	},
+	{
+		"Path": "/api-keys",
+		"Name": "API Keys",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/management/api-keys"
+			}
+		]
+	},
+	{
+		"Path": "/raven-tests",
+		"Name": "Raven Tests",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/troubleshooting/sending-support-ticket#writing-unit-tests"
+			}
+		]
+	}
+]

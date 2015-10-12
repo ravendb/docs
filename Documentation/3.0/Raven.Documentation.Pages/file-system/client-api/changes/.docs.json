@@ -1,0 +1,22 @@
+﻿[
+	{
+		"Path": "how-to-subscribe-file-changes.markdown",
+		"Name": "How to subscribe to file changes?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "how-to-subscribe-synchronization-notifications.markdown",
+		"Name": "How to subscribe to synchronization notifications?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "how-to-subscribe-conflicts.markdown",
+		"Name": "How to subscribe to synchronization conflicts?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "how-to-subscribe-configuration-changes.markdown",
+		"Name": "How to subscribe to configuration changes?",
+		"Mappings": [ ]
+	}
+]

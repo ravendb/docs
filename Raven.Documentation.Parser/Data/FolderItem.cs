@@ -1,26 +1,32 @@
-﻿namespace Raven.Documentation.Parser.Data
-{
-    public class FolderItem
-    {
-        public FolderItem(bool isFolder)
-        {
-            IsFolder = isFolder;
-        }
+﻿using System.Collections.Generic;
 
-	    public FolderItem(FolderItem item)
-	    {
-		    IsFolder = item.IsFolder;
-		    Name = item.Name;
-		    Description = item.Description;
-		    Language = item.Language;
-	    }
+namespace Raven.Documentation.Parser.Data
+{
+	public class FolderItem
+	{
+		public FolderItem(bool isFolder)
+		{
+			IsFolder = isFolder;
+			Mappings = new List<DocumentationMapping>();
+		}
+
+		public FolderItem(FolderItem item)
+		{
+			IsFolder = item.IsFolder;
+			Name = item.Name;
+			Description = item.Description;
+			Language = item.Language;
+			Mappings = item.Mappings;
+		}
 
 		public bool IsFolder { get; private set; }
 
-	    public string Name { get; set; }
+		public string Name { get; set; }
 
-        public string Description { get; set; }
+		public string Description { get; set; }
 
-	    public Language Language { get; set; }
-    }
+		public Language Language { get; set; }
+
+		public List<DocumentationMapping> Mappings { get; set; }
+	}
 }

@@ -1,0 +1,17 @@
+﻿[
+	{
+		"Path": "query-view.markdown",
+		"Name": "Query View",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "reporting-view.markdown",
+		"Name": "Reporting View",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "studio/dynamic-reporting"
+			}
+		]
+	}
+]

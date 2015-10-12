@@ -1,0 +1,17 @@
+[
+  {
+    "Path": "search.markdown",
+    "Name": "Search",
+    "Mappings": []
+  },
+  {
+    "Path": "search-on-directory.markdown",
+    "Name": "SearchOnDirectory",
+    "Mappings": []
+  },
+  {
+    "Path": "get-search-fields.markdown",
+    "Name": "GetSearchFields",
+    "Mappings": []
+  }
+]

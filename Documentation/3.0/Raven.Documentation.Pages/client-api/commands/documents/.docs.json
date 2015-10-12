@@ -1,0 +1,27 @@
+[
+  {
+    "Path": "put.markdown",
+    "Name": "Put",
+    "Mappings": []
+  },
+  {
+    "Path": "get.markdown",
+    "Name": "Get",
+    "Mappings": []
+  },
+  {
+    "Path": "delete.markdown",
+    "Name": "Delete",
+    "Mappings": []
+  },
+  {
+    "Path": "stream.markdown",
+    "Name": "Stream",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  }
+]

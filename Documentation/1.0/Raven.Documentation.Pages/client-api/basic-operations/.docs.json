@@ -1,0 +1,62 @@
+﻿[
+	{
+		"Path": "understanding-session-object.markdown",
+		"Name": "Understanding the Session object",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/what-is-a-session-and-how-does-it-work"
+			}
+		]
+	},
+	{
+		"Path": "opening-a-session.markdown",
+		"Name": "Opening a session",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/opening-a-session"
+			}
+		]
+	},
+	{
+		"Path": "saving-new-document.markdown",
+		"Name": "Saving a new document",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/storing-entities"
+			}
+		]
+	},
+	{
+		"Path": "loading-editing-existing-document.markdown",
+		"Name": "Loading & Editing an existing document",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/loading-entities"
+			}
+		]
+	},
+	{
+		"Path": "deleting-documents.markdown",
+		"Name": "Deleting documents",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/deleting-entities"
+			}
+		]
+	},
+	{
+		"Path": "basic-querying.markdown",
+		"Name": "Basic query support",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/session/querying/how-to-query"
+			}
+		]
+	}
+]

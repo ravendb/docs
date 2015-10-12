@@ -1,0 +1,72 @@
+﻿[
+	{
+		"Path": "documents.markdown",
+		"Name": "The Documents Screen",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/documents/documents-view"
+			}
+		]
+	},
+	{
+		"Path": "collections.markdown",
+		"Name": "The Collections Screen",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/documents/documents-view"
+			}
+		]
+	},
+	{
+		"Path": "indexes.markdown",
+		"Name": "Indexes",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/indexes/indexes-view"
+			}
+		]
+	},
+	{
+		"Path": "tasks.markdown",
+		"Name": "The Tasks Screen",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/tasks/import-export-database"
+			}
+		]
+	},
+	{
+		"Path": "logs.markdown",
+		"Name": "The Logs Screen",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/status/logs"
+			}
+		]
+	},
+	{
+		"Path": "statistics.markdown",
+		"Name": "Database Statistics",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/overview/status/stats"
+			}
+		]
+	},
+	{
+		"Path": "multi-database.markdown",
+		"Name": "Multi-databse Support",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "studio/accessing-studio"
+			}
+		]
+	}
+]

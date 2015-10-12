@@ -1,0 +1,80 @@
+﻿[
+	{
+		"Path": "what-are-plugins.markdown",
+		"Name": "What are plugins?",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/extending/triggers"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			}
+		]
+	},
+	{
+		"Path": "triggers.markdown",
+		"Name": "Triggers",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/extending/triggers"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			}
+		]
+	},
+	{
+		"Path": "codecs.markdown",
+		"Name": "Codecs",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			}
+		]
+	},
+	{
+		"Path": "tasks.markdown",
+		"Name": "Tasks",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			}
+		]
+	},
+	{
+		"Path": "compilation-extensions.markdown",
+		"Name": "Compilation Extensions",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			}
+		]
+	},
+	{
+		"Path": "analyzer-generators.markdown",
+		"Name": "Analyzer Generators",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			}
+		]
+	},
+	{
+		"Path": "database-configuration.markdown",
+		"Name": "Database Configuration",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/plugins"
+			}
+		]
+	}
+]

@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "encryption.markdown",
+		"Name": "Encryption",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "versioning.markdown",
+		"Name": "Versioning",
+		"Mappings": [ ]
+	}
+]

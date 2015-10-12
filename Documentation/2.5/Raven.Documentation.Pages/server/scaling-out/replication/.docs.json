@@ -1,0 +1,52 @@
+﻿[
+	{
+		"Path": "client-integration.markdown",
+		"Name": "Client integration",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
+			}
+		]
+	},
+	{
+		"Path": "handling-conflicts.markdown",
+		"Name": "Dealing with Replication Conflicts",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/scaling-out/replication/replication-conflicts"
+			}
+		]
+	},
+	{
+		"Path": "from-embedded-server.markdown",
+		"Name": "Replicating from an Embedded instance",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/scaling-out/replication/replication-and-embedded-instance"
+			}
+		]
+	},
+	{
+		"Path": "advanced-replication-details.markdown",
+		"Name": "Advanced replication details",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/kb/advanced-replication-details"
+			}
+		]
+	},
+	{
+		"Path": "write-assurance.markdown",
+		"Name": "Write assurance",
+		"Mappings": [
+			{
+				"Version": 3.0,
+				"Key": "server/scaling-out/replication/write-assurance"
+			}
+		]
+	}
+]
