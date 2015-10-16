@@ -41,7 +41,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     
 * **Raven/MemoryCacheExpiration**  
     The expiration value for documents in the internal document cache. Value is in seconds.   
-    _Default:_ 5 minutes   
+    _Default:_ 60 minutes   
 
 * **Raven/MemoryCacheLimitMegabytes**
 	The max size (in megabytes) for the internal document cache inside RavenDB server.   
