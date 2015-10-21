@@ -1,5 +1,37 @@
 # What's new
 
+{PANEL:3.0.3800 - 2015/09/21}
+
+### Server
+
+- improved formatted index generation with better error handling,
+- fixed issue with single OAuth tokens caching,
+- larger batches are now handles better for Map-Reduce indexes,
+- added support for HEAD request for streams,
+- fixed `ArgumentOutOfRangeException` that could occur during reading from Lucene index
+
+### File systems
+
+- better handling of larger files with longer names
+
+<hr />
+
+### Client API
+
+- fixed issue with saving documents to proper database in ShardedBulkInsert operation,
+- fixed issues with index generation,
+- IndexCreation now takes into account conventions,
+- added the option to specify timeout of a subscriptions pull request
+
+<hr />
+
+### Studio
+
+- fixed replication topology graph
+- fixed replication settings page
+
+{/PANEL}
+
 {PANEL:3.0.3785 - 2015/08/31}
 
 ### Server
