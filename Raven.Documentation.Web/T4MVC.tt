@@ -1,6 +1,6 @@
 ﻿<#
 /*
-T4MVC Version 3.15.4
+T4MVC Version 3.16.0
 Find latest version and documentation at https://github.com/T4MVC/T4MVC/wiki/Documentation
 Discuss on StackOverflow or on GitHub (https://github.com/T4MVC/T4MVC/issues)
 
@@ -1295,6 +1295,16 @@ if (!settings.ExcludedStaticFileExtensions.Any(extension => projectItem.Name.End
     if (projectItem.Name.EndsWith(".ts")) {
         string tsJavascriptName =  projectItem.Name.Replace(".ts", ".js");
         string minifiedName = projectItem.Name.Replace(".ts", ".min.js");
+        if (AddTimestampToStaticLink(projectItem)) { #>
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=tsJavascriptName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=tsJavascriptName#>");
+        <#+} else {#>
+    public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>") : Url("<#=tsJavascriptName#>");
+<#+}  #>
+<#+}
+    // if it's a Typescript JSX file
+    else if (projectItem.Name.EndsWith(".tsx")) {
+        string tsJavascriptName =  projectItem.Name.Replace(".tsx", ".js");
+        string minifiedName = projectItem.Name.Replace(".tsx", ".min.js");
         if (AddTimestampToStaticLink(projectItem)) { #>
     public static readonly string <#=name#> = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/<#=minifiedName#>") ? Url("<#=minifiedName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=minifiedName#>") : Url("<#=tsJavascriptName#>")+"?"+T4MVCHelpers.TimestampString(URLPATH + "/<#=tsJavascriptName#>");
         <#+} else {#>
