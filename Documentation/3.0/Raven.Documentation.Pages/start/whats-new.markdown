@@ -6,7 +6,7 @@
 
 - improved formatted index generation with better error handling,
 - fixed issue with single OAuth tokens caching,
-- larger batches are now handles better for Map-Reduce indexes,
+- larger batches are now handled better by Map-Reduce indexes,
 - added support for HEAD request for streams,
 - fixed `ArgumentOutOfRangeException` that could occur during reading from Lucene index
 
