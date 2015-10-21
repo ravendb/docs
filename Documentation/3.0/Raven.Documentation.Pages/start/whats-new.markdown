@@ -30,7 +30,7 @@
 - fixed replication topology graph
 - fixed replication settings page
 
-{/PANEL}
+{PANEL/}
 
 {PANEL:3.0.3785 - 2015/08/31}
 
