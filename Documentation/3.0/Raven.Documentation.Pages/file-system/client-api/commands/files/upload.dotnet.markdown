@@ -24,7 +24,7 @@
 | **filename** | string | The name of the uploaded file (full path) |
 | **source** | Action&lt;Stream&gt; | The action which writes file content to the network stream |
 | **prepareStream** | Action | The action executed before the content is being written (`null` means no action to perform) |
-| **size** | long | The file size. It is sent in `RavenFS-Size` header to validate the number of bytes received on the server side (default: `null` - then `source.Length` value is used). If there is a mismatch between the size reported in the header and the number of the bytes read on the server side, then `BadRequestException` is thrown |
+| **size** | long | The file size. It is sent in `RavenFS-Size` header to validate the number of bytes received on the server side. If there is a mismatch between the size reported in the header and the number of the bytes read on the server side, then `BadRequestException` is thrown |
 | **metadata** | RavenJObject | The file metadata (default: `null`) |
 | **etag** | Etag | The current file etag used for concurrency checks (`null` skips check) |
 
