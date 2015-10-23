@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
+﻿using System;
+
+namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
 {
 	using System.IO;
 	using System.Threading.Tasks;
@@ -12,7 +14,11 @@
 		private interface IFoo
 		{
 			#region upload_1
-			Task UploadAsync(string filename, Stream source, RavenJObject metadata = null, long? size = null, Etag etag = null);
+			Task UploadAsync(string filename, Stream source, RavenJObject metadata = null, Etag etag = null);
+			#endregion
+
+			#region upload_3
+			Task UploadAsync(string filename, Action<Stream> source, Action prepareStream, long size, RavenJObject metadata = null, Etag etag = null);
 			#endregion
 
 			#region download_1
@@ -37,11 +43,35 @@
 			IFilesStore store = null;
 
 			#region upload_2
-			await store
+			using (var file = File.OpenRead(@"C:\intro.avi"))
+			{
+				await store
 				.AsyncFilesCommands
 				.UploadAsync(
 					"/movies/intro.avi",
-					File.OpenRead(@"C:\intro.avi"),
+					file,
+					new RavenJObject
+					{
+						{
+							"AllowRead", "Everyone"
+						}
+					}
+				);
+			}
+			#endregion
+
+			#region upload_4
+			await store
+				.AsyncFilesCommands
+				.UploadAsync(
+					"two-bytes-file.bin",
+					s =>
+					{
+						s.WriteByte(1);
+						s.WriteByte(2);
+					},
+					null,
+					2,
 					new RavenJObject
 					{
 						{
@@ -51,8 +81,8 @@
 				);
 			#endregion
 			{
-			#region download_2
-			var metadata = new Reference<RavenJObject>();
+				#region download_2
+				var metadata = new Reference<RavenJObject>();
 
 			var data = await store
 				.AsyncFilesCommands
