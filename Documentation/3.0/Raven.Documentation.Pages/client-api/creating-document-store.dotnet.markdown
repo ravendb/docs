@@ -1,6 +1,6 @@
 # How to create a document store?
 
-To create an instance of the `DocumentStore` you need to specify the URL address that points to the RavenDB server. The URL must contains the TCP port on which the server is listening (the default port number is 8080).
+To create an instance of the `DocumentStore` you need to specify the URL address that points to the RavenDB server. The URL must contain the TCP port on which the server is listening (the default port number is 8080).
 
 {CODE document_store_creation@ClientApi\CreatingDocumentStore.cs /}
 
@@ -14,8 +14,8 @@ The second thing you should note is that the whole `DocumentStore` initializatio
 
 ##Singleton
 
-Because the document store is a heavyweight object, it should be only one instance created per application (singleton). The document store is a thread safe object and its typical
-initialization looks like below:
+Because the document store is a heavyweight object, there should only be one instance created per application (singleton). The document store is a thread safe object and its typical
+initialization looks like the following:
 
 {CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}
 
