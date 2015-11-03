@@ -13,7 +13,7 @@ By default, all index values are sorted lexicographically, this can be changed i
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
 {CODE-TABS/}
 
-So, the start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
+So, to start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_2_1@Indexes\Querying\Sorting.cs /}
