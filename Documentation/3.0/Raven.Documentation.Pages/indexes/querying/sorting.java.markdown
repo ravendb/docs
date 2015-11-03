@@ -13,7 +13,7 @@ By default, all index values are sorted lexicographically, this can be changed i
 {CODE-TAB:java:Index sorting_1_4@Indexes\Querying\Sorting.java /}
 {CODE-TABS/}
 
-So, the start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
+So, to start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
 
 {CODE-TABS}
 {CODE-TAB:java:Query sorting_2_1@Indexes\Querying\Sorting.java /}
