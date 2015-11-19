@@ -8,24 +8,26 @@
 
 - `[Prefetching]` Fixed performance issues,
 - `[Indexing]` Fixed an issue with accessing index files (System.ObjectDisposedException: Cannot access '_[xxx].fdt' because the index input has been disposed or System.IO.FileNotFoundException: Can not load ICSharpCode.SharpZipLib.dll),
-- `[Indexing]` Fixed reduction phase which skipped docs when fist time it was performed in a single step but later it was processed as a multi step operation,
+- `[Indexing]` Fixed reduction phase which skipped docs when first time it was performed in a single step but later it was processed as a multi step operation,
 - `[Indexing]` Fixed race condition in Lucene.net spatial contrib,
-- `[DTC]` Fixed an issue with deletes performed in multiple concurrent threads (while in a distributed transcation) were not being replicated,
-- `[DTC]` Fixed a race condition in DocumentRetriever which caused non authoritative docs were returned even though `AllowNonAuthoritativeInformation = false` was set.
-- `[Scripted Index Results]` Fixed missing execution of index update triggers when removing from map reduce index using RemoveFromIndexTask,
+- `[DTC]` Fixed an issue with deletes performed in multiple concurrent threads (while in a distributed transaction) were not being replicated,
+- `[DTC]` Fixed a race condition in DocumentRetriever which caused non authoritative docs to be returned even though `AllowNonAuthoritativeInformation = false` was set.
+- `[Scripted Index Results]` Fixed missing execution of index update triggers when removing from map-reduce index using RemoveFromIndexTask,
 - `[Scripted Index Results]` Fixed conversion of null string properties,
 - `[SQL Replication]` Fixed bug when comparing with `null` in a sql replication script,
-- `[Configuration]` Added `Raven/Tenants/MaxConcurrentDatabaseLoads` and `Raven/Tenants/ConcurrentDatabaseLoadTimeout` settings which limit concurrent load of databases
+- `[Configuration]` Added `Raven/Tenants/MaxConcurrentResourceLoads` and `Raven/Tenants/ConcurrentResourceLoadTimeout` settings which limit concurrent load of resources (databases, filesystems, etc)
 
+<hr />
 
 ### Client API
 
 - Added support for transactional sessions with DTC under async sessions,
 - Fixed an issue with unbounded results API which returned up to 128 documents when doing spatial query using Customize(),
-- Enabled compression for more request to shrink the amount of data transferred through the network,
+- Enabled compression for more requests to shrink the amount of data transferred through the network,
 - Added `InMemoryDocumentSessionOperations.UnregisterMissing` and invoke it before loading `ConstraintDocument` in bundle,
-- Added new overload of `SetResultTransformer` to `IDocumentQuery` that will allow strong-typing of the transformed result separate from the type of the index entries.
+- Added new overload of `SetResultTransformer` to `IDocumentQuery` that allows strong-typing of the transformed result separate from the type of the index entries.
 
+<hr />
 
 ### Data Subscriptions
 
@@ -33,6 +35,7 @@
 - Fixed issues related to opening a subscription depending on a specified strategy,
 - Fixed a timeout handling in subscriptions if all documents are filtered out
 
+<hr />
 
 ### File systems
 
@@ -40,13 +43,18 @@
 - Fixed an issue that a file were accessible even though its upload has been aborted,
 - Fixed file uploads with Windows Auth enabled 
 
+<hr />
+
 ### Smuggler
 
 - Fixed the import of dump files containing `Raven/Subscription/...` identities used by Data Subscrptions,
-- Added support for transform / filter scripts on database export. Added transform script validation. Fixing help message and outdated links.
+- Added support for transform / filter scripts on database export.
+
+<hr />
 
 ### Studio
 
+- Added transform script validation for import/export operations. Fixing help message and outdated links,
 - Fixed Patch by index - query not filtering matching documents,
 - Fixed acquisition of the debug info package if the server machine has .NET installed in version 4.5.2 or 4.6,
 - Faster transitions,
@@ -60,31 +68,31 @@
 
 ### Server
 
-- improved formatted index generation with better error handling,
-- fixed issue with single OAuth tokens caching,
-- larger batches are now handled better by Map-Reduce indexes,
-- added support for HEAD request for streams,
-- fixed `ArgumentOutOfRangeException` that could occur during reading from Lucene index
+- Improved formatted index generation with better error handling,
+- Fixed issue with single OAuth tokens caching,
+- Larger batches are now handled better by Map-Reduce indexes,
+- Added support for HEAD request for streams,
+- Fixed `ArgumentOutOfRangeException` that could occur during reading from Lucene index
 
 ### File systems
 
-- better handling of larger files with longer names
+- Better handling of larger files with longer names
 
 <hr />
 
 ### Client API
 
-- fixed issue with saving documents to proper database in ShardedBulkInsert operation,
-- fixed issues with index generation,
+- Fixed issue with saving documents to proper database in ShardedBulkInsert operation,
+- Fixed issues with index generation,
 - IndexCreation now takes into account conventions,
-- added the option to specify timeout of a subscriptions pull request
+- Added the option to specify timeout of a subscriptions pull request
 
 <hr />
 
 ### Studio
 
-- fixed replication topology graph
-- fixed replication settings page
+- Fixed replication topology graph
+- Fixed replication settings page
 
 {PANEL/}
 
