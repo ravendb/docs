@@ -56,7 +56,7 @@
 	},
 	{
 		"Path": "upgrading-to-new-version.markdown",
-		"Name": "Using installer",
+		"Name": "Upgrading to a new version",
 		"Mappings": [
 			{
 				"Version": 1.0,
