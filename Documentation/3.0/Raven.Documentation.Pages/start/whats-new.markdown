@@ -1,5 +1,61 @@
 # What's new
 
+{PANEL:3.0.30000 - 2015/11/19}
+
+- **[Breaking Change]** Changed the build number in the RavenDB version (3.0.**30000**)
+
+### Server
+
+- `[Prefetching]` Fixed performance issues,
+- `[Indexing]` Fixed an issue with accessing index files (System.ObjectDisposedException: Cannot access '_[xxx].fdt' because the index input has been disposed or System.IO.FileNotFoundException: Can not load ICSharpCode.SharpZipLib.dll),
+- `[Indexing]` Fixed reduction phase which skipped docs when fist time it was performed in a single step but later it was processed as a multi step operation,
+- `[Indexing]` Fixed race condition in Lucene.net spatial contrib,
+- `[DTC]` Fixed an issue with deletes performed in multiple concurrent threads (while in a distributed transcation) were not being replicated,
+- `[DTC]` Fixed a race condition in DocumentRetriever which caused non authoritative docs were returned even though `AllowNonAuthoritativeInformation = false` was set.
+- `[Scripted Index Results]` Fixed missing execution of index update triggers when removing from map reduce index using RemoveFromIndexTask,
+- `[Scripted Index Results]` Fixed conversion of null string properties,
+- `[SQL Replication]` Fixed bug when comparing with `null` in a sql replication script,
+- `[Configuration]` Added `Raven/Tenants/MaxConcurrentDatabaseLoads` and `Raven/Tenants/ConcurrentDatabaseLoadTimeout` settings which limit concurrent load of databases
+
+
+### Client API
+
+- Added support for transactional sessions with DTC under async sessions,
+- Fixed an issue with unbounded results API which returned up to 128 documents when doing spatial query using Customize(),
+- Enabled compression for more request to shrink the amount of data transferred through the network,
+- Added `InMemoryDocumentSessionOperations.UnregisterMissing` and invoke it before loading `ConstraintDocument` in bundle,
+- Added new overload of `SetResultTransformer` to `IDocumentQuery` that will allow strong-typing of the transformed result separate from the type of the index entries.
+
+
+### Data Subscriptions
+
+- Changed the approach of retrieving and processing documents to avoid connection breaks caused by consuming incoming data too slowly,
+- Fixed issues related to opening a subscription depending on a specified strategy,
+- Fixed a timeout handling in subscriptions if all documents are filtered out
+
+
+### File systems
+
+- Fixed OutOfMemoryException when uploading large files or synchronizing between servers,
+- Fixed an issue that a file were accessible even though its upload has been aborted,
+- Fixed file uploads with Windows Auth enabled 
+
+### Smuggler
+
+- Fixed the import of dump files containing `Raven/Subscription/...` identities used by Data Subscrptions,
+- Added support for transform / filter scripts on database export. Added transform script validation. Fixing help message and outdated links.
+
+### Studio
+
+- Fixed Patch by index - query not filtering matching documents,
+- Fixed acquisition of the debug info package if the server machine has .NET installed in version 4.5.2 or 4.6,
+- Faster transitions,
+- Fixed race condition between loading the studio version and generating help link,
+- Fixed Patch page - when selecting a collection the documents are overlapping the Before Patch and After Patch,
+- Fixed Indexes page - show if index is map reduce
+
+{PANEL/}
+
 {PANEL:3.0.3800 - 2015/09/21}
 
 ### Server
