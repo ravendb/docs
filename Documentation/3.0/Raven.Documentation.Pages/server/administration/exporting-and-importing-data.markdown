@@ -243,6 +243,12 @@ function(doc) {
 }
 {CODE-BLOCK/}
 
+{INFO: Transforms support for export }
+
+Since version 3.0.3836-Unstable, the change and filter scripts are also allowed to be used during the export process. 
+
+{INFO/}
+
 {PANEL/}
 
 {PANEL:**SmugglerDatabaseApi**}
