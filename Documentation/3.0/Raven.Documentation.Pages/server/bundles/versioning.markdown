@@ -53,7 +53,7 @@ Now, let's delete the original document:
 
 That removed the current document, but the snapshots will remain in place, so you aren't going to lose the audit trail if the document is deleted. 
 
-As you can see, the Versioning Bundle attempts to make things as simple as possible, and once it is installed, you'll automatically get the appropriate audit trail. Working with revisions is identical to working with standard documents (except that you can't modify / delete them) and revision documents can be indexed like standard documents.
+As you can see, the Versioning Bundle attempts to make things as simple as possible, and once it is installed, you'll automatically get the appropriate audit trail. Working with revisions is identical to working with standard documents (except that you can't modify / delete them). Revision documents cannnot be indexed like standard documents.
 
 Limitations
 
