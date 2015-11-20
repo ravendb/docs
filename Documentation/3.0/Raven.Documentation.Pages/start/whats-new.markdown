@@ -11,7 +11,6 @@
 - `[Indexing]` Fixed reduction phase which skipped docs when first time it was performed in a single step but later it was processed as a multi step operation,
 - `[Indexing]` Fixed race condition in Lucene.net spatial contrib,
 - `[DTC]` Fixed an issue with deletes performed in multiple concurrent threads (while in a distributed transaction) were not being replicated,
-- `[DTC]` Fixed a race condition in DocumentRetriever which caused non authoritative docs to be returned even though `AllowNonAuthoritativeInformation = false` was set.
 - `[Scripted Index Results]` Fixed missing execution of index update triggers when removing from map-reduce index using RemoveFromIndexTask,
 - `[Scripted Index Results]` Fixed conversion of null string properties,
 - `[SQL Replication]` Fixed bug when comparing with `null` in a sql replication script,
@@ -25,7 +24,7 @@
 - Fixed an issue with unbounded results API which returned up to 128 documents when doing spatial query using Customize(),
 - Enabled compression for more requests to shrink the amount of data transferred through the network,
 - Added `InMemoryDocumentSessionOperations.UnregisterMissing` and invoke it before loading `ConstraintDocument` in bundle,
-- Added new overload of `SetResultTransformer` to `IDocumentQuery` that allows strong-typing of the transformed result separate from the type of the index entries.
+- Added new overload of `SetResultTransformer` to `IDocumentQuery` that allows strong-typing of the transformed result independently of the type of the index entries.
 
 <hr />
 

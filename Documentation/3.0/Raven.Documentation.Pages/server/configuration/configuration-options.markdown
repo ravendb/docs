@@ -223,7 +223,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/WorkingDir**   
 	Base directory for all relative paths (e.g. `Raven/DataDir`, `Raven/AssembliesDirectory`, `Raven/CompiledIndexCacheDirectory`).   
-	`APPDRIVE` value can be used to point automaticaly to the drive where application lies e.g. `APPDRIVE:\Raven\` may point to `C:\Raven\` if your application is installed on drive `C`.   
+	`APPDRIVE` value can be used to point automatically to the drive where application lies e.g. `APPDRIVE:\Raven\` may point to `C:\Raven\` if your application is installed on drive `C`.   
 	By default, the `web.config` in distribution package have this value set to `APPDRIVE:\Raven\` due to IIS restart issues.   
 	_Default:_ ~/ (server's working directory).
 
@@ -243,6 +243,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     What storage type to use (see: [Storage Engines](../../server/configuration/storage-engines))  
     _Allowed values:_ esent, voron   
     _Default:_ esent  
+
+* **Raven/TransactionJournalsPath**   
+    The common setting for both storage engines used to specify the path for Esent logs or Voron journals. Useful if you want to store them on an another drive for performance reasons.     
+    _Default_: null - it means Esent logs will be placed into [database_data_dir]\Logs, while Voron journals will be located under [database_data_dir]
 
 * **Raven/TransactionMode**   
     Esent only. What transaction mode to use. Safe transaction mode ensures data consistency, but is slower. Lazy is faster, but may result in a data loss if the server crashes.   
@@ -386,8 +390,8 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ 2048  
     
 * **Raven/Esent/LogsPath**   
-    The path for the esent logs. Useful if you want to store the indexes on another HDD for performance reasons.     
-    _Default_: ~/Data/Logs  
+    The path for the esent logs. Useful if you want to store the logs on an another drive for performance reasons.     
+    _Default_: [database_data_dir]/Logs  
 
 * **Raven/Esent/CircularLog**   
     Whatever circular logs will be used, it is true by default. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
@@ -444,6 +448,14 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/Tenants/FrequencyToCheckForIdleDatabases**   
 	The time (in seconds) after which a check for an idle tenant database should be run.  
 	_Default:_ 60
+
+* **Raven/Tenants/MaxConcurrentResourceLoads**   
+	The maximum number of resources (databases, file systems) to be loaded simultaneously.
+	_Default:_ 8
+
+* **Raven/Tenants/ConcurrentResourceLoadTimeout**   
+	The max time before a server will timeout if it doesn't get a free slot to load a resource (database or file systems) concurrently with other loading requests.
+	_Default:_ 00:00:15
 
 ### Quotas
 
