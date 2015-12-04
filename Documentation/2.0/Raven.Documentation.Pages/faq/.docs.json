@@ -102,6 +102,11 @@
 	{
 		"Path": "storing-dates.markdown",
 		"Name": "Storing dates in RavenDB",
-		"Mappings": [ ]
+		"Mappings": [
+            {
+                "Version": 3.0,
+                "Key":  "client-api/how-to/store-dates"
+            }
+        ]
 	}
 ]

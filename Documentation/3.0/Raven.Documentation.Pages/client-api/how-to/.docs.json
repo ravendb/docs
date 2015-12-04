@@ -24,9 +24,20 @@
     "Name": "...integrate with Excel",
     "Mappings": []
   },
-  {
-    "Path": "enable-profiling.markdown",
-    "Name": "...enable profiling",
-    "Mappings": []
+    {
+        "Path": "enable-profiling.markdown",
+        "Name": "...enable profiling",
+        "Mappings": [ ]
+    },
+    {
+    "Path": "store-dates.markdown",
+    "Name": "...store dates",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "faq/storing-dates"
+            }
+
+        ]
   }
 ]
