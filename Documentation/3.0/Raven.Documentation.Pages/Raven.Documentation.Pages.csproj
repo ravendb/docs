@@ -251,6 +251,7 @@
     <None Include="client-api\how-to\enable-profiling.dotnet.markdown" />
     <None Include="client-api\how-to\send-custom-request-using-httpjsonrequestfactory.java.markdown" />
     <None Include="client-api\how-to\setup-aggressive-caching.java.markdown" />
+    <None Include="client-api\how-to\store-dates.markdown" />
     <None Include="client-api\how-to\work-with-authentication.java.markdown" />
     <None Include="client-api\listeners\what-are-query-listeners-and-how-to-work-with-them.java.markdown" />
     <None Include="client-api\listeners\what-are-conflict-listeners-and-how-to-work-with-them.java.markdown" />
