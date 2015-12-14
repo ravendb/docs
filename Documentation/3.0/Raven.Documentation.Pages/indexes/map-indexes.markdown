@@ -63,13 +63,32 @@ The part you should pay attention to is `docs.Employees`. This syntax indicates 
 
 ## Combining multiple fields together
 
-Since under each index there is a LINQ-function, you can combine multiple fields in one, if necessary. When the document is being indexed it is not a problem.
+Since under each index there is a LINQ-function, you can combine multiple fields in one, if necessary.
+
+### Example I
 
 {CODE indexes_7@Indexes/Map.cs /}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_8@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_9@Indexes/Map.cs /}
+{CODE-TABS/}
+
+### Example II
+
+{INFO:Information}
+
+In this example index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. This means that the matches no longer need to be exact.
+
+You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers).
+
+{INFO/}
+
+{CODE indexes_1_6@Indexes/Map.cs /}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query indexes_1_7@Indexes/Map.cs /}
+{CODE-TAB:csharp:DocumentQuery indexes_1_8@Indexes/Map.cs /}
 {CODE-TABS/}
 
 ## Indexing partial field data

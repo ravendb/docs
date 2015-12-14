@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Raven.Abstractions.Indexing;
+using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Client.Linq;
 using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
@@ -142,9 +145,36 @@ namespace Raven.Documentation.Samples.Indexes
 							};
 			}
 		}
-		#endregion
+        #endregion
 
-		public Map()
+        #region indexes_1_6
+        public class Employees_Query : AbstractIndexCreationTask<Employee>
+        {
+            public class Result
+            {
+                public string[] Query { get; set; }
+            }
+
+            public Employees_Query()
+            {
+                Map = employees => from employee in employees
+                                   select new
+                                   {
+                                        Query = new[]
+                                        {
+                                            employee.FirstName,
+                                            employee.LastName,
+                                            employee.Title,
+                                            employee.Address.City
+                                        }
+                                   };
+
+                Index("Query", FieldIndexing.Analyzed);
+            }
+        }
+        #endregion
+
+        public Map()
 		{
 			using (var store = new DocumentStore())
 			{
@@ -227,7 +257,30 @@ namespace Raven.Documentation.Samples.Indexes
 						.ToList();
 					#endregion
 				}
-			}
+
+                using (var session = store.OpenSession())
+                {
+                    #region indexes_1_7
+                    IList<Employee> employees = session
+                        .Query<Employees_Query.Result, Employees_Query>()
+                        .Search(x => x.Query, "John Doe")
+                        .OfType<Employee>()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region indexes_1_8
+                    IList<Employee> employees = session
+                        .Advanced
+                        .DocumentQuery<Employees_Query.Result, Employees_Query>()
+                        .Search(x => x.Query, "John Doe")
+                        .OfType<Employee>()
+                        .ToList();
+                    #endregion
+                }
+            }
 		}
 	}
 }
