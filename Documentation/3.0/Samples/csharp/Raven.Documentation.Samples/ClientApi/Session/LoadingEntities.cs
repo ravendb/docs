@@ -264,7 +264,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 				using (var session = store.OpenSession())
 				{
 					#region loading_entities_5_1
-					IEnumerator<StreamResult<Employee>> enumerator = session.Advanced.Stream<Employee>(null, "employees/");
+					IEnumerator<StreamResult<Employee>> enumerator = session.Advanced.Stream<Employee>("employees/");
 					while (enumerator.MoveNext())
 					{
 						StreamResult<Employee> employee = enumerator.Current;
