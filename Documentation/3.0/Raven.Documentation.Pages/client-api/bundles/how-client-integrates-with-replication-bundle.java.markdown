@@ -23,7 +23,7 @@ The remaining values of `FailoverBehavior` enumeration are:
 
 * *AllowReadsFromSecondaries* (default) - allow to read from secondary server(s), but immediately fail writes to the secondary server(s)
 * *AllowReadsFromSecondariesAndWritesToSecondaries* - allow reads from and writes to secondary server(s)
-* *ReadFromAllServers* - spread read requests across all servers, instead of doing all the work against master. Write requests will always to to master
+* *ReadFromAllServers* - spread read requests across all servers, instead of doing all the work against master. Write requests will always go to master
 
 They determine the strategy of the failovers if the primary server is down and the environment is configured to replicate between sibling instances.
 
