@@ -28,6 +28,6 @@ Raven.Server.exe /uninstallSSL=PathToCertificate==CertificatePassword
 
 ## Ignoring SSL errors
 
-In RavenDB, we have added an option to ignore all SSL certificate validation errors. By default, `Raven/IgnoreSslCertificateErrors` configuration option is set to **false**, but it can be changed if needed.
+In RavenDB, we have added an option to ignore all SSL certificate validation errors. By default, `Raven/IgnoreSslCertificateErrors` configuration option is set to **None**, but it can be changed if needed.
 
-{DANGER We do not recommend enabling `Raven/IgnoreSslCertificateErrors` due to safety reasons. Enabling this option is done at your own risk. /}
+{DANGER We do not recommend setting `Raven/IgnoreSslCertificateErrors` to **All** due to safety reasons. Enabling this option is done at your own risk. /}
