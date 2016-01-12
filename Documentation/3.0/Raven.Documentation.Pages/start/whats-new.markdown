@@ -1,5 +1,54 @@
 # What's new
 
+{PANEL:3.0.30037 - 2016/01/09}
+
+### Server
+
+- `[DTC]` Fixed NonAuthorativeInformation detection,
+- Added `admin/generate-oauth-certificate` endpoint,
+- Exports will now include documents created during the export time,
+- Fixed licensing timer leaks,
+- Minor fixes and tweaks,
+- Added a mechanism preventing from opening a resource with a different storage type than is defined in configuration,
+- Added a mechanism preventing from creating a different resource type than is defined in data directory,
+- `[Scripted Index Results]` will work correctly if there are multiple loads and puts of the same document in same batch,
+- `[JavaScript]` decreased max recursion from 1024 to 128,
+- `[Replication]` added `LastReplicatedAttachmentEtag` to the replication statistics,
+- `[Patching]` Inc operation will now assume that the value is Int64, not Int32,
+- Better mechanism preventing index corruption after server crash
+
+### Client API
+
+- **support for DNX Core 5.0** (only unstable builds greater than 30011 due to NuGet policies),
+- Streams now contain full document metadata,
+- Added `SetResultTransformer` overload to `IDocumentQuery` and `IAsyncDocumentQuery`,
+- Query `DurationMilliseconds` is set to -1 when response comes from cache
+
+### Studio
+
+- Fixed FileSystem import,
+- Studio should not allow to 'save' locked index or should indicate after pressing save that the index is locked and changes will not be saved,
+- Minor fixes and tweaks
+
+### FileSystem
+
+- Failure to start FileSystem should result in 503, not 500 status code,
+- Fixed issues with recreating IndexSearcher during index reset, which could result in a failure to access index files,
+- Fixed FileSystem exports,
+- Fixed issue with streaming, now streams will exclude internal files (tombstones, deleted, synchronized),
+- Stability improvements
+
+### StorageExporter
+
+- Added `SkipConsistencyCheck` option
+
+### Smuggler
+
+- Better export timeout handling,
+- Enhanced server version discovery
+
+{PANEL/}
+
 {PANEL:3.0.30000 - 2015/11/19}
 
 - **[Breaking Change]** Changed the build number in the RavenDB version (3.0.**30000**)

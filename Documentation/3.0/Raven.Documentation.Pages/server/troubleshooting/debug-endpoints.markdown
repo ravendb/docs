@@ -42,6 +42,7 @@
 | admin/debug/info-package | GET | - _(Optional)_ stacktrace - indicates if stacktraces should be included in package (may freeze server for some time to gather them). | Returns debug info package for all loaded databases. |
 | admin/detailed-storage-breakdown | GET | | Returns storage report (e.g. number of documents, indexes, attachments and other storage-dependant statistics). | |
 | admin/low-memory-notification | POST | | Simulates low memory on server and executes all memory conservation events. | |
+| admin/generate-oauth-certificate | GET | | Generates OAuth certificate. | |
 | | | | |
 | build/version | GET | | Returns product and build version. | Y |
 | | | | |
