@@ -33,3 +33,14 @@ The easiest way to search for files from the code is to use Client API methods p
 Searching is also supported by studio, where you will find useful predefined search filters:
 
 ![Figure 1: Search filters](images\indexing_studio.png)
+
+
+{NOTE:Searching by user defined metadata}
+
+Metadata specified during [a file upload](./client-api/commands/files/upload) or changed by [a metadata update](./client-api/commands/files/metadata/update-metadata) action are sent in headers of a HTTP request. 
+In order to keep names of headers consistently cased we transform received keys on the server side. They are modified by upper casing a first letter of dash separated parts of a header name, e.g. 'file-created-at' key becomes 'File-Created-At' and 'owner' becomes 'Owner'.
+
+Also the metadata keys are sensitive during the search (in contrast to the metadata values, which are case insensitive). 
+
+You will need to remember about that if you want to search files by your own metadata.
+{NOTE/}
