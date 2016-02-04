@@ -63,6 +63,11 @@ Execute the following steps on every cluster node:
 8. Summary screen. Click *Finish*  
 ![Figure 2.8: FMC Configuration](images\02ConfigureService_Wizard07.jpg)
 
+{INFO: Windows Authentication usage}
+In a clustered environment a host can have more than one name associated. That can cause problems for Kerberos.
+If you are going to use Windows Authentication then use static IP addresses and add a DNS A record for RavenDB.
+{INFO/}
+
 ##Summary
 
 * After click on a service name in a cluster tree you will see RavenDB service information  

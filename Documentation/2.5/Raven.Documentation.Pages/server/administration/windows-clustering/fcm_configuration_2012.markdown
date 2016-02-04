@@ -33,7 +33,7 @@ Execute the following steps on every cluster node:
 ![Figure 1.5: FCM Configuration](images\01CreateCluster_Wizard09_2012.jpg)
 7. Wait for cluster creation
 ![Figure 1.6: FCM Configuration](images\01CreateCluster_Wizard10_2012.jpg)
-7. Finish operation
+7. Finish operation   
 ![Figure 1.7: FCM Configuration](images\01CreateCluster_Wizard11_2012.jpg)
 
 ##Adding RavenDB as a Generic Service resource
@@ -54,6 +54,11 @@ Execute the following steps on every cluster node:
 ![Figure 2.7: FCM Configuration](images\02ConfigureService_Wizard06_2012.jpg)
 8. Summary screen. Click *Finish*  
 ![Figure 2.8: FCM Configuration](images\02ConfigureService_Wizard07_2012.jpg)
+
+{INFO: Windows Authentication usage}
+In a clustered environment a host can have more than one name associated. That can cause problems for Kerberos.
+If you are going to use Windows Authentication then use static IP addresses and add a DNS A record for RavenDB.
+{INFO/}
 
 ##Summary
 
