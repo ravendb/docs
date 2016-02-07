@@ -41,3 +41,9 @@ You can also setup the document store to always wait for the last write, like so
 {CODE stale4@ClientApi\Querying\StaleIndexes.cs /}
 
 All queries in the store would behave as if `WaitForNonStaleResultsAsOfLastWrite` was applied to them.
+
+{DANGER:Beware of `QueryYourWrites` overuse}
+The indexing mechanism in RavenDB is built on a BASE model (Basically Available, Soft state, Eventual consistency). In order to avoid querying consistency pitfalls in the future you need to consider this at the data modeling phase.
+
+The usage of `WaitForNonStaleResultsAsOfLastWrite` is usually reasonable on only very rare occassions. The need of taking advantage of `QueryYourWrites` convention is very often a symptom of deeper issues in an application model and misunderstanding of querying concepts in RavenDB. 
+{DANGER/}

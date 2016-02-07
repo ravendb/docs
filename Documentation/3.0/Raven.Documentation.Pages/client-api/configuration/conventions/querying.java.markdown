@@ -22,6 +22,12 @@ If you really need your query results to include documents you have just changed
 
 {CODE:java querying_consistency_2@ClientApi\Configuration\Conventions\Querying.java /}
 
+{DANGER:Beware of `AlwaysWaitForNonStaleResultsAsOfLastWrite` overuse}
+The indexing mechanism in RavenDB is built on [a BASE model](../../faq/transaction-support#base-for-query-operations). In order to avoid querying consistency pitfalls in the future you need to consider this at the data modeling phase.
+
+The usage of [`WaitForNonStaleResultsAsOfLastWrite` at a query level](../../session/querying/how-to-customize-query#waitfornonstaleresultsasoflastwrite) is usually reasonable on only very rare occassions. The need of taking advantage of `AlwaysWaitForNonStaleResultsAsOfLastWrite` convention is very often a symptom of deeper issues in an application model and misunderstanding of querying concepts in RavenDB. 
+{DANGER/}
+
 ###AllowQueriesOnId 
 
 It determines whether queries on document id are allowed. By default, queries on id are disabled, because it is far more efficient to do a `load()` than a `query()` if you already know the id.
