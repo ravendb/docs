@@ -22,6 +22,8 @@ If you really need your query results to include documents you have just changed
 
 {CODE querying_consistency_2@ClientApi\Configuration\Conventions\Querying.cs /}
 
+Then the client will wait 15 seconds for non-stale results, using an etag of a last written document within a session as a cut-off point. If after that time the results are still stale, then `TimeoutException` will be thrown. 
+
 {DANGER:Beware of `AlwaysWaitForNonStaleResultsAsOfLastWrite` overuse}
 The indexing mechanism in RavenDB is built on [a BASE model](../../faq/transaction-support#base-for-query-operations). In order to avoid querying consistency pitfalls in the future you need to consider this at the data modeling phase.
 

@@ -32,16 +32,18 @@ A better approach to make sure you are working with non-stale results is to use 
 
 This will make sure that you get the latest results up to that point in time. All pending tasks for changes that occurred after this cut-off point will not be considered. And just as before, a time-out can be set as well.
 
-`WaitForNonStaleResultsAsOfNow` is also available; it is equivalent of calling `WaitForNonStaleResultsAsOf(DateTime.Now)`.
+[`WaitForNonStaleResultsAsOfNow`](../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasofnow) is also available; it is equivalent of calling [`WaitForNonStaleResultsAsOf(DateTime.Now)`](../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasof).
 
-Another option is to use `WaitForNonStaleResultsAsOfLastWrite`, which does exactly what it says, namely, it tracks the last write by the application, and uses that as the cutoff point. This is usually recommended if you are working on the machines where clock synchronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, but etag values for the writes.
+Another option is to use [`WaitForNonStaleResultsAsOfLastWrite`](../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasoflastwrite), which does exactly what it says, namely, it tracks the last write by the application, and uses that as the cutoff point. You might find it useful if you are working on the machines where clock synchronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, but etag values for the writes. The time-out can apply as well.
+
+The default time-out value is 15 seconds.
 
 {INFO:Convention}
 You can also setup the document store to always wait for the last write, like this:
 
 {CODE stale4@Indexes\StaleIndexes.cs /}
 
-All queries in the store would behave as if `WaitForNonStaleResultsAsOfLastWrite` was applied to them.
+All queries in the store would behave as if [`WaitForNonStaleResultsAsOfLastWrite`](../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasoflastwrite) was applied to them.
 
 {DANGER: Warning}
 Before you decide to use this convention, consider the usage of it very carefully. Especially be aware of a potential overuse as it is described [in querying conventions](../client-api/configuration/conventions/querying#defaultqueryingconsistency).
@@ -54,3 +56,4 @@ Before you decide to use this convention, consider the usage of it very carefull
 
 - [What are indexes?](../indexes/what-are-indexes)
 - [Indexing : Basics](../indexes/indexing-basics)
+- [Session : Querying : How to customize query?](../client-api/session/querying/how-to-customize-query)
