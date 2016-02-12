@@ -42,7 +42,13 @@ You can also setup the document store to always wait for the last write, like th
 {CODE stale4@Indexes\StaleIndexes.cs /}
 
 All queries in the store would behave as if `WaitForNonStaleResultsAsOfLastWrite` was applied to them.
+
+{DANGER: Warning}
+Before you decide to use this convention, consider the usage of it very carefully. Especially be aware of a potential overuse as it is described [in querying conventions](../client-api/configuration/conventions/querying#defaultqueryingconsistency).
+{DANGER/}
 {INFO/}
+
+
 
 ## Related articles
 
