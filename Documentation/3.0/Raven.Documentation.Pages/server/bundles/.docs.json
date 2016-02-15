@@ -41,7 +41,7 @@
 	},
 	{
 		"Path": "expiration.markdown",
-		"Name": "Encryption",
+		"Name": "Expiration",
 		"Mappings": [
 			{
 				"Version": 2.0,
