@@ -119,7 +119,7 @@ RavenDB supports parsing dates in ISO standard.
 
 ### Example
 
-In order to get users that was born between 1/1/1980 and 12/31/1999 use the following query:
+In order to get all users that were born between 1/1/1980 and 12/31/1999 use the following query:
 
 {CODE-BLOCK:csharp}
 DateOfBirth:[1980-01-01 TO 1999-12-31T00:00:00.0000000]
