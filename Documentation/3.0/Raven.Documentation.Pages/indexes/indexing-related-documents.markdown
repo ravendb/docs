@@ -13,7 +13,7 @@ Without this feature, the index that had to be created would be a fairly complex
 {CODE-TAB:csharp:Commands indexing_related_documents_3@Indexes\IndexingRelatedDocuments.cs /}
 {CODE-TABS/}
 
-Now we will be able to search for invoices using the `Category Name` as a parameter:
+Now we will be able to search for products using the `Category Name` as a parameter:
 
 {CODE indexing_related_documents_7@Indexes\IndexingRelatedDocuments.cs /}
 
