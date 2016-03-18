@@ -25,6 +25,7 @@
 - Added `debug/sl0w-lists-breakd0wn` debug endpoint exposing internal lists breakdown,
 - Fixed timing of dynamic queries,
 
+<hr />
 
 ### Client
 
@@ -42,6 +43,8 @@
 - Fixed reconnection issue in Changes API,
 - Added `PutIndexAsyncWithOperation` command method
 
+<hr />
+
 ### Studio
 
 - Fixed traffic watch for file systems,
@@ -50,6 +53,8 @@
 - Fixed import to CSV to preserve column ordering, skipping and document identifier if present,
 - Fixed info view of currently running tasks,
 - Fixed escaping of queries with contains `:` character
+
+<hr />
 
 ### Smuggler
 - Fixed issue that an export file didn't include documents created during the export operation,
@@ -77,6 +82,8 @@
 - `[Patching]` Inc operation will now assume that the value is Int64, not Int32,
 - Better mechanism preventing index corruption after server crash
 
+<hr />
+
 ### Client API
 
 - **support for DNX Core 5.0** (only unstable builds greater than 30011 due to NuGet policies),
@@ -84,11 +91,15 @@
 - Added `SetResultTransformer` overload to `IDocumentQuery` and `IAsyncDocumentQuery`,
 - Query `DurationMilliseconds` is set to -1 when response comes from cache
 
+<hr />
+
 ### Studio
 
 - Fixed FileSystem import,
 - Studio should not allow to 'save' locked index or should indicate after pressing save that the index is locked and changes will not be saved,
 - Minor fixes and tweaks
+
+<hr />
 
 ### FileSystem
 
@@ -98,9 +109,13 @@
 - Fixed issue with streaming, now streams will exclude internal files (tombstones, deleted, synchronized),
 - Stability improvements
 
+<hr />
+
 ### StorageExporter
 
 - Added `SkipConsistencyCheck` option
+
+<hr />
 
 ### Smuggler
 
