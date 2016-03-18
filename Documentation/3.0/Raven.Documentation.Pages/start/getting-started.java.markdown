@@ -8,7 +8,7 @@ Simply put ravendb dependency to your pom:
 &lt;dependency&gt;
   &lt;groupId&gt;net.ravendb&lt;/groupId&gt;
   &lt;artifactId&gt;ravendb-client&lt;/artifactId&gt;
-  &lt;version&gt;3.2.0&lt;/version&gt;
+  &lt;version&gt;3.2.1&lt;/version&gt;
 &lt;/dependency&gt;
 {CODE-BLOCK/}
 
