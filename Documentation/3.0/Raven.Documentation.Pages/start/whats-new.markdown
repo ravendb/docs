@@ -1,5 +1,65 @@
 # What's new
 
+{PANEL:3.0.30100 - 2016/03/17}
+
+### Server
+
+- `[Indexing]` Fixed handling of indexes which were disabled,
+- `[Indexing]` Added support for nullable types to facets,
+- `[Indexing]` Fixed updates of side-by-side indexes,
+- `[Indexing]` Fixed index staleness detection,
+- `[Indexing]` Fixed an issue where we wouldn't treat JsonPropertyAttribute correctly during the indexing,
+- `[Indexing]` Added support for custom type arrays in an index definition,
+- `[Prefetching]` Adjustments to document prefetching mechanism,
+- `[Esent]` Fixed Esent storage schema update (4.8 to 5.0),
+- `[Voron]` Fixed handling of overflow pages
+- `[JavaScript]` Fixed math random init in Jint,
+- `[Replication]` Fixed "Resolve to latest" conflict resolution strategy,
+- `[Configuration]` Exposed `Raven/Voron/SkipConsistencyChecks` setting,
+- `[Configuration]` Added `Raven/MaxPrecomputedBatchSizeForNewIndex` setting,
+- Fixed document caching mechanism,
+- Fixed validation of OEM/ISV licensed affecting the startup performance,
+- Fixed UDP port leak in licensing component,
+- Fixed debug info generation,
+- Fixed UniqueConstraintsPutTrigger, which shallowed a snapshot of a document,
+- Added `debug/sl0w-lists-breakd0wn` debug endpoint exposing internal lists breakdown,
+- Fixed timing of dynamic queries,
+
+
+### Client
+
+- Fixed querying with transformer usage - respecting query type instead of transformer one,
+- Fixed `session.Advanced.Lazily.Load()` and `session.Include().Load()` methods against passing duplicate identifiers,
+- Fixed includes in a sharded session,
+- Fixed loads in a sharded session (when array of identifiers specified),
+- Fixed insertion of multiple indexes with given priorities,
+- Fixed internals of UniqueConstraint bundle,
+- Fixed `AllowMultipleIndexEntriesForSameDocumentToResultTransformer` flag application,
+- Added extension methods to work with authorization bundle (`Raven.Client.Authorization` namespace),
+- Fixed filtering of ignored headers,
+- Optimized memory usage when streaming documents with missing properties according to a given type,
+- Optimized usage of HttpClient cache,
+- Fixed reconnection issue in Changes API,
+- Added `PutIndexAsyncWithOperation` command method
+
+### Studio
+
+- Fixed traffic watch for file systems,
+- Fixed documents visibility on the patching page,
+- Fixed vertical scrolling bar on the collections and document view,
+- Fixed import to CSV to preserve column ordering, skipping and document identifier if present,
+- Fixed info view of currently running tasks,
+- Fixed escaping of queries with contains `:` character
+
+### Smuggler
+- Fixed issue that an export file didn't include documents created during the export operation,
+- Fixed export of file systems,
+- Added `--batch-size` option for smuggling file systems,
+- Fixed import operation for large attachments,
+- Fixed smuggler "between" option to ensure documents added during the operation are transferred as well
+
+{PANEL/}
+
 {PANEL:3.0.30037 - 2016/01/09}
 
 ### Server
