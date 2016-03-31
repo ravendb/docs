@@ -1,5 +1,15 @@
 # What's new
 
+{PANEL:Upcoming}
+
+### Server
+
+- **[Major]** `[Prefetching]` Fixed memory leak that could lead into slowness of the server under heavy load impacting indexing and replication mechanisms,
+- **[Major]** `[Indexing]` Fixed issue when new indexes could stuck at 32768 entries under certain conditions when precomputed batch flow was executed,
+- `[JavaScript]` Fixed float conversion
+
+{PANEL/}
+
 {PANEL:3.0.30100 - 2016/03/17}
 
 ### Server
