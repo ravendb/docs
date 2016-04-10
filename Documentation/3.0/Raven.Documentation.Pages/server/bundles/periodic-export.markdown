@@ -4,13 +4,13 @@ RavenDB innately supports periodic exports of the documents and attachments (inc
 
 ## How it works
 
-Periodic exports leverage the concept of incremental exports available in RavenDB. To take advantage of that, we are storing an information about last successful ETag of the documents and attachments that were send to the backup destination.
+Periodic exports leverage the concept of incremental exports available in RavenDB. To take advantage of that, we are storing information about last successful ETag of the documents and attachments that were sent to the backup destination.
 
 ## Activating bundle
 
 To activate bundle globally, simply add `PeriodicExport` to the `Raven/ActiveBundles` in  an appropriate configuration file. More about configuration's setup can be found [here](../../server/configuration/configuration-options).
 
-If you wish to set up a periodic export per database, then add the `PeriodicExport` to the list of database's active bundles, or use the [Studio](../../studio/overview/settings/periodic-export).
+If you wish to set up periodic export per database, then add `PeriodicExport` to the list of database's active bundles or use the [Studio](../../studio/overview/settings/periodic-export).
 
 Bundle can also be activated during a database creation process.
 
@@ -40,7 +40,7 @@ Next, we need to create a backup setup document under the `Raven/Backup/Periodic
 
 ## Configuring Azure Storage
 
-Configuring Azure is almost identical to Amazon AWS process. First you need to store your account name and access key in a database configuration. For example, if we want to create a new database with bundle already activated and keys setup, we can execute the following code:
+Configuring Azure is almost identical to Amazon AWS process. First, you need to store your account name and access key in a database configuration. For example, if we want to create a new database with bundle already activated and keys setup, we can execute the following code:
 
 {CODE periodic_backups_5@Server\Bundles\PeriodicExport.cs /}
 
@@ -52,4 +52,4 @@ Next, we need to create a backup setup document under the `Raven/Backup/Periodic
 
 ## Remarks
 
-Amazon AWS and Azure Storage related properties in the `PeriodicExportSetup` document **exclude** each other. Server will always upload export to one location, and the location will be picked in the following order: `GlacierVaultName`, `S3BucketName`, `AzureStorageContainer`.
+Amazon AWS and Azure Storage related properties in the `PeriodicExportSetup` document **exclude** each other. Server will always upload export to **only** one location, and the location will be picked in the following order: `GlacierVaultName`, `S3BucketName`, `AzureStorageContainer`.
