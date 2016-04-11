@@ -1,12 +1,29 @@
 # What's new
 
-{PANEL:Upcoming}
+{PANEL:3.0.30115 - 2016/04/10}
 
 ### Server
 
 - **[Major]** `[Prefetching]` Fixed memory leak that could lead into slowness of the server under heavy load impacting indexing and replication mechanisms,
 - **[Major]** `[Indexing]` Fixed issue when new indexes could stuck at 32768 entries under certain conditions when precomputed batch flow was executed,
 - `[JavaScript]` Fixed float conversion
+- Added memory statistics thread state to stats (`IsMemoryStatisticThreadRuning`)
+
+<hr />
+
+### Client
+
+- `AlwaysWaitForNonStaleResultsAsOfLastWrite` convention marked as obsolete
+- Fixed concurrency errors when retrieving identity values concurrently by `DatabaseCommands.NextIdentityFor`
+- Fixed JSON parsing of data using base64 format
+
+<hr />
+
+### Studio
+
+- Fixed import with credentials usage
+- Fixed replicate all indexes and transformers options
+- Fixed Etag verification when changing an identifier of an existing document
 
 {PANEL/}
 
