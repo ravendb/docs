@@ -8,14 +8,14 @@
 	using Raven.Documentation.Parser.Data;
 	using Raven.Documentation.Parser.Helpers;
 
-	internal class DirectoryCompiler
+	internal class DocumentationDirectoryCompiler
 	{
 		private readonly DocumentCompiler _documentCompiler;
 
 		private readonly ParserOptions _options;
 
 
-		public DirectoryCompiler(DocumentCompiler documentCompiler, ParserOptions options)
+		public DocumentationDirectoryCompiler(DocumentCompiler documentCompiler, ParserOptions options)
 		{
 			_documentCompiler = documentCompiler;
 			_options = options;
@@ -27,8 +27,8 @@
 			var documentationVersion = directoryName;
 
 			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
-			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationSamplesDirectory(Language.Csharp, documentationVersion)));
-			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationSamplesDirectory(Language.Java, documentationVersion)));
+			Debug.Assert(Directory.Exists(_options.GetPathToCodeDirectory(Language.Csharp, documentationVersion)));
+			Debug.Assert(Directory.Exists(_options.GetPathToCodeDirectory(Language.Java, documentationVersion)));
 
 			return CompileDocumentationDirectory(_options.GetPathToDocumentationPagesDirectory(documentationVersion), documentationVersion);
 		}
@@ -153,7 +153,7 @@
 			yield return CompileDocumentationPage(indexItem, directory, documentationVersion, mappings ?? new List<DocumentationMapping>());
 		}
 
-		private static IEnumerable<FolderItem> GetPages(string directory, FolderItem item)
+	    internal static IEnumerable<FolderItem> GetPages(string directory, FolderItem item)
 		{
 			var path = Path.Combine(directory, item.Name + Constants.MarkdownFileExtension);
 			if (File.Exists(path))

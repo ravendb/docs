@@ -50,7 +50,7 @@ namespace Raven.Documentation.Parser.Helpers
 		private static string GenerateCodeBlockFromFile(string languageAsString, string value, string documentationVersion, ParserOptions options)
 		{
 			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
-			var samplesDirectory = options.GetPathToDocumentationSamplesDirectory(language, documentationVersion);
+			var samplesDirectory = options.GetPathToCodeDirectory(language, documentationVersion);
 
 			var values = value.Split('@');
 			var section = values[0];
@@ -131,7 +131,7 @@ namespace Raven.Documentation.Parser.Helpers
 		private static CodeTab GenerateCodeTabFromFile(string languageAsString, string title, string value, string documentationVersion, ParserOptions options)
 		{
 			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
-			var samplesDirectory = options.GetPathToDocumentationSamplesDirectory(language, documentationVersion);
+			var samplesDirectory = options.GetPathToCodeDirectory(language, documentationVersion);
 
 			var values = value.Split('@');
 			var section = values[0];

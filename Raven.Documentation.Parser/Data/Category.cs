@@ -61,5 +61,8 @@ namespace Raven.Documentation.Parser.Data
 
 		[Prefix("index")]
 		Index,
-	}
+
+        [Prefix("articles")]
+        Articles,
+    }
 }

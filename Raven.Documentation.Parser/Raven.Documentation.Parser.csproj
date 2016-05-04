@@ -57,6 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ArticleCompiler.cs" />
+    <Compile Include="ArticleDirectoryCompiler.cs" />
+    <Compile Include="ArticleParser.cs" />
     <Compile Include="Attributes\FileExtensionAttribute.cs" />
     <Compile Include="Data\Category.cs" />
     <Compile Include="Data\CodeTab.cs" />
@@ -64,6 +67,7 @@
     <Compile Include="Data\DocumentationFile.cs" />
     <Compile Include="Data\DocumentationImage.cs" />
     <Compile Include="Data\CodeBlockLanguage.cs" />
+    <Compile Include="Data\ArticlePage.cs" />
     <Compile Include="Data\Language.cs" />
     <Compile Include="Attributes\PrefixAttribute.cs" />
     <Compile Include="Data\MappingVersion.cs" />
@@ -82,9 +86,10 @@
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\PrefixHelper.cs" />
     <Compile Include="IProvideGitFileInformation.cs" />
+    <Compile Include="ParserBase.cs" />
     <Compile Include="ParserOptions.cs" />
     <Compile Include="Constants.cs" />
-    <Compile Include="DirectoryCompiler.cs" />
+    <Compile Include="DocumentationDirectoryCompiler.cs" />
     <Compile Include="Data\DocumentationPage.cs" />
     <Compile Include="DocumentationParser.cs" />
     <Compile Include="Data\FolderItem.cs" />

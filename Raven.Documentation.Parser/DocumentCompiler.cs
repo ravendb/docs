@@ -12,22 +12,61 @@
 	using Raven.Documentation.Parser.Data;
 	using Raven.Documentation.Parser.Helpers;
 
-	public class DocumentCompiler
+    public class DocumentCompiler : DocumentCompiler<DocumentationPage>
+    {
+        public DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
+            : base(parser, options, repoAnalyzer)
+        {
+        }
+
+        protected override DocumentationPage CreatePage(
+            string key,
+            string title,
+            string documentationVersion,
+            string htmlContent,
+            string textContent,
+            Language language,
+            Category category,
+            HashSet<DocumentationImage> images,
+            string lastCommitSha,
+            string relativePath,
+            List<DocumentationMapping> mappings)
+        {
+            return new DocumentationPage
+            {
+                Key = key,
+                Title = title,
+                Version = documentationVersion,
+                HtmlContent = htmlContent,
+                TextContent = textContent,
+                Language = language,
+                Category = category,
+                Images = images,
+                LastCommitSha = lastCommitSha,
+                RelativePath = relativePath,
+                Mappings = mappings
+            };
+        }
+    }
+
+	public abstract class DocumentCompiler<TPage> where TPage : DocumentationPage
 	{
 		private readonly Markdown _parser;
 
-		private readonly ParserOptions _options;
+		protected readonly ParserOptions Options;
 
-		private IProvideGitFileInformation _repoAnalyzer;
+		private readonly IProvideGitFileInformation _repoAnalyzer;
 
-		public DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
+	    protected DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
 		{
 			_parser = parser;
-			_options = options;
+			Options = options;
 			_repoAnalyzer = repoAnalyzer;
 		}
 
-		public DocumentationPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
+	    protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent, string textContent, Language language, Category category, HashSet<DocumentationImage> images, string lastCommitSha, string relativePath, List<DocumentationMapping> mappings);
+
+		public TPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
 		{
 			try
 			{
@@ -35,7 +74,7 @@
 				var category = CategoryHelper.ExtractCategoryFromPath(key);
 				var images = new HashSet<DocumentationImage>();
 
-				_parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, _options.ImagesUrl, documentationVersion, tag);
+				_parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, tag);
 
 				var content = File.ReadAllText(file.FullName);
 				content = TransformLegacyBlocks(file, content);
@@ -57,20 +96,7 @@
 
 				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-				return new DocumentationPage
-				{
-					Key = key,
-					Title = title,
-					Version = documentationVersion,
-					HtmlContent = content,
-					TextContent = textContent,
-					Language = page.Language,
-					Category = category,
-					Images = images,
-					LastCommitSha = lastCommit,
-					RelativePath = relativeUrl,
-					Mappings = mappings.OrderBy(x => x.Version).ToList()
-				};
+				return CreatePage(key, title, documentationVersion, content, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList());
 			}
 			catch (Exception e)
 			{
@@ -105,9 +131,9 @@
 			return true;
 		}
 
-		private string ExtractKey(FileInfo file, FolderItem page, string documentationVersion)
+		protected virtual string ExtractKey(FileInfo file, FolderItem page, string documentationVersion)
 		{
-			var pathToDocumentationPagesDirectory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
+			var pathToDocumentationPagesDirectory = Options.GetPathToDocumentationPagesDirectory(documentationVersion);
 			var key = file.FullName.Substring(pathToDocumentationPagesDirectory.Length, file.FullName.Length - pathToDocumentationPagesDirectory.Length);
 			key = key.Substring(0, key.Length - file.Extension.Length);
 			key = key.Replace(@"\", @"/");
@@ -159,7 +185,7 @@
 		private string TransformBlocks(string content, string documentationVersion)
 		{
 			content = NoteBlockHelper.GenerateNoteBlocks(content);
-			content = CodeBlockHelper.GenerateCodeBlocks(content, documentationVersion, _options);
+			content = CodeBlockHelper.GenerateCodeBlocks(content, documentationVersion, Options);
 			content = PanelBlockHelper.GeneratePanelBlocks(content);
 
 			return content;

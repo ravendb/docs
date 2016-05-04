@@ -1,0 +1,18 @@
+﻿@model List<Raven.Documentation.Parser.Data.ArticlePage>
+@section scripts {
+    <script type="text/javascript">
+        $('#article table').addClass('table table-hover table-condensed table-bordered');
+    </script>
+}
+<div id="article">
+    <div class="row">
+        <div class="col-md-12">
+            <ul>
+                @foreach (var article in Model)
+                {
+                    <li>@Html.ActionLink(article.Title, MVC.Articles.ActionNames.Articles, new RouteValueDictionary { { "key", article.Key } })</li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

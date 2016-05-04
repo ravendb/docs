@@ -27,6 +27,7 @@ using T4MVC;
 [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
 public static partial class MVC
 {
+    public static Raven.Documentation.Web.Controllers.ArticlesController Articles = new Raven.Documentation.Web.Controllers.T4MVC_ArticlesController();
     public static Raven.Documentation.Web.Controllers.DocsController Docs = new Raven.Documentation.Web.Controllers.T4MVC_DocsController();
     public static T4MVC.SharedController Shared = new T4MVC.SharedController();
 }

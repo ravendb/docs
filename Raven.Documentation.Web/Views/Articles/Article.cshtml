@@ -1,0 +1,17 @@
+﻿@model Raven.Documentation.Parser.Data.ArticlePage
+@{
+    ViewBag.Title = Model.Title;
+}
+@section scripts {
+    <script type="text/javascript">
+        $('#article table').addClass('table table-hover table-condensed table-bordered');
+    </script>
+}
+<div id="article">
+    <div class="row">
+        <div class="col-md-12">
+            @Html.Raw(Model.HtmlContent)
+        </div>
+    </div>
+</div>
+

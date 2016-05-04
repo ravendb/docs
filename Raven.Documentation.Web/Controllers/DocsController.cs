@@ -90,7 +90,7 @@ namespace Raven.Documentation.Web.Controllers
 						{
 							PathToDocumentationDirectory = GetDocumentationDirectory(),
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
-							ImagesUrl = GetImagesUrl()
+							ImagesUrl = GetImagesUrl(DocumentStore)
 						};
 
 			var results = new DocumentationValidator(options, CurrentLanguage)
@@ -124,7 +124,7 @@ namespace Raven.Documentation.Web.Controllers
 			{
 				PathToDocumentationDirectory = GetDocumentationDirectory(),
 				RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
-				ImagesUrl = GetImagesUrl()
+				ImagesUrl = GetImagesUrl(DocumentStore)
 			};
 
 			var results = new DocumentationValidator(options, CurrentLanguage)
@@ -134,7 +134,7 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.ValidateMappings, results);
 		}
 
-		public virtual ActionResult Generate(string language, string version, string key, bool all)
+	    public virtual ActionResult Generate(string language, string version, string key, bool all)
 		{
 			if (DebugHelper.IsDebug() == false)
 				return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
@@ -150,61 +150,62 @@ namespace Raven.Documentation.Web.Controllers
 							PathToDocumentationDirectory = GetDocumentationDirectory(),
 							VersionsToParse = versionsToParse,
 							RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
-							ImagesUrl = GetImagesUrl()
+							ImagesUrl = GetImagesUrl(DocumentStore)
 						}, new NoOpGitFileInformationProvider());
 
-			foreach (var attachment in DocumentStore.DatabaseCommands.GetAttachments(0, Etag.Empty, 1024))
-			{
-				DocumentStore.DatabaseCommands.DeleteAttachment(attachment.Key, null);
-			}
 
-			DocumentStore
-				.DatabaseCommands
-				.DeleteByIndex("Raven/DocumentsByEntityName", new IndexQuery { Query = "Tag:DocumentationPages OR Tag:TableOfContents" })
-				.WaitForCompletion();
+            foreach (var attachment in DocumentStore.DatabaseCommands.GetAttachments(0, Etag.Empty, 1024))
+            {
+                DocumentStore.DatabaseCommands.DeleteAttachment(attachment.Key, null);
+            }
 
-			foreach (var page in parser.Parse())
-			{
-				DocumentSession.Store(page);
+            DocumentStore
+                .DatabaseCommands
+                .DeleteByIndex("Raven/DocumentsByEntityName", new IndexQuery { Query = "Tag:DocumentationPages OR Tag:TableOfContents" })
+                .WaitForCompletion();
 
-				Parallel.ForEach(
-					page.Images,
-					image =>
-						{
-							if (System.IO.File.Exists(image.ImagePath) == false)
-								return;
+            foreach (var page in parser.Parse())
+            {
+                DocumentSession.Store(page);
 
-							using (var file = System.IO.File.OpenRead(image.ImagePath))
-							{
-								DocumentStore.DatabaseCommands.PutAttachment(image.ImageKey, null, file, new RavenJObject());
-							}
-						});
-			}
+                Parallel.ForEach(
+                    page.Images,
+                    image =>
+                    {
+                        if (System.IO.File.Exists(image.ImagePath) == false)
+                            return;
 
-			foreach (var toc in parser.GenerateTableOfContents())
-			{
-				DocumentSession.Store(toc);
-			}
+                        using (var file = System.IO.File.OpenRead(image.ImagePath))
+                        {
+                            DocumentStore.DatabaseCommands.PutAttachment(image.ImageKey, null, file, new RavenJObject());
+                        }
+                    });
+            }
 
-			DocumentSession.SaveChanges();
+            foreach (var toc in parser.GenerateTableOfContents())
+            {
+                DocumentSession.Store(toc);
+            }
 
-			if (string.IsNullOrEmpty(key))
-				return RedirectToAction(MVC.Docs.ActionNames.Welcome, MVC.Docs.Name, new { language = language, version = version });
+            DocumentSession.SaveChanges();
 
-			while (true)
-			{
-				var stats = DocumentStore.DatabaseCommands.GetStatistics();
-				if (stats.StaleIndexes.Any() == false)
-					break;
+            if (string.IsNullOrEmpty(key))
+                return RedirectToAction(MVC.Docs.ActionNames.Welcome, MVC.Docs.Name, new { language = language, version = version });
 
-				Thread.Sleep(500);
-			}
+            while (true)
+            {
+                var stats = DocumentStore.DatabaseCommands.GetStatistics();
+                if (stats.StaleIndexes.Any() == false)
+                    break;
 
-			return RedirectToAction(
-				MVC.Docs.ActionNames.Articles,
-				MVC.Docs.Name,
-				new { language = CurrentLanguage, version = CurrentVersion, key = key });
-		}
+                Thread.Sleep(500);
+            }
+
+            return RedirectToAction(
+                MVC.Docs.ActionNames.Articles,
+                MVC.Docs.Name,
+                new { language = CurrentLanguage, version = CurrentVersion, key = key });
+        }
 
 		public virtual ActionResult Welcome(string language, string version)
 		{
@@ -312,7 +313,7 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Article, new ArticleModel(page, toc));
 		}
 
-		private static DocumentationPage SelectSearchResult(IEnumerable<DocumentationPage> pages)
+        private static DocumentationPage SelectSearchResult(IEnumerable<DocumentationPage> pages)
 		{
 			var list = pages.ToList();
 
@@ -323,13 +324,13 @@ namespace Raven.Documentation.Web.Controllers
 			return list.First(x => x.Language != Language.All);
 		}
 
-		private string GetImagesUrl()
+		public static string GetImagesUrl(IDocumentStore store)
 		{
-			var remoteStore = DocumentStore as DocumentStore;
+			var remoteStore = store as DocumentStore;
 			if (remoteStore != null)
 				return remoteStore.Url.ForDatabase(remoteStore.DefaultDatabase) + "/static/";
 
-			var embeddableDocumentStore = (EmbeddableDocumentStore)DocumentStore;
+			var embeddableDocumentStore = (EmbeddableDocumentStore)store;
 			if (embeddableDocumentStore.Url != null)
 				return embeddableDocumentStore.Url.ForDatabase(embeddableDocumentStore.DefaultDatabase) + "/static/";
 
@@ -344,5 +345,5 @@ namespace Raven.Documentation.Web.Controllers
 
 			return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\Documentation\\");
 		}
-	}
+    }
 }

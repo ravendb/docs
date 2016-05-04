@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Web", "Raven.Documentation.Web\Raven.Documentation.Web.csproj", "{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}"
 EndProject
@@ -54,6 +54,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Samples
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Pages", "Documentation\1.0\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{FB1E86AE-BBD2-4E1E-B05C-A86E2E0FD5C7}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Articles", "Articles", "{B68D5DDD-4A94-4BC5-BCC9-A40C98515A6D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Articles", "Articles\Raven.Documentation.Articles\Raven.Documentation.Articles.csproj", "{33A7BA60-D2B1-44AC-A361-5CCABFAAA7FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,6 +104,10 @@ Global
 		{FB1E86AE-BBD2-4E1E-B05C-A86E2E0FD5C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1E86AE-BBD2-4E1E-B05C-A86E2E0FD5C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB1E86AE-BBD2-4E1E-B05C-A86E2E0FD5C7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{33A7BA60-D2B1-44AC-A361-5CCABFAAA7FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33A7BA60-D2B1-44AC-A361-5CCABFAAA7FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33A7BA60-D2B1-44AC-A361-5CCABFAAA7FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{33A7BA60-D2B1-44AC-A361-5CCABFAAA7FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -125,5 +133,6 @@ Global
 		{6396C639-D4F6-42AA-8A63-7EC0383B96BF} = {A4CE106A-67B3-4928-AB3C-89910C5D9E13}
 		{932C1DB5-59B8-45F5-B89C-C26B28914D15} = {6396C639-D4F6-42AA-8A63-7EC0383B96BF}
 		{FB1E86AE-BBD2-4E1E-B05C-A86E2E0FD5C7} = {CBB6E63F-A3E5-43CE-AA9B-5D8DA74E952B}
+		{33A7BA60-D2B1-44AC-A361-5CCABFAAA7FB} = {B68D5DDD-4A94-4BC5-BCC9-A40C98515A6D}
 	EndGlobalSection
 EndGlobal

@@ -12,7 +12,29 @@
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-			routes.MapRouteLowerCase(
+            routes.MapRouteLowerCase(
+                "ArticlesGenerate",
+                "articles/generate",
+                new
+                {
+                    controller = MVC.Articles.Name,
+                    action = MVC.Articles.ActionNames.Generate
+                },
+                null,
+                new[] { "Raven.Documentation.Web.Controllers" });
+
+            routes.MapRouteLowerCase(
+                "Articles",
+                "articles/{*key}",
+                new
+                {
+                    controller = MVC.Articles.Name,
+                    action = MVC.Articles.ActionNames.Articles
+                },
+                null,
+                new[] { "Raven.Documentation.Web.Controllers" });
+
+            routes.MapRouteLowerCase(
 				"Docs",
 				"article/{version}/{language}/{*key}",
 				new

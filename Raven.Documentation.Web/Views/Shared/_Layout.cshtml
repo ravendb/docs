@@ -49,17 +49,18 @@
                             <li>@Html.ActionLink("Validate links for all versions", MVC.Docs.ActionNames.Validate, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = true }, new { target = "_blank" })</li>
                         </ul>
                     </div>
-					<div class="btn-group">
-						@Html.ActionLink("Validate mappings for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.ValidateMappings, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-info", target = "_blank" })
-						<button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
-							<span class="caret"></span>
-							<span class="sr-only">Toggle Dropdown</span>
-						</button>
-						<ul class="dropdown-menu" role="menu">
-							<li>@Html.ActionLink("Validate mappings for all versions", MVC.Docs.ActionNames.ValidateMappings, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = true }, new { target = "_blank" })</li>
-						</ul>
-					</div>
-				}
+                    <div class="btn-group">
+                        @Html.ActionLink("Validate mappings for " + (string)ViewBag.CurrentVersion, MVC.Docs.ActionNames.ValidateMappings, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = false }, new { @class = "btn btn-info", target = "_blank" })
+                        <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown">
+                            <span class="caret"></span>
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>@Html.ActionLink("Validate mappings for all versions", MVC.Docs.ActionNames.ValidateMappings, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion, key = ViewBag.Key, all = true }, new { target = "_blank" })</li>
+                        </ul>
+                    </div>
+                    <a href="~/articles/generate?key=@ViewBag.ArticleKey" class="btn btn-success">Generate articles</a>
+                }
                 <div class="pull-right chooser">
                     <span>Version </span>
 	                <div class="btn-group">
