@@ -6,8 +6,8 @@ In this article, we will discuss some alternatives to adopt CQRS and Event Sourc
 
 ## What is CQRS (a quick review)?
 
-Back in 1980s, Bertrand Meyer introduced the term Command and Query Separation (CQS) to describe the principle that an object’s methods should be either commands or queries:
-  
+Back in 1980s, Bertrand Meyer introduced the term Command and Query Separation (CQS) to describe the principle that an object’s methods should be either commands or queries:  
+
 - A command changes the state of the object and DOES NOT return any data.
 - A query returns data but DOES NOT alter the state of the object.
 
@@ -22,7 +22,7 @@ The separation of the command stack and the query stack enables us to create mor
 Observing the traditional DDD-inspired layered architecture with CQRS in mind, we can see that only the “command side” uses a domain model. The “query side” is made of plain data access and uses DTOs to bring data up to the presentation layer.
 
 Frequently, when implementing CQRS, systems use separate data stores for the “queries” and “commands”. Each data store optimized for the use cases it supports. Some background synchronization processes and strategies are adopted to ensure (frequently) eventual consistence.
- 
+
 ![Figure 2](images/cqrs2.jpg)  
 
 ## Using RavenDB for implementing CQRS
@@ -91,12 +91,11 @@ Storing events in Command Stack opens up possibilities and interesting technical
 
 Indexes are functions that are performed on the server side and determine which fields (and which values) can be used in searches. These functions often create structures similar to materialized views that accelerate the search results.
 
-The indexing process happens in the background on the server. It is triggered whenever a data is added or modified. This approach allows the server to respond quickly even when large portions of data have been modified avoiding slow searches. The problem, if you see that way, is that there is no guarantee that the search results are up to date.
+The indexing process happens in the background on the server. It is triggered whenever a data is added or modified. This approach allows the server to respond quickly even when large portions of data have been modified avoiding slow searches. The problem, if you see it that way, is that there is no guarantee that the search results are updated.
 
 {CODE article_cqrs_9@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeEventStore.cs /}
 
-
-What this index accounts is the total number of events associated with each entity Employee . It does this by applying the Map Reduce technique.
+What this index takes into account is the total number of events associated with each entity Employee . It does this by applying the Map Reduce technique.
 
 Let's understand how it works...
 
@@ -104,7 +103,7 @@ First, the "map" converts all stored events to a common representation.
  
 ![Figure 4](images/cqrs4.jpg)  
 
-Second, all the mapped objects are grouped by some critery.
+Second, all the mapped objects are grouped by some criteria.
 
 ![Figure 5](images/cqrs5.jpg)  
 
@@ -118,7 +117,7 @@ Following the same idea, the next example shows how to compute the names and sal
 
 Note that during the "map" we use Initial Salary from EmployeeRegisteredEvent and Amount from EmployeeRegisteredEvent.
 
-Following the ideaa of delivering "ready-to-use" data, we have a FullName property.
+Following the idea of delivering "ready-to-use" data, we have a FullName property.
 
 The Reduce is almost self-explanatory. I am adding salaries and taking the first produced name.
 
@@ -134,16 +133,15 @@ In the next example, we define a Compilation Extension with two basic helper fun
 
 {CODE article_cqrs_12@cqrses-demo\scenario_02\src\Payroll.RavenDB.Plugins\Employee.cs /}
 
-These helper functions, after properly deployed, could be used in the server side code like in transforms.
+These helper functions, after properly deployed, can be used on the server side code like in transforms.
 
 ## Last words...
 
 Phew!
+In this article we learned how easy and natural it is using RavenDB to implement CQRS and Event Sourcing.
 
-In this article we learned how easy and natural is using RavenDB to implement CQRS and Event Sourcing.
+Schema-free documents are perfect to store "ready-to-use" data for the Query Stack. Providing transactions, RavenDB is solid enough to be used as a Command Stack database as well.
 
-Schema-free documents are perfect to store "ready-to-use" data for the Query Stack. Providing transactions RavenDB is solid enough to be used as Command Stack database as well.
-
-RavenDB is really fast and flexible. So, it could be easily used as Event Store. Built-in indexing features as Map/Reduce are excellent to create projections and snapshots. 
+RavenDB is really fast and flexible, so, it's easily used as an Event Store.  The built-in indexing feature Map/Reduce is excellent for creating projections and snapshots. 
 
 That's it.
