@@ -33,21 +33,21 @@ Even when using a single database for the “command stack” and “query stack
 
 Storing and loading documents in RavenDB is very easy. It is only necessary to create a session to send and retrieve data from the database.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_1@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeRepository.cs /}
 
 Another good advantage of using a schema-free database is the “built-in” support for polymorphism. For example, an address is a collection of information, presented in a mostly fixed format, used for describing the location of a building, apartment, etc. Some countries uses different information and different formats and the domain model should support it.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_2@cqrses-demo\scenario_01\src\Payroll.Domain\Model\BrazilianAddress.cs /}
 
 With RavenDB, the serialization process facilitates the persistence of polymorphic objects.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_3@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeRepository.cs /}
 
 The serializer adds meta-attributes that ensure that when loading the object, the appropriate type will be used. 
 
 In the previous example, the Patch command was used to perform partial updates without having to load, modify, and save a full document. This is usually useful for updating denormalized data in entities. RavenDB also supports running scripts at server to update documents.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_4@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeRepository.cs /}
 
 ## Welcome Events!
 
@@ -55,9 +55,11 @@ When designing the Command Stack it is common to use the commands, events and me
 
 Commands are imperatives; they are requests for the system to perform a task or action.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_5@cqrses-demo\scenario_02\src\Payroll.Domain\Commands\RaiseSalaryCommand.cs /}
 
 Events are notifications; they report something that has already happened to other interested parties.  Events happen in the past and or immutable. For example, “the employee salary was raised”, “the employee home address was changed”.  Because events happen in the past, they cannot be changed or undone. However, subsequent events may alter or negate the effects of earlier events.
+
+{CODE article_cqrs_6@cqrses-demo\scenario_02\src\Payroll.Domain\Events\EmployeeSalaryRaisedEvent.cs /}
 
 Both commands and events are types of message that are used to exchange data between objects or contexts. This exchange generally occurs using some kind of messaging system.
 
@@ -75,11 +77,11 @@ This is because using Event Sourcing we have not only the current state of the e
 
 Implementing ES with RavenDB is simple and easy. If the system already raise events, we could just need to listen and save the event objects in a dedicated collection.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_7@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeEventStore.cs /}
 
 Another approach would be to maintain a list of events generated in each entity. Then use the Repository Service as a Message Dispatcher. 
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_8@cqrses-demo/scenario_02/src/Infrastructure.EventSourcing.RavenDB/RavenDBESEmployeeRepository.cs /}
 
 In this example, one document will be created for each entity (Employee) with an array containing the related events.
 
@@ -89,9 +91,10 @@ Storing events in Command Stack opens up possibilities and interesting technical
 
 Indexes are functions that are performed on the server side and determine which fields (and which values) can be used in searches. These functions often create structures similar to materialized views that accelerate the search results.
 
-The indexing process happens in the background on the server. It is triggered whenever a data is added or modified. This approach allows the server to respond quickly even when large portions of data have been modified avoiding slow searches. The problem, if you see that way, is that there is no guarantee that the search results are updated.
+The indexing process happens in the background on the server. It is triggered whenever a data is added or modified. This approach allows the server to respond quickly even when large portions of data have been modified avoiding slow searches. The problem, if you see that way, is that there is no guarantee that the search results are up to date.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_9@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeEventStore.cs /}
+
 
 What this index accounts is the total number of events associated with each entity Employee . It does this by applying the Map Reduce technique.
 
@@ -111,7 +114,7 @@ Third and finally, reduction:
 
 Following the same idea, the next example shows how to compute the names and salaries of employees using an event stream collection.
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_10@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeEventStore.cs /}
 
 Note that during the "map" we use Initial Salary from EmployeeRegisteredEvent and Amount from EmployeeRegisteredEvent.
 
@@ -119,7 +122,9 @@ Following the ideaa of delivering "ready-to-use" data, we have a FullName proper
 
 The Reduce is almost self-explanatory. I am adding salaries and taking the first produced name.
 
-{CODE cqrs_1_0@CQRS.cs /}
+With this index it is easy to know the top paid employees.
+
+{CODE article_cqrs_11@cqrses-demo/scenario_01/src/Payroll.Infrastructure.RavenDbEmployeeRepository/EmployeeEventStore.cs /}
 
 ## Querying a stream of events (using Compilation Extensions)
 
@@ -127,7 +132,7 @@ RavenDB is extensible. It is easy to create plugins to add some domain specific 
 
 In the next example, we define a Compilation Extension with two basic helper functions. 
 
-{CODE cqrs_1_0@CQRS.cs /}
+{CODE article_cqrs_12@cqrses-demo\scenario_02\src\Payroll.RavenDB.Plugins\Employee.cs /}
 
 These helper functions, after properly deployed, could be used in the server side code like in transforms.
 
