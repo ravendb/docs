@@ -89,13 +89,13 @@ Note that this cammand can be used every time.
 To import data that was exported incrementally, you can use either of the following:
 
 {CODE-BLOCK:plain}
-    Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location --incremental
+    Raven.Smuggler in http://localhost:8080 folder_location --database=NewNorthwind --incremental
 {CODE-BLOCK/}
 
 or
 
 {CODE-BLOCK:plain}
-    Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location
+    Raven.Smuggler in http://localhost:8080 folder_location --database=NewNorthwind
 {CODE-BLOCK/}
 
 ### Incremental exports and deletions
