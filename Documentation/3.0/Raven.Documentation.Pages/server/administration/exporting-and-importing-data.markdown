@@ -75,7 +75,7 @@ To export data incrementally we can use two options:
 - If it is the first run and the folder does not exist yet, use:
 
 {CODE-BLOCK:plain}
-    Raven.Smuggler out http://localhost:8080 --database=Northwind folder_location --incremental
+    Raven.Smuggler out http://localhost:8080 folder_location --database=Northwind --incremental
 {CODE-BLOCK/}
 
 Note that this cammand can be used every time.
@@ -83,19 +83,19 @@ Note that this cammand can be used every time.
 - If you ran the command before or you created the folder earlier, you can use:
 
 {CODE-BLOCK:plain}
-    Raven.Smuggler out http://localhost:8080 --database=Northwind folder_location
+    Raven.Smuggler out http://localhost:8080 folder_location --database=Northwind
 {CODE-BLOCK/}
 
 To import data that was exported incrementally, you can use either of the following:
 
 {CODE-BLOCK:plain}
-    Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location --incremental
+    Raven.Smuggler in http://localhost:8080  folder_location --database=NewNorthwind --incremental
 {CODE-BLOCK/}
 
 or
 
 {CODE-BLOCK:plain}
-    Raven.Smuggler in http://localhost:8080 --database=NewNorthwind folder_location
+    Raven.Smuggler in http://localhost:8080 folder_location --database=NewNorthwind
 {CODE-BLOCK/}
 
 ### Incremental exports and deletions
@@ -109,7 +109,7 @@ or
 To move data directly between two instances (or different databases in the same instance) use  the `between` option in following manner:
 
 {CODE-BLOCK:plain}
-    Raven.Smuggler between http://localhost:8080 http://localhost:8080 --database=Northwind --database2=NewNorthwind folder_location
+    Raven.Smuggler between http://localhost:8080 http://localhost:8080 folder_location --database=Northwind --database2=NewNorthwind
 {CODE-BLOCK/}
 
 {PANEL/}
