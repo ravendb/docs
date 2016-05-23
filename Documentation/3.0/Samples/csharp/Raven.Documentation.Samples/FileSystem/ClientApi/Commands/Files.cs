@@ -80,9 +80,9 @@ namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
 					}
 				);
 			#endregion
-			{
-				#region download_2
-				var metadata = new Reference<RavenJObject>();
+			
+			#region download_2
+			var metadata = new Reference<RavenJObject>();
 
 			var data = await store
 				.AsyncFilesCommands
@@ -92,8 +92,7 @@ namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
 					from: 0,
 					to: 200);
 			#endregion
-			}
-
+			
 			#region rename_2
 			await store
 				.AsyncFilesCommands
