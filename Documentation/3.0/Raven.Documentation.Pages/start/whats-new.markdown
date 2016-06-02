@@ -32,7 +32,7 @@
 
 ### Studio
 
-- [`SqlReplication`] Stats are not available for not admin user.
+- `[SqlReplication]` Stats are not available for not admin user.
 - Fixed edit document page start page in `Doc {start} of {total}`.
 
 {PANEL/}
