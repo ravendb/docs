@@ -1,5 +1,40 @@
 # What's new
 
+{PANEL:3.0.30143 - 2016/06/01}
+
+### Server
+
+- `[Voron]` Fixed access violation exception.
+- `[Voron]` Fixed an edge case in page splitter.
+- `[FileSystem]` Fixed issues in `FilesReplicationInformer`.
+- `[Indexes]` Better handling of `OperationCanceledException`.
+- `[Prefetcher]` Fixed too frequently calls to `MaybeAddFutureBatch`.
+- `[PeriodicExport]` Fixed an export fail when initial backup is more than 64MB.
+- `[PeriodicExport]` Better error handling.
+
+<hr />
+
+### Client
+
+- Fixed async query that uses ContainsAny or In.
+- Fixed parsing a double value from object.
+- `[Subscrition]` Better error handling.
+- `[Subscrition]` Added missing disposal.
+- Fixed using `ShardedDocumentStore` with a query and a transformer.
+
+<hr />
+
+### Smuggler
+
+- Fixed an identities that was imported which started with `Raven/`.
+
+<hr />
+
+### Studio
+
+- [SqlReplication] Stats are not available for not admin user.
+- Fixed edit document page start page in `Doc {start} of {total}`.
+
 {PANEL:3.0.30115 - 2016/04/10}
 
 ### Server
