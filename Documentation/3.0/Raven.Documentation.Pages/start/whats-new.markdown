@@ -19,7 +19,7 @@
 - Fixed async query that uses ContainsAny or In.
 - Fixed parsing a double value from object.
 - `[Subscrition]` Better error handling.
-- `[Subscrition]` Notify the server that subscriptions can be reused when the store is disosed.
+- `[Subscrition]` Notify the server that subscriptions can be reused when the store is disposed.
 - Fixed using `ShardedDocumentStore` with a query and a transformer.
 
 <hr />
