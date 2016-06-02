@@ -6,7 +6,7 @@
 
 - `[Voron]` Fixed access violation exception.
 - `[Voron]` Fixed an edge case in page splitter.
-- `[FileSystem]` Fixed issues in `FilesReplicationInformer`.
+- `[FileSystem]` Fixed issues in files replication.
 - `[Indexes]` Better handling of `OperationCanceledException`.
 - `[Prefetcher]` Fixed too frequently calls to `MaybeAddFutureBatch`.
 - `[PeriodicExport]` Fixed an export fail when initial backup is more than 64MB.
@@ -19,7 +19,7 @@
 - Fixed async query that uses ContainsAny or In.
 - Fixed parsing a double value from object.
 - `[Subscrition]` Better error handling.
-- `[Subscrition]` Added missing disposal.
+- `[Subscrition]` Notify the server that subscriptions can be reused when the store is disosed.
 - Fixed using `ShardedDocumentStore` with a query and a transformer.
 
 <hr />
