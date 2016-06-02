@@ -35,6 +35,8 @@
 - [SqlReplication] Stats are not available for not admin user.
 - Fixed edit document page start page in `Doc {start} of {total}`.
 
+{PANEL/}
+
 {PANEL:3.0.30115 - 2016/04/10}
 
 ### Server
