@@ -20,14 +20,14 @@ Before we will move to the examples, let's look at the methods, objects, and var
 | `LoadDocument(key)` | method | Allows document loading, increases maximum number of allowed steps in script. See `Raven/AdditionalStepsForScriptBasedOnDocumentSize` [here](../../../server/configuration/configuration-options#javascript-parser). |
 | `PutDocument(key, data, metadata)` | method | Allows document putting, returns generated key |
 | `IncreaseNumberOfAllowedStepsBy(number)` | method | Will increase the maximum allowed number of steps in script by given value. Only available if `Raven/AllowScriptsToAdjustNumberOfSteps` is set to `true`. |
-| `_` | object | [Lo-Dash](https://lodash.com/) |
+| `_` | object | [Lo-Dash 2.4.1](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md) |
 | `trim()` | string.prototype | trims the string e.g. `this.FirstName.trim()` |
-| `indexOf(...)` | Array.prototype | wrapper for [_.indexOf](https://lodash.com/docs#indexOf) |
-| `filter(...)` | Array.prototype | wrapper for [_.filter](https://lodash.com/docs#filter) |
-| `Map(...)` | Array.prototype | wrapper for [_.map](https://lodash.com/docs#map) |
-| `Where(...)` | Array.prototype | wrapper for [_.filter](https://lodash.com/docs#filter) |
-| `RemoveWhere(...)` | Array.prototype | wrapper for [_.remove](https://lodash.com/docs#remove) returning Array for easier chaining |
-| `Remove(...)` | Array.prototype | wrapper for [_.pull](https://lodash.com/docs#pull) returning Array for easier chaining |
+| `indexOf(...)` | Array.prototype | wrapper for [_.indexOf](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_indexofarray-value-fromindex0) |
+| `filter(...)` | Array.prototype | wrapper for [_.filter](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_filtercollection-callbackidentity-thisarg) |
+| `Map(...)` | Array.prototype | wrapper for [_.map](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_mapcollection-callbackidentity-thisarg) |
+| `Where(...)` | Array.prototype | wrapper for [_.filter](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_filtercollection-callbackidentity-thisarg) |
+| `RemoveWhere(...)` | Array.prototype | wrapper for [_.remove](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_removearray-callbackidentity-thisarg) returning Array for easier chaining |
+| `Remove(...)` | Array.prototype | wrapper for [_.pull](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_pullarray-value) returning Array for easier chaining |
 
 ## Custom functions
 
