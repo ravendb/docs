@@ -38,7 +38,7 @@ How do we populate such a view model from pieces of data from other objects?
 
 In relational databases, we tackle this problem using JOINs to piece together a view model on the fly:
 
-{CODE article_viewmodels_1@view-models-demo/snippets/Join.cs /}
+{CODE article_viewmodels_2@view-models-demo/snippets/Join.cs /}
 
 It's not particularly beautiful, but it works. This pseudo code could run against some object-relational mapper, such as Entity Framework, and give us our results back.
 
