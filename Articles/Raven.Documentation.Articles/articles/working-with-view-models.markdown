@@ -22,7 +22,7 @@ At first glance, we see several pieces of data from different objects making up 
 - List of Ingredient objects
 - Name and email of a Chef object, the author of the recipe
 - List of Comment objects
-- List of tags (plain strings) to help users find the recipe
+- List of categories (plain strings) to help users find the recipe
 
 A naive implementation might query for each piece of data independently: a query for the Recipe object, a query for the Ingredients, and so on. 
 
