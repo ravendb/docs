@@ -74,6 +74,7 @@
     <Content Include="articles\images\cqrs4.jpg" />
     <Content Include="articles\images\cqrs5.jpg" />
     <Content Include="articles\images\cqrs6.jpg" />
+    <Content Include="articles\images\viewmodels1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
