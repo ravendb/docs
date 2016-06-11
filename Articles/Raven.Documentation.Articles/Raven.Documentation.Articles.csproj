@@ -63,6 +63,7 @@
   <ItemGroup>
     <None Include=".docs.json" />
     <None Include="articles\.docs.json" />
+    <None Include="articles\working-with-view-models.markdown" />
     <None Include="articles\cqrs-and-event-sourcing-made-easy-with-ravendb.markdown" />
     <None Include="packages.config" />
   </ItemGroup>
@@ -73,6 +74,7 @@
     <Content Include="articles\images\cqrs4.jpg" />
     <Content Include="articles\images\cqrs5.jpg" />
     <Content Include="articles\images\cqrs6.jpg" />
+    <Content Include="articles\images\viewmodels1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

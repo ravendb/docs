@@ -1,7 +1,12 @@
 ﻿[
-  {
-    "Path": "cqrs-and-event-sourcing-made-easy-with-ravendb.markdown",
-    "Name": "CQRS and Event Sourcing made easy with RavenDB",
-    "Mappings": [ ]
-  }
+    {
+        "Path": "cqrs-and-event-sourcing-made-easy-with-ravendb.markdown",
+        "Name": "CQRS and Event Sourcing made easy with RavenDB",
+        "Mappings": [ ]
+    },
+    {
+        "Path": "working-with-view-models.markdown",
+        "Name": "Working with view models in RavenDB",
+        "Mappings": [ ]
+    }
 ]
