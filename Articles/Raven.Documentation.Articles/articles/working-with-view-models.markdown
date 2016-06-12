@@ -110,11 +110,11 @@ This technique has benefits, but also trade-offs:
 - Query times are faster. We don't need to load other documents to display our Recipe details UI page. A single call to the database with zero joins - it's a beautiful thing!
 - Data duplication. We're now storing Recipes and RecipeViewModels. If an author changes his recipe, we may need to also update the RecipeViewModel. This shifts the cost from query times to write times, which may be preferrable in a read-heavy system.
 
-The data duplication is the biggest downside. We've effectively denormalized our data ath the expense of adding redundant data. Can we fix this?
+The data duplication is the biggest downside. We've effectively denormalized our data at the expense of adding redundant data. Can we fix this?
 
 ## Storing view models + syncing via RavenDB's Changes API
 
-Having to remember to update RecipeViewModels whenever a Recipe changes is error prone. Responsibility for syncing the data is now in the hands of you and the other developer on your team. Human error is almost certain to creep in -- someone will write new code to update Recipes and forget to also update the RecipeViewModels -- we've created a pit of failure that your team will eventually fall into.
+Having to remember to update RecipeViewModels whenever a Recipe changes is error prone. Responsibility for syncing the data is now in the hands of you and the other developers on your team. Human error is almost certain to creep in -- someone will write new code to update Recipes and forget to also update the RecipeViewModels -- we've created a pit of failure that your team will eventually fall into.
 
 We can improve on this situation by using RavenDB's Changes API. With Raven's Changes API, we can subscribe to changes to documents in the database. In our app, we'll listen for changes to Recipes and update RecipeViewModels accordingly. We write this code once, and future self and other developers won't need to update the RecipeViewModels; it's already happening ambiently through the Changes API subscription.
 
@@ -128,7 +128,7 @@ Easy enough. Now whenever a Recipe is added, updated, or deleted, we'll get noti
 
 One final, more advanced technique is to let Raven do the heavy lifting in mapping Recipes to RecipeViewModels.
 
-A quick refresher on RavenDB indexes: in RavenDB, all queries are satisfied by an index. For example, if we query for Recipes by .Name, Raven will automatically cretate an index for Recipes-by-name, so that all future queries will return results near instantly. Raven then intelligently manages the indexes its created, throwing server resources behind the most-used indexes. This is one of the secrets to RavenDB's blazing fast query response times.
+A quick refresher on RavenDB indexes: in RavenDB, all queries are satisfied by an index. For example, if we query for Recipes by .Name, Raven will automatically cretate an index for Recipes-by-name, so that all future queries will return results near instantly. Raven then intelligently manages the indexes it's created, throwing server resources behind the most-used indexes. This is one of the secrets to RavenDB's blazing fast query response times.
 
 RavenDB indexes are powerful and customizable. We can piggy-back on RavenDB's indexing capabilities to generate RecipeViewModels for us, essentially making Raven do the work for us behind the scenes.
 
