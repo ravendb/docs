@@ -40,7 +40,7 @@ In relational databases, we tackle this problem using JOINs to piece together a 
 
 {CODE article_viewmodels_2@view-models-demo/snippets/Join.cs /}
 
-It's not particularly beautiful, but it works. This pseudo code could run against some object-relational mapper, such as Entity Framework, and give us our results back.
+It's not particularly beautiful, but it works. This pseudo code could run against some object-relational mapper, such as Entity Framework, and gives us our results back.
 
 However, there are some downsides to this approach.
 
@@ -83,7 +83,7 @@ RavenDB provides a means to build reusable server-side projections. In RavenDB w
 
 Let's write a transformer that does just that:
 
-{CODE article_viewmodels_4@view-models-demo/view-models-demo/Controllers/HomeController.cs /}
+{CODE article_viewmodels_4@view-models-demo/view-models-demo/Models/Transformers/RecipeViewModelTransformer.cs /}
 
 In the above code, we're accepting a Recipe and spitting out a RecipeViewModel. Inside our Transformer code, we can call .LoadDocument to load related objects, like our .Comments and .Chef. And since Transformers are server-side, we're not making extra trips to the database.
 
@@ -134,7 +134,7 @@ RavenDB indexes are powerful and customizable. We can piggy-back on RavenDB's in
 
 First, let's create a custom RavenDB index:
 
-{CODE article_viewmodels_9@view-models-demo/view-models-demo/Controllers/HomeController.cs /}
+{CODE article_viewmodels_9@view-models-demo/view-models-demo/Models/Indexes/RecipeViewModelIndex.cs /}
 
 In RavenDB, we use LINQ to create indexes. The above index tells RavenDB that for every Recipe, we want to spit out a RecipeViewModel. 
 
