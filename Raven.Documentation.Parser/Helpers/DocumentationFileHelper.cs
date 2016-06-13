@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
@@ -9,29 +10,37 @@ namespace Raven.Documentation.Parser.Helpers
 {
 	public class DocumentationFileHelper
 	{
-		public static IEnumerable<FolderItem> ParseFile(string filePath)
-		{
-			var contents = File.ReadAllText(filePath);
-			var docFiles = JsonConvert.DeserializeObject<List<DocumentationFile>>(contents);
+        public static IEnumerable<FolderItem> ParseFile(string filePath)
+        {
+            List<DocumentationFile> docFiles;
+            try
+            {
+                var contents = File.ReadAllText(filePath);
+                docFiles = JsonConvert.DeserializeObject<List<DocumentationFile>>(contents);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Could not parse file: " + filePath, e);
+            }
 
-			foreach (var file in docFiles)
-			{
-				var path = file.Path;
-				var name = file.Name;
-				var isFolder = path.StartsWith("/");
-				var item = new FolderItem(isFolder)
-				{
-					Language = Language.All,
-					Description = name,
-					Name = isFolder ? path.Substring(1, path.Length - 1) : path.Substring(0, path.Length - Constants.MarkdownFileExtension.Length),
-					Mappings = file.Mappings
-				};
+            foreach (var file in docFiles)
+            {
+                var path = file.Path;
+                var name = file.Name;
+                var isFolder = path.StartsWith("/");
+                var item = new FolderItem(isFolder)
+                {
+                    Language = Language.All,
+                    Description = name,
+                    Name = isFolder ? path.Substring(1, path.Length - 1) : path.Substring(0, path.Length - Constants.MarkdownFileExtension.Length),
+                    Mappings = file.Mappings
+                };
 
-				yield return item;
-			}
-		}
+                yield return item;
+            }
+        }
 
-		private static readonly Regex DocsListLine = new Regex(@"^([\w\-/\.]{2,})\t(.+)$", RegexOptions.Compiled | RegexOptions.Multiline);
+        private static readonly Regex DocsListLine = new Regex(@"^([\w\-/\.]{2,})\t(.+)$", RegexOptions.Compiled | RegexOptions.Multiline);
 
 		// used to convert .docslist files to .docs.json ones which support mappings
 		public static void CovertDocslistFileToNewFormatWithMappings()

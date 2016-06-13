@@ -1,4 +1,4 @@
-﻿﻿[
+﻿[
     {
         "Path": "cqrs-and-event-sourcing-made-easy-with-ravendb.markdown",
         "Name": "CQRS and Event Sourcing made easy with RavenDB",
@@ -13,5 +13,5 @@
         "Path": "ravendb-python-client-the-transition-to-a-dynamic-language.markdown",
         "Name": "RavenDB Python client - The transition to a dynamic language",
         "Mappings": [ ]
-    },
+    }
 ]
