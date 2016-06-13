@@ -38,17 +38,17 @@
     <Reference Include="Lucene.Net">
       <HintPath>..\..\..\..\..\packages\Lucene.Net.3.0.3\lib\NET40\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Data.Edm, Version=5.6.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\packages\Microsoft.Data.Edm.5.6.3\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+    <Reference Include="Microsoft.Data.Edm, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\Microsoft.Data.Edm.5.7.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Data.OData, Version=5.6.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\packages\Microsoft.Data.OData.5.6.3\lib\net40\Microsoft.Data.OData.dll</HintPath>
+    <Reference Include="Microsoft.Data.OData, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\Microsoft.Data.OData.5.7.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Microsoft.Data.Services.Client, Version=5.6.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\packages\Microsoft.Data.Services.Client.5.6.3\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\Microsoft.Data.Services.Client.5.7.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.WindowsAzure.Configuration, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\..\..\..\packages\Microsoft.WindowsAzure.ConfigurationManager.2.0.3\lib\net40\Microsoft.WindowsAzure.Configuration.dll</HintPath>
@@ -58,43 +58,51 @@
       <HintPath>..\..\..\..\..\packages\WindowsAzure.Storage.4.3.0\lib\net40\Microsoft.WindowsAzure.Storage.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\Newtonsoft.Json.8.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\Newtonsoft.Json.8.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Abstractions, Version=2.0.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.2915\lib\net45\Raven.Abstractions.dll</HintPath>
+    <Reference Include="Raven.Abstractions, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.25001\lib\net45\Raven.Abstractions.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Bundles.IndexReplication">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Bundles.IndexReplication.2.5.2915\lib\net45\Raven.Bundles.IndexReplication.dll</HintPath>
+    <Reference Include="Raven.Bundles.IndexReplication, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Bundles.IndexReplication.2.5.25001\lib\net45\Raven.Bundles.IndexReplication.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Client.Authorization">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.2.5.2915\lib\net45\Raven.Client.Authorization.dll</HintPath>
+    <Reference Include="Raven.Client.Authorization, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.2.5.25001\lib\net45\Raven.Client.Authorization.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Client.Embedded">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Embedded.2.5.2915\lib\net45\Raven.Client.Embedded.dll</HintPath>
+    <Reference Include="Raven.Client.Embedded, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Embedded.2.5.25001\lib\net45\Raven.Client.Embedded.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.2.5.2915\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.2.5.25001\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Client.MvcIntegration">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.MvcIntegration.2.5.2915\lib\net45\Raven.Client.MvcIntegration.dll</HintPath>
+    <Reference Include="Raven.Client.MvcIntegration, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.MvcIntegration.2.5.25001\lib\net45\Raven.Client.MvcIntegration.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Client.UniqueConstraints">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.2.5.2915\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
+    <Reference Include="Raven.Client.UniqueConstraints, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.2.5.25001\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Database">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.2915\lib\net45\Raven.Database.dll</HintPath>
+    <Reference Include="Raven.Database, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.25001\lib\net45\Raven.Database.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Server">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.2915\lib\net45\Raven.Server.exe</HintPath>
+    <Reference Include="Raven.Server, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.25001\lib\net45\Raven.Server.exe</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Smuggler">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Server.2.5.2915\tools\Raven.Smuggler.exe</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Server.2.5.25001\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
-    <Reference Include="Raven.Tests.Helpers">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.2915\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+    <Reference Include="Raven.Tests.Helpers, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.25001\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
@@ -112,9 +120,9 @@
     <Reference Include="System.Reactive.PlatformServices">
       <HintPath>..\..\..\..\..\packages\Rx-PlatformServices.2.2.5\lib\net45\System.Reactive.PlatformServices.dll</HintPath>
     </Reference>
-    <Reference Include="System.Spatial, Version=5.6.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\packages\System.Spatial.5.6.3\lib\net40\System.Spatial.dll</HintPath>
+    <Reference Include="System.Spatial, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\..\..\..\..\packages\System.Spatial.5.7.0\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />

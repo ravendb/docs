@@ -96,21 +96,16 @@ namespace Links
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(URLPATH); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(URLPATH + "/" + fileName); }
         public static readonly string bootstrap_theme_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap-theme.min.css") ? Url("bootstrap-theme.min.css") : Url("bootstrap-theme.css");
-             
         public static readonly string bootstrap_theme_css_map = Url("bootstrap-theme.css.map");
         public static readonly string bootstrap_theme_min_css = Url("bootstrap-theme.min.css");
         public static readonly string bootstrap_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap.min.css") ? Url("bootstrap.min.css") : Url("bootstrap.css");
-             
         public static readonly string bootstrap_css_map = Url("bootstrap.css.map");
         public static readonly string bootstrap_min_css = Url("bootstrap.min.css");
         public static readonly string font_awesome_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/font-awesome.min.css") ? Url("font-awesome.min.css") : Url("font-awesome.css");
-             
         public static readonly string font_awesome_min_css = Url("font-awesome.min.css");
         public static readonly string prism_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/prism.min.css") ? Url("prism.min.css") : Url("prism.css");
-             
         public static readonly string Site_less = Url("Site.less");
         public static readonly string Site_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/Site.min.css") ? Url("Site.min.css") : Url("Site.css");
-             
         public static readonly string Site_css_map = Url("Site.css.map");
         public static readonly string Site_min_css = Url("Site.min.css");
     }
