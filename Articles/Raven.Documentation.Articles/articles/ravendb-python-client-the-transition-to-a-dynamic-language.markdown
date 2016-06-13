@@ -59,7 +59,7 @@ How can I make sure not to get any exceptions during the initialization?
 That's take us to the second  issue:
 Along with the document, RavenDB saves a dict (as metadata) with more information about the document. One of the properties stored inside the metadata is the Raven-Python-Type a property that I put in the metadata to help me solve the issue, In these property we save the class name and it's module as the value. Then, we can try to import it when we want to load or query a document ("Raven-Python-Type": "__main__.Foo").
  
-![Image](/images/pymetadata.png)
+![Image 1](images/pymetadata.png)
 
 *<sup> ex. Document metadata
 
