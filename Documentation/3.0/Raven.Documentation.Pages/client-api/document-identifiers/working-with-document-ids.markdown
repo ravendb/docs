@@ -126,7 +126,11 @@ entity you want to store. Asking the server about the next identity results in i
 use it to create the identifiers for the whole collection of the same type objects by locally incrementing this value because you can accidentally overwrite the document or get a
 conflict exception if someone else is putting documents using the identity mechanism.
 
-There is even a command that allows you to set the identity value for a given prefix:
+There are dedicated commands that allows you to set identity values. The first one allows to perform that for a single given prefix:
 
 {CODE commands_identity_set@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+
+The usage of the second one sets a collection of identities at once:
+
+{CODE commands_identities_set@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
 

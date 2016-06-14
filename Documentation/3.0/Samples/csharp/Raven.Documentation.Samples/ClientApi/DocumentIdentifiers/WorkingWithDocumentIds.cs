@@ -1,4 +1,6 @@
-﻿using Raven.Abstractions.Data;
+﻿using System.Collections.Generic;
+using System.Linq;
+using Raven.Abstractions.Data;
 
 namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 {
@@ -104,7 +106,15 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 
 			#region commands_identity_set
 			store.DatabaseCommands.SeedIdentityFor("products", 42);
-			#endregion
-		} 
-	}
+            #endregion
+
+            #region commands_identities_set
+            store.DatabaseCommands.SeedIdentities(new Dictionary<string, long>
+            {
+                { "products", 42 },
+                { "orders", 11 }
+            }.ToList());
+            #endregion
+        }
+    }
 }
