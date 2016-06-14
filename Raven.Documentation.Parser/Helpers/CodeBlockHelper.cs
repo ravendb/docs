@@ -260,6 +260,8 @@ namespace Raven.Documentation.Parser.Helpers
 					return "language-none";
 				case CodeBlockLanguage.Xml:
 					return "language-none";
+                    case CodeBlockLanguage.Python:
+			        return "language-python";
 				default:
 					throw new NotSupportedException(language.ToString());
 			}

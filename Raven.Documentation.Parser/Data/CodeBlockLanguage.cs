@@ -7,6 +7,7 @@
 		Http,
 		Json,
 		Plain,
-		Xml
+		Xml,
+        Python
 	}
 }
