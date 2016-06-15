@@ -125,9 +125,9 @@ You can tweak the export/import process with the following parameters:
  - negative-filter: Filter documents NOT matching a document property. Usage example: `--negative-filter=Property-Name=Value`.   
  - metadata-filter: Filter documents by a metadata property. Usage example: `--metadata-filter=Raven-Entity-Name=Posts`.
  - negative-metadata-filter: Filter documents NOT matching a metadata property. Usage example: `--negative-metadata-filter=Raven-Entity-Name=Posts`.
- - transform: Transform documents using a given script (import only).   
- - transform-file: Transform documents using a given script file (import only).   
- - max-steps-for-transform-script: Maximum number of steps that a transform script can have (import only).
+ - transform: Transform documents using a given script.   
+ - transform-file: Transform documents using a given script file.   
+ - max-steps-for-transform-script: Maximum number of steps that a transform script can have.
  - timeout: The timeout (in milliseconds) to use for requests.
  - batch-size: The batch size for requests.
  - chunk-size: The number of documents to import before new connection will be opened.
