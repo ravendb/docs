@@ -219,6 +219,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     If there is just twice as much free space as specified, then a warning will become visible in the studio.
     _Default:_ 2048. Negative value disables protective free space checks.
 
+* **Raven/MaxPrecomputedBatchSizeForNewIndex**   
+    Specifies the max number of results of `Raven/DocumentsByEntityName` index to create a precomputed batch used by a newly created index to speed up its calculation.   
+    _Default:_ 32768   
+
 ### Data settings:
 
 * **Raven/WorkingDir**   
@@ -246,7 +250,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/TransactionJournalsPath**   
     The common setting for both storage engines used to specify the path for Esent logs or Voron journals. Useful if you want to store them on an another drive for performance reasons.     
-    _Default_: null - it means Esent logs will be placed into [database_data_dir]\Logs, while Voron journals will be located under [database_data_dir]
+    _Default:_ null - it means Esent logs will be placed into [database_data_dir]\Logs, while Voron journals will be located under [database_data_dir]
 
 * **Raven/TransactionMode**   
     Esent only. What transaction mode to use. Safe transaction mode ensures data consistency, but is slower. Lazy is faster, but may result in a data loss if the server crashes.   
@@ -391,53 +395,57 @@ This is the standard app.config XML file. The `appSettings` section is where the
     
 * **Raven/Esent/LogsPath**   
     The path for the esent logs. Useful if you want to store the logs on an another drive for performance reasons.     
-    _Default_: [database_data_dir]/Logs  
+    _Default:_ [database_data_dir]/Logs  
 
 * **Raven/Esent/CircularLog**   
     Whatever circular logs will be used, it is true by default. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
-    _Default_: true  
+    _Default:_ true  
 
 ### Voron settings
 
 * **Raven/Voron/AllowIncrementalBackups**   
     If you want to use incremental backups, you need to turn this to true, but then journal files will not be deleted after applying them to the data file. They will be deleted only after a successful backup. Default: false.     
-    _Default_: false  
+    _Default:_ false  
 
 * **Raven/Voron/TempPath**   
     You can use this setting to specify different paths to temporary files. By default it is empty, which means that temporary files will be created at the same location as data file.  
-    _Default_: `null`  
+    _Default:_ `null`  
 
 * **Raven/Voron/MaxBufferPoolSize**   
     You can use this setting to specify the maximum buffer pool size that can be used for transactional storage (in gigabytes). By default it is 4. Minimum value is 2.  
-    _Default_: 4   
+    _Default:_ 4   
 
 * **Raven/Voron/InitialSize**   
     You can use this setting to specify an initial file size for data file (in bytes).   
 
 * **Raven/Voron/MaxScratchBufferSize**   
     The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).
-    _Default_: 1024
+    _Default:_ 1024
 
 * **Raven/Voron/AllowOn32Bits**   
     Allows to use Voron storage on servers running in 32-bit mode.   
-    _Default_: false
+    _Default:_ false
 
 * **Raven/Voron/ScratchBufferSizeNotificationThreshold**   
     The minimum number of megabytes after which each scratch buffer size increase will create a notification. Used for indexing batch size tuning.   
-    _Default_:   
+    _Default:_   
     - 1024 when MaxScratchBufferSize > 1024
     - 512 when MaxScratchBufferSize > 512
     - -1 otherwise (disabled)
+   
+* **Raven/Voron/SkipConsistencyChecks**   
+    Prevents from performing data consistency when retrieving documents from the storage.   
+    _Default:_ false
 
 ### Backup
 
 * **Raven/IncrementalBackup/AlertTimeoutHours**   
     Number of hours after which incremental backup alert will be issued.
-    _Default_: 24
+    _Default:_ 24
 
 * **Raven/IncrementalBackup/RecurringAlertTimeoutDays**   
     Number of days after which incremental backup alert will be shown again.
-    _Default_: 7
+    _Default:_ 7
 
 ### Tenants
 
