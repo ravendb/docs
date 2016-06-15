@@ -22,8 +22,8 @@ Now we want to embed the reduced values inside the company document, so let's cr
 
 {CODE sample_setup_doc@Server\Bundles\ScriptedIndexResults.cs /}
 
-Since this document is stored in the database every time the _Orders/ByCompany_ index creates a new index entry, the _IndexScript_ will be applied to reduce results. Under
-`this` keyword in the _IndexScript_ script you have an access to the _Company_ , _Count_, and _Total_ values.  As you can see, the script uses the built-in `LoadDocument` and `PutDocument` functions in order to modify a company document. Note that we need to ensure that if the index entry is deleted, we will revert the changes by using the _DeleteScript_ script. Notice that we no longer have access to our calculated values under _this_, and the only available variable is a 'key', which is a document key.
+Since this document is stored in the database every time the _Orders/ByCompany_ index creates a new index entry, the _IndexScript_ will be applied to reduce results. 
+Under `this` keyword in the _IndexScript_ and _DeleteScript_ script you have an access to the Lucene document stored in index ( _Company_ , _Count_ , and _Total_ values).  As you can see, the script uses the built-in `LoadDocument` and `PutDocument` functions in order to modify a company document. Note that we need to ensure that if the index entry is deleted, we will revert the changes by using the _DeleteScript_ script. Notice that we no longer have access to our calculated values under _this_, and the only available variable is a 'key', which is a document key.
 
 Now, if you take a look at the documents from the companies collection after orders indexation, you will see the added values. For example:
 
