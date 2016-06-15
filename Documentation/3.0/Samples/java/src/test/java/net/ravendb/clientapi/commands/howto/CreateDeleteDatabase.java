@@ -35,6 +35,7 @@ public class CreateDeleteDatabase {
       databaseDocument.setId("NewDatabase");
       Map<String, String> settings = new HashMap<>();
       settings.put("Raven/ActiveBundles", "PeriodicExport");
+      settings.put("Raven/DataDir", "~\\Databases\\NewDatabase");
       databaseDocument.setSettings(settings);
       store.getDatabaseCommands().getGlobalAdmin().createDatabase(databaseDocument);
       //endregion

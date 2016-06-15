@@ -51,6 +51,7 @@
     <None Include="client-api\bundles\how-to-work-with-authorization-bundle.markdown" />
     <None Include="client-api\bundles\how-to-work-with-unique-constraints-bundle.markdown" />
     <None Include="client-api\changes\.docs.json" />
+    <None Include="client-api\changes\how-to-subscribe-to-data-subscription-changes.java.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-replication-conflicts.java.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-data-subscription-changes.dotnet.markdown" />
     <None Include="client-api\changes\how-to-subscribe-to-transformer-changes.java.markdown" />
