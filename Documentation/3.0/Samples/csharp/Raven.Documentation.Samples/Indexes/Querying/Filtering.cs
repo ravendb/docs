@@ -40,7 +40,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 		}
 		#endregion
 
-		#region filtering_6_4
+		#region filtering_7_4
 		public class Orders_ByTotalPrice : AbstractIndexCreationTask<Order>
 		{
 			public class Result
@@ -179,7 +179,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 			{
 				using (var session = store.OpenSession())
 				{
-					#region filtering_6_1
+					#region filtering_7_1
 					IList<Order> results = session
 						.Query<Orders_ByTotalPrice.Result, Orders_ByTotalPrice>()
 						.Where(x => x.TotalPrice > 50)
@@ -190,7 +190,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 				using (var session = store.OpenSession())
 				{
-					#region filtering_6_2
+					#region filtering_7_2
 					IList<Order> results = session
 						.Advanced
 						.DocumentQuery<Orders_ByTotalPrice.Result, Orders_ByTotalPrice>()
@@ -200,7 +200,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					#endregion
 				}
 
-				#region filtering_6_3
+				#region filtering_7_3
 				QueryResult result = store
 					.DatabaseCommands
 					.Query(

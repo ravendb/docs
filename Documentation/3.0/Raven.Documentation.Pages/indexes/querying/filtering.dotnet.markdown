@@ -27,10 +27,10 @@ One of the most basic functionalities when it comes to querying is the ability t
 Let's consider the following index and queries:
 
 {CODE-TABS}
-{CODE-TAB:csharp:Index filtering_6_4@Indexes\Querying\Filtering.cs /}
-{CODE-TAB:csharp:Query filtering_6_1@Indexes\Querying\Filtering.cs /}
-{CODE-TAB:csharp:DocumentQuery filtering_6_2@Indexes\Querying\Filtering.cs /}
-{CODE-TAB:csharp:Commands filtering_6_3@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:Index filtering_7_4@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:Query filtering_7_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_7_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:Commands filtering_7_3@Indexes\Querying\Filtering.cs /}
 {CODE-TABS/}
 
 Note that `PricePerUnit` is of type `decimal` in `Order` entity, so indexed `TotalPrice` value  will be `decimal` too. In oder to
