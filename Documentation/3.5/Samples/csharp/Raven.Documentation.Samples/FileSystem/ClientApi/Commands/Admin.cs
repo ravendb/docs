@@ -63,13 +63,13 @@
 			await store.AsyncFilesCommands.Admin
 				.CreateFileSystemAsync(new FileSystemDocument
 				{
-					Id = "Raven/FileSystems/NorthwindFS",
+					Id = "NorthwindFS",
 					Settings =
 					{
 						{ Constants.FileSystem.DataDirectory, "~/FileSystems/NorthwindFS" },
 						{ Constants.ActiveBundles, "Versioning" }
 					}
-				}, "NorthwindFS");
+				});
 
 			#endregion
 

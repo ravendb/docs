@@ -1,4 +1,5 @@
-﻿using Raven.Abstractions.Data;
+﻿using System.Net.Http;
+using Raven.Abstractions.Data;
 using Raven.Client.Connection;
 using Raven.Client.Connection.Implementation;
 using Raven.Client.Document;
@@ -23,7 +24,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 				IDatabaseCommands commands = store.DatabaseCommands;
 				using (HttpJsonRequest request = store
 					.JsonRequestFactory
-					.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, "GET", commands.PrimaryCredentials, store.Conventions)))
+					.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(commands, url, HttpMethod.Get, commands.PrimaryCredentials, store.Conventions)))
 				{
 					RavenJToken json = request.ReadResponseJson();
 					JsonDocument jsonDocument = SerializationHelper

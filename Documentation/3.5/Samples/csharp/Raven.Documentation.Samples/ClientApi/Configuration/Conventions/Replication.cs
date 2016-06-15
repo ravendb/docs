@@ -17,8 +17,8 @@
 			#endregion
 
 			#region replication_informer
-			Conventions.ReplicationInformerFactory = (url, jsonRequestFactory) =>
-				new ReplicationInformer(Conventions, jsonRequestFactory);
+			Conventions.ReplicationInformerFactory = (url, jsonRequestFactory, requestTimeMetricGetter) =>
+				new ReplicationInformer(Conventions, jsonRequestFactory, requestTimeMetricGetter);
 			#endregion
 
 			#region index_and_transformer_replication_mode

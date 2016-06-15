@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-
+using System.Net.Http;
 using Raven.Abstractions.Data;
 using Raven.Client.Connection;
 using Raven.Client.Document;
@@ -49,7 +49,7 @@ namespace Raven.Documentation.Samples.Server.Configuration
 				#region authentication_5
 				RavenJToken json = store
 					.JsonRequestFactory
-					.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(null, store.Url + "/debug/user-info", "GET", store.DatabaseCommands.PrimaryCredentials, store.Conventions))
+					.CreateHttpJsonRequest(new CreateHttpJsonRequestParams(null, store.Url + "/debug/user-info", HttpMethod.Get, store.DatabaseCommands.PrimaryCredentials, store.Conventions))
 					.ReadResponseJson();
 				#endregion
 			}

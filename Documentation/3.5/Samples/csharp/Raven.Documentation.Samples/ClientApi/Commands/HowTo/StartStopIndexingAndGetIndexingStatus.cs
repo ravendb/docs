@@ -1,4 +1,5 @@
-﻿using Raven.Client.Document;
+﻿using Raven.Abstractions.Data;
+using Raven.Client.Document;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 {
@@ -33,7 +34,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 
 				#region get_indexing_status_2
 				store.DatabaseCommands.Admin.StopIndexing();
-				string status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Paused"
+				IndexingStatus status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Paused"
 				store.DatabaseCommands.Admin.StartIndexing();
 				status = store.DatabaseCommands.Admin.GetIndexingStatus(); // "Indexing"
 				#endregion
