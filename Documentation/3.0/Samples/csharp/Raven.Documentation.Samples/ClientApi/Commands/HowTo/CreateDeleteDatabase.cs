@@ -51,8 +51,9 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 							                Id = "NewDatabase", 
 											Settings =
 												{
-													{ "Raven/ActiveBundles", "PeriodicExport" }
-												}
+													{ "Raven/ActiveBundles", "PeriodicExport" },
+                                                    { "Raven/DataDir", @"~\Databases\NewDatabase" }
+                                                }
 						                });
 				#endregion
 
