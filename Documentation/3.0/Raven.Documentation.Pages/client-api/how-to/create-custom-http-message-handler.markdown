@@ -5,4 +5,6 @@ with sending and receiving requests you might overwrite its default message hand
 
 ##Example
 
+To properly setup windows auth with unsafe connection sharing use the following code:
+
 {CODE custom_handler_provided@ClientApi\HowTo\CreateCustomHttpMessageHandler.cs /}
