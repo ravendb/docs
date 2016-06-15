@@ -1,0 +1,37 @@
+﻿[
+	{
+		"Path": "what-is-files-store.markdown",
+		"Name": "What is a files store?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "creating-files-store.markdown",
+		"Name": "Creating a files store",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/commands",
+		"Name": "Commands",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/session",
+		"Name": "Session",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/changes",
+		"Name": "Changes API",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/listeners",
+		"Name": "Listeners",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "sharding.markdown",
+		"Name": "Sharding",
+		"Mappings": [ ]
+	}
+]

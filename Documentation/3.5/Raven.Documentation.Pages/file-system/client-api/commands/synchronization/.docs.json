@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "start.markdown",
+    "Name": "Start",
+    "Mappings": []
+  },
+  {
+    "Path": "/destinations",
+    "Name": "Destinations",
+    "Mappings": []
+  },
+  {
+    "Path": "/monitoring",
+    "Name": "Monitoring",
+    "Mappings": []
+  },
+  {
+    "Path": "/conflicts",
+    "Name": "Conflicts",
+    "Mappings": []
+  }
+]

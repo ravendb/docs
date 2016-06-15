@@ -1,0 +1,22 @@
+﻿[
+	{
+		"Path": "how-it-works.markdown",
+		"Name": "How synchronization works?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "synchronization-types.markdown",
+		"Name": "Synchronization types",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "conflicts.markdown",
+		"Name": "Conflicts",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "configurations.markdown",
+		"Name": "Configurations",
+		"Mappings": [ ]
+	}
+]

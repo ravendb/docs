@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "mvc-starter-kit.markdown",
+		"Name": "MVC Starter Kit",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "samples/mvc/createAspNetMVC4Project"
+			}
+		]
+	}
+]

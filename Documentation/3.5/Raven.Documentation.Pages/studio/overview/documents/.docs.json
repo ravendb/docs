@@ -1,0 +1,37 @@
+﻿[
+	{
+		"Path": "documents-view.markdown",
+		"Name": "Documents View",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "studio/documents"
+			}
+		]
+	},
+	{
+		"Path": "document-edit-view.markdown",
+		"Name": "Document Edit View",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "studio/documents"
+			}
+		]
+	},
+	{
+		"Path": "patch-view.markdown",
+		"Name": "Patch View",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "studio/patch"
+			}
+		]
+	},
+	{
+		"Path": "conflicts-view.markdown",
+		"Name": "Conflicts View",
+		"Mappings": [ ]
+	}
+]

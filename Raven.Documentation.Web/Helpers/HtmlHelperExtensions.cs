@@ -56,7 +56,7 @@
 			var mode = GetMode(version);
 
 			if (mode == DocumentationMode.Normal)
-				return GenerateNavigationFor30(htmlHelper, language);
+				return GenerateNavigationFor35Or30(htmlHelper, language, version);
 
 			switch (version)
 			{
@@ -71,28 +71,28 @@
 			return null;
 		}
 
-		private static MvcHtmlString GenerateNavigationFor30(HtmlHelper htmlHelper, Language language)
+		private static MvcHtmlString GenerateNavigationFor35Or30(HtmlHelper htmlHelper, Language language, string version)
 		{
 			var builder = new StringBuilder();
 			builder.AppendLine("<ul class='nav navbar-nav'>");
 
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Getting started", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "start/getting-started" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Indexes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "indexes/what-are-indexes" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Transformers", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "transformers/what-are-transformers" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server", MVC.Docs.ActionNames.Server, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "studio/accessing-studio" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Getting started", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "start/getting-started" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Indexes", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "indexes/what-are-indexes" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Transformers", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "transformers/what-are-transformers" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = language, version = version }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server", MVC.Docs.ActionNames.Server, MVC.Docs.Name, new { language = language, version = version }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "studio/accessing-studio" }, null)));
 
 			builder.AppendLine("<li class='dropdown'>");
 			builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");
 			builder.AppendLine("<ul class='dropdown-menu' role='menu'>");
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Samples, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Glossary", MVC.Docs.ActionNames.Glossary, MVC.Docs.Name, new { language = language, version = "3.0" }, null)));
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Users Issues", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = "3.0", key = "users-issues/azure-router-timeout" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Samples", MVC.Docs.ActionNames.Samples, MVC.Docs.Name, new { language = language, version = version }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Glossary", MVC.Docs.ActionNames.Glossary, MVC.Docs.Name, new { language = language, version = version }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Users Issues", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "users-issues/azure-router-timeout" }, null)));
 			builder.AppendLine("</ul>");
 			builder.AppendLine("</li>");
 
-			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("File System", MVC.Docs.ActionNames.FileSystem, MVC.Docs.Name, new { language = language, version = "3.0", key = "file-system/what-is-ravenfs" }, null)));
+			builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("File System", MVC.Docs.ActionNames.FileSystem, MVC.Docs.Name, new { language = language, version = version, key = "file-system/what-is-ravenfs" }, null)));
 
 			builder.AppendLine("</ul>");
 
@@ -300,6 +300,7 @@
 			switch (version)
 			{
 				case "3.0":
+                case "3.5":
 					return DocumentationMode.Normal;
 				default:
 					return DocumentationMode.Legacy;

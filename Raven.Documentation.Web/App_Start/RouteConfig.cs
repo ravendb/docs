@@ -44,7 +44,7 @@
 					},
 				new
 					{
-						version = "1.0|2.0|2.5|3.0",
+						version = "1.0|2.0|2.5|3.0|3.5",
 						language = "csharp|java|http"
 					},
 				new[] { "Raven.Documentation.Web.Controllers" });
@@ -59,7 +59,7 @@
 				},
 				new
 				{
-					version = "1.0|2.0|2.5|3.0",
+					version = "1.0|2.0|2.5|3.0|3.5",
 					language = "csharp|java|http"
 				},
 				new[] { "Raven.Documentation.Web.Controllers" });
@@ -73,7 +73,7 @@
 					},
 				new
 					{
-						version = "1.0|2.0|2.5|3.0",
+						version = "1.0|2.0|2.5|3.0|3.5",
 						language = "csharp|java|http"
 					},
 				new[] { "Raven.Documentation.Web.Controllers" });
@@ -85,12 +85,12 @@
 					{
 						controller = MVC.Docs.Name,
 						action = MVC.Docs.ActionNames.Index,
-						version = "3.0",
+						version = "3.5",
 						language = Language.Csharp
 					},
 				new
 					{
-						version = "1.0|2.0|2.5|3.0",
+						version = "1.0|2.0|2.5|3.0|3.5",
 						language = "csharp|java|http"
 					},
 				new[] { "Raven.Documentation.Web.Controllers" });

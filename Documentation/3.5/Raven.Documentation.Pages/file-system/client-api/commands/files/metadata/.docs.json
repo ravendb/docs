@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "get-metadata-for.markdown",
+    "Name": "GetMetadata",
+    "Mappings": []
+  },
+  {
+    "Path": "update-metadata.markdown",
+    "Name": "UpdateMetadata",
+    "Mappings": []
+  }
+]

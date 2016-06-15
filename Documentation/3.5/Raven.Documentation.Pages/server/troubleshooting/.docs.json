@@ -1,0 +1,32 @@
+﻿[
+	{
+		"Path": "debug-endpoints.markdown",
+		"Name": "Debug endpoints",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "enabling-logging.markdown",
+		"Name": "Enabling logging",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/deployment/docs-debug-logging"
+			}
+		]
+	},
+	{
+		"Path": "running-in-debug-mode.markdown",
+		"Name": "Running in debug mode",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/deployment/docs-deploy-debug"
+			}
+		]
+	},
+	{
+		"Path": "sending-support-ticket.markdown",
+		"Name": "Sending support ticket",
+		"Mappings": [ ]
+	}
+]

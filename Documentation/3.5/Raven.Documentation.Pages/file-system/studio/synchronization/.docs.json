@@ -1,0 +1,17 @@
+﻿[
+	{
+		"Path": "conflicts-view.markdown",
+		"Name": "Conflicts view",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "destinations-view.markdown",
+		"Name": "Destinations view",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "configuration-view.markdown",
+		"Name": "Configuration view",
+		"Mappings": [ ]
+	}
+]

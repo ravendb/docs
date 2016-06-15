@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "cleanup.markdown",
+		"Name": "CleanUp",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "retry-renaming.markdown",
+		"Name": "RetryRenaming",
+		"Mappings": [ ]
+	}
+]

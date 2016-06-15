@@ -1,0 +1,57 @@
+﻿[
+	{
+		"Path": "what-is-a-file-session.markdown",
+		"Name": "What is a file session?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "opening-session.markdown",
+		"Name": "Opening a session",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "loading-files.markdown",
+		"Name": "Loading files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "uploading-files.markdown",
+		"Name": "Uploading files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "downloading-files.markdown",
+		"Name": "Downloading files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "renaming-files.markdown",
+		"Name": "Renaming files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "deleting-files.markdown",
+		"Name": "Deleting files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "changing-metadata.markdown",
+		"Name": "Changing metadata",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "saving-changes.markdown",
+		"Name": "Saving changes",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/querying",
+		"Name": "Querying",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/configuration",
+		"Name": "Configuration",
+		"Mappings": [ ]
+	}
+]

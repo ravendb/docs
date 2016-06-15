@@ -68,9 +68,10 @@
 		                @Html.VersionLink("2.0", (string)ViewBag.CurrentVersion, Language.Csharp)
 		                @Html.VersionLink("2.5", (string)ViewBag.CurrentVersion, Language.Csharp)
 		                @Html.VersionLink("3.0", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
+                        @Html.VersionLink("3.5", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
 	                </div>
                 </div>
-                @if (ViewBag.CurrentVersion == "3.0")
+                @if (ViewBag.CurrentVersion == "3.0" || ViewBag.CurrentVersion == "3.5")
                 {
                     <div class="pull-right chooser">
                         <span>Code samples </span>

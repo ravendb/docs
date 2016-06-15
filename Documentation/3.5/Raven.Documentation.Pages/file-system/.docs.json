@@ -1,0 +1,42 @@
+﻿[
+	{
+		"Path": "what-is-raven-fs.markdown",
+		"Name": "What is RavenFS?",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "files.markdown",
+		"Name": "Files",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "configurations.markdown",
+		"Name": "Configurations",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "indexing.markdown",
+		"Name": "Indexing",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/client-api",
+		"Name": "Client API",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/synchronization",
+		"Name": "Synchronization",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/server",
+		"Name": "Server",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/studio",
+		"Name": "Studio",
+		"Mappings": [ ]
+	}
+]

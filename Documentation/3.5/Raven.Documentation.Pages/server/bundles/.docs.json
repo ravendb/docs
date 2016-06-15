@@ -1,0 +1,135 @@
+﻿[
+	{
+		"Path": "authorization.markdown",
+		"Name": "Authorization",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/authorization"
+			}
+		]
+	},
+	{
+		"Path": "cascade-delete.markdown",
+		"Name": "Cascade Delete",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/cascade-delete"
+			}
+		]
+	},
+	{
+		"Path": "compression.markdown",
+		"Name": "Compression",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/compression"
+			}
+		]
+	},
+	{
+		"Path": "encryption.markdown",
+		"Name": "Encryption",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/encryption"
+			}
+		]
+	},
+	{
+		"Path": "expiration.markdown",
+		"Name": "Expiration",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/expiration"
+			}
+		]
+	},
+	{
+		"Path": "more-like-this.markdown",
+		"Name": "More Like This",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/bundles/morelikethis"
+			},
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/morelikethis"
+			}
+		]
+	},
+	{
+		"Path": "periodic-export.markdown",
+		"Name": "Periodic Export",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/periodic-backup"
+			}
+		]
+	},
+	{
+		"Path": "quotas.markdown",
+		"Name": "Quotas",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/quotas"
+			}
+		]
+	},
+	{
+		"Path": "replication.markdown",
+		"Name": "Replication",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "server/scaling-out/replication"
+			}
+		]
+	},
+	{
+		"Path": "scripted-index-results.markdown",
+		"Name": "Scripted Index Results",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/indexed-properties"
+			},
+			{
+				"Version": 2.5,
+				"Key": "server/extending/bundles/scripted-index-results"
+			}
+		]
+	},
+	{
+		"Path": "/sql-replication",
+		"Name": "SQL Replication",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "unique-constraints.markdown",
+		"Name": "Unique Constraints",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/unique-constraints"
+			}
+		]
+	},
+	{
+		"Path": "versioning.markdown",
+		"Name": "Versioning",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/versioning"
+			}
+		]
+	}
+]

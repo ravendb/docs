@@ -1,0 +1,52 @@
+[
+  {
+    "Path": "api-keys.markdown",
+    "Name": "API Keys",
+    "Mappings": []
+  },
+  {
+    "Path": "windows-authentication.markdown",
+    "Name": "Windows Authentication",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-restore.markdown",
+    "Name": "Backup & Restore",
+    "Mappings": []
+  },
+  {
+    "Path": "compact.markdown",
+    "Name": "Compact",
+    "Mappings": []
+  },
+  {
+    "Path": "admin-logs.markdown",
+    "Name": "Admin Logs",
+    "Mappings": []
+  },
+  {
+    "Path": "traffic-watch.markdown",
+    "Name": "Traffic Watch",
+    "Mappings": []
+  },
+  {
+    "Path": "license-information.markdown",
+    "Name": "License information",
+    "Mappings": []
+  },
+  {
+    "Path": "gather-debug-info.markdown",
+    "Name": "Gather Debug Info",
+    "Mappings": []
+  },
+  {
+    "Path": "io-test.markdown",
+    "Name": "IO Test",
+    "Mappings": []
+  },
+  {
+    "Path": "studio-config.markdown",
+    "Name": "Studio Config",
+    "Mappings": []
+  }
+]

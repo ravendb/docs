@@ -1,0 +1,48 @@
+[
+  {
+    "Path": "work-with-authentication.markdown",
+    "Name": "...work with authentication",
+    "Mappings": []
+  },
+  {
+    "Path": "setup-aggressive-caching.markdown",
+    "Name": "...setup aggressive caching",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "client-api/advanced/aggressive-caching"
+			}
+		]
+  },
+  {
+    "Path": "send-custom-request-using-httpjsonrequestfactory.markdown",
+    "Name": "...send custom request",
+    "Mappings": []
+  },
+  {
+    "Path": "integrate-with-excel.markdown",
+    "Name": "...integrate with Excel",
+    "Mappings": []
+  },
+    {
+        "Path": "enable-profiling.markdown",
+        "Name": "...enable profiling",
+        "Mappings": [ ]
+    },
+  {
+    "Path": "store-dates.markdown",
+    "Name": "...store dates",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "faq/storing-dates"
+      }
+
+    ]
+  },
+  {
+    "Path": "create-custom-http-message-handler.markdown",
+    "Name": "...create a custom message handler",
+    "Mappings": [ ]
+  },
+]

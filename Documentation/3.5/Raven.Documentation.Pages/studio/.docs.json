@@ -1,0 +1,27 @@
+﻿[
+	{
+		"Path": "accessing-studio.markdown",
+		"Name": "Accessing Studio",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "studio"
+			}
+		]
+	},
+	{
+		"Path": "/overview",
+		"Name": "Overview",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/management",
+		"Name": "Management",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/walkthroughs",
+		"Name": "Walkthroughs",
+		"Mappings": [ ]
+	}
+]

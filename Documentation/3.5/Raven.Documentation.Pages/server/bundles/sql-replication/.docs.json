@@ -1,0 +1,17 @@
+﻿[
+	{
+		"Path": "basics.markdown",
+		"Name": "Basics",
+		"Mappings": [
+			{
+				"Version": 2.0,
+				"Key": "server/extending/bundles/sql-replication"
+			}
+		]
+	},
+	{
+		"Path": "setup-postgre-sql.markdown",
+		"Name": "PostgreSQL",
+		"Mappings": [ ]
+	}
+]

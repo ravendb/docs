@@ -121,8 +121,9 @@ namespace Raven.Documentation.Parser
 			new MappingVersion { FloatValue = 1.0f, StringValue = "1.0"},
 			new MappingVersion { FloatValue = 2.0f, StringValue = "2.0"},
             new MappingVersion { FloatValue = 2.5f, StringValue = "2.5"},
-            new MappingVersion { FloatValue = 3.0f, StringValue = "3.0"}
-		};
+            new MappingVersion { FloatValue = 3.0f, StringValue = "3.0"},
+            new MappingVersion { FloatValue = 3.5f, StringValue = "3.5"}
+        };
 
 		public IEnumerable<PageMappingsValidationResult> ValidateMappings(IList<DocumentationPage> pages)
 		{

@@ -1,0 +1,302 @@
+﻿[
+	{
+		"Path": "admin-statistics.markdown",
+		"Name": "AdminStatistics",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "attachment-information.markdown",
+		"Name": "AttachmentInformation",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "attachment.markdown",
+		"Name": "Attachment",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "batch-result.markdown",
+		"Name": "BatchResult",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "bulk-operation-options.markdown",
+		"Name": "BulkOperationOptions",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "bulk-insert-change-notification.markdown",
+		"Name": "BulkInsertChangeNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "bulk-insert-operation.markdown",
+		"Name": "BulkInsertOperation",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "bulk-insert-options.markdown",
+		"Name": "BulkInsertOptions",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "configuration-change-notification.markdown",
+		"Name": "ConfigurationChangeNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "configuration-search-results.markdown",
+		"Name": "ConfigurationSearchResults",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "conflict-item.markdown",
+		"Name": "ConflictItem",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "conflict-notification.markdown",
+		"Name": "ConflictNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "data-subscription-change-notification.markdown",
+		"Name": "DataSubscriptionChangeNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "database-document.markdown",
+		"Name": "DatabaseDocument",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "database-restore-request.markdown",
+		"Name": "DatabaseRestoreRequest",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "database-statistics.markdown",
+		"Name": "DatabaseStatistics",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "delete-command-data.markdown",
+		"Name": "DeleteCommandData",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "document-change-notification.markdown",
+		"Name": "DocumentChangeNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "dynamic-aggregation-query.markdown",
+		"Name": "DynamicAggregationQuery",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "facet.markdown",
+		"Name": "Facet",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "facet-query.markdown",
+		"Name": "FacetQuery",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "facet-results.markdown",
+		"Name": "FacetResults",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "facet-setup.markdown",
+		"Name": "FacetSetup",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "field-highlightings.markdown",
+		"Name": "FieldHighlightings",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "file-change-notification.markdown",
+		"Name": "FileChangeNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "file-header.markdown",
+		"Name": "FileHeader",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "file-system-backup-request.markdown",
+		"Name": "FileSystemBackupRequest",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "file-system-document.markdown",
+		"Name": "FileSystemDocument",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "file-system-restore-request.markdown",
+		"Name": "FileSystemRestoreRequest",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "index-change-notification.markdown",
+		"Name": "IndexChangeNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "index-definition.markdown",
+		"Name": "IndexDefinition",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "index-merge-results.markdown",
+		"Name": "IndexMergeResults",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "index-query.markdown",
+		"Name": "IndexQuery",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "index-to-add.markdown",
+		"Name": "IndexToAdd",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "json-document-metadata.markdown",
+		"Name": "JsonDocumentMetadata",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "json-document.markdown",
+		"Name": "JsonDocument",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "more-like-this-query.markdown",
+		"Name": "MoreLikeThisQuery",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "multi-load-result.markdown",
+		"Name": "MultiLoadResult",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "open-session-options.markdown",
+		"Name": "OpenSessionOptions",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "operation.markdown",
+		"Name": "Operation",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "patch-command-data.markdown",
+		"Name": "PatchCommandData",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "put-command-data.markdown",
+		"Name": "PutCommandData",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "query-header-information.markdown",
+		"Name": "QueryHeaderInformation",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "query-result.markdown",
+		"Name": "QueryResult",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "raven-query-statistics.markdown",
+		"Name": "RavenQueryStatistics",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "replication-conflict-notification.markdown",
+		"Name": "ReplicationConflictNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "replication-destination.markdown",
+		"Name": "ReplicationDestination",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "scripted-patch-command-data.markdown",
+		"Name": "ScriptedPatchCommandData",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "search-results.markdown",
+		"Name": "SearchResults",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "spatial-criteria-factory.markdown",
+		"Name": "SpatialCriteriaFactory",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "spatial-relation.markdown",
+		"Name": "SpatialRelation",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "stream-result.markdown",
+		"Name": "StreamResult",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "suggestion-query.markdown",
+		"Name": "SuggestionQuery",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "suggestion-query-result.markdown",
+		"Name": "SuggestionQueryResult",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "synchronization-destination.markdown",
+		"Name": "SynchronizationDestination",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "synchronization-details.markdown",
+		"Name": "SynchronizationDetails",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "synchronization-report.markdown",
+		"Name": "SynchronizationReport",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "synchronization-update-notification.markdown",
+		"Name": "SynchronizationUpdateNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "transformer-change-notification.markdown",
+		"Name": "TransformerChangeNotification",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "transformer-definition.markdown",
+		"Name": "TransformerDefinition",
+		"Mappings": [ ]
+	}
+]

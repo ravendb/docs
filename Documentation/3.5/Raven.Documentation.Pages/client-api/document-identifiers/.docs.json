@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "working-with-document-ids.markdown",
+    "Name": "Working with document ids",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/saving-new-document#document-ids"
+			}
+		]
+  },
+  {
+    "Path": "hilo-algorithm.markdown",
+    "Name": "HiLo algorithm",
+    "Mappings": []
+  },
+  {
+    "Path": "beware-of.markdown",
+    "Name": "Beware of ...",
+    "Mappings": []
+  }
+]
