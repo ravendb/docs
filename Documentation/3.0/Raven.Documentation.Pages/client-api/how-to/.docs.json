@@ -29,15 +29,20 @@
         "Name": "...enable profiling",
         "Mappings": [ ]
     },
-    {
+  {
     "Path": "store-dates.markdown",
     "Name": "...store dates",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "faq/storing-dates"
-            }
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "faq/storing-dates"
+      }
 
-        ]
-  }
+    ]
+  },
+  {
+    "Path": "create-custom-http-message-handler.markdown",
+    "Name": "...create a custom message handler",
+    "Mappings": [ ]
+  },
 ]
