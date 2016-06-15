@@ -1,5 +1,5 @@
 ﻿using System;
-
+using Raven.Abstractions.Commands;
 using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 
@@ -43,7 +43,18 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					session.SaveChanges();
 					#endregion
 				}
-			}
+
+                using (var session = store.OpenSession())
+                {
+                    #region deleting_4
+                    session.Delete("employees/1");
+                    #endregion
+
+                    #region deleting_5
+                    session.Advanced.Defer(new DeleteCommandData { Key = "employees/1" });
+                    #endregion
+                }
+            }
 		}
 	}
 }
