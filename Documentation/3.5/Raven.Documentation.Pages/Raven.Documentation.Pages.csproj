@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{446905B5-6EF6-4603-95F9-93B649D35CE9}</ProjectGuid>
+    <ProjectGuid>{E2231393-3A44-4BD4-95C8-6D263C139C48}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Raven.Documentation.Pages</RootNamespace>
