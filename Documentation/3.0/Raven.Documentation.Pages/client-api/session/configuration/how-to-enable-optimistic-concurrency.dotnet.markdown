@@ -14,6 +14,16 @@ by using the convention `DefaultUseOptimisticConcurrency`.
 
 {CODE optimistic_concurrency_2@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
 
+## Remarks
+
+{INFO:Optimistic Concurrency and Replication}
+
+When Optimistic Concurrency is used with Replication then we advise to set `ForceReadFromMaster` when only read operations are load-balanced (FailoverBehavior.ReadFromAllServers) and you want to perform document update.
+
+{CODE optimistic_concurrency_3@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
+
+{INFO/}
+
 ## Related articles
 
 - [Revisions and Concurrency with E-Tags](../../concurrency/revisions-and-concurrency-with-etags)
