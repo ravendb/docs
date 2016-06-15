@@ -25,10 +25,11 @@ One of the most basic functionalities when it comes to querying is the ability t
 Let's consider the following index and queries:
 
 {CODE-TABS}
-{CODE-TAB:java:Index filtering_6_4@Indexes\Querying\Filtering.java /}
-{CODE-TAB:java:Query filtering_6_1@Indexes\Querying\Filtering.java /}
-{CODE-TAB:java:DocumentQuery filtering_6_2@Indexes\Querying\Filtering.java /}
-{CODE-TAB:java:Commands filtering_6_3@Indexes\Querying\Filtering.java /}
+
+{CODE-TAB:java:Index filtering_7_4@Indexes\Querying\Filtering.java /}
+{CODE-TAB:java:Query filtering_7_1@Indexes\Querying\Filtering.java /}
+{CODE-TAB:java:DocumentQuery filtering_7_2@Indexes\Querying\Filtering.java /}
+{CODE-TAB:java:Commands filtering_7_3@Indexes\Querying\Filtering.java /}
 {CODE-TABS/}
 
 Note that `PricePerUnit` is of type `double` in `Order` entity, so indexed `TotalPrice` value  will be `double` too. In oder to

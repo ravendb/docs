@@ -2,7 +2,7 @@
 
 The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
 You are able to subscribe to events for all documents or indexes as well as to indicate a particular one that you are interested in. 
-This mechanism lets you notify users if something has changed without the need to do any expensive pooling. 
+This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
 
 ## Accessing Changes API
 
@@ -46,10 +46,11 @@ In order to retrieve notifications you have to subscribe to server-side events b
 - [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsoftype)
 - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
 - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
+- [ForAllDataSubscriptions](../../client-api/changes/how-to-subscribe-to-data-subscription-changes)
 
 ## Unsubscribing
 
-In order to end subscribtion (stop listening for particular notifications) you must `close()` it.
+In order to end subscription (stop listening for particular notifications) you must `close()` it.
 
 {CODE:java changes_2@ClientApi\Changes\WhatIsChangesApi.java /}
 

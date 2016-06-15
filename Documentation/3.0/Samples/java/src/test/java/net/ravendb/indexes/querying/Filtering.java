@@ -58,7 +58,7 @@ public class Filtering {
   }
   //endregion
 
-  //region filtering_6_4
+  //region filtering_7_4
   public static class Orders_ByTotalPrice extends AbstractIndexCreationTask {
     @QueryEntity
     public static class Result {
@@ -173,6 +173,32 @@ public class Filtering {
         .query("Products/ByUnitsInStock",
           new IndexQuery("UnitsInStock_Range:{Ix50 TO NULL}"));
       //endregion
+    }
+
+
+    try (IDocumentStore store = new DocumentStore()) {
+      try (IDocumentSession session = store.openSession()) {
+        //region filtering_7_1
+        QFiltering_Orders_ByTotalPrice_Result x = QFiltering_Orders_ByTotalPrice_Result.result;
+        List<Orders_ByTotalPrice.Result> results = session.query(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
+                .where(x.totalPrice.gt(50))
+                .toList();
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region filtering_7_2
+        QFiltering_Orders_ByTotalPrice_Result x = QFiltering_Orders_ByTotalPrice_Result.result;
+        List<Orders_ByTotalPrice.Result> results = session.advanced().documentQuery(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
+                .whereGreaterThan(x.totalPrice, 50.0)
+                .toList();
+        //endregion
+      }
+
+      //region filtering_7_3
+      store.getDatabaseCommands().query("Orders/ByTotalPrice", new IndexQuery("TotalPrice_Range:{Dx50 TO NULL}"));
+      //endregion
+
     }
 
     try (IDocumentStore store = new DocumentStore()) {

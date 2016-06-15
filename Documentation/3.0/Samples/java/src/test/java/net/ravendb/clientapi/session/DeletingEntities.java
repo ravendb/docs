@@ -2,6 +2,7 @@ package net.ravendb.clientapi.session;
 
 import java.util.UUID;
 
+import net.ravendb.abstractions.commands.DeleteCommandData;
 import net.ravendb.client.IDocumentSession;
 import net.ravendb.client.IDocumentStore;
 import net.ravendb.client.document.DocumentStore;
@@ -41,6 +42,16 @@ public class DeletingEntities {
         // because Etag for 'employees/1' is unknown
         session.delete("employees/1");
         session.saveChanges();
+        //endregion
+      }
+
+      try (IDocumentSession session = store.openSession()) {
+        //region deleting_4
+        session.delete("employees/1");
+        //endregion
+
+        //region deleting_5
+        session.advanced().defer(new DeleteCommandData("employees/1", null));
         //endregion
       }
     }

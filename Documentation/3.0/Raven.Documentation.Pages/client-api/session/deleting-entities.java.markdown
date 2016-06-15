@@ -18,7 +18,22 @@ Entities can be marked for deletion by using `delete` method, but will not be re
 
 {CODE:java deleting_3@ClientApi\Session\DeletingEntities.java /}
 
+{INFO:Information}
+
+If entity is **not** tracked by session, then executing
+
+{CODE:java deleting_4@ClientApi\Session\DeletingEntities.java /}
+
+is equal to doing
+
+{CODE:java deleting_5@ClientApi\Session\DeletingEntities.java /}
+
+You can read more about defer operations [here](./how-to/defer-operations).
+
+{INFO/}
+
 ## Related articles
 
 - [Opening a session](./opening-a-session)  
 - [Loading entities](./loading-entities)  
+
