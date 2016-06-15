@@ -223,6 +223,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Specifies the max number of results of `Raven/DocumentsByEntityName` index to create a precomputed batch used by a newly created index to speed up its calculation.   
     _Default:_ 32768   
 
+* **Raven/Indexing/SkipRecoveryOnStartup**   
+    Disables the recovery mechanism of corrupted indexes on a database startup.   
+    _Default:_ false   
+
 ### Data settings:
 
 * **Raven/WorkingDir**   
