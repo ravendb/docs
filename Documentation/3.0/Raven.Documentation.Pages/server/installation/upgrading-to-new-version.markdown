@@ -1,6 +1,6 @@
 # Installation : Upgrading to a new version
 
-{INFO On a live system, this process typically takes 30 seconds. /}
+{INFO On a live system, a minor version upgrade process typically takes 30 seconds. /}
 
 ## Manually
 
@@ -40,6 +40,13 @@ You don't have to do anything when you upgrade RavenDB to migrate the stored dat
 
 - If you have secondary node running **only** for the duration of the actual update, you **don't need a license**.
 - If you have secondary node running **constantly** (hot backup), you do **need a license**.
+
+{INFO/}
+
+{INFO:Major version upgrade}
+
+In case of a major version upgrade (like 2.5 to 3.0) you need to validate the previous configuration before applying the upgrade. You will have better
+replace the old configuration file with a new one having options adjusted to the current version.
 
 {INFO/}
 
