@@ -4,6 +4,7 @@ using System.Linq;
 using Raven.Abstractions.Indexing;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
+using Raven.Client.Linq;
 
 namespace Raven.Documentation.Samples.Indexes
 {
@@ -36,17 +37,16 @@ namespace Raven.Documentation.Samples.Indexes
 		{
 			public class Result
 			{
-				public string Author { get; set; }
+				public string[] Authors { get; set; }
 			}
 
 			public BlogPosts_ByCommentAuthor()
 			{
 				Map = posts => from post in posts
-							   from comment in Recurse(post, x => x.Comments)
 							   select new
 							   {
-								   Author = comment.Author
-							   };
+								   Authors = Recurse(post, x => x.Comments).Select(x => x.Author)
+                               };
 			}
 		}
 		#endregion
@@ -72,7 +72,7 @@ namespace Raven.Documentation.Samples.Indexes
 					#region indexes_4
 					IList<BlogPost> results = session
 						.Query<BlogPosts_ByCommentAuthor.Result, BlogPosts_ByCommentAuthor>()
-						.Where(x => x.Author == "Ayende Rahien")
+						.Where(x => x.Authors.Any(a => a == "Ayende Rahien"))
 						.OfType<BlogPost>()
 						.ToList();
 					#endregion
@@ -84,7 +84,7 @@ namespace Raven.Documentation.Samples.Indexes
 					IList<BlogPost> results = session
 						.Advanced
 						.DocumentQuery<BlogPost, BlogPosts_ByCommentAuthor>()
-						.WhereEquals("Author", "Ayende Rahien")
+						.WhereEquals("Authors", "Ayende Rahien")
 						.ToList();
 					#endregion
 				}
