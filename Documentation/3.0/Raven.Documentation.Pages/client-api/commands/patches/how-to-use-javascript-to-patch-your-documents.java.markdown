@@ -22,6 +22,7 @@ Before we will move to the examples, let's look at the methods, objects, and var
 | `IncreaseNumberOfAllowedStepsBy(number)` | method | Will increase the maximum allowed number of steps in script by given value. Only available if `Raven/AllowScriptsToAdjustNumberOfSteps` is set to `true`. |
 | `_` | object | [Lo-Dash 2.4.1](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md) |
 | `trim()` | string.prototype | trims the string e.g. `this.FirstName.trim()` |
+| `output(...)` | method | Allows debug your patch, prints passed messages in output tab |
 | `indexOf(...)` | Array.prototype | wrapper for [_.indexOf](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_indexofarray-value-fromindex0) |
 | `filter(...)` | Array.prototype | wrapper for [_.filter](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_filtercollection-callbackidentity-thisarg) |
 | `Map(...)` | Array.prototype | wrapper for [_.map](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_mapcollection-callbackidentity-thisarg) |

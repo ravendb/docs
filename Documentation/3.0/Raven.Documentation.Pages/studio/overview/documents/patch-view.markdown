@@ -36,3 +36,6 @@ If you want to test your patch before applying it to real data, you can test it 
 
 Each patch can be saved using the `Save` action from `Action Bar` for further use (you need to type its name). To load it just press the `Load` button from the `Action Bar` and select desired patch.
 
+## Related articles
+
+- [How to use JavaScript to patch your documents?](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents)
