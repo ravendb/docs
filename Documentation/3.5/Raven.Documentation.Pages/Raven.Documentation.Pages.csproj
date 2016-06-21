@@ -670,6 +670,7 @@
     <None Include="server\bundles\versioning.markdown" />
     <None Include="server\configuration\.docs.json" />
     <None Include="server\configuration\authentication-and-authorization.markdown" />
+    <None Include="server\configuration\configuration-hot-spare-license.markdown" />
     <None Include="server\configuration\configuration-options.markdown" />
     <None Include="server\configuration\enabling-fips-compliant-encryption-algorithms.markdown" />
     <None Include="server\configuration\enabling-ssl.markdown" />
