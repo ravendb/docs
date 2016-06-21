@@ -21,7 +21,6 @@
 - `[Configuration]` Exposed `Raven/TempPath` setting,
 - `[Configuration]` Exposed `Raven/Indexing/MaxNumberOfStoredIndexingBatchInfoElements` setting,
 - `[Configuration]` Exposed, Raven/MaxClauseCount setting,
-- `[Endpoint]` Added `/debug/indexing-perf-stats and `/debug/indexing-perf-stats-with-timings`, statistics (/stats) no longer contain indexing performance data,
 - `[Endpoint]` Added `/admin/detailed-storage-breakdown`,
 - `[Endpoint]` Added `/admin/activate-hotspare`,
 - `[Endpoint]` Added `/admin/test-hotspare`,
