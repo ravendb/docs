@@ -7,5 +7,5 @@ You have the ability to manually set the last etag.
 
 ## Related articles
 
-- [What are Data Subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [Client API : What are Data Subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 
