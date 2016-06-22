@@ -670,6 +670,7 @@
     <None Include="server\bundles\versioning.markdown" />
     <None Include="server\configuration\.docs.json" />
     <None Include="server\configuration\authentication-and-authorization.markdown" />
+    <None Include="server\configuration\configuration-hot-spare-license.markdown" />
     <None Include="server\configuration\configuration-options.markdown" />
     <None Include="server\configuration\enabling-fips-compliant-encryption-algorithms.markdown" />
     <None Include="server\configuration\enabling-ssl.markdown" />
@@ -722,6 +723,7 @@
     <None Include="studio\.docs.json" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
+    <None Include="studio\management\hot-spare.markdown" />
     <None Include="studio\management\license-information.markdown" />
     <None Include="studio\management\studio-config.markdown" />
     <None Include="studio\management\gather-debug-info.markdown" />
@@ -858,6 +860,7 @@
     <Content Include="studio\management\images\manage_your_server-backup_database-1.png" />
     <Content Include="studio\management\images\manage_your_server-compact_database-1.png" />
     <Content Include="studio\management\images\manage_your_server-gather_debug_info-1.png" />
+    <Content Include="studio\management\images\manage_your_server-hot_spare.png" />
     <Content Include="studio\management\images\manage_your_server-IO_test-options-2.png" />
     <Content Include="studio\management\images\manage_your_server-IO_test-reading_writing-1.png" />
     <Content Include="studio\management\images\manage_your_server-IO_test-results-3.png" />
