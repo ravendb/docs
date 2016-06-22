@@ -24,4 +24,4 @@ administrator will not be able to activate it again without purchasing another h
 
 ## Related articles
 
-- [activating the hot spare](../../studio/management/hot-spare)
+- [Studio: Activating the Hot Spare](../../studio/management/hot-spare)

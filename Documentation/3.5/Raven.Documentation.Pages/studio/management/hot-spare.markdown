@@ -9,4 +9,4 @@ Pressing the test button will enable the server for 1 hour without activating it
 
 ## Related articles
 
-- [Hot Spare Information](../../server/configuration/configuration-hot-spare-license)
+- [Server: Hot Spare License](../../server/configuration/configuration-hot-spare-license)
