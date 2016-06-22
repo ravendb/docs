@@ -1,42 +1,52 @@
 ﻿[
-	{
-		"Path": "import-export-database.markdown",
-		"Name": "Import & Export Database",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	},
-	{
-		"Path": "toggle-indexing.markdown",
-		"Name": "Toggle Indexing",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	},
-	{
-		"Path": "create-sample-data.markdown",
-		"Name": "Create Sample Data",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	},
-	{
-		"Path": "csv-import.markdown",
-		"Name": "CSV Import",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/tasks"
-			}
-		]
-	}
+  {
+    "Path": "import-export-database.markdown",
+    "Name": "Import & Export Database",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "toggle-indexing.markdown",
+    "Name": "Toggle Indexing",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "subscriptions.markdown",
+    "Name": "Subscriptions",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "create-sample-data.markdown",
+    "Name": "Create Sample Data",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  },
+  {
+    "Path": "csv-import.markdown",
+    "Name": "CSV Import",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/tasks"
+      }
+    ]
+  }
 ]
