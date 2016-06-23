@@ -41,6 +41,7 @@ Document with the following format is retrieved:
             "ReducedPerSecond": 0.0,
             "RequestsPerSecond": 0.0,
             "Requests": {
+			  "Type": "Meter",
               "Count": 23,
               "MeanRate": 0.096,
               "OneMinuteRate": 0.048,
@@ -48,6 +49,7 @@ Document with the following format is retrieved:
               "FifteenMinuteRate": 1.253
             },
             "RequestsDuration": {
+			  "Type": "Histogram",
               "Counter": 23,
               "Max": 2224.0,
               "Min": 0.0,
@@ -61,6 +63,12 @@ Document with the following format is retrieved:
                 "99.9%": 2224.0,
                 "99.99%": 2224.0
               }
+            },
+		    "RequestDurationLastMinute": {
+			  "Count": 374,
+              "Min": 0,
+              "Max": 21,
+              "Avg": 0.24331550802139038
             },
             "StaleIndexMaps": {
               "Counter": 20,
@@ -78,6 +86,7 @@ Document with the following format is retrieved:
               }
             },
             "StaleIndexReduces": {
+			  "Type": "Histogram",
               "Counter": 20,
               "Max": 2.0,
               "Min": 0.0,
@@ -94,23 +103,26 @@ Document with the following format is retrieved:
             },
             "Gauges": {
               "Raven.Database.Indexing.IndexBatchSizeAutoTuner": {
+			    "InitialNumberOfItems": "512",
                 "MaxNumberOfItems": "131072",
-                "CurrentNumberOfItems": "1024",
-                "InitialNumberOfItems": "512"
-              },
-              "Raven.Database.Indexing.WorkContext": {
-                "RunningQueriesCount": "1"
+                "CurrentNumberOfItems": "1024"
               },
               "Raven.Database.Indexing.ReduceBatchSizeAutoTuner": {
-                "InitialNumberOfItems": "256",
                 "MaxNumberOfItems": "65536",
-                "CurrentNumberOfItems": "1024"
+                "CurrentNumberOfItems": "1024",
+				"InitialNumberOfItems": "256"
               }
+			  "Raven.Database.Indexing.WorkContext": {
+                "RunningQueriesCount": "1"
+              },
             },
             "ReplicationBatchSizeMeter": {},
-            "ReplicationDurationMeter": {},
             "ReplicationBatchSizeHistogram": {},
             "ReplicationDurationHistogram": {}
+		  },
+          "StorageStats": {
+            "VoronStats": null,
+            "EsentStats": {}
           }
         }
       ],
@@ -173,6 +185,8 @@ Executing one of the above actions will end up in getting a document in the foll
 	  "CountOfDocuments": 1059,
 	  "CountOfAttachments": 0,
 	  "StaleIndexes": [],
+	  "CountOfStaleIndexesExcludingDisabledAndAbandoned": 0,
+	  "CurrentNumberOfParallelTasks": 8,
 	  "CurrentNumberOfItemsToIndexInSingleBatch": 1024,
 	  "CurrentNumberOfItemsToReduceInSingleBatch": 1024,
 	  "DatabaseTransactionVersionSizeInMB": 0.09,
@@ -198,27 +212,10 @@ Executing one of the above actions will end up in getting a document in the foll
 		  "LastIndexingTime": "2014-11-28T09:39:24.5560252Z",
 		  "IsOnRam": "false",
 		  "LockMode": "LockedIgnore",
+		  "IsMapReduce": false,
 		  "ForEntityName": [],
-		  "Performance": [
-			{
-			  "Operation": "Index",
-			  "ItemsCount": 512,
-			  "InputCount": 512,
-			  "OutputCount": 507,
-			  "Started": "2014-11-28T09:39:21.0626773Z",
-			  "Completed": "2014-11-28T09:39:24.4020158Z",
-			  "Duration": "00:00:03.3393385",
-			  "DurationMilliseconds": 3339.34,
-			  "LoadDocumentCount": 0,
-			  "LoadDocumentDurationMs": 0,
-			  "WritingDocumentsToLuceneDurationMs": 90,
-			  "LinqExecutionDurationMs": 1604,
-			  "FlushToDiskDurationMs": 0,
-			  "WaitingTimeSinceLastBatchCompleted": "00:00:00"
-			},
-			...
-		  ],
 		  "DocsCount": 1051,
+		  "IsTestIndex": false,
 		  "IsInvalidIndex": false
 		},
 		{
@@ -238,50 +235,6 @@ Executing one of the above actions will end up in getting a document in the foll
 		}
 	  ],
 	  "Errors": [],
-	  "IndexingBatchInfo": [
-		{
-		  "BatchType": "Standard",
-		  "IndexesToWorkOn": [
-			"Raven/DocumentsByEntityName",
-			"Orders/ByCompany",
-			"Orders/Totals",
-			"Product/Sales"
-		  ],
-		  "TotalDocumentCount": 512,
-		  "TotalDocumentSize": 302597,
-		  "StartedAt": "2014-11-28T09:39:20.8126319Z",
-		  "TotalDuration": "00:00:03.6083852",
-		  "TimeSinceFirstIndexInBatchCompleted": "00:00:00.1770095",
-		  "PerformanceStats": {
-			"Raven/DocumentsByEntityName": {
-			  "Operation": "Index",
-			  "ItemsCount": 512,
-			  "InputCount": 512,
-			  "OutputCount": 507,
-			  "Started": "2014-11-28T09:39:21.0626773Z",
-			  "Completed": "2014-11-28T09:39:24.4020158Z",
-			  "Duration": "00:00:03.3393385",
-			  "DurationMilliseconds": 3339.34,
-			  "LoadDocumentCount": 0,
-			  "LoadDocumentDurationMs": 0,
-			  "WritingDocumentsToLuceneDurationMs": 90,
-			  "LinqExecutionDurationMs": 1604,
-			  "FlushToDiskDurationMs": 0,
-			  "WaitingTimeSinceLastBatchCompleted": "00:00:00"
-			},
-			"Orders/ByCompany": {
-			  ...
-			},
-			"Orders/Totals": {
-			  ...
-			},
-			"Product/Sales": {
-			  ...
-			}
-		  }
-		},
-		...
-	  ],
 	  "Prefetches": [
 		{
 		  "Timestamp": "2014-11-28T09:39:20.7856472Z",
@@ -293,7 +246,8 @@ Executing one of the above actions will end up in getting a document in the foll
 		...
 	  ],
 	  "DatabaseId": "e9c73b04-c787-496a-abf7-7dbef8dde431",
-	  "SupportsDtc": true
+	  "SupportsDtc": true,
+	  "Is64Bit": true
 	}
 {CODE-BLOCK/}
 
@@ -302,13 +256,14 @@ where
 * **StorageEngine** - configured storage engine used by the database (Esent or Voron)
 * **LastDocEtag** - last added document Etag   
 * **LastAttachmentEtag** - last added attachment Etag   
-* **CountOfIndexes** - number of indexes in database   
+* **CountOfIndexes** - number of indexes in database
+* **CountOfIndexesExcludingDisabledAndAbandoned** - number of indexes excluding disabled and abandoned   
 * **CountOfResultTransformers** - number of transformers in database
 * **ApproximateTaskCount** - approximate number of current database tasks   
-* **InMemoryIndexingQueueSizes** - number of docs in prefetching queues used by indexer
 * **CountOfDocuments** - number of documents in database   
 * **CountOfAttachments** - number of attachments in database
 * **StaleIndexes** - index names of stale indexes   
+* **CurrentNumberOfParallelTasks** - number of background tasks 
 * **CurrentNumberOfItemsToIndexInSingleBatch** - initial value is 512 for 64-bit systems and 256 for 32-bit. Depending on the load can be auto-adjusted. Used by database indexer.   
 * **CurrentNumberOfItemsToReduceInSingleBatch** - initial value is 512 for 64-bit systems and 256 for 32-bit. Depending on the load can be auto-adjusted. Used by database reducer.     
 * **DatabaseTransactionVersionSizeInMB** - current size (in MB) of Esent's version store (in memory modified data, relevant for Esent storage only, it returns -1 for Voron)
@@ -333,26 +288,8 @@ where
    * **LastIndexingTime** - time of last indexing run
    * **IsOnRam** - indicates if index is stored only in memory (new and small indexes are stored in memory at first)
    * **LockMode** - indicates what is the current lock mode for index. More information [here](../../server/administration/index-administration#index-locking).
+   * **IsMapReduce** - indicates if index is Map-Reduce index
    * **ForEntityName** - names of relevant collections that index processes
-   * **Performance** - index performance information
-		* **Operation** - operation type:
-			* `Map` or `Reduce Level level_number` for Map-Reduce indexes
-			* `Index` for Map-only indexes
-		* **ItemsCount** - number of documents in processed batch
-		* **InputCount**   
-			* for `Map` and `Index` operations this is a number of documents sent for processing   
-			* for `Reduce Level level_number` operation this is a number of documents that came from `Map` operation.   
-		* **OutputCount** - number of produced index entries
-		* **Started** - operation start time    
-		* **Completed** - operation complete time
-		* **Duration** - operation duration 
-		* **DurationInMilliseconds** - duration in milliseconds
-		* **LoadDocumentCount** - number of loaded documents by using [`LoadDocument`](../../indexes/indexing-related-documents) call
-		* **LoadDocumentDurationMs** - total duration of loading documents in milliseconds
-		* **WritingDocumentsToLuceneDurationMs** - time spent on writing documents to Lucene index
-		* **LinqExecutionDurationMs** - time executing Linq statement (Map or Reduce definition)
-		* **FlushToDiskDurationMs** - time calling Flush on the index writer
-		* **WaitingTimeSinceLastBatchCompleted** - time between the completion of a previous batch and a start of the current one
    * **DocsCount** - number of indexes documents
    * **IsInvalidIndex** - `true` if index index is invalid, otherwise `false`
 * **Errors**
@@ -360,15 +297,6 @@ where
    * **Error** - error message    
    * **Timestamp** - error timestamp   
    * **Document** - key of document that caused error     
-* **IndexingBatchInfo**   
-   * **BatchType** - `Standard` for usual index processing or `Precomputed` for optimized processing of new indexes
-   * **IndexesToWorkOn** - indexes that were selected to be processed in this batch
-   * **TotalDocumentCount** - number of documents in batch   
-   * **TotalDocumentSize** - size of documents in batch
-   * **StartedAt** - time of a batch start
-   * **TotalDuration** - total batch duration (all indexes processed)
-   * **TimeSinceFirstIndexInBatchCompleted** - time between time when first index in batch completed and completion time of the whole batch
-   * **PerformanceStats** - performance stats for particular indexes (see Indexes.Performance description)
 * **Prefetches** - prefetched indexing statistics        
    * **Timestamp** - prefetching start time     
    * **Duration** - prefetching duration      
@@ -377,4 +305,5 @@ where
    * **PrefetchingUser** - prefetching user name
 * **DatabaseId** - unique Id for database
 * **SupportsDtc** - indicates if database (transactional storage) supports DTC transactions    
+* **Is64Bit** - indicates whether the system is 64-bit system
 
