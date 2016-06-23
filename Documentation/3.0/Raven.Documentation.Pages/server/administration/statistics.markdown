@@ -48,6 +48,7 @@ Document with the following format is retrieved:
               "FifteenMinuteRate": 1.253
             },
             "RequestsDuration": {
+			  "Type": "Histogram",
               "Counter": 23,
               "Max": 2224.0,
               "Min": 0.0,
@@ -63,6 +64,7 @@ Document with the following format is retrieved:
               }
             },
             "StaleIndexMaps": {
+			  "Type": "Histogram",
               "Counter": 20,
               "Max": 4.0,
               "Min": 0.0,
@@ -78,6 +80,7 @@ Document with the following format is retrieved:
               }
             },
             "StaleIndexReduces": {
+			  "Type": "Histogram",
               "Counter": 20,
               "Max": 2.0,
               "Min": 0.0,
@@ -111,6 +114,10 @@ Document with the following format is retrieved:
             "ReplicationDurationMeter": {},
             "ReplicationBatchSizeHistogram": {},
             "ReplicationDurationHistogram": {}
+          },
+          "StorageStats": {
+            "VoronStats": null,
+            "EsentStats": {}
           }
         }
       ],
@@ -173,6 +180,7 @@ Executing one of the above actions will end up in getting a document in the foll
 	  "CountOfDocuments": 1059,
 	  "CountOfAttachments": 0,
 	  "StaleIndexes": [],
+	  "CountOfStaleIndexesExcludingDisabledAndAbandoned": 0,
 	  "CurrentNumberOfItemsToIndexInSingleBatch": 1024,
 	  "CurrentNumberOfItemsToReduceInSingleBatch": 1024,
 	  "DatabaseTransactionVersionSizeInMB": 0.09,
@@ -198,6 +206,7 @@ Executing one of the above actions will end up in getting a document in the foll
 		  "LastIndexingTime": "2014-11-28T09:39:24.5560252Z",
 		  "IsOnRam": "false",
 		  "LockMode": "LockedIgnore",
+		  "IsMapReduce": false,
 		  "ForEntityName": [],
 		  "Performance": [
 			{
@@ -209,15 +218,32 @@ Executing one of the above actions will end up in getting a document in the foll
 			  "Completed": "2014-11-28T09:39:24.4020158Z",
 			  "Duration": "00:00:03.3393385",
 			  "DurationMilliseconds": 3339.34,
-			  "LoadDocumentCount": 0,
-			  "LoadDocumentDurationMs": 0,
-			  "WritingDocumentsToLuceneDurationMs": 90,
-			  "LinqExecutionDurationMs": 1604,
-			  "FlushToDiskDurationMs": 0,
+			  "Operations": [
+               {
+                  "$type": "Raven.Abstractions.Data.PerformanceStats, Raven.Abstractions",
+                  "Name": "Lucene_DeleteExistingDocument",
+                  "DurationMs": 0
+               },
+               {
+                  "$type": "Raven.Abstractions.Data.ParallelPerformanceStats, Raven.Abstractions",
+                  "NumberOfThreads": 2,
+                  "BatchedOperations": [
+                    {
+                      "StartDelay": 0,
+                      "Operations": [
+                       {
+                         "Name": "LoadDocument",
+                         "DurationMs": 0
+                       },
+                      ...
+					  ]
+                    },
+					...
+                  ]
+              ],
 			  "WaitingTimeSinceLastBatchCompleted": "00:00:00"
-			},
-			...
-		  ],
+			}
+	      ],
 		  "DocsCount": 1051,
 		  "IsInvalidIndex": false
 		},
@@ -238,50 +264,6 @@ Executing one of the above actions will end up in getting a document in the foll
 		}
 	  ],
 	  "Errors": [],
-	  "IndexingBatchInfo": [
-		{
-		  "BatchType": "Standard",
-		  "IndexesToWorkOn": [
-			"Raven/DocumentsByEntityName",
-			"Orders/ByCompany",
-			"Orders/Totals",
-			"Product/Sales"
-		  ],
-		  "TotalDocumentCount": 512,
-		  "TotalDocumentSize": 302597,
-		  "StartedAt": "2014-11-28T09:39:20.8126319Z",
-		  "TotalDuration": "00:00:03.6083852",
-		  "TimeSinceFirstIndexInBatchCompleted": "00:00:00.1770095",
-		  "PerformanceStats": {
-			"Raven/DocumentsByEntityName": {
-			  "Operation": "Index",
-			  "ItemsCount": 512,
-			  "InputCount": 512,
-			  "OutputCount": 507,
-			  "Started": "2014-11-28T09:39:21.0626773Z",
-			  "Completed": "2014-11-28T09:39:24.4020158Z",
-			  "Duration": "00:00:03.3393385",
-			  "DurationMilliseconds": 3339.34,
-			  "LoadDocumentCount": 0,
-			  "LoadDocumentDurationMs": 0,
-			  "WritingDocumentsToLuceneDurationMs": 90,
-			  "LinqExecutionDurationMs": 1604,
-			  "FlushToDiskDurationMs": 0,
-			  "WaitingTimeSinceLastBatchCompleted": "00:00:00"
-			},
-			"Orders/ByCompany": {
-			  ...
-			},
-			"Orders/Totals": {
-			  ...
-			},
-			"Product/Sales": {
-			  ...
-			}
-		  }
-		},
-		...
-	  ],
 	  "Prefetches": [
 		{
 		  "Timestamp": "2014-11-28T09:39:20.7856472Z",
@@ -293,7 +275,9 @@ Executing one of the above actions will end up in getting a document in the foll
 		...
 	  ],
 	  "DatabaseId": "e9c73b04-c787-496a-abf7-7dbef8dde431",
-	  "SupportsDtc": true
+	  "SupportsDtc": true,
+	  "Is64Bit": true,
+      "IsMemoryStatisticThreadRuning": true
 	}
 {CODE-BLOCK/}
 
@@ -302,7 +286,8 @@ where
 * **StorageEngine** - configured storage engine used by the database (Esent or Voron)
 * **LastDocEtag** - last added document Etag   
 * **LastAttachmentEtag** - last added attachment Etag   
-* **CountOfIndexes** - number of indexes in database   
+* **CountOfIndexes** - number of indexes in database
+* **CountOfIndexesExcludingDisabledAndAbandoned** - number of indexes excluding disabled and abandoned   
 * **CountOfResultTransformers** - number of transformers in database
 * **ApproximateTaskCount** - approximate number of current database tasks   
 * **InMemoryIndexingQueueSizes** - number of docs in prefetching queues used by indexer
@@ -333,6 +318,7 @@ where
    * **LastIndexingTime** - time of last indexing run
    * **IsOnRam** - indicates if index is stored only in memory (new and small indexes are stored in memory at first)
    * **LockMode** - indicates what is the current lock mode for index. More information [here](../../server/administration/index-administration#index-locking).
+   * **IsMapReduce** - indicates if index is Map-Reduce index
    * **ForEntityName** - names of relevant collections that index processes
    * **Performance** - index performance information
 		* **Operation** - operation type:
@@ -360,15 +346,6 @@ where
    * **Error** - error message    
    * **Timestamp** - error timestamp   
    * **Document** - key of document that caused error     
-* **IndexingBatchInfo**   
-   * **BatchType** - `Standard` for usual index processing or `Precomputed` for optimized processing of new indexes
-   * **IndexesToWorkOn** - indexes that were selected to be processed in this batch
-   * **TotalDocumentCount** - number of documents in batch   
-   * **TotalDocumentSize** - size of documents in batch
-   * **StartedAt** - time of a batch start
-   * **TotalDuration** - total batch duration (all indexes processed)
-   * **TimeSinceFirstIndexInBatchCompleted** - time between time when first index in batch completed and completion time of the whole batch
-   * **PerformanceStats** - performance stats for particular indexes (see Indexes.Performance description)
 * **Prefetches** - prefetched indexing statistics        
    * **Timestamp** - prefetching start time     
    * **Duration** - prefetching duration      
@@ -377,4 +354,5 @@ where
    * **PrefetchingUser** - prefetching user name
 * **DatabaseId** - unique Id for database
 * **SupportsDtc** - indicates if database (transactional storage) supports DTC transactions    
-
+* **Is64Bit** - indicates whether the system is 64-bit system
+* **IsMemoryStatisticThreadRuning** - indicates if the statistic thread is running
