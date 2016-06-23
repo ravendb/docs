@@ -12,7 +12,7 @@ More complex text searching can be achieved by using `search` extension method. 
 | **searchTerms** | String | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. |
 | **boost** | double | Boost value. Default: `1`. |
 | **options** | SearchOptions | Explicitly set relation between each Search functions. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
-| **escapeQueryOptions** | [EscapeQueryOptions]() | Terms escaping strategy. One of the following: `EscapeAll`, `AllowPostfixWildcard`, `AllowAllWildcards`, `RawQuery`. Default: `EscapeQueryOptions.EscapeAll`. |
+| **escapeQueryOptions** | EscapeQueryOptions | Terms escaping strategy. One of the following: `EscapeAll`, `AllowPostfixWildcard`, `AllowAllWildcards`, `RawQuery`. Default: `EscapeQueryOptions.EscapeAll`. |
 
 | Return Value | |
 | ------------- | ----- |
