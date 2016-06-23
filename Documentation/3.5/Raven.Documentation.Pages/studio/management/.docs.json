@@ -50,6 +50,11 @@
     "Mappings": [ ]
   },
   {
+    "Path": "disk-io-viewer.markdown",
+    "Name": "Disk IO Viewer",
+    "Mappings": [ ]
+  },
+  {
     "Path": "studio-config.markdown",
     "Name": "Studio Config",
     "Mappings": [ ]
