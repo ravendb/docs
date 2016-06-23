@@ -20,7 +20,8 @@
 - `[JavaScript]` Updated LoDash to 4.13.1,
 - `[Configuration]` Exposed `Raven/TempPath` setting,
 - `[Configuration]` Exposed `Raven/Indexing/MaxNumberOfStoredIndexingBatchInfoElements` setting,
-- `[Endpoint]` Added `/debug/indexing-perf-stats and `/debug/indexing-perf-stats-with-timings`, statistics (/stats) no longer contain indexing performance data,
+- `[Endpoint]` Moved `/debug/indexing-perf-stats` to /debug/indexing-perf-stats-with-timings
+- `[Endpoint]` Changed `/debug/indexing-perf-stats`, gives a new output
 - `[Endpoint]` Added `/admin/detailed-storage-breakdown`,
 - `[Endpoint]` Added `/admin/activate-hotspare`,
 - `[Endpoint]` Added `/admin/test-hotspare`,

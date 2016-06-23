@@ -779,6 +779,7 @@
     <None Include="studio\overview\tasks\.docs.json" />
     <None Include="studio\overview\tasks\csv-import.markdown" />
     <None Include="studio\overview\tasks\create-sample-data.markdown" />
+    <None Include="studio\overview\tasks\subscriptions.markdown" />
     <None Include="studio\overview\tasks\toggle-indexing.markdown" />
     <None Include="studio\overview\tasks\import-export-database.markdown" />
     <None Include="studio\walkthroughs\.docs.json" />
@@ -979,6 +980,7 @@
     <Content Include="studio\overview\tasks\images\tasks-import_and_export_database_tab-1.png" />
     <Content Include="studio\overview\tasks\images\tasks-import_database_tab-advanced-5.png" />
     <Content Include="studio\overview\tasks\images\tasks-import_database_tab-general-4.png" />
+    <Content Include="studio\overview\tasks\images\tasks-subscription-1.png" />
     <Content Include="studio\overview\tasks\images\tasks-toggle_indexing_tab-1.png" />
     <Content Include="studio\walkthroughs\images\encryption-1.png" />
     <Content Include="studio\walkthroughs\images\encryption-2.png" />
