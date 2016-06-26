@@ -743,6 +743,7 @@
     <None Include="studio\overview\documents\patch-view.markdown" />
     <None Include="studio\overview\documents\documents-view.markdown" />
     <None Include="studio\overview\indexes\.docs.json" />
+    <None Include="studio\overview\indexes\index-renaming.markdown" />
     <None Include="studio\overview\indexes\index-edit-view.markdown" />
     <None Include="studio\overview\indexes\indexes-view.markdown" />
     <None Include="studio\overview\indexes\transformer-edit-view.markdown" />
@@ -898,6 +899,8 @@
     <Content Include="studio\overview\documents\images\patch-view-script.png" />
     <Content Include="studio\overview\documents\images\patch-view-test.png" />
     <Content Include="studio\overview\indexes\images\index-edit-view-action-bar.png" />
+    <Content Include="studio\overview\indexes\images\indexes-rename-1.PNG" />
+    <Content Include="studio\overview\indexes\images\indexes-rename-2.PNG" />
     <Content Include="studio\overview\indexes\images\indexes-view-action-bar.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-edit.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-menu-1.png" />

@@ -82,6 +82,7 @@
 - `[Patching]` Added recent patches to Patching view,
 - `[Indexing]` Added the ability to change lock mode for all indexes at once,
 - `[Indexing]` Added the ability to toggle reduction process,
+- `[Indexing]` Added the ability to rename an index without re-running it,
 - `[Indexing]` Indexing performance graph now contains prefetching time and deletions,
 - Added a LINQ-based Data Exploration feature,
 - Enhancements in CSV export (custom columns),
