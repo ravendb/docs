@@ -690,6 +690,7 @@
     <None Include="server\installation\using-installer.markdown" />
     <None Include="server\kb\.docs.json" />
     <None Include="server\kb\advanced-replication-details.markdown" />
+    <None Include="server\kb\raven-thread-pool.markdown" />
     <None Include="server\kb\authorization-bundle-design.markdown" />
     <None Include="server\kb\long-shutdown-times.markdown" />
     <None Include="server\plugins\.docs.json" />
