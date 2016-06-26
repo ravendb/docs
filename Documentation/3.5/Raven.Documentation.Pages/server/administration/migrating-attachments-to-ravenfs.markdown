@@ -1,6 +1,6 @@
 ﻿#Migrating attachments into RavenFS
 
-In version 3.0 the usage of attachments is considered as obsolete. The recommended way to work with files is to use a distributed file system - RavenFS which is part of RavenDB. 
+In version 3.5 the usage of attachments is considered as obsolete. The recommended way to work with files is to use a distributed file system - RavenFS which is part of RavenDB. 
 We provide a migration tool to support the migration of existing attachments into RavenFS.
 
 {PANEL:**Creating a file system**}

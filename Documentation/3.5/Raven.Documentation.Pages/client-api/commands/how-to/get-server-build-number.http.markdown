@@ -18,8 +18,8 @@ curl \
 
 | Return Value | Description |
 | ------------- | ------------- |
-| **ProductVersion** | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
-| **BuildVersion** |  String indicating current build version e.g. `"3260"` |
+| **ProductVersion** | String representing current product version e.g. `"ceacabf"` |
+| **BuildVersion** |  String indicating current build version e.g. `"35123"` |
 
 <hr />
 
@@ -28,7 +28,7 @@ curl \
 {CODE-BLOCK:json}
 curl -X GET "http://localhost:8080/databases/NorthWind/build/version" 
 < HTTP/1.1 200 OK
-{"ProductVersion":"3.0.0 / cdc39ac / ","BuildVersion":"13"}
+{"ProductVersion":"cdc39ac","BuildVersion":"13"}
 {CODE-BLOCK/}
 
 

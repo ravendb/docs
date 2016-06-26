@@ -45,7 +45,7 @@ You don't have to do anything when you upgrade RavenDB to migrate the stored dat
 
 {INFO:Major version upgrade}
 
-In case of a major version upgrade (like 2.5 to 3.0) you need to validate the previous configuration before applying the upgrade. You will have better
+In case of a major version upgrade (like 2.5 to 3.5) you need to validate the previous configuration before applying the upgrade. You will have better
 replace the old configuration file with a new one having options adjusted to the current version.
 
 {INFO/}

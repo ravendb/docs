@@ -10,10 +10,10 @@ When it comes to client server compatibility in RavenDB there are two valid rule
 
 Some examples:
 
- * `2.5` client will work with `3.0` server since server is greater than client
- * `2.5` client will work with `2.5` server since client and server are in the same Major and Minor range
- * `3.0.3785` client will work with `3.0.3528` server since client and server are in the same Major and Minor range
- * `2.5` client will **NOT** work with `2.0` server since client is greater than server
+ * `3.0` client will work with `3.5` server since server is greater than client
+ * `3.5` client will work with `3.5` server since client and server are in the same Major and Minor range
+ * `3.5.3785` client will work with `3.5.3528` server since client and server are in the same Major and Minor range
+ * `3.5` client will **NOT** work with `3.0` server since client is greater than server
  * `3.0` client will **NOT** work with `2.5` server since client is greater than server
 
 ## Upgrading
