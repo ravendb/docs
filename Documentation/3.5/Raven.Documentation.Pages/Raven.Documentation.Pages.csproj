@@ -650,6 +650,7 @@
     <None Include="server\administration\monitoring\.docs.json" />
     <None Include="server\administration\monitoring\pandora-fms.markdown" />
     <None Include="server\administration\monitoring\request-tracking.markdown" />
+    <None Include="server\administration\monitoring\disk-io-perf-monitor.markdown" />
     <None Include="server\administration\multiple-databases.markdown" />
     <None Include="server\administration\statistics.markdown" />
     <None Include="server\bundles\.docs.json" />
@@ -723,6 +724,7 @@
     <None Include="studio\.docs.json" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
+    <None Include="studio\management\disk-io-viewer.markdown" />
     <None Include="studio\management\hot-spare.markdown" />
     <None Include="studio\management\license-information.markdown" />
     <None Include="studio\management\studio-config.markdown" />
@@ -837,6 +839,9 @@
     <Content Include="indexes\images\side-by-side-2.png" />
     <Content Include="indexes\images\side-by-side-3.png" />
     <Content Include="indexes\querying\images\CNET_faceted_search_2.jpg" />
+    <Content Include="server\administration\monitoring\images\monitoring-Disk_IO_test-1.PNG" />
+    <Content Include="server\administration\monitoring\images\monitoring-Disk_IO_test-2.png" />
+    <Content Include="server\administration\monitoring\images\monitoring-Disk_IO_test-3.png" />
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\installation\images\installer_destination_and_paths.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
@@ -859,6 +864,9 @@
     <Content Include="studio\management\images\manage_your_server-api-keys-1.png" />
     <Content Include="studio\management\images\manage_your_server-backup_database-1.png" />
     <Content Include="studio\management\images\manage_your_server-compact_database-1.png" />
+    <Content Include="studio\management\images\manage_your_server-Disk_IO_Viewer-1.PNG" />
+    <Content Include="studio\management\images\manage_your_server-Disk_IO_Viewer-2.png" />
+    <Content Include="studio\management\images\manage_your_server-Disk_IO_Viewer-3.PNG" />
     <Content Include="studio\management\images\manage_your_server-gather_debug_info-1.png" />
     <Content Include="studio\management\images\manage_your_server-hot_spare.png" />
     <Content Include="studio\management\images\manage_your_server-IO_test-options-2.png" />

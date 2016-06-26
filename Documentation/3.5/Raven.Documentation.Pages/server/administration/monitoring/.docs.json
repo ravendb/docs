@@ -1,12 +1,17 @@
 ﻿[
-	{
-		"Path": "pandora-fms.markdown",
-		"Name": "Pandora FMS",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "request-tracking.markdown",
-		"Name": "Request Tracking",
-		"Mappings": [ ]
-	}
+  {
+    "Path": "pandora-fms.markdown",
+    "Name": "Pandora FMS",
+    "Mappings": [ ]
+  },
+  {
+    "Path": "request-tracking.markdown",
+    "Name": "Request Tracking",
+    "Mappings": [ ]
+  },
+  {
+    "Path": "disk-io-perf-monitor.markdown",
+    "Name": "Disk IO Performance Monitor",
+    "Mappings": [ ]
+  }
 ]
