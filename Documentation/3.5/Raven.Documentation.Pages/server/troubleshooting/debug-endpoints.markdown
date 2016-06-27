@@ -44,6 +44,11 @@
 | admin/detailed-storage-breakdown | GET | | Returns storage report (e.g. number of documents, indexes, attachments and other storage-dependant statistics). | |
 | admin/low-memory-notification | POST | | Simulates low memory on server and executes all memory conservation events. | |
 | admin/generate-oauth-certificate | GET | | Generates OAuth certificate. | |
+| admin/detailed-storage-breakdown | GET | | Detailed storage information. | |
+| admin/activate-hotspare | GET | | Activate hotspare license. | |
+| admin/test-hotspare | GET | | Test the hot spare for 1 hour. | |
+| admin/get-hotspare-information | GET | | Hot spare information. | |
+| admin/dump | GET | | Creates a dump file and displays its location. | |
 | | | | |
 | build/version | GET | | Returns product and build version. | Y |
 | | | | |
