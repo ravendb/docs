@@ -26,7 +26,7 @@ Then the conflict will disappear:
 
 ![Figure 5. Studio. No conflicts.](images/conflicts_view_5.png)
 
-Another way to solve all the issues in this page is to press the Reolve all conflicts button and chose how to resolve them:
+Another way to reolve all the issues in this page is to press the Reolve all conflicts button and chose how to resolve them:
 
 <span class="float-left">![Figure 6. Studio. resolve_conflicts_button.](images/resolve_conflicts_button.png)
 
@@ -41,4 +41,4 @@ You can resolve all the conflicts in the studio by three options:
 ## Related articles
 
 - [Server: Replication Bundle](../../../server/scaling-out/replication/how-replication-works)
-- [file-system studio: Conflicts View](../../../file-system/studio/synchronization/conflicts-view)
+- [File System Studio: Conflicts View](../../../file-system/studio/synchronization/conflicts-view)
