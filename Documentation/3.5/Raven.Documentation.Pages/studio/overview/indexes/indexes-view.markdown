@@ -82,3 +82,6 @@ You can read more about locking [here](../../../server/administration/index-admi
 
 {PANEL/}
 
+## Related articles
+
+- [Studio: Overview: Indexes : Index Edit View](./index-edit-view)

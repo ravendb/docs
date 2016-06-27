@@ -20,11 +20,6 @@
     ]
   },
   {
-    "Path": "index-renaming.markdown",
-    "Name": "Index Renaming",
-    "Mappings": [ ]
-  },
-  {
     "Path": "transformers-view.markdown",
     "Name": "Transformers View",
     "Mappings": [ ]

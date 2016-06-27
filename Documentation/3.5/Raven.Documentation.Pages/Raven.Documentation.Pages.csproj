@@ -743,7 +743,6 @@
     <None Include="studio\overview\documents\patch-view.markdown" />
     <None Include="studio\overview\documents\documents-view.markdown" />
     <None Include="studio\overview\indexes\.docs.json" />
-    <None Include="studio\overview\indexes\index-renaming.markdown" />
     <None Include="studio\overview\indexes\index-edit-view.markdown" />
     <None Include="studio\overview\indexes\indexes-view.markdown" />
     <None Include="studio\overview\indexes\transformer-edit-view.markdown" />
