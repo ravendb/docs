@@ -26,7 +26,7 @@ Then the conflict will disappear:
 
 ![Figure 5. Studio. No conflicts.](images/conflicts_view_5.png)
 
-Another way to reolve all the issues in this page is to press the Reolve all conflicts button and chose how to resolve them:
+Another way to solve all the issues in this page is to press the Resolve all conflicts button and chose how to resolve them:
 
 <span class="float-left">![Figure 6. Studio. resolve_conflicts_button.](images/resolve_conflicts_button.png)
 
