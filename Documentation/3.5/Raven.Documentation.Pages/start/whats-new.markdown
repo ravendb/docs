@@ -8,7 +8,6 @@
 - `[Global Configuration]` Added feature,
 - `[Clustering]` Added feature,
 - `[ETL]` Added feature,
-- `[Performance]` Added Raven Thread Pool (RTP)
 - `[Indexing]` Implemented a custom ThreadPool for better indexing thread management,
 - `[Indexing]` Improved performance when using Suggestions
 - `[Indexing]` Added support for AlphaNumeric sorting,
