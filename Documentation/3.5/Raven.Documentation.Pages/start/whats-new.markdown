@@ -26,7 +26,6 @@
 - `[Endpoint]` Added `/admin/activate-hotspare`,
 - `[Endpoint]` Added `/admin/test-hotspare`,
 - `[Endpoint]` Added `/admin/get-hotspare-information`,
-- `[Endpoint]` Added `/admin/clear-hotspare-information`,
 - `[Endpoint]` Added `/admin/dump`,
 - `[Logging]` server metrics will be written to log periodically,
 - `[Voron]` Performance improvements,
