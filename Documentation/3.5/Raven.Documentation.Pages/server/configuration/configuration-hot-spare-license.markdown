@@ -17,9 +17,15 @@ failover to it, etc. After the 96 hours are up, it will revert back to hot spare
 administrator will not be able to activate it again without purchasing another hot spare license.
 
 {NOTE: Remarks}
-- Server can be only be used as a replication destination (master-slave scenario) <br >
-- There is a one-time option to activate the license, which will enable all features for a period of 96 hours <br >
-- The license includes an option of testing the activiation for a short period, for operational testing <br >
+- Server can be only be used as a replication destination (master-slave scenario)  
+- There is a one-time option to activate the license, which will enable all features for a period of 96 hours  
+- The license includes an option of testing the activiation for a short period, for operational testing  
+{NOTE/}
+
+{NOTE: Hot Spare behaviour under clustering}
+- If not activated, the hot spare node will not have voting priviliges, thus it cannot be considered for a quorum.   
+- After activation, the hot spare node becomes promotable and can be elected as a leader. When activation expires, 
+if the hot spare node is the leader, it will gracefully (notifying the other cluster nodes) step down.   
 {NOTE/}
 
 ## Related articles
