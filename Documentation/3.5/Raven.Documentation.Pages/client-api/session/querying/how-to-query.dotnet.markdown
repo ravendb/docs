@@ -58,7 +58,7 @@ Available custom methods and extensions:
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
-- [OrderByScore]()
+- OrderByScore
 - [ProjectFromIndexFieldsInto](../../../client-api/session/querying/how-to-perform-projection)
 - [Search](../../../client-api/session/querying/how-to-use-search)
 - SingleAsync

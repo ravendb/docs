@@ -50,7 +50,7 @@ Available custom methods and extensions:
 - [Include](../../../indexes/querying/handling-document-relationships)
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
-- [OrderByScore]()
+- OrderByScore
 - [ProjectFromIndexFieldsInto](../../../client-api/session/querying/how-to-perform-projection)
 - [Search](../../../client-api/session/querying/how-to-use-search)
 - [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index)

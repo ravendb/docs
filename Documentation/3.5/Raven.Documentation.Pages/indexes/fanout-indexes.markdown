@@ -14,7 +14,7 @@ Note that these index definitions are correct and it both cases this is actually
 entries a document will generate, that means that it is very hard to allocate the appropriate amount of memory reserved for this, and it is possible to get into situations where
 we simply run out of memory. 
 
-That's why we introduced the concept of explicit control over the max number of index entries per document. In RavenDB 3.0 by default each document is allowed to output up to 15 entries
+That's why we introduced the concept of explicit control over the max number of index entries per document. Since RavenDB 3.0 by default each document is allowed to output up to 15 entries
 for a simple index and 50 entries for map-reduce index. If it tries to output more entries, the indexing of this document is aborted, and  it will be skipped by the indexer. An appropriate 
 error message will appear in logs and [indexing errors](../studio/overview/status/index-errors).
 
@@ -29,6 +29,6 @@ You can also set this option for a specific index by setting `MaxIndexOutputsPer
 
 The limit configured in the index definition has the priority over the limit from the configuration settings.
 
-{INFO: Upgrade to 3.0}
-If you upgrade to RavenDB 3.0, old indexes will have a limit of 16,384 items, to avoid breaking of existing indexes.
+{INFO: Upgrade to 3.x}
+If you upgrade to RavenDB 3.x, old indexes will have a limit of 16,384 items, to avoid breaking of existing indexes.
 {INFO/}

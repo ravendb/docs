@@ -49,7 +49,7 @@ Also to protect your data, RavenDB offers [data encryption bundle](../bundles/en
 
 ## Monitoring
 
-RavenDB 3.0 can be integrated with Pandora FMS to provide monitoring support. Click [here](../administration/monitoring/pandora-fms) for details.
+RavenDB 3.5 can be integrated with Pandora FMS to provide monitoring support. Click [here](../administration/monitoring/pandora-fms) for details.
 
 ## Logging
 

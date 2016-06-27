@@ -12,8 +12,8 @@ To check with what version of server commands you are working use `GetBuildNumbe
 
 | Return Value | BuildNumber | Information about current product (server) version and build number. |
 | ------------- | ------------- | ----- |
-| **ProductVersion** | string | String representing current product version e.g. `"3.0.0 / 6dce79a"` |
-| **BuildVersion** | string | String indicating current build version e.g. `"3260"` |
+| **ProductVersion** | string | String representing current product version e.g. `"ceacabf"` |
+| **BuildVersion** | string | String indicating current build version e.g. `"35123"` |
 
 ## Example
 

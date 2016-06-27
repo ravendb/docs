@@ -25,7 +25,8 @@ When the document is created, you can access the Northwind database using the sa
 Everything else remains unchanged. Note that unlike other databases, there isn't any additional steps that you have to go through. Once the document describing the database is created, RavenDB will create the database as soon as a requests for that database is received.
 
 {NOTE: Accessing a database}
-You can access the **Studio** for a specific database with: [http://localhost:8080/studio/index.html#databases/documents?&database=[database name]]().
+You can access the **Studio** for a specific database with:   
+    http://localhost:8080/studio/index.html#databases/documents?&database=database_name
 {NOTE/}
 
 You can create a new database from the client API in following way:
