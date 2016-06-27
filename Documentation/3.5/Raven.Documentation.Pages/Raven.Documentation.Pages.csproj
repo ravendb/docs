@@ -897,6 +897,8 @@
     <Content Include="studio\overview\documents\images\patch-view-action-bar.png" />
     <Content Include="studio\overview\documents\images\patch-view-script.png" />
     <Content Include="studio\overview\documents\images\patch-view-test.png" />
+    <Content Include="studio\overview\documents\images\resolve_conflicts_button.png" />
+    <Content Include="studio\overview\documents\images\resolve_conflicts_options.png" />
     <Content Include="studio\overview\indexes\images\index-edit-view-action-bar.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-action-bar.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-edit.png" />
