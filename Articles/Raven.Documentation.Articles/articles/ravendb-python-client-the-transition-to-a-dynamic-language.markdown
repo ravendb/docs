@@ -115,7 +115,7 @@ if (len(args) - 1) > len(document):
         entity_initialize_dict[args[i]] = document.get(args[i], 
 								defaults[i - remainder])
 else:
-    if keywords == "kwargs":
+    if keywords:
         entity_initialize_dict = document
     else:
         for key in document:
@@ -157,7 +157,7 @@ that can handle most CRUD scenarios, including full support for replication, fai
 
 
 for more information please visit:<br >
-<a href="https://github.com/IdanHaim/RavenDB-Python-Clien">https://github.com/IdanHaim/RavenDB-Python-Clien</a><br >
+<a href="https://github.com/ravendb/RavenDB-Python-Client">https://github.com/ravendb/RavenDB-Python-Client</a><br >
 <a href="https://ravendb.net">https://ravendb.net</a><br >
 
 Author : <b>Idan Haim Shalom</b>
