@@ -725,6 +725,7 @@
     <None Include="studio\.docs.json" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
+    <None Include="studio\management\server-smuggling.markdown" />
     <None Include="studio\management\disk-io-viewer.markdown" />
     <None Include="studio\management\hot-spare.markdown" />
     <None Include="studio\management\license-information.markdown" />
@@ -875,6 +876,7 @@
     <Content Include="studio\management\images\manage_your_server-IO_test-results-3.png" />
     <Content Include="studio\management\images\manage_your_server-log_entries-2.png" />
     <Content Include="studio\management\images\manage_your_server-restore_database-2.png" />
+    <Content Include="studio\management\images\manage_your_server-server-smuggling-1.png" />
     <Content Include="studio\management\images\manage_your_server-studio_config-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-2.png" />
