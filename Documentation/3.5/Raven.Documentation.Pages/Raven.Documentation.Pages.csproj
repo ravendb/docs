@@ -948,6 +948,7 @@
     <Content Include="studio\overview\status\debug\images\debug-explain-replication-studio.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_tracking-1.png" />
+    <Content Include="studio\overview\status\images\status-replication_performance_statistics.png" />
     <Content Include="studio\overview\status\images\status-sql-replication_stats-1.png" />
     <Content Include="studio\overview\status\images\status-storage-1.png" />
     <Content Include="studio\overview\status\images\status-storage-2.png" />

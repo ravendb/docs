@@ -11,3 +11,9 @@ An additional functionality allows requesting server a replication topology. Whe
 ![Figure 2. Studio. Status. Replication Stats. Replication Topology.](images/status-replication_stats-replication_topology-2.png)
 
 {WARNING Gathering replication topology data may be time consuming. /}
+
+## Replication Performance Statistics
+
+Here you can find information about replication performance.
+
+![Figure 3. Studio. Status. Replication Stats. Replication Performance Statistics.](images/status-replication_performance_statistics.png)
