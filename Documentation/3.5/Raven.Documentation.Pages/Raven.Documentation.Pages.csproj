@@ -763,6 +763,7 @@
     <None Include="studio\overview\status\.docs.json" />
     <None Include="studio\overview\status\debug\.docs.json" />
     <None Include="studio\overview\status\debug\explain-replication.markdown" />
+    <None Include="studio\overview\status\debug\data-subscription.markdown" />
     <None Include="studio\overview\status\debug\overview.markdown" />
     <None Include="studio\overview\status\indexing\.docs.json" />
     <None Include="studio\overview\status\indexing\batch-size-and-prefetches.markdown" />
@@ -983,6 +984,7 @@
     <Content Include="studio\overview\status\images\tasks-import_database_tab-general-4.png" />
     <Content Include="studio\overview\status\images\tasks-toggle_indexing_tab-1.png" />
     <Content Include="studio\overview\status\indexing\images\indexing_performance_1.png" />
+    <Content Include="studio\overview\status\debug\images\debug-data-subscriptions.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-1.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-documents_view-2.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-indexes_view-3.png" />
