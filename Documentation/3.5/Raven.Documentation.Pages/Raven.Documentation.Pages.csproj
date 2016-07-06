@@ -725,6 +725,7 @@
     <None Include="studio\.docs.json" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
+    <None Include="studio\management\server-topology.markdown" />
     <None Include="studio\management\server-smuggling.markdown" />
     <None Include="studio\management\disk-io-viewer.markdown" />
     <None Include="studio\management\hot-spare.markdown" />
@@ -946,8 +947,10 @@
     <Content Include="studio\overview\settings\images\settings_replication-4.png" />
     <Content Include="studio\overview\status\debug\images\debug-endpoints-studio-1.png" />
     <Content Include="studio\overview\status\debug\images\debug-explain-replication-studio.png" />
+    <Content Include="studio\management\images\manage_your_server-server-topology-1.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_tracking-1.png" />
+    <Content Include="studio\overview\status\images\status-replication_performance_statistics.png" />
     <Content Include="studio\overview\status\images\status-sql-replication_stats-1.png" />
     <Content Include="studio\overview\status\images\status-storage-1.png" />
     <Content Include="studio\overview\status\images\status-storage-2.png" />
