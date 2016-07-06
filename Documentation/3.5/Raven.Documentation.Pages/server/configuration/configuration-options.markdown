@@ -440,11 +440,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     - 1024 when MaxScratchBufferSize > 1024
     - 512 when MaxScratchBufferSize > 512
     - -1 otherwise (disabled)
-   
-* **Raven/Voron/SkipConsistencyChecks**   
-    Prevents from performing data consistency when retrieving documents from the storage.   
-    _Default:_ false
-
+  
 ### Backup
 
 * **Raven/IncrementalBackup/AlertTimeoutHours**   
