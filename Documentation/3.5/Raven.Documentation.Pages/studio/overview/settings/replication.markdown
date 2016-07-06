@@ -57,6 +57,14 @@ Please refer to following [article](../../../client-api/bundles/how-client-integ
 
 {PANEL/}
 
+{NOTE:Note}
+
+In earlier version of RavenDB, enabling the replication bundle wasn't possible for an existing databases. Now it is.
+
+![Figure 5. Settings. Replication. Enable Replication Bundle.](images/settings_replication-5.png)
+
+{NOTE/}
+
 ## Related articles
 
 - [Explain replication](../../../studio/overview/status/debug/explain-replication)
