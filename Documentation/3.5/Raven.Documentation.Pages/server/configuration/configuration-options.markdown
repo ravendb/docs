@@ -269,6 +269,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Disabled the automatic storage schema updates for all resources.   
     _Default:_ false
 
+* **Raven/TempPath**
+    The common setting that allows us to change the path where server is putting temporary files.   
+    _Default:_ Path.GetTempPath() - In Windows The default value is C:\Users\\{User-Name}\\AppData\Local\Temp\ 
+
 ### Http settings
 
 * **Raven/HostName**   
