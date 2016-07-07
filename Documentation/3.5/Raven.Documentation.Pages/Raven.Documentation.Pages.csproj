@@ -955,6 +955,13 @@
     <Content Include="studio\overview\status\images\status-storage-1.png" />
     <Content Include="studio\overview\status\images\status-storage-2.png" />
     <Content Include="studio\overview\status\images\status-storage-3.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_2.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_3.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_4.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_5.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_6.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_7.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_reduce_levels.png" />
     <Content Include="studio\overview\status\indexing\images\metrics-index_batch_size-4.png" />
     <Content Include="studio\overview\status\indexing\images\metrics-prefetches-5.png" />
     <Content Include="studio\overview\status\images\metrics-request_counter-2.png" />
