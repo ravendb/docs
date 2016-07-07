@@ -17,7 +17,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     <add key="Raven/Port" value="*"/> 
     <add key="Raven/DataDir/Legacy" value="~\Database\System"/> 
     <add key="Raven/DataDir" value="~\Databases\System"/> 
-	<add key="Raven/AnonymousAccess" value="Get" /> 
+	<add key="Raven/AnonymousAccess" value="Admin" /> 
 	<add key="Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse" value="false" />
 	<add key="Raven/AccessControlAllowOrigin" value="*" />
   </appSettings> 
@@ -223,13 +223,17 @@ This is the standard app.config XML file. The `appSettings` section is where the
     If there is just twice as much free space as specified, then a warning will become visible in the studio.
     _Default:_ 2048. Negative value disables protective free space checks.
 
-* **Raven/MaxPrecomputedBatchSizeForNewIndex**   
+* **Raven/MaxPrecomputedBatchSizeForNewIndex**    
     Specifies the max number of results of `Raven/DocumentsByEntityName` index to create a precomputed batch used by a newly created index to speed up its calculation.   
     _Default:_ 32768   
 
 * **Raven/Indexing/SkipRecoveryOnStartup**   
     Disables the recovery mechanism of corrupted indexes on a database startup.   
     _Default:_ false   
+
+* **Raven/Indexing/MaxNumberOfStoredIndexingBatchInfoElements**   
+    Indicates the max number of indexing batch info the server save for debug.   
+    _Default:_ 512
 
 ### Data settings:
 
@@ -268,6 +272,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/PreventSchemaUpdate**   
 	Disabled the automatic storage schema updates for all resources.   
     _Default:_ false
+
+* **Raven/TempPath**   
+    The common setting that allows us to change the path where server is putting temporary files.    
+    _Default:_ Path.GetTempPath() - In Windows The default value is C:\Users\\{User-Name}\\AppData\Local\Temp\ 
 
 ### Http settings
 
@@ -504,8 +512,9 @@ This is the standard app.config XML file. The `appSettings` section is where the
 ### [Authorization & Authentication](../../server/configuration/authentication-and-authorization)
 
 * **Raven/AnonymousAccess**   
-	Determines what actions an anonymous user can perform. Get - read only, All - read & write, None - allows access only to authenticated users, Admin - all (including administrative actions).   
-	_Default:_ Get
+	Determines what actions an anonymous user can perform. None - allows access only to authenticated users,   
+    Admin - all (including administrative actions).   
+	_Default:_ Admin
 
 {WARNING If your database instance does not have a valid license, then the `Admin` is the only available option to set. In a commercial system it should not be used. It is used only for testing and development purposes, since it grants administrative rights to **ANY** user.  /}
 
