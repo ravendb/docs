@@ -8,13 +8,15 @@ The replication bundle provides a mechanism to detect if a document was modified
 
 ## Influence on metadata
 
-The replication module arrives with triggers performed on every PUT operation. They take care of tracking an ancestry of a document (or an attachment) and building its history when it moves between database instances. These information are stored in metadata under special system keys:
+The replication module arrives with triggers performed on every PUT operation. They take care of tracking an ancestry of a document (or an attachment) and building its history when it moves between database instances. 
+This information is stored in metadata under special system keys:
 
 * *Raven-Replication-Version* that describes a file version in a database,
 * *Raven-Replication-Source* which is a database identifier where a file was put,
 * *Raven-Replication-History* where old pairs of source and version are collected.
 
-As already mentioned, these values are added to metadata only if the replication is active. It means that the scenario for enabling database replication when documents are already there is not supported.
+As already mentioned, these values are added to metadata only if the replication is active.
+The scenario for enabling database replication when documents are already there is not supported.
 
 ## History
 

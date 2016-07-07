@@ -59,11 +59,20 @@ Please refer to following [article](../../../client-api/bundles/how-client-integ
 
 {NOTE:Note}
 
-In earlier version of RavenDB, enabling the replication bundle wasn't possible for an existing databases. Now it is.
+Since version 3.5, enabling the replication bundle is possible for an existing databases.
 
 ![Figure 5. Settings. Replication. Enable Replication Bundle.](images/settings_replication-5.png)
 
 {NOTE/}
+
+{WARNING:Warning}
+
+This is not recommended if your database already contain documents.
+For more information read about influence on metadata in [Advanced replication details](../../../server/kb/advanced-replication-details).
+
+{WARNING/}
+
+
 
 ## Related articles
 
