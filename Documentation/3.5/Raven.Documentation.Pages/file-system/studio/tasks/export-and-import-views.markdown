@@ -8,7 +8,7 @@ Export and Import tabs enable fast data moving between file systems.
 
 The easiest way to export a file system is by clicking the `Export Filesystem` button. Dialog for saving file will appear and you can save the export file.
 
-By default the name of the export file is `Dump of [FILE_SYSTEM_NAME], [YYYY-MM-DD HH-MM].ravendump`, you can change it by selecting `Override file name`.
+By default the name of the export file is `Dump of [FILE_SYSTEM_NAME], [YYYY-MM-DD HH-MM].ravenfsdump`, you can change it by selecting `Override file name`.
 
 ##Import
 
