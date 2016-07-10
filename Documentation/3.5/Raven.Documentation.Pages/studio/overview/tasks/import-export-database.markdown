@@ -27,4 +27,10 @@ Import follows the same procedure as export. You can click the `Choose file` but
 
 ![Figure 5. Tasks. Import Database Tab. Advanced Tab.](images/tasks-import_database_tab-advanced-5.png)
 
+{NOTE:Note}
+
+Since version 3.5, you can disable versioning bundle during import.
+
+{NOTE/}
+
 {DANGER Importing will overwrite any existing documents, indexes and transformers. /} 
