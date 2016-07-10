@@ -67,7 +67,9 @@ Since version 3.5, enabling the replication bundle is possible for an existing d
 
 {WARNING:Warning}
 
-This is not recommended if your database already contain documents.
+This is not recommended if your database already contain documents.   
+In case you decided to do it anyway, there will be a side effect where replication info will be missing from the document's metadata
+until you "touch" the document again.    
 For more information read about influence on metadata in [Advanced replication details](../../../server/kb/advanced-replication-details).
 
 {WARNING/}
