@@ -29,3 +29,7 @@ and disable the versioning there, create the config as follow:
 All file revisions are visible under special `$revisions` directory:
 
 ![Figure 6. Studio. Versioning. Revisions.](images/versioning-6.png)
+
+## Related articles
+
+- [Settings: Versioning](../settings/versioning)
