@@ -2,61 +2,71 @@
   {
     "Path": "api-keys.markdown",
     "Name": "API Keys",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "windows-authentication.markdown",
     "Name": "Windows Authentication",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "backup-restore.markdown",
     "Name": "Backup & Restore",
-    "Mappings": [ ]
+    "Mappings": []
+  },
+  {
+    "Path": "server-smuggling.markdown",
+    "Name": "server smuggling",
+    "Mappings": []
   },
   {
     "Path": "compact.markdown",
     "Name": "Compact",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "admin-logs.markdown",
     "Name": "Admin Logs",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "traffic-watch.markdown",
     "Name": "Traffic Watch",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "license-information.markdown",
     "Name": "License information",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "hot-spare.markdown",
     "Name": "Hot Spare",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "gather-debug-info.markdown",
     "Name": "Gather Debug Info",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "io-test.markdown",
     "Name": "IO Test",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "disk-io-viewer.markdown",
     "Name": "Disk IO Viewer",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "studio-config.markdown",
     "Name": "Studio Config",
-    "Mappings": [ ]
+    "Mappings": []
+  },
+  {
+    "Path": "server-topology.markdown",
+    "Name": "Server Topology",
+    "Mappings": []
   }
 ]

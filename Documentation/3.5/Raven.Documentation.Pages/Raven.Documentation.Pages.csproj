@@ -725,6 +725,8 @@
     <None Include="studio\.docs.json" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
+    <None Include="studio\management\server-topology.markdown" />
+    <None Include="studio\management\server-smuggling.markdown" />
     <None Include="studio\management\disk-io-viewer.markdown" />
     <None Include="studio\management\hot-spare.markdown" />
     <None Include="studio\management\license-information.markdown" />
@@ -762,6 +764,7 @@
     <None Include="studio\overview\status\.docs.json" />
     <None Include="studio\overview\status\debug\.docs.json" />
     <None Include="studio\overview\status\debug\explain-replication.markdown" />
+    <None Include="studio\overview\status\debug\data-subscription.markdown" />
     <None Include="studio\overview\status\debug\overview.markdown" />
     <None Include="studio\overview\status\indexing\.docs.json" />
     <None Include="studio\overview\status\indexing\batch-size-and-prefetches.markdown" />
@@ -875,6 +878,7 @@
     <Content Include="studio\management\images\manage_your_server-IO_test-results-3.png" />
     <Content Include="studio\management\images\manage_your_server-log_entries-2.png" />
     <Content Include="studio\management\images\manage_your_server-restore_database-2.png" />
+    <Content Include="studio\management\images\manage_your_server-server-smuggling-1.png" />
     <Content Include="studio\management\images\manage_your_server-studio_config-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-2.png" />
@@ -943,12 +947,21 @@
     <Content Include="studio\overview\settings\images\settings_replication-4.png" />
     <Content Include="studio\overview\status\debug\images\debug-endpoints-studio-1.png" />
     <Content Include="studio\overview\status\debug\images\debug-explain-replication-studio.png" />
+    <Content Include="studio\management\images\manage_your_server-server-topology-1.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_tracking-1.png" />
+    <Content Include="studio\overview\status\images\status-replication_performance_statistics.png" />
     <Content Include="studio\overview\status\images\status-sql-replication_stats-1.png" />
     <Content Include="studio\overview\status\images\status-storage-1.png" />
     <Content Include="studio\overview\status\images\status-storage-2.png" />
     <Content Include="studio\overview\status\images\status-storage-3.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_2.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_3.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_4.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_5.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_6.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_7.png" />
+    <Content Include="studio\overview\status\indexing\images\indexing_performance_reduce_levels.png" />
     <Content Include="studio\overview\status\indexing\images\metrics-index_batch_size-4.png" />
     <Content Include="studio\overview\status\indexing\images\metrics-prefetches-5.png" />
     <Content Include="studio\overview\status\images\metrics-request_counter-2.png" />
@@ -981,6 +994,7 @@
     <Content Include="studio\overview\status\images\tasks-import_database_tab-general-4.png" />
     <Content Include="studio\overview\status\images\tasks-toggle_indexing_tab-1.png" />
     <Content Include="studio\overview\status\indexing\images\indexing_performance_1.png" />
+    <Content Include="studio\overview\status\debug\images\debug-data-subscriptions.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-1.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-documents_view-2.png" />
     <Content Include="studio\overview\tasks\images\tasks-create_sample_data_tab-indexes_view-3.png" />

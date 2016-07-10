@@ -1,27 +1,36 @@
 ﻿#Indexing performance
 
-`Indexing performance` tab provides you with indexing timeline chart:
+`Indexing performance` tab provides you with indexing, prefetching and deletions timeline chart:
 
 ![Figure 1. Studio. Status. Indexing perfomance overview.](images/indexing_performance_1.png)
 
-On the X axis, you have time. The Y axis is for different indexes. Note that the top part is for map operations, while the bottom part is for reduce operations and that they are running in parallel. 
+On the X axis, you have time. The Y axis is for different indexes.
+Note that the map operations, reduce operations, delete operation and prefetch operation are running in parallel.
 Even some index processing parts are run in parallel what is also reflected on the chart.
 
 Indexes and reduces that had been run in the same batch are grouped and presented in a single batch box. You can see when particular indexes were run in batch and how long each of them lasted.
 
-Once you click in the batch box you will see `Map batch information` dialog:
+Once you click in the prefetch batch box you will see `prefetching information` dialog:
 
 ![Figure 2. Studio. Status. Map batch info.](images/indexing_performance_2.png)
 
+Once you click in the batch box you will see `Map batch information` dialog:
+
+![Figure 3. Studio. Status. Map batch info.](images/indexing_performance_3.png)
+
+Once you click in the Delete batch box you will see `Deletion batch information` dialog:
+
+![Figure 4. Studio. Status. Map batch info.](images/indexing_performance_4.png)
+
 If you want to get details about indexing of a particular index you need to click on it:
 
-![Figure 3. Studio. Status. Indexing information.](images/indexing_performance_3.png)
+![Figure 5. Studio. Status. Indexing information.](images/indexing_performance_5.png)
 
 This dialog contains all actual timings for the selected index run and legend that explains what particular colors mean. Note that parts executed in parallel contains measures for an each thread.
 
 Analogous dialog you will see after you click on reducing run:
 
-![Figure 4. Studio. Status. Reducing information.](images/indexing_performance_4.png)
+![Figure 6. Studio. Status. Reducing information.](images/indexing_performance_6.png)
 
 When it comes to reduces, you may notice that there appear some vertical lines on the chart. They split the different reducing phases. Generally the reduction is a multi-step process:
 
@@ -33,7 +42,7 @@ However we also have some optimization that causes that for small number of redu
 Also after reducing we have a post-reducing work where we delete scheduled reductions that we have just processed. Take a look at the following image that distinguishes
 reduction phases:
 
-![Figure 5. Studio. Status. Reduction phases.](images/indexing_performance_5.png)
+![Figure 7. Studio. Status. Reduction phases.](images/indexing_performance_7.png)
 
 Each of the marked boxes is separately clickable to achieve detailed info about an appropriate phase.
 
@@ -71,5 +80,6 @@ Each of the marked boxes is separately clickable to achieve detailed info about 
 | <div class="rect_legend" style="background-color: #9edae5" /> | StorageCommit | Time spent on committing data to transactional storage.|
 | <div class="rect_legend" style="background-color: #ff9896" /> | UpdateDocumentReferences | Time spent on updating document references if an index uses [LoadDocument](../../../../indexes/indexing-related-documents) calls. |
 | <div class="rect_legend" style="background-color: #55fa9a" /> | Extension_Suggestions | Time spent on calculation index suggestions. |
-
+| <div class="rect_legend" style="background-color: #d62728" /> | Delete_Documents | Time spent on deleting documents (index entries). |
+| <div class="rect_legend" style="background-color: #1f77b4" /> | Delete_IndexUpdateTriggers | Time spent on updating index triggers. |
 
