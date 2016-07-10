@@ -706,6 +706,7 @@
     <None Include="server\scaling-out\replication\.docs.json" />
     <None Include="server\scaling-out\replication\how-replication-works.markdown" />
     <None Include="server\scaling-out\replication\replication-and-embedded-instance.markdown" />
+    <None Include="server\scaling-out\replication\etl.markdown" />
     <None Include="server\scaling-out\replication\replication-conflicts.markdown" />
     <None Include="server\scaling-out\replication\write-assurance.markdown" />
     <None Include="server\scaling-out\sharding\.docs.json" />
@@ -755,6 +756,7 @@
     <None Include="studio\overview\query\reporting-view.markdown" />
     <None Include="studio\overview\settings\.docs.json" />
     <None Include="studio\overview\settings\periodic-export.markdown" />
+    <None Include="studio\overview\settings\etl.markdown" />
     <None Include="studio\overview\settings\versioning.markdown" />
     <None Include="studio\overview\settings\sql-replication.markdown" />
     <None Include="studio\overview\settings\replication.markdown" />
@@ -941,6 +943,11 @@
     <Content Include="studio\overview\settings\images\settings-sql_replication-2.png" />
     <Content Include="studio\overview\settings\images\settings-versioning_default_options-1.png" />
     <Content Include="studio\overview\settings\images\settings-versioning_setup-2.png" />
+    <Content Include="studio\overview\settings\images\settings_etl-1.png" />
+    <Content Include="studio\overview\settings\images\settings_etl-2.PNG" />
+    <Content Include="studio\overview\settings\images\settings_etl-3.PNG" />
+    <Content Include="studio\overview\settings\images\settings_etl-4.PNG" />
+    <Content Include="studio\overview\settings\images\settings_etl-5.PNG" />
     <Content Include="studio\overview\settings\images\settings_replication-1.png" />
     <Content Include="studio\overview\settings\images\settings_replication-2.png" />
     <Content Include="studio\overview\settings\images\settings_replication-3.png" />
