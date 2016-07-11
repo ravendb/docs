@@ -119,12 +119,16 @@ To move data directly between two instances (or different databases in the same 
 You can tweak the export/import process with the following parameters:
 
  - database: The database to operate on. If not specified, the operations will be performed on a default database.
+ - database2: The database to operate on. If not specified, the operations will be performed on a default database (used only in the between operation).
  - filesystem: The filesystem to operate on.
+ - filesystem2: The filesystem to operate on (used only in the between operation).
  - operate-on-types: Specify the types to export/import. Usage example: `--operate-on-types=Indexes,Documents,Attachments,Transformers`.
  - filter: Filter documents by a document property. Usage example: `--filter=Property-Name=Value`.
  - negative-filter: Filter documents NOT matching a document property. Usage example: `--negative-filter=Property-Name=Value`.   
  - metadata-filter: Filter documents by a metadata property. Usage example: `--metadata-filter=Raven-Entity-Name=Posts`.
  - negative-metadata-filter: Filter documents NOT matching a metadata property. Usage example: `--negative-metadata-filter=Raven-Entity-Name=Posts`.
+ - ignore-errors-and-continue: If this option is enabled, smuggler will not halt its operation on errors. Errors still will be displayed to the user.
+ - system-database: Set to true in order to work on a system database.
  - transform: Transform documents using a given script.   
  - transform-file: Transform documents using a given script file.   
  - max-steps-for-transform-script: Maximum number of steps that a transform script can have.
@@ -132,18 +136,24 @@ You can tweak the export/import process with the following parameters:
  - batch-size: The batch size for requests.
  - chunk-size: The number of documents to import before new connection will be opened.
  - username: A username to use when a database requires client authentication.
+ - username2: A username to use when a database requires client authentication (used only in the between operation).
  - password: A password to use when a database requires client authentication.
+ - password2: A password to use when a database requires client authentication (used only in the between operation).
  - domain: A domain to use when a database requires client authentication.
+ - domain2: A domain to use when a database requires client authentication (used only in the between operation).
  - api-key: An API-key to use, when using OAuth.
+ - api-key2: An API-key to use, when using OAuth (used only in the between operation).
  - incremental: States usage of incremental operations.
  - wait-for-indexing: Wait until all indexing activities have been completed (import only).
  - excludeexpired: Excludes expired documents created by the [expiration bundle](../../server/bundles/expiration).    
  - limit: Reads at most VALUE documents/attachments.
- - timeout: Timeout to use for requests.
  - strip-replication-information: Remove all replication information from metadata (import only). 
  - disable-versioning-during-import: Disables versioning for the duration of the import.
  - continuation-token: Activates the usage of a continuation token in case of unreliable connections or huge imports.
  - skip-conflicted: The database will issue and error when conflicted documents are put. The default is to alert the user, this allows to skip them to continue.
+ - counter: The counter storage to operate on. If no specified, the operations will be on the default counter storage.
+ - counter2: The counter storage to operate on. If no specified, the operations will be on the default counter storage (used only in the between operation).
+ - no-compression-on-import: A flag that if set to true disables compression usage during import of documents.
  - help: You can use the help option in order to print the built-in options documentation.
 
 {PANEL/}
