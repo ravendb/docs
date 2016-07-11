@@ -13,7 +13,7 @@ with certain fields that are masked so the development / QA team can work with a
 
 {WARNING: Warning: Failover behavior}
 An important consideration with ETL is that because the data is filtered and possibly transformed, 
-a destination that is using this feature isn't a viable fallback target, and it will not be considered as such by the client. 
+a destination that is using this feature isn't a viable fall-back target, and it will not be considered as such by the client. 
 If you want failover, you need to have multiple replicas, some with the full data set and some with the filtered data.
 {WARNING/}
 

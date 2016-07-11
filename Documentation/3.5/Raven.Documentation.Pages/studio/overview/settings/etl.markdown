@@ -11,7 +11,7 @@ Adding an ETL destination is quite similar to [replication setup](./replication)
 - There is no `Client failover behavior` and `Conflict resolution` in ETL   
 - A collection (to replicate from) must be chosen
 
-Simple ETL can be configured by choosing the source collection and providing the destination Url and Database.
+Simple ETL can be configured by choosing the source collection and providing the destination URL and Database.
 
 ![Figure 2. Settings. ETL. Add Destionation.](images/settings_etl-2.png)
 ![Figure 3. Settings. ETL. Choose Collection.](images/settings_etl-3.png)
@@ -21,7 +21,7 @@ Simple ETL can be configured by choosing the source collection and providing the
 
 If you want to manipulate the replicated documents in a custom way, you can easily define transformation and filtering. 
 There is an option to write a JS function [(examples)](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents) 
-for each collection/destination, which means that the sctipt will run on every replicated document from that collection.
+for each collection/destination, which means that the script will run on every replicated document from that collection.
 
 ![Figure 4. Settings. ETL. Defining Transformation and Filtering scripts.](images/settings_etl-4.png)
 
@@ -37,7 +37,7 @@ Some advanced options you can use are:
 
 {WARNING: Warning: Failover behavior}
 An important consideration with ETL is that because the data is filtered and possibly transformed, 
-a destination that is using this feature isn't a viable fallback target, and it will not be considered as such by the client. 
+a destination that is using this feature isn't a viable fall-back target, and it will not be considered as such by the client. 
 If you want failover, you need to have multiple replicas, some with the full data set and some with the filtered data.
 {WARNING/}
 
