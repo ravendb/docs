@@ -33,10 +33,5 @@
     "Path": "write-assurance.markdown",
     "Name": "Write assurance",
     "Mappings": []
-  },
-  {
-    "Path": "etl.markdown",
-    "Name": "ETL",
-    "Mappings": []
   }
 ]

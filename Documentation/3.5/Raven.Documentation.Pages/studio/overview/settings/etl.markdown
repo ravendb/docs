@@ -1,8 +1,9 @@
-# Settings : ETL (Collection Specific Replication)
+# Settings : ETL (Extract Transform Load)
 
-This is where you setup [ETL](../../../server/scaling-out/replication/etl):   
+Here you can edit the following [ETL](../../../server/scaling-out/etl) settings:      
+   
 You can choose `Skip index replication for all destinations` to configure it globally instead of per destination.
-![Figure 1. Settings. ETL. First Screen.](images/settings_etl-1.png)
+![Figure 1. Settings. ETL. First Screen.](images/settings_etl-1.png)   
 
 {PANEL:Adding an ETL destination}
 
@@ -16,12 +17,13 @@ Simple ETL can be configured by choosing the source collection and providing the
 ![Figure 3. Settings. ETL. Choose Collection.](images/settings_etl-3.png)
 {PANEL/}
 
-{PANEL:Defining Transformers}
+{PANEL:Defining Transformation and Filtering scripts}
 
-You can easily define a [transformer](../../../transformers/what-are-transformers) for each collection-based replication. 
-Choose the collection you want replicated and add your own script to manipulate the data.
+If you want to manipulate the replicated documents in a custom way, you can easily define transformation and filtering. 
+There is an option to write a JS function [(examples)](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents) 
+for each collection/destination, which means that the sctipt will run on every replicated document from that collection.
 
-![Figure 4. Settings. ETL. Define Transformers.](images/settings_etl-4.png)
+![Figure 4. Settings. ETL. Defining Transformation and Filtering scripts.](images/settings_etl-4.png)
 
 {PANEL/}
 
@@ -30,12 +32,12 @@ Some advanced options you can use are:
 - `Force replicate all indexes and transformers`   
 - `Skip Index Replication` - for the current destination   
 - `Transitive Replication` - marks what document types should be replicated:   
-	- Changed only - locally   
-	- Changed and replicated - from other sources   
+&emsp;&emsp;- Changed only - locally   
+&emsp;&emsp;- Changed and replicated - from other sources   
 
-{WARNING: Warning: Failover not supported in ETL}
-An important consideration with filtered replication is that because the data is filtered, a destination 
-that is using filtered replication isn't a viable fallback target, and it will not be considered as such by the client. 
+{WARNING: Warning: Failover behavior}
+An important consideration with ETL is that because the data is filtered and possibly transformed, 
+a destination that is using this feature isn't a viable fallback target, and it will not be considered as such by the client. 
 If you want failover, you need to have multiple replicas, some with the full data set and some with the filtered data.
 {WARNING/}
 
@@ -45,7 +47,7 @@ If you want failover, you need to have multiple replicas, some with the full dat
 
 ## Related articles
 
-- [Server: Scaling-Out: Replication: ETL](../../../server/scaling-out/replication/etl)
+- [Server: Scaling-Out: ETL](../../../server/scaling-out/etl)
 - [Transformers: What are transformers?](../../../transformers/what-are-transformers)
 - [Server: Scaling-Out: Replication: How Replication Works](../../../server/scaling-out/replication/how-replication-works)
 - [Studio : Settings : Replication](../../../studio/overview/settings/replication)
