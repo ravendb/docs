@@ -704,6 +704,9 @@
     <None Include="server\plugins\triggers.markdown" />
     <None Include="server\plugins\what-are-plugins.markdown" />
     <None Include="server\scaling-out\.docs.json" />
+    <None Include="server\scaling-out\clustering\.docs.json" />
+    <None Include="server\scaling-out\clustering\clustering-overview.markdown" />
+    <None Include="server\scaling-out\clustering\what-is-rachis.markdown" />
     <None Include="server\scaling-out\etl.markdown" />
     <None Include="server\scaling-out\replication-with-sharding.markdown" />
     <None Include="server\scaling-out\replication\.docs.json" />
@@ -728,6 +731,7 @@
     <None Include="studio\.docs.json" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
+    <None Include="studio\management\cluster.markdown" />
     <None Include="studio\management\server-topology.markdown" />
     <None Include="studio\management\server-smuggling.markdown" />
     <None Include="studio\management\disk-io-viewer.markdown" />
@@ -853,6 +857,7 @@
     <Content Include="server\administration\monitoring\images\monitoring-Disk_IO_test-3.png" />
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\installation\images\installer_destination_and_paths.png" />
+    <Content Include="server\scaling-out\clustering\images\cluster-rachis.png" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
     <Content Include="start\images\linqpad-1.png" />
     <Content Include="start\images\linqpad-2.png" />
@@ -869,6 +874,13 @@
     <Content Include="indexes\images\testing-indexes-1.png" />
     <Content Include="indexes\images\testing-indexes-2.png" />
     <Content Include="indexes\images\testing-indexes-3.png" />
+    <Content Include="studio\management\images\cluster-0.PNG" />
+    <Content Include="studio\management\images\cluster-1.PNG" />
+    <Content Include="studio\management\images\cluster-2.PNG" />
+    <Content Include="studio\management\images\cluster-3.PNG" />
+    <Content Include="studio\management\images\cluster-4.PNG" />
+    <Content Include="studio\management\images\cluster-5.PNG" />
+    <Content Include="studio\management\images\cluster-6.PNG" />
     <Content Include="studio\management\images\manage_your_server-admin_logs-configure_connection-1.png" />
     <Content Include="studio\management\images\manage_your_server-api-keys-1.png" />
     <Content Include="studio\management\images\manage_your_server-backup_database-1.png" />
