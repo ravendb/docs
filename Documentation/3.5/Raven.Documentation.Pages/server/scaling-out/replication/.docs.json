@@ -1,37 +1,37 @@
 ﻿[
-	{
-		"Path": "how-replication-works.markdown",
-		"Name": "How replication works?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/scaling-out/replication"
-			}
-		]
-	},
-	{
-		"Path": "replication-conflicts.markdown",
-		"Name": "Replication conflicts",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/scaling-out/replication/handling-conflicts"
-			}
-		]
-	},
-	{
-		"Path": "replication-and-embedded-instance.markdown",
-		"Name": "Replication and Embedded instance",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/scaling-out/replication/from-embedded-server"
-			}
-		]
-	},
-	{
-		"Path": "write-assurance.markdown",
-		"Name": "Write assurance",
-		"Mappings": [ ]
-	}
+  {
+    "Path": "how-replication-works.markdown",
+    "Name": "How replication works?",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication"
+      }
+    ]
+  },
+  {
+    "Path": "replication-conflicts.markdown",
+    "Name": "Replication conflicts",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication/handling-conflicts"
+      }
+    ]
+  },
+  {
+    "Path": "replication-and-embedded-instance.markdown",
+    "Name": "Replication and Embedded instance",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication/from-embedded-server"
+      }
+    ]
+  },
+  {
+    "Path": "write-assurance.markdown",
+    "Name": "Write assurance",
+    "Mappings": []
+  }
 ]
