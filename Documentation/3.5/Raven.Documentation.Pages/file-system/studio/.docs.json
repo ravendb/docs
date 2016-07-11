@@ -30,6 +30,11 @@
     "Mappings": []
   },
   {
+    "Path": "status-view.markdown",
+    "Name": "Status View",
+    "Mappings": []
+  },
+  {
     "Path": "/settings",
     "Name": "Settings",
     "Mappings": []
