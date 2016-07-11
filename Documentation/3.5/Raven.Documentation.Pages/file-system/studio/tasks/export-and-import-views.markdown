@@ -18,6 +18,7 @@ The import follows the same procedure as the export. You can click `Choose file`
 
 {NOTE:Note}
 
-Since version 3.5, you can disable versioning bundle during import.
+- Since version 3.5, you can disable versioning bundle during import.
+- The message "No sufficient diskspace for import, consider using Raven.Smuggler.exe directly." might occur.
 
 {NOTE/}
