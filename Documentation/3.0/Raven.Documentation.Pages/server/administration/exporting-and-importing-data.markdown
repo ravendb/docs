@@ -128,7 +128,6 @@ You can tweak the export/import process with the following parameters:
  - metadata-filter: Filter documents by a metadata property. Usage example: `--metadata-filter=Raven-Entity-Name=Posts`.
  - negative-metadata-filter: Filter documents NOT matching a metadata property. Usage example: `--negative-metadata-filter=Raven-Entity-Name=Posts`.
  - ignore-errors-and-continue: If this option is enabled, smuggler will not halt its operation on errors. Errors still will be displayed to the user.
- - system-database: Set to true in order to work on a system database.
  - transform: Transform documents using a given script.   
  - transform-file: Transform documents using a given script file.   
  - max-steps-for-transform-script: Maximum number of steps that a transform script can have.
@@ -151,9 +150,6 @@ You can tweak the export/import process with the following parameters:
  - disable-versioning-during-import: Disables versioning for the duration of the import.
  - continuation-token: Activates the usage of a continuation token in case of unreliable connections or huge imports.
  - skip-conflicted: The database will issue and error when conflicted documents are put. The default is to alert the user, this allows to skip them to continue.
- - counter: The counter storage to operate on. If no specified, the operations will be on the default counter storage.
- - counter2: The counter storage to operate on. If no specified, the operations will be on the default counter storage (used only in the between operation).
- - no-compression-on-import: A flag that if set to true disables compression usage during import of documents.
  - help: You can use the help option in order to print the built-in options documentation.
 
 {PANEL/}
