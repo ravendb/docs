@@ -815,11 +815,13 @@
     <Content Include="file-system\server\images\enable-rdc-windows-server-2012.png" />
     <Content Include="file-system\studio\files\images\files-view-create-folder.png" />
     <Content Include="file-system\studio\files\images\files-view-delete-files.png" />
+    <Content Include="file-system\studio\files\images\files-view-delete-folder.png" />
     <Content Include="file-system\studio\files\images\files-view-download-file.png" />
     <Content Include="file-system\studio\files\images\files-view-edit-file.png" />
     <Content Include="file-system\studio\files\images\files-view-empty-folder.png" />
     <Content Include="file-system\studio\files\images\files-view-explorer.png" />
     <Content Include="file-system\studio\files\images\files-view-file-uploaded.png" />
+    <Content Include="file-system\studio\files\images\files-view-rename-file.png" />
     <Content Include="file-system\studio\files\images\files-view-upload.png" />
     <Content Include="file-system\studio\how-to\images\encryption-1.png" />
     <Content Include="file-system\studio\how-to\images\encryption-2.png" />
