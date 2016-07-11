@@ -86,4 +86,4 @@ via conflict resolutions.
 ## Related articles
 
 - [Server: Scaling-Out: Clustering: Overview](./clustering-overview)
-- [Studio: Manage Your Server : Clustering](../../../studio/management/clustering)   
+- [Studio: Manage Your Server : Clustering](../../../studio/management/cluster)   

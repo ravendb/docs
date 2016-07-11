@@ -27,4 +27,4 @@ details once and have it propagate everywhere is a great reduction in operationa
 ## Related articles
 
 - [Clustering: Rachis - RavenDB's Raft implementation](./what-is-rachis)
-- [Studio: Manage Your Server : Clustering](../../../studio/management/clustering)
+- [Studio: Manage Your Server : Clustering](../../../studio/management/cluster)
