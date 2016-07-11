@@ -841,6 +841,8 @@
     <Content Include="file-system\studio\images\search-view-example.png" />
     <Content Include="file-system\studio\images\search-view-filters.png" />
     <Content Include="file-system\studio\images\search-view.png" />
+    <Content Include="file-system\studio\images\status-view-1.png" />
+    <Content Include="file-system\studio\images\status-view-2.png" />
     <Content Include="file-system\studio\synchronization\images\conflicts-view.png" />
     <Content Include="file-system\studio\tasks\images\export-1.png" />
     <Content Include="file-system\studio\tasks\images\import-1.png" />
