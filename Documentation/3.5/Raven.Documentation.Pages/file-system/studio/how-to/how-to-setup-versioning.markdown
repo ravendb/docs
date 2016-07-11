@@ -11,6 +11,12 @@ Step 2. Next you will get the dialog that specifies options for a default config
 
 ![Figure 2. Studio. Versioning. Configuration dialog.](images/versioning-2.png)  
 
+{NOTE:Note}
+
+Configuration can be changed later in [Settings: Versioning](../settings/versioning)
+
+{NOTE/}
+
 You can see that this configuration is stored as `Raven/Versioning/DefaultConfiguration` config:
 
 ![Figure 3. Studio. Versioning. Default configuration.](images/versioning-3.png)  
@@ -29,3 +35,7 @@ and disable the versioning there, create the config as follow:
 All file revisions are visible under special `$revisions` directory:
 
 ![Figure 6. Studio. Versioning. Revisions.](images/versioning-6.png)
+
+## Related articles
+
+- [Settings: Versioning](../settings/versioning)

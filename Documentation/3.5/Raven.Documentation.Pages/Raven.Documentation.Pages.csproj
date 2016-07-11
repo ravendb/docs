@@ -508,6 +508,8 @@
     <None Include="file-system\studio\how-to\how-to-setup-encryption.markdown" />
     <None Include="file-system\studio\how-to\how-to-setup-versioning.markdown" />
     <None Include="file-system\studio\search-view.markdown" />
+    <None Include="file-system\studio\settings\.docs.json" />
+    <None Include="file-system\studio\settings\versioning.markdown" />
     <None Include="file-system\studio\status-view.markdown" />
     <None Include="file-system\studio\synchronization\.docs.json" />
     <None Include="file-system\studio\synchronization\configuration-view.markdown" />
@@ -809,6 +811,7 @@
     <None Include="users-issues\tcp-offloading.markdown" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="file-system\studio\settings\images\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
