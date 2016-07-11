@@ -57,6 +57,25 @@ Please refer to following [article](../../../client-api/bundles/how-client-integ
 
 {PANEL/}
 
+{NOTE:Note}
+
+Since version 3.5, enabling the replication bundle is possible for an existing databases.
+
+![Figure 5. Settings. Replication. Enable Replication Bundle.](images/settings_replication-5.png)
+
+{NOTE/}
+
+{WARNING:Warning}
+
+This is not recommended if your database already contain documents.   
+In case you decided to do it anyway, there will be a side effect where replication info will be missing from the document's metadata (can cause conflicts)
+until you "touch" the document again.    
+For more information read about influence on metadata in [Advanced replication details](../../../server/kb/advanced-replication-details).
+
+{WARNING/}
+
+
+
 ## Related articles
 
 - [Explain replication](../../../studio/overview/status/debug/explain-replication)
