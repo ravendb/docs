@@ -12,6 +12,19 @@ two possible strategies:
 * `Resolve with Remote` to allow the synchronization source file system to synchronize its version.
 
 {INFO: Remote strategy}
-Don't be surprised if resolving the conflict by using the remove version strategy will not cause the conflict to disappear. The conflict
-will exist until the source server retries the synchronization of the conflicted file and notices that the applied strategy lets him to push its version.
+![Figure 2. Studio. Mark Conflicts](images/mark-conflicts.png)      
+
+After marking all the conflicts files we want to resolve. we can choose the option to resolve those conflicts.  
+ 
+![Figure 3. Studio. Resolve with Remote](images/after-remote-resolve.png)   
+
+With Resolve with Remote we can see the status of those conflicts files changed from `Not resolve` to `Scheduled resolution using remote version`.
+Using Resolve with Remote strategy will not cause the conflict to disappear. The conflict will exist until the source server retries the synchronization 
+of the conflicted file and notices that the applied strategy lets him to push its version.
 {INFO/}
+
+{NOTE: Note}
+With Resolve with Local the file will disappear immediately from the conflicts page.
+![Figure 4. Studio. Mark Conflicts With Arrow](images/mark-conflicts-arrow.png)   
+![Figure 5. Studio. No Conflicts](images/no-conflicts.png) 
+{NOTE/}
