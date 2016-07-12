@@ -217,6 +217,9 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/MaxClauseCount**   
 	Specifies the maximum number of available boolean clauses in an index query.   
     _Default:_ 1024    
+* **Raven/Indexing/UseLuceneASTParser**   
+    Use RavenDB's own improved Lucene syntax parser.
+    _Default:_ true  
 
 * **Raven/Indexing/DisableIndexingFreeSpaceThreshold**   
     Threshold value of available space in megabytes on a disk where indexes are located. If there is less space than specified, it will disable the indexing completely (checks are made every 5 min).

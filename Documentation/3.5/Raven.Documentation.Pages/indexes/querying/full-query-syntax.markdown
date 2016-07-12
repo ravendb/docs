@@ -183,5 +183,6 @@ This will cause the exact search for string values *"Australia, Canada"* or *"Is
 
 ## Related articles
 
-- [Querying : Basics](../../indexes/querying/basics)
+- [Querying : Basics](./basics)
+- [Querying : New Lucene Query Parser](./new-lucene-parser)
 - [Client API : Session : How to use lucene in queries?](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries)
