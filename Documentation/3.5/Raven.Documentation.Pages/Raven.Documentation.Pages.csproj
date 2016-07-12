@@ -586,6 +586,7 @@
     <None Include="glossary\transformer-definition.markdown" />
     <None Include="indexes\.docs.json" />
     <None Include="indexes\querying\.docs.json" />
+    <None Include="indexes\querying\new-lucene-parser.markdown" />
     <None Include="indexes\side-by-side-indexes.markdown" />
     <None Include="indexes\testing-indexes.markdown" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
