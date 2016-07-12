@@ -21,3 +21,9 @@ The import follows the same procedure as the export. You can click `Choose file`
 Since version 3.5, you can disable versioning bundle during import.
 
 {NOTE/}
+
+{NOTE:Disk space verification}
+
+Verification of free disk space happens before importing data.
+
+{NOTE/}

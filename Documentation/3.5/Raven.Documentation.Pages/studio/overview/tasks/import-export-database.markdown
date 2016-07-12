@@ -33,4 +33,10 @@ Since version 3.5, you can disable versioning bundle during import.
 
 {NOTE/}
 
+{NOTE:Disk space verification}
+
+Verification of free disk space happens before importing data.
+
+{NOTE/}
+
 {DANGER Importing will overwrite any existing documents, indexes and transformers. /} 
