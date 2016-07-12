@@ -1,5 +1,5 @@
 # Clustering - Overview
-In RavenDB 3.5 we introduce clustering as a new major feature.   
+In RavenDB 3.5 we introduced clustering as a new major feature.   
 In earlier versions of RavenDB, clusters were ad hoc. You created them by bridging together multiple nodes using replication.    
 
 A RavenDB cluster is using Raft (more specifically, [Rachis](./what-is-rachis), our [Raft](https://raft.github.io/) implementation) to 

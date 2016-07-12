@@ -69,19 +69,7 @@ we'll recover and handle this properly.
 ###Normal operations
 During normal operations, there is going to be a leader that is going to be accepting all the requests for the cluster, 
 and handle committing them cluster wide. During those operations, you can spread reads across members in the cluster, 
-for better performance.   
-
-###Low probability scenario - race condition
-There is a specific case where the leader server goes down (the one that you write to), and a new leader will be 
-selected and start accepting writes.    
-
-When the old leader restarts, it will announce to the other nodes that it's the leader and get responses from the 
-other nodes: "You're not the leader anymore... node X is the leader now". If a write happens to the old leader, 
-just before it knows there's a new leader, the write will succeed and we might have a conflict with other nodes 
-if they wrote to the same document at the same time.   
-
-There is a  low probability for this scenario to happen but you should still be aware of it. RavenDB handles it 
-via conflict resolutions.   
+for better performance.    
 
 ## Related articles
 
