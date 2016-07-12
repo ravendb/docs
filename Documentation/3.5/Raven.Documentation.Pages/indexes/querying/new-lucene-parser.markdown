@@ -3,11 +3,11 @@
 In RavenDB 3.5 we introduced our own new implementation of the Lucene Query Parser.
 In older versions of RavenDB, we encountered several issues with the standard parser:
 
-A major issue was performance and stability of queries. RavenDB doesn't actually use Lucene 
-syntax for queries, we have [extended it in several ways](./full-query-syntax). Those extensions to the 
+A major issue was performance and stability of queries. RavenDB uses Lucene 
+syntax for queries, but we have [extended it in several ways](./full-query-syntax). Those extensions to the 
 syntax were implemented primarily as pre and post processing over the raw query 
 string using regular expressions. Under profiling, it turned out that a significant 
-amount of time was spent in these processing, and in particular, in those regexes.
+amount of time was spent during this processing, and in particular, in those regular expressions.
 
 Another problem we encountered was the fact that the old Lucene Query Parser is relying 
 on exceptions for control flow. If you were debugging a test that is using RavenDB, 
@@ -23,7 +23,6 @@ We also got rid of exceptions during parsing.
 In RavenDB 3.5, the new parser is used by default. In order to change this, and use the old
 parser, you need to set the `Raven/Indexing/UseLuceneASTParser` 
 [configuration option](../../server/configuration/configuration-options) to false.
-If you encounter query parsing problems or incompatibilities please contact support and let us know.
 {NOTE/}
 ## Related articles
 
