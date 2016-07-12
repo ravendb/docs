@@ -11,12 +11,17 @@ user defined metadata or built-in one set by RavenFS. To get full list of defaul
 
 The studio has a few, built-in filters in order to help you to create the query that contains common conditions:
 
-![Figure 2. Studio. Search view. Filters](images/search-view-filters.png)  
+![Figure 2. Studio. Search view. Filters](images/search-view-filters.png)
+
+##Reset index
+
+Reset index will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
+
+![Figure 3. Studio. Search view. Reset Index](images/search-view-reset-index.png)
 
 ##Example
 
 Lets find all files in `pdfs` directory which names start with `nosql`:
 
-![Figure 3. Studio. Search view. Example](images/search-view-example.png)  
-
+![Figure 4. Studio. Search view. Example](images/search-view-example.png)
 
