@@ -71,6 +71,14 @@ During normal operations, there is going to be a leader that is going to be acce
 and handle committing them cluster wide. During those operations, you can spread reads across members in the cluster, 
 for better performance.    
 
+###Low probability scenario
+If a majority of the cluster is unable to connect to the leader node, a new node will be selected as the leader. 
+The old leader will notice that it can't talk to the majority of the nodes and will step down.   
+However, there is a short period of time in which the leader is unable to talk to the majority of the cluster, 
+but is yet unaware of that. In that period of time, it may accept writes (since it assumes it is the leader). 
+Concurrently, the new leader is also accepting writes, and those writes may conflict.   
+This is a low probability scenario, and it is already handled via RavenDB Replication Conflicts mechanism. 
+
 ## Related articles
 
 - [Server: Scaling-Out: Clustering: Overview](./clustering-overview)
