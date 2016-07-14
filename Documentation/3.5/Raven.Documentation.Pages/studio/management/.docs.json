@@ -10,6 +10,11 @@
     "Mappings": []
   },
   {
+    "Path": "cluster.markdown",
+    "Name": "Cluster",
+    "Mappings": []
+  },
+  {
     "Path": "backup-restore.markdown",
     "Name": "Backup & Restore",
     "Mappings": []

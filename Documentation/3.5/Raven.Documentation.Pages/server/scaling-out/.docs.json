@@ -5,6 +5,11 @@
     "Mappings": []
   },
   {
+    "Path": "/clustering",
+    "Name": "Clustering",
+    "Mappings": []
+  },
+  {
     "Path": "/sharding",
     "Name": "Sharding",
     "Mappings": []
