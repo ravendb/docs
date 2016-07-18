@@ -17,6 +17,12 @@ To change default options you need to choose desired options in `General` tab or
 
 ![Figure 3. Tasks. Export Database Tab. Advanced Tab.](images/tasks-export_database_tab-advanced-3.png)
 
+{NOTE:Information}
+
+When exporting database the equivalent Smuggler command will be shown in the bottom of the view.
+
+{NOTE/}
+
 <hr />
 
 ## Import
