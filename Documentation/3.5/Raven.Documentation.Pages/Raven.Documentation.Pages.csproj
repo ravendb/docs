@@ -106,6 +106,9 @@
     <None Include="client-api\commands\how-to\get-database-configuration.dotnet.markdown" />
     <None Include="client-api\commands\how-to\get-names-of-all-databases-on-a-server.http.markdown" />
     <None Include="client-api\commands\how-to\get-server-build-number.http.markdown" />
+    <None Include="client-api\commands\how-to\get-the-primary-database-url.markdown" />
+    <None Include="client-api\commands\how-to\retrieve-user-info.markdown" />
+    <None Include="client-api\commands\how-to\retrieve-user-permission.markdown" />
     <None Include="client-api\commands\how-to\start-backup-restore-operations.http.markdown" />
     <None Include="client-api\commands\how-to\get-database-and-server-statistics.http.markdown" />
     <None Include="client-api\commands\how-to\create-delete-database.http.markdown" />
@@ -584,6 +587,8 @@
     <None Include="glossary\data-subscription-change-notification.markdown" />
     <None Include="glossary\transformer-change-notification.markdown" />
     <None Include="glossary\transformer-definition.markdown" />
+    <None Include="glossary\user-info.markdown" />
+    <None Include="glossary\user-permission.markdown" />
     <None Include="indexes\.docs.json" />
     <None Include="indexes\querying\.docs.json" />
     <None Include="indexes\querying\new-lucene-parser.markdown" />

@@ -12,7 +12,7 @@ namespace RavenCodeSamples.ClientApi.Advanced.DatabaseCommands
 		using System.Net;
 
 		using Raven.Abstractions.Commands;
-		using Raven.Abstractions.Data;
+        using Raven.Abstractions.Data;
 		using Raven.Abstractions.Indexing;
 		using Raven.Client.Indexes;
 		using Raven.Json.Linq;
@@ -46,8 +46,11 @@ namespace RavenCodeSamples.ClientApi.Advanced.DatabaseCommands
 			// Retrieves the document metadata for the specified document key.
 			JsonDocumentMetadata Head(string key);
 
-			// Get the full URL for the given document key
-			string UrlFor(string documentKey);
+            // Gets the primary database Url
+            string Url { get; }
+
+            // Get the full URL for the given document key
+            string UrlFor(string documentKey);
 
 			#endregion
 
@@ -136,12 +139,6 @@ namespace RavenCodeSamples.ClientApi.Advanced.DatabaseCommands
 			#region index_4
 			// Commits the specified tx id
 			void Commit(string txId);
-
-			// Rollbacks the specified tx id
-			void Rollback(string txId);
-
-			// Prepares the transaction on the server.
-			void PrepareTransaction(string txId);
 			#endregion
 
 			#region index_5
@@ -188,8 +185,11 @@ namespace RavenCodeSamples.ClientApi.Advanced.DatabaseCommands
 			// Retrieve the statistics for the database
 			DatabaseStatistics GetStatistics();
 
-			// Generate the next identity value from the server
-			long NextIdentityFor(string name);
+            //Retrieve the user info
+            UserInfo GetUserInfo();
+
+            // Generate the next identity value from the server
+            long NextIdentityFor(string name);
 
 			// Seeds the next identity value on the server
 			long SeedIdentityFor(string name, long value);

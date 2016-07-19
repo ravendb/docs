@@ -20,7 +20,8 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents
 				int pageSize = int.MaxValue,
 				string exclude = null,
 				RavenPagingInformation pagingInformation = null,
-				string skipAfter = null);
+				string skipAfter = null, string transformer = null, 
+                Dictionary<string, RavenJToken> transformerParameters = null);
 			#endregion
 		}
 

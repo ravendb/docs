@@ -13,10 +13,10 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 
 			#region stop_indexing_1
 			void StopIndexing();
-			#endregion
+            #endregion
 
-			#region get_indexing_status_1
-			string GetIndexingStatus();
+            #region get_indexing_status_1
+            IndexingStatus GetIndexingStatus();
 			#endregion
 		}
 

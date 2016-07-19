@@ -171,6 +171,8 @@
     <Compile Include="ClientApi\Commands\HowTo\GetDatabaseNames.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\GetUserInfo.cs" />
+    <Compile Include="ClientApi\Commands\HowTo\GetUserPermission.cs" />
     <Compile Include="ClientApi\Commands\HowTo\StartBackupRestoreOperations.cs" />
     <Compile Include="ClientApi\Commands\HowTo\StartStopIndexingAndGetIndexingStatus.cs">
       <SubType>Code</SubType>
@@ -181,6 +183,7 @@
     <Compile Include="ClientApi\Commands\HowTo\SwitchCommandsToDifferentDatabase.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Commands\HowTo\Url.cs" />
     <Compile Include="ClientApi\Commands\Indexes\Delete.cs">
       <SubType>Code</SubType>
     </Compile>
