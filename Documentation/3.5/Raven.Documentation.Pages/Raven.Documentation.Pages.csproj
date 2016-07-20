@@ -984,6 +984,8 @@
     <Content Include="studio\overview\status\images\status-storage-1.png" />
     <Content Include="studio\overview\status\images\status-storage-2.png" />
     <Content Include="studio\overview\status\images\status-storage-3.png" />
+    <Content Include="studio\overview\status\images\status-storage-4.PNG" />
+    <Content Include="studio\overview\status\images\status-storage-5.PNG" />
     <Content Include="studio\overview\status\indexing\images\indexing_performance_2.png" />
     <Content Include="studio\overview\status\indexing\images\indexing_performance_3.png" />
     <Content Include="studio\overview\status\indexing\images\indexing_performance_4.png" />
