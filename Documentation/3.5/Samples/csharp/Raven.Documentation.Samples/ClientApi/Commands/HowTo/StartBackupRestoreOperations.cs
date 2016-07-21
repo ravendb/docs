@@ -8,8 +8,8 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 	{
 		private interface IFoo
 		{
-			#region backup_restore_1
-			void StartBackup(
+            #region backup_restore_1
+            Operation StartBackup(
 				string backupLocation,
 				DatabaseDocument databaseDocument,
 				bool incremental,

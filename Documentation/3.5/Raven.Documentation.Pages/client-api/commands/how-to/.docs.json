@@ -63,5 +63,20 @@
     "Path": "get-names-of-all-databases-on-a-server.markdown",
     "Name": "...get names of all databases on a server",
     "Mappings": []
+  },
+  {
+    "Path": "get-the-primary-database-url.markdown",
+    "Name": "...get the primary database Url",
+    "Mappings": []
+  },
+  {
+    "Path": "retrieve-user-info.markdown",
+    "Name": "...How to retrieve user info",
+    "Mappings": []
+  },
+  {
+    "Path": "retrieve-user-permission.markdown",
+    "Name": "...How to retrieve user permission for a specified database",
+    "Mappings": []
   }
 ]
