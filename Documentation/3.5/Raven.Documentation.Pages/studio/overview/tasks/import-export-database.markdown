@@ -35,7 +35,7 @@ Import follows the same procedure as export. You can click the `Choose file` but
 
 {NOTE:Note}
 
-Since version 3.5, you can disable versioning bundle during import.
+Since version 3.5, you can disable versioning bundle and strip synchronization information from files metadata during import.
 
 {NOTE/}
 
