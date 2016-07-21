@@ -1,6 +1,6 @@
 ﻿# Commands : How to retrieve user info?
 
-`GetUserInfo` used to retreive the user info
+`GetUserInfo` used to retrieve the user info
 
 ## Syntax
 
@@ -9,7 +9,7 @@
 
 | Return Value | |
 | ------------- | ----- |
-| [UserInfo](../../../glossary/user-info) | Retreive the user info. |
+| [UserInfo](../../../glossary/user-info) | Retrieve the user info. |
 
 ## Example I
 
@@ -17,4 +17,4 @@
 
 ## Related articles
 
-- [How to retrieves user permissions for a specified database](../../../client-api/commands/how-to/retrieve-user-permission)
+- [How to retrieve user permissions for a specified database](../../../client-api/commands/how-to/retrieve-user-permission)
