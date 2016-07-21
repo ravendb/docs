@@ -979,7 +979,12 @@
     <Content Include="studio\management\images\manage_your_server-server-topology-1.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_tracking-1.png" />
-    <Content Include="studio\overview\status\images\status-replication_performance_statistics.png" />
+    <Content Include="studio\overview\status\images\status-replication_stats-2.PNG" />
+    <Content Include="studio\overview\status\images\status-replication_stats-3.PNG" />
+    <Content Include="studio\overview\status\images\status-replication_stats-4.PNG" />
+    <Content Include="studio\overview\status\images\status-replication_stats-6.PNG" />
+    <Content Include="studio\overview\status\images\status-replication_stats-7.PNG" />
+    <Content Include="studio\overview\status\images\status-replication_stats-8.PNG" />
     <Content Include="studio\overview\status\images\status-sql-replication_stats-1.png" />
     <Content Include="studio\overview\status\images\status-storage-1.png" />
     <Content Include="studio\overview\status\images\status-storage-2.png" />
@@ -1004,7 +1009,6 @@
     <Content Include="studio\overview\status\images\status-index_errors-4.png" />
     <Content Include="studio\overview\status\indexing\images\status-index_stats-1.png" />
     <Content Include="studio\overview\status\images\status-replication_stats-1.png" />
-    <Content Include="studio\overview\status\images\status-replication_stats-replication_topology-2.png" />
     <Content Include="studio\overview\status\images\status-user_info-1.png" />
     <Content Include="studio\overview\status\images\status_gather-debug-info-1.png" />
     <Content Include="studio\overview\status\images\status_logs-1.png" />
