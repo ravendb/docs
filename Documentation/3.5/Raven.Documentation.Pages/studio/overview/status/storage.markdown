@@ -11,4 +11,7 @@
 `Collections storage` - shows statistics for each collection.
 
 ![Figure 3. Studio. Status. Storage. Collections storage.](images/status-storage-3.png)
+![Figure 3. Studio. Status. Storage. Collections storage continued.](images/status-storage-4.png)
 
+{NOTE Because these operations are expensive, we show the progress and added a cancellation button. /}
+![Figure 4. Studio. Status. Storage. Show Progress.](images/status-storage-5.png)
