@@ -367,6 +367,47 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						});
 				#endregion
 			}
-		}
+			
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region sorting_7_1
+                    IList<Product> results = session
+                        .Query<Product, Products_ByUnitsInStock>()
+                        .Customize(x => x.AlphaNumericOrdering<Product>(y => y.Name))
+                        .Where(x => x.UnitsInStock > 10)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region sorting_7_2
+                    IList<Product> results = session
+                        .Advanced
+                        .DocumentQuery<Product, Products_ByUnitsInStock>()
+                        .AlphaNumericOrdering<Product>(x => x.Name)
+                        .WhereGreaterThan(x => x.UnitsInStock, 10)
+                        .ToList();
+                    #endregion
+                }
+
+                #region sorting_7_3
+                QueryResult result = store
+                    .DatabaseCommands
+                    .Query(
+                        "Products/ByUnitsInStock",
+                        new IndexQuery
+                        {
+                            Query = "UnitsInStock_Range:{Ix10 TO NULL}",
+                            SortedFields = new[]
+                            {
+                                new SortedField(Constants.AlphaNumericFieldName + ";" + nameof(Product.Name))
+                            }
+                        });
+                #endregion
+            }
+        }
 	}
 }

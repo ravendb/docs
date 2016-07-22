@@ -80,6 +80,20 @@ And it can be used like this:
 {CODE-TAB:csharp:Index sorting_5_6@Indexes\Querying\Sorting.cs /}
 {CODE-TABS/}
 
+## Alphanumeric Ordering
+
+Sometimes, when ordering strings, it doesn't make sense to use the default lexicographic ordering.    
+For example, "Abc9" will come after "Abc10" because if treated as single characters, 9 is greater than 1.   
+If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing
+"Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
+To order in this mode, you can use the `AlphaNumericOrdering` method:   
+{CODE-TABS}
+{CODE-TAB:csharp:Query sorting_7_1@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:DocumentQuery sorting_7_2@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Commands sorting_7_3@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
+{CODE-TABS/}
+
 ## Related articles
 
 - [Indexing : Basics](../../indexes/indexing-basics)
