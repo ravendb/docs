@@ -11,6 +11,7 @@ Action Bar contains the following buttons:
 - `Format` - adjusts JSON formatting,
 - `New Line Mode` - toggles new line visibility,
 - `Auto-Collapse` - toggles if nested complex properties should be collapsed,
+- `Generate Code` - generate C# class,
 - `Delete` - deletes document from a server,
 - `Pager` - pages through documents
 
