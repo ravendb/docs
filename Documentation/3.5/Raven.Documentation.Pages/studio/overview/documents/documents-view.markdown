@@ -31,8 +31,10 @@ Since a collection is just a logical unit in RavenDB, there is no actual meaning
 ## Exporting to CSV
 
 To do an CSV Export you need to select a collection from the left side of the screen, then select the documents which you want to export, and click on the `Export to CSV` button.
+To do a partial CSV export (custom columns) click on the drop down menu next to `Export to CSV` button and choose the columns to be exported.
 
-![Figure 5. Studio. Documents View. Exporting to CSV.](images/documents-view-export-to-csv.png)  
+![Figure 5. Studio. Documents View. Exporting to CSV.](images/documents-view-export-to-csv.png)
+![Figure 6. Studio. Documents View. Custom exporting to CSV.](images/documents-view-export-to-csv-2.png)
 
 ## Editing documents
 

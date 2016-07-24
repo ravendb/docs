@@ -924,6 +924,7 @@
     <Content Include="studio\overview\documents\images\document-edit-view-metadata.png" />
     <Content Include="studio\overview\documents\images\documents-view-collections.png" />
     <Content Include="studio\overview\documents\images\documents-view-delete-collection.png" />
+    <Content Include="studio\overview\documents\images\documents-view-export-to-csv-2.png" />
     <Content Include="studio\overview\documents\images\documents-view-export-to-csv.png" />
     <Content Include="studio\overview\documents\images\documents-view-select-all-collection.png" />
     <Content Include="studio\overview\documents\images\documents-view-select-all.png" />
