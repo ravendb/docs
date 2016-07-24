@@ -24,7 +24,7 @@ There is an option to write a JS function [(examples)](../../../client-api/comma
 for each collection/destination, which means that the script will run on every replicated document from that collection.
 
 ![Figure 4. Settings. ETL. Defining Transformation and Filtering scripts.](images/settings_etl-4.png)
-{NOTE The deletion of documents (tombstones) will be replicated to their destination without applying the transformation script on them. /}
+{NOTE The deletion of documents (tombstones) will be replicated to their destination without applying the transformation script on them. It means that they won't be filtered out and all deletes will be processed as usual./}
 
 {PANEL/}
 
