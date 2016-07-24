@@ -65,6 +65,11 @@
     "Mappings": []
   },
   {
+    "Path": "administrator-js-console.markdown",
+    "Name": "Administrator JS Console",
+    "Mappings": []
+  },
+  {
     "Path": "studio-config.markdown",
     "Name": "Studio Config",
     "Mappings": []

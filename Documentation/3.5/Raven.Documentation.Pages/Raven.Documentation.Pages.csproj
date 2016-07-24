@@ -738,6 +738,7 @@
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
     <None Include="studio\management\cluster.markdown" />
+    <None Include="studio\management\administrator-js-console.markdown" />
     <None Include="studio\management\server-topology.markdown" />
     <None Include="studio\management\server-smuggling.markdown" />
     <None Include="studio\management\disk-io-viewer.markdown" />
@@ -892,6 +893,7 @@
     <Content Include="studio\management\images\cluster-4.PNG" />
     <Content Include="studio\management\images\cluster-5.PNG" />
     <Content Include="studio\management\images\cluster-6.PNG" />
+    <Content Include="studio\management\images\manage_your_server-Administrator-JS-Console-1.png" />
     <Content Include="studio\management\images\manage_your_server-admin_logs-configure_connection-1.png" />
     <Content Include="studio\management\images\manage_your_server-api-keys-1.png" />
     <Content Include="studio\management\images\manage_your_server-backup_database-1.png" />
