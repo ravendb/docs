@@ -765,6 +765,7 @@
     <None Include="studio\overview\indexes\transformers-view.markdown" />
     <None Include="studio\overview\query\.docs.json" />
     <None Include="studio\overview\query\query-view.markdown" />
+    <None Include="studio\overview\query\data-exploration-view.markdown" />
     <None Include="studio\overview\query\reporting-view.markdown" />
     <None Include="studio\overview\settings\.docs.json" />
     <None Include="studio\overview\settings\periodic-export.markdown" />
@@ -946,6 +947,10 @@
     <Content Include="studio\overview\indexes\images\indexes-view-query.png" />
     <Content Include="studio\overview\indexes\images\transformers_edit_view-action_bar-1.png" />
     <Content Include="studio\overview\query\images\query_view-1.png" />
+    <Content Include="studio\overview\query\images\query_view-data_exploration-1.PNG" />
+    <Content Include="studio\overview\query\images\query_view-data_exploration-2.PNG" />
+    <Content Include="studio\overview\query\images\query_view-data_exploration-3.PNG" />
+    <Content Include="studio\overview\query\images\query_view-data_exploration-4.PNG" />
     <Content Include="studio\overview\query\images\query_view-dynamic_queries-5.png" />
     <Content Include="studio\overview\query\images\query_view-dynamic_queries-6.png" />
     <Content Include="studio\overview\query\images\query_view-dynamic_queries-7.png" />
