@@ -6,12 +6,14 @@ This view lists all available indexes in a current database and gives you the ab
 
 Action Bar in this View contains the following capabilities:
 
-- `New Index` - redirects to [Index Edit View](../../../studio/overview/indexes/index-edit-view) where you can create a new index,
-- `Query` - redirects to [Query View](../../../studio/overview/query/query-view),
-- `Collapse All` - collapses all indexes,
-- `Paste` - quickly creates index by pasting [IndexDefinition](../../../glossary/index-definition),
+- `New Index` - Redirects to [Index Edit View](../../../studio/overview/indexes/index-edit-view) where you can create a new index,
+- `Query` - Redirects to [Query View](../../../studio/overview/query/query-view),
+- `Collapse All` - Collapses all indexes,
+- `Paste` - Quickly creates index by pasting [IndexDefinition](../../../glossary/index-definition),
+- `Lock Mode` - Set lock mode to all indexes,
 - `Index Merge Suggestions` - retrieves all suggestions for an index merging,
-- `Delete` - removes idle/disabled/abandoned/all indexes
+- `Delete` - Removes idle/disabled/abandoned/all indexes,
+- `Search` - Search for an index
 
 ![Figure 0. Studio. Indexes View. Action Bar.](images/indexes-view-action-bar.png)  
 
@@ -42,7 +44,8 @@ The following menu actions are available in the index menu:
 - `Copy index`,
 - `Delete index`,
 - `Reset Index`,
-- `Unlocked` / `Locked` / `Locked (Error)`
+- `Unlocked` / `Locked (side-by-side)` / `Locked` / `Locked (Error)`
+- `Normal` / `Idle` / `Disabled` / `Abandoned`
 
 ![Figure 4. Studio. Indexes View. Menu.](images/indexes-view-menu-2.png)    
 
@@ -79,6 +82,10 @@ Resetting an index will **remove all indexing data and start indexing from scrat
 ### Locking
 
 You can read more about locking [here](../../../server/administration/index-administration#index-locking).
+
+### Index Prioritization
+
+You can read more about index prioritization [here](../../../server/administration/index-administration#index-prioritization).
 
 {PANEL/}
 
