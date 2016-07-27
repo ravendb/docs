@@ -973,7 +973,7 @@
     <Content Include="studio\overview\settings\images\settings-quotas-1.png" />
     <Content Include="studio\overview\settings\images\settings-sql_replication-1.png" />
     <Content Include="studio\overview\settings\images\settings-sql_replication-2.png" />
-    <Content Include="studio\overview\settings\images\settings-versioning_default_options-1.png" />
+    <Content Include="studio\overview\settings\images\settings-versioning_default_options.png" />
     <Content Include="studio\overview\settings\images\settings-versioning_setup-2.png" />
     <Content Include="studio\overview\settings\images\settings_etl-1.png" />
     <Content Include="studio\overview\settings\images\settings_etl-2.PNG" />

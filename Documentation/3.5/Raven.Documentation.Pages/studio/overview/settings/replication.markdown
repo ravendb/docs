@@ -7,9 +7,11 @@ Here you can edit the following [replication](../../../server/scaling-out/replic
 Client can decide which failover behavior to use by default (`Let client decide`) or the failover behavior can be enforced by a server, with the following options:
 
 - `Allow reads from secondaries`,
+- `Allow reads from secondaries when request time SLA threshold is reached`,
 - `Allow reads from secondaries and writes to secondaries`,
 - `Fail immediately`,
 - `Read from all servers`,
+- `Read from all servers but switch when request time SLA thresold is reached`,
 - `Read from all servers and allow write to secondaries`
 
 If you want to read more about failover behavior, please visit following [article](../../../client-api/bundles/how-client-integrates-with-replication-bundle#failover-behavior).
@@ -47,13 +49,27 @@ List of all destinations to which a database replicates. Here you can choose the
 		
 ![Figure 3. Settings. Replication. Replication Destination.](images/settings_replication-3.png)
 
+{NOTE:Note}
+
+You can replicate, skip replication or force replication for all indexes and transformers.
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL:Conflict Resolution}
+
+You can resolve all existing conflict acording to the current conflict resolution
+
+![Figure 4. Settings. Replication. Conflict Resolution.](images/settings_replication_conflict.png)
+
 {PANEL/}
 
 {PANEL:Server HiLo prefix}
 
 Please refer to following [article](../../../client-api/bundles/how-client-integrates-with-replication-bundle#custom-document-id-generation).
 
-![Figure 4. Settings. Replication. Server Hilo Prefix.](images/settings_replication-4.png)
+![Figure 5. Settings. Replication. Server Hilo Prefix.](images/settings_replication-4.png)
 
 {PANEL/}
 
@@ -61,7 +77,7 @@ Please refer to following [article](../../../client-api/bundles/how-client-integ
 
 Since version 3.5, enabling the replication bundle is possible for an existing databases.
 
-![Figure 5. Settings. Replication. Enable Replication Bundle.](images/settings_replication-5.png)
+![Figure 6. Settings. Replication. Enable Replication Bundle.](images/settings_replication-5.png)
 
 {NOTE/}
 
