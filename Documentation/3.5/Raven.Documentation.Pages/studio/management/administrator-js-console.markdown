@@ -9,7 +9,7 @@ in support cases where we need to figure out what's going on a production system
 The Administrator JS Console is a way for a server administrator to execute arbitrary code on a running system, 
 The idea here is that we have the ability to query and modify the state of the server directly. 
 We don't have to rely on prepared-ahead-of-time end points, and only being able to do whatever it is we thought of beforehand.   
-The `target database` is the instance of DocumentDatabase which you're working on. It means that users can do things like modify configuration on the fly, get statistics, etc.   
+The `chosen database` is the instance of [DocumentDatabase](https://github.com/ayende/ravendb/blob/v3.5/Raven.Database/DocumentDatabase.cs) which you're working on. It means that users can do things like modify configuration on the fly, get statistics, etc.   
    
 For your convenience, there are several predefined scripts but you can also write one of your own.   
 At the bottom of the view you can see the script results.
