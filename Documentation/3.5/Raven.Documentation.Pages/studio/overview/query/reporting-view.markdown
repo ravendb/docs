@@ -8,8 +8,9 @@ Action Bar consists of the following:
 
 - `Select the index` - first you need to choose an index you want to report on,
 - `Run the report` - runs the report on the selected index for a given aggregation values,
-- `Edit the index` - enables to edit a definition of the selected index by navigating to [Index Edit View](../indexes/index-edit-view).
-
+- `Edit the index` - enables to edit a definition of the selected index by navigating to [Index Edit View](../indexes/index-edit-view),
+- `Export to CSV` - Export the report to CSV file,
+- `Cache` - Enable/Disable caching option.
 ![Figure 1. Studio. Reporting View.](images/reporting_view_1.png)
 
 
