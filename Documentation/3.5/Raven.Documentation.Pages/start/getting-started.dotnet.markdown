@@ -6,19 +6,31 @@ Welcome to this introductory article that will guide you through all the parts o
 
 For starters, you need to have a RavenDB server running. There are couple of ways you can acquire it:
 
-- distribution package or installer can be downloaded from [ravendb.net](http://ravendb.net/download),
+- Distribution package or installer which can be downloaded from [ravendb.net](http://ravendb.net/download)
 - [NuGet package](http://www.nuget.org/packages/RavenDB.Server/)
 
-Now, we will focus on the distribution package (if you want to read about the installer go [here](../server/installation/using-installer)). The package contains the following directories:
+{NOTE In RavenDB 3.5 we had the distribution package split into two ZIP packages to make things more comfortable and have a separate Tools package. /}
 
-- `Backup` - contains [Raven.Backup](../server/administration/backup-and-restore) utility for doing backups,
+Now, we will focus on the distribution package (if you want to read about the installer go [here](../server/installation/using-installer)).   
+There are 2 zip files available, the main zip contains the following:
+
 - `Bundles` - contains all non built-in [plugins](../server/plugins/what-are-plugins) e.g. [Authorization](../server/bundles/authorization) or [Encryption](../server/bundles/encryption),
 - `Client` - contains all .NET client libraries needed for development,
 - `Server` - contains all server files (including configuration files such as [Raven.Server.exe.config](../server/configuration/configuration-options))
-- `Smuggler` - contains utility for [importing and exporting](../server/administration/exporting-and-importing-data) data between servers,
 - `Web` - contains all files needed for [IIS deployment](../server/installation/iis)
 
-In the package there is a file `Start.cmd` which will start a server as a console application (aka [debug mode](../server/troubleshooting/running-in-debug-mode)), which is great for development purposes or simply to try out various functionalities, but not for production release. When server has started, [the Studio](../studio/accessing-studio) will be available at `http://localhost:<port>/`. RavenDB is configured by default to use port 8080, or the next available, if this is one is occupied.
+The package contains `Start.cmd` which will start a server as a console application (aka [debug mode](../server/troubleshooting/running-in-debug-mode)), 
+which is great for development purposes or simply to try out various functionalities, but not for production release. When server has started, [the Studio](../studio/accessing-studio) 
+will be available at `http://localhost:<port>/`. RavenDB is configured by default to use port 8080, or the next available, if this is one is occupied.   
+
+The second zip file called `Tools` is for advanced users and contains the following:
+
+- `Raven.Backup.exe` - A utility for doing backups, [read more](../server/administration/backup-and-restore). 
+- `Raven.Smuggler.exe` - A utility for exporting and importing data between servers, [read more](../server/administration/exporting-and-importing-data).
+- `Raven.Monitor.exe` - A utility for monitoring RavenDB using SNMP, [read more](../server/administration/monitoring/snmp). 
+- `Raven.StorageExporter.exe` - A utility for exporting a database directly from the Esent / Voron data files, [read more](../server/administration/storage-exporter).
+- `Raven.Traffic.exe` - A utility to record and replay requests that are being received by RavenDB, [read more](../server/administration/monitoring/request-tracking). 
+- `Raven.ApiToken.exe` - A utility to generate an ApiToken, not through the studio.
 
 {INFO If you want to install RavenDB as a service, please visit [this](../server/installation/as-a-service) article. There is also a possibility to install it on [IIS](../server/installation/iis) or run it as an [embedded](../server/installation/embedded) instance. /}
 
