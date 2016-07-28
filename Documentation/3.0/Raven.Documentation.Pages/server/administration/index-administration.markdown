@@ -16,7 +16,7 @@ You can delete an index by using either [Client API](../../client-api/commands/i
 
 ## Index locking
 
-This feature allows you to change an index definition on the production server. Index locking hes two possible results: either any changes introduced to the locked index will be ignored, or  an error will be raised when someone tries to modify the index. You can update the index definition on the server, next update it on the codebase, and finally deploy the application to match them. While the index is locked, at any time when `IndexCreation.CreateIndexes()` on start up is called, the changes you've introduces will not be reverted.
+This feature allows you to change an index definition on the production server. Index locking has two possible results: either any changes introduced to the locked index will be ignored, or  an error will be raised when someone tries to modify the index. You can update the index definition on the server, next update it on the codebase, and finally deploy the application to match them. While the index is locked, at any time when `IndexCreation.CreateIndexes()` on start up is called, the changes you've introduced will not be reverted.
 
 It is important to note that this is not a security feature, and you can unlock an index at any time.
 
