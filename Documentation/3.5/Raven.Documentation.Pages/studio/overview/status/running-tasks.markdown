@@ -7,12 +7,21 @@ Types of the task available are as follows:
 -  `BulkInsert`,
 -  `IndexBulkOperation`,
 -  `IndexDeleteOperation`,
+-  `BackupDatabase`,
+-  `BackupFilesystem`,
 -  `ImportDatabase`,
 -  `RestoreDatabase`,
 -  `RestoreFilesystem`,
 -  `CompactDatabase`,
 -  `CompactFilesystem`,
--  `IoTest`
+-  `IoTest`,
+-  `NewIndexPrecomputedBatch`,
+-  `PurgeTombstones`,
+-  `ServerSmuggling`,
+-  `CounterBatchOperation`,
+-  `TimeSeriesBatchOperation`,
+-  `RecoverCorruptedIndexOperation`,
+-  `ResolveConflicts`
 
  Each filter will appear if at least one type of this task is currently running. You can refresh the list of running tasks by clicking on the `Refresh` button and search for the specific tasks using `Search` option.
 
