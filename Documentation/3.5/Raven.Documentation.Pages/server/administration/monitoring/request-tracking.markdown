@@ -2,7 +2,7 @@
 
 It is possible to record and replay requests that are being received by RavenDB.
 
-Monitoring is possible using the Raven.Traffic Tool, which can be found in [installDirectory]\Diag\Raven.Traffic 
+Monitoring is possible using the `Raven.Traffic.exe` tool, which can be found in the `Tools` ZIP package in the download page. 
 
 {PANEL:**Recording Traffic**}
 
