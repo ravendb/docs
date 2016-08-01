@@ -26,7 +26,7 @@ will satisfy your requirements. This article describes differences between Backu
 - Size:
     - Export is much smaller than backup
 
-{INFO: As an administrator, should I do backups, exports or both to be on the safe site?}
+{INFO: As an administrator, should I do backups, exports or both to be on the safe side?}
 You should perform backups which allow quickly restore from a failure on the same system.
 Note that also incremental backups are supported.
 {INFO/}
