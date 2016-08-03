@@ -7,9 +7,9 @@ In order to handle write assurance, the client API allows you to wait until repl
 
 {CODE write_assurance_1@Server\ScalingOut\Replication\WriteAssurance.cs /}
 
-The Raven client will ping all of the replicas, waiting to see if the replication matches or exceeds the ETag that we just wrote. 
-You can specify the number of replicas that are required to consider the document write as "safe". Optionally, you can also provide a timeout, and if the nodes aren't reachable, 
-you will get an error concerning this. As the result, the `WaitAsync` method returns the number of nodes that caught up to the specified ETag.
+The Raven client will send a request to the server and wait until response, the server then will check if the replication matches or exceeds the ETag that we just wrote.   
+You can specify the number of replicas that are required to consider the document write as "safe" (The replicas won't be bigger then the replication destination). 
+Optionally, you can also provide a timeout, and if the server failed to check all the destination or they are not rechable, you will get an error concerning this.
 
 You can also use parameterless version of the `WaitAsync` method:
 
@@ -18,9 +18,33 @@ You can also use parameterless version of the `WaitAsync` method:
 Then the default parameters that will be used are as follows:
 
 * *etag* - last written ETag in the document store (`DocumentStore.LastEtagHolder.GetLastWrittenEtag()`),
-* *timeout* - no timeout,
+* *timeout* - 60 seconds,
 * *database* - default database of the document store,
 * *replicas* - 2 destination servers.
+
+Another option to handle write assurance is to use the `WaitForReplicationAfterSaveChanges` this option will add a flag to the save changes request and make the server wait for the document to be confirmed write to at least N replicas or until timeout before sending any response .
+
+To unable this option we need to add this method just before the session.saveChanges():
+
+{CODE-BLOCK: csharp} 
+    using (var session = store.OpenSession()) 
+    { 
+        User user = new User(); 
+        session.Store(user); 
+        session.Advanced.WaitForReplicationAfterSave(replicas: 2, timeout: TimeSpan.FromSeconds(30)); 
+        session.saveChanges(); 
+    } 
+{CODE-BLOCK/}
+
+Like the WaitAsync You can also use parameterless version to the method:
+
+{CODE-BLOCK: csharp} session.Advanced.WaitForReplicationAfterSave(); {CODE-BLOCK/}
+
+Then the default parameters that will be used are as follows:
+
+* *timeout* - 15 seconds,
+* *throwOnTimeout* - true (set to false only if you dont want to get any exception on timeout),
+* *replicas* - 1 destination server
 
 ## Related articles
 
