@@ -8,8 +8,8 @@ In order to handle write assurance, the client API allows you to wait until repl
 {CODE write_assurance_1@Server\ScalingOut\Replication\WriteAssurance.cs /}
 
 The Raven client will send a request to the server and wait until response, the server then will check if the replication matches or exceeds the ETag that we just wrote.   
-You can specify the number of replicas that are required to consider the document write as "safe" (The replicas won't be bigger then the replication destination). 
-Optionally, you can also provide a timeout, and if the server failed to check all the destination or they are not rechable, you will get an error concerning this.
+You can specify the number of replicas that are required to consider the document write as "safe" (The replicas won't be bigger then the replication destinations). 
+Optionally, you can also provide a timeout, and if the server failed to check all the destinations or they are not rechable, you will get an error concerning this.
 
 You can also use parameterless version of the `WaitAsync` method:
 
@@ -20,11 +20,11 @@ Then the default parameters that will be used are as follows:
 * *etag* - last written ETag in the document store (`DocumentStore.LastEtagHolder.GetLastWrittenEtag()`),
 * *timeout* - 60 seconds,
 * *database* - default database of the document store,
-* *replicas* - 2 destination servers.
+* *replicas* - 2 additional servers.
 
 Another option to handle write assurance is to use the `WaitForReplicationAfterSaveChanges` this option will add a flag to the save changes request and make the server wait for the document to be confirmed write to at least N replicas or until timeout before sending any response .
 
-To unable this option we need to add this method just before the session.saveChanges():
+To enable this option we need to add this method just before the session.saveChanges():
 
 {CODE-BLOCK: csharp} 
     using (var session = store.OpenSession()) 
@@ -44,7 +44,7 @@ Then the default parameters that will be used are as follows:
 
 * *timeout* - 15 seconds,
 * *throwOnTimeout* - true (set to false only if you dont want to get any exception on timeout),
-* *replicas* - 1 destination server
+* *replicas* - 1 additional server
 
 ## Related articles
 
