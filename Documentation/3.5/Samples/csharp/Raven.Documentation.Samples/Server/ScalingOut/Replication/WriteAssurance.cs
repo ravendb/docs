@@ -34,7 +34,7 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 						.Advanced
 						.GetEtagFor(user);
 
-					int replicas = await store
+					await store
 						.Replication
 						.WaitAsync(etag: userEtag, timeout: TimeSpan.FromMinutes(1), replicas: 1);
 					#endregion
@@ -43,9 +43,23 @@ namespace Raven.Documentation.Samples.Server.ScalingOut.Replication
 					await store
 						.Replication
 						.WaitAsync();
-					#endregion
-				}
-			}
-		}
+                    #endregion
+
+                    #region write_assurance_3
+                    session.Advanced.WaitForReplicationAfterSaveChanges(replicas: 2, timeout: TimeSpan.FromSeconds(30));
+                    #endregion
+                }
+
+                #region write_assurance_4
+
+                using (var session = store.OpenSession())
+                {
+                    session.Store(user);
+                    session.Advanced.WaitForReplicationAfterSaveChanges(replicas: 2, timeout: TimeSpan.FromSeconds(30));
+                    session.SaveChanges();
+                }
+                #endregion
+            }
+        }
 	}
 }
