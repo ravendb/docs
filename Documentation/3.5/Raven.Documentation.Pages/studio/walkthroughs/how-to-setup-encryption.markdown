@@ -4,7 +4,7 @@ To set up an [Encryption](../../server/bundles/encryption) bundle using Studio f
 
 Step 1. Create new database (e.g. `Encrypted-Northwind`) with `Encryption` enabled.
 
-![Figure 1. Studio. Encryption. Create database.](images/encryption-1.png)  
+![Figure 1. Studio. Encryption. Create database.](images/encryption.png)  
 
 Step 2. Configure encryption.
 

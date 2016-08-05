@@ -1057,7 +1057,7 @@
     <Content Include="studio\overview\tasks\images\tasks-import_database_tab-general-4.png" />
     <Content Include="studio\overview\tasks\images\tasks-subscription-1.png" />
     <Content Include="studio\overview\tasks\images\tasks-toggle_indexing_tab-1.png" />
-    <Content Include="studio\walkthroughs\images\encryption-1.png" />
+    <Content Include="studio\walkthroughs\images\encryption.png" />
     <Content Include="studio\walkthroughs\images\encryption-2.png" />
     <Content Include="studio\walkthroughs\images\encryption-3.png" />
     <Content Include="studio\walkthroughs\images\replication-master-create-database.png" />
