@@ -713,6 +713,7 @@
     <None Include="server\scaling-out\clustering\.docs.json" />
     <None Include="server\scaling-out\clustering\clustering-overview.markdown" />
     <None Include="server\scaling-out\clustering\what-is-rachis.markdown" />
+    <None Include="server\scaling-out\sla.markdown" />
     <None Include="server\scaling-out\etl.markdown" />
     <None Include="server\scaling-out\replication-with-sharding.markdown" />
     <None Include="server\scaling-out\replication\.docs.json" />
@@ -829,6 +830,7 @@
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="client-api\bundles\images\replication-client-configuration.PNG" />
     <Content Include="file-system\images\indexing_studio.png" />
     <Content Include="file-system\images\studio_view.png" />
     <Content Include="file-system\server\images\enable-rdc-windows-7-and-8.png" />
@@ -871,6 +873,8 @@
     <Content Include="server\configuration\images\create-database-select-engine-studio.png" />
     <Content Include="server\installation\images\installer_destination_and_paths.png" />
     <Content Include="server\scaling-out\clustering\images\cluster-rachis.png" />
+    <Content Include="server\scaling-out\images\SLA.PNG" />
+    <Content Include="server\scaling-out\images\SLA2.PNG" />
     <Content Include="server\troubleshooting\images\debug-endpoints-studio.png" />
     <Content Include="start\images\linqpad-1.png" />
     <Content Include="start\images\linqpad-2.png" />
@@ -1071,7 +1075,6 @@
     <Content Include="studio\walkthroughs\images\replication-slave-create-database.png" />
     <Content Include="studio\walkthroughs\images\replication-slave-documents.png" />
     <None Include="server\kb\document-key-generation.markdown" />
-    <Content Include="client-api\bundles\images\replication-client-configuration.png" />
     <Content Include="client-api\how-to\images\excel_connections.png" />
     <Content Include="client-api\how-to\images\excel_connections_dialog_1.png" />
     <Content Include="client-api\how-to\images\excel_connections_dialog_2.png" />

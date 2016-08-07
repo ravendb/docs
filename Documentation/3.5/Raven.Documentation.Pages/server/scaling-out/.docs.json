@@ -28,5 +28,10 @@
     "Path": "etl.markdown",
     "Name": "ETL (Extract Transform Load)",
     "Mappings": []
+  },
+  {
+    "Path": "sla.markdown",
+    "Name": "SLA (Service Level Agreement)",
+    "Mappings": []
   }
 ]
