@@ -1,7 +1,6 @@
 ﻿# Manage Your Server : Global Configuration
-This feature allows you to define the behavior of the system once, and have it apply to all your databases, 
-and using the RavenDB Cluster option, you can apply it across all you nodes in on go. 
-You can configure global behavior and override it on individual databases.
+Global Configuration feature allows you to define behavior for all server databases in one place. 
+This behavior is inherited automatically but also can be overridden by a user per database basis.
 
 You can configure global behavior for the following bundles:      
 `Periodic export` - read more about periodic export configuration [here](../overview/settings/periodic-export).   
@@ -11,4 +10,12 @@ You can configure global behavior for the following bundles:
 `Custom functions` -read more about custom functions configuration [here](../overview/settings/custom-functions).   
 `Versioning` - read more about versioning configuration [here](../overview/settings/versioning).   
    
-![Figure 1. Manage Your Server. Server Smuggling.](images/manage_your_server-global-configuration.png)
+![Figure 1. Manage Your Server. Global Configuration.](images/manage_your_server-global-configuration.png)
+
+{NOTE:Note}
+
+Global Configuration is used extensively by a [Clustering feature](../../server/scaling-out/clustering/clustering-overview) 
+and will allow you to spread configuration across all nodes.
+
+![Figure 2. Manage Your Server. Global Configuration Cluster.](images/manage_your_server-global-configuration-2.png)
+{NOTE/}
