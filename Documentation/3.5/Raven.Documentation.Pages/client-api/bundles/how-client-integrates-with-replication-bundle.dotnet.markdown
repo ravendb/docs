@@ -23,6 +23,7 @@ The remaining values of `FailoverBehavior` enumeration are:
 
 * *AllowReadsFromSecondaries* (default) - allow to read from secondary server(s), but immediately fail writes to the secondary server(s)
 * *AllowReadsFromSecondariesAndWritesToSecondaries* - allow reads from and writes to secondary server(s)
+* *AllowReadFromSecondariesWhenRequestTimeSlaThresholdIsReached* - Allow read from secondaries when request time [SLA](../../server/scaling-out/sla) threshold is reached (configurable in conventions). 
 * *ReadFromAllServers* - spread read requests across all servers, instead of doing all the work against master. Write requests will always go to master
 
 They determine the strategy of the failovers if the primary server is down and the environment is configured to replicate between sibling instances.
@@ -34,6 +35,41 @@ FailoverBehavior enumeration values are actually flags and can be combined, e.g.
 {CODE client_integration_4@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs /}
 
 {NOTE/}
+
+{PANEL/}
+
+{PANEL:**Cluster failover behavior**}
+
+Inside the cluster by default replication bundles in all the servers are enabled. This includes:
+
+* All instances in the will be replicate to every server inside the cluster
+* Default failover behavior `FailoverBehavior.ReadFromLeaderWriteToLeader`.
+* The server always try to write to the leader (will redirect to leader if the client try to make a request to a none leader server).
+* The server always know how is the leader in a case that the leader is down the servers will choose another.
+
+The client can load the cluster toplogy from `/cluster/topology` to learn which servers are in the cluster and can be promoted to leader.
+
+You can turn off the failover behavior by using the document store conventions. In order to do so, use `FailImmediately` option
+
+{CODE client_integration_1@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs /}
+
+When `FailImmediately` option is used then client will raise exception when primary server is down.
+
+The remaining values of `FailoverBehavior` enumeration are:
+
+* *ReadFromLeaderWriteToLeader* (default) - Allows read from leader and write only to leader
+* *ReadFromAllWriteToLeader* - Allows read from any server and write only to leader
+* *ReadFromAllWriteToLeaderWithFailovers* - Allows read from leader and write only to leader with failovers. 
+* *ReadFromLeaderWriteToLeaderWithFailovers* - spread read requests across all servers, instead of doing all the work against master. Write requests will always go to master
+
+{NOTE:WithFailovers behavior}
+The behaviors `ReadFromAllWriteToLeaderWithFailovers` and `ReadFromLeaderWriteToLeaderWithFailovers` will make the client use the new leader only when trying to write
+to a unreachable server. Work only if we configure the Client failover behaviour in the server side to Let client decide .
+
+![Setting up let client decide on server](images/replication-client-configuration-let-client-decide.png)
+
+{NOTE/}
+
 
 {PANEL/}
 

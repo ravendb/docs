@@ -47,6 +47,11 @@ during saving a document again. If `false`, those properties will be removed whe
 
 {CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\Conventions\RequestHandling.cs /}
 
+###RequestTimeSlaThresholdInMilliseconds
+The threshold defined for SLA (Service Level Agreement).If requests to a node take longer than the defined threshold, 
+the client will balance the load and send less requests to that node.
+
+{CODE request_threshold_sla@ClientApi\Configuration\Conventions\RequestHandling.cs /}
 ##Related articles
 
 - [How to send custom request using HttpJsonRequestFactory?](../../how-to/send-custom-request-using-httpjsonrequestfactory)
