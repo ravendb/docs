@@ -20,7 +20,7 @@ Before we will move to the examples, let's look at the methods, objects, and var
 | `LoadDocument(key)` | method | Allows document loading, increases maximum number of allowed steps in script. See `Raven/AdditionalStepsForScriptBasedOnDocumentSize` [here](../../../server/configuration/configuration-options#javascript-parser). |
 | `PutDocument(key, data, metadata)` | method | Allows document putting, returns generated key |
 | `IncreaseNumberOfAllowedStepsBy(number)` | method | Will increase the maximum allowed number of steps in script by given value. Only available if `Raven/AllowScriptsToAdjustNumberOfSteps` is set to `true`. |
-| `_` | object | [Lo-Dash 2.4.1](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md) |
+| `_` | object | [Lo-Dash 4.13.1](https://github.com/lodash/lodash/blob/4.13.1/doc/README.md) |
 | `trim()` | string.prototype | trims the string e.g. `this.FirstName.trim()` |
 | `output(...)` | method | Allows debug your patch, prints passed messages in output tab |
 | `indexOf(...)` | Array.prototype | wrapper for [_.indexOf](https://github.com/lodash/lodash/blob/2.4.1/doc/README.md#_indexofarray-value-fromindex0) |
