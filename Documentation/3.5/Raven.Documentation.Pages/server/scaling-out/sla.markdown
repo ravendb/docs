@@ -23,10 +23,12 @@ decaying semantics, so new responses are more important than old responses. It m
 as the backup operation completes and we have free I/O, RavenDB will detect that and ramp up the 
 number of requests until we are balanced again.
 
-We actually have two client modes here. In the first mode the client talks only with the primary, 
-and if the SLA is violated, it will then start directing queries to other servers. 
-The second mode is to spread the load along all servers, and only use the servers that are under 
-the provided SLA.
+We have two client modes:   
+`Allow reads from secondaries when request time SLA threshold is reached` - In this mode the 
+client talks only with the primary, and if the SLA is violated, it will then start directing queries 
+to other servers.   
+`Read from all servers but switch when request time SLA threshold is reached` - In this mode 
+the load is spread along all servers, and only the servers that are under the provided SLA are used.
 
 ![Figure 2: SLA client modes](images\sla2.png)
 
