@@ -87,6 +87,19 @@ You can read more about locking [here](../../../server/administration/index-admi
 
 You can read more about index prioritization [here](../../../server/administration/index-administration#index-prioritization).
 
+### Index Corruption
+
+During server startup, we check for corrupted indexes. If such a corruption is found, the server attempts to fix it.   
+If an index gets corrupted while the server is running, the following warning message will be displayed:
+![Figure 8. Studio. Indexes View. Index Corruption Message](images/indexes-view-corruption-1.png)
+
+You might also get the following error when attempting to query:   
+![Figure 9. Studio. Indexes View. Index Corruption Query Error](images/indexes-view-corruption-2.png)
+
+If you encounter this problem, you should fix the corrupted index by going to the `Indexes` view and 
+clicking `Try to recover corrupted indexes`:   
+![Figure 10. Studio. Indexes View. Index Corruption Fix](images/indexes-view-corruption-3.png)
+
 {PANEL/}
 
 ## Related articles
