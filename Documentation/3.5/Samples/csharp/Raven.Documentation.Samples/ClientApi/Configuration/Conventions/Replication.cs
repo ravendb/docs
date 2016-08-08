@@ -14,10 +14,14 @@
 
 			#region failover_behavior
 			Conventions.FailoverBehavior = FailoverBehavior.AllowReadsFromSecondaries;
-			#endregion
+            #endregion
 
-			#region replication_informer
-			Conventions.ReplicationInformerFactory = (url, jsonRequestFactory, requestTimeMetricGetter) =>
+            #region cluster_failover_behavior
+            Conventions.FailoverBehavior = FailoverBehavior.ReadFromAllWriteToLeader;
+            #endregion
+
+            #region replication_informer
+            Conventions.ReplicationInformerFactory = (url, jsonRequestFactory, requestTimeMetricGetter) =>
 				new ReplicationInformer(Conventions, jsonRequestFactory, requestTimeMetricGetter);
 			#endregion
 
@@ -25,6 +29,7 @@
 			Conventions.IndexAndTransformerReplicationMode = IndexAndTransformerReplicationMode.Indexes |
 			                                                 IndexAndTransformerReplicationMode.Transformers;
 			#endregion
+
 		} 
 	}
 }

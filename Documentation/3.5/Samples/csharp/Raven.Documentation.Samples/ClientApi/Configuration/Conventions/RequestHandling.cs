@@ -41,9 +41,13 @@
 
 			#region preserve_doc_props_not_found_on_model
 			Conventions.PreserveDocumentPropertiesNotFoundOnModel = true;
-			#endregion
-		} 
-	}
+            #endregion
+
+            #region request_threshold_sla
+            Conventions.RequestTimeSlaThresholdInMilliseconds = 75;
+            #endregion
+        }
+    }
 
 	#region custom_json_contract_resolver
 	public class CustomJsonContractResolver : IContractResolver
