@@ -1,4 +1,5 @@
-﻿using Raven.Client.Document;
+﻿using System;
+using Raven.Client.Document;
 using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session
@@ -30,6 +31,26 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					#endregion
 				}
 			}
-		}
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    // storing new entity
+                    #region saving_changes_3
+                    session.Advanced.WaitForIndexesAfterSaveChanges(timeout: TimeSpan.FromSeconds(30));
+                    session.Store(new Employee
+                    {
+                        FirstName = "John",
+                        LastName = "Doe"
+                    });
+
+                    session.SaveChanges();
+                    #endregion
+                }
+            }
+        }
+
+
 	}
 }
