@@ -17,7 +17,7 @@
 | **SortOptions** | IDictionary&lt;string, SortOptions&gt; | The sort options |
 | **Analyzers** | IDictionary&lt;string, string&gt; | The analyzers options |
 | **Fields** | IList&lt;string&gt; | The fields that are queryable in the index |
-| **Suggestions** | IDictionary&lt;string, SuggestionOptions&gt; | The suggest options |
+| **SuggestionsOptions** | ISet<string> | The suggest options |
 | **TermVectors** | IDictionary&lt;string, FieldTermVector&gt; | The term vectors options |
 | **SpatialIndexes** | IDictionary&lt;string, SpatialOptions&gt; | The spatial options  |
 | **MaxIndexOutputsPerDocument** | int? | Index specific setting that limits the number of map outputs that an index is allowed to create for a one source document. If a map operation applied to the one document produces more outputs than this number then an index definition will be considered as a suspicious and the index will be marked as errored. Default value: null means that the global value from Raven configuration will be taken to detect if number of outputs was exceeded. |
