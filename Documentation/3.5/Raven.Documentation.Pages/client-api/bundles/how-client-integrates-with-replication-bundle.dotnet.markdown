@@ -42,10 +42,10 @@ FailoverBehavior enumeration values are actually flags and can be combined, e.g.
 
 Inside the cluster by default replication bundles in all the servers are enabled. This includes:
 
-* All instances in the will be replicate to every server inside the cluster
-* Default failover behavior `FailoverBehavior.ReadFromLeaderWriteToLeader`.
-* The server always try to write to the leader (will redirect to leader if the client try to make a request to a none leader server).
-* The server always know how is the leader in a case that the leader is down the servers will choose another.
+* All instances will be replicated to every server inside the cluster.
+* Default failover behavior is `FailoverBehavior.ReadFromLeaderWriteToLeader`.
+* Write calls are always referred to the leader (if a write request is made to a none leader server the client will be redirected)
+* In the cluster there will be only one leader. In a case the leader is down, a vote will be made to choose another.  
 
 The client can load the cluster toplogy from `/cluster/topology` to learn which servers are in the cluster and can be promoted to leader.
 
