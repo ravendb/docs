@@ -7,12 +7,12 @@
   {
     "Path": "perform-operations-lazily.markdown",
     "Name": "...perform operations lazily",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/lazy-operations"
-			}
-		]
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/lazy-operations"
+      }
+    ]
   },
   {
     "Path": "clear-a-session.markdown",
@@ -67,6 +67,11 @@
   {
     "Path": "use-morelikethis.markdown",
     "Name": "...use MoreLikeThis?",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-documents-using-index-with-linq.markdown",
+    "Name": "...delete-documents-using-index-with-linq",
     "Mappings": []
   }
 ]

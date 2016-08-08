@@ -97,3 +97,4 @@ When you are absolutely certain that you can perform the operation when the inde
 
 - [Put](../../../../client-api/commands/documents/put)  
 - [Delete](../../../../client-api/commands/documents/delete)  
+- [Session: DeleteByIndex](../../../session/how-to/delete-documents-using-index-with-linq)   
