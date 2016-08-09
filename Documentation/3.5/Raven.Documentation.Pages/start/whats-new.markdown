@@ -9,7 +9,6 @@
 - `[Clustering]` Added feature,
 - `[ETL]` Added feature,
 - `[Indexing]` Implemented a custom ThreadPool for better indexing thread management,
-- `[Indexing]` Improved performance when using Suggestions
 - `[Indexing]` Added support for AlphaNumeric sorting,
 - `[Indexing]` Enhanced index recovery,
 - `[Querying]` Increased Lucene Query parsing performance,
