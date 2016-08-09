@@ -43,15 +43,15 @@ This is the standard app.config XML file. The `appSettings` section is where the
     The expiration value for documents in the internal document cache. Value is in seconds.   
     _Default:_ 60 minutes   
 
-* **Raven/MemoryCacheLimitMegabytes**
+* **Raven/MemoryCacheLimitMegabytes**   
 	The max size (in megabytes) for the internal document cache inside RavenDB server.   
 	_Default:_ 50% of the total system memory minus the size of the Esent cache.  
 
-* **Raven/MemoryCacheLimitPercentage**
+* **Raven/MemoryCacheLimitPercentage**   
 	The percentage of memory that the internal document cache inside RavenDB server will use.   
 	_Default:_ 0 (auto)   
 
-* **Raven/MemoryCacheLimitCheckInterval**
+* **Raven/MemoryCacheLimitCheckInterval**   
 	The internal for checking that the internal document cache inside RavenDB server will be cleaned.   
 	_Format:_ HH:MM:SS   
 	_Default:_ depends on system polling interval   
@@ -72,6 +72,14 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Enable document caching inside storage. Will increase performance, but more memory will be used.   
     _Default:_ true
 
+* **Raven/MaxConcurrentServerRequests**   
+	Maximum of concurrent server requests.   
+	 _Default:_ 512
+
+* **Raven/MaxConcurrentMultiGetRequests**   
+	Maximum of multi get requests.   
+	 _Default:_ 192
+
 ### Index settings
 
 * **Raven/IndexStoragePath**  
@@ -86,7 +94,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     The number of the indexing tasks that can be run in parallel. There is usually one or two indexing tasks for each index.   
 	_Default:_ the number of processors in the current machine
     
-* **Raven/MaxNumberOfItemsToIndexInSingleBatch**   
+* **Raven/MaxNumberOfItemsToIndexInSingleBatch or Raven/MaxNumberOfItemsToProcessInSingleBatch**   
 	The max number of items that will be indexed in a single batch. Larger batch size results in faster indexing, but higher memory usage.   
 	_Default:_ 128 * 1024 for 64-bit and 16 * 1024 for 32-bit  
 	_Minimum:_ 128
@@ -147,17 +155,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Whether we allow creation of auto indexes on dynamic queries.   
 	_Default:_ true
 
-* **Raven/SkipCreatingStudioIndexes**   
-	Control whether the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   
-	_Default:_ false
-
-* **Raven/LimitIndexesCapabilities**   
-	Control whether RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).   
-	_Default:_ false
-
+* **Raven/SkipCreatingStudioIndexes**   	Control whether the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   	_Default:_ false
+* **Raven/LimitIndexesCapabilities**   	Control whether RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).	_Default:_ false
 * **Raven/CompiledIndexCacheDirectory**   
 	Path to a directory used by index compilator.    
-	_Default:_ ~\Raven\CompiledIndexCache
+	_Default:_ ~\CompiledIndexCach
 
 * **Raven/NumberOfItemsToExecuteReduceInSingleStep**  
 	The number that controls if single step reduce optimization is performed. If the count of mapped results is less than this value then the reduce is executed in a single step.  
@@ -223,7 +225,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/Indexing/DisableIndexingFreeSpaceThreshold**   
     Threshold value of available space in megabytes on a disk where indexes are located. If there is less space than specified, it will disable the indexing completely (checks are made every 5 min).
-    If there is just twice as much free space as specified, then a warning will become visible in the studio.
+    If there is just twice as much free space as specified, then a warning will become visible in the studio.   
     _Default:_ 2048. Negative value disables protective free space checks.
 
 * **Raven/MaxPrecomputedBatchSizeForNewIndex**    
@@ -237,6 +239,18 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/Indexing/MaxNumberOfStoredIndexingBatchInfoElements**   
     Indicates the max number of indexing batch info the server save for debug.   
     _Default:_ 512
+
+* **Raven/Indexing/DisableMapReduceInMemoryTracking**   
+	Disable map reduce tracking.   
+	_Default:_ false
+
+* **Raven/MaxPrecomputedBatchTotalDocumentSizeInBytes**   
+	The maximum size in byte for precomputed batch.   
+	_Default:_ 250MB
+
+* **Raven/BulkImport/BatchTimeout**   
+	The time for batch timeout.   
+	_Default:_ 60000 MS
 
 ### Data settings:
 
@@ -259,18 +273,13 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ null  
 
 * **Raven/StorageEngine** or **Raven/StorageTypeName**   
-    What storage type to use (see: [Storage Engines](../../server/configuration/storage-engines))  
-    _Allowed values:_ esent, voron   
+    What storage type to use (see: [Storage Engines](../../server/configuration/storage-engines))     
+    _Allowed values:_ esent, voron      
     _Default:_ esent  
 
 * **Raven/TransactionJournalsPath**   
     The common setting for both storage engines used to specify the path for Esent logs or Voron journals. Useful if you want to store them on an another drive for performance reasons.     
     _Default:_ null - it means Esent logs will be placed into [database_data_dir]\Logs, while Voron journals will be located under [database_data_dir]
-
-* **Raven/TransactionMode**   
-    Esent only. What transaction mode to use. Safe transaction mode ensures data consistency, but is slower. Lazy is faster, but may result in a data loss if the server crashes.   
-    _Allowed values:_  Lazy, Safe   
-    _Default:_ Safe
 
 * **Raven/PreventSchemaUpdate**   
 	Disabled the automatic storage schema updates for all resources.   
@@ -279,6 +288,14 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/TempPath**   
     The common setting that allows us to change the path where server is putting temporary files.    
     _Default:_ Path.GetTempPath() - In Windows The default value is C:\Users\\{User-Name}\\AppData\Local\Temp\ 
+
+* **Raven/DatabaseOperationTimeout**   
+	The time for database operation timeout.   
+	_Default:_ 5 Min
+
+* **Raven/MaxRecentTouchesToRemember**   
+	The maximum number of recent things to remember.   
+	_Default:_ 1024
 
 ### Http settings
 
@@ -330,7 +347,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/MaxConcurrentRequestsForDatabaseDuringLoad**   
     Maximum number of allowed request to databases that are being loaded before warning messages will be returned.
-    _Default:_ 10
+    _Default:_ 50
 
 * **Raven/MaxServicePointIdleTime**   
     If set, changes the ServicePointManager.MaxServicePointIdleTime to given value.   
@@ -352,12 +369,13 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/ServerName**   
 	Name of the server that will show up on `/admin/stats` endpoint.   
 
-* **Raven/ClusterName**   
-	Name of the cluster that will show up on `/admin/stats` endpoint.   
-
 * **Raven/AssembliesDirectory**   
 	Path to directory where server will keep extracted assemblies.   
 	_Default:_ ~\Assemblies
+
+* **Raven/RejectClientsModeEnabled**   
+	Enable / Disable reject client mode.   
+	_Default:_ False
 
 ### Bundles
 
@@ -365,8 +383,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Semicolon separated list of the bundles' names, such as: 'Replication;Versioning'. If the value is not specified, none of the bundles are installed.   
 	_Default:_ none
 
-* **Raven/BundlesSearchPattern**   
-	Allows limiting the loaded plugins by specifying a search pattern, such as Raven.*.dll. Multiple values can be specified, separated by a semicolon (;).   
+* **Raven/BundlesSearchPattern**   	Allows limiting the loaded plugins by specifying a search pattern, such as Raven.*.dll. Multiple values can be specified, separated by a semicolon (;).
 
 * **Raven/PluginsDirectory**    
     The location of the plugins directory for this database.   
@@ -438,7 +455,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     You can use this setting to specify an initial file size for data file (in bytes).   
 
 * **Raven/Voron/MaxScratchBufferSize**   
-    The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).
+    The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).    
     _Default:_ 1024
 
 * **Raven/Voron/AllowOn32Bits**   
@@ -473,11 +490,11 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Default:_ 60
 
 * **Raven/Tenants/MaxConcurrentResourceLoads**   
-	The maximum number of resources (databases, file systems) to be loaded simultaneously.
+	The maximum number of resources (databases, file systems) to be loaded simultaneously.   
 	_Default:_ 8
 
 * **Raven/Tenants/ConcurrentResourceLoadTimeout**   
-	The max time before a server will timeout if it doesn't get a free slot to load a resource (database or file systems) concurrently with other loading requests.
+	The max time before a server will timeout if it doesn't get a free slot to load a resource (database or file systems) concurrently with other loading requests.   
 	_Default:_ 00:00:15
 
 ### Quotas
@@ -512,6 +529,10 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Value indicating if scripts can use `IncreaseNumberOfAllowedStepsBy` function in scripts (more about it [here](../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents#example-xi)) to increase the maximum allowed number of steps in script.   
 	_Default:_ false
 
+* **Raven/TurnOffDiscoveryClient**   
+	If True, turns off the discovery client.   
+	_Default:_ false
+
 ### [Authorization & Authentication](../../server/configuration/authentication-and-authorization)
 
 * **Raven/AnonymousAccess**   
@@ -532,14 +553,6 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/OAuthTokenCertificate**   
     The base 64 to the OAuth key use to communicate with the server.   
     _Default:_ `null` (if no key is specified, one will be automatically created).   
-
-* **Raven/OAuthTokenCertificatePath**   
-	The path to the OAuth certificate.  
-	_Default:_ none. If no certificate is specified, one will be automatically created.
-
-* **Raven/OAuthTokenCertificatePassword**   
-	The password for the OAuth certificate.  
-	_Default:_ none
 
 * **Raven/ExposeConfigOverTheWire**   
 	Allows to access /debug/config, /debug/request-tracing or /debug/info-package endpoints. Valid values are `Open` or `AdminOnly`.  
@@ -578,11 +591,15 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch**   
     Maximum amount of items that can be send in replication batch to THIS database.  
-    _Default:_ 600 seconds
+    _Default:_ 512
 
 * **Raven/Replication/ForceReplicationRequestBuffering**   
     Force buffering in replication requests (useful if using windows auth under certain scenarios).  
     _Default:_ false
+
+* **Raven/Replication/ReplicationPropagationDelayInSeconds**   
+	The replication propogation delay in seconds    
+	_Default:_ 15 
 
 ### Prefetcher
 
@@ -600,6 +617,103 @@ This is the standard app.config XML file. The `appSettings` section is where the
     Determines how long replication and periodic backup tombstones will be kept by a database. After the specified time they will be automatically purged on next database startup.   
     _Default:_ 14 days
 
+### File System
+
+* **Raven/FileSystem/MaximumSynchronizationInterval**   
+	The maximum number in seconds to synchronization interval.   
+	_Default:_ 60 sec
+
+* **Raven/FileSystem/IndexStoragePath**   
+	The path for the indexes on a disk. Useful if you want to store the indexes on another HDD for performance reasons.     
+    _Default:_ None
+
+* **Raven/FileSystem/DataDir**   
+	The directory for the RavenDB file system. You can use the ~\ prefix to refer to RavenDB's base directory.      
+    _Default:_ ~\FileSystems
+
+* **Raven/FileSystem/Storage**   
+	What storage type to use in RavenFS (see: RavenFS Storage engines)   
+	Allowed values: esent, voron
+	_Default:_ esent
+
+### Counters
+
+* **Raven/Counters/DataDir**   
+	The directory for the RavenDB counters. You can use the ~\ prefix to refer to RavenDB's base directory.   
+    _Default:_ ~\Counters
+
+* **Raven/Counter/TombstoneRetentionTime**   
+	Determines how long tombstones will be kept by a counter storage. After the specified time they will be automatically Purged on next counter storage startup.   
+	_Default:_ 14 Days
+
+* **Raven/Counter/DeletedTombstonesInBatch**   
+	Number of tombstones to delete in a batch.   
+	_Default:_ 1000
+
+* **Raven/Counter/ReplicationLatency**   
+	Time to wait due to replication latency.   
+	_Default:_ 30 Sec
+
+* **Raven/Counter/BatchTimeout**   
+	The time for batch timeout.   
+	_Default:_ 360 Sec
+
+### Time Series
+
+* **Raven/TimeSeries/DataDir**   
+	The path for the time series directory.   
+    _Default:_ ~\TimeSeries
+
+* **Raven/TimeSeries/ReplicationLatency**   
+	Time to wait due to replication latency.   
+	_Default:_ 30 Sec
+
+### Cluster
+
+* **Raven/Cluster/ElectionTimeout**   
+	 Number of milliseconds before cluster election will timeout.   
+	_Default:_ 1200 MS
+
+* **Raven/Cluster/HeartbeatTimeout**   
+	Number of milliseconds before cluster heartbeat will timeout.   
+	_Default:_ 300
+
+* **Raven/Cluster/MaxLogLengthBeforeCompaction**   
+	Maximun log length before doing compaction.   
+	_Default:_ 32 * 1024
+
+* **Raven/Cluster/MaxEntriesPerRequest**   
+	Maximum number of entries per request.   
+	_Default:_ 256
+
+* **Raven/Cluster/MaxStepDownDrainTime**   
+	 The max time to step down from being a leader.   
+	_Default:_ 15 Sec
+
+* **Raven/Cluster/MaxReplicationLatency**   
+	Maximum time to wait due to replication latency.   
+	_Default:_ 2 Min
+
+### Monitor
+
+* **Raven/Monitoring/Snmp/Enabled-false**   
+	Enable / Disable snmp Monitoring.   
+	_Default:_ false
+
+* **Raven/Monitoring/Snmp/Community**   
+	Snmp provider.   
+	_Default:_ ravendb
+
+* **Raven/Monitoring/Snmp/Port**   
+	Snmp port.   
+	_Default:_ 161
+
+### Web Sockets
+
+* **Raven/WebSockets/InitialBufferPoolSize**   
+	Buffer pool size.   
+	_Default:_ 128 * 1024
+
 ##Availability of configuration options
 
 Many of the configuration options described in the section above can be used both in global and per database context. If you want to set configuration per database, please refer to [this](../../server/administration/multiple-databases) page.
@@ -615,6 +729,8 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/MaxSecondsForTaskToWaitForDatabaseToLoad** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/DynamicLoadBalancing** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/CacheDocumentsInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxConcurrentServerRequests** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/MaxConcurrentMultiGetRequests** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/IndexStoragePath** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxIndexWritesBeforeRecreate** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -633,9 +749,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/TaskScheduler** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NewIndexInMemoryMaxMB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/CompiledIndexCacheDirectory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) || **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) || **Raven/CompiledIndexCacheDirectory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NumberOfItemsToExecuteReduceInSingleStep** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DisableDocumentPreFetchingForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxIndexCommitPointStoreTimeInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -646,12 +760,16 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Indexing/MaxNumberOfItemsToProcessInTestIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NewIndexInMemoryMaxTime** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/ImplicitFetchFieldsFromDocumentMode** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Indexing/DisableMapReduceInMemoryTracking** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/MaxPrecomputedBatchTotalDocumentSizeInBytes**  | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/BulkImport/BatchTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/WorkingDir** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/RunInMemory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DataDir** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/StorageTypeName** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/TransactionMode** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/DatabaseOperationTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/MaxRecentTouchesToRemember** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/HostName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Port** | ![No](images\delete.png) | ![Yes](images\tick.png) |
@@ -671,11 +789,11 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/LicensePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/Licensing/AllowAdminAnonymousAccessForCommercialUse** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/ServerName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
-| **Raven/ClusterName** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | **Raven/AssembliesDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/RejectClientsModeEnabled** |![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/ActiveBundles** | ![Yes](images\tick.png)* | ![Yes](images\tick.png) |
-| **Raven/BundlesSearchPattern** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/BundlesSearchPattern** | ![No](images\delete.png) | ![Yes](images\tick.png)  |
 | **Raven/PluginsDirectory** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Esent/CacheSizeMax** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -708,6 +826,7 @@ Many of the configuration options described in the section above can be used bot
 | &nbsp; |||
 | **Raven/MaxStepsForScript** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/AdditionalStepsForScriptBasedOnDocumentSize** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/TurnOffDiscoveryClient** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/AnonymousAccess** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/AllowLocalAccessWithoutAuthorization** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
@@ -729,11 +848,39 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/Replication/IndexAndTransformerReplicationLatency** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Replication/MaxNumberOfItemsToReceiveInSingleBatch** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Replication/ForceReplicationRequestBuffering** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/Replication/ReplicationPropagationDelayInSeconds** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/Prefetcher/FetchingDocumentsFromDiskTimeout** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Prefetcher/MaximumSizeAllowedToFetchFromStorage** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/TombstoneRetentionTime** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/FileSystem/MaximumSynchronizationInterval** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/FileSystem/IndexStoragePath** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/FileSystem/DataDir** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/FileSystem/Storage** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/Counters/DataDir** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Counter/TombstoneRetentionTimeh** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Counter/DeletedTombstonesInBatch** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Counter/ReplicationLatency** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Counter/BatchTimeout** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/TimeSeries/DataDir** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/TimeSeries/ReplicationLatency** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/Cluster/ElectionTimeout** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Cluster/HeartbeatTimeout** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Cluster/MaxLogLengthBeforeCompaction** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Cluster/MaxEntriesPerRequest** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Cluster/MaxStepDownDrainTime** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Cluster/MaxReplicationLatency** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/Monitoring/Snmp/Enabled** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Monitoring/Snmp/Community** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| **Raven/Monitoring/Snmp/Port** | ![No](images\delete.png) | ![Yes](images\tick.png) |
+| &nbsp; |||
+| **Raven/WebSockets/InitialBufferPoolSize** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 
 {INFO:Information}
 
