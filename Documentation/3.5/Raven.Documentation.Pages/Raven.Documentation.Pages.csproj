@@ -944,6 +944,9 @@
     <Content Include="studio\overview\indexes\images\indexes-rename-1.PNG" />
     <Content Include="studio\overview\indexes\images\indexes-rename-2.PNG" />
     <Content Include="studio\overview\indexes\images\indexes-view-action-bar.png" />
+    <Content Include="studio\overview\indexes\images\indexes-view-corruption-1.PNG" />
+    <Content Include="studio\overview\indexes\images\indexes-view-corruption-2.PNG" />
+    <Content Include="studio\overview\indexes\images\indexes-view-corruption-3.PNG" />
     <Content Include="studio\overview\indexes\images\indexes-view-edit.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-menu-1.png" />
     <Content Include="studio\overview\indexes\images\indexes-view-menu-2.png" />
