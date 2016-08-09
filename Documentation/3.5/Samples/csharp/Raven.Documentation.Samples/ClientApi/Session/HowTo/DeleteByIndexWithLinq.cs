@@ -51,11 +51,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                 using (var session = store.OpenSession())
                 {
                     #region delete_by_index_LINQ2
-                    // delete all the document in Index Person/ByName from the server with the Name Bob
+                    // remove all documents from the server where Name == Bob using Person/ByName index
                     var operation1 = session.Advanced.DeleteByIndex<Person>("Person/ByName", x => x.Name == "Bob");
                     operation1.WaitForCompletion();
 
-                    // delete all the document in Index Person/ByAge that have Age > 35 from the server 
+                    //remove all documents from the server where Age > 35 using Person/ByAge index
                     var operation2 = session.Advanced.DeleteByIndex<Person, Person_ByAge>(x => x.Age < 35);
                     operation2.WaitForCompletion();
                     #endregion
