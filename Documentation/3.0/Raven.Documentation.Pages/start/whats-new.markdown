@@ -104,8 +104,7 @@
 - Fixed filtering of ignored headers,
 - Optimized memory usage when streaming documents with missing properties according to a given type,
 - Optimized usage of HttpClient cache,
-- Fixed reconnection issue in Changes API,
-- Added `PutIndexAsyncWithOperation` command method
+- Fixed reconnection issue in Changes API
 
 <hr />
 
