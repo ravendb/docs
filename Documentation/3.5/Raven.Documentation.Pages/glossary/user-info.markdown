@@ -8,7 +8,7 @@ Holds the user info for the database.
 | ------------- | ------------- | ----- |
 | **Remark** | string | Inforamtion about the type of user |
 | **User** | string | The specific Name of the user |
-| **IsAdminGlobal** | bool | |
+| **IsAdminGlobal** | bool | Server administrator privileges(global) |
 | **IsAdminCurrentDb** | bool | If using current admin db |
 | **Databases** | List<DatabaseInfo> | Return a list of all the database on the server |
 | **Principal** | IPrincipal | |

@@ -1,6 +1,6 @@
 ﻿# Commands : How to retrieve user permission for a specified database?
 
-`GetUserInfo` used to retreive user permissions for a specified database
+`GetUserPermission` used to retrieve user permissions for a specified database
 
 ## Syntax
 
