@@ -937,6 +937,7 @@
     <Content Include="studio\overview\documents\images\documents-view-select-all-collection.png" />
     <Content Include="studio\overview\documents\images\documents-view-select-all.png" />
     <Content Include="studio\overview\documents\images\patch-view-action-bar.png" />
+    <Content Include="studio\overview\documents\images\patch-view-progress.png" />
     <Content Include="studio\overview\documents\images\patch-view-script.png" />
     <Content Include="studio\overview\documents\images\patch-view-test.png" />
     <Content Include="studio\overview\documents\images\resolve_conflicts_button.png" />
