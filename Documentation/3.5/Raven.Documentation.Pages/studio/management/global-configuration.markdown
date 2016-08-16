@@ -1,6 +1,6 @@
 ﻿# Manage Your Server : Global Configuration
 
-### bundles
+### Bundles
 
 Global Configuration feature allows you to define behavior for all server databases in one place. 
 This behavior is inherited automatically but also can be overridden by a user per database basis.
