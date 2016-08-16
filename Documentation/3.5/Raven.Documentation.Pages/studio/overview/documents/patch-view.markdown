@@ -1,16 +1,19 @@
 # Documents : Patch View
 
-Single documents, entire collections or query results can be patched using this view. More detailed information of JavaScript patching capabilities can be found [here](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents). This article focuses on the Studio's side of the patching.
+Single documents, entire collections or query results can be patched using this view. More detailed information of JavaScript patching capabilities can be found [here](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents). 
+This article focuses on the Studio's side of the patching.
 
 ## Action Bar
 
 Action bar contains the following buttons:
 
 - `Patch type selector` (single document, collection, or index),
-- `Test` - you can test your patch here, without modifying actual data,
-- `Save` - patch script can be saved to use this action later,
 - `Load` - saved patch scripts can be loaded using this action,
-- `Patch` - execute patch on actual data
+- `Save` - patch script can be saved to use this action later,
+- `Recent Patches` - recent patch scripts can be loaded using this action,
+- `Test` - you can test your patch here, without modifying actual data,
+- `Patch Selected` - execute patch on actual data (only the selected document)
+- `Patch All` - execute patch on actual data (on all matching documents in collection/index)
 
 ![Figure 1. Studio. Patch View. Action Bar.](images/patch-view-action-bar.png)  
 
@@ -35,6 +38,12 @@ If you want to test your patch before applying it to real data, you can test it 
 ## Saving Patches
 
 Each patch can be saved using the `Save` action from `Action Bar` for further use (you need to type its name). To load it just press the `Load` button from the `Action Bar` and select desired patch.
+
+## Patching a collection
+
+The case where we patch an entire collection might be time consuming, depending on the script complexity and the size of the collection.
+A warning message will make sure you understand that the script will run on **all** matching documents in the collection. A progress bar will be displayed.   
+![Figure 4. Studio. Patch View. Progress Bar.](images/patch-view-progress.png)  
 
 ## Related articles
 
