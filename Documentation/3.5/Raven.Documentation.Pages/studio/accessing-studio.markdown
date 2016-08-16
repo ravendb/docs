@@ -40,15 +40,25 @@ To access `<system>` database please go to `Manage Your Server` section and clic
 
 <hr />
 
-## Navigation
+## Navigation Bars
 
 If a database is selected, top navigation bar will be filled with the following menu items that will navigate you to various parts of the Studio:
 
 ![Figure 5. Studio. Top navigation bar.](images/accessing-studio-nav.png)  
 
-Note the bottom navigation bar containing information about server build number, license, and basic statistics for the selected database.
+The bottom navigation bar contains information about server build number, license, and basic statistics for the selected database.
 
 ![Figure 6. Studio. Bottom navigation bar.](images/accessing-studio-nav-bottom.png)  
+
+In case you have a valid license, the logo will be green and pressing it brings up the license and support coverage information.
+
+![Figure 9. Studio. Valid License Information.](images/accessing-studio-license-found.png)  
+
+In case you don't have a valid license, the logo will be red and pressing it brings up options for acquiring a license.
+
+![Figure 10. Studio. Bottom navigation bar. Invalid license.](images/accessing-studio-nav-bottom-red.png)
+ 
+![Figure 11. Studio. Invalid License Information.](images/accessing-studio-license-not-found.png)
 
 <hr />
 

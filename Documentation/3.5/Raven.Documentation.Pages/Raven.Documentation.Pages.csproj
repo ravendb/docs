@@ -886,6 +886,9 @@
     <Content Include="studio\images\accessing-studio-database-selection.png" />
     <Content Include="studio\images\accessing-studio-first-run.png" />
     <Content Include="studio\images\accessing-studio-has-api-key.png" />
+    <Content Include="studio\images\accessing-studio-license-found.PNG" />
+    <Content Include="studio\images\accessing-studio-license-not-found.PNG" />
+    <Content Include="studio\images\accessing-studio-nav-bottom-red.png" />
     <Content Include="studio\images\accessing-studio-nav-bottom.png" />
     <Content Include="studio\images\accessing-studio-nav.png" />
     <Content Include="studio\images\accessing-studio-system-database.png" />
