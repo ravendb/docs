@@ -165,7 +165,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	The number that controls if single step reduce optimization is performed. If the count of mapped results is less than this value then the reduce is executed in a single step.  
 	_Default:_ 1024
 
-* **Raven/DisableDocumentPreFetchingForIndexing**  
+* **Raven/DisableDocumentPreFetchingForIndexing** or **Raven/DisableDocumentPreFetching**
 	Disables the document prefetcher.
 	_Default:_ false
 
@@ -752,6 +752,7 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) || **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) || **Raven/CompiledIndexCacheDirectory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NumberOfItemsToExecuteReduceInSingleStep** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DisableDocumentPreFetchingForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/DisableDocumentPreFetching** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxIndexCommitPointStoreTimeInterval** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MaxNumberOfStoredCommitPoints** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/MinIndexingTimeIntervalToStoreCommitPoint** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
