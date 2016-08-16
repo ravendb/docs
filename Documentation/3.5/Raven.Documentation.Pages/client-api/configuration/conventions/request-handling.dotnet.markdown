@@ -48,7 +48,7 @@ during saving a document again. If `false`, those properties will be removed whe
 {CODE preserve_doc_props_not_found_on_model@ClientApi\Configuration\Conventions\RequestHandling.cs /}
 
 ###RequestTimeSlaThresholdInMilliseconds
-The threshold defined for [SLA](../../server/scaling-out/sla) (Service Level Agreement).If requests to a node take longer than the defined threshold, 
+The threshold defined for [SLA](../../../server/scaling-out/sla) (Service Level Agreement).If requests to a node take longer than the defined threshold, 
 the client will balance the load and send less requests to that node.
 
 {CODE request_threshold_sla@ClientApi\Configuration\Conventions\RequestHandling.cs /}
