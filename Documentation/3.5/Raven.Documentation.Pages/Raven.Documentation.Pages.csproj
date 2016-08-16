@@ -741,6 +741,7 @@
     <None Include="studio\management\.docs.json" />
     <None Include="studio\management\cluster.markdown" />
     <None Include="studio\management\administrator-js-console.markdown" />
+    <None Include="studio\management\global-configuration.markdown" />
     <None Include="studio\management\server-topology.markdown" />
     <None Include="studio\management\server-smuggling.markdown" />
     <None Include="studio\management\disk-io-viewer.markdown" />
