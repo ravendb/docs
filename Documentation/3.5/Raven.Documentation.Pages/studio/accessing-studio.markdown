@@ -30,13 +30,17 @@ To access manage your server you need to visit `Databases and  File Systems View
 
 ![Figure 3. Studio. Selecting database.](images/accessing-studio-database-selection.png)  
 
+To go back to `Databases and  File Systems View` click on `Resources` button.
+
+![Figure 4. Studio. Resources button.](images/accessing-studio-resources-button.png)
+
 <hr />
 
 ## Accessing System database
 
 To access `<system>` database please go to `Manage Your Server` section and click on `To System Database` button available in left pane.
 
-![Figure 4. Studio. Selecting database.](images/accessing-studio-system-database.png) 
+![Figure 5. Studio. Selecting database.](images/accessing-studio-system-database.png) 
 
 <hr />
 
@@ -44,21 +48,21 @@ To access `<system>` database please go to `Manage Your Server` section and clic
 
 If a database is selected, top navigation bar will be filled with the following menu items that will navigate you to various parts of the Studio:
 
-![Figure 5. Studio. Top navigation bar.](images/accessing-studio-nav.png)  
+![Figure 6. Studio. Top navigation bar.](images/accessing-studio-nav.png)  
 
 The bottom navigation bar contains information about server build number, license, and basic statistics for the selected database.
 
-![Figure 6. Studio. Bottom navigation bar.](images/accessing-studio-nav-bottom.png)  
+![Figure 7. Studio. Bottom navigation bar.](images/accessing-studio-nav-bottom.png)  
 
 In case you have a valid license, the logo will be green and pressing it brings up the license and support coverage information.
 
-![Figure 9. Studio. Valid License Information.](images/accessing-studio-license-found.png)  
+![Figure 8. Studio. Valid License Information.](images/accessing-studio-license-found.png)  
 
 In case you don't have a valid license, the logo will be red and pressing it brings up options for acquiring a license.
 
-![Figure 10. Studio. Bottom navigation bar. Invalid license.](images/accessing-studio-nav-bottom-red.png)
+![Figure 9. Studio. Bottom navigation bar. Invalid license.](images/accessing-studio-nav-bottom-red.png)
  
-![Figure 11. Studio. Invalid License Information.](images/accessing-studio-license-not-found.png)
+![Figure 10. Studio. Invalid License Information.](images/accessing-studio-license-not-found.png)
 
 <hr />
 
