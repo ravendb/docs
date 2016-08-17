@@ -923,6 +923,7 @@
     <Content Include="studio\management\images\manage_your_server-studio_config-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-2.png" />
+    <Content Include="studio\management\images\manage_your_server-traffic-watch-3.png" />
     <Content Include="studio\management\images\manage_your_server-windows_authentication-group-2.png" />
     <Content Include="studio\management\images\manage_your_server-windows_authentication-user-1.png" />
     <Content Include="studio\overview\documents\images\conflicts_view_1.png" />
