@@ -15,13 +15,18 @@
     "Mappings": []
   },
   {
-    "Path": "backup-restore.markdown",
-    "Name": "Backup & Restore",
+    "Path": "global-configuration.markdown",
+    "Name": "Global Configuration",
     "Mappings": []
   },
   {
     "Path": "server-smuggling.markdown",
     "Name": "server smuggling",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-restore.markdown",
+    "Name": "Backup & Restore",
     "Mappings": []
   },
   {
@@ -32,6 +37,11 @@
   {
     "Path": "admin-logs.markdown",
     "Name": "Admin Logs",
+    "Mappings": []
+  },
+  {
+    "Path": "server-topology.markdown",
+    "Name": "Server Topology",
     "Mappings": []
   },
   {
@@ -72,11 +82,6 @@
   {
     "Path": "studio-config.markdown",
     "Name": "Studio Config",
-    "Mappings": []
-  },
-  {
-    "Path": "server-topology.markdown",
-    "Name": "Server Topology",
     "Mappings": []
   }
 ]

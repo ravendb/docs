@@ -741,6 +741,7 @@
     <None Include="studio\management\.docs.json" />
     <None Include="studio\management\cluster.markdown" />
     <None Include="studio\management\administrator-js-console.markdown" />
+    <None Include="studio\management\global-configuration.markdown" />
     <None Include="studio\management\server-topology.markdown" />
     <None Include="studio\management\server-smuggling.markdown" />
     <None Include="studio\management\disk-io-viewer.markdown" />
@@ -781,6 +782,7 @@
     <None Include="studio\overview\settings\database-settings.markdown" />
     <None Include="studio\overview\status\.docs.json" />
     <None Include="studio\overview\status\debug\.docs.json" />
+    <None Include="studio\overview\status\debug\queries.markdown" />
     <None Include="studio\overview\status\debug\explain-replication.markdown" />
     <None Include="studio\overview\status\debug\data-subscription.markdown" />
     <None Include="studio\overview\status\debug\overview.markdown" />
@@ -1002,6 +1004,7 @@
     <Content Include="studio\overview\status\debug\images\debug-endpoints-studio-1.png" />
     <Content Include="studio\overview\status\debug\images\debug-explain-replication-studio.png" />
     <Content Include="studio\management\images\manage_your_server-server-topology-1.png" />
+    <Content Include="studio\overview\status\debug\images\debug-query.png" />
     <Content Include="studio\overview\status\images\metrics-indexing_performance-3.png" />
     <Content Include="studio\overview\status\images\metrics-request_tracking-1.png" />
     <Content Include="studio\overview\status\images\status-replication_stats-2.PNG" />

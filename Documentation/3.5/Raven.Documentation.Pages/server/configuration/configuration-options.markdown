@@ -889,3 +889,9 @@ Many of the configuration options described in the section above can be used bot
 - **Raven/Encryption** settings can only be provided when a database is being created. Changing them later will cause DB malfunction. More about `Encryption` bundle can be found [here](../bundles/encryption).
 
 {INFO/}
+
+{NOTE:Note}
+
+In the studio you can configure global behavior for all the bundles, read [here](../../studio/management/global-configuration) for more information.
+
+{NOTE/}

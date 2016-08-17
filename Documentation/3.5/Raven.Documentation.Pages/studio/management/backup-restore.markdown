@@ -6,7 +6,9 @@
 
 <hr />
 
-`Restore` is used to restore a backup. You need to provide a backup location and new database or file system name. Additionally, you may give a path to a place where the data should end up (if you choose not to, a default path will be used), carry out defragmentation and decide to disable replication
+`Restore` is used to restore a backup. You need to provide a backup location and new database or file system name. 
+Additionally, you may give a path to a place where the data,indexes and logs should end up 
+(if you choose not to, a default path will be used), carry out defragmentation and decide to disable replication
 destinations after the successful restore.
 
 ![Figure 2. Manage Your Server. Restore Database.](images/manage_your_server-restore_database-2.png)
