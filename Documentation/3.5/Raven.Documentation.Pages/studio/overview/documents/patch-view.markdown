@@ -45,6 +45,12 @@ The case where we patch an entire collection might be time consuming, depending 
 A warning message will make sure you understand that the script will run on **all** matching documents in the collection. A progress bar will be displayed.   
 ![Figure 4. Studio. Patch View. Progress Bar.](images/patch-view-progress.png)  
 
+## Patches in Progress
+
+You can see the number of patches in progress next to the action bar.
+
+![Figure 5. Studio. Patch View. Patches in Progress.](images/patch-view-in-progress.png)
+
 ## Related articles
 
 - [How to use JavaScript to patch your documents?](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents)
