@@ -19,6 +19,7 @@
 - `[JavaScript]` Updated LoDash to 4.13.1,
 - `[Configuration]` Exposed `Raven/TempPath` setting,
 - `[Configuration]` Exposed `Raven/Indexing/MaxNumberOfStoredIndexingBatchInfoElements` setting,
+- `[Configuration]` Alert when a value is out of the expected range,
 - `[Endpoint]` Moved `/debug/indexing-perf-stats` to /debug/indexing-perf-stats-with-timings
 - `[Endpoint]` Changed `/debug/indexing-perf-stats`, gives a new output
 - `[Endpoint]` Added `/admin/detailed-storage-breakdown`,
@@ -26,8 +27,11 @@
 - `[Endpoint]` Added `/admin/test-hotspare`,
 - `[Endpoint]` Added `/admin/get-hotspare-information`,
 - `[Endpoint]` Added `/admin/dump`,
+- `[Periodic Export]` Support export over 64MB when using Azure Storage Containers,
+- `[Data Subscription]` Deleting a subscription will kill the connection if it is active,
 - `[Logging]` server metrics will be written to log periodically,
 - `[Voron]` Performance improvements,
+- `[NuGet]` Semantic versioning for NuGet packages,
 - General performance improvements and bug fixes
 
 <hr />
@@ -41,8 +45,11 @@
 - Added `PotentialShardsFor` overload to DefaultShardResolutionStrategy for easier configuration,
 - Added `GetUserInfo` and `GetUserPermission` commands,
 - Support for `SkipDuplicateChecking` in IndexQuery,
+- Support for artificial documents on MoreLikeThis,
 - `DeleteByIndex` now supports LINQ statement,
-- `StreamDocs` now supports transformers
+- `StreamDocs` now supports transformers,
+- `[Save Changes]` Can wait for indexes to finish, read [here](../client-api/session/saving-changes) for more information,
+- `[Save Changes]` Can wait for replication to finish, read [here](../server/scaling-out/replication/write-assurance) for more information
 
 <hr />
 
@@ -52,7 +59,7 @@
 - `[Client]` Added support for getting `FileQueryStatistics` when using `QueryAsync`,
 - `[Client]` Unified FS creation method, now it matches the DB one,
 - `[Client]` Added support for query streaming,
-- `[Client]` Exposed file streaming under session.Advanced
+- `[Client]` Exposed file streaming under session.Advanced,
 
 <hr />
 
@@ -67,6 +74,7 @@
 
 - `[RavenFS]` Allow to configure synchronization settings,
 - `[RavenFS]` Added the ability to Strip synchronization information from files metadata,
+- `[RavenFS]` Added better search capabilities,
 - `[Export/Import]` Added server-wide smuggling feature,
 - `[Export/Import]` Added disk space verification before importing data (DB and FS),
 - `[Export/Import]` When exporting database the equivalent Smuggler parameters will be shown,
@@ -78,6 +86,7 @@
 - `[Replication]` Added server-wide replication topology view,
 - `[Patching]` Patching now shows progress bar,
 - `[Patching]` Added recent patches to Patching view,
+- `[Patching]` Added ongoing patches to Patching view,
 - `[Indexing]` Added the ability to change lock mode for all indexes at once,
 - `[Indexing]` Added the ability to toggle reduction process,
 - `[Indexing]` Added the ability to rename an index without re-running it,
@@ -99,7 +108,8 @@
 
 - `[Raven.Monitor]` Added I/O performance statistics support,
 - `[Raven.ApiToken]` Added tool to generate API Tokens,
-- `[IndexCleaner]` Added tool that allows to reset all index related data at once during offline mode
+- `[IndexCleaner]` Added tool that allows to reset all index related data at once during offline mode,
+- `[SQL Replication]` Better support for complex data types when replicating to PgSQL
 
 {PANEL/}
 
