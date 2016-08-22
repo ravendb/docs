@@ -14,6 +14,7 @@
 - `[Querying]` Increased Lucene Query parsing performance,
 - `[Monitoring]` Added SNMP Monitoring support,
 - `[Replication]` 'Raven/ConflictDocuments' and 'Raven/ConflictDocumentsTransformer' are now automatically deployed when replication is turned on,
+- `[SQL Replication]` Better support for complex data types when replicating to PgSQL
 - `[Transformer]` Added support for more than two SelectMany
 - `[JavaScript]` Updated Jint to 2.8,
 - `[JavaScript]` Updated LoDash to 4.13.1,
@@ -60,6 +61,7 @@
 - `[Client]` Unified FS creation method, now it matches the DB one,
 - `[Client]` Added support for query streaming,
 - `[Client]` Exposed file streaming under session.Advanced,
+- `[Client]` Added support for uploads using non seekable streams
 
 <hr />
 
@@ -109,7 +111,6 @@
 - `[Raven.Monitor]` Added I/O performance statistics support,
 - `[Raven.ApiToken]` Added tool to generate API Tokens,
 - `[IndexCleaner]` Added tool that allows to reset all index related data at once during offline mode,
-- `[SQL Replication]` Better support for complex data types when replicating to PgSQL
 
 {PANEL/}
 
