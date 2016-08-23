@@ -2,16 +2,26 @@
   {
     "Path": "pandora-fms.markdown",
     "Name": "Pandora FMS",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "request-tracking.markdown",
     "Name": "Request Tracking",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "disk-io-perf-monitor.markdown",
     "Name": "Disk IO Performance Monitor",
-    "Mappings": [ ]
+    "Mappings": []
+  },
+  {
+    "Path": "snmp.markdown",
+    "Name": "SNMP Support",
+    "Mappings": []
+  },
+  {
+    "Path": "setup-zabbix.markdown",
+    "Name": "How to setup Zabbix monitoring",
+    "Mappings": []
   }
 ]

@@ -27,7 +27,7 @@ The second zip file called `Tools` is for advanced users and contains the follow
 
 - `Raven.Backup.exe` - A utility for doing backups, [read more](../server/administration/backup-and-restore). 
 - `Raven.Smuggler.exe` - A utility for exporting and importing data between servers, [read more](../server/administration/exporting-and-importing-data).
-- `Raven.Monitor.exe` - A utility for monitoring RavenDB using SNMP, [read more](../server/administration/monitoring/snmp). 
+- `Raven.Monitor.exe` - A utility for monitoring RavenDB I/O disk rates, [read more](../server/administration/monitoring/disk-io-perf-monitor). 
 - `Raven.StorageExporter.exe` - A utility for exporting a database directly from the Esent / Voron data files, [read more](../server/administration/storage-exporter).
 - `Raven.Traffic.exe` - A utility to record and replay requests that are being received by RavenDB, [read more](../server/administration/monitoring/request-tracking). 
 - `Raven.ApiToken.exe` - A utility to generate an ApiToken, not through the studio.

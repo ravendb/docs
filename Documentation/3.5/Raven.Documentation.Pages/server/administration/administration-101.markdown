@@ -49,7 +49,13 @@ Also to protect your data, RavenDB offers [data encryption bundle](../bundles/en
 
 ## Monitoring
 
-RavenDB 3.5 can be integrated with Pandora FMS to provide monitoring support. Click [here](../administration/monitoring/pandora-fms) for details.
+In RavenDB 3.5 we have added a few ways to monitor RavenDB:
+
+- [SNMP support](../administration/monitoring/snmp)
+- [Zabbix](../administration/monitoring/setup-zabbix)
+- [Pandora FMS](../administration/monitoring/pandora-fms)
+- [Disk IO performance monitor](../administration/monitoring/disk-io-perf-monitor)
+- [Request Tracking](../administration/monitoring/request-tracking)
 
 ## Logging
 
