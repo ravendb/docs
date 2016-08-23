@@ -15,3 +15,16 @@ You can configure global behavior for the following bundles:
    
 ![Figure 1. Manage Your Server. Global Configuration.](images/manage_your_server-global-configuration.png)
 
+### Cluster-wide database settings
+
+Cluster-wide database settings feature allow you to define databases behavior for all nodes in the cluster.
+You can read more about all databases configuration [here](../../server/configuration/configuration-options).
+You can change only databases configuration and not server configuration.
+
+{NOTE:Important}
+
+Remember to restart RavenDB server or reload database to apply cluster-aware database settings.
+
+{NOTE/}
+
+![Figure 2. Manage Your Server. Cluster Configuration.](images/manage_your_server-cluster-configuration.png)
