@@ -14,9 +14,15 @@
 		"Name": "Sorting",
 		"Mappings": [ ]
 	},
-	{
-		"Path": "paging.markdown",
-		"Name": "Paging",
-		"Mappings": [ ]
-	}
+  {
+    "Path": "paging.markdown",
+    "Name": "Paging",
+    "Mappings": []
+  },
+  {
+    "Path": "statistics.markdown",
+    "Name": "Statistics",
+    "Mappings": []
+
+  }
 ]
