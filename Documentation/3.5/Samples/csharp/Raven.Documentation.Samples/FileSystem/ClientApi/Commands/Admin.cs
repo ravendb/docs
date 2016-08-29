@@ -14,7 +14,7 @@
 		private interface IFoo
 		{
 			#region create_fs_1
-			Task CreateFileSystemAsync(FileSystemDocument filesystemDocument, string newFileSystemName = null);
+			Task CreateFileSystemAsync(FileSystemDocument filesystemDocument);
 			#endregion
 
 			#region create_or_update_fs_1

@@ -42,10 +42,14 @@
 
 			#region resolve_conflict_1
 			Task ResolveConflictAsync(string filename, ConflictResolutionStrategy strategy);
-			#endregion
+            #endregion
 
-			#region start_1
-			Task<DestinationSyncResult[]> StartAsync(bool forceSyncingAll = false);
+            #region resolve_conflicts_1
+            Task ResolveConflictsAsync(ConflictResolutionStrategy strategy);
+            #endregion
+
+            #region start_1
+            Task<DestinationSyncResult[]> StartAsync(bool forceSyncingAll = false);
 			#endregion
 
 			#region start_2
@@ -146,17 +150,30 @@
 			await store.AsyncFilesCommands.Synchronization
 				.ResolveConflictAsync("/documents/file.bin", ConflictResolutionStrategy.CurrentVersion);
 
-			#endregion
+            #endregion
 
-			#region resolve_conflict_3
+            #region resolve_conflicts_2
 
-			await store.AsyncFilesCommands.Synchronization
-				.ResolveConflictAsync("/documents/file.bin", ConflictResolutionStrategy.RemoteVersion);
-			#endregion
+            await store.AsyncFilesCommands.Synchronization
+                .ResolveConflictsAsync(ConflictResolutionStrategy.CurrentVersion);
 
-			#region start_4
+            #endregion
 
-			DestinationSyncResult[] results = await store.AsyncFilesCommands.Synchronization
+            #region resolve_conflict_3
+
+            await store.AsyncFilesCommands.Synchronization
+                .ResolveConflictAsync("/documents/file.bin", ConflictResolutionStrategy.RemoteVersion);
+            #endregion
+
+            #region resolve_conflicts_3
+
+            await store.AsyncFilesCommands.Synchronization
+                .ResolveConflictsAsync(ConflictResolutionStrategy.RemoteVersion);
+            #endregion
+
+            #region start_4
+
+            DestinationSyncResult[] results = await store.AsyncFilesCommands.Synchronization
 														.StartAsync();
 
 			foreach (var destinationSyncResult in results)
