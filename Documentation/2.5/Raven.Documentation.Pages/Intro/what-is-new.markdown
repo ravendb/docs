@@ -1,4 +1,16 @@
-﻿# What's new in 2.5?
+﻿{PANEL:2.5.25015 - 2016/08/29}
+
+### Server
+
+- `[Server]` Added config values for MinThreadCount: "Raven/MinThreadPoolWorkerThreads" and "Raven/MinThreadPoolCompletionThreads"
+- `[Database]` Fixed performance problem with multiple databases being loaded parallelly
+
+<hr />
+
+{PANEL/}
+
+
+# What's new in 2.5?
 
 ##Features
 
