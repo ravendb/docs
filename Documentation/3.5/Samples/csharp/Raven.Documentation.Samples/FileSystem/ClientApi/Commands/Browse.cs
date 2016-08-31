@@ -1,4 +1,7 @@
-﻿namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
+﻿using System;
+using System.Collections.Generic;
+
+namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
 {
 	using System.IO;
 	using System.Threading.Tasks;
@@ -25,10 +28,14 @@
 
 			#region stream_file_headers_1
 			Task<IAsyncEnumerator<FileHeader>> StreamFileHeadersAsync(Etag fromEtag, int pageSize = int.MaxValue);
-			#endregion
+            #endregion
 
-			#region get_directories_1
-			Task<string[]> GetDirectoriesAsync(string from = null, int start = 0, int pageSize = 1024);
+            #region stream_query_1
+            Task<IAsyncEnumerator<FileHeader>> StreamQueryAsync(string query, string[] sortFields = null, int start = 0, int pageSize = int.MaxValue);
+            #endregion
+
+            #region get_directories_1
+            Task<string[]> GetDirectoriesAsync(string from = null, int start = 0, int pageSize = 1024);
 			#endregion
 		}
 
@@ -88,8 +95,31 @@
 
 			Stream content = null;
 
-			#region get_directories_2
-			await store.AsyncFilesCommands.UploadAsync("text-files/txt/a.txt", content);
+            #region stream_query_2
+
+            var allFilesMatchingCriteria = new List<FileHeader>();
+            using (var reader = await store.AsyncFilesCommands.StreamQueryAsync("", sortFields: new string[] { "-__key" }))
+            {  
+                while (await reader.MoveNextAsync())
+                {
+                    allFilesMatchingCriteria.Add(reader.Current);
+                }
+            }
+            #endregion
+
+            #region stream_query_3
+
+            using (var reader = await store.AsyncFilesCommands.StreamQueryAsync("Number:2", start: 10, pageSize: 20))
+            {
+                while (await reader.MoveNextAsync())
+                {
+                    allFilesMatchingCriteria.Add(reader.Current);
+                }
+            }
+            #endregion
+
+            #region get_directories_2
+            await store.AsyncFilesCommands.UploadAsync("text-files/txt/a.txt", content);
 			await store.AsyncFilesCommands.UploadAsync("text-files/doc/a.doc", content);
 			await store.AsyncFilesCommands.UploadAsync("text-files/doc/drafts/a.doc", content);
 			await store.AsyncFilesCommands.UploadAsync("image-files/a.jpg", content);

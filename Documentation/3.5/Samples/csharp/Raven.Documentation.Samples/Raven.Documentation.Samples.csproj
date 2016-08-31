@@ -326,9 +326,11 @@
     <Compile Include="FileSystem\ClientApi\Session\Querying\Filtering.cs" />
     <Compile Include="FileSystem\ClientApi\Session\Querying\Paging.cs" />
     <Compile Include="FileSystem\ClientApi\Session\Querying\Sorting.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\Querying\Streaming.cs" />
     <Compile Include="FileSystem\ClientApi\Session\RenamingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\SavingChanges.cs" />
     <Compile Include="FileSystem\ClientApi\Session\ChangingMetadata.cs" />
+    <Compile Include="FileSystem\ClientApi\Session\StreamingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\UploadingFiles.cs" />
     <Compile Include="FileSystem\ClientApi\Session\WhatIsFilesSession.cs" />
     <Compile Include="FileSystem\ClientApi\Sharding.cs" />

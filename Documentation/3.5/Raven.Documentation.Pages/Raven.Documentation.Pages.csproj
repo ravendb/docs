@@ -419,6 +419,7 @@
     <None Include="file-system\client-api\commands\files\browse\starts-with.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\stream-file-headers.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\stream-file-headers.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\browse\stream-query.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\delete.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\delete.http.markdown" />
     <None Include="file-system\client-api\commands\files\download.http.markdown" />
@@ -455,6 +456,7 @@
     <None Include="file-system\client-api\session\.docs.json" />
     <None Include="file-system\client-api\session\configuration\.docs.json" />
     <None Include="file-system\client-api\session\querying\.docs.json" />
+    <None Include="file-system\client-api\session\streaming-files.markdown" />
     <None Include="file-system\client-api\sharding.markdown" />
     <None Include="file-system\client-api\commands\storage\cleanup.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\retry-renaming.dotnet.markdown" />
@@ -1175,6 +1177,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="client-api\how-to\create-custom-http-message-handler.markdown" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="file-system\client-api\session\querying\streaming.dotnet.markdown" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
