@@ -12,14 +12,15 @@ This means that you can apply a set of operations on a state machine, and have t
 nodes in the cluster. It is also drastically simpler to understand than Paxos, which is the more known alternative.   
 
 ###What is Rachis?   
-It is a Raft implementation. To be rather more exact, it is a Raft implementation with the following features:   
-*The ability to manage a distributed set of state machine and to reliably commit updates to said state machines.   
-*Dynamic topology (nodes can join and leave the cluster on the fly, including state sync).   
-*Large state machines (snapshots, efficient transfers, non voting members).   
-*ACID local log using Voron Storage Engine.   
-*Support for in memory and persistent state machines.   
-*Support for voting & non voting members.   
-*A lot of small tweaks for best behavior in strange situations (forced step down, leader timeout and many more).   
+It is a Raft implementation. To be rather more exact, it is a Raft implementation with the following features:
+
+* The ability to manage a distributed set of state machine and to reliably commit updates to said state machines.   
+* Dynamic topology (nodes can join and leave the cluster on the fly, including state sync).   
+* Large state machines (snapshots, efficient transfers, non voting members).   
+* ACID local log using Voron Storage Engine.   
+* Support for in memory and persistent state machines.   
+* Support for voting & non voting members.   
+* A lot of small tweaks for best behavior in strange situations (forced step down, leader timeout and many more).
 
 ###Where can I look at it?   
 In the [RavenDB repository](https://github.com/ayende/ravendb). Note that to get it working, you'll have to pull 
