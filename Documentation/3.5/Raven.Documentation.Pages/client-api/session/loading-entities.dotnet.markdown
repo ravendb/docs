@@ -160,6 +160,8 @@ Entities can be streamed from server using one of the following `Stream` methods
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
 | **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **transformer** | String |  name of transformer (default: `null`) |
+| **transformerParameters** | Dictionary<string, RavenJToken> | parameters to pass to the transformer (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -168,6 +170,13 @@ Entities can be streamed from server using one of the following `Stream` methods
 ### Example I
 
 {CODE loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
+
+## Example 2
+Using the following transformer:
+{CODE transformer@ClientApi\Session\LoadingEntities.cs /}
+
+StreamDocs using the SimpleTransformer defined above and one supplied parameter:
+{CODE loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
 
 ### Remarks
 
