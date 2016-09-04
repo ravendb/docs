@@ -739,6 +739,7 @@
     <None Include="studio\.docs.json" />
     <None Include="studio\accessing-studio.markdown" />
     <None Include="studio\management\.docs.json" />
+    <None Include="studio\management\server-permissions.markdown" />
     <None Include="studio\management\cluster.markdown" />
     <None Include="studio\management\administrator-js-console.markdown" />
     <None Include="studio\management\global-configuration.markdown" />
@@ -906,7 +907,6 @@
     <Content Include="studio\management\images\cluster-6.PNG" />
     <Content Include="studio\management\images\manage_your_server-Administrator-JS-Console-1.png" />
     <Content Include="studio\management\images\manage_your_server-admin_logs-configure_connection-1.png" />
-    <Content Include="studio\management\images\manage_your_server-api-keys-1.png" />
     <Content Include="studio\management\images\manage_your_server-backup_database-1.png" />
     <Content Include="studio\management\images\manage_your_server-compact_database-1.png" />
     <Content Include="studio\management\images\manage_your_server-Disk_IO_Viewer-1.PNG" />
@@ -918,14 +918,15 @@
     <Content Include="studio\management\images\manage_your_server-IO_test-reading_writing-1.png" />
     <Content Include="studio\management\images\manage_your_server-IO_test-results-3.png" />
     <Content Include="studio\management\images\manage_your_server-log_entries-2.png" />
+    <Content Include="studio\management\images\manage_your_server-o-auth.PNG" />
     <Content Include="studio\management\images\manage_your_server-restore_database-2.png" />
     <Content Include="studio\management\images\manage_your_server-server-smuggling-1.png" />
     <Content Include="studio\management\images\manage_your_server-studio_config-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-1.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-2.png" />
     <Content Include="studio\management\images\manage_your_server-traffic-watch-3.png" />
-    <Content Include="studio\management\images\manage_your_server-windows_authentication-group-2.png" />
-    <Content Include="studio\management\images\manage_your_server-windows_authentication-user-1.png" />
+    <Content Include="studio\management\images\manage_your_server-windows-auth-group.PNG" />
+    <Content Include="studio\management\images\manage_your_server-windows-auth.PNG" />
     <Content Include="studio\overview\documents\images\conflicts_view_1.png" />
     <Content Include="studio\overview\documents\images\conflicts_view_2.png" />
     <Content Include="studio\overview\documents\images\conflicts_view_3.png" />
@@ -1106,7 +1107,6 @@
     <Content Include="server\bundles\images\versioned_docs.png" />
     <Content Include="server\bundles\images\versioned_docs_2.png" />
     <Content Include="server\bundles\images\versioned_docs_3.png" />
-    <Content Include="server\configuration\images\authentication-windows.png" />
     <Content Include="server\configuration\images\delete.png" />
     <Content Include="server\configuration\images\tick.png" />
     <Content Include="server\configuration\windows-clustering\images\01CreateCluster.jpg" />
