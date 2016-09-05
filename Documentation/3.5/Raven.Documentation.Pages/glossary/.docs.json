@@ -145,6 +145,11 @@
     "Mappings": []
   },
   {
+    "Path": "files-query-statistics.markdown",
+    "Name": "FilesQueryStatistics",
+    "Mappings": []
+  },
+  {
     "Path": "index-change-notification.markdown",
     "Name": "IndexChangeNotification",
     "Mappings": []

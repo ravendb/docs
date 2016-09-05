@@ -455,6 +455,7 @@
     <None Include="file-system\client-api\session\.docs.json" />
     <None Include="file-system\client-api\session\configuration\.docs.json" />
     <None Include="file-system\client-api\session\querying\.docs.json" />
+    <None Include="file-system\client-api\session\querying\statistics.dotnet.markdown" />
     <None Include="file-system\client-api\sharding.markdown" />
     <None Include="file-system\client-api\commands\storage\cleanup.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\retry-renaming.dotnet.markdown" />
@@ -545,6 +546,7 @@
     <None Include="glossary\file-system-backup-request.markdown" />
     <None Include="glossary\file-system-document.markdown" />
     <None Include="glossary\file-system-restore-request.markdown" />
+    <None Include="glossary\files-query-statistics.markdown" />
     <None Include="glossary\index-to-add.markdown" />
     <None Include="glossary\synchronization-destination.markdown" />
     <None Include="glossary\search-results.markdown" />
