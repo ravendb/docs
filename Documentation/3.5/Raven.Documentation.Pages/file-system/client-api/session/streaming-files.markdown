@@ -21,8 +21,8 @@ File Header can be streamed With **StreamFileHeadersAsync** method from Advanced
 
 {CODE streaming_files_2@FileSystem\ClientApi\Session\StreamingFiles.cs /}   
 
-{INFO: Track entities}
-**StreamFileHeadersAsync** Does NOT track the entities in the session, and will not includes changes there when **SaveChangesasync()** is called.
+{INFO: Information}
+Entities loaded using Stream will be transient (not attached to session).
 {INFO/}
 
 ## Related articles

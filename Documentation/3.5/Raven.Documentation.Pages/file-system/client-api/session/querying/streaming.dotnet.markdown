@@ -20,8 +20,8 @@ Query results can be streamed using **StreamQueryAsync** method from Advanced se
 
 {CODE streaming_2@FileSystem\ClientApi\Session\Querying\Streaming.cs /}   
 
-{INFO: Track entities}
-**StreamQueryAsync** Does NOT track the entities in the session, and will not includes changes there when **SaveChangesasync()** is called.
+{INFO: Information}
+Entities loaded using Stream will be transient (not attached to session).
 {INFO/}
 
 ## Related articles

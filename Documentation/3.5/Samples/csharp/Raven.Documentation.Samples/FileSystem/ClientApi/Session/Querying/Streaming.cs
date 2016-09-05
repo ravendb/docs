@@ -24,7 +24,8 @@ namespace Raven.Documentation.Samples.FileSystem.ClientApi.Session.Querying
                 {
                     #region streaming_2
                     var allFilesMatchingCriteria = new List<FileHeader>();
-                    var query = session.Query();
+
+                    var query = session.Query().WhereStartsWith("Name","Fa" );
 
                     using (var reader = await session.Advanced.StreamQueryAsync(query))
                     {
@@ -33,9 +34,8 @@ namespace Raven.Documentation.Samples.FileSystem.ClientApi.Session.Querying
                             allFilesMatchingCriteria.Add(reader.Current);
                         }
                     }
-
                     #endregion
-                    }
+                }
             }
         }
     }
