@@ -1,19 +1,19 @@
 ﻿[
-	{
-		"Path": "basics.markdown",
-		"Name": "Basics",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "filtering.markdown",
-		"Name": "Filtering",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "sorting.markdown",
-		"Name": "Sorting",
-		"Mappings": [ ]
-	},
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "Mappings": []
+  },
+  {
+    "Path": "filtering.markdown",
+    "Name": "Filtering",
+    "Mappings": []
+  },
+  {
+    "Path": "sorting.markdown",
+    "Name": "Sorting",
+    "Mappings": []
+  },
   {
     "Path": "paging.markdown",
     "Name": "Paging",
@@ -24,5 +24,10 @@
     "Name": "Statistics",
     "Mappings": []
 
+  },
+  {
+    "Path": "streaming.markdown",
+    "Name": "Streaming",
+    "Mappings": []
   }
 ]
