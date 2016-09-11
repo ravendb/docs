@@ -23,7 +23,7 @@
 		"Path": "bulk-operation-options.markdown",
 		"Name": "BulkOperationOptions",
 		"Mappings": [ ]
-	},
+	},	
 	{
 		"Path": "bulk-insert-change-notification.markdown",
 		"Name": "BulkInsertChangeNotification",
@@ -37,6 +37,11 @@
 	{
 		"Path": "bulk-insert-options.markdown",
 		"Name": "BulkInsertOptions",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "chunked-bulk-insert-options.markdown",
+		"Name": "ChunkedBulkOperationOptions",
 		"Mappings": [ ]
 	},
 	{

@@ -40,6 +40,11 @@
     "Mappings": []
   },
   {
+		"Path": "chunked-bulk-insert-options.markdown",
+		"Name": "ChunkedBulkOperationOptions",
+		"Mappings": [ ]
+  },
+  {
     "Path": "configuration-change-notification.markdown",
     "Name": "ConfigurationChangeNotification",
     "Mappings": []

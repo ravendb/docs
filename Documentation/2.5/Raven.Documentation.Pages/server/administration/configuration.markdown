@@ -57,6 +57,16 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	If the database is being loaded for the first time, this value indicates how many seconds will task wait for load completion before throwing exception.   
     _Default:_ 5  
 
+* **Raven/MinThreadPoolWorkerThreads**   
+Indicates minimum worker threads amount value for the .net thread pool. Might be usefull when one wants to help the system to deal with violent bursts of work.
+_Default:_ ThreadPool current value
+_Minimum:_ 2
+
+* **Raven/MinThreadPoolCompletionThreads**   
+Indicates minimum completion threads amount value for the .net thread pool. Might be usefull when one wants to help the system to deal with violent bursts of work.
+_Default:_ ThreadPool current value  
+_Minimum:_ 2
+
 ### Index settings
 
 * **Raven/IndexStoragePath**  

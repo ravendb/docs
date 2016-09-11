@@ -24,6 +24,7 @@ There are several limitations to the API:
 * Documents inserted using bulk-insert will not raise notifications. More about `Changes API` can be found [here](../../client-api/changes/what-is-changes-api).
 * Document Updates and Reference Checking must be explicitly turned on (see `BulkInsertOptions`).
 * `AfterCommit` method in `Put Triggers` will be not executed in contrast to `AllowPut`, `AfterPut` and `OnPut`.
+* The default configuration of the bulk insert is not thread safe, ChunkedBulkInsertOptions inside BulkInsertOptions should be set to null in order to support multi threaded usage. Refer to  [BulkInsertOptions](../../glossary/bulk-insert-options)  for more details
 
 ## Example
 
