@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 
 using Raven.Abstractions.Data;
+using Raven.Abstractions.Indexing;
 using Raven.Client;
 using Raven.Client.Document;
 using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
+using Raven.Documentation.Samples.ClientApi.Commands.Documents;
+using Raven.Json.Linq;
+using Xunit;
 
 namespace Raven.Documentation.Samples.ClientApi.Session
 {
@@ -22,8 +26,27 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 		{
 		}
 
-		#region class_with_interger_id
-		public class EntityWithIntegerId
+        #region transformer
+        public class SimpleTransformer : AbstractTransformerCreationTask
+        {
+            public class Result
+            {
+                public string Name { get; set; }
+            }
+
+            public override TransformerDefinition CreateTransformerDefinition(bool prettify = true)
+            {
+                return new TransformerDefinition
+                {
+                    Name = "SimpleTransformer",
+                    TransformResults = "from r in results select new { Name = Parameter(\"Name\") }"
+                };
+            }
+        }
+        #endregion
+
+        #region class_with_interger_id
+        public class EntityWithIntegerId
 		{
 			public int Id { get; set; }
 			/*
@@ -108,24 +131,27 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 			#endregion
 
 			#region loading_entities_5_0
-			IEnumerator<StreamResult<T>> Stream<T>(
-				Etag fromEtag,
-				int start = 0,
-				int pageSize = int.MaxValue,
-				RavenPagingInformation pagingInformation = null,
-				string skipAfter = null);
+            IEnumerator<StreamResult<T>> Stream<T>(
+                Etag fromEtag, 
+                int start = 0, 
+                int pageSize = int.MaxValue, 
+                RavenPagingInformation pagingInformation = null, 
+                string transformer = null, 
+                Dictionary<string, RavenJToken> transformerParameters = null);
+            
+            IEnumerator<StreamResult<T>> Stream<T>(
+                string startsWith, 
+                string matches = null, 
+                int start = 0, 
+                int pageSize = int.MaxValue, 
+                RavenPagingInformation pagingInformation = null, 
+                string skipAfter = null, 
+                string transformer = null, 
+                Dictionary<string, RavenJToken> transformerParameters = null);
+            #endregion
 
-			IEnumerator<StreamResult<T>> Stream<T>(
-				string startsWith,
-				string matches = null,
-				int start = 0,
-				int pageSize = int.MaxValue,
-				RavenPagingInformation pagingInformation = null,
-				string skipAfter = null);
-			#endregion
-
-			#region loading_entities_6_0
-			bool IsLoaded(string id);
+            #region loading_entities_6_0
+            bool IsLoaded(string id);
 			#endregion
 		}
 
@@ -272,7 +298,25 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 					#endregion
 				}
 
-				using (var session = store.OpenSession())
+                using (var session = store.OpenSession())
+                {
+                    #region loading_entities_5_2
+                    var transformer = new SimpleTransformer();
+                    transformer.Execute(store);
+
+                    using (IEnumerator<StreamResult<SimpleTransformer.Result>> enumerator = session.Advanced.Stream<SimpleTransformer.Result>("people/", transformer: transformer.TransformerName, transformerParameters: new Dictionary<string, RavenJToken> { { "Name", "Bill" } }))
+                    {
+                        while (enumerator.MoveNext())
+                        {
+                            StreamResult<SimpleTransformer.Result> result = enumerator.Current;
+                            string name = result.Document.Name;
+                            Assert.Equal("Bill", name); // Should be true
+                        }
+                    }
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
 				{
 					#region loading_entities_6_1
 					bool isLoaded = session.Advanced.IsLoaded("employees/1"); // false

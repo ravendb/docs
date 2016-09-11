@@ -16,10 +16,20 @@
 | **exclude** | int | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
 | **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side |
 | **skipAfter** | String | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **transformer** | String |  name of transformer (default: `null`) |
+| **transformerParameters** | Dictionary<string, RavenJToken> | parameters to pass to the transformer (default: `null`) |
 
-## Example
+## Example 1
 
 {CODE stream_2@ClientApi\Commands\Documents\Stream.cs /}
+
+## Example 2
+Using the following transformer:
+{CODE transformer@ClientApi\Commands\Documents\Stream.cs /}
+
+StreamDocs using the SimpleTransformer defined above and one supplied parameter:
+{CODE stream_3@ClientApi\Commands\Documents\Stream.cs /}
+
 
 ## Related articles
 
