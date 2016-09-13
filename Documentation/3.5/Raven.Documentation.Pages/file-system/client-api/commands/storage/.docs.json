@@ -1,12 +1,17 @@
 ﻿[
-	{
-		"Path": "cleanup.markdown",
-		"Name": "CleanUp",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "retry-renaming.markdown",
-		"Name": "RetryRenaming",
-		"Mappings": [ ]
-	}
+  {
+    "Path": "cleanup.markdown",
+    "Name": "CleanUp",
+    "Mappings": []
+  },
+  {
+    "Path": "retry-renaming.markdown",
+    "Name": "RetryRenaming",
+    "Mappings": []
+  },
+  {
+    "Path": "retry-copying.markdown",
+    "Name": "RetryCopying",
+    "Mappings": []
+  }
 ]

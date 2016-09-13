@@ -33,5 +33,10 @@
     "Path": "/search",
     "Name": "Search",
     "Mappings": []
+  },
+  {
+    "Path": "copy.markdown",
+    "Name": "Copy",
+    "Mappings": []
   }
 ]

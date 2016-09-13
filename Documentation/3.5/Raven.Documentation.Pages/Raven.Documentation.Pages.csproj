@@ -420,6 +420,7 @@
     <None Include="file-system\client-api\commands\files\browse\stream-file-headers.http.markdown" />
     <None Include="file-system\client-api\commands\files\browse\stream-file-headers.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\browse\stream-query.dotnet.markdown" />
+    <None Include="file-system\client-api\commands\files\copy.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\delete.dotnet.markdown" />
     <None Include="file-system\client-api\commands\files\delete.http.markdown" />
     <None Include="file-system\client-api\commands\files\download.http.markdown" />
@@ -442,6 +443,7 @@
     <None Include="file-system\client-api\commands\files\upload.dotnet.markdown" />
     <None Include="file-system\client-api\commands\storage\.docs.json" />
     <None Include="file-system\client-api\commands\storage\cleanup.http.markdown" />
+    <None Include="file-system\client-api\commands\storage\retry-copying.markdown" />
     <None Include="file-system\client-api\commands\storage\retry-renaming.http.markdown" />
     <None Include="file-system\client-api\commands\synchronization\conflicts\get.http.markdown" />
     <None Include="file-system\client-api\commands\synchronization\conflicts\resolve.http.markdown" />

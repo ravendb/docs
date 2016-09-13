@@ -27,10 +27,14 @@ namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
 
 			#region rename_1
 			Task RenameAsync(string currentName, string newName, Etag etag = null);
-			#endregion
+            #endregion
 
-			#region delete_1
-			Task DeleteAsync(string filename, Etag etag = null);
+            #region copy_1
+            Task CopyAsync(string sourceName, string targetName, Etag etag = null);
+            #endregion
+
+            #region delete_1
+            Task DeleteAsync(string filename, Etag etag = null);
 			#endregion
 
 			#region delete_by_query_1
@@ -109,11 +113,29 @@ namespace Raven.Documentation.Samples.FileSystem.ClientApi.Commands
 					"/movies/intro.avi",
 					"/movies/examples/intro.avi"
 				);
-			#endregion
+            #endregion
 
-			#region delete_2
+            #region copy_2
+            await store
+                .AsyncFilesCommands
+                .CopyAsync(
+                    "/movies/intro.avi",
+                    "/movies/copies/intro.avi"
+                );
+            #endregion
 
-			await store.AsyncFilesCommands.DeleteAsync("/movies/intro.avi");
+            #region copy_3
+            await store
+                .AsyncFilesCommands
+                .CopyAsync(
+                    "/movies/intro.avi",
+                    "/movies/copies/newCopyFile.avi"
+                );
+            #endregion
+
+            #region delete_2
+
+            await store.AsyncFilesCommands.DeleteAsync("/movies/intro.avi");
 			#endregion
 
 			#region delete_by_query_2

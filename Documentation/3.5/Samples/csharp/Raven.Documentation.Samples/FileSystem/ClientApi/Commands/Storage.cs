@@ -13,10 +13,14 @@
 
 			#region retry_renaming_1
 			Task RetryRenamingAsync();
-			#endregion
-		}
+            #endregion
 
-		public async Task Foo()
+            #region retry_copying_1
+            Task RetryCopyingAsync();
+            #endregion
+        }
+
+        public async Task Foo()
 		{
 			IFilesStore store = null;
 
@@ -30,7 +34,13 @@
 
 			await store.AsyncFilesCommands.Storage
 					.RetryRenamingAsync();
-			#endregion
-		}
-	}
+            #endregion
+
+            #region retry_copying_2
+
+            await store.AsyncFilesCommands.Storage
+                    .RetryCopyingAsync();
+            #endregion
+        }
+    }
 }
