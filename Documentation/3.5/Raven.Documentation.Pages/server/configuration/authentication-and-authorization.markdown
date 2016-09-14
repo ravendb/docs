@@ -1,24 +1,25 @@
 # Configuration : Authentication & Authorization
 
-RavenDB comes with a built-in authentication functionality and it supports two types of authentication:    
+RavenDB comes with built-in authentication functionality and it supports two types of authentication:    
 
 * [Windows Authentication](../../server/configuration/authentication-and-authorization#windows-authentication)   
 * [OAuth Authentication](../../server/configuration/authentication-and-authorization#oauth-authentication)   
 
-Appropriate authentication type is chosen by examining incoming request headers. By default all actions except read-only are being authenticated. To determine which actions will be authenticated, please refer to [Raven/AnonymousAccess](../../server/configuration/configuration-options#authorization--authentication) configuration setting.
+The appropriate authentication type is chosen by examining incoming request headers. By default all actions except read-only are being authenticated. To determine which actions will be authenticated, please refer to [Raven/AnonymousAccess](../../server/configuration/configuration-options#authorization--authentication) configuration setting.
 
 ## Security system - OSS vs commercial use
 
 The authentication feature is available only in commercial use of RavenDB. You will be able to enable it if you provide a valid commercial license to your database instance. For an open-source software the only available setting is `Raven/AnonymousAccess = Admin`, which means that no authentication is required. Then any user will have all administrative permissions.
 An attempt to setup authentication for a database working under AGPL license will result in an exception thrown by a server.
 
-In order to prevent security issues in commercial systems related to a temporary lack of a valid license (e.g. if it just expired), RavenDB stores info about a last seen valid license. This way despite the fact that the license is temporary invalid, the authentication will be still working.
+In order to prevent security issues in commercial systems related to a temporary lack of a valid license (e.g. if it just expired), RavenDB stores info about a last seen valid license. This way despite the fact that the license is temporary invalid, the authentication will still work.
 
 ## Windows Authentication
 
-When action (request) needs to be authenticated and no other authentication method is detected, then the Windows Authentication is chosen. Worth noting is that all `/admin` endpoint requests are processed using this method.
+When an action (request) needs to be authenticated and no other authentication method is detected, then Windows Authentication is chosen. Worth noting is that all `/admin` endpoint requests are processed using this method.
+By default all windows users and groups have access to all the databases, but this can be easily changed by editing the `Raven/Authorization/WindowsSettings` document in the `system` database. The document consists of list of users and groups that contain the list of accessible databases.
 
-By default all windows users and groups have access to all the databases, but this can be easily changed by editing the `Raven/Authorization/WindowsSettings` document in the `system` database. The document consists of list of users and groups that contain the list of accessible databases. For example, such document could look like this:
+### Example:
 
 {CODE-BLOCK:json}
 {
@@ -39,9 +40,7 @@ By default all windows users and groups have access to all the databases, but th
 }
 {CODE-BLOCK/}
 
-Above example gives a read-only access to `Northwind` to `IIS AppPool\DefaultAppPool`. Similar effect can be achieved using the Studio and editing `system` database settings.
-
-![Figure 1: `Windows Authentication` settings](images/authentication-windows.png)
+The above example gives a read-only access to `Northwind` database to the user: `IIS AppPool\DefaultAppPool`. A similar effect can be achieved [using the studio](../../studio/management/windows-authentication).
 
 ### Allow to login by using an account with a blank password
 
@@ -61,21 +60,22 @@ to get back into the default setting.
 
 ## OAuth Authentication
 
-Second supported authentication type is an [OAuth](http://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
-
-### Example - API keys
-
+The second supported authentication type is an [OAuth](http://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
 To authenticate the user by using API keys we need to create a document with `Raven/ApiKeys/key_name` as a key and `ApiKeyDefinition` as a content on the `system` database.
+
+### Example:
 
 {CODE authentication_3@Server/Configuration/Authentication.cs /}
 
-Now, to perform any actions against specified database (`system` database must be declared explicitly), we need to provide the API key.
+The above example gives a read-only access to `systen` database and `*` (all databases) using the API key: `sample\ThisIsMySecret`. A similar effect can be achieved [using the studio](../../studio/management/api-keys).
+
+Now, to perform any actions against a specified database (`system` database must be declared explicitly), we need to provide the API key.
 
 {CODE authentication_4@Server/Configuration/Authentication.cs /}
 
 ## Debugging authentication issues
 
-To grant the ability to resolve authentication issues, we have introduced `/debug/user-info` endpoint that will return information about current authenticated user and that can be accessed by executing the following code:
+To grant the ability to resolve authentication issues, we have introduced the `/debug/user-info` endpoint which returns information about the currently authenticated user. The endpoint can be accessed by executing the following code:
 
 {CODE authentication_5@Server/Configuration/Authentication.cs /}
 
@@ -126,3 +126,4 @@ The returned results vary on the current authentication type:
 ## Related articles
 
 - [Client API : How to work with authentication?](../../client-api/how-to/work-with-authentication)
+- [Studio : Manage Your Server : Server Permissions](../../studio/management/server-permissions)

@@ -10,6 +10,11 @@
     "Mappings": []
   },
   {
+    "Path": "server-permissions.markdown",
+    "Name": "Server Permissions",
+    "Mappings": []
+  },
+  {
     "Path": "cluster.markdown",
     "Name": "Cluster",
     "Mappings": []
