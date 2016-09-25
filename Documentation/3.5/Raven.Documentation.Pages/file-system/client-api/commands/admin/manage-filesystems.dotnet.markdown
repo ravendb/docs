@@ -30,6 +30,10 @@ Let's create a new file system with Versioning bundle enabled:
 
 {CODE create_fs_2@FileSystem\ClientApi\Commands\Admin.cs /}
 
+Alternatively, you can use CreateFileSystemDocument() which creates a configuration document with default values:
+
+{CODE create_fs_3@FileSystem\ClientApi\Commands\Admin.cs /}
+
 {PANEL/}
 
 

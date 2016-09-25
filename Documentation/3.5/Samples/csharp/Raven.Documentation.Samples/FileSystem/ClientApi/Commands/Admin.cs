@@ -63,19 +63,26 @@
 			await store.AsyncFilesCommands.Admin
 				.CreateFileSystemAsync(new FileSystemDocument
 				{
-					Id = "NorthwindFS",
+					Id = "Raven/FileSystem/NorthwindFS",
 					Settings =
 					{
 						{ Constants.FileSystem.DataDirectory, "~/FileSystems/NorthwindFS" },
-						{ Constants.ActiveBundles, "Versioning" }
-					}
-				});
+                        { Constants.ActiveBundles, "Versioning" }
+                    }
+                });
 
-			#endregion
+            #endregion
 
-			#region ensure_fs_exists_2
+            #region create_fs_3
 
-			await store.AsyncFilesCommands.Admin
+            await store.AsyncFilesCommands.Admin
+                .CreateFileSystemAsync(MultiDatabase.CreateFileSystemDocument("NorthwindFS"));
+
+            #endregion
+
+            #region ensure_fs_exists_2
+
+            await store.AsyncFilesCommands.Admin
 					.EnsureFileSystemExistsAsync("NorthwindFS");
 
 			#endregion
