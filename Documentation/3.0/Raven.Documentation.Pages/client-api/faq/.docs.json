@@ -2,31 +2,36 @@
   {
     "Path": "what-is-a-collection.markdown",
     "Name": "What is a collection?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "theory/ravendb-collections"
-			}
-		]
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "theory/ravendb-collections"
+      }
+    ]
   },
   {
     "Path": "transaction-support.markdown",
     "Name": "Transaction support",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/advanced/transaction-support"
-			}
-		]
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/advanced/transaction-support"
+      }
+    ]
+  },
+  {
+    "Path": "what-is-a-public-api.markdown",
+    "Name": "What is a public API?",
+    "Mappings": []
   },
   {
     "Path": "backward-compatibility.markdown",
     "Name": "Backward compatibility",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/backward-compatibility"
-			}
-		]
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/backward-compatibility"
+      }
+    ]
   }
 ]

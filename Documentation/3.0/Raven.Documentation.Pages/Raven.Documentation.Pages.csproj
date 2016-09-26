@@ -232,6 +232,7 @@
     <None Include="client-api\configuration\conventions\replication.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\request-handling.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\what-are-conventions.dotnet.markdown" />
+    <None Include="client-api\faq\what-is-a-public-api.markdown" />
     <None Include="client-api\data-subscriptions\.docs.json" />
     <None Include="client-api\data-subscriptions\events.java.markdown" />
     <None Include="client-api\data-subscriptions\events.dotnet.markdown" />
