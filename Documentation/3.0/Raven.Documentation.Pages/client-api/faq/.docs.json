@@ -20,11 +20,6 @@
     ]
   },
   {
-    "Path": "what-is-a-public-api.markdown",
-    "Name": "What is a public API?",
-    "Mappings": []
-  },
-  {
     "Path": "backward-compatibility.markdown",
     "Name": "Backward compatibility",
     "Mappings": [

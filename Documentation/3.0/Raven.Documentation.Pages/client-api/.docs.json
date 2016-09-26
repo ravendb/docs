@@ -17,12 +17,17 @@
   {
     "Path": "setting-up-connection-string.markdown",
     "Name": "Setting up connection string",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/connecting-to-a-ravendb-datastore#using-a-connection-string"
-			}
-		]
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/connecting-to-a-ravendb-datastore#using-a-connection-string"
+      }
+    ]
+  },
+  {
+    "Path": "what-is-a-public-api.markdown",
+    "Name": "What is a public API?",
+    "Mappings": []
   },
   {
     "Path": "/commands",
