@@ -8,8 +8,9 @@
 	using Client.Connection.Async;
 	using Client.Document;
 	using Client.FileSystem;
+    using Raven.Client.Extensions;
 
-	public class Admin
+    public class Admin
 	{
 		private interface IFoo
 		{
