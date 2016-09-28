@@ -25,6 +25,11 @@
     ]
   },
   {
+    "Path": "what-is-a-public-api.markdown",
+    "Name": "What is a public API?",
+    "Mappings": []
+  },
+  {
     "Path": "net-client-versions.markdown",
     "Name": ".NET Client versions",
     "Mappings": []
