@@ -16,3 +16,18 @@ Those interfaces/methods/types are related to the most common actions of the cli
 ## Binary-level compatibility
 
 We guarantee binary-level compatibility **within minor versions** (e.g. 3.0.X and 3.0.Y) of our client library. **Between minor versions** there is no binary-level compatibility guarantees, but we guarantee source-level compatibility. What does it mean? It means that when you are upgrading from version 3.0.X to 3.0.Y you do not have to recompile your application - simple DLL swap should work. For 3.0.X to 3.5.Y updates we do not support that, so your application needs to be recompiled.
+
+
+### NuGet dependency
+
+Given no binary compatibility is guaranteed between minors, any NuGet package taking a dependency on Raven packages should be locked down to the patch range. For example:
+
+```
+<dependency id="RavenDB.Client" version="[3.0.0, 3.1.0)" />
+```
+
+As such that NuGet package will need to be re-compile and re-deployed (with a new dependency range) on every minor release of the RavenDB NuGet package.
+
+
+
+      <dependency id="RavenDB.Client" version="[3.0.30000, 4.0.0)" />
