@@ -27,7 +27,3 @@ Given no binary compatibility is guaranteed between minors, any NuGet package ta
 ```
 
 As such that NuGet package will need to be re-compile and re-deployed (with a new dependency range) on every minor release of the RavenDB NuGet package.
-
-
-
-      <dependency id="RavenDB.Client" version="[3.0.30000, 4.0.0)" />
