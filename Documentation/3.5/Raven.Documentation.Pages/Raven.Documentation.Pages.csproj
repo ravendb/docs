@@ -378,6 +378,7 @@
     <None Include="client-api\setting-up-connection-string.dotnet.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="client-api\what-is-a-public-api.markdown" />
     <None Include="file-system\.docs.json" />
     <None Include="file-system\client-api\.docs.json" />
     <None Include="file-system\client-api\changes\.docs.json" />
