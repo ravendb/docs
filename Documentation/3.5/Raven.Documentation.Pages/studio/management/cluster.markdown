@@ -31,6 +31,14 @@ The third option is `remove the cluster entirely and perform cleanup`. This opti
 after a node secedes from the cluster and is left with a cluster of its own. It removes the 
 clustering information from the node, turning it into a normal non-cluster node.   
 
+The fourth option is to choose a leader selection mode. You can either 
+`Require leaders to have up to date replication state` or `Allow leaders without up to 
+date replication state`. When the first option is set, the cluster will avoid choosing a leader 
+whose replication state it too far out of date. See `Clustering and Replication` below.   
+
+Notice that when you choose a mode, the selection box will display the other mode (toggle between them):
+![Figure 6. Studio. Manage Your Server. Emergency Operations.](images/cluster-6b.png)
+
 When the cluster is up and running, you can click on `Manage your server -> Server topology -> Fetch topology` 
 and get a map of your cluster.   
 
@@ -38,8 +46,9 @@ and get a map of your cluster.
 When in a cluster, every new database you will create will have the replication bundle enabled by default. 
 This is done because in a cluster, not all operations pass through the Raft (Rachis) algorithm. Some 
 operations like creating and deleting databases do, but document replication for example is done  through 
-the replication mechanism instead. In the cluster case - the replication topology is a full connected 
-graph where all nodes are connected to all other nodes (clique).   
+the replication mechanism instead. Failover behaivor is shared with standard replication failover behavior.
+In the cluster case - the replication topology is a full connected graph where all nodes are connected to 
+all other nodes (clique).   
 {NOTE/}   
 ![Figure 4. Studio. Manage Your Server. Replication Enabled by Default.](images/cluster-4.png)   
    

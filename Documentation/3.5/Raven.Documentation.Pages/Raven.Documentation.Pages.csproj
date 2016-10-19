@@ -923,6 +923,7 @@
     <Content Include="studio\management\images\cluster-4.PNG" />
     <Content Include="studio\management\images\cluster-5.PNG" />
     <Content Include="studio\management\images\cluster-6.PNG" />
+    <Content Include="studio\management\images\cluster-6b.PNG" />
     <Content Include="studio\management\images\manage_your_server-Administrator-JS-Console-1.png" />
     <Content Include="studio\management\images\manage_your_server-admin_logs-configure_connection-1.png" />
     <Content Include="studio\management\images\manage_your_server-backup_database-1.png" />
