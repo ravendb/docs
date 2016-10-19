@@ -4,15 +4,15 @@
 
 ### Server
 
-- `[Licensing]` HotSpare license support,
-- `[Global Configuration]` Added feature,
-- `[Clustering]` Added feature,
-- `[ETL]` Added feature,
+- `[Licensing]` [HotSpare](..\server\configuration\configuration-hot-spare-license) license support,
+- `[Global Configuration]` Added feature, read [here](..\studio\management\global-configuration) for more information,
+- `[Clustering]` Added feature, read [here](..\server\scaling-out\clustering\clustering-overview) for more information,
+- `[ETL]` Added feature, read [here](..\server\scaling-out\etl) for more information,
 - `[Indexing]` Implemented a custom ThreadPool for better indexing thread management,
 - `[Indexing]` Added support for AlphaNumeric sorting,
 - `[Indexing]` Enhanced index recovery,
 - `[Querying]` Increased Lucene Query parsing performance,
-- `[Monitoring]` Added SNMP Monitoring support,
+- `[Monitoring]` Added [SNMP Monitoring](..\server\administration\monitoring\SNMP\snmp) support,
 - `[Replication]` 'Raven/ConflictDocuments' and 'Raven/ConflictDocumentsTransformer' are now automatically deployed when replication is turned on,
 - `[SQL Replication]` Better support for complex data types when replicating to PgSQL
 - `[Transformer]` Added support for more than two SelectMany
@@ -21,7 +21,7 @@
 - `[Configuration]` Exposed `Raven/TempPath` setting,
 - `[Configuration]` Exposed `Raven/Indexing/MaxNumberOfStoredIndexingBatchInfoElements` setting,
 - `[Configuration]` Alert when a value is out of the expected range,
-- `[Endpoint]` Moved `/debug/indexing-perf-stats` to /debug/indexing-perf-stats-with-timings
+- `[Endpoint]` Moved `/debug/indexing-perf-stats` to `/debug/indexing-perf-stats-with-timings`
 - `[Endpoint]` Changed `/debug/indexing-perf-stats`, gives a new output
 - `[Endpoint]` Added `/admin/detailed-storage-breakdown`,
 - `[Endpoint]` Added `/admin/activate-hotspare`,
@@ -42,15 +42,15 @@
 - `[Bulk Insert]` Can change format to BSON or JSON,
 - `[Bulk Insert]` Can change compression to GZIP or None,
 - Added SLA request time guarantees,
-- Added new FailoverBehavior for handling Clustering scenarios,
+- Added new FailoverBehavior for handling Clustering scenarios, read [here](..\client-api\bundles\how-client-integrates-with-replication-bundle) for more information,
 - Added `PotentialShardsFor` overload to DefaultShardResolutionStrategy for easier configuration,
 - Added `GetUserInfo` and `GetUserPermission` commands,
 - Support for `SkipDuplicateChecking` in IndexQuery,
 - Support for artificial documents on MoreLikeThis,
 - `DeleteByIndex` now supports LINQ statement,
 - `StreamDocs` now supports transformers,
-- `[Save Changes]` Can wait for indexes to finish, read [here](../client-api/session/saving-changes) for more information,
-- `[Save Changes]` Can wait for replication to finish, read [here](../server/scaling-out/replication/write-assurance) for more information
+- `[Save Changes]` Can wait for indexes to finish, read [here](..\client-api\session\saving-changes) for more information,
+- `[Save Changes]` Can wait for replication to finish, read [here](..\server\scaling-out\replication\write-assurance) for more information
 
 <hr />
 
@@ -83,9 +83,9 @@
 - `[Export/Import]` Changed export file extensions (ravendbdump, ravenfsdump),
 - `[Export/Import]` Added the ability to disable versioning bundle during import (DB and FS),
 - `[Backup/Restore]` Better errors when backup operation have failed,
-- `[Replication]` Added the ability to resolve all conflicts at once,
-- `[Replication]` Added the ability to enable replication on an existing database,
-- `[Replication]` Added server-wide replication topology view,
+- `[Replication]` Added the ability to resolve all conflicts at once, read [here](..\studio\overview\settings\replication) for more information,
+- `[Replication]` Added the ability to enable replication on an existing database, read [here](..\studio\overview\settings\replication) for more information,
+- `[Replication]` Added server-wide replication topology view, read [here](..\studio\overview\status\replication-stats) for more information,
 - `[Patching]` Patching now shows progress bar,
 - `[Patching]` Added recent patches to Patching view,
 - `[Patching]` Added ongoing patches to Patching view,
@@ -96,11 +96,11 @@
 - Added a LINQ-based Data Exploration feature,
 - Enhancements in CSV export (custom columns),
 - Tasks in Tasks View now contain more descriptive errors,
-- Added AdministratorJS Console,
+- Added [AdministratorJS Console](..\studio\management\administrator-js-console),
 - Added I/O performance statistics report (requires to run external tool - Raven.Monitor),
-- Added debug view that allows to turn on Query Timing globally,
+- Added [debug view](..\studio\overview\status\debug\overview) that allows to turn on Query Timing globally,
 - Data Subscriptions debug view now contains more detailed information,
-- Added license and support coverage information,
+- Added license and support coverage information, read [here](..\studio\accessing-studio) for more information,
 - Unified L&F,
 - General performance improvements and bug fixes
 
