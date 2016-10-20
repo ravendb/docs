@@ -46,7 +46,7 @@ and get a map of your cluster.
 When in a cluster, every new database you will create will have the replication bundle enabled by default. 
 This is done because in a cluster, not all operations pass through the Raft (Rachis) algorithm. Some 
 operations like creating and deleting databases do, but document replication for example is done  through 
-the replication mechanism instead. Failover behaivor is shared with standard replication failover behavior.
+the replication mechanism instead. Failover behavior is shared with standard replication failover behavior.
 In the cluster case - the replication topology is a full connected graph where all nodes are connected to 
 all other nodes (clique).   
 {NOTE/}   
