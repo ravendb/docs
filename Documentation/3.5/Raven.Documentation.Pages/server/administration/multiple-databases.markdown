@@ -1,6 +1,13 @@
 # Administration : Multiple Databases
 
-RavenDB originally supports multiple databases. If you want to configure the additional databases, you need to create a document, as usual. RavenDB multi database support was explicitly designed to support multi tenancy scenarios, and RavenDB can easily handle hundreds or thousands of databases on the same instance.
+RavenDB originally supports multiple databases. If you want to configure the additional databases, you need to create a document, as usual. RavenDB multi database support was explicitly designed to support multi tenancy scenarios, and RavenDB can handle hundreds or thousands of databases on the same instance.   
+
+{WARNING:Having too many databases might hurt performance}
+The problem with running many databases on the same hardware is that they compete for a limited amount of resources. 
+If your HD can provide 50 MB/sec and 1000 IOPS, and you have 400 databases all trying their best to give you their best performance, you are going to see a rate of 125 KB / sec and 2.5 IOPS per databases.   
+In a typical scenario, not all databases are active at the same time, but in most systems, when you get to hundreds of databases, they will compete.
+When designing your system, please take this into consideration. Sometimes it would be better to split many databases into several servers.
+{WARNING/}
 
 To define a new database you need to create a document with the name "Raven/Databases/[database name]" and the following contents:
 
