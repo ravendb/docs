@@ -6,6 +6,12 @@ RavenDB innately supports periodic exports of the documents and attachments (inc
 
 Periodic exports leverage the concept of incremental exports available in RavenDB. To take advantage of that, we are storing information about last successful ETag of the documents and attachments that were sent to the backup destination.
 
+{NOTE:Note}
+
+Periodic export saves every full backup to its own time-stamped folder and every incremental backup goes into the current full backup folder until the next full backup is created.
+
+{NOTE/}
+
 ## Activating bundle
 
 To activate bundle globally, simply add `PeriodicExport` to the `Raven/ActiveBundles` in  an appropriate configuration file. More about configuration's setup can be found [here](../../server/configuration/configuration-options).
