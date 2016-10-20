@@ -47,6 +47,9 @@ Inside the cluster by default replication bundles in all the servers are enabled
 * Write calls are always referred to the leader (if a write request is made to a none leader server the client will be redirected)
 * In the cluster there will be only one leader. In a case the leader is down, a vote will be made to choose another.  
 
+To change a behavior from the client, one can use:
+{CODE client_integration_5@ClientApi\Bundles\HowClientIntegratesWithReplicationBundle.cs /}
+
 The client can load the cluster toplogy from `/cluster/topology` to learn which servers are in the cluster and can be promoted to leader.
 
 You can turn off the failover behavior by using the document store conventions. In order to do so, use `FailImmediately` option
