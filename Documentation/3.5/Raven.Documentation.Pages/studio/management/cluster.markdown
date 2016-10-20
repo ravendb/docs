@@ -63,6 +63,8 @@ but only cluster-related failover options will be displayed.
 Note that in the [Global configuration view](./global-configuration) an admin can change replication 
 settings for the entire cluster while in the [Replication settings view](../../studio/overview/settings/replication), 
 the settings will change only for a specific database.
+
+Another way to change failover behavior is by using the [client API](../../client-api/bundles/how-client-integrates-with-replication-bundle).
  
 ![Figure 8. Studio. Manage Your Server. Cluster failover options.](images/cluster-7.png)   
 

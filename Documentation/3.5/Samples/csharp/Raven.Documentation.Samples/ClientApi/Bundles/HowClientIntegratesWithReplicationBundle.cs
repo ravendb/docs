@@ -20,11 +20,26 @@ namespace Raven.Documentation.Samples.ClientApi.Bundles
 				#region client_integration_4
 				store.Conventions.FailoverBehavior = FailoverBehavior.ReadFromAllServers 
 					| FailoverBehavior.AllowReadsFromSecondariesAndWritesToSecondaries;
-				#endregion
+                #endregion
+                
+                using (var session = store.OpenSession())
+                {
+                    #region client_integration_5
+                    session.Store(new ReplicationDocument
+                    {
+                        ClientConfiguration = new ReplicationClientConfiguration
+                        {
+                            FailoverBehavior = FailoverBehavior.ReadFromLeaderWriteToLeader
+                        }
 
-				#region client_integration_2
-				store
-					.DatabaseCommands
+                    }, "Raven/Replication/Destinations");
+                    #endregion
+                    session.SaveChanges();
+                }
+
+                #region client_integration_2
+                store
+                    .DatabaseCommands
 					.Put(
 						"Raven/ServerPrefixForHilo",
 						null,
