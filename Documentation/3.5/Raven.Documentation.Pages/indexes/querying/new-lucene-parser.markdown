@@ -22,7 +22,7 @@ We also got rid of exceptions during parsing.
 {NOTE: Note:}
 In RavenDB 3.5, the new parser is used by default. In order to change this, and use the old
 parser, you need to set the `Raven/Indexing/UseLuceneASTParser` 
-[configuration option](../../server/configuration/configuration-options) to false.
+[configuration option](../../server/configuration/configuration-options) to true.
 {NOTE/}
 ## Related articles
 
