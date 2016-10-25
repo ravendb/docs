@@ -75,7 +75,7 @@ Please refer to following [article](../../../client-api/bundles/how-client-integ
 
 {NOTE:Note}
 
-Since version 3.5, enabling the replication bundle is possible for an existing databases.
+Since version 3.5, enabling the replication bundle is possible for an existing databases. In that case, `Raven/ConflictDocuments` and `Raven/ConflictDocumentsTransformer` are automatically deployed.
 
 ![Figure 6. Settings. Replication. Enable Replication Bundle.](images/settings_replication-5.png)
 
