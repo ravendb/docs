@@ -6,6 +6,12 @@ The cascade delete bundle allows a specified set of documents and attachments to
 
 Simply place the Raven.Bundles.CascadeDelete.dll (included in RavenDB distribution package) in the `Plugins` directory.
 
+To activate cascade delete server-wide, simply add `Cascade Delete` to `Raven/ActiveBundles` configuration in the global configuration file, or setup a new database with the cascade delete bundle turned on using API or the Studio
+
+{NOTE:Important}
+Any bundle which is not added to ActiveBundles list, will not be active, even if the relevant assembly is in the `Plugins` directory.
+{NOTE/}
+
 ## Usage
 
 You can specify the documents and attachments to be cascade deleted using the following code:
