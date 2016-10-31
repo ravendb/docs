@@ -20,10 +20,6 @@ If you wish to set up periodic export per database, then add `PeriodicExport` to
 
 Bundle can also be activated during a database creation process.
 
-{NOTE:Important}
-Any bundle which is not added to ActiveBundles list, will not be active, even if it is built-in or the relevant assembly is in the `Plugins` directory.
-{NOTE/}
-
 {CODE periodic_backups_1@Server\Bundles\PeriodicExport.cs /}
 
 ## Configuring file system folder

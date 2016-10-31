@@ -5,9 +5,6 @@ of documents by index calculated values or recursive map/reduce indexes.
 
 In order to enable this bundle, you need to add  the `ScriptedIndexResults` to the `Raven/ActiveBundles` while setting off a database document when a database is created (or via the Studio):
 
-{NOTE:Important}
-Any bundle which is not added to ActiveBundles list, will not be active, even if the relevant assembly is in the `Plugins` directory.
-{NOTE/}
 
 {CODE activate_bundle@Server\Bundles\ScriptedIndexResults.cs /}
 

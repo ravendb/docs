@@ -115,7 +115,7 @@
 
 ### Breaking Changes
 
-- `[Bundles]` In order for a server-side bundle to be active for a tenant, it's name must be included in ActiveBundles list in the relevant DatabaseDocument
+- `[Bundles]` In order for a server-side bundle to be active for a tenant, it's name must be included in ActiveBundles list in the relevant DatabaseDocument. This is relevant to Authorization, Unique Constraints and Cascade Delete bundles.
 
 {PANEL/}
 
