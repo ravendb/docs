@@ -86,6 +86,12 @@ Tags, operations, and roles are hierarchical, yet the way they work is quite unu
 ## Installation
 To install the Auth Bundle on the server side, simply place the Raven.Bundles.Authorization.dll in the Plugins directory.
 
+To activate authorization server-wide, simply add `Authorization` to `Raven/ActiveBundles` configuration in the global configuration file, or setup a new database with the authorization bundle turned on using API or the Studio
+
+{NOTE:Important}
+Any bundle which is not added to ActiveBundles list, will not be active, even if it is built-in or the relevant assembly is in the `Plugins` directory.
+{NOTE/}
+
 To use the Auth Bundle on the client side, you need to reference the following:
 
 * Raven.Client.Authorization.dll

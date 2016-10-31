@@ -112,5 +112,10 @@
 - `[Raven.ApiToken]` Added tool to generate API Tokens,
 - `[IndexCleaner]` Added tool that allows to reset all index related data at once during offline mode,
 
+
+### Breaking Changes
+
+- `[Bundles]` In order for a server-side bundle to be active for a tenant, it's name must be included in ActiveBundles list in the relevant DatabaseDocument
+
 {PANEL/}
 

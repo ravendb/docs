@@ -36,6 +36,12 @@ The delete trigger acts whenever it finds a document being deleted with constrai
 
 Drop the `Raven.Bundles.UniqueContraints` assembly in the Plugins directory.
 
+To activate unique constraints server-wide, simply add `Unique Constraints` to `Raven/ActiveBundles` configuration in the global configuration file, or setup a new database with the unique constraints bundle turned on using API or the Studio
+
+{NOTE:Important}
+Any bundle which is not added to ActiveBundles list, will not be active, even if the relevant assembly is in the `Plugins` directory.
+{NOTE/}
+
 {PANEL/}
 
 ## Remarks
