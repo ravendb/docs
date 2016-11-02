@@ -1,8 +1,11 @@
 # Session : How to enable optimistic concurrency?
 
 By default, optimistic concurrency checks are turned **off**, which means that changes made outside our session object will be overwritten.
-Checks can be turned on by setting `UseOptimisticConcurrency` property from `Advanced` session operations to `true` and may cause `ConcurrencyExceptions` to be thrown.
+Checks can be turned on by setting `UseOptimisticConcurrency` property from `Advanced` session operations to `true` and may cause `ConcurrencyExceptions` to be thrown.   
 
+Another option is to control optimistic concurrency per specific document.   
+To enable it, you can [supply an ETag to Store](../storing-entities). If you don't supply an ETag or if the ETag is null, then optimistic concurrency will be disabled. 
+Note that setting optimistic concurrency per specific document overrides the use of `UseOptimisticConcurrency` property from `Advanced` session operations.
 ## Example I
 
 {CODE optimistic_concurrency_1@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}

@@ -50,7 +50,8 @@
 - `DeleteByIndex` now supports LINQ statement,
 - `StreamDocs` now supports transformers,
 - `[Save Changes]` Can wait for indexes to finish, read [here](..\client-api\session\saving-changes) for more information,
-- `[Save Changes]` Can wait for replication to finish, read [here](..\server\scaling-out\replication\write-assurance) for more information
+- `[Save Changes]` Can wait for replication to finish, read [here](..\server\scaling-out\replication\write-assurance) for more information,
+- Can use optimistic concurrency per specific document
 
 <hr />
 
@@ -102,6 +103,7 @@
 - Data Subscriptions debug view now contains more detailed information,
 - Added license and support coverage information, read [here](..\studio\accessing-studio) for more information,
 - Unified L&F,
+- Display the number of alerts in studio
 - General performance improvements and bug fixes
 
 <hr />
