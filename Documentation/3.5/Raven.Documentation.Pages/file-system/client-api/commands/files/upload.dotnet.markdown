@@ -32,6 +32,9 @@
 | ------------- | ------------- |
 | **Task** | A task that represents the asynchronous upload operation |
 
+{NOTE CryptoStream and any other non-seekable streams are supported. /}
+
+
 ## Example I
 
 {CODE upload_2@FileSystem\ClientApi\Commands\Files.cs /}
