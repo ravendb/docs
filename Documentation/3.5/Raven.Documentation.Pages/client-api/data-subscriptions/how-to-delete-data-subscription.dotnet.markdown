@@ -12,3 +12,5 @@ The data subscription is never deleted unless you explicitly drop it. This is th
 ##Example
 
 {CODE delete_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+{WARNING Deleting a subscription will kill the connection if it's active. /}

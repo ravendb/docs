@@ -6,6 +6,10 @@ Changes to the config file or additions / removal from the Plugins directory wil
 
 If you are running in Embedded mode, or RavenDB is running as an IIS application, touching the web.config file will cause IIS to automatically restart RavenDB.
 
+{NOTE:Note}
+If a configuration value is out of the expected range, an alert will be written in the debug logs. 
+{NOTE/}  
+
 ## Sample configurations file
 
 This is the standard app.config XML file. The `appSettings` section is where the global configuration options go, also for web applications which have a web.config file instead.
