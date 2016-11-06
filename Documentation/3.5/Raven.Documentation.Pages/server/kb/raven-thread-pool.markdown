@@ -30,8 +30,9 @@ Another fun thing that the thread pool can do is to detect and handle slowpokes.
 The thread pool can release all the other indexes, and let the calling code know that this particular task has been left to run on its own. RavenDB will then split the indexing work so the slow index 
 will not slow all of the rest of the indexing.
 
-And having split the thread pools between front row work (the standard .NET thread pool) doing request processing and the background pool (which is our own custom impl), we get a lot more predictability 
-in the environment. We don't have to worry about indexing jobs taking over the threads required to serve requests, or for requests on the server to impact the loading of a new database, etc.
+In order to achieve stability, have  predictable performance, and  support big amounts of database, we have a single instance of RavenThreadPool in the server. 
+While each call to RPT is performed from a .net thread pool thread, the RPT mechanism will try to use it's own threads in order to help accelerete the execution, 
+but if there is no free resources, the calling .net task will execute the whole workload, without waiting to receive any new resources not from the .net thread pool and not from RTP.
 
 And finally, like every other feature in RavenDB nowadays, we have a rich set of debug endpoints that can tell us in details exactly what is going on. That is crucial when we are talking about systems 
 that run for months and years or when we are trying to troubleshoot a problematic server.
