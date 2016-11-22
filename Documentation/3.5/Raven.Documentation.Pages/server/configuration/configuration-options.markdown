@@ -700,7 +700,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 ### Monitor
 
-* **Raven/Monitoring/Snmp/Enabled-false**   
+* **Raven/Monitoring/Snmp/Enabled**   
 	Enable / Disable snmp Monitoring.   
 	_Default:_ false
 
