@@ -159,8 +159,14 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Whether we allow creation of auto indexes on dynamic queries.   
 	_Default:_ true
 
-* **Raven/SkipCreatingStudioIndexes**   	Control whether the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   	_Default:_ false
-* **Raven/LimitIndexesCapabilities**   	Control whether RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).	_Default:_ false
+* **Raven/SkipCreatingStudioIndexes**   
+	Control whether the Studio default indexes will be created or not. These default indexes are only used by the UI, and are not required for RavenDB to operate.   
+	_Default:_ false
+
+* **Raven/LimitIndexesCapabilities**   
+	Control whether RavenDB limits what the indexes can do (to avoid potentially destabilizing operations).
+	_Default:_ false
+
 * **Raven/CompiledIndexCacheDirectory**   
 	Path to a directory used by index compilator.    
 	_Default:_ ~\CompiledIndexCach
@@ -387,7 +393,8 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	Semicolon separated list of the bundles' names, such as: 'Replication;Versioning'. If the value is not specified, none of the bundles are installed.   
 	_Default:_ none
 
-* **Raven/BundlesSearchPattern**   	Allows limiting the loaded plugins by specifying a search pattern, such as Raven.*.dll. Multiple values can be specified, separated by a semicolon (;).
+* **Raven/BundlesSearchPattern**   
+	Allows limiting the loaded plugins by specifying a search pattern, such as Raven.*.dll. Multiple values can be specified, separated by a semicolon (;).
 
 * **Raven/PluginsDirectory**    
     The location of the plugins directory for this database.   
@@ -753,7 +760,9 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/TaskScheduler** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NewIndexInMemoryMaxMB** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/CreateAutoIndexesForAdHocQueriesIfNeeded** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) || **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) || **Raven/CompiledIndexCacheDirectory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/SkipCreatingStudioIndexes** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/LimitIndexesCapabilities** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
+| **Raven/CompiledIndexCacheDirectory** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/NumberOfItemsToExecuteReduceInSingleStep** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DisableDocumentPreFetchingForIndexing** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/DisableDocumentPreFetching** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
