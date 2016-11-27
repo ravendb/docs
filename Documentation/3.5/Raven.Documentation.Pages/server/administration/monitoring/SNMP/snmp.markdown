@@ -15,6 +15,11 @@ but using SNMP might be easier in some cases. As users start running large numbe
 becomes unpractical to deal with each of them individually and using a monitoring system that can watch many servers 
 is preferable.
 
+{NOTE:Note}
+SNMP support is available for enterprise licenses only.
+{NOTE/}
+
+
 ### Enabling SNMP in RavenDB
 
 RavenDB 3.5 is already configured to support SNMP and all you have to do is enable it and restart the server. 
