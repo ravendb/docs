@@ -51,8 +51,8 @@ Also to protect your data, RavenDB offers [data encryption bundle](../bundles/en
 
 In RavenDB 3.5 we have added a few ways to monitor RavenDB:
 
-- [SNMP support](../administration/monitoring/snmp)
-- [Zabbix](../administration/monitoring/setup-zabbix)
+- [SNMP support](../administration/monitoring/snmp/snmp)
+- [Zabbix](../administration/monitoring/snmp/setup-zabbix)
 - [Pandora FMS](../administration/monitoring/pandora-fms)
 - [Disk IO performance monitor](../administration/monitoring/disk-io-perf-monitor)
 - [Request Tracking](../administration/monitoring/request-tracking)
