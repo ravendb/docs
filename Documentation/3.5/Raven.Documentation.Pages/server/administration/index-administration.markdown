@@ -6,7 +6,7 @@ RavenDB indexes can be administrated easily by the user with a code or the Studi
 
 An index usually needs to be reset as it reached its error quota and was disabled. Resetting an index means forcing RavenDB to re-index all documents matched by the index definition, which can be a very lengthy process.
 
-You can reset an index using either [Client API](../../client-api/commands/indexes/how-to/reset-index) or  the**Studio**.
+You can reset an index using either [Client API](../../client-api/commands/indexes/how-to/reset-index) or  the **Studio**.
 
 ![Figure 1: Reset and delete index options in the Studio](images/index-administration-studio.png)
 
@@ -52,7 +52,7 @@ However, an index priority can be forced by the user. There are four available v
 
 What do these priorities actually mean? The idle index will not be indexed by RavenDB during the normal course of action. Only when the database is idle for a given period of time (by default, about 10 minutes with no writes) will we actually get it indexing. In this case indexing will continue as long as there are no other activities that require resources. If such activities appear, indexing will complete its current run and continue waiting for the database to become idle again.
 
-The disabled index will use no system resources and will never take part in the indexing. This option is available so you can manually shut down a single index, for example when the index very expensive, and the system would be more effectife if you shut it down while doing an import.
+The disabled index will use no system resources and will never take part in the indexing. This option is available so you can manually shut down a single index, for example when the index very expensive, and the system would be more effective if you shut it down while doing an import.
 
 Even idle indexes can take some of the system's resources, so there is yet another option available, namely the abandoned index. An index is abandoned if it has not been queried in the last 72 hours. Currently, RavenDB avoids indexing it even during the idle periods, yet it will get indexed eventually, if enough time has passed since the last indexation.
 
