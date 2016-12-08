@@ -9,11 +9,12 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
 		private interface IFoo
 		{
             #region backup_restore_1
-            Operation StartBackup(
-				string backupLocation,
-				DatabaseDocument databaseDocument,
-				bool incremental,
-				string databaseName);
+
+		    Operation StartBackup(
+                string backupLocation, 
+                DatabaseDocument databaseDocument, 
+                bool incremental, 
+                string databaseName);
 			#endregion
 
 			#region backup_restore_2
