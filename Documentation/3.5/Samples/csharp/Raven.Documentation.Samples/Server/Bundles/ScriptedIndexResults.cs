@@ -85,7 +85,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 									};
 
 				IndexScript = @"
-							var company = LoadDocument(this.Company);
+							var company = LoadDocument(key);
 							if(company == null)
 									return;
 							company.Orders = { Count: this.Count, Total: this.Total };
@@ -146,7 +146,7 @@ namespace Raven.Documentation.Samples.Server.Bundles
 									  {
 										  Id = Abstractions.Data.ScriptedIndexResults.IdPrefix + new Orders_ByCompany().IndexName,
 										  IndexScript = @"
-							var company = LoadDocument(this.Company);
+							var company = LoadDocument(key);
 							if(company == null)
 									return;
 							company.Orders = { Count: this.Count, Total: this.Total };
