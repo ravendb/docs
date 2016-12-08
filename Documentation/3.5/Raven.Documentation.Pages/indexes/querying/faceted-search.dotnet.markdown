@@ -44,7 +44,7 @@ Finally you can write the following code and you get back the data below:
 {CODE-TAB:csharp:Query step_3_0@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery step_3_1@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Commands step_3_2@Indexes\Querying\FacetedSearch.cs /}
-{CODE-TAB:csharp:Index step_1@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Facets step_1@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TABS/}
 
 The data below represents the sample faceted data that satisfies above query:
@@ -114,7 +114,7 @@ Alternatively, if you do not have to change your facets dynamically, you can sto
 {CODE-TAB:csharp:Query step_4_1@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery step_4_2@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Commands step_4_3@Indexes\Querying\FacetedSearch.cs /}
-{CODE-TAB:csharp:Index step_1@Indexes\Querying\FacetedSearch.cs /}
+{CODE-TAB:csharp:Facets step_1@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TABS/}
 
 ### Stale results
