@@ -265,7 +265,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 					IList<Order> results = session
 						.Advanced
 						.DocumentQuery<Order, Order_ByOrderLines_ProductName>()		// query 'Order/ByOrderLines/ProductName' index
-						.WhereEquals("Lines,ProductName", "Teatime Chocolate Biscuits")	// filtering predicates
+						.WhereEquals("Lines_ProductName", "Teatime Chocolate Biscuits")	// filtering predicates
 						.ToList();							// materialize query by sending it to server for processing
 					#endregion
 				}
