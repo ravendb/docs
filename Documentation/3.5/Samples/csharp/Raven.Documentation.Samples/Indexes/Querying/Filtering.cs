@@ -277,7 +277,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 						"Order/ByOrderLinesCount",
 						new IndexQuery
 						{
-							Query = "Lines,ProductName:\"Teatime Chocolate Biscuits\""
+							Query = "Lines_ProductName:\"Teatime Chocolate Biscuits\""
 						});
 				#endregion
 			}
