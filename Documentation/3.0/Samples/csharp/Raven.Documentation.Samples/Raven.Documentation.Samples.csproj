@@ -382,7 +382,6 @@
     <Compile Include="Server\Bundles\Versioning.cs" />
     <Compile Include="Server\Configuration\Authentication.cs" />
     <Compile Include="Server\Configuration\MultipleDatabases.cs" />
-    <Compile Include="Server\Installation\Embedded.cs" />
     <Compile Include="Server\Plugins.cs" />
     <Compile Include="Server\ScalingOut\Replication\FromEmbeddedServer.cs" />
     <Compile Include="Server\ScalingOut\Replication\HandlingConflicts.cs" />
