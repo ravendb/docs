@@ -682,7 +682,6 @@
     <None Include="server\installation\.docs.json" />
     <None Include="server\installation\as-a-service.markdown" />
     <None Include="server\installation\deployment-considerations.markdown" />
-    <None Include="server\installation\embedded.markdown" />
     <None Include="server\installation\IIS.markdown" />
     <None Include="server\installation\system-requirements.markdown" />
     <None Include="server\installation\upgrading-to-new-version.markdown" />

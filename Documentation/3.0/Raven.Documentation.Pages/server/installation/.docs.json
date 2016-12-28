@@ -35,16 +35,6 @@
 		"Mappings": [ ]
 	},
 	{
-		"Path": "embedded.markdown",
-		"Name": "Embedded",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/deployment/embedded"
-			}
-		]
-	},
-	{
 		"Path": "using-installer.markdown",
 		"Name": "Using installer",
 		"Mappings": [
