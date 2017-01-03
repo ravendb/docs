@@ -1,21 +1,3 @@
-﻿{PANEL:2.5.25016 - 2016/10/11}
-
-### Server
-
-- `[Configuration]` Added `Raven/SqlReplication/CommandTimeoutInSec` setting,
-- `[SQL Replication]` Added CommandTimeout property to `SqlReplicationConfig` that allows to override command timeout per destination
-
-{PANEL/}
-
-{PANEL:2.5.25015 - 2016/08/29}
-
-### Server
-
-- `[Server]` Added config values for MinThreadCount: "Raven/MinThreadPoolWorkerThreads" and "Raven/MinThreadPoolCompletionThreads"
-- `[Database]` Fixed performance problem with multiple databases being loaded parallelly
-
-{PANEL/}
-
 
 # What's new in 2.5?
 
