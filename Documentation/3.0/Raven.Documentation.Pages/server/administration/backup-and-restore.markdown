@@ -4,8 +4,8 @@
 
 Backups can be performed while a database is online and accepts requests (including writes). There are two ways to perform a backup:
 
-* Using your existing enterprise backup solution. RavenDB supports VSS backups, which is how most backup solutions on Windows work. You can do that by configuring your backup solution to take backups of the Raven's data directory. 
-* Using RavenDB's own backup & restore system. You can ask a RavenDB server to perform a complete backup of its data to a specified directory at any time. During the backup procedure, the database remains online and can respond to read and write requests. However, a database remains at this state only in the beginnig of the backup.
+* Using your existing enterprise backup solution. RavenDB supports VSS backups, which is how most backup solutions on Windows work, for databases running on [Esent storage](../configuration/storage-engines). You can do that by configuring your backup solution to take backups of the Raven's data directory. 
+* RavenDB's own backup & restore system which supports databases running on both types of storages ([Voron and Esent](../configuration/storage-engines)). You can ask a RavenDB server to perform a complete backup of its data to a specified directory at any time. During the backup procedure, the database remains online and can respond to read and write requests. However, a database remains at this state only in the beginnig of the backup.
 
 ### Backward compatibility
 
