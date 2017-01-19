@@ -261,6 +261,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/BulkImport/BatchTimeout**   
 	The time for batch timeout.   
 	_Default:_ 60000 MS
+	Format: TimeSpan "00:00:00"
 
 ### Data settings:
 
@@ -302,7 +303,8 @@ This is the standard app.config XML file. The `appSettings` section is where the
 * **Raven/DatabaseOperationTimeout**   
 	The time for database operation timeout.   
 	_Default:_ 5 Min
-
+	Format: TimeSpan "00:00:00"
+	
 * **Raven/MaxRecentTouchesToRemember**   
 	The maximum number of recent things to remember.   
 	_Default:_ 1024
