@@ -18,7 +18,11 @@
 		[Description("HTTP")]
 		Http,
 
-		[FileExtension("")]
+        [FileExtension(".python")]
+        [Description("Python")]
+        Python,
+
+        [FileExtension("")]
 		[Description("General")]
 		All
 	}

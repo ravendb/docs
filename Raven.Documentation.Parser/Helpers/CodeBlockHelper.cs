@@ -66,6 +66,9 @@ namespace Raven.Documentation.Parser.Helpers
 				case Language.Java:
 					content = ExtractSectionFromJavaFile(section, Path.Combine(samplesDirectory, file));
 					break;
+                case Language.Python:
+			        content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
+                    break;
 				default:
 					throw new NotSupportedException(language.ToString());
 			}
@@ -146,7 +149,10 @@ namespace Raven.Documentation.Parser.Helpers
 				case Language.Java:
 					content = ExtractSectionFromJavaFile(section, Path.Combine(samplesDirectory, file));
 					break;
-				default:
+                case Language.Python:
+                    content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
+                    break;
+                default:
 					throw new NotSupportedException(language.ToString());
 			}
 
@@ -173,7 +179,27 @@ namespace Raven.Documentation.Parser.Helpers
 			return NormalizeContent(sectionContent);
 		}
 
-		private static string ExtractSectionFromCsharpFile(string section, string filePath)
+        private static string ExtractSectionFromPythonFile(string section, string filePath)
+        {
+            if (File.Exists(filePath) == false)
+                throw new FileNotFoundException(string.Format("File '{0}' does not exist.", filePath), filePath);
+
+            var content = File.ReadAllText(filePath);
+            var startText = string.Format("# region {0}", section);
+            var indexOfStart = content.IndexOf(startText, StringComparison.OrdinalIgnoreCase);
+            if (indexOfStart == -1)
+                throw new InvalidOperationException(string.Format("Section '{0}' not found in '{1}'.", section, filePath));
+
+            var start = content.IndexOf(startText, StringComparison.OrdinalIgnoreCase) + startText.Length;
+            var end = content.IndexOf("# endregion", start, StringComparison.OrdinalIgnoreCase);
+            var sectionContent = content.Substring(start, end - start);
+            if (sectionContent.EndsWith("//"))
+                sectionContent = sectionContent.TrimEnd(new[] { '/' });
+
+            return NormalizeContent(sectionContent);
+        }
+
+        private static string ExtractSectionFromCsharpFile(string section, string filePath)
 		{
 			if (File.Exists(filePath) == false)
 				throw new FileNotFoundException(string.Format("File '{0}' does not exist.", filePath), filePath);
@@ -239,7 +265,9 @@ namespace Raven.Documentation.Parser.Helpers
 					return "language-java";
 				case Language.Http:
 					return "language-javascript";
-				default:
+                case Language.Python:
+                    return "language-python";
+                default:
 					throw new NotSupportedException(language.ToString());
 			}
 		}
@@ -260,7 +288,7 @@ namespace Raven.Documentation.Parser.Helpers
 					return "language-none";
 				case CodeBlockLanguage.Xml:
 					return "language-none";
-                    case CodeBlockLanguage.Python:
+                case CodeBlockLanguage.Python:
 			        return "language-python";
 				default:
 					throw new NotSupportedException(language.ToString());
@@ -277,7 +305,9 @@ namespace Raven.Documentation.Parser.Helpers
 					return "Java";
 				case Language.Http:
 					return "HTTP";
-				default:
+                case Language.Python:
+                    return "Python";
+                default:
 					throw new NotSupportedException(language.ToString());
 			}
 		}

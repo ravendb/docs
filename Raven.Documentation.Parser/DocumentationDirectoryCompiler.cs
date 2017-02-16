@@ -29,8 +29,9 @@
 			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
 			Debug.Assert(Directory.Exists(_options.GetPathToCodeDirectory(Language.Csharp, documentationVersion)));
 			Debug.Assert(Directory.Exists(_options.GetPathToCodeDirectory(Language.Java, documentationVersion)));
+            Debug.Assert(Directory.Exists(_options.GetPathToCodeDirectory(Language.Python, documentationVersion)));
 
-			return CompileDocumentationDirectory(_options.GetPathToDocumentationPagesDirectory(documentationVersion), documentationVersion);
+            return CompileDocumentationDirectory(_options.GetPathToDocumentationPagesDirectory(documentationVersion), documentationVersion);
 		}
 
 		public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo)

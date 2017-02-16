@@ -48,6 +48,7 @@
     <None Include="client-api\bundles\.docs.json" />
     <None Include="client-api\bundles\how-client-integrates-with-replication-bundle.java.markdown" />
     <None Include="client-api\bundles\how-client-integrates-with-replication-bundle.dotnet.markdown" />
+    <None Include="client-api\bundles\how-client-integrates-with-replication-bundle.python.markdown" />
     <None Include="client-api\bundles\how-to-work-with-authorization-bundle.markdown" />
     <None Include="client-api\bundles\how-to-work-with-unique-constraints-bundle.markdown" />
     <None Include="client-api\changes\.docs.json" />
@@ -280,6 +281,7 @@
     <None Include="client-api\session\how-to\evict-entity-from-a-session.java.markdown" />
     <None Include="client-api\session\how-to\perform-operations-lazily.java.markdown" />
     <None Include="client-api\session\how-to\defer-operations.java.markdown" />
+    <None Include="client-api\session\opening-a-session.python.markdown" />
     <None Include="client-api\session\querying\how-to-use-highlighting.java.markdown" />
     <None Include="client-api\session\querying\how-to-use-search.java.markdown" />
     <None Include="client-api\session\querying\how-to-work-with-suggestions.java.markdown" />
@@ -303,10 +305,12 @@
     <None Include="client-api\session\deleting-entities.java.markdown" />
     <None Include="client-api\session\storing-entities.java.markdown" />
     <None Include="client-api\session\opening-a-session.java.markdown" />
+    <None Include="client-api\session\storing-entities.python.markdown" />
     <None Include="client-api\session\transaction-support\.docs.json" />
     <None Include="client-api\session\transaction-support\standard-transactions.markdown" />
     <None Include="client-api\session\transaction-support\dtc-transactions.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.java.markdown" />
+    <None Include="client-api\session\what-is-a-session-and-how-does-it-work.python.markdown" />
     <None Include="client-api\setting-up-connection-string.java.markdown" />
     <None Include="client-api\setting-up-default-database.java.markdown" />
     <None Include="client-api\creating-document-store.java.markdown" />
