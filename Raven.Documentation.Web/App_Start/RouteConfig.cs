@@ -45,7 +45,7 @@
 				new
 					{
 						version = "1.0|2.0|2.5|3.0|3.5",
-						language = "csharp|java|http"
+						language = "csharp|java|http|python"
 					},
 				new[] { "Raven.Documentation.Web.Controllers" });
 
@@ -60,8 +60,8 @@
 				new
 				{
 					version = "1.0|2.0|2.5|3.0|3.5",
-					language = "csharp|java|http"
-				},
+					language = "csharp|java|http|python"
+                },
 				new[] { "Raven.Documentation.Web.Controllers" });
 
 			routes.MapRouteLowerCase(
@@ -74,8 +74,8 @@
 				new
 					{
 						version = "1.0|2.0|2.5|3.0|3.5",
-						language = "csharp|java|http"
-					},
+						language = "csharp|java|http|python"
+                },
 				new[] { "Raven.Documentation.Web.Controllers" });
 
 			routes.MapRouteLowerCase(
@@ -91,8 +91,8 @@
 				new
 					{
 						version = "1.0|2.0|2.5|3.0|3.5",
-						language = "csharp|java|http"
-					},
+						language = "csharp|java|http|python"
+                },
 				new[] { "Raven.Documentation.Web.Controllers" });
 		}
 	}
