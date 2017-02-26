@@ -267,6 +267,7 @@
     <None Include="client-api\listeners\what-are-listeners.java.markdown" />
     <None Include="client-api\session\configuration\how-to-enable-optimistic-concurrency.java.markdown" />
     <None Include="client-api\session\configuration\how-to-change-maximum-number-of-requests-per-session.java.markdown" />
+    <None Include="client-api\session\deleting-entities.python.markdown" />
     <None Include="client-api\session\how-to\clear-a-session.java.markdown" />
     <None Include="client-api\session\how-to\check-if-entity-has-changed.java.markdown" />
     <None Include="client-api\session\how-to\check-if-there-are-any-changes-on-a-session.java.markdown" />
@@ -281,6 +282,7 @@
     <None Include="client-api\session\how-to\evict-entity-from-a-session.java.markdown" />
     <None Include="client-api\session\how-to\perform-operations-lazily.java.markdown" />
     <None Include="client-api\session\how-to\defer-operations.java.markdown" />
+    <None Include="client-api\session\loading-entities.python.markdown" />
     <None Include="client-api\session\opening-a-session.python.markdown" />
     <None Include="client-api\session\querying\how-to-use-highlighting.java.markdown" />
     <None Include="client-api\session\querying\how-to-use-search.java.markdown" />
@@ -303,6 +305,7 @@
     <None Include="client-api\session\saving-changes.java.markdown" />
     <None Include="client-api\session\loading-entities.java.markdown" />
     <None Include="client-api\session\deleting-entities.java.markdown" />
+    <None Include="client-api\session\saving-changes.python.markdown" />
     <None Include="client-api\session\storing-entities.java.markdown" />
     <None Include="client-api\session\opening-a-session.java.markdown" />
     <None Include="client-api\session\storing-entities.python.markdown" />
