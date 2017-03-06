@@ -24,6 +24,10 @@ Query results can be streamed using `Stream` method from `Advanced` session oper
 
 {CODE stream_3@ClientApi\Session\Querying\HowToStream.cs /}
 
+## Remarks
+
+Streaming results only works for queries that were made against a (predefined) static index.
+
 ## Related articles
 
 - [Commands : Documents : Stream](../../commands/documents/stream)

@@ -4,6 +4,7 @@ using System.Linq;
 using Raven.Abstractions.Data;
 using Raven.Client;
 using Raven.Client.Document;
+using Raven.Client.Indexes;
 using Raven.Documentation.CodeSamples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
@@ -35,7 +36,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 				{
 					#region stream_2
 					IQueryable<Employee> query = session
-						.Query<Employee>()
+						.Query<Employee, Employees_ByFirstName>()
 						.Where(x => x.FirstName == "Robert");
 
 					IEnumerator<StreamResult<Employee>> results = session.Advanced.Stream(query);
@@ -52,7 +53,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 					#region stream_3
 					IDocumentQuery<Employee> query = session
 						.Advanced
-						.DocumentQuery<Employee>()
+						.DocumentQuery<Employee, Employees_ByFirstName>()
 						.WhereEquals(x => x.FirstName, "Robert");
 
 					QueryHeaderInformation queryHeaderInformation;
@@ -67,4 +68,16 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 			}
 		}
 	}
+
+    public class Employees_ByFirstName : AbstractIndexCreationTask<Employee>
+    {
+        public Employees_ByFirstName()
+        {
+            Map = employees => from employee in employees
+                               select new
+                               {
+                                   employee.FirstName
+                               };
+        }
+    }
 }
