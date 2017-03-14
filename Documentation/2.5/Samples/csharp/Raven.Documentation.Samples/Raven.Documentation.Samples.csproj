@@ -62,46 +62,47 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Abstractions, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.25001\lib\net45\Raven.Abstractions.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.25020\lib\net45\Raven.Abstractions.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Bundles.IndexReplication, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Bundles.IndexReplication.2.5.25001\lib\net45\Raven.Bundles.IndexReplication.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Bundles.IndexReplication.2.5.25020\lib\net45\Raven.Bundles.IndexReplication.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Authorization, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.2.5.25001\lib\net45\Raven.Client.Authorization.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.Authorization.2.5.25020\lib\net45\Raven.Client.Authorization.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Embedded, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Embedded.2.5.25001\lib\net45\Raven.Client.Embedded.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Embedded.2.5.25020\lib\net45\Raven.Client.Embedded.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.Lightweight, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.2.5.25001\lib\net45\Raven.Client.Lightweight.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.2.5.25020\lib\net45\Raven.Client.Lightweight.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.MvcIntegration, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.MvcIntegration.2.5.25001\lib\net45\Raven.Client.MvcIntegration.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.MvcIntegration.2.5.25020\lib\net45\Raven.Client.MvcIntegration.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Client.UniqueConstraints, Version=2.5.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.2.5.25001\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Client.UniqueConstraints.2.5.25020\lib\net45\Raven.Client.UniqueConstraints.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Database, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.25001\lib\net45\Raven.Database.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Database.2.5.25020\lib\net45\Raven.Database.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Raven.Server, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.25001\lib\net45\Raven.Server.exe</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.25020\lib\net45\Raven.Server.exe</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Raven.Smuggler">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Server.2.5.25001\tools\Raven.Smuggler.exe</HintPath>
+    <Reference Include="Raven.Smuggler, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Server.2.5.25020\tools\Raven.Smuggler.exe</HintPath>
     </Reference>
     <Reference Include="Raven.Tests.Helpers, Version=2.5.0.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.25001\lib\net45\Raven.Tests.Helpers.dll</HintPath>
+      <HintPath>..\..\..\..\..\packages\RavenDB.Tests.Helpers.2.5.25020\lib\net45\Raven.Tests.Helpers.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
