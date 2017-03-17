@@ -92,7 +92,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
 						{
 							new PatchRequest
 								{
-									Type = PatchCommandType.Add, 
+									Type = PatchCommandType.Set, 
 									Name = "Age", 
 									Value = 30
 								}
