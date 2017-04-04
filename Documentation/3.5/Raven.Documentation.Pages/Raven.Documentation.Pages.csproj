@@ -217,6 +217,7 @@
     <None Include="client-api\commands\what-are-commands.dotnet.markdown" />
     <None Include="client-api\concurrency\.docs.json" />
     <None Include="client-api\concurrency\revisions-and-concurrency-with-etags.markdown" />
+    <None Include="client-api\concurrency\using-optimistic-concurrency-in-real-world-scenarios.markdown" />
     <None Include="client-api\configuration\.docs.json" />
     <None Include="client-api\configuration\conventions\caching.dotnet.markdown" />
     <None Include="client-api\configuration\conventions\caching.java.markdown" />
@@ -251,6 +252,7 @@
     <None Include="client-api\data-subscriptions\how-to-release-data-subscription.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\what-are-data-subscriptions.java.markdown" />
     <None Include="client-api\data-subscriptions\what-are-data-subscriptions.dotnet.markdown" />
+    <None Include="client-api\document-identifiers\handling-case-sensitive-document-ids.markdown" />
     <None Include="client-api\net-client-versions.dotnet.markdown" />
     <None Include="client-api\faq\backward-compatibility.markdown" />
     <None Include="client-api\faq\transaction-support.markdown" />
@@ -846,6 +848,7 @@
     <None Include="users-issues\azure-router-timeout.markdown" />
     <None Include="users-issues\recovering-from-esent-errors.markdown" />
     <None Include="users-issues\tcp-offloading.markdown" />
+    <None Include="users-issues\understanding-eventual-consistency.markdown" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="file-system\studio\settings\images\" />

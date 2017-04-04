@@ -10,7 +10,7 @@
 		]
   },
   {
-    "Path": "using-optimistic-concurrency-in-real-world-scenarios.markdown.markdown",
+    "Path": "using-optimistic-concurrency-in-real-world-scenarios.markdown",
     "Name": "Using optimistic concurrency in real world scenarios",
     "Mappings": []
   }

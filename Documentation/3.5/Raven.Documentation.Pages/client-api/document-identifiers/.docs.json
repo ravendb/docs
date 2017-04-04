@@ -18,5 +18,10 @@
     "Path": "beware-of.markdown",
     "Name": "Beware of ...",
     "Mappings": []
+  },
+  {
+    "Path": "handling-case-sensitive-document-ids.markdown",
+    "Name": "Handling case sensitive document IDs",
+    "Mappings": []
   }
 ]
