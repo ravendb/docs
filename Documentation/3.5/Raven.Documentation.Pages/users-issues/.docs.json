@@ -9,9 +9,14 @@
 		"Name": "TCP Offloading",
 		"Mappings": [ ]
 	},
-	{
-		"Path": "recovering-from-esent-errors.markdown",
-		"Name": "Recovering from Esent errors",
+  {
+    "Path": "recovering-from-esent-errors.markdown",
+    "Name": "Recovering from Esent errors",
+    "Mappings": []
+  },
+  {
+		"Path": "understanding-eventual-consistency.markdown",
+		"Name": "Understanding eventual consistency",
 		"Mappings": [ ]
 	}
 ]

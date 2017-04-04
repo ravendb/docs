@@ -230,6 +230,7 @@
     <Compile Include="ClientApi\Commands\WhatAreCommands.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientApi\Concurrency\UsingOptimisticConcurrencyInRealWorldScenarios.cs" />
     <Compile Include="ClientApi\Configuration\Conventions\Caching.cs" />
     <Compile Include="ClientApi\Configuration\Conventions\IdentifierGeneration\Global.cs" />
     <Compile Include="ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs" />
@@ -241,6 +242,7 @@
     <Compile Include="ClientApi\CreatingDocumentStore.cs" />
     <Compile Include="ClientApi\DataSubscriptions\DataSubscriptions.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\BewareOf.cs" />
+    <Compile Include="ClientApi\DocumentIdentifiers\HandlingCaseSensitiveDocumentIds.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\HiLoAlgorithm.cs" />
     <Compile Include="ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs" />
     <Compile Include="ClientApi\HowTo\CreateCustomHttpMessageHandler.cs" />
@@ -403,6 +405,7 @@
     <Compile Include="Transformers\Recurse.cs" />
     <Compile Include="Transformers\Subcollections.cs" />
     <Compile Include="Transformers\WhatAreTransformers.cs" />
+    <Compile Include="UsersIssues\UnderstandingEventualConsistency.cs" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
