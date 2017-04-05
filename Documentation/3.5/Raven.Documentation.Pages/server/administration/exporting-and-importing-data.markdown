@@ -263,7 +263,7 @@ Since version 3.0.3836-Unstable, the change and filter scripts are also allowed 
 
 {PANEL:**SmugglerDatabaseApi**}
 
-Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerDatabaseApi` class (in order to use this class you need to reference the `Raven.Smuggler.exe`).
+Alternatively, if you prefer to do export/import from code rather than from the console utility, you can use the `SmugglerDatabaseApi` class (in order to use this class you need to reference the `Raven.Database.dll`).
 
 ### Exporting
 
