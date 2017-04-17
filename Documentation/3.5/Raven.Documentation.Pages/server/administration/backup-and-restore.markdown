@@ -5,7 +5,7 @@
 Backups can be performed while a database is online and accepts requests (including writes). There are two ways to perform a backup:
 
 * Using your existing enterprise backup solution. RavenDB supports VSS backups, which is how most backup solutions on Windows work, for databases running on [Esent storage](../configuration/storage-engines). You can do that by configuring your backup solution to take backups of the Raven's data directory. 
-* RavenDB's own backup & restore system which supports databases running on both types of storages ([Voron and Esent](../configuration/storage-engines)). You can ask a RavenDB server to perform a complete backup of its data to a specified directory at any time. During the backup procedure, the database remains online and can respond to read and write requests. However, a database remains at this state only in the beginnig of the backup.
+* RavenDB's own backup & restore system which supports databases running on both types of storages ([Voron and Esent](../configuration/storage-engines)). You can ask a RavenDB server to perform a complete backup of its data to a specified directory at any time. During the backup procedure, the database remains online and can respond to read and write requests. However, a database remains at this state only in the beginning of the backup.
 
 ### Backward compatibility
 
@@ -41,7 +41,7 @@ The backup utility will output the progress to the console window, pinging the s
 
 Parameters are as follows:
 
-* `url` - The URL to the database that will be backuped. Server root URL (e.g. http://localhost:8080/) will point to `system` database; to point to a **specific database**, please use `/databases/<database_name>` endpoint (e.g. to backup `ExampleDB` use http://localhost:8080/databases/ExampleDB).     
+* `url` - The URL to the database that will be backed up. Server root URL (e.g. http://localhost:8080/) will point to `system` database; to point to a **specific database**, please use `/databases/<database_name>` endpoint (e.g. to backup `ExampleDB` use http://localhost:8080/databases/ExampleDB).     
 * `dest` - Backup destination. Has to be writable.
 * _(Optional)_ `database` - A database to operate on. If not specified, the operations will be performed on a default database.
 * _(Optional)_ `nowait` - By default the utility will ping the server and wait until backup is done, specifying this flag will make the utility return immediately after the backup process has started.
@@ -67,7 +67,7 @@ Alternatively, you can use Client API to start a backup. API reference can be fo
 
 The backup operation is asynchronous. The backup process will start, and the request will complete before the backup process is completed.
 
-You can check the status of the backup by querying the document with the key: "Raven/Backup/Status". The backup is completed when the IsRunning field in the document is set to false. The backup's current status can be tracked by querying the backup status document, which includes any errors that are occuring during the backup process.
+You can check the status of the backup by querying the document with the key: "Raven/Backup/Status". The backup is completed when the IsRunning field in the document is set to false. The backup's current status can be tracked by querying the backup status document, which includes any errors that are occurring during the backup process.
 
 {PANEL/}
 
