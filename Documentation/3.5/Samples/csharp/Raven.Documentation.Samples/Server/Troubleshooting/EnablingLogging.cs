@@ -32,7 +32,8 @@
 			</targets>
 			<rules>
 				<!-- supported levels: Off, Fatal, Error, Warn, Info, Debug, Trace -->
-   				<logger name="Raven.*" writeTo="AsyncLog" minlevel="Warn" />
+   				<logger name="Raven.*" writeTo="AsyncLog" minlevel="Debug" />
+   				<logger name="Rachis.*" writeTo="AsyncLog" minlevel="Debug" />
 			</rules>
 		</nlog>
 		#endregion
