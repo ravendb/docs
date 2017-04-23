@@ -276,7 +276,7 @@ namespace Raven.Documentation.Samples.Indexes
                         .Advanced
                         .DocumentQuery<Employees_Query.Result, Employees_Query>()
                         .Search(x => x.Query, "John Doe")
-                        .OfType<Employee>()
+                        .SelectFields<Employee>()
                         .ToList();
                     #endregion
                 }
