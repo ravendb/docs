@@ -555,10 +555,6 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 {WARNING If your database instance does not have a valid license, then the `Admin` is the only available option to set. In a commercial system it should not be used. It is used only for testing and development purposes, since it grants administrative rights to **ANY** user.  /}
 
-* **Raven/AllowLocalAccessWithoutAuthorization**   
-	If set local request don't require authentication.   
-	_Default:_ Get
-
 * **Raven/OAuthTokenServer**   
 	The url clients should use for authenticating when using OAuth mode.  
 	_Default:_ http://RavenDB-Server-Url/OAuth/AccessToken - the internal OAuth server.
@@ -845,7 +841,6 @@ Many of the configuration options described in the section above can be used bot
 | **Raven/TurnOffDiscoveryClient** | ![No](images\delete.png) | ![Yes](images\tick.png) |
 | &nbsp; |||
 | **Raven/AnonymousAccess** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
-| **Raven/AllowLocalAccessWithoutAuthorization** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Authorization/Windows/RequiredGroups** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/Authorization/Windows/RequiredUsers** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
 | **Raven/OAuthTokenServer** | ![Yes](images\tick.png) | ![Yes](images\tick.png) |
