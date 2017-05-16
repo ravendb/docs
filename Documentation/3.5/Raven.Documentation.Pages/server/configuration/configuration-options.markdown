@@ -123,7 +123,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 	_Maximum:_ 768
 
 * **Raven/ResetIndexOnUncleanShutdown**   
-	When the database is shut down rudely, determine whatever to reset the index or to check it. Note that checking the index may take some time on large databases.   
+	When the database is shut down rudely, determine whether to reset the index or to check it. Note that checking the index may take some time on large databases.   
 	_Default:_ false
 
 * **Raven/MaxIndexingRunLatency**   
@@ -325,7 +325,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ /  
 
 * **Raven/HttpCompression**   
-    Whatever http compression is enabled.   
+    Whether http compression is enabled.   
     _Default:_ true  
 
 * **Raven/UseSsl**   
@@ -447,7 +447,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
     _Default:_ [database_data_dir]/Logs  
 
 * **Raven/Esent/CircularLog**   
-    Whatever circular logs will be used, it is true by default. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
+    Whether circular logs will be used, it is true by default. If you want to use incremental backups, you need to turn this off, but logs will only be truncated on backup.  
     _Default:_ true  
 
 ### Voron settings
