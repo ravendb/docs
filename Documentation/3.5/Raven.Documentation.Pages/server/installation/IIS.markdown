@@ -93,7 +93,7 @@ You can resolve this problem by executing the following on the command line:
 
 You can also see all existing registrations with the following command:
 
-    ntsh http show urlacl
+    netsh http show urlacl
 
 ## IISReset
 
