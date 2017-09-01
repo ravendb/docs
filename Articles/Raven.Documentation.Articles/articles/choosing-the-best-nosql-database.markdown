@@ -1,6 +1,7 @@
 # Choosing the Best NoSQL Document Database
 
 ![choice](images/beach_crossroads.jpg)
+<br/>
 
 As the pace of technology continues to accelerate, your next database may determine whether your business thrives in the new generation of commerce, or fades towards perilous oblivion. Today’s database must be able to perform fast, even with big data. It must be flexible, and able to scale as the amount of information you process increases exponentially. It must have high-availability, so all of your clients and customers will have access to you at any time, even in the presence of failure.  
 
