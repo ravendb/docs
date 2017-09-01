@@ -13,5 +13,10 @@
         "Path": "ravendb-python-client-the-transition-to-a-dynamic-language.markdown",
         "Name": "RavenDB Python client - The transition to a dynamic language",
         "Mappings": [ ]
+    },
+    {
+        "Path": "choosing-the-best-nosql-database.markdown",
+        "Name": "Choosing the Best NoSQL Document Database",
+        "Mappings": [ ]
     }
 ]
