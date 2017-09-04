@@ -145,4 +145,4 @@ Only a database that is able to report and update the most accurate data is suit
 >
 > The Raven (Edgar Allen Poe)
 
-RavenDB is among the few NoSQL databases that is both ACID and transactional. Built for speed, it pushes your server to the limits. Made for scale, RavenDB will accommodate the expansion of your data, and the success of your business. **[Take a free copy](https://ravendb.net/downloads#server/dev) and see for yourself!**
+<p style="font-size: larger">RavenDB is among the few NoSQL databases that is both ACID and transactional. Built for speed, it pushes your server to the limits. Made for scale, RavenDB will accommodate the expansion of your data, and the success of your business. <a href="https://ravendb.net/downloads#server/dev">Take a free copy</a> and see for yourself!</p>
