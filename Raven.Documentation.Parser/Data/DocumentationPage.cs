@@ -36,6 +36,8 @@
 
 		public List<DocumentationMapping> Mappings { get; set; }
 
+        public Dictionary<string, string> Metadata { get; set; }
+
 		public string GetUniqueKey()
 		{
 			var str = string.Concat(this.Version, this.Language.ToString().ToLowerInvariant(), this.Key);

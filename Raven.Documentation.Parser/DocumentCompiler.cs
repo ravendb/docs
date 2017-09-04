@@ -30,7 +30,8 @@
             HashSet<DocumentationImage> images,
             string lastCommitSha,
             string relativePath,
-            List<DocumentationMapping> mappings)
+            List<DocumentationMapping> mappings,
+            Dictionary<string, string> metadata = null)
         {
             return new DocumentationPage
             {
@@ -44,7 +45,8 @@
                 Images = images,
                 LastCommitSha = lastCommitSha,
                 RelativePath = relativePath,
-                Mappings = mappings
+                Mappings = mappings,
+                Metadata = metadata
             };
         }
     }
@@ -64,7 +66,7 @@
 			_repoAnalyzer = repoAnalyzer;
 		}
 
-	    protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent, string textContent, Language language, Category category, HashSet<DocumentationImage> images, string lastCommitSha, string relativePath, List<DocumentationMapping> mappings);
+	    protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent, string textContent, Language language, Category category, HashSet<DocumentationImage> images, string lastCommitSha, string relativePath, List<DocumentationMapping> mappings, Dictionary<string, string> metadata = null);
 
 		public TPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
 		{
@@ -96,7 +98,7 @@
 
 				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-				return CreatePage(key, title, documentationVersion, content, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList());
+				return CreatePage(key, title, documentationVersion, content, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList(), page.Metadata);
 			}
 			catch (Exception e)
 			{

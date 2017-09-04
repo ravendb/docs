@@ -1,6 +1,7 @@
-# Choosing the Best NoSQL Document Database
+# RavenDB or Elastic: The best database for you? <br/><small>Choosing the best NoSQL database</small>
 
-![choice](images/beach_crossroads.jpg)
+![RavenDB or Elastic: The best database for you?](images/beach_crossroads.jpg)
+
 <br/>
 
 As the pace of technology continues to accelerate, your next database may determine whether your business thrives in the new generation of commerce, or fades towards perilous oblivion. Today’s database must be able to perform fast, even with big data. It must be flexible, and able to scale as the amount of information you process increases exponentially. It must have high-availability, so all of your clients and customers will have access to you at any time, even in the presence of failure.  
@@ -140,8 +141,8 @@ Say you move from New York to California, and you inform the population registry
 
 Only a database that is able to report and update the most accurate data is suited to be a “source of truth” database. RavenDB is transactional and structure less. Its flexibility enables you to scale up seamlessly, while its ACIDity ensures that the current state of data is accurate. Elastic is structured, which makes it strong for its primary purpose, to search for information. But it’s strength is also its weakness, that it is better suited as a ‘secondary’ destination for data.
 
-> Dreaming dreams no mortal ever dared to dream before.
+> *Dreaming dreams no mortal ever dared to dream before.*
 >
 > The Raven (Edgar Allen Poe)
 
-RavenDB is among the few NoSQL databases that is both ACID and transactional. Built for speed, it pushes your server to the limits. Made for scale, RavenDB will accommodate the expansion of your data, and the success of your business. [Take a free copy](https://ravendb.net/downloads#server/dev) and see for yourself!
+RavenDB is among the few NoSQL databases that is both ACID and transactional. Built for speed, it pushes your server to the limits. Made for scale, RavenDB will accommodate the expansion of your data, and the success of your business. **[Take a free copy](https://ravendb.net/downloads#server/dev) and see for yourself!**

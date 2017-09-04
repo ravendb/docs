@@ -26,7 +26,8 @@ namespace Raven.Documentation.Parser
             HashSet<DocumentationImage> images,
             string lastCommitSha,
             string relativePath,
-            List<DocumentationMapping> mappings)
+            List<DocumentationMapping> mappings,
+            Dictionary<string, string> metadata = null)
         {
             return new ArticlePage
             {
@@ -40,7 +41,8 @@ namespace Raven.Documentation.Parser
                 Images = images,
                 LastCommitSha = lastCommitSha,
                 RelativePath = relativePath,
-                Mappings = mappings
+                Mappings = mappings,
+                Metadata = metadata
             };
         }
 
