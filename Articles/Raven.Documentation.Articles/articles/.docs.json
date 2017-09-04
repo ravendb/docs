@@ -17,6 +17,10 @@
     {
         "Path": "choosing-the-best-nosql-database.markdown",
         "Name": "Choosing the Best NoSQL Document Database",
-        "Mappings": [ ]
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "RavenDB or Elastic: The best database for you?",
+            "metaDescription": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?"
+        }
     }
 ]
