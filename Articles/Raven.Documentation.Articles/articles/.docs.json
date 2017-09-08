@@ -22,5 +22,14 @@
             "title": "RavenDB or Elastic: The best database for you?",
             "metaDescription": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?"
         }
+    },
+    {
+        "Path": "holding-off-harvey-with-high-availability.markdown",
+        "Name": "Holding Off Harvey With High Availability",
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "Holding Off Harvey With High Availability",
+            "metaDescription": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?"
+        }
     }
 ]
