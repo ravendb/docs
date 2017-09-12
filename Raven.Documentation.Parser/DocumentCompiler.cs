@@ -79,9 +79,11 @@
 				_parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, tag);
 
 				var content = File.ReadAllText(file.FullName);
+			    content = TransformRawHtmlBlocks(content, out var rawHtmlPlaceholders);
 				content = TransformLegacyBlocks(file, content);
 				content = _parser.Transform(content);
 				content = TransformBlocks(content, documentationVersion);
+			    content = FillRawHtmlPlaceholders(content, rawHtmlPlaceholders);
 
 				var htmlDocument = HtmlHelper.ParseHtml(content);
 
@@ -197,5 +199,17 @@
 		{
 			return LegacyBlockHelper.GenerateLegacyBlocks(Path.GetDirectoryName(file.FullName), content);
 		}
+
+	    private string TransformRawHtmlBlocks(string content, out IDictionary<string, string> placeholders)
+	    {
+	        content = LegacyBlockHelper.ReplaceRawHtml(content, out var foundRawHtmlBlocks);
+	        placeholders = foundRawHtmlBlocks;
+	        return content;
+	    }
+
+	    private string FillRawHtmlPlaceholders(string content, IDictionary<string, string> placeholders)
+	    {
+	        return LegacyBlockHelper.ReplaceRawHtmlPlaceholdersAfterMarkdownTransformation(content, placeholders);
+	    }
 	}
 }

@@ -30,15 +30,18 @@ Data continuity is vital. Current methods of data preservation have worked for n
 
 ## Classical Solution: Backup the Data 
 
+{RAW}
 <aside class="follow">
     <h1 class="call">Follow the Raven
         <small>and get updates on how to get the most out of your database!</small>
     </h1>
-    <div>
+    <div class="linkedin">
         <script src="//platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
-        <script type="IN/FollowCompany" data-id="4839656" data-counter="top"></script>
+        <script type="IN/FollowCompany" data-id="4839656" data-counter="top"> </script>
     </div>
 </aside>
+{RAW/}
+
 Relational databases are ideal for a primary server architecture. As the scale of the data increases, an enterprise typically will add capacity to their main server to handle the added data flow. The best way to back up the data would be with a physical copy, or a digital backup hosted separately.
 
 This has been the incumbent solution, but there are inherent risks:
