@@ -41,6 +41,9 @@ Data continuity is vital. Current methods of data preservation have worked for n
             <script src="//platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
             <script type="IN/FollowCompany" data-id="4839656" data-counter="top"> </script>
         </div>
+        <div class="fb">
+            <iframe src="https://www.facebook.com/plugins/follow.php?href=https%3A%2F%2Fwww.facebook.com%2FRavenDB-265907650186374%2F&width=65&height=65&layout=box_count&size=small&show_faces=false&appId" width="65" height="65" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
+        </div>
     </div>
 </aside>
 {RAW/}
