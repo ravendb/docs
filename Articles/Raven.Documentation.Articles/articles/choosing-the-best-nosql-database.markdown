@@ -43,6 +43,9 @@ RavenDB offers full support to encrypt all data at rest in memory. This is done 
         <small>and get updates on how to get the most out of your database!</small>
     </h1>
     <div class="services">
+        <div class="twitter">
+            <a href="https://twitter.com/ravendb" class="twitter-follow-button" data-show-count="false">Follow @ravendb</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+        </div>
         <div class="linkedin">
             <script src="//platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
             <script type="IN/FollowCompany" data-id="4839656" > </script>
