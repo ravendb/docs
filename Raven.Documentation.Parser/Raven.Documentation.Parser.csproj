@@ -84,6 +84,7 @@
     <Compile Include="Helpers\PanelBlockHelper.cs" />
     <Compile Include="Helpers\PathHelper.cs" />
     <Compile Include="Helpers\PrefixHelper.cs" />
+    <Compile Include="Helpers\SocialMediaBlockHelper.cs" />
     <Compile Include="IProvideGitFileInformation.cs" />
     <Compile Include="ParserBase.cs" />
     <Compile Include="ParserOptions.cs" />
@@ -99,6 +100,9 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\social-media-follow.html" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />

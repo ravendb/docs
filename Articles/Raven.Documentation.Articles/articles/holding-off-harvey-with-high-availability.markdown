@@ -30,26 +30,7 @@ Data continuity is vital. Current methods of data preservation have worked for n
 
 ## Classical Solution: Backup the Data 
 
-{RAW}
-<aside class="follow">
-    <h1 class="call">
-        Follow the Raven
-        <small>and get updates on how to get the most out of your database!</small>
-    </h1>
-    <div class="services">
-        <div class="twitter">
-            <a href="https://twitter.com/ravendb" class="twitter-follow-button" data-show-count="false">Follow @ravendb</a> <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
-        </div>
-        <div class="linkedin">
-            <script src="//platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
-            <script type="IN/FollowCompany" data-id="4839656" > </script>
-        </div>
-        <div class="fb">
-            <iframe src="https://www.facebook.com/plugins/follow.php?href=https%3A%2F%2Fwww.facebook.com%2FRavenDB-265907650186374%2F&width=65&height=65&layout=button&size=small&show_faces=false&appId" width="65" height="20" style="border:none;overflow:hidden" scrolling="no" frameborder="0" allowTransparency="true"></iframe>
-        </div>
-    </div>
-</aside>
-{RAW/}
+{SOCIAL-MEDIA-FOLLOW/}
 
 Relational databases are ideal for a primary server architecture. As the scale of the data increases, an enterprise typically will add capacity to their main server to handle the added data flow. The best way to back up the data would be with a physical copy, or a digital backup hosted separately.
 
