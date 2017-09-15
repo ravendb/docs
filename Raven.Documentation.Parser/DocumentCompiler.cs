@@ -83,6 +83,7 @@
 				content = TransformLegacyBlocks(file, content);
 				content = _parser.Transform(content);
 				content = TransformBlocks(content, documentationVersion);
+			    content = ReplaceSocialMediaBlocks(content);
 			    content = FillRawHtmlPlaceholders(content, rawHtmlPlaceholders);
 
 				var htmlDocument = HtmlHelper.ParseHtml(content);
@@ -108,7 +109,12 @@
 			}
 		}
 
-		private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
+	    private static string ReplaceSocialMediaBlocks(string content)
+	    {
+	        return SocialMediaBlockHelper.ReplaceSocialMediaBlocks(content);
+	    }
+
+	    private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
 		{
 			string src;
 			if (tag.attributes.TryGetValue("src", out src))
