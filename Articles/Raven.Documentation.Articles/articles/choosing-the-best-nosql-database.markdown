@@ -69,7 +69,7 @@ Elasticsearch aggressively caches data for future queries. Bitsets are reused wh
 
 #### RavenDB
 
-RavenDB supports caching at multiple levels. Repeated requests to RavenDB are detected and often served directly from the cache, only talking to server to verify that they are still current. This can dramatically reduce the number of bytes transferred over the network and improve overall system performance.
+RavenDB supports caching at multiple levels. Repeated requests to RavenDB are detected and often served directly from the cache, only talking to the server to verify that they are still current. This can dramatically reduce the number of bytes transferred over the network and improve overall system performance.
 
 RavenDB also supports aggressive caching, taking it one step further. With aggressive caching, you don’t even need to go to the server to verify that the cached data is current. Whenever data changes on a node, the server sends notifications to the client machines. Those caches with data that have been made outdated by the update will receive notifications that their cache has been invalidated. 
 
