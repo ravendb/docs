@@ -52,6 +52,7 @@ Each metric has a unique identifier (OID) and can be accessed individually.
 For example, using the SNMP agent you could run the following snmpget command which gets the server up time metric:
 {CODE-BLOCK:plain}
 snmpget -v 2c -c ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.2
+snmpget -v 3 -l authNoPriv -u ravendb -a SHA -A ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.2
 {CODE-BLOCK/}
 
 Where "ravendb" is the community string and "live-test.ravendb.net" is the host.
