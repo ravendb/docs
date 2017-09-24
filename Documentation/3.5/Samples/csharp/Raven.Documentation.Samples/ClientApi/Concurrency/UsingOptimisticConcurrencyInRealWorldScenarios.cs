@@ -143,7 +143,7 @@ namespace Raven.Documentation.Samples.ClientApi.Concurrency
 
             public bool BeforeStore(string key, object entityInstance, RavenJObject metadata, RavenJObject original)
             {
-                return true;
+                return false;
             }
         }
 
