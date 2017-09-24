@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 using Raven.Json.Linq;
@@ -40,13 +41,17 @@ namespace Raven.Documentation.Samples.ClientApi.Listeners
 		{
 			private readonly IList<string> forbiddenKeys = new List<string> { "system" };
 
-			public bool BeforeStore(string key, object entityInstance, RavenJObject metadata,
-										RavenJObject original)
-			{
-				return forbiddenKeys.Any(x => x.ToLower().Equals(key)) == false;
-			}
+		    public bool BeforeStore(string key, object entityInstance, RavenJObject metadata,
+		        RavenJObject original)
+		    {
+		        if (forbiddenKeys.Any(x => x.ToLower().Equals(key)))
+		        {
+		            throw new InvalidOperationException($"Store a document with a key: {key} is forbidden");
+		        }
+		        return false;
+		    }
 
-			public void AfterStore(string key, object entityInstance, RavenJObject metadata)
+		    public void AfterStore(string key, object entityInstance, RavenJObject metadata)
 			{
 			}
 		}
