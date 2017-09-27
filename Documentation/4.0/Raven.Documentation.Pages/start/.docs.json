@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "getting-started.markdown",
+		"Name": "Getting started",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "intro/ravendb-in-a-nutshell"
+			}
+		]
+	}
+]

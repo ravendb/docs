@@ -25,7 +25,7 @@ namespace Raven.Documentation.Web.Controllers
 
 	public partial class DocsController : BaseController
 	{
-		public static string DefaultVersion = "3.5";
+		public static string DefaultVersion = "4.0";
 
 		public static Language DefaultLanguage = Language.Csharp;
 
