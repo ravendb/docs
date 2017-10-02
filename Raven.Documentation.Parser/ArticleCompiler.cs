@@ -27,7 +27,8 @@ namespace Raven.Documentation.Parser
             string lastCommitSha,
             string relativePath,
             List<DocumentationMapping> mappings,
-            Dictionary<string, string> metadata = null)
+            Dictionary<string, string> metadata = null,
+            Dictionary<string, string> seoMetaProperties = null)
         {
             return new ArticlePage
             {
@@ -42,7 +43,8 @@ namespace Raven.Documentation.Parser
                 LastCommitSha = lastCommitSha,
                 RelativePath = relativePath,
                 Mappings = mappings,
-                Metadata = metadata
+                Metadata = metadata,
+                SeoMetaProperties = seoMetaProperties
             };
         }
 

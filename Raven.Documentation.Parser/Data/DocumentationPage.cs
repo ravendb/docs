@@ -38,6 +38,8 @@
 
         public Dictionary<string, string> Metadata { get; set; }
 
+        public Dictionary<string, string> SeoMetaProperties { get; set; }
+
 		public string GetUniqueKey()
 		{
 			var str = string.Concat(this.Version, this.Language.ToString().ToLowerInvariant(), this.Key);

@@ -34,7 +34,8 @@ namespace Raven.Documentation.Parser.Helpers
                     Description = name,
                     Name = isFolder ? path.Substring(1, path.Length - 1) : path.Substring(0, path.Length - Constants.MarkdownFileExtension.Length),
                     Mappings = file.Mappings,
-                    Metadata = file.Metadata
+                    Metadata = file.Metadata,
+                    SeoMetaProperties = file.SeoMetaProperties
                 };
 
                 yield return item;

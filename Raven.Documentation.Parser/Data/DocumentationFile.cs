@@ -15,6 +15,8 @@ namespace Raven.Documentation.Parser.Data
 
         public Dictionary<string, string> Metadata { get; set; }
 
+        public Dictionary<string, string> SeoMetaProperties { get; set; }
+
         public List<DocumentationMapping> Mappings { get; set; }
     }
 }

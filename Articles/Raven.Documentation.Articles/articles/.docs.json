@@ -28,8 +28,53 @@
         "Name": "Holding Off Harvey With High Availability",
         "Mappings": [ ],
         "Metadata": {
-            "title": "Holding Off Harvey With High Availability",
-            "metaDescription": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?"
+            "title": "Holding Off Harvey With High Availability"
+        },
+        "SeoMetaProperties": {
+            "description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Holding Off Harvey with High Availability",
+            "og:description": "",
+            "og:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability",
+            "og:image": "",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Holding Off Harvey with High Availability",
+            "twitter:description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
+            "twitter:image": "",
+            "twitter:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability"
+        }
+    },
+    {
+        "Path": "why-are-so-many-nosql-databases-getting-hacked.markdown",
+        "Name": "Why are so Many NoSQL Databases Getting Hacked?",
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "Why are so Many NoSQL Databases Getting Hacked? | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked"
+        },
+        "SeoMetaProperties": {
+            "description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Why are so Many NoSQL Databases Getting Hacked? | RavenDB",
+            "og:description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
+            "og:url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/broken_db.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Why are so Many NoSQL Databases Getting Hacked?",
+            "twitter:description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/broken_db.jpg",
+            "twitter:url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked"
         }
     }
 ]
