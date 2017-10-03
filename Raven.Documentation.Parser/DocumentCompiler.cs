@@ -31,7 +31,8 @@
             string lastCommitSha,
             string relativePath,
             List<DocumentationMapping> mappings,
-            Dictionary<string, string> metadata = null)
+            Dictionary<string, string> metadata = null,
+            Dictionary<string, string> seoMetaProperties = null)
         {
             return new DocumentationPage
             {
@@ -46,7 +47,8 @@
                 LastCommitSha = lastCommitSha,
                 RelativePath = relativePath,
                 Mappings = mappings,
-                Metadata = metadata
+                Metadata = metadata,
+                SeoMetaProperties = seoMetaProperties
             };
         }
     }
@@ -66,7 +68,11 @@
 			_repoAnalyzer = repoAnalyzer;
 		}
 
-	    protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent, string textContent, Language language, Category category, HashSet<DocumentationImage> images, string lastCommitSha, string relativePath, List<DocumentationMapping> mappings, Dictionary<string, string> metadata = null);
+	    protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent,
+	        string textContent, Language language, Category category, HashSet<DocumentationImage> images,
+	        string lastCommitSha, string relativePath, List<DocumentationMapping> mappings,
+	        Dictionary<string, string> metadata = null,
+	        Dictionary<string, string> seoMetaProperties = null);
 
 		public TPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
 		{
@@ -83,8 +89,12 @@
 				content = TransformLegacyBlocks(file, content);
 				content = _parser.Transform(content);
 				content = TransformBlocks(content, documentationVersion);
-			    content = ReplaceSocialMediaBlocks(content);
-			    content = FillRawHtmlPlaceholders(content, rawHtmlPlaceholders);
+
+			    string expectedPageUrl = null;
+			    page.Metadata?.TryGetValue("url", out expectedPageUrl);
+			    content = ReplaceSocialMediaBlocks(content, expectedPageUrl);
+
+                content = FillRawHtmlPlaceholders(content, rawHtmlPlaceholders);
 
 				var htmlDocument = HtmlHelper.ParseHtml(content);
 
@@ -101,7 +111,7 @@
 
 				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-				return CreatePage(key, title, documentationVersion, content, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList(), page.Metadata);
+				return CreatePage(key, title, documentationVersion, content, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList(), page.Metadata, page.SeoMetaProperties);
 			}
 			catch (Exception e)
 			{
@@ -109,9 +119,9 @@
 			}
 		}
 
-	    private static string ReplaceSocialMediaBlocks(string content)
+	    private static string ReplaceSocialMediaBlocks(string content, string expectedPageUrl)
 	    {
-	        return SocialMediaBlockHelper.ReplaceSocialMediaBlocks(content);
+	        return SocialMediaBlockHelper.ReplaceSocialMediaBlocks(content, expectedPageUrl);
 	    }
 
 	    private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
