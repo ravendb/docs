@@ -19,8 +19,27 @@
         "Name": "Choosing the Best NoSQL Document Database",
         "Mappings": [ ],
         "Metadata": {
-            "title": "RavenDB or Elastic: The best database for you?",
-            "metaDescription": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?"
+            "title": "RavenDB or Elastic: The best database for you? | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/choosing-the-best-nosql-database"
+        },
+        "SeoMetaProperties": {
+            "description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB or Elastic: The best database for you? | RavenDB",
+            "og:description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
+            "og:url": "https://ravendb.net/articles/choosing-the-best-nosql-database",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/beach_crossroads.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB or Elastic: The best database for you? | RavenDB",
+            "twitter:description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/beach_crossroads.jpg",
+            "twitter:url": "https://ravendb.net/articles/choosing-the-best-nosql-database"
         }
     },
     {
@@ -28,16 +47,18 @@
         "Name": "Holding Off Harvey With High Availability",
         "Mappings": [ ],
         "Metadata": {
-            "title": "Holding Off Harvey With High Availability"
+            "title": "Holding Off Harvey With High Availability | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability"
         },
         "SeoMetaProperties": {
             "description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
             "og:site_name": "RavenDB",
             "og:type": "website",
-            "og:title": "Holding Off Harvey with High Availability",
-            "og:description": "",
+            "og:title": "Holding Off Harvey with High Availability | RavenDB",
+            "og:description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
             "og:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability",
-            "og:image": "",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.png",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -45,7 +66,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Holding Off Harvey with High Availability",
             "twitter:description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
-            "twitter:image": "",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.png",
             "twitter:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability"
         }
     },
