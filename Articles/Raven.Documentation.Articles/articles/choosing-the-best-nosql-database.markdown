@@ -2,6 +2,8 @@
 
 ![RavenDB or Elastic: The best database for you?](images/beach_crossroads.jpg)
 
+{SOCIAL-MEDIA-LIKE/}
+
 <br/>
 
 As the pace of technology continues to accelerate, your next database may determine whether your business thrives in the new generation of commerce, or fades towards perilous oblivion. Today’s database must be able to perform fast, even with big data. It must be flexible, and able to scale as the amount of information you process increases exponentially. It must have high-availability, so all of your clients and customers will have access to you at any time, even in the presence of failure.  
@@ -86,6 +88,10 @@ RavenDB is capable of handling very large datasets. Replications allow you to sp
 RavenDB doesn’t support automatic sharding, but you can shard your data according to your needs, as long as you configure it manually. 
 
 ## Communication with Machines Outside Your Cluster
+
+{RAW}
+{{WHITEPAPER_BANNER}}
+{RAW/}
 
 #### ElasticSearch
 

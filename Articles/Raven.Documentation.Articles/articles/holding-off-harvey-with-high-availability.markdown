@@ -2,6 +2,8 @@
 
 ![RavenDB is an open source NoSQL document database](images/world-map-connections.png)
 
+{SOCIAL-MEDIA-LIKE/}
+
 <br/>
 
 We were saddened to see the tragedy Hurricane Harvey brought to the good people of the United States.
@@ -45,6 +47,10 @@ This has been the incumbent solution, but there are inherent risks:
 4. Maintaining an external backup contingency costs money. You have to constantly test your backup to make sure the copy isn’t broken. 
 
 ## Holding Off Harvey With High Availability 
+
+{RAW}
+{{WHITEPAPER_BANNER}}
+{RAW/}
 
 What if you didn’t need a backup? What if you no longer need to keep all your data in one place?
 
