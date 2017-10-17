@@ -24,6 +24,10 @@ When it is a requirement to get non-stale results back from a query, it is possi
 
 Note that in the sample above a time-out of 5 seconds was specified. While you can ask RavenDB to wait indefinitely long until there are non-stale results, this should only be used in unit-testing, and never in a real-world application, unless you are 100% sure you understand the implications and it is what you actually demand.
 
+{WARNING:Important}
+Using `WaitForNonStaleResultsAsOfNow`, will cause the loss of caching capability. `WaitForNonStaleResultsAsOfNow` adds a `DateTime.Now` to the query which causes the query to always be a new query.
+{WARNING/}
+
 ## Setting cut-off point
 
 A better approach to make sure you are working with non-stale results is to use a cut-off point and tell the server to use that as the point the database should index to:
@@ -37,6 +41,10 @@ This will make sure that you get the latest results up to that point in time. Al
 Another option is to use [`WaitForNonStaleResultsAsOfLastWrite`](../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasoflastwrite), which does exactly what it says, namely, it tracks the last write by the application, and uses that as the cutoff point. You might find it useful if you are working on the machines where clock synchronization might be an issue, since `WaitForNonStaleResultsAsOfLastWrite` doesn't use the machine time, but etag values for the writes. The time-out can apply as well.
 
 The default time-out value is 15 seconds.
+
+{DANGER: Warning}
+Using `WaitForNonStaleResultsAsOf` with `DateTime.Now` will cause the loss of caching capability for the same reason as `WaitForNonStaleResultsAsOfNow` (unless you saving the Date to later use).
+{DANGER/}
 
 {INFO:Convention}
 You can also setup the document store to always wait for the last write, like this:
