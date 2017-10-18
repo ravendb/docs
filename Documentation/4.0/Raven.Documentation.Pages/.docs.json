@@ -3,5 +3,10 @@
 		"Path": "/start",
 		"Name": "Getting started",
 		"Mappings": [ ]
+	},
+	{
+		"Path": "/client-api",
+		"Name": "Client API",
+		"Mappings": [ ]
 	}
 ]
