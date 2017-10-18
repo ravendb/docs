@@ -41,6 +41,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include=".docs.json" />
+    <None Include="client-api\.docs.json" />
+    <None Include="client-api\data-subscriptions\.docs.json" />
+    <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
+    <None Include="client-api\data-subscriptions\what-are-data-subscriptions.dotnet.markdown" />
     <None Include="start\.docs.json" />
     <None Include="start\getting-started.dotnet.markdown" />
   </ItemGroup>
