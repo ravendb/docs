@@ -1,0 +1,12 @@
+﻿[
+	{
+		"Path": "/data-subscriptions",
+		"Name": "Data Subscriptions and Batch Processing",
+		"Mappings": [ ]
+	},
+	{
+		"Path": "/client-api",
+		"Name": "Client API",
+		"Mappings": [ ]
+	}
+]
