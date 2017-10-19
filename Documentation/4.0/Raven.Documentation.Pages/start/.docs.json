@@ -1,12 +1,22 @@
 ﻿[
-	{
-		"Path": "getting-started.markdown",
-		"Name": "Getting started",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "intro/ravendb-in-a-nutshell"
-			}
-		]
-	}
+    {
+        "Path": "getting-started.markdown",
+        "Name": "Getting started",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "intro/ravendb-in-a-nutshell"
+            }
+        ]
+    },
+    {
+        "Path": "installation.markdown",
+        "Name": "Installing RavenDB",
+        "Mappings": []
+    },
+    {
+        "Path": "getting-to-know.markdown",
+        "Name": "Getting to know RavenDB",
+        "Mappings": []
+    }
 ]
