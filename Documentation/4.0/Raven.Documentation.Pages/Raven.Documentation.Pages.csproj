@@ -42,7 +42,9 @@
   <ItemGroup>
     <None Include=".docs.json" />
     <None Include="start\.docs.json" />
-    <None Include="start\getting-started.dotnet.markdown" />
+    <None Include="start\getting-started.markdown" />
+    <None Include="start\installation.markdown" />
+    <None Include="start\getting-to-know.markdown" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
@@ -51,7 +53,8 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="start\images\linqpad-1.png" />
+    <Content Include="start\images\console.PNG" />
+    <Content Include="start\images\studio.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
