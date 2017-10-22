@@ -97,5 +97,33 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/broken_db.jpg",
             "twitter:url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked"
         }
+    },
+    {
+        "Path": "ravendb-presents-the-three-ps-of-database-high-availability.markdown",
+        "Name": "RavenDB Presents the Three Ps of Database High Availability",
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "RavenDB Presents the Three Ps of Database High Availability | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability"
+        },
+        "SeoMetaProperties": {
+            "description": "How RavenDB Proliferates, Preserves, and Perpetuates your Data. To maintain high-availability for your database, we set up multiple lines of defense.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB Presents the Three Ps of Database High Availability | RavenDB",
+            "og:description": "How RavenDB Proliferates, Preserves, and Perpetuates your Data. To maintain high-availability for your database, we set up multiple lines of defense.",
+            "og:url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB Presents the Three Ps of Database High Availability",
+            "twitter:description": "How RavenDB Proliferates, Preserves, and Perpetuates your Data. To maintain high-availability for your database, we set up multiple lines of defense.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
+            "twitter:url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability"
+        }
     }
 ]
