@@ -11,7 +11,7 @@ One of the most vital necessities of an OLTP database is constant availability. 
 Using RavenDB, we take a multi-pronged approach to making sure your data never sleeps. Even if an asteroid were to hit the Pacific Ocean, knocking out half the machines on earth, it’s up to us to make sure your data is still accessible.
 
 ## Proliferating: A Replicating Cluster
-<img class="floating-left" alt="RavenDB Presents The Three Ps of Database High Availability" src="images/ravendb-presents-the-three-ps-of-database-high-availability-pic1.png" />
+<img class="floating-left" alt="RavenDB Presents The Three Ps of Database High Availability" src="images/ravendb-presents-the-three-ps-of-database-high-availability-pic1.jpg" />
 The first step is to host your data at multiple locations. RavenDB enables you to host your database on a series of machines, called nodes, that connect to each other to form a network, called a cluster. Nodes can be physical servers, simple PCs being employed as servers, or even a Raspberry Pi device – a server the size of the palm of your hand that literally puts your database at your fingertips.
 
 Once you designate which machines will become nodes, your database will be hosted on them. Every time an update is made to the data, other nodes will be updated to reflect the same state of data. The update will replicate to the nodes you decide. 
@@ -58,7 +58,7 @@ You can configure your offsite replica to be updated with a time delay. For exam
 If an error happened at 4PM, you can apply the offsite replica to the nodes in the cluster, and work from there.  
 
 ## Added Layer: Automatic Backups
-<img class="floating-right" alt="RavenDB Presents The Three Ps of Database High Availability" src="images/ravendb-presents-the-three-ps-of-database-high-availability-pic2.png" />
+<img class="floating-right" alt="RavenDB Presents The Three Ps of Database High Availability" src="images/ravendb-presents-the-three-ps-of-database-high-availability-pic2.jpg" />
 We can take this one step further by turning your database into a time machine. 
 
 You can tell your RavenDB that every X hours, one node in the cluster will backup your data into a file. Your file can be saved locally, to a network location, or to the cloud. Your database becomes a file.
