@@ -93,12 +93,13 @@
 			    string expectedPageUrl = null;
 			    page.Metadata?.TryGetValue("url", out expectedPageUrl);
 			    content = ReplaceSocialMediaBlocks(content, expectedPageUrl);
-
                 content = FillRawHtmlPlaceholders(content, rawHtmlPlaceholders);
 
 				var htmlDocument = HtmlHelper.ParseHtml(content);
 
-				var title = ExtractTitle(htmlDocument);
+			    ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images);
+
+			    var title = ExtractTitle(htmlDocument);
 				var textContent = ExtractTextContent(htmlDocument);
 
 				var caseSensitiveFileName = PathHelper.GetProperFilePathCapitalization(file.FullName);
@@ -111,7 +112,7 @@
 
 				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-				return CreatePage(key, title, documentationVersion, content, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList(), page.Metadata, page.SeoMetaProperties);
+				return CreatePage(key, title, documentationVersion, htmlDocument.DocumentNode.OuterHtml, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList(), page.Metadata, page.SeoMetaProperties);
 			}
 			catch (Exception e)
 			{
@@ -119,12 +120,53 @@
 			}
 		}
 
+	    private void ProcessNonMarkdownImages(FileInfo file, string documentationVersion, HtmlDocument htmlDocument,
+	        HashSet<DocumentationImage> images)
+	    {
+	        var nonMarkdownImages = htmlDocument.DocumentNode.SelectNodes("//img[starts-with(@src, 'images/')]");
+	        if (nonMarkdownImages == null)
+	        {
+	            return;
+	        }
+
+	        foreach (var node in nonMarkdownImages)
+	        {
+	            AddNonMarkdownImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, node);
+	        }
+	    }
+
 	    private static string ReplaceSocialMediaBlocks(string content, string expectedPageUrl)
 	    {
 	        return SocialMediaBlockHelper.ReplaceSocialMediaBlocks(content, expectedPageUrl);
 	    }
 
-	    private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
+	    private static bool AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory, string imagesUrl,
+	        string documentationVersion, HtmlNode node)
+	    {
+			if (node.Attributes.Contains("src"))
+			{
+                string src = node.Attributes["src"].Value;
+                var imagePath = Path.Combine(directory, src);
+
+				src = src.Replace('\\', '/');
+				if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
+					src = src.Substring(7);
+
+				var newSrc = string.Format("{0}/{1}", documentationVersion, src);
+
+				node.SetAttributeValue("src", imagesUrl + newSrc);
+
+				images.Add(new DocumentationImage
+				{
+					ImagePath = imagePath,
+					ImageKey = newSrc
+				});
+			}
+
+			return true;
+	    }
+
+        private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
 		{
 			string src;
 			if (tag.attributes.TryGetValue("src", out src))

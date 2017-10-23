@@ -67,7 +67,7 @@ namespace Raven.Documentation.Parser
             var fileInfo = new FileInfo(path);
 
             if (fileInfo.Exists == false)
-                throw new FileNotFoundException(string.Format("Documentaiton file '{0}' not found.", path));
+                throw new FileNotFoundException(string.Format("Documentation file '{0}' not found.", path));
 
             return _articleCompiler.Compile(fileInfo, page, "articles", new List<DocumentationMapping>());
         }
