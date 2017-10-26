@@ -21,7 +21,8 @@
         "Metadata": {
             "title": "RavenDB or Elastic: The best database for you? | RavenDB",
             "likeSection": "yes",
-            "url": "https://ravendb.net/articles/choosing-the-best-nosql-database"
+            "url": "https://ravendb.net/articles/choosing-the-best-nosql-database",
+            "publishedAt": "2017-09-01"
         },
         "SeoMetaProperties": {
             "description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
@@ -49,7 +50,8 @@
         "Metadata": {
             "title": "Holding Off Harvey With High Availability | RavenDB",
             "likeSection": "yes",
-            "url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability"
+            "url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability",
+            "publishedAt": "2017-09-10"
         },
         "SeoMetaProperties": {
             "description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
@@ -77,7 +79,8 @@
         "Metadata": {
             "title": "Why are so Many NoSQL Databases Getting Hacked? | RavenDB",
             "likeSection": "yes",
-            "url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked"
+            "url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked",
+            "publishedAt": "2017-10-02"
         },
         "SeoMetaProperties": {
             "description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
@@ -105,7 +108,8 @@
         "Metadata": {
             "title": "RavenDB Presents the Three Ps of Database High Availability | RavenDB",
             "likeSection": "yes",
-            "url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability"
+            "url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability",
+            "publishedAt": "2017-10-20"
         },
         "SeoMetaProperties": {
             "description": "How RavenDB Proliferates, Preserves, and Perpetuates your Data. To maintain high-availability for your database, we set up multiple lines of defense.",
