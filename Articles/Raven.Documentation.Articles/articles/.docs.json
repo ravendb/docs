@@ -60,7 +60,7 @@
             "og:title": "Holding Off Harvey with High Availability | RavenDB",
             "og:description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
             "og:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.png",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -68,7 +68,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Holding Off Harvey with High Availability",
             "twitter:description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.png",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.jpg",
             "twitter:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability"
         }
     },
