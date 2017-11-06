@@ -45,6 +45,8 @@
     <None Include="client-api\data-subscriptions\.docs.json" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\what-are-data-subscriptions.dotnet.markdown" />
+    <None Include="client-api\session\.docs.json" />
+    <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="start\.docs.json" />
     <None Include="start\getting-started.markdown" />
     <None Include="start\installation.markdown" />
