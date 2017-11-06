@@ -9,4 +9,8 @@
     <PackageReference Include="xunit" Version="2.3.0-beta5-build3769" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="ClientApi\Session\" />
+  </ItemGroup>
+
 </Project>

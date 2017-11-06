@@ -18,7 +18,7 @@ Second method is a equivalent of doing
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | [OpenSessionOptions](../../glossary/open-session-options) | Options **containing** information such as **name of database** on which session will work and **credentials** that will be used. |
+| **options** | [OpenSessionOptions](../../glossary/open-session-options) | Options **containing** information such as **name of database** and **RequestExecutor**. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -32,9 +32,10 @@ Second method is a equivalent of doing
 
 {CODE open_session_5@ClientApi\Session\OpeningSession.cs /}
 
-## Remarks
 
-Always remember to release session allocated resources after usage by invoking `Dispose` method or wrapping session object in `using` statement.
+{DANGER:Important}
+**Always remember to release session allocated resources after usage by invoking `Dispose` method or wrapping session object in `using` statement.**
+{DANGER/}
 
 ## Related articles
 
