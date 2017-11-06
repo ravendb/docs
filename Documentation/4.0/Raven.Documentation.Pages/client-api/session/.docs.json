@@ -1,0 +1,12 @@
+[
+ {
+    "Path": "opening-a-session.markdown",
+    "Name": "Opening a session",
+		"Mappings": [
+			{
+				"Version": 1.0,
+				"Key": "client-api/basic-operations/opening-a-session"
+			}
+		]
+  }
+]
