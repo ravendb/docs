@@ -1,12 +1,17 @@
 ﻿[
-	{
-		"Path": "/start",
-		"Name": "Getting started",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/client-api",
-		"Name": "Client API",
-		"Mappings": [ ]
-	}
+    {
+        "Path": "/start",
+        "Name": "Getting started",
+        "Mappings": []
+    },
+    {
+        "Path": "/client-api",
+        "Name": "Client API",
+        "Mappings": []
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
+    }
 ]
