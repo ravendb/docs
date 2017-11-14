@@ -7,7 +7,7 @@ using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
 {
-	public class Metadata
+    public class Metadata
 	{
 		#region indexes_1
         public class Products_AllProperties : AbstractIndexCreationTask<Product, Products_AllProperties.Result>
