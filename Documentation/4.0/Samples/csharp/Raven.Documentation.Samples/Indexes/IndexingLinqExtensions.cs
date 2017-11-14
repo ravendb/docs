@@ -1,11 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using Raven.Abstractions.Indexing;
-using Raven.Client;
-using Raven.Client.Document;
-using Raven.Client.Indexes;
-using Raven.Client.Linq.Indexing;
-using Raven.Documentation.CodeSamples.Orders;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Linq.Indexing;
+using Raven.Documentation.Samples.Orders;
 using Xunit;
 
 namespace Raven.Documentation.Samples.Indexes

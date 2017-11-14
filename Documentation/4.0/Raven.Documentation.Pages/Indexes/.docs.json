@@ -1,11 +1,11 @@
 [
     {
-        "Path": "converting-to-json-and-accessing-metadata",
+        "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to json and accessing metadata",
         "Mappings": []
     },
 	{
-        "Path": "indexing-linq-extensions",
+        "Path": "indexing-linq-extensions.markdown",
         "Name": "Indexing linq extensions",
         "Mappings": []
     }

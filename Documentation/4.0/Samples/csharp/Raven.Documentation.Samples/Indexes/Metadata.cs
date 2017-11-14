@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
-using Raven.Abstractions.Indexing;
-using Raven.Client.Document;
-using Raven.Client.Indexes;
-using Raven.Documentation.CodeSamples.Orders;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
+using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
 {
