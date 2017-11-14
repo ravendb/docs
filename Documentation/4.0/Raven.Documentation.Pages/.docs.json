@@ -13,5 +13,10 @@
         "Path": "/indexes",
         "Name": "Indexes",
         "Mappings": []
+    },
+    {
+        "Path": "/database",
+        "Name": "Database",
+        "Mappings": []
     }
 ]
