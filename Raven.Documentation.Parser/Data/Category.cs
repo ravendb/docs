@@ -12,6 +12,9 @@ namespace Raven.Documentation.Parser.Data
 
 		[Prefix("server")]
 		Server,
+        
+        [Prefix("database")]
+        Database,
 
 		[Prefix("studio")]
 		Studio,
