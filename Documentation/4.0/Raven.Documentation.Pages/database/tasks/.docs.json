@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "create-sample-data.markdown",
+        "Name": "Create Sample Data",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "database/tasks"
+            }
+        ]
+    }
+]
