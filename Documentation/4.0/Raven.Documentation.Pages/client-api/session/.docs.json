@@ -18,5 +18,15 @@
                 "Key": "client-api/basic-operations/storing-entities"
             }
         ]
+    },
+    {
+        "Path": "what-is-a-session-and-how-does-it-work.markdown",
+        "Name": "What is a session and how does it work?",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/understanding-session-object"
+            }
+        ]
     }
 ]
