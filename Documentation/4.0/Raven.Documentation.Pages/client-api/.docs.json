@@ -5,13 +5,18 @@
         "Mappings": []
     },
     {
-        "Path": "/client-api",
-        "Name": "Client API",
+        "Path": "/session",
+        "Name": "Session",
         "Mappings": []
     },
     {
-        "Path": "/session",
-        "Name": "Session",
+        "Path": "creating-document-store.markdown",
+        "Name": "Creating document store",
+        "Mappings": []
+    },
+    {
+        "Path": "what-is-a-document-store.markdown",
+        "Name": "What is a document store?",
         "Mappings": []
     }
 ]
