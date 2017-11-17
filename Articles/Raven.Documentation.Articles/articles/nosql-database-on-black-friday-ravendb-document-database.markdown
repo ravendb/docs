@@ -1,6 +1,6 @@
 # Using A NoSQL Database for Black Friday: The Gift that Keeps On Giving <br/><small>by <a href="https://www.linkedin.com/in/sabrina-globus-3609ba34/">Sabrina Globus</a></small>
 
-![RavenDB Presents The Three Ps of Database High Availability](images/nosql-database-on-black-friday-ravendb-document-database.jpg)
+![A NoSQL Database on Black Friday: The Gift that Keeps Giving](images/nosql-database-on-black-friday-ravendb-document-database.jpg)
 
 {SOCIAL-MEDIA-LIKE/}
 
@@ -25,7 +25,7 @@ Since 1974, SQL has performed these functions. For the first 30 years of its use
 
 ## SQL puts your holiday traffic at risk
 
-<img class="floating-right" alt="NoSQL DB on Black Friday: time is money" src="images/time-is-money.jpg" />
+<img class="floating-right" alt="A NoSQL Database on Black Friday: The Gift that Keeps Giving" src="images/time-is-money.jpg" />
 
 ### A. The Single Server Model is a Killer for Load Balance and Latency
 
@@ -73,7 +73,7 @@ You can quickly adapt to spiking traffic, maintaining top performance for your n
 
 ### 3. With no need for multiple tables NoSQL reads faster
 
-<img class="floating-left" alt="NoSQL DB on Black Friday: RavenDB is NoSQL and ACID" src="images/enjoy-the-data.jpg" />
+<img class="floating-left" alt="A NoSQL Database on Black Friday: The Gift that Keeps Giving" src="images/enjoy-the-data.jpg" />
 
 RavenDB 4.0 reaches over 100,000 writes per second and over half a million reads as the premiere NoSQL solution. You feel it the most during peak holiday season when you need that speed more than ever. 
 
