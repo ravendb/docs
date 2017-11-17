@@ -129,5 +129,34 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
             "twitter:url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability"
         }
+    },
+    {
+        "Path": "nosql-database-on-black-friday-ravendb-document-database.markdown",
+        "Name": "A NoSQL Database on Black Friday: The Gift that Keeps Giving",
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database",
+            "publishedAt": "2017-11-17"
+        },
+        "SeoMetaProperties": {
+            "description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
+            "og:description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
+            "og:url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-on-black-friday-ravendb-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving",
+            "twitter:description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-on-black-friday-ravendb-document-database.jpg",
+            "twitter:url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database"
+        }
     }
 ]
