@@ -129,5 +129,63 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
             "twitter:url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability"
         }
+    },
+    {
+        "Path": "nosql-database-on-black-friday-ravendb-document-database.markdown",
+        "Name": "A NoSQL Database on Black Friday: The Gift that Keeps Giving",
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database",
+            "publishedAt": "2017-11-14"
+        },
+        "SeoMetaProperties": {
+            "description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
+            "og:description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
+            "og:url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-on-black-friday-ravendb-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
+            "twitter:description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-on-black-friday-ravendb-document-database.jpg",
+            "twitter:url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database"
+        }
+    },
+    {
+        "Path": "nosql-database-acid-non-relational-enjoy-full-support-ravendb.markdown",
+        "Name": "Enjoy Our Full Support",
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "Enjoy Our Full Support | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb",
+            "publishedAt": "2017-11-17"
+        },
+        "SeoMetaProperties": {
+            "description": "Our NoSQL database was developed to provide you with a lot of built in fixes so can you spend less time on the phone with us, and more time completing your app.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Enjoy Our Full Support | RavenDB",
+            "og:description": "Our NoSQL database was developed to provide you with a lot of built in fixes so can you spend less time on the phone with us, and more time completing your app.",
+            "og:url": "https://ravendb.net/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Enjoy Our Full Support | RavenDB",
+            "twitter:description": "Our NoSQL database was developed to provide you with a lot of built in fixes so can you spend less time on the phone with us, and more time completing your app.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg",
+            "twitter:url": "https://ravendb.net/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb"
+        }
     }
 ]
