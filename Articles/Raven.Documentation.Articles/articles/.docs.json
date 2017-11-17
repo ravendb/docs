@@ -187,5 +187,34 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg",
             "twitter:url": "https://ravendb.net/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb"
         }
+    },
+    {
+        "Path": "black-friday-cyber-monday-nosql-database-ravendb.markdown",
+        "Name": "3 Hidden Challenges for Your Database on Black Friday",
+        "Mappings": [ ],
+        "Metadata": {
+            "title": "3 Hidden Challenges for Your Database on Black Friday | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/black-friday-cyber-monday-nosql-database-ravendb",
+            "publishedAt": "2017-11-17"
+        },
+        "SeoMetaProperties": {
+            "description": "From Black Friday through New Year’s, a NoSQL database that scales up quickly is like opening up extra cash registers to serve a growing line.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "3 Hidden Challenges for Your Database on Black Friday | RavenDB",
+            "og:description": "From Black Friday through New Year’s, a NoSQL database that scales up quickly is like opening up extra cash registers to serve a growing line.",
+            "og:url": "https://ravendb.net/articles/black-friday-cyber-monday-nosql-database-ravendb",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/black-friday-cyber-monday-nosql-database-ravendb.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "3 Hidden Challenges for Your Database on Black Friday | RavenDB",
+            "twitter:description": "From Black Friday through New Year’s, a NoSQL database that scales up quickly is like opening up extra cash registers to serve a growing line.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/black-friday-cyber-monday-nosql-database-ravendb.jpg",
+            "twitter:url": "https://ravendb.net/articles/black-friday-cyber-monday-nosql-database-ravendb"
+        }
     }
 ]
