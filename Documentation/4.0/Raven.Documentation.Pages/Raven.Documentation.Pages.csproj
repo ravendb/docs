@@ -64,6 +64,7 @@
     <None Include="studio\database\tasks\.docs.json" />
     <None Include="studio\database\tasks\create-sample-data.markdown" />
     <None Include="start\playground-server.markdown" />
+    <None Include="studio\overview.markdown" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
