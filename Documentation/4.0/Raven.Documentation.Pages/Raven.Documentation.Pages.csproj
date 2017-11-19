@@ -59,9 +59,10 @@
     <None Include="indexes\.docs.json" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
     <None Include="indexes\indexing-linq-extensions.markdown" />
-    <None Include="database\.docs.json" />
-    <None Include="database\tasks\.docs.json" />
-    <None Include="database\tasks\create-sample-data.markdown" />
+    <None Include="studio\.docs.json" />
+    <None Include="studio\database\.docs.json" />
+    <None Include="studio\database\tasks\.docs.json" />
+    <None Include="studio\database\tasks\create-sample-data.markdown" />
     <None Include="start\playground-server.markdown" />
   </ItemGroup>
   <ItemGroup>
@@ -71,11 +72,11 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="database\tasks\images\tasks-create_sample_data_tab-documents_view-2.png" />
-    <Content Include="database\tasks\images\tasks-create_sample_data_tab-indexes_view-3.png" />
+    <Content Include="studio\database\tasks\images\tasks-create_sample_data_tab-documents_view-2.png" />
+    <Content Include="studio\database\tasks\images\tasks-create_sample_data_tab-indexes_view-3.png" />
     <Content Include="start\images\console.PNG" />
     <Content Include="start\images\studio.png" />
-    <Content Include="database\tasks\images\tasks-create_sample_data_tab-1.png" />
+    <Content Include="studio\database\tasks\images\tasks-create_sample_data_tab-1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

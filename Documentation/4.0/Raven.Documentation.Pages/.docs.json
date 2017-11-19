@@ -15,8 +15,8 @@
         "Mappings": []
     },
     {
-        "Path": "/database",
-        "Name": "Database",
+        "Path": "/studio",
+        "Name": "Studio",
         "Mappings": []
     }
 ]
