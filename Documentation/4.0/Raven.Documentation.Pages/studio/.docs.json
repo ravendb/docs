@@ -1,7 +1,17 @@
 ﻿[
     {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "studio/overview-info"
+            }
+        ]
+    },
+    {
         "Path": "/database",
         "Name": "Database",
-        "Mappings": [ ]
+        "Mappings": []
     }
 ]
