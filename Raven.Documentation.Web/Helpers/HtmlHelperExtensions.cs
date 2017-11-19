@@ -56,7 +56,7 @@
             var mode = GetMode(version);
 
             if (mode == DocumentationMode.Normal)
-                return GenerateNavigationFor35Or30(htmlHelper, language, version);
+                return GenerateNavigationFor35Or30Or40(htmlHelper, language, version);
 
             switch (version)
             {
@@ -71,7 +71,7 @@
             return null;
         }
 
-        private static MvcHtmlString GenerateNavigationFor35Or30(HtmlHelper htmlHelper, Language language, string version)
+        private static MvcHtmlString GenerateNavigationFor35Or30Or40(HtmlHelper htmlHelper, Language language, string version)
         {
             var builder = new StringBuilder();
             builder.AppendLine("<ul class='nav navbar-nav'>");
@@ -81,7 +81,9 @@
             builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Transformers", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "transformers/what-are-transformers" }, null)));
             builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Client API", MVC.Docs.ActionNames.Client, MVC.Docs.Name, new { language = language, version = version }, null)));
             builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Server", MVC.Docs.ActionNames.Server, MVC.Docs.Name, new { language = language, version = version }, null)));
-            builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "studio/accessing-studio" }, null)));
+            
+            var studioFirstView = version == "4.0" ? "overview" : "accessing-studio";            
+            builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "studio/" + studioFirstView }, null))); 
 
             builder.AppendLine("<li class='dropdown'>");
             builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");
