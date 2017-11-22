@@ -1,13 +1,26 @@
-﻿# Tasks : Create Sample Data
+﻿## Create Sample Data
+---
 
-In this useful tab, if a database is empty, you can import Northwind samples and generate C# classes for an appropriate entities. It is important as vast majority of examples in the documentation is based on this data. This will help you familiarize with RavenDB and test its various functionalities more easily.
+Sample data can be generated on an empty database.
 
-![Figure 1. Tasks. Create Sample Data Tab.](images/tasks-create_sample_data_tab-1.png)
+Creating sample data is quite useful since most of the examples in the documentation are based on this data,   
+and it will help you become familiar with RavenDB and its various functionalities.
 
-## Data
+Click the 'Create' button to generate the Northwind database - documents and sample indexes will be created.     
 
-Generated database contains **1 059 documents** organized in **8 collections** and **3 indexes**.
+---
+![Figure 1. Create Sample Data](images/create-sample-data-1.png "Create sample data")
 
-![Figure 2. Tasks. Create Sample Data Tab. Documents view.](images/tasks-create_sample_data_tab-documents_view-2.png)
+### Data Generated 
 
-![Figure 3. Tasks. Create Sample Data Tab. Indexes view.](images/tasks-create_sample_data_tab-indexes_view-3.png)
+The Generated database contains **1,059 documents** organized in **8 collections** and **3 indexes**.
+
+![Figure 2. The generated sample documents](images/create-sample-data-2.png "Sample documents generated")
+
+![Figure 3. The generated sample indexes](images/create-sample-data-3.png "Sample indexes generated")
+
+### The C# Entities
+
+The C# classes used for appropriate documents entities can also be viewed 
+
+![Figure 4. The C# classes used for the entities](images/create-sample-data-4.png "C# Classes")
