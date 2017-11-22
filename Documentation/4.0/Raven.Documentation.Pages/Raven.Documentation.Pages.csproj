@@ -64,6 +64,13 @@
     <None Include="studio\database\tasks\.docs.json" />
     <None Include="studio\database\tasks\create-sample-data.markdown" />
     <None Include="start\playground-server.markdown" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-1.snag" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-2.snag" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-3.snag" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-4.snag" />
+    <None Include="studio\images\snag\overview-1.snag" />
+    <None Include="studio\images\snag\overview-2.snag" />
+    <None Include="studio\images\snag\overview-3.snag" />
     <None Include="studio\overview.markdown" />
   </ItemGroup>
   <ItemGroup>
@@ -73,11 +80,15 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="studio\database\tasks\images\tasks-create_sample_data_tab-documents_view-2.png" />
-    <Content Include="studio\database\tasks\images\tasks-create_sample_data_tab-indexes_view-3.png" />
     <Content Include="start\images\console.PNG" />
     <Content Include="start\images\studio.png" />
-    <Content Include="studio\database\tasks\images\tasks-create_sample_data_tab-1.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-1.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-2.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-3.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-4.png" />
+    <Content Include="studio\images\overview-1.png" />
+    <Content Include="studio\images\overview-2.png" />
+    <Content Include="studio\images\overview-3.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

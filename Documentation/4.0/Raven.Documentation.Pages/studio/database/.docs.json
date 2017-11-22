@@ -2,6 +2,6 @@
     {
         "Path": "/tasks",
         "Name": "Tasks",
-        "Mappings": [ ]
+        "Mappings": []
     }
 ]
