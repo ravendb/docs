@@ -1,7 +1,6 @@
 ﻿namespace Raven.Documentation.Samples.ClientApi
 {
 	using System;
-	using Client;
 	using Client.Documents;
 
 	public class CreatingDocumentStore
