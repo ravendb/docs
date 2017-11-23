@@ -10,6 +10,11 @@
         "Mappings": []
     },
     {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    },
+    {
         "Path": "creating-document-store.markdown",
         "Name": "Creating document store",
         "Mappings": []
@@ -17,6 +22,11 @@
     {
         "Path": "what-is-a-document-store.markdown",
         "Name": "What is a document store?",
+        "Mappings": []
+    },
+    {
+        "Path": "setting-up-default-database.markdown",
+        "Name": "Setting up default database",
         "Mappings": []
     }
 ]

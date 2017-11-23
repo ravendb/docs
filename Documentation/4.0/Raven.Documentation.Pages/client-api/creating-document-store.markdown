@@ -2,6 +2,10 @@
 
 To create an instance of the `DocumentStore` you need to specify a list of URL addresses that points to RavenDB server nodes.
 
+{WARNING:Important}
+Open a `DocumentStore` with a list of URL addresses that not points to a nodes in the same cluster is not supporeted by RavenDB.
+{WARNING/}
+
 {CODE document_store_creation@ClientApi\CreatingDocumentStore.cs /}
 
 This will instantiate a communication channel between your application and the local RavenDB server instance.

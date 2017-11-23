@@ -46,10 +46,13 @@
     <None Include="client-api\data-subscriptions\.docs.json" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
     <None Include="client-api\data-subscriptions\what-are-data-subscriptions.dotnet.markdown" />
+    <None Include="client-api\how-to\.docs.json" />
+    <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
     <None Include="client-api\session\.docs.json" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
+    <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="start\.docs.json" />
     <None Include="start\about-examples.markdown" />
@@ -74,6 +77,7 @@
     <None Include="studio\overview.markdown" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="client-api\how-to\images\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
