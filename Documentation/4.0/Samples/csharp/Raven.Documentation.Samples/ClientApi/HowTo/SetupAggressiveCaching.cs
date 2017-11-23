@@ -2,9 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-using Raven.Client.Document;
 using Raven.Client.Documents;
-using Raven.Documentation.CodeSamples.Orders;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.HowTo
@@ -13,21 +11,17 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 	{
 		public SetupAggressiveCaching()
 		{
-			using (var documentStore = new DocumentStore { Urls = new []{"http://localhost:8080"} })
+			using (var documentStore = new DocumentStore
+			{
+			    Urls = new []{"http://localhost:8080"},
+                Database = "NorthWind"
+			})
 			{
 				documentStore.Initialize();
-
-				#region should_cache_delegate
-				documentStore.Conventions.ShouldCacheRequest = url => true;
-                #endregion
 
                 #region max_number_of_requests
 			    // TODO change this to MaxHttpCacheSize 
                 documentStore.Conventions.MaxNumberOfRequestsPerSession = 1;
-				#endregion
-
-				#region disable_changes_tracking
-				documentStore.Conventions.ShouldAggressiveCacheTrackChanges = false;
 				#endregion
 
 				using (var session = documentStore.OpenSession())
