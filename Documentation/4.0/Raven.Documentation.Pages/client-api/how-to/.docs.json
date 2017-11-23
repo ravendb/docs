@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "setup-aggressive-caching.markdown",
+        "Name": "...setup aggressive caching",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/advanced/aggressive-caching"
+            }
+        ]
+    }
+]
