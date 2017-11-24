@@ -1,10 +1,20 @@
 [
     {
+        "Path": "what-are-indexes.markdown",
+        "Name": "What are indexes?",
+        "Mappings": [
+            {
+                "Version": "1.0",
+                "Key": "client-api/querying"
+            }
+        ]
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to json and accessing metadata",
         "Mappings": []
     },
-	{
+    {
         "Path": "indexing-linq-extensions.markdown",
         "Name": "Indexing linq extensions",
         "Mappings": []
