@@ -54,6 +54,7 @@
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="indexes\creating-and-deploying.markdown" />
     <None Include="indexes\what-are-indexes.markdown" />
     <None Include="start\.docs.json" />
     <None Include="start\about-examples.markdown" />

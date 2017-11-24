@@ -93,10 +93,17 @@ namespace Raven.Documentation.Parser.Helpers
 			}
 
 			matches = CodeTabBlockFinder.Matches(content);
-			foreach (Match match in matches)
-				tabs.Add(GenerateCodeTab(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
+		    foreach (Match match in matches)
+		    {
+		        var languageAndTitle = match.Groups[1].Value.Trim();
+		        var parts = languageAndTitle.Split(':');
+		        var languageAsString = parts[0];
+		        var title = parts.Length > 1 ? parts[1] : null;
+		        var value = match.Groups[2].Value.Trim();
+		        tabs.Add(GenerateCodeTab(languageAsString, title, value));
+		    }
 
-			var builder = new StringBuilder();
+		    var builder = new StringBuilder();
 			builder.AppendLine("<div class='code-tabs'>");
 			builder.AppendLine("<ul class='nav nav-tabs'>");
 			for (int index = 0; index < tabs.Count; index++)
@@ -120,7 +127,7 @@ namespace Raven.Documentation.Parser.Helpers
 			return builder.ToString();
 		}
 
-		private static CodeTab GenerateCodeTab(string languageAsString, string content)
+		private static CodeTab GenerateCodeTab(string languageAsString, string title, string content)
 		{
 			var language = (Language)Enum.Parse(typeof(Language), languageAsString, true);
 
@@ -128,7 +135,7 @@ namespace Raven.Documentation.Parser.Helpers
 				.Replace("<", "&lt;")
 				.Replace(">", "&gt;");
 
-			return new CodeTab { Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
+			return new CodeTab { Title = title, Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
 		}
 
 		private static CodeTab GenerateCodeTabFromFile(string languageAsString, string title, string value, string documentationVersion, ParserOptions options)
