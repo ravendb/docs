@@ -42,14 +42,14 @@ namespace Raven.Documentation.Samples.ClientApi
 				{
 					// ...
 				}
-			    store.Admin.Send(new DeleteIndexOperation("NorthWindIndex"));
+			    store.Maintenance.Send(new DeleteIndexOperation("NorthWindIndex"));
 
 
                 using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks"))
 				{
 					// ...
 				}
-			    store.Admin.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
+			    store.Maintenance.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
             }
 			#endregion
 		}

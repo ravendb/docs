@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 	        IDocumentStore store = new DocumentStore();
             
 	        var subscriptionName = await store.Subscriptions.CreateAsync<Order>(x => x.Company == "companies/11");
-	        var subscription = store.Subscriptions.Open<Order>(subscriptionName);
+	        var subscription = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
 	        var subscriptionTask = subscription.Run(x =>
 	            x.Items.ForEach(item =>
 	                Console.WriteLine($"Order #{item.Result.Id} will be shipped via: {item.Result.ShipVia}")));
