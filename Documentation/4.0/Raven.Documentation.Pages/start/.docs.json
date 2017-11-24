@@ -10,6 +10,16 @@
         ]
     },
     {
+        "Path": "whats-new.markdown",
+        "Name": "What's new",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "intro/what-is-new"
+            }
+        ]
+    },
+    {
         "Path": "installation.markdown",
         "Name": "Installing RavenDB",
         "Mappings": []
