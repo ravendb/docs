@@ -54,6 +54,8 @@
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="indexes\creating-and-deploying.markdown" />
+    <None Include="indexes\what-are-indexes.markdown" />
     <None Include="start\.docs.json" />
     <None Include="start\about-examples.markdown" />
     <None Include="start\getting-started.markdown" />
@@ -62,6 +64,7 @@
     <None Include="indexes\.docs.json" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
     <None Include="indexes\indexing-linq-extensions.markdown" />
+    <None Include="start\whats-new.markdown" />
     <None Include="studio\.docs.json" />
     <None Include="studio\database\.docs.json" />
     <None Include="studio\database\tasks\.docs.json" />
