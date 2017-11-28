@@ -28,7 +28,10 @@ the querying API provides extension methods that will be described later.
 
 ###Example I - Basic dynamic query
 
-{CODE query_1_1@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync query_1_1@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Async query_1_1_async@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS/}
 
 The above is an example of a dynamic query which doesn't require to specify an index name. RaveDB will create an auto index automatically if that will be necessary.
 
@@ -41,19 +44,31 @@ Both LINQ syntaxes are supported:
 
 - method syntax:
 
-{CODE query_1_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync query_1_2@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Async query_1_2_async@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS/}
 
 - query syntax:
 
-{CODE query_1_3@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync query_1_3@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Async query_1_3_async@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS/}
 
 ### Example III - Using specific index
 
-{CODE query_1_4@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync query_1_4@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Async query_1_4_async@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS/}
 
 or 
 
-{CODE query_1_5@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync query_1_5@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Async query_1_5_async@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS/}
 
 ## Session.Advanced.DocumentQuery
 
@@ -63,7 +78,10 @@ to shape using Linq.
 
 ### Example IV
 
-{CODE query_1_6@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync query_1_6@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Async query_1_6_async@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS/}
 
 ## Session.Advanced.RawQuery
 
@@ -71,7 +89,10 @@ Queries in RavenDB are using a SQL-like language called RavenDB Query Language (
 
 ### Example IV
 
-{CODE query_1_7@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync query_1_7@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TAB:csharp:Async query_1_7_async@ClientApi\Session\Querying\HowToQuery.cs /}
+{CODE-TABS/}
 
 <!--
 ### Custom methods and extensions for LINQ
