@@ -42,6 +42,9 @@
   <ItemGroup>
     <None Include=".docs.json" />
     <None Include="client-api\.docs.json" />
+    <None Include="client-api\commands\documents\how-to\get-document-metadata-only.dotnet.markdown" />
+    <None Include="client-api\commands\documents\how-to\get-document-metadata-only.http.markdown" />
+    <None Include="client-api\commands\documents\how-to\get-document-metadata-only.java.markdown" />
     <None Include="client-api\creating-document-store.markdown" />
     <None Include="client-api\data-subscriptions\.docs.json" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
