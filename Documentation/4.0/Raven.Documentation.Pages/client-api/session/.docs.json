@@ -28,5 +28,10 @@
                 "Key": "client-api/basic-operations/understanding-session-object"
             }
         ]
+    },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
     }
 ]

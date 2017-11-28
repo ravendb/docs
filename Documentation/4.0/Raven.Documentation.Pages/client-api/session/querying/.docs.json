@@ -1,0 +1,12 @@
+[
+    {
+        "Path": "how-to-query.markdown",
+        "Name": "How to query?",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/using-linq-to-query-ravendb"
+            }
+        ]
+    }
+]

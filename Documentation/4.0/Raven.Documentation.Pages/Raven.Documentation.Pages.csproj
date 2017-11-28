@@ -50,6 +50,8 @@
     <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
     <None Include="client-api\session\.docs.json" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />
+    <None Include="client-api\session\querying\.docs.json" />
+    <None Include="client-api\session\querying\how-to-query.dotnet.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
