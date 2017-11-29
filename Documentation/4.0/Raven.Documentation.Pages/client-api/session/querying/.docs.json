@@ -9,14 +9,19 @@
             }
         ]
     },
-      {
-    "Path": "how-to-stream-query-results.markdown",
-    "Name": "How to stream query results?",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/advanced/unbounded-results"
-			}
-		]
-  },
+    {
+        "Path": "how-to-stream-query-results.markdown",
+        "Name": "How to stream query results?",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/advanced/unbounded-results"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-customize-query.markdown",
+        "Name": "How to customize query?",
+        "Mappings": []
+    },
 ]

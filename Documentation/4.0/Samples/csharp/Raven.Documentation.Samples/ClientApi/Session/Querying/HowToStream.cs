@@ -98,7 +98,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Advanced
                         .AsyncDocumentQuery<Employee>()
                         .WhereEquals(x => x.FirstName, "Robert");
-                    
+
                     IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
 
                     while (await results.MoveNextAsync())
@@ -130,7 +130,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     IAsyncRawDocumentQuery<Employee> query = asyncSession
                         .Advanced
                         .AsyncRawQuery<Employee>("from Employees where FirstName = 'Robert'");
-                    
+
                     IAsyncEnumerator<StreamResult<Employee>> results = await asyncSession.Advanced.StreamAsync(query);
 
                     while (await results.MoveNextAsync())
