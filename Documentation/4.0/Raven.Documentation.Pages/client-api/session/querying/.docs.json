@@ -8,5 +8,15 @@
                 "Key": "client-api/querying/using-linq-to-query-ravendb"
             }
         ]
-    }
+    },
+      {
+    "Path": "how-to-stream-query-results.markdown",
+    "Name": "How to stream query results?",
+		"Mappings": [
+			{
+				"Version": 2.5,
+				"Key": "client-api/advanced/unbounded-results"
+			}
+		]
+  },
 ]

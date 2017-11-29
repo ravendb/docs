@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "stream-query-statistics.markdown",
+        "Name": "StreamQueryStatistics",
+        "Mappings": []
+    },
+    {
+        "Path": "stream-result.markdown",
+        "Name": "StreamResult",
+        "Mappings": []
+    }
+]
