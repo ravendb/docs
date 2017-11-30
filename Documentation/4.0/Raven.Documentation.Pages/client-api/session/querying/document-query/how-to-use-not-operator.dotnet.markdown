@@ -6,15 +6,15 @@
 
 ## Example I
 
-{CODE not_1@ClientApi\Session\Querying\DQ\HowToUseNotOperator.cs /}
+{CODE not_1@ClientApi\Session\Querying\DocumentQuery\HowToUseNotOperator.cs /}
 
 ## Example II
 
-{CODE not_2@ClientApi\Session\Querying\DQ\HowToUseNotOperator.cs /}
+{CODE not_2@ClientApi\Session\Querying\DocumentQuery\HowToUseNotOperator.cs /}
 
 ## Example III
 
-{CODE not_3@ClientApi\Session\Querying\DQ\HowToUseNotOperator.cs /}
+{CODE not_3@ClientApi\Session\Querying\DocumentQuery\HowToUseNotOperator.cs /}
 
 ## Related articles
 

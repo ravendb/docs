@@ -18,5 +18,10 @@
                 "Key": "client-api/querying/lucene/how-to-use-not-operator"
             }
         ]
+    },
+    {
+        "Path": "how-to-use-lucene.markdown",
+        "Name": "How to use Lucene?",
+        "Mappings": []
     }
 ]

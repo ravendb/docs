@@ -1,4 +1,11 @@
-﻿using System.Collections.Generic;using System.Linq;using Raven.Client.Documents;using Raven.Client.Documents.Indexes;using Raven.Client.Documents.Session;using Raven.Documentation.Samples.Orders;namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DQ
+﻿using System.Collections.Generic;
+using System.Linq;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Session;
+using Raven.Documentation.Samples.Orders;
+
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DocumentQuery
 {
     public class WhatIsDocumentQuery
     {

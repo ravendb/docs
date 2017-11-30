@@ -4,7 +4,7 @@ Low-level querying capabilities can be accessed via `DocumentQuery` method in ad
 
 ## Syntax
 
-{CODE document_query_1@ClientApi\Session\Querying\DQ\WhatIsDocumentQuery.cs /}
+{CODE document_query_1@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -18,17 +18,17 @@ Low-level querying capabilities can be accessed via `DocumentQuery` method in ad
 
 ## Example I - Basic
 
-{CODE document_query_2@ClientApi\Session\Querying\DQ\WhatIsDocumentQuery.cs /}
+{CODE document_query_2@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
-{CODE document_query_3@ClientApi\Session\Querying\DQ\WhatIsDocumentQuery.cs /}
+{CODE document_query_3@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
 ## Example II - Querying specified index
 
-{CODE document_query_4@ClientApi\Session\Querying\DQ\WhatIsDocumentQuery.cs /}
+{CODE document_query_4@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
 or
 
-{CODE document_query_5@ClientApi\Session\Querying\DQ\WhatIsDocumentQuery.cs /}
+{CODE document_query_5@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
 ## Custom methods and extensions
 
@@ -100,7 +100,7 @@ Available custom methods and extensions:
 - WhereIn
 - WhereLessThan
 - WhereLessThanOrEqual
-- WhereLucene
+- [WhereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - WhereNotEquals
 - WhereRegex
 - WhereStartsWith
