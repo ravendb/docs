@@ -1,4 +1,19 @@
 ﻿[
+        {
+        "Path": "blittable-json-reader-object.markdown",
+        "Name": "BlittableJsonReaderObject",
+        "Mappings": []
+    },
+    {
+        "Path": "index-query.markdown",
+        "Name": "IndexQuery",
+        "Mappings": []
+    },
+    {
+        "Path": "query-result.markdown",
+        "Name": "QueryResult",
+        "Mappings": []
+    },
     {
         "Path": "stream-query-statistics.markdown",
         "Name": "StreamQueryStatistics",
@@ -8,5 +23,5 @@
         "Path": "stream-result.markdown",
         "Name": "StreamResult",
         "Mappings": []
-    }
+    },
 ]

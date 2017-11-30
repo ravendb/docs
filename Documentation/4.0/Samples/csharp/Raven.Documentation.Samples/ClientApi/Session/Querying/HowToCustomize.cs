@@ -3,7 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Queries;
-using Raven.Client.Documents.Session;using Raven.Documentation.Samples.Orders;namespace Raven.Documentation.Samples.ClientApi.Session.Querying
+using Raven.Client.Documents.Session;
+using Raven.Documentation.Samples.Orders;
+using Sparrow.Json;
+using Sparrow.Json.Parsing;
+
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
     public class HowToCustomize
     {
@@ -11,6 +16,14 @@ using Raven.Client.Documents.Session;using Raven.Documentation.Samples.Orders;
         {
             #region customize_1_0
             IDocumentQueryCustomization BeforeQueryExecuted(Action<IndexQuery> action);
+            #endregion
+
+            #region customize_1_0_0
+            IDocumentQueryCustomization AfterQueryExecuted(Action<QueryResult> action);
+            #endregion
+
+            #region customize_1_0_1
+            IDocumentQueryCustomization AfterStreamExecuted(Action<BlittableJsonReaderObject> action);
             #endregion
 
             #region customize_2_0
@@ -25,10 +38,6 @@ using Raven.Client.Documents.Session;using Raven.Documentation.Samples.Orders;
             IDocumentQueryCustomization RandomOrdering();
 
             IDocumentQueryCustomization RandomOrdering(string seed);
-            #endregion
-
-            #region customize_6_0
-            IDocumentQueryCustomization ShowTimings();
             #endregion
 
             #region customize_8_0
@@ -56,6 +65,31 @@ using Raven.Client.Documents.Session;using Raven.Documentation.Samples.Orders;
                     // set 'PageSize' to 10
                     List<Employee> results = session.Query<Employee>()
                         .Customize(x => x.BeforeQueryExecuted(query => query.PageSize = 10))
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region customize_1_1_0
+                    TimeSpan queryDuration;
+
+                    List<Employee> results = session.Query<Employee>()
+                        .Customize(x => x.AfterQueryExecuted(
+                            result => queryDuration = TimeSpan.FromMilliseconds(result.DurationInMs)))
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region customize_1_1_1
+
+                    long totalStreamedResultsSize = 0;
+
+                    List<Employee> results = session.Query<Employee>()
+                        .Customize(x => x.AfterStreamExecuted(
+                            result => totalStreamedResultsSize += result.Size))
                         .ToList();
                     #endregion
                 }

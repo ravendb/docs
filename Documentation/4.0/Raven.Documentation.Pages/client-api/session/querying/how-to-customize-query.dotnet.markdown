@@ -2,16 +2,16 @@
 
 Following query customization options are available in `IDocumentQueryCustomization` interface:
 
-- [BeforeQueryExecution](../../../client-api/session/querying/how-to-customize-query#beforequeryexecution)
-- [CustomSortUsing](../../../client-api/session/querying/how-to-customize-query#customsortusing)
+- [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
+- [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
+- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
 - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
 - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
 - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
 - [WaitForNonStaleResultsAsOf](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasof)
 - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
-<!--- [ShowTimings](../../../client-api/session/querying/how-to-customize-query#showtimings) -->
 
-{PANEL:BeforeQueryExecution}
+{PANEL:BeforeQueryExecuted}
 
 Allows you to modify the index query just before it is executed.
 
@@ -28,6 +28,46 @@ Allows you to modify the index query just before it is executed.
 ### Example
 
 {CODE customize_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+{PANEL/}
+
+{PANEL:AfterQueryExecuted}
+
+Allows you to retrieve a raw query result after it got executed.
+
+{CODE customize_1_0_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Action<[QueryResult](../../../glossary/query-result)> | Action that has the query result. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+{CODE customize_1_1_0@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+{PANEL/}
+
+{PANEL:AfterStreamExecuted}
+
+Allows you to retrieve a raw (blittable) result of the streaming query.
+
+{CODE customize_1_0_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **action** | Action<[BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object)> | Action that has the single query result. |
+
+| Return Value | |
+| ------------- | ----- |
+| IDocumentQueryCustomization | Returns self for easier method chaining. |
+
+### Example
+
+{CODE customize_1_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 {PANEL/}
 
@@ -82,29 +122,6 @@ To order results randomly use `RandomOrdering` method.
 {CODE customize_4_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 {PANEL/}
-
-<!--{PANEL:ShowTimings}
-TODO arek - restore once RavenDB-9587 will be implemented
-By default, detailed timings (duration of Lucene search, loading documents, projecting results) in queries are turned off, this is due to small overhead that calculation of such timings produces.
-
-{CODE customize_6_0@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-Returned timings:
-
-- Query parsing
-- Lucene search
-- Loading documents
-- Transforming results
-
-### Example
-
-{CODE customize_6_1@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-{PANEL/} -->
 
 {PANEL:WaitForNonStaleResultsAsOf}
 

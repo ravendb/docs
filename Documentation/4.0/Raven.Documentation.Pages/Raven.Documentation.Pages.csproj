@@ -59,6 +59,9 @@
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docs.json" />
+    <None Include="glossary\blittable-json-reader-object.markdown" />
+    <None Include="glossary\index-query.markdown" />
+    <None Include="glossary\query-result.markdown" />
     <None Include="glossary\stream-query-statistics.markdown" />
     <None Include="glossary\stream-result.markdown" />
     <None Include="indexes\creating-and-deploying.markdown" />
