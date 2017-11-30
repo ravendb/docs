@@ -18,5 +18,10 @@
         "Path": "/studio",
         "Name": "Studio",
         "Mappings": []
+    },
+    {
+        "Path": "/glossary",
+        "Name": "Glossary",
+        "Mappings": []
     }
 ]
