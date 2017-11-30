@@ -1,0 +1,12 @@
+[
+    {
+        "Path": "how-to-use-not-operator.markdown",
+        "Name": "How to use NOT operator?",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/querying/lucene/how-to-use-not-operator"
+            }
+        ]
+    }
+]
