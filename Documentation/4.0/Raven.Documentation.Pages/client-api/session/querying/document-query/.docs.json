@@ -1,5 +1,15 @@
 [
     {
+        "Path": "what-is-document-query.markdown",
+        "Name": "What is a Document Query?",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/querying/lucene/how-to-use-lucene-in-queries"
+            }
+        ]
+    },
+    {
         "Path": "how-to-use-not-operator.markdown",
         "Name": "How to use NOT operator?",
         "Mappings": [
