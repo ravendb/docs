@@ -3,7 +3,9 @@ using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Linq;
 using Raven.Client.Documents.Session;
-using Raven.Documentation.Samples.Orders;namespace Raven.Documentation.Samples.ClientApi.Session.Querying
+using Raven.Documentation.Samples.Orders;
+
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
     public class HowToGetQueryStatistics
     {

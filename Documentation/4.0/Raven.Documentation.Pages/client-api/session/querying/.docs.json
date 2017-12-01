@@ -44,4 +44,14 @@
             }
         ]
     },
+    {
+        "Path": "how-to-use-intersect.markdown",
+        "Name": "How to use intersect?",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/intersection"
+            }
+        ]
+    }
 ]
