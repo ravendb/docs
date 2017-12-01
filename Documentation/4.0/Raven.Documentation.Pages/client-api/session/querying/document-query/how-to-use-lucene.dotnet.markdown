@@ -17,8 +17,8 @@ Lucene-flawored syntax can be used with `WhereLucene` method, a part of filterin
 {CODE-TAB:csharp:Sync lucene_2@ClientApi\Session\Querying\DocumentQuery\HowToUseLucene.cs /}
 {CODE-TAB:csharp:Async lucene_3@ClientApi\Session\Querying\DocumentQuery\HowToUseLucene.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
-From Companies 
-Where lucene(Name, 'bistro')
+from Companies 
+where lucene(Name, 'bistro')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

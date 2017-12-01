@@ -31,10 +31,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DQ
                     #endregion
                 }
 
-                using (var session = store.OpenAsyncSession())
+                using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region lucene_3
-                    List<Company> results = await session
+                    List<Company> results = await asyncSession
                         .Advanced
                         .AsyncDocumentQuery<Company>()
                         .WhereLucene("Name", "bistro")
