@@ -51,9 +51,13 @@
     <None Include="client-api\session\.docs.json" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="client-api\session\querying\.docs.json" />
+    <None Include="client-api\session\querying\document-query\what-is-document-query.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-customize-query.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-query.dotnet.markdown" />
+    <None Include="client-api\session\querying\document-query\how-to-use-lucene.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-stream-query-results.dotnet.markdown" />
+    <None Include="client-api\session\querying\document-query\.docs.json" />
+    <None Include="client-api\session\querying\document-query\how-to-use-not-operator.dotnet.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />

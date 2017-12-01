@@ -1,5 +1,10 @@
 [
     {
+        "Path": "/document-query",
+        "Name": "DocumentQuery",
+        "Mappings": []
+    },
+    {
         "Path": "how-to-query.markdown",
         "Name": "How to query?",
         "Mappings": [
@@ -23,5 +28,5 @@
         "Path": "how-to-customize-query.markdown",
         "Name": "How to customize query?",
         "Mappings": []
-    },
+    }
 ]
