@@ -28,5 +28,15 @@
         "Path": "how-to-customize-query.markdown",
         "Name": "How to customize query?",
         "Mappings": []
-    }
+    },
+    {
+        "Path": "how-to-work-with-suggestions.markdown",
+        "Name": "How to work with suggestions?",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/suggestions"
+            }
+        ]
+    },
 ]
