@@ -19,35 +19,24 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents.HowTo
     }
 
     public class Foo2
-    { 
+    {
         public Foo2()
         {
-            using (var docStore = new DocumentStore())
+            using (var store = new DocumentStore())
+            using (var session = store.OpenSession())
+            using (var context = JsonOperationContext.ShortTermSingleUse())
             {
                 #region head_2
-                // Create a command to fetch the metadata.
-                var docId = "FooBars/1-A";
-                var getMetaCommand = new GetDocumentCommand(docId, includes: null, metadataOnly: true);
+                var command = new GetDocumentCommand("orders/1-A", null, metadataOnly: true);
+                session.Advanced.RequestExecutor.Execute(command, context);
+                var result = (BlittableJsonReaderObject)command.Result.Results[0];
+                var documentMetadata = (BlittableJsonReaderObject)result["@metadata"];
 
-                var executor = Raven.Client.Http.RequestExecutor.Create(docStore.Urls, docStore.Database, docStore.Certificate, docStore.Conventions);
-                using (var opContext = JsonOperationContext.ShortTermSingleUse())
+                // Print out all the metadata properties.
+                foreach (var propertyName in documentMetadata.GetPropertyNames())
                 {
-                    // Fetch the metadata
-                    executor.Execute(getMetaCommand, opContext);
-                    var metaResult = getMetaCommand.Result; // null if does not exist
-
-                    // We asked for a single document, so get the first (only) item.
-                    var metaResultItem = (BlittableJsonReaderObject)metaResult.Results[0];
-
-                    // We asked for metadata only, so grab that object.
-                    var docMeta = (BlittableJsonReaderObject)metaResultItem["@metadata"];
-
-                    // Print out all the metadata properties.
-                    foreach (var metaPropName in docMeta.GetPropertyNames())
-                    {
-                        docMeta.TryGet<object>(metaPropName, out var metaPropValue);
-                        Console.WriteLine("{0} = {1}", metaPropName, metaPropValue);
-                    }
+                    documentMetadata.TryGet<object>(propertyName, out var metaPropValue);
+                    Console.WriteLine("{0} = {1}", propertyName, metaPropValue);
                 }
                 #endregion
             }
