@@ -64,6 +64,7 @@
     <None Include="client-api\session\querying\how-to-use-intersect.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-use-morelikethis.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-work-with-suggestions.dotnet.markdown" />
+    <None Include="client-api\session\querying\how-to-project-query-results.dotnet.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />

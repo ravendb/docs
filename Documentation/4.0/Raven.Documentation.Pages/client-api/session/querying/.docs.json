@@ -30,6 +30,20 @@
         "Mappings": []
     },
     {
+        "Path": "how-to-project-query-results.markdown",
+        "Name": "How to project query results?",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/results-transformation/transform-results"
+            },
+            {
+                "Version": 3.5,
+                "Key": "client-api/session/querying/how-to-perform-projection"
+            }
+        ]
+    },
+    {
         "Path": "how-to-get-query-statistics.markdown",
         "Name": "How to get query statistics?",
         "Mappings": []

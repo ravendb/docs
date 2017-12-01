@@ -135,3 +135,4 @@ Available custom methods and extensions:
 
 - [What are indexes?](../../../indexes/what-are-indexes)   
 - [Indexes : Querying: Basics](../../../indexes/querying/basics)  
+- [Session : Querying : What is a Document Query?](../document-query/what-is-document-query.dotnet)
