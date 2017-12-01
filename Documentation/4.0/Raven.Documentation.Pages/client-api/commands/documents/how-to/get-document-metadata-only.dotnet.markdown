@@ -11,7 +11,7 @@
 | ------------- | ------------- | ----- |
 | **id** | string | ID of a document to get metadata for |
 | **includes** | string | Related documents to fetch along with the document |
-| **metadataOnly** | boolean | Whether to fetch the whole document, or just the metadata. Pass true to get metadata only. |
+| **metadataOnly** | boolean | Whether to fetch the whole document or just the metadata. |
 
 ## Example
 
