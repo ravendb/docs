@@ -12,8 +12,10 @@ Just 500 milliseconds of web delay can cost you 5% of your projected sales. Perf
 
 ## The Limits of the Disco Database
 
-<div class="flex-v pull-right margin-left">
-    <iframe width="500" height="315" src="https://www.youtube.com/embed/I_izvAbhExY" frameborder="0" allowfullscreen></iframe>
+<div class="youtube-frame youtube-frame--right">
+    <div class="embed-responsive embed-responsive-16by9">
+        <iframe class="embed-responsive-item" width="500" height="315" src="https://www.youtube.com/embed/I_izvAbhExY" frameborder="0" allowfullscreen></iframe>
+    </div>
     <div class="caption">Stayin Alive, 1977, the year relational databases were fully developed.</div>
 </div>
 
@@ -91,9 +93,11 @@ Either way, you have a tremendous opportunity to take the great leap forward in 
 
 <div class="bottom-line">
 <p>
-    <a href="http://ravendb.net/"><strong>RavenDB 4.0</strong></a> is an open source NoSQL document database that specializes in online transaction processing (OLTP). RavenDB is fully transactional (ACID), and compatible with legacy SQL RMDBs. You can have the best of SQL while enjoying high performance, a distributed data cluster, flexibility, and scalability with low overhead that comes with a top of the line NoSQL solution. RavenDB is an easy to use all-in-one database, striving to minimize your need for third party applications, tools, or support.</p
+    <a href="http://ravendb.net/"><strong>RavenDB 4.0</strong></a> is an open source NoSQL document database that specializes in online transaction processing (<em>OLTP</em>). It's fully transactional (<em>ACID</em>), and compatible with legacy SQL RMDBs. You can have the best of SQL while enjoying high performance, a distributed data cluster, flexibility, and scalability with low overhead that comes with a top of the line NoSQL solution. RavenDB is an easy to use all-in-one database, striving to minimize your need for third party applications, tools, or support.</p>
+<p>RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds up to 1,000,000 writes per second on a single node. You can build high-performance, low-latency applications quickly and efficiently. <a href="https://ravendb.net/downloads#server/dev">
+</p>
 
-<p>RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds up to 1,000,000 writes per second on a single node. You can build high-performance, low-latency applications quickly and efficiently. <a href="https://ravendb.net/downloads#server/dev"><strong>Grab RavenDB 4.0 for free</strong></a>, and get 3 cores, our state of the art GUI, and a 6 gigabyte RAM database with up to a 3-server cluster up and running for your next project.</p>
+<p><strong>Grab RavenDB 4.0 for free</strong></a>, and get 3 cores, our state of the art GUI, and a 6 gigabyte RAM database with up to a 3-server cluster up and running for your next project.</p>
 </div>
 
 ## Our Credo
