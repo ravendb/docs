@@ -62,6 +62,7 @@
     <None Include="client-api\session\querying\document-query\.docs.json" />
     <None Include="client-api\session\querying\document-query\how-to-use-not-operator.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-use-intersect.dotnet.markdown" />
+    <None Include="client-api\session\querying\how-to-use-morelikethis.dotnet.markdown" />
     <None Include="client-api\session\querying\how-to-work-with-suggestions.dotnet.markdown" />
     <None Include="client-api\session\storing-entities.dotnet.markdown" />
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />

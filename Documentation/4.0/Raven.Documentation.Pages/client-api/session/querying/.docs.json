@@ -63,5 +63,10 @@
                 "Key": "client-api/querying/static-indexes/suggestions"
             }
         ]
+    },
+    {
+        "Path": "how-to-use-morelikethis.markdown",
+        "Name": "How to use MoreLikeThis?",
+        "Mappings": []
     }
 ]

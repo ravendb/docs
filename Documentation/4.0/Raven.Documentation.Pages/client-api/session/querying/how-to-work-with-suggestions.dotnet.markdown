@@ -15,7 +15,7 @@ Session `Query` method contains extension (`SuggestUsing`) that allows you to us
 
 {CODE suggest_7@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 
-| Parameters | | |
+| Options | | |
 | ------------- | ------------- | ----- |
 | **PageSize** | int | Maximum number of suggestions that will be returned |
 | **Distance** | `StringDistanceTypes` | String distance algorithm to use (`None`, `Levenshtein`, `JaroWinkler`, `NGram`) |
