@@ -1,12 +1,17 @@
 ﻿[
     {
-        "Path": "/data-subscriptions",
-        "Name": "Data Subscriptions and Batch Processing",
+        "Path": "/session",
+        "Name": "Session",
         "Mappings": []
     },
     {
-        "Path": "/session",
-        "Name": "Session",
+        "Path": "/data-subscriptions",
+        "Name": "Data Subscriptions",
+        "Mappings": []
+    },
+    {
+        "Path": "/commands",
+        "Name": "Commands",
         "Mappings": []
     },
     {

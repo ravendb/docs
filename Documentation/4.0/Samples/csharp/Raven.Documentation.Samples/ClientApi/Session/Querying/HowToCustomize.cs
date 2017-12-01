@@ -127,20 +127,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
                 using (var session = store.OpenSession())
                 {
-                    #region customize_6_1
-                    QueryStatistics stats;
-                    List<Employee> results = session.Query<Employee>()
-                        .Customize(x => x.ShowTimings())
-                        .Statistics(out stats)
-                        .Where(x => x.FirstName == "Robert")
-                        .ToList();
-
-                    Dictionary<string, double> timings = stats.TimingsInMs;
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
                     #region customize_8_1
                     List<Employee> results = session.Query<Employee>()
                         .Customize(x => x.WaitForNonStaleResults())
