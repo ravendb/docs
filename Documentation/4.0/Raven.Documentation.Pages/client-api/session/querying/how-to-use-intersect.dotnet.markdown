@@ -8,7 +8,14 @@ To return only documents that match **all** provided sub-queries we have introdu
 
 ## Example
 
-{CODE intersect_2@ClientApi\Session\Querying\HowToUseIntersect.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync intersect_2@ClientApi\Session\Querying\HowToUseIntersect.cs /}
+{CODE-TAB:csharp:Async intersect_3@ClientApi\Session\Querying\HowToUseIntersect.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
+where intersect(Manufacturer = 'Raven', Color = 'Blue' AND Size = 'Small', Color = 'Gray' AND Size = 'Large')
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
 ## Related articles
 
