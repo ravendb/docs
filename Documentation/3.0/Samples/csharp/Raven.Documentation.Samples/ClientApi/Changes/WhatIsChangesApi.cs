@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 			using (var store = new DocumentStore())
 			{
 				#region changes_2
-				IDisposable subscribtion = store
+				IDisposable subscription = store
 					.Changes()
 					.ForAllDocuments()
 					.Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
@@ -30,8 +30,8 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
 				}
 				finally
 				{
-					if (subscribtion != null)
-						subscribtion.Dispose();
+					if (subscription != null)
+						subscription.Dispose();
 				}
 				#endregion
 			}
