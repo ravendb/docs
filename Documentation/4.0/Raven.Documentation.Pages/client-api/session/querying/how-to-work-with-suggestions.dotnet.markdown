@@ -1,6 +1,6 @@
 # Session : Querying : How to work with suggestions?
 
-Session `Query` method contains extension (`SuggestUsing`) that allows you to use the suggestion feature.
+`Suggestion` feature is available through query extension methods and gives you the ability to find word similarities using string distance algorithms.
 
 ## Syntax
 
