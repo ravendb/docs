@@ -25,6 +25,11 @@
         "Mappings": []
     },
     {
+        "Path": "map-indexes.markdown",
+        "Name": "Map indexes",
+        "Mappings": []
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to json and accessing metadata",
         "Mappings": []
