@@ -4,7 +4,7 @@ Instead of pulling full documents in query results you can just grab some pieces
 results. The projections are defined in LINQ with the usage of:
 
 - [Select](../../../client-api/session/querying/how-to-project-query-results#select)
-- [ProjectFromIndexFieldsInto](../../../client-api/session/querying/how-to-project-query-results#projectfromindexfieldsinto)
+- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results#projectinto)
 - [OfType (As)](../../../client-api/session/querying/how-to-project-query-results#oftype-(as)---simple-projection)
 
 {PANEL:Select}
@@ -46,7 +46,21 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with calculation
+### Example IV - Projection with `let`
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Async projections_12_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+declare function output(e) {
+	var format = function(p){ return p.FirstName + " " + p.LastName; };
+	return { FullName : format(e) };
+}
+from Employees as e select output(e)
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+### Example V - Projection with calculation
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -60,14 +74,13 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projection using loaded document
+### Example VI - Projection using loaded document
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_5_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from Orders as o
-where Company = 'companies /1'
 load o.Company as c
 select {
 	CompanyName: c.Name,
@@ -76,7 +89,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VI - Projection with dates
+### Example VII - Projection with dates
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -91,7 +104,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection with raw JavaScript code
+### Example VIII - Projection with raw JavaScript code
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -100,18 +113,31 @@ select {
 from Employees as e 
 select {
     Date : new Date(Date.parse(r.Birthday)), 
-    Name : e.Name.substr(0,3)
+    Name : e.FirstName.substr(0,3)
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+### Example IX - Projection with metadata
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Async projections_13_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Employees as e 
+select {
+     Name : e.FirstName, 
+     Metadata : getMetadata(e)
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 {PANEL/}
 
-{PANEL:ProjectFromIndexFieldsInto}
+{PANEL:ProjectInto}
 
 This extension method retrieves all public fields and properties of the type given in generic and use them to perform projection to the requested type.
-The query results will be created directly from stored fields of the index (it needs to be marked in the index definition).
-If the necessary fields aren't stored then documents will be retrieved from the storage in order to return projections.
+In other words, you can use this method instead of using `Select` together with all fields of the projection class.
 
 ### Example
 
@@ -123,6 +149,8 @@ from index 'Companies/ByContact'
 select Name, Phone
 {CODE-TAB-BLOCK/}
 {CODE-TAB:csharp:Index projections_9@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Class projections_9_class@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+
 {CODE-TABS/}
 
 {PANEL/}
@@ -141,4 +169,6 @@ select Name, Phone
 
 {PANEL/}
 
-{NOTE Projected entities (even named types) are not tracked by session. /}
+{NOTE Projected entities (even named types) are not tracked by the session. /}
+
+{NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition) then the query results will be created directly from there instead of retrieving documents in order to project. /}

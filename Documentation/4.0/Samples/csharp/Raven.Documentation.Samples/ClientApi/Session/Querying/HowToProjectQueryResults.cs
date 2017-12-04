@@ -129,7 +129,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_5
                     var results = (from o in session.Query<Order>()
-                                   where o.Company == "companies/1-A"
                                    let c = RavenQuery.Load<Company>(o.Company)
                                    select new
                                    {
@@ -143,7 +142,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_5_async
                     var results = (from o in asyncSession.Query<Order>()
-                                   where o.Company == "companies/1-A"
                                    let c = RavenQuery.Load<Company>(o.Company)
                                    select new
                                    {
@@ -186,7 +184,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         select new
                         {
                             Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
-                            Name = RavenQuery.Raw<string>("e.Name.substr(0,3)"),
+                            Name = RavenQuery.Raw(e.FirstName, "substr(0,3)"),
                         };
                     #endregion
                 }
@@ -198,7 +196,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         select new
                         {
                             Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
-                            Name = RavenQuery.Raw<string>("e.Name.substr(0,3)"),
+                            Name = RavenQuery.Raw(e.FirstName, "substr(0,3)"),
                         }).ToListAsync();
                     #endregion
                 }
@@ -207,7 +205,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_8
                     var results = session.Query<Company, Companies_ByContact>()
-                        .ProjectFromIndexFieldsInto<ContactDetails>()
+                        .ProjectInto<ContactDetails>()
                         .ToList();
                     #endregion
                 }
@@ -216,7 +214,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_8_async
                     var results = await asyncSession.Query<Company, Companies_ByContact>()
-                        .ProjectFromIndexFieldsInto<ContactDetails>()
+                        .ProjectInto<ContactDetails>()
                         .ToListAsync();
                     #endregion
                 }
@@ -248,6 +246,54 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .ToListAsync();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region projections_12
+                    var results = (from e in session.Query<Employee>()
+                        let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
+                        select new
+                        {
+                            FullName = format(e)
+                        }).ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region projections_12_async
+                    var results = await (from e in asyncSession.Query<Employee>()
+                        let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
+                        select new
+                        {
+                            FullName = format(e)
+                        }).ToListAsync();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region projections_13
+                    var results = (from e in session.Query<Employee>()
+                        select new
+                        {
+                            Name = e.FirstName,
+                            Metadata = RavenQuery.Metadata(e),
+                        }).ToList();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region projections_13_async
+                    var results = await (from e in asyncSession.Query<Employee>()
+                        select new
+                        {
+                            Name = e.FirstName,
+                            Metadata = RavenQuery.Metadata(e),
+                        }).ToListAsync();
+                    #endregion
+                }
             }
         }
 
@@ -263,17 +309,19 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         x.Phone
                     });
 
-                StoreAllFields(FieldStorage.Yes);
+                StoreAllFields(FieldStorage.Yes); // Name and Phone fields can be retrieved directly from index
             }
         }
         #endregion
 
-        private class ContactDetails
+        #region projections_9_class
+        public class ContactDetails
         {
             public string Name { get; set; }
 
             public string Phone { get; set; }
         }
+        #endregion
 
         #region projections_11
         public class Products_BySupplierName : AbstractIndexCreationTask<Product>
