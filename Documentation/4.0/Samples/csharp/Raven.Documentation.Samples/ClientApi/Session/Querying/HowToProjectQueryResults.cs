@@ -156,11 +156,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region projections_6
                     var results = session
                         .Query<Employee>()
-                        .Select(e => new {
+                        .Select(e => new
+                        {
                             DayOfBirth = e.Birthday.Day,
                             MonthOfBirth = e.Birthday.Month,
                             Age = DateTime.Today.Year - e.Birthday.Year
-                        });
+                        })
+                        .ToList();
                     #endregion
                 }
 
@@ -169,11 +171,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region projections_6_async
                     var results = await asyncSession
                         .Query<Employee>()
-                        .Select(e => new {
+                        .Select(e => new
+                        {
                             DayOfBirth = e.Birthday.Day,
                             MonthOfBirth = e.Birthday.Month,
                             Age = DateTime.Today.Year - e.Birthday.Year
-                        }).ToListAsync();
+                        })
+                        .ToListAsync();
                     #endregion
                 }
 
@@ -181,11 +185,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_7
                     var results = from e in session.Query<Employee>()
-                        select new
-                        {
-                            Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
-                            Name = RavenQuery.Raw(e.FirstName, "substr(0,3)"),
-                        };
+                                  select new
+                                  {
+                                      Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
+                                      Name = RavenQuery.Raw(e.FirstName, "substr(0,3)"),
+                                  };
                     #endregion
                 }
 
@@ -193,11 +197,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_7_async
                     var results = await (from e in asyncSession.Query<Employee>()
-                        select new
-                        {
-                            Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
-                            Name = RavenQuery.Raw(e.FirstName, "substr(0,3)"),
-                        }).ToListAsync();
+                                         select new
+                                         {
+                                             Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
+                                             Name = RavenQuery.Raw(e.FirstName, "substr(0,3)"),
+                                         }).ToListAsync();
                     #endregion
                 }
 
@@ -251,11 +255,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_12
                     var results = (from e in session.Query<Employee>()
-                        let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
-                        select new
-                        {
-                            FullName = format(e)
-                        }).ToList();
+                                   let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
+                                   select new
+                                   {
+                                       FullName = format(e)
+                                   }).ToList();
                     #endregion
                 }
 
@@ -263,11 +267,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_12_async
                     var results = await (from e in asyncSession.Query<Employee>()
-                        let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
-                        select new
-                        {
-                            FullName = format(e)
-                        }).ToListAsync();
+                                         let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
+                                         select new
+                                         {
+                                             FullName = format(e)
+                                         }).ToListAsync();
                     #endregion
                 }
 
@@ -275,11 +279,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_13
                     var results = (from e in session.Query<Employee>()
-                        select new
-                        {
-                            Name = e.FirstName,
-                            Metadata = RavenQuery.Metadata(e),
-                        }).ToList();
+                                   select new
+                                   {
+                                       Name = e.FirstName,
+                                       Metadata = RavenQuery.Metadata(e),
+                                   }).ToList();
                     #endregion
                 }
 
@@ -287,11 +291,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region projections_13_async
                     var results = await (from e in asyncSession.Query<Employee>()
-                        select new
-                        {
-                            Name = e.FirstName,
-                            Metadata = RavenQuery.Metadata(e),
-                        }).ToListAsync();
+                                         select new
+                                         {
+                                             Name = e.FirstName,
+                                             Metadata = RavenQuery.Metadata(e),
+                                         }).ToListAsync();
                     #endregion
                 }
             }

@@ -11,7 +11,7 @@ results. The projections are defined in LINQ with the usage of:
 
 The most common way to perform a query with projection is to use `Select` method. You can specify what fields from a document you want to retrieve or even provide complex expression.
 
-### Example I - Projecting only some fields of document
+### Example I - Projecting individual fields of the document
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
