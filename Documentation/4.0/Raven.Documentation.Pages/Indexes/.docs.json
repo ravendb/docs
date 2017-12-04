@@ -20,6 +20,11 @@
         ]
     },
     {
+        "Path": "indexing-basics.markdown",
+        "Name": "Indexing basics",
+        "Mappings": []
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to json and accessing metadata",
         "Mappings": []
