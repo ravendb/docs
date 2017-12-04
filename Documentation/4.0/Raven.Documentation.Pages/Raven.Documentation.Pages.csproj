@@ -76,6 +76,7 @@
     <None Include="glossary\stream-query-statistics.markdown" />
     <None Include="glossary\stream-result.markdown" />
     <None Include="indexes\creating-and-deploying.markdown" />
+    <None Include="indexes\indexing-basics.markdown" />
     <None Include="indexes\what-are-indexes.markdown" />
     <None Include="start\.docs.json" />
     <None Include="start\about-examples.markdown" />
