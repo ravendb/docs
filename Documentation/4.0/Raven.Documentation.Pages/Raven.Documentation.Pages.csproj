@@ -81,6 +81,16 @@
     <None Include="start\.docs.json" />
     <None Include="start\about-examples.markdown" />
     <None Include="start\getting-started.markdown" />
+    <None Include="start\images\setup\10.snag" />
+    <None Include="start\images\setup\2.snag" />
+    <None Include="start\images\setup\3.snag" />
+    <None Include="start\images\setup\4.snag" />
+    <None Include="start\images\setup\5.snag" />
+    <None Include="start\images\setup\6.snag" />
+    <None Include="start\images\setup\7.snag" />
+    <None Include="start\images\setup\8.snag" />
+    <None Include="start\images\setup\9.snag" />
+    <None Include="start\setup-wizard.markdown" />
     <None Include="start\installation.markdown" />
     <None Include="start\getting-to-know.markdown" />
     <None Include="indexes\.docs.json" />
@@ -110,6 +120,16 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="start\images\console.PNG" />
+    <Content Include="start\images\setup\1.png" />
+    <Content Include="start\images\setup\10.png" />
+    <Content Include="start\images\setup\2.png" />
+    <Content Include="start\images\setup\3.png" />
+    <Content Include="start\images\setup\4.png" />
+    <Content Include="start\images\setup\5.png" />
+    <Content Include="start\images\setup\6.png" />
+    <Content Include="start\images\setup\7.png" />
+    <Content Include="start\images\setup\8.png" />
+    <Content Include="start\images\setup\9.png" />
     <Content Include="start\images\studio.png" />
     <Content Include="studio\database\tasks\images\create-sample-data-1.png" />
     <Content Include="studio\database\tasks\images\create-sample-data-2.png" />

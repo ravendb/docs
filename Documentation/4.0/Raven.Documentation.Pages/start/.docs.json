@@ -25,6 +25,11 @@
         "Mappings": []
     },
     {
+        "Path": "setup-wizard.markdown",
+        "Name": "Setup Wizard",
+        "Mappings": []
+    },
+    {
         "Path": "getting-to-know.markdown",
         "Name": "Getting to know RavenDB",
         "Mappings": []
