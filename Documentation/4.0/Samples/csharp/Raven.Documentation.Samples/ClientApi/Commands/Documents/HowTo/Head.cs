@@ -1,17 +1,24 @@
 ﻿using System;
 using Raven.Client.Documents;
 using Sparrow.Json;
-using GetDocumentCommand = Raven.Client.Documents.Commands.GetDocumentCommand;
+using GetDocumentsCommand = Raven.Client.Documents.Commands.GetDocumentsCommand;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.Documents.HowTo
 {
     public class Foo
     {
-        public class GetDocumentCommand
+        public class GetDocumentsCommand
         {
             #region head_1
-            public GetDocumentCommand(string id, string[] includes, bool metadataOnly)
+            public GetDocumentsCommand(string id, string[] includes, bool metadataOnly)
             #endregion
+            {
+
+            }
+
+            #region head_3
+            public GetDocumentsCommand(string[] ids, string[] includes, bool metadataOnly)
+                #endregion
             {
 
             }
@@ -27,7 +34,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents.HowTo
             using (var context = JsonOperationContext.ShortTermSingleUse())
             {
                 #region head_2
-                var command = new GetDocumentCommand("orders/1-A", null, metadataOnly: true);
+                var command = new GetDocumentsCommand("orders/1-A", null, metadataOnly: true);
                 session.Advanced.RequestExecutor.Execute(command, context);
                 var result = (BlittableJsonReaderObject)command.Result.Results[0];
                 var documentMetadata = (BlittableJsonReaderObject)result["@metadata"];
