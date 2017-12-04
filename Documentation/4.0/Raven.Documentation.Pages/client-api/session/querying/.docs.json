@@ -59,6 +59,11 @@
         ]
     },
     {
+        "Path": "how-to-use-search.markdown",
+        "Name": "How to use search?",
+        "Mappings": []
+    },
+    {
         "Path": "how-to-use-intersect.markdown",
         "Name": "How to use intersect?",
         "Mappings": [
