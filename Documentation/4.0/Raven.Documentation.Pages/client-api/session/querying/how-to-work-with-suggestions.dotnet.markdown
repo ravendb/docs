@@ -9,7 +9,7 @@ Session `Query` method contains extension (`SuggestUsing`) that allows you to us
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **suggestion** | `SuggestionBase`  | Defines the type of suggestion that should be executed |
-| **factory** | `Action<ISuggestionFactory<T>>` | Factory with fluent API that helps to build `SuggestionBase` implementation |
+| **factory** | `Action<ISuggestionFactory<T>>` | Factory with fluent API that builds `SuggestionBase` instance |
 
 ### Options
 

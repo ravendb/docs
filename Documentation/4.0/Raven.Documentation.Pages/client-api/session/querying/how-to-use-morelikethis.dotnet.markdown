@@ -1,6 +1,6 @@
 # Session : How to use MoreLikeThis?
 
-`MoreLikeThis` is available through query extension methods and will return documents similar to the provided input.
+`MoreLikeThis` is available through query extension methods and will return similar documents according to the provided criteria and options.
 
 ## Syntax
 
@@ -9,7 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed. |
-| **factory** | `Action<IMoreLikeThisFactory<T>>` | Factory with fluent API that helps to build `MoreLikeThisBase` implementation |
+| **factory** | `Action<IMoreLikeThisFactory<T>>` | Factory with fluent API that builds `MoreLikeThisBase` instance |
 
 ### Options
 
