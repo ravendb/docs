@@ -3,7 +3,7 @@ using System.Linq;
 using Raven.Client.Documents;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DQ
+namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DocumentQuery
 {
     public class HowToUseNotOperator
     {
