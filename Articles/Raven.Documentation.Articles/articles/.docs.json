@@ -1,23 +1,23 @@
-﻿[
+[
     {
         "Path": "cqrs-and-event-sourcing-made-easy-with-ravendb.markdown",
         "Name": "CQRS and Event Sourcing made easy with RavenDB",
-        "Mappings": [ ]
+        "Mappings": []
     },
     {
         "Path": "working-with-view-models.markdown",
         "Name": "Working with view models in RavenDB",
-        "Mappings": [ ]
+        "Mappings": []
     },
     {
         "Path": "ravendb-python-client-the-transition-to-a-dynamic-language.markdown",
         "Name": "RavenDB Python client - The transition to a dynamic language",
-        "Mappings": [ ]
+        "Mappings": []
     },
     {
         "Path": "choosing-the-best-nosql-database.markdown",
         "Name": "Choosing the Best NoSQL Document Database",
-        "Mappings": [ ],
+        "Mappings": [],
         "Metadata": {
             "title": "RavenDB or Elastic: The best database for you? | RavenDB",
             "likeSection": "yes",
@@ -46,7 +46,7 @@
     {
         "Path": "holding-off-harvey-with-high-availability.markdown",
         "Name": "Holding Off Harvey With High Availability",
-        "Mappings": [ ],
+        "Mappings": [],
         "Metadata": {
             "title": "Holding Off Harvey With High Availability | RavenDB",
             "likeSection": "yes",
@@ -75,7 +75,7 @@
     {
         "Path": "why-are-so-many-nosql-databases-getting-hacked.markdown",
         "Name": "Why are so Many NoSQL Databases Getting Hacked?",
-        "Mappings": [ ],
+        "Mappings": [],
         "Metadata": {
             "title": "Why are so Many NoSQL Databases Getting Hacked? | RavenDB",
             "likeSection": "yes",
@@ -104,7 +104,7 @@
     {
         "Path": "ravendb-presents-the-three-ps-of-database-high-availability.markdown",
         "Name": "RavenDB Presents the Three Ps of Database High Availability",
-        "Mappings": [ ],
+        "Mappings": [],
         "Metadata": {
             "title": "RavenDB Presents the Three Ps of Database High Availability | RavenDB",
             "likeSection": "yes",
@@ -133,7 +133,7 @@
     {
         "Path": "nosql-database-on-black-friday-ravendb-document-database.markdown",
         "Name": "A NoSQL Database on Black Friday: The Gift that Keeps Giving",
-        "Mappings": [ ],
+        "Mappings": [],
         "Metadata": {
             "title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
             "likeSection": "yes",
@@ -162,7 +162,7 @@
     {
         "Path": "nosql-database-acid-non-relational-enjoy-full-support-ravendb.markdown",
         "Name": "Enjoy Our Full Support",
-        "Mappings": [ ],
+        "Mappings": [],
         "Metadata": {
             "title": "Enjoy Our Full Support | RavenDB",
             "likeSection": "yes",
@@ -191,7 +191,7 @@
     {
         "Path": "black-friday-cyber-monday-nosql-database-ravendb.markdown",
         "Name": "3 Hidden Challenges for Your Database on Black Friday",
-        "Mappings": [ ],
+        "Mappings": [],
         "Metadata": {
             "title": "3 Hidden Challenges for Your Database on Black Friday | RavenDB",
             "likeSection": "yes",
@@ -215,6 +215,35 @@
             "twitter:description": "From Black Friday through New Year’s, a NoSQL database that scales up quickly is like opening up extra cash registers to serve a growing line.",
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/black-friday-cyber-monday-nosql-database-ravendb.jpg",
             "twitter:url": "https://ravendb.net/articles/black-friday-cyber-monday-nosql-database-ravendb"
+        }
+    },
+    {
+        "Path": "how-nosql-mapreduce-can-boost-your-database-performance.markdown",
+        "Name": "How A NoSQL MapReduce Can Boost Your Database Performance",
+        "Mappings": [],
+        "Metadata": {
+            "title": "How A NoSQL MapReduce Can Boost Your Database Performance | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/how-nosql-mapreduce-can-boost-your-database-performance",
+            "publishedAt": "2017-12-01"
+        },
+        "SeoMetaProperties": {
+            "description": "MapReduce Aggregation is great for your business, but it costs precious time and server resources. A NoSQL database like RavenDB can do it for free.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "How A NoSQL MapReduce Can Boost Your Database Performance | RavenDB",
+            "og:description": "MapReduce Aggregation is great for your business, but it costs precious time and server resources. A NoSQL database like RavenDB can do it for free.",
+            "og:url": "https://ravendb.net/articles/how-nosql-mapreduce-can-boost-your-database-performance",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/how-nosql-mapreduce-can-boost-your-database-performance.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "How A NoSQL MapReduce Can Boost Your Database Performance | RavenDB",
+            "twitter:description": "MapReduce Aggregation is great for your business, but it costs precious time and server resources. A NoSQL database like RavenDB can do it for free.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/how-nosql-mapreduce-can-boost-your-database-performance.jpg",
+            "twitter:url": "https://ravendb.net/articles/how-nosql-mapreduce-can-boost-your-database-performance"
         }
     }
 ]
