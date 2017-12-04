@@ -8,14 +8,10 @@ More complex text searching can be achieved by using `Search` extension method. 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fieldSelector** | Expression<Func&lt;TResult&gt;> | Expression marking a field in which terms should be looked for. |
+| **fieldSelector** | Expression<Func&lt;TResult&gt;> | Points index field that should be used for querying. |
 | **searchTerms** | string | Space separated terms e.g. 'John Adam' means that we will look in selected field for 'John' or 'Adam'. Wildcards can be specified. |
 | **boost** | decimal | Boost value. Default: `1`. |
-| **options** | SearchOptions | Explicitly set relation between each Search functions. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
-
-| Return Value | |
-| ------------- | ----- |
-| IRavenQueryable | Instance implementing IRavenQueryable interface containing additional query methods and extensions. |
+| **options** | SearchOptions | Explicitly set relation between each Search function. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
 
 ## Example I - Dynamic query
 
@@ -50,7 +46,7 @@ where boost(search(Hobbies, 'I love sport'), 10) OR boost(search(Hobbies, 'but a
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE In order to search using static index you have to indicate that indexed fields supports full-text search in the index definition /}
+{NOTE To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition. /}
 
 ## Related articles
 
