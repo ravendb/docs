@@ -8,7 +8,10 @@
 
 ## Example
 
-{CODE DeleteAttachment@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync DeleteAttachment@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TAB:csharp:Async DeleteAttachmentAsync@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TABS/}
 
 ## Related articles
 

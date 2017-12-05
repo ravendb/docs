@@ -15,9 +15,10 @@ There are few methods that allow you to download attachments from a database:
 
 ### Example
 
-{CODE GetAttachment@ClientApi\Attachments\Attachments\Attachments.cs /}
-
-{CODE GetAttachmentAsync@ClientApi\Attachments\Attachments\Attachments.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync GetAttachment@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TAB:csharp:Async GetAttachmentAsync@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TABS/}
 
 ## Related articles
 

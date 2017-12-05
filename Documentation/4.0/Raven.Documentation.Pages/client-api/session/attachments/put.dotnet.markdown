@@ -11,9 +11,10 @@ The can store an attachment using the folloinwg `session.Advanced.Attachments.St
 
 ## Example
 
-{CODE StoreAttachment@ClientApi\Session\Attachments\Attachments.cs /}
-
-{CODE StoreAttachmentAsync@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync StoreAttachment@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TAB:csharp:Async StoreAttachmentAsync@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TABS/}
 
 ## Related articles
 
