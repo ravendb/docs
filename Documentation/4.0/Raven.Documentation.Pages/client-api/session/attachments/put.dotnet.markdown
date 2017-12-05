@@ -21,4 +21,4 @@
 
 - [How to **update** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/update-attachment-metadata-only)  
 - [GetAttachment](../../../client-api/commands/attachments/get)  
-- [DeleteAttachment](../../../client-api/commands/attachments/delete)  
+- [DeleteAttachment](../../../client-api/commands/attachments/delete
