@@ -6,34 +6,38 @@ Subscriptions are consumed by the client on top of a continuous TCP connection. 
 ## Simple consumption example
 
 First, let us start from real simple subscription consumption example:
-Here we create a subscription on 
+Here we create a subscription and have a worker processing documents
 
 {CODE subscriptions_example@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-## Creating subscription object
+## Creating subscription worker object
 
-The subscription object manages the subscription on the client side. Not that upon creation of the object, no connection will be created. A connection is created only wheh the received object's Run method is called.
+The subscription worker object manages the subscription on the client side. Not that upon creation of the object, no connection will be created. A connection is created only wheh the received object's Run method is called.
 
-{PANEL: Get typed subscription object}
-Here we get a subscription object, only based on subscription name.
+{PANEL: Get typed subscription worker}
+Here we get a subscription worker, only based on subscription name.
 {CODE open_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {PANEL/}
 
-{PANEL: Get typed subscription object}
-Here we get a subscription object, which in the case of another client consuming the connection, will wait for it to finish on the server side and only then start consuming the subscription. 
-{CODE open_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{PANEL: Get typed subscription worker}
+Here we get a subscription worker, which in the case of another client consuming the connection, will wait for it to finish on the server side and only then start consuming the subscription. 
+{CODE open_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {PANEL/}
 
-{PANEL: Get typed subscription object}
-Here we get a subscription object as before, but also we set tha maximum batch size to 500. And we define that if there is an error during the client's Run function, we 
-{CODE open_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{PANEL: Get typed subscription worker}
+Here we get a subscription worker as before, but also we set the maximum batch size to 500. And we define that if there is an error during the client's Run function, we will not abort the worker processing as defined by default, but we will continue processing.
+{CODE open_3@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {PANEL/}
 
+
+## This page is a work in progress
+
+<!--
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **id** | long | A data subscription identifier. |
-| **options** | SubscriptionConnectionOptions | Connection options. |
+| **options** | SubscriptionWorkerOptions | Worker options. |
 
 | Return value | |
 | ------------- | ----- |
@@ -109,3 +113,5 @@ You may want to dynamically manage subscription handlers. The returned subscribe
 {NOTE:No subscriber attached}
 The data subscription stops pulling docs if there is no subscriber attached.
 {NOTE/}
+
+-->
