@@ -29,7 +29,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             #region suggest_1
             ISuggestionQuery<T> SuggestUsing<T>(SuggestionBase suggestion);
 
-            ISuggestionQuery<T> SuggestUsing<T>(Action<ISuggestionFactory<T>> factory);
+            ISuggestionQuery<T> SuggestUsing<T>(Action<ISuggestionBuilder<T>> builder);
             #endregion
 
             #region suggest_2
@@ -58,7 +58,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region suggest_5
                     Dictionary<string, SuggestionResult> suggestions = session
                         .Query<Employee, Employees_ByFullName>()
-                        .SuggestUsing(factory => factory
+                        .SuggestUsing(builder => builder
                             .ByField("FullName", "johne")
                             .WithOptions(new SuggestionOptions
                             {
@@ -76,7 +76,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region suggest_6
                     Dictionary<string, SuggestionResult> suggestions = await asyncSession
                         .Query<Employee, Employees_ByFullName>()
-                        .SuggestUsing(factory => factory
+                        .SuggestUsing(builder => builder
                             .ByField("FullName", "johne")
                             .WithOptions(new SuggestionOptions
                             {
