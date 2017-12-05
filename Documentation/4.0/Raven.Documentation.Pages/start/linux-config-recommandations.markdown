@@ -45,5 +45,6 @@ For details on current swapping partitions and priorities use:
 ##### Enlarge memory mapped max usage
 `sysctl -w vm.max_map_count=2000000`
 ##### Consider different swap physical drive. For details on current swapping partitions and priorities:
+
 `swapon`
 
