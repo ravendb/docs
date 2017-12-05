@@ -1,6 +1,6 @@
-# Session : Querying : How to perform queries lazily?
+# Session : Querying : How to Perform Queries Lazily
 
-In some situations query execution must be delayed. To cover such scenario `Lazily` and many others query extensions has been introduced.
+In some situations, query execution must be delayed. To cover such a scenario, `Lazily` and many other query extensions have been introduced.
 
 {PANEL:Lazily and LazilyAsync}
 
@@ -8,7 +8,7 @@ In some situations query execution must be delayed. To cover such scenario `Lazi
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **onEval** | Action<IEnumerable&lt;TResult&gt;> | Action that will be performed on query results. |
+| **onEval** | Action<IEnumerable&lt;TResult&gt;> | An action that will be performed on the query results. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -29,7 +29,7 @@ In some situations query execution must be delayed. To cover such scenario `Lazi
 
 | Return Value | |
 | ------------- | ----- |
-| Lazy<int> | Lazy query initializer returning count of matched documents. |
+| Lazy<int> | Lazy query initializer returning a count of matched documents. |
 
 ### Example
 
@@ -43,7 +43,7 @@ In some situations query execution must be delayed. To cover such scenario `Lazi
 
 | Return Value | |
 | ------------- | ----- |
-| Lazy<Dictionary<string, SuggestionResult>> | Lazy query initializer containing dictionary with suggestions matching executed query |
+| Lazy<Dictionary<string, SuggestionResult>> | Lazy query initializer containing a dictionary with suggestions for matching executed query |
 
 ### Example
 
@@ -57,7 +57,7 @@ In some situations query execution must be delayed. To cover such scenario `Lazi
 
 | Return Value | |
 | ------------- | ----- |
-| Lazy<Dictionary<string, FacetResult>> | Lazy query initializer containing dictionary with facet results matching executed query |
+| Lazy<Dictionary<string, FacetResult>> | Lazy query initializer containing a dictionary with facet results matching executed query |
 
 ### Example
 
@@ -65,6 +65,6 @@ In some situations query execution must be delayed. To cover such scenario `Lazi
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [How to perform operations lazily?](../how-to/perform-operations-lazily)

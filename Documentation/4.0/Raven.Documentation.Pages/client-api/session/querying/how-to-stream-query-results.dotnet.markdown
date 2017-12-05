@@ -1,6 +1,6 @@
-# Session : Querying : How to stream query results?
+# Session : Querying : How to Stream Query Results
 
-Query results can be streamed using `Stream` method from `Advanced` session operations. The query can be issued using either a static index or be dynamic one then it will be handled by auto index.
+Query results can be streamed using the `Stream` method from the `Advanced` session operations. The query can be issued using either a static index, or it can be a dynamic one where it will be handled by an auto index.
 
 ## Syntax
 
@@ -15,21 +15,21 @@ Query results can be streamed using `Stream` method from `Advanced` session oper
 | ------------- | ----- |
 | IEnumerator<[StreamResult](../../../glossary/stream-result)> | Enumerator with entities. |
 
-## Example I - Using static index
+## Example I - Using Static Index
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_2@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TAB:csharp:Async stream_2_async@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
-## Example II - Dynamic document query
+## Example II - Dynamic Document Query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_3@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TAB:csharp:Async stream_3_async@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
 
-## Example III - Dynamic raw query
+## Example III - Dynamic Raw Query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync stream_4@ClientApi\Session\Querying\HowToStream.cs /}

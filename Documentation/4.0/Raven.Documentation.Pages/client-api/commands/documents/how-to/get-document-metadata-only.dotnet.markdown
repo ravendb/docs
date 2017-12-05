@@ -1,4 +1,4 @@
-# Commands : Documents : How to get document metadata only?
+# Commands : Documents : How to Get Document Metadata Only
 
 **GetDocumentsCommand** can be used to retrieve the metadata of documents.
 
@@ -18,7 +18,7 @@
 
 {CODE head_2@ClientApi\Commands\Documents\HowTo\Head.cs /}
 
-## Related articles
+## Related Articles
 
 - [Get](../../../../client-api/commands/documents/get)  
 - [Put](../../../../client-api/commands/documents/put)  

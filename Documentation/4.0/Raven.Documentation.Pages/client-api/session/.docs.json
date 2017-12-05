@@ -1,7 +1,7 @@
 [
     {
         "Path": "opening-a-session.markdown",
-        "Name": "Opening a session",
+        "Name": "Opening a Session",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -11,7 +11,7 @@
     },
     {
         "Path": "storing-entities.markdown",
-        "Name": "Storing entities",
+        "Name": "Storing Entities",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -21,7 +21,7 @@
     },
     {
         "Path": "what-is-a-session-and-how-does-it-work.markdown",
-        "Name": "What is a session and how does it work?",
+        "Name": "What is a Session and How Does it Work?",
         "Mappings": [
             {
                 "Version": 1.0,

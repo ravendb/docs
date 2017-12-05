@@ -1,6 +1,6 @@
-# Session : Querying : How to project query results?
+# Session : Querying : How to Project Query Results
 
-Instead of pulling full documents in query results you can just grab some pieces of data from documents. Moreover, you can transform the projected
+Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
 results. The projections are defined in LINQ with the usage of:
 
 - [Select](../../../client-api/session/querying/how-to-project-query-results#select)
@@ -9,9 +9,9 @@ results. The projections are defined in LINQ with the usage of:
 
 {PANEL:Select}
 
-The most common way to perform a query with projection is to use `Select` method. You can specify what fields from a document you want to retrieve or even provide complex expression.
+The most common way to perform a query with projection is to use the `Select` method. You can specify what fields from a document you want to retrieve and even provide complex expression.
 
-### Example I - Projecting individual fields of the document
+### Example I - Projecting Individual Fields of the Document
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -22,7 +22,7 @@ select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example II - Projecting arrays and objects
+### Example II - Projecting Arrays and Objects
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -33,7 +33,7 @@ select ShipTo, Lines[].ProductName as Products
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example III - Projection with expression
+### Example III - Projection with Expression
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -60,7 +60,7 @@ from Employees as e select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projection with calculation
+### Example V - Projection with Calculation
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -74,7 +74,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VI - Projection using loaded document
+### Example VI - Projection Using a Loaded Document
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -89,7 +89,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection with dates
+### Example VII - Projection with Dates
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -104,7 +104,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VIII - Projection with raw JavaScript code
+### Example VIII - Projection with Raw JavaScript Code
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -118,7 +118,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with metadata
+### Example IX - Projection with Metadata
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
@@ -136,8 +136,8 @@ select {
 
 {PANEL:ProjectInto}
 
-This extension method retrieves all public fields and properties of the type given in generic and use them to perform projection to the requested type.
-In other words, you can use this method instead of using `Select` together with all fields of the projection class.
+This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
+You can use this method instead of using `Select` together with all fields of the projection class.
 
 ### Example
 
@@ -157,7 +157,7 @@ select Name, Phone
 
 {PANEL:OfType (As) - simple projection}
 
-`OfType` or `As` is a client-side projection. The easiest explanation of how it works is: take results that server returned and map them to given type. This may become useful when querying index that contains fields that are not available in mapped type.
+`OfType` or `As` is a client-side projection. The easiest explanation of how it works is to take the results that the server returns and map them to given type. This may become useful when querying an index that contains fields that are not available in mapped type.
 
 ### Example
 
@@ -171,4 +171,4 @@ select Name, Phone
 
 {NOTE Projected entities (even named types) are not tracked by the session. /}
 
-{NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition) then the query results will be created directly from there instead of retrieving documents in order to project. /}
+{NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project. /}

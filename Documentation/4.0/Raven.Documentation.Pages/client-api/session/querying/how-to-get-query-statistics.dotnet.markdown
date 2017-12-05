@@ -1,6 +1,6 @@
-# Session : Querying : How to get query statistics?
+# Session : Querying : How to Get Query Statistics
 
-Query statistics can provide important information about query e.g. duration, total number of results, staleness information, etc. To access statistics use `Statistics` method.
+Query statistics can provide important information about a query like duration, total number of results, staleness information, etc. To access statistics use the `Statistics` method.
 
 ## Syntax
 
@@ -14,6 +14,6 @@ Query statistics can provide important information about query e.g. duration, to
 
 {CODE stats_2@ClientApi\Session\Querying\HowToGetQueryStatistics.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **customize** query?](../../../client-api/session/querying/how-to-customize-query)

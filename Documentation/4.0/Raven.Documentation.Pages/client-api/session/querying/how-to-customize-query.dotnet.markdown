@@ -1,6 +1,6 @@
-# Session : Querying : How to customize query?
+# Session : Querying : How to Customize a Query
 
-Following query customization options are available in `IDocumentQueryCustomization` interface:
+The following query customization options are available in the `IDocumentQueryCustomization` interface:
 
 - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
 - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
@@ -33,7 +33,7 @@ Allows you to modify the index query just before it is executed.
 
 {PANEL:AfterQueryExecuted}
 
-Allows you to retrieve a raw query result after it got executed.
+Allows you to retrieve a raw query result after it's executed.
 
 {CODE customize_1_0_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -73,7 +73,7 @@ Allows you to retrieve a raw (blittable) result of the streaming query.
 
 {PANEL:NoCaching}
 
-By default, queries are cached. To disable query caching use `NoCaching` customization.
+By default, queries are cached. To disable query caching use the `NoCaching` customization.
 
 {CODE customize_2_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -89,7 +89,7 @@ By default, queries are cached. To disable query caching use `NoCaching` customi
 
 {PANEL:NoTracking}
 
-To disable entity tracking by `Session` use `NoTracking`. Usage of this option will prevent holding query results in memory.
+To disable entity tracking by `Session` use `NoTracking`. Usage of this option will prevent holding the query results in memory.
 
 {CODE customize_3_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -105,7 +105,7 @@ To disable entity tracking by `Session` use `NoTracking`. Usage of this option w
 
 {PANEL:RandomOrdering}
 
-To order results randomly use `RandomOrdering` method.
+To order results randomly, use `RandomOrdering` method.
 
 {CODE customize_4_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -125,15 +125,15 @@ To order results randomly use `RandomOrdering` method.
 
 {PANEL:WaitForNonStaleResultsAsOf}
 
-Queries can be 'instructed' to wait for non-stale results as of cutoff etag for specified amount of time using `WaitForNonStaleResultsAsOf` method. 
-If the query won't be able to return non-stale results within the specified (or default) timeout then `TimeoutException` is thrown.
+Queries can be 'instructed' to wait for non-stale results as of a cutoff Etag for a specified amount of time using the `WaitForNonStaleResultsAsOf` method. 
+If the query won't be able to return non-stale results within the specified (or default) timeout, then `TimeoutException` is thrown.
 
 {CODE customize_9_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **cutOffEtag** | long | Minimum etag of last indexed document. If last indexed document etag is greater than this value the results are considered non-stale. |
-| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. Default: 15 seconds. |
+| **cutOffEtag** | long | Minimum Etag of last indexed document. If last indexed document Etag is greater than this value, the results are considered non-stale. |
+| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. The default is 15 seconds. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -143,16 +143,16 @@ If the query won't be able to return non-stale results within the specified (or 
 
 {PANEL:WaitForNonStaleResults}
 
-{NOTE This methods should be used only for testing purposes and are considered **EXPERT ONLY** /}
+{NOTE This method should be used only for testing purposes and are considered **EXPERT ONLY** /}
 
-Queries can be 'instructed' to wait for non-stale results for specified amount of time using `WaitForNonStaleResults` method. It is not advised to use this method on live production
-database since the high load might cause the index never becomes non-stale. The preffered usage is `WaitForNonStaleResultsAsOf` where the cutoff is specified.
+Queries can be 'instructed' to wait for non-stale results for specified amount of time using the `WaitForNonStaleResults` method. It is not advised to use this method on a live production
+database since the high load might cause the index never to become non-stale. The preferred usage is `WaitForNonStaleResultsAsOf` where the cutoff is specified.
 
 {CODE customize_8_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. Default: 15 seconds. |
+| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. The default is 15 seconds. |
 
 | Return Value | |
 | ------------- | ----- |

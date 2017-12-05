@@ -1,6 +1,6 @@
 # Session : Querying : What is a Document Query?
 
-Low-level querying capabilities can be accessed via `DocumentQuery` method in advanced session operations. `DocumentQuery` gives user more flexibility and control over the process of building a query.
+Low-level querying capabilities can be accessed via the `DocumentQuery` method in advanced session operations. `DocumentQuery` gives you more flexibility and control over the process of building a query.
 
 ## Syntax
 
@@ -8,9 +8,9 @@ Low-level querying capabilities can be accessed via `DocumentQuery` method in ad
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **indexName** | string | Name of an index to perform query on (exclusive with **collectionName**)  |
-| **collectionName** | string | Name of an collection to perform query on (exclusive with **indexName**) |
-| **isMapReduce** | bool | Indicates if queried index is a map/reduce index (modifies how we treat identifier properties) |
+| **indexName** | string | Name of an index to perform a query on (exclusive with **collectionName**)  |
+| **collectionName** | string | Name of a collection to perform a query on (exclusive with **indexName**) |
+| **isMapReduce** | bool | Indicates if a queried index is a map/reduce index (modifies how we treat identifier properties) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -22,7 +22,7 @@ Low-level querying capabilities can be accessed via `DocumentQuery` method in ad
 
 {CODE document_query_3@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
-## Example II - Querying specified index
+## Example II - Querying Specified Index
 
 {CODE document_query_4@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
@@ -30,9 +30,9 @@ or
 
 {CODE document_query_5@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
-## Custom methods and extensions
+## Custom Methods and Extensions
 
-{NOTE Functionality of most of the methods matches functionality of their `Query` counterparts and therefore will not be described again. Please refer to appropriate counterpart documentation articles. Links starting with `[Query]` are marking those articles. /}
+{NOTE Functionality of most of the methods match the functionality of their `Query` counterparts and therefore will not be described again. Please refer to the appropriate counterpart documentation articles. Links starting with `[Query]` are marking those articles. /}
 
 Available custom methods and extensions:   
 
@@ -108,8 +108,8 @@ Available custom methods and extensions:
 
 ## Remarks
 
-By default, if `page size` is not specified, all of the matching records will be retrieved from a database.
+By default, if the `page size` is not specified, all of the matching records will be retrieved from a database.
 
-## Related articles
+## Related Articles
 
 - [Query vs DocumentQuery](../../../../indexes/querying/query-vs-document-query)

@@ -1,6 +1,6 @@
-# Session : Querying : How to use intersect?
+# Session : Querying : How to Use Intersect
 
-To return only documents that match **all** provided sub-queries we have introduced `Intersect` extension that enables us to do server-side intersection queries.
+To return only documents that match **all** provided sub-queries, we have introduced the `Intersect` extension which enables us to do server-side intersection queries.
 
 ## Syntax
 
@@ -17,6 +17,6 @@ where intersect(Manufacturer = 'Raven', Color = 'Blue' AND Size = 'Small', Color
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Related articles
+## Related Articles
 
 - [Indexes : Querying : Intersection](../../../indexes/querying/intersection)

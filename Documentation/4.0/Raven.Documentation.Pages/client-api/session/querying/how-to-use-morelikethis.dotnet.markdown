@@ -1,4 +1,4 @@
-# Session : How to use MoreLikeThis?
+# Session : How to Use MoreLikeThis
 
 `MoreLikeThis` is available through query extension methods and will return similar documents according to the provided criteria and options.
 
@@ -17,8 +17,8 @@
 
 | Options | | |
 | ------------- | ------------- | ----- |
-| **MinimumTermFrequency** | int? | Ignore terms with less than this frequency in the source doc |
-| **MaximumQueryTerms** | int? | Return a Query with no more than this many terms |
+| **MinimumTermFrequency** | int? | Ignores terms with less than this frequency in the source doc |
+| **MaximumQueryTerms** | int? | Return a query with no more than this many terms |
 | **MaximumNumberOfTokensParsed** | int? | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
 | **MinimumWordLength** | int? | Ignore words less than this length or if 0 then this has no effect |
 | **MaximumWordLength** | int? | Ignore words greater than this length or if 0 then this has no effect |
@@ -68,6 +68,6 @@ Do not forget to add following **using** statement which contains necessary exte
 
 {CODE more_like_this_8@ClientApi\Session\Querying\MoreLikeThis.cs /}
 
-## Related articles
+## Related Articles
 
 - [Server : Bundles : MoreLikeThis](../../../server/bundles/more-like-this)
