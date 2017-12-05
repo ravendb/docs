@@ -5,6 +5,16 @@
         "Mappings": []
     },
     {
+        "Path": "/bulk-insert",
+        "Name": "Bulk Insert",
+        "Mappings": []
+    },
+    {
+        "Path": "/changes",
+        "Name": "Changes API",
+        "Mappings": []
+    },
+    {
         "Path": "/data-subscriptions",
         "Name": "Data Subscriptions",
         "Mappings": []

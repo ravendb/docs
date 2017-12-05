@@ -1,5 +1,5 @@
 ﻿[
-        {
+    {
         "Path": "blittable-json-reader-object.markdown",
         "Name": "BlittableJsonReaderObject",
         "Mappings": []
@@ -24,4 +24,10 @@
         "Name": "StreamResult",
         "Mappings": []
     },
+    {
+        "Path": "bulk-insert-operation.markdown",
+        "Name": "BulkInsertOperation",
+        "Mappings": []
+    },
+
 ]
