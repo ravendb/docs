@@ -31,11 +31,10 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Documents.HowTo
         {
             using (var store = new DocumentStore())
             using (var session = store.OpenSession())
-            using (var context = JsonOperationContext.ShortTermSingleUse())
             {
                 #region head_2
                 var command = new GetDocumentsCommand("orders/1-A", null, metadataOnly: true);
-                session.Advanced.RequestExecutor.Execute(command, context);
+                session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
                 var result = (BlittableJsonReaderObject)command.Result.Results[0];
                 var documentMetadata = (BlittableJsonReaderObject)result["@metadata"];
 
