@@ -1,6 +1,6 @@
-# Session : Querying : How to query?
+# Session : Querying : How to Query
 
-The session exposes the following methods to query a database:
+This session explains the following methods to query a database:
 
 * `session.Query`
 * `session.Advanced.DocumentQuery`
@@ -8,7 +8,7 @@ The session exposes the following methods to query a database:
 
 ## Session.Query
 
-The most straightforward way to issue a query is using `Query` method which allows to define queries using LINQ. In order to take advantage of querying capabilities specific for RavenDB
+The most straightforward way to issue a query is by using the `Query` method which allows you to define queries using LINQ. In order to take advantage of querying capabilities specific for RavenDB,
 the querying API provides extension methods that will be described later.
 
 ### Syntax
@@ -26,37 +26,37 @@ the querying API provides extension methods that will be described later.
 | IRavenQueryable | Instance implementing `IRavenQueryable` interface containing additional query methods and extensions |
 
 
-###Example I - Basic dynamic query
+###Example I - Basic Dynamic Query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync query_1_1@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB:csharp:Async query_1_1_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-The above is an example of a dynamic query which doesn't require to specify an index name. RaveDB will create an auto index automatically if that will be necessary.
+The above is an example of a dynamic query which doesn't require you to specify an index name. RavenDB will create an auto index automatically if necessary.
 
 The provided `Employee` type as the generic type parameter does not only define the type of returned
-results but it also indicates that the queried collection will be `Employees`. There is no need to specify it as the parameter.
+results, but it also indicates that the queried collection will be `Employees`. There is no need to specify it as the parameter.
 
-### Example II - Linq syntax support
+### Example II - Linq Syntax Support
 
 Both LINQ syntaxes are supported:
 
-- method syntax:
+- Method syntax:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync query_1_2@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB:csharp:Async query_1_2_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-- query syntax:
+- Query syntax:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync query_1_3@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TAB:csharp:Async query_1_3_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-### Example III - Using specific index
+### Example III - Using Specific Index
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync query_1_4@ClientApi\Session\Querying\HowToQuery.cs /}
@@ -73,7 +73,7 @@ or
 ## Session.Advanced.DocumentQuery
 
 The advanced querying methods accessible by `session.Advanced.DocumentQuery` is the low-level API used to query RavenDB. The entire LINQ API is the wrapper of `DocumentQuery` API and
-each query created using LINQ is built on top of it. Since it offers the full spectrum of querying capabilities you might find it handy when doing very complex queries, difficult
+each query created using LINQ is built on top of it. Since it offers the full spectrum of querying capabilities, you might find it handy when doing very complex queries that are difficult
 to shape using Linq.
 
 ### Example IV
@@ -85,7 +85,7 @@ to shape using Linq.
 
 ## Session.Advanced.RawQuery
 
-Queries in RavenDB are using a SQL-like language called RavenDB Query Language (RQL). All of the above queries generates RQL sent to the server. The session also gives you the way to express the query directly in RQL.
+Queries in RavenDB use a SQL-like language called RavenDB Query Language (RQL). All of the above queries generate RQL sent to the server. The session also gives you the way to express the query directly in RQL.
 
 ### Example IV
 
@@ -95,7 +95,7 @@ Queries in RavenDB are using a SQL-like language called RavenDB Query Language (
 {CODE-TABS/}
 
 <!--
-### Custom methods and extensions for LINQ
+### Custom Methods and Extensions for LINQ
 
 Available custom methods and extensions:
 
@@ -131,7 +131,7 @@ Available custom methods and extensions:
 - [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries)
 -->
 
-### Related articles
+### Related Articles
 
 - [What are indexes?](../../../indexes/what-are-indexes)   
 - [Indexes : Querying: Basics](../../../indexes/querying/basics)  

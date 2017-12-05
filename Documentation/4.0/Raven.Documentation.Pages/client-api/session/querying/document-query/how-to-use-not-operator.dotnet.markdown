@@ -1,4 +1,4 @@
-# Session : Querying : How to use NOT operator?
+# Session : Querying : How to Use NOT Operator
 
 `IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
 
@@ -16,6 +16,6 @@
 
 {CODE not_3@ClientApi\Session\Querying\DocumentQuery\HowToUseNotOperator.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to use lucene in queries?](../../../../client-api/session/querying/document-query/how-to-use-lucene-in-queries)

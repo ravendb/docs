@@ -1,6 +1,6 @@
-# Session : Querying : How to work with suggestions?
+# Session : Querying : How to Work with Suggestions
 
-`Suggestion` feature is available through query extension methods and gives you the ability to find word similarities using string distance algorithms.
+The `Suggestion` feature is available through query extension methods and gives you the ability to find word similarities using string distance algorithms.
 
 ## Syntax
 
@@ -9,7 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **suggestion** | `SuggestionBase`  | Defines the type of suggestion that should be executed |
-| **factory** | `Action<ISuggestionFactory<T>>` | Factory with fluent API that builds `SuggestionBase` instance |
+| **factory** | `Action<ISuggestionFactory<T>>` | Factory with a fluent API that builds a `SuggestionBase` instance |
 
 ### Options
 
@@ -20,7 +20,7 @@
 | **PageSize** | int | Maximum number of suggestions that will be returned |
 | **Distance** | `StringDistanceTypes` | String distance algorithm to use (`None`, `Levenshtein`, `JaroWinkler`, `NGram`) |
 | **Accuracy** | float? | Suggestion accuracy |
-| **SortMode** | `SuggestionSortMode` | Indicates in what order results should be returned (`None`, `Popularity`) |
+| **SortMode** | `SuggestionSortMode` | Indicates in what order the results should be returned (`None`, `Popularity`) |
 
 ### Factory
 
@@ -28,8 +28,8 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fieldName** | string | Points to index field that should be used for operation |
-| **path** | `Expression<Func<T, object>>` | Points to index field that should be used for operation |
+| **fieldName** | string | Points to the index field that should be used for operation |
+| **path** | `Expression<Func<T, object>>` | Points to the index field that should be used for operation |
 | **term** | string | Term that will be used as a basis of the suggestions |
 | **terms** | string[] | Terms that will be used as a basis of the suggestions |
 | **options** | `SuggestionOptions` | Non-default options that should be used for operation |
@@ -56,6 +56,6 @@ where suggest('FullName', 'johne')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Related articles
+## Related Articles
 
 - [Indexes : Suggestions](../../../indexes/querying/suggestions)

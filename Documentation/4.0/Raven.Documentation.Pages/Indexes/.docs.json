@@ -1,7 +1,7 @@
 [
     {
         "Path": "what-are-indexes.markdown",
-        "Name": "What are indexes?",
+        "Name": "What are Indexes?",
         "Mappings": [
             {
                 "Version": "1.0",
@@ -11,7 +11,7 @@
     },
     {
         "Path": "creating-and-deploying.markdown",
-        "Name": "Creating and deploying indexes",
+        "Name": "Creating and Deploying Indexes",
         "Mappings": [
             {
                 "Version": "1.0",
@@ -21,22 +21,22 @@
     },
     {
         "Path": "indexing-basics.markdown",
-        "Name": "Indexing basics",
+        "Name": "Indexing Basics",
         "Mappings": []
     },
     {
         "Path": "map-indexes.markdown",
-        "Name": "Map indexes",
+        "Name": "Map Indexes",
         "Mappings": []
     },
     {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
-        "Name": "Converting to json and accessing metadata",
+        "Name": "Converting to JSON and Accessing Metadata",
         "Mappings": []
     },
     {
         "Path": "indexing-linq-extensions.markdown",
-        "Name": "Indexing linq extensions",
+        "Name": "Indexing Linq Extensions",
         "Mappings": []
     }
 ]

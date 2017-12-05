@@ -21,17 +21,17 @@
     },
     {
         "Path": "creating-document-store.markdown",
-        "Name": "Creating document store",
+        "Name": "Creating Document Store",
         "Mappings": []
     },
     {
         "Path": "what-is-a-document-store.markdown",
-        "Name": "What is a document store?",
+        "Name": "What is a Document Store?",
         "Mappings": []
     },
     {
         "Path": "setting-up-default-database.markdown",
-        "Name": "Setting up default database",
+        "Name": "Setting up Default Database",
         "Mappings": []
     }
 ]

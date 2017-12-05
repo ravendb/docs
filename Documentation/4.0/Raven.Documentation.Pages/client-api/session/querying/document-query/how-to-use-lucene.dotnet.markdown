@@ -1,6 +1,6 @@
-# Session : Querying : How to use Lucene?
+# Session : Querying : How to use Lucene
 
-Lucene-flawored syntax can be used with `WhereLucene` method, a part of filtering methods available in `IDocumentQuery`.
+Lucene flavored syntax can be used with the `WhereLucene` method, a part of filtering methods available in `IDocumentQuery`.
 
 ## Syntax
 
@@ -8,7 +8,7 @@ Lucene-flawored syntax can be used with `WhereLucene` method, a part of filterin
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fieldName** | string | Name of a field in index |
+| **fieldName** | string | Name of a field in an index |
 | **whereClause** | string | Lucene-syntax based clause for a given field |
 
 ## Example
