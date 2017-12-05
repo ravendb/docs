@@ -18,10 +18,8 @@ One of the features that is particularly useful when inserting large amount of d
 
 There are several limitations to the API:
 
-* Entity **Id** must be provided by the client. The client by default will use the HiLo generator in order to generate the **Id**.
-* Transactions are per batch, not per operation.
-* Documents inserted using bulk-insert will not raise notifications. More about `Changes API` can be found [here](../changes/what-is-changes-api).
-* Bulk insert is not thread safe, it should not be accessed concurrently.
+* The bulk insert operation is broken into batches, each batch is treated in its own transaction so the whole operation isn't treated under a single transaction.
+* Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported.
 
 ## Example
 
