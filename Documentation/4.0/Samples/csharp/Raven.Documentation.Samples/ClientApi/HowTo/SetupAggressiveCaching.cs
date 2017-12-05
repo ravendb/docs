@@ -4,6 +4,7 @@ using System.Linq;
 
 using Raven.Client.Documents;
 using Raven.Documentation.Samples.Orders;
+using Sparrow;
 
 namespace Raven.Documentation.Samples.ClientApi.HowTo
 {
@@ -19,12 +20,15 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 			{
 				documentStore.Initialize();
 
-                #region max_number_of_requests
-			    // TODO change this to MaxHttpCacheSize 
-                documentStore.Conventions.MaxNumberOfRequestsPerSession = 1;
-				#endregion
+                #region max_number_of_requests 
+                documentStore.Conventions.MaxHttpCacheSize = new Size(1024, SizeUnit.Bytes);
+                #endregion
 
-				using (var session = documentStore.OpenSession())
+			    #region disable_http_cache
+                documentStore.Conventions.MaxHttpCacheSize = new Size(0, SizeUnit.Megabytes);
+                #endregion
+
+                using (var session = documentStore.OpenSession())
 				{
 					#region aggressive_cache_load
 					using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))

@@ -2,11 +2,22 @@
 
 ## Standard cache configuration
 
-The RavenDB client provides a caching mechanism out of the box.
+The RavenDB client provides a caching mechanism out of the box. The default caching configuration is to cache all requests.
 
-The default value of number of cached requests is 512 MB (Right now we don't support changing the number)
+The default value of number of cached requests per database is 512 MB, But you can change it by changing `MaxHttpCacheSize` in the store `Conventions`.
 
-The client utilizes the notion of the `304 Not Modified` server's response and will serve the data from the cache if available. 
+{CODE max_number_of_requests@ClientApi\HowTo\SetupAggressiveCaching.cs /}
+
+The client utilizes the notion of the `304 Not Modified` server's response and will serve the data from the cache if available.
+
+{NOTE: Disable caching} 
+To disable the caching you can change `MaxHttpCacheSize` value to zero:
+{CODE disable_http_cache@ClientApi\HowTo\SetupAggressiveCaching.cs /}
+
+**In this scenrio all the requests will be sent to the server to fetch the data.**
+
+{NOTE/}
+
 
 ## Aggressive mode
 
