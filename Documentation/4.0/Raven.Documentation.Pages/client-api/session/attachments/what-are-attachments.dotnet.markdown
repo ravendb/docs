@@ -1,7 +1,8 @@
 # What are attachments?
 
-In RavenDB v4.0 attachments are binary stream which can be attached to an exiting document. 
+In RavenDB v4.0 attachments are binary streams which can be attached to an exiting document. 
 Each attachment has a name and you can specify the content type ("image/png" or "application/pdf" for example).
+A document can have any number of attachments.
 
 Each attachment is attached to an exiting document and in order to get an document you'll need to specify the document ID and the attachment name. 
 What's great in this approach that you can specify the attachment's metadata in the document itself, and this document can be queries as any other document.
