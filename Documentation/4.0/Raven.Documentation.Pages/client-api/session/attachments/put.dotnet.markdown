@@ -7,13 +7,13 @@ Note that attachments are trnsactional and would be save when you call `session.
 
 The can store an attachment using the folloinwg `session.Advanced.Attachments.Store` methods:
 
-{CODE StoreSyntax@ClientApi\Session\Attachments.cs /}
+{CODE StoreSyntax@ClientApi\Session\Attachments\Attachments.cs /}
 
 ## Example
 
-{CODE StoreAttachment@ClientApi\Session\Attachments.cs /}
+{CODE StoreAttachment@ClientApi\Session\Attachments\Attachments.cs /}
 
-{CODE StoreAttachmentAsync@ClientApi\Session\Attachments.cs /}
+{CODE StoreAttachmentAsync@ClientApi\Session\Attachments\Attachments.cs /}
 
 ## Related articles
 

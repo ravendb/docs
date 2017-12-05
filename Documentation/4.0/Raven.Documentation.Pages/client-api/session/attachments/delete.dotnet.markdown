@@ -1,21 +1,16 @@
 # Attachments : Delete
 
-**DeleteAttachment** is used to remove an attachment from a database.
+**DeleteAttachment** is used to remove an attachment from a document.
 
 ## Syntax
 
-{CODE delete_1@ClientApi\Commands\Attachments\Delete.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | string | key of an attachment to delete |
-| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check) |
+{CODE DeleteSyntax@ClientApi\Session\Attachments\Attachments.cs /}
 
 ## Example
 
-{CODE delete_2@ClientApi\Commands\Attachments\Delete.cs /}
+{CODE DeleteAttachment@ClientApi\Session\Attachments\Attachments.cs /}
 
 ## Related articles
 
-- [GetAttachment](../../../client-api/commands/attachments/get)  
-- [PutAttachment](../../../client-api/commands/attachments/put)  
+- [GetAttachment](../../../client-api/session/attachments/get)  
+- [PutAttachment](../../../client-api/session/attachments/put)  

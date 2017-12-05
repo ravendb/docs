@@ -1,56 +1,25 @@
 # Attachments : Get
 
 There are few methods that allow you to download attachments from a database:   
-- [GetAttachment](../../../client-api/commands/attachments/get#getattachment)   
-- [GetAttachments](../../../client-api/commands/attachments/get#getattachments)   
+- [GetAttachment](../../../client-api/session/attachments/get#getattachment)   
+- [GetAttachments](../../../client-api/session/attachments/get#getattachments)   
 
-{PANEL:**GetAttachment**}
-
-**GetAttachment** can be used to download a single attachment.
-
-### Syntax
-
-{CODE get_1_0@ClientApi\Commands\Attachments\Get.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | string | key of the attachment you want to download |
-
-| Return Value | |
-| ------------- | ----- |
-| [Attachment](../../../glossary/attachment) | Object that represents attachment. |
-
-### Example
-
-{CODE get_1_1@ClientApi\Commands\Attachments\Get.cs /}
-
-{PANEL/}
-{PANEL:GetAttachments}
-
-**GetAttachments** can be used to download attachment information for multiple attachments.
+**session.Advanced.Attachments.Get** can be used to download an attachment.
+**session.Advanced.Attachments.GetNames** can be used to all attachment names that attached to a document.
+**session.Advanced.Attachments.GetRevision** can be used to download an attachment of a reivions document.
+**session.Advanced.Attachments.Exists** can be used to determine if an attachment is exists on a document.
 
 ### Syntax
 
-{CODE get_2_0@ClientApi\Commands\Attachments\Get.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **start** | int | Indicates how many attachments should be skipped |
-| **startEtag** | Etag | ETag from which to start |
-| **batchSize** | int | maximum number of attachments that will be downloaded |
-
-| Return Value | |
-| ------------- | ----- |
-| [AttachmentInformation](../../../glossary/attachment-information) | Object that represents attachment metadata information. |
+{CODE GetSyntax@ClientApi\Session\Attachments\Attachments.cs /}
 
 ### Example
 
-{CODE get_2_1@ClientApi\Commands\Attachments\Get.cs /}
+{CODE GetAttachment@ClientApi\Attachments\Attachments\Attachments.cs /}
 
-{PANEL/}
+{CODE GetAttachmentAsync@ClientApi\Attachments\Attachments\Attachments.cs /}
 
 ## Related articles
 
-- [How to **get** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
-- [PutAttachment](../../../client-api/commands/attachments/put)  
-- [DeleteAttachment](../../../client-api/commands/attachments/delete)  
+- [PutAttachment](../../../client-api/session/attachments/put)  
+- [DeleteAttachment](../../../client-api/session/attachments/delete)  
