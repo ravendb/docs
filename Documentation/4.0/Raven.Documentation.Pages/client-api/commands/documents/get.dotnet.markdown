@@ -1,6 +1,7 @@
 # Commands : Documents : Get
 
-There are few methods that allow you to retrieve documents from a database:   
+There are a few methods that allow you to retrieve documents from a database:   
+
 - [Get single document](../../../client-api/commands/documents/get#get-single-document)   
 - [Get multiple documents](../../../client-api/commands/documents/get#get-multiple-documents)   
 - [Get paged documents](../../../client-api/commands/documents/get#get-paged-documents)   
@@ -44,11 +45,11 @@ There are few methods that allow you to retrieve documents from a database:
 
 {CODE get_sample_multiple@ClientApi\Commands\Documents\Get.cs /}
 
-### Example II - using includes
+### Example II - Using Includes
 
 {CODE get_sample_includes@ClientApi\Commands\Documents\Get.cs /}
 
-### Example III - missing documents
+### Example III - Missing Documents
 
 {CODE get_sample_missing@ClientApi\Commands\Documents\Get.cs /}
 
@@ -84,12 +85,12 @@ There are few methods that allow you to retrieve documents from a database:
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **startsWith** | string | prefix for which documents should be returned |
-| **startAfter** | string | skip document fetching until given key is found and return documents after that key (default: null) |
+| **startAfter** | string | skip 'document fetching' until the given key is found, and return documents after that key (default: null) |
 | **matches** | string | pipe ('&#124;') separated values for which document keys (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
 | **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **metadataOnly** | bool | specifies if only document metadata should be returned |
+| **metadataOnly** | bool | specifies whether or not only document metadata should be returned |
 
 ### Example I
 
@@ -105,7 +106,7 @@ There are few methods that allow you to retrieve documents from a database:
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [How to **get** document **metadata** only?](../../../client-api/commands/documents/how-to/get-document-metadata-only)  
 - [Put](../../../client-api/commands/documents/put)  
