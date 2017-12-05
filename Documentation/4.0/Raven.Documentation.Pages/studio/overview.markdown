@@ -4,20 +4,21 @@
 RavenDB comes with a Management Studio that can be accessed by any modern browser using the server url     
 (e.g. http://localhost:8080/ - when your server runs at port 8080). 
 
-The Studio lets you manage your server, databases, indexes, issue queries, perform various maintenance actions and much more,    
+The Studio lets you manage your server, databases, indexes, issue queries,  
+perform maintenance actions, view various stats graphs and logs, define tasks, import & export data and much more,    
 all in a very easy manner.
 
 The Studio can be accessed on any RavenDB server, regardless of how it is deployed. 
 
 ---
-### Manage your server
+### Manage RavenDB server
 
 ![Figure 1. Studio overview - Manage server](images/overview-1.png "Manage server")
 
 ---
-### Manage your database
+### Manage your databases
 
-![Figure 2. Studio overview - Manage database](images/overview-2.png "Manage database")
+![Figure 2. Studio overview - Manage databases](images/overview-2.png "Manage databases")
 
 ---
 ### Header and Footer area

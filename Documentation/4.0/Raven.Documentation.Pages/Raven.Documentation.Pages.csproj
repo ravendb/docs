@@ -102,6 +102,9 @@
     <None Include="studio\images\snag\overview-2.snag" />
     <None Include="studio\images\snag\overview-3.snag" />
     <None Include="studio\overview.markdown" />
+    <None Include="studio\server\.docs.json" />
+    <None Include="studio\server\images\snag\server-dashboard.snag" />
+    <None Include="studio\server\server-dashboard.markdown" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client-api\how-to\images\" />
@@ -120,6 +123,7 @@
     <Content Include="studio\images\overview-1.png" />
     <Content Include="studio\images\overview-2.png" />
     <Content Include="studio\images\overview-3.png" />
+    <Content Include="studio\server\images\server-dashboard.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

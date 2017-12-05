@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/server",
+        "Name": "Server",
+        "Mappings": []
+    },
+    {
         "Path": "/database",
         "Name": "Database",
         "Mappings": []
