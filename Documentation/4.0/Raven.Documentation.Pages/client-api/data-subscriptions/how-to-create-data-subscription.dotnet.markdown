@@ -2,7 +2,7 @@
 
 Subscriptions in their essence all defined by an RQL like query that describes both the filtering and the projection. For conveniece, we've provided several ways to express that defintion, we'll cover all of them in this page.
 
-## Common subscription creations examples
+## Common subscription creation examples
 {PANEL: Create subscription on whole collection}
 Here we create a plain subscription on the Orders collection, without any constraint or transformation.
 {CODE-TABS}
@@ -56,23 +56,25 @@ Here we create a subscription on Orders collection, which returns current and pr
 
 ### SubscriptionCreationOptions
 
-Not generic version of the class, relies on user's full knowledge of the RQL query structure
+Non generic version of the class, relies on user's full knowledge of the RQL query structure
 
 | Member | Type | Required | Description |
 | ------------- | -- | ------------- | ----- | 
 | **Name** | string | N | User defined name of subscription. |
-| **Query** | string | Y | RQL-like query that describes the subscription. The main difference from RQL that here we support javascript clause inside the 'Where' statement. |
+| **Query** | string | Y | RQL query that describes the subscription. That RQL comes with additional support to javascript clause inside the 'Where' statement and special semantics for subscriptions on documents revisions.
 | **ChangeVector** | string | N | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
 | **MentorNode** | N | string | Node tag of the preffered node to run the subscription. If the node is down, the subscription Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
 
 ### SubscriptionCreationOptions&lt;T&gt;
 
+An RQL statement will be built based on the fields.
+
 | Member | Type | Required | Description |
 | ------------- | -- | ------------- | ----- | 
 | **&lt;T&gt;** | type | Y | Type of the object, from which the collection will be derived. |
 | **Name** | string | N | User defined name of subscription. |
-| **Filter** | Expression<Func<T, bool>> | N | Lambda describing filter logic for the subscription. |
-| **Projection** | Expression<Func<T, object>> | N | Lamda describing the projection of returned documents. |
+| **Filter** | Expression<Func<T, bool>> | N | Lambda describing filter logic for the subscription. Will be transalted to a javascript function.
+| **Projection** | Expression<Func<T, object>> | N | Lamda describing the projection of returned documents. |Will be translated to a javascript funciton
 | **ChangeVector** | N | string | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
 
 

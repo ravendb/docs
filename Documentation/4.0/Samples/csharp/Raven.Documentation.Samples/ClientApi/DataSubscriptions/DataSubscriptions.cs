@@ -2,6 +2,7 @@
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Raven.Client.Documents.Queries;
+using Xunit;
 
 namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 {
@@ -27,25 +28,24 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 	                Console.WriteLine($"Order #{item.Result.Id} will be shipped via: {item.Result.ShipVia}")));
 	        _ = subscriptionWorkerTcs.Task.ContinueWith(async x => await subscription.DisposeAsync());
 	        await subscriptionTask;
-
 	    }
 	    #endregion
 
-
+        [Fact]
 	    public async Task CreationExamples()
 	    {
-	        string id;
+	        string name;
 	        IDocumentStore store = new DocumentStore();
 
 	        #region create_whole_collection_generic
 
-	        id = await store.Subscriptions.CreateAsync<Order>();
+	        name = await store.Subscriptions.CreateAsync<Order>();
 
 	        #endregion
 
 	        #region create_whole_collection_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
 	            Query = "From Orders"
 	        });
@@ -54,14 +54,14 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
 	        #region create_filter_only_generic
 
-	        id = await store.Subscriptions.CreateAsync<Order>(x =>
+	        name = await store.Subscriptions.CreateAsync<Order>(x =>
 	            x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100);
 
 	        #endregion
 
 	        #region create_filter_only_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
 	            Query = @"
 declare function getOrderLinesSum(doc){
@@ -77,7 +77,7 @@ Where getOrderLinesSum(o) > 100"
 
 	        #region create_filter_and_projection_generic
 
-	        id = store.Subscriptions.Create(
+	        name = store.Subscriptions.Create(
 	            new SubscriptionCreationOptions<Order>()
 	            {
 	                Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
@@ -95,7 +95,7 @@ Where getOrderLinesSum(o) > 100"
 
 	        #region create_filter_and_projection_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
 	            Query = @"
 declare function getOrderLinesSum(doc){
@@ -124,23 +124,55 @@ Select projectOrder(o)"
 
 	        #region create_versioned_subscription_generic
 
-	        id = store.Subscriptions.Create(
+	        name = store.Subscriptions.Create(
 	            new SubscriptionCreationOptions<Revision<Order>>());
 
 	        #endregion
 
 	        #region create_filter_and_projection_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
 	            Query = @"From Orders (Revisions = true)"
 	        });
 
+            #endregion
+
+	        Subscription<Order> subscription;
+
+            #region consumption_0
+	        var subscriptionName = await store.Subscriptions.CreateAsync<Order>(x => x.Company == "companies/11");
+
+            store.Subscriptions.Open<Order>(subscriptionName);
+	        var subscriptionTask = subscription.Run(x =>
+	            x.Items.ForEach(item =>
+	                Console.WriteLine($"Order #{item.Result.Id} will be shipped via: {item.Result.ShipVia}")));
+	        _ = subscriptionWorkerTcs.Task.ContinueWith(async x => await subscription.DisposeAsync());
+	        await subscriptionTask;
+            #endregion
+            #region open_1
+            subscription = store.Subscriptions.Open<Order>(name);
+            #endregion
+
+	        #region open_2
+	        subscription = store.Subscriptions.Open<Order>(new SubscriptionConnectionOptions(name)
+	        {
+	            Strategy = SubscriptionOpeningStrategy.WaitForFree
+	        });
+            #endregion
+
+	        #region open_3
+	        subscription = store.Subscriptions.Open<Order>(new SubscriptionConnectionOptions(name)
+	        {
+	            Strategy = SubscriptionOpeningStrategy.WaitForFree,
+                MaxDocsPerBatch = 500,
+                IgnoreSubscriberErrors = true
+	        });
 	        #endregion
-	    }
+        }
 
 
-	    public DataSubscriptions()
+        public DataSubscriptions()
 		{
 			IDocumentStore store = new DocumentStore();
        
