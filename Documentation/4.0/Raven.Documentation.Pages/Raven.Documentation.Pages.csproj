@@ -42,8 +42,12 @@
   <ItemGroup>
     <None Include=".docs.json" />
     <None Include="client-api\.docs.json" />
+    <None Include="client-api\commands\.docs.json" />
+    <None Include="client-api\commands\documents\.docs.json" />
     <None Include="client-api\commands\documents\get.dotnet.markdown" />
     <None Include="client-api\commands\documents\how-to\get-document-metadata-only.dotnet.markdown" />
+    <None Include="client-api\commands\patches\.docs.json" />
+    <None Include="client-api\commands\patches\how-to-work-with-patch-requests.dotnet.markdown" />
     <None Include="client-api\creating-document-store.markdown" />
     <None Include="client-api\data-subscriptions\.docs.json" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
