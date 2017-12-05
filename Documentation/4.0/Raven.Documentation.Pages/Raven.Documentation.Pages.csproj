@@ -50,6 +50,28 @@
     <None Include="client-api\data-subscriptions\what-are-data-subscriptions.dotnet.markdown" />
     <None Include="client-api\how-to\.docs.json" />
     <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
+    <None Include="client-api\operations\.docs.json" />
+    <None Include="client-api\operations\client\.docs.json" />
+    <None Include="client-api\operations\client\compare-exchange.dotnet.markdown" />
+    <None Include="client-api\operations\client\delete-by-query-operation.dotnet.markdown" />
+    <None Include="client-api\operations\client\get-attachment-operation.dotnet.markdown" />
+    <None Include="client-api\operations\client\patch-attachment-operation.dotnet.markdown" />
+    <None Include="client-api\operations\client\patch-by-query-operation.dotnet.markdown" />
+    <None Include="client-api\operations\client\patch-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\.docs.json" />
+    <None Include="client-api\operations\maintenance\delete-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\disable-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\enable-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-client-configuration-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-operation-state-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\put-client-configuration-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\reset-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\set-indexes-lock-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\set-indexes-priority-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\start-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\start-indexing-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\stop-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\stop-indexing-operation.dotnet.markdown" />
     <None Include="client-api\session\.docs.json" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="client-api\session\querying\.docs.json" />
@@ -71,6 +93,8 @@
     <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
     <None Include="client-api\setting-up-default-database.dotnet.markdown" />
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="indexes\side-by-side-indexes.markdown" />
+    <None Include="indexes\what-are-indexes.markdown" />
     <None Include="glossary\.docs.json" />
     <None Include="glossary\blittable-json-reader-object.markdown" />
     <None Include="glossary\index-query.markdown" />
@@ -106,12 +130,14 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="client-api\how-to\images\" />
+    <Folder Include="client-api\operations\server\" />
     <Folder Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="client-api\operations\what-are-operations.dotnet.markdown" />
     <Content Include="start\images\console.PNG" />
     <Content Include="start\images\studio.png" />
     <Content Include="studio\database\tasks\images\create-sample-data-1.png" />
