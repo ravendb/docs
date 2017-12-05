@@ -12,9 +12,9 @@ In order to store album of pictures in RavenDB 4.0 you can create the folloinwg 
 
 {
     "UserId": "users/1",
-    "Name": "Holidays Travel",
+    "Name": "Holidays",
     "Description": "Holidays travel pictures of the all family",
-    "Tags": ["Holydays Travel", "All Family"],
+    "Tags": ["Holidays Travel", "All Family"],
     "@metadata": {
         "@collection": "Albums"
     }

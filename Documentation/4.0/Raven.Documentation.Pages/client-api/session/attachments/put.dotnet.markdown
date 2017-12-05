@@ -1,24 +1,21 @@
 # Attachments : Put
 
-**PutAttachment** is used to insert or update an attachment in a database.
+In order to put an attachment in RavenDB you need to create a document and than you can attach an attachment to the document using the `Advanced.Attachments.Store` method.
+Note that attachments are trnsactional and would be save when you call `session.SaveChanges`.
 
 ## Syntax
 
-{CODE put_1@ClientApi\Commands\Attachments\Put.cs /}
+The can store an attachment using the folloinwg `session.Advanced.Attachments.Store` methods:
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | string | unique key under which attachment will be stored |
-| **etag** | Etag | current attachment etag, used for concurrency checks (`null` to skip check)  |
-| **data** | Stream | attachment data |
-| **metadata** | RavenJObject | attachment metadata |
+{CODE StoreSyntax@ClientApi\Session\Attachments.cs /}
 
 ## Example
 
-{CODE put_2@ClientApi\Commands\Attachments\Put.cs /}
+{CODE StoreAttachment@ClientApi\Session\Attachments.cs /}
+
+{CODE StoreAttachmentAsync@ClientApi\Session\Attachments.cs /}
 
 ## Related articles
 
-- [How to **update** attachment **metadata** only?](../../../client-api/commands/attachments/how-to/update-attachment-metadata-only)  
 - [GetAttachment](../../../client-api/commands/attachments/get)  
 - [DeleteAttachment](../../../client-api/commands/attachments/delete

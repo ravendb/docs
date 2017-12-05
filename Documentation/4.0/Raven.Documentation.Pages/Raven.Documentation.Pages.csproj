@@ -54,7 +54,6 @@
     <None Include="client-api\session\attachments\.docs.json" />
     <None Include="client-api\session\attachments\how-to\.docs.json" />
     <None Include="client-api\session\attachments\how-to\get-attachment-metadata-only.dotnet.markdown" />
-    <None Include="client-api\session\attachments\how-to\update-attachment-metadata-only.dotnet.markdown" />
     <None Include="client-api\session\attachments\put.dotnet.markdown" />
     <None Include="client-api\session\attachments\delete.dotnet.markdown" />
     <None Include="client-api\session\attachments\get.dotnet.markdown" />
