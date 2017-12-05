@@ -10,6 +10,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="ClientApi\Commands\Documents\Get.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="ClientApi\Commands\Documents\HowTo\Head.cs">
       <SubType>Code</SubType>
     </Compile>
