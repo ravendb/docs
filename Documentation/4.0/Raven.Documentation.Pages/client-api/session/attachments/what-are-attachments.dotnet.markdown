@@ -64,3 +64,14 @@ In RavenDB v4.0 attachment and documents can be stored in one transaction, real 
 
 When revisions is on, each attachment addition to a document (or deletion from a document) would create a new revision to the document, 
 as there would be a change to the document's metadata, as shown in example #2. 
+
+## Client API
+
+The follwing client API are related to attachments:
+
+- Get attachment names using a document ID
+- Get attachment using a document ID and attachment name.
+- Checking if attachment exists.
+- Get attachment of a revision document using document ID, attachment name and the revision change vector.
+- Store attachment.
+- Delete attachment.
