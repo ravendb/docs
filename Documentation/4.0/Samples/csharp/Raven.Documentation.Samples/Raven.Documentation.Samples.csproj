@@ -1,9 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="RavenDB.Client" Version="4.0.0-nightly-20171205-0501" />
     <PackageReference Include="xunit" Version="2.3.1" />
