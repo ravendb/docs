@@ -1,132 +1,107 @@
 # Commands : Documents : Get
 
 There are few methods that allow you to retrieve documents from a database:   
-- [Get](../../../client-api/commands/documents/get#get)   
-- [Get - multiple documents](../../../client-api/commands/documents/get#get---multiple-documents)   
-- [GetDocuments](../../../client-api/commands/documents/get#getdocuments)   
-- [StartsWith](../../../client-api/commands/documents/get#startswith)  
+- [Get single document](../../../client-api/commands/documents/get#get-single-document)   
+- [Get multiple documents](../../../client-api/commands/documents/get#get-multiple-documents)   
+- [Get paged documents](../../../client-api/commands/documents/get#get-paged-documents)   
+- [Get documents by starts with](../../../client-api/commands/documents/get#get-by-starts-with)  
 
-{PANEL:Get}
+{PANEL:Get single document}
 
-**Get** can be used to retrieve a single document.
+**GetDocumentsCommand** can be used to retrieve a single document
 
 ### Syntax
 
-{CODE get_1_0@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_interface_single@ClientApi\Commands\Documents\Get.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **key** | string | key of the document you want to retrieve |
-
-| Return Value | |
-| ------------- | ----- |
-| [JsonDocument](../../../glossary/json-document) | Object representing the retrieved document. |
+| **id** string | ID of the documents to get |
+| **includes** | string | Related documents to fetch along with the document |
+| **metadataOnly** | boolean | Whether to fetch the whole document or just the metadata. |
 
 ### Example
 
-{CODE get_1_2@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_single@ClientApi\Commands\Documents\Get.cs /}
 
 {PANEL/}
 
-{PANEL:Get - multiple documents}
+{PANEL:Get multiple documents}
 
-**Get** can also be used to retrieve a list of documents.
+**GetDocumentsCommand** can also be used to retrieve a list of documents.
 
 ### Syntax
 
-{CODE get_2_0@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_interface_multiple@ClientApi\Commands\Documents\Get.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **keys** | string[] | array of keys of the documents you want to retrieve |
-| **includes** | string[] | array of paths in documents in which server should look for a 'referenced' document (check example) |
-| **transformer** | string | name of a transformer that should be used to transform the results |
-| **transformerParameters** | Dictionary<string, RavenJToken> | parameters that will be passed to transformer |
-| **metadataOnly** | bool | specifies if only document metadata should be returned |
-
-<hr />
-
-{CODE multiloadresult@Common.cs /}
-
-| Return Value | | |
-| ------------- | ------------- | ----- |
-| **Results** | List&lt;RavenJObject&gt; | list of documents in **exact** same order as in **keys** parameter |
-| **Includes** | List&lt;RavenJObject&gt; | list of documents that were found in specified paths that were passed in **includes** parameter |
+| **ids** string[] | IDs of the documents to get |
+| **includes** | string | Related documents to fetch along with the documents |
+| **metadataOnly** | boolean | Whether to fetch whole documents or just the metadata. |
 
 ### Example I
 
-{CODE get_2_2@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_multiple@ClientApi\Commands\Documents\Get.cs /}
 
 ### Example II - using includes
 
-{CODE get_2_3@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_includes@ClientApi\Commands\Documents\Get.cs /}
 
 ### Example III - missing documents
 
-{CODE get_2_4@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_missing@ClientApi\Commands\Documents\Get.cs /}
 
 {PANEL/}
 
-{PANEL:GetDocuments}
+{PANEL:Get paged documents}
 
-**GetDocuments** can be used to retrieve multiple documents.
+**GetDocumentsCommand** can also be used to retrieve a paged set of documents.
 
 ### Syntax
 
-{CODE get_3_0@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_interface_paged@ClientApi\Commands\Documents\Get.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **metadataOnly** | bool | specifies if only document metadata should be returned |  
-
-| Return Value | |
-| ------------- | ----- |
-| [JsonDocument](../../../glossary/json-document) | Object representing retrieved document. |
 
 ### Example
 
-{CODE get_3_1@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_paged@ClientApi\Commands\Documents\Get.cs /}
 
 {PANEL/}
 
-{PANEL:StartsWith}
+{PANEL:Get by starts with}
 
-**StartsWith** can be used to retrieve multiple documents for a specified key prefix.
+**GetDocumentsCommand** can be used to retrieve multiple documents for a specified key prefix.
 
 ### Syntax
 
-{CODE get_4_0@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_interface_startswith@ClientApi\Commands\Documents\Get.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **keyPrefix** | string | prefix for which documents should be returned |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **startsWith** | string | prefix for which documents should be returned |
+| **startAfter** | string | skip document fetching until given key is found and return documents after that key (default: null) |
+| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
+| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on a server side  |
 | **metadataOnly** | bool | specifies if only document metadata should be returned |
-| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **transformer** | string | name of a transformer that should be used to transform the results |
-| **transformerParameters** | Dictionary<string, RavenJToken> | parameters that will be passed to transformer |
-| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
-
-| Return Value | |
-| ------------- | ----- |
-| [JsonDocument](../../../glossary/json-document) | Object representing retrieved document. |
 
 ### Example I
 
-{CODE get_4_1@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_startswith@ClientApi\Commands\Documents\Get.cs /}
 
 ### Example II
 
-{CODE get_4_2@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_startswith_matches@ClientApi\Commands\Documents\Get.cs /}
 
 ### Example III
 
-{CODE get_4_3@ClientApi\Commands\Documents\Get.cs /}
+{CODE get_sample_startswith_matches_end@ClientApi\Commands\Documents\Get.cs /}
 
 {PANEL/}
 
