@@ -112,7 +112,7 @@ select {
 {CODE-TAB-BLOCK:csharp:RQL}
 from Employees as e 
 select {
-    Date : new Date(Date.parse(r.Birthday)), 
+    Date : new Date(Date.parse(e.Birthday)), 
     Name : e.FirstName.substr(0,3)
 }
 {CODE-TAB-BLOCK/}

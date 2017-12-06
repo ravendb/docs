@@ -48,5 +48,10 @@
         "Path": "indexing-linq-extensions.markdown",
         "Name": "Indexing Linq Extensions",
         "Mappings": []
+    },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
     }
 ]
