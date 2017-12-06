@@ -140,6 +140,8 @@ namespace Raven.Documentation.Samples
 
 			public string Title { get; set; }
 
+            public int Age { get; set; }
+
 			public Address Address { get; set; }
 
 			public DateTime HiredAt { get; set; }

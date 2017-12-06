@@ -25,6 +25,11 @@
         "Mappings": []
     },
     {
+        "Path": "/operations",
+        "Name": "Operations",
+        "Mappings": []
+    },
+    {
         "Path": "/how-to",
         "Name": "How to...",
         "Mappings": []
