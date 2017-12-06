@@ -16,8 +16,9 @@ To delete a large amount of documents answering certain criteria we can use `Del
 | [Operation](../../../glossary/operation) | Object that allows waiting for operation to complete. |
 
 ### Remarks
-{NOTE} `DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception.   
-The document will be removed from the server after the method is called and not after `SaveChanges`
+{NOTE: Note} 
+`DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception. 
+The document will be removed from the server after the method is called and not after `SaveChanges`.
 {NOTE/}
 
 ### Example
