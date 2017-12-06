@@ -47,7 +47,7 @@
     <None Include="client-api\commands\documents\get.dotnet.markdown" />
     <None Include="client-api\commands\documents\how-to\get-document-metadata-only.dotnet.markdown" />
     <None Include="client-api\commands\patches\.docs.json" />
-    <None Include="client-api\commands\patches\how-to-work-with-patch-requests.dotnet.markdown" />
+    <None Include="client-api\commands\patches\how-to-work-with-patch-requests.markdown" />
     <None Include="client-api\creating-document-store.markdown" />
     <None Include="client-api\data-subscriptions\.docs.json" />
     <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
@@ -57,6 +57,10 @@
     <None Include="client-api\data-subscriptions\what-are-data-subscriptions.dotnet.markdown" />
     <None Include="client-api\how-to\.docs.json" />
     <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
+    <None Include="client-api\operations\.docs.json" />
+    <None Include="client-api\operations\client\.docs.json" />
+    <None Include="client-api\operations\client\patches\.docs.json" />
+    <None Include="client-api\operations\client\patches\how-to-work-with-patch-requests.markdown" />
     <None Include="client-api\session\.docs.json" />
     <None Include="client-api\session\attachments\.docs.json" />
     <None Include="client-api\session\attachments\put.dotnet.markdown" />
