@@ -8,7 +8,7 @@ One of the features that is particularly useful when inserting large amount of d
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **database** | string | Name of database for which bulk operation should be performed. If `null` then `DefaultDatabase` from DocumentStore will be used. |
+| **database** | string | Name of database for which bulk operation should be performed. If `null` then the `Database` from DocumentStore will be used. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -26,13 +26,14 @@ One of the features that is particularly useful when inserting large amount of d
 | **void StoreAsync(object entity, IMetadataDictionary metadata = null)** | store the entity in an async manner, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
 | **void StoreAsync(object entity, string id, IMetadataDictionary metadata = null)** | store the entity in an async manner, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
 | **void Dispose()** | Dispose an object |
+| **void DisposeAsync()** | Dispose an object in an async manner |
 
 ## Limitations
 
-There are several limitations to the API:
+There are a couple limitations to the API:
 
 * The bulk insert operation is broken into batches, each batch is treated in its own transaction so the whole operation isn't treated under a single transaction.
-* Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported.
+* Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported also the use in an async context is supported.
 
 ## Example
 {PANEL: Create bulk insert}

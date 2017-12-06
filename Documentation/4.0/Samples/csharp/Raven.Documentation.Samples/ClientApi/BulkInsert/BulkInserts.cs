@@ -40,8 +40,11 @@ namespace Raven.Documentation.Samples.ClientApi.BulkInsert
             using (var store = new DocumentStore())
             {
                 #region bulk_inserts_5
-                using (BulkInsertOperation bulkInsert = store.BulkInsert())
+
+                BulkInsertOperation bulkInsert = null;
+                try
                 {
+                    bulkInsert = store.BulkInsert();
                     for (int i = 0; i < 1000 * 1000; i++)
                     {
                         await bulkInsert.StoreAsync(new Employee
@@ -49,6 +52,13 @@ namespace Raven.Documentation.Samples.ClientApi.BulkInsert
                             FirstName = "FirstName #" + i,
                             LastName = "LastName #" + i
                         });
+                    }
+                }
+                finally
+                {
+                    if (bulkInsert != null)
+                    {
+                        await bulkInsert.DisposeAsync().ConfigureAwait(false);
                     }
                 }
                 #endregion

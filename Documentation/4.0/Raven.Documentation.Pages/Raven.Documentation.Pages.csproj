@@ -77,7 +77,6 @@
     <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
     <None Include="glossary\.docs.json" />
     <None Include="glossary\blittable-json-reader-object.markdown" />
-    <None Include="glossary\bulk-insert-operation.markdown" />
     <None Include="glossary\index-query.markdown" />
     <None Include="glossary\query-result.markdown" />
     <None Include="glossary\stream-query-statistics.markdown" />
