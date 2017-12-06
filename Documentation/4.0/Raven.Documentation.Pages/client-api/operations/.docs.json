@@ -1,0 +1,27 @@
+﻿[
+    {
+        "Path": "/client",
+        "Name": "Client Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/maintenance",
+        "Name": "Maintenance Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/Server",
+        "Name": "Server Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "what-are-operations.markdown",
+        "Name": "What are operations?",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "/client-api/operations/what-are-operations"
+            }
+        ]
+    }
+]
