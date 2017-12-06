@@ -12,7 +12,20 @@ One of the features that is particularly useful when inserting large amount of d
 
 | Return Value | |
 | ------------- | ----- |
-| [BulkInsertOperation](../../glossary/bulk-insert-operation) | Instance of BulkInsertOperation used for interaction. |
+| BulkInsertOperation| Instance of BulkInsertOperation used for interaction. |
+
+# BulkInsertOperation
+
+### Methods
+
+| Signature | Description |
+| ----------| ----- |
+| **void Abort()** | Abort the operation |
+| **void Store(object entity, IMetadataDictionary metadata = null)** | store the entity, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **void Store(object entity, string id, IMetadataDictionary metadata = null)** | store the entity, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
+| **void StoreAsync(object entity, IMetadataDictionary metadata = null)** | store the entity in an async manner, identifier will be generated automatically on client-side. Optional, metadata can be provided for the stored entity. |
+| **void StoreAsync(object entity, string id, IMetadataDictionary metadata = null)** | store the entity in an async manner, with `id` parameter to explicitly declare the entity identifier. Optional, metadata can be provided for the stored entity.|
+| **void Dispose()** | Dispose an object |
 
 ## Limitations
 
@@ -22,8 +35,13 @@ There are several limitations to the API:
 * Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported.
 
 ## Example
-
-{CODE bulk_inserts_4@ClientApi\BulkInsert\BulkInserts.cs /}
+{PANEL: Create bulk insert}
+Here we create a bulk insert operation and inserting a million documents of type Employee
+{CODE-TABS}
+{CODE-TAB:csharp:sync bulk_inserts_4@ClientApi\BulkInsert\BulkInserts.cs /}
+{CODE-TAB:csharp:async bulk_inserts_5@ClientApi\BulkInsert\BulkInserts.cs /}
+{CODE-TABS/}
+{PANEL/}
 
 ## Related articles
 
