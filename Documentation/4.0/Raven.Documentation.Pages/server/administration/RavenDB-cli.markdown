@@ -27,11 +27,11 @@ ravendb>
 
 ```
 
-- RavenDB can operate as service/daemon without console input. It is possible to access the cli through the provided [rvn](https://github.com/ravendb/ravendb/tree/v4.0/tools/rvn)  **TODO: Location? ** application as follows:
+- RavenDB can operate as service/daemon without console input. It is possible to access the cli through the provided `rvn` application as follows:
 ```
 rvn admin-channel [RavenDB process Id]
 ```
-- ***rvn admin-channel*** useses [Named Pipe Connection](https://en.wikipedia.org/wiki/Named_pipe) and can connect to RavenDB CLI only when running on the same machine as the server (and with appropriate prevelages).
+- ***rvn admin-channel*** uses [Named Pipe Connection](https://en.wikipedia.org/wiki/Named_pipe) and can connect to RavenDB CLI only when running on the same machine as the server (and with appropriate privileges).
 
 <br><br>
 
@@ -122,19 +122,28 @@ ravendb>
 
 Usage : **script <server | database\> [database name]**
 
-Patch database documents (or server's) from within the cli.
+Execute Admin JavaScript patches. 
 
-* Attention : Running scripts can modify your dataset with no revert option. Use with care!
+* Attention : Running scripts can harm the database beyond recovery. Use with care!!!
 
-Example: **TODO: script currently fails while passing in studio!**
-
+Example:
 ```
+ravendb> script database ProductionDB
 
+Enter JavaScript:
+(to cancel enter in new line 'cancel' or 'EXEC' to execute)
+
+>>> return database.Configuration.Storage.MaxConcurrentFlushes
+>>> EXEC
+{"Result":10}
+ravendb> 
 ```
 
 #### addServerCert
 
 Usage : **addServerCert <path\> [password]**
+
+Adding a certificate to be trusted on this server, in order for other nodes to be able to connect with it.
 
 <br><br>
 
