@@ -112,7 +112,6 @@
     <None Include="start\images\setup\w5.snag" />
     <None Include="start\images\setup\w6.snag" />
     <None Include="start\setup-wizard.markdown" />
-    <None Include="start\installation.markdown" />
     <None Include="start\getting-to-know.markdown" />
     <None Include="indexes\.docs.json" />
     <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
@@ -144,6 +143,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="start\images\console.PNG" />
+    <Content Include="start\images\dashboard.png" />
     <Content Include="start\images\setup\1.png" />
     <Content Include="start\images\setup\10.png" />
     <Content Include="start\images\setup\2.png" />
@@ -164,7 +164,6 @@
     <Content Include="start\images\setup\w4.png" />
     <Content Include="start\images\setup\w5.png" />
     <Content Include="start\images\setup\w6.png" />
-    <Content Include="start\images\studio.png" />
     <Content Include="studio\database\tasks\images\create-sample-data-1.png" />
     <Content Include="studio\database\tasks\images\create-sample-data-2.png" />
     <Content Include="studio\database\tasks\images\create-sample-data-3.png" />

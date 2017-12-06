@@ -20,11 +20,6 @@
         ]
     },
     {
-        "Path": "installation.markdown",
-        "Name": "Installing RavenDB",
-        "Mappings": []
-    },
-    {
         "Path": "setup-wizard.markdown",
         "Name": "Setup Wizard",
         "Mappings": []
