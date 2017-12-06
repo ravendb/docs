@@ -30,6 +30,11 @@
         "Mappings": []
     },
     {
+        "Path": "/operations",
+        "Name": "Operations",
+        "Mappings": []
+    },
+    {
         "Path": "creating-document-store.markdown",
         "Name": "Creating Document Store",
         "Mappings": []
