@@ -84,17 +84,7 @@ And this is probably what you will change it to if you decide to setup manually:
     }  
  
 
-If port 8080 is already being used, RavenDB will fail to start and give you an "address in use" error (EADDRINUSE).
-
-You can customize the port and host from the command line by issuing the following command on <strong>Windows</strong> which will run RavenDB on port 8081, avoiding the conflicting port issue:    
-
-    .\Raven.Server.exe --ServerUrl=http://localhost:8081
-
-Using <strong>Linux/Mac</strong>, the command should look like this:
-
-    .\Raven.Server --ServerUrl=http://localhost:8081
-
-You can also change the default port by editing the 'ServerUrl' value in `settings.json`.
+If port 8080 is already being used, RavenDB will fail to start and give you an "address in use" error (EADDRINUSE). Change the default port by editing the 'ServerUrl' value in `settings.json`.
 
 Registering as a service in <strong>Windows</strong>:
 
@@ -120,8 +110,7 @@ You are ready to continue to the next section, [Getting to Know RavenDB](getting
 
 If you already have Docker installed, getting started is simple. Just run the following command:
 
-    docker run -d -e UNSECURED_ACCESS_ALLOWED=PrivateNetwork 
-        -e PUBLIC_SERVER_URL=http://10.0.75.2:8080 
+    docker run -d -e PUBLIC_SERVER_URL=http://10.0.75.2:8080 
         -e PUBLIC_TCP_SERVER_URL=http://10.0.75.2:38888 
         -p 8080:8080 
         -p 38888:38888 
