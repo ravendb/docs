@@ -3,5 +3,10 @@
         "Path": "server-dashboard.markdown",
         "Name": "Server Dashboard",
         "Mappings": []
+    },
+    {
+        "Path": "/databases",
+        "Name": "Databases",
+        "Mappings": []
     }
 ]
