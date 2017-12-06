@@ -2,13 +2,15 @@
 using System.Reflection.Metadata;
 using System.Threading.Tasks;
 using Raven.Client.Documents.Queries;
+using Xunit;
 
 namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 {
 	using System;
 	using System.Collections.Generic;
 	using System.Linq.Expressions;
-	using Raven.Client.Documents;
+    using System.Threading;
+    using Raven.Client.Documents;
 	using Raven.Client.Documents.Subscriptions;
 	using Raven.Documentation.Samples.Orders;
     
@@ -16,7 +18,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 	{
 
 	    #region subscriptions_example
-        public async Task Worker(TaskCompletionSource<bool> subscriptionWorkerTcs)
+        public async Task Worker(CancellationToken cancellationToken)
 	    {
 	        IDocumentStore store = new DocumentStore();
             
@@ -24,60 +26,59 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 	        var subscription = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
 	        var subscriptionTask = subscription.Run(x =>
 	            x.Items.ForEach(item =>
-	                Console.WriteLine($"Order #{item.Result.Id} will be shipped via: {item.Result.ShipVia}")));
-	        _ = subscriptionWorkerTcs.Task.ContinueWith(async x => await subscription.DisposeAsync());
+	                Console.WriteLine($"Order #{item.Result.Id} will be shipped via: {item.Result.ShipVia}")), 
+                    cancellationToken);	        
 	        await subscriptionTask;
-
 	    }
 	    #endregion
 
-
+        [Fact]
 	    public async Task CreationExamples()
 	    {
-	        string id;
+	        string name;
 	        IDocumentStore store = new DocumentStore();
 
 	        #region create_whole_collection_generic
 
-	        id = await store.Subscriptions.CreateAsync<Order>();
+	        name = await store.Subscriptions.CreateAsync<Order>();
 
 	        #endregion
 
 	        #region create_whole_collection_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
-	            Query = "From Orders"
+	            Query = "from Orders"
 	        });
 
 	        #endregion
 
 	        #region create_filter_only_generic
 
-	        id = await store.Subscriptions.CreateAsync<Order>(x =>
+	        name = await store.Subscriptions.CreateAsync<Order>(x =>
 	            x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100);
 
 	        #endregion
 
 	        #region create_filter_only_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
 	            Query = @"
-declare function getOrderLinesSum(doc){
-    var sum = 0;
-    for (var i in doc.Lines) { sum += doc.Lines[i];}
-    return sum;
-}
-From Orders as o 
-Where getOrderLinesSum(o) > 100"
+                            declare function getOrderLinesSum(doc){
+                                var sum = 0;
+                                for (var i in doc.Lines) { sum += doc.Lines[i];}
+                                return sum;
+                            }
+                            from Orders as o 
+                            where getOrderLinesSum(o) > 100"
 	        });
 
 	        #endregion
 
 	        #region create_filter_and_projection_generic
 
-	        id = store.Subscriptions.Create(
+	        name = store.Subscriptions.Create(
 	            new SubscriptionCreationOptions<Order>()
 	            {
 	                Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
@@ -95,52 +96,85 @@ Where getOrderLinesSum(o) > 100"
 
 	        #region create_filter_and_projection_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
 	            Query = @"
-declare function getOrderLinesSum(doc){
-    var sum = 0;
-    for (var i in doc.Lines) { sum += doc.Lines[i];}
-    return sum;
-}
+                            declare function getOrderLinesSum(doc){
+                                var sum = 0;
+                                for (var i in doc.Lines) { sum += doc.Lines[i];}
+                                return sum;
+                            }
 
-declare function projectOrder(doc){
-    var employee = LoadDocument(doc.Employee);
-    return {
-        Id: order.Id,
-        Total: getOrderLinesSum(order),
-        ShipTo: order.ShipTo,
-        EmployeeName: employee.FirstName + ' ' + employee.LastName
+                            declare function projectOrder(doc){
+                                var employee = LoadDocument(doc.Employee);
+                                return {
+                                    Id: order.Id,
+                                    Total: getOrderLinesSum(order),
+                                    ShipTo: order.ShipTo,
+                                    EmployeeName: employee.FirstName + ' ' + employee.LastName
 
-    };
-}
+                                };
+                            }
 
-From Orders as o 
-Where getOrderLinesSum(o) > 100
-Select projectOrder(o)"
+                            from Orders as o 
+                            where getOrderLinesSum(o) > 100
+                            select projectOrder(o)"
 	        });
 
 	        #endregion
 
 	        #region create_versioned_subscription_generic
 
-	        id = store.Subscriptions.Create(
+	        name = store.Subscriptions.Create(
 	            new SubscriptionCreationOptions<Revision<Order>>());
 
 	        #endregion
 
 	        #region create_filter_and_projection_RQL
 
-	        id = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+	        name = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
 	        {
-	            Query = @"From Orders (Revisions = true)"
+	            Query = @"from Orders (Revisions = true)"
 	        });
 
+            #endregion
+
+	        SubscriptionWorker<Order> subscription;
+            var cancellationToken = new CancellationTokenSource().Token;
+            #region consumption_0
+            var subscriptionName = await store.Subscriptions.CreateAsync<Order>(x => x.Company == "companies/11");
+
+            subscription = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+	        var subscriptionTask = subscription.Run(x =>
+	            x.Items.ForEach(item =>
+	                Console.WriteLine($"Order #{item.Result.Id} will be shipped via: {item.Result.ShipVia}")), 
+                    cancellationToken);	        
+
+	        await subscriptionTask;
+            #endregion
+            #region open_1
+            subscription = store.Subscriptions.GetSubscriptionWorker<Order>(name);
+            #endregion
+
+	        #region open_2
+	        subscription = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(name)
+	        {
+	            Strategy = SubscriptionOpeningStrategy.WaitForFree
+	        });
+            #endregion
+
+	        #region open_3
+	        subscription = store.Subscriptions.GetSubscriptionWorker<Order>(new SubscriptionWorkerOptions(name)
+	        {
+	            Strategy = SubscriptionOpeningStrategy.WaitForFree,
+                MaxDocsPerBatch = 500,
+                IgnoreSubscriberErrors = true
+	        });
 	        #endregion
-	    }
+        }
 
 
-	    public DataSubscriptions()
+        public DataSubscriptions()
 		{
 			IDocumentStore store = new DocumentStore();
        
