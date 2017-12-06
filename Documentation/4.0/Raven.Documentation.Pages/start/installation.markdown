@@ -2,7 +2,7 @@
 
 The following tutorial shows how to set up RavenDB.  
 
-RavenDB 4 is cross-platform. You can use it on these platforms:
+RavenDB 4 is cross-platform. You can use it on the follwoing platforms:
 
 - Windows x64 / x86  
 - Linux x64  
@@ -12,7 +12,7 @@ RavenDB 4 is cross-platform. You can use it on these platforms:
 
 ## Prerequisites  
 
-For Windows, Microsoft Visual C++ 2015 Redistributable Package should be installed.
+For Windows, [Microsoft Visual C++ 2015 Redistributable Package](https://www.microsoft.com/en-US/download/details.aspx?id=52685) should be installed.
 
 ## Downloading the Server  
 
