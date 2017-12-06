@@ -1,7 +1,7 @@
 ﻿[
     {
-        "Path": "/client",
-        "Name": "Client Operations",
+        "Path": "/patch",
+        "Name": "Patch",
         "Mappings": []
     },
     {
@@ -12,6 +12,36 @@
     {
         "Path": "/Server",
         "Name": "Server Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "compare-exchange.markdown",
+        "Name": "CompareExchange",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-by-query-operation.markdown",
+        "Name": "DeleteByQueryOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-attachment-operation.markdown",
+        "Name": "GetAttachmentOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "put-attachment-operation.markdown",
+        "Name": "PutAttachmentOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-by-query-operation.markdown",
+        "Name": "PatchByQueryOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-operation.markdown",
+        "Name": "PatchOperation",
         "Mappings": []
     },
     {
