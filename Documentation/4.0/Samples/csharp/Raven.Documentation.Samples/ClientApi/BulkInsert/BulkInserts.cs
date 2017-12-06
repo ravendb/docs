@@ -1,5 +1,5 @@
-﻿using Raven.Abstractions.Data;
-using Raven.Client.Document;
+﻿using Raven.Client.Documents;
+using Raven.Client.Documents.BulkInsert;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.BulkInsert
