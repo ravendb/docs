@@ -3,5 +3,10 @@
         "Path": "/documents",
         "Name": "Documents",
         "Mappings": []
+    },
+	{
+        "Path": "/patches",
+        "Name": "Patches",
+        "Mappings": []
     }
 ]

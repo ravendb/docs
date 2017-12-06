@@ -16,6 +16,12 @@
     <Compile Update="ClientApi\Commands\Documents\HowTo\Head.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ClientApi\Commands\Patches\JavaScript.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="ClientApi\Commands\Patches\PatchRequests.cs">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
 
 </Project>
