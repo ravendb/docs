@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "what-are-attachments.markdown",
+    "Name": "What are attachments?",
+    "Mappings": []
+  },
+  {
+    "Path": "put.markdown",
+    "Name": "Put",
+    "Mappings": []
+  },
+  {
+    "Path": "get.markdown",
+    "Name": "Get",
+    "Mappings": []
+  },
+  {
+    "Path": "delete.markdown",
+    "Name": "Delete",
+    "Mappings": []
+  }
+]

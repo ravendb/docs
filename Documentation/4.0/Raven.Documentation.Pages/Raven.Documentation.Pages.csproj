@@ -54,6 +54,11 @@
     <None Include="client-api\how-to\.docs.json" />
     <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
     <None Include="client-api\session\.docs.json" />
+    <None Include="client-api\session\attachments\.docs.json" />
+    <None Include="client-api\session\attachments\put.dotnet.markdown" />
+    <None Include="client-api\session\attachments\delete.dotnet.markdown" />
+    <None Include="client-api\session\attachments\get.dotnet.markdown" />
+    <None Include="client-api\session\attachments\what-are-attachments.dotnet.markdown" />
     <None Include="client-api\session\opening-a-session.dotnet.markdown" />
     <None Include="client-api\session\querying\.docs.json" />
     <None Include="client-api\session\querying\document-query\what-is-document-query.dotnet.markdown" />
