@@ -90,6 +90,10 @@
     <None Include="start\images\setup\7.snag" />
     <None Include="start\images\setup\8.snag" />
     <None Include="start\images\setup\9.snag" />
+    <None Include="start\images\setup\u0.snag" />
+    <None Include="start\images\setup\u2.snag" />
+    <None Include="start\images\setup\u3.snag" />
+    <None Include="start\images\setup\u4.snag" />
     <None Include="start\images\setup\w1.snag" />
     <None Include="start\images\setup\w2.snag" />
     <None Include="start\images\setup\w3.snag" />
@@ -136,6 +140,10 @@
     <Content Include="start\images\setup\7.png" />
     <Content Include="start\images\setup\8.png" />
     <Content Include="start\images\setup\9.png" />
+    <Content Include="start\images\setup\u0.png" />
+    <Content Include="start\images\setup\u2.png" />
+    <Content Include="start\images\setup\u3.png" />
+    <Content Include="start\images\setup\u4.png" />
     <Content Include="start\images\setup\w1.png" />
     <Content Include="start\images\setup\w2.png" />
     <Content Include="start\images\setup\w3.png" />

@@ -9,7 +9,7 @@ You have 4 options to choose from:
 3. [Unsecured Setup](#unsecured-setup)
 4. [Manual Setup](#manual-setup)
 
-When running the RavenDB 4 server for the first time, you will be redirected to the setup wizard welcome screen where you can choose your preferred option.
+When running the RavenDB server for the first time, you will be redirected to the setup wizard welcome screen where you can choose your preferred option.
 
 ![Figure 1. Welcome Screen](images/setup/2.png)
 
@@ -102,7 +102,7 @@ You have successfully finished setting up a secure cluster of RavenDB servers us
 
 # Secure Setup with your own certificate
 
-In RavenDB 4, users can provide their own server certificate. The certificate can be issued by a trusted SSL vendor or it can be a self-signed certificate. In the latter case, it is the user's responsibility to have the self-signed CA registered in the OS stores on all the relevant machines.
+In RavenDB, users can provide their own server certificate. The certificate can be issued by a trusted SSL vendor or it can be a self-signed certificate. In the latter case, it is the user's responsibility to have the self-signed CA registered in the OS stores on all the relevant machines.
 
 RavenDB will only accept server certificates which contain the private key and have the following fields:
 
@@ -165,3 +165,53 @@ When nodes B and C are up, go back to the studio and see that the topology of th
 You have successfully finished setting up a secure cluster of RavenDB servers using you own wildcard certificate.
 
 # Unsecured Setup
+
+Setting up the server in an unsecured mode requires you to choose the IPs and port that the server will listen to and an optional "Public Server URL".
+
+{NOTE:Note}
+In unsecured mode all security features are disabled (authentication, authorization and encryption).
+{NOTE/}
+
+If you choose to develop only on the local machine, enter private IP addresses and port. When the setup wizard completes, the server will restart and listen to these addresses.
+
+The following screenshot shows a simple local configuration. The server in the example will be accessible at "http://127.0.0.1:8080" or "http://localhost:8080".
+
+![Figure 1. Complete Cluster](images/setup/u0.png)
+
+If you choose to open the server to the outside network or Internet, you can enter public IP addresses and a "Public Server URL". 
+
+{DANGER: Danger}
+When choosing to listen to an outside network, the RavenDB server runs in an unsafe mode. Authentication is off. Anyone who can access the server using the configured IP address will be granted **administrative privileges**. 
+{DANGER/}
+
+The following screenshot shows a configuration for listening to a public IP address. The server in the example will be accessible from both the chosen IP address and the "Public Server Url".
+
+
+![Figure 2. Complete Cluster](images/setup/u2.png)
+
+When you are done with configuring the server, click next and then restart. After a few seconds, the server is ready and accessible.
+
+![Figure 3. Complete Cluster](images/setup/u3.png)
+
+You can access the studio by entering the url in the browser (in the example it's "http://127.0.0.1:8080" or "http://localhost:8080" ).
+
+![Figure 4. Complete Cluster](images/setup/u4.png)
+
+You have successfully finished setting up a RavenDB server.
+
+To construct a cluster locally, unzip the downloaded RavenDB package to more folders, as many as the number of desired nodes. Each node will run in its own process. For each node, complete the setup wizard just like we did now, with different private IP addresses.
+
+To construct a cluster in a network, complete the setup wizard in each machine (node) separately.
+
+Once all the servers are up and running, building the cluster is simple. Access the studio, go to Manage Server > Cluster and add nodes to the cluster by their url.
+
+Read more about Clustering [here]().
+
+# Manual Setup
+
+If none of the above setup options work for you, it is possible to configure the server manually using the 'settings.json' file which is located in the server folder. To disable the setup wizard, change the 'Setup.Mode' value to 'None' and then run the server.
+
+Read the [Security Section]() to learn about security in RavenDB and how to enable the security features.
+
+Read the [Configuration Section]() to learn more about using 'settings.json' and see a list of configuration options.
+
