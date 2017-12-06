@@ -48,7 +48,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             #region more_like_this_1
             IRavenQueryable<T> MoreLikeThis<T>(MoreLikeThisBase moreLikeThis);
 
-            IRavenQueryable<T> MoreLikeThis<T>(Action<IMoreLikeThisFactory<T>> factory);
+            IRavenQueryable<T> MoreLikeThis<T>(Action<IMoreLikeThisBuilder<T>> builder);
             #endregion
 
             #region more_like_this_3
@@ -80,7 +80,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // using 'Articles/MoreLikeThis' index and search only field 'Body'
                     List<Article> articles = session
                         .Query<Article>("Articles/MoreLikeThis")
-                        .MoreLikeThis(factory => factory
+                        .MoreLikeThis(builder => builder
                             .UsingDocument(x => x.Id == "articles/1")
                             .WithOptions(new MoreLikeThisOptions
                             {
@@ -97,7 +97,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // using 'Articles/MoreLikeThis' index and search only field 'Body'
                     List<Article> articles = await asyncSession
                         .Query<Article>("Articles/MoreLikeThis")
-                        .MoreLikeThis(factory => factory
+                        .MoreLikeThis(builder => builder
                             .UsingDocument(x => x.Id == "articles/1")
                             .WithOptions(new MoreLikeThisOptions
                             {
@@ -115,7 +115,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // where article category is 'IT'
                     List<Article> articles = session
                         .Query<Article>("Articles/MoreLikeThis")
-                        .MoreLikeThis(factory => factory
+                        .MoreLikeThis(builder => builder
                             .UsingDocument(x => x.Id == "articles/1")
                             .WithOptions(new MoreLikeThisOptions
                             {
@@ -134,7 +134,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     // where article category is 'IT'
                     List<Article> articles = await asyncSession
                         .Query<Article>("Articles/MoreLikeThis")
-                        .MoreLikeThis(factory => factory
+                        .MoreLikeThis(builder => builder
                             .UsingDocument(x => x.Id == "articles/1")
                             .WithOptions(new MoreLikeThisOptions
                             {

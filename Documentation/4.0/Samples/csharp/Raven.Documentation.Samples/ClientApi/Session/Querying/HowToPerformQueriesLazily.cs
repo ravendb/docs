@@ -77,7 +77,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region lazy_7
                     Lazy<Dictionary<string, SuggestionResult>> suggestLazy = session
                         .Query<Employee>("Employees_ByFullName")
-                        .SuggestUsing(factory => factory.ByField("FullName", "johne"))
+                        .SuggestUsing(builder => builder.ByField("FullName", "johne"))
                         .ExecuteLazy();
 
                     Dictionary<string, SuggestionResult> suggest = suggestLazy.Value; // query will be executed here

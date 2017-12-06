@@ -9,7 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed. |
-| **factory** | `Action<IMoreLikeThisFactory<T>>` | Factory with fluent API that builds `MoreLikeThisBase` instance |
+| **builder** | `Action<IMoreLikeThisFactory<T>>` | Builder with fluent API that constructs `MoreLikeThisBase` instance |
 
 ### Options
 
