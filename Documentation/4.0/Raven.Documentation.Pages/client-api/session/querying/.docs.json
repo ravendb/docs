@@ -74,6 +74,16 @@
         ]
     },
     {
+        "Path": "how-to-perform-a-faceted-search.markdown",
+        "Name": "How to perform a faceted search?",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/faceted-search"
+            }
+        ]
+    },
+    {
         "Path": "how-to-work-with-suggestions.markdown",
         "Name": "How to Work with Suggestions",
         "Mappings": [
