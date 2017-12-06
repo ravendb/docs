@@ -1,8 +1,8 @@
 # Patches: How to work with patch requests?
 
-**Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. This is usefull for performance enhancement or for updating denormalized data in entities.
+**Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on server-side and is useful as a performance enhancement or for updating denormalized data in entities.
 
-    The current page deals with patch operations on single docuements, the next pages in this section will deal with patches on more than one docuemnt.
+    The current page deals with patch operations on single documents, the next pages in this section will deal with patches on more than one document.
 
 ## Syntax
     Patching has three possible interfaces: typed session, non-typed session and operation
@@ -21,7 +21,7 @@ A non-typed session interface that exposes the full functionality and uses the s
 
 {CODE patch_command_data@Common.cs /}
 
-We highly recommend using scripts with parameters, that allows RavenDB to cache scripts and therefor enhance performance
+We highly recommend using scripts with parameters, that allows RavenDB to cache scripts and therefor boost performance
 
 {CODE patch_request@Common.cs /}
 
@@ -34,18 +34,18 @@ We highly recommend using scripts with parameters, that allows RavenDB to cache 
 
 {CODE patch_operation@Common.cs /}
 
-## Builtin javascript enhancements
+## Built-in JavaScript extentions
 
-In addition to Ecmascript 5.1 api, RavenDB introduces few builtin functions and members:
+In addition to ECMAScript 5.1 API, RavenDB introduces few built-in functions and members:
 
 | ------ |:------:| ------ |
 | `id(document)` | function | returns the ID of a document|
 | `this` | object | Current document (with metadata) |
-| `load(key)` | method | Allows document loading, increases maximum number of allowed steps in script. See `Raven/AdditionalStepsForScriptBasedOnDocumentSize` [here](../../../server/configuration/configuration-options#javascript-parser). |
+| `load(key)` | method | Allows document loading, increases maximum number of allowed steps in script. |
 | `put(key, data, metadata)` | method | Allows document putting, returns generated key |
 | `output(...)` | method | Allows debug your patch, prints passed messages in output tab |
 
-## Eexamples
+## Examples
 
 {PANEL: Change field's value }
 {CODE-TABS}
@@ -55,7 +55,7 @@ In addition to Ecmascript 5.1 api, RavenDB introduces few builtin functions and 
 {CODE-TABS/}
 {PANEL/}
 
-{PANEL: Change two fields values }
+{PANEL: Changes values of two fields }
 {CODE-TABS}
 {CODE-TAB:csharp:Session-typed-syntax patch_firstName_and_lastName_generic@ClientApi\Operations\Client\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Session-syntax-untyped pathc_firstName_and_lastName_non_generic_session@ClientApi\Operations\Client\Patches\PatchRequests.cs /}
