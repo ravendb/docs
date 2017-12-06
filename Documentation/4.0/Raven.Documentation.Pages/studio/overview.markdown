@@ -11,7 +11,7 @@ all in a very easy manner.
 The Studio can be accessed on any RavenDB server, regardless of how it is deployed. 
 
 ---
-### Manage RavenDB server
+### Manage your RavenDB server
 
 ![Figure 1. Studio overview - Manage server](images/overview-1.png "Manage server")
 
