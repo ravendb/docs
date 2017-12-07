@@ -6,6 +6,11 @@ Paging, or pagination, is the process of splitting a dataset into pages, reading
 Starting from version 4.0 if page size is not specified **on client side** server will assume **int.MaxValue** (2,147,483,647) and all results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amount of data over the network or high memory consumption caused by the need of handling large quantities of documents.
 {WARNING/}
 
+{INFO:Performance}
+By default, if number of returned results exceeds **2048**, the server will issue a `Performance Hint` notification (visible in Studio) with information about query details, so you can assert if this behavior is desired or not. 
+The threshold can be adjusted by changing the `PerformanceHints.MaxNumberOfResults` configuration value.
+{INFO/}
+
 ## Example I - no paging
 
 All of the bellow queries will return all the results available.
