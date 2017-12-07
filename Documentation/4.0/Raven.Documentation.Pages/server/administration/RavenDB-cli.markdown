@@ -27,10 +27,12 @@ ravendb>
 
 ```
 
-- RavenDB can operate as service/daemon without console input. It is possible to access the cli through the provided `rvn` application as follows:
+- RavenDB can operate as service/daemon without console input. It is possible to access the cli through the provided `rvn` (use `rvn.exe` in windows) application as follows:
 ```
 rvn admin-channel [RavenDB process Id]
 ```
+*The rvn executable can be found in the distribution package (under 'Server' directory)*
+
 - ***rvn admin-channel*** uses [Named Pipe Connection](https://en.wikipedia.org/wiki/Named_pipe) and can connect to RavenDB CLI only when running on the same machine as the server (and with appropriate privileges).
 
 <br><br>
