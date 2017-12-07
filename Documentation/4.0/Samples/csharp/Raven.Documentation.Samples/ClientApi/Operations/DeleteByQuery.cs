@@ -63,7 +63,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                 #region delete_by_query2
 
-                //remove all documents from the server where Age > 35 using Person/ByAge index
+                // remove all documents from the server where Age > 35 using Person/ByAge index
                 var operation2 =
                     store.Operations.Send(
                         new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
@@ -71,10 +71,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                 #region delete_by_query3
 
-                // remove all document from People collection in the server 
+                // delete multiple docs with specific ids in a single run without loading them into the session
                 var operation3 = store.Operations.Send(new DeleteByQueryOperation(new IndexQuery
                 {
-                    Query = "from People"
+                    Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
                 }));
                 #endregion
 
@@ -117,10 +117,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                 #region delete_by_query3_async
 
-                // remove all document from People collection in the server 
+                // delete multiple docs with specific ids in a single run without loading them into the session
                 var operation3 = await store.Operations.SendAsync(new DeleteByQueryOperation(new IndexQuery
                 {
-                    Query = "from People"
+                    Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
                 }));
 
                 #endregion

@@ -40,7 +40,7 @@ from index 'Person/ByName' where Age < 35
 {CODE-TAB:csharp:Sync delete_by_query3@ClientApi\Operations\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Async delete_by_query3_async@ClientApi\Operations\DeleteByQuery.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
-from People
+from People u where id(u) in ('people/1-A', 'people/3-A')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
