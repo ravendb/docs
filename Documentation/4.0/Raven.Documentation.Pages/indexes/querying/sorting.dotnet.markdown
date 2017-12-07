@@ -29,7 +29,7 @@ order by UnitsInStock as long desc
 
 {INFO:Forcing ordering type}
 
-By default, `OrderBy` methods will determine `OrderingType` from the property path expression (e.g. `x => x.UnitsInStock` will result in `OrderingType.Long` because property type is an Int32), but a different ordering can be forced by passing `OrderingType` explicitly to one of the `OrderBy` methods.
+By default, `OrderBy` methods will determine `OrderingType` from the property path expression (e.g. `x => x.UnitsInStock` will result in `OrderingType.Long` because property type is an integer), but a different ordering can be forced by passing `OrderingType` explicitly to one of the `OrderBy` methods.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_8_1@Indexes\Querying\Sorting.cs /}
