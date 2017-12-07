@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/client",
+        "Name": "Client Operations",
+        "Mappings": []
+    },
+    {
         "Path": "/maintenance",
         "Name": "Maintenance Operations",
         "Mappings": []

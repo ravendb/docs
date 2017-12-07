@@ -265,6 +265,7 @@
     <Compile Include="ClientApi\Session\DeletingEntities.cs" />
     <Compile Include="ClientApi\Session\HowTo\Clear.cs" />
     <Compile Include="ClientApi\Session\HowTo\Defer.cs" />
+    <Compile Include="ClientApi\Session\HowTo\DeleteByIndexWithLinq.cs" />
     <Compile Include="ClientApi\Session\HowTo\Evict.cs" />
     <Compile Include="ClientApi\Session\HowTo\GetDocumentId.cs" />
     <Compile Include="ClientApi\Session\HowTo\GetEntityUrl.cs" />

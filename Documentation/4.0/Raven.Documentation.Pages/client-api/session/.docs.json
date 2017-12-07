@@ -33,5 +33,10 @@
         "Path": "/querying",
         "Name": "Querying",
         "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How To",
+        "Mappings": []
     }
 ]

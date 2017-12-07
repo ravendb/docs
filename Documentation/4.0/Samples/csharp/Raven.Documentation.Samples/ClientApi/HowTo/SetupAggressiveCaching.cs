@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 				documentStore.Initialize();
 
                 #region max_number_of_requests 
-                documentStore.Conventions.MaxHttpCacheSize = new Size(1024, SizeUnit.Bytes);
+                documentStore.Conventions.MaxHttpCacheSize = new Size(1024, SizeUnit.Megabytes);
                 #endregion
 
 			    #region disable_http_cache
