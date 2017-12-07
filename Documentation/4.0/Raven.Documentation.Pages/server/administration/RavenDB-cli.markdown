@@ -12,7 +12,7 @@
 
       Safe by default, optimized for efficiency
 
- Build 40, Version 4.0, SemVer 4.0.0-custom-40, Commit 401bf7f
+ Build 40050, Version 4.0, SemVer 4.0.0, Commit fffffff
  PID 18263, 64 bits, 8 Cores, Phys Mem 31.122 GBytes, Arch: X64
  Source Code (git repo): https://github.com/ravendb/ravendb
  Built with love by Hibernating Rhinos and awesome contributors!
@@ -27,11 +27,11 @@ ravendb>
 
 ```
 
-- RavenDB can operate as service/daemon without console input. It is possible to access the cli through the provided `rvn` (use `rvn.exe` in windows) application as follows:
+- RavenDB can operate as service/daemon without console input. It is possible to access the CLI through provided `rvn` (`rvn.exe` in windows) tool included in each distribution package as follows:
 ```
 rvn admin-channel [RavenDB process Id]
 ```
-*The rvn executable can be found in the distribution package (under 'Server' directory)*
+*The rvn executable can be found in the distribution package under 'Server' directory*
 
 - ***rvn admin-channel*** uses [Named Pipe Connection](https://en.wikipedia.org/wiki/Named_pipe) and can connect to RavenDB CLI only when running on the same machine as the server (and with appropriate privileges).
 
@@ -50,7 +50,7 @@ Example:
 ```
 ravendb> info
   Node A in cluster eabe7a24-054a-48ef-9391-7f7b7707969d
-  Build 40, Version 4.0, SemVer 4.0.0-custom-40, Commit 401bf7f
+  Build 40050, Version 4.0, SemVer 4.0.0, Commit fffffff
   PID 17591, 64 bits, 8 Cores, Arch: X64
   31.122 GBytes Physical Memory, 28.908 GBytes Available Memory
   Using GC in server concurrent mode retaining memory from the OS.
@@ -60,7 +60,7 @@ ravendb> info
 
 Usage : **stats**
 
-Online display of memory usage by RavenDB, separate into Working Set, Native Mem, Mananged Mem and Memory Mapped Size. Hitting any key will return to cli's input mode (beware not to hit Ctrl+C / Break to avoid unintended shutdown of the server).
+Online display of memory usage by RavenDB, separate into Working Set, Native Mem, Mananged Mem and Memory Mapped Size. Hitting any key will return to CLI's input mode (beware not to hit Ctrl+C / Break to avoid unintended shutdown of the server).
 
 Example:
 
@@ -151,7 +151,7 @@ Adding a certificate to be trusted on this server, in order for other nodes to b
 
 ### CLI Debugging Commands
 
-The following are debugging commands for debug use only!
+The following commands are intended for debugging use only!
 
 #### lowMem
 
@@ -167,7 +167,7 @@ Enable/Disable candidate selection timer (Rachis), or fire timeout immediately
 
 <br><br>
 
-### Misiliniance Commands
+### Miscellaneous Commands
 
 #### clear
 Usage: **clear**
