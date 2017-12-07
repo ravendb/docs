@@ -1,11 +1,11 @@
-# What is a document store?
+# What is a Document Store?
 
-A document store is the main client API object, which establishes and manages the connection channel between an application and a database instance. 
-It acts as the connection manager and also exposes methods to perform all operations that you can run against an associated server instance.
+A document store is our main client API object which establishes and manages the connection channel between an application and a database instance. 
+It acts as the connection manager and also exposes methods to perform all operations which you can run against an associated server instance.
 
 The document store object has a list of URL addresses that points to RavenDB server nodes.
 
-* `DocumentStore` acts against a remote server via HTTP requests, implement common `IDocumentStore` interface
+* `DocumentStore` acts against a remote server via HTTP requests, implementing a common `IDocumentStore` interface
 
 The document store ensures access to the following client API features:
 
@@ -17,6 +17,6 @@ The document store ensures access to the following client API features:
 * [Listeners](../client-api/listeners/what-are-listeners)
 * [Aggressive cache](../client-api/how-to/setup-aggressive-caching)
 
-## Related articles
+## Related Articles
 
 - [How to create a document store?](./creating-document-store)

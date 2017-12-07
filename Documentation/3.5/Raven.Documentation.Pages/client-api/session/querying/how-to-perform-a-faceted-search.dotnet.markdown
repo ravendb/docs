@@ -1,6 +1,6 @@
-# Session : Querying : How to perform a faceted search?
+# Session : Querying : How to Perform a Faceted Search
 
-To execute facet query using session `Query` method use `ToFacets` extension. There is also a possibility to convert query straight into `FacetQuery` instance using `ToFacetQuery` extension.
+To execute a facet query using the session `Query` method, use `ToFacets` extension. There is also a possibility to convert the query straight into the `FacetQuery` instance using the `ToFacetQuery` extension.
 
 ## Syntax
 
@@ -15,7 +15,7 @@ To execute facet query using session `Query` method use `ToFacets` extension. Th
 
 | Return Value | |
 | ------------- | ----- |
-| [FacetResults](../../../glossary/facet-results) | Facet query results with query `Duration` and list of `Results` - one entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
+| [FacetResults](../../../glossary/facet-results) | Facet query results with query `Duration` and list of `Results`: One entry for each term/range as specified in [FacetSetup] document or passed in parameters. |
 
 ## Example I
 
@@ -44,6 +44,6 @@ To execute facet query using session `Query` method use `ToFacets` extension. Th
 
 {CODE facet_5@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 
-## Related articles
+## Related Articles
 
 - [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)   

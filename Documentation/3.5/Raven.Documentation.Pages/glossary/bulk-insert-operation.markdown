@@ -1,6 +1,6 @@
 ﻿# Glossary : BulkInsertOperation
 
-### Related delegates
+### Related Delegates
 
 | Signature |
 | ----------|
@@ -10,7 +10,7 @@
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **IsAborted** | bool | indicates if operation has aborted. |
+| **IsAborted** | bool | indicates if an operation has aborted. |
 | **OperationId** | Guid | Unique operation Id. |
 
 ### Methods
@@ -18,7 +18,7 @@
 | Signature | Description |
 | ----------| ----- |
 | **void Abort()** | Abort the operation |
-| **void Store(object entity)** | store the entity, identifier will be generated automatically on client-side |
+| **void Store(object entity)** | store the entity, identifier will be generated automatically on the client-side |
 | **void Store(object entity, string id)** | store the entity, with `id` parameter to explicitly declare the entity identifier |
 | **void Dispose()** | Dispose an object |
 

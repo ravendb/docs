@@ -9,9 +9,9 @@ This dashboard provides a diagnostic overview of your server performance and dat
 
 ![Figure 1. Server Dashboard](images/server-dashboard.png "Server Dashboard")
 
-**1 - Server node details:**  
+**1 - Server Node Details:**  
       Data about the running server such as:   
-        - The server ip address,   
+        - The server IP address,   
         - Time it is up and running,   
         - Secured info
         - Number of members in cluster     
