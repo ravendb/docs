@@ -1,0 +1,17 @@
+﻿[
+    {
+        "Path": "paging.markdown",
+        "Name": "Paging",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/paging"
+            }
+        ]
+    },
+    {
+        "Path": "sorting.markdown",
+        "Name": "Sorting",
+        "Mappings": []
+    }
+]
