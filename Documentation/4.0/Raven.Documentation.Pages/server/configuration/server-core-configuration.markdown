@@ -5,32 +5,47 @@
 #### ServerUrl
 ###### The URLs which the server should listen to
 ###### Default Value: "http://localhost:8080"
-Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use "0.0.0.0" to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (http:// or https://) must be included with each URL. 
+Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use "0.0.0.0" to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (http:// or https://) must be included with each URL.
+Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port must be specified after the address using ':' as separator. 
+
+{SAFE Setting to a non loopback address will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
 
 Examples:
 
-* Server will serve all incoming requests: {WARNING This will expose the server to the outer network /}
+* Server will listen to incoming requests in all the network devices available on the machine on the specific port
 ```
 ServerUrl=http://0.0.0.0:8080
 ```
 
-* Server will serve only local incoming requests:
+* Server will listen to loopback device only:
 ```
 ServerUrl=http://localhost:8080
 ```
+
+* Serve localhost's IPv6 address
+```
+ServerUrl=http://[0:0:0:0:0:0:0:1]:8080
+```
+
 
 <br><br>
 
 #### TcpServerUrls
 ###### The TCP URLs which the server should listen to
 ###### Default Value: null
-Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for incoming TCP connections, used for inter-node communication. If not specified, will use the server url host and random port. If it just a number specify, will use that port. Otherwise, will bind to the host & port specified
+Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for incoming TCP connections, used for inter-node communication.
+Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port must be specified after the address using ':' as separator or just as number without address. 
+If no url is set - the ServerUrl will be used along with random port
+If just a number is set - the ServerUrl will be used with the specified number as port
+If address and port are set - RavwnDB will listen to address and port specified
+
+{SAFE Setting to a non loopback address will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
 
 Example:
 
-* Server will listen all incoming TCP connections: {WARNING This will expose the server to the outer network /}
+* Server will listen to TCP connections in all the network devices available on the machine
 ```
-TcpServerUrl=0.0.0.0:38888
+TcpServerUrl=tcp://0.0.0.0:38888
 ```
 
 <br><br>
@@ -38,7 +53,7 @@ TcpServerUrl=0.0.0.0:38888
 #### PublicServerUrl
 ###### The URL under which server is publicly available
 ###### Default Value: null
-Set the public address of the server on which requests will be served. Used for access from behind a firewall, proxy etc.
+Set URL to be accessible by clients and other nodes, regardless of what IP is used to access the server internally. This is useful when using secured connection vi https URL, or behind a proxy server. 
 
 Examples:
 
@@ -48,10 +63,10 @@ Examples:
 PublicServerUrl=http://10.0.0.1:80
 ```
 
-* Use a specific domain
+* Use a specific https domain
 
 ```
-PublicServerUrl=http://example.com:8080
+PublicServerUrl=https://example.com:8080
 ```
 
 <br><br>
@@ -83,9 +98,9 @@ RunInMemory=true
 <br><br>
 
 #### DataDirectory
-###### The directory for the RavenDB resource
+###### Path to the data directory of RavenDB
 ###### Default Value: "Databases/{name}"
-Relative path will be located under the application base directory
+Relative paths will be based from the application base directory (where the Raven.Server executable is located)
 
 Example:
 ```
@@ -99,11 +114,11 @@ DataDirectory="/home/user/databases"
 ###### Default Value: SetupMode.None
 Possible values:
 
-- None
-- Initial
-- LetsEncrypt,
-- Secured,
-- Unsecured
+- None : No setup process on RavenDB server startup
+- Initial : Start the wizard process to setup RavenDB on first server startup
+- LetsEncrypt : Let ravendb know that it needs to take care of refreshing cretificates on the fly via LE
+- Secured : This value will be set internally by RavenDB
+- Unsecured : Run the server in unsecured mode
 
 Example:
 ```
@@ -121,6 +136,9 @@ Setup.Mode="Unsecured"
 #### ThrowIfAnyIndexCannotBeOpened
 ###### Indicates if we should throw an exception if any index could not be opened
 ###### Default Value: false
+
+This is an expert only option that is rarely used, for debugging use only,
+
 
 Example:
 ```
