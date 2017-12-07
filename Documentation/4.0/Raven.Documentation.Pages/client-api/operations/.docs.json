@@ -5,11 +5,6 @@
         "Mappings": []
     },
     {
-        "Path": "/client",
-        "Name": "Client Operations",
-        "Mappings": []
-    },
-    {
         "Path": "/maintenance",
         "Name": "Maintenance Operations",
         "Mappings": []
@@ -37,16 +32,6 @@
     {
         "Path": "put-attachment-operation.markdown",
         "Name": "PutAttachmentOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "patch-by-query-operation.markdown",
-        "Name": "PatchByQueryOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "patch-operation.markdown",
-        "Name": "PatchOperation",
         "Mappings": []
     },
     {
