@@ -166,10 +166,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #endregion
                 }
 
-                using (var session = store.OpenSession())
+                using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region facet_2_2
-                    Dictionary<string, FacetResult> facets = await session
+                    Dictionary<string, FacetResult> facets = await asyncSession
                         .Query<Camera>("Camera/Costs")
                         .AggregateBy(new Facet
                         {
@@ -237,10 +237,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #endregion
                 }
 
-                using (var session = store.OpenSession())
+                using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region facet_3_2
-                    Dictionary<string, FacetResult> facets = await session
+                    Dictionary<string, FacetResult> facets = await asyncSession
                         .Query<Camera>("Camera/Costs")
                         .AggregateBy(builder => builder
                             .ByField(x => x.Manufacturer)
@@ -313,10 +313,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #endregion
                 }
 
-                using (var session = store.OpenSession())
+                using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region facet_4_2
-                    session.Store(new FacetSetup
+                    await asyncSession.StoreAsync(new FacetSetup
                     {
                         Facets = new List<Facet>
                             {
@@ -351,9 +351,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                             }
                     }, "facets/CameraFacets");
 
-                    session.SaveChanges();
+                    await asyncSession.SaveChangesAsync();
 
-                    Dictionary<string, FacetResult> facets = await session
+                    Dictionary<string, FacetResult> facets = await asyncSession
                         .Query<Camera>("Camera/Costs")
                         .AggregateUsing("facets/CameraFacets")
                         .ExecuteAsync();
