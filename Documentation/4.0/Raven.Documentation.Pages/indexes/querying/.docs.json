@@ -1,5 +1,15 @@
 ﻿[
     {
+        "Path": "basics.markdown",
+        "Name": "Basics",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/using-linq-to-query-ravendb"
+            }
+        ]
+    },
+    {
         "Path": "paging.markdown",
         "Name": "Paging",
         "Mappings": [
