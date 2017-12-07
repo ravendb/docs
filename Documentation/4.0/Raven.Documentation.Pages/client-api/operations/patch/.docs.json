@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "patch-by-query-operation.markdown",
+        "Name": "PatchByQueryOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-operation.markdown",
+        "Name": "PatchOperation",
+        "Mappings": []
+    }
+]

@@ -3,4 +3,169 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".docs.json" />
+    <None Include="client-api\.docs.json" />
+    <None Include="client-api\creating-document-store.markdown" />
+    <None Include="client-api\data-subscriptions\.docs.json" />
+    <None Include="client-api\data-subscriptions\how-to-create-data-subscription.dotnet.markdown" />
+    <None Include="client-api\data-subscriptions\what-are-data-subscriptions.dotnet.markdown" />
+    <None Include="client-api\how-to\.docs.json" />
+    <None Include="client-api\how-to\setup-aggressive-caching.dotnet.markdown" />
+    <None Include="client-api\operations\.docs.json" />
+    <None Include="client-api\operations\compare-exchange.dotnet.markdown" />
+    <None Include="client-api\operations\delete-by-query-operation.dotnet.markdown" />
+    <None Include="client-api\operations\get-attachment-operation.dotnet.markdown" />
+    <None Include="client-api\operations\put-attachment-operation.dotnet.markdown" />
+    <None Include="client-api\operations\patch-by-query-operation.dotnet.markdown" />
+    <None Include="client-api\operations\patch-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\.docs.json" />
+    <None Include="client-api\operations\maintenance\delete-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\disable-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\enable-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-client-configuration-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-collection-statistics-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-identities-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-index-errors-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-index-names-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-index-performance-statistics-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-index-statistics-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-indexes-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-indexes-statistics-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-indexing-status-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-operation-state-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-replication-performance-statistics-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-statistics-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\get-terms-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\index-has-changed-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\put-client-configuration-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\put-indexes-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\reset-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\set-indexes-lock-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\set-indexes-priority-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\sql-migration-import-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\sql-migration-schema-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\start-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\start-indexing-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\stop-index-operation.dotnet.markdown" />
+    <None Include="client-api\operations\maintenance\stop-indexing-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\.docs.json" />
+    <None Include="client-api\operations\server\add-database-node-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\add-etl-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\compact-database-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\configure-expiration-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\configure-revisions-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\create-client-certificate-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\create-database-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\delete-certificate-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\delete-database-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\delete-ongoing-task-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-build-number-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-certificate-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-certificates-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-connection-strings-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-database-names-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-database-topology-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-ongoing-task-info-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-periodic-backup-status-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-serverwide-client-configuration-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\get-serverwide-operation-state-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\modify-conflict-solver-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\promote-database-node-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\put-client-certificate-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\put-connection-strings-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\put-serverwide-client-configuration-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\remove-connection-strings-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\reorder-database-members-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\reset-etl-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\restore-backup-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\start-backup-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\toggle-databases-state-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\update-etl-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\update-external-replication-operation.dotnet.markdown" />
+    <None Include="client-api\operations\server\update-periodic-backup-operation.dotnet.markdown" />
+    <None Include="client-api\session\.docs.json" />
+    <None Include="client-api\session\opening-a-session.dotnet.markdown" />
+    <None Include="client-api\session\storing-entities.dotnet.markdown" />
+    <None Include="client-api\session\what-is-a-session-and-how-does-it-work.markdown" />
+    <None Include="client-api\setting-up-default-database.dotnet.markdown" />
+    <None Include="client-api\what-is-a-document-store.dotnet.markdown" />
+    <None Include="indexes\side-by-side-indexes.markdown" />
+    <None Include="indexes\what-are-indexes.markdown" />
+    <None Include="start\.docs.json" />
+    <None Include="start\about-examples.markdown" />
+    <None Include="start\getting-started.markdown" />
+    <None Include="start\installation.markdown" />
+    <None Include="start\getting-to-know.markdown" />
+    <None Include="indexes\.docs.json" />
+    <None Include="indexes\converting-to-json-and-accessing-metadata.markdown" />
+    <None Include="indexes\indexing-linq-extensions.markdown" />
+    <None Include="studio\.docs.json" />
+    <None Include="studio\database\.docs.json" />
+    <None Include="studio\database\tasks\.docs.json" />
+    <None Include="studio\database\tasks\create-sample-data.markdown" />
+    <None Include="start\playground-server.markdown" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-1.snag" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-2.snag" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-3.snag" />
+    <None Include="studio\database\tasks\images\snag\create-sample-data-4.snag" />
+    <None Include="studio\images\snag\overview-1.snag" />
+    <None Include="studio\images\snag\overview-2.snag" />
+    <None Include="studio\images\snag\overview-3.snag" />
+    <None Include="studio\overview.markdown" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="client-api\how-to\images\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="client-api\operations\what-are-operations.dotnet.markdown" />
+    <Content Include="start\images\console.PNG" />
+    <Content Include="start\images\studio.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-1.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-2.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-3.png" />
+    <Content Include="studio\database\tasks\images\create-sample-data-4.png" />
+    <Content Include="studio\images\overview-1.png" />
+    <Content Include="studio\images\overview-2.png" />
+    <Content Include="studio\images\overview-3.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

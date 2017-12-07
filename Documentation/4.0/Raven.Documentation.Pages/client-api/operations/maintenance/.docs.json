@@ -1,0 +1,152 @@
+﻿[
+    {
+        "Path": "put-client-configuration-operation.markdown",
+        "Name": "PutClientConfigurationOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-client-configuration-operation.markdown",
+        "Name": "GetClientConfigurationOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-operation-state-operation.markdown",
+        "Name": "GetOperationStateOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-index-operation.markdown",
+        "Name": "DeleteIndexOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "disable-index-operation.markdown",
+        "Name": "DisableIndexOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "enable-index-operation.markdown",
+        "Name": "EnableIndexOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "reset-index-operation.markdown",
+        "Name": "ResetIndexOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "set-indexes-lock-operation.markdown",
+        "Name": "SetIndexesLockOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "set-indexes-priority-operation.markdown",
+        "Name": "SetIndexesPriorityOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "start-index-operation.markdown",
+        "Name": "StartIndexOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "start-indexing-operation.markdown",
+        "Name": "StartIndexingOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "stop-index-operation.markdown",
+        "Name": "StopIndexOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "stop-indexing-operation.markdown",
+        "Name": "StopIndexingOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-errors-operation.markdown",
+        "Name": "GetIndexErrorsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-names-operation.markdown",
+        "Name": "GetIndexNamesOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-operation.markdown",
+        "Name": "GetIndexOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-performance-statistics-operation.markdown",
+        "Name": "GetIndexPerformanceStatisticsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-index-statistics-operation.markdown",
+        "Name": "GetIndexStatisticsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-indexes-operation.markdown",
+        "Name": "GetIndexesOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-indexes-statistics-operation.markdown",
+        "Name": "GetIndexesStatisticsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-indexing-status-operation.markdown",
+        "Name": "GetIndexingStatusOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-terms-operation.markdown",
+        "Name": "GetTermsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "index-has-changed-operation.markdown",
+        "Name": "IndexHasChangedOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "put-indexes-operation.markdown",
+        "Name": "PutIndexesOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "sql-migration-import-operation.markdown",
+        "Name": "SqlMigrationImportOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "sql-migration-schema-operation.markdown",
+        "Name": "SqlMigrationSchemaOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-collection-statistics-operation.markdown",
+        "Name": "GetCollectionStatisticsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-identities-operation.markdown",
+        "Name": "GetIdentitiesOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-replication-performance-statistics-operation.markdown",
+        "Name": "GetReplicationPerformanceStatisticsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-statistics-operation.markdown",
+        "Name": "GetStatisticsOperation",
+        "Mappings": []
+    }
+]

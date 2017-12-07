@@ -1,0 +1,186 @@
+﻿[
+    {
+        "Path": "create-client-certificate-operation.markdown",
+        "Name": "CreateClientCertificateOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-certificates-operation.markdown",
+        "Name": "GetCertificatesOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-certificate-operation.markdown",
+        "Name": "DeleteCertificateOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "put-client-certificate-operation.markdown",
+        "Name": "PutClientCertificateOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-serverwide-client-configuration-operation.markdown",
+        "Name": "GetServerWideClientConfigurationOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "get-connection-strings-operation.markdown",
+        "Name": "GetConnectionStringsOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "put-connection-strings-operation.markdown",
+        "Name": "PutConnectionStringOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "put-serverwide-client-configuration-operation.markdown",
+        "Name": "PutServerWideClientConfigurationOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "remove-connection-strings-operation.markdown",
+        "Name": "RemoveConnectionStringOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "add-etl-operation.markdown",
+        "Name": "AddEtlOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "update-etl-operation.markdown",
+        "Name": "UpdateEtlOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "reset-etl-operation.markdown",
+        "Name": "ResetEtlOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "add-database-node-operation.markdown",
+        "Name": "AddDatabaseNodeOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "reorder-database-members-operation.markdown",
+        "Name": "ReorderDatabaseMembersOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "compact-database-operation.markdown",
+        "Name": "CompactDatabaseOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "configure-expiration-operation.markdown",
+        "Name": "ConfigureExpirationOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "configure-revisions-operation.markdown",
+        "Name": "ConfigureRevisionsOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "create-database-operation.markdown",
+        "Name": "CreateDatabaseOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-database-operation.markdown",
+        "Name": "DeleteDatabasesOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "delete-ongoing-task-operation.markdown",
+        "Name": "DeleteOngoingTaskOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "get-build-number-operation.markdown",
+        "Name": "GetBuildNumberOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "get-database-names-operation.markdown",
+        "Name": "GetDatabaseNamesOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "get-database-topology-operation.markdown",
+        "Name": "GetDatabaseTopology",
+        "Mappings": []
+    },
+
+    {
+        "Path": "get-ongoing-task-info-operation.markdown",
+        "Name": "GetOngoingTaskInfoOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "get-periodic-backup-status-operation.markdown",
+        "Name": "GetPeriodicBackupStatusOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "get-serverwide-operation-state-operation.markdown",
+        "Name": "GetServerWideOperationStateOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "modify-conflict-solver-operation.markdown",
+        "Name": "ModifyConflictSolverOperation",
+        "Mappings": []
+    },
+
+    {
+        "Path": "promote-database-node-operation.markdown",
+        "Name": "PromoteDatabaseNodeOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "restore-backup-operation.markdown",
+        "Name": "RestoreBackupOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "start-backup-operation.markdown",
+        "Name": "StartBackupOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "toggle-databases-state-operation.markdown",
+        "Name": "ToggleDatabasesStateOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "update-periodic-backup-operation.markdown",
+        "Name": "UpdatePeriodicBackupOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "update-external-replication-operation.markdown",
+        "Name": "UpdateExternalReplicationOperation",
+        "Mappings": []
+    }
+]

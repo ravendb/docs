@@ -1,0 +1,57 @@
+﻿[
+    {
+        "Path": "/patch",
+        "Name": "Patch",
+        "Mappings": []
+    },
+    {
+        "Path": "/maintenance",
+        "Name": "Maintenance Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/Server",
+        "Name": "Server Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "compare-exchange.markdown",
+        "Name": "CompareExchange",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-by-query-operation.markdown",
+        "Name": "DeleteByQueryOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "get-attachment-operation.markdown",
+        "Name": "GetAttachmentOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "put-attachment-operation.markdown",
+        "Name": "PutAttachmentOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-by-query-operation.markdown",
+        "Name": "PatchByQueryOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "patch-operation.markdown",
+        "Name": "PatchOperation",
+        "Mappings": []
+    },
+    {
+        "Path": "what-are-operations.markdown",
+        "Name": "What are operations?",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "/client-api/commands/what-are-commands"
+            }
+        ]
+    }
+]
