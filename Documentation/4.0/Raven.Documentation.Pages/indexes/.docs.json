@@ -36,7 +36,7 @@
     },
     {
         "Path": "multi-map-indexes.markdown",
-        "Name": "Multi-Map indexes",
+        "Name": "Multi-Map Indexes",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -46,9 +46,14 @@
     },
     {
         "Path": "map-reduce-indexes.markdown",
-        "Name": "Map-Reduce indexes",
+        "Name": "Map-Reduce Indexes",
         "Mappings": []
     },
+    	{
+		"Path": "fanout-indexes.markdown",
+		"Name": "Fanout Indexes",
+		"Mappings": [ ]
+	},
     {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
