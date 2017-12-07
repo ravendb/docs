@@ -1,4 +1,4 @@
-﻿# How to create a document store?
+﻿# How to Create a Document Store
 
 To create an instance of the `DocumentStore` you need to specify a list of URL addresses that point to RavenDB server nodes.
 
@@ -12,7 +12,7 @@ This will instantiate a communication channel between your application and the l
 
 ##Initialization
 
-To be able to work on the `DocumentStore` You will have to call `Initialize` method To get the fully initialized instance of `IDocumentStore`.
+To be able to work on the `DocumentStore`, you will have to call the `Initialize` method to get the fully initialized instance of `IDocumentStore`.
 
 ##Singleton
 
@@ -24,7 +24,7 @@ initialization looks like the following:
 {NOTE If you use more than one instance of `DocumentStore` you should dispose it after use. /}
 
 
-## Related articles
+## Related Articles
 
 - [What is a document store?](./what-is-a-document-store)
 - [How to setup a default database?](./setting-up-default-database)

@@ -1,4 +1,4 @@
-# Indexing LINQ extensions
+# Indexing LINQ Extensions
 
 Various indexing LINQ extensions are available to enhance the usability and reduce the complexity of the indexing functions. The available extensions are:
 
@@ -27,7 +27,7 @@ You can read more about boosting [here](../indexes/boosting).
 
 {PANEL:**WhereEntityIs**}
 
-`WhereEntityIs` can be used to check if given `Raven-Entity-Name` value in metadata for the given document matches any of the given values. This can be useful when indexing polymorphic data. Please visit dedicated article to get more information (or click [here](../indexes/indexing-polymorphic-data#other-ways)).
+`WhereEntityIs` can be used to check if given `Raven-Entity-Name` value in metadata for the given document matches any of the given values. This can be useful when indexing polymorphic data. Please visit our dedicated article to get more information (or click [here](../indexes/indexing-polymorphic-data#other-ways)).
 
 {PANEL/}
 
@@ -39,14 +39,14 @@ You can read more about boosting [here](../indexes/boosting).
 
 {PANEL:**Parsing numbers**}
 
-String values can be safely parsed to `int`, `long`, `decimal` and `double` using appropriate methods:
+String values can be safely parsed to `int`, `long`, `decimal` and `double` using the appropriate methods:
 
 - ParseInt,
 - ParseLong,
 - ParseDecimal,
 - ParseDouble
 
-There are two overrides for each method, first one returning default value in case of parsing failure, second one accepting value that should be returned when failure occurs.
+There are two overrides for each method: The first one returns the default value in case of parsing failure. The second one accepts the value that should be returned when failure occurs.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Index indexes_3@Indexes/IndexingLinqExtensions.cs /}
@@ -56,7 +56,7 @@ There are two overrides for each method, first one returning default value in ca
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [Map indexes](../indexes/map-indexes)
 - [Boosting](../indexes/boosting)

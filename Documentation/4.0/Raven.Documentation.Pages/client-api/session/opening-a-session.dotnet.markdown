@@ -1,6 +1,6 @@
-# Session : Opening a session
+# Session : Opening a Session
 
-To open synchronous session use `OpenSession` method from `DocumentStore` or `OpenAsyncSession` if you prefer working in asynchronous manner.
+To open synchronous session use the `OpenSession` method from `DocumentStore` or `OpenAsyncSession` if you prefer working in an asynchronous manner.
 
 ## Syntax
 
@@ -8,11 +8,11 @@ There are three overloads of `OpenSession` method
 
 {CODE open_session_1@ClientApi\Session\OpeningSession.cs /}
 
-First method is a equivalent of doing
+The first method is an equivalent of doing
 
 {CODE open_session_2@ClientApi\Session\OpeningSession.cs /}
 
-Second method is a equivalent of doing
+The second method is an equivalent of doing
 
 {CODE open_session_3@ClientApi\Session\OpeningSession.cs /}
 
@@ -32,11 +32,10 @@ Second method is a equivalent of doing
 
 {CODE open_session_5@ClientApi\Session\OpeningSession.cs /}
 
-
 {DANGER:Important}
-**Always remember to release session allocated resources after usage by invoking `Dispose` method or wrapping session object in `using` statement.**
+**Always remember to release session allocated resources after usage by invoking the `Dispose` method or wrapping the session object in the `using` statement.**
 {DANGER/}
 
-## Related articles
+## Related Articles
 
 - [What is a session and how does it work?](./what-is-a-session-and-how-does-it-work)  

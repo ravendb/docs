@@ -12,13 +12,13 @@ The changes subscription is accessible by a document store. Depending on the typ
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **database** | string | Name of database to open changes API for. If `null`, default database configured in DocumentStore will be used. |
+| **database** | string | Name of the database to open changes API for. If `null`, the default database configured in DocumentStore will be used. |
 
 | Return value | |
 | ------------- | ----- |
 | IDocumentChanges | Instance implementing IDocumentChanges interface appropriate to store type. |
 
-## Connection properties
+## Connection Properties
 
 `IDatabaseChanges` has three properties that are related to the server connection:
 
@@ -35,7 +35,7 @@ event EventHandler ConnectionStatusChanged
 
 ## Subscriptions
 
-In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
+In order to retrieve notifications, you have to subscribe to server-side events by using one of the following methods:
 
 - [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
 - [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
@@ -51,7 +51,7 @@ In order to retrieve notifications you have to subscribe to server-side events b
 
 ## Unsubscribing
 
-In order to end subscription (stop listening for particular notifications) you must `Dispose` it.
+In order to end a subscription (stop listening for particular notifications), you must `Dispose` it.
 
 {CODE changes_2@ClientApi\Changes\WhatIsChangesApi.cs /}
 

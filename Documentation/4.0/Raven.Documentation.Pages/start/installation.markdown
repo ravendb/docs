@@ -2,7 +2,7 @@
 
 The following tutorial shows how to set up RavenDB.  
 
-RavenDB 4 is cross-platform. You can use it on the follwoing platforms:
+RavenDB 4 is cross-platform. You can use it on the following platforms:
 
 - Windows x64 / x86  
 - Linux x64  
@@ -25,11 +25,11 @@ continue to the next section, [Getting to Know RavenDB](getting-to-know).
 
 ### Security Concerns
 
-To let a developer start coding an application quickly, RavenDB will run with the default security mode. 
+To let a developer start coding an application quickly, RavenDB will run in the default security mode. 
 
 As long as the database is used inside the local machine and no outside connections are allowed, you can ignore security concerns 
 and you require no authentication. Once you set RavenDB to listen to connections outside your local machine, 
-your database will immediately block this now vulnerable configuration, and require the administrator to properly setup the security and 
+your database will immediately block this now vulnerable configuration and require the administrator to properly setup the security and 
 access control to prevent unauthorized access to your data.
 
 <strong>RavenDB will not let you listen to requests outside your local machine until you have adequately provided security for it.  </strong>  
@@ -85,7 +85,7 @@ Using <strong>Linux</strong>, the command should look like this:
 
 To change the default port, you also have the option to edit `Server\settings.json`. This file is where you would typically define server wide configurations.  
 
-You can read all about it in the [Configuration Section](). For now we'll stick to the basics, these are the default initial settings:  
+You can read all about it in the [Configuration Section](). For now, these are the default initial settings:  
 
     {  
         "ServerUrl": "http://localhost:8080",  
@@ -93,7 +93,7 @@ You can read all about it in the [Configuration Section](). For now we'll stick 
         "RunInMemory": false  
     }  
 
-Once things are set up and the server is running, you can access our GUI, the [RavenDB Management Studio](), by going to http://localhost:8080 in your browser. The Studio comes with every license: Community, Professional, and Enterprise. 
+Once things are set up and the server is running you can access our GUI, the [RavenDB Management Studio](), by going to http://localhost:8080 in your browser. The Studio comes with every license: Community, Professional, and Enterprise. 
 
 ![Figure 2: Accessing the Studio for the first time.](images\studio.png)
 

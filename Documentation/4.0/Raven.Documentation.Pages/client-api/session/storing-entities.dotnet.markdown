@@ -1,18 +1,18 @@
-# Session : Storing entities in session
+# Session : Storing Entities in Session
 
 To store entities inside the **session** object, use one of the three `Store` methods.
 
 ## Syntax
 
-First overload: stores entity in session, then extracts Id from entity or generates a new one if it is not available.
+First overload: Stores the entity in a session, then extracts the Id from the entity or generates a new one if it's not available.
 
 {CODE store_entities_1@ClientApi\Session\StoringEntities.cs /}
 
-Second overload: stores entity in session with given id.
+Second overload: Stores the entity in a session with given id.
 
 {CODE store_entities_2@ClientApi\Session\StoringEntities.cs /}
 
-Third overload: stores entity in session with given id, forces concurrency check with given change vector.
+Third overload: Stores the entity in a session with given id, forces concurrency check with given change vector.
 
 {CODE store_entities_3@ClientApi\Session\StoringEntities.cs /}
 
@@ -27,6 +27,6 @@ Third overload: stores entity in session with given id, forces concurrency check
 
 {CODE store_entities_5@ClientApi\Session\StoringEntities.cs /}
 
-## Related articles
+## Related Articles
 
 - [Saving changes](./saving-changes)  

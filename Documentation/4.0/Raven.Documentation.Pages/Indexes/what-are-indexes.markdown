@@ -1,10 +1,10 @@
-# What are indexes?
+# What are Indexes?
 
 Indexes are server-side functions that define which fields (and what values) documents can be searched on and are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoids costly table scan operations. A consequence of this choice is that the results might be stale, and you can read more about this (including mitigation techniques) on the [Stale Indexes](../indexes/stale-indexes) page.
 
 The core of every index is its mapping function that utilizes LINQ-like syntax, and the result of such a mapping is converted to a [Lucene](http://lucene.apache.org/) index entry, which is persisted for future use to avoid re-indexing each time the query is issued and keep response times minimal.
 
-## Basic example
+## Basic Example
 
 In our example, we will create an index that will map documents from the `Employees` [collection](../client-api/faq/what-is-a-collection) and enable querying by `FirstName`, `LastName`, or both.
 
@@ -30,7 +30,7 @@ A frequent mistake is to treat indexes as SQL Views, but they are not analogous.
 This behavior can be altered by [storing](../indexes/storing-data-in-index) fields and doing [projections](../indexes/querying/projections).
 {WARNING/}
 
-## Related articles
+## Related Articles
 
 - [Indexes : Creating and deploying indexes](../indexes/creating-and-deploying)
 - [Indexes : Basics](../indexes/indexing-basics)

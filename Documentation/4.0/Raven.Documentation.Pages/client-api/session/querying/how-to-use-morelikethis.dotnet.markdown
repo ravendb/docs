@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed. |
+| **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed |
 | **builder** | `Action<IMoreLikeThisFactory<T>>` | Builder with fluent API that constructs `MoreLikeThisBase` instance |
 
 ### Options
@@ -18,13 +18,13 @@
 | Options | | |
 | ------------- | ------------- | ----- |
 | **MinimumTermFrequency** | int? | Ignores terms with less than this frequency in the source doc |
-| **MaximumQueryTerms** | int? | Return a query with no more than this many terms |
+| **MaximumQueryTerms** | int? | Returns a query with no more than this many terms |
 | **MaximumNumberOfTokensParsed** | int? | The maximum number of tokens to parse in each example doc field that is not stored with TermVector support |
-| **MinimumWordLength** | int? | Ignore words less than this length or if 0 then this has no effect |
-| **MaximumWordLength** | int? | Ignore words greater than this length or if 0 then this has no effect |
-| **MinimumDocumentFrequency** | int? | Ignore words which do not occur in at least this many documents |
-| **MaximumDocumentFrequency** | int? | Ignore words which occur in more than this many documents |
-| **MaximumDocumentFrequencyPercentage** | int? | Ignore words which occur in more than this percentage of documents |
+| **MinimumWordLength** | int? | Ignores words less than this length or, if 0, then this has no effect |
+| **MaximumWordLength** | int? | Ignores words greater than this length or if 0 then this has no effect |
+| **MinimumDocumentFrequency** | int? | Ignores words which do not occur in at least this many documents |
+| **MaximumDocumentFrequency** | int? | Ignores words which occur in more than this many documents |
+| **MaximumDocumentFrequencyPercentage** | int? | Ignores words which occur in more than this percentage of documents |
 | **Boost** | bool? | Boost terms in query based on score |
 | **BoostFactor** | float? |  Boost factor when boosting based on score |
 | **StopWordsDocumentId** | string | Document id containing custom stop words |
@@ -64,7 +64,7 @@ where morelikethis(id() = 'articles/1', '{ Fields : [ "Body" ] }') AND Category 
 
 ## Remarks
 
-Do not forget to add following **using** statement which contains necessary extensions:
+Do not forget to add the following **using** statement which contains necessary extensions:
 
 {CODE more_like_this_8@ClientApi\Session\Querying\MoreLikeThis.cs /}
 
