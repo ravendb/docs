@@ -4,7 +4,7 @@ The fanout index is the index that outputs multiple index entries per each docum
 
 {CODE fanout_index_def_1@Indexes/FanoutIndexes.cs /}
 
-Note that a large order, having a lot of line items, we will create an index entry per each `OrderLine` item from `Lines` collection. It means that a single document can generate hundreds of index entries.
+Note that a large order, having a lot of line items, will create an index entry per each `OrderLine` item from `Lines` collection. It means that a single document can generate hundreds of index entries.
 
 The fanout index concept is not specific for map-only indexes. It also applies to map-reduce ones:
 
@@ -39,5 +39,5 @@ You can control when a performance hint should be created using `PerformanceHint
 
 ##Paging 
 
-Since the fanout index creates multiple entries for a single document and queries return documents by default (it be changed if the query defines the projection) the paging of query results
+Since the fanout index creates multiple entries for a single document and queries return documents by default (it can change if the query defines the projection) the paging of query results
 is a bit more complex. Please read the dedicated article about [paging through tampered results](../indexes/querying/paging#paging-through-tampered-results).
