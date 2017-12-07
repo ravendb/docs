@@ -8,12 +8,16 @@ To execute facet (aggregation) query using session `Query` method use `Aggregate
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **facet** | FacetBase | `FacetBase` implementation defining the scope of the facet and it's options (either `Facet` or `RangeFacet`) |
+| **facet** | FacetBase | `FacetBase` implementation defining the scope of the facet and its options (either `Facet` or `RangeFacet`) |
 | **facets** | `IEnumerable<FacetBase>` | Enumerable containing `FacetBase` implementations |
 | **builder** | `Action<IFacetFactory<T>>` | Builder with a fluent API that constructs a `FacetBase` instance |
 | **facetSetupDocumentId** | string | Id of a document containing `FacetSetup` | 
 
 ### Facet & RangeFacet
+
+{INFO:Facet vs RangeFacet}
+`RangeFacet` allows you to split the results of the calculations into several ranges in contrast to `Facet` where whole spectrum of results will be used to generate single outcome.
+{INFO/}
 
 {CODE-TABS}
 {CODE-TAB:csharp:Facet facet_7_3@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
@@ -49,8 +53,8 @@ To execute facet (aggregation) query using session `Query` method use `Aggregate
 {CODE-TAB:csharp:Sync facet_2_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB:csharp:Async facet_2_2@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
-FROM INDEX 'Camera/Costs' 
-SELECT 
+from index 'Camera/Costs' 
+select 
 facet(Manufacturer), 
 facet(Cost < 200, Cost >= 200 AND Cost < 400, Cost >= 400 AND Cost < 600, Cost >= 600 AND Cost < 800, Cost >= 800),
 facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Megapixels < 10, Megapixels >= 10)
@@ -63,8 +67,8 @@ facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Me
 {CODE-TAB:csharp:Sync facet_3_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB:csharp:Async facet_3_2@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
-FROM INDEX 'Camera/Costs' 
-SELECT 
+from index 'Camera/Costs' 
+select 
 facet(Manufacturer), 
 facet(Cost < 200, Cost >= 200 AND Cost < 400, Cost >= 400 AND Cost < 600, Cost >= 600 AND Cost < 800, Cost >= 800),
 facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Megapixels < 10, Megapixels >= 10)
@@ -77,8 +81,8 @@ facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Me
 {CODE-TAB:csharp:Sync facet_4_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB:csharp:Async facet_4_2@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
-FROM INDEX 'Camera/Costs' 
-SELECT facet(id('facets/CameraFacets'))
+from index 'Camera/Costs' 
+select facet(id('facets/CameraFacets'))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
