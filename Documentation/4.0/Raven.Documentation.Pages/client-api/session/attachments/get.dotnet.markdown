@@ -6,7 +6,7 @@ There are few methods that allow you to download attachments from a database:
 
 **session.Advanced.Attachments.Get** can be used to download an attachment.
 **session.Advanced.Attachments.GetNames** can be used to all attachment names that attached to a document.
-**session.Advanced.Attachments.GetRevision** can be used to download an attachment of a reivions document.
+**session.Advanced.Attachments.GetRevision** can be used to download an attachment of a revision document.
 **session.Advanced.Attachments.Exists** can be used to determine if an attachment is exists on a document.
 
 ### Syntax

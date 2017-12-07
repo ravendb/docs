@@ -1,15 +1,15 @@
 # What are attachments?
 
-In RavenDB v4.0 attachments are binary streams which can be attached to an exiting document. 
+In RavenDB attachments are binary streams which can be bound to an existing document. 
 Each attachment has a name and you can specify the content type ("image/png" or "application/pdf" for example).
 A document can have any number of attachments.
 
-Each attachment is attached to an exiting document and in order to get an document you'll need to specify the document ID and the attachment name. 
-What's great in this approach that you can specify the attachment's metadata in the document itself, and this document can be queries as any other document.
+Each attachment is bound to an existing document and in order to get an document you'll need to specify the document ID and the attachment name. 
+What's great in this approach that you can specify the attachment's metadata in the document itself, and this document can be queried as any other document.
 
 ## Example 1:
 
-In order to store album of pictures in RavenDB 4.0 you can create the folloinwg "albums/1" document:
+In order to store album of pictures in RavenDB you can create the following "albums/1" document:
 
 {
     "UserId": "users/1",
@@ -30,9 +30,10 @@ Name: 004.mp4, Content-Type: video/mp4
 
 ## Example 2:
 
-You can store an "users/1" document and attach to it a profile picutre.
+You can store an "users/1" document and attach to it a profile picture.
 When requesting the document from the server the results would be:
 
+{CODE-BLOCK:json}
 {
   "Name": "Hibernating Rhinos",
   "@metadata": {
@@ -51,28 +52,29 @@ When requesting the document from the server the results would be:
     "@last-modified": "2017-12-05T12:36:24.0504021Z"
   }
 }
+{CODE-BLOCK/}
 
 You can note from this that the document has a HasAttachments flag and a @attachments array with the attachments info.
 You can see the attachments name, content type, hash and size.
 
-Note that we would store the attachment streams by the hash, so if many attachments has the same hash their streams would be store just once.
+{NOTE Note that we would store the attachment streams by the hash, so if many attachments has the same hash their streams would be store just once. /}
 
 ## Transaction support
 
-In RavenDB v4.0 attachment and documents can be stored in one transaction, a real one, which means you either get all of them saved to disk or none.
+In RavenDB attachment and documents can be stored in one transaction, a real one, which means you either get all of them saved to disk or none.
 
-## Reivions and attachments
+## Revisions and attachments
 
-When revisions is on, each attachment addition to a document (or deletion from a document) would create a new revision to the document, 
+When revisions feature is turned on in your database, each attachment addition to a document (or deletion from a document) would create a new revision of the document, 
 as there would be a change to the document's metadata, as shown in example #2. 
 
 ## Client API
 
-The follwing client API are related to attachments:
+The following client API are related to attachments:
 
-- Get attachment names using a document ID
-- Get attachment using a document ID and attachment name.
-- Checking if attachment exists.
-- Get attachment of a revision document using document ID, attachment name and the revision change vector.
-- Store attachment.
-- Delete attachment.
+- [Get attachment names using a document ID](../../../client-api/commands/attachments/get) 
+- [Get attachment using a document ID and attachment name](../../../client-api/session/attachments/get)
+- [Checking if attachment exists](../../../client-api/commands/attachments/get) 
+- [Get attachment of a revision document using document ID, attachment name and the revision change vector](../../../client-api/commands/attachments/get) 
+- [Store attachment](../../../client-api/session/attachments/put)
+- [Delete attachment](../../../client-api/session/attachments/delete)
