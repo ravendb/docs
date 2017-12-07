@@ -3,5 +3,10 @@
         "Path": "what-is-changes-api.markdown",
         "Name": "What is Changes API?",
         "Mappings": []
-    }    
+    },
+    {
+        "Path": "how-to-subscribe-to-document-changes.markdown",
+        "Name": "How to subscribe to document changes?",
+        "Mappings": []
+    }
 ]
