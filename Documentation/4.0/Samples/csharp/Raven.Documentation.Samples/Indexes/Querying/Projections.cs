@@ -34,7 +34,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                                    FirstName = employee.FirstName,
                                    LastName = employee.LastName
                                };
-
             StoreAllFields(FieldStorage.Yes); // FirstName and LastName fields can be retrieved directly from index
         }
     }
@@ -93,7 +92,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
             {
                 using (var session = store.OpenSession())
                 {
-                    #region projections_1_query
+                    #region projections_1
                     var results = session
                         .Query<Employee, Employees_ByFirstAndLastName>()
                         .Select(x => new
@@ -106,21 +105,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 }
                 using (var session = store.OpenSession())
                 {
-                    #region projections_1_docquery
-                    var results = session
-                        .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstAndLastName>()
-                        .Select(x => new
-                        {
-                            FirstName = x.FirstName,
-                            LastName = x.LastName
-                        })
-                        .ToList();
-                    #endregion
-                }
-                using (var session = store.OpenSession())
-                {
-                    #region projections_1_stored_query
+                    #region projections_1_stored
                     var results = session
                         .Query<Employee, Employees_ByFirstAndLastNameWithStoredFields>()
                         .Select(x => new
@@ -133,21 +118,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 }
                 using (var session = store.OpenSession())
                 {
-                    #region projections_1_stored_docquery
-                    var results = session
-                        .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstAndLastNameWithStoredFields>()
-                        .Select(x => new
-                        {
-                            FirstName = x.FirstName,
-                            LastName = x.LastName
-                        })
-                        .ToList();
-                    #endregion
-                }
-                using (var session = store.OpenSession())
-                {
-                    #region projections_2_query
+                    #region projections_2
                     var results = session
                         .Query<Order, Orders_ByShipToAndLines>()
                         .Select(x => new
@@ -158,23 +129,10 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
+
                 using (var session = store.OpenSession())
                 {
-                    #region projections_2_docquery
-                    var results = session
-                        .Advanced
-                        .DocumentQuery<Order, Orders_ByShipToAndLines>()
-                        .Select(x => new
-                        {
-                            ShipTo = x.ShipTo,
-                            Products = x.Lines.Select(y => y.ProductName),
-                        })
-                        .ToList();
-                    #endregion
-                }
-                using (var session = store.OpenSession())
-                {
-                    #region projections_3_query
+                    #region projections_3
                     var results = session
                         .Query<Employee, Employees_ByFirstAndLastName>()
                         .Select(x => new
@@ -184,22 +142,10 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
+
                 using (var session = store.OpenSession())
                 {
-                    #region projections_3_docquery
-                    var results = session
-                        .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstAndLastName>()
-                        .Select(x => new
-                        {
-                            FullName = x.FirstName + " " + x.LastName
-                        })
-                        .ToList();
-                    #endregion
-                }
-                using (var session = store.OpenSession())
-                {
-                    #region projections_4_query
+                    #region projections_4
                     var results = (from e in session.Query<Employee, Employees_ByFirstAndLastName>()
                                    let format = (Func<Employee, string>)(p => p.FirstName + " " + p.LastName)
                                    select new
@@ -210,7 +156,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 }
                 using (var session = store.OpenSession())
                 {
-                    #region projections_5_query
+                    #region projections_5
                     var results = (from o in session.Query<Order, Orders_ByShippedAtAndCompany>()
                                    let c = RavenQuery.Load<Company>(o.Company)
                                    select new
@@ -222,7 +168,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 }
                 using (var session = store.OpenSession())
                 {
-                    #region projections_6_query
+                    #region projections_6
                     var results = session
                         .Query<Employee, Employees_ByFirstNameAndBirthday>()
                         .Select(e => new
@@ -233,35 +179,23 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         }).ToList();
                     #endregion
                 }
+
                 using (var session = store.OpenSession())
                 {
-                    #region projections_6_docquery
+                    #region projections_7
                     var results = session
-                        .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstNameAndBirthday>()
+                        .Query<Employee, Employees_ByFirstNameAndBirthday>()
                         .Select(e => new
                         {
-                            DayOfBirth = e.Birthday.Day,
-                            MonthOfBirth = e.Birthday.Month,
-                            Age = DateTime.Today.Year - e.Birthday.Year
+                            Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
+                            Name = RavenQuery.Raw(e.FirstName, "substr(0,3)")
                         }).ToList();
-                    #endregion
-                }
-                using (var session = store.OpenSession())
-                {
-                    #region projections_7_query
-                    var results = (from e in session.Query<Employee, Employees_ByFirstNameAndBirthday>()
-                                   select new
-                                   {
-                                       Date = RavenQuery.Raw<DateTime>("new Date(Date.parse(e.Birthday))"),
-                                       Name = RavenQuery.Raw(e.FirstName, "substr(0,3)")
-                                   }).ToList();
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
-                    #region projections_8_query
+                    #region projections_8
                     var results = session
                         .Query<Employee, Employees_ByFirstAndLastName>()
                         .Select(e => new
@@ -272,41 +206,16 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
+
                 using (var session = store.OpenSession())
                 {
-                    #region projections_8_docquery
-                    var results = session
-                        .Advanced
-                        .DocumentQuery<Employee, Employees_ByFirstAndLastName>()
-                        .Select(e => new
-                        {
-                            Name = e.FirstName,
-                            Metadata = session.Advanced.GetMetadataFor(e),
-                        })
-                        .ToList();
-                    #endregion
-                }
-                using (var session = store.OpenSession())
-                {
-                    #region projections_9_query
+                    #region projections_9
                     var results = session
                         .Query<Order, Orders_ByShipToAndLines>()
                         .Select(x => new
                         {
-                            Total = x.Lines.Sum(l => l.PricePerUnit * l.Quantity),
-                        })
-                        .ToList();
-                    #endregion
-                }
-                using (var session = store.OpenSession())
-                {
-                    #region projections_9_docquery
-                    var results = session
-                        .Advanced
-                        .DocumentQuery<Order, Orders_ByShipToAndLines>()
-                        .Select(x => new
-                        {
-                            Total = x.Lines.Sum(l => l.PricePerUnit * l.Quantity),
+                            Total = x.Lines.Sum(l => l.PricePerUnit * l.Quantity)
+
                         })
                         .ToList();
                     #endregion

@@ -2,9 +2,35 @@
 
 There are couple a couple of ways to perform projections in RavenDB:
 
-- simple projections using [Select](../../indexes/querying/projections#select)
+- projections using [Select](../../indexes/querying/projections#select)
 - using [ProjectInto](../../indexes/querying/projections#projectinto)
 - using [OfType (As)](../../indexes/querying/projections#oftype-(as))
+
+{INFO:What are projections and when to use them}
+When preforming a query, we usually pull the full document back from the server.
+However, we often need to display the data to the user, and instead of pulling the whole document back and picking just what we'll show we can
+ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
+This saving can be very signficant if we need to show just a bit of information on a large document.  
+
+A good example in the sample data set would be the order document. If we'll ask 
+for all the Orderes where Company is "companies/65-A", the size of the result that we get back from the server is 19KB,
+But if we preform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
+
+Asides from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents and preform transformations on the results. 
+{INFO/}
+
+{INFO:Projections are applied as the last stage in the query}
+It is important to understand that projections are applied after the query has been processed, filtered, sorted and paged. This means that the project doesn't apply to all the documents in the database, only to the results that are actually returned.  
+This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately after. And it also means that we cannot do any filtering work as part of the projection. You can filter what will be returned, but not which documents will be returned, that has already been determined earlier in the query pipeline.  
+{INFO/}
+
+{INFO:The coat of running a projection}
+Another consideration to take into account is the cost of running the projection. It is possible to make the projection query expensive to run. RavenDB has limits to the amount of time it will spend in evaluating the projection, and exceeding these (quite generous) limits will fail the query.
+{INFO/}
+
+{INFO:Projections and Stored fields}
+If projection function only requires fields that are stored, then document will not be loaded from storage and all data will come from index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
+{INFO/}
 
 {PANEL:Select}
 The most basic projection can be done using LINQ `Select` method:
@@ -12,8 +38,7 @@ The most basic projection can be done using LINQ `Select` method:
 ### Example I - Projecting Individual Fields of the Document
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_1_query@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:DocumentQuery projections_1_docquery@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Employees/ByFirstAndLastName'
@@ -23,15 +48,12 @@ select FirstName, LastName
 
 This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? It means that, if index entry matches our query predicate, then we will try to extract all requested fields from that particular entry and if all requested fields are available in there, then we do not download it from storage. Index `Employees/ByFirstAndLastName` used in above query is not storing any fields so documents will be fetched from storage.
 
-{INFO:Projections and Stored fields}
-If projection function only requires fields that are stored, then document will not be loaded from storage and all data will come from index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
-{INFO/}
+### Example II - Projecting Stored fields
 
-So following above rule, if we create index that stores `FirstName` and `LastName` and request only those fields in query, then **data will come from index directly**.
+If we create index that stores `FirstName` and `LastName` and request only those fields in query, then **data will come from index directly**.
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_1_stored_query@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:DocumentQuery projections_1_stored_docquery@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_1_stored@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1_stored@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Employees/ByFirstAndLastNameWithStoredFields'
@@ -39,11 +61,10 @@ select FirstName, LastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example II - Projecting Arrays and Objects
+### Example III - Projecting Arrays and Objects
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_2_query@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:DocumentQuery projections_2_docquery@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_2@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Orders/ByShipToAndLines' as o
@@ -55,11 +76,10 @@ select
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example III - Projection with Expression
+### Example IV - Projection with Expression
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_3_query@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:DocumentQuery projections_3_docquery@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_3@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Employees/ByFirstAndLastName' as e
@@ -70,9 +90,9 @@ select
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IV - Projection with `let`
+### Example V - Projection with `let`
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_4_query@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_4@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 declare function output(e) {
@@ -83,11 +103,10 @@ from index 'Employees/ByFirstAndLastName' as e select output(e)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example V - Projection with Calculation
+### Example VI - Projection with Calculation
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_9_query@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:DocumentQuery projections_9_docquery@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_9@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Orders/ByShipToAndLines' as o
@@ -98,10 +117,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VI - Projection Using a Loaded Document
+### Example VII - Projection Using a Loaded Document
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_5_query@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_5@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_4@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Orders/ByShippedAtAndCompany' as o
@@ -113,11 +132,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection with Dates
+### Example VIII - Projection with Dates
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_6_query@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:DocumentQuery projections_6_docquery@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_6@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Employees/ByFirstNameAndBirthday' as e 
@@ -129,10 +147,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VIII - Projection with Raw JavaScript Code
+### Example IX - Projection with Raw JavaScript Code
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_7_query@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_7@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Employees/ByFirstNameAndBirthday' as e 
@@ -143,11 +161,10 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with Metadata
+### Example X - Projection with Metadata
 
 {CODE-TABS}
-{CODE-TAB:csharp:Query projections_8_query@Indexes\Querying\Projections.cs /}
-{CODE-TAB:csharp:DocumentQuery projections_8_docquery@Indexes\Querying\Projections.cs /}
+{CODE-TAB:csharp:Query projections_8@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Employees/ByFirstAndLastName' as e 
@@ -168,8 +185,7 @@ You can use this method instead of using `Select` together with all fields of th
 ### Example
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB:csharp:Async projections_8_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Companies/ByContact' 
 select Name, Phone
@@ -187,7 +203,9 @@ select Name, Phone
 
 {PANEL/}
 
-{NOTE Projected entities (even named types) are not tracked by the session. /}
+{INFO:Projections and the session}
+Because you are working with projections, and not directly with documents, they are _not_ tracked by the session and modifications to a projection will not modify the document when SaveChanges is called
+{INFO/}
 
 ## Related articles
 
