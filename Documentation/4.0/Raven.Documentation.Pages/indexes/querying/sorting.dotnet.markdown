@@ -74,9 +74,9 @@ order by random()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Ordering when field is Analyzed
+## Ordering when field is Searchable
 
-When sorting must be done on field that is marked as [Analyzed](../../indexes/using-analyzers) then due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, the solution is to create another field that is not marked as Analyzed and sort by it.
+When sorting must be done on field that is [Searchable](../../indexes/using-analyzers) then due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, the solution is to create another field that is not Searchable and sort by it.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_6_1@Indexes\Querying\Sorting.cs /}
