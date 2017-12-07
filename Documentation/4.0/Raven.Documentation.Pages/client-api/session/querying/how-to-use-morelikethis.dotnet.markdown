@@ -11,6 +11,16 @@
 | **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed. |
 | **builder** | `Action<IMoreLikeThisFactory<T>>` | Builder with fluent API that constructs `MoreLikeThisBase` instance |
 
+### Builder
+
+{CODE more_like_this_3@ClientApi\Session\Querying\MoreLikeThis.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **documentJson** | string | Inline JSON document that will be used as a base for operation |
+| **predicate** | `Expression<Func<T, bool>>` | Filtering expression utilized to find a document that will be used as a base for operation |
+| **options** | `MoreLikeThisOptions` | Non-default options that should be used for operation |
+
 ### Options
 
 {CODE more_like_this_2@ClientApi\Session\Querying\MoreLikeThis.cs /}
@@ -29,16 +39,6 @@
 | **BoostFactor** | float? |  Boost factor when boosting based on score |
 | **StopWordsDocumentId** | string | Document id containing custom stop words |
 | **Fields** | string[] | Fields to compare |
-
-### Factory
-
-{CODE more_like_this_3@ClientApi\Session\Querying\MoreLikeThis.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **documentJson** | string | Inline JSON document that will be used as a base for operation |
-| **predicate** | `Expression<Func<T, bool>>` | Filtering expression utilized to find a document that will be used as a base for operation |
-| **options** | `MoreLikeThisOptions` | Non-default options that should be used for operation |
 
 ## Example I
 

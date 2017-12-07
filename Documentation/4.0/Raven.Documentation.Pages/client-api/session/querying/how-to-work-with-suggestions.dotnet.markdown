@@ -11,18 +11,7 @@ The `Suggestion` feature is available through query extension methods and gives 
 | **suggestion** | `SuggestionBase`  | Defines the type of suggestion that should be executed |
 | **builder** | `Action<ISuggestionFactory<T>>` | Builder with a fluent API that constructs a `SuggestionBase` instance |
 
-### Options
-
-{CODE suggest_7@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
-
-| Options | | |
-| ------------- | ------------- | ----- |
-| **PageSize** | int | Maximum number of suggestions that will be returned |
-| **Distance** | `StringDistanceTypes` | String distance algorithm to use (`None`, `Levenshtein`, `JaroWinkler`, `NGram`) |
-| **Accuracy** | float? | Suggestion accuracy |
-| **SortMode** | `SuggestionSortMode` | Indicates in what order the results should be returned (`None`, `Popularity`) |
-
-### Factory
+### Builder
 
 {CODE suggest_2@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 
@@ -33,6 +22,17 @@ The `Suggestion` feature is available through query extension methods and gives 
 | **term** | string | Term that will be used as a basis of the suggestions |
 | **terms** | string[] | Terms that will be used as a basis of the suggestions |
 | **options** | `SuggestionOptions` | Non-default options that should be used for operation |
+
+### Options
+
+{CODE suggest_7@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
+
+| Options | | |
+| ------------- | ------------- | ----- |
+| **PageSize** | int | Maximum number of suggestions that will be returned |
+| **Distance** | `StringDistanceTypes` | String distance algorithm to use (`None`, `Levenshtein`, `JaroWinkler`, `NGram`) |
+| **Accuracy** | float? | Suggestion accuracy |
+| **SortMode** | `SuggestionSortMode` | Indicates in what order the results should be returned (`None`, `Popularity`) |
 
 ## Example I
 
