@@ -3,5 +3,10 @@
         "Path": "/administration",
         "Name": "Administration",
         "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
     }
 ]
