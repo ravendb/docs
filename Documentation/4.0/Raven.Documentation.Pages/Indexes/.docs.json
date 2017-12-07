@@ -40,6 +40,11 @@
         ]
     },
     {
+        "Path": "map-reduce-indexes.markdown",
+        "Name": "Map-Reduce indexes",
+        "Mappings": []
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
         "Mappings": []
