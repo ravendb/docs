@@ -26,7 +26,7 @@ Example :
 }
 ```
 
-*** setting.json config options OVERRIDES environment variables settings***
+{NOTE setting.json config options OVERRIDES environment variables settings /}
 
 ### Command Line Arguments
 The Raven.Server executable can configure options using arguments which can be passed to the console application (or while running as daemon)
@@ -37,5 +37,5 @@ Example:
 ./Raven.Server --Setup.Mode=None
 ```
 
-*** Executable arguments config options OVERRIDES environment variables settings and setting.json***
+{NOTE Executable arguments config options OVERRIDES environment variables settings and setting.json /}
 
