@@ -245,5 +245,34 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/how-nosql-mapreduce-can-boost-your-database-performance.jpg",
             "twitter:url": "https://ravendb.net/articles/how-nosql-mapreduce-can-boost-your-database-performance"
         }
+    },
+    {
+        "Path": "ravendb-best-nosql-database-example-for-startups.markdown",
+        "Name": "Why a NoSQL Database is the Best Solution for a Startup",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Why a NoSQL Database is the Best Solution for a Startup | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-best-nosql-database-example-for-startups",
+            "publishedAt": "2017-12-07"
+        },
+        "SeoMetaProperties": {
+            "description": "Choosing the right NoSql database can feel like adding another member to your development team. It’s great for ROI, brand reputation, and reducing cash burn.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Why a NoSQL Database is the Best Solution for a Startup | RavenDB",
+            "og:description": "Choosing the right NoSql database can feel like adding another member to your development team. It’s great for ROI, brand reputation, and reducing cash burn.",
+            "og:url": "https://ravendb.net/articles/ravendb-best-nosql-database-example-for-startups",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-best-nosql-database-example-for-startups.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Why a NoSQL Database is the Best Solution for a Startup | RavenDB",
+            "twitter:description": "Choosing the right NoSql database can feel like adding another member to your development team. It’s great for ROI, brand reputation, and reducing cash burn.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-best-nosql-database-example-for-startups.jpg",
+            "twitter:url": "https://ravendb.net/articles/ravendb-best-nosql-database-example-for-startups"
+        }
     }
 ]
