@@ -49,11 +49,25 @@
         "Name": "Map-Reduce Indexes",
         "Mappings": []
     },
-    	{
-		"Path": "fanout-indexes.markdown",
-		"Name": "Fanout Indexes",
-		"Mappings": [ ]
-	},
+    {
+        "Path": "fanout-indexes.markdown",
+        "Name": "Fanout Indexes",
+        "Mappings": []
+    },
+    {
+        "Path": "sorting-and-collation.markdown",
+        "Name": "Sorting & Collation",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/customizing-results-order"
+            },
+            {
+                "Version": 3.0,
+                "Key": "indexes/customizing-results-order"
+            }
+        ]
+    },
     {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
