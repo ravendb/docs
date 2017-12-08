@@ -4,14 +4,21 @@ Following article will introduce you into the querying. You probably read quite 
 
 ## Query-flow
 
-Each query in RavenDB must be done against index and the query-flow is as follows:
+Each query in RavenDB must be expressed by [RQL](), our query language, and each query must match an index in order to return the results. The full query flow is as follows:
 
-1. First step, when query is issued, is to locate appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise the query analysis is taking place and auto-index is created (if it does not exist already).
-2. When we have our index, we scan it for records that match query predicate.
-3. From each record server extracts appropriate fields. It always extracts `id()` field ([stored](../../indexes/storing-data-in-index) by default). Additionally when [projection](../../indexes/querying/projections) is taking place, then fields defined in projection are extracted from index (if stored).
-4. Next, if query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in index, then we use them and continue, if not, then document is loaded from storage and missing fields are fetched from it.
-5. _(Optional)_ If query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection.
-6. Return results.
+1. `from index | collection` 
+  - First step, when query is issued, is to locate appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise the query analysis is taking place and auto-index is created (if no match is found).
+2. `where` 
+  - When we have our index, we scan it for records that match query predicate.
+3. `load`
+  - If query contains projection that requires any documents loads to be processed, they are done just before projection is executed.
+3. `select`
+  - From each record server extracts appropriate fields. It always extracts `id()` field ([stored](../../indexes/storing-data-in-index) by default).   
+  - Next, if query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in index, then we use them and continue, if not, then document is loaded from storage and missing fields are fetched from it.
+  - If query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in projection are extracted from index (if stored).
+4. `include` 
+  - If any [includes]() are defined then the results is being traversed to extract the IDs of potential documents to include with the results.
+5. Return results.
 
 ## Querying using LINQ
 
