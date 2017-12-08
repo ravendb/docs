@@ -3,15 +3,14 @@
 Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic and hardware usage, or simply because no user can handle huge amounts of data at once.
 
 {WARNING:Warning}
-Starting from version 4.0, if page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amount of data over the network or high memory consumption caused by the need of handling large quantities of documents.
+Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by the need of handling large quantities of documents.
 {WARNING/}
 
 {INFO:Performance}
-By default, if number of returned results exceeds **2048**, the server will issue a `Performance Hint` notification (visible in Studio) with information about query details, so you can assert if this behavior is desired or not. 
+By default, if number of returned results exceeds **2048**, the server will issue a `Performance Hint` notification (visible in Studio) with information about query details. You can decide if this behavior is desired or not. 
 The threshold can be adjusted by changing the `PerformanceHints.MaxNumberOfResults` configuration value.
 {INFO/}
 
-## Example I - no paging
 ## Example I - No Paging
 
 All of the queries below will return all the results available.
@@ -46,7 +45,7 @@ While the query will return with just 10 results, `totalResults` will hold the t
 
 ## Paging Through Tampered Results
 
-For some queries the server will skip over some results internally, and by that invalidate the `TotalResults` value. When executing a `Distinct` query or index produces multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
+For some queries, the server will skip over some results internally, and by that invalidate the `TotalResults` value. When executing a `Distinct` query or index producing multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
 
 Whenever `SkippedResults` is greater than 0 and a query involved some non-stored fields, it implies that we skipped over some results in the index.
     
@@ -66,7 +65,7 @@ For example, let's page through all the results:
 {CODE-TAB:csharp:Index paging_6_0@Indexes\Querying\Paging.cs /}
 {CODE-TABS/}
 
-The situation would be different if a `Distinct` query and a projection applied to stored fields only. Then to get correct results you shouldn't include `SkippedResults`
+The situation would be different if a `Distinct` query and a projection applied to stored fields only. To get the correct results here, you shouldn't include `SkippedResults`
 into the paging formula. Let's take a look at the example (note the usage of `Store` method in the index definition):
 
 {CODE-TABS}

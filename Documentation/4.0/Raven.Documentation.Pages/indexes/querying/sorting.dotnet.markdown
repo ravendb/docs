@@ -2,7 +2,7 @@
 
 ## Basics
 
-Starting from 4.0, server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** applied until you request it by using appropriate methods, so following queries will not return ordered results:
+Starting from 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_1_1@Indexes\Querying\Sorting.cs /}
@@ -44,9 +44,9 @@ order by UnitsInStock desc
 
 {INFO/}
 
-## Ordering by score
+## Ordering by Score
 
-When query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)) and this value is available in metadata information of a document under `@index-score` (the higher the value, the better the match). To order by this value you can use `OrderByScore` or `OrderByScoreDescending` methods:
+When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)) and this value is available in metadata information of a document under `@index-score` (the higher the value, the better the match). To order by this value you can use the `OrderByScore` or the `OrderByScoreDescending` methods:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_4_1@Indexes\Querying\Sorting.cs /}
@@ -59,9 +59,9 @@ order by score()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Random ordering
+## Random Ordering
 
-If you want to randomize the order of your results each time the query is executed you can use `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
+If you want to randomize the order of your results each time the query is executed, you can use the `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_3_1@Indexes\Querying\Sorting.cs /}
@@ -74,9 +74,9 @@ order by random()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Ordering when field is Searchable
+## Ordering When a Field is Searchable
 
-When sorting must be done on field that is [Searchable](../../indexes/using-analyzers) then due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, the solution is to create another field that is not Searchable and sort by it.
+When sorting must be done on field that is [Searchable](../../indexes/using-analyzers), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not Searchable, and sort by it.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_6_1@Indexes\Querying\Sorting.cs /}
@@ -95,7 +95,9 @@ Sometimes, when ordering strings, it doesn't make sense to use the default lexic
 For example, "Abc9" will come after "Abc10" because if treated as single characters, 9 is greater than 1.   
 If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing
 "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
+
 To order in this mode, you can pass the `OrderingType.AlphaNumeric` type into `OrderBy` or `OrderByDescending`:   
+
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_7_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_7_2@Indexes\Querying\Sorting.cs /}
@@ -107,7 +109,7 @@ order by Name as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Related articles
+## Related Articles
 
 - [Indexing : Basics](../../indexes/indexing-basics)
 - [Querying : Basics](../../indexes/querying/basics)

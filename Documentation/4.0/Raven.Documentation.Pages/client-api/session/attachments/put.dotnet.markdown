@@ -1,11 +1,12 @@
 # Attachments : Put
 
-In order to put an attachment in RavenDB you need to create a document and than you can attach an attachment to the document using the `Advanced.Attachments.Store` method.
-Note that attachments, same as documents, are a part of the session and will be only saved on the Server when session.SaveChanges is executed in one transaction.
+In order to put an attachment in RavenDB, you need to create a document. Then you can attach an attachment to the document using the `Advanced.Attachments.Store` method.
+
+Attachments, just like documents, are a part of the session and will be only saved on the Server when session.SaveChanges is executed in one transaction.
 
 ## Syntax
 
-Attachments can be stored using one the following `session.Advanced.Attachments.Store` methods:
+Attachments can be stored using one of the following `session.Advanced.Attachments.Store` methods:
 
 {CODE StoreSyntax@ClientApi\Session\Attachments\Attachments.cs /}
 
