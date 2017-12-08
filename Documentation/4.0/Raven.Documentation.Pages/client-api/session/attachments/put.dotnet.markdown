@@ -16,7 +16,7 @@ Attachments can be stored using one the following `session.Advanced.Attachments.
 {CODE-TAB:csharp:Async StoreAttachmentAsync@ClientApi\Session\Attachments\Attachments.cs /}
 {CODE-TABS/}
 
-## Related articles
+## Related Articles
 
 - [GetAttachment](../../../client-api/commands/attachments/get)  
 - [DeleteAttachment](../../../client-api/commands/attachments/delete)

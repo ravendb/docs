@@ -1,7 +1,8 @@
-# What are attachments?
+# What are Attachments?
 
 In RavenDB attachments are binary streams which can be bound to an existing document. 
 Each attachment has a name and you can specify the content type ("image/png" or "application/pdf" for example).
+
 A document can have any number of attachments.
 
 Each attachment is bound to an existing document and in order to get an document you'll need to specify the document ID and the attachment name. 
@@ -22,6 +23,7 @@ In order to store album of pictures in RavenDB you can create the following "alb
 }
 
 And this document can have the following attachments:
+This document can have the following attachments:
 
 Name: 001.jpg, Content-Type: image/jpeg
 Name: 002.jpg, Content-Type: image/jpeg
@@ -54,12 +56,13 @@ When requesting the document from the server the results would be:
 }
 {CODE-BLOCK/}
 
-You can note from this that the document has a HasAttachments flag and a @attachments array with the attachments info.
+Note that this document has an HasAttachments flag and a @attachments array with the attachments info.
+
 You can see the attachments name, content type, hash and size.
 
 {NOTE Note that we would store the attachment streams by the hash, so if many attachments has the same hash their streams would be store just once. /}
 
-## Transaction support
+## Transaction Support
 
 In RavenDB attachment and documents can be stored in one transaction, a real one, which means you either get all of them saved to disk or none.
 
