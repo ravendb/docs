@@ -1,7 +1,7 @@
-﻿# Operations: How to delete documents by query
+﻿# Operations: How to Delete Documents by Query
 
-The `DeleteByQueryOperation` gives you the ability to delete a large number of documents with single query.
-The operation is performed in the background on the server 
+The `DeleteByQueryOperation` gives you the ability to delete a large number of documents with a single query.
+The operation is performed in the background on the server. 
 
 ### Syntax
 
@@ -10,7 +10,7 @@ The operation is performed in the background on the server
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **indexName** | string | Name of an index to perform a query on |
-| **expression** | Expression<Func<T, bool>> | The linq expression (the query that will be performed) |
+| **expression** | Expression<Func<T, bool>> | The LINQ expression (the query that will be performed) |
 | **queryToDelete** | IndexQuery | Holds all the information required to query an index |
 | **options** | QueryOperationOptions | Holds different setting options for base operations |
 
@@ -59,10 +59,10 @@ from People where Name = 'Bob' and Age >= 29
 
 #### Remarks
 {WARNING: important} 
-`DeleteByQueryOperation` can only be performed on map index. Executing it on map-reduce index will lead to an exception. 
+`DeleteByQueryOperation` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
 {WARNING/}
 
 
-## Related articles
+## Related Articles
 
 - [What are **operations**?](../what-are-operations?)  

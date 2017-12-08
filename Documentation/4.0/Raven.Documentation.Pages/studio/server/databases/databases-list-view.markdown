@@ -17,34 +17,34 @@ All your databases are listed in this view
 **1 - Database State**   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; A database can be: Online, Offline or Disabled  
 <ul>
-  <li>Online   - Database is active and ready to use, read & write actions can be done</li>  
-  <li>Offline  - Database was not used recently, will become online upon access</li>
-  <li>Disabled - Database has been disabled</li>
+  <li>Online   - Database is active and ready to use. Read and write actions can be done.</li>  
+  <li>Offline  - Database was not used recently, and will become online upon access.</li>
+  <li>Disabled - Database has been disabled.</li>
 </ul>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Note: If the database is contained in one of the cluster's nodes, but Not in the node that shows in this current view,  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Note: If the database is contained in one of the cluster's nodes, but not in the node that shows in this current view,  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; then _'Remote'_ will be indicated - see more below
 
 **2 - Containing Nodes**    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; These are the nodes that contain a replica of the database 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; These are the nodes that contain a replica of the database. 
 
 **3 - Database Size**    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total size of database, including documents and indexes 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Total size of database, including documents and indexes.
 
 **4 - Up time**        
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time that has passed since database last went online 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time that has passed since database last went online. 
 
 **5 - Number of documents**      
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Number of douments in database
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The number of documents in database.
 
 **6 - Latest backup time**      
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time of latest database backup
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Time of the latest database backup.
       
 **7 - Number of indexes**    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Number of index errors will show if relevant
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The number of index errors will show if relevant.
 
 **8 - Alerts**    
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Number of alerts on this database if there are any
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; The number of alerts on this database if there are any.
 {PANEL/}
 
 ---  
@@ -92,12 +92,12 @@ All your databases are listed in this view
 
 {PANEL:More Actions}
 **1 - Pause indexing**      
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All indexes on this database will stop indexing  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Indexing will be resumed upon a restart to the server  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All indexes on this database will stop indexing.
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Indexing will be resumed upon a restart to the server.  
 
 **2 - Disable indexing**     
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All indexes on this database will stop indexing  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Indexing will be NOT be resumed upon a restart to the server  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; All indexes on this database will stop indexing.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Indexing will be NOT be resumed upon a restart to the server.  
 
 **3 - Compact database**   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Physically compact the database on disk
@@ -108,7 +108,7 @@ All your databases are listed in this view
 ![Figure 5. Remote Database](images/database-actions-4.png "Remote Database")
 
 {PANEL: Remote Database}
-If the database is contained in one of the cluster's nodes, but Not in the node that shows in this current view, then _'Remote'_ is indicated  
+If the database is contained in one of the cluster's nodes but Not in the node that shows in this current view, then _'Remote'_ is indicated  
 
 For example, in the above figure, DB2 is contained in nodes A & B  
 It is indicated as _'Remote'_ since the current view is for node C

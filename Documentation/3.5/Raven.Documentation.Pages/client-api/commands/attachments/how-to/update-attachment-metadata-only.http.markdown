@@ -1,6 +1,6 @@
-# Attachments : How to update an attachment metadata only?
+# Attachments : How to Update Only Attachment Metadata 
 
-**UpdateAttachmentMetadata** is used to update an attachment metadata in a database.
+**UpdateAttachmentMetadata** is used to update an attachment's metadata in a database.
 
 ## Syntax
 
@@ -14,7 +14,7 @@ curl \
 
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **key** | Yes |  key under which attachment is stored |
+| **key** | Yes |  key under which the attachment is stored |
 
 | Header | Required | Description |
 | --------| ------- | --- |
@@ -44,7 +44,7 @@ curl -X POST "http://localhost:8080/databases/sample/static/sea.jpg" \
 "02000000-0000-0002-0000-000000000003"
 {CODE-BLOCK/}
 
-## Related articles
+## Related Articles
 
 - [How to **get** attachment **metadata** only?](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only)  
 - [PutAttachment](../../../../client-api/commands/attachments/put)  

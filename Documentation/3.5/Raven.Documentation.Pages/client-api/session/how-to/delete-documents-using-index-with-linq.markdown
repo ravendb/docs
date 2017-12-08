@@ -1,6 +1,6 @@
-﻿# Session: How to delete documents using index with LINQ statment
+﻿# Session: How to Delete Documents Using Index with LINQ Statment
 
-To delete a large amount of documents answering certain criteria we can use `DeleteByIndex` method from `session.Advanced`
+To delete a large amount of documents answering certain criteria, we can use the `DeleteByIndex` method from `session.Advanced`
 
 ### Syntax
 
@@ -9,21 +9,21 @@ To delete a large amount of documents answering certain criteria we can use `Del
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
 | **indexName** | string | name of an index to perform a query on |
-| **expression** | Expression<Func<T, bool>> | The linq expression (the query that will be performed) |
+| **expression** | Expression<Func<T, bool>> | The LINQ expression (the query that will be performed) |
 
 | Return Value | |
 | ------------- | ----- |
-| [Operation](../../../glossary/operation) | Object that allows waiting for operation to complete. |
+| [Operation](../../../glossary/operation) | Object that allows waiting for an operation to complete. |
 
 ### Remarks
 {NOTE: Note} 
-`DeleteByIndex` can only be performed on map index. Executing it on map-reduce index will lead to an exception. 
+`DeleteByIndex` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
 The document will be removed from the server after the method is called and not after `SaveChanges`.
 {NOTE/}
 
 ### Example
 {CODE delete_by_index_LINQ2@ClientApi\Session\HowTo\DeleteByIndexWithLinq.cs /}
 
-## Related articles
+## Related Articles
 [Delete](../deleting-entities)   
 [Commands: DeleteByIndex](../../commands/documents/how-to/delete-or-update-documents-using-index)

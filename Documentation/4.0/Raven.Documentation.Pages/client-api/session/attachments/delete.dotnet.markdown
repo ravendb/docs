@@ -13,7 +13,7 @@
 {CODE-TAB:csharp:Async DeleteAttachmentAsync@ClientApi\Session\Attachments\Attachments.cs /}
 {CODE-TABS/}
 
-## Related articles
+## Related Articles
 
 - [GetAttachment](../../../client-api/session/attachments/get)  
 - [PutAttachment](../../../client-api/session/attachments/put)  
