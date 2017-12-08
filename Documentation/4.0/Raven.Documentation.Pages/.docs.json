@@ -10,15 +10,15 @@
         "Mappings": []
     },
     {
-        "Path": "/server",
-        "Name": "Server",
-        "Mappings": []
-    },
-    {
         "Path": "/indexes",
         "Name": "Indexes",
         "Mappings": []
     },
+    //{
+    //    "Path": "/server",
+    //    "Name": "Server",
+    //    "Mappings": []
+    //},
     {
         "Path": "/studio",
         "Name": "Studio",

@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "configuration-options.markdown",
+        "Name": "Configuration Options",
+        "Mappings": []
+    },
+    {
+        "Path": "server-core-configuration.markdown",
+        "Name": "Core Configuration",
+        "Mappings": []
+    }
+]

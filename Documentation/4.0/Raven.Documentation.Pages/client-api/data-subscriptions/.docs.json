@@ -13,25 +13,5 @@
     "Path": "how-to-consume-data-subscription.markdown",
     "Name": "How to consume a data subscription?",
     "Mappings": []
-  },
-  {
-    "Path": "how-to-delete-data-subscription.markdown",
-    "Name": "How to delete a data subscription",
-    "Mappings": []
-  },
-  {
-    "Path": "how-to-release-data-subscription.markdown",
-    "Name": "How to release a data subscription",
-    "Mappings": []
-  },
-  {
-    "Path": "how-to-get-subscriptions.markdown",
-    "Name": "How to get all subscriptions",
-    "Mappings": []
-  },
-  {
-    "Path": "events.markdown",
-    "Name": "Events",
-    "Mappings": []
   }
 ]
