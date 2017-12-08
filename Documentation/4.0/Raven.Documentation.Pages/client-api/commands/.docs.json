@@ -3,10 +3,5 @@
         "Path": "/documents",
         "Name": "Documents",
         "Mappings": []
-    },
-    {
-        "Path": "/how-to",
-        "Name": "How to...",
-        "Mappings": []
     }
 ]
