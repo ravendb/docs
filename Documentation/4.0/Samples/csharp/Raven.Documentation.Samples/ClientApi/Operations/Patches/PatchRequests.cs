@@ -1,13 +1,14 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Commands.Batches;
 using Raven.Client.Documents.Operations;
+using Raven.Client.Documents.Queries;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
-using static Raven.Client.Documents.Operations.PatchOperation;
 
 namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
 {
@@ -38,8 +39,12 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
             #region patch_non_generic_interface_in_store
             PatchStatus Send(PatchOperation operation);
             #endregion
+
+            
         }
-        
+
+      
+
         public PatchRequests()
         {
             using (var store = new DocumentStore().Initialize())
@@ -255,6 +260,7 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
                     }
 
                 }, null));
+                
                 #endregion
 
                 #region insert_new_comment_at_position_1_session
@@ -375,7 +381,122 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Patches
                                 });"
                 }, null));
                 #endregion
-               
+
+                #region update_value_in_whole_collection
+                // increase by 10 Freight field in all orders
+                var operation1 = store.Operations.Send(
+                   new PatchByQueryOperation(@"from Orders as o
+                                               update
+                                               {
+                                                   o.Freight +=10;
+                                               }"));
+                // Wait for the operation to be complete on the server side.
+                // Not waiting for completion will not harm the patch process and it will continue running to completion.
+                operation1.WaitForCompletion();
+                #endregion
+
+                #region update-value-by-dynamic-query
+                // set discount to all orders that was processed by a specific employee
+                var operation2 = store.Operations.Send(
+                    new PatchByQueryOperation(@"from Orders as o
+                                                where o.Employee = args.EmployeeToUpdate
+                                                update
+                                                {
+                                                    o.Lines.forEach(line=> line.Discount = 0.3);
+                                                }"));
+                operation2.WaitForCompletion();
+
+                #endregion
+
+                #region update-value-by-index-query
+                // switch all products with supplier 'suppliers/12-A' with 'suppliers/13-A'
+                var operation3 = store.Operations.Send(
+                    new PatchByQueryOperation(new IndexQuery
+                    {
+                        Query = @"from index 'Product/Search' as p
+                                  where p.Supplier = 'suppliers/12-A'
+                                  update
+                                  {
+                                      p.Supplier = 'suppliers/13-A'
+                                  }"                        
+                    }));
+                operation3.WaitForCompletion();
+                #endregion
+
+                #region update-on-stale-results
+                // patch on stale results
+                var operation4 = store.Operations.Send(
+                    new PatchByQueryOperation(new IndexQuery
+                    {
+                        Query = @"from Orders as o
+                                  where o.Company = 'companies/12-A'
+                                  update
+                                  {
+                                      o.Company = 'companies/13-A'
+                                  }"
+                    },
+                    new QueryOperationOptions
+                    {
+                        AllowStale=true                        
+                    }
+                    ));
+                operation4.WaitForCompletion();
+                #endregion
+
+                #region report_progress_on_patch
+                // report progress during patch processing
+                var operation5 = store.Operations.Send(
+                    new PatchByQueryOperation(new IndexQuery
+                    {
+                        Query = @"from Orders as o
+                                  where o.Company = 'companies/12-A'
+                                  update
+                                  {
+                                      o.Company = 'companies/13-A'
+                                  }"
+                    },
+                    new QueryOperationOptions
+                    {
+                        AllowStale = true
+                    }
+                    ));
+                operation5.OnProgressChanged = x =>
+                {
+                    DeterminateProgress progress = (DeterminateProgress)x;
+                    Console.WriteLine($"Progress: Processed:{progress.Total}; Total:{progress.Processed}");                    
+                };
+                operation5.WaitForCompletion();
+                #endregion
+
+                #region patch-request-with-details     
+                // perform patch and create summary of processing statuses
+                var operation6 = 
+                    store.Operations.Send(
+                        new PatchByQueryOperation(new IndexQuery
+                        {
+                            Query = @"from Orders as o
+                                      where o.Company = 'companies/12-A'
+                                      update
+                                      {
+                                          o.Company = 'companies/13-A'
+                                      }"
+                        },
+                        new QueryOperationOptions
+                        {                            
+                            RetrieveDetails =true
+                        }));
+
+                var result = operation6.WaitForCompletion<BulkOperationResult>();
+                var formattedResults =
+                    result.Details
+                    .Select(x => (BulkOperationResult.PatchDetails)x)
+                    .GroupBy(x => x.Status)
+                    .Select(x => $"{x.Key}: {x.Count()}").ToList();
+                formattedResults.ForEach(Console.WriteLine);
+                
+                operation6.WaitForCompletion();
+
+                #endregion
             }
         }
     }

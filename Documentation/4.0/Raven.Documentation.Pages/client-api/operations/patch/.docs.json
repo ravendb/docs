@@ -1,12 +1,13 @@
 ﻿[
     {
-        "Path": "patch-by-query-operation.markdown",
-        "Name": "PatchByQueryOperation",
+        "Path": "single-doc-patch-operation.markdown",
+        "Name": "Single Document Patch Operation",
         "Mappings": []
     },
     {
-        "Path": "patch-operation.markdown",
-        "Name": "PatchOperation",
+        "Path": "set-based-patch-operation.markdown",
+        "Name": "Set Based Patch Operation",
         "Mappings": []
     }
+
 ]
