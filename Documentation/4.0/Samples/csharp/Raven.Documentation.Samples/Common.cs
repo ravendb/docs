@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using Raven.Client.Documents.Operations;
+using Raven.Client.Documents.Queries;
 
 namespace Raven.Documentation.Samples
 {
@@ -41,6 +42,32 @@ namespace Raven.Documentation.Samples
             {
 
             }
+        }
+        
+        public interface OperationSend
+        {
+            #region sendingSetBasedPatchRequest
+            Operation Send(PatchByQueryOperation operation);
+            #endregion
+        }
+
+        public class PatchByQueryOperation
+        {
+            #region patchBeQueryOperationCtor1
+            public PatchByQueryOperation(string queryToUpdate)
+            #endregion
+            {
+
+            }
+            
+
+            #region patchBeQueryOperationCtor2
+            public PatchByQueryOperation(IndexQuery queryToUpdate, QueryOperationOptions options = null)
+            #endregion
+            {
+
+            }
+            
         }
         
     }

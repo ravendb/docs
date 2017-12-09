@@ -1,8 +1,8 @@
-﻿# Patches: How to work with patch requests?
+﻿# Patches: How to perform single document patch operations?
 
 **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on server-side and is useful as a performance enhancement or for updating denormalized data in entities.
 
-    The current page deals with patch operations on single documents, the next pages in this section will deal with patches on more than one document.
+    The current page deals with patch operations on single documents, the next pages in this section will deal with set based patch operations.
 
 ## Syntax
     Patching has three possible interfaces: typed session, non-typed session and operation
