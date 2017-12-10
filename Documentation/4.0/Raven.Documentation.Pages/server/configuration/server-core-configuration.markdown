@@ -1,6 +1,3 @@
-###**TODO** : Note specifically how this plays together with ServerUrl in the example of HTTPs binding.
-###**TODO** : "see LINK_TO_SETUP_SECURITY" to real link
-
 ## Server Configuration : Core Options
 
 <br><br>
@@ -56,7 +53,7 @@ TcpServerUrl=tcp://0.0.0.0:38888
 #### PublicServerUrl
 ###### The URL under which server is publicly available
 ###### Default Value: null (Local Server URL)
-Set URL to be accessible by clients and other nodes, regardless of what IP is used to access the server internally. This is useful when using secured connection vi https URL, or behind a proxy server. 
+Set the URL to be accessible by clients and other nodes, regardless of what IP is used to access the server internally. This is useful when using secured connection via https URL, or behind a proxy server. 
 
 Examples:
 
@@ -70,7 +67,13 @@ PublicServerUrl=http://10.0.0.1:80
 
 ```
 PublicServerUrl=https://example.com:8080
+ServerUrl=http://10.0.0.123:8080
 ```
+
+{NOTE In the above example, `example.com` is the external domain/ip provied by the ISP, and `ServerUrl` must be specified when server is behind firewall / proxy / router /}
+
+
+
 
 <br><br>
 
