@@ -15,39 +15,39 @@ Databases.OperationTimeoutInMin=8
 
 <br><br>
 
-#### Databases.ConcurrentResourceLoadTimeoutInSec
+#### Databases.ConcurrentDatabaseLoadTimeoutInSec
 ###### Set time in seconds to wait for a database to start loading when under load
 ###### Default Value: 10
-Set how much time has to wait for the resource to become available when too much different resources get loaded at the same time
+Set how much time has to wait for the database to become available when too much different resources get loaded at the same time
 
 Example:
 
 ```
-Databases.ConcurrentResourceLoadTimeoutInSec=30
+Databases.ConcurrentDatabaseLoadTimeoutInSec=30
 ```
 
 <br><br>
 
-#### Databases.MaxConcurrentResourceLoads
+#### Databases.MaxConcurrentDatabaseLoads
 ###### Specifies the maximum amount of databases that can be loaded simultaneously
 ###### Default Value: 8
 
 Example:
 
 ```
-Databases.MaxConcurrentResourceLoads=4
+Databases.MaxConcurrentDatabaseLoads=4
 ```
 
 <br><br>
 
-#### Databases.MaxIdleTimeForTenantDatabaseInSec
+#### Databases.MaxIdleTimeForDatabaseInSec
 ###### Set time in seconds for max idle time for database
 ###### Default Value: 900
 After this time, and idle database will be unloaded from memory. Use lower time period if memory resource limited
 
 Example:
 ```
-Databases.MaxIdleTimeForTenantDatabaseInSec=300
+Databases.MaxIdleTimeForDatabaseInSec=300
 ```
 
 <br><br>

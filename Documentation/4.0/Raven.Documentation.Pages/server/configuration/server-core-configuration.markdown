@@ -1,3 +1,6 @@
+###**TODO** : Note specifically how this plays together with ServerUrl in the example of HTTPs binding.
+###**TODO** : "see LINK_TO_SETUP_SECURITY" to real link
+
 ## Server Configuration : Core Options
 
 <br><br>
@@ -6,9 +9,9 @@
 ###### The URLs which the server should listen to
 ###### Default Value: "http://localhost:8080"
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use "0.0.0.0" to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (http:// or https://) must be included with each URL.
-Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port must be specified after the address using ':' as separator. 
+Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port can be specified after the address using ':' as separator, or default is being used : *port 80* for *http* protocol, and *port 443* for *https* protocol.
 
-{SAFE Setting to a non loopback address will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
+{SAFE Setting to a non loopback address using ***http*** protocol will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
 
 Examples:
 
@@ -22,7 +25,7 @@ ServerUrl=http://0.0.0.0:8080
 ServerUrl=http://localhost:8080
 ```
 
-* Serve localhost's IPv6 address
+* Serve using IPV6 loopback only address
 ```
 ServerUrl=http://[0:0:0:0:0:0:0:1]:8080
 ```
@@ -34,12 +37,12 @@ ServerUrl=http://[0:0:0:0:0:0:0:1]:8080
 ###### The TCP URLs which the server should listen to
 ###### Default Value: null
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for incoming TCP connections, used for inter-node communication.
-Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port must be specified after the address using ':' as separator or just as number without address. 
+Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port **must be specified** after the address using ':' as separator or just as number without address. 
 If no url is set - the ServerUrl will be used along with random port
 If just a number is set - the ServerUrl will be used with the specified number as port
 If address and port are set - RavwnDB will listen to address and port specified
 
-{SAFE Setting to a non loopback address will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
+{SAFE Same security consideration as in ***ServerUrl*** option should be applied (see above)}
 
 Example:
 
@@ -52,7 +55,7 @@ TcpServerUrl=tcp://0.0.0.0:38888
 
 #### PublicServerUrl
 ###### The URL under which server is publicly available
-###### Default Value: null
+###### Default Value: null (Local Server URL)
 Set URL to be accessible by clients and other nodes, regardless of what IP is used to access the server internally. This is useful when using secured connection vi https URL, or behind a proxy server. 
 
 Examples:
@@ -79,7 +82,7 @@ Set the public TCP address of the server. Used for inter-node communication and 
 
 Example:
 ```
-PublicServerUrl=example.com:38888
+PublicServerUrl=tcp://example.com:38888
 ```
 
 <br><br>
