@@ -41,17 +41,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             #endregion
 
             #region customize_8_0
-            IDocumentQueryCustomization WaitForNonStaleResults();
-
-            IDocumentQueryCustomization WaitForNonStaleResults(TimeSpan waitTimeout);
-            #endregion
-
-            #region customize_9_0
-            IDocumentQueryCustomization WaitForNonStaleResultsAsOf(long cutOffEtag);
-
-            IDocumentQueryCustomization WaitForNonStaleResultsAsOf(
-                long cutOffEtag,
-                TimeSpan waitTimeout);
+            IDocumentQueryCustomization WaitForNonStaleResults(TimeSpan? waitTimeout);
             #endregion
         }
 
