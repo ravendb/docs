@@ -1,5 +1,15 @@
 ﻿[
     {
+        "Path": "get.markdown",
+        "Name": "Get",
+        "Mappings": []
+    },
+    {
+        "Path": "put.markdown",
+        "Name": "Put",
+        "Mappings": []
+    },
+    {
         "Path": "/how-to",
         "Name": "How to...",
         "Mappings": []
