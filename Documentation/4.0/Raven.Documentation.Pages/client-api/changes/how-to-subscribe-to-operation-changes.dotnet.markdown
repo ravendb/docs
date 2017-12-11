@@ -1,6 +1,6 @@
 ﻿# Changes API : How to subscribe to operation changes?
 
-Following methods allow you to subscribe to index changes:
+Following methods allow you to subscribe to operation changes:
 
 - [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
 - [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
@@ -63,7 +63,7 @@ Operations changes for all Operations can be observed using `ForAllOperations` m
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **Result** | [IOperationResult](../../client-api/changes/how-to-subscribe-to-operation-changes#operationresult) | Operation result |
-| **Progress** | [IOperationProgress](../../client-api/changes/how-to-subscribe-to-operation-changes#operationprogress) | Operation progress |
+| **Progress** | IOperationProgress| Instance of IOperationProgress (json representation of the progress) |
 | **Status** | [OperationStatus](../../client-api/changes/how-to-subscribe-to-operation-changes#operationstatus) | Operation status |
 {PANEL/}
 
@@ -73,13 +73,6 @@ Operations changes for all Operations can be observed using `ForAllOperations` m
 | ------------- | ------------- | ----- |
 | **Message** | string | Operation message |
 | **ShouldPersist** | bool | determine weather or not the result should be saved in the storage |
-{PANEL/}
-
-{PANEL:OperationProgress}
-### Members
-| Name | Type | Description |
-| ------------- | ------------- | ----- |
-| **ToJson** | Func<DynamicJsonValue> | returns the progress of the operation as as dynamic json value |
 {PANEL/}
 
 {PANEL:OperationStatus}
