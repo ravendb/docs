@@ -32,7 +32,7 @@ Single document changes can be observed using `ForDocument` method.
 
 {PANEL:ForDocumentsInCollection}
 
-To observe all document changes in particular collection use `ForDocumentInCollection` method. This method filters documents by `Raven-Entity-Name` metadata property value.
+To observe all document changes in particular collection use `ForDocumentInCollection` method. This method filters documents by `@collection` metadata property value.
 
 ### Syntax
 
@@ -46,7 +46,7 @@ To observe all document changes in particular collection use `ForDocumentInColle
 | ------------- | ----- |
 | IChangesObservable<[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)> | Observable that allows to add subscriptions to notifications for given document collection name. |
 
-{INFO Overload with `TEntity` type uses `Conventions.GetTypeTagName` to get collection name. /}
+{INFO Overload with `TEntity` type uses `Conventions.GetCollectionName` to get collection name. /}
 
 ### Example
 
@@ -68,7 +68,7 @@ To observe all document changes for given type use `ForDocumentsOfType` method. 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **typeName** or **type** | string or Type | Name of type or type for which notifications will be processed. If default conventions are used, the full type name without version information should be passed. See `Raven.Client.Document.ReflectionUtil.GetFullNameWithoutVersionInformation`. |
+| **typeName** or **type** | string or Type | Name of type or type for which notifications will be processed. If default conventions are used, the full type name without version information should be passed. See `Raven.Client.Util.ReflectionUtil.GetFullNameWithoutVersionInformation`. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -160,5 +160,5 @@ To observe all document changes use `ForAllDocuments` method.
 
 ## Remarks
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
+{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
