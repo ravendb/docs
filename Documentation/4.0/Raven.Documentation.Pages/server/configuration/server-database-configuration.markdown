@@ -2,15 +2,41 @@
 
 <br><br>
 
-#### Databases.OperationTimeoutInMin
-###### The number of minutes to wait before canceling a database operation such as load (many) or query
-###### Default Value: 5
+#### Databases.QueryOperationTimeoutInSec
+###### The number of seconds to wait before canceling a query operation
+###### Default Value: 300
 If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
 
 Example:
 
 ```
-Databases.OperationTimeoutInMin=8
+Databases.QueryOperationTimeoutInSec=600
+```
+
+<br><br>
+
+#### Databases.IndexTermsOperationTimeoutInSec
+###### The number of seconds to wait before canceling an indexing terms operation
+###### Default Value: 300
+If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
+
+Example:
+
+```
+Databases.IndexTermsOperationTimeoutInSec=600
+```
+
+<br><br>
+
+#### Databases.DeleteDocsOperationTimeoutInSec
+###### The number of seconds to wait before canceling a documents deletion operation
+###### Default Value: 300
+If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
+
+Example:
+
+```
+Databases.DeleteDocsOperationTimeoutInSec=600
 ```
 
 <br><br>
