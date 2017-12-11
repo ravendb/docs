@@ -1,10 +1,10 @@
-# Getting started
+# Getting Started
 
-Welcome to this introduction that will guide you through your first steps with RavenDB.
+Welcome to RavenDB! This introduction will guide you through your first steps.
 
 ## Downloading the Server  
 
-RavenDB is cross-platform. You can use it on these platforms:
+RavenDB is cross-platform. You can use it on the following:
 
 - Windows x64 / x86  
 - Linux x64  
@@ -12,7 +12,7 @@ RavenDB is cross-platform. You can use it on these platforms:
 - MacOS  
 - Raspberry Pi   
 
-Go to [https://ravendb.net/downloads](https://ravendb.net/downloads), select the appropriate version and platform, and download the zip package.   
+Go to [https://ravendb.net/downloads](https://ravendb.net/downloads). Select the appropriate version and platform, and download the zip package.   
 
 <hr />
 
@@ -25,7 +25,7 @@ See: [Visual C++ Downloads](https://support.microsoft.com/en-us/help/2977003/the
 #### Linux/MacOS
 It is recommended that you update your OS before launching an instance of RavenDB.
 For example, Ubuntu-16.x as an updated OS doesn't require any additional packages.
-libsodium (1.0.13 or up) must be installed prior to RavenDB launch.
+Libsodium (1.0.13 or up) must be installed prior to RavenDB launch.
 
 In Ubuntu 16.x: 
 
@@ -45,17 +45,17 @@ See also: [Linux Prerequisites](https://docs.microsoft.com/en-us/dotnet/core/lin
 
 <hr />
 
-## Installing RavenDB using the Setup Wizard
+## Installing RavenDB Using the Setup Wizard
 
 1. Extract the zip/tar file to a directory of your choice.  
 
-2. In <strong>Windows</strong>, use the `Start.cmd` script. In <strong>Linux</strong>, use the `start.sh` script. This will run RavenDB in an initial setup mode and redirect you to the Setup Wizard in the browser.
+2. In <strong>Windows</strong>, use the `Start.cmd` script. In <strong>Linux</strong>, use the `start.sh` script. This will run RavenDB in an initial setup mode and redirect you to the Setup Wizard in your browser.
 
 3. Follow this [detailed walk through](setup-wizard) to complete the wizard successfully. 
 
 <hr />
 
-## Installing RavenDB manually on Windows/Linux/Mac
+## Installing RavenDB Manually on Windows/Linux/Mac
 
 1. Extract the zip/tar file to a directory of your choice.  
 
@@ -67,7 +67,7 @@ This will run RavenDB in interactive mode inside a console application:
 
 ![Figure 1: RavenDB console.](images\console.png) 
 
-You can read all about 'settings.json' in the [Configuration Section](). For now we'll stick to the basics, these are the default initial settings:  
+You can read all about 'settings.json' in the [Configuration Section](). These are the default initial settings:  
 
     {  
         "ServerUrl": "http://127.0.0.1:0",
@@ -75,7 +75,7 @@ You can read all about 'settings.json' in the [Configuration Section](). For now
         "DataDir": "RavenData"
     }  
 
-And this is probably what you will change it to if you decide to setup manually:
+This is likely what you will change it to if you decide to setup manually:
 
     {  
         "ServerUrl": "http://127.0.0.1:8080",
@@ -90,15 +90,13 @@ Registering as a service in <strong>Windows</strong>:
 
     .\rvn.exe windows-service register --service-name RavenDB4
 
-
 Running as a service in <strong>Linux</strong>, add the following to your daemon script:
 
     <path/to/ravendb>/Server/Raven.Server --daemon
 
-
 Once things are set up and the server is running, you can access our GUI, the [RavenDB Management Studio](..\studio\overview.markdown), by going to http://localhost:8080 in your browser.
 
-<strong>RavenDB Management Studio, comes free with all licenses: Community, Professional, and Enterprise. </strong>
+<strong>RavenDB Management Studio comes free with all licenses: Community, Professional, and Enterprise. </strong>
 
 ![Figure 2: Accessing the Studio for the first time.](images\dashboard.png)
 
@@ -108,7 +106,7 @@ You are ready to continue to the next section, [Getting to Know RavenDB](getting
 
 ## Installing RavenDB with Docker
 
-If you already have Docker installed, getting started is simple. Just run the following command:
+If you already have Docker installed, just run the following command:
 
     docker run -d -e PUBLIC_SERVER_URL=http://10.0.75.2:8080 
         -e PUBLIC_TCP_SERVER_URL=http://10.0.75.2:38888 
