@@ -33,7 +33,7 @@ namespace Raven.Documentation.Samples.Indexes
                                       product.Name
                                   };
 
-                Analyzers.Add(x => x.Name, "Raven.Server.Documents.Indexes.Persistence.Lucene.Analyzers.Collation.Cultures, Raven.Server");
+                Analyzers.Add(x => x.Name, "Raven.Server.Documents.Indexes.Persistence.Lucene.Analyzers.Collation.Cultures.SvCollationAnalyzer, Raven.Server");
             }
         }
 
