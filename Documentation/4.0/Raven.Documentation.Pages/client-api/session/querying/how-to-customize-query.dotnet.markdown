@@ -126,14 +126,14 @@ To order results randomly, use `RandomOrdering` method.
 {PANEL:WaitForNonStaleResultsAsOf}
 
 Queries can be 'instructed' to wait for non-stale results as of a cutoff Etag for a specified amount of time using the `WaitForNonStaleResultsAsOf` method. 
-If the query won't be able to return non-stale results within the specified (or default) timeout, then `TimeoutException` is thrown.
+If the query won't be able to return non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
 {CODE customize_9_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **cutOffEtag** | long | Minimum Etag of last indexed document. If last indexed document Etag is greater than this value, the results are considered non-stale. |
-| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. The default is 15 seconds. |
+| **waitTimeout** | TimeSpan | Time to wait for an index to return non-stale results. The default is 15 seconds. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -145,14 +145,14 @@ If the query won't be able to return non-stale results within the specified (or 
 
 {NOTE This method should be used only for testing purposes and are considered **EXPERT ONLY** /}
 
-Queries can be 'instructed' to wait for non-stale results for specified amount of time using the `WaitForNonStaleResults` method. It is not advised to use this method on a live production
+Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `WaitForNonStaleResults` method. It is not advised to use this method on a live production
 database since the high load might cause the index never to become non-stale. The preferred usage is `WaitForNonStaleResultsAsOf` where the cutoff is specified.
 
 {CODE customize_8_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **waitTimeout** | TimeSpan | Time to wait for index to return non-stale results. The default is 15 seconds. |
+| **waitTimeout** | TimeSpan | Time to wait for an index to return non-stale results. The default is 15 seconds. |
 
 | Return Value | |
 | ------------- | ----- |
