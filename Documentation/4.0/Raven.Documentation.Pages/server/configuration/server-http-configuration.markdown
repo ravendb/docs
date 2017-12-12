@@ -9,7 +9,7 @@
 ###### DefaultValue : null
 #### MinDataRateGracePeriodInSec
 ###### Set Kestrel's allowed request and reponse grace in seconds
-###### DefaultValue : null
+###### Default Value : null
 
 The http server *Kestrel* checks every second if data is coming in at the specified rate in bytes/second. If the rate drops below the minimum set by *MinResponseDataRate*, the connection is timed out. The grace period *MinDataRateGracePeriod* is the amount of time that *Kestrel* gives the client to increase its send rate up to the minimum. The rate is not checked during that time. The grace period helps avoid dropping connections that are initially sending data at a slow rate due to TCP slow-start.
 
@@ -21,7 +21,7 @@ If not set or set to *null* - rates are set as unlimited.
 
 #### MaxRequestBufferSizeInKb
 ###### Set Kestrel's MaxRequestBufferSize
-###### DefaultValue : null
+###### Default Value : null
 
 Gets or sets the maximum size of the response buffer before write calls begin to block or return tasks that don't complete until the buffer size drops below the configured limit. 
 
@@ -31,7 +31,7 @@ If not set or set to *null* - size is set as unlimited.
 
 #### MaxRequestLineSizeInKb
 ###### Set Kestrel's MaxRequestLineSize
-###### DefaultValue : 16
+###### Default Value : 16
 
 Gets or sets the maximum allowed size for the HTTP request line
 
@@ -44,7 +44,7 @@ Http.MaxRequestLineSizeInKb=8
 
 #### UseResponseCompression
 ###### Set whether Raven's HTTP server should compress its responses
-###### DefaultValue : true
+###### Default Value : true
 
 Using compression lower the network bandwidth usage.  However in order to debug or view the response via sniffer tools, setting to false is needed. 
 
@@ -57,7 +57,7 @@ Http.UseResponseCompression=false
 
 #### AllowResponseCompressionOverHttps
 ###### Set whether Raven's HTTP server should allow response compression to happen when HTTPS is enabled
-###### DefaultValue : false
+###### Default Value : false
 
 {WARNING Setting this to `true` might expose a security risk /}
 **See http://breachattack.com/ before enabling this**
@@ -66,13 +66,13 @@ Http.UseResponseCompression=false
 
 #### GzipResponseCompressionLevel
 ###### Set the compression level to be used when compressing HTTP responses with GZip
-###### DefaultValue : CompressionLevel.Fastest
+###### Default Value : CompressionLevel.Fastest
 #### DeflateResponseCompressionLevel
 ###### Set the compression level to be used when compressing HTTP responses with Deflate
-###### DefaultValue : CompressionLevel.Fastest
+###### Default Value : CompressionLevel.Fastest
 #### StaticFilesResponseCompressionLevel
 ###### Set the compression level to be used when compressing static files
-###### DefaultValue : CompressionLevel.Optimal
+###### Default Value : CompressionLevel.Optimal
 
 Values can be either:
 
