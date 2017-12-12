@@ -34,8 +34,6 @@ In the Studio, administrators can use the [Certificates View](../../studio/serve
 
 RavenDB uses x.509 certificates for authorization as well.
 
-It is considered more secured to use client certificates for authorization, insdead of having usernames and passwords. 
-
 It means that every client certificate is associated with a security clearance and access permissions which are assigned by an administrator. 
 
 #### Read more:
