@@ -33,9 +33,11 @@ If not set or set to *null* - size is set as unlimited.
 ###### Set Kestrel's MaxRequestLineSize
 ###### DefaultValue : 16
 
+Gets or sets the maximum allowed size for the HTTP request line
+
 Example:
 ```
-Http.MaxRequestLineSizeInKb=true
+Http.MaxRequestLineSizeInKb=8
 ```
 
 <br><br>
