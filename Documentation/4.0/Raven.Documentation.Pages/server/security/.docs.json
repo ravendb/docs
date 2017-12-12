@@ -1,0 +1,22 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "Mappings": []
+    },
+    {
+        "Path": "/authentication",
+        "Name": "Authentication",
+        "Mappings": []
+    },
+    {
+        "Path": "/authorization",
+        "Name": "Authorization",
+        "Mappings": []
+    },
+    {
+        "Path": "/encryption",
+        "Name": "Encryption",
+        "Mappings": []
+    }
+]

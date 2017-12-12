@@ -1,0 +1,38 @@
+[
+    {
+        "Path": "cerificate-management.markdown",
+        "Name": "Certificate Management",
+        "Mappings": []
+    },
+    {
+        "Path": "certificate-renewal-and-rotation.markdown",
+        "Name": "Certificate Renewal and Rotation",
+        "Mappings": []
+    },
+    {
+        "Path": "lets-encrypt-certificates.markdown",
+        "Name": "Let's Encrypt Certificates",
+        "Mappings": []
+    },
+    {
+        "Path": "manual-configuration.markdown",
+        "Name": "Manual Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "client-certificate-usage.markdown",
+        "Name": "Client Certificate Usage",
+        "Mappings": []
+    },
+    {
+        "Path": "authentication-in-the-cluster.markdown",
+        "Name": "Authentication in the Cluster",
+        "Mappings": []
+    },
+    {
+        "Path": "common-errors-and-troubleshooting.markdown",
+        "Name": "Common Errors and Troubleshooting",
+        "Mappings": []
+    }
+
+]

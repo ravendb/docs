@@ -1,0 +1,22 @@
+[
+    {
+        "Path": "theory-and-design.markdown",
+        "Name": "Theory & Design",
+        "Mappings": []
+    },
+    {
+        "Path": "database-encryption.markdown",
+        "Name": "Database Encryption",
+        "Mappings": []
+    },
+    {
+        "Path": "server-store-encryption.markdown",
+        "Name": "Server Store Encryption",
+        "Mappings": []
+    },
+    {
+        "Path": "secret-key-management.markdown",
+        "Name": "Secret Key Management",
+        "Mappings": []
+    }
+]
