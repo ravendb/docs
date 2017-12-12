@@ -10,6 +10,11 @@
         "Mappings": []
     },
     {
+        "Path": "delete.markdown",
+        "Name": "Delete",
+        "Mappings": []
+    },
+    {
         "Path": "/how-to",
         "Name": "How to...",
         "Mappings": []
