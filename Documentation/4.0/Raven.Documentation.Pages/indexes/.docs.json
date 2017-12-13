@@ -79,6 +79,16 @@
         ]
     },
     {
+        "Path": "indexing-related-documents.markdown",
+        "Name": "Indexing related documents",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/indexing-related-documents"
+            }
+        ]
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
         "Mappings": []
