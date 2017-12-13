@@ -28,7 +28,7 @@
                 "Key": "client-api/basic-operations/deleting-entities"
             }
         ]
-    },    
+    },
     {
         "Path": "what-is-a-session-and-how-does-it-work.markdown",
         "Name": "What is a Session and How Does it Work?",
@@ -42,6 +42,16 @@
     {
         "Path": "/querying",
         "Name": "Querying",
+        "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    },
+    {
+        "Path": "/attachments",
+        "Name": "Attachments",
         "Mappings": []
     }
 ]
