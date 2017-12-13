@@ -89,6 +89,16 @@
         ]
     },
     {
+        "Path": "indexing-hierarchical-data.markdown",
+        "Name": "Indexing hierarchical data",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/indexing-hierarchies"
+            }
+        ]
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
         "Mappings": []
