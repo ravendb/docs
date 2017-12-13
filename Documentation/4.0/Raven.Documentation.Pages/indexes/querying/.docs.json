@@ -33,5 +33,15 @@
         "Path": "projections.markdown",
         "Name": "Projections",
         "Mappings": []
-    }
+    },
+    {
+        "Path": "searching.markdown",
+        "Name": "Searching",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/searching"
+            }
+        ]
+    },
 ]
