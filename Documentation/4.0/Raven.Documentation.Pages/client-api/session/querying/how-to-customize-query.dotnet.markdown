@@ -8,7 +8,6 @@ The following query customization options are available in the `IDocumentQueryCu
 - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
 - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
 - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
-- [WaitForNonStaleResultsAsOf](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasof)
 - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
 
 {PANEL:BeforeQueryExecuted}
@@ -123,36 +122,23 @@ To order results randomly, use `RandomOrdering` method.
 
 {PANEL/}
 
-{PANEL:WaitForNonStaleResultsAsOf}
-
-Queries can be 'instructed' to wait for non-stale results as of a cutoff Etag for a specified amount of time using the `WaitForNonStaleResultsAsOf` method. 
-If the query won't be able to return non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
-
-{CODE customize_9_0@ClientApi\Session\Querying\HowToCustomize.cs /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **cutOffEtag** | long | Minimum Etag of last indexed document. If last indexed document Etag is greater than this value, the results are considered non-stale. |
-| **waitTimeout** | TimeSpan | Time to wait for an index to return non-stale results. The default is 15 seconds. |
-
-| Return Value | |
-| ------------- | ----- |
-| IDocumentQueryCustomization | Returns self for easier method chaining. |
-
-{PANEL/}
-
 {PANEL:WaitForNonStaleResults}
 
-{NOTE This method should be used only for testing purposes and are considered **EXPERT ONLY** /}
+Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `WaitForNonStaleResults` method. If the query won't be able to return 
+non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
-Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `WaitForNonStaleResults` method. It is not advised to use this method on a live production
-database since the high load might cause the index never to become non-stale. The preferred usage is `WaitForNonStaleResultsAsOf` where the cutoff is specified.
+{NOTE: Cutoff Etag}
+In order to prevent from waiting for the
+results forever (what could happen on a production database constantly updating documents), the etag of last document (or document tombstone) as of the query started will be used as
+the cutoff. If last indexed document etag is greater than the cutoff, the results are considered non-stale.
+{NOTE/}
+
 
 {CODE customize_8_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **waitTimeout** | TimeSpan | Time to wait for an index to return non-stale results. The default is 15 seconds. |
+| **waitTimeout** | TimeSpan? | Time to wait for an index to return non-stale results. The default is 15 seconds. |
 
 | Return Value | |
 | ------------- | ----- |

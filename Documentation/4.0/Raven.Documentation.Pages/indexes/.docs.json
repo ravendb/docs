@@ -50,6 +50,16 @@
         "Mappings": []
     },
     {
+        "Path": "stale-indexes.markdown",
+        "Name": "Stale Indexes",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/stale-indexes"
+            }
+        ]
+    },
+    {
         "Path": "fanout-indexes.markdown",
         "Name": "Fanout Indexes",
         "Mappings": []
