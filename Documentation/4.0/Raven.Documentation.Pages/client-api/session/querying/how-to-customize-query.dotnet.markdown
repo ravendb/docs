@@ -129,7 +129,7 @@ non-stale results within the specified (or default) timeout, then a `TimeoutExce
 
 {NOTE: Cutoff Etag}
 In order to prevent from waiting for the
-results forever (what could happen on a production database constantly updating documents), the etag of last document in the querying transaction will be used as
+results forever (what could happen on a production database constantly updating documents), the etag of last document (or document tombstone) as of the query started will be used as
 the cutoff. If last indexed document etag is greater than the cutoff, the results are considered non-stale.
 {NOTE/}
 
