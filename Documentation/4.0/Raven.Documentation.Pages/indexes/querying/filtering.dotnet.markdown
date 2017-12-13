@@ -1,8 +1,8 @@
 ﻿# Filtering
 
-One of the most basic functionalities when it comes to querying is the ability to filter out data and only return records that match given condition. There are couple of ways to do this, and they all depend on querying approach you want to use ([Query](../../client-api/session/querying/how-to-query) from basic session operations, [DocumentQuery](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries) from advanced session operations or directly using [RQL]()).  
+One of the most basic functionalities of querying is the ability to filter out data and return records that match given condition. There are couple of ways to do this, and they all depend on the querying approach you want to use ([Query](../../client-api/session/querying/how-to-query) from basic session operations, [DocumentQuery](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries) from advanced session operations or directly using [RQL]()).  
 
-Following examples demonstrates how to add a simple conditions to query using all of those methods.
+The following examples demonstrate how to add a simple conditions to a query using all of those methods.
 
 ## Where
 
@@ -16,7 +16,7 @@ where FirstName = 'Robert' and LastName = 'King'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where - numeric property
+## Where - Numeric Property
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_1_1@Indexes\Querying\Filtering.cs /}
@@ -28,7 +28,7 @@ where UnitsInStock > 50
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where - nested property
+## Where - Nested Property
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_2_1@Indexes\Querying\Filtering.cs /}
@@ -42,7 +42,7 @@ where Lines.Count > 50
 
 ## Where + Any
 
-`Any` is useful when you have a collection of items (e.g. `Order` contains `OrderLines`) and you want to filter out based on a values from this collection. For example, let's retrieve all orders that contain a `OrderLine` with a given product.
+`Any` is useful when you have a collection of items (e.g. `Order` contains `OrderLines`) and you want to filter out based on values from this collection. For example, let's retrieve all orders that contain an `OrderLine` with a given product.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_3_1@Indexes\Querying\Filtering.cs /}
@@ -56,7 +56,7 @@ where Lines_ProductName = 'Teatime Chocolate Biscuits'
 
 ## Where + In
 
-When you want to check single value against multiple values `In` operator can become handy. E.g. to retrieve all employees that `FirstName` is either `Robert` or `Nancy` we can issue following query:
+When you want to check a single value against multiple values, the `In` operator can become handy. To retrieve all employees that `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_4_1@Indexes\Querying\Filtering.cs /}
@@ -74,7 +74,7 @@ Remember to add `Raven.Client.Documents.Linq` namespace to usings if you want to
 
 ## Where + ContainsAny
 
-To check if enumeration contains **any** of the values from a specified collection you can use `ContainsAny` method.
+To check if enumeration contains **any** of the values from a specified collection you can use the `ContainsAny` method.
 
 Let's assume that we want to return all `BlogPosts` that contain any of the specified `Tags`.
 
@@ -89,14 +89,14 @@ where Tags IN ('Development', 'Research')
 {CODE-TABS/}
 
 {WARNING:Important}
-Remember to add `Raven.Client.Documents.Linq` namespace to usings if you want to use `ContainsAny` extension method.
+Remember to add the `Raven.Client.Documents.Linq` namespace to usings if you want to use the `ContainsAny` extension method.
 {WARNING/}
 
 ## Where + ContainsAll
 
-To check if enumeration contains **all** of the values from a specified collection you can use `ContainsAll` method.
+To check if an enumeration contains **all** of the values from a specified collection, you can use the `ContainsAll` method.
 
-Let's assume that we want to return all `BlogPosts` that contain all of the specified `Tags`.
+Let's assume that we want to return all the `BlogPosts` that contain all of the specified `Tags`.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_6_1@Indexes\Querying\Filtering.cs /}
@@ -109,14 +109,14 @@ where Tags ALL IN ('Development', 'Research')
 {CODE-TABS/}
 
 {WARNING:Important}
-Remember to add `Raven.Client.Documents.Linq` namespace to usings if you want to use `ContainsAll` extension method.
+Remember to add the `Raven.Client.Documents.Linq` namespace to usings if you want to use the `ContainsAll` extension method.
 {WARNING/}
 
 ## Remarks
 
-{INFO Underneath, `Query` and `DocumentQuery` are converting predicates to `IndexQuery` class so they can issue a query from **low-level operation method**. /}
+{INFO Underneath, `Query` and `DocumentQuery` are converting predicates to the `IndexQuery` class so they can issue a query from a **low-level operation method**. /}
 
-## Related articles
+## Related Articles
 
 - [Indexing : Basics](../../indexes/indexing-basics)
 - [Querying : Basics](../../indexes/querying/basics)

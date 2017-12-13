@@ -1,10 +1,10 @@
 ﻿# Sorting & Collation
 
-Starting from version 4.0, RavenDB automatically determines sorting based on an indexed value. Because of that all values will have a capability to be sorted `lexicographically`. Numerical values will also be sortable by their `double` and `long` value.
+Starting from version 4.0, RavenDB automatically determines sorting based on an indexed value. All values will have a capability to be sorted `lexicographically`. Numerical values will also be sortable by their `double` and `long` value.
 
 ## Date types
 
-Dates are written to the index in a form which preserves lexicography order, and is readable by both human and machine (like so: `2011-04-04T11:28:46.0404749+03:00`), so this requires no user intervention, too.
+Dates are written to the index in a form which preserves lexicography order, and is readable by both human and machine (like so: `2011-04-04T11:28:46.0404749+03:00`). This requires no user intervention.
 
 ## Example
 
@@ -20,7 +20,7 @@ The following is an example of an index definition which allows sorting based on
 
 In general, you can sort using `Raven.Database.Indexing.Collation.Cultures.<two-letters-culture-name>CollationAnalyzer`, and _all_ the cultures supported by the .NET framework are supported.
 
-## Related articles
+## Related Articles
 
 - [Map indexes](../indexes/map-indexes)
 - [What are indexes?](../indexes/what-are-indexes)

@@ -1,10 +1,10 @@
-﻿# Session : What is a session and how does it work?
+﻿# Session : What is a Session and How Does it Work?
 
-After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on the DB, we start by obtaining a new Session object from the document store. The Session object will contain everything needed to perform any operation necessary:
+After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on RavenDB, we start by obtaining a new Session object from the document store. The Session object will contain everything we need to perform any operation necessary.
 
 {CODE session_usage_1@ClientApi\Session\WhatIsSession.cs /}
 
-The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and finally apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server and do something with it.
+The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server, and do something with it.
 
 {NOTE: Storing Entities} 
 You can read more about storing data with the session [here](./storing-entities).
@@ -25,7 +25,7 @@ The Client API implements the Unit of Work pattern. That has several implication
 
 ## Batching
 
-One of the most expensive operations in an application is making remote calls. The RavenDB Client API optimizes this for you by batching all write calls to the RavenDB server into a single call. This is the default behavior whenever using the Session object, so you don't have to do anything to enable it. This also ensures that writes to the database are always executed in a single transaction, no matter how many operations you are actually executing.
+One of the most expensive operations in an application is making remote calls. The RavenDB Client API optimizes this for you by batching all write calls to the RavenDB server into a single call. This is the default behavior whenever using the Session object, you don't have to do anything to enable it. This also ensures that writes to the database are always executed in a single transaction, no matter how many operations you are actually executing.
 
 ## Remarks
 
@@ -37,6 +37,6 @@ By default, the maximum requests count in the session is 30.
 This can be changed by DocumentConventions::MaxNumberOfRequestsPerSession property.
 {NOTE/}
 
-## Related articles
+## Related Articles
 
 - [Opening a session](./opening-a-session)  
