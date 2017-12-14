@@ -1,5 +1,30 @@
 ﻿[
     {
+        "Path": "creating-document-store.markdown",
+        "Name": "Creating Document Store",
+        "Mappings": []
+    },
+    {
+        "Path": "what-is-a-document-store.markdown",
+        "Name": "What is a Document Store?",
+        "Mappings": []
+    },
+    {
+        "Path": "setting-up-default-database.markdown",
+        "Name": "Setting up Default Database",
+        "Mappings": []
+    },
+    {
+        "Path": "what-is-a-public-api.markdown",
+        "Name": "What is a public API?",
+        "Mappings": []
+    },
+    {
+        "Path": "net-client-versions.markdown",
+        "Name": ".NET Client versions",
+        "Mappings": []
+    },
+    {
         "Path": "/session",
         "Name": "Session",
         "Mappings": []
@@ -32,26 +57,6 @@
     {
         "Path": "/commands",
         "Name": "Commands",
-        "Mappings": []
-    },
-    {
-        "Path": "creating-document-store.markdown",
-        "Name": "Creating Document Store",
-        "Mappings": []
-    },
-    {
-        "Path": "what-is-a-document-store.markdown",
-        "Name": "What is a Document Store?",
-        "Mappings": []
-    },
-    {
-        "Path": "setting-up-default-database.markdown",
-        "Name": "Setting up Default Database",
-        "Mappings": []
-    },
-    {
-        "Path": "what-is-a-public-api.markdown",
-        "Name": "What is a public API?",
         "Mappings": []
     }
 ]
