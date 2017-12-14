@@ -127,5 +127,15 @@
         "Path": "indexing-linq-extensions.markdown",
         "Name": "Indexing Linq Extensions",
         "Mappings": []
-    }
+    },
+    {
+        "Path": "using-term-vectors.markdown",
+        "Name": "Term Vectors",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/querying/static-indexes/configuring-index-options#term-vectors"
+            }
+        ]
+    },
 ]
