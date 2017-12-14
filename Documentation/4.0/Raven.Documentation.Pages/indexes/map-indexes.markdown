@@ -115,7 +115,7 @@ Imagine that you would like to return all employees that were born in a specific
 {CODE-TAB:csharp:DocumentQuery indexes_5_2@Indexes/Map.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Employees/ByBirthday '
-where Birthday BETWEEN '1963-01-01' AND '1963-12-31T23:59:59.9990000'
+where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

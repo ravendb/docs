@@ -31,7 +31,7 @@ where search(Name, 'a*')
 {CODE-TAB:csharp:Async search_2_async@ClientApi\Session\Querying\HowToUseSearch.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Users/ByNameAndHobbies' 
-where search(Name, 'Adam') OR search(Hobbies, 'sport')
+where search(Name, 'Adam') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -42,7 +42,7 @@ where search(Name, 'Adam') OR search(Hobbies, 'sport')
 {CODE-TAB:csharp:Async search_3_async@ClientApi\Session\Querying\HowToUseSearch.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from index 'Users/ByHobbies' 
-where boost(search(Hobbies, 'I love sport'), 10) OR boost(search(Hobbies, 'but also like reading books'), 5)
+where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

@@ -113,7 +113,7 @@ According to RQL syntax it will be transformed to the query:
 
 {CODE-BLOCK:csharp}
 from Users
-where exists(Name) AND NOT search(James, 'Adam')
+where exists(Name) and not search(James, 'Adam')
 {CODE-BLOCK/}
 
 You can treat `SearchOptions` values as bit flags and create any combination of the defined enum values, e.g:
@@ -127,7 +127,7 @@ It will produce the following RQL query:
 
 {CODE-BLOCK:csharp}
 from Users
-where search(Name, 'Adam') and (exists(Hobbies) and NOT search(Hobbies, 'sport'))
+where search(Name, 'Adam') and (exists(Hobbies) and not search(Hobbies, 'sport'))
 {CODE-BLOCK/}
 
 <hr />
@@ -161,7 +161,7 @@ where search(Name, '*oh* *da*')
 {WARNING:Warning}
 RavenDB allows to search by using such queries but you have to be aware that **leading wildcards drastically slow down searches**.
 
-Consider if you really need to find substrings, most cases looking for words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
+Consider if you really need to find substrings, in most cases looking for whole words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
 {WARNING/}
 
 ## Static Indexes
