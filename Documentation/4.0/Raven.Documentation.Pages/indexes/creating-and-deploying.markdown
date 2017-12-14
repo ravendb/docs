@@ -89,8 +89,8 @@ For instance, issuing a query like this
 {CODE-TABS}
 {CODE-TAB:csharp:C# indexes_7@Indexes/Creating.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
-FROM Employees
-WHERE FirstName = 'Robert' AND LastName = 'King'
+from Employees
+where FirstName = 'Robert' and LastName = 'King'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
