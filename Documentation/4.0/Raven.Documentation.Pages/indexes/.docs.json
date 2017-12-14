@@ -109,6 +109,16 @@
         ]
     },
     {
+        "Path": "using-analyzers.markdown",
+        "Name": "Analyzers",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/configuring-index-options"
+            }
+        ]
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
         "Mappings": []
