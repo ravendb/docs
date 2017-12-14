@@ -1,7 +1,7 @@
 # Stale Indexes
 
 RavenDB performs indexing in the background threads. The indexes start processing whenever the new data comes in, the existing documents are updated or deleted.
-Running them in the background allows the server to return query results immediately regardless the large number of documents has been just changed.
+Running them in the background allows the server to return query results immediately even if the large number of documents has been just changed.
 However in that case, the index is stale until it processes them. 
 
 The notion of stale indexes comes from the close observation of the way RavenDB is designed and the assumption that the user should never suffer from assigning big tasks to
@@ -20,8 +20,8 @@ Typically you don't need to worry about it, the index usually updates the record
 
 ## Explicitly Waiting for Non-Stale Results
 
-In order to assure that a query won't return stale results you can use a few approaches. By default RavenDB will wait 15 seconds unless different timeout was specified. 
-It is handled by the server, the client won't send any additional requests meanwhile. If it exceeds the timeout then `TimeoutException` will be thrown.
+In order to assure that a query won't return stale results you can use a few approaches. For each of them the default wait timeout will be 15 seconds unless it was specified
+differently by the user. It is handled by the server, the client won't send any additional requests meanwhile. If it exceeds the timeout then `TimeoutException` will be thrown.
 
 ### Customizing Single Query
 
@@ -63,7 +63,7 @@ misunderstanding of the querying concepts in RavenDB.
 {DANGER/}
 
 
-## Cutoff point
+## Cutoff Point
 
 If a query sent to the server specifies it needs to wait for non-stale results then RavenDB sets the cutoff etag for the staleness check.
 It is the etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
