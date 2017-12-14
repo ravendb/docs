@@ -127,10 +127,12 @@ To order results randomly, use `RandomOrdering` method.
 Queries can be 'instructed' to wait for non-stale results for a specified amount of time using the `WaitForNonStaleResults` method. If the query won't be able to return 
 non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
-{NOTE: Cutoff Etag}
-In order to prevent from waiting for the
-results forever (what could happen on a production database constantly updating documents), the etag of last document (or document tombstone) as of the query started will be used as
-the cutoff. If last indexed document etag is greater than the cutoff, the results are considered non-stale.
+{NOTE: Cutoff Point}
+If a query sent to the server specifies it needs to wait for non-stale results then RavenDB sets the cutoff etag for the staleness check.
+It is the etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
+This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
+
+If the last etag processed by the index is greater than the cutoff then the results are considered as non-stale.
 {NOTE/}
 
 
