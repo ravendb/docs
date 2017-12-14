@@ -5,13 +5,13 @@
         "Mappings": []
     },
     {
-        "Path": "/bulk-insert",
-        "Name": "Bulk Insert",
+        "Path": "/operations",
+        "Name": "Operations",
         "Mappings": []
     },
     {
-        "Path": "/changes",
-        "Name": "Changes API",
+        "Path": "/bulk-insert",
+        "Name": "Bulk Insert",
         "Mappings": []
     },
     {
@@ -20,18 +20,18 @@
         "Mappings": []
     },
     {
-        "Path": "/commands",
-        "Name": "Commands",
-        "Mappings": []
-    },
-    {
-        "Path": "/operations",
-        "Name": "Operations",
+        "Path": "/changes",
+        "Name": "Changes API",
         "Mappings": []
     },
     {
         "Path": "/how-to",
         "Name": "How to...",
+        "Mappings": []
+    },
+    {
+        "Path": "/commands",
+        "Name": "Commands",
         "Mappings": []
     },
     {
@@ -47,6 +47,11 @@
     {
         "Path": "setting-up-default-database.markdown",
         "Name": "Setting up Default Database",
+        "Mappings": []
+    },
+    {
+        "Path": "what-is-a-public-api.markdown",
+        "Name": "What is a public API?",
         "Mappings": []
     }
 ]
