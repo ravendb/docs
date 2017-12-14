@@ -1,22 +1,37 @@
 ﻿[
     {
-    "Path": "check-if-entity-has-changed.markdown",
-    "Name": "...check if entity has changed",
-    "Mappings": [
-        {
-            "Version": 3.5,
-            "Key": "client-api/session/how-to/check-if-entity-has-changed"
-        }
-    ]
-  },
-  {
-    "Path": "check-if-there-are-any-changes-on-a-session.markdown",
-    "Name": "...check if there are any changes on a session",
-    "Mappings": [
-        {
-            "Version": 3.5,
-            "Key": "client-api/session/how-to/check-if-there-are-any-changes-on-a-session"
-        }
-    ]
-  }
+        "Path": "check-if-entity-has-changed.markdown",
+        "Name": "...check if entity has changed",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/session/how-to/check-if-entity-has-changed"
+            }
+        ]
+    },
+    {
+        "Path": "check-if-there-are-any-changes-on-a-session.markdown",
+        "Name": "...check if there are any changes on a session",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/session/how-to/check-if-there-are-any-changes-on-a-session"
+            }
+        ]
+    },
+    {
+        "Path": "clear-a-session.markdown",
+        "Name": "...clear a session",
+        "Mappings": []
+    },
+    {
+        "Path": "evict-entity-from-a-session.markdown",
+        "Name": "...evict entity from a session",
+        "Mappings": []
+    },
+    {
+        "Path": "refresh-entity.markdown",
+        "Name": "...refresh entity",
+        "Mappings": []
+    }
 ]
