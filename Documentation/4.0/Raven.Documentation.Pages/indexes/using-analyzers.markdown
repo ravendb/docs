@@ -2,7 +2,7 @@
 
 RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.
 
-The indexing of a single document starts from creating Lucene's **Document** according an index definition. Next, Lucene processed it by breaking it into **fields** and splitting all the text
+The indexing of a single document starts from creating Lucene's **Document** according an index definition. Next, Lucene processes it by breaking it into **fields** and splitting all the text
 from each **Field** into tokens (**Terms**) in the process called **Tokenization**. Those tokens will be stored in the index, and later will be searched upon.
 The **Tokenization** process uses an object called an Analyzer underneath.
 
@@ -61,7 +61,7 @@ To make a document property indexed using a specific Analyzer, all you need to d
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask analyzers_1@Indexes\Analyzers.cs /}
-{CODE-TAB:csharp:PutIndexesOperation analyzers_2@Indexes\Analyzers.cs /}
+{CODE-TAB:csharp:Operation analyzers_2@Indexes\Analyzers.cs /}
 {CODE-TABS/}
 
 {INFO The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name). /}
