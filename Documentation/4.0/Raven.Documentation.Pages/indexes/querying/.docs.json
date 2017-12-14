@@ -44,4 +44,14 @@
             }
         ]
     },
+    {
+        "Path": "query-vs-document-query.markdown",
+        "Name": "Query vs DocumentQuery",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/querying/query-and-lucene-query"
+            }
+        ]
+    }
 ]
