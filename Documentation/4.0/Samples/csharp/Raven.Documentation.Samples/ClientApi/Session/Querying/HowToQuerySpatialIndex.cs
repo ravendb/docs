@@ -162,7 +162,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.WithinRadius(10, 32.1234, 23.4321))
+                            criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
                         .ToList();
                     #endregion
                 }
@@ -177,7 +177,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.WithinRadius(10, 32.1234, 23.4321))
+                            criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
                         .ToListAsync();
                     #endregion
                 }
@@ -193,7 +193,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.RelatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
+                            criteria => criteria.RelatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
                         .ToList();
                     #endregion
                 }
@@ -209,7 +209,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.RelatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
+                            criteria => criteria.RelatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
                         .ToListAsync();
                     #endregion
                 }
@@ -225,7 +225,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.WithinRadius(10, 32.1234, 23.4321))
+                            criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
                         .OrderByDistance(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
                         .ToList();
@@ -243,7 +243,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.WithinRadius(10, 32.1234, 23.4321))
+                            criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
                         .OrderByDistance(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
                         .ToListAsync();
@@ -261,7 +261,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.WithinRadius(10, 32.1234, 23.4321))
+                            criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
                         .OrderByDistanceDescending(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
                         .ToList();
@@ -279,7 +279,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            factory => factory.WithinRadius(10, 32.1234, 23.4321))
+                            criteria => criteria.WithinRadius(10, 32.1234, 23.4321))
                         .OrderByDistanceDescending(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
                         .ToListAsync();
