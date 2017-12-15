@@ -129,6 +129,16 @@
         ]
     },
     {
+        "Path": "using-dynamic-fields.markdown",
+        "Name": "Dynamic Fields",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/advanced/dynamic-fields"
+            }
+        ]
+    },
+    {
         "Path": "converting-to-json-and-accessing-metadata.markdown",
         "Name": "Converting to JSON and Accessing Metadata",
         "Mappings": []
