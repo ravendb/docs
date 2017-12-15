@@ -4,7 +4,6 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.Spatial;
 using Raven.Client.Documents.Queries.Spatial;
-using Raven.Client.Documents.Session;
 
 namespace Raven.Documentation.Samples.Indexes
 {
@@ -35,26 +34,6 @@ namespace Raven.Documentation.Samples.Indexes
             #endregion
         }
 
-        public interface SpatialCriteriaFactory
-        {
-            #region spatial_search_enhancements_a
-            SpatialCriteria RelatesToShape(object shape, SpatialRelation relation);
-
-            SpatialCriteria Intersects(object shape);
-
-            SpatialCriteria Contains(object shape);
-
-            SpatialCriteria Disjoint(object shape);
-
-            SpatialCriteria Within(object shape);
-
-            [Obsolete("Order of parameters in this method is inconsistent with the rest of the API (x = longitude, y = latitude). Please use 'WithinRadius'.")]
-            SpatialCriteria WithinRadiusOf(double radius, double x, double y);
-
-            SpatialCriteria WithinRadius(double radius, double latitude, double longitude);
-            #endregion
-        }
-
         public interface CartesianSpatialOptionsFactory
         {
             #region spatial_search_enhancements_5
@@ -67,72 +46,14 @@ namespace Raven.Documentation.Samples.Indexes
         public interface Foo
         {
             #region spatial_search_0
-            object SpatialGenerate(double lat, double lng);
+            object CreateSpatialField(double? lat, double? lng);
 
-            object SpatialGenerate(string fieldName, double lat, double lng);
-
-            object SpatialGenerate(string fieldName, string shapeWKT);
-
-            object SpatialGenerate(string fieldName, string shapeWKT, SpatialSearchStrategy strategy);
-
-            object SpatialGenerate(string fieldName, string shapeWKT, SpatialSearchStrategy strategy, int maxTreeLevel);
-            #endregion
-
-            #region spatial_search_5
-            IDocumentQueryCustomization RelatesToShape(string fieldName, string shapeWKT, SpatialRelation rel);
+            object CreateSpatialField(string shapeWkt);
             #endregion
         }
-
-        #region spatial_search_6
-        public enum SpatialSearchStrategy
-        {
-            GeohashPrefixTree,
-            QuadPrefixTree,
-        }
-        #endregion
-
-        #region spatial_search_7
-        public enum SpatialRelation
-        {
-            Within,
-            Contains,
-            Disjoint,
-            Intersects,
-
-            /// <summary>
-            /// Does not filter the query, merely sort by the distance
-            /// </summary>
-            Nearby
-        }
-        #endregion
     }
 
-    public class SpatialDoc
-    {
-        public object Shape { get; set; }
-
-        public object Point { get; set; }
-    }
-
-    #region spatial_search_enhancements_8
-    public class SpatialDoc_ByShapeAndPoint : AbstractIndexCreationTask<SpatialDoc>
-    {
-        public SpatialDoc_ByShapeAndPoint()
-        {
-            Map = docs => from spatial in docs
-                          select new
-                          {
-                              Shape = spatial.Shape,
-                              Point = spatial.Point
-                          };
-
-            Spatial(x => x.Shape, options => options.Geography.Default());
-            Spatial(x => x.Point, options => options.Cartesian.BoundingBoxIndex());
-        }
-    }
-    #endregion
-
-    #region spatial_search_enhancements_1
+    #region spatial_search_2
     public class EventWithWKT
     {
         public string Id { get; set; }
@@ -140,6 +61,19 @@ namespace Raven.Documentation.Samples.Indexes
         public string Name { get; set; }
 
         public string WKT { get; set; }
+    }
+
+    public class EventsWithWKT_ByNameAndWKT : AbstractIndexCreationTask<EventWithWKT>
+    {
+        public EventsWithWKT_ByNameAndWKT()
+        {
+            Map = events => from e in events
+                            select new
+                            {
+                                Name = e.Name,
+                                WKT = CreateSpatialField(e.WKT)
+                            };
+        }
     }
     #endregion
 
@@ -154,9 +88,7 @@ namespace Raven.Documentation.Samples.Indexes
 
         public double Longitude { get; set; }
     }
-    #endregion
 
-    #region spatial_search_2
     public class Events_ByNameAndCoordinates : AbstractIndexCreationTask<Event>
     {
         public Events_ByNameAndCoordinates()
@@ -171,125 +103,24 @@ namespace Raven.Documentation.Samples.Indexes
     }
     #endregion
 
-    #region spatial_search_enhancements_2
-    public class EventsWithWKT_ByNameAndWKT : AbstractIndexCreationTask<EventWithWKT>
+    #region spatial_search_3
+    public class Events_ByNameAndCoordinates_Custom : AbstractIndexCreationTask<Event>
     {
-        public EventsWithWKT_ByNameAndWKT()
+        public Events_ByNameAndCoordinates_Custom()
         {
             Map = events => from e in events
                             select new
                             {
                                 Name = e.Name,
-                                WKT = e.WKT
+                                Coordinates = CreateSpatialField(e.Latitude, e.Longitude)
                             };
 
-            Spatial(x => x.WKT, options => options.Geography.Default());
+            Spatial("Coordinates", factory => factory.Cartesian.BoundingBoxIndex());
         }
     }
     #endregion
 
     public class SpatialIndexes
     {
-        public void Sample()
-        {
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
-                    #region spatial_search_3
-                    IList<Event> results = session
-                        .Query<Event, Events_ByNameAndCoordinates>()
-                        .Spatial("Coordinates", factory => factory
-                            .WithinRadius(
-                                radius: 10,
-                                latitude: 32.1234,
-                                longitude: 23.4321))
-                        .ToList();
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region spatial_search_8
-                    IList<Event> results = session
-                        .Advanced
-                        .DocumentQuery<Event, Events_ByNameAndCoordinates>()
-                        .WithinRadiusOf(
-                            fieldName: "Coordinates",
-                            radius: 10,
-                            latitude: 32.1234,
-                            longitude: 23.4321)
-                        .ToList();
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region spatial_search_4
-                    IList<Event> results = session
-                        .Query<Event, Events_ByNameAndCoordinates>()
-                        .Spatial("Coordinates", factory => factory
-                            .RelatesToShape(
-                                shapeWKT: "Circle(32.1234 23.4321 d=10.0000)",
-                                relation: SpatialRelation.Within))
-                        .ToList();
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region spatial_search_9
-                    IList<Event> results = session
-                        .Advanced
-                        .DocumentQuery<Event, Events_ByNameAndCoordinates>()
-                        .RelatesToShape("Coordinates", "Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within)
-                        .ToList();
-                    #endregion
-
-                    #region spatial_search_enhancements_6
-                    var point = new
-                    {
-                        type = "Point",
-                        coordinates = new[] { -10d, 45d }
-                    };
-
-                    session.Store(new SpatialDoc { Shape = point });
-                    #endregion
-
-                    #region spatial_search_enhancements_7
-                    session.Store(new SpatialDoc { Point = new[] { -10d, 45d } });
-                    session.Store(new SpatialDoc { Point = new { X = -10d, Y = 45d } });
-                    session.Store(new SpatialDoc { Point = new { Latitude = 45d, Longitude = -10d } });
-                    session.Store(new SpatialDoc { Point = new { lat = 45d, lon = -10d } });
-                    session.Store(new SpatialDoc { Point = new { lat = 45d, lng = -10d } });
-                    session.Store(new SpatialDoc { Point = new { Lat = 45d, Long = -10d } });
-                    session.Store(new SpatialDoc { Point = "geo:45.0,-10.0;u=2.0" }); // Geo URI
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    #region spatial_search_enhancements_9
-                    IList<SpatialDoc> results = session
-                        .Query<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
-                        .Spatial(x => x.Shape, criteria => criteria.WithinRadius(500, 30, 30))
-                        .ToList();
-                    #endregion
-                }
-
-                using (var session = store.OpenSession())
-                {
-                    object someWktShape = null;
-
-                    #region spatial_search_enhancements_1_0
-                    IList<SpatialDoc> results = session
-                        .Advanced
-                        .DocumentQuery<SpatialDoc, SpatialDoc_ByShapeAndPoint>()
-                        .Spatial(x => x.Shape, criteria => criteria.WithinRadius(500, 30, 30))
-                        .ToList();
-                    #endregion
-                }
-            }
-        }
     }
 }
