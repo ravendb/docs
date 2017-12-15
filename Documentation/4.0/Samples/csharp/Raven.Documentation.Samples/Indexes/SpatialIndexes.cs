@@ -1,16 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Raven.Client.Documents;
+﻿using System.Linq;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Indexes.Spatial;
-using Raven.Client.Documents.Queries.Spatial;
 
 namespace Raven.Documentation.Samples.Indexes
 {
     namespace Foo
     {
-        using System;
-
         #region spatial_search_enhancements_3
         public class SpatialOptionsFactory
         {

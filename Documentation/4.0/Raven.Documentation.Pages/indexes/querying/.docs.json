@@ -45,6 +45,16 @@
         ]
     },
     {
+        "Path": "spatial.markdown",
+        "Name": "Spatial",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ]
+    },
+    {
         "Path": "query-vs-document-query.markdown",
         "Name": "Query vs DocumentQuery",
         "Mappings": [
