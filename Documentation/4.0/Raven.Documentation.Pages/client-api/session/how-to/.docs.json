@@ -1,55 +1,5 @@
 ﻿[
     {
-        "Path": "check-if-entity-has-changed.markdown",
-        "Name": "...check if entity has changed",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/session/how-to/check-if-entity-has-changed"
-            }
-        ]
-    },
-    {
-        "Path": "check-if-there-are-any-changes-on-a-session.markdown",
-        "Name": "...check if there are any changes on a session",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/session/how-to/check-if-there-are-any-changes-on-a-session"
-            }
-        ]
-    },
-    {
-        "Path": "get-entity-id.markdown",
-        "Name": "...get entity id",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/session/how-to/get-entity-id"
-            }
-        ]
-    },
-    {
-        "Path": "get-entity-metadata.markdown",
-        "Name": "...get entity metadata",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/session/how-to/get-entity-metadata"
-            }
-        ]
-    },
-    {
-        "Path": "get-entity-change-vector.markdown",
-        "Name": "...get entity change-vector",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/session/how-to/get-entity-etag"
-            }
-        ]
-    },
-    {
         "Path": "clear-a-session.markdown",
         "Name": "...clear a session",
         "Mappings": []
@@ -62,6 +12,36 @@
     {
         "Path": "refresh-entity.markdown",
         "Name": "...refresh entity",
+        "Mappings": []
+    },
+    {
+        "Path": "get-entity-id.markdown",
+        "Name": "...get entity id",
+        "Mappings": []
+    },
+    {
+        "Path": "get-entity-metadata.markdown",
+        "Name": "...get entity metadata",
+        "Mappings": []
+    },
+    {
+        "Path": "get-entity-change-vector.markdown",
+        "Name": "...get entity change vector",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/session/how-to/get-entity-etag"
+            }
+        ]
+    },
+    {
+        "Path": "check-if-entity-has-changed.markdown",
+        "Name": "...check if entity has changed",
+        "Mappings": []
+    },
+    {
+        "Path": "check-if-there-are-any-changes-on-a-session.markdown",
+        "Name": "...check if there are any changes on a session",
         "Mappings": []
     }
 ]

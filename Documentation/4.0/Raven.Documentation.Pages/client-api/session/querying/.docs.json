@@ -6,7 +6,7 @@
     },
     {
         "Path": "how-to-query.markdown",
-        "Name": "How to Query",
+        "Name": "How to Query?",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -16,7 +16,7 @@
     },
     {
         "Path": "how-to-stream-query-results.markdown",
-        "Name": "How to Stream Query Results",
+        "Name": "How to Stream Query Results?",
         "Mappings": [
             {
                 "Version": 2.5,
@@ -26,56 +26,26 @@
     },
     {
         "Path": "how-to-customize-query.markdown",
-        "Name": "How to Customize a Query",
+        "Name": "How to Customize Query?",
         "Mappings": []
     },
     {
         "Path": "how-to-project-query-results.markdown",
-        "Name": "How to Project Query Results",
+        "Name": "How to Project Query Results?",
         "Mappings": [
             {
                 "Version": 2.0,
                 "Key": "client-api/querying/results-transformation/transform-results"
             },
             {
-                "Version": 3.5,
+                "Version": 3.0,
                 "Key": "client-api/session/querying/how-to-perform-projection"
             }
         ]
     },
     {
-        "Path": "how-to-get-query-statistics.markdown",
-        "Name": "How to Get Query Statistics",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-perform-queries-lazily.markdown",
-        "Name": "How to Perform Queries Lazily",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/lazy-operations"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-use-search.markdown",
-        "Name": "How to use Search",
-        "Mappings": []
-    },
-    {
-        "Path": "how-to-use-intersect.markdown",
-        "Name": "How to use Intersect",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/intersection"
-            }
-        ]
-    },
-    {
         "Path": "how-to-perform-a-faceted-search.markdown",
-        "Name": "How to perform a faceted search?",
+        "Name": "How to Perform a Faceted Search?",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -85,7 +55,7 @@
     },
     {
         "Path": "how-to-query-a-spatial-index.markdown",
-        "Name": "How to query a spatial index?",
+        "Name": "How to Query a Spatial Index?",
         "Mappings": [
             {
                 "Version": 2.0,
@@ -94,8 +64,33 @@
         ]
     },
     {
+        "Path": "how-to-get-query-statistics.markdown",
+        "Name": "How to Get Query Statistics?",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-use-intersect.markdown",
+        "Name": "How to Use Intersect?",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/intersection"
+            }
+        ]
+    },
+    {
+        "Path": "how-to-perform-queries-lazily.markdown",
+        "Name": "How to Perform Queries Lazily?",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/lazy-operations"
+            }
+        ]
+    },
+    {
         "Path": "how-to-work-with-suggestions.markdown",
-        "Name": "How to Work with Suggestions",
+        "Name": "How to Work With Suggestions?",
         "Mappings": [
             {
                 "Version": 2.0,
@@ -105,7 +100,12 @@
     },
     {
         "Path": "how-to-use-morelikethis.markdown",
-        "Name": "How to Use MoreLikeThis",
+        "Name": "How to Use MoreLikeThis?",
+        "Mappings": []
+    },
+    {
+        "Path": "how-to-use-search.markdown",
+        "Name": "How to Use Search?",
         "Mappings": []
     }
 ]

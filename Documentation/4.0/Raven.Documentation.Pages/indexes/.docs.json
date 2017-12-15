@@ -80,7 +80,7 @@
     },
     {
         "Path": "indexing-related-documents.markdown",
-        "Name": "Indexing related documents",
+        "Name": "Indexing Related Documents",
         "Mappings": [
             {
                 "Version": 2.0,
@@ -90,7 +90,7 @@
     },
     {
         "Path": "indexing-hierarchical-data.markdown",
-        "Name": "Indexing hierarchical data",
+        "Name": "Indexing Hierarchical Data",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -100,7 +100,7 @@
     },
     {
         "Path": "indexing-polymorphic-data.markdown",
-        "Name": "Indexing polymorphic data",
+        "Name": "Indexing Polymorphic Data",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -110,7 +110,7 @@
     },
     {
         "Path": "indexing-spatial-data.markdown",
-        "Name": "Indexing spatial data",
+        "Name": "Indexing Spatial Data",
         "Mappings": [
             {
                 "Version": 1.0,
@@ -119,6 +119,31 @@
             {
                 "Version": 2.0,
                 "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ]
+    },
+    {
+        "Path": "indexing-linq-extensions.markdown",
+        "Name": "Indexing LINQ Extensions",
+        "Mappings": []
+    },
+    {
+        "Path": "converting-to-json-and-accessing-metadata.markdown",
+        "Name": "Converting to JSON and Accessing Metadata",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/defining-static-index#using--and-"
+            }
+        ]
+    },
+    {
+        "Path": "boosting.markdown",
+        "Name": "Boosting",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/boosting"
             }
         ]
     },
@@ -134,11 +159,21 @@
     },
     {
         "Path": "storing-data-in-index.markdown",
-        "Name": "Storing data in index",
+        "Name": "Storing Data in Index",
         "Mappings": [
             {
                 "Version": 1.0,
                 "Key": "client-api/querying/static-indexes/configuring-index-options#field-options"
+            }
+        ]
+    },
+    {
+        "Path": "using-term-vectors.markdown",
+        "Name": "Term Vectors",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/querying/static-indexes/configuring-index-options#term-vectors"
             }
         ]
     },
@@ -151,35 +186,5 @@
                 "Key": "client-api/advanced/dynamic-fields"
             }
         ]
-    },
-    {
-        "Path": "boosting.markdown",
-        "Name": "Boosting",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/static-indexes/boosting"
-            }
-        ]
-    },
-    {
-        "Path": "converting-to-json-and-accessing-metadata.markdown",
-        "Name": "Converting to JSON and Accessing Metadata",
-        "Mappings": []
-    },
-    {
-        "Path": "indexing-linq-extensions.markdown",
-        "Name": "Indexing Linq Extensions",
-        "Mappings": []
-    },
-    {
-        "Path": "using-term-vectors.markdown",
-        "Name": "Term Vectors",
-        "Mappings": [
-            {
-                "Version": 2.5,
-                "Key": "client-api/querying/static-indexes/configuring-index-options#term-vectors"
-            }
-        ]
-    },
+    }
 ]

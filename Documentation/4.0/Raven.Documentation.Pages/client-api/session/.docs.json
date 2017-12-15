@@ -1,5 +1,15 @@
 [
     {
+        "Path": "what-is-a-session-and-how-does-it-work.markdown",
+        "Name": "What is a Session and how does it work?",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/understanding-session-object"
+            }
+        ]
+    },
+    {
         "Path": "opening-a-session.markdown",
         "Name": "Opening a Session",
         "Mappings": [
@@ -15,7 +25,7 @@
         "Mappings": [
             {
                 "Version": 1.0,
-                "Key": "client-api/basic-operations/storing-entities"
+                "Key": "client-api/basic-operations/saving-new-document"
             }
         ]
     },
@@ -25,17 +35,7 @@
         "Mappings": [
             {
                 "Version": 1.0,
-                "Key": "client-api/basic-operations/deleting-entities"
-            }
-        ]
-    },
-    {
-        "Path": "what-is-a-session-and-how-does-it-work.markdown",
-        "Name": "What is a Session and How Does it Work?",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/basic-operations/understanding-session-object"
+                "Key": "client-api/basic-operations/deleting-documents"
             }
         ]
     },
@@ -45,13 +45,13 @@
         "Mappings": []
     },
     {
-        "Path": "/how-to",
-        "Name": "How to...",
+        "Path": "/attachments",
+        "Name": "Attachments",
         "Mappings": []
     },
     {
-        "Path": "/attachments",
-        "Name": "Attachments",
+        "Path": "/how-to",
+        "Name": "How to...",
         "Mappings": []
     }
 ]

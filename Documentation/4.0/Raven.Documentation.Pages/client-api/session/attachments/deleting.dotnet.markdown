@@ -1,6 +1,6 @@
-# Attachments : Delete
+# Attachments : Deleting Attachments
 
-**DeleteAttachment** is used to remove an attachment from a document.
+**Delete** from `session.Advanced.Attachments` is used to remove an attachment from a document.
 
 ## Syntax
 

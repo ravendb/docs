@@ -5,18 +5,18 @@
     "Mappings": []
   },
   {
-    "Path": "put.markdown",
-    "Name": "Put",
+    "Path": "storing.markdown",
+    "Name": "Storing",
     "Mappings": []
   },
   {
-    "Path": "get.markdown",
-    "Name": "Get",
+    "Path": "loading.markdown",
+    "Name": "Loading",
     "Mappings": []
   },
   {
-    "Path": "delete.markdown",
-    "Name": "Delete",
+    "Path": "deleting.markdown",
+    "Name": "Deleting",
     "Mappings": []
   }
 ]
