@@ -52,12 +52,15 @@ namespace Raven.Documentation.Samples.Indexes
                     .Send(new PutIndexesOperation(new IndexDefinition
                     {
                         Name = "Employees/ByFirstAndLastName",
-                        Maps = { @"from employee in docs.Employees
-                                select new
-                                {
-                                    FirstName = employee.FirstName.Boost(10),
-                                    LastName = employee.LastName
-                                }" }
+                        Maps =
+                        {
+                            @"from employee in docs.Employees
+                              select new
+                              {
+                                  FirstName = employee.FirstName.Boost(10),
+                                  LastName = employee.LastName
+                              }"
+                        }
                     }));
                 #endregion
             }
