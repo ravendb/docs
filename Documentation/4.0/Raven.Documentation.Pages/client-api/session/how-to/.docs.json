@@ -49,4 +49,18 @@
             }
         ]
     }
+        "Path": "clear-a-session.markdown",
+        "Name": "...clear a session",
+        "Mappings": []
+    },
+    {
+        "Path": "evict-entity-from-a-session.markdown",
+        "Name": "...evict entity from a session",
+        "Mappings": []
+    },
+    {
+        "Path": "refresh-entity.markdown",
+        "Name": "...refresh entity",
+        "Mappings": []
+    }
 ]
