@@ -109,6 +109,20 @@
         ]
     },
     {
+        "Path": "indexing-spatial-data.markdown",
+        "Name": "Indexing spatial data",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/advanced/spatial-search"
+            },
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ]
+    },
+    {
         "Path": "using-analyzers.markdown",
         "Name": "Analyzers",
         "Mappings": [
