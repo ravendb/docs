@@ -48,7 +48,8 @@
                 "Key": "client-api/session/how-to/get-entity-etag"
             }
         ]
-    }
+    },
+    {
         "Path": "clear-a-session.markdown",
         "Name": "...clear a session",
         "Mappings": []

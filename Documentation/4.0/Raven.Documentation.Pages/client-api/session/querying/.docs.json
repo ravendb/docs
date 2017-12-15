@@ -84,6 +84,16 @@
         ]
     },
     {
+        "Path": "how-to-query-a-spatial-index.markdown",
+        "Name": "How to query a spatial index?",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ]
+    },
+    {
         "Path": "how-to-work-with-suggestions.markdown",
         "Name": "How to Work with Suggestions",
         "Mappings": [
