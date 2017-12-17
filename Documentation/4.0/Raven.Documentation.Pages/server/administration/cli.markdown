@@ -145,7 +145,7 @@ ravendb>
 
 Usage : **addServerCert <path\> [password]**
 
-Adding a certificate to be trusted on this server, in order for other nodes to be able to connect with it.
+Adding another node's server certificate to be trusted on this server. This is required when building a cluster where each node has a different certificate.
 
 <br><br>
 
