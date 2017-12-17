@@ -45,6 +45,16 @@
         ]
     },
     {
+        "Path": "intersection.markdown",
+        "Name": "Intersection",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/intersection"
+            }
+        ]
+    },
+    {
         "Path": "spatial.markdown",
         "Name": "Spatial",
         "Mappings": [
