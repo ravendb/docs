@@ -6,12 +6,12 @@
     },
     {
         "Path": "/server",
-        "Name": "Server",
+        "Name": "Server Management",
         "Mappings": []
     },
     {
         "Path": "/database",
-        "Name": "Database",
+        "Name": "Database Management",
         "Mappings": []
     }
 ]

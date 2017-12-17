@@ -1,7 +1,12 @@
 ﻿[
     {
         "Path": "databases-list-view.markdown",
-        "Name": "General",
+        "Name": "List View",
+        "Mappings": []
+    },
+    {
+        "Path": "/create-new-database",
+        "Name": "Create New Database",
         "Mappings": []
     }
 ]

@@ -9,10 +9,11 @@ All your databases are listed in this view
 {PANEL/}
             
 ---
+### Database Stats
 
 ![Figure 1. Database Stats](images/database-stats.png "Database Stats")
 
-{PANEL: Database Stats}
+{PANEL}
 
 1. **Database State**    
    A database can be: _Online_ , _Offline_ or _Disabled_        
@@ -47,10 +48,11 @@ then ***'Remote'*** will be indicated - see more below
 {PANEL/}
 
 ---  
+### Database Actions
 
 ![Figure 2. Database Actions](images/database-actions-1.png "Database Actions")
 
-{PANEL: Database Actions}
+{PANEL}
 
 1. **Create new database**    
    A new database can be created from scratch, from a backup copy, or from existing 3.x data - see more below
@@ -71,10 +73,11 @@ then ***'Remote'*** will be indicated - see more below
 {PANEL/}
 
 ---
+### Creating New Database Options
 
 ![Figure 3. Creating New Database](images/database-actions-2.png "Creating New Database Options")
 
-{PANEL: Creating New Database Options}
+{PANEL}
 
 1. **Create new database from scratch**   
    See detailed flow in: // TODO: add links to relevant page when exists.. 
@@ -88,10 +91,11 @@ then ***'Remote'*** will be indicated - see more below
 {PANEL/}
 
 ---
+### More Actions
 
 ![Figure 4. More Actions](images/database-actions-3.png "More Actions")
 
-{PANEL:More Actions}
+{PANEL}
 
 1. **Pause indexing**      
    All indexes on this database will stop indexing.
@@ -106,10 +110,11 @@ then ***'Remote'*** will be indicated - see more below
 {PANEL/}
 
 ---
+### Remote Database
 
 ![Figure 5. Remote Database](images/database-actions-4.png "Remote Database")
 
-{PANEL: Remote Database}
+{PANEL}
 
 If the database is contained in one of the cluster's nodes but Not in the node that shows in this current view, then ***'Remote'*** is indicated  
 
