@@ -24,7 +24,7 @@ If UseOptimisticConcurrency is set to 'true' (default 'false'), the Delete() met
 {CODE deleting_3@ClientApi\Session\DeletingEntities.cs /}
 
 {NOTE: Concurrency on Delete}
-In this overload, the Delete() method will not do any change vector based-based concurrency checks because the change vector for 'employees/1' is unknown
+In this overload, the Delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown
 {NOTE/}
 
 {INFO:Information}
