@@ -1,5 +1,10 @@
 [
     {
+        "Path": "certificate-configuration.markdown",
+        "Name": "Certificate Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "cerificate-management.markdown",
         "Name": "Certificate Management",
         "Mappings": []
@@ -12,11 +17,6 @@
     {
         "Path": "lets-encrypt-certificates.markdown",
         "Name": "Let's Encrypt Certificates",
-        "Mappings": []
-    },
-    {
-        "Path": "manual-configuration.markdown",
-        "Name": "Manual Configuration",
         "Mappings": []
     },
     {

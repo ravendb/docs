@@ -1,10 +1,5 @@
 [
     {
-        "Path": "theory-and-design.markdown",
-        "Name": "Theory & Design",
-        "Mappings": []
-    },
-    {
         "Path": "database-encryption.markdown",
         "Name": "Database Encryption",
         "Mappings": []
