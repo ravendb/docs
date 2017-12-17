@@ -65,6 +65,16 @@
         ]
     },
     {
+        "Path": "faceted-search.markdown",
+        "Name": "Faceted search",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/faceted-search"
+            }
+        ]
+    },
+    {
         "Path": "query-vs-document-query.markdown",
         "Name": "Query vs DocumentQuery",
         "Mappings": [

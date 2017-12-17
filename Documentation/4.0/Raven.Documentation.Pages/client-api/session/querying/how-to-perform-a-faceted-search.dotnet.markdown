@@ -86,6 +86,10 @@ select facet(id('facets/CameraFacets'))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Remarks
+
+{WARNING `AggregateBy` only supports aggregation by single field, if you want to aggregate by a multiple fields you need to emit a single field that contains all values. /}
+
 ## Related articles
 
 - [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)   
