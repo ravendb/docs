@@ -2,44 +2,70 @@
 
 <br><br>
 
-#### Databases.QueryOperationTimeoutInSec
-###### The number of seconds to wait before canceling a query operation
+#### Databases.QueryTimeoutInSec
+###### The time in seconds to wait before canceling query
 ###### Default Value: 300
+
+This timeout refers to queries and streamed queries operations.
+
 If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
 
 Example:
 
 ```
-Databases.QueryOperationTimeoutInSec=600
+Databases.QueryTimeoutInSec=600
 ```
 
 <br><br>
 
-#### Databases.IndexTermsOperationTimeoutInSec
-###### The number of seconds to wait before canceling an indexing terms operation
+#### Databases.QueryOperationTimeout
+###### The time in seconds to wait before canceling query related operation
 ###### Default Value: 300
+
+This timeout refers to patch/delete query operations.
+
 If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
 
 Example:
 
 ```
-Databases.IndexTermsOperationTimeoutInSec=600
+Databases.QueryOperationTimeout=600
 ```
 
 <br><br>
 
-#### Databases.DeleteDocsOperationTimeoutInSec
-###### The number of seconds to wait before canceling a documents deletion operation
+#### Databases.OperationTimeout
+###### The time in seconds to wait before canceling specific operations
 ###### Default Value: 300
+
+Set timeout for some general operations (such as indexing terms) requirring their own timeout settings.
+
 If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
 
 Example:
 
 ```
-Databases.DeleteDocsOperationTimeoutInSec=600
+Databases.OperationTimeout=600
 ```
 
 <br><br>
+
+#### Databases.CollectionOperationTimeoutInSec
+###### The time in seconds to wait before canceling several collection operations
+###### Default Value: 300
+
+Set timeout for some operations on collections (such as batch delete documents from studio) requirring their own timeout settings.
+
+If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
+
+Example:
+
+```
+Databases.CollectionOperationTimeoutInSec=600
+```
+
+<br><br>
+
 
 #### Databases.ConcurrentDatabaseLoadTimeoutInSec
 ###### Set time in seconds to wait for a database to start loading when under load
