@@ -8,5 +8,10 @@
         "Path": "server-core-configuration.markdown",
         "Name": "Core Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "security-configuration.markdown",
+        "Name": "Security Configuration",
+        "Mappings": []
     }
 ]

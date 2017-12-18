@@ -8,5 +8,10 @@
         "Path": "/configuration",
         "Name": "Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "/security",
+        "Name": "Security",
+        "Mappings": []
     }
 ]

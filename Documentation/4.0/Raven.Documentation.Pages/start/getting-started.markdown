@@ -67,7 +67,7 @@ This will run RavenDB in interactive mode inside a console application:
 
 ![Figure 1: RavenDB console.](images\console.png) 
 
-You can read all about 'settings.json' in the [Configuration Section](). These are the default initial settings:  
+You can read all about 'settings.json' in the [Configuration Section](../server/configuration/configuration-options). These are the default initial settings:  
 
     {  
         "ServerUrl": "http://127.0.0.1:0",
@@ -141,10 +141,14 @@ access control to prevent unauthorized access to your data.
 
 <strong>We recommend using the Setup Wizard to easily install RavenDB securely from the very start.  </strong>
 
-Read more about security and how to enable authentication [here]()
+Read more about security and how to enable authentication [here](../server/security/overview)
 
 <hr />
 
 ## Installing RavenDB on a Raspberry Pi
+
+<hr />
+
+## Running RavenDB on 32-bit machines
 
 <hr />
