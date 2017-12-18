@@ -14,9 +14,9 @@ For example, this is a typical settings.json:
     {  
         "ServerUrl": "https://rvn-srv-1:8080",
         "Setup.Mode": "None",
-        "DataDir": "RavenData",
+        "DataDir": "/home/RavenData",
         "Security.Certificate": {
-            "Path": "/mnt/secrets/server.pfx",
+            "Path": "/home/secrets/server.pfx",
             "Password": "s3cr7t p@$$w0rd"
         }
     }  
@@ -32,16 +32,16 @@ Let's look at an example - a simple powershell script called give_me_cert.ps1
 
     try
     {
-	    $thumbprint = $args[0]
-	    $cert = gci "cert:\CurrentUser\my\$thumbprint"
-	    $exportedCertBinary = $cert.Export("Pfx")
-	    $stdout = [System.Console]::OpenStandardOutput()
-	    $stdout.Write($exportedCertBinary, 0, $exportedCertBinary.Length)
+	$thumbprint = $args[0]
+	$cert = gci "cert:\CurrentUser\my\$thumbprint"
+	$exportedCertBinary = $cert.Export("Pfx")
+    	$stdout = [System.Console]::OpenStandardOutput()
+	$stdout.Write($exportedCertBinary, 0, $exportedCertBinary.Length)
     }
     catch
     {
-	    write-error $_.Exception
-	    exit 3
+	write-error $_.Exception
+	exit 3
     }
 
 And settings.json will look something like this:
@@ -49,12 +49,12 @@ And settings.json will look something like this:
     {  
         "ServerUrl": "https://rvn-srv-1:8080",
         "Setup.Mode": "None",
-        "DataDir": "RavenData",
+        "DataDir": "/home/RavenData",
         "Security.Certificate": {
-		    "Exec": "powershell",
-		    "Arguments": "d:/give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
+    		"Exec": "powershell",
+		"Arguments": "/home/secrets/give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
         }
     } 
     
 
-{NOTE In any secure configuration, the `ServerUrl` must contain the same domain name that is used in the certificate (under the CN or ASN properties). /}
+{NOTE In all secure configurations, the `ServerUrl` must contain the same domain name that is used in the certificate (under the CN or ASN properties). /}
