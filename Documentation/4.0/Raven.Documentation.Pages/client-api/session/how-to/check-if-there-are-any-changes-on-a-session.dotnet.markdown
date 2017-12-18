@@ -1,10 +1,10 @@
-# Session : How to check if there are any changes on a session?
+# Session : How to Check if There are Any Changes on a Session
 
-Single entity can be checked for changes using [HasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both `HasChanges` property and `WhatChanged` method are available in `Advanced` session operations.
+Single entity can be checked for changes using [HasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `HasChanges` property and the `WhatChanged` method are available in the `Advanced` session operations.
 
 {PANEL:HasChanges}
 
-Property indicates if session contains any changes. That is if there are any new, changed or deleted entities.
+Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
 
 ### Syntax
 
@@ -18,7 +18,7 @@ Property indicates if session contains any changes. That is if there are any new
 
 {PANEL:WhatChanged}
 
-Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value and change type. 
+Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
 
 ### Syntax
 
@@ -38,6 +38,6 @@ Method returns all changes for each entity stored within the session. Including 
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [How to check if entity has changed?](./check-if-entity-has-changed)

@@ -33,7 +33,7 @@ rvn admin-channel [RavenDB process Id]
 ```
 *The rvn executable can be found in the distribution package under 'Server' directory*
 
-- ***rvn admin-channel*** uses [Named Pipe Connection](https://en.wikipedia.org/wiki/Named_pipe) and can connect to RavenDB CLI only when running on the same machine as the server (and with appropriate privileges).
+- ***rvn admin-channel*** uses [Named Pipe Connection](https://en.wikipedia.org/wiki/Named_pipe), and can connect to RavenDB CLI only when running on the same machine as the server, and with appropriate privileges.
 
 <br><br>
 
@@ -60,7 +60,7 @@ ravendb> info
 
 Usage : **stats**
 
-Online display of memory usage by RavenDB, separate into Working Set, Native Mem, Mananged Mem and Memory Mapped Size. Hitting any key will return to CLI's input mode (beware not to hit Ctrl+C / Break to avoid unintended shutdown of the server).
+Online display of memory usage by RavenDB. You can separate into Working Set, Native Mem, Managed Mem, and Memory Mapped Size. Hitting any key will return to CLI's input mode (beware not to hit Ctrl+C / Break to avoid unintended a shutdown of the server).
 
 Example:
 
@@ -80,7 +80,7 @@ Example:
 
 `ravendb>log on`
 
-* Note : If log enabled using ***rvn admin-channel***, the information will be displayed in the main console application. If RavenDB running as a service, see the log output in the service log.
+* Note : If log enabled using ***rvn admin-channel***, the information will be displayed in the main console application. If RavenDB is running as a service, see the log output in the service log.
 
 #### gc
 

@@ -12,7 +12,7 @@ The following query customization options are available in the `IDocumentQueryCu
 
 {PANEL:BeforeQueryExecuted}
 
-Allows you to modify the index query just before it is executed.
+Allows you to modify the index query just before it's executed.
 
 {CODE customize_1_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -104,7 +104,7 @@ To disable entity tracking by `Session` use `NoTracking`. Usage of this option w
 
 {PANEL:RandomOrdering}
 
-To order results randomly, use `RandomOrdering` method.
+To order results randomly, use the `RandomOrdering` method.
 
 {CODE customize_4_0@ClientApi\Session\Querying\HowToCustomize.cs /}
 
@@ -128,11 +128,11 @@ Queries can be 'instructed' to wait for non-stale results for a specified amount
 non-stale results within the specified (or default) timeout, then a `TimeoutException` is thrown.
 
 {NOTE: Cutoff Point}
-If a query sent to the server specifies it needs to wait for non-stale results then RavenDB sets the cutoff etag for the staleness check.
-It is the etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
+If a query sent to the server specifies that it needs to wait for non-stale results, then RavenDB sets the cutoff Etag for the staleness check.
+It is the Etag of the last document (or document tombstone), from the collection(s) processed by the index, as of the query arrived to the server.
 This way the server won't be waiting forever for the non-stale results even though documents are constantly updated meanwhile.
 
-If the last etag processed by the index is greater than the cutoff then the results are considered as non-stale.
+If the last Etag processed by the index is greater than the cutoff then the results are considered as non-stale.
 {NOTE/}
 
 
