@@ -8,5 +8,10 @@
                 "Key": "client-api/advanced/aggressive-caching"
             }
         ]
+    },
+    {
+        "Path": "store-dates.markdown",
+        "Name": "...store dates",
+        "Mappings": []
     }
 ]
