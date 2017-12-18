@@ -6,9 +6,10 @@
 ###### The time in seconds to wait before canceling query
 ###### Default Value: 300
 
-This timeout refers to queries and streamed queries operations.
+This timeout refers to queries and streamed queries.
 
-If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
+If a query exceeds the specified time, an *OperationCanceledException* will be thrown. For the streaming queries the timeout is delayed every time a
+query result is pushed to the stream. The timeout will be exceeded only if no result is streamed within that time.
 
 Example:
 
@@ -24,7 +25,7 @@ Databases.QueryTimeoutInSec=600
 
 This timeout refers to patch/delete query operations.
 
-If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
+If an operation exceeds the specified time, an *OperationCanceledException* will be thrown
 
 Example:
 
@@ -38,9 +39,9 @@ Databases.QueryOperationTimeout=600
 ###### The time in seconds to wait before canceling specific operations
 ###### Default Value: 300
 
-Set timeout for some general operations (such as indexing terms) requirring their own timeout settings.
+Set timeout for some general operations (such as retrieving indexing terms) requiring their own timeout settings.
 
-If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
+If an operation exceeds the specified time, an *OperationCanceledException* will be thrown
 
 Example:
 
@@ -54,9 +55,9 @@ Databases.OperationTimeout=600
 ###### The time in seconds to wait before canceling several collection operations
 ###### Default Value: 300
 
-Set timeout for some operations on collections (such as batch delete documents from studio) requirring their own timeout settings.
+Set timeout for some operations on collections (such as batch delete documents from studio) requiring their own timeout settings.
 
-If an operation exeeds the specified time, an *OperationCanceledException* will be thrown
+If an operation exceeds the specified time, an *OperationCanceledException* will be thrown
 
 Example:
 
