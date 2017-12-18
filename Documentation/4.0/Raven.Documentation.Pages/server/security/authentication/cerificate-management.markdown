@@ -2,8 +2,8 @@
 
 Once authentication is set up, it's the administrator's responsibility to issue and manage client certificates.
 
-RavenDB provides a certificates management view in the studio. All the operations which are described down 
-below are also available in the client API. Click [here](client-certificate-usage) for detailed client examples.
+RavenDB provides a certificates management view in the studio. All the operations which are described below are also available in the client API. 
+Click [here](client-certificate-usage) for detailed client examples.
 
 ![Figure 1. Certificates View](images/main.png)
 
