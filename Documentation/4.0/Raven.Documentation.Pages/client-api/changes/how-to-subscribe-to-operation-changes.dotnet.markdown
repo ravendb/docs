@@ -1,13 +1,13 @@
-﻿# Changes API : How to subscribe to operation changes?
+﻿# Changes API : How to Subscribe to Operation Changes
 
-Following methods allow you to subscribe to operation changes:
+The following methods allow you to subscribe to operation changes:
 
 - [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
 - [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
 
 {PANEL:ForOperation}
 
-Operation changes for one operation can be observed using `ForOperationId` method.
+Operation changes for one operation can be observed using the `ForOperationId` method.
 
 ### Syntax
 
@@ -19,7 +19,7 @@ Operation changes for one operation can be observed using `ForOperationId` metho
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable<[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)> | Observable that allows to add subscriptions to notifications for operation with given id. |
+| IChangesObservable<[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)> | Observable that allows you to add subscriptions to notifications for an operation with a given id. |
 
 ### Example
 
@@ -29,9 +29,9 @@ Operation changes for one operation can be observed using `ForOperationId` metho
 
 {PANEL:ForAllOperations}
 
-Operations changes for all Operations can be observed using `ForAllOperations` method.
+Operations changes for all Operations can be observed using the `ForAllOperations` method.
 
-| Return value | |
+| Return Value | |
 | ------------- | ----- |
 | IChangesObservable<[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)> | Observable that allows to add subscriptions to notifications for all operations. |
 
@@ -58,6 +58,7 @@ Operations changes for all Operations can be observed using `ForAllOperations` m
 {PANEL/}
 
 {PANEL:OperationState}
+
 ### Members
 
 | Name | Type | Description |
@@ -68,7 +69,9 @@ Operations changes for all Operations can be observed using `ForAllOperations` m
 {PANEL/}
 
 {PANEL:OperationResult}
+
 ### Members
+
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **Message** | string | Operation message |
@@ -81,12 +84,12 @@ Operations changes for all Operations can be observed using `ForAllOperations` m
 
 | Name | Description |
 | ---- | ----- |
-| **InProgress** | `Indicates that the operation made prgoress` |
-| **Completed** | `Indicates that the operation had completed` |
+| **InProgress** | `Indicates that the operation made progress` |
+| **Completed** | `Indicates that the operation has completed` |
 | **Faulted** | `Indicates that the operation is faulted` |
-| **Canceled** | `Indicates that the operation had been Canceled` |
+| **Canceled** | `Indicates that the operation has been Canceled` |
 {PANEL/}
 ## Remarks
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
+{INFO To get more method overloads, especially the ones supporting delegates, please add the [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 

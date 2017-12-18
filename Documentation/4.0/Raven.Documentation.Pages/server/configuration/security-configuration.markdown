@@ -1,6 +1,6 @@
 ## Security Configuration
 
-The following configuration values allow you to control the desired level of security in a RavenDB server. For a more adetailed explanation, please visit the [Security Section](../security/authentication/certificate-configuration).
+The following configuration values allow you to control the desired level of security in a RavenDB server. For a more detailed explanation, please visit the [Security Section](../security/authentication/certificate-configuration).
 
 <strong>Security.Certificate.Path</strong>  
 The path to .pfx certificate file. If specified, RavenDB will use HTTPS/SSL for all network activities.  
