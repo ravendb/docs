@@ -43,5 +43,10 @@
         "Path": "/Server",
         "Name": "Server Operations",
         "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
     }
 ]
