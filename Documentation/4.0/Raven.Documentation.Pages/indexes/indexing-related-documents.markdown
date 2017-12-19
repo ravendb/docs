@@ -4,9 +4,9 @@ To extend indexing capabilities and simplify many scenarios, we have introduced 
 
 ## Example I
 
-Firstly, let's consider a simple `Product - Category` scenario where you want to look for a `Product` by `Category Name`.
+Let's consider a simple `Product - Category` scenario where you want to look for a `Product` by `Category Name`.
 
-Without this feature, the index that had to be created would be a fairly complex multiple map-reduce index. This is why the `LoadDocument` function was introduced.
+Without this feature, you would have to create a fairly complex multiple map-reduce index. This is why the `LoadDocument` function was introduced.
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask indexing_related_documents_2@Indexes\IndexingRelatedDocuments.cs /}
@@ -19,11 +19,11 @@ Now we will be able to search for products using the `CategoryName` as a paramet
 
 ## Example II
 
-Our next scenario will show us that indexing of more complex relationships is also trivial. Let's consider the following case:
+Our next scenario will show us how indexing of more complex relationships is also trivial. Let's consider the following case:
 
 {CODE indexing_related_documents_4@Indexes\IndexingRelatedDocuments.cs /}
 
-Now, to create an index with `Author Name` and list of `Book Names`, we need do the following:
+To create an index with `Author Name` and list of `Book Names`, we need do the following:
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask indexing_related_documents_5@Indexes\IndexingRelatedDocuments.cs /}
@@ -38,7 +38,7 @@ Now, to create an index with `Author Name` and list of `Book Names`, we need do 
 
 {WARNING Using the `LoadDocument` adds a loaded document to the tracking list. This may cause very expensive calculations to occur, especially when multiple documents are tracking the same document. /}
 
-## Related articles
+## Related Articles
 
 - [Indexing : Basics](../indexes/indexing-basics)
 - [Indexing hierarchical data](../indexes/indexing-hierarchical-data)
