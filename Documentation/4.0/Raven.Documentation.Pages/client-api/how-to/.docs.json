@@ -8,10 +8,5 @@
                 "Key": "client-api/advanced/aggressive-caching"
             }
         ]
-    },
-    {
-        "Path": "use-operations.markdown",
-        "Name": "...use operations",
-        "Mappings": []
     }
 ]
