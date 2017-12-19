@@ -6,5 +6,19 @@ However if you have people from around the world using the same database, and yo
 
 The decision of whether to use UTC, Local Time, or `DateTimeOffset` is an application decision, not an infrastructure decision.  There are valid reasons for using any one of these.
 
+
+##ISO 8601 Compliance and Default Storing Formats
+
+RavenDB is [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) compliant.   
+
+RavenDB uses the follwing default formats for storing `DateTime`:  
+
+- **"yyyy'-'MM'-'dd'T'HH':'mm':'ss"**
+- **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff"**
+- **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff'Z'"**
+
+
+For storing `DateTimeOffset` RavenDB uses the [Round-trip ("o")](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip)  Format
+
 ##More Information
 For detailed information about this topic, please refer to the [Working with Date and Time in RavenDB](http://codeofmatt.com/2015/01/25/date-and-time-in-ravendb/) article written by Matt Johnson.
