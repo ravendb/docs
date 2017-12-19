@@ -148,19 +148,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
-
-                /*
-				#region intersection_6
-				QueryResult result = store
-					.DatabaseCommands
-					.Query(
-						"TShirts/ByManufacturerColorSizeAndReleaseYear",
-						new IndexQuery
-						{
-							Query = "Manufacturer:Raven INTERSECT Color:Blue AND Size:Small INTERSECT Color:Gray AND Size:Large"
-						});
-				#endregion
-                */
             }
         }
     }
