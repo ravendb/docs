@@ -5,7 +5,7 @@ When displaying a large amount of data, often paging is used to make viewing the
 ![Facets](images\CNET_faceted_search_2.jpg)
 
 <br />
-To achieve this in RavenDB, lets say you have a document like this:
+Let's start from defining a document like this:
 
 {CODE camera@Faceted.cs /}
 
@@ -89,15 +89,15 @@ The data below represents the sample faceted data that satisfies above query:
             },
             {
                 "Count": 2,
-                "Range": "Cost BETWEEN 200 AND 400"
+                "Range": "Cost between 200 and 400"
             },
             {
                 "Count": 0,
-                "Range": "Cost BETWEEN 400 AND 600"
+                "Range": "Cost between 400 and 600"
             },
             {
                 "Count": 0,
-                "Range": "Cost BETWEEN 600 AND 800"
+                "Range": "Cost between 600 and 800"
             },
             {
                 "Count": 0,
@@ -114,11 +114,11 @@ The data below represents the sample faceted data that satisfies above query:
             },
             {
                 "Count": 6,
-                "Range": "Megapixels BETWEEN 3 AND 7"
+                "Range": "Megapixels between 3 and 7"
             },
             {
                 "Count": 1,
-                "Range": "Megapixels BETWEEN 7 AND 10"
+                "Range": "Megapixels between 7 and 10"
             },
             {
                 "Count": 1,
@@ -148,11 +148,11 @@ select facet(id('facets/CameraFacets'))
 
 ### Stale results
 
-The faceted search does not take into account a staleness of an index. You can't wait for non stale results by customizing your query with `WaitForNonStaleResults` method.
+The faceted search does not take into account a staleness of an index. You can wait for non stale results by customizing your query with `WaitForNonStaleResults` method.
 
 ### Fluent API
 
-As an alternative for creating a list of facets and passing it to `AggregateBy` method, RavenDB also exposes a dynamic API where you can create your facets using a built-in builder. You can read more about those methods in our dedicated Client API article that can be found [here](../../client-api/session/querying/how-to-perform-a-faceted-search).
+As an alternative for creating a list of facets and passing it to `AggregateBy` method, RavenDB also exposes a dynamic API where you can create your facets using a builder. You can read more about those methods in our dedicated Client API article that can be found [here](../../client-api/session/querying/how-to-perform-a-faceted-search).
 
 ## Related articles
 
