@@ -1,12 +1,12 @@
-# Map indexes
+# Map Indexes
 
-`Map` indexes (sometimes referred to as simple indexes) contain one (or more) mapping functions that indicate which fields from the documents should be indexed (in other words they indicate which documents can be searched by which fields). 
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
 
 These **mapping functions** are **LINQ-based functions** and can be considered the **core** of indexes.
 
-## What can be indexed?
+## What Can be Indexed?
 
-The easiest answer to this question is practically anything. You can:
+You can:
 
 - [index single fields](../indexes/map-indexes#basics---indexing-single-fields)
 - [combined multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
@@ -14,11 +14,9 @@ The easiest answer to this question is practically anything. You can:
 - [index nested data](../indexes/map-indexes#indexing-nested-data)
 - [index fields from related documents](../indexes/indexing-related-documents)
 - [index fields from multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
-- ...and so on. 
+- ...and more. 
 
-Various articles in this part of documentation will describe these possibilities in detail.
-
-## Basics - indexing single fields
+## Indexing Single Fields
 
 To start, let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
 
@@ -26,9 +24,9 @@ To start, let's create an index that will help us search for `Employees` by thei
 
 {CODE indexes_1@Indexes/Map.cs /}
 
-You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. Thanks to that, our indexing function will have a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, then you should read [this](../indexes/creating-and-deploying) article before proceeding.
+You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../indexes/creating-and-deploying) article before proceeding.
 
-- The next step is to create an indexing function itself, and this is done by setting the `Map` property with our function in a **parameterless constructor**.
+- The next step is to create an indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query-syntax indexes_2@Indexes/Map.cs /}
@@ -49,9 +47,9 @@ Our final index looks like:
 
 {CODE indexes_6@Indexes/Map.cs /}
 
-{WARNING:Convention}
+{WARNING: Convention}
 
-You will probably notice that in the `Studio` this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class, and looks like this:
+You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
 
 {CODE-BLOCK:json}
 from doc in docs.Employees
@@ -62,13 +60,13 @@ select new
 }
 {CODE-BLOCK/}
 
-The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case documents will be taken from the `Employees` collection. To change the collection you need to change `Employees` to the desired collection name, or remove it and leave only `docs` to index **all documents**.
+The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.
 
 {WARNING/}
 
-## Combining multiple fields together
+## Combining Multiple Fields Together
 
-Since each index contains a LINQ function, you can combine multiple fields into one, if necessary.
+Since each index contains a LINQ function, you can combine multiple fields into one.
 
 ### Example I
 
@@ -85,9 +83,9 @@ where FullName = 'Robert King'
 
 ### Example II
 
-{INFO:Information}
+{INFO: Information}
 
-In this example the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations, meaning that the matches no longer need to be exact.
+In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
 
 You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers).
 
@@ -104,7 +102,7 @@ where search(Query, 'John Doe')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Indexing partial field data
+## Indexing Partial Field Data
 
 Imagine that you would like to return all employees that were born in a specific year. You could of course do it by indexing `Birthday` from `Employee` in the following way:
 
@@ -119,7 +117,7 @@ where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-However, RavenDB gives you an ability to extract field data and to index by it, so a different way to achieve our goal will look as follows:
+RavenDB gives you an ability to extract field data and to index by it, so a different way to achieve our goal will look as follows:
 
 {CODE indexes_1_0@Indexes/Map.cs /}
 
@@ -132,9 +130,9 @@ where YearOfBirth = 1963
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Indexing nested data
+## Indexing Nested Data
 
-If our document contains nested data, e.g. `Employee` contains `Address`, you can index by its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
 
 {CODE indexes_1_4@Indexes/Map.cs /}
 
@@ -147,13 +145,13 @@ where Country = 'USA'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-If a document relationship is represented by the document's Id, you can use `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents).
+If a document relationship is represented by the document's Id, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents).
 
-## Indexing multiple collections
+## Indexing Multiple Collections
 
-Please read an article dedicated to `Multi-Map` indexes that can be found [here](../indexes/indexing-polymorphic-data#multi-map-indexes).
+Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data#multi-map-indexes).
 
-## Related articles
+## Related Articles
 
 - [Indexing related documents](../indexes/indexing-related-documents)
 - [Map-Reduce indexes](../indexes/map-reduce-indexes)

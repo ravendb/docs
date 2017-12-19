@@ -1,12 +1,12 @@
 ﻿# Creating and Deploying Indexes
 
-**Indexes are used by the server to satisfy queries.** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
+**Indexes are used by the server to satisfy queries. ** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
 
 {INFO:Remember}
 
 Indexes are created by issuing a query are called `dynamic` or `Auto` indexes, and can be easily identified. Their name starts with `Auto/` prefix.
 
-Indexes created explicitly by user are called `static`.
+Indexes created explicitly by the user are called `static`.
 
 {INFO/}
 
@@ -28,19 +28,19 @@ There is only one naming convention: each `_` in the class name will be translat
 
 e.g.
 
-In `Northwind` samples there is a index called `Orders/Totals`. To get such a index name, we need to create a class called `Orders_Totals`.
+In the `Northwind` samples, there is a index called `Orders/Totals`. To get such a index name, we need to create a class called `Orders_Totals`.
 
 {CODE indexes_1@Indexes/Creating.cs /}
 
 #### Sending to Server
 
-There is not much use from an index if it is not deployed to the server. In order to do so, we need to create instance of our class that inherits from `AbstractIndexCreationTask` and use one of the deployment methods: `Execute` or `ExecuteAsync` for an asynchronous call.
+There is not much use from an index if it is not deployed to the server. To do so, we need to create an instance of our class that inherits from `AbstractIndexCreationTask` and use one of the deployment methods: `Execute` or `ExecuteAsync` for an asynchronous call.
 
 {CODE indexes_2@Indexes/Creating.cs /}
 
 {CODE indexes_3@Indexes/Creating.cs /}
 
-{SAFE If index exists on the server and stored definition is the same as the one that was sent, then it will not be overwritten. This implies that indexed data will not be deleted and indexation will not start from scratch. /}
+{SAFE If an index exists on the server and the stored definition is the same as the one that was sent, then it will not be overwritten. This implies that indexed data will not be deleted and indexation will not start from scratch. /}
 
 #### Using Assembly Scanner
 
@@ -60,7 +60,7 @@ Underneath, the `IndexCreation` will attempt to create all indexes in a single r
 
 `PutIndexesOperation` maintenance operation (which API reference can be found [here](../client-api/commands/indexes/put)) can be used also to send index(es) to the server.
 
-The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. But you lose the ability to deploy using the assembly scanner. Also you will have to use string-based names of indexes when querying.
+The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. But you lose the ability to deploy using the assembly scanner. You will also have to use string-based names of indexes when querying.
 
 {CODE indexes_5@Indexes/Creating.cs /}
 
@@ -82,7 +82,7 @@ Auto-indexes are **created** when queries that do **not specify an index name** 
 
 ### Naming Convention
 
-Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name also contains name of a collection that was queried, and list of fields that were required to find valid query results.
+Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name also contains the name of a collection that was queried, and list of fields that were required to find valid query results.
 
 For instance, issuing a query like this
 

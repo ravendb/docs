@@ -9,7 +9,7 @@
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **moreLikeThis** | `MoreLikeThisBase` | Defines the type of MoreLikeThis that should be executed |
-| **builder** | `Action<IMoreLikeThisFactory<T>>` | Builder with fluent API that constructs `MoreLikeThisBase` instance |
+| **builder** | `Action<IMoreLikeThisFactory<T>>` | Builder with fluent API that constructs the `MoreLikeThisBase` instance |
 
 ### Builder
 
@@ -37,7 +37,7 @@
 | **MaximumDocumentFrequencyPercentage** | int? | Ignores words which occur in more than this percentage of documents |
 | **Boost** | bool? | Boost terms in query based on score |
 | **BoostFactor** | float? |  Boost factor when boosting based on score |
-| **StopWordsDocumentId** | string | Document id containing custom stop words |
+| **StopWordsDocumentId** | string | Document ID containing custom stop words |
 | **Fields** | string[] | Fields to compare |
 
 ## Example I

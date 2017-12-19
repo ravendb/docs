@@ -2,11 +2,11 @@
 
 RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.
 
-The indexing of a single document starts from creating Lucene's **Document** according an index definition. Next, Lucene processes it by breaking it into **fields** and splitting all the text
-from each **Field** into tokens (**Terms**) in the process called **Tokenization**. Those tokens will be stored in the index, and later will be searched upon.
+The indexing of a single document starts from creating Lucene's **Document** according an index definition. Lucene processes it by breaking it into **fields** and splitting all the text
+from each **Field** into tokens (**Terms**) in a process called **Tokenization**. Those tokens will be stored in the index, and later will be searched upon.
 The **Tokenization** process uses an object called an Analyzer underneath.
 
-The indexing process and its results can be controlled by various field options and Analyzers, as explained below.
+The indexing process and its results can be controlled by various field options and Analyzers.
 
 ## Understanding Analyzers
 
@@ -20,11 +20,11 @@ For example, given this sample text:
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]`
 
-* **StopAnalyzer** will work similarly, but will not perform light stemming, and will only tokenize on white space:
+* **StopAnalyzer** will work similarly, but will not perform light stemming and will only tokenize on white space:
 
     `[quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`
 
-* **SimpleAnalyzer**, on the other hand, will tokenize on all non-alpha characters, and will make all the tokens lowercase:
+* **SimpleAnalyzer** will tokenize on all non-alpha characters and will make all the tokens lowercase:
 
     `[the]   [quick]   [brown]   [fox]   [jumped]   [over]   [the]   [lazy]   [dogs]   [bob]   [hotmail]   [com]`
 
@@ -40,24 +40,24 @@ For example, given this sample text:
 
 By default, RavenDB uses the custom analyzer called `LowerCaseKeywordAnalyzer` for all indexed content. Its implementation behaves like Lucene's KeywordAnalyzer, but it also performs case normalization by converting all characters to lower case. 
 
-In other words, RavenDB stores the entire term as a single token, in a lower cased form. Given the same sample above text, `LowerCaseKeywordAnalyzer` will produce a single token:
+RavenDB stores the entire term as a single token, in a lower cased form. Given the same sample above text, `LowerCaseKeywordAnalyzer` will produce a single token:
 
 `[the quick brown fox jumped over the lazy dogs, bob@hotmail.com 123432.]`
 
-This default analyzer allows you to perform exact searches which is exactly what you would expect. However, it doesn't allow you to perform full-text searches. For that purposes a different analyzer should be used.
+This default analyzer allows you to perform exact searches which is exactly what you would expect. However, it doesn't allow you to perform full-text searches. For that purposes, a different analyzer should be used.
 
 ## Full-Text Search
 
 To allow full-text search on the text fields, you can use the analyzers provided out of the box with Lucene. These are available as part of the Lucene library which ships with RavenDB.
 
-For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing, normalizes cases, filters out common English words, and does some basic English stemming as well.
+For most cases, Lucene's `StandardAnalyzer` would be your analyzer of choice. As shown above, this analyzer is aware of e-mail and network addresses when tokenizing. It normalizes cases, filters out common English words, and does some basic English stemming as well.
 
 For languages other than English, or if you need a custom analysis process, you can roll your own `Analyzer`. It is quite simple and may be already available as a contrib package for Lucene. 
 There are also `Collation analyzers` available (you can read more about them [here](../indexes/sorting-and-collation#collation)).
 
 ## Using Non-Default Analyzer
 
-To make a document property indexed using a specific Analyzer, all you need to do is to match it with the name of the property, like this:
+To make a document property indexed using a specific Analyzer, all you need to do is to match it with the name of the property:
 
 {CODE-TABS}
 {CODE-TAB:csharp:AbstractIndexCreationTask analyzers_1@Indexes\Analyzers.cs /}
@@ -68,17 +68,17 @@ To make a document property indexed using a specific Analyzer, all you need to d
 
 ## Manipulating Field Indexing Behavior
 
-By default each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.
+By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.
 
-This behavior can be changed, for instance by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the `KeywordAnalyzer` on this field.
+This behavior can be changed by turning off the field analysis (setting the `FieldIndexing` option for this field to `Exact`). This causes all the properties to be treated as a single token and the matches must be exact (case sensitive), similarly to using the `KeywordAnalyzer` on this field.
 
 {CODE analyzers_3@Indexes\Analyzers.cs /}
 
-On the other hand, `FieldIndexing.Search` allows performing full text search operations against the field:
+`FieldIndexing.Search` allows performing full text search operations against the field:
 
 {CODE analyzers_4@Indexes\Analyzers.cs /}
 
-If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store](../indexes/storing-data-in-index) field data in the index but don't want to make it available for querying, however it will available for extraction by projections:
+If you want to disable indexing on a particular field, use the `FieldIndexing.No` option. This can be useful when you want to [store](../indexes/storing-data-in-index) field data in the index, but don't want to make it available for querying, however it will available for extraction by projections:
 
 {CODE analyzers_5@Indexes\Analyzers.cs /}
 
@@ -86,7 +86,7 @@ If you want to disable indexing on a particular field, use the `FieldIndexing.No
 
 When field is marked as `Search` sorting must be done using additional field. More [here](../indexes/querying/sorting#ordering-when-a-field-is-searchable).
 
-## Related articles
+## Related Articles
 
 - [Boosting](../indexes/boosting)
 - [Storing data in index](../indexes/storing-data-in-index)
