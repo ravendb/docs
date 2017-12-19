@@ -11,14 +11,9 @@ The decision of whether to use UTC, Local Time, or `DateTimeOffset` is an applic
 
 RavenDB is [ISO 8601](https://www.iso.org/iso-8601-date-and-time-format.html) compliant.   
 
-RavenDB uses the follwing default formats for storing `DateTime`:  
+The default storing format for `DateTime` is :  **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff"**
 
-- **"yyyy'-'MM'-'dd'T'HH':'mm':'ss"**
-- **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff"**
-- **"yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff'Z'"**
-
-
-For storing `DateTimeOffset` RavenDB uses the [Round-trip ("o")](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip)  Format
+For storing `DateTimeOffset` RavenDB uses the [Round-trip ("o")](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip) format
 
 ##More Information
 For detailed information about this topic, please refer to the [Working with Date and Time in RavenDB](http://codeofmatt.com/2015/01/25/date-and-time-in-ravendb/) article written by Matt Johnson.
