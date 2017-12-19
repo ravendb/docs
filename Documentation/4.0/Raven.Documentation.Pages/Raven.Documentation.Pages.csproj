@@ -4,4 +4,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="server\security\authentication\images\snag\" />
+  </ItemGroup>
 </Project>

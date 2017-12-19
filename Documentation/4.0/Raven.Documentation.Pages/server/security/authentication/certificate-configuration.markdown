@@ -11,50 +11,54 @@ When providing a certificate for authentication, you <strong>must</strong> also 
 
 For example, this is a typical settings.json:
 
-    {  
-        "ServerUrl": "https://rvn-srv-1:8080",
-        "Setup.Mode": "None",
-        "DataDir": "/home/RavenData",
-        "Security.Certificate": {
-            "Path": "/home/secrets/server.pfx",
-            "Password": "s3cr7t p@$$w0rd"
-        }
-    }  
-
+{CODE-BLOCK:json}
+{
+    "ServerUrl": "https://rvn-srv-1:8080",
+    "Setup.Mode": "None",
+    "DataDir": "/home/RavenData",
+    "Security.Certificate": {
+        "Path": "/home/secrets/server.pfx",
+        "Password": "s3cr7t p@$$w0rd"
+    }
+} 
+{CODE-BLOCK/}
 
 The second way to enable authentication is to set `Security.Certificate.Exec`. 
 
 This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
 
-RavenDB excpects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
+RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
 
 Let's look at an example - a simple powershell script called give_me_cert.ps1
 
-    try
-    {
-	$thumbprint = $args[0]
-	$cert = gci "cert:\CurrentUser\my\$thumbprint"
-	$exportedCertBinary = $cert.Export("Pfx")
-    	$stdout = [System.Console]::OpenStandardOutput()
-	$stdout.Write($exportedCertBinary, 0, $exportedCertBinary.Length)
-    }
-    catch
-    {
-	write-error $_.Exception
-	exit 3
-    }
+{CODE-BLOCK:json}
+try
+{
+    $thumbprint = $args[0]
+    $cert = gci "cert:\CurrentUser\my\$thumbprint"
+    $exportedCertBinary = $cert.Export("Pfx")
+    $stdout = [System.Console]::OpenStandardOutput()
+    $stdout.Write($exportedCertBinary, 0, $exportedCertBinary.Length)
+}
+catch
+{
+    write-error $_.Exception
+    exit 3
+}
+{CODE-BLOCK/}
 
 And settings.json will look something like this:
 
-    {  
-        "ServerUrl": "https://rvn-srv-1:8080",
-        "Setup.Mode": "None",
-        "DataDir": "/home/RavenData",
-        "Security.Certificate": {
-    		"Exec": "powershell",
-		"Arguments": "/home/secrets/give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
-        }
-    } 
-    
+{CODE-BLOCK:json}
+{
+    "ServerUrl": "https://rvn-srv-1:8080",
+    "Setup.Mode": "None",
+    "DataDir": "/home/RavenData",
+    "Security.Certificate": {
+    	"Exec": "powershell",
+	"Arguments": "/home/secrets/give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
+    }
+}
+{CODE-BLOCK/}
 
 {NOTE In all secure configurations, the `ServerUrl` must contain the same domain name that is used in the certificate (under the CN or ASN properties). /}
