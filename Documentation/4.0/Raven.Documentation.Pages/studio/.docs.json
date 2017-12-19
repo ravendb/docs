@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/overview",
+        "Name": "OverviewSub",
+        "Mappings": []
+    },
+    {
         "Path": "/server",
         "Name": "Server Management",
         "Mappings": []
