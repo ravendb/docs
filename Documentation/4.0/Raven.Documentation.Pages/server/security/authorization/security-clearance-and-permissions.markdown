@@ -4,7 +4,7 @@ X.509 certificates are used for authentication - validating that users are who t
 
 Each certificate is associated with a security clearance and access permissions per database.
 
-It is the administrator's responsibility to generate client certificates and assign permissions.
+It is the administrator's responsibility to generate client certificates and assign permissions. Read more in the [Certificate Management](../authentication/certificate-management) section.
 
 A client certificate's security clearance can be one of the following:
 

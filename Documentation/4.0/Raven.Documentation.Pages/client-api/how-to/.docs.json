@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "Path": "setup-aggressive-caching.markdown",
         "Name": "...setup aggressive caching",
@@ -13,5 +13,19 @@
         "Path": "store-dates.markdown",
         "Name": "...store dates",
         "Mappings": []
+    },
+    {
+        "Path": "handle-document-relationships.markdown",
+        "Name": "...handle document relationships",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "indexes/querying/handling-document-relationships"
+            },
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/handling-document-relationships"
+            }
+        ]
     }
 ]

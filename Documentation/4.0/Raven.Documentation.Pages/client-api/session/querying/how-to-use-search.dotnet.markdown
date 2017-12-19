@@ -1,6 +1,6 @@
-# Session : Querying : How to Use Search?
+# Session : Querying : How to Use Search
 
-More complex text searching can be achieved by using `Search` extension method. This method allows you to pass one or more search terms that will be used in searching process for a particular field (or fields).
+More complex text searching can be achieved by using the `Search` extension method. This method allows you to pass one or more search terms that will be used in the searching process for a particular field (or fields).
 
 ## Syntax
 
@@ -13,7 +13,7 @@ More complex text searching can be achieved by using `Search` extension method. 
 | **boost** | decimal | Boost value. Default: `1`. |
 | **options** | SearchOptions | Explicitly set relation between each Search function. One of the following: `Or`, `And`, `Not`, `Guess`. Default: `SearchOptions.Guess`. |
 
-## Example I - Dynamic query
+## Example I - Dynamic Query
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync search_4@ClientApi\Session\Querying\HowToUseSearch.cs /}
@@ -24,7 +24,7 @@ where search(Name, 'a*')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Example II - Query using static index
+## Example II - Query Using Static Index
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync search_2@ClientApi\Session\Querying\HowToUseSearch.cs /}
@@ -35,7 +35,7 @@ where search(Name, 'Adam') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Example III - Boosting usage
+## Example III - Boosting Usage
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync search_3@ClientApi\Session\Querying\HowToUseSearch.cs /}
@@ -46,9 +46,9 @@ where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but a
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition. /}
+{NOTE: To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition. /}
 
-## Related articles
+## Related Articles
 
 - [Indexes : Querying : Searching](../../../indexes/querying/searching)
 
