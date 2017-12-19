@@ -12,34 +12,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 {
     public class HandleDocumentRelationships
     {
-        #region includes_3_3
-        public class Orders_ByTotalPrice : AbstractIndexCreationTask<Order>
-        {
-            public Orders_ByTotalPrice()
-            {
-                Map = orders => from order in orders
-                                select new
-                                {
-                                    order.TotalPrice
-                                };
-            }
-        }
-        #endregion
-
-        #region includes_8_5
-        public class Order2s_ByTotalPrice : AbstractIndexCreationTask<Order2>
-        {
-            public Order2s_ByTotalPrice()
-            {
-                Map = orders => from order in orders
-                                select new
-                                {
-                                    order.TotalPrice
-                                };
-            }
-        }
-        #endregion
-
         #region order
         public class Order
         {
@@ -192,22 +164,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
             {
                 using (var session = store.OpenSession())
                 {
-                    #region includes_1_1
-                    var command = new GetDocumentsCommand("orders/1-A", new[] { "CustomerId" }, metadataOnly: false);
-
-                    session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-
-                    var order = (BlittableJsonReaderObject)command.Result.Results[0];
-                    var customer = (BlittableJsonReaderObject)command.Result.Includes["customers/1-A"];
-
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
                     #region includes_2_0
                     Dictionary<string, Order> orders = session
                         .Include<Order>(x => x.CustomerId)
@@ -224,27 +180,12 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 
             using (var store = new DocumentStore())
             {
-                using (var session = store.OpenSession())
-                {
-                    #region includes_2_1
-                    var command = new GetDocumentsCommand(new[] { "orders/1-A", "orders/2-A" }, new[] { "CustomerId" }, metadataOnly: false);
-
-                    session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-
-                    var orders = command.Result.Results;
-                    var customers = command.Result.Includes;
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
 
                 using (var session = store.OpenSession())
                 {
                     #region includes_3_0
                     IList<Order> orders = session
-                        .Query<Order, Orders_ByTotalPrice>()
+                        .Query<Order>()
                         .Include(o => o.CustomerId)
                         .Where(x => x.TotalPrice > 100)
                         .ToList();
@@ -263,7 +204,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                     #region includes_3_1
                     IList<Order> orders = session
                         .Advanced
-                        .DocumentQuery<Order, Orders_ByTotalPrice>()
+                        .DocumentQuery<Order>()
                         .Include(x => x.CustomerId)
                         .WhereGreaterThan(x => x.TotalPrice, 100)
                         .ToList();
@@ -300,21 +241,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
             {
                 using (var session = store.OpenSession())
                 {
-                    #region includes_4_1
-                    var command = new GetDocumentsCommand("orders/1-A", new[] { "SupplierIds" }, metadataOnly: false);
-
-                    session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-
-                    var order = (BlittableJsonReaderObject)command.Result.Results[0];
-                    var suppliers = command.Result.Includes;
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
                     #region includes_5_0
                     Dictionary<string, Order> orders = session
                         .Include<Order>(x => x.SupplierIds)
@@ -328,24 +254,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                             Supplier supplier = session.Load<Supplier>(supplierId);
                         }
                     }
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
-                    #region includes_5_1
-
-                    var command = new GetDocumentsCommand(new[] { "orders/1-A", "orders/2-A" }, new[] { "SupplierIds" },
-                        metadataOnly: false);
-
-                    session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-
-                    var orders = command.Result.Results;
-                    var suppliers = command.Result.Includes;
-
                     #endregion
                 }
             }
@@ -380,20 +288,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
             {
                 using (var session = store.OpenSession())
                 {
-                    #region includes_6_1
-                    var command = new GetDocumentsCommand("orders/1-A", new[] { "Refferal.CustomerId" },
-                        metadataOnly: false);
-
-                    var order = (BlittableJsonReaderObject)command.Result.Results[0];
-                    var customers = command.Result.Includes;
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
                     #region includes_7_0
                     Order order = session
                         .Include<Order>(x => x.LineItems.Select(l => l.ProductId))
@@ -412,20 +306,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
             {
                 using (var session = store.OpenSession())
                 {
-                    #region includes_7_1
-                    var command = new GetDocumentsCommand("orders/1-A", new[] { "LineItems[].ProductId" },
-                        metadataOnly: false);
-
-                    var order = (BlittableJsonReaderObject)command.Result.Results[0];
-                    var products = command.Result.Includes;
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
                     #region includes_9_0
                     Order3 order = session
                         .Include<Order3, Customer>(x => x.Customer.Id)
@@ -433,20 +313,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 
                     // this will not require querying the server!
                     Customer customer = session.Load<Customer>(order.Customer.Id);
-                    #endregion
-                }
-            }
-
-            using (var store = new DocumentStore())
-            {
-                using (var session = store.OpenSession())
-                {
-                    #region includes_9_1
-                    var command = new GetDocumentsCommand("orders/1-A", new[] { "Customer.Id" },
-                        metadataOnly: false);
-
-                    var order = (BlittableJsonReaderObject)command.Result.Results[0];
-                    var customer = command.Result.Includes;
                     #endregion
                 }
             }
@@ -502,12 +368,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                     Assert.Equal(1, session.Advanced.NumberOfRequests);
                     #endregion
 
-                    #region includes_10_2
-                    var command = new GetDocumentsCommand("people/1-A", new[] { "Attributes.$Values" },
-                        metadataOnly: false);
-
-                    var includes = command.Result.Includes;
-                    #endregion
                 }
             }
 
@@ -519,11 +379,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                     var person = session
                         .Include<Person>(x => x.Attributes.Keys)
                         .Load("people/1-A");
-                    #endregion
-
-                    #region includes_10_4
-                    var command = new GetDocumentsCommand("people/1-A", new[] { "Attributes.$Keys" },
-                        metadataOnly: false);
                     #endregion
                 }
             }
@@ -579,13 +434,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                     Assert.Equal(1, session.Advanced.NumberOfRequests);
                     #endregion
                 }
-
-                #region includes_11_2
-                var command = new GetDocumentsCommand("people/1-A", new[] { "Attributes.$Values.Ref" },
-                    metadataOnly: false);
-
-                var includes = command.Result.Includes;
-                #endregion
             }
         }
     }
