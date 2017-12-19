@@ -163,6 +163,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Samples = "Samples";
             public readonly string FileSystem = "FileSystem";
             public readonly string Articles = "Articles";
+            public readonly string Migration = "Migration";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -350,6 +351,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string Validate = "~/Views/Docs/Validate.cshtml";
             public readonly string ValidateMappings = "~/Views/Docs/ValidateMappings.cshtml";
             public readonly string Welcome = "~/Views/Docs/Welcome.cshtml";
+            public readonly string Migration = "~/Views/Docs/Migration.cshtml";
         }
     }
 

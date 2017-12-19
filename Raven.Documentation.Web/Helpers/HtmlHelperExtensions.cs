@@ -84,6 +84,7 @@
             
             var studioFirstView = version == "4.0" ? "overview" : "accessing-studio";            
             builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Studio", MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language, version = version, key = "studio/" + studioFirstView }, null))); 
+            builder.AppendLine(string.Format("<li>{0}</li>", htmlHelper.ActionLink("Migration Guide", MVC.Docs.ActionNames.Migration, MVC.Docs.Name, new { language = language, version = version }, null))); 
 
             builder.AppendLine("<li class='dropdown'>");
             builder.AppendLine("<a href='#' class='dropdown-toggle' data-toggle='dropdown'>Other <span class='caret'></span></a>");

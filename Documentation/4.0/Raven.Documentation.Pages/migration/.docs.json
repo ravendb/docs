@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "/client-api",
+        "Name": "Client API",
+        "Mappings": []
+    },
+    {
+        "Path": "/server",
+        "Name": "Server",
+        "Mappings": []
+    }
+]
