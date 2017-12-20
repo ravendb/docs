@@ -21,8 +21,8 @@ only  documents from the specified collection. This way the studio can group the
 
 ###Indexing
 
-Another usage of collections is filtering documents during indexing process. When you create an index you determine what collection does it involve. During indexing process only the documents
-that belong this collection are indexed, the rest is filtered out.
+Each Ravendb index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) we use a storage index to iterate documents of the same collection in the indexing process from this
+you may derive that a collection is a set of documents that have sence been indexed together.
 
 ###Document keys
 
