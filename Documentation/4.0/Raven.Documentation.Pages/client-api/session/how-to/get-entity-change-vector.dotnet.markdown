@@ -1,7 +1,7 @@
-# Session : How to get entity change-vector?
+# Session : How to Get Entity Change-Vector
 
-The change-vector reflect the cluster wide point in time where something happened, it include the unique database id, node identifier and the etag of the document in the specific node.
-When document is downloaded from server it contains various metadata information e.g. Id or current change-vector. Current change-vector is stored within metadata in session and available for each entity using `GetChangeVectorFor` method from `Advanced` session operations.
+The change-vector reflects the cluster wide point in time where something happened. It includes the unique database id, node identifier and the Etag of the document in the specific node.
+When a document is downloaded from server, it contains various metadata information e.g. ID or current change-vector. Current change-vector is stored within the metadata in session and is available for each entity using the `GetChangeVectorFor` method from `Advanced` session operations.
 
 ## Syntax
 
@@ -9,11 +9,11 @@ When document is downloaded from server it contains various metadata information
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **instance** | T | Instance of an entity for which etag will be returned. |
+| **instance** | T | Instance of an entity for which an Etag will be returned. |
 
 | Return Value | |
 | ------------- | ----- |
-| string | Returns current change-vector for an entity. If the `instance` is transient it will load document from server and attach entity and its metadata to session. |
+| string | Returns the current change-vector for an entity. If the `instance` is transient, it will load the document from the server and attach the entity and its metadata to the session. |
 
 ## Example
 

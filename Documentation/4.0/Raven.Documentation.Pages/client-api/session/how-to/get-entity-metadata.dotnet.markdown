@@ -1,6 +1,6 @@
-# Session : How to get entity metadata?
+# Session : How to Get Entity Metadata
 
-When document is downloaded from server it contains various metadata information e.g. Id or current change-vector. This information is stored in session and available for each entity using `GetMetadataFor` method from `Advanced` session operations.
+When a document is downloaded from the server, it contains various metadata information e.g. Id or current change-vector. This information is stored in session and is available for each entity using the `GetMetadataFor` method from `Advanced` session operations.
 
 ## Syntax
 
@@ -12,7 +12,7 @@ When document is downloaded from server it contains various metadata information
 
 | Return Value | |
 | ------------- | ----- |
-| IMetadataDictionary | Returns the metadata for the specified entity. If the `instance` is transient it will load the metadata from the store and associate the current state of the entity with the metadata from the server. |
+| IMetadataDictionary | Returns the metadata for the specified entity. If the `instance` is transient, it will load the metadata from the store and associate the current state of the entity with the metadata from the server. |
 
 ## Example
 

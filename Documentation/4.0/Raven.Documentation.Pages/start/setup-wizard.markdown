@@ -1,6 +1,6 @@
 # RavenDB Setup Walkthrough
 
-To make the setup process as fluent and painless as possible, we introduced the "Setup Wizard", a step-by-step guide to help you configure your desired level of security and easily deploy a secured cluster.
+To make the setup process as smooth as possible, we introduced the "Setup Wizard", a step-by-step guide to help you configure your desired level of security and easily deploy a secured cluster.
 
 You have 4 options to choose from:
 
@@ -21,7 +21,7 @@ This section explains how to follow the setup wizard. It does not go into detail
 
 [Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain (or website) as long as you can prove that you own it.
 
-We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning, and to stay secured through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
+We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning and to stay secure through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
 
 During the wizard, RavenDB will give you a free subdomain under "dbs.local.ravendb.net". It lets you configure the DNS records for this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, but you can always update the DNS records by running the setup wizard.
 
@@ -59,7 +59,7 @@ A common scenario for running an internal cluster will be:
 - Node B (https://b.3cpo.dbs.local.ravendb.net) will listen to 10.0.0.75 on port 443.
 - Node C (https://c.3cpo.dbs.local.ravendb.net) will listen to 10.0.0.91 on port 443.
 
-You can deploy a cluster that is completely internal to your network, and still gain all the benefits of using certificates and SSL with full trust and complete support from all the standard tooling. RavenDB also ensures that the *Let's Encrypt* certificate is refreshed automatically as needed.
+You can deploy a cluster that is completely internal to your network and still gain all the benefits of using certificates and SSL with full trust and complete support from all the standard tooling. RavenDB also ensures that the *Let's Encrypt* certificate is refreshed automatically as needed.
 
 {WARNING: Important}
 You need to make sure that the IP/port is available. On the local machine, the setup will check the port availability and validate the IP address. However, on the other machines in the cluster, you'll need to verify that beforehand. When using port 443, you need to ensure that it hasn't already been taken by other applications like Skype, IIS, Apache, etc.
@@ -69,11 +69,11 @@ When you click next, the wizard will establish a connection with *Let's Encrypt*
 
 ![Figure 5. Finishing Up](images/setup/6.png)
 
-When finished, you will receive a ZIP file containing all of the cluster configuration files that include the server and client certificates, and a settings.json file for each node. 
+When finished you will receive a ZIP file containing all of the cluster configuration files that include the server and client certificates, and a settings.json file for each node. 
 
 ![Figure 6. Configuration Completed](images/setup/7.png)
 
-Click the "Restart Server" button and wait until the browser redirects you to the new url (in our example, it's "https://a.3cpo.dbs.local.ravendb.net").
+Click the "Restart Server" button and wait until the browser redirects you to the new URL (in our example, it's "https://a.3cpo.dbs.local.ravendb.net").
 
 If you checked the relevant box in the previous stage, a client certificate is registered in the OS trusted store during setup. The Chrome and Edge browsers use the OS store, so they will let you choose your certificate right before you are redirected. Firefox users will have to manually import the certificate to the browser via Tools > Options > Advanced > Certificates > View Certificates.
 
@@ -138,7 +138,7 @@ When finished, you will receive a ZIP file containing all of the cluster configu
 
 ![Figure 3. Configuration Completed](images/setup/w3.png)
 
-At this point, click the "Restart Server" button, and wait until the browser redirects you to the new url (in the example it's "https://a.ravendb.example.com").
+At this point, click the "Restart Server" button, and wait until the browser redirects you to the new URL (in the example it's "https://a.ravendb.example.com").
 
 If you checked the relevant box in the previous stage, a client certificate is registered in the OS trusted store during setup. The Chrome and Edge browsers use the OS store, so they will let you choose your certificate right before you are redirected. Firefox users will have to manually import the certificate to the browser via Tools > Options > Advanced > Certificates > View Certificates.
 
@@ -170,7 +170,7 @@ Setting up the server in an unsecured mode requires you to choose the IPs and po
 In unsecured mode all security features are disabled (authentication, authorization and encryption).
 {NOTE/}
 
-If you choose to develop only on your local machine, enter private IP addresses and port. When the setup wizard completes, the server will restart and listen to these addresses.
+If you choose to develop only on your local machine, enter the private IP addresses and port. When the setup wizard completes, the server will restart and listen to these addresses.
 
 The following screenshot shows a simple local configuration. The server in the example will be accessible at "http://127.0.0.1:8080" or "http://localhost:8080".
 
@@ -201,7 +201,7 @@ To construct a cluster locally, unzip the downloaded RavenDB package to more fol
 
 To construct a cluster in a network, complete the setup wizard in each machine (node) separately.
 
-Once all the servers are up and running, building the cluster is simple. Access the studio, go to Manage Server > Cluster and add nodes to the cluster by their URL.
+Once all the servers are up and running, building the cluster is simple. Access the studio, go to Manage Server > Cluster, and add nodes to the cluster by their URL.
 
 Read more about Clustering [here]().
 
@@ -212,4 +212,3 @@ If none of the above setup options work for you, it is possible to configure the
 Read the [Security Section]() to learn about security in RavenDB and how to enable the security features.
 
 Read the [Configuration Section]() to learn more about using 'settings.json' and see a list of configuration options.
-

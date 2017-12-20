@@ -117,7 +117,7 @@ where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-RavenDB gives you an ability to extract field data and to index by it, so a different way to achieve our goal will look as follows:
+RavenDB gives you the ability to extract field data and to index by it. A different way to achieve our goal will look as follows:
 
 {CODE indexes_1_0@Indexes/Map.cs /}
 

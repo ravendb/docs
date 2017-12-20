@@ -163,7 +163,7 @@ where search(Name, '*oh* *da*')
 {WARNING:Warning}
 RavenDB allows you to search by using such queries, but you have to be aware that **leading wildcards drastically slow down searches**.
 
-Consider if you really need to find substrings. In most cases looking for whole words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
+Consider if you really need to find substrings. In most cases, looking for whole words is enough. There are also other alternatives for searching without expensive wildcard matches, e.g. indexing a reversed version of text field or creating a custom analyzer.
 {WARNING/}
 
 ## Static Indexes
