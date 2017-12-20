@@ -1,5 +1,10 @@
 ﻿[
     {
+        "Path": "suggestions.markdown",
+        "Name": "Suggestions",
+        "Mappings": []
+    },
+    {
         "Path": "morelikethis.markdown",
         "Name": "MoreLikeThis",
         "Mappings": []
