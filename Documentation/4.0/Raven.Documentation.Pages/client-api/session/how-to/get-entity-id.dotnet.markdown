@@ -1,6 +1,6 @@
-# Session : How to get entity Id?
+# Session : How to Get Entity ID
 
-Entities does not have to contain Id property or field. In case of such an entity and a need of knowing under what Id it is stored on server `GetDocumentId` method has been created.
+Entities does not have to contain an ID property or field. In the case of such an entity, and a need for knowing under what Id it is stored on the server, the `GetDocumentId` method was created.
 
 ## Syntax
 
@@ -8,11 +8,11 @@ Entities does not have to contain Id property or field. In case of such an entit
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **entity** | object | Instance of an entity for which Id will be returned |
+| **entity** | object | Instance of an entity for which an ID will be returned |
 
 | Return Value | |
 | ------------- | ----- |
-| string | Returns Id for specified entity. Method may return `null` if `entity` is **null, isn't tracked or Id will be generated on the server**. |
+| string | Returns the ID for a specified entity. The method may return `null` if `entity` is **null, isn't tracked or the ID will be generated on the server**. |
 
 ## Example
 
@@ -20,6 +20,6 @@ Entities does not have to contain Id property or field. In case of such an entit
 
 {CODE get_document_id_2@ClientApi\Session\HowTo\GetDocumentId.cs /}
 
-## Related articles
+## Related Articles
 
  - [Working with document identifiers](../../document-identifiers/working-with-document-ids)
