@@ -2,7 +2,7 @@
 
 A collection in RavenDB is a set of documents with the same `@collection` metadata property which is filled in by the client based on the type of 
 an entity object that you store (the function responsible for tagging documents can by overwritten by using [customizations](../../client-api/configuration/conventions/identifier-generation/global#findtypetagname-and-finddynamictagname)). 
-Also if the documents are inserted through the studio a `@collection` metadata will be generated for them, e.g `users|`/`users/`/`users/17` will have `@collection:users`.
+Also if the documents are inserted through the studio a `@collection` metadata will be generated for them, e.g `users|`/`users/`/`users/17` will have `@collection:Users`.
 Note that documents that are in the same collection can have a completely different structure, which is fine because RavenDB is schema-less.
 
 
@@ -21,8 +21,7 @@ only  documents from the specified collection. This way the studio can group the
 
 ###Indexing
 
-Each Ravendb index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) we use a storage index to iterate documents of the same collection in the indexing process from this
-you may derive that a collection is a set of documents that have sence been indexed together.
+Each Ravendb index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) we use a storage index to iterate documents of the same collection in the indexing process.
 
 ###Document keys
 
