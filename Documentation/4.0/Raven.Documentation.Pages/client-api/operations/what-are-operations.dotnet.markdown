@@ -8,8 +8,8 @@ Operations are an encapsulation of a set of low level commands which are used to
 They are available in DocumentStore under **Operations**, **Maintenance** and **Maintenance.Server** properties.
 
 ### Common Operations
-Common operations include set based operations for [Patching](https://ravendb.net/docs/article-page/4.0/csharp/client-api/operations/patch/set-based-patch-operation) or removal of documents by using queries (more can be read [here](https://ravendb.net/docs/article-page/4.0/csharp/client-api/operations/delete-by-query-operation)).  
-There is also the ability to handle distributed [Compare-Exchange](https://ravendb.net/docs/article-page/4.0/csharp/client-api/operations/compare-exchange) operations and manage [Attachments](https://ravendb.net/docs/article-page/4.0/csharp/client-api/operations/get-attachment-operation).
+Common operations include set based operations for [Patching](../../client-api/operations/patch/set-based-patch-operation) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query-operation)).  
+There is also the ability to handle distributed [Compare-Exchange](../../client-api/operations/compare-exchange) operations and manage [Attachments](../../client-api/operations/get-attachment-operation).
 
 {PANEL:Operations.Send}
 In order to excecute an Operation, you will need to use the `Send` or `SendAsync` methods. Avaliable overloads are:
