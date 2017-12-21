@@ -1,5 +1,5 @@
 # RavenDB CLI
-- Running RavenDB as a console application provides basic information along with command line interface which can be used for getting additional information about the server and performing specific commands.
+- Running RavenDB as a console application provides basic information along with a command line interface which can be used for getting additional information about the server and in performing specific commands.
 
 ```
        _____                       _____  ____ 
@@ -27,7 +27,7 @@ ravendb>
 
 ```
 
-- RavenDB can operate as service/daemon without console input. It is possible to access the CLI through provided `rvn` (`rvn.exe` in windows) tool included in each distribution package as follows:
+- RavenDB can operate as service/daemon without console input. It is possible to access the CLI through a provided `rvn` (`rvn.exe` in windows) tool included in each distribution package. The process is as follows:
 ```
 rvn admin-channel [RavenDB process Id]
 ```
@@ -45,7 +45,7 @@ Usage : **info**
 
 Prints basic information to the console, including build version information, process id (PID), bitness, and system hardware information.
 
-Example:
+#Example:
 
 ```
 ravendb> info
@@ -62,7 +62,7 @@ Usage : **stats**
 
 Online display of memory usage by RavenDB. You can separate into Working Set, Native Mem, Managed Mem, and Memory Mapped Size. Hitting any key will return to CLI's input mode (beware not to hit Ctrl+C / Break to avoid unintended a shutdown of the server).
 
-Example:
+#Example:
 
 ```
 ravendb> stats
@@ -76,11 +76,11 @@ ravendb> stats
 Usage : **log <on | off\>**  or **log <http-on | http-off\>**
 enable/disable online log printing to the console (http-on/off to enable/disable only http requests log information).
 
-Example:
+#Example:
 
 `ravendb>log on`
 
-* Note : If log enabled using ***rvn admin-channel***, the information will be displayed in the main console application. If RavenDB is running as a service, see the log output in the service log.
+* Note : If log enabled using ***rvn admin-channel***, the information will be displayed in the main console application. If RavenDB is running as a service, you will see the log output in the service log.
 
 #### gc
 
@@ -88,7 +88,7 @@ Usage: gc [gen]
 
 Force Garbage Collection to a specific generation 0, 1 or 2.  See [GC.Collect Method](https://msdn.microsoft.com/en-us/library/y46kxc5e(v=vs.110).aspx)
 
-Example:
+#Example:
 
 ```
 ravendb> gc 2
@@ -99,9 +99,9 @@ After collecting, managed memory used:  10.09 MBytes at 0.0078154 Seconds
 
 #### resetServer / shutdown / q
 
-Gracefully shutdown RavenDB. `resetServer` will restart RavenDB after shutdown. 
+Gracefully shuts down RavenDB. `resetServer` will restart RavenDB after shutdown. 
 
-Example:
+# Example:
 
 ```
 ravendb> resetServer
@@ -124,11 +124,11 @@ ravendb>
 
 Usage : **script <server | database\> [database name]**
 
-Execute Admin JavaScript patches. 
+Executes Admin JavaScript patches. 
 
-* Attention : Running scripts can harm the database beyond recovery. Use with care!!!
+* Attention: Running scripts can harm the database beyond recovery. Use with care!!!
 
-Example:
+#Example:
 ```
 ravendb> script database ProductionDB
 
@@ -157,13 +157,13 @@ The following commands are intended for debugging use only!
 
 Usage **lowMem**
 
-Simulate low memory state in RavenDB
+Simulates low memory state in RavenDB
 
 #### timer
 
 Usage: **timer <on | off | fire\>**
 
-Enable/Disable candidate selection timer (Rachis), or fire timeout immediately
+Enable/Disable candidate selection timer (Rachis), or fires timeout immediately
 
 <br><br>
 
@@ -177,7 +177,7 @@ Clear screen.
 For usage type **helpPrompt**
 Can be used to show memory information used by **stats** while using `rvn`
 
-Example :
+#Example :
 ```
 prompt %M
 ```
@@ -190,7 +190,3 @@ Prints initial logo
 
 #### help
 Display help screen
-
-
-
-
