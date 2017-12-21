@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "facets-and-dynamic-aggregation.markdown",
+        "Name": "Facets and Dynamic Aggregation",
+        "Mappings": []
+    },
+    {
         "Path": "suggestions.markdown",
         "Name": "Suggestions",
         "Mappings": []
@@ -18,5 +23,5 @@
         "Path": "documentquery.markdown",
         "Name": "DocumentQuery",
         "Mappings": []
-    },
+    }
 ]
