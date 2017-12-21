@@ -1,12 +1,12 @@
 ﻿# Introduction to 3.x to 4.0 migration
 
-Raven.Client 4.0 is a major upgrade. It's no backward compatible and the API has a lot of breaking changes.
+RavenDB.Client 4.0 is a major upgrade. It's no backward compatible and the API has a lot of breaking changes.
 
 This section discusses the changes that you need to be aware of when migrating your application using 3.x DLLs and recommended actions you need to take.
 
 ### Internalized Json.NET usage
 
-Raven.Client doesn't use customized Json.NET any longer. Replace all references to RavenDB Json.NET, like `Raven.Imports.Newtonsoft`, with `Newtonsoft.Json` reference. 
+RavenDB.Client doesn't use customized Json.NET any longer. Replace all references to RavenDB Json.NET, like `Raven.Imports.Newtonsoft`, with `Newtonsoft.Json` reference. 
 Please use latest version of Json.NET for good performance.
 
 ### RavenJObject 
@@ -41,3 +41,7 @@ List of changed metadata properties:
 * new:
   * `@change-vector`
   * `@flags`
+
+### Raven.Abstractions
+
+RavenDB.Client doesn't have Raven.Abstractions dependency. Please remove all usings of `Raven.Abstractions*` namespace.

@@ -1,4 +1,9 @@
-﻿using Raven.Client.Documents;
+﻿using System;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Commands;
+using Raven.Client.Http;
+using Sparrow;
+using Sparrow.Json;
 
 namespace Raven.Documentation.Samples.Migration.ClientApi
 {
@@ -13,6 +18,18 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
             store.OnAfterStore += (s, e) => { };
             store.OnBeforeDelete += (s, e) => { };
             store.OnBeforeQueryExecuted += (s, e) => { };
+            #endregion
+
+            #region urls_1
+            new DocumentStore
+            {
+                Urls = new []
+                {
+                    "http://ravendb-1:8080",
+                    "http://ravendb-2:8080",
+                    "http://ravendb-3:8080"
+                }
+            }.Initialize();
             #endregion
 
             #region serialization_1
@@ -38,6 +55,32 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
                     }
                 }
             }.Initialize();
+            #endregion
+
+            #region request_executor_1
+            RequestExecutor requestExecutor = store.GetRequestExecutor();
+
+            using (requestExecutor.ContextPool.AllocateOperationContext(out JsonOperationContext context))
+            {
+                var command = new GetDocumentsCommand(start: 0, pageSize: 10);
+                requestExecutor.Execute(command, context);
+
+                GetDocumentsResult result = command.Result;
+            }
+            #endregion
+
+            #region request_executor_2
+            int numberOfCachedItems = requestExecutor.Cache.NumberOfItems;
+
+            requestExecutor.Cache.Clear();
+            #endregion
+
+            #region request_executor_3
+            var numberOfSentRequests = requestExecutor.NumberOfServerRequests;
+            #endregion
+
+            #region request_executor_4
+            requestExecutor.DefaultTimeout = TimeSpan.FromSeconds(180);
             #endregion
         }
     }
