@@ -13,5 +13,10 @@
         "Path": "morelikethis.markdown",
         "Name": "MoreLikeThis",
         "Mappings": []
-    }
+    },
+    {
+        "Path": "documentquery.markdown",
+        "Name": "DocumentQuery",
+        "Mappings": []
+    },
 ]
