@@ -1,27 +1,27 @@
 ﻿@using Raven.Documentation.Web.Helpers
 @model Raven.Documentation.Web.Models.NotDocumentedModel
 @{
-	ViewBag.Title = "NotDocumented";
+    ViewBag.Title = "NotDocumented";
 }
 <div id="article">
-	<div class="row">
-		<div class="col-md-3">
-			@Html.GenerateTableOfContents(Url, Model.TableOfContents, Model.ArticleKey)
-		</div>
-		<div class="col-md-9">
-			<div class="jumbotron">
-				<h1>Oops, 404!</h1>
-				<p>
-					The article is not documented in '@Model.CurrentLanguage'.<br />
-					Please try one of the following languages:
-				</p>
-				<ul>
-					@foreach (var language in @Model.AvailableLanguages)
-					{
-						<li>@Html.ActionLink(language.GetDescription(), MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language.ToString().ToLowerInvariant(), key = Model.ArticleKey }, null)</li>
-					}
-				</ul>
-			</div>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-md-3 col-lg-2 col-lg-offset-1">
+            @Html.GenerateTableOfContents(Url, Model.TableOfContents, Model.ArticleKey)
+        </div>
+        <div class="col-md-9 col-lg-8">
+            <div class="jumbotron">
+                <h1>Oops, 404!</h1>
+                <p>
+                    The article is not documented in '@Model.CurrentLanguage'.<br />
+                    Please try one of the following languages:
+                </p>
+                <ul>
+                    @foreach (var language in @Model.AvailableLanguages)
+                    {
+                        <li>@Html.ActionLink(language.GetDescription(), MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = language.ToString().ToLowerInvariant(), key = Model.ArticleKey }, null)</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
 </div>

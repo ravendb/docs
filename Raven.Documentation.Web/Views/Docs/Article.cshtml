@@ -18,10 +18,10 @@
 }
 <div id="article">
     <div class="row">
-        <div class="col-md-3">
+        <div class="col-md-3 col-lg-2 col-lg-offset-1">
             @Html.GenerateTableOfContents(Url, Model.TableOfContents, Model.Key)
         </div>
-        <div class="col-md-9">
+        <div class="col-md-9 col-lg-8">
             @Html.Raw(Model.HtmlContent)
         </div>
     </div>
