@@ -1,10 +1,5 @@
 ﻿[
     {
-        "Path": "/session",
-        "Name": "Session",
-        "Mappings": []
-    },
-    {
         "Path": "introduction.markdown",
         "Name": "Introduction",
         "Mappings": []
@@ -17,6 +12,11 @@
     {
         "Path": "commands.markdown",
         "Name": "Commands",
+        "Mappings": []
+    },
+    {
+        "Path": "/session",
+        "Name": "Session",
         "Mappings": []
     }
 ]

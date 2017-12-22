@@ -25,13 +25,13 @@
         "Mappings": []
     },
     {
-        "Path": "/glossary",
-        "Name": "Glossary",
-        "Mappings": []
-    },
-    {
         "Path": "/migration",
         "Name": "Migration Guide",
         "Mappings": []
     },
+    {
+        "Path": "/glossary",
+        "Name": "Glossary",
+        "Mappings": []
+    }
 ]
