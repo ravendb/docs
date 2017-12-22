@@ -1,7 +1,15 @@
 ﻿@model List<Raven.Documentation.Parser.Data.ArticlePage>
 @section scripts {
     <script type="text/javascript">
-        $('#article table').addClass('table table-hover table-condensed table-bordered');
+        $('table', '#article').each(function () {
+            var div = $('<div></div>')
+                .attr({
+                    'class': 'table-responsive'
+                });
+            $(this).attr({
+                'class': 'table table-striped table-bordered table-condensed'
+            }).wrap(div);
+        });
     </script>
 }
 <div id="article">
