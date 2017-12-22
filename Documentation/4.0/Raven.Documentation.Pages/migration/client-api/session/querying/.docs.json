@@ -1,5 +1,10 @@
 ﻿[
     {
+        "Path": "basics.markdown",
+        "Name": "Basics",
+        "Mappings": []
+    },
+    {
         "Path": "transformers.markdown",
         "Name": "Transformers",
         "Mappings": []
