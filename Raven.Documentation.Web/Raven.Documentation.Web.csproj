@@ -25,6 +25,7 @@
     <RestorePackages>true</RestorePackages>
     <NuGetPackageImportStamp>204b14ff</NuGetPackageImportStamp>
     <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -277,6 +278,7 @@
     <Content Include="Views\Docs\ValidateMappings.cshtml" />
     <Content Include="Views\Articles\Article.cshtml" />
     <Content Include="Views\Articles\Articles.cshtml" />
+    <Content Include="Views\Docs\Migration.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

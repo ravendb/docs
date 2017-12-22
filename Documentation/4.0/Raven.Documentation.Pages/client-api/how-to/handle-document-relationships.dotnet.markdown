@@ -63,26 +63,24 @@ But, what happens when the user's address is changed? We will have to perform an
 
 **Includes** feature addresses the limitations of denormalization. Instead of one object containing copies of the properties from another object, it is only necessary to hold a reference to the second object. Then server can be instructed to pre-load the referenced document at the same time that the root object is retrieved. We can do this using:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_1_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_1_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_1_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 Above we are asking RavenDB to retrieve the `Order` `orders/1-A` and at the same time "include" the `Customer` referenced by the `Order.CustomerId` property. The second call to `Load()` is resolved completely client side (i.e. without a second request to the RavenDB server) because the relevant `Customer` object has already been retrieved (this is the full `Customer` object not a denormalized version). 
 
 There is also a possibility to load multiple documents:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_2_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_2_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_2_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 You can also use Includes with queries:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query includes_3_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 {CODE-TAB:csharp:DocumentQuery includes_3_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Index includes_3_3@ClientApi/HowTo/HandleDocumentRelationships.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders
+where TotalPrice > 100
+include CustomerId
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 Under the hood, this works because RavenDB has two channels through which it can return information in response to a load request. The first is the Results channel, through which the root object retrieved by the `Load()` method call is returned. The second is the Includes channel, through which any included documents are sent back to the client. Client side, those included documents are not returned from the `Load()` method call, but they are added to the session unit of work, and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
@@ -91,19 +89,13 @@ Under the hood, this works because RavenDB has two channels through which it can
 
 Include can be used with a many to one relationship. In the above classes, an `Order` has a property `SupplierIds` which contains an array of references to `Supplier` documents. The following code will cause the suppliers to be pre-loaded:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_4_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_4_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_4_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 Again, the calls to `Load()` within the `foreach` loop will not require a call to the server as the `Supplier` objects will already be loaded into the session cache.
 
 Multi-loads are also possible:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_5_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_5_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_5_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 ### Secondary level includes
 
@@ -113,17 +105,11 @@ An Include does not need to work only on the value of a top level property withi
 
 This class contains an identifier for a `Customer`. The following code will include the document referenced by that secondary level identifier:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_6_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_6_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_6_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 Alternative way is to provide string based path:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_6_2@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_6_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODEincludes_6_2@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 This secondary level include will also work with collections. The `Order.LineItems` property holds a collection of `LineItem` objects which each contain a reference to a `Product`:
 
@@ -131,10 +117,7 @@ This secondary level include will also work with collections. The `Order.LineIte
 
 The `Product` documents can be included using this syntax:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_7_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_7_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_7_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 when you want to load multiple documents.
 
@@ -144,10 +127,7 @@ The `Select()` within the Include tells RavenDB which property of secondary leve
 
 When using string-based includes like:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_6_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_6_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_6_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 you must remember to follow certain rules that must apply to the provided string path:
 
@@ -173,18 +153,11 @@ Dictionary keys and values can also be used when doing includes. Consider follow
 
 Now we want to include all documents that are under dictionary values:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_10_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_10_2@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_10_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 You can also include values from dictionary keys:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_10_3@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_10_4@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
-
+{CODE includes_10_3@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 #### Complex types
 
 If values in dictionary are more complex e.g.
@@ -195,10 +168,7 @@ If values in dictionary are more complex e.g.
 
 We can do includes on specific properties also:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_11_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_11_2@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_11_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 <hr />
 
@@ -210,10 +180,7 @@ It is possible to combine the above techniques. Using the `DenormalizedCustomer`
 
 We have the advantages of a denormalization, a quick and simple load of an `Order` and the fairly static `Customer` details that are required for most processing. But we also have the ability to easily and efficiently load the full `Customer` object when necessary using:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Session includes_9_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB:csharp:Command includes_9_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TABS/}
+{CODE includes_9_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 This combining of denormalization and Includes could also be used with a list of denormalized objects.
 
