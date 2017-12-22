@@ -27,6 +27,8 @@ If the number of records exceeds 2048 (default value that can be changed by `Per
 
 {INFO/}
 
+You can read more about paging in our [dedicated article](../../../../indexes/querying/paging).
+
 ## Transformers and Projections
 
 Transformers have been removed from the RavenDB. Please read our migration article tackling this change. The article can be found [here](../../../../migration/client-api/session/querying/transformers).
