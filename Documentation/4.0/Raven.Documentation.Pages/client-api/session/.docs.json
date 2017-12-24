@@ -20,6 +20,16 @@
         ]
     },
     {
+        "Path": "loading-entities.markdown",
+        "Name": "Loading Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/loading-editing-existing-document"
+            }
+        ]
+    },
+    {
         "Path": "storing-entities.markdown",
         "Name": "Storing Entities",
         "Mappings": [
@@ -28,7 +38,7 @@
                 "Key": "client-api/basic-operations/saving-new-document"
             }
         ]
-    },
+    },    
     {
         "Path": "deleting-entities.markdown",
         "Name": "Deleting Entities",
