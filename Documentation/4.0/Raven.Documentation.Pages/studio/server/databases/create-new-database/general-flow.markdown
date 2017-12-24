@@ -41,13 +41,17 @@ A database name can be any sequence of characters except for the following rules
 ![Figure 4. Create New Database - Path](images/new-database-general-4.png "Configure Path")
 {INFO: }
 Set the directory path for database data.  
-Use:  
+Use:
 
-* Full path (e.g. Windows: _C:/MyWork/MyDatabaseFolder_, Linux: _/etc/MyWork/MyDatabaseFolder_ ) - Database will be created in this physical location
-* Relative path (e.g. _MyWork/MyDatabaseFolder_) - Database will be created under RavenDB binaries folder
-* Leave field empty - Database will be created under `Databases` directory in RavenDB binaries folder
+* **Full path** (e.g. Windows: _C:/MyWork/MyDatabaseFolder_, Linux: _/etc/MyWork/MyDatabaseFolder_ ) - Database will be created in this physical location
+* **Relative path** (e.g. _MyWork/MyDatabaseFolder_) - Database will be created under the `DataDir` folder
+* **Leave field empty** - Database will be created in `Databases` directory under the `DataDir` folder
 
-Note: Path can't start with: $home, '~' or 'appdrive:'
+{NOTE: Note}
+1. The `DataDir` folder can be set in the `settings.json` configuration file (e.g. "DataDir": "RavenData")  
+2. If `DataDir` is Not specified in the configuration file, then the database will be created under the RavenDB binaries folder (where RavenDB dlls are located)  
+3. Path can't start with: $home, '~' or 'appdrive:'
+{NOTE/}
 
 {INFO/}
 <br/>
