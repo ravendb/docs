@@ -1,0 +1,37 @@
+﻿[
+    {
+        "Path": "basics.markdown",
+        "Name": "Basics",
+        "Mappings": []
+    },
+    {
+        "Path": "transformers.markdown",
+        "Name": "Transformers",
+        "Mappings": []
+    },
+    {
+        "Path": "spatial.markdown",
+        "Name": "Spatial",
+        "Mappings": []
+    },
+    {
+        "Path": "facets-and-dynamic-aggregation.markdown",
+        "Name": "Facets and Dynamic Aggregation",
+        "Mappings": []
+    },
+    {
+        "Path": "suggestions.markdown",
+        "Name": "Suggestions",
+        "Mappings": []
+    },
+    {
+        "Path": "morelikethis.markdown",
+        "Name": "MoreLikeThis",
+        "Mappings": []
+    },
+    {
+        "Path": "documentquery.markdown",
+        "Name": "DocumentQuery",
+        "Mappings": []
+    }
+]

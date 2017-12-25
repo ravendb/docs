@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "delete-command-data.markdown",
+        "Name": "DeleteCommandData",
+        "Mappings": []
+    },
+    {
         "Path": "index-query.markdown",
         "Name": "IndexQuery",
         "Mappings": []
@@ -24,5 +29,14 @@
         "Name": "StreamResult",
         "Mappings": []
     },
-
+    {
+        "Path": "patch-command-data.markdown",
+        "Name": "PatchCommandData",
+        "Mappings": []
+    },
+    {
+        "Path": "put-command-data.markdown",
+        "Name": "PutCommandData",
+        "Mappings": []
+    }
 ]

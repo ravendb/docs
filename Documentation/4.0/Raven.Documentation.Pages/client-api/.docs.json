@@ -58,5 +58,10 @@
         "Path": "/commands",
         "Name": "Commands",
         "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
     }
 ]

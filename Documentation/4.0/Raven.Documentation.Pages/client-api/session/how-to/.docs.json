@@ -15,6 +15,21 @@
         "Mappings": []
     },
     {
+        "Path": "defer-operations.markdown",
+        "Name": "...defer operations",
+        "Mappings": []
+    },
+    {
+        "Path": "perform-operations-lazily.markdown",
+        "Name": "...perform operations lazily",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/session/how-to/perform-operations-lazily"
+            }
+        ]
+    },
+    {
         "Path": "get-entity-id.markdown",
         "Name": "...get entity id",
         "Mappings": []

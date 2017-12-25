@@ -313,6 +313,15 @@ namespace Raven.Documentation.Web.Controllers
 			return View(MVC.Docs.Views.Article, new ArticleModel(page, toc));
 		}
 
+	    public virtual ActionResult Migration(string version, string language)
+	    {
+	        var toc = DocumentSession
+	            .Query<TableOfContents>()
+	            .First(x => x.Category == Category.Migration && x.Version == CurrentVersion);
+
+	        return View(MVC.Docs.Views.Migration, new PageModel(toc));
+	    }
+
         private static DocumentationPage SelectSearchResult(IEnumerable<DocumentationPage> pages)
 		{
 			var list = pages.ToList();

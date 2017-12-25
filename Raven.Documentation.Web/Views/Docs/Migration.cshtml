@@ -1,0 +1,17 @@
+﻿@using Raven.Documentation.Web.Helpers
+@model Raven.Documentation.Web.Models.PageModel
+@{
+	ViewBag.Title = "Migration Guide";
+}
+<div id="article">
+	<div class="row">
+	    <div class="col-md-3 col-lg-2 col-lg-offset-1">
+	        @Html.GenerateTableOfContents(Url, Model.TableOfContents, null)
+	    </div>
+	    <div class="col-md-9 col-lg-8">
+	        TODO
+	    </div>
+	</div>
+</div>
+
+

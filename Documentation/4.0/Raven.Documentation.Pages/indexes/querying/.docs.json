@@ -55,6 +55,16 @@
         ]
     },
     {
+        "Path": "suggestions.markdown",
+        "Name": "Suggestions",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/suggestions"
+            }
+        ]
+    },
+    {
         "Path": "spatial.markdown",
         "Name": "Spatial",
         "Mappings": [
