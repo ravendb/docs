@@ -8,5 +8,10 @@
         "Path": "/databases",
         "Name": "Databases",
         "Mappings": []
+    },
+    {
+        "Path": "/cluster",
+        "Name": "Cluster",
+        "Mappings": []
     }
 ]
