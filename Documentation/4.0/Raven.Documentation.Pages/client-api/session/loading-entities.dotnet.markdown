@@ -27,11 +27,8 @@ The most basic way to load single entity is to use one of `Load` methods.
 
 {CODE loading_entities_1_1@ClientApi\Session\LoadingEntities.cs /}
 
-### Non string identifiers
 
-The above examples show how to load a document by its string key. What if a type of your entity's identifier is not a string? You need to use an overload of the `Load` method that takes a parameter which type is `ValueType`. 
-
-{NOTE In 4.x RavenDB, only string identifiers are supported. /}
+{NOTE In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
 
 {PANEL/}
 
@@ -116,16 +113,11 @@ Entities can be streamed from server using one of the following `Stream` methods
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fromEtag** | Etag | ETag of a document from which stream should start (mutually exclusive with 'startsWith') |
 | **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
 | **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **pagingInformation** | RavenPagingInformation | used to perform rapid pagination on server side |
 | **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
-| **transformer** | String |  name of transformer (default: `null`) |
-| **transformerParameters** | Dictionary<string, RavenJToken> | parameters to pass to the transformer (default: `null`) |
-| **transformerParameters** | Dictionary<string, RavenJToken> | parameters to pass to the transformer (default: `null`) |
 | streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc. |
 
 | Return Value | |
@@ -146,12 +138,6 @@ Fetch documents for a Id prefix directly into a stream
 ### Remarks
 
 {INFO Entities loaded using `Stream` will be transient (not attached to session). /}
-
-{WARNING:Caution}
-
-**fromEtag** does not do any filtrations on server-side based on the specified in streaming function return type (e.g. `Employee`) and will return all documents from given Etag even if their `Raven-Clr-Type` does not match the return type, which may cause potential casting errors. Set return type to `object`, `dynamic` or `RavenJObject` to address situation when documents with different types might be returned.
-
-{WARNING/}
 
 {PANEL/}
 
