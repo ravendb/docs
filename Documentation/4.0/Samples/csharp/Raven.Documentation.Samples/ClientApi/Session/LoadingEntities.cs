@@ -123,10 +123,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     // loading 'products/1'
                     // including document found in 'Supplier' property
                     Product product = session
-			            .Include<Product>(x => x.Supplier)
-			            .Load<Product>("products/1");
+                        .Include<Product>(x => x.Supplier)
+                        .Load<Product>("products/1");
 
-			        Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
+                    Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
 
                     #endregion
                 }
