@@ -13,11 +13,11 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
         public interface IInterface
         {
             #region Execute
-            void Execute<TResult>(RavenCommand<TResult> command, JsonOperationContext context, CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null)
+            void Execute<TResult>(RavenCommand<TResult> command, JsonOperationContext context, SessionInfo sessionInfo = null)
             #endregion
             ;
             #region Execute_async
-            Task ExecuteAsync<TResult>(RavenCommand<TResult> command, JsonOperationContext context, CancellationToken token = default(CancellationToken), SessionInfo sessionInfo = null)
+            Task ExecuteAsync<TResult>(RavenCommand<TResult> command, JsonOperationContext context, SessionInfo sessionInfo = null, CancellationToken token = default(CancellationToken))
             #endregion
             ;
         }
@@ -32,7 +32,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                     var command = new GetDocumentsCommand("orders/1-A", null, false);
                     session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
                     var order = (BlittableJsonReaderObject)command.Result.Results[0];
-
                 }
                 #endregion
 
@@ -50,7 +49,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                 {
                     var command = new DeleteDocumentCommand("employees/1-A", null);
                     session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context);
-
                 }
                 #endregion
 
@@ -61,60 +59,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                     await session.Advanced.RequestExecutor.ExecuteAsync(command, session.Advanced.Context);
                 }
                 #endregion
-
-                using (var session = documentStore.OpenAsyncSession())
-                {
-                    #region commands_3
-                    var requestExecutor = documentStore.GetRequestExecutor();
-                    using (var context = JsonOperationContext.ShortTermSingleUse())
-                    {
-                        var command = new GetDocumentsCommand("orders/1-A", null, false);
-                        requestExecutor.Execute(command, context);
-                        var order = (BlittableJsonReaderObject)command.Result.Results[0];
-                    }
-                    #endregion
-                }
-
-
-                using (var session = documentStore.OpenAsyncSession())
-                {
-                    #region commands_3_async
-                    var requestExecutor = documentStore.GetRequestExecutor();
-                    using (var context = JsonOperationContext.ShortTermSingleUse())
-                    {
-                        var command = new GetDocumentsCommand("orders/1-A", null, false);
-                        await requestExecutor.ExecuteAsync(command, context);
-                        var order = (BlittableJsonReaderObject)command.Result.Results[0];
-                    }
-                    #endregion
-                }
-
-                using (var session = documentStore.OpenAsyncSession())
-                {
-                    #region commands_4
-                    var requestExecutor = documentStore.GetRequestExecutor();
-                    using (var context = JsonOperationContext.ShortTermSingleUse())
-                    {
-                        var command = new DeleteDocumentCommand("employees/1-A", null);
-                        requestExecutor.Execute(command, context);
-                    }
-                    #endregion
-                }
-
-
-                using (var session = documentStore.OpenAsyncSession())
-                {
-                    #region commands_4_async
-                    var requestExecutor = documentStore.GetRequestExecutor();
-                    using (var context = JsonOperationContext.ShortTermSingleUse())
-                    {
-                        var command = new DeleteDocumentCommand("employees/1-A", null);
-                        await requestExecutor.ExecuteAsync(command, context);
-                    }
-                    #endregion
-                }
-
-
             }
         }
     }
