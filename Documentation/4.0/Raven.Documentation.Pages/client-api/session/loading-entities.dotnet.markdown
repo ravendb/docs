@@ -49,7 +49,7 @@ When there is a 'relationship' between documents, then those documents can be lo
 ### Example I
 
 We can use this code to load also an employee which made the order.
-{CODE loading_entities_2_1b@ClientApi\Session\LoadingEntities.cs /}
+{CODE loading_entities_2_1@ClientApi\Session\LoadingEntities.cs /}
 
 ### Example II
 
