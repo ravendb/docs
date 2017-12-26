@@ -31,6 +31,10 @@ You can ask the server to wait until the replication are caught up with this par
 
 {CODE saving_changes_4@ClientApi\Session\SavingChanges.cs /}
 
+{WARNING:Important}
+The `WaitForReplicationAfterSaveChanges` waits only replicas which are part of the cluster. This means, for example, that external replication destinations are not counted towards this number in waiting, since such destinations are not parto fo the cluster.
+{WARNING/}
+
 {NOTE/}
 
 
