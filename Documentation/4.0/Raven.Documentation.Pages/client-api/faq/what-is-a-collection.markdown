@@ -21,7 +21,7 @@ only  documents from the specified collection. This way the studio can group the
 
 ###Indexing
 
-Each Ravendb index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) we use a storage index to iterate documents of the same collection in the indexing process.
+Each Ravendb index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) and we iterate over the collection's documents during the indexing process.
 
 ###Document keys
 
