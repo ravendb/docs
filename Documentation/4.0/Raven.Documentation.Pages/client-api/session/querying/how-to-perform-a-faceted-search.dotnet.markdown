@@ -1,6 +1,6 @@
-# Session : Querying : How to perform a faceted (aggregated) search?
+# Session : Querying : How to Perform a Faceted (Aggregated) Search
 
-To execute facet (aggregation) query using session `Query` method use `AggregateBy` or `AggregateUsing` methods. This will scope you to the aggregation query builder where you will be allowed to define single or multiple facets for the query using straightforward and fluent API.
+To execute facet (aggregation) query using the session `Query` method, use the `AggregateBy` or `AggregateUsing` methods. This will scope you to the aggregation query builder where you will be allowed to define single or multiple facets for the query using a straightforward and fluent API.
 
 ## Syntax
 
@@ -16,7 +16,7 @@ To execute facet (aggregation) query using session `Query` method use `Aggregate
 ### Facet & RangeFacet
 
 {INFO:Facet vs RangeFacet}
-`RangeFacet` allows you to split the results of the calculations into several ranges in contrast to `Facet` where whole spectrum of results will be used to generate single outcome.
+`RangeFacet` allows you to split the results of the calculations into several ranges, in contrast to `Facet` where whole spectrum of results will be used to generate a single outcome.
 {INFO/}
 
 {CODE-TABS}
@@ -88,8 +88,8 @@ select facet(id('facets/CameraFacets'))
 
 ## Remarks
 
-{WARNING `AggregateBy` only supports aggregation by single field, if you want to aggregate by a multiple fields you need to emit a single field that contains all values. /}
+{WARNING `AggregateBy` only supports aggregation by a single field. If you want to aggregate by multiple fields, you need to emit a single field that contains all values. /}
 
-## Related articles
+## Related Articles
 
 - [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)   

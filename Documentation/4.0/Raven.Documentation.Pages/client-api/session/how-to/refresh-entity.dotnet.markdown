@@ -1,6 +1,6 @@
-# Session : How to refresh entity?
+# Session : How to Refresh an Entity
 
-To update entity with latest changes from server `Refresh` method from `Advanced` session operations can be used.
+To update an entity with the latest changes from the server, use the `Refresh` method from `Advanced` session operations.
 
 ## Syntax
 
@@ -16,4 +16,4 @@ To update entity with latest changes from server `Refresh` method from `Advanced
 
 ## Remarks
 
-Refreshing transient entity (not attached) or entity that was deleted on server-side will result in `InvalidOperationException`.
+Refreshing a transient entity (not attached) or an entity that was deleted on server-side will result in a `InvalidOperationException`.

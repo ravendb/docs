@@ -1,6 +1,6 @@
-# Session : How to clear a session?
+# Session : How to Clear a Session
 
-To clear session state, that is to stop tracking entities and remove all pending commands, etc. `Clear` method is used from `Advanced` session operations.
+To clear session state, to stop tracking entities and remove all pending commands, etc. the `Clear` method is used from the `Advanced` session operations.
 
 ## Syntax
 

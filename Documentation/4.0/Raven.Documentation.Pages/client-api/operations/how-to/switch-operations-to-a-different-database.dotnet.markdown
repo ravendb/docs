@@ -1,6 +1,6 @@
-# Operations : How to switch operations to a different database?
+# Operations : How to Switch Operations to a Different Database
 
-By default, Operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use **ForDatabase** method.
+By default, the operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **ForDatabase** method.
 
 {PANEL:Operations.ForDatabase}
 
@@ -20,9 +20,9 @@ By default, Operations available directly in store are working on a default data
 
 {PANEL/}
 
-## How to switch maintenance operations to a different database?
+## How to Switch Maintenance Operations to a Different Database
 
-As with Operations, by default the Maintenance operations available directly in store are working on a default database that was setup for that store. To switch maintenance operations to a different database use **ForDatabase** method.
+As with Operations, by default the Maintenance operations available directly in store are working on a default database that was setup for that store. To switch maintenance operations to a different database use the **ForDatabase** method.
 
 {PANEL:Maintenance.ForDatabase}
 
