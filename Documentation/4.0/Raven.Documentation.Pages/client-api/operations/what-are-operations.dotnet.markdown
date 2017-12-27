@@ -1,18 +1,19 @@
-# Operations : What are the operations?
+# Operations : What are the Operations?
 
-The RavenDB client API is built with the notion of layers. At the top,
-and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)** and the **[DocumentSession](../../client-api/session/what-is-a-session-and-how-does-it-work)**.
+The RavenDB client API is built with the notion of layers. At the top, and what you will usually interact with, are the **[DocumentStore](../../client-api/what-is-a-document-store)** and the **[DocumentSession](../../client-api/session/what-is-a-session-and-how-does-it-work)**.
+
 They, in turn, are built on top of the notion of Operations and Commands.
 
-Operations are an encapsulation of a set of low level commands which are used to manipulate data, execute administrative tasks and change configuration on a server.  
-They are available in DocumentStore under **Operations**, **Maintenance** and **Maintenance.Server** properties.
+Operations are an encapsulation of a set of low level commands which are used to manipulate data, execute administrative tasks, and change the configuration on a server.  
+
+They are available in the DocumentStore under the **Operations**, **Maintenance**, and **Maintenance.Server** properties.
 
 ### Common Operations
 Common operations include set based operations for [Patching](../../client-api/operations/patch/set-based-patch-operation) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query-operation)).  
 There is also the ability to handle distributed [Compare-Exchange](../../client-api/operations/compare-exchange) operations and manage [Attachments](../../client-api/operations/get-attachment-operation).
 
 {PANEL:Operations.Send}
-In order to excecute an Operation, you will need to use the `Send` or `SendAsync` methods. Avaliable overloads are:
+In order to excecute an operation, you will need to use the `Send` or `SendAsync` methods. Avaliable overloads are:
 {CODE-TABS}
 {CODE-TAB:csharp:Sync Client_Operations_api@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async Client_Operations_api_async@ClientApi\Operations\WhatAreOperations.cs /}
@@ -35,7 +36,7 @@ In order to excecute an Operation, you will need to use the `Send` or `SendAsync
 {CODE-TABS/}
 
 ### Maintenance Operations
-Maintenance operations include operations for changing configuration at runtime and for management of index operations.
+Maintenance operations include operations for changing the configuration at runtime and for management of index operations.
 
 {PANEL:Maintenance.Send}
 {CODE-TABS}
@@ -90,10 +91,10 @@ Maintenance operations include operations for changing configuration at runtime 
 {CODE-TAB:csharp:Async Maintenance_Operations_1_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE By default, operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use **[ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database)** method. /}
+{NOTE By default, operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database)** method. /}
 
 ### Server Operations
-This type of operations contain various administrative and miscellaneous configuration operations.
+These type of operations contain various administrative and miscellaneous configuration operations.
 
 {PANEL:Maintenance.Server.Send}
 {CODE-TABS}
@@ -110,7 +111,7 @@ This type of operations contain various administrative and miscellaneous configu
 * [DeleteCertificateOperation](../../client-api/operations/server/delete-certificate-operation)   
 * [PutClientCertificateOperation](../../client-api/operations/server/put-client-certificate-operation)   
 
-##### Server-wide Configuration
+##### Serverwide Configuration
 * [GetServerWideClientConfigurationOperation](../../client-api/operations/server/get-serverwide-client-configuration-operation)   
 * [PutServerWideClientConfigurationOperation](../../client-api/operations/server/put-serverwide-client-configuration-operation)   
 

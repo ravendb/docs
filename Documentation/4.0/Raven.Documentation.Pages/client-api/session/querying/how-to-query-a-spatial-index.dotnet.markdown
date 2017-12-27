@@ -1,6 +1,6 @@
-# Session : Querying : How to query a spatial index?
+# Session : Querying : How to Query a Spatial Index
 
-Spatial indexes can be queried using `Spatial` method which contains full spectrum of spatial methods. Following article will cover those methods:
+Spatial indexes can be queried using the `Spatial` method which contains a full spectrum of spatial methods. The following article will cover these methods:
 
 - [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index#spatial)
 - [OrderByDistance](../../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)
@@ -14,10 +14,10 @@ Spatial indexes can be queried using `Spatial` method which contains full spectr
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | Expression<Func<T, object>> | Path to spatial field in index |
-| **fieldName** | string | Path to spatial field in index |
+| **path** | Expression<Func<T, object>> | Path to spatial field in an index |
+| **fieldName** | string | Path to spatial field in an index |
 | **field** | Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> or DynamicSpatialField | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
-| **clause** | Func<SpatialCriteriaFactory, SpatialCriteria> | Spatial criteria that will be executed on given spatial field from `path` parameter. |
+| **clause** | Func<SpatialCriteriaFactory, SpatialCriteria> | Spatial criteria that will be executed on a given spatial field from the `path` parameter. |
 
 ### DynamicSpatialFieldFactory
 
@@ -25,7 +25,7 @@ Spatial indexes can be queried using `Spatial` method which contains full spectr
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **latitudePath** or **longitudePath** or **wktPath** | Expression<Func<T, object>> | Path to field in document containing either longitude, latitude or WKT |
+| **latitudePath** or **longitudePath** or **wktPath** | Expression<Func<T, object>> | Path to the field in a document containing either longitude, latitude or WKT |
 
 ### SpatialCriteriaFactory
 
@@ -37,7 +37,7 @@ Spatial indexes can be queried using `Spatial` method which contains full spectr
 | **relation** | SpatialRelation | Shape relation. Can be `Within`, `Contains`, `Disjoint`, `Intersects` |
 | **distErrorPercent** | double | Maximum distance error tolerance in percents. Default: 0.025 |
 | **radius** or **latitude** or **longitude** | double | Used to define a radius circle |
-| **radiusUnits** | SpatialUnits | Determines if circle should be calculated to `Kilometers` or `Miles` units |
+| **radiusUnits** | SpatialUnits | Determines if circle should be calculated in `Kilometers` or `Miles` units |
 
 ### Example I
 
@@ -65,7 +65,7 @@ where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(32.
 
 {PANEL:OrderByDistance}
 
-To sort by distance from given point use `OrderByDistance` method. The closest results will come first.
+To sort by distance from given point use the `OrderByDistance` method. The closest results will come first.
 
 {CODE spatial_6@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 
@@ -74,7 +74,7 @@ To sort by distance from given point use `OrderByDistance` method. The closest r
 | **path** | Expression<Func<T, object>> | Path to spatial field in index |
 | **fieldName** | string | Path to spatial field in index |
 | **field** | Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> or DynamicSpatialField | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
-| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If shape is not a single point then center of the shape will be used as a reference. |
+| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
 
 ### Example
@@ -93,16 +93,16 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 
 {PANEL:OrderByDistanceDescending}
 
-To sort by distance from given point use `OrderByDistanceDescending` method. The farthest results will come first.
+To sort by distance from given point use the `OrderByDistanceDescending` method. The farthest results will come first.
 
 {CODE spatial_8@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | Expression<Func<T, object>> | Path to spatial field in index |
-| **fieldName** | string | Path to spatial field in index |
+| **path** | Expression<Func<T, object>> | Path to spatial field in an index |
+| **fieldName** | string | Path to spatial field in an index |
 | **field** | Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> or DynamicSpatialField | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
-| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If shape is not a single point then center of the shape will be used as a reference. |
+| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
 
 ### Example
@@ -123,7 +123,7 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 
 {NOTE By default, distances are measured in **kilometers**. /}
 
-## Related articles
+## Related Articles
 
 - [Indexes : Indexing spatial data](../../../indexes/indexing-spatial-data)   
 - [Indexes : Querying : Spatial](../../../indexes/querying/spatial)   

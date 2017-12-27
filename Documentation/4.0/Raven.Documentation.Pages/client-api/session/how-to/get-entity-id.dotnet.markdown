@@ -1,6 +1,6 @@
 # Session : How to Get Entity ID
 
-Entities does not have to contain an ID property or field. In the case of such an entity, and a need for knowing under what Id it is stored on the server, the `GetDocumentId` method was created.
+Entities does not have to contain an ID property or field. In the case of such an entity, and a need for knowing under what ID it is stored on the server, the `GetDocumentId` method was created.
 
 ## Syntax
 
@@ -12,7 +12,7 @@ Entities does not have to contain an ID property or field. In the case of such a
 
 | Return Value | |
 | ------------- | ----- |
-| string | Returns the ID for a specified entity. The method may return `null` if `entity` is **null, isn't tracked or the ID will be generated on the server**. |
+| string | Returns the ID for a specified entity. The method may return `null` if `entity` is **null, isn't tracked, or the ID will be generated on the server**. |
 
 ## Example
 
