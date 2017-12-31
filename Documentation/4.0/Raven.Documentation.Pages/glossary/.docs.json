@@ -3,6 +3,26 @@
         "Path": "blittable-json-reader-object.markdown",
         "Name": "BlittableJsonReaderObject",
         "Mappings": []
+    },        
+    {
+        "Path": "raft-algorithm.markdown",
+        "Name": "Raft Consensus Algorithm",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-node.markdown",
+        "Name": "Cluster Node",
+        "Mappings": []
+    },
+    {
+        "Path": "ravendb-cluster.markdown",
+        "Name": "RavenDB Cluster",
+        "Mappings": []
+    },    
+    {
+        "Path": "database-group.markdown",
+        "Name": "Database Group",
+        "Mappings": []
     },
     {
         "Path": "delete-command-data.markdown",
