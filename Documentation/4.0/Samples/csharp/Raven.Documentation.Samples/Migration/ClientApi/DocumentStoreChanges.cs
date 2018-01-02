@@ -15,7 +15,7 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
 
             #region events_1
             store.OnBeforeStore += (s, e) => { };
-            store.OnAfterStore += (s, e) => { };
+            store.OnAfterSaveChanges += (s, e) => { };
             store.OnBeforeDelete += (s, e) => { };
             store.OnBeforeQueryExecuted += (s, e) => { };
             #endregion
