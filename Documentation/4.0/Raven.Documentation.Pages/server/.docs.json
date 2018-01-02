@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/clustering",
+        "Name": "Clustering",
+        "Mappings": []
+    },
+    {
         "Path": "/configuration",
         "Name": "Configuration",
         "Mappings": []

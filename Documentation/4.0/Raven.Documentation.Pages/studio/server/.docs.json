@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "client-configuration.markdown",
+        "Name": "Client Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "/databases",
         "Name": "Databases",
         "Mappings": []

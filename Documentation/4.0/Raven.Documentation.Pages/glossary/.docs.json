@@ -10,6 +10,16 @@
         "Mappings": []
     },
     {
+        "Path": "raft-command.markdown",
+        "Name": "Raft Command",
+        "Mappings": []
+    },
+    {
+        "Path": "replication-factor.markdown",
+        "Name": "Replication Factor",
+        "Mappings": []
+    },
+    {
         "Path": "cluster-node.markdown",
         "Name": "Cluster Node",
         "Mappings": []
