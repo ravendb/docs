@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "how-client-integrates-with-replication-and-cluster.markdown",
+        "Name": "How Client Integrations With Replication and Cluster",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
+            }
+        ]
+    }  
+]

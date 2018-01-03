@@ -50,6 +50,11 @@
         "Mappings": []
     },
     {
+        "Path": "/cluster",
+        "Name": "Cluster Related",
+        "Mappings": []
+    },
+    {
         "Path": "/how-to",
         "Name": "How to...",
         "Mappings": []
