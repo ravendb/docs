@@ -33,7 +33,7 @@ The same queries and indexes that are used for data retrieval are used for the s
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **queryToUpdate** | string | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "udpate" statements, but later, it continues with an "update" clause, in which you describe the javascript pathc code
+| **queryToUpdate** | string | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements, but later, it continues with an "update" clause, in which you describe the javascript pathc code
 
 ### Full
 
