@@ -12,19 +12,6 @@ namespace RavenDBTestDriverFullExample
 {
     public class RavenDBTestDriver : RavenTestDriver<MyRavenDBLocator>
     {
-        //This allows us to generate a clean database for our test
-        protected override void SetupDatabase(IDocumentStore documentStore)
-        {
-            var doc = new DatabaseRecord(documentStore.Database);
-            try
-            {
-                documentStore.Maintenance.Server.Send(new CreateDatabaseOperation(doc));
-            }
-            catch (Exception e)
-            {
-                //Ignore if the database exists, we could also delete it and create a new one if we need
-            }
-        }
 
         //This allows us to modify the conventions of the store we get from 'GetDocumentStore'
         protected override void PreInitialize(IDocumentStore documentStore)

@@ -3,7 +3,6 @@ In this section we will explain how to use [Raven.TestDriver](https://www.nuget.
 
 - [RavenServerLocator](../start/test-driver#ravenserverlocator)
 - [RavenTestDriver](../start/test-driver#raventestdriver)
-- [Setup the database](../start/test-driver#setupthedatabase)
 - [Pre-initializing the store](../start/test-driver#preinitializingthestore)
 - [Unit test](../start/test-driver#unittest)
 - [Complete code sample](../start/test-driver#completecodesample)
@@ -45,12 +44,6 @@ Lets start with reviewing the TestDriver's methods and properties and later we w
 | **protected virtual void OpenBrowser(string url)** | Allows you to open the browser. |
 | **public virtual void Dispose()** | Allows you to dispose of the server. |
 
-{PANEL/}
-
-{PANEL:SetupTheDatabase}
-Setup the database will allow you to customise the creation of your test database.
-### Example
-{CODE test_driver_2@Start\RavenDBTestDriver.cs /}
 {PANEL/}
 
 {PANEL:PreInitializingTheStore}
