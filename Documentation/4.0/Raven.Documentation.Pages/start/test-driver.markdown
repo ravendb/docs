@@ -62,7 +62,7 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 {PANEL/}
 
 {PANEL:UnitTest}
-Finally we can write down a simple test, note that i'm using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
+Finally we can write down a simple test, note that I'm using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
 Also note that the test itself is meant to show diffrent capabilities of the test driver and is not meant to be the most efficient.
 The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#completecodesample)
 

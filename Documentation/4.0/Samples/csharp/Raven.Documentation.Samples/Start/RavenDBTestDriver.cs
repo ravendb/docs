@@ -23,10 +23,6 @@ namespace RavenDBTestDriver
             catch (Exception e)
             {
                 //Ignore if the database exists, we could also delete it and create a new one if we need
-                if (e.Message.EndsWith("already exists!") == false)
-                {
-                    throw;
-                }
             }
         }
         #endregion
@@ -67,7 +63,13 @@ namespace RavenDBTestDriver
     #region test_driver_5
     public class MyRavenDBLocator : RavenServerLocator
     {
-        public override string ServerPath => @"C:\work\RavenDB-4.0.0-rc-40025-windows-x64\Server\Raven.Server.dll";
+        public override string ServerPath
+        {
+            get
+            {
+                return Environment.GetEnvironmentVariable("RavenServerTestPath");
+            }
+        }
         public override string Command => "dotnet";
         public override string CommandArguments => ServerPath;
     }
