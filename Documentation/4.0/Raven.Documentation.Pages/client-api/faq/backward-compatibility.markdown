@@ -6,7 +6,7 @@ When it comes to client server compatibility in RavenDB there are two valid rule
 
 **OR**
 
- * The server version is greater than the client version
+ * The server version is greater than the client version, but the Major version must match
 
 Some examples:
 
@@ -14,6 +14,7 @@ Some examples:
  * `4.5` client will work with `4.5` server since client and server are in the same Major and Minor range
  * `4.0.2` client will work with `4.0.1` server since client and server are in the same Major and Minor range
  * `4.5` client will **NOT** work with `4.0` server since client is greater than server
+ * `3.x` client will **NOT** work with `4.0` server since client and server Major version do not match
 
 ## Upgrading
 
