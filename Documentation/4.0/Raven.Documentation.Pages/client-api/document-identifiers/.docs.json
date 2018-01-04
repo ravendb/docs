@@ -13,10 +13,5 @@
     "Path": "hilo-algorithm.markdown",
     "Name": "HiLo algorithm",
     "Mappings": []
-  },
-  {
-    "Path": "handling-case-sensitive-document-ids.markdown",
-    "Name": "Handling case sensitive document IDs",
-    "Mappings": []
   }
 ]
