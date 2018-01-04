@@ -70,6 +70,16 @@
         "Mappings": []
     },
     {
+        "Path": "/faq",
+        "Name": "FAQ",
+        "Mappings": []
+    },
+    {
+        "Path": "/document-identifiers",
+        "Name": "Document identifiers",
+        "Mappings": []
+    },
+    {
         "Path": "/configuration",
         "Name": "Configuration",
         "Mappings": []

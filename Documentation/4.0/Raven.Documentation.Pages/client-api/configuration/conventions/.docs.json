@@ -1,12 +1,12 @@
-﻿[
-    {
-        "Path": "request-handling.markdown",
-        "Name": "Request Handling",
-        "Mappings": []
-    },
-    {
-        "Path": "replication.markdown",
-        "Name": "Replication",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "request-handling.markdown",
+    "Name": "Request Handling",
+    "Mappings": []
+  },
+  {
+     "Path": "replication.markdown",
+     "Name": "Replication",
+     "Mappings": []
+  }
 ]
