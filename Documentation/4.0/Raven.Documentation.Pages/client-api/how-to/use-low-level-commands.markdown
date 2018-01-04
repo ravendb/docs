@@ -1,7 +1,7 @@
 #How to use low-level commands?
 
-Low-level commands are the mechanism that [Operations](../../client-api/operations/what-are-operations) are bult on top of.  
-When preforming an operation, there is an underlying low-level command that is in charge of sending the appropriate request to the server 
+Low-level commands are the mechanism that [Operations](../../client-api/operations/what-are-operations) are built on top of.  
+When performing an operation, there is an underlying low-level command that is in charge of sending the appropriate request to the server 
 (via the **Request Executor**) and parsing the server reply.
 
 In order to use low-level commands directly, you will need to use the `Execute` or `ExectueAsync` method of a  **Request Executor**.
@@ -30,8 +30,33 @@ In order to use low-level commands directly, you will need to use the `Execute` 
 
 ### The following low-level commands are available:
 
-#### Documents
-* [GetDocumentsCommand](../../client-api/commands/documents/get)   
-* [PutDocumentCommand](../../client-api/commands/documents/put)    
-* [DeleteDocumentCommand](../../client-api/commands/documents/delete)    
+* BatchCommand  
+* CreateSubscriptionCommand  
+* DeleteDocumentCommand   
+* DeleteSubscriptionCommand  
+* DropSubscriptionConnectionCommand  
+* ExplainQueryCommand  
+* GetConflictsCommand  
+* GetDocumentsCommand  
+* GetIdentitiesCommand
+* GetNextOperationIdCommand  
+* GetOperationStateCommand  
+* GetRevisionsBinEntryCommand  
+* GetRevisionsCommand  
+* GetStatisticsCommand  
+* GetSubscriptionsCommand  
+* GetSubscriptionStateCommand  
+* HeadAttachmentCommand
+* HeadDocumentCommand  
+* HiLoReturnCommand  
+* KillOperationCommand  
+* NextHiLoCommand   
+* NextIdentityForCommand 
+* PatchCommand
+* PutDocumentCommand   
+* QueryCommand   
+* QueryStreamCommand   
+* SeedIdentityForCommand   
+* StartBackupCommand   
+* StreamCommand   
 
