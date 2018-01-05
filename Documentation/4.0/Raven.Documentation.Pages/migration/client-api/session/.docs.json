@@ -1,7 +1,12 @@
 ﻿[
     {
+        "Path": "basics.markdown",
+        "Name": "Basics",
+        "Mappings": []
+    },
+    {
         "Path": "/querying",
         "Name": "Querying",
         "Mappings": []
-    },
+    }
 ]

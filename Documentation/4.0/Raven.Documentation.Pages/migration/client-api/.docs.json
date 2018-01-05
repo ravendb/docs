@@ -10,13 +10,18 @@
         "Mappings": []
     },
     {
+        "Path": "/session",
+        "Name": "Session",
+        "Mappings": []
+    },
+    {
         "Path": "commands.markdown",
         "Name": "Commands",
         "Mappings": []
     },
     {
-        "Path": "/session",
-        "Name": "Session",
+        "Path": "indexes.markdown",
+        "Name": "Indexes",
         "Mappings": []
     }
 ]

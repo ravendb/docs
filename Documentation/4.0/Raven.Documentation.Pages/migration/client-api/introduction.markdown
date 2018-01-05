@@ -4,6 +4,19 @@ RavenDB.Client 4.0 is a major upgrade. It's no backward compatible and the API h
 
 This section discusses the changes that you need to be aware of when migrating your application using 3.x DLLs and recommended actions you need to take.
 
+### 3.x packages
+
+Please remove the following 3.x packages:
+
+- RavenDB.Abstractions
+- RavenDB.Client.Lightweight
+- RavenDB.Database
+- RavenDB.Embedded
+
+## 4.0 package
+
+Please install [RavenDB.Client](https://www.nuget.org/packages/RavenDB.Client) package from nuget. See what [.net targets are supported](../../client-api/net-client-versions) by Raven client.
+
 ### Internalized Json.NET usage
 
 RavenDB.Client doesn't use customized Json.NET any longer. Replace all references to RavenDB Json.NET, like `Raven.Imports.Newtonsoft`, with `Newtonsoft.Json` reference. 
@@ -16,7 +29,7 @@ with low-level stuff in the client as `BlittableJsonReaderObject` or `BlittableJ
 
 ### Etags
 
-Documents doesn't have etags. Since documents can be stored in a cluster environment, that is on different nodes, they use a change vector to reflect changes on particular cluster nodes.
+Documents don't have etags. Instead, since documents can be stored in a cluster environment, that is on different nodes, they use a change vector to reflect changes on particular cluster nodes.
 The change vector is composed of list of node IDs and a sequential number (per node). The sequential number, still named as the etag, is represeted by `long`.
 
 ### Identifiers
@@ -42,6 +55,10 @@ List of changed metadata properties:
   * `@change-vector`
   * `@flags`
 
-### Raven.Abstractions
+### RavenDB.Abstractions
 
-RavenDB.Client doesn't have Raven.Abstractions dependency. Please remove all usings of `Raven.Abstractions*` namespace.
+RavenDB.Client doesn't have RavenDB.Abstractions dependency. Please remove all usings of `Raven.Abstractions*` namespace.
+
+### Tests
+
+Instead of `EmbeddableDocumentStore` you should use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver) package.

@@ -1,7 +1,7 @@
 ﻿[
     {
         "Path": "how-client-integrates-with-replication-and-cluster.markdown",
-        "Name": "How Client Integrations With Replication and Cluster",
+        "Name": "How Client Integrates With Replication and Cluster",
         "Mappings": [
             {
                 "Version": 3.5,

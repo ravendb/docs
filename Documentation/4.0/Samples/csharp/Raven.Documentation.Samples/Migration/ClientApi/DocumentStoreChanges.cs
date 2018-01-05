@@ -37,8 +37,8 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
             {
                 Conventions =
                 {
-                    CustomizeJsonSerializer = serializer => { },
-                    DeserializeEntityFromBlittable = (type, blittable) => new object()
+                    CustomizeJsonSerializer = serializer => throw new CodeOmitted(),
+                    DeserializeEntityFromBlittable = (type, blittable) => throw new CodeOmitted()
                 }
             }.Initialize();
             #endregion
@@ -50,8 +50,8 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
                 {
                     BulkInsert =
                     {
-                        TrySerializeEntityToJsonStream = (o, writer) => true,
-                        TrySerializeMetadataToJsonStream = (o, writer) => true
+                        TrySerializeEntityToJsonStream = (o, writer) => throw new CodeOmitted(),
+                        TrySerializeMetadataToJsonStream = (o, writer) => throw new CodeOmitted()
                     }
                 }
             }.Initialize();

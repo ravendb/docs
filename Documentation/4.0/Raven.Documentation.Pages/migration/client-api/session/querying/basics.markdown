@@ -2,6 +2,13 @@
 
 Following changes occured in 4.0 and need to be considered when migration is done.
 
+## Namespaces
+
+The following namespaces are no longer valid and have to be removed:
+
+- Raven.Client.Linq
+- Raven.Json.Linq
+
 ## Paging
 
 There is no longer a default page size send from the client API (128 by default) and maxium page size that to which server will cut the results (1024 by default).
@@ -36,3 +43,30 @@ Transformers have been removed from the RavenDB. Please read our migration artic
 ## Default Operator
 
 Default operator for `session.Query` was and still is `AND`, but the operator for `DocumentQuery` have changed from `OR` to `AND`. We have created a dedicated article that helps you with migration. It can be found [here](../../../../migration/client-api/session/querying/documentquery).
+
+## Waiting for Non Stale Results
+
+The following methods has been removed:
+
+- `WaitForNonStaleResultsAsOf`
+- `WaitForNonStaleResultsAsOfNow`
+
+You should use `WaitForNonStaleResults` instead. Its behavior has changed in 4.0 - it's like `WaitForNonStaleResultsAsOfNow` in 3.x. Please read a dedicated article discussing [how to deal with non stale results](../../../../indexes/stale-indexes).
+
+{CODE basics_1_3@Migration\ClientApi\Session\Querying\Basics.cs /}
+
+## Raven/DocumentsByEntityName index
+
+`Raven/DocumentsByEntityName` is no longer necessary in RavenDB 4.0. You can perform queries directly on collections, in particular we support queries that you can run to modify the docs:
+
+| 3.x | 4.0 |
+|:---:|:---:|
+| {CODE basics_1_5@Migration\ClientApi\Session\Querying\Basics.cs /} | {CODE basics_1_6@Migration\ClientApi\Session\Querying\Basics.cs /} |
+
+## RavenQueryStatistics
+
+`RavenQueryStatistics` has been renamed to `QueryStatistics`.
+
+## ProjectFromIndexFieldsInto
+
+`ProjectFromIndexFieldsInto` has been renamed to `ProjectInto`.
