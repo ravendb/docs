@@ -30,11 +30,6 @@
         "Mappings": []
     },
     {
-        "Path": "/document-identifiers",
-        "Name": "Document identifiers",
-        "Mappings": []
-    },
-    {
         "Path": "/operations",
         "Name": "Operations",
         "Mappings": []
