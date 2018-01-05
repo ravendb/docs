@@ -3,5 +3,10 @@
         "Path": "/documents",
         "Name": "Documents",
         "Mappings": []
+    },
+    {
+        "Path": "/batches",
+        "Name": "Batches",
+        "Mappings": []
     }
 ]
