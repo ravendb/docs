@@ -31,11 +31,13 @@ namespace Raven.Documentation.Samples.ClientApi.Commands.Batches
         {
             public bool WaitForReplicas { get; set; }
 
+            //if set to true, will wait for replication to be performed on at least a majority
+            //of DB instances (applies only when WaitForReplicas is set to true)
+            public bool Majority { get; set; }
+
             public int NumberOfReplicasToWaitFor { get; set; }
 
             public TimeSpan WaitForReplicasTimeout { get; set; }
-
-            public bool Majority { get; set; }
 
             public bool ThrowOnTimeoutInWaitForReplicas { get; set; }
 
