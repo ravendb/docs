@@ -1,10 +1,9 @@
 ﻿#region test_driver_1
 using Raven.Client.Documents;
 using Raven.TestDriver;
-using Raven.Client.ServerWide;
-using Raven.Client.ServerWide.Operations;
 using Xunit;
 using System;
+using System.IO;
 using System.Linq;
 using Raven.Client.Documents.Indexes;
 
@@ -42,17 +41,87 @@ namespace RavenDBTestDriverFullExample
         }
     }
 
+
     public class MyRavenDBLocator : RavenServerLocator
     {
+        private string _serverPath;
+        private string _command = "dotnet";
+        private readonly string RavenServerName = "Raven.Server";
+        private string _arguments;
+
         public override string ServerPath
         {
             get
             {
-                return Environment.GetEnvironmentVariable("RavenServerTestPath");
+                if (string.IsNullOrEmpty(_serverPath) == false)
+                {
+                    return _serverPath;
+                }
+                var path = Environment.GetEnvironmentVariable("RavenServerTestPath");
+                if (string.IsNullOrEmpty(path) == false)
+                {
+                    if (InitializeFromPath(path))
+                        return _serverPath;
+                }
+                //If we got here we didn't have ENV:RavenServerTestPath setup for us maybe this is a CI enviroement
+                path = Environment.GetEnvironmentVariable("RavenServerCIPath");
+                if (string.IsNullOrEmpty(path) == false)
+                {
+                    if (InitializeFromPath(path))
+                        return _serverPath;
+                }
+                //We couldn't find Raven.Server in either enviroment variables lets look for it in the current directory
+                foreach (var file in Directory.GetFiles(Environment.CurrentDirectory, $"{RavenServerName}.exe; {RavenServerName}.dll"))
+                {
+                    if (InitializeFromPath(file))
+                        return _serverPath;
+                }
+                //Lets try some brut force
+                foreach (var file in Directory.GetFiles(Directory.GetDirectoryRoot(Environment.CurrentDirectory), $"{RavenServerName}.exe; {RavenServerName}.dll", SearchOption.AllDirectories))
+                {
+                    if (InitializeFromPath(file))
+                    {
+                        try
+                        {
+                            //We don't want to override the variable if defined
+                            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("RavenServerTestPath")))
+                                Environment.SetEnvironmentVariable("RavenServerTestPath", file);
+                        }
+                        //We might not have permissions to set the enviroment variable
+                        catch
+                        {
+
+                        }
+                        return _serverPath;
+                    }
+                }
+                throw new FileNotFoundException($"Could not find {RavenServerName} anywhere on the device.");
             }
         }
-        public override string Command => "dotnet";
-        public override string CommandArguments => ServerPath;
+
+        private bool InitializeFromPath(string path)
+        {
+            if (Path.GetFileNameWithoutExtension(path) != RavenServerName)
+                return false;
+            var ext = Path.GetExtension(path);
+            if (ext == ".dll")
+            {
+                _serverPath = path;
+                _arguments = _serverPath;
+                return true;
+            }
+            if (ext == ".exe")
+            {
+                _serverPath = path;
+                _command = _serverPath;
+                _arguments = string.Empty;
+                return true;
+            }
+            return false;
+        }
+
+        public override string Command => _command;
+        public override string CommandArguments => _arguments;
     }
 
     public class TestDocumentByName : AbstractIndexCreationTask<TestDocument>
