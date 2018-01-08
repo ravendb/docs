@@ -1,14 +1,14 @@
 # How to integrate with Excel?
 
 A very common use case for many application is to expose data to users as an Excel file. RavenDB has a dedicated support that allows to directly consume data stored in a database by Excel application. 
-The integration of Excel with the data store is achieved by a designated query streaming endpoint that outputs a steam in a format acceptible by `Excel`, Comma Separated Values (CSV).
+The integration of Excel with the data store is achieved by a designated query streaming endpoint that outputs a stream in a format acceptable by `Excel`, Comma Separated Values (CSV).
 
-In order to take advantage of this feature you need to specify [an RQL]() that you want to query.
+In order to take advantage of this feature you need to specify a valid query according to [RQL syntax]().
 
 The generic HTTP request will have the following address:
 
 {CODE-BLOCK:plain}
-http://localhost:8080/databases/[db_name]streams/queries?query=[query]
+http://localhost:8080/databases/[db_name]/streams/queries?query=[query]
 {CODE-BLOCK/}
 
 In order to include only specific properties in the CSV output you can use the `field` parameter like so:
@@ -19,7 +19,7 @@ http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[f
 
 ## Example
 
-Firstly lets create a database, Northwind, and import the [sample data](..\..\studio\database\tasks\create-sample-data.markdown) into it.
+Firstly let's create a database, Northwind, and import the [sample data](..\..\studio\database\tasks\create-sample-data.markdown) into it.
 Now let's query the product collection include the category document and project some of its properties using the below RQL
 
 {CODE-BLOCK:plain}
@@ -85,7 +85,7 @@ As a result of previous actions, the spreadsheet data should look like:
 
 ![Excel results](images\excel_from_text_results.png)
 
-Now we must tell Excel to to refresh data. Click on `Connections` in `Data` panel:
+Now we must tell Excel to refresh data. Click on `Connections` in `Data` panel:
 
 ![Excel connections](images\excel_connections.png)
 
