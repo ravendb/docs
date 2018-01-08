@@ -7,7 +7,7 @@
 | **Id** | string | Document id |
 | **ChangeVector** | string | Document change-vector |
 | **Document** | DynamicJsonValue | Document to put |
-| **Type** | CommandType | The Commad Type (PUT) |
+| **Type** | CommandType | The Command Type (PUT) |
 
 ### Methods
 
