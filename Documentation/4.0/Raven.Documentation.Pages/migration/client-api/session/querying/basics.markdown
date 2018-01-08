@@ -1,6 +1,6 @@
 ﻿# How to migrate Queries from 3.x?
 
-Following changes occured in 4.0 and need to be considered when migration is done.
+Following changes occurred in 4.0 and need to be considered when migration is done.
 
 ## Namespaces
 
@@ -11,7 +11,7 @@ The following namespaces are no longer valid and have to be removed:
 
 ## Paging
 
-There is no longer a default page size send from the client API (128 by default) and maxium page size that to which server will cut the results (1024 by default).
+There is no longer a default page size send from the client API (128 by default) and maximum page size that to which server will cut the results (1024 by default).
 
 Following query will return **all** results from the database (even when there is 1M of them):
 

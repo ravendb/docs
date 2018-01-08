@@ -30,7 +30,7 @@ of documents requested to be loaded. If a document with was not found then `null
 
 ### Loading with transformer
 
-The `Load` method overloads acceppting transformer name parameter and transformer types as generic have been removed since transformers was completely replaced by projections in RavenDB 4.0.
+The `Load` method overloads accepting transformer name parameter and transformer types as generic have been removed since transformers was completely replaced by projections in RavenDB 4.0.
 You need to perform a query and specify a projection instead. The query will be handled very efficiently, directly by a collection storage index, it won't create regular RavenDB index.
 
 | 3.x | 4.0 |
@@ -61,7 +61,7 @@ The method `session.Advanced.DeleteByIndex` has been removed. Use `DeleteByQuery
 
 {PANEL:Streaming}
 
-The document streaming method accepting the document etag as the first paramter `session.Advanced.Stream<T>(Etag fromEtag)` no longer exists. As the streaming request can be processed 
+The document streaming method accepting the document etag as the first parameter `session.Advanced.Stream<T>(Etag fromEtag)` no longer exists. As the streaming request can be processed 
 by any node available in the cluster, the solution is to use [Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions) in order to guarantee reliable processing of documents in the cluster environment.
 
 {PANEL/}

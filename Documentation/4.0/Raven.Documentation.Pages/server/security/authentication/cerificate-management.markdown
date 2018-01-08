@@ -7,7 +7,7 @@ Click [here](client-certificate-usage) for detailed client examples.
 
 ![Figure 1. Certificates View](images/main.png)
 
-Client certificates are managed by RavenDB directly and not through any PKI infrastrurcture. If you want to remove
+Client certificates are managed by RavenDB directly and not through any PKI infrastructure. If you want to remove
 or reduce the permissions on a certificate handed to a client, you can edit the permissions or remove them entirely from this screen.
 
 It's important to note that RavenDB does __not__ keep track of the certificate's private key. Whether you generate a client certificate
@@ -105,7 +105,7 @@ Every certificate in the list can be edited. The editable fields are:
 
 Pfx files may contain a single certificate or a collection of certificates.
 
-When uploading a .pfx file with a collection, RavenDB will add all of the certificates to the list of registered certificates as one entry and will allow access to all of the certificates in the collection explicily by their thumbprint.
+When uploading a .pfx file with a collection, RavenDB will add all of the certificates to the list of registered certificates as one entry and will allow access to all of the certificates in the collection explicitly by their thumbprint.
 
 ### Export Cluster Certificates
 
@@ -113,11 +113,11 @@ This options allows you to export the server certificate as a .pfx file. In case
 
 ### Client Certificate Chain of Trust
 
-As metioned above, RavenDB generates client certificates by signing them using the server certificate. A typical server certificate doesn't allow acting as an Intermediate Certificate Authority signing other certificates. This is the case with Let's Encrypt certificates.
+As mentioned above, RavenDB generates client certificates by signing them using the server certificate. A typical server certificate doesn't allow acting as an Intermediate Certificate Authority signing other certificates. This is the case with Let's Encrypt certificates.
 
 In that case, the generated client certificate will have a broken chain of trust, just like in the following screenshot:
 
 ![Figure 6. Client Cert Chain](images/client-cert.png)
 
-Because client certificates are managed by RavenDB directly and not through any PKI infrastrurcture <strong>this is perfectly acceptable</strong>. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server.
+Because client certificates are managed by RavenDB directly and not through any PKI infrastructure <strong>this is perfectly acceptable</strong>. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server.
 
