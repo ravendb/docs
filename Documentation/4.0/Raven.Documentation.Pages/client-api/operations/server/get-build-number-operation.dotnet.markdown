@@ -16,7 +16,7 @@ The result of executing GetBuildNumberOperation is a **BuildNumber** object
 | **ProductVersion** | current product version e.g. "4.0" |
 | **BuildVersion** | current build version e.g. 40 |
 | **CommitHash** | git commit SHA e.g. ""a377982"" |
-| **FullVersion** | semantic versioning e.g. "4.0.0-custom-40" |
+| **FullVersion** | semantic versioning e.g. "4.0.0" |
 
 ###Example
 
