@@ -1,10 +1,10 @@
-#How to use low-level commands?
+#How to Use Low-Level Commands
 
 Low-level commands are the mechanism that [Operations](../../client-api/operations/what-are-operations) are built on top of.  
 When performing an operation, there is an underlying low-level command that is in charge of sending the appropriate request to the server 
 (via the **Request Executor**) and parsing the server reply.
 
-In order to use low-level commands directly, you will need to use the `Execute` or `ExectueAsync` method of a  **Request Executor**.
+In order to use low-level commands directly, you will need to use the `Execute` or `ExectueAsync` method of a **Request Executor**.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Execute Execute@ClientApi\HowTo\UseLowLevelCommands.cs /}
@@ -28,7 +28,7 @@ In order to use low-level commands directly, you will need to use the `Execute` 
 {PANEL/}
 
 
-### The following low-level commands are available:
+### The Following Low-Level Commands are Available:
 
 * BatchCommand  
 * CreateSubscriptionCommand  
