@@ -6,7 +6,7 @@ Facets and Dynamic Aggregation have been merged into a single feature and are no
 
 Facets are now divided into two types:
 
-- `Facet` where shole spectrum of results will regenrate single outcome,
+- `Facet` where whole spectrum of results will generate single outcome,
 - `RangeFacet` gives you the ability to split the whole spectrum of results into smaller ranges
 
 `FacetSetup` document also now splits the facets into two properties. One containing `Facets`, the other one containing `RangeFacets`.

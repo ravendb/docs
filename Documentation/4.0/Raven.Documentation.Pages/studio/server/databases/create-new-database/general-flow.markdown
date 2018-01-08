@@ -24,7 +24,7 @@ A database name can be any sequence of characters except for the following rules
 
 1. **Replication Factor:**  
    Set the number of nodes that will contain this database.   
-   The minumun required number is 1. 
+   The minimum required number is 1. 
    The maximum number is the cluster size (number of nodes in the cluster).
 
 2. **Dynamic Node Distribution**   

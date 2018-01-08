@@ -5,7 +5,7 @@ RavenDB is **Safe by Default** which means its set of options are configured for
 There are few ways to configure option values before initiating the new server's instance.
 
 ### Environment Variable
-Setting environment variable with the following sytax will set a configuration value.
+Setting environment variable with the following syntax will set a configuration value.
 
 #Usage:
  `RAVEN_<ConfigOption>` or `RAVEN.<ConfigOption>`

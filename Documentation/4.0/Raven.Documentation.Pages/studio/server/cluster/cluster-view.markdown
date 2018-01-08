@@ -22,7 +22,7 @@ You can manage the cluster by actions such as:
    Assigned: Total number of cores assigned to use for server nodes in all of the cluster  
    Licensed: Total number of cores available for usage according to your license - per the whole cluster
 2. **Term**  
-   Number of times that elections occured in the cluster
+   Number of times that elections occurred in the cluster
 3. **Node State, Tag, and Address:**  
    A node state can be one of the following:  
    * _Passive_ - Node doesn't belong to any cluster
@@ -100,7 +100,7 @@ You can manage the cluster by actions such as:
 
 **1.** A new server/node will start as **Passive**, meaning it is Not part of any cluster yet.  
 
-**2.** When a node is added to a cluster, it immediatly becomes the **Leader** if it is the only node in the cluster  
+**2.** When a node is added to a cluster, it immediately becomes the **Leader** if it is the only node in the cluster  
 
 **3.** When a node is added to a cluster and a Leader already exists,  
        it will become **Promotable** (on its way to either becoming a Member or a Watcher - depending on what was specified when created)

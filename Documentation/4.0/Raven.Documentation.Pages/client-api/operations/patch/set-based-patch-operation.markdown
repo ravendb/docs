@@ -27,13 +27,13 @@ The same queries and indexes that are used for data retrieval are used for the s
 {PANEL: PatchByQueryOperation} 
 
 ### Simple
-    This is a simpler overload of the the PatchByQueryOperation ctor, it allows defining the RQL update statement, while all other paremeters get's their default values. Best for working with non-stale data.
+    This is a simpler overload of the PatchByQueryOperation ctor, it allows defining the RQL update statement, while all other parameters get's their default values. Best for working with non-stale data.
 
 {CODE patchBeQueryOperationCtor1@Common.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **queryToUpdate** | string | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements, but later, it continues with an "update" clause, in which you describe the javascript pathc code
+| **queryToUpdate** | string | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements, but later, it continues with an "update" clause, in which you describe the javascript patch code
 
 ### Full
 
@@ -41,7 +41,7 @@ The same queries and indexes that are used for data retrieval are used for the s
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **queryToUpdate** | [InexQuery](../../glossary/indexQuery) | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "udpate" statements, but later, it continues with an "update" clause, in which you describe the javascript pathc code
+| **queryToUpdate** | [InexQuery](../../glossary/indexQuery) | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements, but later, it continues with an "update" clause, in which you describe the javascript patch code
 | **options** | [QueryOperationOptions](../../glossary/queryOperationOptions) | Options defining how the operation will be performed and various constraints on how it is performed
 
 {PANEL/}

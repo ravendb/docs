@@ -68,7 +68,7 @@ When triggered, transaction will be closed and a new one will be opened
 <br><br>
 
 #### MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory
-###### Set minimu number of map attempts after which batch will be canceled if running low on memory
+###### Set minimum number of map attempts after which batch will be canceled if running low on memory
 ###### Default Value : 512
 
 {WARNING Use with cautious /}

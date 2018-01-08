@@ -10,6 +10,10 @@ This article describes the changes in public API of `DocumentStore`.
 
 `DefaultDatabase` property has been renamed to `Database`.
 
+## Credentials and ApiKey
+
+The support for WindowsAuth and OAuth has been dropped. RavenDB 4.0 uses X.509 certificate-based authentication.
+
 ## Url and FailoverServers
 
 When initializing `DocumentStore` you can provide multiple URLs to RavenDB servers holding your database in the cluster. It will grab the cluster topology from the first accessible server. 
@@ -23,9 +27,7 @@ entry from `appsettings.json`, convert it and manually set `Urls` and `Database`
 
 ## Listeners
 
-All listeners have been removed in favour of events.
-
-#### Recommended changes
+All listeners have been removed in favor of events.
 
 - Usage of the events:   
 
@@ -80,21 +82,45 @@ In order to customize bulk insert serialization you can use the following conven
 
 ### DefaultQueryingConsistency
 
-`DefaultQueryingConsistency` convention has been removed. Check related article discussing [how to deal with non stale results](../../indexes/stale-indexes).
+`DefaultQueryingConsistency` convention has been removed. Check the related article discussing [how to deal with non stale results](../../indexes/stale-indexes).
 
 
 ### FindTypeTagName and FindDynamicTagName
 
 Renamed to `FindCollectionName` and `FindCollectionNameForDynamic`.
 
-
 ### IdentityTypeConvertors
 
-It hass been removed. Only string identifiers are supported.
-
+It has been removed. Only string identifiers are supported.
 
 ## FailoverBehavior
 
 The client will failover automatically to different node in the cluster. You can customize the reads by using `ReadBalanceBehavior` convention.
 
+### EnlistInDistributedTransactions
 
+The support for DTC transactions has been dropped.
+
+### UseParallelMultiGet
+
+Removed. The multi gets are processed in async manner on the server side.
+
+### ReplicationInformerFactory
+
+Removed. Check [How Client Integrates With Replication and Cluster](../../client-api/cluster/how-client-integrates-with-replication-and-cluster) article.
+
+### ShouldAggressiveCacheTrackChanges and ShouldSaveChangesForceAggressiveCacheCheck
+
+The client listens to changes by default and evicts cached items if they change on the server side.
+
+### IndexAndTransformerReplicationMode
+
+Removed. Indexes are automatically replicated within the cluster. Transformers has been removed completely.
+
+### RequestTimeSlaThresholdInMilliseconds
+
+Use `ReadBalanceBehavior.FastestNode` to if you need to ensure that get requests will executed against the fastest node in the cluster.
+
+### TimeToWaitBetweenReplicationTopologyUpdates
+
+Removed. Check [How Client Integrates With Replication and Cluster](../../client-api/cluster/how-client-integrates-with-replication-and-cluster) article.

@@ -8,7 +8,7 @@
 ###### Set Kestrel's minimum required data rate in bytes per second
 ###### DefaultValue : null
 #### MinDataRateGracePeriodInSec
-###### Set Kestrel's allowed request and reponse grace in seconds
+###### Set Kestrel's allowed request and response grace in seconds
 ###### Default Value : null
 
 The http server *Kestrel* checks every second if data is coming in at the specified rate in bytes/second. If the rate drops below the minimum set by *MinResponseDataRate*, the connection is timed out. The grace period *MinDataRateGracePeriod* is the amount of time that *Kestrel* gives the client to increase its send rate up to the minimum. The rate is not checked during that time. The grace period helps avoid dropping connections that are initially sending data at a slow rate due to TCP slow-start.

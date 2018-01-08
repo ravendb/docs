@@ -5,7 +5,7 @@ Raft is a [distributed consensus](https://en.wikipedia.org/wiki/Consensus_(compu
 In general, the algorithm is useful when we want to order the events that happen on a distributed system in different nodes.
 
 In case or RavenDB, Raft is used to coordinate the execution of cluster-wide operations over the nodes. 
-This means, that if we want to create a database in a cluster, and this means creating the database on all cluter nodes,
+This means, that if we want to create a database in a cluster, and this means creating the database on all cluster nodes,
 the Raft will be used to make sure that the database creation is executed in at least (n/2) + 1 nodes. (quorum of nodes)
 
 ### Additonal Reading
