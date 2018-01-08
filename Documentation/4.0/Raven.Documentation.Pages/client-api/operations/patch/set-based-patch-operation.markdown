@@ -41,7 +41,7 @@ The same queries and indexes that are used for data retrieval are used for the s
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **queryToUpdate** | [InexQuery](../../glossary/indexQuery) | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements, but later, it continues with an "update" clause, in which you describe the javascript patch code
+| **queryToUpdate** | [IndexQuery](../../glossary/indexQuery) | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements, but later, it continues with an "update" clause, in which you describe the javascript patch code
 | **options** | [QueryOperationOptions](../../glossary/queryOperationOptions) | Options defining how the operation will be performed and various constraints on how it is performed
 
 {PANEL/}
