@@ -5,6 +5,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="client-api\how-to\excel-images\**" />
+    <EmbeddedResource Remove="client-api\how-to\excel-images\**" />
+    <None Remove="client-api\how-to\excel-images\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="server\security\authentication\images\snag\" />
   </ItemGroup>
 </Project>

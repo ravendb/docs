@@ -11,15 +11,16 @@ The generic HTTP request will have the following address:
 http://localhost:8080/databases/[db_name]streams/queries?query=[query]
 {CODE-BLOCK/}
 
-Inorder to include only specific properties in the CSV output you can use the `field` parameter like so:
+In order to include only specific properties in the CSV output you can use the `field` parameter like so:
 
 {CODE-BLOCK:plain}
 http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[field-1]&field=[field-2]...&field=[field-N]
 {CODE-BLOCK/}
 
 ## Example
- 
-Let's query the product collection include the category document and project some of its properties using the below RQL
+
+Firstly lets create a database, Northwind, and import the [sample data](..\..\studio\database\tasks\create-sample-data.markdown) into it.
+Now let's query the product collection include the category document and project some of its properties using the below RQL
 
 {CODE-BLOCK:plain}
 from Products as p
@@ -28,20 +29,37 @@ select
 {
     Name: p.Name,
     Category: c.Name,
-    Discontinued: p.Discontinued,
-    PricePerUnit: p.PricePerUnit
 }
 {CODE-BLOCK/}
 
 In order to execute the above query we will need to use the following url:   
 
 {CODE-BLOCK:plain}
-http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D
+http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%7D
 {CODE-BLOCK/}
 
-Going to the above address in a web browser will give you the following results:
+Going to the above address in a web browser will download you an export.csv file containing following results:
 
-![Query results](images\excel_result.png)
+{CODE-BLOCK:plain}
+Name,Category
+Chang,Beverages
+Aniseed Syrup,Condiments
+Chef Anton's Cajun Seasoning,Condiments
+Chef Anton's Gumbo Mix,Condiments
+Grandma's Boysenberry Spread,Condiments
+Uncle Bob's Organic Dried Pears,Produce
+Northwoods Cranberry Sauce,Condiments
+Mishi Kobe Niku,Meat/Poultry
+Ikura,Seafood
+Queso Cabrales,Dairy Products
+Queso Manchego La Pastora,Dairy Products
+Konbu,Seafood
+Tofu,Produce
+Genen Shouyu,Condiments
+Pavlova,Confections
+Alice Mutton,Meat/Poultry
+Carnarvon Tigers,Seafood
+{CODE-BLOCK/}
 
 Now to push them to Excel we need to create new spreadsheet and import data `From Text`:
 
@@ -56,6 +74,8 @@ Next, the Import Wizard will show up where we can adjust our import settings (do
 ![Import Wizard Step 1](images\excel_from_text_wizard_1.png)
 
 ![Import Wizard Step 2](images\excel_from_text_wizard_2.png)
+
+![Import Wizard Step 3](images\excel_from_text_wizard_3.png)
 
 Finally we need to select where we would like to place the imported data:
 
