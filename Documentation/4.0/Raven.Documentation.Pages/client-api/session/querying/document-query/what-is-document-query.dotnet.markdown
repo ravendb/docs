@@ -102,7 +102,7 @@ Available custom methods and extensions:
 - WhereLessThanOrEqual
 - [WhereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - WhereNotEquals
-- WhereRegex
+- [WhereRegex](../../../../client-api/session/querying/document-query/how-to-use-regex)
 - WhereStartsWith
 - [Query] [WithinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 
