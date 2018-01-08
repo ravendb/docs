@@ -30,7 +30,7 @@ with low-level stuff in the client as `BlittableJsonReaderObject` or `BlittableJ
 ### Etags
 
 Documents don't have etags. Instead, since documents can be stored in a cluster environment, that is on different nodes, they use a change vector to reflect changes on particular cluster nodes.
-The change vector is composed of list of node IDs and a sequential number (per node). The sequential number, still named as the etag, is represeted by `long`.
+The change vector is composed of list of node IDs and a sequential number (per node). The sequential number, still named as the etag, is represented by `long`.
 
 ### Identifiers
 

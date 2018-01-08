@@ -7,7 +7,7 @@
 ###### Default Value : null
 
 If not set or set to null - use provider's default.
-Can be overriden by setting *CommandTimeout* property value in SQL ETL configuration
+Can be overridden by setting *CommandTimeout* property value in SQL ETL configuration
 
 <br><br>
 

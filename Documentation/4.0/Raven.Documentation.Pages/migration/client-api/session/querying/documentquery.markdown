@@ -1,6 +1,6 @@
 ﻿# How to migrate DocumentQuery from 3.x?
 
-There were many changes to `DocumentQuery` regarding specific functionalities, we encourage you to read about them in their respective articles, but the biggest change that this particular article wants to adress is the **default operator change**.
+There were many changes to `DocumentQuery` regarding specific functionalities, we encourage you to read about them in their respective articles, but the biggest change that this particular article wants to address is the **default operator change**.
 
 In previous version of RavenDB there was a disprepancy between `Query` and `DocumentQuery` in regards to default operator. The `Query` was using `AND` and `DocumentQuery` was using `OR`. Now both of those types of query are using the same operator which is `AND`.
 

@@ -12,7 +12,7 @@ Here we create a subscription and have a worker processing documents
 
 ## Creating subscription worker object
 
-The subscription worker object manages the subscription on the client side. Not that upon creation of the object, no connection will be created. A connection is created only wheh the received object's Run method is called.
+The subscription worker object manages the subscription on the client side. Not that upon creation of the object, no connection will be created. A connection is created only when the received object's Run method is called.
 
 {PANEL: Get typed subscription worker}
 Here we get a subscription worker, only based on subscription name.

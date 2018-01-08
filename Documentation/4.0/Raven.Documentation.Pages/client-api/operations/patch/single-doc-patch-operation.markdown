@@ -34,7 +34,7 @@ An operations interface that exposes the full functionality and allows performin
 
 {CODE patch_operation@Common.cs /}
 
-## Built-in JavaScript extentions
+## Built-in JavaScript extensions
 
 In addition to ECMAScript 5.1 API, RavenDB introduces few built-in functions and members:
 
