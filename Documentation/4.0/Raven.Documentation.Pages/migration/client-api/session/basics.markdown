@@ -49,6 +49,21 @@ Also the `Delete` method no longer have the following overload `Delete<T>(ValueT
 |:---:|:---:|
 | {CODE delete_1_0@Migration\ClientApi\Session\Basics.cs /} | {CODE delete_2_0@Migration\ClientApi\Session\Basics.cs /} |
 
+### Delete by index
+
+The method `session.Advanced.DeleteByIndex` has been removed. Use `DeleteByQueryOperation` operation instead.
+
+| 3.x | 4.0 |
+|:---:|:---:|
+| {CODE delete_by_index_1_7@Migration\ClientApi\Session\Basics.cs /} | {CODE delete_by_index_1_8@Migration\ClientApi\Session\Basics.cs /} |
+
+{PANEL/}
+
+{PANEL:Streaming}
+
+The document streaming method accepting the document etag as the first paramter `session.Advanced.Stream<T>(Etag fromEtag)` no longer exists. As the streaming request can be processed 
+by any node available in the cluster, the solution is to use [Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions) in order to guarantee reliable processing of documents in the cluster environment.
+
 {PANEL/}
 
 

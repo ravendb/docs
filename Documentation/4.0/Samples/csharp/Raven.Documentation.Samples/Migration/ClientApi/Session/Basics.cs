@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Indexes;
+using Raven.Client.Documents.Operations;
 using Raven.Documentation.Samples.Indexes.Querying;
 
 namespace Raven.Documentation.Samples.Migration.ClientApi.Session
@@ -74,7 +76,36 @@ namespace Raven.Documentation.Samples.Migration.ClientApi.Session
                                                      }).First();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    /*
+                    #region delete_by_index_1_7
+                    Operation operation = 
+                        session
+                            .Advanced
+                            .DeleteByIndex<Person, Person_ByAge>(x => x.Age < 35);
+                    #endregion
+                    */
+                }
+
+                #region delete_by_index_1_8
+                Operation operation =
+                    store
+                        .Operations
+                        .Send(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+                #endregion
             }
+        }
+
+        private class Person
+        {
+            public int Age { get; set; }
+        }
+
+        private class Person_ByAge : AbstractIndexCreationTask<Person>
+        {
+
         }
     }
 }
