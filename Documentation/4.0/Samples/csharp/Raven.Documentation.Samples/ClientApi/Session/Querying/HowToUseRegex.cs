@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Linq;
+using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 {
@@ -24,11 +25,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var session = store.OpenSession())
                 {
                     #region regex_1
-                    // loads all users, which first name
-                    // starts with 'A' or 'J'
-                    List<User> users = session
-                        .Query<User>()
-                        .Where(x => Regex.IsMatch(x.FirstName, "^[AJ]"))
+                    // loads all products, which name
+                    // starts with 'N' or 'A'
+                    List<Product> products = session
+                        .Query<Product>()
+                        .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
                         .ToList();
                     #endregion
                 }
@@ -36,11 +37,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region regex_1_async
-                    // loads all users, which first name
-                    // starts with 'A' or 'J'
-                    List<User> users = await asyncSession
-                        .Query<User>()
-                        .Where(x => Regex.IsMatch(x.FirstName, "^[AJ]"))
+                    // loads all products, which name
+                    // starts with 'N' or 'A'
+                    List<Product> products = await asyncSession
+                        .Query<Product>()
+                        .Where(x => Regex.IsMatch(x.Name, "^[NA]"))
                         .ToListAsync();
                     #endregion
                 }

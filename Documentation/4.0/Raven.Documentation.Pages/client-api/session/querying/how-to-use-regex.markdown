@@ -1,6 +1,8 @@
-# Session : Querying : How to Use Regexp
+# Session : Querying : How to Use Regex
 
 To return only documents that match regular expression, use the `Regex` method which enables RavenDB to perform server-side pattern matching queries. 
+
+Supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
 
 ## Example
 
@@ -8,8 +10,8 @@ To return only documents that match regular expression, use the `Regex` method w
 {CODE-TAB:csharp:Sync regex_1@ClientApi\Session\Querying\HowToUseRegex.cs /}
 {CODE-TAB:csharp:Async regex_1_async@ClientApi\Session\Querying\HowToUseRegex.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
-from Users 
-where regex(FirstName, '^[NA]')
+from Products 
+where regex(Name, '^[NA]')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
