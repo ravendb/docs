@@ -59,7 +59,7 @@ You can manage the cluster by actions such as:
    This option is available only on the Leader node,  
    A new voting process will be triggered and a new Leader will be elected  
 5. **Force Timeout**  
-   The default configuration for the RavenDB cluster is each node expects to get a heartbeat from the cluster leader every 300 milliseconds.  
+   The default configuration for the RavenDB cluster is that each node expects to get a heartbeat from the cluster leader every 300 milliseconds.  
    Clicking 'Force Timeout' will trigger actions on the node as if it did Not hear from the Leader in this time period  
 {PANEL/}
 
