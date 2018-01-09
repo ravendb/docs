@@ -14,13 +14,13 @@ Following keywords and methods are available in RQL:
   - array()
 - [WHERE](../../indexes/querying/what-is-rql#where)
   - id()
-  - [search](../../indexes/querying/searching)
+  - [search()](../../indexes/querying/searching)
   - cmpxchg()
   - boost()
-  - [regex](../../client-api/session/querying/how-to-use-regex)
+  - [regex()](../../client-api/session/querying/how-to-use-regex)
   - startsWith()
   - endsWith()
-  - [lucene](../../client-api/session/querying/document-query/how-to-use-lucene)
+  - [lucene()](../../client-api/session/querying/document-query/how-to-use-lucene)
   - exists()
   - exact()
   - [intersect()](../../indexes/querying/intersection)
@@ -39,7 +39,7 @@ Following keywords and methods are available in RQL:
     - [alphaNumeric](../../indexes/querying/sorting#alphanumeric-ordering)
   - [random()](../../indexes/querying/sorting#random-ordering)
   - [score()](../../indexes/querying/sorting#ordering-by-score)
-  - [spatial.distance](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)
+  - [spatial.distance()](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)
 - [LOAD](../../indexes/querying/what-is-rql#load)
 - [SELECT](../../indexes/querying/what-is-rql#select)
   - DISTINCT
@@ -113,7 +113,7 @@ This option is used to perform RQL operations against a given [static index].
 
 {PANEL:WHERE}
 
-The keyword 'where' is used to filter-out the documents from final results.
+The keyword `where` is used to filter-out the documents from final results.
 
 ### Operator: >= <= <> != < > = ==
 
@@ -128,7 +128,7 @@ where Name = 'The Big Cheese'
 
 ### Operator: BETWEEN
 
-BETWEEN returns results inclusively and the type of border values used must match. It works on both 'numbers' and 'strings' and can be substituted with `>=` and `<=` operators (see the example below).
+Operator `between` returns results inclusively and the type of border values used must match. It works on both 'numbers' and 'strings' and can be substituted with `>=` and `<=` operators (see the example below).
 
 {CODE-BLOCK:csharp}
 from Products 
@@ -144,7 +144,7 @@ where PricePerUnit >= 10.5 and PricePerUnit <= 13.0
 
 ### Operator: IN
 
-Operator 'in' is validating if a given field contains passed values. It will return results if a given field matches **any** of the passed values.
+Operator `in` is validating if a given field contains passed values. It will return results if a given field matches **any** of the passed values.
 
 {CODE-BLOCK:csharp}
 from Companies 
@@ -176,7 +176,7 @@ where Lines[].ProductName all in ('Chang', 'Spegesild')
 
 ### Binary operators: AND OR NOT
 
-Binary operators can be used to build more complex statements. The 'NOT' operator can only be used with one of the other binary operators creating 'OR NOT' or 'AND NOT' ones.
+Binary operators can be used to build more complex statements. The `NOT` operator can only be used with one of the other binary operators creating `OR NOT` or `AND NOT` ones.
 
 {CODE-BLOCK:csharp}
 from Companies
@@ -203,7 +203,7 @@ Subcluses can be used along with binary operators to build even more complex log
 
 {PANEL:ORDER BY}
 
-To perform sorting 'order by' must be used. If you are interested in this subject, please read our dedicated sorting article that can be found [here](../../indexes/querying/sorting).
+To perform sorting `order by` must be used. If you are interested in this subject, please read our dedicated sorting article that can be found [here](../../indexes/querying/sorting).
 
 {PANEL/}
 
@@ -227,7 +227,7 @@ Projections can be performed by using `select`. Please read our dedicated projec
 
 {PANEL:UPDATE}
 
-To patch documents on server-side use 'update' with desired JS script that will be applied to any documents matching the query criteria. Please refer to our [patching article](../../client-api/operations/patch/set-based-patch-operation) for more information.
+To patch documents on server-side use `update` with desired JS script that will be applied to any documents matching the query criteria. Please refer to our [patching article](../../client-api/operations/patch/set-based-patch-operation) for more information.
 
 {PANEL/}
 
