@@ -50,6 +50,11 @@
         ]
     },
     {
+        "Path": "get-entity-last-modified.markdown",
+        "Name": "...get entity last modified",
+        "Mappings": []
+    },
+    {
         "Path": "check-if-entity-has-changed.markdown",
         "Name": "...check if entity has changed",
         "Mappings": []
