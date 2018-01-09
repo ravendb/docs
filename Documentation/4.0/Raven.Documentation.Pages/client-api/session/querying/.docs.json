@@ -112,5 +112,10 @@
         "Path": "how-to-use-regex.markdown",
         "Name": "How to Use Regex?",
         "Mappings": []
+    },
+    {
+        "Path": "how-to-query-with-exact-match.markdown",
+        "Name": "How to Query With Exact Match?",
+        "Mappings": []
     }
 ]
