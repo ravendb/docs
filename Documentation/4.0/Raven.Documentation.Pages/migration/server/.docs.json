@@ -1,7 +1,27 @@
 ﻿[
     {
-        "Path": "server.markdown",
-        "Name": "How to upgrade to 4.0",
+        "Path": "data-migration.markdown",
+        "Name": "Data migration",
+        "Mappings": []
+    },
+    {
+        "Path": "configuration-options.markdown",
+        "Name": "Configuration options",
+        "Mappings": []
+    },
+    {
+        "Path": "indexes.markdown",
+        "Name": "Indexes",
+        "Mappings": []
+    },
+    {
+        "Path": "bundles.markdown",
+        "Name": "Bundles",
+        "Mappings": []
+    },
+    {
+        "Path": "authentication-and-authorization.markdown",
+        "Name": "Authentication and authorization",
         "Mappings": []
     }
 ]

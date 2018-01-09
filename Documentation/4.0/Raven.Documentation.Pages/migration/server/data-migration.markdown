@@ -1,9 +1,9 @@
-﻿# How to migrate 3.x server to 4.0?
+﻿# How to migrate data from 3.x server to 4.0?
 
 {WARNING:Backward compatibility}
 
 RavenDB 4.0 is a major version upgrade from 3.x. As such, applications using 3.x client DLLs will not be able to work against 4.0 and require updating to the latest RavenDB.Client release before doing the server upgrade.
-
+More details can be found in [the Client API migration guide](../migration/client-api/introduction).
 {WARNING/}
 
 There are a few options to migrate 3.x data to RavenDB 4.0:
