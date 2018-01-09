@@ -8,16 +8,10 @@ To perform case-sensitive match you should use `exact` parameter.
 
 {CODE query_1_0@ClientApi\Session\Querying\HowToQueryWithExactMatch.cs /}
 
-
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **predicate** | Expression<Func<T, int, bool>> | Predicate with match condition |
 | **exact** | bool | Indicates if `predicate` should be matched in case-sensitive manner |
-
-| Return Value | |
-| ------------- | ----- |
-| IRavenQueryable | Instance implementing `IRavenQueryable` interface containing additional query methods and extensions |
-
 
 ###Example I - Query With Exact Match
 
@@ -29,7 +23,6 @@ from Employees where exact(FirstName == 'Robert')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-
 ### Example II - Query With Inner Exact Match
 
 {CODE-TABS}
@@ -40,8 +33,6 @@ from Orders
 where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-The above example returns Orders, which contains at least order line with product name: 'Singaporean Hokkien Fried Mee'. This is case sensitive match. 
 
 ### Related Articles
 

@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Linq;
 using Raven.Documentation.Samples.Orders;
 
@@ -12,12 +13,11 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
     {
         private interface IFoo<T>
         {
-            /*
             #region query_1_0
-            IRavenQueryable<T> Where<T>(this IQueryable<T> source, Expression<Func<T, int, bool>> predicate, bool exact)
-            IRavenQueryable<T> Where<T>(this IQueryable<T> source, Expression<Func<T, bool>> predicate, bool exact);
+            IRavenQueryable<T> Where<T>(Expression<Func<T, int, bool>> predicate, bool exact);
+
+            IRavenQueryable<T> Where<T>(Expression<Func<T, bool>> predicate, bool exact);
             #endregion
-            */
         }
 
         public async Task Examples()
@@ -51,6 +51,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var session = store.OpenSession())
                 {
                     #region query_2_1
+                    // return all entities from 'Orders' collection
+                    // which contain at least one order line with
+                    // 'Singaporean Hokkien Fried Mee' product
+                    // perform a case-sensitive match
                     List<Order> orders = session
                         .Query<Order>()
                         .Where(x => x.Lines.Any(p => p.ProductName == "Singaporean Hokkien Fried Mee"), exact: true)
@@ -61,6 +65,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 using (var asyncSession = store.OpenAsyncSession())
                 {
                     #region query_2_1_async
+                    // return all entities from 'Orders' collection
+                    // which contain at least one order line with
+                    // 'Singaporean Hokkien Fried Mee' product
+                    // perform a case-sensitive match
                     List<Order> orders = await asyncSession
                         .Query<Order>()
                         .Where(x => x.Lines.Any(p => p.ProductName == "Singaporean Hokkien Fried Mee"), exact: true)
