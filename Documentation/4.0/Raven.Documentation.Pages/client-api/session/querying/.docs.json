@@ -107,5 +107,10 @@
         "Path": "how-to-use-search.markdown",
         "Name": "How to Use Search?",
         "Mappings": []
+    },
+    {
+        "Path": "how-to-use-regex.markdown",
+        "Name": "How to Use Regex?",
+        "Mappings": []
     }
 ]
