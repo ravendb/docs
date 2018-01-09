@@ -11,7 +11,6 @@ namespace RavenDBTestDriverFullExample
 {
     public class RavenDBTestDriver : RavenTestDriver<MyRavenDBLocator>
     {
-
         //This allows us to modify the conventions of the store we get from 'GetDocumentStore'
         protected override void PreInitialize(IDocumentStore documentStore)
         {
@@ -40,7 +39,6 @@ namespace RavenDBTestDriverFullExample
             }
         }
     }
-
 
     public class MyRavenDBLocator : RavenServerLocator
     {
@@ -137,6 +135,5 @@ namespace RavenDBTestDriverFullExample
     {
         public string Name { get; set; }
     }
-
 }
 #endregion

@@ -5,7 +5,7 @@ In this section we will explain how to use [Raven.TestDriver](https://www.nuget.
 - [RavenTestDriver](../start/test-driver#raventestdriver)
 - [Pre-initializing the store](../start/test-driver#preinitialize)
 - [Unit test](../start/test-driver#unittest)
-- [Complete code sample](../start/test-driver#completecodesample)
+- [Complete example](../start/test-driver#complete-example)
 
 {PANEL:RavenServerLocator}
 
@@ -49,7 +49,9 @@ Lets start with reviewing the TestDriver's methods and properties and later we w
 {PANEL:PreInitialize}
 
 Pre-Initializing the IDocumentStore allows you to mutate the conventions used by the document store.
+
 ### Example
+
 {CODE test_driver_3@Start\RavenDBTestDriver.cs /}
 
 {PANEL/}
@@ -59,7 +61,8 @@ Finally we can write down a simple test, note that I'm using [xunit](https://www
 Also note that the test itself is meant to show diffrent capabilities of the test driver and is not meant to be the most efficient.
 The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#completecodesample)
 
-###Example
+### Example
+
 {CODE test_driver_4@Start\RavenDBTestDriver.cs /}
 
 In the test we get an IDocumentStore to our test database, deploy an index and insert two documents into it. 
@@ -68,7 +71,7 @@ At the end of the test we query for TestDocument where their name contains the w
 
 {PANEL/}
 
-{PANEL:CompleteCodeSample}
+{PANEL:Complete Example}
 
 {CODE test_driver_1@Start\RavenDBTestDriverFull.cs /}
 
