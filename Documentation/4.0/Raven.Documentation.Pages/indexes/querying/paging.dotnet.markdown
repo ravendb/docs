@@ -5,17 +5,17 @@ Paging, or pagination, is the process of splitting a dataset into pages, reading
 {WARNING:Warning}
 Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by the need of handling large quantities of documents.
 
-You can also set `DocumentConventions.ThrowIfQueryPageSizeIsNotSet` convention to **true** to guard yourself from executing queries without page size explicitly set. We recommend turning this convention on, especially during development or testing phases, to detect early the queries that potentially can return excessive amount of results.
+You can also set `DocumentConventions.ThrowIfQueryPageSizeIsNotSet` convention to **true** to guard yourself from executing queries without page size explicitly set. We recommend turning this convention on, especially during development or testing phases to detect early the queries that potentially can return excessive amount of results.
 {WARNING/}
 
 {INFO:Performance}
-By default, if number of returned results exceeds **2048**, the server will issue a `Performance Hint` notification (visible in Studio) with information about query details. You can decide if this behavior is desired or not. 
+By default, if the number of returned results exceeds **2048**, the server will issue a `Performance Hint` notification (visible in the Studio) with information about query details. You can decide if this behavior is desired or not. 
 The threshold can be adjusted by changing the `PerformanceHints.MaxNumberOfResults` configuration value.
 {INFO/}
 
 ## Example I - No Paging
 
-All of the queries below will return all the results available.
+The queries below will return all the results available.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_0_1@Indexes\Querying\Paging.cs /}
@@ -25,7 +25,7 @@ All of the queries below will return all the results available.
 
 ## Example II - Basic Paging
 
-Let's assume that our page size is `10`, and we want to retrieve the 3rd page. To do this we need to issue following query:
+Let's assume that our page size is `10`, and we want to retrieve the 3rd page. To do this, we need to issue following query:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_2_1@Indexes\Querying\Paging.cs /}
@@ -35,7 +35,7 @@ Let's assume that our page size is `10`, and we want to retrieve the 3rd page. T
 
 ## Finding the Total Results Count When Paging
 
-While paging you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
+While paging, you sometimes need to know the exact number of results returned from the query. The Client API supports this explicitly:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query paging_3_1@Indexes\Querying\Paging.cs /}
@@ -47,7 +47,7 @@ While the query will return with just 10 results, `totalResults` will hold the t
 
 ## Paging Through Tampered Results
 
-For some queries, the server will skip over some results internally, and by that invalidate the `TotalResults` value. When executing a `Distinct` query or index producing multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but will not take into account results that were skipped as a result of the `Distinct` operator.
+For some queries, the server will skip over some results internally, and invalidate the `TotalResults` value. When executing a `Distinct` query or index producing multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but it will not take into account results that were skipped as a result of the `Distinct` operator.
 
 Whenever `SkippedResults` is greater than 0 and a query involved some non-stored fields, it implies that we skipped over some results in the index.
     
