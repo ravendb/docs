@@ -63,5 +63,10 @@
         "Path": "check-if-there-are-any-changes-on-a-session.markdown",
         "Name": "...check if there are any changes on a session",
         "Mappings": []
+    },
+    {
+        "Path": "ignore-entity-changes.markdown",
+        "Name": "...ignore entity changes",
+        "Mappings": []
     }
 ]
