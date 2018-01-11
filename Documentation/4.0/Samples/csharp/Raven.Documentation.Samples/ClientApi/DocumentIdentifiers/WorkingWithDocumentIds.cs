@@ -109,7 +109,7 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
             var commandWithPipe = new PutDocumentCommand("products|", null, blittableDoc);
             session.Advanced.RequestExecutor.Execute(commandWithPipe, session.Advanced.Context);
 
-            var identityPipeId = command.Result.Id; // "products/1-A"
+            var identityPipeId = command.Result.Id; // "products/1"
 
             #endregion
         }
