@@ -65,6 +65,11 @@
         "Mappings": []
     },
     {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "/attachments",
         "Name": "Attachments",
         "Mappings": []
