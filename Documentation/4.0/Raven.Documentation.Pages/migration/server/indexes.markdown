@@ -50,9 +50,19 @@ It means the legacy auto indexes won't be used to satisfy dynamic queries becaus
 {PANEL/}
 
 
-{PANEL: Indexing extensions}
+{PANEL: Plugins / extensions}
 
-As the replacement for plugins you can use [Additional Sources]() feature. It allows you to write own C# code and use it during indexing. The code is attached to the index definition.
+## Compilation Extensions
+
+As a replacement for Compilation Extensions you can use [Additional Sources]() feature. It allows you to write own C# code and use it during indexing. The code is attached to the index definition.
 In addition, you can deploy custom DLLs next to RavenDB binaries and reference them in your extensions.
+
+## Custom analyzers
+
+Please read dedicated article [how to compile, deploy and use a custom analyzer]().
+
+## Analyzer Generators
+
+Analyzer generators aren't supported.
 
 {PANEL/}
