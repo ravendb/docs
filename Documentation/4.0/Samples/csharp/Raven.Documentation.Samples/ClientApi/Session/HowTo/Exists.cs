@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 				using (var session = store.OpenSession())
 				{
 				    #region exists_2
-				    bool exists = session.Advanced.Exists("employees/1");
+				    bool exists = session.Advanced.Exists("employees/1-A");
 				    if (exists)
 				    {
 				        //do something...
