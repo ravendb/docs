@@ -1,20 +1,53 @@
 ﻿# Bundles
 
-RavenDB 4.0 doesn't have the notion of bundles. All features are built-in the RavenDB server. 
+RavenDB 4.0 doesn't have the notion of bundles. All features are built-in the RavenDB server. Many of 3.x bundles has been designed to work in cluster environment as such you will find them 
+as [Ongoing Tasks](). However, some of the bundles are no longer available in version 4.0 so it might be necessary to take a different approach when during migration of some functionalities. 
 
-## Replication
+## Authorization
 
-When running in a cluster the replication is turned on between databases belonging to the same database group. In addition to that you can define External Replication task.
+Authorization is based on [client X.509 certificates](../../server/security/authorization/security-clearance-and-permissions).
+
+## Cascade Delete
+
+The attachments are always tied to their documents. The deletion of a documents results in removing all its attachments as well (in the same transaction).
+
+Deletion of referenced / child documents needs to be handled by your application. You just simply need to call `session.Delete()` for related documents when deleting the main one.
+
+## Compression
+
+The large fields of documents being strings are compressed by default. It is the built-in feature of the blittable JSON, the internal format for storing documents by RavenDB. Also the repeated properties are optimized away.
+
+Each attachments has the hash calculated based on its content. If multiple attachments have the same hash the data will be stored just once.
+
+## Encryption
+
+The encryption can be turned on during a database creation. 
+
+## Expiration
+
+Document Expiration can be enabled in the database settings.
 
 ## Periodic export
 
-Please define backup task and choose what kind of backup you want to create periodically.
+It can be setup as Backup task. You can choose there what kind of backup you want to create periodically.
+
+## Replication
+
+When running in a cluster the replication is always turned on between databases belonging to the same database group. In addition to that you can define External Replication task that will create an offsite replica outside the cluster.
 
 ## Scripted Index Results
 
-Creating documents based on map-reduce indexing results is possible using `OutputReduceToCollection` option defined in the index definition. This way recursive map-reduce indexes are possible.
+Documents can be created based on indexing results using `OutputReduceToCollection` option for map-reduce indexes. It allows to create recursive map-reduce indexes.
 
 ## SQL Replication
 
-It's defined as SQL ETL task
+It is defined as SQL ETL task
+
+## Unique Constraints
+
+`CompareExchangeValue` operations (`Get/Put/Delete`) and querying with the usage of `CmpXchg` method are the way to achieve Unique Constraints bundle functionality.
+
+## Versioning
+
+Document Revisions can be enabled in the database settings.
 

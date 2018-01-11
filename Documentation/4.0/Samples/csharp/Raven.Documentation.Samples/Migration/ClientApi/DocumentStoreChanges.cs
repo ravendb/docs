@@ -82,6 +82,12 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
             #region request_executor_4
             requestExecutor.DefaultTimeout = TimeSpan.FromSeconds(180);
             #endregion
+
+            #region request_executor_5
+            using (store.SetRequestsTimeout(TimeSpan.FromMilliseconds(180)))
+            {
+            }
+            #endregion
         }
     }
 }

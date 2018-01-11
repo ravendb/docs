@@ -20,8 +20,8 @@
         "Mappings": []
     },
     {
-        "Path": "authentication-and-authorization.markdown",
-        "Name": "Authentication and authorization",
+        "Path": "authentication.markdown",
+        "Name": "Authentication",
         "Mappings": []
     }
 ]
