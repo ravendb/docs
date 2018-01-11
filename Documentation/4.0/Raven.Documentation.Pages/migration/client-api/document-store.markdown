@@ -92,6 +92,10 @@ In order to customize bulk insert serialization you can use the following conven
 
 `DefaultUseOptimisticConcurrency` has been renamed to `UseOptimisticConcurrency`.
 
+### FindIdentityPropertyNameFromEntityName
+
+`FindIdentityPropertyNameFromEntityName` has been renamed to `FindIdentityPropertyNameFromCollectionName`.
+
 ### FindTypeTagName and FindDynamicTagName
 
 Renamed to `FindCollectionName` and `FindCollectionNameForDynamic`.

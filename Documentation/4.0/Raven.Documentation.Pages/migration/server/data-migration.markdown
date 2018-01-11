@@ -3,7 +3,7 @@
 {WARNING:Backward compatibility}
 
 RavenDB 4.0 is a major version upgrade from 3.x. As such, applications using 3.x client DLLs will not be able to work against 4.0 server and require migrating to the latest 4.0 client release prior the server upgrade. 
-Please refer to our [client migration guide](../migration/client-api/introduction) if you haven't migrated your application yet.
+Please refer to our [client migration guide](../../migration/client-api/introduction) if you haven't migrated your application yet.
 {WARNING/}
 
 There are a few options to migrate 3.x data to RavenDB 4.0:
@@ -43,7 +43,7 @@ The `Advanced` options section allows to:
 
 {NOTE:Files and legacy attachments}
 
-RavenDB 4.0 introduces the notion of [attachments](../client-api/session/attachments/what-are-attachments) that can be bound to documents. 
+RavenDB 4.0 introduces the notion of [attachments](../../client-api/session/attachments/what-are-attachments) that can be bound to documents. 
 The files migrated from RavenFS and legacy database attachments will be saved as documents in `@files` collection. Each document will have a single attachment.
 The name of the document will be `files/{attachment-name}`, the name of an attachment will remain unchanged.
 
