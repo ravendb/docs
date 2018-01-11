@@ -1,5 +1,10 @@
 [
     {
+        "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
+        "Name": "How to customize identity property lookup for entities?",
+        "Mappings": []
+    },
+    {
         "Path": "how-to-enable-optimistic-concurrency.markdown",
         "Name": "How to enable optimistic concurrency?",
         "Mappings": []
