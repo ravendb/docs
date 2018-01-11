@@ -65,6 +65,11 @@
         "Mappings": []
     },
     {
+        "Path": "check-if-document-exists.markdown",
+        "Name": "...check if document exists",
+        "Mappings": []
+    },
+    {
         "Path": "ignore-entity-changes.markdown",
         "Name": "...ignore entity changes",
         "Mappings": []
