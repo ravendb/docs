@@ -274,5 +274,34 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-best-nosql-database-example-for-startups.jpg",
             "twitter:url": "https://ravendb.net/articles/ravendb-best-nosql-database-example-for-startups"
         }
+    },
+    {
+        "Path": "making-how-to-set-up-a-database-easy-for-nosql-document-database.markdown",
+        "Name": "Making &quot;How to set up a Database&quot; Really Easy",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Making &quot;How to set up a Database&quot; Really Easy | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database",
+            "publishedAt": "2018-01-02"
+        },
+        "SeoMetaProperties": {
+            "description": "Perform a simple NoSql Database download. Includes easy install, raven security encryption, and setup. How to set up a database is easy with our setup wizard.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Making &quot;How to set up a Database&quot; Really Easy | RavenDB",
+            "og:description": "Perform a simple NoSql Database download. Includes easy install, raven security encryption, and setup. How to set up a database is easy with our setup wizard.",
+            "og:url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Making &quot;How to set up a Database&quot; Really Easy | RavenDB",
+            "twitter:description": "Perform a simple NoSql Database download. Includes easy install, raven security encryption, and setup. How to set up a database is easy with our setup wizard.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg",
+            "twitter:url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database"
+        }
     }
 ]
