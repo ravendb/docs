@@ -28,6 +28,10 @@ There is no need to explicitly define sorting in definitions of static indexes a
 
 `FieldIndexing.Analyzed` has been renamed to `FieldIndexing.Search`
 
+### FieldIndexing.NotAnalyzed
+
+`FieldIndexing.NotAnalyzed` has been renamed to `FieldIndexing.Exact`
+
 {PANEL/}
 
 {PANEL:IndexDefinition}
@@ -35,5 +39,13 @@ There is no need to explicitly define sorting in definitions of static indexes a
 ### Map
 
 `Map` property has been removed. Use `Maps` property instead.
+
+### Field options
+
+Options as are now defined per field using `Fields` property.
+
+| 3.x | 4.0 |
+|:---:|:---:|
+| {CODE indexes_2@Migration\ClientApi\Indexes.cs /} | {CODE indexes_3@Migration\ClientApi\Indexes.cs /} |
 
 {PANEL/}

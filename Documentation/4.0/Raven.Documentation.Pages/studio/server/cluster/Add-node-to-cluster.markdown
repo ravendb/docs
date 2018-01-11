@@ -6,7 +6,7 @@ When a server is started for the first time, it is in a `passive` state.
 Performing any Raft command (such as listed below) will make the server be part of a cluster.
 
 * Adding a license
-* Creaing a database on this server
+* Creating a database on this server
 * Adding another node to this server cluster (will cause both to be part of the same cluster)
 {NOTE/}
 

@@ -1,6 +1,6 @@
 ﻿# Indexing Basics
 
-To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](todo) for querying.
+To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../indexes/querying/what-is-rql) for querying.
 
 ## Stale Indexes
 
@@ -12,7 +12,7 @@ RavenDB returns quickly for every client request, even if involves re-indexing h
 
 ## Querying
 
-RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](todo) that) and do not bother about anything else.
+RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query#session.advanced.rawquery) that) and do not bother about anything else.
 
 The fact is, that we did not stop at this point, we went much further, by exposing LINQ-based querying with strong-type support that hides all Lucene syntax complexity:
 
@@ -25,7 +25,7 @@ where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-You can also create queries manually by using  [DocumentQuery]() or [RawQuery](todo), both available as a part of advanced session operations:
+You can also create queries manually by using  [DocumentQuery](../client-api/session/querying/document-query/what-is-document-query) or [RawQuery](client-api/session/querying/how-to-query#session.advanced.rawquery), both available as a part of advanced session operations:
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery indexes_3@Indexes/IndexingBasics.cs /}

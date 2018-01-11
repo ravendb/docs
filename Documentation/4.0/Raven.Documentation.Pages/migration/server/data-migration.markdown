@@ -1,16 +1,16 @@
-﻿# How to migrate 3.x server to 4.0?
+﻿# How to migrate data from 3.x server to 4.0?
 
 {WARNING:Backward compatibility}
 
-RavenDB 4.0 is a major version upgrade from 3.x. As such, applications using 3.x client DLLs will not be able to work against 4.0 and require updating to the latest RavenDB.Client release before doing the server upgrade.
-
+RavenDB 4.0 is a major version upgrade from 3.x. As such, applications using 3.x client DLLs will not be able to work against 4.0 server and require migrating to the latest 4.0 client release prior the server upgrade. 
+Please refer to our [client migration guide](../../migration/client-api/introduction) if you haven't migrated your application yet.
 {WARNING/}
 
 There are a few options to migrate 3.x data to RavenDB 4.0:
 
 - create database from 3.x data
 - live import data from a running instance
-- restoring 3.x backup
+- restore 3.x backup
 
 <br />
 
@@ -18,7 +18,7 @@ There are a few options to migrate 3.x data to RavenDB 4.0:
 
 The process of upgrading to RavenDB 4.0 server is as follows:
 
-- Ensure backups of 3.x databases
+- Ensure backups of 3.x databases have been made
 - Stop existing 3.x server
 - Start new RavenDB 4.0 server (4.0 binaries must not be extracted the same directory as 3.x ones)
 - Create new database using `New database from v3.x (legacy) data files`:
@@ -33,7 +33,7 @@ Next, you need to provide the migration configuration:
 
 - `Resource type` - whether you are going to import a database of a file system
 - `Data directory` - the absolute path to 3.x data directory
-- `Data exporter` - the absolute path to `Raven.StorageExporter.exe` - RavenDB 3.5 tool that can be found on [ravendb.net](http://ravendb.net/download) in Tools package, please make sure you use the latest version
+- `Data exporter` - the absolute path to `Raven.StorageExporter.exe` - RavenDB 3.5 tool that can be found on [ravendb.net](http://ravendb.net/download) as a part of Tools package. Please make sure to use the latest version (patch or stable).
 
 The `Advanced` options section allows to:
 
@@ -43,7 +43,7 @@ The `Advanced` options section allows to:
 
 {NOTE:Files and legacy attachments}
 
-RavenDB 4.0 introduces the notion of [attachments](../client-api/session/attachments/what-are-attachments) that can be bound to documents. 
+RavenDB 4.0 introduces the notion of [attachments](../../client-api/session/attachments/what-are-attachments) that can be bound to documents. 
 The files migrated from RavenFS and legacy database attachments will be saved as documents in `@files` collection. Each document will have a single attachment.
 The name of the document will be `files/{attachment-name}`, the name of an attachment will remain unchanged.
 
@@ -63,7 +63,7 @@ database on 4.0 server and go to `Setting -> Import Data -> From another RavenDB
 
 {PANEL: How to restore an existing 3.x backup?}
 
-If you want to restore a database from 3.x backup to 4.0 server, first you need to restore it manually to running 3.x instance (by [command line](https://ravendb.net/docs/article-page/3.5/Csharp/server/administration/backup-and-restore) or [RavenDB studio](https://ravendb.net/docs/article-page/3.5/csharp/studio/management/backup-restore)).
+If you want to restore a database from 3.x backup to 4.0 server, first you need to restore it manually to running 3.x instance (by [command line](https://ravendb.net/docs/article-page/3.5/Csharp/server/administration/backup-and-restore) or [RavenDB Studio](https://ravendb.net/docs/article-page/3.5/csharp/studio/management/backup-restore)).
 Next, use `New database from v3.x (legacy) data files` option, described above, and point the just restored data.
 
 {PANEL/}

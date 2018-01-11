@@ -98,7 +98,7 @@ Identities are sequential, so running the above code again will generate `compan
 
 {NOTE Using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster and **might** affect performance /}
 
-{INFO:Prefix convention}F
+{INFO:Prefix convention}
 Note that we used `companies/` as the prefix just to follow the RavenDB convention. However nothing stands in the way to provide the different prefix, 
 which will be completely unrelated to the collection name.
 {INFO/}
@@ -113,7 +113,7 @@ The use of the commands API gives you the full freedom to select the identifier 
 
 ### Identity ids
 
-As in the case of session, you can indicate if the identifier that you are passing needs to have the identifier suffix added. You have to mark it by ending the key by `/` or '|' character:
+As in the case of session, you can indicate if the identifier that you are passing needs to have the identifier suffix added. You have to mark it by ending the key by `/` or `|` character:
 
 {CODE commands_identity@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
 

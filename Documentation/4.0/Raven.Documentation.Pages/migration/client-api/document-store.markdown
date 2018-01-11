@@ -55,6 +55,10 @@ Instead of `JsonRequestFactory` `IDocumentStore` instance has `RequestExecutor`.
 
 {CODE request_executor_4@Migration\ClientApi\DocumentStoreChanges.cs /}  
 
+The timeout change can be also scoped with the usage of:
+
+{CODE request_executor_5@Migration\ClientApi\DocumentStoreChanges.cs /} 
+
 ## Conventions
 
 All conventions needs to be set before `DocumentStore.Initialize` is called. Otherwise `InvalidOperationException` will be thrown.
@@ -84,6 +88,13 @@ In order to customize bulk insert serialization you can use the following conven
 
 `DefaultQueryingConsistency` convention has been removed. Check the related article discussing [how to deal with non stale results](../../indexes/stale-indexes).
 
+### DefaultUseOptimisticConcurrency
+
+`DefaultUseOptimisticConcurrency` has been renamed to `UseOptimisticConcurrency`.
+
+### FindIdentityPropertyNameFromEntityName
+
+`FindIdentityPropertyNameFromEntityName` has been renamed to `FindIdentityPropertyNameFromCollectionName`.
 
 ### FindTypeTagName and FindDynamicTagName
 
