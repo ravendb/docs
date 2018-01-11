@@ -20,4 +20,4 @@ In order to check if a document with specific Id exists in the database, use the
 
 ## Related Articles
 
-- [How to check if there are any changes on a session?](./check-if-there-are-any-changes-on-a-session)
+- [How to check if there are any changes on a session?](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
