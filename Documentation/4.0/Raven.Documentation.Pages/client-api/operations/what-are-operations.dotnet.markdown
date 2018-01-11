@@ -143,6 +143,7 @@ These type of operations contain various administrative and miscellaneous config
 * [UpdateExternalReplicationOperation](../../client-api/operations/server/update-external-replication-operation)   
 
 ##### Miscellaneous
+* [GetBuildNumberOperation](../../client-api/operations/server/get-build-number-operation)   
 * [GetDatabaseNamesOperation](../../client-api/operations/server/get-database-names-operation)   
 
 ####Example : Get Build Number
