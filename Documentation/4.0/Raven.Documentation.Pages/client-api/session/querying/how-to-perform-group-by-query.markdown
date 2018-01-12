@@ -1,0 +1,144 @@
+#Session : Querying : How to Perform Dynamic Group By Query?
+
+The query optimizer in RavenDB 4.0 supports dynamic group by queries and automatically creates auto map-reduce indexes.
+It means you can create a dynamic query that does an aggregation by using LINQ `GroupBy()` method or `group by into` syntax.
+
+The supported aggregation operations are:
+
+- Count
+- Sum
+
+<br />
+
+{PANEL: Group By Single Field}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_1@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_1_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders
+group by ShipTo.City
+select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Group By Multiple Fields}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_2@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_2_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders
+group by Employee, Company
+select Employee as EmployeeIdentifier, Company, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Select Composite GroupBy Key}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_3@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_3_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders 
+group by Employee, Company
+select key() as EmployeeCompanyPair, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{PANEL/}
+
+{PANEL: Group By Array}
+
+### By Array Values
+
+In order to group by values of array you need to use `GroupByArrayValues`. The following query will group by `Product` property from `Lines` collection 
+and calculate the count per ordered products. Underneath a [fanout](../../../indexes/fanout-indexes) auto map-reduce index will be created to handle such query. 
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_4@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_4_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders 
+group by Lines[].Product
+select Lines[].Product, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+Inside a single group by statement you can mix collection values and value of another property. That's supported by `DocumentQuery` only:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_5@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_5_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders 
+group by Lines[].Product, ShipTo.Country 
+select Lines[].Product as Product, ShipTo.Country as Country, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+Grouping by multiple values from **the same** collection is supported as well:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_6@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_6_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders 
+group by Lines[].Product, Lines[].Quantity 
+select Lines[].Product as Product, Lines[].Quantity as Quantity, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+### By Array Content
+
+Another option is to group by array content. Then the reduction key will be calculated based on all values of a collection specified in `GroupBy`.
+The client API exposes `GroupByArrayContent` extension method for that purpose.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_7@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_7_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders
+group by array(Lines[].Product)
+select key() as Products, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+Grouping by array content and a value of another property is supported by `DocumentQuery`:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_8@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_8_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders 
+group by array(Lines[].Product), ShipTo.Country 
+select Lines[].Product as Products, ShipTo.Country as Country, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+Grouping by multiple values from **the same** collection is also supported only by `DocumentQuery`:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync group_by_9@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB:csharp:Async group_by_9_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Orders 
+group by array(Lines[].Product), array(Lines[].Quantity) 
+select Lines[].Product as Products, Lines[].Quantity as Quantities, count()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{NOTE: Note}
+In order to use the above extension methods you need to add the following **using** statement:
+
+{CODE group_by_using@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
+{NOTE/}
+
+
+
+{PANEL/}
+

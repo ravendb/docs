@@ -46,7 +46,7 @@ where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but a
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-{NOTE: To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition. /}
+{NOTE To leverage the searching capabilities with the usage of static indexes, please remember to enable full-text search in field settings of the index definition. /}
 
 ## Related Articles
 
