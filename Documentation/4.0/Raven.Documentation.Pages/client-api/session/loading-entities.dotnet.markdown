@@ -88,7 +88,7 @@ To load multiple entities that contain common prefix use `LoadStartingWith` meth
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -117,7 +117,7 @@ Entities can be streamed from server using one of the following `Stream` methods
 | **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
 | streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc. |
 
 | Return Value | |

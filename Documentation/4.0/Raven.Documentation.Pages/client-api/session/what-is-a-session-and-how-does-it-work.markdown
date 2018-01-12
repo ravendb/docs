@@ -15,7 +15,7 @@ You can read more about storing data with the session [here](./storing-entities)
 
 The Client API implements the Unit of Work pattern. That has several implications:
 
-* In the context of a single session, a single document (identified by its key) always resolves to the same instance.
+* In the context of a single session, a single document (identified by its ID) always resolves to the same instance.
 
 {CODE session_usage_3@ClientApi\Session\WhatIsSession.cs /}
 

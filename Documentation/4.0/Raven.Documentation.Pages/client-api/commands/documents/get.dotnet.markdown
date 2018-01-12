@@ -76,7 +76,7 @@ There are a few methods that allow you to retrieve documents from a database:
 
 {PANEL:Get by starts with}
 
-**GetDocumentsCommand** can be used to retrieve multiple documents for a specified key prefix.
+**GetDocumentsCommand** can be used to retrieve multiple documents for a specified ID prefix.
 
 ### Syntax
 
@@ -85,7 +85,7 @@ There are a few methods that allow you to retrieve documents from a database:
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **startsWith** | string | prefix for which documents should be returned |
-| **startAfter** | string | skip 'document fetching' until the given key is found, and return documents after that key (default: null) |
+| **startAfter** | string | skip 'document fetching' until the given ID is found, and return documents after that ID (default: null) |
 | **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
 | **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped |

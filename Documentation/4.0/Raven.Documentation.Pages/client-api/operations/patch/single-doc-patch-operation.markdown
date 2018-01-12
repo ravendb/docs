@@ -42,8 +42,8 @@ In addition to ECMAScript 5.1 API, RavenDB introduces few built-in functions and
 | `id(document)` | function | returns the ID of a document|
 | `this` | object | Current document (with metadata) |
 | `args` | object | Object containing arguments passed to the script |
-| `load(key)` | method | Allows document loading, increases maximum number of allowed steps in script. |
-| `put(key, data, metadata)` | method | Allows document putting, returns generated key |
+| `load(id)` | method | Allows document loading, increases maximum number of allowed steps in script. |
+| `put(id, data, metadata)` | method | Allows document putting, returns generated ID |
 | `output(...)` | method | Allows debug your patch, prints passed messages in output tab |
 
 ## Examples

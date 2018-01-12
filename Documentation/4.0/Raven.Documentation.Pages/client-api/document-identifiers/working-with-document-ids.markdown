@@ -113,7 +113,7 @@ The use of the commands API gives you the full freedom to select the identifier 
 
 ### Identity IDs
 
-As in the case of session, you can indicate if the identifier that you are passing needs to have the identifier suffix added. You have to mark it by ending the key by `/` or `|` character:
+As in the case of session, you can indicate if the identifier that you are passing needs to have the identifier suffix added. You have to mark it by ending the ID with `/` or `|` character:
 
 {CODE commands_identity@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
 
