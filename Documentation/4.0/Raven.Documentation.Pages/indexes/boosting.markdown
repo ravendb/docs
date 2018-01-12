@@ -17,7 +17,7 @@ The next step is to perform a query against that index:
 
 ## Remarks
 
-{INFO Boosting is also available at the query level when using the `Search` method. You can read more about it [here](../indexes/querying/searching#boosting). /}
+{INFO Boosting is also available at the query level. You can read more about it [here](../indexes/querying/boosting). /}
 
 ## Related Articles
 
