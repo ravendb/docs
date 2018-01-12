@@ -68,10 +68,10 @@ To make a document property indexed using a specific Analyzer, all you need to d
 
 ## Creating Own Analyzer
 
-You can create a custom analyzer on your own and deploy it to RavenDB server. You need to perform the following steps:
+You can create a custom analyzer on your own and deploy it to RavenDB server. To do that pefrom the following steps:
 
-- the analyzer needs to be a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (you need to reference `Lucene.Net.dll` supplied with RavenDB Server package),
-- your DLL needs to be placed next to RavenDB binaries (note it needs to be .netstandard 2.0 assembly)
+- create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (you need to reference `Lucene.Net.dll` supplied with RavenDB Server package),
+- your DLL needs to be placed next to RavenDB binaries (note it needs to be compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly)
 - the fully qualified name needs to be specified for an indexing field that is going to be tokenized by the analyzer
 
 {CODE analyzers_6@Indexes\Analyzers.cs /}
