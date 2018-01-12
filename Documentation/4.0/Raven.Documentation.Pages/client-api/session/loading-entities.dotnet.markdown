@@ -21,7 +21,7 @@ The most basic way to load single entity is to use one of `Load` methods.
 
 | Return Value | |
 | ------------- | ----- |
-| TResult | Instance of `TResult` or `null` if document with given Id does not exist. |
+| TResult | Instance of `TResult` or `null` if document with given ID does not exist. |
 
 ### Example
 
@@ -69,7 +69,7 @@ To load multiple entities at once use one of the following `Load` overloads.
 
 | Return Value | |
 | ------------- | ----- |
-| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if document with given Id does not exist. |
+| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if document with given ID does not exist. |
 
 {CODE loading_entities_3_1@ClientApi\Session\LoadingEntities.cs /}
 
@@ -128,11 +128,11 @@ Entities can be streamed from server using one of the following `Stream` methods
 
 ### Example I
 
-Stream documents for a Id prefix
+Stream documents for a ID prefix
 {CODE loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
 
 ## Example 2
-Fetch documents for a Id prefix directly into a stream
+Fetch documents for a ID prefix directly into a stream
 {CODE loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
 
 ### Remarks
@@ -149,11 +149,11 @@ To check if entity is attached to session, e.g. has been loaded previously, use 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string | Entity Id for which check should be performed. |
+| **id** | string | Entity ID for which check should be performed. |
 
 | Return Value | |
 | ------------- | ----- |
-| bool | Indicates if entity with given Id is loaded. |
+| bool | Indicates if entity with given ID is loaded. |
 
 ### Example
 

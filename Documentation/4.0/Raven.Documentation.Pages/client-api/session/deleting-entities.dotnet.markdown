@@ -8,7 +8,7 @@ Entities can be marked for deletion by using `Delete` method, but will not be re
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **entity** or **id** | T, ValueType or string | instance of entity to delete or entity Id |
+| **entity** or **id** | T, ValueType or string | instance of entity to delete or entity ID |
 | **expectedChangeVector** | string | a change vector to use for concurrency checks
 
 ## Example 1

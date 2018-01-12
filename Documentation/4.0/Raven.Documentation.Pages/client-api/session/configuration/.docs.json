@@ -1,5 +1,15 @@
 [
     {
+        "Path": "how-to-customize-id-generation-for-entities.markdown",
+        "Name": "How to customize ID generation for entities?",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/session/configuration/how-to-customize-key-generation-for-entities"
+            }
+        ]
+    },
+    {
         "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
         "Name": "How to customize identity property lookup for entities?",
         "Mappings": []

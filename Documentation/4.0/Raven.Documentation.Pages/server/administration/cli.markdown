@@ -29,7 +29,7 @@ ravendb>
 
 - RavenDB can operate as service/daemon without console input. It is possible to access the CLI through a provided `rvn` (`rvn.exe` in windows) tool included in each distribution package. The process is as follows:
 ```
-rvn admin-channel [RavenDB process Id]
+rvn admin-channel [RavenDB process ID]
 ```
 *The rvn executable can be found in the distribution package under 'Server' directory*
 
@@ -43,7 +43,7 @@ rvn admin-channel [RavenDB process Id]
 
 Usage : **info**
 
-Prints basic information to the console, including build version information, process id (PID), bitness, and system hardware information.
+Prints basic information to the console, including build version information, process ID (PID), bitness, and system hardware information.
 
 #Example:
 

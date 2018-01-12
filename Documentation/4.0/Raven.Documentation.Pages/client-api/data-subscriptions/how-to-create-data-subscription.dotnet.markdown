@@ -20,7 +20,7 @@ Here we create a subscription on Orders collection, which total order revenue is
 {PANEL/}
 
 {PANEL: Create subscription with filtering and projection}
-Here we create a subscription on Orders collection, which total order revenue is greater than 100, and return only Id and total revenue.
+Here we create a subscription on Orders collection, which total order revenue is greater than 100, and return only ID and total revenue.
 {CODE-TABS}
 {CODE-TAB:csharp:Generic-syntax create_filter_and_projection_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TAB:csharp:RQL-syntax create_filter_and_projection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
@@ -29,7 +29,7 @@ Here we create a subscription on Orders collection, which total order revenue is
 
 
 {PANEL: Create subscription with load document in filter projection }
-Here we create a subscription on Orders collection, which total order revenue is greater than 100, and return Id, total revenue, shipping address and responsible employee name.
+Here we create a subscription on Orders collection, which total order revenue is greater than 100, and return ID, total revenue, shipping address and responsible employee name.
 {CODE-TABS}
 {CODE-TAB:csharp:Generic-syntax create_filter_and_projection_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TAB:csharp:RQL-syntax create_filter_and_projection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}

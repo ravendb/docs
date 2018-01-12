@@ -4,7 +4,7 @@
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Id** | string | Document id |
+| **Id** | string | Document ID |
 | **ChangeVector** | string | Document change-vector |
 | **Document** | DynamicJsonValue | Document to put |
 | **Type** | CommandType | The Command Type (PUT) |

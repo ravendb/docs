@@ -4,7 +4,7 @@
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Id** | string | Document id |
+| **Id** | string | Document ID |
 | **Type** | CommandType | The Command Type (`DELETE`) |
 | **ChangeVector** | string | Document change-vector |
 

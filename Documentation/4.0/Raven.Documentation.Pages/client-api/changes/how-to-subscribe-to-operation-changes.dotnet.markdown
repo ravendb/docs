@@ -15,11 +15,11 @@ Operation changes for one operation can be observed using the `ForOperationId` m
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **operationId** | long | Id of an operation for which notifications will be processed. |
+| **operationId** | long | ID of an operation for which notifications will be processed. |
 
 | Return value | |
 | ------------- | ----- |
-| IChangesObservable<[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)> | Observable that allows you to add subscriptions to notifications for an operation with a given id. |
+| IChangesObservable<[OperationStatusChange](../../client-api/changes/how-to-subscribe-to-operation-changes#operationchange)> | Observable that allows you to add subscriptions to notifications for an operation with a given ID. |
 
 ### Example
 
@@ -52,7 +52,7 @@ Operations changes for all Operations can be observed using the `ForAllOperation
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **State** | [OperationState](../../client-api/changes/how-to-subscribe-to-operation-changes#operationstate) | Operation state |
-| **OperationId** | long | Operation id |
+| **OperationId** | long | Operation ID |
 
 <hr />
 {PANEL/}

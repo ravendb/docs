@@ -1,6 +1,6 @@
 # Session : How to check if a document exists?
 
-In order to check if a document with specific Id exists in the database, use the `Exists` method from the `Advanced` session operations.
+In order to check if a document with specific ID exists in the database, use the `Exists` method from the `Advanced` session operations.
 
 ## Syntax
 
@@ -8,11 +8,11 @@ In order to check if a document with specific Id exists in the database, use the
 
 | Parameters | | |
 | ---------- | ---------- | ----- |
-| **id** | string | Id of the document to check the existence of. |
+| **id** | string | ID of the document to check the existence of. |
 
 | Return Value | |
 | ------------- | ----- |
-| bool | Indicates if a document with the given Id exists. |
+| bool | Indicates if a document with the given ID exists. |
 
 ## Example
 
