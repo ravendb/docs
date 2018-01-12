@@ -296,6 +296,58 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #endregion
                 }
             }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_8_1
+                    // return all products which name starts with 'ch'
+                    IList<Product> results = session
+                        .Query<Product>()
+                        .Where(x => x.Name.StartsWith("Ch"))
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_8_2
+                    // return all products which name starts with 'ch'
+                    IList<Product> results = session
+                        .Advanced
+                        .DocumentQuery<Product>()
+                        .WhereStartsWith(x => x.Name, "Ch")
+                        .ToList();
+                    #endregion
+                }
+            }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_9_1
+                    // return all products which name ends with 'ra'
+                    IList<Product> results = session
+                        .Query<Product>()
+                        .Where(x => x.Name.EndsWith("ra"))
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_9_2
+                    // return all products which name ends with 'ra'
+                    IList<Product> results = session
+                        .Advanced
+                        .DocumentQuery<Product>()
+                        .WhereEndsWith(x => x.Name, "ra")
+                        .ToList();
+                    #endregion
+                }
+            }
         }
     }
 }
