@@ -1,6 +1,6 @@
 ﻿# Creating and Deploying Indexes
 
-**Indexes are used by the server to satisfy queries. ** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
+**Indexes are used by the server to satisfy queries.** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
 
 {INFO:Remember}
 
