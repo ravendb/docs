@@ -119,7 +119,7 @@ Remember to add the `Raven.Client.Documents.Linq` namespace to usings if you wan
 {CODE-TAB:csharp:DocumentQuery filtering_8_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from Products 
-where startsWith(Name, 'Ch')
+where startsWith(Name, 'ch')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

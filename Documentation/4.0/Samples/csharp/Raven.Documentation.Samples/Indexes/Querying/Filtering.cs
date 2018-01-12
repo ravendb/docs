@@ -305,7 +305,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     // return all products which name starts with 'ch'
                     IList<Product> results = session
                         .Query<Product>()
-                        .Where(x => x.Name.StartsWith("Ch"))
+                        .Where(x => x.Name.StartsWith("ch"))
                         .ToList();
                     #endregion
                 }
@@ -317,7 +317,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     IList<Product> results = session
                         .Advanced
                         .DocumentQuery<Product>()
-                        .WhereStartsWith(x => x.Name, "Ch")
+                        .WhereStartsWith(x => x.Name, "ch")
                         .ToList();
                     #endregion
                 }
