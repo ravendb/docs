@@ -22,7 +22,7 @@ How that happens in the virtual concept of the collections is visualized in the 
 
 Each RavenDB index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) and we iterate over the collection's documents during the indexing process.
 
-###Document Keys
+###Document IDs
 
 The default convention is that documents have the identifiers like, `orders/1-A` where `orders` is just a collection name and `1` is the identity value and `A` is the `Server's Tag`. 
 

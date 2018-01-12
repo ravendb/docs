@@ -26,7 +26,7 @@ Method returns all changes for each entity stored within the session. Including 
 
 | ReturnValue | |
 | ------------- | ----- |
-| IDictionary<string, DocumentsChanges[]> | Dictionary containing list of changes per document key. |
+| IDictionary<string, DocumentsChanges[]> | Dictionary containing list of changes per document ID. |
 
 ### Example I
 

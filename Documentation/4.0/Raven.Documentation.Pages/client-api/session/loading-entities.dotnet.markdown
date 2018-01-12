@@ -84,10 +84,10 @@ To load multiple entities that contain common prefix use `LoadStartingWith` meth
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **keyPrefix** | string |  prefix for which documents should be returned  |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
 | **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
 
 | Return Value | |
@@ -114,7 +114,7 @@ Entities can be streamed from server using one of the following `Stream` methods
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
