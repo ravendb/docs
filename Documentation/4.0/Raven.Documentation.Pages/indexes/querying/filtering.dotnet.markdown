@@ -112,6 +112,28 @@ where Tags ALL IN ('Development', 'Research')
 Remember to add the `Raven.Client.Documents.Linq` namespace to usings if you want to use the `ContainsAll` extension method.
 {WARNING/}
 
+## Where - Starts With
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query filtering_8_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_8_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Products 
+where startsWith(Name, 'ch')
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+## Where - Ends With
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query filtering_9_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_9_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB-BLOCK:csharp:RQL}
+from Products 
+where endsWith(Name, 'ra')
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 ## Remarks
 
 {INFO Underneath, `Query` and `DocumentQuery` are converting predicates to the `IndexQuery` class so they can issue a query from a **low-level operation method**. /}
