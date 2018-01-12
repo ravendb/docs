@@ -31,6 +31,7 @@
             string lastCommitSha,
             string relativePath,
             List<DocumentationMapping> mappings,
+            string relatedArticlesContent,
             Dictionary<string, string> metadata = null,
             Dictionary<string, string> seoMetaProperties = null)
         {
@@ -48,7 +49,8 @@
                 RelativePath = relativePath,
                 Mappings = mappings,
                 Metadata = metadata,
-                SeoMetaProperties = seoMetaProperties
+                SeoMetaProperties = seoMetaProperties,
+                RelatedArticlesContent = relatedArticlesContent
             };
         }
     }
@@ -70,7 +72,8 @@
 
 	    protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent,
 	        string textContent, Language language, Category category, HashSet<DocumentationImage> images,
-	        string lastCommitSha, string relativePath, List<DocumentationMapping> mappings,
+	        string lastCommitSha, string relativePath, List<DocumentationMapping> mappings, 
+            string relatedArticlesContent,
 	        Dictionary<string, string> metadata = null,
 	        Dictionary<string, string> seoMetaProperties = null);
 
@@ -100,7 +103,7 @@
 			    ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images);
 
 			    var title = ExtractTitle(htmlDocument);
-				var textContent = ExtractTextContent(htmlDocument);
+				var textContent = ExtractTextContent(htmlDocument, out var relatedArticlesContent);
 
 				var caseSensitiveFileName = PathHelper.GetProperFilePathCapitalization(file.FullName);
 
@@ -112,7 +115,21 @@
 
 				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-				return CreatePage(key, title, documentationVersion, htmlDocument.DocumentNode.OuterHtml, textContent, page.Language, category, images, lastCommit, relativeUrl, mappings.OrderBy(x => x.Version).ToList(), page.Metadata, page.SeoMetaProperties);
+				return CreatePage(
+				    key, 
+				    title, 
+				    documentationVersion, 
+				    htmlDocument.DocumentNode.OuterHtml, 
+				    textContent, 
+				    page.Language, 
+				    category, 
+				    images, 
+				    lastCommit, 
+				    relativeUrl, 
+				    mappings.OrderBy(x => x.Version).ToList(), 
+				    relatedArticlesContent, 
+				    page.Metadata, 
+				    page.SeoMetaProperties);
 			}
 			catch (Exception e)
 			{
@@ -210,16 +227,19 @@
 			return key;
 		}
 
-		private static string ExtractTextContent(HtmlDocument htmlDocument)
+		private static string ExtractTextContent(HtmlDocument htmlDocument, out string relatedArticlesHtmlContent)
 		{
 			var relatedArticles =
 				htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(
 					x => x.InnerText.Equals("Related articles", StringComparison.OrdinalIgnoreCase));
 
-			if (relatedArticles == null)
-				return htmlDocument.DocumentNode.InnerText;
+		    if (relatedArticles == null)
+		    {
+		        relatedArticlesHtmlContent = null;
+		        return htmlDocument.DocumentNode.InnerText;
+		    }
 
-			var nodeToRemove = relatedArticles;
+		    var nodeToRemove = relatedArticles;
 			var nodesToRemove = new List<HtmlNode>();
 			while (nodeToRemove != null)
 			{
@@ -231,6 +251,8 @@
 			{
 				htmlDocument.DocumentNode.RemoveChild(node);
 			}
+
+		    relatedArticlesHtmlContent = string.Join(Environment.NewLine, nodesToRemove.Skip(1).Select(x => x.OuterHtml));
 
 			return htmlDocument.DocumentNode.InnerText;
 		}

@@ -27,6 +27,7 @@ namespace Raven.Documentation.Parser
             string lastCommitSha,
             string relativePath,
             List<DocumentationMapping> mappings,
+            string relatedArticlesContent,
             Dictionary<string, string> metadata = null,
             Dictionary<string, string> seoMetaProperties = null)
         {
