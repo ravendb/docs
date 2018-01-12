@@ -1,6 +1,6 @@
 ﻿# Configuration options
 
-In RavenDB 4.0 the configuration settings are defined in `settings.json` file which resides next to Raven binaries. Its default content is as follows:
+In RavenDB 4.0 the configuration settings are defined in `settings.json` file which resides next to server binaries. Its default content is as follows:
 
 {CODE-BLOCK:json}
 {
@@ -11,7 +11,7 @@ In RavenDB 4.0 the configuration settings are defined in `settings.json` file wh
 {CODE-BLOCK/}
 
 {INFO: Setup Wizard}
-The default `Setup.Mode: Initial` option will cause that the first run of RavenDB 4.0 server will launch [Setup Wizard](../../start/setup-wizard) and guide you how to configure your RavenDB 4.0 in a cluster.
+The default `Setup.Mode: Initial` option will cause that the first run of RavenDB 4.0 server will launch [Setup Wizard](../../start/setup-wizard) and guide and guide you through authentication and cluster setup.
 {INFO/}
 
 Below there are listings of 4.0 equivalents for 3.x settings. If there isn't an equivalent for 3.x setting it means the option isn't applicable in 4.0.
@@ -22,7 +22,7 @@ Below there are listings of 4.0 equivalents for 3.x settings. If there isn't an 
 |:---------------------|:---|
 | Raven/DataDir | DataDir|
 | Raven/Port | Defined using ServerUrl |
-| Raven/HostName | Defined using Server Url |
+| Raven/HostName | Defined using ServerUrl and PublicServerUrl |
 | Raven/RunInMemory | RunInMemory |
 
 ## Cluster settings
