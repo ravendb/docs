@@ -45,6 +45,11 @@
         "Mappings": []
     },
     {
+        "Path": "distinct.markdown",
+        "Name": "Distinct",
+        "Mappings": []
+    },
+    {
         "Path": "searching.markdown",
         "Name": "Searching",
         "Mappings": [
