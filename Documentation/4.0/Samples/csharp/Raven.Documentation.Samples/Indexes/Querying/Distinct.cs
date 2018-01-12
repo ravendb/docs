@@ -21,6 +21,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .OrderBy(x => x.ShipTo.Country)
                         .Distinct()
                         .Select(x => x.ShipTo.Country)
+                        .Distinct()
                         .ToList();
                     #endregion
                 }

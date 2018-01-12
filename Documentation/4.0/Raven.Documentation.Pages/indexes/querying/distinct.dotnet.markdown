@@ -7,7 +7,6 @@
 {CODE-TAB:csharp:Query distinct_1_0@Indexes\Querying\Distinct.cs /}
 {CODE-TAB-BLOCK:csharp:RQL}
 from Orders 
-order by ShipTo.Country 
 select distinct ShipTo.Country 
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
