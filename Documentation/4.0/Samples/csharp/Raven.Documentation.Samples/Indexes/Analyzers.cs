@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.IO;
+using System.Linq;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations.Indexes;
@@ -106,4 +107,16 @@ namespace Raven.Documentation.Samples.Indexes
             }
         }
     }
+
+    /*
+    #region analyzers_6
+    public class MyAnalyzer : Lucene.Net.Analysis.Analyzer
+    {
+        public override TokenStream TokenStream(string fieldName, TextReader reader)
+        {
+            throw new CodeOmitted();
+        }
+    }
+    #endregion
+    */
 }

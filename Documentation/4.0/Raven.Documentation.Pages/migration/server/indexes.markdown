@@ -59,7 +59,7 @@ In addition, you can deploy custom DLLs next to RavenDB binaries and reference t
 
 ## Custom analyzers
 
-Please read dedicated article [how to compile, deploy and use a custom analyzer]().
+Please read dedicated article about [using non-default or custom analyzers](../../indexes/using-analyzers#using-non-default-analyzer).
 
 ## Analyzer Generators
 

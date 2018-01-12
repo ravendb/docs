@@ -66,6 +66,16 @@ To make a document property indexed using a specific Analyzer, all you need to d
 
 {INFO The analyzer you are referencing to has to be available to the RavenDB server instance. When using analyzers that do not come with the default Lucene.NET distribution, you need to drop all the necessary DLLs into the RavenDB working directory (where `Raven.Server` executable is located), and use their fully qualified type name (including the assembly name). /}
 
+## Creating Own Analyzer
+
+You can create a custom analyzer on your own and deploy it to RavenDB server. To do that pefrom the following steps:
+
+- create a class that inherits from abstract `Lucene.Net.Analysis.Analyzer` (you need to reference `Lucene.Net.dll` supplied with RavenDB Server package),
+- your DLL needs to be placed next to RavenDB binaries (note it needs to be compatible with .NET Core 2.0 e.g. .NET Standard 2.0 assembly)
+- the fully qualified name needs to be specified for an indexing field that is going to be tokenized by the analyzer
+
+{CODE analyzers_6@Indexes\Analyzers.cs /}
+
 ## Manipulating Field Indexing Behavior
 
 By default, each indexed field is analyzed using the `LowerCaseKeywordAnalyzer` which indexes a field as a single, lower cased term.
