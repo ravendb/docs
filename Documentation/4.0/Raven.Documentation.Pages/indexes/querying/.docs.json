@@ -35,6 +35,11 @@
         "Mappings": []
     },
     {
+        "Path": "boosting.markdown",
+        "Name": "Boosting",
+        "Mappings": []
+    },
+    {
         "Path": "projections.markdown",
         "Name": "Projections",
         "Mappings": []
