@@ -10,6 +10,11 @@
         ]
     },
     {
+        "Path": "how-to-customize-collection-assignment-for-entities.markdown",
+        "Name": "How to customize collection assignment for entities?",
+        "Mappings": []
+    },
+    {
         "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
         "Name": "How to customize identity property lookup for entities?",
         "Mappings": []
