@@ -1,11 +1,12 @@
-﻿# What is RQL?
+﻿# RQL - Raven Query Language
 
 RQL, the Raven Query Language, is a SQL-like language used to retrieve the data from the server when queries are being executed. 
-It is designed to expose externally the RavenDB query pipeline in a way that is easy to understand, easy to use and not overwhelming to the user.
+
+It is designed to expose externally the RavenDB query pipeline in a way that is easy to understand, easy to use, and not overwhelming to the user.
 
 {PANEL:Keywords and methods}
 
-Following keywords and methods are available in RQL:
+The following keywords and methods are available in RQL:
 
 - DECLARE
 - [FROM](../../indexes/querying/what-is-rql#from)
@@ -50,7 +51,7 @@ Following keywords and methods are available in RQL:
 - [UPDATE](../../indexes/querying/what-is-rql#update)
 - [INCLUDE](../../indexes/querying/what-is-rql#include)
 
-With following operators:
+With the following operators:
 
 - >=
 - <=
@@ -67,7 +68,7 @@ With following operators:
 - (
 - )
 
-And following values:
+And the following values:
 
 - true
 - false
@@ -90,13 +91,13 @@ The keyword `declare` gives you the ability to create a JS function that can be 
 
 {PANEL:FROM}
 
-The keyword `from` is used to determine the source data that should be used when query is executed. We have two options here:
+The keyword `from` is used to determine the source data that should be used when a query is executed. You have two options:
 
 1. `from <collection>`
 
 This option is used to perform:
 
-- Collection queries that are doing basic ID filtering only e.q. `from Companies where id() == 'companies/1-A'` where there is no need to query an index, we can return the document from the storage directly,
+- Collection queries that are doing basic ID filtering only, e.g. `from Companies where id() == 'companies/1-A'` where there is no need to query an index, we can return the document from the storage directly
 - Dynamic queries that are being executed against [Auto Index](../../indexes/creating-and-deploying#auto-indexes)
 
 2. `from INDEX <index-name>`
@@ -119,7 +120,7 @@ The keyword `where` is used to filter-out the documents from final results.
 
 The operators above are considered basic and self-explanatory. They work on all value types including 'numbers' and 'strings'.
 
-The simplest example would be to return results with field value **equal** to a given input e.g. if we want to return a document from `@companies` collection (more about collection can be read [here](../../client-api/faq/what-is-a-collection)) you need to execute following query:
+The simplest example would be to return results with field value **equal** to a given input. If you want to return a document from `@companies` collection (more about collection can be read [here](../../client-api/faq/what-is-a-collection)), you need to execute following query:
 
 {CODE-BLOCK:csharp}
 from Companies
@@ -128,7 +129,7 @@ where Name = 'The Big Cheese'
 
 ### Operator: BETWEEN
 
-Operator `between` returns results inclusively and the type of border values used must match. It works on both 'numbers' and 'strings' and can be substituted with `>=` and `<=` operators (see the example below).
+The operator `between` returns results inclusively, and the type of border values used must match. It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators (see the example below).
 
 {CODE-BLOCK:csharp}
 from Products 
@@ -158,16 +159,16 @@ where Lines[].ProductName in ('Chang', 'Spegesild', 'Unknown product name')
 
 ### Operator: ALL IN
 
-This operator checks if **all** passes values are matching given field. Due to its mechanics it is only usefull when used on array fields.
+This operator checks if **all** passes values are matching given field. Due to its mechanics, it is only useful when used on array fields.
 
-Following query will yield no results in contrast to 'in' operator.
+The following query will yield no results in contrast to an 'in' operator.
 
 {CODE-BLOCK:csharp}
 from Orders 
 where Lines[].ProductName all in ('Chang', 'Spegesild', 'Unknown product name') 
 {CODE-BLOCK/}
 
-but removing the 'Unknown product name' will give you Orders that only contains products with both 'Chang' and 'Spegesild' names
+but removing the 'Unknown product name' will give you orders that only contains products with both 'Chang' and 'Spegesild' names
 
 {CODE-BLOCK:csharp}
 from Orders 
@@ -195,7 +196,7 @@ where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 
 ## Subclauses: ( )
 
-Subcluses can be used along with binary operators to build even more complex logical statements and are self-explanatory so no example will be given.
+Subclauses can be used along with binary operators to build even more complex logical statements. They are self-explanatory so no example will be given.
 
 {PANEL/}
 
@@ -203,7 +204,7 @@ Subcluses can be used along with binary operators to build even more complex log
 
 {PANEL:ORDER BY}
 
-To perform sorting `order by` must be used. If you are interested in this subject, please read our dedicated sorting article that can be found [here](../../indexes/querying/sorting).
+To perform sorting, the `order by` must be used. If you are interested in this subject, please read our dedicated sorting article [here](../../indexes/querying/sorting).
 
 {PANEL/}
 
@@ -211,7 +212,7 @@ To perform sorting `order by` must be used. If you are interested in this subjec
 
 {PANEL:LOAD}
 
-When there is a need to use data from external document in projection `load` can be used. Please refer to following [projection article](../../indexes/querying/projections#example-vii---projection-using-a-loaded-document) to find out more about it.
+When there is a need to use data from an external document in projection, `load` can be used. Please refer to the following [projection article](../../indexes/querying/projections#example-vii---projection-using-a-loaded-document) to find out more about it.
 
 {PANEL/}
 
@@ -219,7 +220,7 @@ When there is a need to use data from external document in projection `load` can
 
 {PANEL:SELECT}
 
-Projections can be performed by using `select`. Please read our dedicated projection article that can be found [here](indexes/querying/projections).
+Projections can be performed by using `select`. Please read our dedicated projection article [here](indexes/querying/projections).
 
 {PANEL/}
 
@@ -227,7 +228,7 @@ Projections can be performed by using `select`. Please read our dedicated projec
 
 {PANEL:UPDATE}
 
-To patch documents on server-side use `update` with desired JS script that will be applied to any documents matching the query criteria. Please refer to our [patching article](../../client-api/operations/patch/set-based-patch-operation) for more information.
+To patch documents on the server-side, use `update` with desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patch/set-based-patch-operation).
 
 {PANEL/}
 
@@ -235,6 +236,6 @@ To patch documents on server-side use `update` with desired JS script that will 
 
 {PANEL:INCLUDE}
 
-Keyword `include` has been introduced to support attaching additional documents to the query response. Dedicated article that tackles this subject can be found [here](../../client-api/how-to/handle-document-relationships#includes).
+The keyword `include` has been introduced to support attaching additional documents to the query response. A dedicated article that tackles this subject can be found [here](../../client-api/how-to/handle-document-relationships#includes).
 
 {PANEL/}

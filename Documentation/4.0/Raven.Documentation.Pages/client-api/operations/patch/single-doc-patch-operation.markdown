@@ -1,18 +1,18 @@
-﻿# Patches: How to perform single document patch operations?
+﻿# Patches: How to Perform Single Document Patch Operations
 
-**Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on server-side and is useful as a performance enhancement or for updating denormalized data in entities.
+The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server-side and is useful as a performance enhancement or for updating denormalized data in entities.
 
-    The current page deals with patch operations on single documents, the next pages in this section will deal with set based patch operations.
+The current page deals with patch operations on single documents.
 
 ## Syntax
-    Patching has three possible interfaces: typed session, non-typed session and operation
+    Patching has three possible interfaces: typed session, non-typed session, and operation
 
-### 1. Typed session API
-A type safe session interface, that allows performing the most patch operations and uses the session facilities to perform multiple operations in one request.
+### 1. Typed Session API
+A type safe session interface that allows performing the most patch operations and uses the session facilities to perform multiple operations in one request.
 
 {CODE patch_generic_interfact@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-### 2. Non-typed session API
+### 2. Non-Typed Session API
 A non-typed session interface that exposes the full functionality and uses the session facilities to perform multiple operations in one request.
 
 {CODE patch_non_generic_interface_in_session@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -21,12 +21,13 @@ A non-typed session interface that exposes the full functionality and uses the s
 
 {CODE patch_command_data@Common.cs /}
 
-    We highly recommend using scripts with parameters, this allows RavenDB to cache scripts and therefor boost performance. Parameters accessed in the script through "args" object, and passed using PatchRequest's "Values" parameter.
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through "args" object, and passed using PatchRequest's "Values" parameter.
 
 {CODE patch_request@Common.cs /}
 
 ### 3. Operations API
-An operations interface that exposes the full functionality and allows performing ad-hoc patch operations, without creating a session
+
+An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.
 
 {CODE patch_non_generic_interface_in_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 
@@ -34,17 +35,17 @@ An operations interface that exposes the full functionality and allows performin
 
 {CODE patch_operation@Common.cs /}
 
-## Built-in JavaScript extensions
+## Built-in JavaScript Extensions
 
-In addition to ECMAScript 5.1 API, RavenDB introduces few built-in functions and members:
+In addition to ECMAScript 5.1 API, RavenDB introduces a few built-in functions and members:
 
 | ------ |:------:| ------ |
 | `id(document)` | function | returns the ID of a document|
 | `this` | object | Current document (with metadata) |
 | `args` | object | Object containing arguments passed to the script |
-| `load(key)` | method | Allows document loading, increases maximum number of allowed steps in script. |
+| `load(key)` | method | Allows document loading, increases the maximum number of allowed steps in a script. |
 | `put(key, data, metadata)` | method | Allows document putting, returns generated key |
-| `output(...)` | method | Allows debug your patch, prints passed messages in output tab |
+| `output(...)` | method | Allows debug on your patch, prints passed messages in output tab |
 
 ## Examples
 
@@ -130,6 +131,6 @@ Renaming property supported only by the non-typed APIs
 
 
 
-## Related articles
+## Related Articles
 
 
