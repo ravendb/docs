@@ -8,14 +8,16 @@ In order to take advantage of this feature you need to specify a valid query acc
 The generic HTTP request will have the following address:
 
 {CODE-BLOCK:plain}
-http://localhost:8080/databases/[db_name]/streams/queries?query=[query]
+http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&format=csv
 {CODE-BLOCK/}
 
 In order to include only specific properties in the CSV output you can use the `field` parameter like so:
 
 {CODE-BLOCK:plain}
-http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[field-1]&field=[field-2]...&field=[field-N]
+http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[field-1]&field=[field-2]...&field=[field-N]&format=csv
 {CODE-BLOCK/}
+
+- [Dealing With Long Urls](../how-to/integrate-with-excel#dealingwithlongurls)
 
 ## Example
 
@@ -35,7 +37,7 @@ select
 In order to execute the above query we will need to use the following url:   
 
 {CODE-BLOCK:plain}
-http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%7D
+http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%7D&format=csv
 {CODE-BLOCK/}
 
 Going to the above address in a web browser will download you an export.csv file containing following results:
@@ -100,3 +102,61 @@ Go to Properties and:
 ![Excel connection properties](images\excel_connections_dialog_2.png)
 
 Finally you can close the file, change something in the database and reopen it. You will see new values.
+
+{PANEL:DealingWithLongUrls}
+
+## Dealing with long query urls in excel
+
+If you try and query for a bit more complex query you might realize that excel will refuse to execute your request.
+
+### Long query example
+{CODE-BLOCK:plain}
+from Products as p
+load p.Category as c
+select 
+{
+    Name: p.Name,
+    Category: c.Name,
+    Discontinued: p.Discontinued,
+    PricePerUnit: p.PricePerUnit
+}
+{CODE-BLOCK/}
+
+After escaping the above query we will end up with the following request url
+
+{CODE-BLOCK:plain}
+http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D&format=csv
+{CODE-BLOCK/}
+
+Trying to use this url will throw the following error in excel
+
+![Excel url too long](images\excel_url_too_long.png)
+
+There are two ways to deal with this problem, you can use an online service like [TinyUrl](https://tinyurl.com/) and provide them with the above url.
+What you get back is a url like this, `https://tinyurl.com/y8t7j6r7`, this is a pretty nice workaround if you're not on an isolated system and have no security restriction.
+The other option is to redirect the query through a pre-defined query that resides in your database.
+For that you will need to include a document in your database with a `Query` property, let's generate such a document and call it `Excel/ProductWithCatagory`.
+While the name of the document has no significance, it is recommanded using a key that reflects on the purpose of this document.
+Now let's add the `Query` property and set its value to the above query like so:
+
+{CODE-BLOCK:plain}
+{
+    "Query": "from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D",
+    "@metadata": {
+        "@collection": "Excel"
+    }
+}
+{CODE-BLOCK/}
+
+Now that we have the document ready for use all we need to do is modify our url so it will use the document redirection feature.
+
+{CODE-BLOCK:plain}
+http://localhost:8080/databases/Northwind/streams/queries?fromDocument=Excel%2FProductWithCatagory&format=csv
+{CODE-BLOCK/}
+
+Repeating the instrucion above you should get the following result:
+
+![Excel integrated with long url](images\excel_integrated_long_url.png)
+
+{PANEL/}
+
