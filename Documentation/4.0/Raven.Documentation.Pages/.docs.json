@@ -33,5 +33,10 @@
         "Path": "/glossary",
         "Name": "Glossary",
         "Mappings": []
+    },
+    {
+        "Path": "/users-issues",
+        "Name": "Users Issues",
+        "Mappings": []
     }
 ]
