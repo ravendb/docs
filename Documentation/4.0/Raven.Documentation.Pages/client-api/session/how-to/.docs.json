@@ -55,6 +55,11 @@
         "Mappings": []
     },
     {
+        "Path": "get-current-session-node.markdown",
+        "Name": "...get current session node",
+        "Mappings": []
+    },
+    {
         "Path": "check-if-entity-has-changed.markdown",
         "Name": "...check if entity has changed",
         "Mappings": []
