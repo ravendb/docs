@@ -8,5 +8,10 @@
         "Path": "/batches",
         "Name": "Batches",
         "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
     }
 ]
