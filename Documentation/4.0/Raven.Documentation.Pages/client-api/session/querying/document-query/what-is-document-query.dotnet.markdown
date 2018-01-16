@@ -56,7 +56,9 @@ Available custom methods and extensions:
 - FirstOrDefault
 - Fuzzy
 - [Not](../../../../client-api/session/querying/document-query/how-to-use-not-operator)
-- GroupBy
+- [GroupBy](../../../../client-api/session/querying/how-to-perform-group-by-query)
+- [GroupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
+- [GroupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
 - Include
 - Intersect
 - InvokeAfterQueryExecuted
