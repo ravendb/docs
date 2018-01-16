@@ -72,10 +72,7 @@ Serialization and deserialization of entities can be customized using:
 
 {CODE serialization_1@Migration\ClientApi\DocumentStoreChanges.cs /}   
 
-In order to customize bulk insert serialization you can use the following conventions:
-
-- `BulkInsert.TrySerializeEntityToJsonStream`
-- `BulkInsert.TrySerializeMetadataToJsonStream`
+In order to customize bulk insert serialization you can use `BulkInsert.TrySerializeEntityToJsonStream` convention:
 
 {CODE serialization_2@Migration\ClientApi\DocumentStoreChanges.cs /}   
 
