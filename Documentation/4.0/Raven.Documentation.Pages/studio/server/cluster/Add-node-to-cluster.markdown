@@ -1,16 +1,17 @@
-﻿## Adding a Node to Cluster
+﻿## Adding a Node to a Cluster
 ---
 
 {NOTE: }
 When a server is started for the first time, it is in a `passive` state.  
-Performing any Raft command (such as listed below) will make the server be part of a cluster.
+
+Performing any RAFT command (such as listed below) will make the server become part of a cluster.
 
 * Adding a license
 * Creating a database on this server
 * Adding another node to this server cluster (will cause both to be part of the same cluster)
 {NOTE/}
 
-### Add Node to Cluster
+### Add Node to the Cluster
 
 ![Figure 1. Click to add a new node](images/cluster-add-node-1.png "Click to add a new node")
 
@@ -19,7 +20,7 @@ Performing any Raft command (such as listed below) will make the server be part 
 {PANEL}
 
 **1.** Enter the URL of the server for the new node  
-**2.** Decide if to add the new node as a `member` -or- as a `watcher` (difference explained in [Cluster View](cluster-view))  
+**2.** Decide if you will add the new node as a `member` -or- as a `watcher` (difference explained in [Cluster View](cluster-view))  
 **3.** Click to use all available nodes -or- Enter the number of cores to be assigned for this node  
 **4.** Click _Test connection_ to test the connection for the above url entered  
 

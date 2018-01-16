@@ -5,7 +5,7 @@ The **Patch** operation is used to perform partial document updates without havi
 The current page deals with patch operations on single documents.
 
 ## Syntax
-    Patching has three possible interfaces: typed session, non-typed session, and operation
+    Patching has three possible interfaces: typed session, non-typed session, and operation.
 
 ### 1. Typed Session API
 A type safe session interface that allows performing the most patch operations and uses the session facilities to perform multiple operations in one request.
@@ -21,7 +21,7 @@ A non-typed session interface that exposes the full functionality and uses the s
 
 {CODE patch_command_data@Common.cs /}
 
-We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through "args" object, and passed using PatchRequest's "Values" parameter.
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through the "args" object, and passed using PatchRequest's "Values" parameter.
 
 {CODE patch_request@Common.cs /}
 
@@ -128,8 +128,6 @@ Renaming property supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 {PANEL/}
-
-
 
 ## Related Articles
 

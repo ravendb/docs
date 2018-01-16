@@ -39,7 +39,7 @@ There are a few methods that allow you to retrieve documents from a database:
 | ------------- | ------------- | ----- |
 | **ids** string[] | IDs of the documents to get |
 | **includes** | string | Related documents to fetch along with the documents |
-| **metadataOnly** | boolean | Whether to fetch whole documents or just the metadata. |
+| **metadataOnly** | boolean | Whether to fetch whole documents or just the metadata |
 
 ### Example I
 
