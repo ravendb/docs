@@ -47,7 +47,12 @@
     {
         "Path": "set-indexes-priority-operation.markdown",
         "Name": "SetIndexesPriorityOperation",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/change-index-priority"
+            }
+        ]
     },
     {
         "Path": "start-index-operation.markdown",
