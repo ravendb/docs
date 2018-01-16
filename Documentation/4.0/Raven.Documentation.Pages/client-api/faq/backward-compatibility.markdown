@@ -1,6 +1,8 @@
-# Backward compatibility
+# Backward Compatibility
 
-When it comes to client server compatibility in RavenDB there are two valid rules. Either:
+When it comes to client server compatibility in RavenDB, there are two valid rules. 
+
+Either:
 
  * The server version is within the same Major and Minor range as the client version
 
@@ -10,16 +12,16 @@ When it comes to client server compatibility in RavenDB there are two valid rule
 
 Some examples:
 
- * `4.0` client will work with `4.5` server since server is greater than client
- * `4.5` client will work with `4.5` server since client and server are in the same Major and Minor range
- * `4.0.2` client will work with `4.0.1` server since client and server are in the same Major and Minor range
- * `4.5` client will **NOT** work with `4.0` server since client is greater than server
- * `3.x` client will **NOT** work with `4.0` server since client and server Major version do not match
+ * A `4.0` client will work with a `4.5` server since the server is greater than the client
+ * A `4.5` client will work with a `4.5` server since both the client and the server are in the same Major and Minor range
+ * A `4.0.2` client will work with a `4.0.1` server since both the client and the server are in the same Major and Minor range
+ * A `4.5` client will **NOT** work with a `4.0` server since the client is greater than the server
+ * A `3.x` client will **NOT** work with a `4.0` server since both the client's and the server's Major version do not match
 
 ## Upgrading
 
-To properly upgrade your applications and server, we advise you to upgrade the server first, then the clients. This way your applications will keep working as before, and you can update them one-by-one if needed.
+To properly upgrade your applications and server, we advise you to upgrade the server first, then the clients. This way, your applications will keep working as before, and you can update them one-by-one if needed.
 
-## Related articles
+## Related Articles
 
 - [Server : Upgrading to a new version](../../server/installation/upgrading-to-new-version)

@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to get server build number?
+﻿# Operations : Server : How to Get Server Build Number
 
 To get the server build number use **GetBuildNumberOperation** from `Maintenance.Server`
 
@@ -9,7 +9,8 @@ To get the server build number use **GetBuildNumberOperation** from `Maintenance
 <hr />
 
 ### Return Value
-The result of executing GetBuildNumberOperation is a **BuildNumber** object 
+The result of executing GetBuildNumberOperation is a **BuildNumber** object: 
+
 {CODE:csharp buildNumber_2@ClientApi\Operations\Server\GetBuildNumber.cs /}
 
 | ------------- |----- |
