@@ -1,7 +1,7 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.ServerWide.Operations;
 
-namespace Raven.Documentation.Samples.ClientApi.Commands.HowTo
+namespace Raven.Documentation.Samples.ClientApi.Operations.Server
 {
     public class GetDatabaseNamesInterfaces
     {
