@@ -94,42 +94,38 @@ Queries in RavenDB use a SQL-like language called RavenDB Query Language (RQL). 
 {CODE-TAB:csharp:Async query_1_7_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-<!--
+
 ### Custom Methods and Extensions for LINQ
 
 Available custom methods and extensions:
 
-- [AddTransformerParameter](../../../client-api/session/querying/how-to-use-transformers-in-queries)
-- [AggregateBy](../../../client-api/session/querying/how-to-perform-dynamic-aggregation)
+- [AggregateBy](../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - AnyAsync
-- [As](../../../client-api/session/querying/how-to-perform-projection)
-- [AsProjection](../../../client-api/session/querying/how-to-perform-projection)
+- [As](../../../client-api/session/querying/how-to-project-query-results)
 - CountAsync
 - [CountLazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [Customize](../../../client-api/session/querying/how-to-customize-query)
 - FirstAsync
 - FirstOrDefaultAsync
-- [Include](../../../indexes/querying/handling-document-relationships)
+- [GroupByArrayValues](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
+- [GroupByArrayContent](../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
+- [Include](../../../client-api/how-to/handle-document-relationships)
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
+- MoreLikeThis(../../../client-api/session/querying/how-to-use-morelikethis) 
+- OrderByDistance
+- OrderByDistanceDescending
 - OrderByScore
-- [ProjectFromIndexFieldsInto](../../../client-api/session/querying/how-to-perform-projection)
+- OrderByScoreDescending
+- [ProjectInto](../../../client-api/session/querying/how-to-project-query-results)
 - [Search](../../../client-api/session/querying/how-to-use-search)
 - SingleAsync
 - SingleOrDefaultAsync
 - [Spatial](../../../client-api/session/querying/how-to-query-a-spatial-index)
 - [Statistics](../../../client-api/session/querying/how-to-get-query-statistics)
-- [Suggest](../../../client-api/session/querying/how-to-work-with-suggestions)
-- [SuggestAsync](../../../client-api/session/querying/how-to-work-with-suggestions)
-- [SuggestLazy](../../../client-api/session/querying/how-to-perform-queries-lazily)
-- [ToFacetQuery](../../../client-api/session/querying/how-to-perform-a-faceted-search)
-- [ToFacets](../../../client-api/session/querying/how-to-perform-a-faceted-search)
-- [ToFacetsAsync](../../../client-api/session/querying/how-to-perform-a-faceted-search)
-- [ToFacetsLazy](../../../client-api/session/querying/how-to-perform-a-faceted-search)
+- [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
 - ToListAsync
-- [TransformWith](../../../client-api/session/querying/how-to-use-transformers-in-queries)
--->
 
 ### Related Articles
 
