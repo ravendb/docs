@@ -42,7 +42,12 @@
     {
         "Path": "set-indexes-lock-operation.markdown",
         "Name": "SetIndexesLockOperation",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/change-index-lock-mode"
+            }
+        ]
     },
     {
         "Path": "set-indexes-priority-operation.markdown",
