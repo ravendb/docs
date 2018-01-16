@@ -86,7 +86,7 @@ Set the public TCP address of the server. Used for inter-node communication and 
 
 #Example:
 ```
-PublicServerUrl=tcp://example.com:38888
+PublicTcpServerUrl=tcp://example.com:38888
 ```
 
 <br><br>
