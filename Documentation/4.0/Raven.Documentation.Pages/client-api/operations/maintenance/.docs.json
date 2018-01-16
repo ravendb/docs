@@ -122,7 +122,12 @@
     {
         "Path": "get-terms-operation.markdown",
         "Name": "GetTermsOperation",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/get-index-terms"
+            }
+        ]
     },
     {
         "Path": "index-has-changed-operation.markdown",
