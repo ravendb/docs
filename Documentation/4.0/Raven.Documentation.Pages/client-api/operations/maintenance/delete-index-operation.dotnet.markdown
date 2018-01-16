@@ -1,1 +1,20 @@
-﻿TODO
+﻿# Operations : How to delete index?
+
+**DeleteIndexOperation** is used to remove an index from a database.
+
+## Syntax
+
+{CODE delete_1@ClientApi\Operations\DeleteIndex.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **indexName** | string | name of an index to delete |
+
+## Example
+
+{CODE delete_2@ClientApi\Operations\DeleteIndex.cs /}
+
+## Related articles
+
+- [How to **get index**?](../../../client-api/operations/maintenance/get-index-operation)
+- [How to **put index**?](../../../client-api/operations/maintenance/put-indexes-operation)
