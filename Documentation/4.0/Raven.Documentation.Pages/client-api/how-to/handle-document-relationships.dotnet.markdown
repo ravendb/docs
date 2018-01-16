@@ -15,7 +15,7 @@ The easiest solution is to denormalize the data within the containing entity, fo
 Take this JSON document for example:
 
 {CODE-BLOCK:json}
-// Order document with id: orders/1-A
+// Order document with ID: orders/1-A
 { 
     "Customer": 
     {

@@ -18,7 +18,7 @@ Single document changes can be observed using `ForDocument` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **docId** | string | Id of a document for which notifications will be processed. |
+| **docId** | string | ID of a document for which notifications will be processed. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -88,7 +88,7 @@ or
 
 {PANEL:ForDocumentsStartingWith}
 
-To observe all document changes for documents with Id that contains given prefix use `ForDocumentsStartingWith` method.
+To observe all document changes for documents with ID that contains given prefix use `ForDocumentsStartingWith` method.
 
 ## Syntax
 
@@ -96,11 +96,11 @@ To observe all document changes for documents with Id that contains given prefix
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **docIdPrefix** | string | Document Id prefix for which notifications will be processed. |
+| **docIdPrefix** | string | Document ID prefix for which notifications will be processed. |
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable<[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)> | Observable that allows to add subscriptions to notifications for given document Id prefix. |
+| IChangesObservable<[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)> | Observable that allows to add subscriptions to notifications for given document ID prefix. |
 
 ## Example
 

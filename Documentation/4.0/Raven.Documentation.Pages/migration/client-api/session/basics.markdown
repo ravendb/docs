@@ -8,10 +8,10 @@
 
 {PANEL:Load}
 
-### Loading by value type id
+### Loading by value type ID
 
 Since an entity identifier can be only `string` in RavenDB 4.0 the `Load<T>(ValueType id)` method overload accepting value types (`int`, `Guid` etc.) is no longer available. 
-In order to load an entity having value type identifier you need to use a document identifier, that is a collection name concatenated with the value type id.
+In order to load an entity having value type identifier you need to use a document identifier, that is a collection name concatenated with the value type ID.
 
 | 3.x | 4.0 |
 |:---:|:---:|
@@ -22,7 +22,7 @@ Also `User.Id` property should be `string`.
 ### Loading multiple documents
 
 The signature of `T[] Load<T>(IEnumerable<string> ids)` method has been changed to `Dictionary<string, T> Load<T>(IEnumerable<string> ids)`. The keys in the returned dictionary are identifiers
-of documents requested to be loaded. If a document with was not found then `null` is set in the dictionary under a given id.
+of documents requested to be loaded. If a document with was not found then `null` is set in the dictionary under a given ID.
 
 | 3.x | 4.0 |
 |:---:|:---:|
@@ -41,7 +41,7 @@ You need to perform a query and specify a projection instead. The query will be 
 
 {PANEL:Delete}
 
-### Delete by value type id 
+### Delete by value type ID 
 
 Also the `Delete` method no longer have the following overload `Delete<T>(ValueType id)`. Please pass entity instance that you want to delete or the document identifier including collection name.
 

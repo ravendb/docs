@@ -21,7 +21,7 @@ The most basic way to load single entity is to use one of `Load` methods.
 
 | Return Value | |
 | ------------- | ----- |
-| TResult | Instance of `TResult` or `null` if document with given Id does not exist. |
+| TResult | Instance of `TResult` or `null` if document with given ID does not exist. |
 
 ### Example
 
@@ -69,7 +69,7 @@ To load multiple entities at once use one of the following `Load` overloads.
 
 | Return Value | |
 | ------------- | ----- |
-| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if document with given Id does not exist. |
+| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if document with given ID does not exist. |
 
 {CODE loading_entities_3_1@ClientApi\Session\LoadingEntities.cs /}
 
@@ -84,11 +84,11 @@ To load multiple entities that contain common prefix use `LoadStartingWith` meth
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **keyPrefix** | string |  prefix for which documents should be returned  |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -114,10 +114,10 @@ Entities can be streamed from server using one of the following `Stream` methods
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
 | streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc. |
 
 | Return Value | |
@@ -128,11 +128,11 @@ Entities can be streamed from server using one of the following `Stream` methods
 
 ### Example I
 
-Stream documents for a Id prefix
+Stream documents for a ID prefix
 {CODE loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
 
 ## Example 2
-Fetch documents for a Id prefix directly into a stream
+Fetch documents for a ID prefix directly into a stream
 {CODE loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
 
 ### Remarks
@@ -149,11 +149,11 @@ To check if entity is attached to session, e.g. has been loaded previously, use 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string | Entity Id for which check should be performed. |
+| **id** | string | Entity ID for which check should be performed. |
 
 | Return Value | |
 | ------------- | ----- |
-| bool | Indicates if entity with given Id is loaded. |
+| bool | Indicates if entity with given ID is loaded. |
 
 ### Example
 

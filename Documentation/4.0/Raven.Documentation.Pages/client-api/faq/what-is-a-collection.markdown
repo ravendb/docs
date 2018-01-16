@@ -8,7 +8,7 @@ Documents that are in the same collection can have a completely different struct
 
 The collection is just a virtual concept. There is no influence on how or where the documents within the same collection are stored. 
 
-But the collection concept has a great meaning for three RavenDB features: [the studio](../../studio/overview/documents/documents-view), [the indexes](../../indexes/what-are-indexes) and [the document key generation](../../client-api/document-identifiers/working-with-document-ids) on the client side.
+But the collection concept has a great meaning for three RavenDB features: [the studio](../../studio/overview/documents/documents-view), [the indexes](../../indexes/what-are-indexes) and [the document ID generation](../../client-api/document-identifiers/working-with-document-ids) on the client side.
 
 ##Collections Usage
 
@@ -22,7 +22,7 @@ How that happens in the virtual concept of the collections is visualized in the 
 
 Each RavenDB index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) and we iterate over the collection's documents during the indexing process.
 
-###Document Keys
+###Document IDs
 
 The default convention is that documents have the identifiers like, `orders/1-A` where `orders` is just a collection name and `1` is the identity value and `A` is the `Server's Tag`. 
 

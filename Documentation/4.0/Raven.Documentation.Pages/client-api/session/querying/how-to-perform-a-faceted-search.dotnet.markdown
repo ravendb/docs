@@ -11,7 +11,7 @@ To execute facet (aggregation) query using the session `Query` method, use the `
 | **facet** | FacetBase | `FacetBase` implementation defining the scope of the facet and its options (either `Facet` or `RangeFacet`) |
 | **facets** | `IEnumerable<FacetBase>` | Enumerable containing `FacetBase` implementations |
 | **builder** | `Action<IFacetFactory<T>>` | Builder with a fluent API that constructs a `FacetBase` instance |
-| **facetSetupDocumentId** | string | Id of a document containing `FacetSetup` | 
+| **facetSetupDocumentId** | string | ID of a document containing `FacetSetup` | 
 
 ### Facet & RangeFacet
 

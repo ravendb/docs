@@ -4,7 +4,7 @@
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **Id** | string | Document id |
+| **Id** | string | Document ID |
 | **ChangeVector** | string | Document change vector |
 | **Metadata** | IMetadataDictionary | Document metadata |
 | **Document** | `T` | Document deserialized to a given generic type |

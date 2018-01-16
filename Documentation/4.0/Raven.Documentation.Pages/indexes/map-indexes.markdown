@@ -145,7 +145,7 @@ where Country = 'USA'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-If a document relationship is represented by the document's Id, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents).
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents).
 
 ## Indexing Multiple Collections
 
