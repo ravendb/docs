@@ -80,7 +80,7 @@ You can manage the cluster by actions such as:
 * **Watcher**
   * A watcher is a non-voting node in the cluster that is still fully managed by it
   * A watcher can be assigned databases and work to be done
-  * Grow your RavenDB cluster by adding watchers without suffering from large voting majorities and the latencies they can incur. Yhese nodes don’t take part in majority calculations and are only there to watch what’s going on in the cluster.
+  * Grow your RavenDB cluster by adding watchers without suffering from large voting majorities and the latencies they can incur. These nodes don’t take part in majority calculations and are only there to watch what’s going on in the cluster.
     Cluster decisions can be made with a majority of only a small amount of nodes while the actual size of the cluster can be much higher.
   * Any number of watchers can be added to handle the work load  
 <br/>  

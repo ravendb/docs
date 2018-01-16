@@ -1,4 +1,4 @@
-﻿# Session : What is a Session and How Does it Work?
+﻿# Session : What is a Session and How Does it Work
 
 After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on RavenDB, we start by obtaining a new Session object from the document store. The Session object will contain everything we need to perform any operation necessary.
 
@@ -30,11 +30,11 @@ One of the most expensive operations in an application is making remote calls. T
 ## Remarks
 
 A very common problem with all ORMs and ORM-like APIs is the Select N+1 problem. This is relevant to any database API which is designed to work like an ORM, RavenDB Client API included.
-How RavenDB API attempts to mitigate this is not immediate, and should never be reached if RavenDB is being utilized correctly - remote calls are expensive, and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other misuse of the RavenDB session.
+How RavenDB API attempts to mitigate this is not immediate, and should never be reached if RavenDB is being utilized correctly. Remote calls are expensive and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other misuse of the RavenDB session.
 
 {NOTE: Configuring the maximum requests in a session} 
 By default, the maximum requests count in the session is 30.
-This can be changed by DocumentConventions::MaxNumberOfRequestsPerSession property.
+This can be changed by the DocumentConventions::MaxNumberOfRequestsPerSession property.
 {NOTE/}
 
 ## Related Articles
