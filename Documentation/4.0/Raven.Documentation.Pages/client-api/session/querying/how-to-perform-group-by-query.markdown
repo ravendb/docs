@@ -1,6 +1,6 @@
 #Session : Querying : How to Perform Dynamic Group By Query?
 
-The query optimizer in RavenDB 4.0 supports dynamic group by queries and automatically creates auto map-reduce indexes.
+Since RavenDB 4.0, the query optimizer supports dynamic group by queries and automatically creates auto map-reduce indexes.
 It means you can create a dynamic query that does an aggregation by using LINQ `GroupBy()` method or `group by into` syntax.
 
 The supported aggregation operations are:

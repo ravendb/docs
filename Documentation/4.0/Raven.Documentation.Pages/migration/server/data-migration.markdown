@@ -11,6 +11,7 @@ There are a few options to migrate 3.x data to RavenDB 4.0:
 - create database from 3.x data
 - live import data from a running instance
 - restore 3.x backup
+- import database from `.ravendump` file
 
 <br />
 
@@ -53,17 +54,30 @@ The name of the document will be `files/{attachment-name}`, the name of an attac
 
 {PANEL: How to live import data from a running instance?}
 
-Another option of moving data to RavenDB 4.0 is to import database from running RavenDB 3.x instance. To import data of running database please create a new empty 
-database on 4.0 server and go to `Setting -> Import Data -> From another RavenDB Server`
+Another option of moving data to RavenDB 4.0 is to import a database or a file system from running RavenDB 3.x instance. To import data of running 3.x resource please create a new empty 
+database on 4.0 server and go to `Settings -> Import Data -> From another RavenDB Server`
 
 ![Figure 2. Migrate data from another, running RavenDB](images/import-database-from-running-instance.png)
 
+
+{NOTE: RavenFS}
+
+Importing a file system requires to check `Import RavenFS`.
+
+{NOTE /}
 
 {PANEL/}
 
 {PANEL: How to restore an existing 3.x backup?}
 
 If you want to restore a database from 3.x backup to 4.0 server, first you need to restore it manually to running 3.x instance (by [command line](https://ravendb.net/docs/article-page/3.5/Csharp/server/administration/backup-and-restore) or [RavenDB Studio](https://ravendb.net/docs/article-page/3.5/csharp/studio/management/backup-restore)).
-Next, use `New database from v3.x (legacy) data files` option, described above, and point the just restored data.
+
+Next, use one of the above options and point the just restored database / file system.
+
+{PANEL/}
+
+{PANEL: How to import database from `.ravendump` file?}
+
+The export file (`.ravendump`) from a 3.x  database can be imported to 4.0 using the Studio: `Settings -> Import Data -> From file`
 
 {PANEL/}

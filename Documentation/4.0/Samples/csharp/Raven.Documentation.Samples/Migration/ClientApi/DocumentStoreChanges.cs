@@ -50,8 +50,7 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
                 {
                     BulkInsert =
                     {
-                        TrySerializeEntityToJsonStream = (o, writer) => throw new CodeOmitted(),
-                        TrySerializeMetadataToJsonStream = (o, writer) => throw new CodeOmitted()
+                        TrySerializeEntityToJsonStream = (entity, metadata, writer) => throw new CodeOmitted(),
                     }
                 }
             }.Initialize();
