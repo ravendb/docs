@@ -32,7 +32,12 @@
     {
         "Path": "reset-index-operation.markdown",
         "Name": "ResetIndexOperation",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/indexes/how-to/reset-index"
+            }
+        ]
     },
     {
         "Path": "set-indexes-lock-operation.markdown",
