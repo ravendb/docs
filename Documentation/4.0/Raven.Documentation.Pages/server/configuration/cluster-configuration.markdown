@@ -1,62 +1,101 @@
-## Server Configuration : Cluster Options
+## Server Configuration : Cluster
 
-<br>
+{PANEL:Cluster.ElectionTimeoutInMs}
 
-#### ElectionTimeoutInMs
-###### Timeout in which the node expects to receive a heartbeat from the leader, in milliseconds
-###### Default Value : 300
+Timeout in which the node expects to receive a heartbeat from the leader, in milliseconds.
 
-<br><br>
+- **Type**: `int`
+- **Default**: `300`
+- **Scope**: Server-wide only
 
-#### WorkerSamplePeriodInMs
-###### Time in millisecond between sampling the information about the databases and send it to the maintenance supervisor
-###### Default Value : 250
+{PANEL/}
 
-<br><br>
+{PANEL:Cluster.WorkerSamplePeriodInMs}
 
-#### SupervisorSamplePeriodInMs
-###### As the maintenance supervisor, time in millisecond between sampling the information received from the nodes
-###### Default Value : 500
+Time in millisecond between sampling the information about the databases and send it to the maintenance supervisor.
 
-<br><br>
+- **Type**: `int`
+- **Default**: `250`
+- **Scope**: Server-wide only
 
-#### ReceiveFromWorkerTimeoutInMs
-###### As the maintenance supervisor, time in millisecond to wait to hear from a worker before it is time out
-###### Default Value : 5000
+{PANEL/}
 
-<br><br>
+{PANEL:Cluster.SupervisorSamplePeriodInMs}
 
-#### OnErrorDelayTimeInMs
-###### As the maintenance supervisor, time in millisecond to wait after we received an exception from a worker, before retry
-###### Default Value : 5000
+ As the maintenance supervisor, time in millisecond between sampling the information received from the nodes.
 
-<br><br>
+- **Type**: `int`
+- **Default**: `500`
+- **Scope**: Server-wide only
 
-#### OperationTimeoutInSec
-###### As a cluster node, set timeout in seconds for operation between two cluster nodes
-###### Default Value : 15
+{PANEL/}
 
-<br><br>
+{PANEL:Cluster.ReceiveFromWorkerTimeoutInMs}
 
-#### StatsStabilizationTimeInSec
-###### As a cluster node, time in seconds in which it takes to timeout operation between two cluster nodes
-###### Default Value : 5
+  As the maintenance supervisor, time in millisecond to wait to hear from a worker before it is time out.
 
-<br><br>
+- **Type**: `int`
+- **Default**: `5000`
+- **Scope**: Server-wide only
 
-#### TimeBeforeAddingReplicaInSec
-###### The time in seconds we give to a database instance to be in a good and responsive state, before adding a replica to match the replication factor
-###### Default Value : 900
+{PANEL/}
 
-<br><br>
+{PANEL:Cluster.OnErrorDelayTimeInMs}
 
-#### TcpTimeout
-###### Tcp connection read/write timeout in milliseconds
-###### Default Value : 15000
+As the maintenance supervisor, how long we wait after we received an exception from a worker. Before we retry.
 
-<br><br>
+- **Type**: `int`
+- **Default**: `5000`
+- **Scope**: Server-wide only
 
-#### HardDeleteOnReplacement
-###### Set hard/soft delete for a database that was removed by the observer form the cluster topology in order to maintain the replication factor
-###### Default Value : true
+{PANEL/}
 
+{PANEL:Cluster.OperationTimeoutInSec}
+
+As a cluster node, set timeout in seconds for operation between two cluster nodes.
+
+- **Type**: `int`
+- **Default**: `15`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.StatsStabilizationTimeInSec}
+
+As a cluster node, time in seconds in which it takes to timeout operation between two cluster nodes.
+
+- **Type**: `int`
+- **Default**: `5`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.TimeBeforeAddingReplicaInSec}
+
+The time in seconds we give to a database instance to be in a good and responsive state, before adding a replica to match the replication factor.
+
+- **Type**: `int`
+- **Default**: `900`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.TcpTimeoutInMs}
+
+TCP connection read/write timeout in milliseconds.
+
+- **Type**: `int`
+- **Default**: `15000`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Cluster.TcpTimeoutInMs}
+
+Set hard/soft delete for a database that was removed by the observer form the cluster topology in order to maintain the replication factor.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+{PANEL/}
