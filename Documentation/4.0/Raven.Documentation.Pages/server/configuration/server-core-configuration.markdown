@@ -1,4 +1,4 @@
-## Server Configuration : Core Configuration
+## Server Configuration : Core
 
 {PANEL:ServerUrl}
 

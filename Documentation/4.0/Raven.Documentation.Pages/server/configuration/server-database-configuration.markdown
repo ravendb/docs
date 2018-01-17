@@ -1,115 +1,78 @@
-## Server Configuration : Database Options
+## Server Configuration : Database
 
-<br><br>
+{PANEL:Databases.QueryTimeoutInSec}
 
-#### Databases.QueryTimeoutInSec
-###### The time in seconds to wait before canceling query
-###### Default Value: 300
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.QueryTimeoutInSec | The time in seconds to wait before canceling query | `300` | Server-wide or per database |
 
 This timeout refers to queries and streamed queries.
 
 If a query exceeds the specified time, an *OperationCanceledException* will be thrown. For the streaming queries the timeout is delayed every time a
 query result is pushed to the stream. The timeout will be exceeded only if no result is streamed within that time.
 
-Example:
+{PANEL/}
 
-```
-Databases.QueryTimeoutInSec=600
-```
+{PANEL:Databases.QueryOperationTimeoutInSec}
 
-<br><br>
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.QueryOperationTimeoutInSec | The time in seconds to wait before canceling query related operation (patch/delete query) | `300` | Server-wide or per database |
 
-#### Databases.QueryOperationTimeout
-###### The time in seconds to wait before canceling query related operation
-###### Default Value: 300
+{PANEL/}
 
-This timeout refers to patch/delete query operations.
+{PANEL:Databases.OperationTimeoutInSec}
 
-If an operation exceeds the specified time, an *OperationCanceledException* will be thrown
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.OperationTimeoutInSec | The time in seconds to wait before canceling specific operations (such as indexing terms) | `300` | Server-wide or per database |
 
-Example:
+{PANEL/}
 
-```
-Databases.QueryOperationTimeout=600
-```
+{PANEL:Databases.CollectionOperationTimeoutInSec}
 
-<br><br>
-
-#### Databases.OperationTimeout
-###### The time in seconds to wait before canceling specific operations
-###### Default Value: 300
-
-Set timeout for some general operations (such as retrieving indexing terms) requiring their own timeout settings.
-
-If an operation exceeds the specified time, an *OperationCanceledException* will be thrown
-
-Example:
-
-```
-Databases.OperationTimeout=600
-```
-
-<br><br>
-
-#### Databases.CollectionOperationTimeoutInSec
-###### The time in seconds to wait before canceling several collection operations
-###### Default Value: 300
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.CollectionOperationTimeoutInSec | The time in seconds to wait before canceling several collection operations (such as batch delete documents from studio) | `300` | Server-wide or per database |
 
 Set timeout for some operations on collections (such as batch delete documents from studio) requiring their own timeout settings.
 
 If an operation exceeds the specified time, an *OperationCanceledException* will be thrown
 
-Example:
+{PANEL/}
 
-```
-Databases.CollectionOperationTimeoutInSec=600
-```
+{PANEL:Databases.ConcurrentLoadTimeoutInSec}
 
-<br><br>
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.ConcurrentLoadTimeoutInSec | The time in seconds to wait for a database to start loading when under load | `10` | Server-wide or per database |
 
-
-#### Databases.ConcurrentDatabaseLoadTimeoutInSec
-###### Set time in seconds to wait for a database to start loading when under load
-###### Default Value: 10
 Set how much time has to wait for the database to become available when too much different resources get loaded at the same time
 
-Example:
+{PANEL/}
 
-```
-Databases.ConcurrentDatabaseLoadTimeoutInSec=30
-```
+{PANEL:Databases.MaxConcurrentLoads}
 
-<br><br>
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.MaxConcurrentLoads | Specifies the maximum amount of databases that can be loaded simultaneously | `8` | Server-wide or per database |
 
-#### Databases.MaxConcurrentDatabaseLoads
-###### Specifies the maximum amount of databases that can be loaded simultaneously
-###### Default Value: 8
+{PANEL/}
 
-Example:
+{PANEL:Databases.MaxIdleTimeInSec}
 
-```
-Databases.MaxConcurrentDatabaseLoads=4
-```
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.MaxIdleTimeInSec | Set time in seconds for max idle time for database | `900` | Server-wide or per database |
 
-<br><br>
-
-#### Databases.MaxIdleTimeForDatabaseInSec
-###### Set time in seconds for max idle time for database
-###### Default Value: 900
 After this time, and idle database will be unloaded from memory. Use lower time period if memory resource limited
 
-Example:
-```
-Databases.MaxIdleTimeForDatabaseInSec=300
-```
+{PANEL/}
 
-<br><br>
+{PANEL:Databases.FrequencyToCheckForIdleDatabasesInSec}
 
-#### Databases.FrequencyToCheckForIdleDatabasesInSec
-###### The time in seconds to check for an idle tenant database
-###### Default Value: 60
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Databases.FrequencyToCheckForIdleDatabasesInSec | The time in seconds to check for an idle tenant database | `60` | Server-wide or per database |
 
-Example:
-```
-Databases.FrequencyToCheckForIdleDatabasesInSec=15
-```
+{PANEL/}
