@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
             using (var store = new DocumentStore())
             {
-                IndexDefinition ordersIndexDefinition;
+                IndexDefinition ordersIndexDefinition = null;
                 #region index_has_changed_2
                 bool ordersIndexHasChanged = store.Maintenance.Send(new IndexHasChangedOperation(ordersIndexDefinition));
                 #endregion

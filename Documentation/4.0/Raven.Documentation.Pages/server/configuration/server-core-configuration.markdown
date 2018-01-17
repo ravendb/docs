@@ -1,10 +1,10 @@
 ## Server Configuration : Core Options
 
-<br><br>
+{PANEL:ServerUrl}
 
-#### ServerUrl
-###### The URLs which the server should listen to
-###### Default Value: "http://localhost:8080"
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| ServerUrl | The URLs which the server should listen to | `http://localhost:8080` |
 
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use "0.0.0.0" to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (http:// or https://) must be included with each URL.
 
@@ -12,28 +12,33 @@ Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port can be 
 
 {SAFE Setting to a non loopback address using the ***http*** protocol will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent a startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
 
-#Examples:
+### Examples
 
 * The server will listen to incoming requests in all the network devices available on the machine on the specific port
-```
-ServerUrl=http://0.0.0.0:8080
-```
+
+{CODE-BLOCK:plain}
+http://0.0.0.0:8080
+{CODE-BLOCK/}
 
 * The server will listen to loopback device only:
-```
-ServerUrl=http://localhost:8080
-```
+
+{CODE-BLOCK:plain}
+http://localhost:8080
+{CODE-BLOCK/}
 
 * Server using IPV6 loopback only address
-```
-ServerUrl=http://[0:0:0:0:0:0:0:1]:8080
-```
 
-<br><br>
+{CODE-BLOCK:plain}
+http://[0:0:0:0:0:0:0:1]:8080
+{CODE-BLOCK/}
 
-#### TcpServerUrls
-###### The TCP URLs which the server should listen to
-###### Default Value: null
+{PANEL/}
+
+{PANEL:ServerUrl.Tcp}
+
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| ServerUrl.Tcp | The TCP URLs which the server should listen to | `null` |
 
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for incoming TCP connections, are used for inter-node communication.
 Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port **must be specified** after the address using ':' as separator or just as number without address. 
@@ -42,113 +47,120 @@ If no URL is set, the ServerUrl will be used along with random port
 If just a number is set, the ServerUrl will be used with the specified number as port
 If the address and port are set, RavenDB will listen to the address and port specified
 
-{SAFE Same security consideration as in ***ServerUrl*** option should be applied (see above)}
+{SAFE Same security consideration as in ***ServerUrl*** option should be applied (see above) /}
 
-#Example:
+### Examples
 
 * Server will listen to TCP connections in all the network devices available on the machine
-```
-TcpServerUrl=tcp://0.0.0.0:38888
-```
 
-<br><br>
+{CODE-BLOCK:plain}
+tcp://0.0.0.0:38888
+{CODE-BLOCK/}
 
-#### PublicServerUrl
-###### The URL under which server is publicly available
-###### Default Value: null (Local Server URL)
+{PANEL/}
+
+{PANEL:PublicServerUrl}
+
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| PublicServerUrl | The URL under which server is publicly available | `null` (Local Server URL) |
+
 Set the URL to be accessible by clients and other nodes, regardless of which IP is used to access the server internally. This is useful when using a secured connection via https URL, or behind a proxy server. 
 
-#Examples:
+### Examples
 
 * Use LAN proxy server address 10.0.0.1
 
-```
-PublicServerUrl=http://10.0.0.1:80
-```
+{CODE-BLOCK:plain}
+http://10.0.0.1:80
+{CODE-BLOCK/}
 
 * Use a specific https domain
 
-```
-PublicServerUrl=https://example.com:8080
-ServerUrl=http://10.0.0.123:8080
-```
+{CODE-BLOCK:plain}
+https://example.com:8080
+{CODE-BLOCK/}
 
 {NOTE In the above example, `example.com` is the external domain/ip provided by the ISP, and `ServerUrl` must be specified when the server is behind a firewall, proxy, or router /}
 
-<br><br>
+{PANEL/}
 
-#### PublicTcpServerUrl
-###### The TCP URL under which server is publicly listen to
-###### Default Value: null
+{PANEL:PublicServerUrl.Tcp}
+
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| PublicServerUrl.Tcp | The TCP URL under which server is publicly listen to | `null` |
 
 Set the public TCP address of the server. Used for inter-node communication and access from behind a firewall, proxy, etc.
 
+### Examples
 
-#Example:
-```
-PublicTcpServerUrl=tcp://example.com:38888
-```
+{CODE-BLOCK:plain}
+tcp://example.com:38888
+{CODE-BLOCK/}
 
-<br><br>
+{PANEL/}
 
-#### RunInMemory
-###### Set whether the database should run purely in memory
-###### Default Value: false
+{PANEL:RunInMemory}
+
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| RunInMemory | Set whether the database should run purely in memory | `false` |
 
 When running in memory, RavenDB does not write to the disk. If the server is restarted, all data will be lost. This is mostly useful for testing.
 
-#Example:
-```
-RunInMemory=true
-```
+{PANEL/}
 
-<br><br>
+{PANEL:RunInMemory}
 
-#### DataDirectory
-###### Path to the data directory of RavenDB
-###### Default Value: "Databases/{name}"
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| DataDir | Path to the data directory of RavenDB | `Databases/{name}` |
+
 Relative paths will be based from the application base directory (where the Raven.Server executable is located).
 
-#Example:
-```
-DataDirectory="/home/user/databases"
-```
+### Examples
 
-<br><br>
+{CODE-BLOCK:plain}
+/home/user/databases
+{CODE-BLOCK/}
 
-#### Setup.Mode
-###### Determines what kind of security was chosen during setup, or not to use setup on startup at all (SetupMode.None)
-###### Default Value: SetupMode.None
+{PANEL/}
+
+{PANEL:Setup.Mode}
+
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| Setup.Mode | Determines what kind of security was chosen during setup, or not to use setup on startup at all (SetupMode.None) | `None` |
 
 Possible values:
 
-- None : No setup process on RavenDB server startup
-- Initial : Start the wizard process to setup RavenDB on the first server startup
-- LetsEncrypt : Let RavenDB know that it needs to take care of refreshing certificates on the fly via LE
-- Secured : This value will be set internally by RavenDB
-- Unsecured : Run the server in unsecured mode
+- `None` : No setup process on RavenDB server startup
+- `Initial` : Start the wizard process to setup RavenDB on the first server startup
+- `LetsEncrypt` : Let RavenDB know that it needs to take care of refreshing certificates on the fly via LE
+- `Secured` : This value will be set internally by RavenDB
+- `Unsecured` : Run the server in unsecured mode
 
-#Example:
-```
-Setup.Mode="Unsecured"
-```
+### Examples
 
-<br><br>
+{CODE-BLOCK:plain}
+Unsecured
+{CODE-BLOCK/}
 
-#### AcmeUrl
-###### The URLs which the server should contact when requesting certificates from using the ACME protocol
-###### Default Value: "https://acme-v01.api.letsencrypt.org/directory"
+{PANEL/}
 
-<br><br>
+{PANEL:AcmeUrl}
 
-#### ThrowIfAnyIndexCannotBeOpened
-###### Indicates if we should throw an exception if any index could not be opened
-###### Default Value: false
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| AcmeUrl | The URLs which the server should contact when requesting certificates from using the ACME protocol | `https://acme-v01.api.letsencrypt.org/directory` |
 
-This is an option that is rarely used, for debugging use only, and only if you have an expert level knowledge of coding. 
+{PANEL/}
 
+{PANEL:ThrowIfAnyIndexCannotBeOpened}
 
-#Example:
-```
-Setup.ThrowIfAnyIndexCannotBeOpened=true
-```
+| Configuration Key | Description | Default |
+|:------------------|:------------|:--------|
+| ThrowIfAnyIndexCannotBeOpened | Indicates if we should throw an exception if any index could not be opened | `false` |
+
+{PANEL/}
