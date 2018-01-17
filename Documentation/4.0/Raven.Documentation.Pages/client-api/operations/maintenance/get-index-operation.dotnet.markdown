@@ -20,6 +20,6 @@
 
 ## Related articles
 
-- [GetIndexesOperation](../../../client-api/operations/get-indexes-operation)
-- [PutIndexesOperation](../../../client-api/operations/put-indexes-operation)
-- [DeleteIndexOperation](../../../client-api/operations/delete-index-operation)
+- [How to **get indexes**?](../../../client-api/operations/get-indexes-operation)
+- [How to **put indexes**?](../../../client-api/operations/put-indexes-operation)
+- [How to **delete index**?](../../../client-api/operations/delete-index-operation)
