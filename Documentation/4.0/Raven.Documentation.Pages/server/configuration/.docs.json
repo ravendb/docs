@@ -5,22 +5,22 @@
         "Mappings": []
     },
     {
-        "Path": "server-core-configuration.markdown",
+        "Path": "core-configuration.markdown",
         "Name": "Core Configuration",
         "Mappings": []
     },
     {
-        "Path": "server-http-configuration.markdown",
+        "Path": "http-configuration.markdown",
         "Name": "HTTP Configuration",
         "Mappings": []
     },
     {
-        "Path": "server-database-configuration.markdown",
+        "Path": "database-configuration.markdown",
         "Name": "Database Configuration",
         "Mappings": []
     },
     {
-        "Path": "server-indexing-configuration.markdown",
+        "Path": "indexing-configuration.markdown",
         "Name": "Indexing Configuration",
         "Mappings": []
     },
