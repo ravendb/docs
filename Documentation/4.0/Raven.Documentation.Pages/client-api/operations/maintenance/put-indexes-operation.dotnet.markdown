@@ -25,5 +25,5 @@
 ## Related articles
 
 - [How to **reset index**?](../../../client-api/operations/maintenance/reset-index-operation)
-- [GetIndex](../../../client-api/operations/maintenance/get-index-operation)
-- [DeleteIndex](../../../client-api/operations/maintenance/delete-index-operation)
+- [How to **get index**?](../../../client-api/operations/maintenance/get-index-operation)
+- [How to **delete index**?](../../../client-api/operations/maintenance/delete-index-operation)
