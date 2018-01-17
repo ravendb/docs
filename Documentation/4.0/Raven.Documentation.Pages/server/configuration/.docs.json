@@ -10,6 +10,16 @@
         "Mappings": []
     },
     {
+        "Path": "server-http-configuration.markdown",
+        "Name": "HTTP Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "server-indexing-configuration.markdown",
+        "Name": "Indexing Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "security-configuration.markdown",
         "Name": "Security Configuration",
         "Mappings": []

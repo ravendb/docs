@@ -1,97 +1,121 @@
-## Server Configuration : Indexing Options
+## Server Configuration : Indexing Configuration
 
-<br>
+{PANEL:Indexing.RunInMemory}
 
-#### RunInMemory
-###### Set if indexes should run purely in memory
-###### Default Value : null
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.RunInMemory | Set if indexes should run purely in memory | `null` | Server-wide or per database |
 
- When running in memory, the index information is not written to disk and if the server is restarted all indexing data will be lost. This is mostly useful for testing, or faster non-persistant indexing
+When running in memory, the index information is not written to disk and if the server is restarted all indexing data will be lost. This is mostly useful for testing, or faster non-persistant indexing
  
- If not set or set to null - indexing will run in memory if core settings *RunInMemory* is set to true.
- 
+If not set or set to null - indexing will run in memory if core settings *RunInMemory* is set to true.
+
  Values:
  
  * null - use the value set in core configuration *RunInMemory*
  * true - run indexing in memory
  * false - store information on the disk
- 
-<br><br>
 
-#### Disable
-###### Disable indexing
-###### Default Value : false
+{PANEL/}
 
-<br><br>
+{PANEL:Indexing.Disable}
 
-#### TempPath
-###### Temporary path for indexing files
-###### Default Value : null
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Disable | Disable indexing | `false` | Server-wide or per database |
+
+{PANEL/}
+
+{PANEL:Indexing.TempPath}
+
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.TempPath | Temporary path for indexing files | `null` | Server-wide or per database |
 
 If not set, or set to null - use system's temp directory
 
-<br><br>
+{PANEL/}
 
-#### MaxTimeForDocumentTransactionToRemainOpenInSec
-###### Set how many seconds indexing will keep document transaction open when indexing
-###### Default Value :15
+{PANEL:Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec}
+
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.MaxTimeForDocumentTransactionToRemainOpenInSec | Set how many seconds indexing will keep document transaction open when indexing | `15` | Server-wide or per database |
 
 When triggered, transaction will be closed and a new one will be opened
 
-<br><br>
+{PANEL/}
 
-#### TimeBeforeDeletionOfSupersededAutoIndexInSec
-###### Set how many seconds to keep a superseded auto index
-###### Default Value : 15
+{PANEL:Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec}
 
-<br><br>
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.TimeBeforeDeletionOfSupersededAutoIndexInSec | Set how many seconds to keep a superseded auto index | `15` | Server-wide or per database |
 
+{PANEL/}
 
-#### TimeToWaitBeforeMarkingAutoIndexAsIdleInMin
-###### Set how many minutes to wait before marking auto index as idle
-###### Default Value : 30
+{PANEL:Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin}
 
-<br><br>
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin | Set how many minutes to wait before marking auto index as idle | `30` | Server-wide or per database |
 
-#### DisableQueryOptimizerGeneratedIndexes
-###### Disable query optimizer generated indexes
-###### Default Value : false
+{PANEL/}
 
-{WARNING Use with cautious /}
+{PANEL:Indexing.DisableQueryOptimizerGeneratedIndexes}
 
-<br><br>
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.DisableQueryOptimizerGeneratedIndexes | Disable query optimizer generated indexes (Auto Indexes) | `false` | Server-wide or per database |
 
-#### TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs
-###### Set how many hours the database should wait before deleting an auto index with the idle flag
-###### Default Value : 72
+{WARNING Use with caution. /}
 
-<br><br>
+{PANEL/}
 
-#### MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory
-###### Set minimum number of map attempts after which batch will be canceled if running low on memory
-###### Default Value : 512
+{PANEL:Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs}
 
-{WARNING Use with cautious /}
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.TimeToWaitBeforeDeletingAutoIndexMarkedAsIdleInHrs | Set how many hours the database should wait before deleting an auto index with the idle flag | `72` | Server-wide or per database |
 
-<br><br>
+{PANEL/}
 
+{PANEL:Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory}
 
-#### NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory
-###### Number of concurrent stopped batches if running low on memory
-###### Default Value : 3
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.MinNumberOfMapAttemptsAfterWhichBatchWillBeCanceledIfRunningLowOnMemory | Set minimum number of map attempts after which batch will be canceled if running low on memory | `512` | Server-wide or per database |
 
-<br><br>
+{WARNING Use with caution. /}
 
-#### MapTimeoutInSec
-###### Number of seconds after which mapping will end even if there is more to map
-###### Default Value : -1
+{PANEL/}
+
+{PANEL:Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory}
+
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.NumberOfConcurrentStoppedBatchesIfRunningLowOnMemory | Number of concurrent stopped batches if running low on memory | `3` | Server-wide or per database |
+
+{WARNING Use with caution. /}
+
+{PANEL/}
+
+{PANEL:Indexing.MapTimeoutInSec}
+
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.MapTimeoutInSec | Number of seconds after which mapping will end even if there is more to map | `-1` | Server-wide or per database |
 
 Value of *-1* for map as much as possible in single batch
 
-<br><br>
+{PANEL/}
 
-#### MapTimeoutAfterEtagReachedInMin
-###### Number of minutes after which mapping will end even if there is more to map
-###### Default Value : 15
+{PANEL:Indexing.MapTimeoutAfterEtagReachedInMin}
+
+| Configuration Key | Description | Default | Scope |
+|:------------------|:------------|:--------|:------|
+| Indexing.MapTimeoutAfterEtagReachedInMin | Number of minutes after which mapping will end even if there is more to map | `15` | Server-wide or per database |
 
 This will only be applied if we pass the last etag in collection that we saw when batch was started
+
+{PANEL/}
