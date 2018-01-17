@@ -1,11 +1,11 @@
 [
     {
-        "Path": "working-with-document-ids.markdown",
-        "Name": "Working with document IDs",
+        "Path": "working-with-document-identifiers.markdown",
+        "Name": "Working with Document Identifiers",
         "Mappings": [
             {
-                "Version": 1.0,
-                "Key": "client-api/basic-operations/saving-new-document#document-ids"
+                "Version": 3.5,
+                "Key": "client-api/document-identifiers/working-with-document-ids"
             }
         ]
     },

@@ -26,11 +26,11 @@ The range of available numbers is calculated by using the `HiLo` algorithm and i
 
 Let's see the example.
 
-{CODE session_id_not_provided@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE session_id_not_provided@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 What will be the identifier of this order? You can check it by calling:
 
-{CODE session_get_document_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE session_get_document_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 If this is the first `Order` entity in your database, then it will return `orders/1-A`. How does the identifier generation process proceed? The RavenDB client determines the collection name as `orders` (by default it is the plural form of the entity name).
 Then it asks the server to give him the ID's range he can use (the first available range is 1 - 32). The server will handle the Raven/Hilo/orders document. 
@@ -58,7 +58,7 @@ The number of sessions per document store instance plays no part in identifier v
 
 If your intention is to skip the identifier creation strategy that relies on the collection and HiLo value pair, then you can allow the RavenDB database to assign the Guid identifier to the stored document. Then you have to provide the `string.Empty` as the value of the `Id` property:
 
-{CODE session_empty_string_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE session_empty_string_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 This time the check for the document ID is called after `SaveChanges` because only then we go to the server while the entity's identifier is generated there.
 
@@ -66,17 +66,17 @@ This time the check for the document ID is called after `SaveChanges` because on
 
 The session also supports the option to store the entity and explicitly tell under what identifier it should be stored in the database. To do this, you can either set the `Id` property of the object:
 
-{CODE session_semantic_id_1@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE session_semantic_id_1@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 or use the following `Store` method overload:
 
-{CODE session_semantic_id_2@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE session_semantic_id_2@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 ### Automatic IDs and Identities
 
 RavenDB also supports the notion of the identifier without the usage of the HiLo. By creating a string ID property in your entity and setting it to a value ending with a slash (`/`) or with a pipe (`|`), you can ask RavenDB to assign a document ID to a new document when it is saved.
 
-{CODE session_auto_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE session_auto_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
  
 Using `/` at the end of the ID will create an ID at the server side by using the etag of the document storage.
 After executing the code above we will get from the server ID something that looks like this `companies/000000000000000027-A`.
@@ -84,7 +84,7 @@ Be aware that the only guarantee for the auto IDs is that it will always increas
 
 Using `|` at the end of the ID is the same as putting `/`. In this case we are going to tell RavenDB to create the ID when the document is saved. But here we are going to use a special cluster identity integer that will increase every time we are using the pipe symbol as a suffix to our ID.
 
-{CODE session_identity_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE session_identity_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 After execution of the code above the ID will be `companies/1`. Here we don't add the tag of the node to the end of the ID because this number is unique to all the cluster.
 Identities are sequential, so running the above code again will generate `companies/2`, and so on.
@@ -107,15 +107,15 @@ The use of the commands API gives you the full freedom to select the identifier 
 
 As in the case of session, you can indicate if the identifier that you are passing needs to have the identifier suffix added. You have to mark it by ending the ID with `/` or `|` character:
 
-{CODE commands_identity@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE commands_identity@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 Using the commands, you can manage to build identifiers on the client, but still relying on the server side identifier generator. Simply point out for which prefix you want to fetch the next available identifier number. Look at the example:
 
-{CODE commands_identity_generate@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE commands_identity_generate@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
 Note that such construction requires going to the server twice in order to add a single document. The call of `session.Advanced.RequestExecutor.Execute(command, session.Advanced.Context)` is necessary for every entity you want to store. Asking the server about the next identifier results in increasing this value on the server side. You cannot simply get the next available identifier and 
 use it to create the identifiers for the whole collection of the same type objects by locally incrementing this value because you can accidentally overwrite the document or get a conflict exception if someone else is putting documents using the identifier mechanism.
 
 There are dedicated commands that allow you to set identifier values for a single given prefix:
 
-{CODE commands_identity_set@ClientApi\DocumentIdentifiers\WorkingWithDocumentIds.cs /}
+{CODE commands_identity_set@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}

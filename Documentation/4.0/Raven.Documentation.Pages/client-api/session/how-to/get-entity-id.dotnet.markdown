@@ -22,4 +22,4 @@ Entities does not have to contain an ID property or field. In the case of such a
 
 ## Related Articles
 
- - [Working with document identifiers](../../document-identifiers/working-with-document-ids)
+ - [Working with document identifiers](../../document-identifiers/working-with-document-identifiers)
