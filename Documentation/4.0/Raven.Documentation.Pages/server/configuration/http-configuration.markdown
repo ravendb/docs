@@ -6,17 +6,21 @@
 
 {PANEL:Http.MinDataRateBytesPerSec}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.MinDataRateBytesPerSec | Set Kestrel's minimum required data rate in bytes per second | `null` | Server-wide only |
+Set Kestrel's minimum required data rate in bytes per second.
+
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide only
 
 {PANEL/}
 
 {PANEL:Http.MinDataRateGracePeriodInSec}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.MinDataRateGracePeriodInSec | Set Kestrel's allowed request and response grace in seconds | `null` | Server-wide only |
+ Set Kestrel's allowed request and response grace in seconds.
+
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide only
 
 The http server *Kestrel* checks every second if data is coming in at the specified rate in bytes/second. If the rate drops below the minimum set by *MinResponseDataRate*, the connection is timed out. The grace period *MinDataRateGracePeriod* is the amount of time that *Kestrel* gives the client to increase its send rate up to the minimum. The rate is not checked during that time. The grace period helps avoid dropping connections that are initially sending data at a slow rate due to TCP slow-start.
 
@@ -28,9 +32,11 @@ If not set or set to *null* - rates are set as unlimited.
 
 {PANEL:Http.MaxRequestBufferSizeInKb}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.MaxRequestBufferSizeInKb | Set Kestrel's MaxRequestBufferSize | `null` | Server-wide only |
+Set Kestrel's MaxRequestBufferSize.
+
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide only
 
 Gets or sets the maximum size of the response buffer before write calls begin to block or return tasks that don't complete until the buffer size drops below the configured limit. 
 
@@ -40,9 +46,11 @@ If not set or set to *null* - size is set as unlimited.
 
 {PANEL:Http.MaxRequestLineSizeInKb}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.MaxRequestLineSizeInKb | Set Kestrel's MaxRequestLineSize | `16` | Server-wide only |
+Set Kestrel's MaxRequestLineSize.
+
+- **Type**: `int`
+- **Default**: `16`
+- **Scope**: Server-wide only
 
 Gets or sets the maximum allowed size for the HTTP request line
 
@@ -50,9 +58,11 @@ Gets or sets the maximum allowed size for the HTTP request line
 
 {PANEL:Http.UseResponseCompression}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.UseResponseCompression | Set whether Raven's HTTP server should compress its responses | `true` | Server-wide only |
+Set whether Raven's HTTP server should compress its responses.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
 
 Using compression lower the network bandwidth usage.  However in order to debug or view the response via sniffer tools, setting to false is needed. 
 
@@ -60,48 +70,42 @@ Using compression lower the network bandwidth usage.  However in order to debug 
 
 {PANEL:Http.AllowResponseCompressionOverHttps}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.AllowResponseCompressionOverHttps | Set whether Raven's HTTP server should allow response compression to happen when HTTPS is enabled | `false` | Server-wide only |
+Set whether Raven's HTTP server should allow response compression to happen when HTTPS is enabled.
 
-{WARNING Setting this to `true` might expose a security risk. See **http://breachattack.com/** before enabling this. /}
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+{WARNING Setting this to `true` might expose a security risk. See **[http://breachattack.com/](http://breachattack.com/)** before enabling this. /}
 
 {PANEL/}
 
 {PANEL:Http.GzipResponseCompressionLevel}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.GzipResponseCompressionLevel | Set the compression level to be used when compressing HTTP responses with GZip | `Fastest` | Server-wide only |
+Set the compression level to be used when compressing HTTP responses with GZip.
+
+- **Type**: `enum` (`Optimal`, `Fastest`, `NoCompression`)
+- **Default**: `Fastest`
+- **Scope**: Server-wide only
 
 {PANEL/}
 
 {PANEL:Http.DeflateResponseCompressionLevel}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.DeflateResponseCompressionLevel | Set the compression level to be used when compressing HTTP responses with Deflate | `Fastest` | Server-wide only |
+Set the compression level to be used when compressing HTTP responses with Deflate.
 
-{PANEL/}
-
-{PANEL:Http.DeflateResponseCompressionLevel}
-
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.DeflateResponseCompressionLevel | Set the compression level to be used when compressing HTTP responses with Deflate | `Fastest` | Server-wide only |
+- **Type**: `enum` (`Optimal`, `Fastest`, `NoCompression`)
+- **Default**: `Fastest`
+- **Scope**: Server-wide only
 
 {PANEL/}
 
 {PANEL:Http.StaticFilesResponseCompressionLevel}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Http.StaticFilesResponseCompressionLevel | Set the compression level to be used when compressing static files | `Optimal` | Server-wide only |
+Set the compression level to be used when compressing static files.
 
-Values can be either:
-
-* `Optimal`
-* `Fastest`
-* `NoCompression`
+- **Type**: `enum` (`Optimal`, `Fastest`, `NoCompression`)
+- **Default**: `Optimal`
+- **Scope**: Server-wide only
 
 {PANEL/}

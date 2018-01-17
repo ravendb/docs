@@ -4,7 +4,7 @@
 
 The time in seconds to wait before canceling query.
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `300`
 - **Scope**: Server-wide or per database
 
@@ -19,7 +19,7 @@ query result is pushed to the stream. The timeout will be exceeded only if no re
 
 The time in seconds to wait before canceling query related operation (patch/delete query).
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `300`
 - **Scope**: Server-wide or per database
 
@@ -29,7 +29,7 @@ The time in seconds to wait before canceling query related operation (patch/dele
 
 The time in seconds to wait before canceling specific operations (such as indexing terms).
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `300`
 - **Scope**: Server-wide or per database
 
@@ -39,7 +39,7 @@ The time in seconds to wait before canceling specific operations (such as indexi
 
 The time in seconds to wait before canceling several collection operations (such as batch delete documents from Studio).
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `300`
 - **Scope**: Server-wide or per database
 
@@ -53,7 +53,7 @@ If an operation exceeds the specified time, an *OperationCanceledException* will
 
 The time in seconds to wait for a database to start loading when under load.
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `10`
 - **Scope**: Server-wide or per database
 
@@ -65,7 +65,7 @@ Set how much time has to wait for the database to become available when too much
 
 Specifies the maximum amount of databases that can be loaded simultaneously.
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `8`
 - **Scope**: Server-wide or per database
 
@@ -75,7 +75,7 @@ Specifies the maximum amount of databases that can be loaded simultaneously.
 
 Set time in seconds for max idle time for database.
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `900`
 - **Scope**: Server-wide or per database
 
@@ -87,7 +87,7 @@ After this time, and idle database will be unloaded from memory. Use lower time 
 
  The time in seconds to check for an idle tenant database.
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `60`
 - **Scope**: Server-wide or per database
 

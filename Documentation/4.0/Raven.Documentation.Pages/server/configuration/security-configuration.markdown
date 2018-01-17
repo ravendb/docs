@@ -49,7 +49,7 @@ The command line arguments for the 'Security.Certificate.Exec' command or execut
 
 The number of seconds to wait for the certificate executable to exit.
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide only
 
@@ -99,7 +99,7 @@ The command line arguments for the 'Security.MasterKey.Exec' command or executab
 
 The number of seconds to wait for the Master Key executable to exit.
 
-- **Type**: `integer`
+- **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide only
 
