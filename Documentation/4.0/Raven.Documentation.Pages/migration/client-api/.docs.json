@@ -23,5 +23,10 @@
         "Path": "indexes.markdown",
         "Name": "Indexes",
         "Mappings": []
+    },
+    {
+        "Path": "list.markdown",
+        "Name": "List of Differences in Public API",
+        "Mappings": []
     }
 ]
