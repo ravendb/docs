@@ -68,7 +68,7 @@ tcp://0.0.0.0:38888
 The URL under which server is publicly available.
 
 - **Type**: `string`
-- **Default**: `null` (Local Server URL)
+- **Default**: `null` (local Server URL)
 - **Scope**: Server-wide only
 
 Set the URL to be accessible by clients and other nodes, regardless of which IP is used to access the server internally. This is useful when using a secured connection via https URL, or behind a proxy server. 
