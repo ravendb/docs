@@ -2,7 +2,7 @@
 
 To return only documents that match regular expression, use the `Regex` method which enables RavenDB to perform server-side pattern matching queries. 
 
-Supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
+The supplied regular expression must be [.NET compatible](https://docs.microsoft.com/en-us/dotnet/api/system.text.regularexpressions.regex?view=netframework-4.7.1).
 
 ## Example
 

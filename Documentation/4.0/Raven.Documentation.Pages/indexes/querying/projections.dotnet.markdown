@@ -9,18 +9,18 @@ There are couple a couple of ways to perform projections in RavenDB:
 ## What are Projections and When to Use Them
 
 When performing a query, we usually pull the full document back from the server.
-However, we often need to display the data to the user. Instead of pulling the whole document back and picking just what we'll show, we can
-ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
-This saving can be very significant if we need to show just a bit of information on a large document.  
 
-A good example in the sample data set would be the order document. If we'll ask 
-for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB,
-But if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
+However, we often need to display the data to the user. Instead of pulling the whole document back and picking just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
 
-Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents and perform transformations on the results. 
+This saving can be very significant - if we need to show just a bit of information on a large document.  
+
+A good example in the sample data set would be the order document. If we'll ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
+However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
+
+Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents, and perform transformations on the results. 
 
 ## Projections are Applied as the Last Stage in the Query
-It is important to understand that projections are applied after the query has been processed, filtered, sorted and paged. This means that the project doesn't apply to all the documents in the database, only to the results that are actually returned.  
+It is important to understand that projections are applied after the query has been processed, filtered, sorted, and paged. The project doesn't apply to all the documents in the database, only to the results that are actually returned.  
 This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately after. It also means that we cannot do any filtering work as part of the projection. You can filter what will be returned, but not which documents will be returned. That has already been determined earlier in the query pipeline.  
 
 ## The Cost of Running a Projection

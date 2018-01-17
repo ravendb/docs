@@ -1,6 +1,7 @@
 # Session : How to Get Entity Last Modified 
 
 When a document is downloaded from the server it contains various metadata information, including the last modified date of the document.  
+
 Last modified date is stored within the metadata in session and is available for each entity using the `GetLastModifiedFor` method from the `Advanced` session operations.
 
 ## Syntax
@@ -9,7 +10,7 @@ Last modified date is stored within the metadata in session and is available for
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **instance** | T | Instance of an entity for which last modified date will be returned. |
+| **instance** | T | Instance of an entity for which the last modified date will be returned. |
 
 | Return Value | |
 | ------------- | ----- |
