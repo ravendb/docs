@@ -60,12 +60,6 @@ database on 4.0 server and go to `Settings -> Import Data -> From another RavenD
 ![Figure 2. Migrate data from another, running RavenDB](images/import-database-from-running-instance.png)
 
 
-{NOTE: RavenFS}
-
-Importing a file system requires to check `Import RavenFS`.
-
-{NOTE /}
-
 {PANEL/}
 
 {PANEL: How to restore an existing 3.x backup?}
@@ -79,5 +73,7 @@ Next, use one of the above options and point the just restored database / file s
 {PANEL: How to import database from `.ravendump` file?}
 
 The export file (`.ravendump`) from a 3.x  database can be imported to 4.0 using the Studio: `Settings -> Import Data -> From file`
+
+![Figure 3. Import data from ravendump](images/import-database-from-ravendump.png)
 
 {PANEL/}
