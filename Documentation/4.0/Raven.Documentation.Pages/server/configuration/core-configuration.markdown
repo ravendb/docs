@@ -2,9 +2,11 @@
 
 {PANEL:ServerUrl}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| ServerUrl | The URLs which the server should listen to | `http://localhost:8080` | Server-wide only |
+The URLs which the server should listen to.
+
+- **Type**: `string`
+- **Default**: `http://localhost:8080`
+- **Scope**: Server-wide only
 
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use `0.0.0.0` to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (`http://` or `https://`) must be included with each URL.
 
@@ -36,9 +38,11 @@ http://[0:0:0:0:0:0:0:1]:8080
 
 {PANEL:ServerUrl.Tcp}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| ServerUrl.Tcp | The TCP URLs which the server should listen to | `null` | Server-wide only |
+The TCP URLs which the server should listen to.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
 
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for incoming TCP connections, are used for inter-node communication.
 Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port **must be specified** after the address using ':' as separator or just as number without address. 
@@ -61,9 +65,11 @@ tcp://0.0.0.0:38888
 
 {PANEL:PublicServerUrl}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| PublicServerUrl | The URL under which server is publicly available | `null` (Local Server URL) | Server-wide only |
+The URL under which server is publicly available.
+
+- **Type**: `string`
+- **Default**: `null` (Local Server URL)
+- **Scope**: Server-wide only
 
 Set the URL to be accessible by clients and other nodes, regardless of which IP is used to access the server internally. This is useful when using a secured connection via https URL, or behind a proxy server. 
 
@@ -87,9 +93,11 @@ https://example.com:8080
 
 {PANEL:PublicServerUrl.Tcp}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| PublicServerUrl.Tcp | The TCP URL under which server is publicly listen to | `null` | Server-wide only |
+The TCP URL under which server is publicly listen to.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
 
 Set the public TCP address of the server. Used for inter-node communication and access from behind a firewall, proxy, etc.
 
@@ -103,9 +111,11 @@ tcp://example.com:38888
 
 {PANEL:RunInMemory}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| RunInMemory | Set whether the database should run purely in memory | `false` | Server-wide or per database |
+Set whether the database should run purely in memory.
+
+- **Type**: `bool`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
 
 When running in memory, RavenDB does not write to the disk. If the server is restarted, all data will be lost. This is mostly useful for testing.
 
@@ -113,9 +123,11 @@ When running in memory, RavenDB does not write to the disk. If the server is res
 
 {PANEL:DataDir}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| DataDir | Path to the data directory of RavenDB | `Databases/{name}` | Server-wide or per database |
+Path to the data directory of RavenDB
+
+- **Type**: `string`
+- **Default**: `Databases/{name}`
+- **Scope**: Server-wide or per database
 
 Relative paths will be based from the application base directory (where the Raven.Server executable is located).
 
@@ -129,9 +141,11 @@ Relative paths will be based from the application base directory (where the Rave
 
 {PANEL:Setup.Mode}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| Setup.Mode | Determines what kind of security was chosen during setup, or not to use setup on startup at all (SetupMode.None) | `None` | Server-wide only |
+Determines what kind of security was chosen during setup, or not to use setup on startup at all (`None`).
+
+- **Type**: `enum`
+- **Default**: `None`
+- **Scope**: Server-wide only
 
 Possible values:
 
@@ -145,16 +159,20 @@ Possible values:
 
 {PANEL:AcmeUrl}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| AcmeUrl | The URLs which the server should contact when requesting certificates from using the ACME protocol | `https://acme-v01.api.letsencrypt.org/directory` | Server-wide only |
+The URLs which the server should contact when requesting certificates from using the ACME protocol.
+
+- **Type**: `string`
+- **Default**: `https://acme-v01.api.letsencrypt.org/directory`
+- **Scope**: Server-wide only
 
 {PANEL/}
 
 {PANEL:ThrowIfAnyIndexCannotBeOpened}
 
-| Configuration Key | Description | Default | Scope |
-|:------------------|:------------|:--------|:------|
-| ThrowIfAnyIndexCannotBeOpened | Indicates if we should throw an exception if any index could not be opened | `false` | Server-wide or per database |
+ Indicates if we should throw an exception if any index could not be opened.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide or per database
 
 {PANEL/}
