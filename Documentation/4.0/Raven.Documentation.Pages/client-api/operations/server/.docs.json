@@ -80,7 +80,12 @@
     {
         "Path": "compact-database-operation.markdown",
         "Name": "CompactDatabaseOperation",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/admin/compaction"
+            }
+        ]
     },
 
     {
