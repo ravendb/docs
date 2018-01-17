@@ -1,8 +1,8 @@
 # Session : Querying : How to Query With Exact Match
 
-By default `Where` method in `Query` uses case-insensitive match.
+By default the `Where` method in `Query` uses a case-insensitive match.
 
-To perform case-sensitive match you should use `exact` parameter.
+To perform a case-sensitive match you should use the `exact` parameter.
 
 ### Syntax
 
