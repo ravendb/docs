@@ -1,7 +1,17 @@
 ﻿[
     {
+        "Path": "azure-router-timeout.markdown",
+        "Name": "Azure Router Timeout",
+        "Mappings": []
+    },
+    {
+        "Path": "tcp-offloading.markdown",
+        "Name": "TCP Offloading",
+        "Mappings": []
+    },
+    {
         "Path": "understanding-eventual-consistency.markdown",
         "Name": "Understanding eventual consistency",
-        "Mappings": [ ]
+        "Mappings": []
     }
 ]
