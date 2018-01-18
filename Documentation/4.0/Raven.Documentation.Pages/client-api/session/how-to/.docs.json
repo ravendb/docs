@@ -30,6 +30,16 @@
         ]
     },
     {
+        "Path": "subscribe-to-events.markdown",
+        "Name": "...subscribe to events",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/listeners/what-are-listeners"
+            }
+        ]
+    },
+    {
         "Path": "get-entity-id.markdown",
         "Name": "...get entity id",
         "Mappings": []

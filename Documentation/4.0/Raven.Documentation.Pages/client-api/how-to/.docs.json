@@ -32,8 +32,7 @@
         "Path": "use-low-level-commands.markdown",
         "Name": "...use low-level commands",
         "Mappings": []
-    }
-    ,
+    },
     {
         "Path": "integrate-with-excel.markdown",
         "Name": "...integrate with Excel",
