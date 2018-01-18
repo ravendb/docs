@@ -8,7 +8,7 @@ Documents that are in the same collection can have a completely different struct
 
 The collection is just a virtual concept. There is no influence on how or where the documents within the same collection are stored. 
 
-But the collection concept has a great meaning for three RavenDB features: [the studio](../../studio/overview/documents/documents-view), [the indexes](../../indexes/what-are-indexes) and [the document ID generation](../../client-api/document-identifiers/working-with-document-ids) on the client side.
+But the collection concept has a great meaning for three RavenDB features: [the studio](../../studio/overview/documents/documents-view), [the indexes](../../indexes/what-are-indexes) and [the document ID generation](../../client-api/document-identifiers/working-with-document-identifiers) on the client side.
 
 ##Collections Usage
 
