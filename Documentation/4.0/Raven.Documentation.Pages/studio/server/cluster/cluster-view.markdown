@@ -122,8 +122,7 @@ You can manage the cluster by actions such as:
 **9.** When the voting is over and a new leader is elected, one node will become a **leader** and the rest will go back to being **members**.  
 {NOTE: }
  A **watcher**  does not take part in the voting process.  
-
-      During elections, a watcher enters a **waiting** state until elections are over.
+     During elections, a watcher enters a **waiting** state until elections are over.
 {NOTE/}
 
 {PANEL/}
