@@ -1,6 +1,6 @@
 ﻿# How Clustering and Replication Works
 
-In RavenDB 4.x clustering and replication are two parts of one feature - this means setting up replication without having a cluster is not possible.
+Starting from RavenDB 4.x, clustering and replication are two parts of one feature - this means setting up replication without having a cluster is not possible.
 
 ## The Big Picture
 [RavenDB Cluster](../../glossary/ravendb-cluster) is a two or more RavenDB Instances which are called [cluster nodes](../../glossary/cluster-node). The cluster state is managed through [Raft algorithm](../../glossary/raft-algorithm) commands.
@@ -27,7 +27,7 @@ When a cluster-level operation is sent from the client, the following sequence o
   * If the node that the client sent command to is not a leader, it redirects the command to a leader
   * The leader appends the command to leader log and propagates the command to other nodes
   * If the leader receives acknowledge from majority of nodes, the command is actually executed.
-  * If the command is executed at the leader, it is comitted to the leader log, and notification is sent to other nodes. Once the nod receives the notification, it executes the command as well.
+  * If the command is executed at the leader, it is comitted to the leader log, and notification is sent to other nodes. Once the node receives the notification, it executes the command as well.
   * If a non-leader node executes the command, it is added to the node log as well.
 
 {INFO/}
@@ -36,7 +36,7 @@ When a cluster-level operation is sent from the client, the following sequence o
 The starting state is two or more RavenDB instances. 
 
 ### Server-side
-Once the cluster is created (via Stdio, code or script), the node on which we executed the "join" command, becomes a cluster leader. After the cluster command is propagated successfully, the nodes will continue with regular Raft protocol.
+Once the cluster is created (via Studio, code or script), the node on which we executed the "join" command, becomes a cluster leader. After the cluster command is propagated successfully, the nodes will continue with regular Raft protocol.
 Each time a node is added or deleted, a node which was the origin of the change (on which we did the change), would propagate the changes on all cluster nodes. Each topology change event has an etag, which increments after each change to topology.
 
 ### Client-side
@@ -59,16 +59,23 @@ If node C is offline or is not reachable, the cluster will relocate the database
 
 
 ### Replication
-Each [database group](../../glossary/database-group) has a master-master replication between the replicas. 
+Each [database group](../../glossary/database-group) has a master-master of documents replication between the replicas. 
 
 #### Failover
 When initialized, the client gets a list of nodes that are in each [database group](../../glossary/database-group), so when one of the nods is down (or there are network issues), the client will automatically and transparently try contacting other nodes. 
 How the failover nodes are selected, depends on the configuration of *read balance behavior*, which can be configured either in the [studio](../../studio/server/client-configuration) or in the client.
 
+_Note: documents writes can happen to all nodes, or some of them, depending on the configured load-balance behavior. Operations are sent *only* to leader nodes, with client doing the redirecting as needed._
+
 #### Load-balance
-The load-balance behavior can be of three types
+The load-balance behavior can be of three types:
 
   * None - no load balance behavior at all
   * Round Robin - Each request from the client will address another node
   * Fastest Node - Each request will go to the fastest node. The fastest node will be recalculated 
 
+### What happens if there are issues?
+There are two types of cluster issues which can happen:
+
+  * [Split brain](https://en.wikipedia.org/wiki/Split-brain_(computing)) - any network issue which causes one or more nodes to be inacessible. In this case, each group of nodes that still can communicate with each other, would form a new cluster, each with its own leader. Once the split is "healed", and all nodes can communicate again, one of the leaders will step down, and the cluster will return to normal. Such scenario may generate document conflicts.
+  * Too frequent leader elections - If a client sends an operation to a non-leader node, it will respond with a leader address, so the client can send another request. If in the meantime an election was held and the leader has changed, it will return the address for a new leader to the client. In order to prevent infinite loop, there is a limit of *two* redirections to leader. If the election happens frequently enough, the RavenDB client may throw an exception.
