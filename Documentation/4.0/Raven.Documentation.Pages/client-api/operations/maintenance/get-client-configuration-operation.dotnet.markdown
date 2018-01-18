@@ -4,9 +4,9 @@
 
 ## Syntax
 
-{CODE config_1@ClientApi\Operations\ClientConfiguration.cs /}
+{CODE config_1_0@ClientApi\Operations\ClientConfig.cs /}
 
-{CODE config_2@ClientApi\Operations\ClientConfiguration.cs /}
+{CODE config_1_1@ClientApi\Operations\ClientConfig.cs /}
 
 | Return Value | | |
 | ------------- | ----- | ---- |
@@ -15,7 +15,7 @@
 
 ## Example
 
-{CODE config_3@ClientApi\Operations\ClientConfiguration.cs /}
+{CODE config_1_2@ClientApi\Operations\ClientConfig.cs /}
 
 ## Related articles
 
