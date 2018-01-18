@@ -150,16 +150,6 @@
         "Mappings": []
     },
     {
-        "Path": "sql-migration-import-operation.markdown",
-        "Name": "SqlMigrationImportOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "sql-migration-schema-operation.markdown",
-        "Name": "SqlMigrationSchemaOperation",
-        "Mappings": []
-    },
-    {
         "Path": "get-collection-statistics-operation.markdown",
         "Name": "GetCollectionStatisticsOperation",
         "Mappings": []
