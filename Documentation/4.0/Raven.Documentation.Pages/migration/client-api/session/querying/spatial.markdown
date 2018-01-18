@@ -1,6 +1,6 @@
-﻿# How to migrate Spatial from 3.x?
+﻿# How to Migrate Spatial from 3.x
 
-Spatial functionality have been merged into [RQL](../../indexes/querying/what-is-rql) and to reflect that change the Client API have integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. Below migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
+Spatial functionality has been merged into [RQL](../../indexes/querying/what-is-rql). To reflect that change, the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
 
 ## Namespaces
 
@@ -10,9 +10,9 @@ Spatial functionality have been merged into [RQL](../../indexes/querying/what-is
 
 ## Example I - Index
 
-Following changes have been applied:
+The following changes have been applied:
 
-1. All spatial fields must be created by using `CreateSpatialField` method
+1. All spatial fields must be created using the `CreateSpatialField` method
 2. No support for GeoJSON and other non-standard formats
 3. No support for spatial clustering
 

@@ -1,5 +1,5 @@
 # Server Configuration
-RavenDB is **Safe by Default** which means its set of options are configured for best safety.  However, these options can be manually configured in order to accommodate different server behavior.
+RavenDB is **Safe by Default** which means its set of options are configured for the best safety.  However, these options can be manually configured in order to accommodate different server behavior.
 
 {PANEL:Environment Variables}
 
@@ -15,7 +15,7 @@ RAVEN_Setup.Mode=None
 
 {PANEL:JSON}
 
-File `settings.json` which can be found in the same directory as the server executable can also be used to change the configuration of the server. The file is read and applied on server startup only.
+|The file `settings.json` which can be found in the same directory as the server executable can also be used to change the configuration of the server. The file is read and applied on the server startup only.
 
 ### Example
 

@@ -4,11 +4,11 @@ This article describes the changes in public API of `DocumentStore`.
 
 ## Namespace
 
-`IDocumentStore` is can be referenced using `Raven.Client.Documents` (previously `Raven.Client`).
+`IDocumentStore` can be referenced using `Raven.Client.Documents` (previously `Raven.Client`).
 
 ## DefaultDatabase
 
-`DefaultDatabase` property has been renamed to `Database`.
+The `DefaultDatabase` property has been renamed to `Database`.
 
 ## Credentials and ApiKey
 
@@ -16,14 +16,13 @@ The support for WindowsAuth and OAuth has been dropped. RavenDB 4.0 uses X.509 c
 
 ## Url and FailoverServers
 
-When initializing `DocumentStore` you can provide multiple URLs to RavenDB servers holding your database in the cluster. It will grab the cluster topology from the first accessible server. 
+When initializing `DocumentStore`, you can provide multiple URLs to RavenDB servers holding your database in the cluster. It will grab the cluster topology from the first accessible server. 
 
 {CODE urls_1@Migration\ClientApi\DocumentStoreChanges.cs /}  
 
 ## ConnectionStringName
 
-As the configuration system has been changed in .NET Core we removed `ConnectionStringName` property. Instead you can use .NET core configuration mechanism, retrieve the connection string
-entry from `appsettings.json`, convert it and manually set `Urls` and `Database` properties.
+As the configuration system has been changed in .NET Core, we removed the `ConnectionStringName` property. Instead you can use the .NET core configuration mechanism, retrieve the connection string entry from `appsettings.json`, convert it, and manually set `Urls` and `Database` properties.
 
 ## Listeners
 
@@ -37,7 +36,7 @@ All listeners have been removed in favor of events.
 
 ## JsonRequestFactory
 
-Instead of `JsonRequestFactory` `IDocumentStore` instance has `RequestExecutor`. Using it you can:
+Instead of `JsonRequestFactory`, the `IDocumentStore` instance has `RequestExecutor`. Using it you can:
 
   - send any command:
 
@@ -61,9 +60,9 @@ The timeout change can be also scoped with the usage of:
 
 ## Conventions
 
-All conventions needs to be set before `DocumentStore.Initialize` is called. Otherwise `InvalidOperationException` will be thrown.
+All conventions needs to be set before `DocumentStore.Initialize` is called. Otherwise, an `InvalidOperationException` will be thrown.
 
-### Entity serialization and deserialization
+### Entity Serialization and Deserialization
 
 Serialization and deserialization of entities can be customized using:
 
@@ -78,8 +77,7 @@ In order to customize bulk insert serialization you can use `BulkInsert.TrySeria
 
 ### DocumentKeyGenerator
 
-`DocumentKeyGenerator` has been removed. Use `AsyncDocumentIdGenerator` instead.
-
+The `DocumentKeyGenerator` has been removed. Use `AsyncDocumentIdGenerator` instead.
 
 ### DefaultQueryingConsistency
 
@@ -87,11 +85,11 @@ In order to customize bulk insert serialization you can use `BulkInsert.TrySeria
 
 ### DefaultUseOptimisticConcurrency
 
-`DefaultUseOptimisticConcurrency` has been renamed to `UseOptimisticConcurrency`.
+The `DefaultUseOptimisticConcurrency` has been renamed to `UseOptimisticConcurrency`.
 
 ### FindIdentityPropertyNameFromEntityName
 
-`FindIdentityPropertyNameFromEntityName` has been renamed to `FindIdentityPropertyNameFromCollectionName`.
+The `FindIdentityPropertyNameFromEntityName` has been renamed to `FindIdentityPropertyNameFromCollectionName`.
 
 ### FindTypeTagName and FindDynamicTagName
 
@@ -103,7 +101,7 @@ It has been removed. Only string identifiers are supported.
 
 ## FailoverBehavior
 
-The client will failover automatically to different node in the cluster. You can customize the reads by using `ReadBalanceBehavior` convention.
+The client will failover automatically to different node in the cluster. You can customize the reads by using the `ReadBalanceBehavior` convention.
 
 ### EnlistInDistributedTransactions
 

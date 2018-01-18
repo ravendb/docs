@@ -1,6 +1,6 @@
 ﻿# Distinct
 
-`Distinct` method allows user to remove duplicates from result. Items are compared based on fields listed in `select` section of the query. 
+The `Distinct` method allows you to remove duplicates from the result. Items are compared based on fields listed in the `select` section of the query. 
 
 
 {CODE-TABS}
@@ -13,9 +13,7 @@ select distinct ShipTo.Country
 
 ## Paging 
 
-Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results). This kind of paging is required when using distinct keyword.
-
-
+Please read the dedicated article about [paging through tampered results](../../indexes/querying/paging#paging-through-tampered-results). This kind of paging is required when using a distinct keyword.
 
 ## Related Articles
 

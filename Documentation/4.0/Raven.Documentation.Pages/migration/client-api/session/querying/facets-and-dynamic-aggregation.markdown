@@ -1,15 +1,15 @@
-﻿# How to migrate Facets and Dynamic Aggregation from 3.x?
+﻿# How to Migrate Facets and Dynamic Aggregation from 3.x
 
-Facets and Dynamic Aggregation have been merged into a single feature and are now also a part of [RQL](../../indexes/querying/what-is-rql).
+Facets and Dynamic Aggregation have been merged into a single feature and are now a part of [RQL](../../indexes/querying/what-is-rql).
 
 ## Facets
 
 Facets are now divided into two types:
 
-- `Facet` where whole spectrum of results will generate single outcome,
+- `Facet` where the whole spectrum of results will generate a single outcome
 - `RangeFacet` gives you the ability to split the whole spectrum of results into smaller ranges
 
-`FacetSetup` document also now splits the facets into two properties. One containing `Facets`, the other one containing `RangeFacets`.
+The `FacetSetup` document also now splits the facets into two properties. One containing `Facets`, the other containing `RangeFacets`.
 
 ### Example
 

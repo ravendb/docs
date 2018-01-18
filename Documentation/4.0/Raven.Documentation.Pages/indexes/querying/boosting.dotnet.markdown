@@ -1,7 +1,9 @@
 ﻿# Boosting
 
 Indexing in RavenDB is built upon the Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
+
 Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
+
 This way you can improve your searching mechanism and provide users with much more accurate results.
 
 
@@ -31,12 +33,9 @@ where boost(startsWith(Name, 'G'), 10) or boost(startsWith(Name, 'A'), 5)
 
 This shows users which name starts with letter 'G' or 'A'. Results which starts with 'G' go first. 
 
-
-
 ## Remarks
 
 {INFO Boosting is also available at the index definiton level. You can read more about it [here](../../indexes/boosting). /}
-
 
 ## Related Articles
 
