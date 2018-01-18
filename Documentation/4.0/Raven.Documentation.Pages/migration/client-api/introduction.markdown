@@ -62,3 +62,7 @@ RavenDB.Client doesn't have RavenDB.Abstractions dependency. Please remove all u
 ### Tests
 
 Instead of `EmbeddableDocumentStore` your tests should use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver) package. See the dedicated [article](../../start/test-driver).
+
+### DTC transactions
+
+There is no support for DTC transactions.

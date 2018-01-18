@@ -57,7 +57,7 @@ The default parameters are:
   
 {DANGER:Beware of waiting for non stale results overuse}
 
-The indexing mechanism in RavenDB is built on [a BASE model](../../faq/transaction-support#base-for-query-operations). 
+The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support#base-for-query-operations). 
 In order to avoid querying consistency pitfalls, you need to consider this at the data modeling phase.
 
 The usage of `WaitForNonStaleResults` at the query level is usually reasonable on only rare occasions. 
