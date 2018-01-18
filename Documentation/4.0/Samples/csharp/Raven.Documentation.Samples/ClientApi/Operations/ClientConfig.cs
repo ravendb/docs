@@ -7,6 +7,7 @@ using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Operations.Configuration;
 using Raven.Client.Documents.Queries;
+using Raven.Client.Http;
 using Raven.Client.ServerWide;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
@@ -53,8 +54,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 }
 
                 {
-                    ClientConfiguration clientConfiguration = null;
                     #region config_2_2
+                    ClientConfiguration clientConfiguration = new ClientConfiguration
+                    {
+                        MaxNumberOfRequestsPerSession = 100,
+                        ReadBalanceBehavior = ReadBalanceBehavior.FastestNode
+                    };
+                    
                     store.Maintenance.Send(new PutClientConfigurationOperation(clientConfiguration));
                     #endregion
                 }
