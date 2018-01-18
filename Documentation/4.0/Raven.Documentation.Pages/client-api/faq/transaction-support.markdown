@@ -3,7 +3,7 @@
 
 {PANEL:ACID for document operations}
 
-In RavenDB all actions performed on documents are fully ACID (Atomicity, Consistency, Isolation, Durability). It's supported by [Voron]() - storage engine used by RavenDB under the hood.
+In RavenDB all actions performed on documents are fully ACID (Atomicity, Consistency, Isolation, Durability). It's supported by [Voron]() - our storage engine used by RavenDB under the hood.
 
 An each document operation or a batch of operations applied to a set of documents sent in a single HTTP request will execute in a single transaction. The ACID properties of RavenDB:
 
