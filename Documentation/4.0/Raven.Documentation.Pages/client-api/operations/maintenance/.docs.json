@@ -100,11 +100,6 @@
         "Mappings": []
     },
     {
-        "Path": "get-index-performance-statistics-operation.markdown",
-        "Name": "GetIndexPerformanceStatisticsOperation",
-        "Mappings": []
-    },
-    {
         "Path": "get-index-statistics-operation.markdown",
         "Name": "GetIndexStatisticsOperation",
         "Mappings": []
@@ -157,11 +152,6 @@
     {
         "Path": "get-identities-operation.markdown",
         "Name": "GetIdentitiesOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "get-replication-performance-statistics-operation.markdown",
-        "Name": "GetReplicationPerformanceStatisticsOperation",
         "Mappings": []
     },
     {
