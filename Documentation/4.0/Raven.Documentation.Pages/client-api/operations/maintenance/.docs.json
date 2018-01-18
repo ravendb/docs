@@ -10,11 +10,6 @@
         "Mappings": []
     },
     {
-        "Path": "get-operation-state-operation.markdown",
-        "Name": "GetOperationStateOperation",
-        "Mappings": []
-    },
-    {
         "Path": "delete-index-operation.markdown",
         "Name": "DeleteIndexOperation",
         "Mappings": [
@@ -100,23 +95,8 @@
         "Mappings": []
     },
     {
-        "Path": "get-index-statistics-operation.markdown",
-        "Name": "GetIndexStatisticsOperation",
-        "Mappings": []
-    },
-    {
         "Path": "get-indexes-operation.markdown",
         "Name": "GetIndexesOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "get-indexes-statistics-operation.markdown",
-        "Name": "GetIndexesStatisticsOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "get-indexing-status-operation.markdown",
-        "Name": "GetIndexingStatusOperation",
         "Mappings": []
     },
     {
