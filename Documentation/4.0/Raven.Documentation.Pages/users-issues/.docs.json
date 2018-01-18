@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "tcp-offloading.markdown",
+        "Name": "TCP Offloading",
+        "Mappings": []
+    },
+    {
         "Path": "understanding-eventual-consistency.markdown",
         "Name": "Understanding eventual consistency",
         "Mappings": []
