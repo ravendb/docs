@@ -59,11 +59,6 @@
             }
         ]
     },
-     {
-        "Path": "events.markdown",
-        "Name": "Events",
-        "Mappings": []
-    },
     {
         "Path": "/querying",
         "Name": "Querying",
