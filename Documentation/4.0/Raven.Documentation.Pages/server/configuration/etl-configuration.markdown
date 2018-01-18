@@ -1,24 +1,33 @@
 ## Server Configuration : ETL Options
 
-<br>
+{PANEL:ETL.SQL.CommandTimeoutInSec}
 
-#### SQL.CommandTimeoutInSec
-###### Set number of seconds after which SQL command will timeout
-###### Default Value : null
+Number of seconds after which SQL command will timeout.
 
-If not set or set to null - use provider's default.
-Can be overridden by setting *CommandTimeout* property value in SQL ETL configuration
+- **Type**: `int`
+- **Default**: `null` (use provider default)
+- **Scope**: Server-wide or per database
 
-<br><br>
+{PANEL/}
 
-#### ExtractAndTransformTimeoutInSec
-###### Set number of seconds after which extraction and transformation will end and loading will start
-###### Default Value : 300
+{PANEL:ETL.ExtractAndTransformTimeoutInSec}
 
-<br><br>
+Number of seconds after which extraction and transformation will end and loading will start.
 
-#### MaxNumberOfExtractedDocuments
-###### Max number of extracted documents in ETL batch
-###### Default Value : null
+- **Type**: `int`
+- **Default**: `300`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:ETL.MaxNumberOfExtractedDocuments}
+
+Max number of extracted documents in ETL batch.
+
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
 
 If value is not set, or set to null - number of extracted documents is infinite per ETL batch 
+
+{PANEL/}

@@ -28,5 +28,15 @@
         "Path": "security-configuration.markdown",
         "Name": "Security Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "cluster-configuration.markdown",
+        "Name": "Cluster Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "etl-configuration.markdown",
+        "Name": "ETL Configuration",
+        "Mappings": []
     }
 ]
