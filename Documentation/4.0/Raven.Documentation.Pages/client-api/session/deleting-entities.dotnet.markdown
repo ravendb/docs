@@ -8,12 +8,15 @@ Entities can be marked for deletion by using `Delete` method, but will not be re
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **entity** or **id** | T, ValueType or string | instance of entity to delete or entity ID |
+| **entity** or **id** | T or string | instance of entity to delete or entity ID |
 | **expectedChangeVector** | string | a change vector to use for concurrency checks
 
 ## Example 1
 
-{CODE deleting_2@ClientApi\Session\DeletingEntities.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync deleting_2@ClientApi\Session\DeletingEntities.cs /}
+{CODE-TAB:csharp:Async deleting_2_async@ClientApi\Session\DeletingEntities.cs /}
+{CODE-TABS/}
 
 {NOTE: Concurrency on Delete}
 If UseOptimisticConcurrency is set to 'true' (default 'false'), the Delete() method will use loaded 'employees/1' change vector for concurrency check and might throw ConcurrencyException.
@@ -21,7 +24,10 @@ If UseOptimisticConcurrency is set to 'true' (default 'false'), the Delete() met
 
 ## Example 2
 
-{CODE deleting_3@ClientApi\Session\DeletingEntities.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync deleting_3@ClientApi\Session\DeletingEntities.cs /}
+{CODE-TAB:csharp:Async deleting_3_async@ClientApi\Session\DeletingEntities.cs /}
+{CODE-TABS/}
 
 {NOTE: Concurrency on Delete}
 In this overload, the Delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown
