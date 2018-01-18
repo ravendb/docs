@@ -10,6 +10,11 @@
         "Mappings": []
     },
     {
+        "Path": "recovering-from-voron-errors.markdown",
+        "Name": "Recovering from Voron errors",
+        "Mappings": []
+    },
+    {
         "Path": "understanding-eventual-consistency.markdown",
         "Name": "Understanding eventual consistency",
         "Mappings": []
