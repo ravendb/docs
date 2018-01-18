@@ -3,10 +3,10 @@ using Raven.Client.Documents.Operations.Indexes;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations.Indexes
 {
-	public class StartIndex
-	{
-		private interface IFoo
-		{
+    public class StartIndex
+    {
+        private interface IFoo
+        {
             /*
             #region start_1
             public StartIndexOperation(string indexName)
@@ -15,13 +15,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Indexes
         }
 
         public StartIndex()
-		{
-			using (var store = new DocumentStore())
-			{
+        {
+            using (var store = new DocumentStore())
+            {
                 #region start_2
-                store.Maintenance.Send(new StartIndexOperation("Orders/Totals")));
+                store.Maintenance.Send(new StartIndexOperation("Orders/Totals"));
                 #endregion
-			}
-		}
-	}
+            }
+        }
+    }
 }
