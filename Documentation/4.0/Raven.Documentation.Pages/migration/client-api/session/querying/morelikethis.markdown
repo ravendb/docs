@@ -1,6 +1,6 @@
-﻿# How to migrate MoreLikeThis from 3.x?
+﻿# How to Migrate MoreLikeThis from 3.x
 
-MoreLikeThis functionality have been merged into [RQL](../../indexes/querying/what-is-rql) and to reflect that change the Client API have integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. Below migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
+MoreLikeThis functionality has been merged into [RQL](../../indexes/querying/what-is-rql). To reflect this change the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
 
 ## Namespaces
 
