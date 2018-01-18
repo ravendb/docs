@@ -1,9 +1,6 @@
 # Server Configuration
 RavenDB is **Safe by Default** which means its set of options are configured for best safety.  However, these options can be manually configured in order to accommodate different server behavior.
 
-## Setting Config Options
-There are few ways to configure option values before initiating the new server's instance.
-
 {PANEL:Environment Variables}
 
 Configuration can be adjusted by preceding configuration keys with `RAVEN_` or `RAVEN.` prefix. 
