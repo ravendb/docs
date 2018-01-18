@@ -288,16 +288,34 @@ namespace Raven.Documentation.Parser.Helpers
 				case CodeBlockLanguage.Java:
 					return "language-java";
 				case CodeBlockLanguage.Http:
-					return "language-javascript";
+					return "language-http";
 				case CodeBlockLanguage.Json:
-					return "language-javascript";
+					return "language-json";
 				case CodeBlockLanguage.Plain:
 					return "language-none";
 				case CodeBlockLanguage.Xml:
-					return "language-none";
+					return "language-xml";
                 case CodeBlockLanguage.Python:
 			        return "language-python";
-				default:
+			    case CodeBlockLanguage.Bash:
+			        return "language-bash";
+			    case CodeBlockLanguage.Batch:
+			        return "language-batch";
+			    case CodeBlockLanguage.Git:
+			        return "language-git";
+			    case CodeBlockLanguage.Go:
+			        return "language-go";
+			    case CodeBlockLanguage.Html:
+			        return "language-html";
+			    case CodeBlockLanguage.JavaScript:
+			        return "language-javascript";
+			    case CodeBlockLanguage.PowerShell:
+			        return "language-powershell";
+			    case CodeBlockLanguage.Ruby:
+			        return "language-ruby";
+			    case CodeBlockLanguage.Sql:
+			        return "language-sql";
+			    default:
 					throw new NotSupportedException(language.ToString());
 			}
 		}

@@ -1,13 +1,22 @@
 ﻿namespace Raven.Documentation.Parser.Data
 {
-	public enum CodeBlockLanguage
-	{
-		Csharp,
-		Java,
-		Http,
-		Json,
-		Plain,
-		Xml,
-        Python
-	}
+    public enum CodeBlockLanguage
+    {
+        Bash,
+        Batch,
+        Csharp,
+        Git,
+        Go,
+        Html,
+        Http,
+        Java,
+        JavaScript,
+        Json,
+        Plain,
+        PowerShell,
+        Python,
+        Ruby,
+        Sql,
+        Xml
+    }
 }

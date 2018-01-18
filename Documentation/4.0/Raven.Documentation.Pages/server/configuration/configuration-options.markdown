@@ -35,9 +35,10 @@ File `settings.json` which can be found in the same directory as the server exec
 The server can be configured using the list of arguments that can be passed to the console application (or while running as a deamon).
 
 ### Example:
-```
+
+{CODE-BLOCK:bash}
 ./Raven.Server --Setup.Mode=None
-```
+{CODE-BLOCK/}
 
 {NOTE Executable arguments overrides environment variables settings and `settings.json` ones. /}
 
