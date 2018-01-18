@@ -4,39 +4,44 @@ RavenDB is **Safe by Default** which means its set of options are configured for
 ## Setting Config Options
 There are few ways to configure option values before initiating the new server's instance.
 
-### Environment Variable
-Setting environment variable with the following syntax will set a configuration value.
+{PANEL:Environment Variables}
 
-#Usage:
- `RAVEN_<ConfigOption>` or `RAVEN.<ConfigOption>`
+Configuration can be adjusted by preceding configuration keys with `RAVEN_` or `RAVEN.` prefix. 
 
-#Example:
-```
-export RAVEN_Setup.Mode=None
-```
+### Example
 
-### settings.json
-On the server executable directory lies `setting.json` which will be read and applied on server startup. 
-Usage : `"ConfigOption": "ConfigValue"`
+{CODE-BLOCK:plain}
+RAVEN_Setup.Mode=None
+{CODE-BLOCK/}
 
-#Example : 
-```
+{PANEL/}
+
+{PANEL:JSON}
+
+File `settings.json` which can be found in the same directory as the server executable can also be used to change the configuration of the server. The file is read and applied on server startup only.
+
+### Example
+
+{CODE-BLOCK:json}
 {
     "ServerUrl": "http://127.0.0.1:8080",
     "Setup.Mode": "None"
 }
-```
+{CODE-BLOCK/}
 
-{NOTE setting.json config options OVERRIDES the environment variables settings! /}
+{NOTE Changes in `settings.json` overrides the environment variables settings. /}
 
-### Command Line Arguments
-The Raven.Server executable can configure options using arguments which can be passed to the console application (or while running as daemon)
-Usage: --<ConfigOption>=<ConfigValue>
+{PANEL/}
 
-#Example:
+{PANEL:Command Line Arguments}
+
+The server can be configured using the list of arguments that can be passed to the console application (or while running as a deamon).
+
+### Example:
 ```
 ./Raven.Server --Setup.Mode=None
 ```
 
-{NOTE Executable arguments config options OVERRIDES environment variables settings and setting.json! /}
+{NOTE Executable arguments overrides environment variables settings and `settings.json` ones. /}
 
+{PANEL/}
