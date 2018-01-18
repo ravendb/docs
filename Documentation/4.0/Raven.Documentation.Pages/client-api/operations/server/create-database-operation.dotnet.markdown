@@ -8,8 +8,8 @@ This operation is used to create a new database on a server.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **databaseRecord** | string | TODO |
-| **replicationFactor** | bool | TODO |
+| **databaseRecord** | string | instance of `DatabaseRecord` containing database configuration |
+| **replicationFactor** | bool | indicates how many nodes should contain the database |
 
 ## Example
 
