@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "get-certificate-operation.markdown",
+        "Name": "GetCertificateOperation",
+        "Mappings": []
+    },
+    {
         "Path": "get-certificates-operation.markdown",
         "Name": "GetCertificatesOperation",
         "Mappings": []
@@ -24,38 +29,9 @@
         "Name": "GetServerWideClientConfigurationOperation",
         "Mappings": []
     },
-
-    {
-        "Path": "get-connection-strings-operation.markdown",
-        "Name": "GetConnectionStringsOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "put-connection-strings-operation.markdown",
-        "Name": "PutConnectionStringOperation",
-        "Mappings": []
-    },
-
     {
         "Path": "put-serverwide-client-configuration-operation.markdown",
         "Name": "PutServerWideClientConfigurationOperation",
-        "Mappings": []
-    },
-
-    {
-        "Path": "remove-connection-strings-operation.markdown",
-        "Name": "RemoveConnectionStringOperation",
-        "Mappings": []
-    },
-
-    {
-        "Path": "add-etl-operation.markdown",
-        "Name": "AddEtlOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "update-etl-operation.markdown",
-        "Name": "UpdateEtlOperation",
         "Mappings": []
     },
 
@@ -72,12 +48,6 @@
     },
 
     {
-        "Path": "reorder-database-members-operation.markdown",
-        "Name": "ReorderDatabaseMembersOperation",
-        "Mappings": []
-    },
-
-    {
         "Path": "compact-database-operation.markdown",
         "Name": "CompactDatabaseOperation",
         "Mappings": [
@@ -87,18 +57,6 @@
             }
         ]
     },
-
-    {
-        "Path": "configure-expiration-operation.markdown",
-        "Name": "ConfigureExpirationOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "configure-revisions-operation.markdown",
-        "Name": "ConfigureRevisionsOperation",
-        "Mappings": []
-    },
-
     {
         "Path": "create-database-operation.markdown",
         "Name": "CreateDatabaseOperation",
@@ -109,13 +67,6 @@
         "Name": "DeleteDatabasesOperation",
         "Mappings": []
     },
-
-    {
-        "Path": "delete-ongoing-task-operation.markdown",
-        "Name": "DeleteOngoingTaskOperation",
-        "Mappings": []
-    },
-
     {
         "Path": "get-build-number-operation.markdown",
         "Name": "GetBuildNumberOperation",
@@ -136,18 +87,6 @@
     {
         "Path": "get-database-topology-operation.markdown",
         "Name": "GetDatabaseTopology",
-        "Mappings": []
-    },
-
-    {
-        "Path": "get-ongoing-task-info-operation.markdown",
-        "Name": "GetOngoingTaskInfoOperation",
-        "Mappings": []
-    },
-
-    {
-        "Path": "get-periodic-backup-status-operation.markdown",
-        "Name": "GetPeriodicBackupStatusOperation",
         "Mappings": []
     },
 
@@ -181,16 +120,6 @@
     {
         "Path": "toggle-databases-state-operation.markdown",
         "Name": "ToggleDatabasesStateOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "update-periodic-backup-operation.markdown",
-        "Name": "UpdatePeriodicBackupOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "update-external-replication-operation.markdown",
-        "Name": "UpdateExternalReplicationOperation",
         "Mappings": []
     }
 ]
