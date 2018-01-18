@@ -1,6 +1,6 @@
 #Tcp Offloading
 ##Symptoms: 
-- Exception thrown in Raven client when accessing raven server,  exception was because of socket timeout
+- Exception thrown in RavenDB client when accessing RavenDB server,  exception was because of socket timeout
 - General slow operation of client system
 
 ##Cause:
