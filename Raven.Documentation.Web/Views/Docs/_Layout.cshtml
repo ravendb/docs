@@ -1,0 +1,160 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Core.ViewModels
+@using Raven.Documentation.Web.Helpers
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RavenDB Documentation - @ViewBag.Title</title>
+    
+    @RenderSection("HeadAdditions", false)
+
+    @{
+        var v = 1;
+    }
+
+    <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900' rel='stylesheet' type='text/css'>
+    <link href="https://ravendb.net/Content/css/bundle?v=@v" rel="stylesheet" />
+    <link href="/Content/styles.css?v=@v" rel="stylesheet" type="text/css"/>
+
+</head>
+
+<body class="push-body docs">
+
+    <div id="shop"></div>
+    <div id="menuOverlay"></div>
+    <div id="wrapper">
+        <nav class="navbar">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+                    </button>
+                    <a class="logo" href="@Url.Action("ArticlePage", "Docs", new
+                                      {
+                                          version = Model.SelectedVersion,
+                                          language = Model.SelectedLanguage,
+                                      })">RavenDB</a>
+                    <a href="~/" class="back-to-home">back to ravendb.net</a>
+                </div>
+
+                <div id="navbar" class="navbar-collapse collapse">
+                    <div class="flex-horizontal docs-nav-container">
+
+                        <div id="docs-search" class="flex-grow">
+                            <form method="get" action="@Url.Action(MVC.Docs.ActionNames.Search)" id="form-search">
+                                <input autocomplete="off" type="text" id="search-docs" data-bind="hasFocus: isSearchFocused, value: input, valueUpdate: 'afterkeydown'" class="form-control" name="searchTerm" placeholder="Search in @Model.SelectedVersion documentation" />
+                                <div class="dropdown-sugestions" data-bind="style: { display: shouldShowSuggest() ? 'block' : 'none' }, foreach: items">
+                                    <p>
+                                        <a data-bind="attr:{href:$root.getLink($data)}"><span data-bind="text: Path"></span> / <span href="#" data-bind="text:Title"></span></a>
+                                    </p>
+                                </div>
+                                <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
+                            </form>
+                        </div>
+                        <div class="version-select">
+                            @Html.Partial("VersionSelector")
+                        </div>
+
+                    </div>
+                    <div class="row" id="search-instead-for" align="left" style="padding-left: 15px; font-size: 15px; display: none;">
+                        <span style="align-self: flex-start">Search instead for</span>
+                        <a></a>
+                    </div>
+                    @{
+                        var isNotLegacyVersion = DocsVersion.GetModeForVersion(Model.SelectedVersion) == DocsVersion.DocsMode.Normal;
+                    }
+                    <nav id="submenu" class="documentation @if (isNotLegacyVersion)
+	                                       {<text>show-general show-@DocumentationLanguage.GetClientName(Model.SelectedLanguage)</text>}">
+                        @if (isNotLegacyVersion)
+                        {
+                            @Html.Partial("LanguageSelector");
+                        }
+                        <ul id="docs-menu" class="treeview-famfamfam nav treeview">
+                            @PartialExtensions.Partial(Html, "Toc", Model.Toc)
+                        </ul>
+                    </nav>
+                </div><!--/.nav-collapse -->
+            </div>
+        </nav>
+
+
+        <div class="flex-horizontal">
+
+            <article id="articleContainer">
+                <div class="article-center">
+                    @RenderBody()
+
+                </div>
+                <aside>
+                @RenderSection("RelatedArticles", false)
+                @if (Html.IsDebug())
+                {
+                    @Html.Partial("DevControls")
+                }
+                </aside>
+            </article>
+
+
+        </div>
+        <div class="clearfix"></div>
+
+    </div>
+
+    <script src="//ravendb.net/js/libs?v=@v"></script>
+    <script>
+        var root = '/';
+    </script>
+    <script src="//ravendb.net/js/app?v=@v"></script>
+    <script src="//ravendb.net/js/shared?v=@v"></script>
+    <script>
+    RavenDb.Documentation.init(
+    {
+        baseUrl: '@Url.Content("~/docs/article-page/")',
+        version: '@Model.SelectedVersion',
+        lang: 'CSharp'
+    });
+    </script>
+    <script>
+        $('table', '#article-body').each(function () {
+            var div = $('<div></div>')
+                .attr({
+                    'class': 'table-responsive'
+                });
+            $(this).attr({
+                'class': 'table table-striped table-bordered table-condensed'
+            }).wrap(div);
+        });
+
+        $('div h3 a').click(function () {
+            searchResult.setSearchFound(this.href);
+        });
+
+        $(document).ready(function () {
+            var isShowInstead = localStorage["searchInsteadFor"] !== localStorage["searchInput"];
+            var a = $('#search-instead-for a');
+            var $searchInsteadFor = $('#search-instead-for');
+            if (isShowInstead) {
+                $searchInsteadFor.show();
+
+                var href = $('#form-search').attr('action') + '?searchTerm='
+                    + localStorage["searchInsteadFor"];
+
+                a.attr('href', href);
+                a.html(localStorage["searchInsteadFor"]);
+
+                a.click(function () {
+                    localStorage["searchInput"] = localStorage["searchInsteadFor"];
+                });
+            } else {
+                $searchInsteadFor.hide();
+                $('#search-instead-for span').html('');
+            }
+        });
+
+
+    </script>
+</body>
+</html>

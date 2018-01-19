@@ -1,0 +1,48 @@
+﻿@model Raven.Documentation.Web.Core.ViewModels.DocSearchViewModel
+@{
+    Layout = "_Layout.cshtml";
+}
+
+<div id="search-results">
+
+    <div id="article-search-result">
+        @{
+            var index = 0;
+        }
+        @foreach (var result in Model.SearchResults)
+        {
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a data-toggle="collapse" href="#@index">
+                        <span class="result-name">@result.Key</span>
+                        <span class="result-count">@result.Count() result(s)</span>
+                    </a>
+                </div>
+                <div id="@index" class="panel-collapse collapse in">
+                    @foreach (var art in result)
+                    {
+                        <div class="article-search-result">
+                            <h3>
+                                <a href="~/docs/article-page/@art.Version/@art.Language/@art.Key">
+                                    @Html.Raw(art.Title)
+                                </a>
+                                <small>@art.Key</small>
+                            </h3>
+                            <p>
+                                @if (string.IsNullOrWhiteSpace(art.ContentHighlight) == false)
+                                {
+                                    <text>...@Html.Raw(art.ContentHighlight)...</text>
+                                }
+                                else
+                                {
+                                    <text>...</text>
+                                }
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+            index++;
+        }
+    </div>
+</div>

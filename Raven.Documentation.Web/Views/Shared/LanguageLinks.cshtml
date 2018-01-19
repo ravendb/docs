@@ -1,0 +1,15 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Helpers
+
+@if (ViewBag.CurrentVersion == "3.0" || ViewBag.CurrentVersion == "3.5" || ViewBag.CurrentVersion == "4.0")
+{
+    <div class="chooser">
+        <span>Code samples </span>
+        <div class="btn-group">
+            @Html.LanguageLink(Language.Csharp, ViewContext)
+            @Html.LanguageLink(Language.Java, ViewContext)
+            @Html.LanguageLink(Language.Http, ViewContext)
+            @Html.LanguageLink(Language.Python, ViewContext)
+        </div>
+    </div>
+}

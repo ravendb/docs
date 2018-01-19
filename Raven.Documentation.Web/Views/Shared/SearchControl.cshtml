@@ -1,0 +1,9 @@
+﻿@using (Html.BeginForm(MVC.Docs.ActionNames.Search, MVC.Docs.Name, new { language = ViewBag.CurrentLanguage, version = ViewBag.CurrentVersion }, FormMethod.Post, null))
+{
+    <div class="input-group">
+        @Html.TextBox("value", string.Empty, new { required = "required", @class = "form-control", placeholder = "How to..." })
+        <span class="input-group-btn">
+            <button class="btn btn-primary" type="submit"><span class="glyphicon glyphicon-search"></span></button>
+        </span>
+    </div>
+}

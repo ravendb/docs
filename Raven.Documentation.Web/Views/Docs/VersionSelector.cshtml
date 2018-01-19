@@ -1,0 +1,29 @@
+﻿@using Raven.Documentation.Web.Core.ViewModels
+@{
+    string currentVersion = ViewBag.Version;
+    string language = ViewBag.Language;
+}
+
+<div class="dropdown">
+    <button class="btn btn-default btn-block dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+        Version @currentVersion
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+        @foreach (var version in DocsVersion.AllVersions)
+        {
+            if (version == currentVersion)
+            {
+                continue;
+            }
+            if (DocsVersion.GetModeForVersion(version) == DocsVersion.DocsMode.Normal)
+            {
+                <li><a href="~/docs/article-page/@version/@language/">Version @version</a></li>
+            }
+            else
+            {
+                <li><a href="~/docs/article-page/@version/@language/intro/what-is-nosql">Version @version</a></li>
+            }
+        }
+    </ul>
+</div>

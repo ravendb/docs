@@ -1,0 +1,22 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Core.ViewModels
+@using Raven.Documentation.Web.Helpers
+@{
+    string currentLanguage = ViewBag.Language;
+}
+
+<div id="highlight" class="highlight">
+    <h4 style="text-align: center">LANGUAGE</h4>
+    <hr />
+    <button data-lang="general" data-sname="all" class="general active">General</button>
+    @foreach (var lang in DocumentationLanguage.AllLangs)
+    {
+        if (lang == Language.All)
+        {
+            continue;
+        }
+        var langStr = lang.ToString().ToLowerInvariant();
+        var clientName = DocumentationLanguage.GetClientName(lang);
+        <button data-lang="@clientName" data-sname="@langStr" class="@clientName @if(langStr== currentLanguage){<text>active</text>}">@lang.GetDescription()</button>
+    }
+</div>
