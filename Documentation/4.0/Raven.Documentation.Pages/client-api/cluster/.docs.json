@@ -8,5 +8,9 @@
                 "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
             }
         ]
-    }  
+    },  
+    {
+        "Path": "speed-test.markdown",
+        "Name": "Client Speed Test"
+    }
 ]

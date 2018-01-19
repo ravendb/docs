@@ -1,0 +1,8 @@
+﻿# How ClientAPI Speed Test is working?
+
+In RavenDB ClientAPI, if the _Read balance behavior_ is configured for the _Fastest node_ , under certain conditions the ClientAPI would execute a speed test for each node, so a fastest test would be selected.
+
+### When does it trigger?
+Once a client configuration is updated at a server, the next response from the server would include the following header : "Refresh-Client-Configuration". 
+When a client sees such a header for the first time, it will probe all nodes when the next read request will happen and store the fastest found.
+After the first probe for speed, the client would repeat the speed test at most once per minute on a read request.
