@@ -266,6 +266,8 @@
     <Content Include="Views\Docs\Doc.cshtml" />
     <Content Include="Views\Shared\LanguageSelector.cshtml" />
     <Content Include="Views\Articles\DevControls.cshtml" />
+    <Content Include="Views\Docs\NoSearchResults.cshtml" />
+    <Content Include="Views\Docs\SearchResults.cshtml" />
     <None Include="Views\Shared\LanguageLinks.cshtml" />
     <None Include="Views\Docs\VersionSelector.cshtml" />
     <Content Include="Web.config">
