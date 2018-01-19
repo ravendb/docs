@@ -1,6 +1,6 @@
 ﻿# Introduction to 3.x to 4.0 migration
 
-RavenDB.Client 4.0 is a major upgrade. It's no backward compatible and the API has a lot of breaking changes.
+RavenDB.Client 4.0 is a major upgrade. It's not backward compatible and the API has a lot of breaking changes.
 
 This section discusses the changes that you need to be aware of when migrating your application using 3.x DLLs and recommended actions you need to take.
 
