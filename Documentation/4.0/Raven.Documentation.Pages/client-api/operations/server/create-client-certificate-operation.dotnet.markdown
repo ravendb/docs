@@ -1,4 +1,4 @@
-﻿# Operations : How to generate client certificate?
+﻿# Operations : Server : How to generate client certificate?
 
 You can generate client certificate using **CreateClientCertificateOperation**. 
 
@@ -28,4 +28,8 @@ You can generate client certificate using **CreateClientCertificateOperation**.
 ## Example II
 
 {CODE cert_5@ClientApi\Operations\Server\ClientCertificate.cs /}
+
+## Related articles
+
+- [How to **delete** client certificate?](../../../client-api/operations/server/delete-client-certificate-operation) 
 
