@@ -4,11 +4,11 @@ You can generate client certificate using **CreateClientCertificateOperation**.
 
 ## Syntax
 
-{CODE cert_1@ClientApi\Operations\Server\ClientCertificate.cs /}
+{CODE cert_1_1@ClientApi\Operations\Server\ClientCertificate.cs /}
 
-{CODE cert_2@ClientApi\Operations\Server\ClientCertificate.cs /}
+{CODE cert_1_2@ClientApi\Operations\Server\ClientCertificate.cs /}
 
-{CODE cert_3@ClientApi\Operations\Server\ClientCertificate.cs /}
+{CODE cert_1_3@ClientApi\Operations\Server\ClientCertificate.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -23,11 +23,11 @@ You can generate client certificate using **CreateClientCertificateOperation**.
 
 ## Example I
 
-{CODE cert_4@ClientApi\Operations\Server\ClientCertificate.cs /}
+{CODE cert_1_4@ClientApi\Operations\Server\ClientCertificate.cs /}
 
 ## Example II
 
-{CODE cert_5@ClientApi\Operations\Server\ClientCertificate.cs /}
+{CODE cert_1_5@ClientApi\Operations\Server\ClientCertificate.cs /}
 
 ## Related articles
 
