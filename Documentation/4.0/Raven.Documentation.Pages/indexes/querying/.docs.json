@@ -99,6 +99,17 @@
             }
         ]
     },
+
+    {
+        "Path": "morelikethis.markdown",
+        "Name": "MoreLikeThis",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/bundles/more-like-this"
+            }
+        ]
+    },
     {
         "Path": "query-vs-document-query.markdown",
         "Name": "Query vs DocumentQuery",

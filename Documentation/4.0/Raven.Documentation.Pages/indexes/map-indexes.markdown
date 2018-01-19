@@ -37,7 +37,7 @@ You might notice that we're passing `Employee` as a generic parameter to `Abstra
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_4@Indexes/Map.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
@@ -75,7 +75,7 @@ Since each index contains a LINQ function, you can combine multiple fields into 
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_8@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_9@Indexes/Map.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName'
 where FullName = 'Robert King'
 {CODE-TAB-BLOCK/}
@@ -96,7 +96,7 @@ You can read more about analyzers and `Full Text Search` [here](../indexes/using
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_1_7@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_1_8@Indexes/Map.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/Query'
 where search(Query, 'John Doe')
 {CODE-TAB-BLOCK/}
@@ -111,7 +111,7 @@ Imagine that you would like to return all employees that were born in a specific
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_5_1@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_5_2@Indexes/Map.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByBirthday '
 where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 {CODE-TAB-BLOCK/}
@@ -124,7 +124,7 @@ RavenDB gives you the ability to extract field data and to index by it. A differ
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_6_1@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_6_2@Indexes/Map.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByYearOfBirth'
 where YearOfBirth = 1963
 {CODE-TAB-BLOCK/}
@@ -139,7 +139,7 @@ If your document contains nested data, e.g. `Employee` contains `Address`, you c
 {CODE-TABS}
 {CODE-TAB:csharp:Query indexes_7_1@Indexes/Map.cs /}
 {CODE-TAB:csharp:DocumentQuery indexes_7_2@Indexes/Map.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByCountry'
 where Country = 'USA'
 {CODE-TAB-BLOCK/}

@@ -46,7 +46,7 @@ You can write the following code to get back the data below:
 {CODE-TAB:csharp:Query step_3_0@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery step_3_1@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Facets step_1@Indexes\Querying\FacetedSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Cameras/ByManufacturerModelCostDateOfListingAndMegapixels' 
 where Cost between 100 and 300
 select facet(Manufacturer), facet(Cost <= 200, Cost between 200 and 400, Cost between 400 and 600, Cost between 600 and 800, Cost >= 800), facet(Megapixels <= 3, Megapixels between 3 and 7, Megapixels between 7 and 10, Megapixels >= 10)
@@ -141,7 +141,7 @@ If you do not have to change your facets dynamically, you can store your facets 
 {CODE-TAB:csharp:Query step_4_1@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:DocumentQuery step_4_2@Indexes\Querying\FacetedSearch.cs /}
 {CODE-TAB:csharp:Facets step_1@Indexes\Querying\FacetedSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Cameras/ByManufacturerModelCostDateOfListingAndMegapixels' 
 where Cost between 100 and 300
 select facet(id('facets/CameraFacets'))

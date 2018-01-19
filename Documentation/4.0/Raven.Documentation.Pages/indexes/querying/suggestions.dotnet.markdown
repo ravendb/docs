@@ -13,7 +13,7 @@ If our database has `Northwind` samples deployed then it will not return any res
 {CODE-TABS}
 {CODE-TAB:csharp:Query suggestions_3@Indexes\Querying\Suggestions.cs /}
 {CODE-TAB:csharp:DocumentQuery suggestions_4@Indexes\Querying\Suggestions.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByName' 
 where suggest('Name', 'chaig')
 {CODE-TAB-BLOCK/}

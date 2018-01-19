@@ -8,7 +8,7 @@ Starting from 4.0, the server will determine possible sorting capabilities autom
 {CODE-TAB:csharp:Query sorting_1_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_1_2@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStock' 
 where UnitsInStock > 10
 {CODE-TAB-BLOCK/}
@@ -20,7 +20,7 @@ To start sorting, we need to request to order by some specified index field. In 
 {CODE-TAB:csharp:Query sorting_2_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_2_2@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStock' 
 where UnitsInStock > 10
 order by UnitsInStock as long desc
@@ -35,7 +35,7 @@ By default, `OrderBy` methods will determine `OrderingType` from the property pa
 {CODE-TAB:csharp:Query sorting_8_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_8_2@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStock' 
 where UnitsInStock > 10
 order by UnitsInStock desc
@@ -52,7 +52,7 @@ When a query is issued, each index entry is scored by Lucene (you can read more 
 {CODE-TAB:csharp:Query sorting_4_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_4_2@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStock' 
 where UnitsInStock > 10
 order by score()
@@ -67,7 +67,7 @@ If you want to randomize the order of your results each time the query is execut
 {CODE-TAB:csharp:Query sorting_3_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_3_2@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStock' 
 where UnitsInStock > 10
 order by random()
@@ -82,7 +82,7 @@ When sorting must be done on field that is [Searchable](../../indexes/using-anal
 {CODE-TAB:csharp:Query sorting_6_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_6_2@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:Index sorting_6_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByName/Search' 
 where search(Name, 'Louisiana')
 order by NameForSorting desc
@@ -102,7 +102,7 @@ To order in this mode, you can pass the `OrderingType.AlphaNumeric` type into `O
 {CODE-TAB:csharp:Query sorting_7_1@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:DocumentQuery sorting_7_2@Indexes\Querying\Sorting.cs /}
 {CODE-TAB:csharp:Index sorting_1_4@Indexes\Querying\Sorting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStock ' 
 where UnitsInStock > 10
 order by Name as alphanumeric

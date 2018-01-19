@@ -15,7 +15,7 @@ The supported aggregation operations are:
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_1@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_1_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders
 group by ShipTo.City
 select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
@@ -29,7 +29,7 @@ select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_2@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_2_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders
 group by Employee, Company
 select Employee as EmployeeIdentifier, Company, count()
@@ -43,7 +43,7 @@ select Employee as EmployeeIdentifier, Company, count()
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_3@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_3_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Employee, Company
 select key() as EmployeeCompanyPair, count()
@@ -62,7 +62,7 @@ and calculate the count per ordered products. Underneath a [fanout](../../../ind
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_4@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_4_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Lines[].Product
 select Lines[].Product, count()
@@ -74,7 +74,7 @@ Inside a single group by statement you can mix collection values and value of an
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_5@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_5_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Lines[].Product, ShipTo.Country 
 select Lines[].Product as Product, ShipTo.Country as Country, count()
@@ -86,7 +86,7 @@ Grouping by multiple values from **the same** collection is supported as well:
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_6@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_6_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Lines[].Product, Lines[].Quantity 
 select Lines[].Product as Product, Lines[].Quantity as Quantity, count()
@@ -101,7 +101,7 @@ The client API exposes `GroupByArrayContent` extension method for that purpose.
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_7@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_7_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders
 group by array(Lines[].Product)
 select key() as Products, count()
@@ -113,7 +113,7 @@ Grouping by array content and a value of another property is supported by `Docum
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_8@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_8_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by array(Lines[].Product), ShipTo.Country 
 select Lines[].Product as Products, ShipTo.Country as Country, count()
@@ -125,7 +125,7 @@ Grouping by multiple values from **the same** collection is also supported only 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_9@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {CODE-TAB:csharp:Async group_by_9_async@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by array(Lines[].Product), array(Lines[].Quantity) 
 select Lines[].Product as Products, Lines[].Quantity as Quantities, count()

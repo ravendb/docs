@@ -9,7 +9,7 @@ The supplied regular expression must be [.NET compatible](https://docs.microsoft
 {CODE-TABS}
 {CODE-TAB:csharp:Sync regex_1@ClientApi\Session\Querying\HowToUseRegex.cs /}
 {CODE-TAB:csharp:Async regex_1_async@ClientApi\Session\Querying\HowToUseRegex.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Products 
 where regex(Name, '^[NA]')
 {CODE-TAB-BLOCK/}

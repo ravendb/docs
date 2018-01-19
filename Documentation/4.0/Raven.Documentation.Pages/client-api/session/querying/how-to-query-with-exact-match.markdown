@@ -18,7 +18,7 @@ To perform a case-sensitive match you should use the `exact` parameter.
 {CODE-TABS}
 {CODE-TAB:csharp:Sync query_1_1@ClientApi\Session\Querying\HowToQueryWithExactMatch.cs /}
 {CODE-TAB:csharp:Async query_1_1_async@ClientApi\Session\Querying\HowToQueryWithExactMatch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Employees where exact(FirstName == 'Robert')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -28,7 +28,7 @@ from Employees where exact(FirstName == 'Robert')
 {CODE-TABS}
 {CODE-TAB:csharp:Sync query_2_1@ClientApi\Session\Querying\HowToQueryWithExactMatch.cs /}
 {CODE-TAB:csharp:Async query_2_1_async@ClientApi\Session\Querying\HowToQueryWithExactMatch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
 {CODE-TAB-BLOCK/}

@@ -5,7 +5,7 @@ The `Distinct` method allows you to remove duplicates from the result. Items are
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_1_0@Indexes\Querying\Distinct.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 select distinct ShipTo.Country 
 {CODE-TAB-BLOCK/}

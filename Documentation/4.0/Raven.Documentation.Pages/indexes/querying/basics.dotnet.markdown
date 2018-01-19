@@ -31,7 +31,7 @@ Let's execute our first query and return all employees from Northwind database. 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_0@Indexes\Querying\Basics.cs /}
 {CODE-TAB:csharp:Async basics_1_0@Indexes\Querying\Basics.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Employees
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -45,7 +45,7 @@ To filter results, use the suitable LINQ method e.g. `Where`:
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_1@Indexes\Querying\Basics.cs /}
 {CODE-TAB:csharp:Async basics_1_1@Indexes\Querying\Basics.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Employees
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
@@ -73,7 +73,7 @@ In order to specify an index, we need to pass it as a second generic parameter t
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_3@Indexes\Querying\Basics.cs /}
 {CODE-TAB:csharp:Async basics_1_3@Indexes\Querying\Basics.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstName' 
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
@@ -82,7 +82,7 @@ where FirstName = 'Robert'
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_4@Indexes\Querying\Basics.cs /}
 {CODE-TAB:csharp:Async basics_1_4@Indexes\Querying\Basics.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstName' 
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
@@ -101,7 +101,7 @@ To take full control over your queries, we introduced a `DocumentQuery` method t
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_2_0@Indexes\Querying\Basics.cs /}
 {CODE-TAB:csharp:Async basics_2_1@Indexes\Querying\Basics.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstName' 
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}

@@ -20,7 +20,7 @@ The operation is performed in the background on the server.
 {CODE-TABS}
 {CODE-TAB:csharp:Sync delete_by_query1@ClientApi\Operations\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Async delete_by_query1_async@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Person/ByName' where Name = 'Bob' 
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -30,7 +30,7 @@ from index 'Person/ByName' where Name = 'Bob'
 {CODE-TABS}
 {CODE-TAB:csharp:Sync delete_by_query2@ClientApi\Operations\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Async delete_by_query2_async@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Person/ByName' where Age < 35
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -39,7 +39,7 @@ from index 'Person/ByName' where Age < 35
 {CODE-TABS}
 {CODE-TAB:csharp:Sync delete_by_query3@ClientApi\Operations\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Async delete_by_query3_async@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from People u where id(u) in ('people/1-A', 'people/3-A')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -51,7 +51,7 @@ You have the option to **wait** for it using `WaitForCompletion`.
 {CODE-TABS}
 {CODE-TAB:csharp:Sync delete_by_query_wait_for_completion@ClientApi\Operations\DeleteByQuery.cs /}
 {CODE-TAB:csharp:Async delete_by_query_wait_for_completion_async@ClientApi\Operations\DeleteByQuery.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from People where Name = 'Bob' and Age >= 29
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
