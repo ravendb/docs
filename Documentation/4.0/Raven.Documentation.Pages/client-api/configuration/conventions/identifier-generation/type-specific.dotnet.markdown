@@ -5,7 +5,7 @@ Now we will show how to override the default ID generation in a more granular wa
 
 To override default document identifier generation algorithms you can register custom conventions per an entity type, where you can include your own identifier generation logic.
 
-####RegisterAsyncIdConvention
+##RegisterAsyncIdConvention
 
 {CODE register_id_convention_method_async@ClientApi\Configuration\Conventions\IdentifierGeneration\TypeSpecific.cs /}
 
@@ -17,7 +17,7 @@ To override default document identifier generation algorithms you can register c
 | ------------- | ----- |
 | DocumentConventions | Current `DocumentConventions` instance. |
 
-{NOTE This method applied to both synchronous and asynchronous operations}
+{NOTE This method applied to both synchronous and asynchronous operations /}
 
 {INFO:Database name parameter}
 The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database

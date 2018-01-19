@@ -10,6 +10,11 @@
         "Mappings": []
     },
     {
+        "Path": "conventions.markdown",
+        "Name": "Conventions",
+        "Mappings": []
+    },
+    {
         "Path": "/session",
         "Name": "Session",
         "Mappings": []
