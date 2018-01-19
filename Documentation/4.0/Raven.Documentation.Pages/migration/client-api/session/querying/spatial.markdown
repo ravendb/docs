@@ -1,12 +1,16 @@
 ﻿# How to Migrate Spatial from 3.x
 
-Spatial functionality has been merged into [RQL](../../indexes/querying/what-is-rql). To reflect that change, the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
+Spatial functionality has been merged into [RQL](../../../../indexes/querying/what-is-rql). To reflect that change, the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
 
 ## Namespaces
 
-| 3.x | 4.0 |
-|:---:|:---:|
-| {CODE spatial_1@Migration\ClientApi\Session\Querying\Spatial.cs /} | {CODE spatial_2@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+| 3.x |
+|:---:|
+| {CODE spatial_1@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+
+| 4.0 |
+|:---:|
+| {CODE spatial_2@Migration\ClientApi\Session\Querying\Spatial.cs /} |
 
 ## Example I - Index
 
@@ -26,21 +30,33 @@ The following changes have been applied:
 
 ## Example II - RelatesToShape
 
-| 3.x | 4.0 |
-|:---:|:---:|
-| {CODE spatial_3@Migration\ClientApi\Session\Querying\Spatial.cs /} | {CODE spatial_4@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+| 3.x |
+|:---:|
+| {CODE spatial_3@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+
+| 4.0 |
+|:---:|
+| {CODE spatial_4@Migration\ClientApi\Session\Querying\Spatial.cs /} |
 
 ## Example III - WithinRadiusOf
 
-| 3.x | 4.0 |
-|:---:|:---:|
-| {CODE spatial_5@Migration\ClientApi\Session\Querying\Spatial.cs /} | {CODE spatial_6@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+| 3.x |
+|:---:|
+| {CODE spatial_5@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+
+| 4.0 |
+|:---:|
+| {CODE spatial_6@Migration\ClientApi\Session\Querying\Spatial.cs /} |
 
 ## Example IV - SortByDistance
 
-| 3.x | 4.0 |
-|:---:|:---:|
-| {CODE spatial_7@Migration\ClientApi\Session\Querying\Spatial.cs /} | {CODE spatial_8@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+| 3.x |
+|:---:|
+| {CODE spatial_7@Migration\ClientApi\Session\Querying\Spatial.cs /} |
+
+| 4.0 |
+|:---:|
+| {CODE spatial_8@Migration\ClientApi\Session\Querying\Spatial.cs /} |
 
 ## Remarks
 

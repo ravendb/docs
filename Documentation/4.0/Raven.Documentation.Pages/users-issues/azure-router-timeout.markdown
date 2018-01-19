@@ -1,12 +1,16 @@
-#The Azure router timeout
-##Symptoms:
--  Exception is thrown in RavenDB client when accessing raven server,  exception was because of socket timeout or general connection failure
+#The Azure Router timeout
+
+##Symptoms
+
+- Exception is thrown in RavenDB Client when accessing RavenDB Server, exception was because of socket timeout or general connection failure
 - Problem happens mainly on Azure hosted VMs
 
-##Cause:
-Azure's load balancer closes connections that are idle for more than 60 seconds
+##Cause
 
-##Resolution:
+Azure's Load Balancer closes connections that are idle for more than 60 seconds.
+
+##Resolution
+
 We have to make sure that there are no connections that are idle for more than 60 seconds.
 There are two possible ways to do that:
 
@@ -16,5 +20,6 @@ There are two possible ways to do that:
 {NOTE RavenDB is using hearbeats, in a 3-10 seconds interval, on all its internal communication channels so they will be kept open./}
 <hr />
 
-##Further read:
-[Azure Sql Server Connection Management](http://social.technet.microsoft.com/wiki/contents/articles/1541.windows-azure-sql-database-connection-management.aspx)
+##Further read
+
+- [Azure SQL Server Connection Management](http://social.technet.microsoft.com/wiki/contents/articles/1541.windows-azure-sql-database-connection-management.aspx)

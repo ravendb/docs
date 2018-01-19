@@ -1,25 +1,25 @@
 ﻿# Introduction to 3.x to 4.0 migration
 
-RavenDB.Client 4.0 is a major upgrade. It's not backward compatible and the API has a lot of breaking changes.
+RavenDB Client 4.0 is a major upgrade. It's not backward compatible and the API has a lot of breaking changes.
 
 This section discusses the changes that you need to be aware of when migrating your application using 3.x DLLs and recommended actions you need to take.
 
-### 3.x packages
+## 3.x packages
 
 Please remove the following 3.x packages:
 
-- RavenDB.Abstractions
-- RavenDB.Client.Lightweight
-- RavenDB.Database
-- RavenDB.Embedded
+- `RavenDB.Abstractions`
+- `RavenDB.Client`
+- `RavenDB.Database`
+- `RavenDB.Embedded`
 
 ## 4.0 package
 
-Please install [RavenDB.Client](https://www.nuget.org/packages/RavenDB.Client) package from nuget. See what [.net targets are supported](../../client-api/net-client-versions) by Raven client.
+Please install [RavenDB.Client](https://www.nuget.org/packages/RavenDB.Client) package from NuGet. See what [.NET targets are supported](../../client-api/net-client-versions) by RavenDB Client.
 
 ### Internalized Json.NET usage
 
-RavenDB.Client doesn't use customized Json.NET any longer. Replace all references to RavenDB Json.NET, like `Raven.Imports.Newtonsoft`, with `Newtonsoft.Json` reference. 
+RavenDB Client doesn't use customized Json.NET any longer. Replace all references to RavenDB Json.NET, like `Raven.Imports.Newtonsoft`, with `Newtonsoft.Json` reference. 
 Please use latest version of Json.NET for good performance.
 
 ### RavenJObject 

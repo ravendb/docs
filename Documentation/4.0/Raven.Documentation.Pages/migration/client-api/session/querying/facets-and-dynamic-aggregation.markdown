@@ -1,8 +1,8 @@
 ﻿# How to Migrate Facets and Dynamic Aggregation from 3.x
 
-Facets and Dynamic Aggregation have been merged into a single feature and are now a part of [RQL](../../indexes/querying/what-is-rql).
+Facets and Dynamic Aggregation have been merged into a single feature and are now a part of [RQL](../../../../indexes/querying/what-is-rql).
 
-## Facets
+{PANEL:Facets}
 
 Facets are now divided into two types:
 
@@ -23,7 +23,9 @@ The `FacetSetup` document also now splits the facets into two properties. One co
 
 ---
 
-## Querying
+{PANEL/}
+
+{PANEL:Querying}
 
 All of the method were substituted with `AggregateBy` and `AggregateUsing`.
 
@@ -47,7 +49,8 @@ All of the method were substituted with `AggregateBy` and `AggregateUsing`.
 |:---:|
 | {CODE facets_3_1@Migration\ClientApi\Session\Querying\Facets.cs /} |
 
+{PANEL/}
+
 ## Remarks
 
 {INFO You can read more about Facets in our dedicated [Querying article](../../../../indexes/querying/faceted-search), our [Indexing article](../../../../indexes/querying/faceted-search) or [Client API article](../../../../client-api/session/querying/how-to-query-a-spatial-index). /}
-

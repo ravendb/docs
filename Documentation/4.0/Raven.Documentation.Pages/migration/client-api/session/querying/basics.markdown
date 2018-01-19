@@ -2,14 +2,16 @@
 
 Following changes occurred in 4.0 and need to be considered when migration is done.
 
-## Namespaces
+{PANEL:Namespaces}
 
 The following namespaces are no longer valid and have to be removed:
 
 - Raven.Client.Linq
 - Raven.Json.Linq
 
-## Paging
+{PANEL/}
+
+{PANEL:Paging}
 
 There is no longer a default page size send from the client API (128 by default) and maximum page size that to which server will cut the results (1024 by default).
 
@@ -36,15 +38,21 @@ If the number of records exceeds 2048 (default value that can be changed by `Per
 
 You can read more about paging in our [dedicated article](../../../../indexes/querying/paging).
 
-## Transformers and Projections
+{PANEL/}
+
+{PANEL:Transformers and Projections}
 
 Transformers have been removed from the RavenDB. Please read our migration article tackling this change. The article can be found [here](../../../../migration/client-api/session/querying/transformers).
 
-## Default Operator
+{PANEL/}
+
+{PANEL:Default Operator}
 
 Default operator for `session.Query` was and still is `AND`, but the operator for `DocumentQuery` have changed from `OR` to `AND`. We have created a dedicated article that helps you with migration. It can be found [here](../../../../migration/client-api/session/querying/documentquery).
 
-## Waiting for Non Stale Results
+{PANEL/}
+
+{PANEL:Waiting for Non Stale Results}
 
 The following methods has been removed:
 
@@ -55,7 +63,9 @@ You should use `WaitForNonStaleResults` instead. Its behavior has changed in 4.0
 
 {CODE basics_1_3@Migration\ClientApi\Session\Querying\Basics.cs /}
 
-## Raven/DocumentsByEntityName index
+{PANEL/}
+
+{PANEL:Raven/DocumentsByEntityName index}
 
 `Raven/DocumentsByEntityName` is no longer necessary in RavenDB 4.0. You can perform queries directly on collections, in particular we support queries that you can run to modify the docs:
 
@@ -63,10 +73,16 @@ You should use `WaitForNonStaleResults` instead. Its behavior has changed in 4.0
 |:---:|:---:|
 | {CODE basics_1_5@Migration\ClientApi\Session\Querying\Basics.cs /} | {CODE basics_1_6@Migration\ClientApi\Session\Querying\Basics.cs /} |
 
-## RavenQueryStatistics
+{PANEL/}
+
+{PANEL:RavenQueryStatistics}
 
 `RavenQueryStatistics` has been renamed to `QueryStatistics`.
 
-## ProjectFromIndexFieldsInto
+{PANEL/}
+
+{PANEL:ProjectFromIndexFieldsInto}
 
 `ProjectFromIndexFieldsInto` has been renamed to `ProjectInto`.
+
+{PANEL/}

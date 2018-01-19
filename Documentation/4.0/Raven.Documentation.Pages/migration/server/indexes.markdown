@@ -6,15 +6,19 @@
 Regardless [the data migration strategy](../../migration/server/data-migration) you have chosen you might get warnings complaining about inability to import some indexes.
 That is due to breaking changes to index definitions and require manual change.
 
-## LoadDocument
+### LoadDocument
 
 `LoadDocument` requires a second argument which is a collection name of the loaded document.
 
-| 3.x | 4.0 |
-|:---:|:---:|
-| {CODE indexes_1@Migration\Server\Indexes.cs /} | {CODE indexes_2@Migration\Server\Indexes.cs /} |
+| 3.x |
+|:---:|
+| {CODE indexes_1@Migration\Server\Indexes.cs /} |
 
-## Spatial field creation
+| 4.0 |
+|:---:|
+| {CODE indexes_2@Migration\Server\Indexes.cs /} |
+
+### Spatial field creation
 
 `AbstractIndexCreationTask.SpatialGenerate` and `SpatialIndex.Generate` should be replaced with `CreateSpatialField`. In addition to that you can define own field name and use it when querying.   
 
@@ -23,23 +27,27 @@ In addition to the above there are also the following changes:
 - No support for GeoJSON and other non-standard formats
 - No support for spatial clustering
 
-| 3.x | 4.0 |
-|:---:|:---:|
-| {CODE indexes_3@Migration\Server\Indexes.cs /} | {CODE indexes_4@Migration\Server\Indexes.cs /} |
+| 3.x |
+|:---:|
+| {CODE indexes_3@Migration\Server\Indexes.cs /} |
 
-## DynamicList
+| 4.0 |
+|:---:|
+| {CODE indexes_4@Migration\Server\Indexes.cs /} |
+
+### DynamicList
 
 Any occurrence of `new Raven.Abstractions.Linq.DynamicList()` should be removed from an index definition.
 
 {PANEL/}
 
-{PANEL:Built-in indexes}
+{PANEL:Built-in Indexes}
 
 `Raven/DocumentsByEntityName` and `Raven/ConflictDocuments` are no longer necessary and are intentionally skipped during the import.
 
 {PANEL/}
 
-{PANEL:Auto indexes}
+{PANEL:Auto Indexes}
 
 The query optimizer and auto indexing mechanism have significantly changed in RavenDB 4.0. Auto indexes imported from 3.x will get `Legacy/` prefix to their names. You should consider removing the legacy ones and let RavenDB create
 new auto indexes from scratch.
@@ -50,18 +58,18 @@ It means the legacy auto indexes won't be used to satisfy dynamic queries becaus
 {PANEL/}
 
 
-{PANEL: Plugins / extensions}
+{PANEL: Plugins & Extensions}
 
-## Compilation Extensions
+### Compilation Extensions
 
 As a replacement for Compilation Extensions you can use [Additional Sources]() feature. It allows you to write own C# code and use it during indexing. The code is attached to the index definition.
 In addition, you can deploy custom DLLs next to RavenDB binaries and reference them in your extensions.
 
-## Custom analyzers
+### Custom analyzers
 
 Please read dedicated article about [using non-default or custom analyzers](../../indexes/using-analyzers#using-non-default-analyzer).
 
-## Analyzer Generators
+### Analyzer Generators
 
 Analyzer generators aren't supported.
 
