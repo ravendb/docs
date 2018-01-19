@@ -70,4 +70,4 @@ Do not forget to add the following **using** statement which contains necessary 
 
 ## Related Articles
 
-- [Server : Bundles : MoreLikeThis](../../../server/bundles/more-like-this)
+- [Indexes : Querying : MoreLikeThis](../../../indexes/querying/morelikethis)
