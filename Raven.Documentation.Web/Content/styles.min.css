@@ -1,0 +1,1 @@
+﻿.dev-controls{display:flex;flex-shrink:1;flex-direction:column;background-color:inherit;position:fixed;bottom:100px;}.dev-controls .btn{text-transform:uppercase;}.dev-controls .control+.control{margin:10px 0 0 0;}

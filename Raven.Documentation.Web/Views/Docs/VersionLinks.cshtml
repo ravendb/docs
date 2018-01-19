@@ -1,0 +1,13 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Helpers
+<div class="chooser">
+    <span>Version</span>
+    <div class="btn-group">
+        @Html.VersionLink("1.0", (string)ViewBag.CurrentVersion, Language.Csharp)
+        @Html.VersionLink("2.0", (string)ViewBag.CurrentVersion, Language.Csharp)
+        @Html.VersionLink("2.5", (string)ViewBag.CurrentVersion, Language.Csharp)
+        @Html.VersionLink("3.0", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
+        @Html.VersionLink("3.5", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
+        @Html.VersionLink("4.0", (string)ViewBag.CurrentVersion, (Language)ViewBag.CurrentLanguage)
+    </div>
+</div>

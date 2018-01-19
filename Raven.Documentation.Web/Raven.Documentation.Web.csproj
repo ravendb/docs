@@ -13,7 +13,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Raven.Documentation.Web</RootNamespace>
     <AssemblyName>Raven.Documentation.Web</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.1</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort />
@@ -23,7 +23,8 @@
     <TargetFrameworkProfile />
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <NuGetPackageImportStamp>204b14ff</NuGetPackageImportStamp>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
     <UseGlobalApplicationHostFile />
     <Use64BitIISExpress />
   </PropertyGroup>
@@ -91,9 +92,9 @@
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Abstractions" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Web.Helpers, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.WebPages.3.2.3\lib\net45\System.Web.Helpers.dll</HintPath>
       <Private>True</Private>
@@ -173,6 +174,8 @@
     <Compile Include="Helpers\EnumExtensions.cs" />
     <Compile Include="Helpers\HtmlHelperExtensions.cs" />
     <Compile Include="Helpers\NoOpGitFileInformationProvider.cs" />
+    <Compile Include="Indexes\DocumentationPages_ByKey.cs" />
+    <Compile Include="Indexes\DocumentationPages_LanguagesAndVersions.cs" />
     <Compile Include="Models\PageModel.cs" />
     <Compile Include="Models\NotDocumentedModel.cs" />
     <Compile Include="Models\ArticleModel.cs" />
@@ -201,6 +204,12 @@
     <Content Include="Content\Site.min.css">
       <DependentUpon>Site.css</DependentUpon>
     </Content>
+    <Content Include="Content\styles.css">
+      <DependentUpon>styles.less</DependentUpon>
+    </Content>
+    <Content Include="Content\styles.min.css">
+      <DependentUpon>styles.css</DependentUpon>
+    </Content>
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
@@ -222,6 +231,11 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
+    <Content Include="Content\styles.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
     <None Include="Scripts\jquery-1.11.1.intellisense.js" />
     <Content Include="Content\prism.css" />
     <None Include="Scripts\jquery-1.12.3.intellisense.js" />
@@ -247,6 +261,13 @@
     </None>
     <None Include="T4MVC.tt.hooks.t4" />
     <None Include="T4MVC.tt.settings.xml" />
+    <Content Include="Views\Docs\DevControls.cshtml" />
+    <Content Include="Views\Docs\Toc.cshtml" />
+    <Content Include="Views\Docs\Doc.cshtml" />
+    <Content Include="Views\Shared\LanguageSelector.cshtml" />
+    <Content Include="Views\Articles\DevControls.cshtml" />
+    <None Include="Views\Shared\LanguageLinks.cshtml" />
+    <None Include="Views\Docs\VersionSelector.cshtml" />
     <Content Include="Web.config">
       <SubType>Designer</SubType>
     </Content>
@@ -259,26 +280,18 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
-    <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Docs\Article.cshtml" />
+    <Content Include="Views\Docs\_Layout.cshtml" />
     <Content Include="Views\Docs\Search.cshtml" />
     <Content Include="Views\Docs\NotFound.cshtml" />
     <Content Include="Views\Docs\NotDocumented.cshtml" />
-    <Content Include="Views\Docs\Client.cshtml" />
-    <Content Include="Views\Docs\Server.cshtml" />
-    <Content Include="Views\Docs\Indexes.cshtml" />
-    <Content Include="Views\Docs\Transformers.cshtml" />
-    <Content Include="Views\Docs\Glossary.cshtml" />
-    <Content Include="Views\Docs\Welcome.cshtml" />
     <Content Include="Views\Docs\Validate.cshtml" />
-    <Content Include="Views\Docs\Start.cshtml" />
-    <Content Include="Views\Docs\Studio.cshtml" />
-    <Content Include="Views\Docs\Samples.cshtml" />
-    <Content Include="Views\Docs\FileSystem.cshtml" />
     <Content Include="Views\Docs\ValidateMappings.cshtml" />
     <Content Include="Views\Articles\Article.cshtml" />
     <Content Include="Views\Articles\Articles.cshtml" />
-    <Content Include="Views\Docs\Migration.cshtml" />
+    <Content Include="Views\Docs\VersionLinks.cshtml" />
+    <Content Include="Views\Shared\SearchControl.cshtml" />
+    <Content Include="Views\Articles\_Layout.cshtml" />
+    <Content Include="Views\Shared\_Layout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -294,6 +307,10 @@
     <ProjectReference Include="..\Raven.Documentation.Parser\Raven.Documentation.Parser.csproj">
       <Project>{f83ea05a-f381-4d22-94e9-5e6055e05190}</Project>
       <Name>Raven.Documentation.Parser</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Raven.Documentation.Web.Core\Raven.Documentation.Web.Core.csproj">
+      <Project>{2e8e4867-144f-4c2c-8041-6df1d794dabc}</Project>
+      <Name>Raven.Documentation.Web.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

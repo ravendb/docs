@@ -1,4 +1,10 @@
-﻿namespace Raven.Documentation.Web.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Raven.Documentation.Parser.Helpers;
+using Raven.Documentation.Web.Helpers;
+
+namespace Raven.Documentation.Web.Models
 {
 	using Raven.Documentation.Parser.Data;
 
@@ -7,7 +13,7 @@
 		public ArticleModel(DocumentationPage page, TableOfContents tableOfContents)
 		{
 			Key = page.Key;
-			TableOfContents = tableOfContents;
+			//TableOfContents = tableOfContents;
 			Title = page.Title;
 			HtmlContent = page.HtmlContent;
 		}

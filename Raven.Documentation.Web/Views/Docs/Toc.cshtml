@@ -1,0 +1,43 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Core.ViewModels
+@model List<Raven.Documentation.Web.Core.ViewModels.TableOfContentsViewModel>
+@{
+    string currentKey = ViewBag.Key != null ? ViewBag.Key.ToLowerInvariant() : string.Empty;
+}
+
+@foreach (var toc in Model)
+{
+    var isActive = currentKey.StartsWith(toc.Key.ToLowerInvariant()) && !string.IsNullOrWhiteSpace(toc.Key) && !string.IsNullOrWhiteSpace(currentKey);
+    isActive = isActive || currentKey == toc.Key;
+
+
+    if (toc.IsFolder)
+    {
+        <li class="@toc.GetCssClass() expandable @if (isActive)
+                                                 {<text>open</text>}">
+            <div></div>
+            <span class="category-link">
+                @if (toc.Mode == DocsVersion.DocsMode.Normal)
+                {
+                    @toc.Title
+                }
+                else
+                {
+                    <a class="legacy-link" href="~/docs/article-page/@ViewBag.Version/@ViewBag.Language/@toc.Key">@toc.Title</a>
+                }
+            </span>
+            <ul class="">
+                @{ Html.RenderPartial("Toc", toc.Items);  }
+            </ul>
+        </li>
+    }
+    else
+    {
+        <li class="@toc.GetCssClass() @if (isActive)
+                                      {<text>active</text>}">
+            <a data-key="@toc.Key" href="~/docs/article-page/@ViewBag.Version/@ViewBag.Language/@toc.Key">
+                <i class="fa fa-file-text-o"></i> @toc.Title
+            </a>
+        </li>
+    }
+}

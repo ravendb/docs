@@ -22,6 +22,7 @@ namespace Raven.Documentation.Web.Controllers
         {
         }
 
+        [Route("/articles/{*key}")]
         public virtual ActionResult Articles(string key)
         {
             if (string.IsNullOrWhiteSpace(key))
@@ -35,8 +36,7 @@ namespace Raven.Documentation.Web.Controllers
 
             var article = DocumentSession
                 .Query<ArticlePage>()
-                .Where(x => x.Key == key)
-                .FirstOrDefault();
+                .FirstOrDefault(x => x.Key == key);
 
             if (article == null)
                 return View(MVC.Docs.Views.NotFound);

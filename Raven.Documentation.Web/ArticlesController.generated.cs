@@ -122,9 +122,11 @@ namespace Raven.Documentation.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
+                public readonly string _Layout = "_Layout";
                 public readonly string Article = "Article";
                 public readonly string Articles = "Articles";
             }
+            public readonly string _Layout = "~/Views/Articles/_Layout.cshtml";
             public readonly string Article = "~/Views/Articles/Article.cshtml";
             public readonly string Articles = "~/Views/Articles/Articles.cshtml";
         }

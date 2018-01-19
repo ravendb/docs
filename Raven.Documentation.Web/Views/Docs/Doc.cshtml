@@ -1,0 +1,87 @@
+﻿@using Raven.Documentation.Parser.Data
+@using Raven.Documentation.Web.Core
+@using Raven.Documentation.Web.Core.ViewModels
+@model DocPageViewModel
+@{
+    ViewBag.Title = Model.Page.Title;
+    Layout = "_Layout.cshtml";
+}
+@section HeadAdditions
+{
+    @if (Model.SelectedVersion != DocsVersion.Default)
+    {
+        <meta name="robots" content="noindex">
+    }
+}
+
+<div>
+    <header class="flex-horizontal">
+
+        @{
+            var langs = Model.GetLanguagesForDropDown().ToList();
+        }
+
+        @if (!(langs.Count == 0 && Model.Page.Language == Language.All))
+        {
+            <div class="btn-group">
+
+                <button type="button" class="btn btn-@DocumentationLanguage.GetClientName(Model.Page.Language)">@Model.Page.Language.GetDescription()</button>
+                @if (langs.Count > 0)
+                {
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var lang in langs)
+                        {
+                            <li><a href="~/docs/article-page/@Model.Page.Version/@lang.ToString().ToLowerInvariant()/@Model.Page.Key">@lang.GetDescription()</a></li>
+                        }
+                    </ul>
+                }
+            </div>
+        }
+        @if (Model.AvailableVersions.Count > 0)
+        {
+            <div class="btn-group">
+                <button type="button" class="btn btn-version">@Model.Page.Version</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span class="caret"></span>
+                    <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu">
+                    @foreach (var version in Model.AvailableVersions.OrderByDescending(x => x.Key))
+                    {
+                        var versionAsString = version.Key.ToString("F1");
+                        Language language = Language.Csharp;
+                        if (version.Key >= 3)
+                        {
+                            language = @Model.Page.Language == Language.All ? Language.Csharp : @Model.Page.Language;
+                        }
+
+                        var languageAsString = language.ToString().ToLowerInvariant();
+                        <li><a href="~/docs/article-page/@versionAsString/@languageAsString/@version.Value">@versionAsString</a></li>
+                    }
+                </ul>
+            </div>
+
+        }
+        <div class="flex-grow"></div>
+        <a href="https://github.com/ravendb/docs/blob/master/@Model.Page.RelativePath" target="_blank" class="btn btn-default btn-github">see on GitHub</a>
+    </header>
+    <section class="panel padding">
+        <div id="article-body">
+            @Html.Raw(Model.Page.HtmlContent)
+        </div>
+    </section>
+</div>
+
+@section RelatedArticles {
+    @if (string.IsNullOrEmpty(Model.Page.RelatedArticlesContent) == false)
+    {
+        <section class="related-articles padding">
+            <h2><i class="icon-book-filled"></i> Related articles</h2>
+            @Html.Raw(Model.Page.RelatedArticlesContent)
+        </section>
+    }
+}

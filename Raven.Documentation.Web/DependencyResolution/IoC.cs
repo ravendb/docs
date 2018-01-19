@@ -1,4 +1,5 @@
 using System.Configuration;
+using Raven.Documentation.Web.Indexes;
 
 namespace Raven.Documentation.Web.DependencyResolution
 {
@@ -21,6 +22,10 @@ namespace Raven.Documentation.Web.DependencyResolution
 							};
 
 			store.Initialize();
+
+            store.ExecuteIndex(new DocumentationPages_ByKey());
+            store.ExecuteIndex(new DocumentationPages_LanguagesAndVersions());
+            store.ExecuteTransformer(new DocumentationPage_WithVersionsAndLanguages());
 
 			var container = new Container(x => x.For<IDocumentStore>().Use(store));
 			return container;

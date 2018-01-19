@@ -75,9 +75,10 @@ namespace Links
         public static readonly string bootstrap_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap.min.js") ? Url("bootstrap.min.js") : Url("bootstrap.js");
         public static readonly string bootstrap_min_js = Url("bootstrap.min.js");
         public static readonly string jquery_1_11_1_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.11.1.intellisense.min.js") ? Url("jquery-1.11.1.intellisense.min.js") : Url("jquery-1.11.1.intellisense.js");
-        public static readonly string jquery_1_11_1_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.11.1.min.js") ? Url("jquery-1.11.1.min.js") : Url("jquery-1.11.1.js");
-        public static readonly string jquery_1_11_1_min_js = Url("jquery-1.11.1.min.js");
-        public static readonly string jquery_1_11_1_min_map = Url("jquery-1.11.1.min.map");
+        public static readonly string jquery_1_12_3_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.12.3.intellisense.min.js") ? Url("jquery-1.12.3.intellisense.min.js") : Url("jquery-1.12.3.intellisense.js");
+        public static readonly string jquery_1_12_3_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery-1.12.3.min.js") ? Url("jquery-1.12.3.min.js") : Url("jquery-1.12.3.js");
+        public static readonly string jquery_1_12_3_min_js = Url("jquery-1.12.3.min.js");
+        public static readonly string jquery_1_12_3_min_map = Url("jquery-1.12.3.min.map");
         public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
         public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
         public static readonly string jquery_validate_min_js = Url("jquery.validate.min.js");
@@ -98,9 +99,11 @@ namespace Links
         public static readonly string bootstrap_theme_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap-theme.min.css") ? Url("bootstrap-theme.min.css") : Url("bootstrap-theme.css");
         public static readonly string bootstrap_theme_css_map = Url("bootstrap-theme.css.map");
         public static readonly string bootstrap_theme_min_css = Url("bootstrap-theme.min.css");
+        public static readonly string bootstrap_theme_min_css_map = Url("bootstrap-theme.min.css.map");
         public static readonly string bootstrap_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/bootstrap.min.css") ? Url("bootstrap.min.css") : Url("bootstrap.css");
         public static readonly string bootstrap_css_map = Url("bootstrap.css.map");
         public static readonly string bootstrap_min_css = Url("bootstrap.min.css");
+        public static readonly string bootstrap_min_css_map = Url("bootstrap.min.css.map");
         public static readonly string font_awesome_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/font-awesome.min.css") ? Url("font-awesome.min.css") : Url("font-awesome.css");
         public static readonly string font_awesome_min_css = Url("font-awesome.min.css");
         public static readonly string prism_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(URLPATH + "/prism.min.css") ? Url("prism.min.css") : Url("prism.css");
@@ -122,8 +125,9 @@ namespace Links
                 public const string bootstrap_js = "~/Scripts/bootstrap.js"; 
                 public const string bootstrap_min_js = "~/Scripts/bootstrap.min.js"; 
                 public const string jquery_1_11_1_intellisense_js = "~/Scripts/jquery-1.11.1.intellisense.js"; 
-                public const string jquery_1_11_1_js = "~/Scripts/jquery-1.11.1.js"; 
-                public const string jquery_1_11_1_min_js = "~/Scripts/jquery-1.11.1.min.js"; 
+                public const string jquery_1_12_3_intellisense_js = "~/Scripts/jquery-1.12.3.intellisense.js"; 
+                public const string jquery_1_12_3_js = "~/Scripts/jquery-1.12.3.js"; 
+                public const string jquery_1_12_3_min_js = "~/Scripts/jquery-1.12.3.min.js"; 
                 public const string jquery_validate_js = "~/Scripts/jquery.validate.js"; 
                 public const string jquery_validate_min_js = "~/Scripts/jquery.validate.min.js"; 
                 public const string jquery_validate_unobtrusive_js = "~/Scripts/jquery.validate.unobtrusive.js"; 

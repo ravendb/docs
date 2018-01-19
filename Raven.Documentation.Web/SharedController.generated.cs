@@ -40,9 +40,15 @@ namespace T4MVC
             {
                 public readonly string _Layout = "_Layout";
                 public readonly string Error = "Error";
+                public readonly string LanguageLinks = "LanguageLinks";
+                public readonly string LanguageSelector = "LanguageSelector";
+                public readonly string SearchControl = "SearchControl";
             }
             public readonly string _Layout = "~/Views/Shared/_Layout.cshtml";
             public readonly string Error = "~/Views/Shared/Error.cshtml";
+            public readonly string LanguageLinks = "~/Views/Shared/LanguageLinks.cshtml";
+            public readonly string LanguageSelector = "~/Views/Shared/LanguageSelector.cshtml";
+            public readonly string SearchControl = "~/Views/Shared/SearchControl.cshtml";
         }
     }
 

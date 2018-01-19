@@ -1,6 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
+
     @if (string.IsNullOrEmpty(ViewBag.Title) == false)
     {
         <title>@ViewBag.Title</title>
@@ -9,16 +10,17 @@
     {
         <title>RavenDB - ACID NoSQL Document Database</title>
     }
-
+    
     @{
         var v = 1;
     }
 
     <link href='//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic,900' rel='stylesheet' type='text/css'>
-    <link href="https://ravendb.net/Content/css/bundle?v=cWpduTY8fIjepWANZlswIlM20tVbgOCF2rXUW0rTc9s1" rel="stylesheet" />
+    <link href="https://ravendb.net/Content/css/bundle?v=@v" rel="stylesheet" />
     <link href="/Content/styles.css?v=@v" rel="stylesheet" type="text/css"/>
 
     @RenderSection("HeadAdditions", false)
+
 </head>
 <body>
     <div id="menuOverlay"></div>
@@ -26,17 +28,16 @@
         @RenderBody()
     </div>
 
-    <script src="//ravendb.net/js/libs?v=c0Ji40S_7SL-ofRcPBi6LgYsmTiKLhjT3A_ozB6KlHA1"></script>
+    <script src="//ravendb.net/js/libs?v=1"></script>
     <script>
         var root = '/';
     </script>
-    <script src="//ravendb.net/js/app?v=sAZigfnNsiHWJ5gyWomU7YOhX3kOQXa323TPxaSegos1"></script>
-    <script src="//ravendb.net/js/shared?v=edR9Urvb9xPd-iVyr60Md3UruR68-3jY-h7p_T-5pWA1"></script>
+    <script src="//ravendb.net/js/app?v=@v"></script>
+    <script src="//ravendb.net/js/shared?v=@v"></script>
     <script>
         if (!window.Promise) {
             window.Promise = window.ES6Promise;
         }
     </script>
-    @RenderSection("Scripts", false)
 </body>
 </html>

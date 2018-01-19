@@ -1,4 +1,6 @@
-﻿namespace Raven.Documentation.Web
+﻿using Raven.Documentation.Web.Core.ViewModels;
+
+namespace Raven.Documentation.Web
 {
 	using System.Web.Mvc;
 	using System.Web.Routing;
@@ -12,56 +14,21 @@
 		{
 			routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
-            routes.MapRouteLowerCase(
-                "ArticlesGenerate",
-                "articles/generate",
-                new
-                {
-                    controller = MVC.Articles.Name,
-                    action = MVC.Articles.ActionNames.Generate
-                },
-                null,
-                new[] { "Raven.Documentation.Web.Controllers" });
+            MapArticlesRoutes(routes);
 
-            routes.MapRouteLowerCase(
-                "Articles",
-                "articles/{*key}",
-                new
-                {
-                    controller = MVC.Articles.Name,
-                    action = MVC.Articles.ActionNames.Articles
-                },
-                null,
-                new[] { "Raven.Documentation.Web.Controllers" });
-
-            routes.MapRouteLowerCase(
+		    routes.MapRouteLowerCase(
 				"Docs",
 				"article/{version}/{language}/{*key}",
 				new
 					{
 						controller = MVC.Docs.Name,
-						action = MVC.Docs.ActionNames.Articles
+						action = MVC.Docs.ActionNames.ArticlePage
 					},
 				new
 					{
 						version = "1.0|2.0|2.5|3.0|3.5|4.0",
 						language = "csharp|java|http|python"
 					},
-				new[] { "Raven.Documentation.Web.Controllers" });
-
-			routes.MapRouteLowerCase(
-				"Client",
-				"client-api/{version}/{language}",
-				new
-				{
-					controller = MVC.Docs.Name,
-					action = MVC.Docs.ActionNames.Client
-				},
-				new
-				{
-					version = "1.0|2.0|2.5|3.0|3.5|4.0",
-					language = "csharp|java|http|python"
-                },
 				new[] { "Raven.Documentation.Web.Controllers" });
 
 			routes.MapRouteLowerCase(
@@ -94,6 +61,59 @@
 						language = "csharp|java|http|python"
                 },
 				new[] { "Raven.Documentation.Web.Controllers" });
+
+            routes.MapRoute("ArticleSearch", "docs/search/{version}/{language}", new { controller = MVC.Docs.Name, action = MVC.Docs.ActionNames.Search });
+            routes.MapRoute("ArticleSearchSuggest", "docs/suggest/{version}/{language}/{*searchTerm}", new { controller = MVC.Docs.Name, action = MVC.Docs.ActionNames.Suggest });
+
+            routes.MapRoute("ArticleByRoutePage", "docs/article-page/{version}/{language}/{*key}", new { controller = MVC.Docs.Name, action = MVC.Docs.ActionNames.ArticlePage });
+			routes.MapRoute("DocsLegacyV1", "docs/1.0/{*key}", new { controller = MVC.Docs.Name, action = MVC.Docs.ActionNames.OldArticlePage, language = Language.Csharp, version = "1.0" });
+			routes.MapRoute("DocsLegacyV2", "docs/2.0/{*key}", new { controller = MVC.Docs.Name, action = MVC.Docs.ActionNames.OldArticlePage, language = Language.Csharp, version = "2.0" });
+			routes.MapRoute("DocsLegacyV25", "docs/2.5/{*key}", new { controller = MVC.Docs.Name, action = MVC.Docs.ActionNames.OldArticlePage, language = Language.Csharp, version = "2.5" });
+
+			
+			routes.MapRoute(
+				"DocsDefault",
+				"docs/{action}/{version}/{language}",
+				new
+				{
+					controller = MVC.Docs.Name,
+					action = MVC.Docs.ActionNames.Index,
+					version = DocsVersion.Default,
+					language = DocumentationLanguage.Default
+				},
+				new
+				{
+					version = "1.0|2.0|2.5|3.0|3.5|4.0",
+					language = "csharp|java|http"
+				},
+				new[] { "Raven.Documentation.Web.Controllers" });
+
+			routes.MapRoute("DocsLegacy", "docs/{*key}", new { controller = MVC.Docs.Name, action = MVC.Docs.ActionNames.OldArticlePage, language = Language.Csharp, version = "2.5" });
 		}
+
+	    private static void MapArticlesRoutes(RouteCollection routes)
+	    {
+	        routes.MapRouteLowerCase(
+	            "ArticlesGenerate",
+	            "articles/generate",
+	            new
+	            {
+	                controller = MVC.Articles.Name,
+	                action = MVC.Articles.ActionNames.Generate
+	            },
+	            null,
+	            new[] {"Raven.Documentation.Web.Controllers"});
+
+	        routes.MapRouteLowerCase(
+	            "Articles",
+	            "articles/{*key}",
+	            new
+	            {
+	                controller = MVC.Articles.Name,
+	                action = MVC.Articles.ActionNames.Articles
+	            },
+	            null,
+	            new[] {"Raven.Documentation.Web.Controllers"});
+	    }
 	}
 }

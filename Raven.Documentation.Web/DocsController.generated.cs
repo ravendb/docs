@@ -58,6 +58,24 @@ namespace Raven.Documentation.Web.Controllers
 
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Index()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult ArticlePage()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ArticlePage);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult Suggest()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Suggest);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Search()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
@@ -76,63 +94,15 @@ namespace Raven.Documentation.Web.Controllers
         }
         [NonAction]
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult OldArticlePage()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldArticlePage);
+        }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public virtual System.Web.Mvc.ActionResult Generate()
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Welcome()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Welcome);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Index()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Client()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Client);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Server()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Server);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult UsersIssues()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersIssues);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Glossary()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Glossary);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Samples()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Samples);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult FileSystem()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileSystem);
-        }
-        [NonAction]
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public virtual System.Web.Mvc.ActionResult Articles()
-        {
-            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Articles);
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -150,41 +120,61 @@ namespace Raven.Documentation.Web.Controllers
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNamesClass
         {
+            public readonly string Index = "Index";
+            public readonly string ArticlePage = "ArticlePage";
+            public readonly string Suggest = "Suggest";
             public readonly string Search = "Search";
             public readonly string Validate = "Validate";
             public readonly string ValidateMappings = "ValidateMappings";
+            public readonly string OldArticlePage = "OldArticlePage";
             public readonly string Generate = "Generate";
-            public readonly string Welcome = "Welcome";
-            public readonly string Index = "Index";
-            public readonly string Client = "Client";
-            public readonly string Server = "Server";
-            public readonly string UsersIssues = "UsersIssues";
-            public readonly string Glossary = "Glossary";
-            public readonly string Samples = "Samples";
-            public readonly string FileSystem = "FileSystem";
-            public readonly string Articles = "Articles";
-            public readonly string Migration = "Migration";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionNameConstants
         {
+            public const string Index = "Index";
+            public const string ArticlePage = "ArticlePage";
+            public const string Suggest = "Suggest";
             public const string Search = "Search";
             public const string Validate = "Validate";
             public const string ValidateMappings = "ValidateMappings";
+            public const string OldArticlePage = "OldArticlePage";
             public const string Generate = "Generate";
-            public const string Welcome = "Welcome";
-            public const string Index = "Index";
-            public const string Client = "Client";
-            public const string Server = "Server";
-            public const string UsersIssues = "UsersIssues";
-            public const string Glossary = "Glossary";
-            public const string Samples = "Samples";
-            public const string FileSystem = "FileSystem";
-            public const string Articles = "Articles";
         }
 
 
+        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Index
+        {
+            public readonly string language = "language";
+            public readonly string version = "version";
+        }
+        static readonly ActionParamsClass_ArticlePage s_params_ArticlePage = new ActionParamsClass_ArticlePage();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_ArticlePage ArticlePageParams { get { return s_params_ArticlePage; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_ArticlePage
+        {
+            public readonly string version = "version";
+            public readonly string language = "language";
+            public readonly string key = "key";
+            public readonly string page = "page";
+            public readonly string fullVersion = "fullVersion";
+        }
+        static readonly ActionParamsClass_Suggest s_params_Suggest = new ActionParamsClass_Suggest();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_Suggest SuggestParams { get { return s_params_Suggest; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_Suggest
+        {
+            public readonly string language = "language";
+            public readonly string version = "version";
+            public readonly string searchTerm = "searchTerm";
+        }
         static readonly ActionParamsClass_Search s_params_Search = new ActionParamsClass_Search();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Search SearchParams { get { return s_params_Search; } }
@@ -215,6 +205,16 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string version = "version";
             public readonly string all = "all";
         }
+        static readonly ActionParamsClass_OldArticlePage s_params_OldArticlePage = new ActionParamsClass_OldArticlePage();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_OldArticlePage OldArticlePageParams { get { return s_params_OldArticlePage; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_OldArticlePage
+        {
+            public readonly string version = "version";
+            public readonly string language = "language";
+            public readonly string key = "key";
+        }
         static readonly ActionParamsClass_Generate s_params_Generate = new ActionParamsClass_Generate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ActionParamsClass_Generate GenerateParams { get { return s_params_Generate; } }
@@ -226,88 +226,6 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string key = "key";
             public readonly string all = "all";
         }
-        static readonly ActionParamsClass_Welcome s_params_Welcome = new ActionParamsClass_Welcome();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Welcome WelcomeParams { get { return s_params_Welcome; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Welcome
-        {
-            public readonly string language = "language";
-            public readonly string version = "version";
-        }
-        static readonly ActionParamsClass_Index s_params_Index = new ActionParamsClass_Index();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Index IndexParams { get { return s_params_Index; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Index
-        {
-            public readonly string language = "language";
-            public readonly string version = "version";
-        }
-        static readonly ActionParamsClass_Client s_params_Client = new ActionParamsClass_Client();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Client ClientParams { get { return s_params_Client; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Client
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_Server s_params_Server = new ActionParamsClass_Server();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Server ServerParams { get { return s_params_Server; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Server
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_UsersIssues s_params_UsersIssues = new ActionParamsClass_UsersIssues();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_UsersIssues UsersIssuesParams { get { return s_params_UsersIssues; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_UsersIssues
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_Glossary s_params_Glossary = new ActionParamsClass_Glossary();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Glossary GlossaryParams { get { return s_params_Glossary; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Glossary
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_Samples s_params_Samples = new ActionParamsClass_Samples();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Samples SamplesParams { get { return s_params_Samples; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Samples
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_FileSystem s_params_FileSystem = new ActionParamsClass_FileSystem();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_FileSystem FileSystemParams { get { return s_params_FileSystem; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_FileSystem
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-        }
-        static readonly ActionParamsClass_Articles s_params_Articles = new ActionParamsClass_Articles();
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public ActionParamsClass_Articles ArticlesParams { get { return s_params_Articles; } }
-        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
-        public class ActionParamsClass_Articles
-        {
-            public readonly string version = "version";
-            public readonly string language = "language";
-            public readonly string key = "key";
-        }
         static readonly ViewsClass s_views = new ViewsClass();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public ViewsClass Views { get { return s_views; } }
@@ -318,40 +236,29 @@ namespace Raven.Documentation.Web.Controllers
             public _ViewNamesClass ViewNames { get { return s_ViewNames; } }
             public class _ViewNamesClass
             {
-                public readonly string Article = "Article";
-                public readonly string Client = "Client";
-                public readonly string FileSystem = "FileSystem";
-                public readonly string Glossary = "Glossary";
-                public readonly string Indexes = "Indexes";
+                public readonly string _Layout = "_Layout";
+                public readonly string DevControls = "DevControls";
+                public readonly string Doc = "Doc";
                 public readonly string NotDocumented = "NotDocumented";
                 public readonly string NotFound = "NotFound";
-                public readonly string Samples = "Samples";
                 public readonly string Search = "Search";
-                public readonly string Server = "Server";
-                public readonly string Start = "Start";
-                public readonly string Studio = "Studio";
-                public readonly string Transformers = "Transformers";
+                public readonly string Toc = "Toc";
                 public readonly string Validate = "Validate";
                 public readonly string ValidateMappings = "ValidateMappings";
-                public readonly string Welcome = "Welcome";
+                public readonly string VersionLinks = "VersionLinks";
+                public readonly string VersionSelector = "VersionSelector";
             }
-            public readonly string Article = "~/Views/Docs/Article.cshtml";
-            public readonly string Client = "~/Views/Docs/Client.cshtml";
-            public readonly string FileSystem = "~/Views/Docs/FileSystem.cshtml";
-            public readonly string Glossary = "~/Views/Docs/Glossary.cshtml";
-            public readonly string Indexes = "~/Views/Docs/Indexes.cshtml";
+            public readonly string _Layout = "~/Views/Docs/_Layout.cshtml";
+            public readonly string DevControls = "~/Views/Docs/DevControls.cshtml";
+            public readonly string Doc = "~/Views/Docs/Doc.cshtml";
             public readonly string NotDocumented = "~/Views/Docs/NotDocumented.cshtml";
             public readonly string NotFound = "~/Views/Docs/NotFound.cshtml";
-            public readonly string Samples = "~/Views/Docs/Samples.cshtml";
             public readonly string Search = "~/Views/Docs/Search.cshtml";
-            public readonly string Server = "~/Views/Docs/Server.cshtml";
-            public readonly string Start = "~/Views/Docs/Start.cshtml";
-            public readonly string Studio = "~/Views/Docs/Studio.cshtml";
-            public readonly string Transformers = "~/Views/Docs/Transformers.cshtml";
+            public readonly string Toc = "~/Views/Docs/Toc.cshtml";
             public readonly string Validate = "~/Views/Docs/Validate.cshtml";
             public readonly string ValidateMappings = "~/Views/Docs/ValidateMappings.cshtml";
-            public readonly string Welcome = "~/Views/Docs/Welcome.cshtml";
-            public readonly string Migration = "~/Views/Docs/Migration.cshtml";
+            public readonly string VersionLinks = "~/Views/Docs/VersionLinks.cshtml";
+            public readonly string VersionSelector = "~/Views/Docs/VersionSelector.cshtml";
         }
     }
 
@@ -359,6 +266,49 @@ namespace Raven.Documentation.Web.Controllers
     public partial class T4MVC_DocsController : Raven.Documentation.Web.Controllers.DocsController
     {
         public T4MVC_DocsController() : base(Dummy.Instance) { }
+
+        [NonAction]
+        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Index(string language, string version)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            IndexOverride(callInfo, language, version);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void ArticlePageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language, string key, int? page, string fullVersion);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult ArticlePage(string version, string language, string key, int? page, string fullVersion)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.ArticlePage);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "page", page);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "fullVersion", fullVersion);
+            ArticlePageOverride(callInfo, version, language, key, page, fullVersion);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void SuggestOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string searchTerm);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult Suggest(string language, string version, string searchTerm)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Suggest);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "searchTerm", searchTerm);
+            SuggestOverride(callInfo, language, version, searchTerm);
+            return callInfo;
+        }
 
         [NonAction]
         partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string value);
@@ -403,6 +353,20 @@ namespace Raven.Documentation.Web.Controllers
         }
 
         [NonAction]
+        partial void OldArticlePageOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language, string key);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult OldArticlePage(string version, string language, string key)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.OldArticlePage);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            OldArticlePageOverride(callInfo, version, language, key);
+            return callInfo;
+        }
+
+        [NonAction]
         partial void GenerateOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string key, bool all);
 
         [NonAction]
@@ -414,124 +378,6 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "all", all);
             GenerateOverride(callInfo, language, version, key, all);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void WelcomeOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Welcome(string language, string version)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Welcome);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            WelcomeOverride(callInfo, language, version);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void IndexOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Index(string language, string version)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Index);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            IndexOverride(callInfo, language, version);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ClientOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Client(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Client);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            ClientOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ServerOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Server(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Server);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            ServerOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void UsersIssuesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult UsersIssues(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.UsersIssues);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            UsersIssuesOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void GlossaryOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Glossary(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Glossary);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            GlossaryOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void SamplesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Samples(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Samples);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            SamplesOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void FileSystemOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult FileSystem(string version, string language)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.FileSystem);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            FileSystemOverride(callInfo, version, language);
-            return callInfo;
-        }
-
-        [NonAction]
-        partial void ArticlesOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string version, string language, string key);
-
-        [NonAction]
-        public override System.Web.Mvc.ActionResult Articles(string version, string language, string key)
-        {
-            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Articles);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
-            ArticlesOverride(callInfo, version, language, key);
             return callInfo;
         }
 

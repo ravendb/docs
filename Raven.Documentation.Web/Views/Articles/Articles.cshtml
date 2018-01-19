@@ -13,14 +13,22 @@
     </script>
 }
 <div id="article">
-    <div class="row">
-        <div class="col-md-12">
-            <ul>
-                @foreach (var article in Model)
+    <div class="container">
+        <h2>Articles</h2>
+        <div class="row">
+            <div class="col-md-12">
+                <ul>
+                    @foreach (var article in Model)
                 {
-                    <li>@Html.ActionLink(article.Title, MVC.Articles.ActionNames.Articles, new RouteValueDictionary { { "key", article.Key } })</li>
-                }
-            </ul>
+                    <li style="font-size: 22px;">
+                        @Html.ActionLink(article.Title, MVC.Articles.ActionNames.Articles, new RouteValueDictionary { { "key", article.Key } })
+                    </li>
+            }
+                </ul>
+            </div>
         </div>
+
     </div>
 </div>
+
+@Html.Partial("DevControls")
