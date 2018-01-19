@@ -1,4 +1,4 @@
-## Server Configuration : Indexing
+# Server Configuration : Indexing
 
 {PANEL:Indexing.RunInMemory}
 

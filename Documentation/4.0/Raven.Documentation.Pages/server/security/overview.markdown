@@ -1,8 +1,8 @@
-# Overview
+# Security : Overview
 
 In the security section, we will review the security features in RavenDB and explain how to manage your secured server or cluster.
 
-## Authentication
+{PANEL:Authentication}
 
 RavenDB uses X.509 certificate-based authentication. 
 X.509 certificates are standardized, secured and widely used in many applications. They allow you to use TLS/SSL and HTTPS which keeps your communications encrypted and secured.
@@ -17,22 +17,17 @@ In the Studio, administrators can use the [Certificates View](../../studio/serve
 
 <strong>Read more:</strong>
 
-[Certificate Configuration](authentication/certificate-configuration)
+- [Certificate Configuration](../../server/security/authentication/certificate-configuration)
+- [Certificate Management](../../server/security/authentication/certificate-management)
+- [Certificate Renewal & Rotation](../../server/security/authentication/certificate-renewal-and-rotation)
+- [Let's Encrypt Certificates](../../server/security/authentication/lets-encrypt-certificates)
+- [Client Certificate Usage](../../server/security/authentication/client-certificate-usage)
+- [Authentication in the Cluster](../../server/security/authentication/authentication-in-the-cluster) 
+- [Common Errors & Troubleshooting](../../server/security/authentication/common-errors-and-troubleshooting)
 
-[Certificate Management](authentication/certificate-management)
+{PANEL/}
 
-[Certificate Renewal & Rotation](authentication/certificate-renewal-and-rotation)
-
-[Let's Encrypt Certificates](authentication/lets-encrypt-certificates)
-
-[Client Certificate Usage](authentication/client-certificate-usage)
-
-[Authentication in the Cluster](authentication/authentication-in-the-cluster)
-
-[Common Errors & Troubleshooting](authentication/common-errors-and-troubleshooting)
-
-
-## Authorization
+{PANEL:Authorization}
 
 Authorization in RavenDB is based on the same X.509 certificates.
 
@@ -40,12 +35,13 @@ Every client certificate is associated with a security clearance and access perm
 
 <strong>Read more:</strong>
 
-[Security Clearance & Permissions](authorization/security-clearance-and-permissions)
+- [Security Clearance & Permissions](../../server/security/authorization/security-clearance-and-permissions)
 
+{PANEL/}
 
-## Encryption
+{PANEL:Encryption}
 
-RavenDB offers full database encryption using [libsodium](https://github.com/jedisct1/libsodium), a well-known battle tested encryption library. 
+RavenDB offers full database encryption using [libsodium](https://download.libsodium.org/doc/), a well-known battle tested encryption library. 
 
 Encryption is implemented at the storage level, with ChaCha20-Poly1305 authenticated encryption using 256 bit keys. 
 
@@ -53,9 +49,8 @@ When database encryption is on, all the features of a database are automatically
 
 <strong>Read more:</strong>
 
-[Database Encryption](encryption/database-encryption)
+- [Database Encryption](../../server/security/encryption/database-encryption)
+- [Server Store Encryption](../../server/security/encryption/server-store-encryption)
+- [Secret Key Management](../../server/security/encryption/secret-key-management)
 
-[Server Store Encryption](encryption/server-store-encryption)
-
-[Secret Key Management](encryption/secret-key-management)
-
+{PANEL/}

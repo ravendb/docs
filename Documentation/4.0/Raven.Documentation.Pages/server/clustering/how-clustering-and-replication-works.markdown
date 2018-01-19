@@ -1,8 +1,9 @@
-﻿# How Clustering and Replication Works
+﻿# Clustering : How Clustering and Replication Works
 
 In RavenDB 4.x clustering and replication are two parts of one feature - this means setting up replication without having a cluster is not possible.
 
-## The Big Picture
+{PANEL:The Big Picture}
+
 [RavenDB Cluster](../../glossary/ravendb-cluster) is a two or more RavenDB Instances which are called [cluster nodes](../../glossary/cluster-node). The cluster state is managed through [Raft algorithm](../../glossary/raft-algorithm) commands.
 There are two kinds of operations which are possible to use on a cluster.
   * Node level operation - an operation that happens locally, on a [cluster node](../../glossary/cluster-node). This includes:
@@ -32,7 +33,10 @@ When a cluster-level operation is sent from the client, the following sequence o
 
 {INFO/}
 
-## What happens when we create a cluster?
+{PANEL/}
+
+{PANEL:What happens when we create a cluster?}
+
 The starting state is two or more RavenDB instances. 
 
 ### Server-side
@@ -43,7 +47,10 @@ Each time a node is added or deleted, a node which was the origin of the change 
 Once a client is initialized, it will query the server for current topology. The response will initialize failover functionality with the list of fallback nodes.
 If a topology is changed after the client was initialized, the client would have old topology etag, and this would make the client fetch the updated topology from the server.
 
-## Databases
+{PANEL/}
+
+{PANEL:Databases}
+
 The idea is that the cluster will have databases with specified [replication factor](../../glossary/replication-factor) spread out over multiple [cluster nodes](../../glossary/cluster-node).
 If a [cluster node](cluster-node) that contains one of replicas goes offline or is [not reachable](https://en.wikipedia.org/wiki/Split-brain_(computing)), the cluster will relocate the replica to another node (if there is one available), and maintain it there.
 
@@ -56,7 +63,6 @@ Then, we create a database with replication factor of 3.
 The newly created database will be distributed either manually or automatically to three of the cluster nodes. Let's assume it is distributed to B, C and E. 
 If node C is offline or is not reachable, the cluster will relocate the database to any available node.
 {INFO/}
-
 
 ### Replication
 Each [database group](../../glossary/database-group) has a master-master replication between the replicas. 
@@ -72,3 +78,4 @@ The load-balance behavior can be of three types
   * Round Robin - Each request from the client will address another node
   * Fastest Node - Each request will go to the fastest node. The fastest node will be recalculated 
 
+{PANEL/}

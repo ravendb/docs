@@ -1,4 +1,4 @@
-# Certificate Management
+# Security : Authentication : Certificate Management
 
 Once authentication is set up, it's the administrator's responsibility to issue and manage client certificates.
 
@@ -14,7 +14,7 @@ It's important to note that RavenDB does __not__ keep track of the certificate's
 via RavenDB or upload an existing client certificate, the private key is not retained. If a certificate was lost, you'll
 need to recreate a new certificate, assign the same permissions, and distribute the certificate again.
 
-### The RavenDB Security Approach
+{PANEL:The RavenDB Security Approach}
 
 The security system in RavenDB does not assume any correlation between a particular certificate and a user. The concept of a user
 does not really exist within RavenDB in this manner. Instead, you have a certificate that is assigned a set of permissions. 
@@ -48,8 +48,9 @@ In general, RavenDB assumes that an application will implement its own logic reg
 itself to protecting the data from unauthorized access. Applications operate on behalf of users, and as such they are in a better position to determine what is
 allowed than RavenDB. 
 
+{PANEL/}
 
-### List of Registered Certificates
+{PANEL:List of Registered Certificates} 
 
 In the screenshot, we can see an example list of registered certificates. Each item contains the following information:
 
@@ -61,7 +62,9 @@ In the screenshot, we can see an example list of registered certificates. Each i
 
 ![Figure 2. Registered Certificates](images/registered.png)
 
-### Generate Client Certificate
+{PANEL/}
+
+{PANEL:Generate Client Certificate} 
 
 Using this view, you can generate client certificates directly via RavenDB. Newly generated certificates will be added to the list of registered certificates.
 
@@ -77,7 +80,9 @@ This information is used by RavenDB internally and is not stored in the certific
 
 Expiration for client certificates is set to 5 years by default.
 
-### Upload an Existing Certificate
+{PANEL/}
+
+{PANEL:Upload an Existing Certificate} 
 
 Using this view you can upload existing client certificates. Uploaded certificates will be added to the list of registered certificates.
 
@@ -91,7 +96,9 @@ When uploading an existing certificate file, you also need to fill the following
 
 This information is used by RavenDB internally and is not stored in the certificate itself.
 
-### Edit Certificate
+{PANEL/}
+
+{PANEL:Edit Certificate} 
 
 Every certificate in the list can be edited. The editable fields are:
 
@@ -101,17 +108,23 @@ Every certificate in the list can be edited. The editable fields are:
 
 ![Figure 5. Edit Certificate](images/edit.png)
 
-### Certificate Collections
+{PANEL/}
+
+{PANEL:Certificate Collections} 
 
 Pfx files may contain a single certificate or a collection of certificates.
 
 When uploading a .pfx file with a collection, RavenDB will add all of the certificates to the list of registered certificates as one entry and will allow access to all of the certificates in the collection explicitly by their thumbprint.
 
-### Export Cluster Certificates
+{PANEL/}
+
+{PANEL:Export Cluster Certificates} 
 
 This options allows you to export the server certificate as a .pfx file. In case of a cluster which contains several different server certificates, a .pfx collection will be exported.
 
-### Client Certificate Chain of Trust
+{PANEL/}
+
+{PANEL:Client Certificate Chain of Trust} 
 
 As mentioned above, RavenDB generates client certificates by signing them using the server certificate. A typical server certificate doesn't allow acting as an Intermediate Certificate Authority signing other certificates. This is the case with Let's Encrypt certificates.
 
@@ -121,3 +134,4 @@ In that case, the generated client certificate will have a broken chain of trust
 
 Because client certificates are managed by RavenDB directly and not through any PKI infrastructure <strong>this is perfectly acceptable</strong>. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server.
 
+{PANEL/}

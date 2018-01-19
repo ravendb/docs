@@ -1,4 +1,4 @@
-## Server Configuration : Cluster
+# Server Configuration : Cluster
 
 {PANEL:Cluster.ElectionTimeoutInMs}
 

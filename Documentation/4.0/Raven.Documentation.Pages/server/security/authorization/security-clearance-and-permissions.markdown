@@ -1,4 +1,4 @@
-# Security Clearance and Permissions
+# Security : Authorization : Security Clearance and Permissions
 
 X.509 certificates are used for authentication - validating that users are who they say they are. Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
 
@@ -8,7 +8,7 @@ It is the administrator's responsibility to generate client certificates and ass
 
 A client certificate's security clearance can be one of the following:
 
-### Cluster Admin
+{PANEL:Cluster Admin}
 
 `Cluster Admin` is the highest security clearance. There are no restrictions. A `Cluster Admin` certificate has admin permissions to all databases. It also has the ability to modify the cluster itself.
 
@@ -22,9 +22,11 @@ The following operations are allowed <strong>only</strong> for `Cluster Admin` c
 - Use the Admin JS Console
 - Migrate databases
 - Activate or update the license
-- Get SNMP used oids
+- Get SNMP used OIDs
 
-### Operator
+{PANEL/}
+
+{PANEL:Operator}
 
 A client certificate with an `Operator` security clearance has admin access to all databases, but is unable to modify the cluster. It cannot perform operations such as add/remove/promote/demote nodes from the cluster. This is useful in a hosted solution. If you are running on your own machines, you'll typically ignore that level in favor of `Cluster Admin` or `User`.
 
@@ -48,7 +50,9 @@ The following operations are allowed for <strong>both</strong> `Operator` and `C
 - Get server metrics (request/sec, indexed/sec, batch size, etc...)
 - Get remote server build info
 
-### User
+{PANEL/}
+
+{PANEL:User}
 
 A `User` client certificate has a list of databases it is allowed to access. In addition, the access level to each database can be either `Database Admin` or `read/write`. A `User` certificate cannot perform any admin operations at the cluster level.
 
@@ -66,3 +70,5 @@ The following operations are allowed for `User` certificates with `Database Admi
 
 A `User` certificate with `read/write` access level can perform all the operations which are not listed above.  
 The full list of endpoints and their required security clearance can be found [here]().
+
+{PANEL/}
