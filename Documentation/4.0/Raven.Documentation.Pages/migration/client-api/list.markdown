@@ -234,31 +234,12 @@ Renamed to `DocumentConventions`.
 * `Task SideBySideExecuteIndexAsync(Raven.Client.Indexes.AbstractIndexCreationTask, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
 * `void SideBySideExecuteIndexes(List<Raven.Client.Indexes.AbstractIndexCreationTask>, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
 * `Task SideBySideExecuteIndexesAsync(List<Raven.Client.Indexes.AbstractIndexCreationTask>, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
-* `void ExecuteTransformer(Raven.Client.Indexes.AbstractTransformerCreationTask)`
-* `Task ExecuteTransformerAsync(Raven.Client.Indexes.AbstractTransformerCreationTask)`
-* `Raven.Client.Connection.Async.IAsyncDatabaseCommands get_AsyncDatabaseCommands()`
-* `Raven.Client.Document.IAsyncReliableSubscriptions get_AsyncSubscriptions()`
-* `Raven.Client.Connection.IDatabaseCommands get_DatabaseCommands()`
-* `bool get_HasJsonRequestFactory()`
-* `Raven.Client.Connection.HttpJsonRequestFactory get_JsonRequestFactory()`
-* `Raven.Client.Document.DocumentSessionListeners get_Listeners()`
-* `NameValueCollection get_SharedOperationsHeaders()`
-* `string get_Url()`
-* `Raven.Abstractions.Data.Etag GetLastWrittenEtag()`
-* `Raven.Client.Connection.Profiling.ProfilingInformation GetProfilingInformationFor(Guid)`
-* `void InitializeProfiling()`
-* `void SetListeners(Raven.Client.Document.DocumentSessionListeners)`
-* `IDisposable SetRequestsTimeoutFor(TimeSpan)`
-* `void SideBySideExecuteIndex(Raven.Client.Indexes.AbstractIndexCreationTask, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
-* `Task SideBySideExecuteIndexAsync(Raven.Client.Indexes.AbstractIndexCreationTask, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
-* `void SideBySideExecuteIndexes(List<Raven.Client.Indexes.AbstractIndexCreationTask>, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
-* `Task SideBySideExecuteIndexesAsync(List<Raven.Client.Indexes.AbstractIndexCreationTask>, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
 
 #### Added methods
 
 * `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
 * `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
+* `void add_OnBeforeQuery(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
 * `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
 * `System.Security.Cryptography.X509Certificates.X509Certificate2 get_Certificate()`
 * `string get_Database()`
@@ -268,23 +249,7 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.Http.RequestExecutor GetRequestExecutor(string)`
 * `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
 * `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void set_Database(string)`
-* `System.IDisposable SetRequestsTimeout(System.TimeSpan, string)`
-* `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `System.Security.Cryptography.X509Certificates.X509Certificate2 get_Certificate()`
-* `string get_Database()`
-* `Raven.Client.Documents.Operations.MaintenanceOperationExecutor get_Maintenance()`
-* `Raven.Client.Documents.Operations.OperationExecutor get_Operations()`
-* `System.String[] get_Urls()`
-* `Raven.Client.Http.RequestExecutor GetRequestExecutor(string)`
-* `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
+* `void remove_OnBeforeQuery(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
 * `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
 * `void set_Database(string)`
 * `System.IDisposable SetRequestsTimeout(System.TimeSpan, string)`
@@ -364,7 +329,9 @@ Renamed to `DocumentConventions`.
 * `Nullable<int> get_MaxIndexOutputsPerDocument()`
 * `void set_MaxIndexOutputsPerDocument(Nullable<int>)`
 
-### AbstractMultiMapIndexCreationTask<TReduceResult>
+{PANEL/}
+
+{PANEL:AbstractMultiMapIndexCreationTask<TReduceResult>}
 #### Namespace changed
 
 * 3.x: `Raven.Client.Indexes`
@@ -443,14 +410,6 @@ Renamed to `DocumentConventions`.
 * 4.0: `Raven.Client.Documents.Linq`
 #### Removed methods
 
-* `Raven.Client.Linq.IRavenQueryable<T> AddQueryInput(string, Raven.Json.Linq.RavenJToken)`
-* `Raven.Client.Linq.IRavenQueryable<T> AddTransformerParameter(string, Raven.Json.Linq.RavenJToken)`
-* `Type get_OriginalQueryType()`
-* `Raven.Client.Linq.IRavenQueryable<T> OrderByDistance(Raven.Abstractions.Indexing.SpatialSort)`
-* `void set_OriginalQueryType(Type)`
-* `Raven.Client.Linq.IRavenQueryable<T> Spatial(Expression<Func<T, object>>, Func<Raven.Client.Spatial.SpatialCriteriaFactory, Raven.Client.Spatial.SpatialCriteria>)`
-* `Raven.Client.Linq.IRavenQueryable<TResult> TransformWith<TTransformer, TResult>()`
-* `Raven.Client.Linq.IRavenQueryable<TResult> TransformWith<TResult>(string)`
 * `Raven.Client.Linq.IRavenQueryable<T> AddQueryInput(string, Raven.Json.Linq.RavenJToken)`
 * `Raven.Client.Linq.IRavenQueryable<T> AddTransformerParameter(string, Raven.Json.Linq.RavenJToken)`
 * `Type get_OriginalQueryType()`
@@ -603,50 +562,11 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.IDocumentQueryCustomization WithinRadiusOf(string, Double, Double, Double, Double)`
 * `Raven.Client.IDocumentQueryCustomization WithinRadiusOf(Double, Double, Double, Raven.Abstractions.Indexing.SpatialUnits, Double)`
 * `Raven.Client.IDocumentQueryCustomization WithinRadiusOf(string, Double, Double, Double, Raven.Abstractions.Indexing.SpatialUnits, Double)`
-* `Raven.Client.IDocumentQueryCustomization AddOrder(string, bool)`
-* `Raven.Client.IDocumentQueryCustomization AddOrder<TResult>(Expression<Func<TResult, object>>, bool)`
-* `Raven.Client.IDocumentQueryCustomization AddOrder(string, bool, Type)`
-* `Raven.Client.IDocumentQueryCustomization AlphaNumericOrdering(string, bool)`
-* `Raven.Client.IDocumentQueryCustomization AlphaNumericOrdering<TResult>(Expression<Func<TResult, object>>, bool)`
-* `Raven.Client.IDocumentQueryCustomization BeforeQueryExecution(Action<Raven.Abstractions.Data.IndexQuery>)`
-* `Raven.Client.IDocumentQueryCustomization CustomSortUsing(string)`
-* `Raven.Client.IDocumentQueryCustomization CustomSortUsing(string, bool)`
-* `Raven.Client.IDocumentQueryCustomization Highlight(string, int, int, string)`
-* `Raven.Client.IDocumentQueryCustomization Highlight(string, int, int, Raven.Client.FieldHighlightings&)`
-* `Raven.Client.IDocumentQueryCustomization Highlight(string, string, int, int, Raven.Client.FieldHighlightings&)`
 * `Raven.Client.IDocumentQueryCustomization Include<TResult>(Expression<Func<TResult, object>>)`
-* `Raven.Client.IDocumentQueryCustomization Include<TResult, TInclude>(Expression<Func<TResult, object>>)`
-* `Raven.Client.IDocumentQueryCustomization Include(string)`
-* `Raven.Client.IDocumentQueryCustomization RelatesToShape(string, string, Raven.Abstractions.Indexing.SpatialRelation, Double)`
-* `Raven.Client.IDocumentQueryCustomization SetAllowMultipleIndexEntriesForSameDocumentToResultTransformer(bool)`
-* `Raven.Client.IDocumentQueryCustomization SetHighlighterTags(string, string)`
-* `Raven.Client.IDocumentQueryCustomization SetHighlighterTags(String[], String[])`
-* `Raven.Client.IDocumentQueryCustomization ShowTimings()`
-* `Raven.Client.IDocumentQueryCustomization SortByDistance()`
-* `Raven.Client.IDocumentQueryCustomization SortByDistance(Double, Double)`
-* `Raven.Client.IDocumentQueryCustomization SortByDistance(Double, Double, string)`
 * `Raven.Client.IDocumentQueryCustomization Spatial(string, Func<Raven.Client.Spatial.SpatialCriteriaFactory, Raven.Client.Spatial.SpatialCriteria>)`
-* `Raven.Client.IDocumentQueryCustomization TransformResults(Func<Raven.Abstractions.Data.IndexQuery, IEnumerable<object>, IEnumerable<object>>)`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResults(TimeSpan)`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOf(DateTime)`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOf(DateTime, TimeSpan)`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOf(Raven.Abstractions.Data.Etag)`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOf(Raven.Abstractions.Data.Etag, TimeSpan)`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOfLastWrite()`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOfLastWrite(TimeSpan)`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOfNow()`
-* `Raven.Client.IDocumentQueryCustomization WaitForNonStaleResultsAsOfNow(TimeSpan)`
-* `Raven.Client.IDocumentQueryCustomization WithinRadiusOf(Double, Double, Double, Double)`
-* `Raven.Client.IDocumentQueryCustomization WithinRadiusOf(string, Double, Double, Double, Double)`
-* `Raven.Client.IDocumentQueryCustomization WithinRadiusOf(Double, Double, Double, Raven.Abstractions.Indexing.SpatialUnits, Double)`
-* `Raven.Client.IDocumentQueryCustomization WithinRadiusOf(string, Double, Double, Double, Raven.Abstractions.Indexing.SpatialUnits, Double)`
 
 #### Added methods
 
-* `Raven.Client.Documents.Session.IDocumentQueryCustomization AfterQueryExecuted(System.Action<Raven.Client.Documents.Queries.QueryResult>)`
-* `Raven.Client.Documents.Session.IDocumentQueryCustomization AfterStreamExecuted(System.Action<Sparrow.Json.BlittableJsonReaderObject>)`
-* `Raven.Client.Documents.Session.IDocumentQueryCustomization BeforeQueryExecuted(System.Action<Raven.Client.Documents.Queries.IndexQuery>)`
-* `Raven.Client.Documents.Session.Operations.QueryOperation get_QueryOperation()`
 * `Raven.Client.Documents.Session.IDocumentQueryCustomization AfterQueryExecuted(System.Action<Raven.Client.Documents.Queries.QueryResult>)`
 * `Raven.Client.Documents.Session.IDocumentQueryCustomization AfterStreamExecuted(System.Action<Sparrow.Json.BlittableJsonReaderObject>)`
 * `Raven.Client.Documents.Session.IDocumentQueryCustomization BeforeQueryExecuted(System.Action<Raven.Client.Documents.Queries.IndexQuery>)`
@@ -670,31 +590,9 @@ Renamed to `DocumentConventions`.
 * `void SetQueryInputs(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
 * `Raven.Client.IAsyncDocumentQuery<TTransformerResult> SetResultTransformer<TTransformer, TTransformerResult>()`
 * `Raven.Client.IAsyncDocumentQuery<T> SetTransformerParameters(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
-* `string get_AsyncIndexQueried()`
-* `Task<Raven.Abstractions.Data.FacetResults> GetFacetsAsync(string, int, Nullable<int>, CancellationToken)`
-* `Task<Raven.Abstractions.Data.FacetResults> GetFacetsAsync(List<Raven.Abstractions.Data.Facet>, int, Nullable<int>, CancellationToken)`
-* `Lazy<Task<Raven.Abstractions.Data.FacetResults>> GetFacetsLazyAsync(string, int, Nullable<int>, CancellationToken)`
-* `Lazy<Task<Raven.Abstractions.Data.FacetResults>> GetFacetsLazyAsync(List<Raven.Abstractions.Data.Facet>, int, Nullable<int>, CancellationToken)`
-* `Task<Raven.Abstractions.Data.QueryResult> QueryResultAsync(CancellationToken)`
-* `void SetQueryInputs(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
-* `Raven.Client.IAsyncDocumentQuery<TTransformerResult> SetResultTransformer<TTransformer, TTransformerResult>()`
-* `Raven.Client.IAsyncDocumentQuery<T> SetTransformerParameters(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
 
 #### Added methods
 
-* `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(System.Action<Raven.Client.Documents.Queries.Facets.IFacetBuilder<T>>)`
-* `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(Raven.Client.Documents.Queries.Facets.FacetBase)`
-* `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(System.Collections.Generic.IEnumerable<Raven.Client.Documents.Queries.Facets.Facet>)`
-* `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateUsing(string)`
-* `string get_IndexName()`
-* `bool get_IsDistinct()`
-* `System.Threading.Tasks.Task<Raven.Client.Documents.Queries.QueryResult> GetQueryResultAsync(System.Threading.CancellationToken)`
-* `Raven.Client.Documents.Session.IAsyncGroupByDocumentQuery<T> GroupBy(string, System.String[])`
-* `Raven.Client.Documents.Session.IAsyncGroupByDocumentQuery<T> GroupBy(System.ValueTuple<string, Raven.Client.Documents.Queries.GroupByMethod>, System.ValueTuple`2<System.String,Raven.Client.Documents.Queries.GroupByMethod>[])`
-* `Raven.Client.Documents.Session.IAsyncDocumentQuery<T> MoreLikeThis(System.Action<Raven.Client.Documents.Queries.MoreLikeThis.IMoreLikeThisBuilderForAsyncDocumentQuery<T>>)`
-* `Raven.Client.Documents.Session.IAsyncDocumentQuery<TResult> OfType<TResult>()`
-* `Raven.Client.Documents.Queries.Suggestions.IAsyncSuggestionDocumentQuery<T> SuggestUsing(Raven.Client.Documents.Queries.Suggestions.SuggestionBase)`
-* `Raven.Client.Documents.Queries.Suggestions.IAsyncSuggestionDocumentQuery<T> SuggestUsing(System.Action<Raven.Client.Documents.Queries.Suggestions.ISuggestionBuilder<T>>)`
 * `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(System.Action<Raven.Client.Documents.Queries.Facets.IFacetBuilder<T>>)`
 * `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(Raven.Client.Documents.Queries.Facets.FacetBase)`
 * `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(System.Collections.Generic.IEnumerable<Raven.Client.Documents.Queries.Facets.Facet>)`
@@ -739,39 +637,9 @@ Renamed to `DocumentConventions`.
 * `Task<Raven.Abstractions.Util.IAsyncEnumerator<Raven.Abstractions.Data.StreamResult<T>>> StreamAsync<T>(IQueryable<T>, Raven.Abstractions.Extensions.Reference<Raven.Abstractions.Data.QueryHeaderInformation>, CancellationToken)`
 * `Task<Raven.Abstractions.Util.IAsyncEnumerator<Raven.Abstractions.Data.StreamResult<T>>> StreamAsync<T>(Raven.Abstractions.Data.Etag, int, int, Raven.Client.RavenPagingInformation, string, Dictionary<string, Raven.Json.Linq.RavenJToken>, CancellationToken)`
 * `Task<Raven.Abstractions.Util.IAsyncEnumerator<Raven.Abstractions.Data.StreamResult<T>>> StreamAsync<T>(string, string, int, int, Raven.Client.RavenPagingInformation, string, string, Dictionary<string, Raven.Json.Linq.RavenJToken>, CancellationToken)`
-* `Raven.Client.IAsyncDocumentQuery<T> AsyncDocumentQuery<T>()`
-* `Raven.Client.IAsyncDocumentQuery<T> AsyncLuceneQuery<T, TIndexCreator>()`
-* `Raven.Client.IAsyncDocumentQuery<T> AsyncLuceneQuery<T>(string, bool)`
-* `Raven.Client.IAsyncDocumentQuery<T> AsyncLuceneQuery<T>()`
-* `Task<Raven.Client.Connection.Operation> DeleteByIndexAsync<T, TIndexCreator>(Expression<Func<T, bool>>)`
-* `Task<Raven.Client.Connection.Operation> DeleteByIndexAsync<T>(string, Expression<Func<T, bool>>)`
-* `string GetDocumentUrl(object)`
-* `Task<Raven.Json.Linq.RavenJObject> GetMetadataForAsync<T>(T)`
-* `Task<IEnumerable<TResult>> LoadStartingWithAsync<TTransformer, TResult>(string, string, int, int, string, Raven.Client.RavenPagingInformation, Action<Raven.Client.ILoadConfiguration>, string, CancellationToken)`
-* `Task<Raven.Abstractions.Data.FacetResults[]> MultiFacetedSearchAsync(Raven.Abstractions.Data.FacetQuery[])`
-* `void Store(object, Raven.Abstractions.Data.Etag)`
-* `void Store(object, Raven.Abstractions.Data.Etag, string)`
-* `void Store(object)`
-* `void Store(object, string)`
-* `Task<Raven.Abstractions.Util.IAsyncEnumerator<Raven.Abstractions.Data.StreamResult<T>>> StreamAsync<T>(Raven.Abstractions.Data.Etag, int, int, Raven.Client.RavenPagingInformation, string, Dictionary<string, Raven.Json.Linq.RavenJToken>, CancellationToken)`
-* `Task<Raven.Abstractions.Util.IAsyncEnumerator<Raven.Abstractions.Data.StreamResult<T>>> StreamAsync<T>(string, string, int, int, Raven.Client.RavenPagingInformation, string, string, Dictionary<string, Raven.Json.Linq.RavenJToken>, CancellationToken)`
 
 #### Added methods
 
-* `Raven.Client.Documents.Session.IAsyncRawDocumentQuery<T> AsyncRawQuery<T>(string)`
-* `System.Threading.Tasks.Task<bool> ExistsAsync(string)`
-* `Raven.Client.Documents.Session.IAttachmentsSessionOperationsAsync get_Attachments()`
-* `Raven.Client.Documents.Session.IRevisionsSessionOperationsAsync get_Revisions()`
-* `void Increment<T, U>(T, System.Linq.Expressions.Expression<System.Func<T, U>>, U)`
-* `void Increment<T, U>(string, System.Linq.Expressions.Expression<System.Func<T, U>>, U)`
-* `System.Threading.Tasks.Task LoadIntoStreamAsync(System.Collections.Generic.IEnumerable<string>, System.IO.Stream, System.Threading.CancellationToken)`
-* `System.Threading.Tasks.Task LoadStartingWithIntoStreamAsync(string, System.IO.Stream, string, int, int, string, string, System.Threading.CancellationToken)`
-* `void Patch<T, U>(string, System.Linq.Expressions.Expression<System.Func<T, U>>, U)`
-* `void Patch<T, U>(T, System.Linq.Expressions.Expression<System.Func<T, U>>, U)`
-* `void Patch<T, U>(T, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<U>>>, System.Linq.Expressions.Expression<System.Func<Raven.Client.Documents.Session.JavaScriptArray<U>, object>>)`
-* `void Patch<T, U>(string, System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<U>>>, System.Linq.Expressions.Expression<System.Func<Raven.Client.Documents.Session.JavaScriptArray<U>, object>>)`
-* `System.Threading.Tasks.Task StreamIntoAsync<T>(Raven.Client.Documents.Session.IAsyncDocumentQuery<T>, System.IO.Stream, System.Threading.CancellationToken)`
-* `System.Threading.Tasks.Task StreamIntoAsync<T>(Raven.Client.Documents.Session.IAsyncRawDocumentQuery<T>, System.IO.Stream, System.Threading.CancellationToken)`
 * `Raven.Client.Documents.Session.IAsyncRawDocumentQuery<T> AsyncRawQuery<T>(string)`
 * `System.Threading.Tasks.Task<bool> ExistsAsync(string)`
 * `Raven.Client.Documents.Session.IAttachmentsSessionOperationsAsync get_Attachments()`
@@ -809,30 +677,9 @@ Renamed to `DocumentConventions`.
 * `Task<TResult[]> LoadAsync<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
 * `Task<T> LoadAsync<T>(string, CancellationToken)`
 * `Task<T[]> LoadAsync<T>(IEnumerable<string>, CancellationToken)`
-* `Task<T> LoadAsync<T>(ValueType, CancellationToken)`
-* `Task<T[]> LoadAsync<T>(CancellationToken, ValueType[])`
-* `Task<T[]> LoadAsync<T>(IEnumerable<ValueType>, CancellationToken)`
-* `Task<TResult> LoadAsync<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult[]> LoadAsync<TTransformer, TResult>(IEnumerable<string>, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult> LoadAsync<TResult>(string, string, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult[]> LoadAsync<TResult>(IEnumerable<string>, string, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult> LoadAsync<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult[]> LoadAsync<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
 * `Raven.Client.Linq.IRavenQueryable<T> Query<T>()`
 * `Raven.Client.Linq.IRavenQueryable<T> Query<T, TIndexCreator>()`
 * `Task StoreAsync(object, Raven.Abstractions.Data.Etag, string, CancellationToken)`
-* `Task StoreAsync(object, string, CancellationToken)`
-* `void Delete(string)`
-* `Task<T> LoadAsync<T>(ValueType, CancellationToken)`
-* `Task<T[]> LoadAsync<T>(CancellationToken, ValueType[])`
-* `Task<T[]> LoadAsync<T>(IEnumerable<ValueType>, CancellationToken)`
-* `Task<TResult> LoadAsync<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult[]> LoadAsync<TTransformer, TResult>(IEnumerable<string>, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult> LoadAsync<TResult>(string, string, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult[]> LoadAsync<TResult>(IEnumerable<string>, string, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult> LoadAsync<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Task<TResult[]> LoadAsync<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>, CancellationToken)`
-* `Raven.Client.Linq.IRavenQueryable<T> Query<T, TIndexCreator>()`
 * `Task StoreAsync(object, string, CancellationToken)`
 
 #### Added methods
@@ -840,8 +687,6 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<T> Include<T>(System.Linq.Expressions.Expression<System.Func<T, string>>)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<T> Include<T, TInclude>(System.Linq.Expressions.Expression<System.Func<T, string>>)`
-* `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<T> Include<T>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<string>>>)`
-* `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<T> Include<T, TInclude>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<string>>>)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<T> Include<T>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<string>>>)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<T> Include<T, TInclude>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<string>>>)`
 
@@ -855,46 +700,6 @@ Renamed to `DocumentConventions`.
 #### Removed methods
 
 * `void ExplicitlyVersion(object)`
-* `void ExplicitlyVersion(object)`
-* `bool get_AllowNonAuthoritativeInformation()`
-* `bool get_AllowNonAuthoritativeInformation()`
-* `TimeSpan get_NonAuthoritativeInformationTimeout()`
-* `TimeSpan get_NonAuthoritativeInformationTimeout()`
-* `Raven.Abstractions.Data.Etag GetEtagFor<T>(T)`
-* `Raven.Abstractions.Data.Etag GetEtagFor<T>(T)`
-* `void MarkReadOnly(object)`
-* `void MarkReadOnly(object)`
-* `void set_AllowNonAuthoritativeInformation(bool)`
-* `void set_AllowNonAuthoritativeInformation(bool)`
-* `void set_NonAuthoritativeInformationTimeout(TimeSpan)`
-* `void set_NonAuthoritativeInformationTimeout(TimeSpan)`
-* `void UnregisterMissing(string)`
-* `void UnregisterMissing(string)`
-* `void ExplicitlyVersion(object)`
-* `void ExplicitlyVersion(object)`
-* `bool get_AllowNonAuthoritativeInformation()`
-* `bool get_AllowNonAuthoritativeInformation()`
-* `TimeSpan get_NonAuthoritativeInformationTimeout()`
-* `TimeSpan get_NonAuthoritativeInformationTimeout()`
-* `Raven.Abstractions.Data.Etag GetEtagFor<T>(T)`
-* `Raven.Abstractions.Data.Etag GetEtagFor<T>(T)`
-* `void MarkReadOnly(object)`
-* `void MarkReadOnly(object)`
-* `void set_AllowNonAuthoritativeInformation(bool)`
-* `void set_AllowNonAuthoritativeInformation(bool)`
-* `void set_NonAuthoritativeInformationTimeout(TimeSpan)`
-* `void set_NonAuthoritativeInformationTimeout(TimeSpan)`
-* `void UnregisterMissing(string)`
-* `void UnregisterMissing(string)`
-* `void ExplicitlyVersion(object)`
-* `bool get_AllowNonAuthoritativeInformation()`
-* `TimeSpan get_NonAuthoritativeInformationTimeout()`
-* `Raven.Abstractions.Data.Etag GetEtagFor<T>(T)`
-* `void MarkReadOnly(object)`
-* `void set_AllowNonAuthoritativeInformation(bool)`
-* `void set_NonAuthoritativeInformationTimeout(TimeSpan)`
-* `void UnregisterMissing(string)`
-* `void ExplicitlyVersion(object)`
 * `bool get_AllowNonAuthoritativeInformation()`
 * `TimeSpan get_NonAuthoritativeInformationTimeout()`
 * `Raven.Abstractions.Data.Etag GetEtagFor<T>(T)`
@@ -906,71 +711,12 @@ Renamed to `DocumentConventions`.
 #### Added methods
 
 * `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
 * `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
+* `void add_OnBeforeQuery(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
 * `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
 * `void Defer(Raven.Client.Documents.Commands.Batches.ICommandData, Raven.Client.Documents.Commands.Batches.ICommandData[])`
 * `void Defer(Raven.Client.Documents.Commands.Batches.ICommandData[])`
 * `Sparrow.Json.JsonOperationContext get_Context()`
-* `Sparrow.Json.JsonOperationContext get_Context()`
-* `Raven.Client.Documents.Session.EntityToBlittable get_EntityToBlittable()`
-* `Raven.Client.Documents.Session.EntityToBlittable get_EntityToBlittable()`
-* `Raven.Client.Http.RequestExecutor get_RequestExecutor()`
-* `Raven.Client.Http.RequestExecutor get_RequestExecutor()`
-* `string GetChangeVectorFor<T>(T)`
-* `string GetChangeVectorFor<T>(T)`
-* `System.Threading.Tasks.Task<Raven.Client.Http.ServerNode> GetCurrentSessionNode()`
-* `System.Threading.Tasks.Task<Raven.Client.Http.ServerNode> GetCurrentSessionNode()`
-* `System.Nullable<System.DateTime> GetLastModifiedFor<T>(T)`
-* `System.Nullable<System.DateTime> GetLastModifiedFor<T>(T)`
-* `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void Defer(Raven.Client.Documents.Commands.Batches.ICommandData, Raven.Client.Documents.Commands.Batches.ICommandData[])`
-* `void Defer(Raven.Client.Documents.Commands.Batches.ICommandData[])`
-* `Sparrow.Json.JsonOperationContext get_Context()`
-* `Sparrow.Json.JsonOperationContext get_Context()`
-* `Raven.Client.Documents.Session.EntityToBlittable get_EntityToBlittable()`
-* `Raven.Client.Documents.Session.EntityToBlittable get_EntityToBlittable()`
-* `Raven.Client.Http.RequestExecutor get_RequestExecutor()`
-* `Raven.Client.Http.RequestExecutor get_RequestExecutor()`
-* `string GetChangeVectorFor<T>(T)`
-* `string GetChangeVectorFor<T>(T)`
-* `System.Threading.Tasks.Task<Raven.Client.Http.ServerNode> GetCurrentSessionNode()`
-* `System.Threading.Tasks.Task<Raven.Client.Http.ServerNode> GetCurrentSessionNode()`
-* `System.Nullable<System.DateTime> GetLastModifiedFor<T>(T)`
-* `System.Nullable<System.DateTime> GetLastModifiedFor<T>(T)`
-* `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void Defer(Raven.Client.Documents.Commands.Batches.ICommandData[])`
-* `Sparrow.Json.JsonOperationContext get_Context()`
 * `Raven.Client.Documents.Session.EntityToBlittable get_EntityToBlittable()`
 * `Raven.Client.Http.RequestExecutor get_RequestExecutor()`
 * `string GetChangeVectorFor<T>(T)`
@@ -978,22 +724,7 @@ Renamed to `DocumentConventions`.
 * `System.Nullable<System.DateTime> GetLastModifiedFor<T>(T)`
 * `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
 * `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void add_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
-* `void add_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
-* `void Defer(Raven.Client.Documents.Commands.Batches.ICommandData[])`
-* `Sparrow.Json.JsonOperationContext get_Context()`
-* `Raven.Client.Documents.Session.EntityToBlittable get_EntityToBlittable()`
-* `Raven.Client.Http.RequestExecutor get_RequestExecutor()`
-* `string GetChangeVectorFor<T>(T)`
-* `System.Threading.Tasks.Task<Raven.Client.Http.ServerNode> GetCurrentSessionNode()`
-* `System.Nullable<System.DateTime> GetLastModifiedFor<T>(T)`
-* `void remove_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
-* `void remove_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
-* `void remove_OnBeforeQueryExecuted(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
+* `void remove_OnBeforeQuery(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
 * `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
 
 {PANEL/}
@@ -1016,33 +747,12 @@ Renamed to `DocumentConventions`.
 * `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<ValueType>, Action<TResult[]>, CancellationToken)`
 * `Lazy<Task<TResult>> LoadAsync<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>, Action<TResult>, CancellationToken)`
 * `Lazy<Task<TResult>> LoadAsync<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>, CancellationToken)`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<string>, CancellationToken)`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<string>, Action<TResult[]>, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(string, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(string, Action<TResult>, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(ValueType, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(ValueType, Action<TResult>, CancellationToken)`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(CancellationToken, ValueType[])`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<ValueType>, CancellationToken)`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<ValueType>, Action<TResult[]>, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>, Action<TResult>, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>, CancellationToken)`
-* `Lazy<Task<TResult[]>> MoreLikeThisAsync<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery, CancellationToken)`
-* `Lazy<Task<TResult[]>> MoreLikeThisAsync<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(ValueType, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(ValueType, Action<TResult>, CancellationToken)`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(CancellationToken, ValueType[])`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<ValueType>, CancellationToken)`
-* `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<ValueType>, Action<TResult[]>, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>, Action<TResult>, CancellationToken)`
-* `Lazy<Task<TResult>> LoadAsync<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>, CancellationToken)`
 * `Lazy<Task<TResult[]>> MoreLikeThisAsync<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery, CancellationToken)`
 
 #### Added methods
 
 * `Raven.Client.Documents.Session.Loaders.IAsyncLazyLoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, string>>)`
-* `Raven.Client.Documents.Session.Loaders.IAsyncLazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, System.Collections.Generic.IEnumerable<string>>>)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, System.Collections.Generic.IEnumerable<string>>>)`
 
 {PANEL/}
@@ -1064,31 +774,9 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.IDocumentQuery<T> SetQueryInputs(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
 * `Raven.Client.IDocumentQuery<TTransformerResult> SetResultTransformer<TTransformer, TTransformerResult>()`
 * `Raven.Client.IDocumentQuery<T> SetTransformerParameters(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
-* `string get_IndexQueried()`
-* `Raven.Abstractions.Data.QueryResult get_QueryResult()`
-* `Raven.Abstractions.Data.FacetResults GetFacets(string, int, Nullable<int>)`
-* `Raven.Abstractions.Data.FacetResults GetFacets(List<Raven.Abstractions.Data.Facet>, int, Nullable<int>)`
-* `Lazy<Raven.Abstractions.Data.FacetResults> GetFacetsLazy(string, int, Nullable<int>)`
-* `Lazy<Raven.Abstractions.Data.FacetResults> GetFacetsLazy(List<Raven.Abstractions.Data.Facet>, int, Nullable<int>)`
-* `Lazy<IEnumerable<T>> Lazily(Action<IEnumerable<T>>)`
-* `Raven.Client.IDocumentQuery<T> SetQueryInputs(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
-* `Raven.Client.IDocumentQuery<TTransformerResult> SetResultTransformer<TTransformer, TTransformerResult>()`
-* `Raven.Client.IDocumentQuery<T> SetTransformerParameters(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
 
 #### Added methods
 
-* `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(System.Action<Raven.Client.Documents.Queries.Facets.IFacetBuilder<T>>)`
-* `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(Raven.Client.Documents.Queries.Facets.FacetBase)`
-* `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(System.Collections.Generic.IEnumerable<Raven.Client.Documents.Queries.Facets.Facet>)`
-* `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateUsing(string)`
-* `string get_IndexName()`
-* `Raven.Client.Documents.Queries.QueryResult GetQueryResult()`
-* `Raven.Client.Documents.Session.IGroupByDocumentQuery<T> GroupBy(string, System.String[])`
-* `Raven.Client.Documents.Session.IGroupByDocumentQuery<T> GroupBy(System.ValueTuple<string, Raven.Client.Documents.Queries.GroupByMethod>, System.ValueTuple`2<System.String,Raven.Client.Documents.Queries.GroupByMethod>[])`
-* `Raven.Client.Documents.Session.IDocumentQuery<T> MoreLikeThis(System.Action<Raven.Client.Documents.Queries.MoreLikeThis.IMoreLikeThisBuilderForDocumentQuery<T>>)`
-* `Raven.Client.Documents.Session.IDocumentQuery<TResult> OfType<TResult>()`
-* `Raven.Client.Documents.Queries.Suggestions.ISuggestionDocumentQuery<T> SuggestUsing(Raven.Client.Documents.Queries.Suggestions.SuggestionBase)`
-* `Raven.Client.Documents.Queries.Suggestions.ISuggestionDocumentQuery<T> SuggestUsing(System.Action<Raven.Client.Documents.Queries.Suggestions.ISuggestionBuilder<T>>)`
 * `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(System.Action<Raven.Client.Documents.Queries.Facets.IFacetBuilder<T>>)`
 * `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(Raven.Client.Documents.Queries.Facets.FacetBase)`
 * `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(System.Collections.Generic.IEnumerable<Raven.Client.Documents.Queries.Facets.Facet>)`
@@ -1139,28 +827,9 @@ Renamed to `DocumentConventions`.
 * `T Load<T>(string)`
 * `T[] Load<T>(IEnumerable<string>)`
 * `T Load<T>(ValueType)`
-* `T[] Load<T>(ValueType[])`
-* `T[] Load<T>(IEnumerable<ValueType>)`
-* `TResult Load<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult[] Load<TTransformer, TResult>(IEnumerable<string>, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult Load<TResult>(string, string, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult[] Load<TResult>(IEnumerable<string>, string, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult Load<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult[] Load<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>)`
 * `Raven.Client.Linq.IRavenQueryable<T> Query<T>()`
 * `Raven.Client.Linq.IRavenQueryable<T> Query<T, TIndexCreator>()`
 * `void Store(object)`
-* `void Store(object, string)`
-* `T Load<T>(ValueType)`
-* `T[] Load<T>(ValueType[])`
-* `T[] Load<T>(IEnumerable<ValueType>)`
-* `TResult Load<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult[] Load<TTransformer, TResult>(IEnumerable<string>, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult Load<TResult>(string, string, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult[] Load<TResult>(IEnumerable<string>, string, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult Load<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>)`
-* `TResult[] Load<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>)`
-* `Raven.Client.Linq.IRavenQueryable<T> Query<T, TIndexCreator>()`
 * `void Store(object, string)`
 
 #### Added methods
@@ -1168,8 +837,6 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<T> Include<T>(System.Linq.Expressions.Expression<System.Func<T, string>>)`
 * `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<T> Include<T>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<string>>>)`
-* `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<T> Include<T, TInclude>(System.Linq.Expressions.Expression<System.Func<T, string>>)`
-* `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<T> Include<T, TInclude>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<string>>>)`
 * `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<T> Include<T, TInclude>(System.Linq.Expressions.Expression<System.Func<T, string>>)`
 * `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<T> Include<T, TInclude>(System.Linq.Expressions.Expression<System.Func<T, System.Collections.Generic.IEnumerable<string>>>)`
 
@@ -1195,37 +862,12 @@ Renamed to `DocumentConventions`.
 * `Lazy<TResult> Load<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
 * `Lazy<TResult[]> Load<TTransformer, TResult>(IEnumerable<string>, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
 * `Lazy<TResult[]> Load<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<string>)`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<string>, Action<TResult[]>)`
-* `Lazy<TResult> Load<TResult>(string)`
-* `Lazy<TResult> Load<TResult>(string, Action<TResult>)`
-* `Lazy<TResult> Load<TResult>(ValueType)`
-* `Lazy<TResult> Load<TResult>(ValueType, Action<TResult>)`
-* `Lazy<TResult[]> Load<TResult>(ValueType[])`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<ValueType>)`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<ValueType>, Action<TResult[]>)`
-* `Lazy<TResult> Load<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult> Load<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult[]> Load<TTransformer, TResult>(IEnumerable<string>, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult[]> MoreLikeThis<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery)`
-* `Lazy<TResult[]> MoreLikeThis<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery)`
-* `Lazy<TResult> Load<TResult>(ValueType)`
-* `Lazy<TResult> Load<TResult>(ValueType, Action<TResult>)`
-* `Lazy<TResult[]> Load<TResult>(ValueType[])`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<ValueType>)`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<ValueType>, Action<TResult[]>)`
-* `Lazy<TResult> Load<TTransformer, TResult>(string, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult> Load<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult[]> Load<TTransformer, TResult>(IEnumerable<string>, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
-* `Lazy<TResult[]> Load<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
 * `Lazy<TResult[]> MoreLikeThis<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery)`
 
 #### Added methods
 
 * `Raven.Client.Documents.Session.Loaders.ILazyLoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.ILazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, string>>)`
-* `Raven.Client.Documents.Session.Loaders.ILazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, System.Collections.Generic.IEnumerable<string>>>)`
 * `Raven.Client.Documents.Session.Loaders.ILazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, System.Collections.Generic.IEnumerable<string>>>)`
 
 {PANEL/}
