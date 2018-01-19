@@ -18,5 +18,10 @@
         "Path": "/security",
         "Name": "Security",
         "Mappings": []
+    },
+    {
+        "Path": "/troubleshooting",
+        "Name": "Troubleshooting",
+        "Mappings": []
     }
 ]
