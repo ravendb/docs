@@ -5,9 +5,9 @@ using Sparrow.Json.Parsing;
 
 namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 {
-    public class WorkingWithDocumentIds
+    public class WorkingWithDocumentIdentifiers
     {
-        public WorkingWithDocumentIds()
+        public WorkingWithDocumentIdentifiers()
         {
             var store = new DocumentStore();
 
@@ -114,7 +114,7 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
             #endregion
         }
 
-        public WorkingWithDocumentIds(string g)
+        public WorkingWithDocumentIdentifiers(string g)
         {
             var store = new DocumentStore();
             var session = store.OpenSession();
