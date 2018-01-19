@@ -18,7 +18,7 @@ More complex text searching can be achieved by using the `Search` extension meth
 {CODE-TABS}
 {CODE-TAB:csharp:Sync search_4@ClientApi\Session\Querying\HowToUseSearch.cs /}
 {CODE-TAB:csharp:Async search_4_async@ClientApi\Session\Querying\HowToUseSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users 
 where search(Name, 'a*')
 {CODE-TAB-BLOCK/}
@@ -29,7 +29,7 @@ where search(Name, 'a*')
 {CODE-TABS}
 {CODE-TAB:csharp:Sync search_2@ClientApi\Session\Querying\HowToUseSearch.cs /}
 {CODE-TAB:csharp:Async search_2_async@ClientApi\Session\Querying\HowToUseSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Users/ByNameAndHobbies' 
 where search(Name, 'Adam') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
@@ -40,7 +40,7 @@ where search(Name, 'Adam') or search(Hobbies, 'sport')
 {CODE-TABS}
 {CODE-TAB:csharp:Sync search_3@ClientApi\Session\Querying\HowToUseSearch.cs /}
 {CODE-TAB:csharp:Async search_3_async@ClientApi\Session\Querying\HowToUseSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Users/ByHobbies' 
 where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
 {CODE-TAB-BLOCK/}

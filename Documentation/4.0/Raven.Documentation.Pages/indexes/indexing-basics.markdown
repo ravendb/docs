@@ -19,7 +19,7 @@ The fact is, that we did not stop at this point, we went much further, by exposi
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax indexes_2@Indexes/IndexingBasics.cs /}
 {CODE-TAB:csharp:Query-syntax indexes_1@Indexes/IndexingBasics.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstName'
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
@@ -30,7 +30,7 @@ You can also create queries manually by using  [DocumentQuery](../client-api/ses
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery indexes_3@Indexes/IndexingBasics.cs /}
 {CODE-TAB:csharp:RawQuery indexes_4@Indexes/IndexingBasics.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstName'
 where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}

@@ -25,7 +25,7 @@ and issue the query:
 {CODE-TABS}
 {CODE-TAB:csharp:Query map_reduce_0_1@Indexes\MapReduceIndexes.cs /}
 {CODE-TAB:csharp:DocumentQuery map_reduce_0_2@Indexes\MapReduceIndexes.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from 'Products/ByCategory'
 where Category == 'Seafood'
 {CODE-TAB-BLOCK/}
@@ -44,7 +44,7 @@ and the query:
 {CODE-TABS}
 {CODE-TAB:csharp:Query map_reduce_1_1@Indexes\MapReduceIndexes.cs /}
 {CODE-TAB:csharp:DocumentQuery map_reduce_1_2@Indexes\MapReduceIndexes.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from 'Products/Average/ByCategory'
 where Category == 'Seafood'
 {CODE-TAB-BLOCK/}
@@ -63,7 +63,7 @@ and send the query:
 {CODE-TABS}
 {CODE-TAB:csharp:Query map_reduce_2_1@Indexes\MapReduceIndexes.cs /}
 {CODE-TAB:csharp:DocumentQuery map_reduce_2_2@Indexes\MapReduceIndexes.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from 'Product/Sales'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}

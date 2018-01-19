@@ -25,7 +25,7 @@ Now we can define our index using `AddMap` or `AddMapForAll` in the following wa
 {CODE-TABS}
 {CODE-TAB:csharp:Query multi_map_7@Indexes\MultiMap.cs /}
 {CODE-TAB:csharp:DocumentQuery multi_map_8@Indexes\MultiMap.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Animals/ByName'
 where Name = 'Mitzy'
 {CODE-TAB-BLOCK/}

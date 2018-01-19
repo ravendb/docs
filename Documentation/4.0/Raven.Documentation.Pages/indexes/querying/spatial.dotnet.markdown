@@ -9,7 +9,7 @@ The most basic usage and probably most common one is to search for all points or
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_1_0@Indexes\Querying\Spatial.cs /}
 {CODE-TAB:csharp:DocumentQuery spatial_1_1@Indexes\Querying\Spatial.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Events
 where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(500, 30, 30))
 {CODE-TAB-BLOCK/}
@@ -22,7 +22,7 @@ The most advanced (and low-level) method available is `RelatesToShape`
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_2_0@Indexes\Querying\Spatial.cs /}
 {CODE-TAB:csharp:DocumentQuery spatial_2_1@Indexes\Querying\Spatial.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Events
 where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(30 30 d=500.0000)'))
 {CODE-TAB-BLOCK/}
@@ -38,7 +38,7 @@ All of the above examples are using the dynamic querying capabilities of RavenDB
 {CODE-TAB:csharp:Query spatial_3_0@Indexes\Querying\Spatial.cs /}
 {CODE-TAB:csharp:DocumentQuery spatial_3_1@Indexes\Querying\Spatial.cs /}
 {CODE-TAB:csharp:Index spatial_3_2@Indexes\Querying\Spatial.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Events/ByCoordinates'
 where spatial.within(Coordinates, spatial.circle(500, 30, 30))
 {CODE-TAB-BLOCK/}

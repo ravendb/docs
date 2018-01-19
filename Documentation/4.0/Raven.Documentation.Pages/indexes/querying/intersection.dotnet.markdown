@@ -21,7 +21,7 @@ To do this, we need to do the following:
 {CODE-TAB:csharp:Query intersection_4@Indexes\Querying\Intersection.cs /}
 {CODE-TAB:csharp:DocumentQuery intersection_5@Indexes\Querying\Intersection.cs /}
 {CODE-TAB:csharp:Index intersection_2@Indexes\Querying\Intersection.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
 where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large') 
 {CODE-TAB-BLOCK/}

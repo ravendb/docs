@@ -16,7 +16,7 @@ Lucene flavored syntax can be used with the `WhereLucene` method, a part of filt
 {CODE-TABS}
 {CODE-TAB:csharp:Sync lucene_2@ClientApi\Session\Querying\DocumentQuery\HowToUseLucene.cs /}
 {CODE-TAB:csharp:Async lucene_3@ClientApi\Session\Querying\DocumentQuery\HowToUseLucene.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Companies 
 where lucene(Name, 'bistro')
 {CODE-TAB-BLOCK/}

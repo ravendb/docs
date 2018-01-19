@@ -37,7 +37,7 @@ The most basic projection can be done using LINQ `Select` method:
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 select FirstName, LastName
 {CODE-TAB-BLOCK/}
@@ -52,7 +52,7 @@ If we create an index that stores `FirstName` and `LastName` and request only th
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1_stored@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1_stored@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastNameWithStoredFields'
 select FirstName, LastName
 {CODE-TAB-BLOCK/}
@@ -63,7 +63,7 @@ select FirstName, LastName
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_2@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Orders/ByShipToAndLines' as o
 select 
 { 
@@ -78,7 +78,7 @@ select
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_3@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName' as e
 select 
 { 
@@ -91,7 +91,7 @@ select
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_4@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 declare function output(e) {
 	var format = function(p){ return p.FirstName + " " + p.LastName; };
 	return { FullName : format(e) };
@@ -105,7 +105,7 @@ from index 'Employees/ByFirstAndLastName' as e select output(e)
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_9@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_3@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Orders/ByShipToAndLines' as o
 select {
     Total : o.Lines.reduce(
@@ -119,7 +119,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_5@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_4@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Orders/ByShippedAtAndCompany' as o
 load o.Company as c
 select {
@@ -134,7 +134,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_6@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstNameAndBirthday' as e 
 select { 
     DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
@@ -149,7 +149,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_7@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_2@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstNameAndBirthday' as e 
 select {
     Date : new Date(Date.parse(e.Birthday)), 
@@ -163,7 +163,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_8@Indexes\Querying\Projections.cs /}
 {CODE-TAB:csharp:Index indexes_1@Indexes\Querying\Projections.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName' as e 
 select {
      Name : e.FirstName, 
@@ -183,7 +183,7 @@ You can use this method instead of using `Select` together with all fields of th
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies/ByContact' 
 select Name, Phone
 {CODE-TAB-BLOCK/}

@@ -76,7 +76,7 @@ You can also use Includes with queries:
 {CODE-TABS}
 {CODE-TAB:csharp:Query includes_3_0@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 {CODE-TAB:csharp:DocumentQuery includes_3_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders
 where TotalPrice > 100
 include CustomerId

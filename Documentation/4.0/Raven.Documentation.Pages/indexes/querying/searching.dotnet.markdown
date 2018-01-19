@@ -6,7 +6,7 @@ that uses the `Search` extension to get users with the name *John* or *Adam*:
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_3_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_3_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where search(Name, 'John Adam')
 {CODE-TAB-BLOCK/}
@@ -19,7 +19,7 @@ In the same way, you can also look for users that have some hobby:
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_4_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_4_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where search(Name, 'looking for someone who likes sport books computers')
 {CODE-TAB-BLOCK/}
@@ -36,7 +36,7 @@ By using the `Search` extension, you are also able to look for multiple indexed 
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_5_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_5_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where search(Name, 'Adam') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
@@ -55,7 +55,7 @@ For example:
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_6_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_6_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
 {CODE-TAB-BLOCK/}
@@ -143,7 +143,7 @@ When the beginning or ending of a search term is unknown, wildcards can be used 
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_11_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_11_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where search(Name, 'Jo* Ad*')
 {CODE-TAB-BLOCK/}
@@ -154,7 +154,7 @@ where search(Name, 'Jo* Ad*')
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_12_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_12_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where search(Name, '*oh* *da*')
 {CODE-TAB-BLOCK/}
@@ -179,7 +179,7 @@ To be able to search you need to set `Indexing` to `Search` on a desired field.
 {CODE-TABS}
 {CODE-TAB:csharp:Query search_20_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_20_1@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where search(Name, 'John')
 {CODE-TAB-BLOCK/}
@@ -191,7 +191,7 @@ where search(Name, 'John')
 {CODE-TAB:csharp:Query search_21_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_21_1@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:Index search_21_2@Indexes\Querying\Searching.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where search(Query, 'John')
 {CODE-TAB-BLOCK/}

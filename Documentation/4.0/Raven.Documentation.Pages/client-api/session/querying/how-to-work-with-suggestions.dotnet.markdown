@@ -39,7 +39,7 @@ The `Suggestion` feature is available through query extension methods. It gives 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync suggest_5@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 {CODE-TAB:csharp:Async suggest_6@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName' 
 where suggest('FullName', 'johne', '{ Accuracy : 0.4, PageSize : 5, Distance : "JaroWinkler", SortMode : "Popularity" }')
 {CODE-TAB-BLOCK/}
@@ -50,7 +50,7 @@ where suggest('FullName', 'johne', '{ Accuracy : 0.4, PageSize : 5, Distance : "
 {CODE-TABS}
 {CODE-TAB:csharp:Sync suggest_8@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 {CODE-TAB:csharp:Async suggest_9@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName' 
 where suggest('FullName', 'johne')
 {CODE-TAB-BLOCK/}

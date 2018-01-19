@@ -10,7 +10,7 @@ The following examples demonstrate how to add simple conditions to a query using
 {CODE-TAB:csharp:Query filtering_0_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_0_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_0_4@Indexes\Querying\Filtering.cs 
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 where FirstName = 'Robert' and LastName = 'King'
 {CODE-TAB-BLOCK/}
@@ -22,7 +22,7 @@ where FirstName = 'Robert' and LastName = 'King'
 {CODE-TAB:csharp:Query filtering_1_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_1_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_1_4@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStock'
 where UnitsInStock > 50
 {CODE-TAB-BLOCK/}
@@ -34,7 +34,7 @@ where UnitsInStock > 50
 {CODE-TAB:csharp:Query filtering_2_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_2_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_2_4@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Order/ByOrderLinesCount'
 where Lines.Count > 50
 {CODE-TAB-BLOCK/}
@@ -48,7 +48,7 @@ where Lines.Count > 50
 {CODE-TAB:csharp:Query filtering_3_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_3_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_3_4@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Order/ByOrderLinesCount'
 where Lines_ProductName = 'Teatime Chocolate Biscuits'
 {CODE-TAB-BLOCK/}
@@ -62,7 +62,7 @@ When you want to check a single value against multiple values, the `In` operator
 {CODE-TAB:csharp:Query filtering_4_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_4_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_0_4@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 where FirstName IN ('Robert', 'Nancy')
 {CODE-TAB-BLOCK/}
@@ -82,7 +82,7 @@ Let's assume that we want to return all `BlogPosts` that contain any of the spec
 {CODE-TAB:csharp:Query filtering_5_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_5_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_5_4@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'BlogPosts/ByTags'
 where Tags IN ('Development', 'Research')
 {CODE-TAB-BLOCK/}
@@ -102,7 +102,7 @@ Let's assume that we want to return all the `BlogPosts` that contain all of the 
 {CODE-TAB:csharp:Query filtering_6_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_6_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_5_4@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'BlogPosts/ByTags'
 where Tags ALL IN ('Development', 'Research')
 {CODE-TAB-BLOCK/}
@@ -117,7 +117,7 @@ Remember to add the `Raven.Client.Documents.Linq` namespace to usings if you wan
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_8_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_8_2@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Products 
 where startsWith(Name, 'ch')
 {CODE-TAB-BLOCK/}
@@ -128,7 +128,7 @@ where startsWith(Name, 'ch')
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_9_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_9_2@Indexes\Querying\Filtering.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Products 
 where endsWith(Name, 'ra')
 {CODE-TAB-BLOCK/}

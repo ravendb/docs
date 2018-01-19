@@ -44,7 +44,7 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync spatial_4@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB:csharp:Async spatial_4_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Houses
 where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
 {CODE-TAB-BLOCK/}
@@ -55,7 +55,7 @@ where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1
 {CODE-TABS}
 {CODE-TAB:csharp:Sync spatial_5@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB:csharp:Async spatial_5_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Houses
 where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(32.1234 23.4321 d=10.0000)'))
 {CODE-TAB-BLOCK/}
@@ -82,7 +82,7 @@ To sort by distance from given point use the `OrderByDistance` method. The close
 {CODE-TABS}
 {CODE-TAB:csharp:Sync spatial_7@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB:csharp:Async spatial_7_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Houses
 where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
 order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
@@ -110,7 +110,7 @@ To sort by distance from given point use the `OrderByDistanceDescending` method.
 {CODE-TABS}
 {CODE-TAB:csharp:Sync spatial_9@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB:csharp:Async spatial_9_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Houses
 where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1234. 23.4321))
 order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321)) desc

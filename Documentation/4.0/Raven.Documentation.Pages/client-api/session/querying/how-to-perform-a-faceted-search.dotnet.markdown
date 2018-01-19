@@ -52,7 +52,7 @@ To execute facet (aggregation) query using the session `Query` method, use the `
 {CODE-TABS}
 {CODE-TAB:csharp:Sync facet_2_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB:csharp:Async facet_2_2@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Camera/Costs' 
 select 
 facet(Manufacturer), 
@@ -66,7 +66,7 @@ facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Me
 {CODE-TABS}
 {CODE-TAB:csharp:Sync facet_3_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB:csharp:Async facet_3_2@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Camera/Costs' 
 select 
 facet(Manufacturer), 
@@ -80,7 +80,7 @@ facet(Megapixels < 3, Megapixels >= 3 AND Megapixels < 7, Megapixels >= 7 AND Me
 {CODE-TABS}
 {CODE-TAB:csharp:Sync facet_4_1@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
 {CODE-TAB:csharp:Async facet_4_2@ClientApi\Session\Querying\HowToPerformFacetedSearch.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Camera/Costs' 
 select facet(id('facets/CameraFacets'))
 {CODE-TAB-BLOCK/}

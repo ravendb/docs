@@ -16,7 +16,7 @@ The most common way to perform a query with projection is to use the `Select` me
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_1_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Companies
 select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
@@ -27,7 +27,7 @@ select Name, Address.City as City, Address.Country as Country
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_2_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders
 select ShipTo, Lines[].ProductName as Products
 {CODE-TAB-BLOCK/}
@@ -38,7 +38,7 @@ select ShipTo, Lines[].ProductName as Products
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_3@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_3_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Employees as e
 select {
     FullName : e.FirstName + " " + e.LastName
@@ -51,7 +51,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_12@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_12_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 declare function output(e) {
 	var format = function(p){ return p.FirstName + " " + p.LastName; };
 	return { FullName : format(e) };
@@ -65,7 +65,7 @@ from Employees as e select output(e)
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_4@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_4_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders as o
 select {
     Total : o.Lines.reduce(
@@ -79,7 +79,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_5@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_5_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Orders as o
 load o.Company as c
 select {
@@ -94,7 +94,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_6@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_6_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select { 
     DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), 
@@ -109,7 +109,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_7@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_7_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select {
     Date : new Date(Date.parse(e.Birthday)), 
@@ -123,7 +123,7 @@ select {
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_13@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_13_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select {
      Name : e.FirstName, 
@@ -144,7 +144,7 @@ You can use this method instead of using `Select` together with all fields of th
 {CODE-TABS}
 {CODE-TAB:csharp:Sync projections_8@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
 {CODE-TAB:csharp:Async projections_8_async@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies/ByContact' 
 select Name, Phone
 {CODE-TAB-BLOCK/}

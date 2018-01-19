@@ -35,7 +35,7 @@ And query it like this:
 {CODE-TABS}
 {CODE-TAB:csharp:Query multi_map_3@Indexes\IndexingPolymorphicData.cs /}
 {CODE-TAB:csharp:DocumentQuery multi_map_2@Indexes\IndexingPolymorphicData.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from index 'Animals/ByName'
 where Name = 'Mitzy'
 {CODE-TAB-BLOCK/}

@@ -12,7 +12,7 @@ This way you can improve your searching mechanism and provide users with much mo
 {CODE-TABS}
 {CODE-TAB:csharp:Query boosting_1_0@Indexes\Querying\Boosting.cs /}
 {CODE-TAB:csharp:DocumentQuery boosting_2_1@Indexes\Querying\Boosting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
 {CODE-TAB-BLOCK/}
@@ -25,7 +25,7 @@ This search will promote users who do sports before book readers and they will b
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery boosting_2_1@Indexes\Querying\Boosting.cs /}
-{CODE-TAB-BLOCK:csharp:RQL}
+{CODE-TAB-BLOCK:sql:RQL}
 from Users
 where boost(startsWith(Name, 'G'), 10) or boost(startsWith(Name, 'A'), 5)
 {CODE-TAB-BLOCK/}
