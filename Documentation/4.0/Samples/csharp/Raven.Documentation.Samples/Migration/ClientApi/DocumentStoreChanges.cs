@@ -17,13 +17,13 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
             store.OnBeforeStore += (s, e) => { };
             store.OnAfterSaveChanges += (s, e) => { };
             store.OnBeforeDelete += (s, e) => { };
-            store.OnBeforeQueryExecuted += (s, e) => { };
+            store.OnBeforeQuery += (s, e) => { };
             #endregion
 
             #region urls_1
             new DocumentStore
             {
-                Urls = new []
+                Urls = new[]
                 {
                     "http://ravendb-1:8080",
                     "http://ravendb-2:8080",

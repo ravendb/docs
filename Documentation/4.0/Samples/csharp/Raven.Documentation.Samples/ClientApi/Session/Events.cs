@@ -29,7 +29,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         #endregion
 
         #region on_before_query_execute_event
-        private void OnBeforeQueryExecutedEvent(object sender, BeforeQueryExecutedEventArgs args)
+        private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
         {
             args.QueryCustomization.NoCaching();
         }
@@ -38,7 +38,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         private class Foo
         {
             #region on_before_query_execute_event_2
-            private void OnBeforeQueryExecutedEvent(object sender, BeforeQueryExecutedEventArgs args)
+            private void OnBeforeQueryEvent(object sender, BeforeQueryEventArgs args)
             {
                 args.QueryCustomization.WaitForNonStaleResults(TimeSpan.FromSeconds(30));
             }
@@ -59,7 +59,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             {
                 store.OnAfterSaveChanges += OnAfterSaveChangesEvent;
                 store.OnBeforeDelete += OnBeforeDeleteEvent;
-                store.OnBeforeQueryExecuted += OnBeforeQueryExecutedEvent;
+                store.OnBeforeQuery += OnBeforeQueryEvent;
 
                 #region store_session
                 // Subscribe to the event

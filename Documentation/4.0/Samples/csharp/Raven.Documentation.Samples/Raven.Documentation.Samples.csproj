@@ -3,8 +3,8 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="RavenDB.Client" Version="4.0.0-nightly-20180118-0500" />
-    <PackageReference Include="RavenDB.TestDriver" Version="4.0.0-nightly-20180118-0500" />
+    <PackageReference Include="RavenDB.Client" Version="4.0.0-nightly-20180120-0500" />
+    <PackageReference Include="RavenDB.TestDriver" Version="4.0.0-nightly-20180120-0500" />
     <PackageReference Include="System.Reactive.Core" Version="3.1.1" />
     <PackageReference Include="xunit" Version="2.3.1" />
   </ItemGroup>

@@ -55,11 +55,11 @@ If we want to log each entity that was saved then we can create method as follow
 
 {PANEL/}
 
-{PANEL:OnBeforeQueryExecuted}
+{PANEL:OnBeforeQuery}
 
 This event is invoked just before the query is sent to the server.
 
-It takes the argument `BeforeQueryExecutedEventArgs`, that consists of the `Session` and the `IDocumentQueryCustomization`.
+It takes the argument `BeforeQueryEventArgs`, that consists of the `Session` and the `IDocumentQueryCustomization`.
 
 ### Example I
 
