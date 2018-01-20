@@ -12,7 +12,7 @@
 
 ## Remarks
 
-{NOTE By default value of `Database` property in `DocumentStore` is `null` which means that in any actions that need a databae name we will have to specify the database./}
+{NOTE By default value of `Database` property in `DocumentStore` is `null` which means that in any actions that need a database name we will have to specify the database./}
 
 ## Related Articles
 
