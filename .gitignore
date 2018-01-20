@@ -224,3 +224,5 @@ Raven.Studio.Html5.zip
 !/Documentation/3.5/Raven.Documentation.Pages/studio/overview/status/debug
 Documentation/3.0/Samples/java/.idea/
 /.idea/*
+*.raven-cluster-topology
+*.raven-topology

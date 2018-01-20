@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Raven.Documentation.Parser.Helpers;
-using Raven.Documentation.Web.Helpers;
+﻿using System.ComponentModel;
+using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Web.Models
 {
-	using Raven.Documentation.Parser.Data;
-
 	public class ArticleModel
 	{
 		public ArticleModel(DocumentationPage page, TableOfContents tableOfContents)
@@ -26,4 +21,13 @@ namespace Raven.Documentation.Web.Models
 
 		public TableOfContents TableOfContents { get; set; }
 	}
+
+    public enum ArticleType
+    {
+        [Description("documentation")]
+        Documentation,
+
+        [Description("articles")]
+        Articles
+    }
 }

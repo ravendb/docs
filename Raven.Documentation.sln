@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{02197DA7-3859-4919-98A7-4FAFC4D75F2B}"
 EndProject
@@ -78,7 +78,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Parser"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Web", "Raven.Documentation.Web\Raven.Documentation.Web.csproj", "{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Web.Core", "Raven.Documentation.Web.Core\Raven.Documentation.Web.Core.csproj", "{2E8E4867-144F-4C2C-8041-6DF1D794DABC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Web.Core", "Raven.Documentation.Web.Core\Raven.Documentation.Web.Core.csproj", "{2E8E4867-144F-4C2C-8041-6DF1D794DABC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

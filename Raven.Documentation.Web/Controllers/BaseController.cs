@@ -1,72 +1,61 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Web.Mvc;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
+using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Web.Controllers
 {
-	using System;
-	using System.Web.Mvc;
+    public abstract partial class BaseController : Controller
+    {
+        protected Language CurrentLanguage { get; private set; }
 
-	using Raven.Client;
-	using Raven.Documentation.Parser.Data;
+        protected string CurrentVersion { get; private set; }
 
-	public abstract partial class BaseController : Controller
-	{
-		protected Language CurrentLanguage { get; private set; }
+        private readonly IDocumentStore _store;
 
-		protected string CurrentVersion { get; private set; }
+        protected IDocumentStore DocumentStore => _store;
 
-		private readonly IDocumentStore _store;
+        protected IDocumentSession DocumentSession { get; private set; }
 
-		protected IDocumentStore DocumentStore
-		{
-			get
-			{
-				return _store;
-			}
-		}
+        protected BaseController(IDocumentStore store)
+        {
+            _store = store;
+        }
 
-		protected IDocumentSession DocumentSession { get; private set; }
+        protected override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            CurrentLanguage = GetLanguage(filterContext);
+            CurrentVersion = GetVersion(filterContext);
 
-		protected BaseController(IDocumentStore store)
-		{
-			_store = store;
-		}
+            ViewBag.CurrentLanguage = CurrentLanguage;
+            ViewBag.CurrentVersion = CurrentVersion;
 
-		protected override void OnActionExecuting(ActionExecutingContext filterContext)
-		{
-			CurrentLanguage = GetLanguage(filterContext);
-			CurrentVersion = GetVersion(filterContext);
+            DocumentSession = _store.OpenSession();
+            base.OnActionExecuting(filterContext);
+        }
 
-			ViewBag.CurrentLanguage = CurrentLanguage;
-			ViewBag.CurrentVersion = CurrentVersion;
+        protected override void OnActionExecuted(ActionExecutedContext filterContext)
+        {
+            DocumentSession?.Dispose();
 
-			DocumentSession = _store.OpenSession();
-			base.OnActionExecuting(filterContext);
-		}
+            base.OnActionExecuted(filterContext);
+        }
 
-		protected override void OnActionExecuted(ActionExecutedContext filterContext)
-		{
-			if (DocumentSession != null)
-			{
-				DocumentSession.Dispose();
-			}
+        private static string GetVersion(ActionExecutingContext filterContext)
+        {
+            if (filterContext.ActionParameters.ContainsKey("version") == false)
+                return DocsController.DefaultVersion;
 
-			base.OnActionExecuted(filterContext);
-		}
+            return filterContext.ActionParameters["version"].ToString();
+        }
 
-		private static string GetVersion(ActionExecutingContext filterContext)
-		{
-			if (filterContext.ActionParameters.ContainsKey("version") == false)
-				return DocsController.DefaultVersion;
+        private static Language GetLanguage(ActionExecutingContext filterContext)
+        {
+            if (filterContext.ActionParameters.ContainsKey("language") == false)
+                return DocsController.DefaultLanguage;
 
-			return filterContext.ActionParameters["version"].ToString();
-		}
-
-		private static Language GetLanguage(ActionExecutingContext filterContext)
-		{
-			if (filterContext.ActionParameters.ContainsKey("language") == false)
-				return DocsController.DefaultLanguage;
-
-			return (Language)Enum.Parse(typeof(Language), filterContext.ActionParameters["language"].ToString(), true);
-		}
-	}
+            return (Language)Enum.Parse(typeof(Language), filterContext.ActionParameters["language"].ToString(), true);
+        }
+    }
 }

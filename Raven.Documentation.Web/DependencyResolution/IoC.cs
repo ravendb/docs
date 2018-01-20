@@ -1,34 +1,42 @@
+using System;
 using System.Configuration;
+using Raven.Client.Documents;
+using Raven.Client.ServerWide;
+using Raven.Client.ServerWide.Operations;
 using Raven.Documentation.Web.Indexes;
+using StructureMap;
 
 namespace Raven.Documentation.Web.DependencyResolution
 {
-	using Raven.Client;
-	using Raven.Client.Embedded;
+    public static class IoC
+    {
+        public static IContainer Initialize()
+        {
+            var url = ConfigurationManager.AppSettings["Raven/Server/Url"];
+            if (string.IsNullOrWhiteSpace(url))
+                throw new InvalidOperationException("Please set 'Raven/Server/Url' in Web.config");
 
-	using StructureMap;
+            var store = new DocumentStore
+            {
+                Urls = new[] { url },
+                Database = "Documentation"
+            };
 
-	public static class IoC
-	{
-		public static IContainer Initialize()
-		{
-			var url = ConfigurationManager.AppSettings["Raven/Server/Url"];
-			var store = new EmbeddableDocumentStore
-							{
-								Url = string.IsNullOrEmpty(url) == false ? url : null,
-								DefaultDatabase = "Documentation",
-								UseEmbeddedHttpServer = string.IsNullOrEmpty(url),
-								RunInMemory = true
-							};
+            store.Initialize();
 
-			store.Initialize();
+            try
+            {
+                store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(store.Database)));
+            }
+            catch (Exception e)
+            {
+            }
 
             store.ExecuteIndex(new DocumentationPages_ByKey());
             store.ExecuteIndex(new DocumentationPages_LanguagesAndVersions());
-            store.ExecuteTransformer(new DocumentationPage_WithVersionsAndLanguages());
 
-			var container = new Container(x => x.For<IDocumentStore>().Use(store));
-			return container;
-		}
-	}
+            var container = new Container(x => x.For<IDocumentStore>().Use(store));
+            return container;
+        }
+    }
 }

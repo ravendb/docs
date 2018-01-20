@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
+﻿using System.Globalization;
 using System.Linq;
-using System.Text;
 using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Web.Core.ViewModels
@@ -12,8 +9,6 @@ namespace Raven.Documentation.Web.Core.ViewModels
         public string Title { get; set; }
 
         public string Key { get; set; }
-
-        public string ContentHighlight { get; set; }
 
         public string Category { get; set; }
     
