@@ -183,7 +183,7 @@ namespace Raven.Documentation.Web.Controllers
         {
             public readonly string language = "language";
             public readonly string version = "version";
-            public readonly string value = "value";
+            public readonly string searchTerm = "searchTerm";
         }
         static readonly ActionParamsClass_Validate s_params_Validate = new ActionParamsClass_Validate();
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -239,9 +239,11 @@ namespace Raven.Documentation.Web.Controllers
                 public readonly string _Layout = "_Layout";
                 public readonly string DevControls = "DevControls";
                 public readonly string Doc = "Doc";
+                public readonly string NoSearchResults = "NoSearchResults";
                 public readonly string NotDocumented = "NotDocumented";
                 public readonly string NotFound = "NotFound";
                 public readonly string Search = "Search";
+                public readonly string SearchResults = "SearchResults";
                 public readonly string Toc = "Toc";
                 public readonly string Validate = "Validate";
                 public readonly string ValidateMappings = "ValidateMappings";
@@ -251,9 +253,11 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string _Layout = "~/Views/Docs/_Layout.cshtml";
             public readonly string DevControls = "~/Views/Docs/DevControls.cshtml";
             public readonly string Doc = "~/Views/Docs/Doc.cshtml";
+            public readonly string NoSearchResults = "~/Views/Docs/NoSearchResults.cshtml";
             public readonly string NotDocumented = "~/Views/Docs/NotDocumented.cshtml";
             public readonly string NotFound = "~/Views/Docs/NotFound.cshtml";
             public readonly string Search = "~/Views/Docs/Search.cshtml";
+            public readonly string SearchResults = "~/Views/Docs/SearchResults.cshtml";
             public readonly string Toc = "~/Views/Docs/Toc.cshtml";
             public readonly string Validate = "~/Views/Docs/Validate.cshtml";
             public readonly string ValidateMappings = "~/Views/Docs/ValidateMappings.cshtml";
@@ -311,16 +315,16 @@ namespace Raven.Documentation.Web.Controllers
         }
 
         [NonAction]
-        partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string value);
+        partial void SearchOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string searchTerm);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Search(string language, string version, string value)
+        public override System.Web.Mvc.ActionResult Search(string language, string version, string searchTerm)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Search);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
-            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "value", value);
-            SearchOverride(callInfo, language, version, value);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "searchTerm", searchTerm);
+            SearchOverride(callInfo, language, version, searchTerm);
             return callInfo;
         }
 

@@ -125,10 +125,12 @@ namespace Raven.Documentation.Web.Controllers
                 public readonly string _Layout = "_Layout";
                 public readonly string Article = "Article";
                 public readonly string Articles = "Articles";
+                public readonly string DevControls = "DevControls";
             }
             public readonly string _Layout = "~/Views/Articles/_Layout.cshtml";
             public readonly string Article = "~/Views/Articles/Article.cshtml";
             public readonly string Articles = "~/Views/Articles/Articles.cshtml";
+            public readonly string DevControls = "~/Views/Articles/DevControls.cshtml";
         }
     }
 
