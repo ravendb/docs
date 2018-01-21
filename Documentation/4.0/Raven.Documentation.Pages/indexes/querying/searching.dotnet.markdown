@@ -180,7 +180,7 @@ To be able to search you need to set `Indexing` to `Search` on a desired field.
 {CODE-TAB:csharp:Query search_20_0@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:DocumentQuery search_20_1@Indexes\Querying\Searching.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Users_ByName'
+from index 'Users/ByName'
 where search(Name, 'John')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
@@ -192,7 +192,7 @@ where search(Name, 'John')
 {CODE-TAB:csharp:DocumentQuery search_21_1@Indexes\Querying\Searching.cs /}
 {CODE-TAB:csharp:Index search_21_2@Indexes\Querying\Searching.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
-from index 'Users_Search'
+from index 'Users/Search'
 where search(Query, 'John')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
