@@ -24,8 +24,13 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         #endregion
 
         #region search_21_2
-        public class Users_Search : AbstractIndexCreationTask<User>
+        public class Users_Search : AbstractIndexCreationTask<User, Users_Search.Result>
         {
+            public class Result
+            {
+                public string Query;
+            }
+
             public Users_Search()
             {
                 Map = users => from user in users
@@ -346,9 +351,9 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                 using (var session = store.OpenSession())
                 {
                     #region search_21_0
-                    IList<User> users = session
-                        .Query<User, Users_ByName>()
-                        .Search(x => x.Name, "John")
+                    var users = session
+                        .Query<Users_Search.Result, Users_Search>()
+                        .Search(x => x.Query, "John")
                         .ToList();
                     #endregion
                 }
@@ -358,8 +363,8 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #region search_21_1
                     IList<User> users = session
                         .Advanced
-                        .DocumentQuery<User, Users_ByName>()
-                        .Search("Name", "John")
+                        .DocumentQuery<User, Users_Search>()
+                        .Search("Query", "John")
                         .ToList();
                     #endregion
                 }
