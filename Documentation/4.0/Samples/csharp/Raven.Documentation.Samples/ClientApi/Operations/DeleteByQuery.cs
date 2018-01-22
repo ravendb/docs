@@ -20,10 +20,10 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         public Person_ByAge()
         {
             Map = persons => from person in persons
-                select new
-                {
-                    Age = person.Age
-                };
+                             select new
+                             {
+                                 Age = person.Age
+                             };
         }
     }
 
@@ -31,7 +31,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
     {
         private interface IFoo
         {
-
             #region delete_by_query
 
             DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(Expression<Func<TEntity, bool>> expression,
@@ -48,47 +47,51 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
         public DeleteByQuery()
         {
+            using (var store = new DocumentStore())
+            {
+                #region delete_by_query1
+                // remove all documents from the server where Name == Bob using Person/ByName index
+                var operation = store
+                    .Operations
+                    .Send(new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
+                #endregion
+            }
 
             using (var store = new DocumentStore())
             {
-                store.Initialize();
-
-                #region delete_by_query1
-
-                // remove all documents from the server where Name == Bob using Person/ByName index
-                var operation1 =
-                    store.Operations.Send(
-                        new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
-                #endregion
-
                 #region delete_by_query2
-
                 // remove all documents from the server where Age > 35 using Person/ByAge index
-                var operation2 =
-                    store.Operations.Send(
-                        new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+                var operation = store
+                    .Operations
+                    .Send(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
                 #endregion
+            }
 
+            using (var store = new DocumentStore())
+            {
                 #region delete_by_query3
-
                 // delete multiple docs with specific ids in a single run without loading them into the session
-                var operation3 = store.Operations.Send(new DeleteByQueryOperation(new IndexQuery
-                {
-                    Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
-                }));
+                var operation = store
+                    .Operations
+                    .Send(new DeleteByQueryOperation(new IndexQuery
+                    {
+                        Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
+                    }));
                 #endregion
+            }
 
-
+            using (var store = new DocumentStore())
+            {
                 #region delete_by_query_wait_for_completion
-
                 // remove all document from server where Name == Bob and Age >= 29 using People collection
-                var operation4 = store.Operations.Send(new DeleteByQueryOperation(new IndexQuery
-                {
-                    Query = "from People where Name = 'Bob' and Age >= 29"
-                }));
+                var operation = store
+                    .Operations
+                    .Send(new DeleteByQueryOperation(new IndexQuery
+                    {
+                        Query = "from People where Name = 'Bob' and Age >= 29"
+                    }));
 
-                operation4.WaitForCompletion(TimeSpan.FromSeconds(15));
-
+                operation.WaitForCompletion(TimeSpan.FromSeconds(15));
                 #endregion
             }
         }
@@ -97,43 +100,53 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         {
             using (var store = new DocumentStore())
             {
-                store.Initialize();
-
                 #region delete_by_query1_async
 
                 // remove all documents from the server where Name == Bob using Person/ByName index
-                var operation1 =
-                    await store.Operations.SendAsync(
-                        new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
+                var operation = await store
+                    .Operations
+                    .SendAsync(new DeleteByQueryOperation<Person>("Person/ByName", x => x.Name == "Bob"));
                 #endregion
+            }
 
+            using (var store = new DocumentStore())
+            {
                 #region delete_by_query2_async
 
                 //remove all documents from the server where Age > 35 using Person/ByAge index
-                var operation2 =
-                    await store.Operations.SendAsync(
-                        new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
+                var operation = await store
+                    .Operations
+                    .SendAsync(new DeleteByQueryOperation<Person, Person_ByAge>(x => x.Age < 35));
                 #endregion
+            }
 
+            using (var store = new DocumentStore())
+            {
                 #region delete_by_query3_async
 
                 // delete multiple docs with specific ids in a single run without loading them into the session
-                var operation3 = await store.Operations.SendAsync(new DeleteByQueryOperation(new IndexQuery
-                {
-                    Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
-                }));
-
+                var operation = await store
+                    .Operations
+                    .SendAsync(new DeleteByQueryOperation(new IndexQuery
+                    {
+                        Query = "from People u where id(u) in ('people/1-A', 'people/3-A')"
+                    }));
                 #endregion
+            }
 
+            using (var store = new DocumentStore())
+            {
                 #region delete_by_query_wait_for_completion_async
 
                 // remove all document from server where Name == Bob and Age >= 29 using People collection
-                var operation4 = await store.Operations.SendAsync(new DeleteByQueryOperation(new IndexQuery
-                {
-                    Query = "from People where Name = 'Bob' and Age >= 29"
-                }));
+                var operation = await store
+                    .Operations
+                    .SendAsync(new DeleteByQueryOperation(new IndexQuery
+                    {
+                        Query = "from People where Name = 'Bob' and Age >= 29"
+                    }));
 
-                await operation4.WaitForCompletionAsync(TimeSpan.FromSeconds(15));
+                await operation.WaitForCompletionAsync(TimeSpan.FromSeconds(15));
 
                 #endregion
             }

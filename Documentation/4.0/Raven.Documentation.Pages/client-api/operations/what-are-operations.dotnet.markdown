@@ -8,19 +8,21 @@ Operations are an encapsulation of a set of low level commands which are used to
 
 They are available in the DocumentStore under the **Operations**, **Maintenance**, and **Maintenance.Server** properties.
 
-### Common Operations
+{PANEL:Common Operations}
+
 Common operations include set based operations for [Patching](../../client-api/operations/patch/set-based-patch-operation) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query-operation)).  
 There is also the ability to handle distributed [Compare-Exchange](../../client-api/operations/compare-exchange) operations and manage [Attachments](../../client-api/operations/get-attachment-operation).
 
-{PANEL:Operations.Send}
+### How to Send an Operation
+
 In order to excecute an operation, you will need to use the `Send` or `SendAsync` methods. Avaliable overloads are:
 {CODE-TABS}
 {CODE-TAB:csharp:Sync Client_Operations_api@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async Client_Operations_api_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
-{PANEL/}
 
-#### The following common operations are available:
+### The following common operations are available:
+
 * [CompareExchange](../../client-api/operations/compare-exchange)   
 * [DeleteByQueryOperation](../../client-api/operations/delete-by-query-operation)   
 * [GetAttachmentOperation](../../client-api/operations/get-attachment-operation)   
@@ -28,30 +30,35 @@ In order to excecute an operation, you will need to use the `Send` or `SendAsync
 * [PatchOperation](../../client-api/operations/patch/patch-operation.markdown)   
 * [PutAttachmentOperation](../../client-api/operations/put-attachment-operation)
 
+### Example - Get Attachment
 
-####Example : Get Attachment
 {CODE-TABS}
 {CODE-TAB:csharp:Sync Client_Operations_1@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async Client_Operations_1_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-### Maintenance Operations
+{PANEL/}
+
+{PANEL:Maintenance Operations}
+
 Maintenance operations include operations for changing the configuration at runtime and for management of index operations.
 
-{PANEL:Maintenance.Send}
+### How to Send an Operation
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync Maintenance_Operations_api@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async Maintenance_Operations_api_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
-{PANEL/}
 
-#### The following maintenance operations are available:
+### The following maintenance operations are available:
 
-##### Client Configuration
+#### Client Configuration
+
 * [PutClientConfigurationOperation](../../client-api/operations/maintenance/put-client-configuration-operation)   
 * [GetClientConfigurationOperation](../../client-api/operations/maintenance/get-client-configuration-operation)   
 
-##### Indexing
+#### Indexing
+
 * [DeleteIndexOperation](../../client-api/operations/maintenance/delete-index-operation)   
 * [DisableIndexOperation](../../client-api/operations/maintenance/disable-index-operation)   
 * [EnableIndexOperation](../../client-api/operations/maintenance/enable-index-operation)   
@@ -73,59 +80,67 @@ Maintenance operations include operations for changing the configuration at runt
 * [IndexHasChangedOperation](../../client-api/operations/maintenance/index-has-changed-operation)   
 * [PutIndexesOperation](../../client-api/operations/maintenance/put-indexes-operation)   
 
-##### SQL Migration
+#### SQL Migration
+
 * [SqlMigrationImportOperation](../../client-api/operations/maintenance/sql-migration-import-operation)   
 * [SqlMigrationSchemaOperation](../../client-api/operations/maintenance/sql-migration-schema-operation)   
 
-##### Misc
+#### Misc
+
 * [GetOperationStateOperation](../../client-api/operations/maintenance/get-operation-state-operation)   
 * [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-collection-statistics-operation)   
 * [GetIdentitiesOperation](../../client-api/operations/maintenance/get-identities-operation)   
 * [GetReplicationPerformanceStatisticsOperation](../../client-api/operations/maintenance/get-replication-performance-statistics-operation)   
 * [GetStatisticsOperation](../../client-api/operations/maintenance/get-statistics-operation)      
 
+### Example - Stop Index
 
-####Example : Stop Index
 {CODE-TABS}
 {CODE-TAB:csharp:Sync Maintenance_Operations_1@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async Maintenance_Operations_1_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
 
-{NOTE By default, operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database)** method. /}
+{PANEL/}
 
-### Server Operations
+{PANEL:Server Operations}
+
 These type of operations contain various administrative and miscellaneous configuration operations.
 
-{PANEL:Maintenance.Server.Send}
+### How to Send an Operation
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync Server_Operations_api@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async Server_Operations_api_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
-{PANEL/}
 
-#### The following server operations are available:
+### The following server operations are available:
 
-##### Client Certificates
+#### Client Certificates
+
 * [CreateClientCertificateOperation](../../client-api/operations/server/create-client-certificate-operation)   
 * [GetCertificatesOperation](../../client-api/operations/server/get-certificates-operation)   
 * [DeleteCertificateOperation](../../client-api/operations/server/delete-certificate-operation)   
 * [PutClientCertificateOperation](../../client-api/operations/server/put-client-certificate-operation)   
 
-##### Serverwide Configuration
+#### Serverwide Configuration
+
 * [GetServerWideClientConfigurationOperation](../../client-api/operations/server/get-serverwide-client-configuration-operation)   
 * [PutServerWideClientConfigurationOperation](../../client-api/operations/server/put-serverwide-client-configuration-operation)   
 
-##### Connection Strings
+#### Connection Strings
+
 * [GetConnectionStringsOperation](../../client-api/operations/server/get-connection-strings-operation)   
 * [PutConnectionStringOperation](../../client-api/operations/server/put-connection-strings-operation)   
 * [RemoveConnectionStringOperation](../../client-api/operations/server/remove-connection-strings-operation)   
 
-##### ETL
+#### ETL
+
 * [AddEtlOperation](../../client-api/operations/server/add-etl-operation)   
 * [UpdateEtlOperation](../../client-api/operations/server/update-etl-operation)   
 * [ResetEtlOperation](../../client-api/operations/server/reset-etl-operation)   
 
-##### Cluster Management
+#### Cluster Management
+
 * [AddDatabaseNodeOperation](../../client-api/operations/server/add-database-node-operation)   
 * [ReorderDatabaseMembersOperation](../../client-api/operations/server/reorder-database-members-operation)   
 * [CreateDatabaseOperation](../../client-api/operations/server/create-database-operation)   
@@ -134,20 +149,30 @@ These type of operations contain various administrative and miscellaneous config
 * [PromoteDatabaseNodeOperation](../../client-api/operations/server/promote-database-node-operation)   
 * [ToggleDatabasesStateOperation](../../client-api/operations/server/toggle-databases-state-operation)   
 
-##### Backup/Restore
+#### Backup/Restore
+
 * [RestoreBackupOperation](../../client-api/operations/server/restore-backup-operation)   
 * [StartBackupOperation](../../client-api/operations/server/start-backup-operation)   
 * [UpdatePeriodicBackupOperation](../../client-api/operations/server/update-periodic-backup-operation)   
 
-##### Replication
+#### Replication
+
 * [UpdateExternalReplicationOperation](../../client-api/operations/server/update-external-replication-operation)   
 
-##### Miscellaneous
+#### Miscellaneous
+
 * [GetBuildNumberOperation](../../client-api/operations/server/get-build-number-operation)   
 * [GetDatabaseNamesOperation](../../client-api/operations/server/get-database-names-operation)   
 
-####Example : Get Build Number
+### Example - Get Build Number
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync Server_Operations_1@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TAB:csharp:Async Server_Operations_1_async@ClientApi\Operations\WhatAreOperations.cs /}
 {CODE-TABS/}
+
+{PANEL/}
+
+## Remarks
+
+{NOTE By default, operations available in `store.Operations` or `store.Maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database)** method. /}
