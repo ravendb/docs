@@ -24,11 +24,11 @@ Some examples:
 
 ### Same Major Version
 
-To properly upgrade your applications and server, we advise you to upgrade the server first, then the clients. This way, your applications will keep working as before, and you can update them one-by-one if needed.
+To properly upgrade your applications and server, we advise you to upgrade the server first, then the clients. This way, your applications will keep working as before and you can update them one-by-one if needed.
 
 ### Different Major Version
 
-Upgrading to different Major version necessitate upgrading the server and all clients in lockstep. Please visit [migration guide section](../../migration/client-api/introduction) talking about migration from 3.x.
+Upgrading to a different Major version necessitates upgrading the server and all clients in lockstep. Please visit [migration guide section](../../migration/client-api/introduction) talking about migration from 3.x.
 
 {PANEL/}
 

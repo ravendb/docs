@@ -1,4 +1,4 @@
-﻿# Operations : How to change index lock mode?
+﻿# Operations : How to Change the Index Lock Mode
 
 **SetIndexesLockOperation**  allows you to change index lock mode for a given index or indexes.
 
@@ -24,6 +24,6 @@
 
 {CODE set_lock_mode_5@ClientApi\Operations\ChangeIndexLockMode.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **change index priority**?](../../../../client-api/operations/set-indexes-priority-operation)  

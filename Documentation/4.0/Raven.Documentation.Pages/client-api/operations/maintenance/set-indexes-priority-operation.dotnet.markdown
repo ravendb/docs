@@ -1,6 +1,6 @@
-﻿# Operations : How to change index priority?
+﻿# Operations : How to Change Index Priorities
 
-**SetIndexesPriorityOperation**  allows you to change index priority for a given index or indexes.
+**SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.
 
 ## Syntax
 
@@ -24,6 +24,6 @@
 
 {CODE set_priority_5@ClientApi\Operations\ChangeIndexPriority.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **change index lock mode**?](../../../../client-api/operations/set-indexes-lock-operation)  

@@ -1,7 +1,8 @@
-#Session : Querying : How to Perform Dynamic Group By Query?
+#Session : Querying : How to Perform Dynamic Group By Query
 
 Since RavenDB 4.0, the query optimizer supports dynamic group by queries and automatically creates auto map-reduce indexes.
-It means you can create a dynamic query that does an aggregation by using LINQ `GroupBy()` method or `group by into` syntax.
+
+You can create a dynamic query that does an aggregation by using the LINQ `GroupBy()` method or `group by into` syntax.
 
 The supported aggregation operations are:
 
@@ -96,7 +97,7 @@ select Lines[].Product as Product, Lines[].Quantity as Quantity, count()
 ### By Array Content
 
 Another option is to group by array content. Then the reduction key will be calculated based on all values of a collection specified in `GroupBy`.
-The client API exposes `GroupByArrayContent` extension method for that purpose.
+The client API exposes the `GroupByArrayContent` extension method for that purpose.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_7@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}

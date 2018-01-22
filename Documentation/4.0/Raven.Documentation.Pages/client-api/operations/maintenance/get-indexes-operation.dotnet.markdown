@@ -1,4 +1,4 @@
-﻿# Operations : How to get indexes?
+﻿# Operations : How to Get Indexes
 
 **GetIndexesOperation** is used to retrieve multiple index definitions from a database.
 
@@ -19,7 +19,7 @@
 
 {CODE get_2_1@ClientApi\Operations\Indexes\Get.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **get indexes names**?](../../../client-api/operations/get-index-names-operation)
 - [How to **put indexes**?](../../../client-api/operations/put-indexes-operation)

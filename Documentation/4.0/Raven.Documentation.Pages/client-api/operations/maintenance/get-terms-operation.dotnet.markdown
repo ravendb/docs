@@ -1,6 +1,6 @@
-﻿# Operations : How to get index terms?
+﻿# Operations : How to Get Index Terms
 
-**GetTermsOperation** will retrieve stored terms for a field of an index.
+The **GetTermsOperation** will retrieve stored terms for a field of an index.
 
 ## Syntax
 
@@ -22,6 +22,6 @@
 
 {CODE get_terms2@ClientApi\Operations\IndexTerms.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **reset index**?](../../../../client-api/operations/maintenance/reset-index-operation)

@@ -1,4 +1,4 @@
-﻿# Operations : How to put indexes?
+﻿# Operations : How to Put Indexes
 
 **PutIndexesOperation** is used to insert indexes into a database.
 
@@ -22,7 +22,7 @@
 
 {CODE put_1_2@ClientApi\Operations\Indexes\Put.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **reset index**?](../../../client-api/operations/maintenance/reset-index-operation)
 - [How to **get index**?](../../../client-api/operations/maintenance/get-index-operation)

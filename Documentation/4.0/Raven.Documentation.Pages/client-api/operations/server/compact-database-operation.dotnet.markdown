@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to compact database?
+﻿# Operations : Server : How to Compact a Database
 
 To compact database, please use **CompactDatabaseOperation**. You can choose what should be compacted: documents and/or listed indexes.
 
@@ -11,7 +11,7 @@ To compact database, please use **CompactDatabaseOperation**. You can choose wha
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **DatabaseName** | string | Name of a database to compact |
-| **Documents** | bool | Indicates, if documents should be compacted |
+| **Documents** | bool | Indicates if documents should be compacted |
 | **Indexes** | string[] | List of index names to compact |
 
 ## Example I
@@ -26,9 +26,9 @@ To compact database, please use **CompactDatabaseOperation**. You can choose wha
 
 ## Remarks
 
-Compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
+The compacting operation is executed **asynchronously** and during this operation the **database** will be **offline**.
 
-## Related articles
+## Related Articles
 
 - [How to **create** database?](../../../client-api/operations/server/create-database-operation) 
 - [How to get database **statistics**?](../../../client-api/operations/maintenance/get-statistics-operation)

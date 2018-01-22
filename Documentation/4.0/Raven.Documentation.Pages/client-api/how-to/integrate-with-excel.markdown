@@ -1,9 +1,10 @@
-# How to integrate with Excel?
+# How to Integrate with Excel
 
-A very common use case for many application is to expose data to users as an Excel file. RavenDB has a dedicated support that allows to directly consume data stored in a database by Excel application. 
+A very common use case for many applications is to expose data to users as an Excel file. RavenDB has dedicated support that allows you to directly consume data stored in a database by an Excel application. 
+
 The integration of Excel with the data store is achieved by a designated query streaming endpoint that outputs a stream in a format acceptable by `Excel`, Comma Separated Values (CSV).
 
-In order to take advantage of this feature you need to specify a valid query according to [RQL syntax]().
+In order to take advantage of this feature, you need to specify a valid query according to [RQL syntax]().
 
 The generic HTTP request will have the following address:
 
@@ -11,7 +12,7 @@ The generic HTTP request will have the following address:
 http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&format=csv
 {CODE-BLOCK/}
 
-In order to include only specific properties in the CSV output you can use the `field` parameter like so:
+In order to include only specific properties in the CSV output you can use the `field` parameter:
 
 {CODE-BLOCK:plain}
 http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[field-1]&field=[field-2]...&field=[field-N]&format=csv
@@ -21,8 +22,9 @@ http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[f
 
 ## Example
 
-Firstly let's create a database, Northwind, and import the [sample data](..\..\studio\database\tasks\create-sample-data.markdown) into it.
-Now let's query the product collection include the category document and project some of its properties using the below RQL
+First let's create a database, Northwind, and import the [sample data](..\..\studio\database\tasks\create-sample-data.markdown) into it.
+
+Now let's query the product collection include the category document and project some of its properties using the below RQL:
 
 {CODE-BLOCK:plain}
 from Products as p
@@ -34,13 +36,13 @@ select
 }
 {CODE-BLOCK/}
 
-In order to execute the above query we will need to use the following url:   
+In order to execute the above query we will need to use the following URL:   
 
 {CODE-BLOCK:plain}
 http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%7D&format=csv
 {CODE-BLOCK/}
 
-Going to the above address in a web browser will download you an export.csv file containing following results:
+Going to the above address in a web browser will download an export.csv file containing following results:
 
 {CODE-BLOCK:plain}
 Name,Category
@@ -63,11 +65,11 @@ Alice Mutton,Meat/Poultry
 Carnarvon Tigers,Seafood
 {CODE-BLOCK/}
 
-Now to push them to Excel we need to create new spreadsheet and import data `From Text`:
+To push them to Excel we need to create a new spreadsheet and import data `From Text`:
 
 ![Importing data from text in Excel](images\excel_from_text.png)
 
-Then in a Open File Dialog we paste our querying url:
+In an Open File Dialog we paste our querying url:
 
 ![Open File Dialog](images\excel_from_text_dialog.png)
 
@@ -83,15 +85,15 @@ Finally we need to select where we would like to place the imported data:
 
 ![Select where to put the data](images\excel_from_text_select.png)
 
-As a result of previous actions, the spreadsheet data should look like:
+As a result of the previous actions, the spreadsheet data should look like:
 
 ![Excel results](images\excel_from_text_results.png)
 
-Now we must tell Excel to refresh data. Click on `Connections` in `Data` panel:
+Now we must tell Excel to refresh data. Click on `Connections` in the `Data` panel:
 
 ![Excel connections](images\excel_connections.png)
 
-You will see something like that:
+You will see something like:
 
 ![Excel connections dialog](images\excel_connections_dialog_1.png)
 
@@ -101,15 +103,15 @@ Go to Properties and:
 
 ![Excel connection properties](images\excel_connections_dialog_2.png)
 
-Finally you can close the file, change something in the database and reopen it. You will see new values.
+You can close the file, change something in the database, and reopen it. You will see new values.
 
 {PANEL:DealingWithLongUrls}
 
-## Dealing with long query urls in excel
+## Dealing with Long Query URLs in Excel
 
-If you try and query for a bit more complex query you might realize that excel will refuse to execute your request.
+If you try and query for a bit more complex query, you might realize that excel will refuse to execute your request.
 
-### Long query example
+### Long Query Example
 {CODE-BLOCK:plain}
 from Products as p
 load p.Category as c
@@ -122,7 +124,7 @@ select
 }
 {CODE-BLOCK/}
 
-After escaping the above query we will end up with the following request url
+After escaping the above query we will end up with the following request URL
 
 {CODE-BLOCK:plain}
 http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D&format=csv
@@ -132,12 +134,13 @@ Trying to use this url will throw the following error in excel
 
 ![Excel url too long](images\excel_url_too_long.png)
 
-There are two ways to deal with this problem, you can use an online service like [TinyUrl](https://tinyurl.com/) and provide them with the above url.
-What you get back is a url like this, `https://tinyurl.com/y8t7j6r7`, this is a pretty nice workaround if you're not on an isolated system and have no security restriction.
+There are two ways to deal with this problem: You can use an online service like [TinyUrl](https://tinyurl.com/) and provide them with the above url.
+
+What you get back is a url like, `https://tinyurl.com/y8t7j6r7`. This is a pretty nice workaround if you're not on an isolated system and have no security restrictions.
 The other option is to redirect the query through a pre-defined query that resides in your database.
-For that you will need to include a document in your database with a `Query` property, let's generate such a document and call it `Excel/ProductWithCatagory`.
-While the name of the document has no significance, it is recommanded using a key that reflects on the purpose of this document.
-Now let's add the `Query` property and set its value to the above query like so:
+For that you will need to include a document in your database with a `Query` property. Let's generate such a document and call it `Excel/ProductWithCatagory`.
+The name of the document has no significance, but it is recommanded to use a key that reflects the purpose of this document.
+Let's add the `Query` property and set its value to the above query:
 
 {CODE-BLOCK:plain}
 {
@@ -148,13 +151,13 @@ Now let's add the `Query` property and set its value to the above query like so:
 }
 {CODE-BLOCK/}
 
-Now that we have the document ready for use all we need to do is modify our url so it will use the document redirection feature.
+Now that we have the document ready for use, all we need to do is modify our URL so it will use the document redirection feature.
 
 {CODE-BLOCK:plain}
 http://localhost:8080/databases/Northwind/streams/queries?fromDocument=Excel%2FProductWithCatagory&format=csv
 {CODE-BLOCK/}
 
-Repeating the instrucion above you should get the following result:
+Repeating the instrucions above you should get the following result:
 
 ![Excel integrated with long url](images\excel_integrated_long_url.png)
 

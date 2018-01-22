@@ -1,4 +1,4 @@
-﻿# Operations : How to get index?
+﻿# Operations : How to Get an Index
 
 **GetIndexOperation** is used to retrieve an index definition from a database.
 
@@ -18,7 +18,7 @@
 
 {CODE get_1_1@ClientApi\Operations\Indexes\Get.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **get indexes**?](../../../client-api/operations/get-indexes-operation)
 - [How to **put indexes**?](../../../client-api/operations/put-indexes-operation)
