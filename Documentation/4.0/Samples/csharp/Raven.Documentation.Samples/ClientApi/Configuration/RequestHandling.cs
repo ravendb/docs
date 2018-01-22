@@ -2,9 +2,8 @@
 using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
 using Sparrow;
-using Xunit.Sdk;
 
-namespace Raven.Documentation.Samples.ClientApi.Configuration.Conventions
+namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
 
     public class RequestHandling

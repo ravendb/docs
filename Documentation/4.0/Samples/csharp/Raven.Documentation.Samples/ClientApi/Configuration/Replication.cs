@@ -1,7 +1,7 @@
 ﻿using Raven.Client.Documents;
 using Raven.Client.Http;
 
-namespace Raven.Documentation.Samples.ClientApi.Configuration.Conventions
+namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
 
 	public class Replication

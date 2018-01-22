@@ -3,7 +3,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Conventions;
 using Sparrow.Json;
 
-namespace Raven.Documentation.Samples.ClientApi.Configuration.Conventions.IdentifierGeneration
+namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGeneration
 {
 	public class Global
 	{

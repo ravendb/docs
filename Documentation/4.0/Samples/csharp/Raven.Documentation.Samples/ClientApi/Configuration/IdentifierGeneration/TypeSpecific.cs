@@ -4,7 +4,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Conventions;
 using Raven.Documentation.Samples.Orders;
 
-namespace Raven.Documentation.Samples.ClientApi.Configuration.Conventions.IdentifierGeneration
+namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGeneration
 {
     public class TypeSpecific
     {

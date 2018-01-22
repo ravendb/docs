@@ -1,7 +1,42 @@
 [
-  {
-    "Path": "/conventions",
-    "Name": "Conventions",
-    "Mappings": []
-  }
+    {
+        "Path": "what-are-conventions.markdown",
+        "Name": "What are conventions?",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/what-are-conventions"
+            }
+        ]
+    },
+    {
+        "Path": "/identifier-generation",
+        "Name": "Identifier generation",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/identifier-generation"
+            }
+        ]
+    },
+    {
+        "Path": "request-handling.markdown",
+        "Name": "Request Handling",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/request-handling"
+            }
+        ]
+    },
+    {
+        "Path": "replication.markdown",
+        "Name": "Replication",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/replication"
+            }
+        ]
+    }
 ]
