@@ -54,7 +54,6 @@ Operations changes for all Operations can be observed using the `ForAllOperation
 | **State** | [OperationState](../../client-api/changes/how-to-subscribe-to-operation-changes#operationstate) | Operation state |
 | **OperationId** | long | Operation ID |
 
-<hr />
 {PANEL/}
 
 {PANEL:OperationState}

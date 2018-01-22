@@ -6,8 +6,6 @@ There are valid scenarios where we need to define relationships between objects.
 
 RavenDB offers three elegant approaches to solve this problem. Each scenario will need to use one or more of them. When applied correctly, they can drastically improve performance, reduce network bandwidth, and speed up development.
 
-<hr />
-
 ## Denormalization
 
 The easiest solution is to denormalize the data within the containing entity, forcing it to contain the actual value of the referenced entity in addition to (or instead of) the foreign key.
@@ -56,8 +54,6 @@ But what happens when the user's address is changed? We will have to perform an 
 {INFO:Tip}
 **Denormalization** is a viable solution for rarely changing data or for data that must remain the same despite the underlying referenced data changing over time.
 {INFO/}
-
-<hr />
 
 ## Includes
 
@@ -171,8 +167,6 @@ We can also do includes on specific properties:
 
 {CODE includes_11_1@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
-<hr />
-
 ## Combining Approaches
 
 It is possible to combine the above techniques. Using the `DenormalizedCustomer` from above and creating an order that uses it:
@@ -188,8 +182,6 @@ This combining of denormalization and Includes could also be used with a list of
 It is possible to use Include on a query being a projection. Includes are evaluated after the projection has been evaluated. This opens up the possibility of implementing Tertiary Includes (i.e. retrieving documents that are referenced by documents that are referenced by the root document). 
 
 RavenDB can support Tertiary Includes, but before resorting to them you should re-evaluate your document model. Needing Tertiary Includes can be an indication that you are designing your documents along "Relational" lines.
-
-<hr />
 
 ## Summary
 

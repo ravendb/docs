@@ -27,8 +27,6 @@ where search(Name, 'looking for someone who likes sport books computers')
 
 The results will return users that are interested in *sport*, *books* or *computers*.
 
-<hr />
-
 ## Multiple Fields
 
 By using the `Search` extension, you are also able to look for multiple indexed fields. In order to search using both `Name` and `Hobbies` properties, you need to issue the following query:
@@ -41,8 +39,6 @@ from Users
 where search(Name, 'Adam') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
-
-<hr />
 
 ## Boosting
 
@@ -62,8 +58,6 @@ where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but a
 {CODE-TABS/}
 
 This search will promote users who do sports before book readers and they will be placed at the top of the results list.
-
-<hr />
 
 ## Search Options
 
@@ -131,8 +125,6 @@ It will produce the following RQL query:
 from Users
 where search(Name, 'Adam') and (exists(Hobbies) and not search(Hobbies, 'sport'))
 {CODE-BLOCK/}
-
-<hr />
 
 ## Using Wildcards
 
