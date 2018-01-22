@@ -354,6 +354,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     var users = session
                         .Query<Users_Search.Result, Users_Search>()
                         .Search(x => x.Query, "John")
+                        .As<User>()
                         .ToList();
                     #endregion
                 }
