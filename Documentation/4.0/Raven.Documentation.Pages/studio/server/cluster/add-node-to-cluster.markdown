@@ -20,7 +20,7 @@ Performing any RAFT command (such as listed below) will make the server become p
 {PANEL}
 
 **1.** Enter the URL of the server for the new node  
-**2.** Decide if you will add the new node as a `member` -or- as a `watcher` (difference explained in [Cluster View](cluster-view))  
+**2.** Decide if you will add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
 **3.** Click to use all available nodes -or- Enter the number of cores to be assigned for this node  
 **4.** Click _Test connection_ to test the connection for the above url entered  
 
