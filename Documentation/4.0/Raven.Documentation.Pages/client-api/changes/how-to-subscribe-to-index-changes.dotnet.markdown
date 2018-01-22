@@ -55,13 +55,9 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 | **Name** | string | Index name |
 | **Etag** | long? | Index Etag |
 
-<hr />
 {PANEL/}
 
 {PANEL:IndexChangeTypes}
-# IndexChangeTypes (enum flags)
-
-### Members
 
 | Name | Value |
 | ---- | ----- |
@@ -78,6 +74,7 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 | **IndexPaused** | `4096` |
 | **LockModeChanged** | `8192` |
 | **PriorityChanged** | `16384` |
+
 {PANEL/}
 
 ## Remarks

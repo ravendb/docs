@@ -14,8 +14,6 @@ RavenDB is cross-platform. You can use it on the following:
 
 Go to [https://ravendb.net/downloads](https://ravendb.net/downloads). Select the appropriate version and platform, and download the zip package.   
 
-<hr />
-
 ## Prerequisites  
 
 #### Windows
@@ -43,8 +41,6 @@ You might need to also install additional packages, for example:
 
 See also: [Linux Prerequisites](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) or [MacOS Prerequisites](https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites)
 
-<hr />
-
 ## Installing RavenDB Using the Setup Wizard
 
 1. Extract the zip/tar file to a directory of your choice.  
@@ -52,8 +48,6 @@ See also: [Linux Prerequisites](https://docs.microsoft.com/en-us/dotnet/core/lin
 2. In <strong>Windows</strong>, use the `Start.cmd` script. In <strong>Linux</strong>, use the `start.sh` script. This will run RavenDB in an initial setup mode and redirect you to the Setup Wizard in your browser.
 
 3. Follow this [detailed walk through](setup-wizard) to complete the wizard successfully. 
-
-<hr />
 
 ## Installing RavenDB Manually on Windows/Linux/Mac
 
@@ -102,8 +96,6 @@ Once things are set up and the server is running, you can access our GUI, the [R
 
 You are ready to continue to the next section, [Getting to Know RavenDB](getting-to-know).
 
-<hr />
-
 ## Installing RavenDB with Docker
 
 If you already have Docker installed, just run the following command:
@@ -126,8 +118,6 @@ externally, make sure to go through the security configuration first.
 
 For more options and information on running RavenDB under Docker, please visit the [Docker Section]().
 
-<hr />
-
 ## Security Concerns
 
 To let a developer start coding an application quickly, RavenDB will run with the following default security mode:
@@ -143,12 +133,6 @@ access control to prevent unauthorized access to your data.
 
 Read more about security and how to enable authentication [here](../server/security/overview)
 
-<hr />
-
 ## Installing RavenDB on a Raspberry Pi
 
-<hr />
-
 ## Running RavenDB on 32-bit machines
-
-<hr />

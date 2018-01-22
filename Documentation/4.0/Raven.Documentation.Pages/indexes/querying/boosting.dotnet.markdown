@@ -6,7 +6,6 @@ Each search term can be associated with a boost factor that influences the final
 
 This way you can improve your searching mechanism and provide users with much more accurate results.
 
-
 ## Examples
 
 {CODE-TABS}
@@ -21,7 +20,6 @@ where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but a
 This search will promote users who do sports before book readers and they will be placed at the top of the results list.
 
 <hr />
-
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery boosting_2_1@Indexes\Querying\Boosting.cs /}

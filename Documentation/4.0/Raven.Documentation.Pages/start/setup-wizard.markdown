@@ -15,9 +15,7 @@ When running the RavenDB server for the first time, you will be redirected to th
 
 This section explains how to follow the setup wizard. It does not go into detail about security concerns. If you wish to learn about how authentication and authorization work in RavenDB or more about security in general, please read the relevant security section. 
 
-<hr />
-
-# Secure Setup with a *Let's Encrypt* Certificate
+## Secure Setup with a *Let's Encrypt* Certificate
 
 [Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain (or website) as long as you can prove that you own it.
 
@@ -106,9 +104,7 @@ When nodes B and C are up, go back to the studio and see that the topology of th
 
 You have successfully finished setting up a secure cluster of RavenDB servers using a *Let's Encrypt* certificate.
 
-<hr />
-
-# Secure Setup with Your Own Certificate
+## Secure Setup with Your Own Certificate
 
 In RavenDB, users can provide their own server certificate. The certificate can be issued by a trusted SSL vendor or it can be a self-signed certificate. In the latter case, it's the user's responsibility to have the self-signed CA registered in the OS stores on all the relevant machines.
 

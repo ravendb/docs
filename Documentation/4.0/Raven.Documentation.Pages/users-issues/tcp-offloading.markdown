@@ -13,8 +13,6 @@ It appears that the machine hosting the RavenDB Server had the TCP offload funct
 
 Disabling TCP Offloading.
 
-<hr/>
-
 ##Further read
 
 - [TCP Offloading Disabling](http://blogs.technet.com/b/onthewire/archive/2014/01/21/tcp-offloading-chimney-amp-rss-what-is-it-and-should-i-disable-it.aspx)

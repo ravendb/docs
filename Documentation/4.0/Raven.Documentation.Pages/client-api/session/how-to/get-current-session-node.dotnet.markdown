@@ -10,8 +10,6 @@ In order to find out what is the current node that the session sends its request
 
 {CODE current_session_node_1@ClientApi\Session\HowTo\GetCurrentSessionNode.cs /}
 
-<hr />
-
 ### Return Value
 
 The return value of `GetCurrentSessionNode` is a **ServerNode** object

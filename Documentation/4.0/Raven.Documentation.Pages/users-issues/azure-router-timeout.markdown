@@ -18,7 +18,6 @@ There are two possible ways to do that:
 - Change service point manager's [MaxIdleTime](https://msdn.microsoft.com/query/dev12.query?appId=Dev12IDEF1&l=EN-US&k=k(System.Net.ServicePointManager.MaxServicePointIdleTime);k(TargetFrameworkMoniker-.NETFramework,Version%3Dv4.5);k(DevLang-csharp)&rd=true) value in your client application 
 
 {NOTE RavenDB is using hearbeats, in a 3-10 seconds interval, on all its internal communication channels so they will be kept open./}
-<hr />
 
 ##Further read
 

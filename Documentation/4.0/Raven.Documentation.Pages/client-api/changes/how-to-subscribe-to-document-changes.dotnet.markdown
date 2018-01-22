@@ -127,6 +127,7 @@ To observe all document changes use `ForAllDocuments` method.
 {PANEL/}
 
 {PANEL:DocumentChange}
+
 ### Properties
 
 | Name | Type | Description |
@@ -137,13 +138,9 @@ To observe all document changes use `ForAllDocuments` method.
 | **TypeName** | string | Type name |
 | **ChangeVector** | string | Document's ChangeVector|
 
-<hr />
 {PANEL/}
 
 {PANEL:DocumentChangeTypes}
-# DocumentChangeTypes (enum flags)
-
-### Members
 
 | Name | Value |
 | ---- | ----- |
@@ -156,6 +153,7 @@ To observe all document changes use `ForAllDocuments` method.
 | **DeleteOnTombstoneReplication** | `32` |
 | **Conflict** | `64` |
 | **Common** | `Put & Delete` |
+
 {PANEL/}
 
 ## Remarks
