@@ -194,7 +194,7 @@ from Orders
 where Freight > 500 AND ShippedAt > '1998-01-01' AND NOT Freight = 830.75
 {CODE-BLOCK/}
 
-## Subclauses: ( )
+### Subclauses: ( )
 
 Subclauses can be used along with binary operators to build even more complex logical statements. They are self-explanatory so no example will be given.
 

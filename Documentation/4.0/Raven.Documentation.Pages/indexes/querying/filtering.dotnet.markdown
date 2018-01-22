@@ -9,7 +9,7 @@ The following examples demonstrate how to add simple conditions to a query using
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_0_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_0_2@Indexes\Querying\Filtering.cs /}
-{CODE-TAB:csharp:Index filtering_0_4@Indexes\Querying\Filtering.cs 
+{CODE-TAB:csharp:Index filtering_0_4@Indexes\Querying\Filtering.cs  /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
 where FirstName = 'Robert' and LastName = 'King'
@@ -112,7 +112,7 @@ where Tags ALL IN ('Development', 'Research')
 Remember to add the `Raven.Client.Documents.Linq` namespace to usings if you want to use the `ContainsAll` extension method.
 {WARNING/}
 
-## Where - Starts With
+## Where - StartsWith
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_8_1@Indexes\Querying\Filtering.cs /}
@@ -123,7 +123,7 @@ where startsWith(Name, 'ch')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Where - Ends With
+## Where - EndsWith
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_9_1@Indexes\Querying\Filtering.cs /}
