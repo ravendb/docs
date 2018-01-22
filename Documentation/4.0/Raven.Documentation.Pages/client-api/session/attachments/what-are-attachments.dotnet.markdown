@@ -1,17 +1,18 @@
 # What are Attachments?
 
 In RavenDB, attachments are binary streams which can be bound to an existing document. 
-Each attachment has a name, and you can specify the content type ("image/png" or "application/pdf" for example).
+Each attachment has a name, and you can specify the content type (`image/png` or `application/pdf` for example).
 
 A document can have any number of attachments.
 
 Each attachment is bound to an existing document. In order to get a document, you'll need to specify the document ID and the attachment name. 
 What's great in this approach is that you can specify the attachment's metadata in the document itself, and this document can be queried as any other document.
 
-## Example I:
+## Example I
 
 In order to store an album of pictures in RavenDB, you can create the following "albums/1" document:
 
+{CODE-BLOCK:json}
 {
     "UserId": "users/1",
     "Name": "Holidays",
@@ -21,17 +22,18 @@ In order to store an album of pictures in RavenDB, you can create the following 
         "@collection": "Albums"
     }
 }
+{CODE-BLOCK/}
 
 This document can have the following attachments:
 
-Name: 001.jpg, Content-Type: image/jpeg
-Name: 002.jpg, Content-Type: image/jpeg
-Name: 003.jpg, Content-Type: image/jpeg
-Name: 004.mp4, Content-Type: video/mp4
+- Name: `001.jpg`, Content-Type: `image/jpeg`
+- Name: `002.jpg`, Content-Type: `image/jpeg`
+- Name: `003.jpg`, Content-Type: `image/jpeg`
+- Name: `004.mp4`, Content-Type: `video/mp4`
 
-## Example II:
+## Example II
 
-You can store a "users/1" document and attach to it to a profile picture.
+You can store a `users/1` document and attach to it to a profile picture.
 When requesting the document from the server the results would be:
 
 {CODE-BLOCK:json}
@@ -70,13 +72,8 @@ In RavenDB, attachment and documents are stored as ACID transaction: You either 
 When the revisions feature is turned on in your database, each attachment addition to a document (or deletion from a document) will create a new revision of the document, 
 as there will be a change to the document's metadata, as shown in example #2. 
 
-## Client API
+## Related articles
 
-The following client API is related to attachments:
-
-- [Get attachment names using a document ID](../../../client-api/commands/attachments/get) 
-- [Get attachment using a document ID and attachment name](../../../client-api/session/attachments/get)
-- [Checking if attachment exists](../../../client-api/commands/attachments/get) 
-- [Get attachment of a revision document using document ID, attachment name and the revision change vector](../../../client-api/commands/attachments/get) 
-- [Store attachment](../../../client-api/session/attachments/put)
-- [Delete attachment](../../../client-api/session/attachments/delete)
+- [Attachments : Storing](../../../client-api/session/attachments/storing)
+- [Attachments : Loading](../../../client-api/session/attachments/loading)
+- [Attachments : Deleting](../../../client-api/session/attachments/deleting)

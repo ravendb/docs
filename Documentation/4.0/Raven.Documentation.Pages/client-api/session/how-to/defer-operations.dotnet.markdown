@@ -12,8 +12,8 @@ Operations can be deferred till `SaveChanges` is called by using `Defer` method 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| ICommandData | Command to be executed. |
-| ICommandData[] | Array of commands implementing `ICommandData` interface. |
+| `ICommandData` | Command to be executed. |
+| `ICommandData[]` | Array of commands implementing `ICommandData` interface. |
 
 ## Example
 

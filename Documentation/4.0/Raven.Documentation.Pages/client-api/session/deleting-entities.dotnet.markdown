@@ -11,7 +11,7 @@ Entities can be marked for deletion by using `Delete` method, but will not be re
 | **entity** or **id** | T or string | instance of entity to delete or entity ID |
 | **expectedChangeVector** | string | a change vector to use for concurrency checks
 
-## Example 1
+## Example I
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync deleting_2@ClientApi\Session\DeletingEntities.cs /}
@@ -22,7 +22,7 @@ Entities can be marked for deletion by using `Delete` method, but will not be re
 If UseOptimisticConcurrency is set to 'true' (default 'false'), the Delete() method will use loaded 'employees/1' change vector for concurrency check and might throw ConcurrencyException.
 {NOTE/}
 
-## Example 2
+## Example II
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync deleting_3@ClientApi\Session\DeletingEntities.cs /}

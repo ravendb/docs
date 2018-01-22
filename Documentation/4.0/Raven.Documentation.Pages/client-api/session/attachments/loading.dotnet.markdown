@@ -7,11 +7,11 @@ There are a few methods that allow you to download attachments from a database:
 **session.Advanced.Attachments.GetRevision** can be used to download an attachment of a revision document.   
 **session.Advanced.Attachments.Exists** can be used to determine if an attachment exists on a document.   
 
-### Syntax
+## Syntax
 
 {CODE GetSyntax@ClientApi\Session\Attachments\Attachments.cs /}
 
-### Example
+## Example
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync GetAttachment@ClientApi\Session\Attachments\Attachments.cs /}
@@ -20,5 +20,5 @@ There are a few methods that allow you to download attachments from a database:
 
 ## Related Articles
 
-- [Attachments : Storing](../../../client-api/commands/attachments/storing)  
-- [Attachments : Deleting](../../../client-api/commands/attachments/deleting)
+- [Attachments : Storing](../../../client-api/session/attachments/storing)
+- [Attachments : Deleting](../../../client-api/session/attachments/deleting)

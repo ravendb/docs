@@ -8,8 +8,6 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 
 {PANEL:Spatial}
 
-### Syntax
-
 {CODE spatial_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 
 | Parameters | | |

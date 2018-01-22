@@ -6,8 +6,6 @@ Single entity can be checked for changes using [HasChanged](../../../client-api/
 
 Property indicates if the session contains any changes. If there are any new, changed or deleted entities.
 
-### Syntax
-
 {CODE what_changed_1@ClientApi\Session\HowTo\WhatChanged.cs /}
 
 ### Example
@@ -19,8 +17,6 @@ Property indicates if the session contains any changes. If there are any new, ch
 {PANEL:WhatChanged}
 
 Method returns all changes for each entity stored within the session. Including name of the field/property that changed, its old and new value, and change type. 
-
-### Syntax
 
 {CODE what_changed_3@ClientApi\Session\HowTo\WhatChanged.cs /}
 

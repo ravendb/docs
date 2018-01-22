@@ -6,8 +6,8 @@ You can create a dynamic query that does an aggregation by using the LINQ `Group
 
 The supported aggregation operations are:
 
-- Count
-- Sum
+- `Count`
+- `Sum`
 
 <br />
 

@@ -94,8 +94,7 @@ Queries in RavenDB use a SQL-like language called RavenDB Query Language (RQL). 
 {CODE-TAB:csharp:Async query_1_7_async@ClientApi\Session\Querying\HowToQuery.cs /}
 {CODE-TABS/}
 
-
-### Custom Methods and Extensions for LINQ
+## Custom Methods and Extensions for LINQ
 
 Available custom methods and extensions:
 
@@ -113,7 +112,7 @@ Available custom methods and extensions:
 - [Intersect](../../../client-api/session/querying/how-to-use-intersect)
 - [Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)
 - [LazilyAsync](../../../client-api/session/querying/how-to-perform-queries-lazily)
-- MoreLikeThis(../../../client-api/session/querying/how-to-use-morelikethis) 
+- [MoreLikeThis](../../../client-api/session/querying/how-to-use-morelikethis) 
 - OrderByDistance
 - OrderByDistanceDescending
 - OrderByScore

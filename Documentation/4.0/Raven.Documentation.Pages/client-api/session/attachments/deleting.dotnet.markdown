@@ -15,5 +15,5 @@
 
 ## Related Articles
 
-- [GetAttachment](../../../client-api/session/attachments/get)  
-- [PutAttachment](../../../client-api/session/attachments/put)  
+- [Attachments : Storing](../../../client-api/session/attachments/storing)
+- [Attachments : Loading](../../../client-api/session/attachments/loading)

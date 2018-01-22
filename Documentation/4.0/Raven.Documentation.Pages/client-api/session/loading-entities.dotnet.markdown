@@ -132,7 +132,7 @@ Entities can be streamed from the server using one of the following `Stream` met
 Stream documents for an ID prefix
 {CODE loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
 
-## Example 2
+### Example II
 Fetch documents for an ID prefix directly into a stream
 {CODE loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
 
