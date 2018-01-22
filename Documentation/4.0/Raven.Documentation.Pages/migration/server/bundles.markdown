@@ -18,7 +18,7 @@ Deletion of referenced / child documents needs to be handled by your application
 
 {PANEL:Compression}
 
-The large fields of documents being strings are compressed by default. It is the built-in feature of the blittable JSON and the internal format for storing documents by RavenDB. Also the repeated properties are optimized.
+The large fields of documents being strings are compressed by default. It is the built-in feature of the blittable JSON - the internal format for storing documents by RavenDB. Also the repeated properties are optimized.
 
 Each attachment has the hash calculated based on its content. If multiple attachments have the same hash the, data will be stored just once.
 
