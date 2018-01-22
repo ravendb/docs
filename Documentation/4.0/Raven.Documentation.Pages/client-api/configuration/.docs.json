@@ -20,6 +20,16 @@
         ]
     },
     {
+        "Path": "querying.markdown",
+        "Name": "Querying",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/querying"
+            }
+        ]
+    },
+    {
         "Path": "request-handling.markdown",
         "Name": "Request Handling",
         "Mappings": [

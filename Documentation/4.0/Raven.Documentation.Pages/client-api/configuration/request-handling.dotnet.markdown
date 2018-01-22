@@ -8,14 +8,6 @@ If you need to modify the maximum http cache size, you can use the following set
 
 {NOTE Default value of this setting is 512MB on 64 bits, 32MB on 32 bits /}
 
-###ThrowIfQueryPageSizeIsNotSet
-
-To decide if you would like to for any query in session to throw when no explicit page size set, you can use the following setting:
-
-{CODE ThrowIfQueryPageSizeIsNotSet@ClientApi\Configuration\RequestHandling.cs /}
-
-{NOTE From 4.0 there is no limitation for number of results returned from server. This can be useful for development purposes to pinpoint all the possible performance bottlenecks. /}
-
 ###CustomizeJsonSerializer
 
 If you need to modify `JsonSerializer` object used by the client you can register a customization action:

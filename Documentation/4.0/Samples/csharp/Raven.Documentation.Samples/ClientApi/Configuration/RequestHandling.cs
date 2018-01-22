@@ -18,10 +18,6 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             Conventions.MaxHttpCacheSize = new Size(256,SizeUnit.Megabytes);
             #endregion
 
-            #region ThrowIfQueryPageSizeIsNotSet
-            Conventions.ThrowIfQueryPageSizeIsNotSet = true;
-            #endregion
-
             #region customize_json_serializer
             Conventions.CustomizeJsonSerializer = serializer => { };
             #endregion
