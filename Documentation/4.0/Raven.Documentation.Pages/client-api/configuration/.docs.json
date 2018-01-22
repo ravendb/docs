@@ -1,7 +1,7 @@
 [
     {
-        "Path": "what-are-conventions.markdown",
-        "Name": "What are conventions?",
+        "Path": "conventions.markdown",
+        "Name": "Conventions",
         "Mappings": [
             {
                 "Version": "3.0",
@@ -30,14 +30,9 @@
         ]
     },
     {
-        "Path": "request-handling.markdown",
-        "Name": "Request Handling",
-        "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/request-handling"
-            }
-        ]
+        "Path": "serialization.markdown",
+        "Name": "Serialization",
+        "Mappings": []
     },
     {
         "Path": "replication.markdown",

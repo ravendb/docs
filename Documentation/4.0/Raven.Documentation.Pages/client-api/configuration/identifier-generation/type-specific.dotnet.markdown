@@ -52,6 +52,6 @@ If we register two conventions, one for `Employee` and the second for `EmployeeM
 
 ##Related articles
 
-- [Document identifier generatation](../../../../server/kb/document-identifier-generation)
+- [Document identifier generation](../../../../server/kb/document-identifier-generation)
 - [Working with document identifiers](../../../document-identifiers/working-with-document-identifiers)
 - [Global identifier generation conventions](../../../../client-api/configuration/identifier-generation/global)

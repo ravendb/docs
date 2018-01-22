@@ -5,56 +5,88 @@ using Sparrow.Json;
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGeneration
 {
-	public class Global
-	{
-		public Global()
-		{
-			var store = new DocumentStore();
+    public class Global
+    {
+        public Global()
+        {
+            var store = new DocumentStore()
+            {
+                Conventions =
+                {
+                    #region find_type_name
 
-			DocumentConventions Conventions = store.Conventions;
+                    FindClrTypeName = type => // use reflection to determine the type;
 
-			#region find_type_name
-			Conventions.FindClrTypeName = type => // use reflection to determine the type;
-			#endregion
-				string.Empty;
+                        #endregion
 
-			#region find_clr_type
-			Conventions.FindClrType = (id, doc) =>
-			{
-			    if (doc.TryGet(Constants.Documents.Metadata.Key, out BlittableJsonReaderObject metadata) &&
-			        metadata.TryGet(Constants.Documents.Metadata.RavenClrType, out string clrType))
-			        return clrType;
+                            string.Empty,
 
-			    return null;
-			};
-			#endregion
+                    #region find_clr_type
 
-			#region find_type_collection_name
-			Conventions.FindCollectionName = type => // function that provides the collection name based on the entity type
-			#endregion
-				string.Empty;
+                    FindClrType = (id, doc) =>
+                    {
+                        if (doc.TryGet(Constants.Documents.Metadata.Key, out BlittableJsonReaderObject metadata) &&
+                            metadata.TryGet(Constants.Documents.Metadata.RavenClrType, out string clrType))
+                            return clrType;
 
-			#region find_dynamic_collection_name
-			Conventions.FindCollectionNameForDynamic = dynamicObject => // function to determine the collection name for the given dynamic object
-			#endregion
-				string.Empty;
+                        return null;
+                    },
 
-			#region transform_collection_name_to_prefix
-			Conventions.TransformTypeCollectionNameToDocumentIdPrefix = collectionName => // transform the collection name to the prefix of a identifier, e.g. [prefix]/12
-            #endregion
-                string.Empty;
+                    #endregion
 
-			#region find_identity_property
-			Conventions.FindIdentityProperty = memberInfo => memberInfo.Name == "Id";
-            #endregion
+                    #region find_type_collection_name
 
-            #region find_identity_property_name_from_collection_name
-            Conventions.FindIdentityPropertyNameFromCollectionName = collectionName => "Id";
-			#endregion
+                    FindCollectionName = type => // function that provides the collection name based on the entity type
 
-			#region identity_part_separator
-			Conventions.IdentityPartsSeparator = "/";
-			#endregion
-		}
-	}
+                        #endregion
+
+                            string.Empty,
+
+                    #region find_dynamic_collection_name
+
+                    FindCollectionNameForDynamic =
+                        dynamicObject => // function to determine the collection name for the given dynamic object
+
+                            #endregion
+
+                                string.Empty,
+
+                    #region transform_collection_name_to_prefix
+
+                    TransformTypeCollectionNameToDocumentIdPrefix =
+                        collectionName => // transform the collection name to the prefix of a identifier, e.g. [prefix]/12
+
+                            #endregion
+
+                                string.Empty,
+
+                    #region find_identity_property
+
+                    FindIdentityProperty = memberInfo => memberInfo.Name == "Id"
+
+                    #endregion
+
+                    ,
+
+                    #region find_identity_property_name_from_collection_name
+
+                    FindIdentityPropertyNameFromCollectionName = collectionName => "Id"
+
+                    #endregion
+
+                    ,
+
+                    #region identity_part_separator
+
+                    IdentityPartsSeparator = "/"
+
+                    #endregion
+                }
+            };
+
+
+
+
+        }
+    }
 }
