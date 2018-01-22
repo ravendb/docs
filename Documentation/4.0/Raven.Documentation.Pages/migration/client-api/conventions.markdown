@@ -125,3 +125,17 @@ Use `ReadBalanceBehavior.FastestNode` to if you need to ensure that get requests
 Removed. Check [How Client Integrates With Replication and Cluster](../../client-api/cluster/how-client-integrates-with-replication-and-cluster) article.
 
 {PANEL/}
+
+{PANEL:AllowQueriesOnId}
+
+In 4.0 queries on IDs are supported by default.
+
+{PANEL/}
+
+{PANEL:ShouldCacheRequest}
+
+Removed. There is no longer option to determine caching per request. Cache size can be controlled using `MaxHttpCacheSize` convention.
+
+{PANEL/}
+
+
