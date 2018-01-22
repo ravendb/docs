@@ -74,6 +74,12 @@ The benefit of this approach is that you can choose the name as you feel fit, an
 
 {INFO Maintenance Operations or `IndexDefinitionBuilder` approaches are not recommended and should be used only if you can't do it by inheriting from `AbstractIndexCreationTask`. /}
 
+{INFO:Side-by-Side}
+
+Since RavenDB 4.0, **all** index updates are side-by-side by default. The new index will replace the existing one once it get non-stale. If you want to force an index to swap immediately you can use the Studio for that.
+
+{INFO/}
+
 {PANEL/}
 
 {PANEL:**Auto indexes**}
