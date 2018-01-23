@@ -16,6 +16,16 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
             IDocumentSession OpenSession(SessionOptions options);
             #endregion
+
+            #region open_session_1_1
+            // Open session for a 'default' database configured in 'DocumentStore'
+            IAsyncDocumentSession OpenAsyncSession();
+
+            // Open session for a specified database
+            IAsyncDocumentSession OpenAsyncSession(string database);
+
+            IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
+            #endregion
         }
 
         public OpeningSession()
@@ -28,8 +38,19 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 store.OpenSession(new SessionOptions());
                 #endregion
 
+                #region open_session_2_1
+                store.OpenAsyncSession(new SessionOptions());
+                #endregion
+
                 #region open_session_3
                 store.OpenSession(new SessionOptions
+                {
+                    Database = databaseName
+                });
+                #endregion
+
+                #region open_session_3_1
+                store.OpenAsyncSession(new SessionOptions
                 {
                     Database = databaseName
                 });
