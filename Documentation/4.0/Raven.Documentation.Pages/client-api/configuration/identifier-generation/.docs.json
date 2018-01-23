@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "global.markdown",
+    "Name": "Global",
+    "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/identifier-generation/global"
+            }
+        ]
+  },
+  {
+    "Path": "type-specific.markdown",
+    "Name": "Type-specific",
+    "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/identifier-generation/type-specific"
+            }
+        ]
+  }
+]

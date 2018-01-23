@@ -1,7 +1,47 @@
 [
-  {
-    "Path": "/conventions",
-    "Name": "Conventions",
-    "Mappings": []
-  }
+    {
+        "Path": "conventions.markdown",
+        "Name": "Conventions",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/what-are-conventions"
+            }
+        ]
+    },
+    {
+        "Path": "/identifier-generation",
+        "Name": "Identifier generation",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/identifier-generation"
+            }
+        ]
+    },
+    {
+        "Path": "querying.markdown",
+        "Name": "Querying",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/querying"
+            }
+        ]
+    },
+    {
+        "Path": "serialization.markdown",
+        "Name": "Serialization",
+        "Mappings": []
+    },
+    {
+        "Path": "replication.markdown",
+        "Name": "Replication",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/replication"
+            }
+        ]
+    }
 ]

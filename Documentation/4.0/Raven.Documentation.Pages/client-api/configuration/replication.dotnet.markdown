@@ -3,7 +3,7 @@
 ###Read Load Balancing Behavior
 
 This convention gets or sets the default load balancing behavior of RavenDB Cluster.
-{CODE ReadBalanceBehavior@ClientApi\Configuration\Conventions\Replication.cs /}
+{CODE ReadBalanceBehavior@ClientApi\Configuration\Replication.cs /}
 
 
 There are three available settings which govern how RequestExecuter selects which cluster nodes to send requests to.
