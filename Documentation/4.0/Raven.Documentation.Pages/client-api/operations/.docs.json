@@ -10,6 +10,11 @@
         ]
     },
     {
+        "Path": "delete-by-query.markdown",
+        "Name": "Delete By Query",
+        "Mappings": []
+    },
+    {
         "Path": "/attachments",
         "Name": "Attachments",
         "Mappings": []
