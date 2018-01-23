@@ -4,17 +4,26 @@ To open synchronous session use the `OpenSession` method from `DocumentStore` or
 
 ## Syntax
 
-There are three overloads of `OpenSession` method
+There are three overloads of `OpenSession / OpenAsyncSession` methods
 
-{CODE open_session_1@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync open_session_1@ClientApi\Session\OpeningSession.cs /}
+{CODE-TAB:csharp:Async open_session_1_1@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS/}
 
 The first method is an equivalent of doing
 
-{CODE open_session_2@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync open_session_2@ClientApi\Session\OpeningSession.cs /}
+{CODE-TAB:csharp:Async open_session_2_1@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS/}
 
 The second method is an equivalent of doing
 
-{CODE open_session_3@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync open_session_3@ClientApi\Session\OpeningSession.cs /}
+{CODE-TAB:csharp:Async open_session_3_1@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS/}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -22,15 +31,15 @@ The second method is an equivalent of doing
 
 | Return Value | |
 | ------------- | ----- |
-| IDocumentSession | Instance of a session object that implements `IDocumentSession` interface. |
+| IDocumentSession / IAsyncDocumentSession | Instance of a session object. |
 
-## Example I
+## Example
 
-{CODE open_session_4@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync open_session_4@ClientApi\Session\OpeningSession.cs /}
+{CODE-TAB:csharp:Async open_session_5@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS/}
 
-## Example II
-
-{CODE open_session_5@ClientApi\Session\OpeningSession.cs /}
 
 {DANGER:Important}
 **Always remember to release session allocated resources after usage by invoking the `Dispose` method or wrapping the session object in the `using` statement.**
@@ -38,4 +47,4 @@ The second method is an equivalent of doing
 
 ## Related Articles
 
-- [What is a session and how does it work?](./what-is-a-session-and-how-does-it-work)  
+- [What is a session and how does it work?](../../client-api/session/what-is-a-session-and-how-does-it-work)  
