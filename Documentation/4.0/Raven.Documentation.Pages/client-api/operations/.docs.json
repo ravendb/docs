@@ -10,38 +10,33 @@
         ]
     },
     {
-        "Path": "compare-exchange.markdown",
-        "Name": "CompareExchange",
+        "Path": "delete-by-query.markdown",
+        "Name": "Delete By Query",
         "Mappings": []
     },
     {
-        "Path": "delete-by-query-operation.markdown",
-        "Name": "DeleteByQueryOperation",
+        "Path": "/attachments",
+        "Name": "Attachments",
         "Mappings": []
     },
     {
-        "Path": "get-attachment-operation.markdown",
-        "Name": "GetAttachmentOperation",
+        "Path": "/patching",
+        "Name": "Patching",
         "Mappings": []
     },
     {
-        "Path": "put-attachment-operation.markdown",
-        "Name": "PutAttachmentOperation",
-        "Mappings": []
-    },
-    {
-        "Path": "/patch",
-        "Name": "Patch",
+        "Path": "/compare-exchange",
+        "Name": "Compare Exchange",
         "Mappings": []
     },
     {
         "Path": "/maintenance",
-        "Name": "Maintenance Operations",
+        "Name": "Maintenance",
         "Mappings": []
     },
     {
-        "Path": "/Server",
-        "Name": "Server Operations",
+        "Path": "/server-wide",
+        "Name": "Server-Wide",
         "Mappings": []
     },
     {

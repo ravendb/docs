@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "put-client-configuration.markdown",
+        "Name": "Put Client Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "get-client-configuration.markdown",
+        "Name": "Get Client Configuration",
+        "Mappings": []
+    }
+]

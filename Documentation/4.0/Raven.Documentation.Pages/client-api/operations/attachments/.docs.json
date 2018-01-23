@@ -1,0 +1,17 @@
+﻿[
+    {
+        "Path": "get-attachment.markdown",
+        "Name": "Get Attachment",
+        "Mappings": []
+    },
+    {
+        "Path": "put-attachment.markdown",
+        "Name": "Put Attachment",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-attachment.markdown",
+        "Name": "Delete Attachment",
+        "Mappings": []
+    }
+]
