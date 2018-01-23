@@ -35,8 +35,8 @@
         "Mappings": []
     },
     {
-        "Path": "replication.markdown",
-        "Name": "Replication",
+        "Path": "cluster.markdown",
+        "Name": "Cluster",
         "Mappings": [
             {
                 "Version": "3.0",

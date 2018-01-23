@@ -128,7 +128,7 @@ Removed. Check [How Client Integrates With Replication and Cluster](../../client
 
 {PANEL:AllowQueriesOnId}
 
-In 4.0 queries on IDs are supported by default.
+Removed. In 4.0 queries on IDs are supported by default.
 
 {PANEL/}
 
