@@ -14,7 +14,7 @@ If you need to modify the maximum http cache size, you can use the following set
 
 {CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE Default value of this setting is 512MB on 64 bits, 32MB on 32 bits /}
+{NOTE Default value of this setting is 512MB on 64 bits, 32MB on 32 bits per database /}
 
 {PANEL/}
 
@@ -44,7 +44,7 @@ Forces to disable updates of database topology. Default: `false`.
 
 {PANEL:SaveEnumsAsIntegers}
 
-It determines if C# `enum` types should be saved as integers or strings and instruct the Linq provider to query enums as integer values. Default: `false`.
+It determines if C# `enum` types should be saved as integers or strings and instruct the LINQ provider to query enums as integer values. Default: `false`.
 
 {CODE SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.cs /}
 

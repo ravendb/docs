@@ -3,30 +3,30 @@ using Sparrow;
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
-	public class Conventions
-	{
-		public Conventions()
-		{
-			#region conventions_1
-		    using (var store = new DocumentStore()
-		    {
-		        Conventions =
-		        {
+    public class Conventions
+    {
+        public Conventions()
+        {
+            #region conventions_1
+            using (var store = new DocumentStore()
+            {
+                Conventions =
+                {
                 // customizations go here
 		        }
-		    }.Initialize())
-		    {
+            }.Initialize())
+            {
 
-		    }
-			#endregion
-		}
+            }
+            #endregion
+        }
 
-	    public void Examples()
-	    {
-	        var store = new DocumentStore()
-	        {
-	            Conventions =
-	            {
+        public void Examples()
+        {
+            var store = new DocumentStore()
+            {
+                Conventions =
+                {
 	                #region MaxHttpCacheSize
 	                MaxHttpCacheSize = new Size(256, SizeUnit.Megabytes)
 	                #endregion
@@ -47,7 +47,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     SaveEnumsAsIntegers = true
 	                #endregion
 	            }
-	        };
-	    }
-	}
+            };
+        }
+    }
 }

@@ -5,7 +5,7 @@
 In contrast to previous versions, in RavenDB 4.x replication is not a bundle and it is always enabled, if there are two nodes or more in the cluster. 
 This means that the failover mechanism is always turned on by default.
 
-The client contains a list of the cluster nodes per database group, and each time the client needs to do a request, it will choose a  that contains the database node to send the request to from the topology.  The choice of node depends on a value of `ReadBalanceBehavior`, which is taken from the current conventions. You can read more about the different values and node selection process [here](../configuration/conventions/replication).
+The client contains a list of the cluster nodes per database group, and each time the client needs to do a request, it will choose a  that contains the database node to send the request to from the topology.  The choice of node depends on a value of `ReadBalanceBehavior` convention, which is taken from the current conventions. You can read more about the different values and node selection process [here](../configuration/cluster).
 
 {PANEL/}
 

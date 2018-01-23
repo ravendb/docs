@@ -2,16 +2,16 @@
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration
 {
-	public class Querying
-	{
-		public Querying()
-		{
-			var store = new DocumentStore()
-			{
+    public class Querying
+    {
+        public Querying()
+        {
+            var store = new DocumentStore()
+            {
                 Conventions =
                 {
                     #region find_prop_name
-                    FindPropertyNameForIndex = (indexedType, indexName, path, prop) => 
+                    FindPropertyNameForIndex = (indexedType, indexName, path, prop) =>
                                                     (path + prop).Replace(",", "_").Replace(".", "_"),
 
                     FindPropertyNameForDynamicIndex = (indexedType, indexName, path, prop) => path + prop,
@@ -21,7 +21,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     ThrowIfQueryPageSizeIsNotSet = true
                     #endregion
                 }
-			};
-		} 
-	}
+            };
+        }
+    }
 }
