@@ -2,19 +2,20 @@
 
 The list of differences in the public Client API between 3.x and 4.0 contains the following changes:
 
-- removed fields and methods in types that exists in both 3.x and 4.0,
-- added fields and methods in types that exists in both 3.x and 4.0,
-- types that don't exists in 4.0 API.
+- removed fields and methods in types that exist in both 3.x and 4.0
+- added fields and methods in types that exist in both 3.x and 4.0
+- types that don't exist in the 4.0 API
 
-## Types with removed or added members
+## Types with Removed or Added Members
 
 {PANEL:BulkInsertOperation}
 
-#### Namespace changed
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Document`
 * 4.0: `Raven.Client.Documents.BulkInsert`
-#### Removed methods
+
+#### Removed Methods
 
 * `void add_OnBeforeEntityInsert(Raven.Client.Document.BulkInsertOperation/BeforeEntityInsert)`
 * `void add_Report(Action<string>)`
@@ -26,11 +27,11 @@ The list of differences in the public Client API between 3.x and 4.0 contains th
 * `void Store(Raven.Json.Linq.RavenJObject, Raven.Json.Linq.RavenJObject, string, Nullable<int>)`
 * `Task WaitForLastTaskToFinish()`
 
-#### Added fields
+#### Added Fields
 
 * `System.IO.Compression.CompressionLevel CompressionLevel`
 
-#### Added methods
+#### Added Methods
 
 * `System.Threading.Tasks.Task AbortAsync()`
 * `System.Threading.Tasks.Task<string> StoreAsync(object, Raven.Client.Documents.Session.IMetadataDictionary)`
@@ -39,11 +40,13 @@ The list of differences in the public Client API between 3.x and 4.0 contains th
 {PANEL/}
 
 {PANEL:IDatabaseChanges}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Changes`
 * 4.0: `Raven.Client.Documents.Changes`
-#### Removed methods
+
+#### Removed Methods
 
 * `Raven.Client.Changes.IObservableWithTask<Raven.Abstractions.Data.DataSubscriptionChangeNotification> ForAllDataSubscriptions()`
 * `Raven.Client.Changes.IObservableWithTask<Raven.Abstractions.Data.ReplicationConflictNotification> ForAllReplicationConflicts()`
@@ -51,7 +54,7 @@ The list of differences in the public Client API between 3.x and 4.0 contains th
 * `Raven.Client.Changes.IObservableWithTask<Raven.Abstractions.Data.BulkInsertChangeNotification> ForBulkInsert(Nullable<Guid>)`
 * `Raven.Client.Changes.IObservableWithTask<Raven.Abstractions.Data.DataSubscriptionChangeNotification> ForDataSubscription(long)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Changes.IChangesObservable<Raven.Client.Documents.Operations.OperationStatusChange> ForAllOperations()`
 * `Raven.Client.Documents.Changes.IChangesObservable<Raven.Client.Documents.Operations.OperationStatusChange> ForOperationId(long)`
@@ -59,16 +62,18 @@ The list of differences in the public Client API between 3.x and 4.0 contains th
 {PANEL/}
 
 {PANEL:BatchOptions}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Connection`
 * 4.0: `Raven.Client.Documents.Commands.Batches`
-#### Removed methods
+
+#### Removed Methods
 
 * `TimeSpan get_WaitForReplicasTimout()`
 * `void set_WaitForReplicasTimout(TimeSpan)`
 
-#### Added methods
+#### Added Methods
 
 * `System.Nullable<System.TimeSpan> get_RequestTimeout()`
 * `System.TimeSpan get_WaitForReplicasTimeout()`
@@ -78,19 +83,20 @@ The list of differences in the public Client API between 3.x and 4.0 contains th
 {PANEL/}
 
 {PANEL:DefaultRavenContractResolver}
-#### Namespace changed
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Document`
 * 4.0: `Raven.Client.Documents.Conventions`
-#### Removed methods
+
+#### Removed Methods
 
 * `IDisposable RegisterForExtensionData(Raven.Imports.Newtonsoft.Json.Serialization.ExtensionDataSetter)`
 
-#### Added fields
+#### Added Fields
 
 * `System.Nullable<System.Reflection.BindingFlags> MembersSearchFlag`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Conventions.DefaultRavenContractResolver/ClearExtensionData RegisterExtensionDataGetter(Newtonsoft.Json.Serialization.ExtensionDataGetter)`
 * `Raven.Client.Documents.Conventions.DefaultRavenContractResolver/ClearExtensionData RegisterExtensionDataSetter(Newtonsoft.Json.Serialization.ExtensionDataSetter)`
@@ -101,11 +107,12 @@ The list of differences in the public Client API between 3.x and 4.0 contains th
 
 Renamed to `DocumentConventions`.
 
-#### Namespace changed
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Document`
 * 4.0: `Raven.Client.Documents.Conventions`
-#### Removed methods
+
+#### Removed Methods
 
 * `string DefaultFindFullDocumentKeyFromNonStringIdentifier(object, Type, bool)`
 * `string DefaultTransformTypeTagNameToDocumentKeyPrefix(string)`
@@ -165,11 +172,11 @@ Renamed to `DocumentConventions`.
 * `string TryGetDocumentIdFromRegisteredIdLoadConventions(ValueType, Type)`
 * `bool UsesRangeType(object)`
 
-#### Added fields
+#### Added Fields
 
 * `Raven.Client.Documents.Conventions.DocumentConventions/BulkInsertConventions BulkInsert`
 
-#### Added methods
+#### Added Methods
 
 * `string DefaultGetCollectionName(System.Type)`
 * `string DefaultTransformCollectionNameToDocumentIdPrefix(string)`
@@ -209,11 +216,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IDocumentStore}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents`
-#### Removed methods
+
+#### Removed Methods
 
 * `void ExecuteTransformer(Raven.Client.Indexes.AbstractTransformerCreationTask)`
 * `Task ExecuteTransformerAsync(Raven.Client.Indexes.AbstractTransformerCreationTask)`
@@ -235,7 +244,7 @@ Renamed to `DocumentConventions`.
 * `void SideBySideExecuteIndexes(List<Raven.Client.Indexes.AbstractIndexCreationTask>, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
 * `Task SideBySideExecuteIndexesAsync(List<Raven.Client.Indexes.AbstractIndexCreationTask>, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
 
-#### Added methods
+#### Added Methods
 
 * `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
 * `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
@@ -257,16 +266,18 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:GenerateEntityIdOnTheClient}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Document`
 * 4.0: `Raven.Client.Documents.Identity`
-#### Removed methods
+
+#### Removed Methods
 
 * `string GenerateDocumentKeyForStorage(object)`
 * `string GetOrGenerateDocumentKey(object)`
 
-#### Added methods
+#### Added Methods
 
 * `string GenerateDocumentIdForStorage(object)`
 * `string GetOrGenerateDocumentId(object)`
@@ -274,11 +285,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:AbstractGenericIndexCreationTask<TReduceResult>}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Indexes`
 * 4.0: `Raven.Client.Documents.Indexes`
-#### Removed methods
+
+#### Removed Methods
 
 * `bool get_DisableInMemoryIndexing()`
 * `void set_DisableInMemoryIndexing(bool)`
@@ -286,11 +299,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:AbstractIndexCreationTask}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Indexes`
 * 4.0: `Raven.Client.Documents.Indexes`
-#### Removed methods
+
+#### Removed Methods
 
 * `void AfterExecute(Raven.Client.Connection.IDatabaseCommands, Raven.Client.Document.DocumentConvention)`
 * `Task AfterExecuteAsync(Raven.Client.Connection.Async.IAsyncDatabaseCommands, Raven.Client.Document.DocumentConvention, CancellationToken)`
@@ -310,7 +325,7 @@ Renamed to `DocumentConventions`.
 * `object SpatialGenerate(string, string, Raven.Abstractions.Indexing.SpatialSearchStrategy)`
 * `object SpatialGenerate(string, string, Raven.Abstractions.Indexing.SpatialSearchStrategy, int)`
 
-#### Added methods
+#### Added Methods
 
 * `object CreateSpatialField(System.Nullable<System.Double>, System.Nullable<System.Double>)`
 * `object CreateSpatialField(string)`
@@ -320,11 +335,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:AbstractIndexCreationTask<TDocument, TReduceResult>}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Indexes`
 * 4.0: `Raven.Client.Documents.Indexes`
-#### Removed methods
+
+#### Removed Methods
 
 * `Nullable<int> get_MaxIndexOutputsPerDocument()`
 * `void set_MaxIndexOutputsPerDocument(Nullable<int>)`
@@ -332,11 +349,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:AbstractMultiMapIndexCreationTask<TReduceResult>}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Indexes`
 * 4.0: `Raven.Client.Documents.Indexes`
-#### Removed methods
+
+#### Removed Methods
 
 * `Nullable<int> get_MaxIndexOutputsPerDocument()`
 * `void set_MaxIndexOutputsPerDocument(Nullable<int>)`
@@ -344,11 +363,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IndexCreation}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Indexes`
 * 4.0: `Raven.Client.Documents.Indexes`
-#### Removed methods
+
+#### Removed Methods
 
 * `void CreateIndexes(ExportProvider, Raven.Client.IDocumentStore)`
 * `Task CreateIndexesAsync(ExportProvider, Raven.Client.IDocumentStore)`
@@ -362,11 +383,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IndexDefinitionBuilder<TDocument, TReduceResult>}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Indexes`
 * 4.0: `Raven.Client.Documents.Indexes`
-#### Removed methods
+
+#### Removed Methods
 
 * `bool get_DisableInMemoryIndexing()`
 * `Nullable<int> get_MaxIndexOutputsPerDocument()`
@@ -379,7 +402,7 @@ Renamed to `DocumentConventions`.
 * `void set_SortOptionsStrings(Dictionary<string, Raven.Abstractions.Indexing.SortOptions>)`
 * `void set_Suggestions(IDictionary<Expression<Func<TReduceResult, object>>, Raven.Abstractions.Indexing.SuggestionOptions>)`
 
-#### Added methods
+#### Added Methods
 
 * `System.Collections.Generic.Dictionary<string, string> get_AdditionalSources()`
 * `string get_OutputReduceToCollection()`
@@ -391,11 +414,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IndexingLinqExtensions}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Linq.Indexing`
 * 4.0: `Raven.Client.Documents.Linq.Indexing`
-#### Removed methods
+
+#### Removed Methods
 
 * `string ParseShort(object)`
 * `string ParseShort(object, Int16)`
@@ -404,11 +429,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IRavenQueryable<T>}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Linq`
 * 4.0: `Raven.Client.Documents.Linq`
-#### Removed methods
+
+#### Removed Methods
 
 * `Raven.Client.Linq.IRavenQueryable<T> AddQueryInput(string, Raven.Json.Linq.RavenJToken)`
 * `Raven.Client.Linq.IRavenQueryable<T> AddTransformerParameter(string, Raven.Json.Linq.RavenJToken)`
@@ -422,11 +449,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:LinqExtensions}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents`
-#### Removed methods
+
+#### Removed Methods
 
 * `Raven.Client.Linq.IRavenQueryable<TResult> ProjectFromIndexFieldsInto<TResult>(IQueryable)`
 * `Raven.Abstractions.Data.SuggestionQueryResult Suggest(IQueryable)`
@@ -452,7 +481,7 @@ Renamed to `DocumentConventions`.
 * `Lazy<Task<Raven.Abstractions.Data.FacetResults>> ToFacetsLazyAsync<T>(IQueryable<T>, string, int, Nullable<int>)`
 * `Lazy<Task<Raven.Abstractions.Data.FacetResults>> ToFacetsLazyAsync<T>(IQueryable<T>, IEnumerable<Raven.Abstractions.Data.Facet>, int, Nullable<int>)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Queries.Facets.IAggregationQuery<T> AggregateUsing<T>(System.Linq.IQueryable<T>, string)`
 * `Raven.Client.Documents.Linq.IRavenQueryable<System.Linq.IGrouping<System.Collections.Generic.IEnumerable<TKey>, TSource>> GroupByArrayContent<TSource, TKey>(System.Linq.IQueryable<TSource>, System.Linq.Expressions.Expression<System.Func<TSource, System.Collections.Generic.IEnumerable<TKey>>>)`
@@ -501,16 +530,17 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:Operation}
-#### Namespace changed
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Connection`
 * 4.0: `Raven.Client.Documents.Operations`
-#### Removed methods
+
+#### Removed Methods
 
 * `void .ctor(Func<long, Task<Raven.Json.Linq.RavenJToken>>, long)`
 * `void .ctor(Raven.Client.Connection.Async.AsyncServerClient, long)`
 
-#### Added methods
+#### Added Methods
 
 * `void OnCompleted()`
 * `void OnError(System.Exception)`
@@ -521,11 +551,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IDocumentQueryCustomization}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `Raven.Client.IDocumentQueryCustomization AddOrder(string, bool)`
 * `Raven.Client.IDocumentQueryCustomization AddOrder<TResult>(Expression<Func<TResult, object>>, bool)`
@@ -565,7 +597,7 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.IDocumentQueryCustomization Include<TResult>(Expression<Func<TResult, object>>)`
 * `Raven.Client.IDocumentQueryCustomization Spatial(string, Func<Raven.Client.Spatial.SpatialCriteriaFactory, Raven.Client.Spatial.SpatialCriteria>)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Session.IDocumentQueryCustomization AfterQueryExecuted(System.Action<Raven.Client.Documents.Queries.QueryResult>)`
 * `Raven.Client.Documents.Session.IDocumentQueryCustomization AfterStreamExecuted(System.Action<Sparrow.Json.BlittableJsonReaderObject>)`
@@ -575,11 +607,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IAsyncDocumentQuery<T>}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `string get_AsyncIndexQueried()`
 * `Task<Raven.Abstractions.Data.FacetResults> GetFacetsAsync(string, int, Nullable<int>, CancellationToken)`
@@ -591,7 +625,7 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.IAsyncDocumentQuery<TTransformerResult> SetResultTransformer<TTransformer, TTransformerResult>()`
 * `Raven.Client.IAsyncDocumentQuery<T> SetTransformerParameters(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(System.Action<Raven.Client.Documents.Queries.Facets.IFacetBuilder<T>>)`
 * `Raven.Client.Documents.Queries.Facets.IAsyncAggregationDocumentQuery<T> AggregateBy(Raven.Client.Documents.Queries.Facets.FacetBase)`
@@ -610,11 +644,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IAsyncAdvancedSessionOperations}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `Raven.Client.IAsyncDocumentQuery<T> AsyncDocumentQuery<T>(string, bool)`
 * `Raven.Client.IAsyncDocumentQuery<T> AsyncDocumentQuery<T>()`
@@ -638,7 +674,7 @@ Renamed to `DocumentConventions`.
 * `Task<Raven.Abstractions.Util.IAsyncEnumerator<Raven.Abstractions.Data.StreamResult<T>>> StreamAsync<T>(Raven.Abstractions.Data.Etag, int, int, Raven.Client.RavenPagingInformation, string, Dictionary<string, Raven.Json.Linq.RavenJToken>, CancellationToken)`
 * `Task<Raven.Abstractions.Util.IAsyncEnumerator<Raven.Abstractions.Data.StreamResult<T>>> StreamAsync<T>(string, string, int, int, Raven.Client.RavenPagingInformation, string, string, Dictionary<string, Raven.Json.Linq.RavenJToken>, CancellationToken)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Session.IAsyncRawDocumentQuery<T> AsyncRawQuery<T>(string)`
 * `System.Threading.Tasks.Task<bool> ExistsAsync(string)`
@@ -658,11 +694,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IAsyncDocumentSession}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `void Delete<T>(ValueType)`
 * `void Delete(string)`
@@ -682,7 +720,7 @@ Renamed to `DocumentConventions`.
 * `Task StoreAsync(object, Raven.Abstractions.Data.Etag, string, CancellationToken)`
 * `Task StoreAsync(object, string, CancellationToken)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLoaderWithInclude<T> Include<T>(System.Linq.Expressions.Expression<System.Func<T, string>>)`
@@ -693,11 +731,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IAdvancedDocumentSessionOperations}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `void ExplicitlyVersion(object)`
 * `bool get_AllowNonAuthoritativeInformation()`
@@ -708,7 +748,7 @@ Renamed to `DocumentConventions`.
 * `void set_NonAuthoritativeInformationTimeout(TimeSpan)`
 * `void UnregisterMissing(string)`
 
-#### Added methods
+#### Added Methods
 
 * `void add_OnAfterSaveChanges(System.EventHandler<Raven.Client.Documents.Session.AfterSaveChangesEventArgs>)`
 * `void add_OnBeforeDelete(System.EventHandler<Raven.Client.Documents.Session.BeforeDeleteEventArgs>)`
@@ -730,11 +770,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IAsyncLazySessionOperations}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Document.Batches`
 * 4.0: `Raven.Client.Documents.Session.Operations.Lazy`
-#### Removed methods
+
+#### Removed Methods
 
 * `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<string>, CancellationToken)`
 * `Lazy<Task<TResult[]>> LoadAsync<TResult>(IEnumerable<string>, Action<TResult[]>, CancellationToken)`
@@ -749,7 +791,7 @@ Renamed to `DocumentConventions`.
 * `Lazy<Task<TResult>> LoadAsync<TResult>(string, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>, CancellationToken)`
 * `Lazy<Task<TResult[]>> MoreLikeThisAsync<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery, CancellationToken)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Session.Loaders.IAsyncLazyLoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.IAsyncLazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, string>>)`
@@ -758,11 +800,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IDocumentQuery<T>}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `string get_IndexQueried()`
 * `Raven.Abstractions.Data.QueryResult get_QueryResult()`
@@ -775,7 +819,7 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.IDocumentQuery<TTransformerResult> SetResultTransformer<TTransformer, TTransformerResult>()`
 * `Raven.Client.IDocumentQuery<T> SetTransformerParameters(Dictionary<string, Raven.Json.Linq.RavenJToken>)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(System.Action<Raven.Client.Documents.Queries.Facets.IFacetBuilder<T>>)`
 * `Raven.Client.Documents.Queries.Facets.IAggregationDocumentQuery<T> AggregateBy(Raven.Client.Documents.Queries.Facets.FacetBase)`
@@ -793,7 +837,8 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:ISyncAdvancedSessionOperation}
-#### Removed methods
+
+#### Removed Methods
 
 * `Raven.Client.Connection.Operation DeleteByIndex<T, TIndexCreator>(Expression<Func<T, bool>>)`
 * `Raven.Client.Connection.Operation DeleteByIndex<T>(string, Expression<Func<T, bool>>)`
@@ -810,11 +855,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IDocumentSession}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `T[] Load<T>(ValueType[])`
 * `T[] Load<T>(IEnumerable<ValueType>)`
@@ -832,7 +879,7 @@ Renamed to `DocumentConventions`.
 * `void Store(object)`
 * `void Store(object, string)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.ILoaderWithInclude<T> Include<T>(System.Linq.Expressions.Expression<System.Func<T, string>>)`
@@ -843,11 +890,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:ILazySessionOperations}
-#### Namespace changed
+
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Document.Batches`
 * 4.0: `Raven.Client.Documents.Session.Operations.Lazy`
-#### Removed methods
+
+#### Removed Methods
 
 * `Lazy<TResult[]> Load<TResult>(IEnumerable<string>)`
 * `Lazy<TResult[]> Load<TResult>(IEnumerable<string>, Action<TResult[]>)`
@@ -864,7 +913,7 @@ Renamed to `DocumentConventions`.
 * `Lazy<TResult[]> Load<TResult>(IEnumerable<string>, Type, Action<Raven.Client.ILoadConfiguration>, Action<TResult>)`
 * `Lazy<TResult[]> MoreLikeThis<TResult>(Raven.Abstractions.Data.MoreLikeThisQuery)`
 
-#### Added methods
+#### Added Methods
 
 * `Raven.Client.Documents.Session.Loaders.ILazyLoaderWithInclude<object> Include(string)`
 * `Raven.Client.Documents.Session.Loaders.ILazyLoaderWithInclude<TResult> Include<TResult>(System.Linq.Expressions.Expression<System.Func<TResult, string>>)`
@@ -873,16 +922,17 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:WhereParams}
-#### Namespace changed
+#### Namespace Changed
 
 * 3.x: `Raven.Client`
 * 4.0: `Raven.Client.Documents.Session`
-#### Removed methods
+
+#### Removed Methods
 
 * `bool get_IsAnalyzed()`
 * `void set_IsAnalyzed(bool)`
 
-#### Added methods
+#### Added Methods
 
 * `bool get_Exact()`
 * `void set_Exact(bool)`
@@ -890,17 +940,18 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:DocumentSubscriptions}
-#### Namespace changed
+#### Namespace Changed
 
 * 3.x: `Raven.Client.Document`
 * 4.0: `Raven.Client.Documents.Subscriptions`
-#### Removed methods
+
+#### Removed Methods
 
 * `Raven.Client.Document.Subscription<Raven.Json.Linq.RavenJObject> Open(long, Raven.Abstractions.Data.SubscriptionConnectionOptions, string)`
 * `Raven.Client.Document.Subscription<T> Open<T>(long, Raven.Abstractions.Data.SubscriptionConnectionOptions, string)`
 * `void Release(long, string)`
 
-#### Added methods
+#### Added Methods
 
 * `System.Threading.Tasks.Task<string> CreateAsync<T>(Raven.Client.Documents.Subscriptions.SubscriptionCreationOptions<T>, string)`
 * `System.Threading.Tasks.Task<string> CreateAsync<T>(System.Linq.Expressions.Expression<System.Func<T, bool>>, Raven.Client.Documents.Subscriptions.SubscriptionCreationOptions, string)`
@@ -919,13 +970,13 @@ Renamed to `DocumentConventions`.
 {PANEL/}
 
 {PANEL:IndexCreation}
-#### Removed methods
+#### Removed Methods
 
 * `Raven.Client.Documents.Indexes.IndexDefinition[] CreateIndexesToAdd(System.Collections.Generic.IEnumerable<Raven.Client.Documents.Indexes.AbstractIndexCreationTask>, Raven.Client.Documents.Conventions.DocumentConventions)`
 {PANEL/}
 
 
-## The following types (or entire namespaces) are no longer available
+## The Following Types (or Entire Namespaces) are No Longer Available
 
 * Raven.Client.AfterStreamExecutedDelegate
 * Raven.Client.Bundles.MoreLikeThis.MoreLikeThisExtensions

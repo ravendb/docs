@@ -1,10 +1,10 @@
-﻿# Operations : How to stop indexing?
+﻿# Operations : How to Stop Indexing
 
-**StopIndexingOperation** is used to stop indexing for entire database.
+**StopIndexingOperation** is used to stop indexing for the entire database.
 
 Use [StopIndexOperation](../../../client-api/operations/maintenance/stop-index-operation) to stop single index.
 
-{NOTE Indexing will be resumed automatically after server restart or after using [start indexing operation](../../../client-api/operations/maintenance/start-indexing-operation)./}
+{NOTE Indexing will be resumed automatically after a server restart or after using [start indexing operation](../../../client-api/operations/maintenance/start-indexing-operation)./}
 
 ### Syntax
 
@@ -14,7 +14,7 @@ Use [StopIndexOperation](../../../client-api/operations/maintenance/stop-index-o
 
 {CODE stop_2@ClientApi\Operations\Indexes\StopIndexing.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **disable index**?](../../../client-api/operations/maintenance/disable-index-operation)
 - [How to **stop index** until restart?](../../../client-api/operations/maintenance/stop-index-operation)

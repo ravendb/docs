@@ -2,8 +2,8 @@
 
 ##Symptoms
 
-- Exception thrown in RavenDB Client when accessing RavenDB Server, exception was because of socket timeout
-- General slow operation of client system
+- An exception is thrown in RavenDB Client when accessing RavenDB Server, because of a socket timeout
+- A general slow operation of client system
 
 ##Cause
 
@@ -11,7 +11,7 @@ It appears that the machine hosting the RavenDB Server had the TCP offload funct
 
 ##Resolution
 
-Disabling TCP Offloading.
+Disable TCP Offloading.
 
 ##Further read
 

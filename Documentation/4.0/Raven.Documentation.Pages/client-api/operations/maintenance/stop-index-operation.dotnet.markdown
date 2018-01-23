@@ -1,6 +1,6 @@
-﻿# Operations : How to stop index?
+﻿# Operations : How to Stop an Index
 
-**StopIndexOperation** is used to stop indexing for index 
+The **StopIndexOperation** is used to stop indexing for an index. 
 
 {NOTE Indexing will be resumed automatically after server restart. /}
 
@@ -16,7 +16,7 @@
 
 {CODE stop_2@ClientApi\Operations\Indexes\StopIndex.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **enable index**?](../../../client-api/operations/maintenance/enable-index-operation)
 - [How to **stop indexing** until restart?](../../../client-api/operations/maintenance/stop-indexing-operation)
