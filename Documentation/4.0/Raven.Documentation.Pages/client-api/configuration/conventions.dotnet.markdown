@@ -34,6 +34,14 @@ Controls whether optimistic concurrency is set to true by default for all future
 
 {PANEL/}
 
+{PANEL:RequestTimeout}
+
+It allows to define the global request timeout value for all `RequestExecutors` created per database. Default: `null`.
+
+{CODE RequestTimeout@ClientApi\Configuration\Conventions.cs /}
+
+{PANEL/}
+
 {PANEL:DisableTopologyUpdates}
 
 Forces to disable updates of database topology. Default: `false`.
