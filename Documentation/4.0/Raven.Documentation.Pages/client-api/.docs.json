@@ -1,12 +1,12 @@
 ﻿[
     {
-        "Path": "creating-document-store.markdown",
-        "Name": "Creating Document Store",
+        "Path": "what-is-a-document-store.markdown",
+        "Name": "What is a Document Store?",
         "Mappings": []
     },
     {
-        "Path": "what-is-a-document-store.markdown",
-        "Name": "What is a Document Store?",
+        "Path": "creating-document-store.markdown",
+        "Name": "Creating Document Store",
         "Mappings": []
     },
     {
