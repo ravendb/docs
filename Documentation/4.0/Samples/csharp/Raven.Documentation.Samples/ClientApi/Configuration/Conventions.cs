@@ -1,4 +1,5 @@
-﻿using Raven.Client.Documents;
+﻿using System;
+using Raven.Client.Documents;
 using Sparrow;
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration
@@ -46,6 +47,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
 	                #region SaveEnumsAsIntegers
                     SaveEnumsAsIntegers = true
 	                #endregion
+                    ,
+                    #region RequestTimeout
+                    RequestTimeout = TimeSpan.FromSeconds(90)
+                    #endregion
 	            }
             };
         }
