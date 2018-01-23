@@ -14,7 +14,19 @@ If you need to modify the maximum http cache size, you can use the following set
 
 {CODE MaxHttpCacheSize@ClientApi\Configuration\Conventions.cs /}
 
-{NOTE Default value of this setting is 512MB on 64 bits, 32MB on 32 bits per database /}
+{NOTE: Cache size}
+
+Default value of this setting is 512MB on 64 bits, 32MB on 32 bits per database.   
+
+{NOTE/}
+
+{NOTE: Disable caching} 
+
+To disable the caching you can set the `MaxHttpCacheSize` value to zero:
+
+{CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
+
+{NOTE/}
 
 {PANEL/}
 

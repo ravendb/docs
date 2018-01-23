@@ -53,6 +53,16 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #endregion
 	            }
             };
+
+            var stor2e = new DocumentStore()
+            {
+                Conventions =
+                {
+                    #region disable_cache
+                    MaxHttpCacheSize = new Size(0, SizeUnit.Megabytes)
+                    #endregion
+                }
+            };
         }
     }
 }
