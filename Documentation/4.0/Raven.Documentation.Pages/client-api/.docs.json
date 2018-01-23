@@ -60,11 +60,6 @@
         "Mappings": []
     },
     {
-        "Path": "/faq",
-        "Name": "FAQ",
-        "Mappings": []
-    },
-    {
         "Path": "/document-identifiers",
         "Name": "Document identifiers",
         "Mappings": []
@@ -77,6 +72,11 @@
     {
         "Path": "/how-to",
         "Name": "How to...",
+        "Mappings": []
+    },
+    {
+        "Path": "/faq",
+        "Name": "FAQ",
         "Mappings": []
     },
 ]
