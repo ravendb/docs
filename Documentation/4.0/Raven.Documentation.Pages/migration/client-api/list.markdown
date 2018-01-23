@@ -229,7 +229,7 @@ Renamed to `DocumentConventions`.
 * `Raven.Client.Connection.Profiling.ProfilingInformation GetProfilingInformationFor(Guid)`
 * `void InitializeProfiling()`
 * `void SetListeners(Raven.Client.Document.DocumentSessionListeners)`
-* `IDisposable SetRequestsTimeoutFor(TimeSpan)`
+* `IDisposable SetRequestTimeoutFor(TimeSpan)`
 * `void SideBySideExecuteIndex(Raven.Client.Indexes.AbstractIndexCreationTask, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
 * `Task SideBySideExecuteIndexAsync(Raven.Client.Indexes.AbstractIndexCreationTask, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
 * `void SideBySideExecuteIndexes(List<Raven.Client.Indexes.AbstractIndexCreationTask>, Raven.Abstractions.Data.Etag, Nullable<DateTime>)`
@@ -252,7 +252,7 @@ Renamed to `DocumentConventions`.
 * `void remove_OnBeforeQuery(System.EventHandler<Raven.Client.Documents.Session.BeforeQueryExecutedEventArgs>)`
 * `void remove_OnBeforeStore(System.EventHandler<Raven.Client.Documents.Session.BeforeStoreEventArgs>)`
 * `void set_Database(string)`
-* `System.IDisposable SetRequestsTimeout(System.TimeSpan, string)`
+* `System.IDisposable SetRequestTimeout(System.TimeSpan, string)`
 
 {PANEL/}
 

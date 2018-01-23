@@ -59,7 +59,7 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
             #endregion
 
             #region request_executor_5
-            using (store.SetRequestsTimeout(TimeSpan.FromMilliseconds(180)))
+            using (store.SetRequestTimeout(TimeSpan.FromMilliseconds(180)))
             {
             }
             #endregion
