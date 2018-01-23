@@ -55,11 +55,6 @@
         "Mappings": []
     },
     {
-        "Path": "/how-to",
-        "Name": "How to...",
-        "Mappings": []
-    },
-    {
         "Path": "/commands",
         "Name": "Commands",
         "Mappings": []
@@ -78,5 +73,10 @@
         "Path": "/configuration",
         "Name": "Configuration",
         "Mappings": []
-    }
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    },
 ]
