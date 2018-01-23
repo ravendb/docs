@@ -127,3 +127,7 @@ Renaming property supported only by the non-typed APIs
 {CODE-TAB:csharp:Session-syntax-untyped rename_property_age_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
+
+## Related Articles
+
+- [Set Based Patch Operation](../../../client-api/operations/patch/set-based-patch-operation)
