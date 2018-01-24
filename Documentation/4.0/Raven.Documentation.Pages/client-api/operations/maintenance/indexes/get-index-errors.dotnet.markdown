@@ -1,6 +1,6 @@
-﻿# Operations : How to get index errors?
+﻿# Operations : How to Get Index Errors
 
-**GetIndexErrorsOperation** is used to return errors encounted during document indexing. 
+**GetIndexErrorsOperation** is used to return errors encountered during document indexing. 
 
 ## Syntax
 

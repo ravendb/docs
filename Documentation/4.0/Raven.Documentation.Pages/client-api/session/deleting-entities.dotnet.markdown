@@ -1,6 +1,6 @@
 # Session : Deleting Entities
 
-Entities can be marked for deletion by using `Delete` method, but will not be removed from server until `SaveChanges` is called.
+Entities can be marked for deletion by using the `Delete` method, but will not be removed from the server until `SaveChanges` is called.
 
 ## Syntax
 
@@ -8,7 +8,7 @@ Entities can be marked for deletion by using `Delete` method, but will not be re
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **entity** or **id** | T or string | instance of entity to delete or entity ID |
+| **entity** or **id** | T or string | instance of the entity to delete or entity ID |
 | **expectedChangeVector** | string | a change vector to use for concurrency checks
 
 ## Example I
@@ -30,7 +30,7 @@ If UseOptimisticConcurrency is set to 'true' (default 'false'), the Delete() met
 {CODE-TABS/}
 
 {NOTE: Concurrency on Delete}
-In this overload, the Delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown
+In this overload, the Delete() method will not do any change vector based concurrency checks because the change vector for 'employees/1' is unknown.
 {NOTE/}
 
 {INFO:Information}
@@ -51,7 +51,7 @@ You can read more about defer operations [here](./how-to/defer-operations).
 
 {INFO/}
 
-## Related articles
+## Related Articles
 
 - [Opening a session](./opening-a-session)  
 - [Loading entities](./loading-entities)  

@@ -1,9 +1,9 @@
-#Type-specific identifier generation
+#Type-Specific Identifier Generation
 
-[In the previous article](../../../../client-api/configuration/identifier-generation/global), global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
-Now we will show how to override the default ID generation in a more granular way, that is only for particular types of entities.
+[In the previous article](../../../../client-api/configuration/identifier-generation/global), Global Identifier generation conventions were introduced. Any customization made by using those conventions changes the behavior for all stored entities.
+Now we will show how to override the default ID generation in a more granular way, for particular types of entities.
 
-To override default document identifier generation algorithms you can register custom conventions per an entity type, where you can include your own identifier generation logic.
+To override default document identifier generation algorithms, you can register custom conventions per an entity type. You can include your own identifier generation logic.
 
 ##RegisterAsyncIdConvention
 
@@ -20,7 +20,7 @@ To override default document identifier generation algorithms you can register c
 {NOTE This method applied to both synchronous and asynchronous operations /}
 
 {INFO:Database name parameter}
-The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database
+The database name parameter is passed to the register convention methods to allow users to make Id generation decision per database.
 {INFO/}
 
 ###Example
@@ -38,11 +38,11 @@ the client will associate the `employees/Bond/James` identifier with it.
 
 ##Inheritance
 
-Registered conventions are inheritance-aware, so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree.
+Registered conventions are inheritance-aware so all types that can be assigned from registered type will fall into that convention according to inheritance-hierarchy tree.
 
 ###Example
 
-If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, then both types will use the following:
+If we create a new class `EmployeeManager` that will derive from our `Employee` class and keep the convention registered in the last example, both types will use the following:
 
 {CODE employees_custom_convention_inheritance@ClientApi\Configuration\IdentifierGeneration\TypeSpecific.cs /}
 
@@ -50,7 +50,7 @@ If we register two conventions, one for `Employee` and the second for `EmployeeM
 
 {CODE custom_convention_inheritance_2@ClientApi\Configuration\IdentifierGeneration\TypeSpecific.cs /}
 
-##Related articles
+##Related Articles
 
 - [Document identifier generation](../../../../server/kb/document-identifier-generation)
 - [Working with document identifiers](../../../document-identifiers/working-with-document-identifiers)
