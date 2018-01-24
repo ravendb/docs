@@ -1,6 +1,6 @@
-﻿# Operations : How to start index?
+﻿# Operations : How to Start an Index
 
-**StartIndexOperation** is used to resume indexing for index.
+The **StartIndexOperation** is used to resume indexing for an index.
 
 ### Syntax
 
@@ -14,7 +14,7 @@
 
 {CODE start_2@ClientApi\Operations\Indexes\StartIndex.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **disable index**?](../../../client-api/operations/maintenance/disable-index-operation)
 - [How to **stop index** until restart?](../../../client-api/operations/maintenance/stop-index-operation)

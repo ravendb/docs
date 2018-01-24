@@ -1,6 +1,6 @@
-﻿# Operations : How to enable index?
+﻿# Operations : How to Enable an Index
 
-**EnableIndexOperation** is used to turn the indexing on for given index.
+The **EnableIndexOperation** is used to turn on the indexing for a given index.
 
 
 ## Syntax
@@ -15,7 +15,7 @@
 
 {CODE enable_2@ClientApi\Operations\Indexes\EnableIndex.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **disable index**?](../../../client-api/operations/maintenance/disable-index-operation)
 - [How to **stop index** until restart?](../../../client-api/operations/maintenance/stop-index-operation)

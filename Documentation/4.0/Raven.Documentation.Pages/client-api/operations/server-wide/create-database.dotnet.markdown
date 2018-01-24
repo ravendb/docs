@@ -1,6 +1,6 @@
-﻿# Operations : Server : How to create a database?
+﻿# Operations : Server : How to Create a Database
 
-This operation is used to create a new database on a server.
+Create a new database on a server.
 
 ## Syntax
 
