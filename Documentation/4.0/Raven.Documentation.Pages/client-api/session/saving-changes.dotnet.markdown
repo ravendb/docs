@@ -4,11 +4,18 @@ Pending session operations e.g. `Store`, `Delete` and many others will not be se
 
 ##Syntax
 
-{CODE saving_changes_1@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync saving_changes_1@ClientApi\Session\SavingChanges.cs /}
+{CODE-TAB:csharp:Async saving_changes_1_async@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS/} 
 
 ##Example
 
-{CODE saving_changes_2@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync saving_changes_2@ClientApi\Session\SavingChanges.cs /}
+{CODE-TAB:csharp:Async saving_changes_2_async@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS/} 
+
 
 {NOTE:Waiting for indexes}
 
@@ -16,7 +23,10 @@ You can ask the server to wait until the indexes are caught up with this particu
 You can also set a timeout and whatever to throw or not. 
 You can specify indexes that you want to wait for. If you don't specify anything, RavenDB will automatically select just the indexes that are impacted by this write.
 
-{CODE saving_changes_3@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync saving_changes_3@ClientApi\Session\SavingChanges.cs /}
+{CODE-TAB:csharp:Async saving_changes_3_async@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS/} 
 
 {NOTE/}
 
@@ -29,7 +39,10 @@ You can ask the server to wait until the replication are caught up with this par
 * You can specify to how many replicas (nodes) the currently saved write must be replicated, before the SaveChanges() returns.
 * You can specify whether the SaveChanges() will return only when the current write was replicated to majority of the nodes.
 
-{CODE saving_changes_4@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync saving_changes_4@ClientApi\Session\SavingChanges.cs /}
+{CODE-TAB:csharp:Async saving_changes_4_async@ClientApi\Session\SavingChanges.cs /}
+{CODE-TABS/} 
 
 {WARNING:Important}
 The `WaitForReplicationAfterSaveChanges` waits only replicas which are part of the cluster. This means, for example, that external replication destinations are not counted towards the number specified in `replicas` parameter, since such destinations are not part of the cluster.
