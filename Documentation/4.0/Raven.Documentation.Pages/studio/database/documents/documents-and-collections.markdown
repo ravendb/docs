@@ -2,52 +2,48 @@
 ---
 
 {NOTE: Documents}
-A document holds your data in a JSON format object.  
-See more about a document in [Document View](../../../../todo-update-me-later)
+
+* A document holds your data in a JSON format object.  
+* For more information about a document see [Document View](../../../../todo-update-me-later)
 {NOTE/}
 
 {NOTE: Collections}
-Collections are used to group documents together so that it is convenient to apply some operation to them,  
-i.e. subscribing to changes, indexing, querying, ETL, etc.
 
-Every document belongs to exactly one collection.  
+* Collections are used to group documents together so that it is convenient to apply some operation to them,  
+  i.e. subscribing to changes, indexing, querying, ETL, etc.
 
-Typically, a collection holds similar structured documents - based on the entity type of the document.  
-Note: It is Not required that documents within the same collection will share the same structure or have any sort of schema.  
+* Every document belongs to exactly one collection.  
+
+* Typically, a collection holds similar structured documents - based on the entity type of the document.  
+  Note: It is Not required that documents within the same collection will share the same structure, or have any sort of schema.
+  The only requirement for documents to be in the same collection is that they must have the same `@collection` metadata property.  
+
+* For more information see [What is a Collection](/client-api/faq/what-is-a-collection)
 {NOTE/}
 
 ---
 
 {PANEL}
-**Documents view:**  
+####**Documents View:**  
 
 * Shows all collections and the documents each contains.  
 * Actions such as create, delete or export a document and more can be done.  
 
 ![Figure 1. Documents and Collections](images/documents-and-collections-1.png "Collection 'Categories'")  
 
-**1.**  The existing **collections** in the database showing with the number of documents each collection contains.  
-**2.**  The **documents** within a selected collection.  
-
-*  The documents are ordered by the modification time
-*  Each **column** corresponds to a key property in the document json
+1.  **Recent**:
+  *  Click on `Recent` to see a list of **all** documents from **all** collectons in the selected database  
+  *  Documents are ordered by the modification time  
+<br/>
+2.  **Collections**:
+  *  The existing **collections** in the selected database  
+  *  The number of documents each collection has is indicated  
+<br/>
+3.  **Documents**:
+  *  The list of documents within the selected collection  
+  *  Each **column** corresponds to a _key property name_ in the document json  
+  *  Documents are ordered by the modification time  
 {PANEL/}
-
-{NOTE: Recent Documents}
-List of **all** documents from **all** collections in the database.  
-Ordered by modification time.
-{NOTE/}
-
-{NOTE: @hilo Collection}
-Documents in the _@hilo_ collection are created when a client (Not from studio) is creating documents without an explicit ID.
-In this case, RavenDB will reserve a range of identifiers and ensure that this range is provided only to this client.
-The client can safely generate identifiers within this given range.  
-
-See more about documents IDs in [Create New Document](../../../../todo-update-me-later)  
-
-The _'Max'_ property value in the hilo doc represents the largest ID number that was used (from the given range)  
-for a document in the collection.  
-{NOTE/}
 
 ---
 
@@ -81,3 +77,22 @@ Click `Display` to:
 
 ![Figure 3. Manage Displayed Columns](images/documents-and-collections-3.png "Manage Displayed Columns")
 {PANEL/}
+
+---
+
+{PANEL}
+####**The @hilo Collection:**  
+
+![Figure 4. hilo collection](images/documents-and-collections-4.png "The @hilo Collection")  
+
+* Documents in the _@hilo_ collection are created when a client (Not from studio) is creating documents **without** an explicit ID.  
+  For more information about the various documents IDs see [Create New Document](../../../../todo-update-me-later)  
+
+* In the above case, RavenDB will reserve a range of identifiers and ensure that this range is provided only to this client.  
+  The client can safely generate identifiers within this given range.  
+
+* The _'Max'_ property value that shows in the hilo doc represents the largest ID number that was used (from the given range)
+  for a document in that collection.  
+  For more information about the HiLo Algorithm see [HiLo Algorithm](/client-api/document-identifiers/hilo-algorithm)  
+{PANEL/}
+
