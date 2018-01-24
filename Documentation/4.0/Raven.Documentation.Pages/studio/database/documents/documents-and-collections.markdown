@@ -41,7 +41,7 @@
 <br/>
 3.  **Documents**:
   *  The list of documents within the selected collection  
-  *  Each **column** corresponds to a _key property name_ in the document json  
+  *  Each **column** corresponds to a _property_ in the document json  
   *  Documents are ordered by the modification time  
 {PANEL/}
 
