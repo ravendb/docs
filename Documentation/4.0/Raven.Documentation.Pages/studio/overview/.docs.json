@@ -3,10 +3,5 @@
         "Path": "overview.markdown",
         "Name": "Overview",
         "Mappings": []
-    },
-    {
-        "Path": "/documents",
-        "Name": "Documents",
-        "Mappings": []
     }
 ]
