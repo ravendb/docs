@@ -21,12 +21,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
 		public async Task SavingChangesXY()
 		{
-            /*
-{CODE-TABS}
-{CODE-TAB:csharp:AbstractIndexCreationTask boosting_2@Indexes\Boosting.cs /}
-{CODE-TAB:csharp:Operation boosting_4@Indexes\Boosting.cs /}
-{CODE-TABS/}             
-             */
 			using (var store = new DocumentStore())
 			{
 				using (var session = store.OpenSession())
