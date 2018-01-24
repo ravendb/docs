@@ -1,6 +1,6 @@
-﻿# Operations : How to get identities?
+﻿# Operations : How to Get Identities
 
-**GetIdentitiesOperation** is used to return dictionary which maps from collection name to identity value.
+**GetIdentitiesOperation** is used to return a dictionary which maps from the collection name to the identity value.
 
 ## Syntax
 
