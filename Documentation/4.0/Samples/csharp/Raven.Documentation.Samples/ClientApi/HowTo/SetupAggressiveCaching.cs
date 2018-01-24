@@ -20,14 +20,6 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 			{
 				documentStore.Initialize();
 
-                #region max_number_of_requests 
-                documentStore.Conventions.MaxHttpCacheSize = new Size(1024, SizeUnit.Megabytes);
-                #endregion
-
-			    #region disable_http_cache
-                documentStore.Conventions.MaxHttpCacheSize = new Size(0, SizeUnit.Megabytes);
-                #endregion
-
                 using (var session = documentStore.OpenSession())
 				{
 					#region aggressive_cache_load

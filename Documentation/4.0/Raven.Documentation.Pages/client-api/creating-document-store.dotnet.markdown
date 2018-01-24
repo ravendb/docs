@@ -14,6 +14,12 @@ This will instantiate a communication channel between your application and the l
 
 To be able to work on the `DocumentStore`, you will have to call the `Initialize` method to get the fully initialized instance of `IDocumentStore`.
 
+{NOTE:Conventions}
+
+The conventions are frozen after `DocumentStore` initialization so they need to be set before `Initialize` is called.
+
+{NOTE/}
+
 ##Singleton
 
 Because the document store is a heavyweight object, there should only be one instance created per application (singleton). The document store is a thread safe object and its typical
