@@ -23,7 +23,9 @@ The default value of this setting is configured as follows:
   * if usable memory is greater than 3GB and lower than or equal to 6GB: 128MB,
   * if usable memory is greater than 6GB: 512MB,
 
-* running on 32 bits: 32MB
+* running on 32 bits: 32MB.
+
+The cache is created per database you use.
 
 {NOTE/}
 
