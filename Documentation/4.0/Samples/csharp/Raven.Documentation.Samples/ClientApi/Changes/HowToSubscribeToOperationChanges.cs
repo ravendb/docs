@@ -10,13 +10,11 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
         private interface IFoo
         {
             #region operation_changes_1
-            IChangesObservable<OperationStatusChange>
-                ForOperationId(long operationId);
+            IChangesObservable<OperationStatusChange> ForOperationId(long operationId);
             #endregion
 
             #region operation_changes_3
-            IChangesObservable<OperationStatusChange>
-                ForAllOperations();
+            IChangesObservable<OperationStatusChange> ForAllOperations();
             #endregion
         }
 
@@ -28,7 +26,7 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
                 #region operation_changes_2
                 IDisposable subscription = store
                     .Changes()
-                    .ForOperationId(operationId) 
+                    .ForOperationId(operationId)
                     .Subscribe(
                         change =>
                         {

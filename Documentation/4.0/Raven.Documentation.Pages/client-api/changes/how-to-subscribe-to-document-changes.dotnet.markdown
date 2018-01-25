@@ -62,7 +62,7 @@ or
 
 To observe all document changes for given type use `ForDocumentsOfType` method. This method filters documents by `Raven-Clr-Type` metadata property value.
 
-## Syntax
+### Syntax
 
 {CODE document_changes_6@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
@@ -76,7 +76,7 @@ To observe all document changes for given type use `ForDocumentsOfType` method. 
 
 {INFO Overloads with `TEntity` type or `Type` uses `Conventions.FindClrTypeName` to get type name. /}
 
-## Example
+### Example
 
 {CODE document_changes_7@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
@@ -90,7 +90,7 @@ or
 
 To observe all document changes for documents with ID that contains given prefix use `ForDocumentsStartingWith` method.
 
-## Syntax
+### Syntax
 
 {CODE document_changes_9@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
@@ -102,7 +102,7 @@ To observe all document changes for documents with ID that contains given prefix
 | ------------- | ----- |
 | IChangesObservable<[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)> | Observable that allows to add subscriptions to notifications for given document ID prefix. |
 
-## Example
+### Example
 
 {CODE document_changes_1_0@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
@@ -112,7 +112,7 @@ To observe all document changes for documents with ID that contains given prefix
 
 To observe all document changes use `ForAllDocuments` method.
 
-## Syntax
+### Syntax
 
 {CODE document_changes_1_1@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
@@ -120,15 +120,13 @@ To observe all document changes use `ForAllDocuments` method.
 | ------------- | ----- |
 | IChangesObservable<[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)> | Observable that allows to add subscriptions to notifications for all documents. |
 
-## Example
+### Example
 
 {CODE document_changes_1_2@ClientApi\Changes\HowToSubscribeToDocumentChanges.cs /}
 
 {PANEL/}
 
 {PANEL:DocumentChange}
-
-### Properties
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
@@ -160,3 +158,8 @@ To observe all document changes use `ForAllDocuments` method.
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
+## Related articles
+
+- [What is Changes API?](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Index Changes?](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes?](../../client-api/changes/how-to-subscribe-to-operation-changes)

@@ -9,13 +9,11 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
         private interface IFoo
         {
             #region index_changes_1
-            IChangesObservable<IndexChange>
-                ForIndex(string indexName);
+            IChangesObservable<IndexChange> ForIndex(string indexName);
             #endregion
 
             #region index_changes_3
-            IChangesObservable<IndexChange>
-                ForAllIndexes();
+            IChangesObservable<IndexChange> ForAllIndexes();
             #endregion
         }
 

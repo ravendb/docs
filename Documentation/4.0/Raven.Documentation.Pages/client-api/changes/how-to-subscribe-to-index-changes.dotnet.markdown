@@ -81,3 +81,8 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
+## Related articles
+
+- [What is Changes API?](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Document Changes?](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Operation Changes?](../../client-api/changes/how-to-subscribe-to-operation-changes)

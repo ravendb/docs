@@ -48,4 +48,8 @@ In order to end subscription (stop listening for particular notifications) you m
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
+## Related articles
 
+- [How to Subscribe to Document Changes?](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Index Changes?](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes?](../../client-api/changes/how-to-subscribe-to-operation-changes)
