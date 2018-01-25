@@ -1,24 +1,41 @@
-﻿## Client Configuration
+﻿# Client Configuration
 ---
+
+{NOTE: }
+
+* Configure the RavenDB client behaviour for **all** databases in the cluster  
+* These default values can be overwritten per databses in [Database Client Configuration](../../../../todo-update-me-later)  
+{NOTE/}
+
+---
+
+{PANEL: Client Configuration}
 
 ![Figure 1. Client Configuration](images/client-configuration.jpg "Client Configuration")
 
-### Client Configuration
-On this screen we can set load-balancing behavior and restrict the number of requests per session in the client API. 
-This is done per database group.
+**1. Read balance behaviour**  
 
-#### Read Balance Behavior
-The choice made in the combobox affects two behaviors:  
+* Set the client API load-balancing behavior  
+* Effects the client API decision of which node to failover in case of issues  
+* Options:  
+  * **None**  
+      * The client API will failover nodes in their TAG order. (Node A, then Node B, then Node C and so on).  
+      * No load balancing will occur.  
+  * **Round Robin**  
+      * For each request, the client API will address the next node in their TAG order.  
+      * In case of a failover, the client will try the next node as well.  
+  * **Fastest Node**  
+      * Each client API request will go to the fastest node (determined by a [speed test](../../../server/scaling-out/clustering/speed-test)).  
+      * Any topology change would trigger the [speed test](../../../server/scaling-out/clustering/speed-test) again.  
+      * Failover in this case would select the node with the next TAG.  
 
-  * How the client API will decide which node to failover in case of issues
-  * How the client API will execute load balancing
+**2. Max number of requests per session**  
 
-The choices:
-
-  * None - the client API will failover nodes in their TAG order, (Node A, then Node B, then Node C and so on). No load balancing will occur.
-  * Round Robin - for each request the client API will address the next node in their TAG order. In case of failover, the client will try the next node as well.
-  * Fastest Node - each client API request will go to the fastest node (determined by a [speed test](../../../server/scaling-out/clustering/speed-test)). Any topology change would trigger the [speed test](../../../server/scaling-out/clustering/speed-test) again. Failover in this case would select the node with the next TAG. 
+* Set this number to restrict the number of requests per session in the client API.  
+* Default value is 30.  
 
 {NOTE: Failure to contact all nodes}
 If the client has tried to contact all nodes and failed, an `AllTopologyNodesDownException` will be thrown
 {NOTE/}
+
+{PANEL/}
