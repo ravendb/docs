@@ -26,4 +26,5 @@ Data subscriptions are accessible by a document store. Here's an example of an a
 
 ## Related articles
 
-- [How to create a data subscription?](../../client-api/data-subscriptions/how-to-create-data-subscription)
+- [How to **create** a data subscription?](../../client-api/data-subscriptions/how-to-create-data-subscription)
+- [How to **consume** a data subscription?](../../client-api/data-subscriptions/how-to-consume-data-subscription)

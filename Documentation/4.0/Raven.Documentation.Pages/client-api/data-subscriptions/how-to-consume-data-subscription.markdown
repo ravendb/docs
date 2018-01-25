@@ -14,20 +14,20 @@ Here we create a subscription and have a worker processing documents
 
 The subscription worker object manages the subscription on the client side. Not that upon creation of the object, no connection will be created. A connection is created only when the received object's Run method is called.
 
-{PANEL: Get typed subscription worker}
+### Get typed subscription worker
+
 Here we get a subscription worker, only based on subscription name.
 {CODE open_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{PANEL/}
 
-{PANEL: Get typed subscription worker}
+### Get typed subscription worker
+
 Here we get a subscription worker, which in the case of another client consuming the connection, will wait for it to finish on the server side and only then start consuming the subscription. 
 {CODE open_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{PANEL/}
 
-{PANEL: Get typed subscription worker}
+### Get typed subscription worker
+
 Here we get a subscription worker as before, but also we set the maximum batch size to 500. And we define that if there is an error during the client's Run function, we will not abort the worker processing as defined by default, but we will continue processing.
 {CODE open_3@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-{PANEL/}
 
 
 ## This page is a work in progress
@@ -115,3 +115,8 @@ The data subscription stops pulling docs if there is no subscriber attached.
 {NOTE/}
 
 -->
+
+## Related articles
+
+- [What are data subscriptions?](../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **create** a data subscription?](../../client-api/data-subscriptions/how-to-create-data-subscription)
