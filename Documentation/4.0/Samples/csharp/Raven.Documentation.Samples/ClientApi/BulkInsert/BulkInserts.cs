@@ -10,8 +10,7 @@ namespace Raven.Documentation.Samples.ClientApi.BulkInsert
         private interface IFoo
         {
             #region bulk_inserts_1
-            BulkInsertOperation BulkInsert(
-                string database = null);
+            BulkInsertOperation BulkInsert(string database = null);
             #endregion
         }
 

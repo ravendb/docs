@@ -22,3 +22,8 @@ The subscriptions are persistent and long lived. A subscription created by one c
 Data subscriptions are accessible by a document store. Here's an example of an ad-hod creation and usage of data subscriptions:
 
 {CODE subscriptions_example@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+
+## Related articles
+
+- [How to create a data subscription?](../../client-api/data-subscriptions/how-to-create-data-subscription)

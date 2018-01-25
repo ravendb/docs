@@ -36,13 +36,15 @@ There are a couple limitations to the API:
 * Bulk insert is not thread safe, a single bulk insert should not be accessed concurrently. The use of multiple bulk inserts, on the same client, concurrently is supported also the use in an async context is supported.
 
 ## Example
-{PANEL: Create bulk insert}
+
+### Create bulk insert
+
 Here we create a bulk insert operation and inserting a million documents of type Employee
 {CODE-TABS}
 {CODE-TAB:csharp:sync bulk_inserts_4@ClientApi\BulkInsert\BulkInserts.cs /}
 {CODE-TAB:csharp:async bulk_inserts_5@ClientApi\BulkInsert\BulkInserts.cs /}
 {CODE-TABS/}
-{PANEL/}
+
 
 ## Related articles
 
