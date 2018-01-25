@@ -18,7 +18,11 @@ In order to include only specific properties in the CSV output you can use the `
 http://localhost:8080/databases/[db_name]/streams/queries?query=[query]&field=[field-1]&field=[field-2]...&field=[field-N]&format=csv
 {CODE-BLOCK/}
 
-- [Dealing With Long Urls](../how-to/integrate-with-excel#dealingwithlongurls)
+{INFO:Dealing with long URLs}
+
+In some cases it might be cumbersome to use the URL to send the query or the query might be too long. Please see our [dedicated section](../../client-api/how-to/integrate-with-excel#dealing-with-long-query-urls-in-excel) that deals with that problem.
+
+{INFO/}
 
 ## Example
 
@@ -26,7 +30,7 @@ First let's create a database, Northwind, and import the [sample data](..\..\stu
 
 Now let's query the product collection include the category document and project some of its properties using the below RQL:
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK:sql}
 from Products as p
 load p.Category as c
 select 
@@ -38,7 +42,7 @@ select
 
 In order to execute the above query we will need to use the following URL:   
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK:bash}
 http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%7D&format=csv
 {CODE-BLOCK/}
 
@@ -98,6 +102,7 @@ You will see something like:
 ![Excel connections dialog](images\excel_connections_dialog_1.png)
 
 Go to Properties and:   
+
 1. **uncheck** `Prompt for file name on refresh`.   
 2. **check** `Refresh data when opening the file`.   
 
@@ -105,14 +110,13 @@ Go to Properties and:
 
 You can close the file, change something in the database, and reopen it. You will see new values.
 
-{PANEL:DealingWithLongUrls}
-
-## Dealing with Long Query URLs in Excel
+{PANEL:Dealing with Long Query URLs in Excel}
 
 If you try and query for a bit more complex query, you might realize that excel will refuse to execute your request.
 
 ### Long Query Example
-{CODE-BLOCK:plain}
+
+{CODE-BLOCK:sql}
 from Products as p
 load p.Category as c
 select 
@@ -126,7 +130,7 @@ select
 
 After escaping the above query we will end up with the following request URL
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK:bash}
 http://localhost:8080/databases/Northwind/streams/queries?query=from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D&format=csv
 {CODE-BLOCK/}
 
@@ -142,7 +146,7 @@ For that you will need to include a document in your database with a `Query` pro
 The name of the document has no significance, but it is recommanded to use a key that reflects the purpose of this document.
 Let's add the `Query` property and set its value to the above query:
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK:json}
 {
     "Query": "from%20Products%20as%20p%0Aload%20p.Category%20as%20c%0Aselect%20%0A%7B%0A%20%20%20%20Name%3A%20p.Name%2C%0A%20%20%20%20Category%3A%20c.Name%2C%0A%20%20%20%20Discontinued%3A%20p.Discontinued%2C%0A%20%20%20%20PricePerUnit%3A%20p.PricePerUnit%0A%7D",
     "@metadata": {
@@ -153,7 +157,7 @@ Let's add the `Query` property and set its value to the above query:
 
 Now that we have the document ready for use, all we need to do is modify our URL so it will use the document redirection feature.
 
-{CODE-BLOCK:plain}
+{CODE-BLOCK:bash}
 http://localhost:8080/databases/Northwind/streams/queries?fromDocument=Excel%2FProductWithCatagory&format=csv
 {CODE-BLOCK/}
 

@@ -11,24 +11,23 @@ In order to use low-level commands directly, you will need to use the `Execute` 
 {CODE-TAB:csharp:ExecuteAsync Execute_async@ClientApi\HowTo\UseLowLevelCommands.cs /}
 {CODE-TABS/}
 
-### Examples
+## Examples
 
-{PANEL:GetDocumentsCommand}
+### GetDocumentsCommand
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync commands_1@ClientApi\HowTo\UseLowLevelCommands.cs /}
 {CODE-TAB:csharp:Async commands_1_async@ClientApi\HowTo\UseLowLevelCommands.cs /}
 {CODE-TABS/}
-{PANEL/}
 
-{PANEL:DeleteDocumentCommand}
+### DeleteDocumentCommand
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync commands_2@ClientApi\HowTo\UseLowLevelCommands.cs /}
 {CODE-TAB:csharp:Async commands_2_async@ClientApi\HowTo\UseLowLevelCommands.cs /}
 {CODE-TABS/}
-{PANEL/}
 
-
-### The Following Low-Level Commands are Available:
+## The Following Low-Level Commands are Available:
 
 * BatchCommand  
 * CreateSubscriptionCommand  
