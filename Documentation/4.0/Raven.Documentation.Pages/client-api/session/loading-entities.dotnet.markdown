@@ -1,6 +1,6 @@
-﻿# Session : Loading entities
+﻿# Session : Loading Entities
 
-There are various methods with many overloads that allow user to download a documents from database and convert them to entities. This article will cover following methods:
+There are various methods with many overloads that allow users to download documents from a database and convert them to entities. This article will cover the following methods:
 
 - [Load](../../client-api/session/loading-entities#load)
 - [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
@@ -11,7 +11,7 @@ There are various methods with many overloads that allow user to download a docu
 
 {PANEL:Load}
 
-The most basic way to load single entity is to use one of `Load` methods.
+The most basic way to load a single entity is to use one of the `Load` methods.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_1_0@ClientApi\Session\LoadingEntities.cs /}
@@ -24,7 +24,7 @@ The most basic way to load single entity is to use one of `Load` methods.
 
 | Return Value | |
 | ------------- | ----- |
-| TResult | Instance of `TResult` or `null` if document with given Id does not exist. |
+| TResult | Instance of `TResult` or `null` if a document with a given ID does not exist. |
 
 ### Example
 
@@ -39,17 +39,17 @@ The most basic way to load single entity is to use one of `Load` methods.
 
 {PANEL:Load with Includes}
 
-When there is a 'relationship' between documents, then those documents can be loaded in a single request call using `Include + Load` methods.
+When there is a 'relationship' between documents, those documents can be loaded in a single request call using the `Include + Load` methods.
 
 {CODE loading_entities_2_0@ClientApi\Session\LoadingEntities.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | string or Expression | Path in documents in which server should look for a 'referenced' documents. |
+| **path** | string or Expression | Path in documents in which the server should look for 'referenced' documents. |
 
 | Return Value | |
 | ------------- | ----- |
-| ILoaderWithInclude | `Include` method by itself does not materialize any requests, but returns loader containing methods such as `Load`. |
+| ILoaderWithInclude | The `Include` method by itself does not materialize any requests but returns loader containing methods such as `Load`. |
 
 ### Example I
 
@@ -71,7 +71,7 @@ We can use this code to load also an employee which made the order.
 
 {PANEL:Load - multiple entities}
 
-To load multiple entities at once use one of the following `Load` overloads.
+To load multiple entities at once, use one of the following `Load` overloads.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_3_0@ClientApi\Session\LoadingEntities.cs /}
@@ -84,7 +84,7 @@ To load multiple entities at once use one of the following `Load` overloads.
 
 | Return Value | |
 | ------------- | ----- |
-| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if document with given Id does not exist. |
+| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID does not exist. |
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_3_1@ClientApi\Session\LoadingEntities.cs /}
@@ -95,7 +95,7 @@ To load multiple entities at once use one of the following `Load` overloads.
 
 {PANEL:LoadStartingWith}
 
-To load multiple entities that contain common prefix use `LoadStartingWith` method from `Advanced` session operations.
+To load multiple entities that contain a common prefix, use the `LoadStartingWith` method from the `Advanced` session operations.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_4_0@ClientApi\Session\LoadingEntities.cs /}
@@ -105,11 +105,11 @@ To load multiple entities that contain common prefix use `LoadStartingWith` meth
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **keyPrefix** | string |  prefix for which documents should be returned  |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **exclude** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that key (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -134,7 +134,7 @@ To load multiple entities that contain common prefix use `LoadStartingWith` meth
 
 {PANEL:Stream}
 
-Entities can be streamed from server using one of the following `Stream` methods from `Advanced` session operations.
+Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_5_0@ClientApi\Session\LoadingEntities.cs /}
@@ -144,11 +144,11 @@ Entities can be streamed from server using one of the following `Stream` methods
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
-| **matches** | string | pipe ('&#124;') separated values for which document keys (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | string | skip document fetching until given key is found and return documents after that key (default: `null`) |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc. |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -180,17 +180,17 @@ Fetch documents for a Id prefix directly into a stream
 
 {PANEL:IsLoaded}
 
-To check if entity is attached to session, e.g. has been loaded previously, use `IsLoaded` method from `Advanced` session operations.
+To check if entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.
 
 {CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string | Entity Id for which check should be performed. |
+| **id** | string | Entity ID for which check should be performed. |
 
 | Return Value | |
 | ------------- | ----- |
-| bool | Indicates if entity with given Id is loaded. |
+| bool | Indicates if an entity with a given ID is loaded. |
 
 ### Example
 
@@ -201,6 +201,6 @@ To check if entity is attached to session, e.g. has been loaded previously, use 
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [Opening a session](./opening-a-session)  
