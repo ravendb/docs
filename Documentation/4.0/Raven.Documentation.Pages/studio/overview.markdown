@@ -33,14 +33,12 @@
 
 1. **Database selector**
 
-2. **Send feedback**
+2. **Send feedback** & **Notification Center**
 
-3. **Notification Center**
+3. **Number of documents & indexes in the database**
 
-4. **Number of documents & indexes in the database**
+4. **The local server node**
 
-5. **The local server node**
-
-6. **Server & studio versions**
+5. **Server & studio versions**
 
 {PANEL/}
