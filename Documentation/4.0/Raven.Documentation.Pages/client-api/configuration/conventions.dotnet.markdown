@@ -8,7 +8,7 @@ You will find many settings to overwrite, allowing you to adjust the client acco
 
 {INFO All customizations need to be set before `DocumentStore.Initialize()` is called. /}
 
-{PANEL:MaxHttpCacheSize}
+##MaxHttpCacheSize
 
 If you need to modify the maximum http cache size, you can use the following setting:
 
@@ -39,46 +39,32 @@ To disable the caching you can set the `MaxHttpCacheSize` value to zero:
 
 {NOTE/}
 
-{PANEL/}
-
-{PANEL:MaxNumberOfRequestsPerSession}
+## MaxNumberOfRequestsPerSession
 
 Gets or sets maximum number of GET requests per session. Default: `30`.
 
 {CODE MaxNumberOfRequestsPerSession@ClientApi\Configuration\Conventions.cs /}
 
-{PANEL/}
-
-{PANEL:UseOptimisticConcurrency}
+##UseOptimisticConcurrency
 
 Controls whether optimistic concurrency is set to true by default for all future sessions. Default: `false`.
 
 {CODE UseOptimisticConcurrency@ClientApi\Configuration\Conventions.cs /}
 
-{PANEL/}
-
-{PANEL:RequestTimeout}
+##RequestTimeout
 
 It allows to define the global request timeout value for all `RequestExecutors` created per database. Default: `null`.
 
 {CODE RequestTimeout@ClientApi\Configuration\Conventions.cs /}
 
-{PANEL/}
-
-{PANEL:DisableTopologyUpdates}
+##DisableTopologyUpdates
 
 Forces to disable updates of database topology. Default: `false`.
 
 {CODE DisableTopologyUpdates@ClientApi\Configuration\Conventions.cs /}
 
-{PANEL/}
-
-{PANEL:SaveEnumsAsIntegers}
+##SaveEnumsAsIntegers
 
 It determines if C# `enum` types should be saved as integers or strings and instruct the LINQ provider to query enums as integer values. Default: `false`.
 
 {CODE SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.cs /}
-
-{PANEL/}
-
-

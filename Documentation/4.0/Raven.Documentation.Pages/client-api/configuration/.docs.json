@@ -10,16 +10,6 @@
         ]
     },
     {
-        "Path": "/identifier-generation",
-        "Name": "Identifier generation",
-        "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/identifier-generation"
-            }
-        ]
-    },
-    {
         "Path": "querying.markdown",
         "Name": "Querying",
         "Mappings": [
@@ -43,5 +33,15 @@
                 "Key": "client-api/configuration/conventions/replication"
             }
         ]
-    }
+    },
+    {
+        "Path": "/identifier-generation",
+        "Name": "Identifier generation",
+        "Mappings": [
+            {
+                "Version": "3.0",
+                "Key": "client-api/configuration/conventions/identifier-generation"
+            }
+        ]
+    },
 ]

@@ -4,7 +4,7 @@ In RavenDB ClientAPI, if the _Read balance behavior_ is configured for the _Fast
 
 ### When Does it Trigger?
 
-Once a client configuration is updated on a server, the next response from the server would include the following header: "Refresh-Client-Configuration". 
+Once a client configuration is updated on a server, the next response from the server would include the following header: `Refresh-Client-Configuration`. 
 
 When a client sees such a header for the first time, it will probe all nodes when the next read request will happen and store the fastest found.
 

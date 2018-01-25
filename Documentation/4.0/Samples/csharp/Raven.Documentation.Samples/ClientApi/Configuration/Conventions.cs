@@ -13,8 +13,8 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             {
                 Conventions =
                 {
-                // customizations go here
-		        }
+                    // customizations go here
+                }
             }.Initialize())
             {
 

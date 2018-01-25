@@ -38,20 +38,23 @@ The next available identifier value (always incrementing number) from the given 
 
 The next attempt to store another `Order` object within the same session will result in creating the `orders/2-A` identifier. However, this time asking the server about the possible range will not be necessary because the in-memory range (1 - 32) is enough, so simply the next number will be added as the identifier suffix.
 
-{INFO:identifier value numeric range generation}
+{INFO:Identifier value numeric range generation}
 
 Each (in code) document store _instance_ handles the generation of the identifier value numeric range. The database stores the last requested number while the document store _instances_ request ranges and caches the returned range of available identities.
 
 The database has a single document (per collection) which stores the last identifier value requested by a document store instance.
 
-Eg. the document `Raven/HiLo/accounts` has the following value `
+E.g. the document `Raven/HiLo/accounts` has the following value 
+{CODE-BLOCK:json}
 { 
     "Max": "4000",
     "@metadata": {
         "@collection": "@hilo"
     } 
-}`, then the next range will be `4001 - 4032`, if 32 was range size. 
-(By default, it's 32).
+}
+{CODE-BLOCK/}
+
+then the next range will be `4001 - 4032`, if 32 was range size (by default, it's 32).
 
 The number of sessions per document store instance plays no part in identifier value generation. When the store is disposed, the client sends to the server the last value that he used and the max value he got from the server. Then the server will write it in the HiLo document (If the Max number is equal to the max number from the client and bigger or equal to the last used value by the client)
 {INFO/}
