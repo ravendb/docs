@@ -76,7 +76,7 @@ order by random()
 
 ## Ordering When a Field is Searchable
 
-When sorting must be done on field that is [Searchable](../../indexes/using-analyzers), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not Searchable, and sort by it.
+When sorting must be done on field that is [Searchable](../../indexes/using-analyzers), due to [Lucene](https://lucene.apache.org/) limitations sorting on such a field is not supported. To overcome this, create another field that is not searchable, and sort by it.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_6_1@Indexes\Querying\Sorting.cs /}
@@ -91,10 +91,11 @@ order by NameForSorting desc
 
 ## AlphaNumeric Ordering
 
-Sometimes, when ordering strings, it doesn't make sense to use the default lexicographic ordering.    
+Sometimes when ordering strings, it doesn't make sense to use the default lexicographic ordering.    
+
 For example, "Abc9" will come after "Abc10" because if treated as single characters, 9 is greater than 1.   
-If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing
-"Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
+
+If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
 
 To order in this mode, you can pass the `OrderingType.AlphaNumeric` type into `OrderBy` or `OrderByDescending`:   
 

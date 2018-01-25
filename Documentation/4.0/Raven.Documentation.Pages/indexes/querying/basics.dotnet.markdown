@@ -8,16 +8,23 @@ Each query in RavenDB must be expressed by [RQL](), our query language. Each que
 
 1. `from index | collection` 
   - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
+
 2. `where` 
   - When we have our index, we scan it for records that match the query predicate.
+
 3. `load`
   - If a query contains a projection that requires any document loads to be processed, they are done just before projection is executed.
+
 3. `select`
   - From each record, the server extracts the appropriate fields. It always extracts the `id()` field ([stored](../../indexes/storing-data-in-index) by default).   
-  - If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, then we use them and continue. If not, then the document is loaded from storage and the missing fields are fetched from it.
+
+  - If a query is not a projection query, then we load a document from storage. Otherwise, if we stored all requested fields in the index, we use them and continue. If not, the document is loaded from storage and the missing fields are fetched from it.
+
   - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
+
 4. `include` 
   - If any [includes]() are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+
 5. Return results.
 
 ## Querying Using LINQ
@@ -26,7 +33,7 @@ RavenDB Client supports querying using LINQ. This functionality can be accessed 
 
 ### Example I
 
-Let's execute our first query and return all employees from Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store) and [opened session](../../client-api/session/opening-a-session) and specify a [collection](../../client-api/faq/what-is-a-collection) type that we want to query (in our case `Employees`) by passing `Employee` as a generic parameter to the `Query` method:
+Let's execute our first query and return all the employees from the Northwind database. To do that, we need to have a [document store](../../client-api/what-is-a-document-store) and [opened session](../../client-api/session/opening-a-session) and specify a [collection](../../client-api/faq/what-is-a-collection) type that we want to query (in our case `Employees`) by passing `Employee` as a generic parameter to the `Query` method:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_0@Indexes\Querying\Basics.cs /}
@@ -40,7 +47,7 @@ By specifying `Employee` as a type parameter, we are also defining a result type
 
 ### Example II - Filtering
 
-To filter results, use the suitable LINQ method e.g. `Where`:
+To filter the results, use the suitable LINQ method e.g. `Where`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_1@Indexes\Querying\Basics.cs /}
@@ -89,12 +96,12 @@ where FirstName = 'Robert'
 {CODE-TABS/}
 
 {INFO:Remember}
-If you are filtering by fields that are not present in index, an exception will be thrown.
+If you are filtering by fields that are not present in an index, an exception will be thrown.
 {INFO/}
 
 ## Low-Level Query Access
 
-To take full control over your queries, we introduced a `DocumentQuery` method that is available in advanced session operations. It is a low-level access to the querying mechanism. The user can take advantage of to shape queries according to his needs.
+To take full control over your queries, we introduced a `DocumentQuery` method that is available in advanced session operations. It is a low-level access to the querying mechanism the user can take advantage of to shape queries according to his needs.
 
 ### Example
 
