@@ -32,7 +32,7 @@ Where the shape is in [WKT](http://en.wikipedia.org/wiki/Well-known_text) format
 
 ## Static Indexes
 
-All of the above examples are using the dynamic querying capabilities of RavenDB, and will create automatic indexes to retrieve their results. However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
+All of the above examples are using the dynamic querying capabilities of RavenDB and will create automatic indexes to retrieve their results. However, spatial queries can also be performed against static indexes, and this is done in a very similar way.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_3_0@Indexes\Querying\Spatial.cs /}
@@ -48,7 +48,7 @@ where spatial.within(Coordinates, spatial.circle(500, 30, 30))
 
 ## Ordering
 
-In order to sort the results by distance please use the `OrderByDistance` or `OrderByDistanceDescending` methods. You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index).
+In order to sort the results by distance, please use the `OrderByDistance` or `OrderByDistanceDescending` methods. You can read more about them [here](../../client-api/session/querying/how-to-query-a-spatial-index).
 
 ## Remarks
 
