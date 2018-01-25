@@ -40,17 +40,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
 		    using (var store = new DocumentStore())
 		    {
-		        using (var session = store.OpenAsyncSession())
+		        using (var asyncSession = store.OpenAsyncSession())
 		        {
 		            #region saving_changes_2_async
 		            // storing new entity
-		            await session.StoreAsync(new Employee
+		            await asyncSession.StoreAsync(new Employee
 		            {
 		                FirstName = "John", 
 		                LastName = "Doe"
 		            });
 
-		            await session.SaveChangesAsync();
+		            await asyncSession.SaveChangesAsync();
 		            #endregion
 		        }
 		    }
@@ -80,22 +80,22 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
 		    using (var store = new DocumentStore())
 		    {
-		        using (var session = store.OpenAsyncSession())
+		        using (var asyncSession = store.OpenAsyncSession())
 		        {
 		            // storing new entity
 		            #region saving_changes_3_async
-		            session.Advanced.WaitForIndexesAfterSaveChanges(
+		            asyncSession.Advanced.WaitForIndexesAfterSaveChanges(
 		                timeout: TimeSpan.FromSeconds(30),
 		                throwOnTimeout:true,
 		                indexes:new []{"index/1", "index/2"});
 
-		            await session.StoreAsync(new Employee
+		            await asyncSession.StoreAsync(new Employee
 		            {
 		                FirstName = "John",
 		                LastName = "Doe"
 		            });
                     
-		            await session.SaveChangesAsync();
+		            await asyncSession.SaveChangesAsync();
 		            #endregion
 		        }
 		    }
@@ -126,24 +126,24 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
 		    using (var store = new DocumentStore())
 		    {
-		        using (var session = store.OpenAsyncSession())
+		        using (var asyncSession = store.OpenAsyncSession())
 		        {
 		            // storing new entity
 		            #region saving_changes_4_async
 
-		            session.Advanced.WaitForReplicationAfterSaveChanges(
+		            asyncSession.Advanced.WaitForReplicationAfterSaveChanges(
 		                timeout: TimeSpan.FromSeconds(30),
 		                throwOnTimeout: false, //default true
 		                replicas:2, //minimum replicas to replicate
 		                majority:false);
 
-		            await session.StoreAsync(new Employee
+		            await asyncSession.StoreAsync(new Employee
 		            {
 		                FirstName = "John",
 		                LastName = "Doe"
 		            });
 
-		            await session.SaveChangesAsync();
+		            await asyncSession.SaveChangesAsync();
 		            #endregion
 		        }
 		    }
