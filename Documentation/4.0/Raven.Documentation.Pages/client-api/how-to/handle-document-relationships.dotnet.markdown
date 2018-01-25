@@ -14,21 +14,18 @@ Take this JSON document for example:
 
 {CODE-BLOCK:json}
 // Order document with ID: orders/1-A
-{ 
-    "Customer": 
-    {
+{
+    "Customer": {
         "Name": "Itamar",
         "Id": "customers/1-A"
     },
-    Items: 
-    [
-        { 
-            "Product": 
-            { 
+    Items: [
+        {
+            "Product": {
                 "Id": "products/1-A",
                 "Name": "Milk",
                 "Cost": 2.3
-             },
+            },
             "Quantity": 3
         }
     ]
@@ -105,7 +102,7 @@ This class contains an identifier for a `Customer`. The following code will incl
 
 The alternative way is to provide a string based path:
 
-{CODEincludes_6_2@ClientApi/HowTo/HandleDocumentRelationships.cs /}
+{CODE includes_6_2@ClientApi/HowTo/HandleDocumentRelationships.cs /}
 
 This secondary level include will also work with collections. The `Order.LineItems` property holds a collection of `LineItem` objects which each contain a reference to a `Product`:
 
