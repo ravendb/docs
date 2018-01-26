@@ -17,7 +17,7 @@ We want to make it as easy as possible for you to start RavenDB with a valid tru
 
 This section explains how to follow the setup wizard. It does not go into detail about security concerns. If you wish to learn about how authentication and authorization work in RavenDB or more about security in general, please read the [security section](../server/security/overview). 
 
-## Secure Setup with a Let's Encrypt Certificate
+{PANEL:Secure Setup with a Let's Encrypt Certificate}
 
 [Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain (or website) as long as you can prove that you own it.
 
@@ -43,7 +43,7 @@ The next step is to claim your subdomain. In the example below we choose the "ra
 ![Figure 3. Claim Domain](images/setup/4.png)  
 <br/>
 
-#### Configuring The Server Addresses
+### Configuring The Server Addresses
 
 In the next screen, you will choose the IP address and port that your server will bind to.
 
@@ -53,7 +53,7 @@ For a smooth setup experience, please make sure that the IP address and port are
 
 IP addresses may be changed at a later time by running the setup wizard again which will update the DNS records.
 
-#### Example I
+### Example I
 
 In the following screenshot, we show an example of constructing a cluster for local development:
 
@@ -67,7 +67,7 @@ All 3 nodes will run on the local machine:
 
 Each node will run in its own process and have its own data directory and settings.json file. You should have 3 seperate RavenDB folders.
 
-#### Example II
+### Example II
 
 Each node will run on its own machine in a network.
 
@@ -79,7 +79,7 @@ A common scenario for running an internal cluster will be:
 
 You can deploy a cluster that is completely internal to your network and still gain all the benefits of using certificates and SSL with full trust and complete support from all the standard tooling.
 
-#### Example III
+### Example III
 
 A RavenDB server can run behind a firewall (in cloud environments for example).
 
@@ -90,7 +90,7 @@ Check the box "Customize external IP and Ports" and supply the external IP addre
 ![Figure 4a. Configure Cloud Node](images/setup/5a.png)  
 <br/>
 
-#### Example IV
+### Example IV
 
 In Docker, if you choose to use port mapping with the -p flag, You need to check the box "Customize external IP and Ports" and supply the external IP address as well as the exposed ports.  
 
@@ -103,7 +103,7 @@ Then the following congifuration should be applied:
 ![Figure 4b. Configure Docker Node](images/setup/5b.png)  
 <br/>
 
-#### Getting The Certificate
+### Getting The Certificate
 
 When you click next, the wizard will establish a connection with Let's Encrypt to obtain a valid certificate for the entire cluster. 
 
@@ -132,7 +132,7 @@ If you didn't check the box, before you continue please register the client cert
 
 If you are setting up a single node, the setup is complete and you can start working.
 
-#### Continuing The Cluster Setup
+### Continuing The Cluster Setup
 
 When you access the studio please navigate to: Manage Server > Cluster. You will see something similar to this:
 
@@ -159,7 +159,9 @@ Click restart when finished and repeat the process for more nodes. When all the 
 
 You have successfully finished setting up a secure cluster of RavenDB servers using a Let's Encrypt certificate.
 
-## Secure Setup with Your Own Certificate
+{PANEL/}
+
+{PANEL:Secure Setup with Your Own Certificate}
 
 In RavenDB, users can provide their own server certificate. The certificate can be issued by a trusted SSL vendor or it can be a self-signed certificate. In the latter case, it's the user's responsibility to have the self-signed CA registered in the OS stores on all the relevant machines.
 
@@ -174,7 +176,7 @@ After choosing the Secure Setup with your own certificate option, you are requir
 
 ![Figure 1. Upload Certificate](images/setup/w1.png)
 
-#### Configuring The Server Addresses
+### Configuring The Server Addresses
 
 In the next screen, you will choose the IP address and port that your server will bind to.
 
@@ -188,7 +190,7 @@ If you bring your own certificate you must also take care of the DNS records. If
 If you are running behind a firewall, the DNS records must point to the **external** IP address.
 {WARNING/}
 
-#### Example I
+### Example I
 
 In the following screenshot, we show an example of constructing a cluster for local development:
 
@@ -202,7 +204,7 @@ All 3 nodes will run on the local machine:
 
 Each node will run in its own process and have its own data directory and settings.json file. You should have 3 seperate RavenDB folders.
 
-#### Example II
+### Example II
 
 Each node will run on its own machine in a network.
 
@@ -214,7 +216,7 @@ A common scenario for running an internal cluster will be:
 
 You can deploy a cluster that is completely internal to your network and still gain all the benefits of using certificates and SSL with full trust and complete support from all the standard tooling.
 
-#### Example III
+### Example III
 
 A RavenDB server can run behind a firewall (in cloud environments for example).
 
@@ -222,7 +224,7 @@ RavenDB will bind to the **private** IP address. However, the DNS records must b
 
 It is your responsibility to update the DNS record of your domain to point to your external IP address.  
 
-#### Example IV
+### Example IV
 
 In Docker, if you choose to use port mapping with the -p flag, You need to check the box "Customize external IP and Ports" and supply the external IP address as well as the exposed ports.  
 
@@ -233,12 +235,10 @@ So if a container was created using:
 Then the following congifuration should be applied:  
 
 ![Figure 2a. Configure Docker Node](images/setup/w2a.png)  
-<br/>
 
 When finished you will receive a ZIP file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this ZIP file to setup the other nodes.
 
 ![Figure 3. Configuration Completed](images/setup/w3.png)
-<br/>
 
 At this point, click the "Restart Server" button, and wait until the browser redirects you to the new URL (in the example it's "https://a.ravendb.example.com").
 
@@ -247,16 +247,15 @@ If you checked the relevant box in the previous stage, a client certificate is r
 If you didn't check the box, please register the client certificate in the OS store or import it to the browser before you continue.
 
 ![Figure 4. Restart and choose certificate](images/setup/w4.png)
-</br>
 
 If you are setting up a single node, the setup is complete and you can start working.
 
-#### Continuing The Cluster Setup
+### Continuing The Cluster Setup
 
 When you access the studio please navigate to: Manage Server > Cluster. You will see something similar to this:
 
 ![Figure 8. Incomplete Cluster](images/setup/w5.png)  
-</br>
+
 Nodes B and C are not running yet. As soon as we start them, node A will detect it and add them to the cluster.
 
 Now, let's bring node B up.
@@ -274,13 +273,12 @@ Now we will supply the downloaded ZIP file and select the node we are currently 
 Click restart when finished and repeat the process for more nodes. When all the nodes are up, you can view the updated topology in the studio.
 
 ![Figure 11. Complete Cluster](images/setup/w7.png)
-</br>
 
 You have successfully finished setting up a secure cluster of RavenDB servers using you own wildcard certificate.
-</br>
-</br>
 
-# Unsecured Setup
+{PANEL/}
+
+{PANEL:Unsecured Setup}
 
 In Unsecured Setup, all you need to do is choose the IP address and ports that the server will listen to.
 
@@ -299,7 +297,6 @@ When choosing to listen to an outside network, the RavenDB server does not provi
 When you are done configuring the server, click next and then restart. After a few seconds, the server will be ready and accessible.
 
 ![Figure 3. Complete Cluster](images/setup/u1.png)
-</br>
 
 Access the studio by entering the URL in the browser: "http://127.0.0.1:8080" or "http://localhost:8080".
 
@@ -310,9 +307,10 @@ You have successfully finished setting up a RavenDB server.
 To construct a cluster, unzip the downloaded RavenDB package to more machines (or local folders), as many as the number of nodes you want. In each node, start the RavenDB server and complete the setup wizard , with a different IP address.
 
 Once all the servers are up and running, building the cluster is simple. Access the studio, go to Manage Server > Cluster, and add nodes to the cluster by their URL.  
-</br>
 
-# Manual Setup
+{PANEL/}
+
+{PANEL:Manual Setup}
 
 If none of the above setup options work for you, it is possible to configure the server manually using the 'settings.json' file which is located in the server folder. To disable the setup wizard, change the 'Setup.Mode' value to 'None'.
 
@@ -321,3 +319,5 @@ Read the [Certificate Configuration Section](../server/security/authentication/c
 Read the [Configuration Section](../server/configuration/configuration-options) to learn more about using 'settings.json' and see a list of configuration options.
 
 Read the [Security Section](../server/security/overview) to learn more about security in RavenDB.
+
+{PANEL/}
