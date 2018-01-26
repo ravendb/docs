@@ -141,12 +141,43 @@ ravendb>
 
 {PANEL/}
 
-{PANEL:addServerCert}
+{PANEL:generateClientCert}
 
-Adding another node's server certificate to be trusted on this server. This is required when building a cluster where each node has a different certificate.
+Generate a new trusted client certificate with `ClusterAdmin` security clearance.
 
 {CODE-BLOCK:plain}
-addServerCert <path> [password]
+ravendb> generateClientCert <name> <path-to-output-folder> [password]
+{CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL:trustServerCert}
+
+Register a server certificate of another node to be trusted on this server. This is required when building a cluster where each node has a different certificate.
+
+{CODE-BLOCK:plain}
+ravendb> trustServerCert <name> <path-to-pfx> [password]
+{CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL:trustClientCert}
+
+Register a client certificate to be trusted on this server with `ClusterAdmin` security clearance.
+
+{CODE-BLOCK:plain}
+ravendb> trustClientCert <name> <path-to-pfx> [password]
+{CODE-BLOCK/}
+
+{PANEL/}
+
+{PANEL:replaceClusterCert}
+
+Replace the cluster certificate.  
+{DANGER If [-replaceImmediately] is specified, RavenDB will replace the certificate by force, even if some nodes are not responding. In that case, you will have to manually replace the certificate in those nodes. Use with care. /}
+
+{CODE-BLOCK:plain}
+ravendb> replaceClusterCert [-replaceImmediately] <name> <path-to-pfx> [password]
 {CODE-BLOCK/}
 
 {PANEL/}

@@ -45,7 +45,7 @@ See also: [Linux Prerequisites](https://docs.microsoft.com/en-us/dotnet/core/lin
 
 1. Extract the zip/tar file to a directory of your choice.  
 
-2. In <strong>Windows</strong>, use the `Start.cmd` script. In <strong>Linux</strong>, use the `start.sh` script. This will run RavenDB in an initial setup mode and redirect you to the Setup Wizard in your browser.
+2. In <strong>Windows</strong>, use the `run.ps1` script. In <strong>Linux</strong>, use the `start.sh` script. It will run RavenDB in an initial setup mode and redirect you to the Setup Wizard in your browser.
 
 3. Follow this [detailed walk through](setup-wizard) to complete the wizard successfully. 
 
@@ -55,7 +55,7 @@ See also: [Linux Prerequisites](https://docs.microsoft.com/en-us/dotnet/core/lin
 
 2. Find the 'settings.json' file which is located in the server folder. To disable the setup wizard, change the 'Setup.Mode' value to 'None'.
 
-3. In <strong>Windows</strong>, use the `Start.cmd` script or run `Server\Raven.Server.exe` directly.  In <strong>Linux</strong>, use the `start.sh` script or run `Server\Raven.Server` directly.  
+3. In <strong>Windows</strong>, use the `run.ps1` script or run `Server\Raven.Server.exe` directly.  In <strong>Linux</strong>, use the `start.sh` script or run `Server\Raven.Server` directly.  
 
 This will run RavenDB in interactive mode inside a console application:
 
@@ -88,7 +88,7 @@ Running as a service in <strong>Linux</strong>, add the following to your daemon
 
     <path/to/ravendb>/Server/Raven.Server --daemon
 
-Once things are set up and the server is running, you can access our GUI, the [RavenDB Management Studio](..\studio\overview.markdown), by going to http://localhost:8080 in your browser.
+Once things are set up and the server is running, you can access our GUI, the [RavenDB Management Studio](..\studio\overview), by going to http://localhost:8080 in your browser.
 
 <strong>RavenDB Management Studio comes free with all licenses: Community, Professional, and Enterprise. </strong>
 
@@ -112,11 +112,11 @@ If port 8080 is already being used, RavenDB will fail to start and give you an "
 
 <strong>Our GUI, the RavenDB Management Studio, comes free with all licenses: Community, Professional, and Enterprise. </strong>
 
-You can access the [RavenDB Management Studio](..\studio\overview.markdown) by going to http://10.0.75.2:8080 in your browser. This is assuming that you are using the default networking
-configuration with Dokcer, and that the Dokcer instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it 
+You can access the [RavenDB Management Studio](..\studio\overview) by going to http://10.0.75.2:8080 in your browser. This is assuming that you are using the default networking
+configuration with Docker, and that the Docker instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it 
 externally, make sure to go through the security configuration first. 
 
-For more options and information on running RavenDB under Docker, please visit the [Docker Section]().
+For more options and information on running RavenDB under Docker, please visit the [Docker Section]() (coming soon...).
 
 ## Security Concerns
 
@@ -127,12 +127,6 @@ and you require no authentication. Once you set RavenDB to listen to connections
 your database will immediately block this now vulnerable configuration, and require the administrator to properly setup the security and 
 access control to prevent unauthorized access to your data.
 
-<strong>RavenDB will not let you listen to requests outside your local machine until you have adequately provided security for it.  </strong>  
-
-<strong>We recommend using the Setup Wizard to easily install RavenDB securely from the very start.  </strong>
+<strong>RavenDB will not let you listen to requests outside your local machine until you have adequately provided security for it. We recommend using the Setup Wizard to easily install RavenDB securely from the very start.  </strong>  
 
 Read more about security and how to enable authentication [here](../server/security/overview)
-
-## Installing RavenDB on a Raspberry Pi
-
-## Running RavenDB on 32-bit machines
