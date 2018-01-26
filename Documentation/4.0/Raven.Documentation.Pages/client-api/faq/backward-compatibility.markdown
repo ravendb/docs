@@ -20,7 +20,7 @@ Some examples:
 
  <br />
 
-{PANEL: Upgrading}
+## Upgrading
 
 ### Same Major Version
 
@@ -29,8 +29,6 @@ To properly upgrade your applications and server, we advise you to upgrade the s
 ### Different Major Version
 
 Upgrading to a different Major version necessitates upgrading the server and all clients in lockstep. Please visit [migration guide section](../../migration/client-api/introduction) talking about migration from 3.x.
-
-{PANEL/}
 
 ## Related Articles
 
