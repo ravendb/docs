@@ -1,5 +1,4 @@
 ﻿# Creating Sample Data
----
 
 {NOTE: }
 
@@ -8,8 +7,6 @@
 * Most of the examples in the documentation are based on this data,  
   and it will help you become familiar with RavenDB and its various functionalities.  
 {NOTE/}
-
----
 
 {PANEL: Create Sample Data}
 

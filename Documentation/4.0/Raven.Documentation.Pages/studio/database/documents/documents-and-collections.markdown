@@ -1,5 +1,4 @@
 ﻿# Documents and Collections
----
 
 {NOTE: Documents}
 
@@ -24,7 +23,7 @@
 
 ---
 
-{PANEL: The Documents View:}  
+{PANEL: The Documents View}  
 
 * Shows all collections and the documents each contains.  
 * Actions such as create, delete or export a document and more can be done.  
@@ -79,8 +78,6 @@ Click `Display` to:
 
 {PANEL/}
 
----
-
 {PANEL: The @hilo Collection:}  
 
 ![Figure 4. hilo collection](images/documents-and-collections-4.png "The @hilo Collection")
@@ -93,13 +90,11 @@ Click `Display` to:
   For more information about the HiLo Algorithm see [HiLo Algorithm](../../../client-api/document-identifiers/hilo-algorithm)  
 {PANEL/}
 
----
-
 {PANEL: The @empty Collection:}  
 
 ![Figure 5. empty collection](images/documents-and-collections-5.png "The @emtpy Collection")
 
-* A document that has been generated with a **Guid identifier** has no specific collection.  
+* A document that has been generated with a **GUID identifier** has no specific collection.  
   Those documents will show under the _@empty_ collection.  
 
 * For more information about the various documents identifiers that can be generated see [Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)  

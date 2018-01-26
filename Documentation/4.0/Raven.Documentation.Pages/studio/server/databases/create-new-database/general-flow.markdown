@@ -1,5 +1,4 @@
 ﻿# Create A Database : General Flow
----
 
 {PANEL: 1. New Database}
 

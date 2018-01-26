@@ -3,9 +3,7 @@
 
 {NOTE: }
 
-* All the data in your database can be encrypted when running in HTTPS.  
-
-* Database encryption is possible only if authentication is enabled and a server certificate is defined.  
+* All the data in your database can be encrypted, but encryption is possible only if authentication is enabled and a server certificate is defined
 
 * Learn more about authentication in: [Authentication Overview](../../../../server/security/overview)  
 {NOTE/}
