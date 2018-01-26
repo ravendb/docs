@@ -2,7 +2,7 @@
 
 In RavenDB, configuration values can be set using environment variables, command line arguments or using the `settings.json` file. For more details, please read the [Configuration Section.](../../configuration/configuration-options)  
 
-{NOTE This section explains how to setup authentication <strong>manually</strong>. Please also take a look at the automated [Setup Wizard](../../../start/setup-wizard) which lets you setup authentication in a much easier and faster way. /}
+{NOTE This section explains how to setup authentication <strong>manually</strong>. Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you setup authentication in a much easier and faster way. /}
 
 To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Exec` must be set in `settings.json`.
 

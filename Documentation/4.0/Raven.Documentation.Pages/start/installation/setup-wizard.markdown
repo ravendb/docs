@@ -312,7 +312,7 @@ Once all the servers are up and running, building the cluster is simple. Access 
 
 {PANEL:Manual Setup}
 
-If none of the above setup options work for you, it is possible to configure the server manually using the 'settings.json' file which is located in the server folder. To disable the setup wizard, change the 'Setup.Mode' value to 'None'.
+If none of the above setup options work for you, it is possible to configure the server manually using the `settings.json` file which is located in the `Server` folder. To disable the setup wizard, change the `Setup.Mode` value to `None`.
 
 Read the [Certificate Configuration Section](../server/security/authentication/certificate-configuration) to learn how setup security manually
 
