@@ -104,12 +104,12 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **keyPrefix** | string |  prefix for which documents should be returned  |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **idPrefix** | string |  prefix for which documents should be returned  |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | string | skip document fetching until given ID is found and return documents after that key (default: `null`) |
+| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -143,8 +143,8 @@ Entities can be streamed from the server using one of the following `Stream` met
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **startsWith** | string | prefix for which documents should be streamed (mutually exclusive with 'fromEtag') |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'keyPrefix') should be matched ('?' any single character, '*' any characters) |
+| **startsWith** | string | prefix for which documents should be streamed |
+| **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
 | **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
@@ -158,7 +158,7 @@ Entities can be streamed from the server using one of the following `Stream` met
 
 ### Example I
 
-Stream documents for a Id prefix
+Stream documents for a ID prefix
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
@@ -166,7 +166,7 @@ Stream documents for a Id prefix
 {CODE-TABS/}
 
 ## Example 2
-Fetch documents for a Id prefix directly into a stream
+Fetch documents for a ID prefix directly into a stream
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TAB:csharp:Async loading_entities_5_2_async@ClientApi\Session\LoadingEntities.cs /}
