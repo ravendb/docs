@@ -8,7 +8,7 @@ When RavenDB is running with a server certificate for the first time, there are 
 
 {NOTE This operation is only required when doing a <strong>manual</strong> secured setup. If you are using the automated [Setup Wizard](../../../start/setup-wizard), an admin client certificate will be generated for you as part of the wizard. /}
 
-#### Example I : Using the RavenDB CLI
+### Example I - Using the RavenDB CLI
 
 If you have access to the server, the simplest way is to use the RavenDB CLI:
 
@@ -22,7 +22,7 @@ Or if you wish to use your own client certificate:
 ravendb> trustClientCert <name> <path-to-pfx> [password]
 {CODE-BLOCK/}
 
-#### Example II : Using Powershel and Wget in Windows 
+### Example II - Using Powershel and Wget in Windows 
 
 You can use a client to make an HTTP request to the server. At this point you only have a **server certificate** and you will use it (acting as the client certificate).
 
@@ -52,17 +52,19 @@ We can use wget to request a `Cluster Admin` certificate. This will be the paylo
 
 First, load the server certificate:
 
-    $cert = Get-PfxCertificate -FilePath c:/secrets/server.pfx
+{CODE-BLOCK:powershell}
+$cert = Get-PfxCertificate -FilePath c:/secrets/server.pfx
+{CODE-BLOCK/}
 
 Then make the request:
 
-    wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.pfx" -Body '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' "https://rvn-srv-1:8080/admin/certificates"
+{CODE-BLOCK:powershell}
+wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.pfx" -Body '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' "https://rvn-srv-1:8080/admin/certificates"
+{CODE-BLOCK/}
 
-</br>
+### Example III : Using Curl in Linux
 
-#### Example III : Using Curl in Linux
+### Example IV : Using the RavenDB Client
 
-#### Example IV : Using the RavenDB Client
-
-## Client certificates & the RavenDB Client
+## Client Certificates & the RavenDB Client
 

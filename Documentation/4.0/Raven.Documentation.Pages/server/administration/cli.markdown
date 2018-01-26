@@ -174,7 +174,7 @@ ravendb> trustClientCert <name> <path-to-pfx> [password]
 {PANEL:replaceClusterCert}
 
 Replace the cluster certificate.  
-{DANGER If [-replaceImmediately] is specified, RavenDB will replace the certificate by force, even if some nodes are not responding. In that case, you will have to manually replace the certificate in those nodes. Use with care. /}
+{DANGER If **replaceImmediately** is specified, RavenDB will replace the certificate by force, even if some nodes are not responding. In that case, you will have to manually replace the certificate in those nodes. Use with care. /}
 
 {CODE-BLOCK:plain}
 ravendb> replaceClusterCert [-replaceImmediately] <name> <path-to-pfx> [password]
