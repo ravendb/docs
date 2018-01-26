@@ -1,4 +1,4 @@
-# RavenDB Setup Walkthrough
+# Installation : Setup Wizard
 
 To make the setup process as smooth as possible, we introduced the "Setup Wizard", a step-by-step guide to help you configure your desired level of security and easily deploy a secured cluster.
 
@@ -7,7 +7,7 @@ You have 4 options to choose from:
 1. [Secure Setup with a Let's Encrypt certificate](#secure-setup-with-a-lets-encrypt-certificate)
 2. [Secure Setup with your own certificate](#secure-setup-with-your-own-certificate)
 3. [Unsecured Setup](#unsecured-setup)
-4. [Manual Setup](#manual-setup)
+4. [Manual Setup](../../start/installation/manual)
 
 When running the RavenDB server for the first time, you will be redirected to the setup wizard welcome screen where you can choose your preferred option.
 

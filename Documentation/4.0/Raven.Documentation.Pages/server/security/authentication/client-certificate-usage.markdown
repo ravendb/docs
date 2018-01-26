@@ -6,7 +6,7 @@ In previous sections we described how to obtain a server certificate and how to 
 
 When RavenDB is running with a server certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is to generate/register an admin client certificate.
 
-{NOTE This operation is only required when doing a <strong>manual</strong> secured setup. If you are using the automated [Setup Wizard](../../../start/installation/setup-wizard), an admin client certificate will be generated for you as part of the wizard. /}
+{NOTE This operation is only required when doing a **manual** secured setup. If you are using the automated [Setup Wizard](../../../start/installation/setup-wizard), an admin client certificate will be generated for you as part of the wizard. /}
 
 ### Example I - Using the RavenDB CLI
 

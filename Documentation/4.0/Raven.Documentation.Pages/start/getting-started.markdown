@@ -42,7 +42,7 @@ We highly recommend **updating** your **MacOS** and checking [.NET Core prerequs
 
 ### Installation & Setup
 
-After extraction of the Server package you can start the [Setup Wizard](../start/installation/setup-wizard) by running the `run.ps1` (or `run.sh`) script or [disable the 'Setup Wizard' and configure the server manually](../start/setup-wizard#manual-setup).
+After extraction of the Server package you can start the [Setup Wizard](../start/installation/setup-wizard) by running the `run.ps1` (or `run.sh`) script or [disable the 'Setup Wizard' and configure the server manually](../start//installation/manual).
 
 {NOTE: Running in a Docker container}
 
