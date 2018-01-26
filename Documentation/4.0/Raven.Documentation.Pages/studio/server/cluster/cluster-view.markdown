@@ -1,23 +1,23 @@
-﻿## Cluster View
+﻿# Cluster View
 ---
 
-{PANEL}
-This view shows your cluster's current state and structure.  
+{NOTE: }
 
-You can manage the cluster by actions such as:  
+* This view shows your cluster's current state and structure.  
 
-* Adding a node to the cluster
-* Changing the leader
-* Reassigning cores
-* And much more
-{PANEL/}
+* You can manage the cluster by actions such as:  
+
+  * Adding a node to the cluster  
+  * Changing the leader  
+  * Reassigning cores  
+  * And much more  
+{NOTE/}
 
 ---
-### Cluster Stats
+
+{PANEL: Cluster Stats}
 
 ![Figure 1. Cluster Stats](images/cluster-view-1.png "Cluster Stats")
-
-{PANEL}
 
 1. **Available Cores**  
    Assigned: Total number of cores assigned to use for server nodes in all of the cluster  
@@ -43,15 +43,12 @@ You can manage the cluster by actions such as:
     The core-memory ratio is determined by your license type
 {PANEL/}
 
----
-### Cluster Operations
+{PANEL: Cluster Operations}
 
 ![Figure 2. Cluster Operations](images/cluster-view-2.png "Cluster Operations")
 
-{PANEL}
-
 1. **Add New Node to Cluster**  
-   // TODO: Add Link to page when created .......  
+   See [Add node to cluster](add-node-to-cluster)
 2. **Demote**  
    Demote a Member to be a Watcher  
 3. **Reassign Cores**  
@@ -64,7 +61,6 @@ You can manage the cluster by actions such as:
    Clicking 'Force Timeout' will trigger actions on the node as if it did Not hear from the Leader in this time period  
 {PANEL/}
 
----
 {PANEL: Nodes Types}
 
 * **Member**
@@ -90,7 +86,6 @@ You can manage the cluster by actions such as:
   * Updated by the leader to the latest RAFT state 
 {PANEL/}
 
----
 {PANEL: Nodes States & Types Flow}
 
 ![Figure 3. States Flow](images/cluster-states.png "States Flow")

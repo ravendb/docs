@@ -1,29 +1,28 @@
-﻿## Databases List View
+﻿# Databases List View
 ---
 
-{PANEL}
-All your databases are listed in this view
+{NOTE: }
+All your databases are listed in this view  
 
-* Database stats can be viewed   
-* Actions can be performed on each database   
-{PANEL/}
-            
+* Database stats can be viewed  
+* Actions can be performed on each database  
+{NOTE/}
+
 ---
-### Database Stats
+{PANEL: Database Stats}
 
 ![Figure 1. Database Stats](images/database-stats.png "Database Stats")
-
-{PANEL}
 
 1. **Database State**    
    A database can be: _Online_ , _Offline_ or _Disabled_        
 
-   * ***Online***   - Database is active and ready to use. Read and write actions can be done.
-   * ***Offline***  - Database was not used recently, and will become online upon access.
-   * ***Disabled*** - Database has been disabled.      
+   * ***Online***   - Database is active and ready to use. Read and write actions can be done.  
+   * ***Offline***  - Database was not used recently, and will become online upon access.  
+   * ***Disabled*** - Database has been disabled.  
   
-   * Note: If the database is contained in one of the cluster's nodes, but not in the node that shows in this current view,   
-then ***'Remote'*** will be indicated - see more below
+   * Note:  
+     If the database is contained in one of the cluster's nodes, but Not in the node that shows in this current view,
+     then ***'Remote'*** will be indicated - see more below
 
 2. **Containing Nodes**   
    These are the nodes that contain a replica of the database. 
@@ -47,12 +46,9 @@ then ***'Remote'*** will be indicated - see more below
    The number of alerts on this database if there are any.
 {PANEL/}
 
----  
-### Database Actions
+{PANEL: Database Actions}
 
 ![Figure 2. Database Actions](images/database-actions-1.png "Database Actions")
-
-{PANEL}
 
 1. **Create new database**    
    A new database can be created from scratch, from a backup copy, or from existing 3.x data - see more below
@@ -72,12 +68,9 @@ then ***'Remote'*** will be indicated - see more below
 6. **Delete the database**
 {PANEL/}
 
----
-### Creating New Database Options
+{PANEL: Creating New Database Options}
 
 ![Figure 3. Creating New Database](images/database-actions-2.png "Creating New Database Options")
-
-{PANEL}
 
 1. **Create new database from scratch**   
    See detailed flow in: // TODO: add links to relevant page when exists.. 
@@ -90,12 +83,9 @@ then ***'Remote'*** will be indicated - see more below
    See detailed flow in: // TODO: add links to relevant page when exists..
 {PANEL/}
 
----
-### More Actions
+{PANEL: More Actions}
 
 ![Figure 4. More Actions](images/database-actions-3.png "More Actions")
-
-{PANEL}
 
 1. **Pause indexing**      
    All indexes on this database will stop indexing.
@@ -109,17 +99,15 @@ then ***'Remote'*** will be indicated - see more below
    Physically compact the database on disk
 {PANEL/}
 
----
-### Remote Database
+{PANEL: Remote Database}
 
 ![Figure 5. Remote Database](images/database-actions-4.png "Remote Database")
 
-{PANEL}
+* If the database is contained in one of the cluster's nodes but Not in the node that shows in this current view,  
+  then ***'Remote'*** is indicated  
 
-If the database is contained in one of the cluster's nodes but Not in the node that shows in this current view, then ***'Remote'*** is indicated  
+* For example, in the above figure, DB2 is contained in nodes A & B  
+  It is indicated as _'Remote'_ since the current view is for node C  
 
-For example, in the above figure, DB2 is contained in nodes A & B  
-It is indicated as _'Remote'_ since the current view is for node C
-
-**Note:** Clicking on a remote database will navigate to the documents view for this database on its containing node 
+* **Note:** Clicking on a remote database will navigate to the documents view for this database on its containing node  
 {PANEL/}

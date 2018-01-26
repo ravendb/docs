@@ -1,16 +1,15 @@
-﻿## Server Dashboard
+﻿# Server Dashboard
 ---
 
-{PANEL}
-This dashboard provides a diagnostic overview of your server performance and databases status.   
-{PANEL/}
+{NOTE: }
+This dashboard provides a diagnostic overview of the RavenDB server performance and databases status.  
+{NOTE/}
 
 ---
-### The Server Dashboard
+
+{PANEL: The Server Dashboard}
 
 ![Figure 1. Server Dashboard](images/server-dashboard.png "Server Dashboard")
-
-{PANEL}
 
 1. **Server Node Details:**  
    Data about the running server such as:   
