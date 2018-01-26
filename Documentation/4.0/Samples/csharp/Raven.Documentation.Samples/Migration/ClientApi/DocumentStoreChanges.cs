@@ -15,19 +15,44 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
 
             #region events_1
             store.OnBeforeStore += (s, e) => { };
-            store.OnAfterSaveChanges += (s, e) => { };
+            store.OnAfterStore += (s, e) => { };
             store.OnBeforeDelete += (s, e) => { };
-            store.OnBeforeQuery += (s, e) => { };
+            store.OnBeforeQueryExecuted += (s, e) => { };
             #endregion
 
             #region urls_1
             new DocumentStore
             {
-                Urls = new[]
+                Urls = new []
                 {
                     "http://ravendb-1:8080",
                     "http://ravendb-2:8080",
                     "http://ravendb-3:8080"
+                }
+            }.Initialize();
+            #endregion
+
+            #region serialization_1
+            new DocumentStore
+            {
+                Conventions =
+                {
+                    CustomizeJsonSerializer = serializer => { },
+                    DeserializeEntityFromBlittable = (type, blittable) => new object()
+                }
+            }.Initialize();
+            #endregion
+
+            #region serialization_2
+            new DocumentStore
+            {
+                Conventions =
+                {
+                    BulkInsert =
+                    {
+                        TrySerializeEntityToJsonStream = (o, writer) => true
+                        TrySerializeMetadataToJsonStream = (o, writer) => true
+                    }
                 }
             }.Initialize();
             #endregion
@@ -59,7 +84,7 @@ namespace Raven.Documentation.Samples.Migration.ClientApi
             #endregion
 
             #region request_executor_5
-            using (store.SetRequestTimeout(TimeSpan.FromMilliseconds(180)))
+            using (store.SetRequestsTimeout(TimeSpan.FromMilliseconds(180)))
             {
             }
             #endregion
