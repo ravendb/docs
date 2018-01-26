@@ -1,5 +1,6 @@
-﻿# Writing your unit test against Raven.TestDriver
-In this section we will explain how to use [Raven.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
+﻿# Writing your unit test using TestDriver
+
+In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
 
 - [RavenServerLocator](../start/test-driver#ravenserverlocator)
 - [RavenTestDriver](../start/test-driver#raventestdriver)
@@ -9,16 +10,12 @@ In this section we will explain how to use [Raven.TestDriver](https://www.nuget.
 
 {PANEL:RavenServerLocator}
 
-The first thing we need to implement is a class derived from RavenServerLocator
+The first thing we need to implement is a class derived from `RavenServerLocator`
 
-### Properties
-| Signature | Description |
-| ----------| ----- |
-| **public abstract string ServerPath { get; }** | Allows to fetch the server path. |
-| **public virtual string Command => ServerPath;** | Allows to fetch the command used to invoke the server. |
-| **public virtual string CommandArguments => string.Empty;** | Allows to fetch the command arguments.|
+{CODE RavenServerLocator@Start\RavenDBTestDriver.cs /}
 
 ### Example
+
 {CODE test_driver_5@Start\RavenDBTestDriver.cs /}
 
 {PANEL/}
@@ -26,7 +23,7 @@ The first thing we need to implement is a class derived from RavenServerLocator
 {PANEL:RavenTestDriver}
 
 Now that we learned how to implement a server locator we can define a class that derives from Raven's TestDriver.
-Lets start with reviewing the TestDriver's methods and properties and later we will get into implementation (complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver#completecodesample) of the page).
+Lets start with reviewing the TestDriver's methods and properties and later we will get into implementation (complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver##complete-example) of the page).
 
 ### Properties and Methods
 | Signature | Description |
@@ -59,7 +56,7 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 {PANEL:UnitTest}
 Finally we can write down a simple test, note that I'm using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
 Also note that the test itself is meant to show diffrent capabilities of the test driver and is not meant to be the most efficient.
-The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#completecodesample)
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver##complete-example)
 
 ### Example
 

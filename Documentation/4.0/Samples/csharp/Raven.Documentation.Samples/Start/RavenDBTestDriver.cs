@@ -8,6 +8,29 @@ using Raven.Client.Documents.Indexes;
 
 namespace RavenDBTestDriver
 {
+    namespace Foo
+    {
+        #region RavenServerLocator
+        public abstract class RavenServerLocator
+        {
+            /// <summary>
+            /// Allows to fetch the server path
+            /// </summary>
+            public abstract string ServerPath { get; }
+
+            /// <summary>
+            /// Allows to fetch the command used to invoke the server.
+            /// </summary>
+            public virtual string Command => ServerPath;
+
+            /// <summary>
+            /// Allows to fetch the command arguments.
+            /// </summary>
+            public virtual string CommandArguments => string.Empty;
+        }
+        #endregion
+    }
+
     public class RavenDBTestDriver : RavenTestDriver<MyRavenDBLocator>
     {
         #region test_driver_3
@@ -59,14 +82,14 @@ namespace RavenDBTestDriver
                 {
                     return _serverPath;
                 }
-                var path = Environment.GetEnvironmentVariable("RavenServerTestPath");
+                var path = Environment.GetEnvironmentVariable("Raven_Server_Test_Path");
                 if (string.IsNullOrEmpty(path) == false)
                 {
                     if (InitializeFromPath(path))
                         return _serverPath;
                 }
                 //If we got here we didn't have ENV:RavenServerTestPath setup for us maybe this is a CI enviroement
-                path = Environment.GetEnvironmentVariable("RavenServerCIPath");
+                path = Environment.GetEnvironmentVariable("Raven_Server_CI_Path");
                 if (string.IsNullOrEmpty(path) == false)
                 {
                     if (InitializeFromPath(path))
@@ -86,8 +109,8 @@ namespace RavenDBTestDriver
                         try
                         {
                             //We don't want to override the variable if defined
-                            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("RavenServerTestPath")))
-                                Environment.SetEnvironmentVariable("RavenServerTestPath", file);
+                            if (string.IsNullOrEmpty(Environment.GetEnvironmentVariable("Raven_Server_Test_Path")))
+                                Environment.SetEnvironmentVariable("Raven_Server_Test_Path", file);
                         }
                         //We might not have permissions to set the enviroment variable
                         catch

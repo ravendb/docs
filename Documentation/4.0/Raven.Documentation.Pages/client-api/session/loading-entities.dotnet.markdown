@@ -153,7 +153,7 @@ Entities can be streamed from the server using one of the following `Stream` met
 | Return Value | |
 | ------------- | ----- |
 | IEnumerator<[StreamResult](../../glossary/stream-result)> | Enumerator with entities. |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc. |
+| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
 ### Example I
