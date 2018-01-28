@@ -2,7 +2,7 @@
 
 ## Basics
 
-Starting from 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
+Starting from RavenDB 4.0, the server will determine possible sorting capabilities automatically from the indexed value, but sorting will **not be applied** until you request it by using the appropriate methods. The following queries will not return ordered results:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_1_1@Indexes\Querying\Sorting.cs /}
@@ -61,7 +61,7 @@ order by score()
 
 ## Random Ordering
 
-If you want to randomize the order of your results each time the query is executed, you can use the `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
+If you want to randomize the order of your results each time the query is executed, use the `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_3_1@Indexes\Querying\Sorting.cs /}

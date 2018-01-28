@@ -1,8 +1,8 @@
 ﻿# Suggestions
 
-RavenDB has an indexing mechanism built upon that Lucene engine which has a great suggestions feature. This capability allows a significant improvement of search functionalities enhancing the overall user experience of the application.
+RavenDB has an indexing mechanism built upon the Lucene engine which has a great suggestions feature. This capability allows a significant improvement of search functionalities enhancing the overall user experience of the application.
 
-Let's consider an example where the users have the option to look for products by their name. The index and query would look as follows:
+Let's consider an example where the users have the option to look for products by their name. The index and query would appear as follows:
 
 {CODE suggestions_1@Indexes\Querying\Suggestions.cs /}
 
@@ -19,7 +19,7 @@ where suggest('Name', 'chaig')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-It will produce the suggestions:
+It will produce these suggestions:
 
     Did you mean?
         chang
@@ -33,7 +33,7 @@ The `SuggestUsing` method is an extension contained in the `Raven.Client.Documen
 
 ## Suggest Over Multiple Words
 
-RavenDB allows you to perform a suggestion query over multiple words. In order to use this functionality you have to pass words that you are looking for in *Term* by using our special RavenDB syntax (more details [here](../../indexes/querying/full-query-syntax#suggestions-over-multiple-words)):
+RavenDB allows you to perform a suggestion query over multiple words. In order to use this functionality, you have to pass words that you are looking for in *Term* by using our special RavenDB syntax (more details [here](../../indexes/querying/full-query-syntax#suggestions-over-multiple-words)):
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query query_suggestion_over_multiple_words@Indexes\Querying\Suggestions.cs /}
@@ -53,7 +53,7 @@ This will produce the following results:
 
 {WARNING: Increased indexing time}
 
-Indexes with turned on suggestions tend to use much more CPU power than other indexes. This can impact indexing speed (querying is not impacted).
+Indexes with turned on suggestions tend to use a lot more CPU power than other indexes. This can impact indexing speed (querying is not impacted).
 
 {WARNING/}
 

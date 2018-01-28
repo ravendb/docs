@@ -4,7 +4,7 @@ To perform a spatial search, you can use the `Spatial` method which contains a f
 
 ## Radius Search
 
-The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search we will use the `WithinRadius` method.
+The most basic usage and probably most common one is to search for all points or shapes within provided distance from the given center point. To perform this search use the `WithinRadius` method.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query spatial_1_0@Indexes\Querying\Spatial.cs /}
