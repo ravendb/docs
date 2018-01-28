@@ -1,24 +1,24 @@
 # Installation : Running in a Docker container
 
-RavenDB Server can be run on [Docker](https://www.docker.com/) using our official images available in two channels:
+A RavenDB Server can be run on [Docker](https://www.docker.com/) using our official images available in two channels:
 
 - [ravendb/ravendb](https://hub.docker.com/r/ravendb/ravendb/) containing stable, patch, rc and beta images
 - [ravendb/ravendb-nightly](https://hub.docker.com/r/ravendb/ravendb-nightly/) containing our nightly releases
 
 ## Platforms
 
-Server images are published on Docker for following platforms:
+Server images are published on Docker for the following platforms:
 
 - Ubuntu 16.04
 - Windows Nano Server
 
 ## Tags
 
-Beside tags matching the exact builds e.g. `4.0.0-rc-40025-ubuntu.16.04-x64` or `4.0.0-rc-40025-windows-nanoserver` each of the repositories contains following tags for your convenience:
+Beside tags matching the exact builds e.g. `4.0.0-rc-40025-ubuntu.16.04-x64` or `4.0.0-rc-40025-windows-nanoserver` each of the repositories contain the following tags for your convenience:
 
 - `latest` this is an alias to `ubuntu-latest`
-- `ubuntu-latest` is an alias to latest RavenDB Ubuntu image
-- `windows-nanoserver-latest` is an aliast to latest RavenDB Windows Nano Server image
+- `ubuntu-latest` is an alias to the latest RavenDB Ubuntu image
+- `windows-nanoserver-latest` is an alias to the latest RavenDB Windows Nano Server image
 
 ## Example
 

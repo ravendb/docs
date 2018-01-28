@@ -1,4 +1,4 @@
-# Installation : Setup Wizard
+# Installation : Setup Wizard Walkthrough
 
 To make the setup process as smooth as possible, we introduced the "Setup Wizard", a step-by-step guide to help you configure your desired level of security and easily deploy a secured cluster.
 
