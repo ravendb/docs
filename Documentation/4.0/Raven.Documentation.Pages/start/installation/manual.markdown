@@ -1,8 +1,8 @@
 # Installation : Manual Setup
 
-By default, when Server is started using `run.ps1` (or `run.sh`) script. It will open a browser with [Setup Wizard](../../start/installation/setup-wizard) to guide you through the Server configuration process more fluently. 
+By default, when Server is started using `run.ps1` (or `run.sh`) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard) which will guide you through the Server configuration process.
 
-The setup is started because default configuration file `settings.json` used in RavenDB Server package looks like follows:
+The setup is started because the default configuration file `settings.json` used in the RavenDB Server package looks like this:
 
 {CODE-BLOCK:json}
 {
@@ -15,7 +15,7 @@ The setup is started because default configuration file `settings.json` used in 
 Which means that the Server will run:
 
 - In `Setup Wizard` mode
-- On `localhost` with `random port`
+- On `localhost` with a `random port`
 - Store the data in `RavenData` directory.
 
 ## Disabling 'Setup Wizard'
@@ -24,7 +24,7 @@ To disable the 'Setup Wizard' please change the `Setup.Mode` configuration to `N
 
 ## Server Url and Port
 
-Setting the `ServerUrl` to `http://127.0.0.1:0` will bind the server to a `localhost` with a `random port`. For manual setup we suggest changing the port to non-random value e.g. **8080**.
+Setting the `ServerUrl` to `http://127.0.0.1:0` will bind the server to a `localhost` with a `random port`. For manual setup we suggest changing the port to a non-random value e.g. **8080**.
 
 {WARNING:Port in Use}
 
@@ -34,7 +34,7 @@ In some cases the port might be in use, this will prevent the Server from starti
 
 ## Security
 
-Read the [Certificate Configuration Section](../server/security/authentication/certificate-configuration) to learn how setup security manually.
+Read the [Certificate Configuration Section](../server/security/authentication/certificate-configuration) to learn how to setup security manually.
 
 ## Configuration
 

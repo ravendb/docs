@@ -11,7 +11,7 @@ In RavenDB 4.0 the configuration settings are defined in `settings.json` file wh
 {CODE-BLOCK/}
 
 {INFO: Setup Wizard}
-The default `Setup.Mode: Initial` option will cause that the first run of RavenDB 4.0 server will launch [Setup Wizard](../../start/installation/setup-wizard) and guide and guide you through authentication and cluster setup.
+The default `Setup.Mode: Initial` option will cause that the first run of RavenDB 4.0 server will launch the [Setup Wizard](../../start/installation/setup-wizard) and guide you through authentication and cluster setup.
 {INFO/}
 
 Below there are listings of 4.0 equivalents for 3.x settings. If there isn't an equivalent for 3.x setting it means the option isn't applicable in 4.0.

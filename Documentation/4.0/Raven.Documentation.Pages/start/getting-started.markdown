@@ -6,7 +6,7 @@ Welcome to this introductory article that will guide you through all the parts o
 
 Let's start by installing and configuring the Server. In order to do that first we need to download the server package from the [downloads](https://ravendb.net/downloads) page.
 
-RavenDB is cross-platform with a support for following operating systems:
+RavenDB is cross-platform with a support for the following operating systems:
 
 - Windows x64 / x86
 - Linux x64
@@ -18,7 +18,7 @@ RavenDB is cross-platform with a support for following operating systems:
 
 ### Prerequisites
 
-RavenDB is written in .NET Core, because of that it requires same set of prerequisites as the .NET Core.
+RavenDB is written in .NET Core, because of that it requires the same set of prerequisites as the .NET Core.
 
 {NOTE: Windows}
 
@@ -28,13 +28,13 @@ Please install [Visual C++ 2015 Redistributable Package](https://support.microso
 
 {NOTE: Linux}
 
-We highly recommend **updating** your **Linux OS** prior launching an instance of RavenDB. Please also check if .NET Core does not require any other prerequisites. This can be checked in [.NET Core prerequisited for Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
+We highly recommend **updating** your **Linux OS** prior to launching an instance of RavenDB. Please also check if .NET Core does not require any other prerequisites. This can be checked in the [.NET Core prerequisites for Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
 
 {NOTE/}
 
 {NOTE: MacOS}
 
-We highly recommend **updating** your **MacOS** and checking [.NET Core prerequsites for MacOS](https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites) article written by Microsoft prior running the RavenDB Server.
+We highly recommend **updating** your **MacOS** and checking the [.NET Core prerequisites for MacOS](https://docs.microsoft.com/en-us/dotnet/core/macos-prerequisites) article written by Microsoft prior to running the RavenDB Server.
 
 {NOTE/}
 
@@ -42,7 +42,7 @@ We highly recommend **updating** your **MacOS** and checking [.NET Core prerequs
 
 ### Installation & Setup
 
-After extraction of the Server package you can start the [Setup Wizard](../start/installation/setup-wizard) by running the `run.ps1` (or `run.sh`) script or [disable the 'Setup Wizard' and configure the server manually](../start//installation/manual).
+After extraction of the Server package you can start the [Setup Wizard](../start/installation/setup-wizard) by running the `run.ps1` (or `run.sh`) script or [disabling the 'Setup Wizard' and configuring the Server manually](../start/installation/manual).
 
 {NOTE: Running in a Docker container}
 
@@ -54,13 +54,13 @@ If you are interested in hosting the Server in a Docker container. Please read o
 
 ### Configuration
 
-RavenDB Server is using `settings.json` file to store the server-wide configuration options. This file is located in the `Server` directory, but please note that after making changes to this file Server restart is required in order for them to be applied.
+RavenDB Server is using a `settings.json` file to store the server-wide configuration options. This file is located in the `Server` directory, but please note that after making changes to this file, a Server restart is required in order for them to be applied.
 
-You can read more about available configuration options in our dedicated article that can be found [here](../server/configuration/configuration-options).
+You can read more about the available configuration options in our dedicated article which can be found [here](../server/configuration/configuration-options).
 
 {INFO:Default configuration}
 
-After downloading the Server package the configuration file will look like follows:
+The configuration file included in each RavenDB Server distribution package is as follows:
 
 {CODE-BLOCK:json}
 {
@@ -73,14 +73,14 @@ After downloading the Server package the configuration file will look like follo
 Which means that the Server will run:
 
 - In `Setup Wizard` mode
-- On `localhost` with `random port`
+- On `localhost` with a `random port`
 - Store the data in `RavenData` directory.
 
 {INFO/}
 
 {WARNING:Port in Use}
 
-In some cases the port might be in use, this will prevent the Server from starting with "address in use" error (`EADDRINUSE`).
+In some cases the port might be in use. This will prevent the Server from starting with "address in use" error (`EADDRINUSE`).
 
 The port can be changed by editing the `ServerUrl` value.
 
@@ -92,7 +92,7 @@ The port can be changed by editing the `ServerUrl` value.
 
 {SAFE: Free}
 
-Our GUI, the RavenDB Management Studio, comes **free** with **all the licenses**:
+Our GUI, the RavenDB Management Studio, comes **free** with **all the license types**:
 
 - Community,
 - Professional,
@@ -100,7 +100,7 @@ Our GUI, the RavenDB Management Studio, comes **free** with **all the licenses**
 
 {SAFE/}
 
-After installation and setup, the Studio can be accessed via the browser using the `ServerUrl` or `ServerPublicUrl` value e.g. `http://localhost:8080`.
+After installation and setup, the Studio can be accessed via the browser using the `ServerUrl` or the `ServerPublicUrl` value e.g. `http://localhost:8080`.
 
 ---
 
