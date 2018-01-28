@@ -57,8 +57,8 @@ select key() as EmployeeCompanyPair, count()
 
 ### By Array Values
 
-In order to group by values of array you need to use `GroupByArrayValues`. The following query will group by `Product` property from `Lines` collection 
-and calculate the count per ordered products. Underneath a [fanout](../../../indexes/fanout-indexes) auto map-reduce index will be created to handle such query. 
+In order to group by values of array, you need to use `GroupByArrayValues`. The following query will group by `Product` property from `Lines` collection 
+and calculate the count per ordered products. Underneath a [fanout](../../../indexes/fanout-indexes), an auto map-reduce index will be created to handle such query. 
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_4@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
@@ -96,7 +96,7 @@ select Lines[].Product as Product, Lines[].Quantity as Quantity, count()
 
 ### By Array Content
 
-Another option is to group by array content. Then the reduction key will be calculated based on all values of a collection specified in `GroupBy`.
+Another option is to group by array content. The reduction key will be calculated based on all values of a collection specified in `GroupBy`.
 The client API exposes the `GroupByArrayContent` extension method for that purpose.
 
 {CODE-TABS}
@@ -121,7 +121,7 @@ select Lines[].Product as Products, ShipTo.Country as Country, count()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Grouping by multiple values from **the same** collection is also supported only by `DocumentQuery`:
+Grouping by multiple values from **the same** collection is also supported by `DocumentQuery`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync group_by_9@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}

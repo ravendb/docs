@@ -4,7 +4,7 @@
 
 These **mapping functions** are **LINQ-based functions** and can be considered the **core** of indexes.
 
-## What Can be Indexed?
+## What Can be Indexed
 
 You can:
 
@@ -18,7 +18,7 @@ You can:
 
 ## Indexing Single Fields
 
-To start, let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
+Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
 
 - First, let's create an index called `Employees/ByFirstAndLastName`
 

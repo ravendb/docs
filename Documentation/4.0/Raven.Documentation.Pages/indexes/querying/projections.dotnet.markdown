@@ -12,22 +12,26 @@ When performing a query, we usually pull the full document back from the server.
 
 However, we often need to display the data to the user. Instead of pulling the whole document back and picking just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
 
-This saving can be very significant - if we need to show just a bit of information on a large document.  
+This saving can be very significant if we need to show just a bit of information on a large document.  
 
 A good example in the sample data set would be the order document. If we'll ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
+
 However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
 
 Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents, and perform transformations on the results. 
 
 ## Projections are Applied as the Last Stage in the Query
+
 It is important to understand that projections are applied after the query has been processed, filtered, sorted, and paged. The project doesn't apply to all the documents in the database, only to the results that are actually returned.  
 This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately after. It also means that we cannot do any filtering work as part of the projection. You can filter what will be returned, but not which documents will be returned. That has already been determined earlier in the query pipeline.  
 
 ## The Cost of Running a Projection
+
 Another consideration to take into account is the cost of running the projection. It is possible to make the projection query expensive to run. RavenDB has limits on the amount of time it will spend in evaluating the projection, and exceeding these (quite generous) limits will fail the query.
 
 ## Projections and Stored Fields
-If a projection function only requires fields that are stored, then document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
+
+If a projection function only requires fields that are stored, then the document will not be loaded from storage and all data will come from the index directly. This can increase query performance (by the cost of disk space used) in many situations when whole document is not needed. You can read more about field storing [here](../../indexes/storing-data-in-index).
 
 {PANEL:Select}
 The most basic projection can be done using LINQ `Select` method:
@@ -43,11 +47,11 @@ select FirstName, LastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If index entry matches our query predicate, then we will try to extract all requested fields from that particular entry and if all requested fields are available in there, then we do not download it from storage. Index `Employees/ByFirstAndLastName` used in above query is not storing any fields so documents will be fetched from storage.
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index entry matches our query predicate, then we will try to extract all requested fields from that particular entry. If all requested fields are available in there, then we do not download it from storage. The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, so the documents will be fetched from storage.
 
 ### Example II - Projecting Stored Fields
 
-If we create an index that stores `FirstName` and `LastName` and request only those fields in query, then **data will come from the index directly**.
+If we create an index that stores `FirstName` and `LastName` and requests only those fields in query, then **the data will come from the index directly**.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1_stored@Indexes\Querying\Projections.cs /}
@@ -177,6 +181,7 @@ select {
 {PANEL:ProjectInto}
 
 This extension method retrieves all public fields and properties of the type given in generic and uses them to perform projection to the requested type.
+
 You can use this method instead of using `Select` together with all fields of the projection class.
 
 ### Example
@@ -201,7 +206,7 @@ select Name, Phone
 {PANEL/}
 
 ## Projections and the Session
-Because you are working with projections, and not directly with documents, they are _not_ tracked by the session, and modifications to a projection will not modify the document when SaveChanges is called.
+Because you are working with projections and not directly with documents, they are _not_ tracked by the session. Modifications to a projection will not modify the document when SaveChanges is called.
 
 ## Related Articles
 

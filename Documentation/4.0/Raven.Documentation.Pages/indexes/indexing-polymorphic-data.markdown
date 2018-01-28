@@ -1,6 +1,6 @@
 # Indexing Polymorphic Data
 
-By default, RavenDB indexes operate only on a specific entity type, or a `Collection`, and it ignores the inheritance hierarchy.
+By default, RavenDB indexes operate only on a specific entity type, or a `Collection`, that ignores the inheritance hierarchy.
 
 For example, let's assume that we have the following inheritance hierarchy:
 

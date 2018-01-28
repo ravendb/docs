@@ -1,11 +1,11 @@
-# Map-Reduce indexes
+# Map-Reduce Indexes
 
-Map-Reduce indexes allow to perform complex aggregation of data. The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
+Map-Reduce indexes allow you to perform complex aggregations of data. The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
 Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
 
 The idea behind map-reduce indexing is that aggregation queries using such indexes are very cheap. The aggregation is performed only once and the results are stored inside the index.
-Once new data come into the database or existing documents are modified the map-reduce index will keep the aggregation results up-to-date. The aggregations are never done during
-querying to avoid expensive calculations that could result in severe performance degradation. When you make the query, RavenDB just returns the matching results directly from the index.
+Once new data come into the database or existing documents are modified, the map-reduce index will keep the aggregation results up-to-date. The aggregations are never done during
+querying to avoid expensive calculations that could result in severe performance degradation. When you make the query, RavenDB immediately returns the matching results directly from the index.
 
 For a more in-depth look at how map reduce works, you can read this post: [RavenDB 4.0 Unsung Heroes: Map/reduce](https://ayende.com/blog/179938/ravendb-4-0-unsung-heroes-map-reduce).
 
@@ -68,7 +68,7 @@ from 'Product/Sales'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Related articles
+## Related Articles
 
 - [Indexing related documents](../indexes/indexing-related-documents)
 - [Creating and deploying indexes](../indexes/creating-and-deploying)
