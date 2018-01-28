@@ -1,0 +1,22 @@
+﻿[
+    {
+        "Path": "setup-wizard.markdown",
+        "Name": "Setup Wizard",
+        "Mappings": []
+    },
+    {
+        "Path": "manual.markdown",
+        "Name": "Manual",
+        "Mappings": []
+    },
+    {
+        "Path": "running-as-service.markdown",
+        "Name": "Running as a Service",
+        "Mappings": []
+    },
+    {
+        "Path": "running-in-docker-container.markdown",
+        "Name": "Running in a Docker container",
+        "Mappings": []
+    }
+]

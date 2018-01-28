@@ -20,11 +20,6 @@
         ]
     },
     {
-        "Path": "setup-wizard.markdown",
-        "Name": "Setup Wizard",
-        "Mappings": []
-    },
-    {
         "Path": "getting-to-know.markdown",
         "Name": "Getting to Know RavenDB",
         "Mappings": []
@@ -37,6 +32,11 @@
     {
         "Path": "test-driver.markdown",
         "Name": "Unit tests",
+        "Mappings": []
+    },
+    {
+        "Path": "/installation",
+        "Name": "Installation",
         "Mappings": []
     }
 ]
