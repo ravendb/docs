@@ -1,6 +1,6 @@
-﻿# Operations : Server : How to generate client certificate?
+﻿# Operations : Server : How to Generate a Client Certificate
 
-You can generate client certificate using **CreateClientCertificateOperation**. 
+You can generate a client certificate using **CreateClientCertificateOperation**. 
 
 ## Syntax
 
