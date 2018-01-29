@@ -1,4 +1,21 @@
 ﻿# Create A Database : General Flow
+---
+
+{NOTE: }
+
+From the Studio, the database creation options are:  
+
+* **Regular** database - see here below  
+
+* **Encrypted** database - see [Encrypted Database](encrypted.markdown)  
+
+* Create a database from a **Backup** copy - see [From Backup](from-backup.markdown)  
+
+* Create a database from a **Previous** RavenDB version database - see [From Legacy File](from-legacy-files)  
+
+{NOTE/}
+
+---
 
 {PANEL: 1. New Database}
 

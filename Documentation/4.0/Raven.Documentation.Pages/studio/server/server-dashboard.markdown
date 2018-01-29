@@ -1,8 +1,11 @@
 ﻿# Server Dashboard
+---
 
 {NOTE: }
 This dashboard provides a diagnostic overview of the RavenDB server performance and databases status.  
 {NOTE/}
+
+---
 
 {PANEL: The Server Dashboard}
 

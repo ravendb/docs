@@ -1,4 +1,79 @@
-﻿## Document View
+﻿# Document View
+---
 
-Page Under Construction
+{NOTE: }
+
+* In this view, a document can be viewed and edited.  
+* Actions such as cloning the document, deleting, adding attachments and much more can be performed.  
+{NOTE/}
+
+---
+
+{PANEL: The Document View}
+
+![Figure 1. Document View](images/document-view-1.png "Document: 'Suppliers/1-A' in the 'Suppliers' Collection")
+
+1. **Document Name**  
+   * For detailed explanation about the possible identifiers See [Create New Document](../../../../todo-update-me-later)  
+   * Clicking the link, right by the name, will show the _raw document output_ that is received  from the server  
+<br/>
+2. **Document properties**  
+   * **Change-Vector**  
+     * The _change-vector_ uniquely marks the specific version of the document globally in the cluster  
+     * Each time a document is modified, a new _change-vector_ is generated  
+     * Used for optimistic  concurrency control, various internal operations and caching  
+     * It is composed of a list of node _IDs_ and _etags_  
+       _Node ID_ - uniquely identifies a node  
+       _etag_ - a 64 bit number that is incremented on every operation in a database  
+   * **Modified** - The last time the document was modified by any client  
+   * **Size** - The Document size (including attachments)  
+<br/>
+3. **Document content** - The document properties and values in JSON format  
+   * a. **Nested Data**  
+        * Another JSON object can be nested in a property value  
+<br/>
+   * b. **Included Documents**  
+        * Your can reference other documents from other collections in a document property value  
+        * These included documents can then be easily retrieved when a client _Loads_ the document from the server  
+        * e.g., In the example above, _'categories/1-A'_ document shows in the _'Category'_ property  
+<br/>
+   * c. **Metadata**  
+        * This is additional information that is unrelated to the document itself but is rather about the document  
+        * The metadata, also in JSON format, is embedded inside the document and is an integral part of it  
+        * RavenDB server reserves metadata properties that start with _'@'_ for its own use  
+        * You can add properties to the metadata and use to store your own values  
+        * Note: only the following metadata properties will show in the Studio:  
+           * ***@collection*** - determines to which collection the document belongs to  
+           * ***@flags*** - i.e. if a document has attachments, revisions, etc.  
+           * Any ***client generated*** properties - any metadata properties generated in code by a client  
+<br/>
+
+4. **Related Document**  
+   * List of related documents - those are the documents that are _included_ inside the document. (see 3b above)
+   * Click to open each  
+{PANEL/}
+
+{PANEL: Actions}
+
+![Figure 2. Document View Actions](images/document-view-2.png "Document View Actions")
+
+1. **General** actions  
+   * Save document  
+   * Delete document  
+   * Clone document - Create a clone of the current document  
+     * A copy of the document without attachments is created  
+     * It can be saved with a new ID  
+<br/>
+2. **Copy** to clipboard  
+   * Copy to clipboard - The document content is copied  
+   * Copy as C# class - The c# entity class (on which the document json is based) is copied  
+<br/>
+3. **Format** content
+   * Format - Adjust the document JSON format  
+   * Toggle collapse - Toggle nested complex properties in the document  
+   * Toggle new lines - Toggle between showing the character '/n' or the actuall new lines  
+<br/>
+4. **Attachments**  
+   * Add any type of file as an attachment to the document  
+{PANEL/}
 

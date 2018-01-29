@@ -1,10 +1,13 @@
 ﻿# Client Configuration
+---
 
 {NOTE: }
 
 * Configure the RavenDB client behaviour for **all** databases in the cluster  
 * These default values can be overwritten per databses in [Database Client Configuration](../../../../todo-update-me-later)  
 {NOTE/}
+
+---
 
 {PANEL: Client Configuration}
 

@@ -1,4 +1,5 @@
 ﻿# Databases List View
+---
 
 {NOTE: }
 All your databases are listed in this view  
@@ -6,6 +7,8 @@ All your databases are listed in this view
 * Database stats can be viewed  
 * Actions can be performed on each database  
 {NOTE/}
+
+---
 
 {PANEL: Database Stats}
 
