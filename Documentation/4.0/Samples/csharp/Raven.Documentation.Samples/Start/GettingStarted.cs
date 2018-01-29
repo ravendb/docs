@@ -91,5 +91,91 @@ namespace Raven.Documentation.Samples.Start
             }
             #endregion
         }
+
+        public void Sample()
+        {
+            #region client_1
+            using (IDocumentStore store = new DocumentStore
+            {
+                Urls = new[]                        // URL to the Server,
+                {                                   // or list of URLs 
+                    "http://live-test.ravendb.net"  // to all Cluster Servers (Nodes)
+                },
+                Database = "Northwind",             // Default database that DocumentStore will interact with
+                Conventions = { }                   // DocumentStore customizations
+            })
+            {
+                store.Initialize();                 // Each DocumentStore needs to be initialized before use.
+                                                    // This process establishes the connection with the Server
+                                                    // and downloads various configurations
+                                                    // e.g. cluster topology or client configuration
+            }
+            #endregion
+        }
+
+        public void Sample2()
+        {
+            using (var store = new DocumentStore())
+            {
+                #region client_2
+                using (IDocumentSession session = store.OpenSession())  // Open a session for a default 'Database'
+                {
+                    Category category = new Category
+                    {
+                        Name = "Database Category"
+                    };
+
+                    session.Store(category);                            // Assign an 'Id' and collection (Employees)
+                                                                        // and start tracking an entity
+
+                    Product product = new Product
+                    {
+                        Name = "RavenDB Database",
+                        Category = category.Id,
+                        UnitsInStock = 10
+                    };
+
+                    session.Store(product);                             // Assign an 'Id' and collection (Products)
+                                                                        // and start stracing an entity
+
+                    session.SaveChanges();                              // Send to the Server
+                                                                        // one request processed in one transaction
+                }
+                #endregion
+
+                string productId = string.Empty;
+
+                #region client_3
+                using (IDocumentSession session = store.OpenSession())  // Open a session
+                {
+                    Product product = session
+                        .Include<Product>(x => x.Category)              // Include Category
+                        .Load(productId);                               // Load the Product and start tracking
+
+                    Category category = session
+                        .Load<Category>(product.Category);              // No remote calls,
+                                                                        // Session contains this entity from .Include
+
+                    product.Name = "RavenDB";                           // Apply changes
+                    category.Name = "Database";
+
+                    session.SaveChanges();                              // Synchronize with the Server
+                                                                        // one request processed in one transaction
+                }
+                #endregion
+
+                #region client_4
+                using (IDocumentSession session = store.OpenSession())  // Open a session
+                {
+                    List<string> productNames = session
+                        .Query<Product>()                               // Query for Products
+                        .Where(x => x.UnitsInStock > 5)                 // Filter
+                        .Skip(0).Take(10)                               // Page
+                        .Select(x => x.Name)                            // Project
+                        .ToList();                                      // Materialize query
+                }
+                #endregion
+            }
+        }
     }
 }

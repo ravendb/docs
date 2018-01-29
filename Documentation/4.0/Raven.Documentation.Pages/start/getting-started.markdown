@@ -2,6 +2,11 @@
 
 Welcome to this introductory article that will guide you through all the parts of RavenDB needed for basic understanding and simple setup.
 
+This article consists of two parts:
+
+- [Server](../start/getting-started#server) part will focus on installation, setup & configuration of RavenDB Server
+- [Client](../start/getting-started#client) part will describe general principles behind our client libraries 
+
 {PANEL: Server}
 
 Let's start by installing and configuring the Server. In order to do that first we need to download the server package from the [downloads](https://ravendb.net/downloads) page.
@@ -123,4 +128,106 @@ Read more about security and how to enable authentication [here](../server/secur
 
 {PANEL/}
 
+{PANEL:Client}
 
+After your Server is up and running, to write an application you need to aquire one of the `Client` access libraries:
+
+- .NET from [NuGet](https://www.nuget.org/packages/RavenDB.Client/)
+- Java from [Maven](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.ravendb%22%20AND%20a%3A%22ravendb%22)
+- Node.js from [NPM](https://www.npmjs.com/package/ravendb)
+- Python from [PyPi](https://pypi.python.org/pypi/pyravendb)
+- [Ruby](https://github.com/ravendb/ravendb-ruby-client)
+- [Go](https://github.com/ravendb/ravendb-go-client)
+
+<hr />
+
+### DocumentStore
+
+In order to start you need to create an instance of `DocumentStore` - the main entry point for your application which is responsible for establishing and managing connections between a RavenDB Server (or Cluster) and your application.
+
+{INFO:Examples}
+
+Before proceeding to the examples we would like to point out that most of the articles are using `Northwind` database. You can read more about it and how to deploy it [here](../studio/database/tasks/create-sample-data).
+
+{INFO/}
+
+{CODE-TABS}
+{CODE-TAB:csharp:C# client_1@Start/GettingStarted.cs /}
+{CODE-TABS/}
+
+{INFO:Singleton}
+
+The `DocumentStore` is capable of working on multiple databases and for proper operation we **recommend** having only one instance of it per application.
+
+{INFO/}
+
+Following articles can extend your knowledge about `DocumentStore` and its configuration:
+
+- [What is a Document Store?](../client-api/what-is-a-document-store)
+- [How to Create a Document Store?](../client-api/creating-document-store)
+- [How to Setup a Default Database?](../client-api/setting-up-default-database)
+- [How to configure Document Store using Conventions?](../client-api/configuration/conventions)
+
+<hr />
+
+### Session
+
+The `Session` is used to manipulate the data. It implements the `Unit of Work` pattern and is capable of batching the requests to save expensive remote calls. In contrast to `DocumentStore` it is a lightweight object and can be created more frequently e.g. in Web applications a common (and recommended) pattern is to create a Session per each request.
+
+### Example I - Storing
+
+RavenDB is a Document Database, which means that all stored objects are called `documents`. Each document contains a **unique ID** that identifies it, **data** and adjacent **metadata**, both stored in JSON format. The metadata contains various information describing the document, e.g. the last modification date (`@last-modified` property) or the [collection](../client-api/faq/what-is-a-collection) (`@collection` property) assignment.
+
+{CODE-TABS}
+{CODE-TAB:csharp:C# client_2@Start/GettingStarted.cs /}
+{CODE-TABS/}
+
+### Example II - Loading
+
+The `Session` was designed to help the user write a performant code in as easy way as possible. For example, when document is being loaded (`.Load`) from the Server, there is a possibility to download in one single server call all adjacent documents (`.Include`) reducing number of expensive remote calls to minimum. 
+
+Beside that Session implements `Unit of Work` pattern, so all **changes** to loaded entities are **automatically being tracked**. In result when `SaveChanges` is called, Session knows which entities changed and will synchronize **only them** with the Server. Worth noting at this point is that **all of those changes are send in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an **ACID database** [here](../client-api/faq/transaction-support)).
+
+{CODE-TABS}
+{CODE-TAB:csharp:C# client_3@Start/GettingStarted.cs /}
+{CODE-TABS/}
+
+### Example III - Querying
+
+To satisfy queries, indexes are being used. From the querying perspective index define which fields (and what values) can be used to find a document. The whole indexation process is done asynchronously, which gives a very quick response times, even when large amounts of data have been changed, however implication of this approach is that the index might be [stale](../indexes/stale-indexes).
+
+When index is not specified in the query (e.g. like in the query bellow) then RavenDB is using its **intelligent auto-indexes** feature that will use already existing index or create new one if nothing is found. The other options is to write the index yourself and deploy it to the Server, those indexes are called [Static](../indexes/creating-and-deploying#static-indexes).
+
+Underneath all of the clients are translating the query to the Raven Query Language (RQL) syntax. If you are interested then you can read more about RQL [here](../indexes/querying/what-is-rql).
+
+{CODE-TABS}
+{CODE-TAB:csharp:C# client_4@Start/GettingStarted.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Products
+where UnitsInStock > 5
+select Name
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+Following articles can extend your knowledge about `Session`:
+
+- [What is a Session and how does it work?](../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Opening a Session](../client-api/session/opening-a-session)
+- [Storing Entities](../client-api/session/storing-entities)
+- [Deleting Entities](../client-api/session/deleting-entities)
+- [Loading Entities](../client-api/session/loading-entities)
+- [Saving Changes](../client-api/session/saving-changes)
+
+Best introductory articles describing `Querying` can be found here:
+
+- [Basics](../indexes/querying/basics)
+- [What is RQL?](../indexes/querying/what-is-rql)
+
+If you are interested in `Indexes` subject then we recommend reading following articles:
+
+- [Indexes: What are Indexes?](../indexes/what-are-indexes)
+- [Indexes: Creating and deploying indexes?](../indexes/creating-and-deploying)
+- [Indexes: Indexing basics](../indexes/indexing-basics)
+- [Indexes: Map indexes](../indexes/map-indexes)
+
+{PANEL/}

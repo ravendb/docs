@@ -309,15 +309,3 @@ To construct a cluster, unzip the downloaded RavenDB package to more machines (o
 Once all the servers are up and running, building the cluster is simple. Access the studio, go to Manage Server > Cluster, and add nodes to the cluster by their URL.  
 
 {PANEL/}
-
-{PANEL:Manual Setup}
-
-If none of the above setup options work for you, it is possible to configure the server manually using the `settings.json` file which is located in the `Server` folder. To disable the setup wizard, change the `Setup.Mode` value to `None`.
-
-Read the [Certificate Configuration Section](../server/security/authentication/certificate-configuration) to learn how setup security manually
-
-Read the [Configuration Section](../server/configuration/configuration-options) to learn more about using 'settings.json' and see a list of configuration options.
-
-Read the [Security Section](../server/security/overview) to learn more about security in RavenDB.
-
-{PANEL/}

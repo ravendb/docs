@@ -20,6 +20,26 @@
         ]
     },
     {
+        "Path": "storing-entities.markdown",
+        "Name": "Storing Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document"
+            }
+        ]
+    },
+    {
+        "Path": "deleting-entities.markdown",
+        "Name": "Deleting Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/deleting-documents"
+            }
+        ]
+    },
+    {
         "Path": "loading-entities.markdown",
         "Name": "Loading Entities",
         "Mappings": [
@@ -36,26 +56,6 @@
             {
                 "Version": 1.0,
                 "Key": "client-api/basic-operations/saving-new-document"
-            }
-        ]
-    },
-    {
-        "Path": "Storing-entities.markdown",
-        "Name": "Storing Entities",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/basic-operations/saving-new-document"
-            }
-        ]
-    },
-    {
-        "Path": "deleting-entities.markdown",
-        "Name": "Deleting Entities",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/basic-operations/deleting-documents"
             }
         ]
     },
