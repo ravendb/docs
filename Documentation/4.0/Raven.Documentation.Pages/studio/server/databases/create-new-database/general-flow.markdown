@@ -5,7 +5,7 @@
 
 From the Studio, the database creation options are:  
 
-* **Regular** database - see here below  
+* **Regular** database - see [below](general-flow#1.-new-database)  
 
 * **Encrypted** database - see [Encrypted Database](encrypted.markdown)  
 

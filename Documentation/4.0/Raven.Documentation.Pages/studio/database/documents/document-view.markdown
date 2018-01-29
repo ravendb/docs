@@ -13,43 +13,43 @@
 
 ![Figure 1. Document View](images/document-view-1.png "Document: 'Suppliers/1-A' in the 'Suppliers' Collection")
 
-1. **Document Name**  
+1. **Document identifier (ID)**  
    * For detailed explanation about the possible identifiers See [Create New Document](../../../../todo-update-me-later)  
-   * Clicking the link, right by the name, will show the _raw document output_ that is received  from the server  
+   * Clicking the link, right by the ID, will show the _raw document output_ that is received  from the server  
 <br/>
 2. **Document properties**  
    * **Change-Vector**  
      * The _change-vector_ uniquely marks the specific version of the document globally in the cluster  
      * Each time a document is modified, a new _change-vector_ is generated  
      * Used for optimistic  concurrency control, various internal operations and caching  
-     * It is composed of a list of node _IDs_ and _etags_  
-       _Node ID_ - uniquely identifies a node  
+     * It is composed of a list of node _tags_ and _etags_  
+       _Node tag_ - uniquely identifies a node  
        _etag_ - a 64 bit number that is incremented on every operation in a database  
-   * **Modified** - The last time the document was modified by any client  
+   * **Modified** - The last time the document was modified by any client, or by the Studio  
    * **Size** - The Document size (including attachments)  
 <br/>
 3. **Document content** - The document properties and values in JSON format  
    * a. **Nested Data**  
         * Another JSON object can be nested in a property value  
 <br/>
-   * b. **Included Documents**  
-        * Your can reference other documents from other collections in a document property value  
-        * These included documents can then be easily retrieved when a client _Loads_ the document from the server  
-        * e.g., In the example above, _'categories/1-A'_ document shows in the _'Category'_ property  
+   * b. **Referenced Documents**  
+        * Your can reference other documents from any other collection (or from the current collection)  
+        * These referenced documents can then be _included_ in a single _Load_ request to the server. See [Load with Includes](../../../client-api/session/loading-entities#load-with-includes)  
+        * e.g., In the example above, _'categories/1-A'_ document is referenced in the _'Category'_ property  
 <br/>
    * c. **Metadata**  
-        * This is additional information that is unrelated to the document itself but is rather about the document  
+        * This is additional information about the document  
         * The metadata, also in JSON format, is embedded inside the document and is an integral part of it  
         * RavenDB server reserves metadata properties that start with _'@'_ for its own use  
         * You can add properties to the metadata and use to store your own values  
         * Note: only the following metadata properties will show in the Studio:  
            * ***@collection*** - determines to which collection the document belongs to  
            * ***@flags*** - i.e. if a document has attachments, revisions, etc.  
-           * Any ***client generated*** properties - any metadata properties generated in code by a client  
+           * ***Custom metadata*** properties - any metadata properties generated in code by a client  
 <br/>
 
 4. **Related Document**  
-   * List of related documents - those are the documents that are _included_ inside the document. (see 3b above)
+   * List of related documents - those are the documents that are _referenced_ inside the document. (see 3b above)
    * Click to open each  
 {PANEL/}
 
@@ -66,7 +66,7 @@
 <br/>
 2. **Copy** to clipboard  
    * Copy to clipboard - The document content is copied  
-   * Copy as C# class - The c# entity class (on which the document json is based) is copied  
+   * Copy as C# class - The C# entity class (reflecting the document JSON content) is copied  
 <br/>
 3. **Format** content
    * Format - Adjust the document JSON format  
