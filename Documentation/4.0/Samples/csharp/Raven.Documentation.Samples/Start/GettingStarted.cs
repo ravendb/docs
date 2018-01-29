@@ -125,7 +125,7 @@ namespace Raven.Documentation.Samples.Start
                         Name = "Database Category"
                     };
 
-                    session.Store(category);                            // Assign an 'Id' and collection (Employees)
+                    session.Store(category);                            // Assign an 'Id' and collection (Categories)
                                                                         // and start tracking an entity
 
                     Product product = new Product
@@ -136,7 +136,7 @@ namespace Raven.Documentation.Samples.Start
                     };
 
                     session.Store(product);                             // Assign an 'Id' and collection (Products)
-                                                                        // and start stracing an entity
+                                                                        // and start tracing an entity
 
                     session.SaveChanges();                              // Send to the Server
                                                                         // one request processed in one transaction
@@ -146,7 +146,7 @@ namespace Raven.Documentation.Samples.Start
                 string productId = string.Empty;
 
                 #region client_3
-                using (IDocumentSession session = store.OpenSession())  // Open a session
+                using (IDocumentSession session = store.OpenSession())  // Open a session for a default 'Database'
                 {
                     Product product = session
                         .Include<Product>(x => x.Category)              // Include Category
@@ -165,7 +165,7 @@ namespace Raven.Documentation.Samples.Start
                 #endregion
 
                 #region client_4
-                using (IDocumentSession session = store.OpenSession())  // Open a session
+                using (IDocumentSession session = store.OpenSession())  // Open a session for a default 'Database'
                 {
                     List<string> productNames = session
                         .Query<Product>()                               // Query for Products

@@ -27,7 +27,7 @@ RavenDB is written in .NET Core, because of that it requires the same set of pre
 
 {NOTE: Windows}
 
-Please install [Visual C++ 2015 Redistributable Package](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) (or newer) before launching the Server. This package should be the sole requirement for 'Windows' platforms, but in occursion of any troubles please check [.NET Core prerequisites for Windows](https://docs.microsoft.com/en-us/dotnet/core/windows-prerequisites) article written by Microsoft.
+Please install [Visual C++ 2015 Redistributable Package](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) (or newer) before launching the Server. This package should be the sole requirement for 'Windows' platforms, but in occurence of any troubles please check [.NET Core prerequisites for Windows](https://docs.microsoft.com/en-us/dotnet/core/windows-prerequisites) article written by Microsoft.
 
 {NOTE/}
 
@@ -130,7 +130,7 @@ Read more about security and how to enable authentication [here](../server/secur
 
 {PANEL:Client}
 
-After your Server is up and running, to write an application you need to aquire one of the `Client` access libraries:
+After your Server is up and running, to write an application you need to acquire one of the `Client` access libraries:
 
 - .NET from [NuGet](https://www.nuget.org/packages/RavenDB.Client/)
 - Java from [Maven](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.ravendb%22%20AND%20a%3A%22ravendb%22)
@@ -153,6 +153,7 @@ Before proceeding to the examples we would like to point out that most of the ar
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_1@Start/GettingStarted.cs /}
+{CODE-TAB:java:Java client_1@Start\GettingStarted.java /}
 {CODE-TABS/}
 
 {INFO:Singleton}
@@ -180,28 +181,43 @@ RavenDB is a Document Database, which means that all stored objects are called `
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_2@Start/GettingStarted.cs /}
+{CODE-TAB:java:Java client_2@Start\GettingStarted.java /}
+{CODE-TAB-BLOCK:javascript:NodeJS}
+...
+{CODE-TAB-BLOCK/}
+{CODE-TAB-BLOCK:python:Python}
+...
+{CODE-TAB-BLOCK/}
+{CODE-TAB-BLOCK:ruby:Ruby}
+...
+{CODE-TAB-BLOCK/}
+{CODE-TAB-BLOCK:go:Go}
+...
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 ### Example II - Loading
 
-The `Session` was designed to help the user write a performant code in as easy way as possible. For example, when document is being loaded (`.Load`) from the Server, there is a possibility to download in one single server call all adjacent documents (`.Include`) reducing number of expensive remote calls to minimum. 
+The `Session` was designed to help the user write a efficient code in as easy way as possible. For example, when document is being loaded (`.Load`) from the Server, there is an option to retrieve additional document in a single request (using `.Include`), reducing number of expensive calls to minimum.
 
-Beside that Session implements `Unit of Work` pattern, so all **changes** to loaded entities are **automatically being tracked**. In result when `SaveChanges` is called, Session knows which entities changed and will synchronize **only them** with the Server. Worth noting at this point is that **all of those changes are send in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an **ACID database** [here](../client-api/faq/transaction-support)).
+Beside that Session implements `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked** so `SaveChanges` call will **synchronize with the Server only the ones that have changed within that Session**. Worth noting at this point is that **all of those changes are send in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an **ACID database** [here](../client-api/faq/transaction-support)).
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_3@Start/GettingStarted.cs /}
+{CODE-TAB:java:Java client_3@Start\GettingStarted.java /}
 {CODE-TABS/}
 
 ### Example III - Querying
 
-To satisfy queries, indexes are being used. From the querying perspective index define which fields (and what values) can be used to find a document. The whole indexation process is done asynchronously, which gives a very quick response times, even when large amounts of data have been changed, however implication of this approach is that the index might be [stale](../indexes/stale-indexes).
+To satisfy queries, indexes are used. From the querying perspective index defines which document fields can be used to find a document. The whole indexing process is done asynchronously, which gives a very quick querying response times, even when large amounts of data have been changed, however implication of this approach is that the index might be [stale](../indexes/stale-indexes).
 
-When index is not specified in the query (e.g. like in the query bellow) then RavenDB is using its **intelligent auto-indexes** feature that will use already existing index or create new one if nothing is found. The other options is to write the index yourself and deploy it to the Server, those indexes are called [Static](../indexes/creating-and-deploying#static-indexes).
+When index is not specified in the query (e.g. like in the query bellow) then RavenDB is using its **intelligent auto-indexes** feature that will use already existing index or create new one if no match is found. The other options is to write the index yourself and deploy it to the Server, those indexes are called [Static](../indexes/creating-and-deploying#static-indexes).
 
 Underneath all of the clients are translating the query to the Raven Query Language (RQL) syntax. If you are interested then you can read more about RQL [here](../indexes/querying/what-is-rql).
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_4@Start/GettingStarted.cs /}
+{CODE-TAB:java:Java client_4@Start\GettingStarted.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products
 where UnitsInStock > 5
