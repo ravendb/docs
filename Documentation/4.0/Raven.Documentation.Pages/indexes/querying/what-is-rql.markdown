@@ -220,7 +220,7 @@ When there is a need to use data from an external document in projection, `load`
 
 {PANEL:SELECT}
 
-Projections can be performed by using `select`. Please read our dedicated projection article [here](indexes/querying/projections).
+Projections can be performed by using `select`. Please read our dedicated projection article [here](../../indexes/querying/projections).
 
 {PANEL/}
 
@@ -228,7 +228,7 @@ Projections can be performed by using `select`. Please read our dedicated projec
 
 {PANEL:UPDATE}
 
-To patch documents on the server-side, use `update` with desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patch/set-based-patch-operation).
+To patch documents on the server-side, use `update` with desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based-patching).
 
 {PANEL/}
 
