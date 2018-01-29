@@ -4,7 +4,7 @@
 
 {INFO:Remember}
 
-Indexes are created by issuing a query are called `dynamic` or `Auto` indexes, and can be easily identified. Their name starts with `Auto/` prefix.
+Indexes are created by issuing a query are called `dynamic` or `Auto` indexes. They can be easily identified. Their name starts with `Auto/` prefix.
 
 Indexes created explicitly by the user are called `static`.
 
@@ -12,7 +12,7 @@ Indexes created explicitly by the user are called `static`.
 
 {PANEL:**Static indexes**}
 
-There are a couple of ways to create a `static index` and send it to server. We can use [maintenance operations](../indexes/creating-and-deploying#using-maintenance-operations) or create a [custom class](../indexes/creating-and-deploying#using-abstractindexcreationtask). You can also [scan an assembly](../indexes/creating-and-deploying#using-assembly-scanner) and deploy all found indexes.
+There are a couple of ways to create a `static index` and send it to the server. We can use [maintenance operations](../indexes/creating-and-deploying#using-maintenance-operations) or create a [custom class](../indexes/creating-and-deploying#using-abstractindexcreationtask). You can also [scan an assembly](../indexes/creating-and-deploying#using-assembly-scanner) and deploy all found indexes.
 
 <hr />
 
@@ -40,7 +40,7 @@ There is not much use from an index if it is not deployed to the server. To do s
 
 {CODE indexes_3@Indexes/Creating.cs /}
 
-{SAFE If an index exists on the server and the stored definition is the same as the one that was sent, then it will not be overwritten. This implies that indexed data will not be deleted and indexation will not start from scratch. /}
+{SAFE If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch. /}
 
 #### Using Assembly Scanner
 
@@ -58,7 +58,7 @@ Underneath, the `IndexCreation` will attempt to create all indexes in a single r
 
 ### Using Maintenance Operations
 
-`PutIndexesOperation` maintenance operation (which API reference can be found [here](../client-api/commands/indexes/put)) can be used also to send index(es) to the server.
+The `PutIndexesOperation` maintenance operation (which API references can be found [here](../client-api/commands/indexes/put)) can be used also to send index(es) to the server.
 
 The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. But you lose the ability to deploy using the assembly scanner. You will also have to use string-based names of indexes when querying.
 
@@ -76,7 +76,7 @@ The benefit of this approach is that you can choose the name as you feel fit, an
 
 {INFO:Side-by-Side}
 
-Since RavenDB 4.0, **all** index updates are side-by-side by default. The new index will replace the existing one once it get non-stale. If you want to force an index to swap immediately you can use the Studio for that.
+Since RavenDB 4.0, **all** index updates are side-by-side by default. The new index will replace the existing one once it becomes non-stale. If you want to force an index to swap immediately, you can use the Studio for that.
 
 {INFO/}
 
@@ -84,7 +84,7 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 
 {PANEL:**Auto indexes**}
 
-Auto-indexes are **created** when queries that do **not specify an index name** are executed and (after in-depth query analysis) **no matching auto index is found** on the server-side.
+Auto-indexes are **created** when queries that do **not specify an index name** are executed and, after in-depth query analysis, **no matching auto index is found** on the server-side.
 
 ### Naming Convention
 

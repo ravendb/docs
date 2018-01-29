@@ -1,6 +1,6 @@
-﻿# Operations : Server : How to Get Certificate?
+﻿# Operations : Server : How to Get a Certificate
 
-To get client certificate by thumbprint use **GetCertificateOperation**.
+To get a client certificate by thumbprint use **GetCertificateOperation**.
 
 ## Syntax
 
@@ -8,7 +8,7 @@ To get client certificate by thumbprint use **GetCertificateOperation**.
 
 ### Return Value
 
-The result of executing GetCertificateOperation is [CertificateDefinition](../../../glossary/CertificateDefinition) object.
+The result of executing GetCertificateOperation is a [CertificateDefinition](../../../glossary/CertificateDefinition) object.
 
 ###Example
 

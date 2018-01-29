@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get Certificates?
+﻿# Operations : Server : How to Get Certificates
 
 To get client certificates use **GetCertificatesOperation**.
 
@@ -9,7 +9,7 @@ To get client certificates use **GetCertificatesOperation**.
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **pageSize** | int | Maximum number of records that will be downloaded |
-| **start** | int | Number of records that should be skipped. |
+| **start** | int | Number of records that should be skipped |
 
 | Return Value | |
 | ------------- | ----- |
