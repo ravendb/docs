@@ -136,7 +136,7 @@ namespace Raven.Documentation.Samples.Start
                     };
 
                     session.Store(product);                             // Assign an 'Id' and collection (Products)
-                                                                        // and start tracing an entity
+                                                                        // and start tracking an entity
 
                     session.SaveChanges();                              // Send to the Server
                                                                         // one request processed in one transaction
