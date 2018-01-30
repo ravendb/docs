@@ -2,7 +2,7 @@
 
 `Certificate` property allows to pass certificate which will be used by RavenDB client to connect to server. 
 
-{NOTE Your server must be running `https` if you want to use client certificate. You can find more information [here](../server/security/overview). /}
+{NOTE If your RavenDB instance is running on 'https' then your application has to use a client certificate in order to be able to access the server. You can find more information [here](../server/security/overview). /}
 
 ## Example I
 
