@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 using Raven.Client.Documents;
 using Raven.Client.ServerWide.Operations;
 using Raven.Client.ServerWide.Operations.Certificates;
@@ -21,6 +22,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
 
             #region get_certs_1
             public GetCertificatesOperation(int start, int pageSize)
+            #endregion
+
+            #region cert_put_1
+            public PutClientCertificateOperation(
+                string name, 
+                X509Certificate2 certificate, 
+                Dictionary<string, DatabaseAccess> permissions, 
+                SecurityClearance clearance)
             #endregion
             */
         }
@@ -82,6 +91,15 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                 {
                     #region get_certs_2
                     CertificateDefinition[] definitions = store.Maintenance.Server.Send(new GetCertificatesOperation(0, 20));
+                    #endregion
+                }
+
+                {
+
+                    #region cert_put_2
+                    X509Certificate2 certificate = new X509Certificate2("c:\\path_to_pfx_file");
+                    store.Maintenance.Server.Send(
+                        new PutClientCertificateOperation("cert1", certificate, null, SecurityClearance.ClusterAdmin));
                     #endregion
                 }
             }
