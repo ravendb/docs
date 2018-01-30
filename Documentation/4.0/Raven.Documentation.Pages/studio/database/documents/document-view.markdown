@@ -71,9 +71,8 @@
 3. **Format** content
    * Format - Adjust the document JSON format  
    * Toggle collapse - Toggle nested complex properties in the document  
-   * Toggle new lines - Toggle between showing the character '/n' or the actuall new lines  
+   * Toggle new lines - Toggle between showing the character '/n', or the actual new lines  
 <br/>
 4. **Attachments**  
    * Add any type of file as an attachment to the document  
 {PANEL/}
-
