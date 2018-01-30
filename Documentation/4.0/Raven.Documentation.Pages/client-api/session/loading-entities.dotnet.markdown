@@ -53,7 +53,7 @@ When there is a 'relationship' between documents, those documents can be loaded 
 
 ### Example I
 
-We can use this code to load also an employee which made the order.
+We can use this code to also load an employee which made the order.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_2_1@ClientApi\Session\LoadingEntities.cs /}
@@ -84,7 +84,7 @@ To load multiple entities at once, use one of the following `Load` overloads.
 
 | Return Value | |
 | ------------- | ----- |
-| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID does not exist. |
+| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID doesn't exist. |
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_3_1@ClientApi\Session\LoadingEntities.cs /}
@@ -104,7 +104,7 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **idPrefix** | string |  prefix for which documents should be returned  |
+| **idPrefix** | string |  prefix for which the documents should be returned  |
 | **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
@@ -147,7 +147,7 @@ Entities can be streamed from the server using one of the following `Stream` met
 | **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **skipAfter** | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
 | streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 | Return Value | |
@@ -158,7 +158,7 @@ Entities can be streamed from the server using one of the following `Stream` met
 
 ### Example I
 
-Stream documents for a ID prefix
+Stream documents for a ID prefix:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
@@ -166,7 +166,9 @@ Stream documents for a ID prefix
 {CODE-TABS/}
 
 ## Example 2
-Fetch documents for a ID prefix directly into a stream
+
+Fetch documents for a ID prefix directly into a stream:
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
 {CODE-TAB:csharp:Async loading_entities_5_2_async@ClientApi\Session\LoadingEntities.cs /}
@@ -180,13 +182,13 @@ Fetch documents for a ID prefix directly into a stream
 
 {PANEL:IsLoaded}
 
-To check if entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.
 
 {CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string | Entity ID for which check should be performed. |
+| **id** | string | Entity ID for which the check should be performed. |
 
 | Return Value | |
 | ------------- | ----- |
