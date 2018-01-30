@@ -6,12 +6,9 @@ Authentication and authorization is based on [client X.509 certificates](../serv
 
 {NOTE If your RavenDB instance is running on 'https' then your application has to use a client certificate in order to be able to access the server. You can find more information [here](../server/security/overview). /}
 
-
-
-## Example I
+## Example
 
 {CODE client_cert@ClientApi\Certificate.cs /}
-
 
 ## Related Articles
 
