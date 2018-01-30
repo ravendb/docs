@@ -8,7 +8,7 @@ To get a client certificate by thumbprint use **GetCertificateOperation**.
 
 ### Return Value
 
-The result of executing GetCertificateOperation is a [CertificateDefinition](../../../glossary/CertificateDefinition) object.
+The result of executing GetCertificateOperation is a [CertificateDefinition](../../../../glossary/CertificateDefinition) object.
 
 ###Example
 

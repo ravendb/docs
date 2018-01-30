@@ -13,7 +13,7 @@ To get client certificates use **GetCertificatesOperation**.
 
 | Return Value | |
 | ------------- | ----- |
-| [CertificateDefinition](../../../glossary/CertificateDefinition)[] | List of certificate definitions |
+| [CertificateDefinition](../../../../glossary/CertificateDefinition)[] | List of certificate definitions |
 
 ###Example
 
