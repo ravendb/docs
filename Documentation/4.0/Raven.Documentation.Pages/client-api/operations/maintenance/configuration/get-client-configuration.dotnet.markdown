@@ -19,4 +19,4 @@
 
 ## Related Articles
 
-- [How to get server-wide **client configuration**?](../../../client-api/operations/server/get-serverwide-client-configuration-operation)
+- [How to get server-wide **client configuration**?](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)

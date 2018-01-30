@@ -26,4 +26,4 @@
 
 ## Related Articles
 
-- [How to **change index priority**?](../../../../client-api/operations/set-indexes-priority-operation)  
+- [How to **change index priority**?](../../../../client-api/operations/maintenance/indexes/set-indexes-priority)

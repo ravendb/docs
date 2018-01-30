@@ -67,4 +67,4 @@ from People where Name = 'Bob' and Age >= 29
 
 ## Related Articles
 
-- [What are **operations**?](../what-are-operations?)  
+- [What are **operations**?](../../client-api/operations/what-are-operations)

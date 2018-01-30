@@ -22,6 +22,6 @@
 
 ## Related Articles
 
-- [How to **get index**?](../../../client-api/operations/maintenance/get-index-operation)
-- [How to **put index**?](../../../client-api/operations/maintenance/put-indexes-operation)
-- [How to **delete index**?](../../../client-api/operations/maintenance/delete-index-operation)
+- [How to **get index**?](../../../../client-api/operations/maintenance/indexes/get-index)
+- [How to **put index**?](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to **delete index**?](../../../../client-api/operations/maintenance/indexes/delete-index)

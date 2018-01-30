@@ -31,5 +31,5 @@ You can generate a client certificate using **CreateClientCertificateOperation**
 
 ## Related articles
 
-- [How to **delete** client certificate?](../../../../client-api/operations/server-wide/certificates/delete-client-certificate) 
+- [How to **delete** certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate) 
 - [How to **put** client certificate?](../../../../client-api/operations/server-wide/certificates/put-client-certificate) 
