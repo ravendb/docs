@@ -66,5 +66,4 @@ wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.ce
 
 ### Example IV : Using the RavenDB Client
 
-## Client Certificates & the RavenDB Client
-
+Wiring certificate in RavenDB Client is described in [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section.
