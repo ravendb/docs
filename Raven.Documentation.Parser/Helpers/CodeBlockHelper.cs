@@ -64,7 +64,8 @@ namespace Raven.Documentation.Parser.Helpers
                     content = ExtractSectionFromCsharpFile(section, Path.Combine(samplesDirectory, file));
                     break;
                 case Language.Java:
-                    content = ExtractSectionFromJavaFile(section, Path.Combine(samplesDirectory, file));
+                case Language.NodeJs:
+                    content = ExtractSectionFromFile(section, Path.Combine(samplesDirectory, file));
                     break;
                 case Language.Python:
                     content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
@@ -154,7 +155,8 @@ namespace Raven.Documentation.Parser.Helpers
                     content = ExtractSectionFromCsharpFile(section, Path.Combine(samplesDirectory, file));
                     break;
                 case Language.Java:
-                    content = ExtractSectionFromJavaFile(section, Path.Combine(samplesDirectory, file));
+                case Language.NodeJs:
+                    content = ExtractSectionFromFile(section, Path.Combine(samplesDirectory, file));
                     break;
                 case Language.Python:
                     content = ExtractSectionFromPythonFile(section, Path.Combine(samplesDirectory, file));
@@ -166,7 +168,7 @@ namespace Raven.Documentation.Parser.Helpers
             return new CodeTab(ConvertLanguageToCssClass, ConvertLanguageToDisplayName) { Title = title, Content = content, Language = language, Id = Guid.NewGuid().ToString("N") };
         }
 
-        private static string ExtractSectionFromJavaFile(string section, string filePath)
+        private static string ExtractSectionFromFile(string section, string filePath)
         {
             if (File.Exists(filePath) == false)
                 throw new FileNotFoundException(string.Format("File '{0}' does not exist.", filePath), filePath);
@@ -271,6 +273,7 @@ namespace Raven.Documentation.Parser.Helpers
                 case Language.Java:
                     return "language-java";
                 case Language.Http:
+                case Language.NodeJs:
                     return "language-javascript";
                 case Language.Python:
                     return "language-python";
@@ -328,6 +331,8 @@ namespace Raven.Documentation.Parser.Helpers
                     return "C#";
                 case Language.Java:
                     return "Java";
+                case Language.NodeJs:
+                    return "Node.js";
                 case Language.Http:
                     return "HTTP";
                 case Language.Python:

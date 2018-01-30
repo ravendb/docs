@@ -154,6 +154,7 @@ Before proceeding to the examples we would like to point out that most of the ar
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_1@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_1@Start\GettingStarted.java /}
+{CODE-TAB:nodejs:Node.js client_1@start\gettingStarted.js /}
 {CODE-TABS/}
 
 {INFO:Singleton}
@@ -182,9 +183,7 @@ RavenDB is a Document Database, which means that all stored objects are called `
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_2@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_2@Start\GettingStarted.java /}
-{CODE-TAB-BLOCK:javascript:NodeJS}
-...
-{CODE-TAB-BLOCK/}
+{CODE-TAB:nodejs:Node.js client_2@start\gettingStarted.js /}
 {CODE-TAB-BLOCK:python:Python}
 ...
 {CODE-TAB-BLOCK/}
@@ -205,6 +204,7 @@ Beside that Session implements `Unit of Work` pattern, meaning that all **change
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_3@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_3@Start\GettingStarted.java /}
+{CODE-TAB:nodejs:Node.js client_3@start\gettingStarted.js /}
 {CODE-TABS/}
 
 ### Example III - Querying
@@ -218,6 +218,7 @@ Underneath all of the clients are translating the query to the Raven Query Langu
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_4@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_4@Start\GettingStarted.java /}
+{CODE-TAB:nodejs:Node.js client_4@start\gettingStarted.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products
 where UnitsInStock > 5

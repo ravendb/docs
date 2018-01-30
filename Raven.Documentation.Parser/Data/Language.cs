@@ -22,6 +22,10 @@
         [Description("Python")]
         Python,
 
+	    [FileExtension(".js")]
+	    [Description("Node.js")]
+	    NodeJs,
+
         [FileExtension("")]
 		[Description("General")]
 		All
