@@ -1,18 +1,17 @@
 //region client_1
-try (DocumentStore store = new DocumentStore()) {
-        store.setUrls(new string[] { 
-            "http://live-test.ravendb.net" 
-        });                                                 // URL to the Server
-                                                            // or list of URLs
-                                                            // to all Cluster Servers (Nodes)
-        
-        store.setDatabase("Northwind");                     // Default database that DocumentStore will interact with
-        store.setConventions(new DocumentConventions());    // DocumentStore customizations
-        
-        store.initialize();                                 // Each DocumentStore needs to be initialized before use.
-                                                            // This process establishes the connection with the Server
-                                                            // and downloads various configurations
-                                                            // e.g. cluster topology or client configuration
+ try (IDocumentStore store = new DocumentStore(
+            new String[]{ "http://live-test.ravendb.net" },        // URL to the Server,
+                                                                   // or list of URLs
+                                                                   // to all Cluster Servers (Nodes)
+            "Northwind")                                           // Default database that DocumentStore will interact with
+    ) {
+
+        DocumentConventions conventions = store.getConventions();  // DocumentStore customizations
+
+        store.initialize();                                        // Each DocumentStore needs to be initialized before use.
+                                                                   // This process establishes the connection with the Server
+                                                                   // and downloads various configurations
+                                                                   // e.g. cluster topology or client configuration
     }
 //endregion
 
@@ -30,7 +29,7 @@ try (IDocumentSession session = store.openSession()) {      // Open a session fo
         product.setUnitsInStock(10);
 
         session.store(product);                             // Assign an 'Id' and collection (Products)
-                                                            // and start tracing an entity
+                                                            // and start tracking an entity
         
         session.saveChanges();                              // Send to the Server
                                                             // one request processed in one transaction
