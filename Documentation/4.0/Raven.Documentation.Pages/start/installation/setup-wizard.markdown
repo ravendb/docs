@@ -184,8 +184,13 @@ If you wish to setup a cluster, this is the place to add nodes to the cluster an
 
 For a smooth setup experience, please make sure that the IP address and port are available in each machine. The wizard will validate this and throw an error if they are being used. When using port 443, you need to ensure that it hasn't already been taken by other applications like Skype, IIS, Apache, etc. On Linux, you might need to [allow port 443 for non-root processes](https://superuser.com/questions/710253/allow-non-root-process-to-bind-to-port-80-and-443). 
 
+{NOTE: Note}
+When you provide a wildcard certificate, node tags are assigned automatically in alphabetical order. For example, when using CN=*.my.domain then the cluster domain names will be a.my.domain, b.my.domain, c.my.domain and so on.
+
+If you wish to use different domain names or build a cluster with more than 26 nodes you can either do a manual setup or use the wizard and provide a certificate with as many domains as you need under the "Subject Alternative Names" (SAN) property.
+{NOTE/}
 {WARNING: Important} 
-If you bring your own certificate you must also take care of the DNS records. If you choose to bind to 127.0.0.1, and provide a certificate with CN=my.domain.com, then the DNS record of my.domain.com must point to 127.0.0.1.
+If you bring your own certificate you must also take care of the DNS records. If you choose to bind to 127.0.0.1, and provide a certificate with CN=my.domain, then the DNS record of my.domain must point to 127.0.0.1.
 
 If you are running behind a firewall, the DNS records must point to the **external** IP address.
 {WARNING/}
@@ -226,7 +231,9 @@ It is your responsibility to update the DNS record of your domain to point to yo
 
 ### Example IV
 
-In Docker, if you choose to use port mapping with the -p flag, You need to check the box "Customize external IP and Ports" and supply the external IP address as well as the exposed ports.  
+In Docker, if you choose to use port mapping with the -p flag, You need to check the box "Customize external ports" and supply the exposed ports.  
+
+It is your responsibility to update the DNS record of your domain to point to your external IP address. 
 
 So if a container was created using:
 
