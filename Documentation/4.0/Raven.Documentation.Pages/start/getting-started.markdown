@@ -155,6 +155,7 @@ Before proceeding to the examples we would like to point out that most of the ar
 {CODE-TAB:csharp:C# client_1@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_1@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_1@start\gettingStarted.js /}
+{CODE-TAB:python:Python client_1@start\getting_started.py /}
 {CODE-TABS/}
 
 {INFO:Singleton}
@@ -184,15 +185,7 @@ RavenDB is a Document Database, which means that all stored objects are called `
 {CODE-TAB:csharp:C# client_2@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_2@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_2@start\gettingStarted.js /}
-{CODE-TAB-BLOCK:python:Python}
-...
-{CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:ruby:Ruby}
-...
-{CODE-TAB-BLOCK/}
-{CODE-TAB-BLOCK:go:Go}
-...
-{CODE-TAB-BLOCK/}
+{CODE-TAB:python:Python client_2@start\getting_started.py /}
 {CODE-TABS/}
 
 ### Example II - Loading
@@ -205,6 +198,7 @@ Beside that Session implements `Unit of Work` pattern, meaning that all **change
 {CODE-TAB:csharp:C# client_3@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_3@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_3@start\gettingStarted.js /}
+{CODE-TAB:python:Python client_3@start\getting_started.py /}
 {CODE-TABS/}
 
 ### Example III - Querying
@@ -219,6 +213,7 @@ Underneath all of the clients are translating the query to the Raven Query Langu
 {CODE-TAB:csharp:C# client_4@Start/GettingStarted.cs /}
 {CODE-TAB:java:Java client_4@Start\GettingStarted.java /}
 {CODE-TAB:nodejs:Node.js client_4@start\gettingStarted.js /}
+{CODE-TAB:python:Python client_4@start\getting_started.py /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products
 where UnitsInStock > 5
