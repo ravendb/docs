@@ -20,11 +20,6 @@
         ]
     },
     {
-        "Path": "getting-to-know.markdown",
-        "Name": "Getting to Know RavenDB",
-        "Mappings": []
-    },
-    {
         "Path": "playground-server.markdown",
         "Name": "Playground Server",
         "Mappings": []
