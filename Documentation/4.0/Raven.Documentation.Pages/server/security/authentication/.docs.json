@@ -11,7 +11,7 @@
     },
     {
         "Path": "certificate-renewal-and-rotation.markdown",
-        "Name": "Certificate Renewal and Rotation",
+        "Name": "Certificate Renewal & Rotation",
         "Mappings": []
     },
     {
@@ -31,7 +31,7 @@
     },
     {
         "Path": "common-errors-and-troubleshooting.markdown",
-        "Name": "Common Errors and Troubleshooting",
+        "Name": "Common Errors & Troubleshooting",
         "Mappings": []
     }
 
