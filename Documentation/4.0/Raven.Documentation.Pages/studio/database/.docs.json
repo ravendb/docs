@@ -1,12 +1,17 @@
 ﻿[
     {
-        "Path": "/tasks",
-        "Name": "Tasks",
+        "Path": "/documents",
+        "Name": "Documents",
         "Mappings": []
     },
     {
-        "Path": "/documents",
-        "Name": "Documents",
+        "Path": "/settings",
+        "Name": "Settings",
+        "Mappings": []
+    },
+    {
+        "Path": "/tasks",
+        "Name": "Tasks",
         "Mappings": []
     }
 ]

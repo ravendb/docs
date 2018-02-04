@@ -51,22 +51,22 @@ All your databases are listed in this view
 
 ![Figure 2. Database Actions](images/database-actions-1.png "Database Actions")
 
-1. **Create new database**    
-   A new database can be created from scratch, from a backup copy, or from existing 3.x data - see more below
+1. **Create new database**  
+   A new database can be created from scratch, from a backup copy, or from existing 3.x data - see more [below](databases-list-view#creating-new-database-options)  
 
-2. **Manage group**    
-   Click to manage the nodes that contain this database
+2. **Manage group**  
+   Click to manage the nodes that contain this database - see more about [The Database Group](../../../studio/database/settings/manage-database-group)  
 
-3. **Disable/Enable the database**    
-   A disabled database cannot be accessed
+3. **Disable/Enable the database**  
+   A disabled database cannot be accessed  
 
-4. **More actions**      
-   Pause indexing, Disable indexing, Compact database - see more below      
+4. **More actions**  
+   Pause indexing, Disable indexing, Compact database - see more below  
 
-5. **Refresh data**      
+5. **Refresh data**  
    Refresh the database stats data in this view from the server  
 
-6. **Delete the database**
+6. **Delete the database**  
 {PANEL/}
 
 {PANEL: Creating New Database Options}
