@@ -90,7 +90,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 new SubscriptionCreationOptions<Order>()
                 {
                     Filter = x => x.Lines.Sum(line => line.PricePerUnit * line.Quantity) > 100,
-                    Project = x => new
+                    Projection = x => new
                     {
                         Id = x.Id,
                         Total = x.Lines.Sum(line => line.PricePerUnit * line.Quantity),

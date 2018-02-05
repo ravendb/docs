@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
+using Raven.Client.Documents.Operations.Attachments;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
 {

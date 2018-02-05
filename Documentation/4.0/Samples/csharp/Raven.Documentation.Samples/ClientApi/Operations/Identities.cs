@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
+using Raven.Client.Documents.Operations.Identities;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
 {
