@@ -43,12 +43,13 @@ Every client certificate is associated with a security clearance and access perm
 
 RavenDB offers full database encryption using [libsodium](https://download.libsodium.org/doc/), a well-known battle tested encryption library. 
 
-Encryption is implemented at the storage level, with ChaCha20-Poly1305 authenticated encryption using 256 bit keys. 
+Encryption is implemented at the storage level, with XChaCha20-Poly1305 authenticated encryption using 256 bit keys. 
 
 When database encryption is on, all the features of a database are automatically encrypted - documents, indexes and every piece of data that is written to disk.
 
 <strong>Read more:</strong>
 
+- [Encryption at Rest](../../server/security/encryption/encryption-at-rest)
 - [Database Encryption](../../server/security/encryption/database-encryption)
 - [Server Store Encryption](../../server/security/encryption/server-store-encryption)
 - [Secret Key Management](../../server/security/encryption/secret-key-management)

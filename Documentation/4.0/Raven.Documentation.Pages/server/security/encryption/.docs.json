@@ -1,7 +1,7 @@
 [
     {
-        "Path": "encryption-in-ravendb.markdown",
-        "Name": "Encryption in RavenDB",
+        "Path": "encryption-at-rest.markdown",
+        "Name": "Encryption at Rest",
         "Mappings": []
     },
     {
