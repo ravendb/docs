@@ -1,10 +1,20 @@
 ﻿# How to create a data subscription?
 
+{INFO:General}
+
 Subscriptions in their essence all defined by an RQL like query that describes both the filtering and the projection. For convenience, we've provided several ways to express that definition, we'll cover all of them in this page.
+
+This page covers two topics:
+
+[Common subscription creation examples](how-to-create-data-subscription#common-subscription-creation-examples): Coverst most common use cases
+
+[API overview](how-to-create-data-subscription#api-overview): Describes detailed overview of the subscriptions creation API
+
+{INFO/}
 
 ## Common subscription creation examples
 
-### Create subscription on whole collection
+{PANEL:Create subscription on whole collection}
 
 Here we create a plain subscription on the Orders collection, without any constraint or transformation.
 {CODE-TABS}
@@ -12,7 +22,9 @@ Here we create a plain subscription on the Orders collection, without any constr
 {CODE-TAB:csharp:RQL-syntax create_whole_collection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TABS/}
 
-### Create subscription with filtering
+{PANEL/}
+
+{PANEL:Create subscription with filtering}
 
 Here we create a subscription on Orders collection, which total order revenue is greater than 100.
 {CODE-TABS}
@@ -20,7 +32,9 @@ Here we create a subscription on Orders collection, which total order revenue is
 {CODE-TAB:csharp:RQL-syntax create_filter_only_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TABS/}
 
-### Create subscription with filtering and projection
+{PANEL/}
+
+{PANEL:Create subscription with filtering and projection}
 
 Here we create a subscription on Orders collection, which total order revenue is greater than 100, and return only ID and total revenue.
 {CODE-TABS}
@@ -28,7 +42,9 @@ Here we create a subscription on Orders collection, which total order revenue is
 {CODE-TAB:csharp:RQL-syntax create_filter_and_projection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TABS/}
 
-### Create subscription with load document in filter projection
+{PANEL/}
+
+{PANEL:Create subscription with load document in filter projection}
 
 Here we create a subscription on Orders collection, which total order revenue is greater than 100, and return ID, total revenue, shipping address and responsible employee name.
 {CODE-TABS}
@@ -36,13 +52,17 @@ Here we create a subscription on Orders collection, which total order revenue is
 {CODE-TAB:csharp:RQL-syntax create_filter_and_projection_RQL@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TABS/}
 
-### Create versioning enabled subscription
+{PANEL/}
+
+{PANEL:Create versioning enabled subscription}
 
 Here we create a subscription on Orders collection, which returns current and previous version of the subscriptions. Please see the versioning subscription dedicated page for more details.
 {CODE-TABS}
 {CODE-TAB:csharp:Generic-syntax create_filter_and_projection_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TAB:csharp:RQL-syntax create_versioned_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {CODE-TABS/}
+
+{PANEL/}
 
 ## Advanced subscription creation options
 
@@ -54,7 +74,7 @@ Here we create a subscription on Orders collection, which returns current and pr
 
 ## API overview
 
-### SubscriptionCreationOptions
+{PANEL:SubscriptionCreationOptions}
 
 Non generic version of the class, relies on user's full knowledge of the RQL query structure
 
@@ -65,7 +85,9 @@ Non generic version of the class, relies on user's full knowledge of the RQL que
 | **ChangeVector** | `string` | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
 | **MentorNode** | `string` | Node tag of the preffered node to run the subscription. If the node is down, the subscription Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
 
-### SubscriptionCreationOptions&lt;T&gt;
+{PANEL/}
+
+{PANEL:SubscriptionCreationOptions&lt;T&gt;}
 
 An RQL statement will be built based on the fields.
 
@@ -78,7 +100,9 @@ An RQL statement will be built based on the fields.
 | **ChangeVector** | `string` | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
 | **MentorNode** | `string` | Node tag of the preffered node to run the subscription. If the node is down, the subscription Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
 
-### Create and CreateAsync overloads summary
+{PANEL/}
+
+{PANEL:Create and CreateAsync overloads summary}
 
 {CODE definition@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -91,6 +115,8 @@ An RQL statement will be built based on the fields.
 | Return value | |
 | ------------- | ----- |
 | `string` | Created data subscription name. If Name was provided in SubscriptionCreationOptions, it will be returned, otherwise, a unique name will be generated by server. |
+
+{PANEL/}
 
 ## Related articles
 

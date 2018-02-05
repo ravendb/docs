@@ -1,38 +1,22 @@
 ﻿# How to consume a data subscription?
 
-Subscriptions are consumed by the client on top of a continuous TCP connection. Those TCP connections are managed on the client side by s Subscription object, In this page we'll cover how to get those objects and how to use the to consume the subscription.
+Subscriptions are consumed by the client using a 'SubscriptionWorker' object, This page will cover ways to obtain and configure the subscription workers.
 
-
-## Simple consumption example
+{PANEL:Simple consumption example}
 
 First, let us start from real simple subscription consumption example:
 Here we create a subscription and have a worker processing documents
 
 {CODE subscriptions_example@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
+{PANEL/}
+
 ## Creating subscription worker object
 
-The subscription worker object manages the subscription on the client side. Not that upon creation of the object, no connection will be created. A connection is created only when the received object's Run method is called.
+{INFO:Connection to server}
+The subscription worker object manages the subscription on the client side. Note that upon creation of the object, no connection will be created. A connection is created only when the received object's Run method is called.
+{INFO/}
 
-### Get typed subscription worker
-
-Here we get a subscription worker, only based on subscription name.
-{CODE open_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
-### Get typed subscription worker
-
-Here we get a subscription worker, which in the case of another client consuming the connection, will wait for it to finish on the server side and only then start consuming the subscription. 
-{CODE open_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
-### Get typed subscription worker
-
-Here we get a subscription worker as before, but also we set the maximum batch size to 500. And we define that if there is an error during the client's Run function, we will not abort the worker processing as defined by default, but we will continue processing.
-{CODE open_3@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
-
-
-## This page is a work in progress
-
-<!--
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -114,7 +98,21 @@ You may want to dynamically manage subscription handlers. The returned subscribe
 The data subscription stops pulling docs if there is no subscriber attached.
 {NOTE/}
 
--->
+
+### Get typed subscription worker
+
+Here we get a subscription worker, only based on subscription name.
+{CODE open_1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+### Get typed subscription worker
+
+Here we get a subscription worker, which in the case of another client consuming the connection, will wait for it to finish on the server side and only then start consuming the subscription. 
+{CODE open_2@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+### Get typed subscription worker
+
+Here we get a subscription worker as before, but also we set the maximum batch size to 500. And we define that if there is an error during the client's Run function, we will not abort the worker processing as defined by default, but we will continue processing.
+{CODE open_3@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 ## Related articles
 
