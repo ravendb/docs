@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "document-identifier-generation.markdown",
+        "Name": "Document identifier generation",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/kb/document-key-generation"
+            }
+        ]
+    }
+]
