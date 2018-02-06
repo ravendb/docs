@@ -12,5 +12,6 @@
 
   <ItemGroup>
     <Folder Include="server\security\authentication\images\snag\" />
+    <Folder Include="server\security\encryption\images\" />
   </ItemGroup>
 </Project>

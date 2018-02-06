@@ -58,6 +58,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
                 store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord("MyNewDatabase")));
                 #endregion
 
+                #region CreateEncryptedDatabase
+                store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord("MyEncryptedDatabase")
+                {
+                    Encrypted = true
+                }));
+                #endregion
+
                 #region DeleteDatabase
                 store.Maintenance.Server.Send(new DeleteDatabasesOperation("MyNewDatabase", hardDelete: true, fromNode: null, timeToWaitForConfirmation: null));
                 #endregion
@@ -81,6 +88,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             {
                 #region CreateDatabaseAsync
                 await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord("MyNewDatabase")));
+                #endregion
+
+                #region CreateEncryptedDatabaseAsync
+                await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord("MyEncryptedDatabase")
+                {
+                    Encrypted = true
+                }));
                 #endregion
 
                 #region DeleteDatabaseAsync

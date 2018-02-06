@@ -1,11 +1,13 @@
-﻿# Create Database - Encrypted
+﻿# Create A Database : Encrypted
 ---
 
-{NOTE: }
+{NOTE: Note}
 
-* All the data in your database can be encrypted, but encryption is possible only if authentication is enabled and a server certificate is defined
+Encryption is possible only if authentication is enabled and a server certificate is defined.
 
-* Learn more about authentication in: [Authentication Overview](../../../../server/security/overview)  
+Learn more about encryption in: [Encryption At Rest](../../../../server/security/encryption/encryption-at-rest)  
+Learn how to enable authentication in: [Certificate Configuration](../../../../server/security/authentication/certificate-configuration)  
+Learn about the secret key in: [Secret Key Management](../../../../server/security/encryption/secret-key-management)  
 {NOTE/}
 
 ---
@@ -28,7 +30,7 @@
 <br/>
 
 3. **Note**
-   * You will Not have access to the database if the key is lost.  
-   * Download, print, or copy and save the key in a safe place. It will NOT be available again to you!  
+   * You will not have access to the database if the key is lost.  
+   * Download, print, or copy and save the key in a safe place. It will NOT be available again!  
 
 {PANEL/}
