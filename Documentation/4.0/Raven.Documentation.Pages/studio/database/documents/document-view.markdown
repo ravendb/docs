@@ -4,7 +4,12 @@
 {NOTE: }
 
 * In this view, a document can be viewed and edited.  
+<br/>
 * Actions such as cloning the document, deleting, adding attachments and much more can be performed.  
+<br/>
+* In this page:  
+  * [Document View](document-view#the-document-view)  
+  * [Documents View - Actions](document-view#actions)  
 {NOTE/}
 
 ---
@@ -60,6 +65,8 @@
 1. **General** actions  
    * Save document  
    * Delete document  
+     * The document _content_ is deleted and will not be available again
+     * The document itself is marked as a _Tombstone_ , so that the delete action can be replicated to the other database instances  
    * Clone document - Create a clone of the current document  
      * A copy of the document without attachments is created  
      * It can be saved with a new ID  
