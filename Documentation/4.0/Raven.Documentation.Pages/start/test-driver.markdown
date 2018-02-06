@@ -6,8 +6,8 @@ In this section we will explain how to use [RavenDB.TestDriver](https://www.nuge
 - [RavenTestDriver](../start/test-driver#raventestdriver)
 - [Pre-initializing the store](../start/test-driver#preinitialize)
 - [Unit test](../start/test-driver#unittest)
-- [CI Servers](../start/test-driver#ci-servers)
 - [Complete example](../start/test-driver#complete-example)
+- [CI Servers](../start/test-driver#continuous-integration-servers)
 
 {PANEL:RavenServerLocator}
 
@@ -69,24 +69,33 @@ At the end of the test we query for TestDocument where their name contains the w
 
 {PANEL/}
 
+{PANEL:Complete Example}
+
+{CODE test_driver_1@Start\RavenDBTestDriverFull.cs /}
+
+{PANEL/}
+
+
 {PANEL:Continuous Integration Servers}
+
 Best practice is to use a CI/CD server to help automate the testing and deployment of your new code. 
 Popular CI/CD products are [AppVeyor]() or [Visual Studio Team Services (aka. VSTS)](). Some customization is required for any
 CI/CD product you use, because you will need to manually download the RavenDb Server _before_ any tests are kicked off. Remember, the Test Driver
-requires a `path location` for a `raven.server.exe` or `raven.server.dll` to be located, where the path on your CI/CD server 
+requires a `path location` for a `Raven.Server.exe` or `Raven.Server.dll` to be located, where the path on your CI/CD server 
 will most likely be different to the path on your localhost-development machine.
 
 ### AppVeyor settings
 
-1. Create some environment variables and powershell script to download RavenDb-Server and unzip it.
+1. Create some environment variables and powershell script to download RavenDB Server and unzip it.
 2. Make sure your custom test-driver knows to check/look for those environment variables you've just set.
 3. Queue/build away!
 
-Step 1 - Create environment variables and powershell script.
+#### Step 1 - Create environment variables and powershell script.
 
 Here's some simple, sample appveyor.yml which set the environmental variables, downloads, unzips, restores, builds and then tests.
 
-```
+{CODE-BLOCK:powershell}
+
 version: '{build}.0.0-dev'
 configuration: Release
 os: Visual Studio 2017
@@ -124,13 +133,13 @@ test_script:
 
 cache:
   - packages -> **\packages.config
-``` 
+{CODE-BLOCK/}
 
-Step 2 - Check/update your custom test-driver code
+#### Step 2 - Check/update your custom test-driver code
 
 Here's some sample code which the test-driver checks for environmental variables.
 
-```
+{CODE-BLOCK:powershell}
 var path = Environment.GetEnvironmentVariable("RavenServerTestPath");
 if (!string.IsNullOrWhiteSpace(path))
 {
@@ -139,9 +148,9 @@ if (!string.IsNullOrWhiteSpace(path))
 		return _serverPath;
 	}
 }
-```
+{CODE-BLOCK/}
 
-Step 3 - Queue/Build away!
+#### Step 3 - Queue/Build away!
 Now queue up a new build to push up a commit and this should kick off where RavenDb-Server downloads, unzips and the 
 test-driver references that downloaded server, in your tests.
 
@@ -150,17 +159,17 @@ test-driver references that downloaded server, in your tests.
 
 1. Create some environment variables for the entire build definition.
 2. Make sure your custom test-driver knows to check/look for those environment variables you've just set.
-3. Add a custom powershell task to manually download and unzip the `Raven-Server.zip`.
+3. Add a custom powershell task to manually download and unzip the RavenDB distribution package.
 4. Queue/build away!
 
-Step 1 - Global Environment Variables for the build definition.
+####Step 1 - Global Environment Variables for the build definition.
 ![](images/test-driver/td1.png)
 
-Step 2 - Check/update your custom test-driver code
+####Step 2 - Check/update your custom test-driver code
 
 Here's some sample code which the test-driver checks for environmental variables.
 
-```
+{CODE-BLOCK:powershell}
 var path = Environment.GetEnvironmentVariable("RavenServerTestPath");
 if (!string.IsNullOrWhiteSpace(path))
 {
@@ -169,14 +178,14 @@ if (!string.IsNullOrWhiteSpace(path))
 		return _serverPath;
 	}
 }
-```
+{CODE-BLOCK/}
 
-Step 3 - Add a custom powershell task
+####Step 3 - Add a custom powershell task
 ![](images/test-driver/td2.png)
 
 here's the code to quickly copy/paste the script into your VSTS task settings:
 
-```
+{CODE-BLOCK:powershell}
 Write-Output "Lets see what all our Environmental variables are now defined as:"
 Get-ChildItem Env:
 
@@ -185,17 +194,12 @@ Write-Output "Downloading RavenDb 4.0.0-rc-40025 ..."
 
 Write-Output "Unzipping RavenDb from" + $env:RavenServerDownloadDestinationFile + " to " + $env:RavenServerDirectory
 expand-archive -Path $env:RavenServerDownloadDestinationFile -DestinationPath  $env:RavenServerDirectory
-```
+{CODE-BLOCK/}
 
-Step 4 - Queue/Build away!
+####Step 4 - Queue/Build away!
 Now queue up a new build to push up a commit and this should kick off where RavenDb-Server downloads, unzips and the 
 test-driver references that downloaded server, in your tests.
 
 
 {PANEL/}
 
-{PANEL:Complete Example}
-
-{CODE test_driver_1@Start\RavenDBTestDriverFull.cs /}
-
-{PANEL/}
