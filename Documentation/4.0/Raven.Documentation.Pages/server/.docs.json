@@ -23,5 +23,10 @@
         "Path": "/troubleshooting",
         "Name": "Troubleshooting",
         "Mappings": []
+    },
+    {
+        "Path": "/kb",
+        "Name": "Knowledge Base",
+        "Mappings": []
     }
 ]
