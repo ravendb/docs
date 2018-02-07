@@ -24,4 +24,4 @@ The **GetTermsOperation** will retrieve stored terms for a field of an index.
 
 ## Related Articles
 
-- [How to **reset index**?](../../../../client-api/operations/maintenance/reset-index-operation)
+- [How to **reset index**?](../../../../client-api/operations/maintenance/indexes/reset-index)

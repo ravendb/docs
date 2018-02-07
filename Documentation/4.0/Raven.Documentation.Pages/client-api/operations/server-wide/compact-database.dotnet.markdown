@@ -30,7 +30,7 @@ The compacting operation is executed **asynchronously** and during this operatio
 
 ## Related Articles
 
-- [How to **create** database?](../../../client-api/operations/server/create-database-operation) 
-- [How to get database **statistics**?](../../../client-api/operations/maintenance/get-statistics-operation)
-- [How to start **restore** operation?](../../../client-api/operations/maintenance/restore-backup-operation)
+- [How to **create** database?](../../../client-api/operations/server-wide/create-database) 
+- [How to get database **statistics**?](../../../client-api/operations/maintenance/get-statistics)
+- [How to start **restore** operation?](../../../client-api/operations/server-wide/restore-backup)
 

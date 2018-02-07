@@ -73,6 +73,7 @@ A database name can be any sequence of characters except for the following rules
   * **Relative path** (e.g. _MyWork/MyDatabaseFolder_) - A database will be created under the `DataDir` folder  
   * **Leave field empty** - A Database will be created in `Databases` directory under the `DataDir` folder  
 <br/>
+
 * Note:  
 
   * The `DataDir` folder can be set in the `settings.json` configuration file (e.g. "DataDir": "RavenData").  

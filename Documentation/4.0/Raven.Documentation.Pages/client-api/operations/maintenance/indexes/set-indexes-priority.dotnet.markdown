@@ -26,4 +26,4 @@
 
 ## Related Articles
 
-- [How to **change index lock mode**?](../../../../client-api/operations/set-indexes-lock-operation)  
+- [How to **change index lock mode**?](../../../../client-api/operations/maintenance/indexes/set-indexes-lock)

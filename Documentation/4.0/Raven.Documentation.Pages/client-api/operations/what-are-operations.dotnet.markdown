@@ -31,7 +31,7 @@ In order to excecute an operation, you will need to use the `Send` or `SendAsync
 
 * [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)
 * [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)
-* [DeleteAttachmentOperation](../../client-api/operations/attachments/gdelete-attachment)
+* [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)
 
 #### Patching
 
@@ -69,17 +69,9 @@ Maintenance operations include operations for changing the configuration at runt
 * [PutClientConfigurationOperation](../../client-api/operations/maintenance/configuration/put-client-configuration)   
 * [GetClientConfigurationOperation](../../client-api/operations/maintenance/configuration/get-client-configuration)   
 
-#### Connection Strings
-
-* [GetConnectionStringsOperation](../../client-api/operations/maintenance/connection-strings/get-connection-strings)   
-* [PutConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/put-connection-strings)   
-* [RemoveConnectionStringOperation](../../client-api/operations/maintenance/connection-strings/remove-connection-strings)   
-
 #### ETL
 
-* [AddEtlOperation](../../client-api/operations/maintenance/etl/add-etl)   
-* [UpdateEtlOperation](../../client-api/operations/maintenance/etl/update-etl)   
-* [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)   
+* [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)
 
 #### Indexing
 
@@ -95,36 +87,16 @@ Maintenance operations include operations for changing the configuration at runt
 * [StopIndexingOperation](../../client-api/operations/maintenance/indexes/stop-indexing)   
 * [GetIndexErrorsOperation](../../client-api/operations/maintenance/indexes/get-index-errors)   
 * [GetIndexOperation](../../client-api/operations/maintenance/indexes/get-index)   
-* [GetIndexPerformanceStatisticsOperation](../../client-api/operations/maintenance/indexes/get-index-performance-statistics)   
-* [GetIndexStatisticsOperation](../../client-api/operations/maintenance/indexes/get-index-statistics)   
 * [GetIndexesOperation](../../client-api/operations/maintenance/indexes/get-indexes)   
-* [GetIndexesStatisticsOperation](../../client-api/operations/maintenance/indexes/get-indexes-statistics)   
-* [GetIndexingStatusOperation](../../client-api/operations/maintenance/indexes/get-indexing-status)   
 * [GetTermsOperation](../../client-api/operations/maintenance/indexes/get-terms)   
 * [IndexHasChangedOperation](../../client-api/operations/maintenance/indexes/index-has-changed)   
 * [PutIndexesOperation](../../client-api/operations/maintenance/indexes/put-indexes)   
-
-#### SQL Migration
-
-* [SqlMigrationImportOperation](../../client-api/operations/maintenance/migration/sql-migration-import)   
-* [SqlMigrationSchemaOperation](../../client-api/operations/maintenance/migration/sql-migration-schema)   
-
-#### Backup/Restore
-
-* [StartBackupOperation](../../client-api/operations/maintenance/backups/start-backup)   
-* [UpdatePeriodicBackupOperation](../../client-api/operations/maintenance/backups/update-periodic-backup)   
-
-#### Replication
-
-* [UpdateExternalReplicationOperation](../../client-api/operations/maintenance/replication/update-external-replication)   
-* [GetReplicationPerformanceStatisticsOperation](../../client-api/operations/maintenance/replication/get-replication-performance-statistics)   
 
 #### Misc
 
 * [GetCollectionStatisticsOperation](../../client-api/operations/maintenance/get-collection-statistics)   
 * [GetStatisticsOperation](../../client-api/operations/maintenance/get-statistics)     
-* [GetIdentitiesOperation](../../client-api/operations/maintenance/get-identities)   
-* [GetOperationStateOperation](../../client-api/operations/maintenance/get-operation-state)   
+* [GetIdentitiesOperation](../../client-api/operations/maintenance/identities/get-identities)   
 
 ### Example - Stop Index
 
@@ -150,10 +122,10 @@ These type of operations contain various administrative and miscellaneous config
 
 #### Client Certificates
 
-* [CreateClientCertificateOperation](../../client-api/operations/server-wide/create-client-certificate)   
-* [GetCertificatesOperation](../../client-api/operations/server-wide/get-certificates)   
-* [DeleteCertificateOperation](../../client-api/operations/server-wide/delete-certificate)   
-* [PutClientCertificateOperation](../../client-api/operations/server-wide/put-client-certificate)   
+* [CreateClientCertificateOperation](../../client-api/operations/server-wide/certificates/create-client-certificate)   
+* [GetCertificatesOperation](../../client-api/operations/server-wide/certificates/get-certificates)   
+* [DeleteCertificateOperation](../../client-api/operations/server-wide/certificates/delete-certificate)   
+* [PutClientCertificateOperation](../../client-api/operations/server-wide/certificates/put-client-certificate)   
 
 #### Server-wide Configuration
 
@@ -163,16 +135,11 @@ These type of operations contain various administrative and miscellaneous config
 #### Cluster Management
 
 * [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node)   
-* [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members)   
 * [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
 * [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)   
 * [GetDatabaseTopology](../../client-api/operations/server-wide/get-database-topology)   
 * [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node)   
 * [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)   
-
-#### Backup/Restore
-
-* [RestoreBackupOperation](../../client-api/operations/server-wide/restore-backup)   
 
 #### Miscellaneous
 
