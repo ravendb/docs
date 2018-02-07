@@ -1,6 +1,6 @@
 ﻿# Operations : How to reset ETL?
 
-ETL process continues to send documents where it last finished. To reset pointer to last sent document and start from the beginning you should use **ResetEtlOperation**.
+ETL is processing documents from the point where last batch finished. To start the processing from the very beginning you can reset the ETL by using the **ResetEltOperation**.
 
 ## Syntax
 
@@ -9,7 +9,7 @@ ETL process continues to send documents where it last finished. To reset pointer
 | Return Value | | |
 | ------------- | ----- | ---- |
 | **configurationName** | string | ETL configuration name |
-| **transformationName** | string | Name of ETL transformation name |
+| **transformationName** | string | Name of ETL transformation |
 
 ## Example
 
