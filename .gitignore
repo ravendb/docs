@@ -228,3 +228,4 @@ Documentation/3.0/Samples/java/.idea/
 /.idea/*
 *.raven-cluster-topology
 *.raven-topology
+*.raven-database-topology
