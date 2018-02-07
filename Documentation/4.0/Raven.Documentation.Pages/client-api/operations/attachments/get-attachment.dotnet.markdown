@@ -10,7 +10,7 @@ This operation is used to get attachment from document.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **documentId** | string | Name of a document which will contain attachment |
+| **documentId** | string | Id of a document which will contain attachment |
 | **name** | name | Name of an attachment |
 | **type** | AttachmentType | **Document** or **Revision** |
 | **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
@@ -19,7 +19,7 @@ This operation is used to get attachment from document.
 | ------------- | ----- |
 | **Stream** | Stream containing attachment |
 | **ChangeVector** | Change vector of attachment |
-| **DocumentId** | Name of document |
+| **DocumentId** | Id of document |
 | **Name** | Name of attachment |
 | **Hash** | Hash of attachment |
 | **ContentType** | MIME content type of attachment |

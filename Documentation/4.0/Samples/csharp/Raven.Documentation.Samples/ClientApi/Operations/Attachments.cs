@@ -88,13 +88,13 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             {
                 {
                     #region delete_1
-                    store.Operations.Send(new DeleteAttachmentOperation("orders/1", "invoice.pdf"));
+                    store.Operations.Send(new DeleteAttachmentOperation("orders/1-A", "invoice.pdf"));
                     #endregion
                 }
 
                 {
                     #region get_1
-                    store.Operations.Send(new GetAttachmentOperation("orders/1", 
+                    store.Operations.Send(new GetAttachmentOperation("orders/1-A", 
                         "invoice.pdf", 
                         AttachmentType.Document, 
                         changeVector: null));
@@ -106,7 +106,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     #region put_1
                     AttachmentDetails attachmentDetails = 
                         store.Operations.Send(
-                            new PutAttachmentOperation("orders/1", 
+                            new PutAttachmentOperation("orders/1-A", 
                                 "invoice.pdf", 
                                 stream, 
                                 "application/pdf"));

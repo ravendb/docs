@@ -8,7 +8,7 @@ This operation is used to delete attachment from document.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **documentId** | string | Name of a document containing attachment |
+| **documentId** | string | Id of a document containing attachment |
 | **name** | name | Name of an attachment |
 | **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
 

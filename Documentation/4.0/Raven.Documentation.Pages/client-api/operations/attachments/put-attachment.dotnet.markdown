@@ -10,7 +10,7 @@ This operation is used to put attachment to document.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **documentId** | string | Name of a document which will contain attachment |
+| **documentId** | string | Id of a document which will contain attachment |
 | **name** | name | Name of an attachment |
 | **stream** | Stream | Stream contains attachment raw bytes |
 | **contentType** | string | MIME type of attachment |
@@ -19,7 +19,7 @@ This operation is used to put attachment to document.
 | Return Value | |
 | ------------- | ----- |
 | **ChangeVector** | Change vector of created attachment |
-| **DocumentId** | Name of document |
+| **DocumentId** | Id of document |
 | **Name** | Name of created attachment |
 | **Hash** | Hash of created attachment |
 | **ContentType** | MIME content type of attachment |
