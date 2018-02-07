@@ -42,8 +42,8 @@
     },
 
     {
-        "Path": "get-database-topology.markdown",
-        "Name": "Get Database Topology",
+        "Path": "get-serverwide-operation-state.markdown",
+        "Name": "Get Server Wide Operation State",
         "Mappings": []
     },
 
