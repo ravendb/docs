@@ -117,17 +117,17 @@ namespace Links
         {
             public static class Assets
             {
-                public const string _references_js = "~/Scripts/_references.js"; 
-                public const string prism_js = "~/Scripts/prism.js"; 
+                public static readonly string _references_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/_references.js"); 
+                public static readonly string prism_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/prism.js"); 
             }
         }
         public static partial class Content 
         {
             public static class Assets
             {
-                public const string font_awesome_css = "~/Content/font-awesome.css";
-                public const string font_awesome_min_css = "~/Content/font-awesome.min.css";
-                public const string prism_css = "~/Content/prism.css";
+                public static readonly string font_awesome_css = T4MVCHelpers.ProcessAssetPath("~/Content/font-awesome.css");
+                public static readonly string font_awesome_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/font-awesome.min.css");
+                public static readonly string prism_css = T4MVCHelpers.ProcessAssetPath("~/Content/prism.css");
             }
         }
     }
@@ -146,8 +146,14 @@ internal static class T4MVCHelpers {
         return path;
     }
 
+    private static string ProcessAssetPathDefault(string virtualPath) {
+        // The path that comes in starts with ~/ and should retain this prefix
+        return virtualPath;
+    }
+
     // Calling ProcessVirtualPath through delegate to allow it to be replaced for unit testing
     public static Func<string, string> ProcessVirtualPath = ProcessVirtualPathDefault;
+    public static Func<string, string> ProcessAssetPath = ProcessAssetPathDefault;
 
     // Calling T4Extension.TimestampString through delegate to allow it to be replaced for unit testing and other purposes
     public static Func<string, string> TimestampString = System.Web.Mvc.T4Extensions.TimestampString;
