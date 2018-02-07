@@ -65,4 +65,4 @@ For indexes that are updated all the time, you can set the AllowStale field of Q
 
 ## Related Articles
 
-- [Set Based Patch Operation](../../../client-api/operations/patch/single-doc-patch-operation)
+- [Single Document Based Patch Operation](../../../client-api/operations/patching/single-document-patching)

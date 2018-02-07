@@ -33,14 +33,17 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
         {
             #region delete_by_query
 
-            DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(Expression<Func<TEntity, bool>> expression,
+            DeleteByQueryOperation DeleteByQueryOperation<TEntity, TIndexCreator>(
+                Expression<Func<TEntity, bool>> expression,
                 QueryOperationOptions options = null)
                 where TIndexCreator : AbstractIndexCreationTask, new();
 
-            DeleteByQueryOperation DeleteByQueryOperation<TEntity>(string indexName, Expression<Func<TEntity, bool>> expression,
+            DeleteByQueryOperation DeleteByQueryOperation<TEntity>(
+                string indexName, Expression<Func<TEntity, bool>> expression,
                 QueryOperationOptions options = null);
 
-            DeleteByQueryOperation DeleteByQueryOperation(IndexQuery queryToDelete, QueryOperationOptions options = null);
+            DeleteByQueryOperation DeleteByQueryOperation(
+                IndexQuery queryToDelete, QueryOperationOptions options = null);
 
             #endregion
         }
