@@ -19,7 +19,12 @@ As long as the database is idle and there are no requests to serve, everything i
 
 Once a request is made, RavenDB will start a transaction (either read or write) and decrypt just the necessary pages into memory. Then it will serve the request, and when the transaction is finished, modified pages are encrypted and written back to the datafile.
 
-At any point in time, only the data of the current transaction will reside in memory in plain text - and only for the duration of the transaction. When the transaction ends, all of the used memory is safely zeroed. RavenDB also makes sure that **no data is written to disk as plain text**. It will always be encrypted.
+{DANGER: Important things to be aware of:}
+1. RavenDB makes sure that **no data is written to disk as plain text**. It will always be encrypted.  
+2. Indexed fields (the actual data) will reside in memory as plain text. Don't index sensitive information.  
+3. Pages of the current transaction will reside in memory as plain text, and only for the duration of the transaction. When the transaction ends, all this memory is safely zeroed.  
+4. Loading documents from the database (using the Studio, the Client API, Rest API...) means that they will be decrypted and sent to you as plain text.
+{DANGER/}
 
 {NOTE Using encryption may reduce performance by a little bit. However, it **doesn't** affect the ACID properties of RavenDB which remains both transactional and secured./}
 
