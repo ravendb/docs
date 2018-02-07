@@ -299,7 +299,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Raven.Documentation.Parser\Raven.Documentation.Parser.csproj">
-      <Project>{f83ea05a-f381-4d22-94e9-5e6055e05190}</Project>
+      <Project>{7f36fd76-ee52-4d36-9a41-6a7db277b863}</Project>
       <Name>Raven.Documentation.Parser</Name>
     </ProjectReference>
     <ProjectReference Include="..\Raven.Documentation.Web.Core\Raven.Documentation.Web.Core.csproj">

@@ -143,6 +143,8 @@ publish/
 
 # NuGet Packages
 *.nupkg
+# Allow for NuGet packages stored in libs folder
+!/libs/*.nupkg
 # The packages folder can be ignored because of Package Restore
 **/packages/*
 # except build/, which is used as an MSBuild target.

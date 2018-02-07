@@ -1,124 +1,13 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F83EA05A-F381-4D22-94E9-5E6055E05190}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Raven.Documentation.Parser</RootNamespace>
-    <AssemblyName>Raven.Documentation.Parser</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>10c692f5</NuGetPackageImportStamp>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
+
   <ItemGroup>
-    <Reference Include="HtmlAgilityPack, Version=1.6.13.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlAgilityPack.1.6.13\lib\Net45\HtmlAgilityPack.dll</HintPath>
-    </Reference>
-    <Reference Include="MarkdownDeep">
-      <HintPath>..\packages\MarkdownDeep.NET.1.5\lib\.NetFramework 3.5\MarkdownDeep.dll</HintPath>
-    </Reference>
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Net.Http.WebRequest" />
-    <Reference Include="System.Web" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Xml" />
+    <PackageReference Include="HtmlAgilityPack" Version="1.6.16" />
+    <PackageReference Include="MarkdownDeep.NetCore" Version="1.5.0.99" />
+    <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="ArticleCompiler.cs" />
-    <Compile Include="ArticleDirectoryCompiler.cs" />
-    <Compile Include="ArticleParser.cs" />
-    <Compile Include="Attributes\FileExtensionAttribute.cs" />
-    <Compile Include="Data\Category.cs" />
-    <Compile Include="Data\CodeTab.cs" />
-    <Compile Include="Data\DocumentationMapping.cs" />
-    <Compile Include="Data\DocumentationFile.cs" />
-    <Compile Include="Data\DocumentationImage.cs" />
-    <Compile Include="Data\CodeBlockLanguage.cs" />
-    <Compile Include="Data\ArticlePage.cs" />
-    <Compile Include="Data\Language.cs" />
-    <Compile Include="Attributes\PrefixAttribute.cs" />
-    <Compile Include="Data\MappingVersion.cs" />
-    <Compile Include="Data\PageLinksValidationResult.cs" />
-    <Compile Include="Data\PageMappingsValidationResult.cs" />
-    <Compile Include="Data\TableOfContents.cs" />
-    <Compile Include="DocumentationValidator.cs" />
-    <Compile Include="Helpers\CategoryHelper.cs" />
-    <Compile Include="Helpers\CodeBlockHelper.cs" />
-    <Compile Include="Helpers\DocumentationFileHelper.cs" />
-    <Compile Include="Helpers\FileExtensionHelper.cs" />
-    <Compile Include="Helpers\HtmlHelper.cs" />
-    <Compile Include="Helpers\LegacyBlockHelper.cs" />
-    <Compile Include="Helpers\NoteBlockHelper.cs" />
-    <Compile Include="Helpers\PanelBlockHelper.cs" />
-    <Compile Include="Helpers\PathHelper.cs" />
-    <Compile Include="Helpers\PrefixHelper.cs" />
-    <Compile Include="Helpers\SocialMediaBlockHelper.cs" />
-    <Compile Include="IProvideGitFileInformation.cs" />
-    <Compile Include="ParserBase.cs" />
-    <Compile Include="ParserOptions.cs" />
-    <Compile Include="Constants.cs" />
-    <Compile Include="DocumentationDirectoryCompiler.cs" />
-    <Compile Include="Data\DocumentationPage.cs" />
-    <Compile Include="DocumentationParser.cs" />
-    <Compile Include="Data\FolderItem.cs" />
-    <Compile Include="DocumentCompiler.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Properties\" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\social-media-follow.html" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Assets\social-media-like.html" />
-  </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('$(SolutionDir)\.nuget\NuGet.targets')" Text="$([System.String]::Format('$(ErrorText)', '$(SolutionDir)\.nuget\NuGet.targets'))" />
-  </Target>
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
