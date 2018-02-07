@@ -10,7 +10,7 @@ If your disk is stolen/lost, an attacker will have full access to the raw data f
 
 On the other hand, if encryption is turned on - the raw data files are useless without possesion of the secret key.
 
-Because encryption is done at the lower levels of the storage engine, it makes it super easy to use. Everything is done transparentely behind the scenes and requires no user intervention. 
+Because encryption is done at the lower levels of the storage engine, it makes it super easy to use. Everything is done transparentely behind the scenes and requires minimal user intervention. 
 
 
 **How does it work?**
@@ -21,7 +21,7 @@ Once a request is made, RavenDB will start a transaction (either read or write) 
 
 {DANGER: Important things to be aware of:}
 1. RavenDB makes sure that **no data is written to disk as plain text**. It will always be encrypted.  
-2. Indexed fields (the actual data) will reside in memory as plain text. Don't index sensitive information.  
+2. Indexed fields (the actual data) will reside in memory as plain text.  
 3. Pages of the current transaction will reside in memory as plain text, and only for the duration of the transaction. When the transaction ends, all this memory is safely zeroed.  
 4. Loading documents from the database (using the Studio, the Client API, Rest API...) means that they will be decrypted and sent to you as plain text.
 {DANGER/}
