@@ -2,7 +2,7 @@
 
 In previous sections we described how to obtain a server certificate and how to configue RavenDB to use it. In this section we will cover how to use client certificates to connect to a RavenDB server.
 
-## Obtaining your first client certificate
+## Obtaining Your First Client Certificate
 
 When RavenDB is running with a server certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is to generate/register an admin client certificate.
 
@@ -66,4 +66,4 @@ wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.ce
 
 ### Example IV : Using the RavenDB Client
 
-Wiring certificate in RavenDB Client is described in [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section.
+Wiring a certificate in the RavenDB Client is described in the [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section.
