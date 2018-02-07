@@ -16,5 +16,5 @@ You can delete client certificate using **DeleteCertificateOperation**.
 
 ## Related articles
 
-- [How to **create** client certificate?](../../../client-api/operations/server/create-client-certificate-operation) 
+- [How to **create** client certificate?](../../../../client-api/operations/server-wide/certificates/create-client-certificate) 
 
