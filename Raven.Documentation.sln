@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2024
+VisualStudioVersion = 15.0.27130.2026
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{02197DA7-3859-4919-98A7-4FAFC4D75F2B}"
 EndProject
@@ -74,11 +74,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\4.0\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{5C0C6DF8-4E44-4985-B2FF-51A50364AF84}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Parser", "Raven.Documentation.Parser\Raven.Documentation.Parser.csproj", "{F83EA05A-F381-4D22-94E9-5E6055E05190}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Web", "Raven.Documentation.Web\Raven.Documentation.Web.csproj", "{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Web.Core", "Raven.Documentation.Web.Core\Raven.Documentation.Web.Core.csproj", "{2E8E4867-144F-4C2C-8041-6DF1D794DABC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Parser", "Raven.Documentation.Parser\Raven.Documentation.Parser.csproj", "{7F36FD76-EE52-4D36-9A41-6A7DB277B863}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -138,10 +138,6 @@ Global
 		{5C0C6DF8-4E44-4985-B2FF-51A50364AF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5C0C6DF8-4E44-4985-B2FF-51A50364AF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5C0C6DF8-4E44-4985-B2FF-51A50364AF84}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F83EA05A-F381-4D22-94E9-5E6055E05190}.Release|Any CPU.Build.0 = Release|Any CPU
 		{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{735034F4-3E54-4D0A-BBC9-4A9B2B1DC1AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -150,6 +146,10 @@ Global
 		{2E8E4867-144F-4C2C-8041-6DF1D794DABC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2E8E4867-144F-4C2C-8041-6DF1D794DABC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2E8E4867-144F-4C2C-8041-6DF1D794DABC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7F36FD76-EE52-4D36-9A41-6A7DB277B863}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7F36FD76-EE52-4D36-9A41-6A7DB277B863}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7F36FD76-EE52-4D36-9A41-6A7DB277B863}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7F36FD76-EE52-4D36-9A41-6A7DB277B863}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
