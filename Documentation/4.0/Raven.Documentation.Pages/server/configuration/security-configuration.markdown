@@ -67,7 +67,7 @@ The E-mail address associated with the Let's Encrypt certificate. Used for renew
 
 {PANEL:Security.MasterKey.Path}
 
-The path of the (512-bit) Master Key. If specified, RavenDB will use this key to protect secrets.
+The path of the (256-bit) Master Key. If specified, RavenDB will use this key to protect secrets.
 
 - **Type**: `string`
 - **Default**: `null`
@@ -77,7 +77,7 @@ The path of the (512-bit) Master Key. If specified, RavenDB will use this key to
 
 {PANEL:Security.MasterKey.Exec}
 
-A command or executable to run which will provide a (512-bit) Master Key, If specified, RavenDB will use this key to protect secrets.
+A command or executable to run which will provide a (256-bit) Master Key, If specified, RavenDB will use this key to protect secrets.
 
 - **Type**: `string`
 - **Default**: `null`

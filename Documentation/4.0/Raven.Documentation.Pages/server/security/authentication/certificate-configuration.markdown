@@ -31,7 +31,7 @@ For example, this is a typical settings.json:
 
 The second way to enable authentication is to set `Security.Certificate.Exec`. 
 
-This option is useful when you want to protect your certificate (private key) with other solutions such as **Azure Key Vault**, **HashiCorp Vault** or even **Hardware-Based Protection**. RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
+This option is useful when you want to protect your certificate (private key) with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection. RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use.
 
 RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
 
@@ -59,11 +59,9 @@ And `settings.json` will look something like this:
 {
     "ServerUrl": "https://rvn-srv-1:8080",
     "Setup.Mode": "None",
-    "DataDir": "/home/RavenData",
-    "Security.Certificate": {
-        "Exec": "powershell",
-        "Arguments": "/home/secrets/give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
-    }
+    "DataDir": "RavenData",
+    "Security.Certificate.Exec": "powershell",
+    "Security.Certificate.Exec.Arguments": "C:\\secrets\\give_me_cert.ps1 90F4BC16CA5E5CB535A6CD8DD78CBD3E88FC6FEA"
 }
 {CODE-BLOCK/}
 
