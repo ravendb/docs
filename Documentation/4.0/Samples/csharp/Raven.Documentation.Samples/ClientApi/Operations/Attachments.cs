@@ -7,6 +7,7 @@ using Raven.Client.Documents;
 using Raven.Client.Documents.Attachments;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Operations;
+using Raven.Client.Documents.Operations.Attachments;
 using Raven.Client.Documents.Operations.Configuration;
 using Raven.Client.Documents.Queries;
 using Raven.Client.Http;
@@ -94,9 +95,9 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
 
                 {
                     #region get_1
-                    store.Operations.Send(new GetAttachmentOperation("orders/1-A", 
-                        "invoice.pdf", 
-                        AttachmentType.Document, 
+                    store.Operations.Send(new GetAttachmentOperation("orders/1-A",
+                        "invoice.pdf",
+                        AttachmentType.Document,
                         changeVector: null));
                     #endregion
                 }
@@ -104,11 +105,11 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                 {
                     Stream stream = null;
                     #region put_1
-                    AttachmentDetails attachmentDetails = 
+                    AttachmentDetails attachmentDetails =
                         store.Operations.Send(
-                            new PutAttachmentOperation("orders/1-A", 
-                                "invoice.pdf", 
-                                stream, 
+                            new PutAttachmentOperation("orders/1-A",
+                                "invoice.pdf",
+                                stream,
                                 "application/pdf"));
                     #endregion
                 }
