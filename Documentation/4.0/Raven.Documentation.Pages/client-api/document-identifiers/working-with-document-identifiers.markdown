@@ -75,27 +75,31 @@ or use the following `Store` method overload:
 
 {CODE session_semantic_id_2@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
-### Automatic IDs and Identities
+### Server-side generated IDs
 
-RavenDB also supports the notion of the identifier without the usage of the HiLo. By creating a string ID property in your entity and setting it to a value ending with a slash (`/`) or with a pipe (`|`), you can ask RavenDB to assign a document ID to a new document when it is saved.
+RavenDB also supports the notion of the identifier without the usage of the HiLo. By creating a string ID property in your entity and setting it to a value ending with a slash (`/`), you can ask RavenDB to assign a document ID to a new document when it is saved.
 
 {CODE session_auto_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
  
-Using `/` at the end of the ID will create an ID at the server side by using the etag of the document storage.
-After executing the code above we will get from the server ID something that looks like this `companies/000000000000000027-A`.
-Be aware that the only guarantee for the auto IDs is that it will always increase in the same node.
+Using `/` at the end of the ID will create an ID at the server side by appending a numeric value and the node tag.
+After executing the code above we will get from the server ID something that looks like `companies/000000000000000027-A`.
 
-Using `|` at the end of the ID is the same as putting `/`. In this case we are going to tell RavenDB to create the ID when the document is saved. But here we are going to use a special cluster identity integer that will increase every time we are using the pipe symbol as a suffix to our ID.
+{INFO Be aware that the only guarantee for the numeric part is that it will alway be increasing only within the same node. /}
+
+### Identities
+
+If you really need to have consecutive IDs across the cluster, you can use the identity option. To do so you need to use a pipe (`|`) as a suffix to the provided ID. It will tell RavenDB to create
+the ID when the document is saved but here it will use a special always-incrementing integer value that is cluster wide.
 
 {CODE session_identity_id@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
 
-After execution of the code above the ID will be `companies/1`. Here we don't add the tag of the node to the end of the ID because this number is unique to all the cluster.
+After execution of the code above the ID will be `companies/1`. Here we don't add the tag of the node to the end of the ID because this number is unique in the cluster.
 Identities are sequential, so running the above code again will generate `companies/2`, and so on.
 
-{NOTE Using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster and **might** affect performance /}
+{WARNING Using the pipe symbol (`|`) as a prefix to the ID generates a call to the cluster and **might** affect performance /}
 
 {INFO:Prefix convention}
-Note that we used `companies/` as the prefix just to follow the RavenDB convention. But nothing stands in your way to provide a different prefix which will be completely unrelated to the collection name.
+Note that we used `companies` as the prefix just to follow the RavenDB convention. But nothing stands in your way to provide a different prefix which will be completely unrelated to the collection name.
 {INFO/}
 
 {INFO:Concurrent writes}

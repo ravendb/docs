@@ -20,6 +20,11 @@
         "Mappings": []
     },
     {
+        "Path": "/ongoing-tasks",
+        "Name": "Ongoing Tasks",
+        "Mappings": []
+    },
+    {
         "Path": "/troubleshooting",
         "Name": "Troubleshooting",
         "Mappings": []
