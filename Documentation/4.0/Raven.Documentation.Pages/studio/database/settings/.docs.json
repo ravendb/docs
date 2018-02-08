@@ -3,5 +3,10 @@
         "Path": "database-record.markdown",
         "Name": "Database Record",
         "Mappings": []
+    },
+    {
+        "Path": "manage-database-group.markdown",
+        "Name": "Manage Database Group",
+        "Mappings": []
     }
 ]
