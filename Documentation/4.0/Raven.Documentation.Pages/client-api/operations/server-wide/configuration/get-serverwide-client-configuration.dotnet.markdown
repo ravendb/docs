@@ -1,8 +1,8 @@
 ﻿# Operations : Server : How to Get Server-Wide Client Configuration?
 
-**GetClientConfigurationOperation** is used to return a server-wide client configuration, which is saved on the server and overrides client behavior. 
+**GetServerWideClientConfigurationOperation** is used to return a server-wide client configuration, which is saved on the server and overrides client behavior. 
 
-{NOTE Client Configuration at database level overrides server-wide client configuration. /}
+{NOTE `ClientConfiguration` defined at database level overrides server-wide client configuration. /}
 
 ## Syntax
 
@@ -10,7 +10,7 @@
 
 | Return Value | |
 | ------------- | ---- |
-| [ClientConfiguration](../../../glossary/ClientConfiguration) | configuration which will be used by the client API |
+| [ClientConfiguration](../../../glossary/ClientConfiguration) | configuration which will be used by the RavenDB Client |
 
 ## Example
 

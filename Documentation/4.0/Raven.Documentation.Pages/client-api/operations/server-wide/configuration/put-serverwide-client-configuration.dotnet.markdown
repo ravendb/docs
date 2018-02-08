@@ -2,7 +2,7 @@
 
 **PutServerWideClientConfigurationOperation** is used to save server-wide client configuration on the server. It allows you to override client's settings remotely. 
 
-{NOTE Client Configuration at database level overrides server-wide client configuration. /}
+{NOTE `ClientConfiguration` defined at database level overrides server-wide client configuration. /}
 
 ## Syntax
 
