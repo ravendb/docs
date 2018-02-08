@@ -75,5 +75,5 @@
 
 * Once the task is defined and saved, it will be written to the [Database Record](../../../todo-update-me-later)  
 
-* The cluster will decide which node will actually be responsible for doing the task - see [Members Duties](../../../todo-update-me-later)  
+* The cluster will decide which node will actually be responsible for doing the task - see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)  
 {PANEL/}

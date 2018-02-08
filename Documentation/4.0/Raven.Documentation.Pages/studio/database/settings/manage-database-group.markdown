@@ -64,7 +64,7 @@
    The order of the nodes is relevant for the client, as it selects which node to contact from this list.  
    Click this button to reorder the nodes order.  
 <br/>
-2. **Add a Node to the database group** - See [below](manage-database-group#database-group-topolgy---add-new-node)  
+2. **Add a Node to the database group** - See [below](../../../studio/database/settings/manage-database-group#database-group-topology---add-new-node)  
 <br/>
 3. **Settings**  
    Open settings to set ***Dynamic Node Distribution***  
