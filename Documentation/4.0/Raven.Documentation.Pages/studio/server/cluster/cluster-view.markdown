@@ -6,7 +6,8 @@
 * A **RavenDB Cluster** is one or more machines (nodes) that have been joined together, 
   working to achieve the same goal.  
   The cluster distributes work among the various nodes, handles failures, recovery and more.  
-  This is done by using the Raft consensus protocol, the cluster members vote to select a strong leader among themselves.  
+  This is done by using the Raft consensus protocol, the cluster Member nodes elect a [Leader](../../server/cluster/cluster-view#cluster-nodes-types) - 
+  a node that manages the cluster state.  
 <br/>
 * This view shows your cluster's current state and structure.  
 <br/>
@@ -17,11 +18,11 @@
   * And much more  
 <br/>
 * In this page:  
-  * [Cluster View Stats](cluster-view#cluster-view-stats)  
-  * [Cluster View Operations](cluster-view#cluster-view-operations)  
-  * [Cluster Nodes Types](cluster-view#cluster-nodes-types)  
-  * [Cluster Nodes States & Types Flow](cluster-view#cluster-nodes-states-&-types-flow)  
-  * [Cluster-Wide operation -vs- Database Operations](cluster-view#cluster-wide-operation--vs--database-operations)  
+  * [Cluster View Stats](../../server/cluster/cluster-view#cluster-view-stats)  
+  * [Cluster View Operations](../../server/cluster/cluster-view#cluster-view-operations)  
+  * [Cluster Nodes Types](../../server/cluster/cluster-view#cluster-nodes-types)  
+  * [Cluster Nodes States & Types Flow](../../server/cluster/cluster-view#cluster-nodes-states-&-types-flow)  
+  * [Cluster-Wide operation -vs- Database Operations](../../server/cluster/cluster-view#cluster-wide-operation--vs--database-operations)  
 {NOTE/}
 
 ---
@@ -78,11 +79,11 @@
   * A Member is a fully functional voting member in the cluster  
 <br/>  
 * **Leader**
-  * A leader is a member
-  * The leader is responsible for monitoring the cluster’s health, making sure that decisions making is consistent at the cluster level as long as a majority of the nodes are functioning and can talk to one another.  
+  * A Leader is a Member
+  * The Leader is responsible for monitoring the cluster’s health, making sure that decisions making is consistent at the cluster level as long as a majority of the nodes are functioning and can talk to one another.  
     For example, the decision to add a database to a node will be either accepted by the entire cluster (eventually) or fail to register altogether.  
-  * The leader maintains the database topology, which is fetched by the clients as part of their initialization.  
-  * [Cluster-wide operations](cluster-view#cluster-wide-operation--vs--database-operations) can't be done when the leader is down  
+  * The Leader maintains the database topology, which is fetched by the clients as part of their initialization.  
+  * [Cluster-wide operations](cluster-view#cluster-wide-operation--vs--database-operations) can't be done when the Leader is down  
 <br/>  
 * **Watcher**
   * A watcher is a non-voting node in the cluster that is still fully managed by it
@@ -92,7 +93,7 @@
   * Any number of watchers can be added to handle the workload  
 <br/>  
 * **Promotable**  
-  * Promotable is a pre-state before becoming a watcher or a member 
+  * Promotable is a pre-state before becoming a Watcher or a Member 
   * Cannot make cluster decisions (i.e vote for leader, enter a new Raft command to the log) 
   * Updated by the leader to the latest Raft state 
 {PANEL/}
@@ -141,7 +142,8 @@ Operations in RavenDB are usually divided into cluster-wide operations and inter
 ###Cluster-Wide Operation
 
 * Any action/decision that is made at the cluster level and needs a Raft consensus - so that the cluster is always kept consistent.  
-* This decision will either be accepted by the entire cluster or completely fail to register - if a majority of the nodes isn't available, we can’t proceed.  
+* This decision will either be accepted by the entire cluster or completely fail to register.  
+  Note: An action is accepted by the entire cluster if a majority of the nodes have approved that action - if a majority of the nodes isn't available, we can’t proceed.  
 * i.e.:  
   * Creating/deleting/enabling/disabling a database  
   * Creating/deleting/modifying/enabling/disabling a [task](../../../todo-update-me-later)  

@@ -7,7 +7,7 @@
 
 * The client contains a list of cluster nodes per database group.  
   Each time the client needs to do a request to a database, it will choose a node that contains this database from this list to send the request to. 
-  If the node is down and the request fails, it will select another node form this list.  
+  If the node is down and the request fails, it will select another node from this list.  
 
 * The choice of which node to select depends on the value of `ReadBalanceBehavior`, which is taken from the current conventions. 
   For more information about the different values and the node selection process see [Related Cluster Conventions](../configuration/cluster).  
@@ -16,7 +16,7 @@
 {PANEL:**Cluster Topology In The Client**}
 
 When the client is initialized, it fetches the topologies and populates the nodes list for the load-balancing and failover functionality.
-During the lifetime of a RavenDB Client object, it periodically receives cluster and database topology from the server.  
+During the lifetime of a RavenDB Client object, it periodically receives the cluster and the databases topologies from the server.  
 
 The topology is updated with the following logic:
 
@@ -27,7 +27,7 @@ The topology is updated with the following logic:
 * If a client detects `"Refresh-Topology:true"` header in the response, the client will fetch the updated topology from the server.  
   Note: if `ReadBalanceBehavior.FastestNode` is selected, the client will schedule a speed test to determine the fastest node.  
 
-The client configuration is handled similarly:
+The client configuration is handled in a similar way:
 
 * Each client configuration has an etag attached.  
 * Each time the configuration has changed at the server-side, the server adds `"Refresh-Client-Configuration"` to the response.  

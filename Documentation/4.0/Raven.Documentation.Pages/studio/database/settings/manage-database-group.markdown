@@ -3,34 +3,34 @@
 
 {NOTE: }
 
-* A **Database instance** can reside in a single node, some number of the nodes or even all the nodes in the cluster,  
+* A **Database instance** can reside on a single node, on a number of nodes, or on all cluster nodes,  
   depending on the replication factor defined when [creating the database](../../server/databases/create-new-database/general-flow).  
-  The replication factor determines the number of copies we hold for that database,  
+  The replication factor determines the number of copies we hold for that database in the cluster,  
   so we still have a copy of the data when a node goes down.  
 <br/>
 * The **Database Group** refers to all the database instances in the cluster.  
   Every node in a Database Group will have a _full copy_ of all the data,  
   including documents, indexes, tombstones (which is how we replicate deletes), 
   attachments and [revisions](../../../todo-update-me-later),  
-  and is able to serve all queries, operations and writes requests.  
+  and is able to serve all queries, operations and write requests.  
 <br/>
 * The **Database Group Topology** is the specification of nodes that contain the database in the cluster in a particular point in time.  
 <br/>
 * At the **Database Group Level**, all the nodes are working cooperatively together.  
-  The connections between the databases on the different nodes do Not go through any consensus protocol.  
+  The connections between the databases on the different nodes do not go through any consensus protocol.  
   Instead of selecting a leader, as in the [Cluster Level](../../server/cluster/cluster-view), 
   there is a direct TCP connection among the various nodes that hold a particular database. 
   Whenever there is a write on one of the databases instances, it will immediately be recorded and replicated (sent) to all the other nodes in the Database Group.  
 <br/>
 * Note 1: If the database instance is unable to replicate the data for some reason, it will still accept that data and send it later.  
 <br/>
-* Note 2: Although not all nodes in the cluster belong to the Database Group, each node in the cluster _has_ a full copy of _all_ Databases Groups Topologies.  
+* Note 2: Although not all nodes in the cluster belong to the Database Group, each node in the cluster _has_ a full copy of _all_ Database Group Topologies.  
 <br/>
 * In this page:  
-  * [Database Group Topology - View](manage-database-group#database-group-topolgy---view)  
-  * [Database Group Topology - Actions](manage-database-group#database-group-topolgy---actions)  
-  * [Database Group Topology - Add New Node](manage-database-group#database-group-topolgy---add-new-node)  
-  * [Database Group Topology - Members Duties](manage-database-group#database-group-topology---members-duties)  
+  * [Database Group Topology - View](../../../studio/database/settings/manage-database-group#database-group-topology---view)  
+  * [Database Group Topology - Actions](../../../studio/database/settings/manage-database-group#database-group-topology---actions)  
+  * [Database Group Topology - Add New Node](../../../studio/database/settings/manage-database-group#database-group-topology---add-new-node)  
+  * [Database Group Topology - Members Duties](../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)  
 {NOTE/}
 
 ---
@@ -41,7 +41,7 @@
 
 1. **List of nodes** that are in the Database Group Topology.  
    In this example, database _db1_ exists on nodes: A, B, C, D, and E as well.  
-   Note: Other nodes in the cluster exist but they do not belong to this database group.  
+   Note: There are other nodes defined in the cluster but they do not belong to this database group.  
 <br/>
 2. **Tasks** for which a node is responsible for.  
    i.e. Node 'A' is responsible for an 'External Replication Task'.  
@@ -95,8 +95,9 @@
 <br/>
 2. **Preferred Mentor:**  
    Check the 'Choose preferred mentor node manually' checkbox in order to specify which node will be the preferred mentor for the newly added node.  
-   If not checked, then the server (the observer ?) will assign one of the nodes from the group to be the mentor node.  
-   The preferred mentor will be responsible for updating the new node with all the database data and its state.  
+   If not checked, then any one of the already existing Member nodes in the group will become the mentor node.  
+   The preferred mentor will be responsible for updating the new node with all the database data and its state. 
+   See [Members Duties](../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)  
 <br/>
 3. The new node is added as a `Promotable`  
    Once the new node is fully updated and has finished indexing the last data that was sent to it,  
@@ -124,9 +125,8 @@
 as well as tasks that are defined on the database, are written to the [Database Record](../../../todo-update-me-later). 
 The database record exists in each node in the cluster.  
 <br/>
-* When a new node is added and a mentor is needed for the new node, or when a new task is added,
-  each node in the Database Group checks the Database Record and calculates (according to a pre-defined algorithm) 
-  to see if he is the task owner.  
+* When a new node is added and a mentor is needed for the new node, or when a new task is added,  
+  each node in the Database Group checks the Database Record and determines (based on a pre-defined algorithm) if it is the task owner.  
 {NOTE/}
 
 {PANEL/}

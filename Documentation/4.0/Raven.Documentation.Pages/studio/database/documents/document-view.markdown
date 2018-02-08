@@ -8,8 +8,8 @@
 * Actions such as cloning the document, deleting, adding attachments and much more can be performed.  
 <br/>
 * In this page:  
-  * [Document View](document-view#the-document-view)  
-  * [Documents View - Actions](document-view#actions)  
+  * [Document View](../../../studio/database/documents/document-view#the-document-view)  
+  * [Documents View - Actions](../../../studio/database/documents/document-view#actions)  
 {NOTE/}
 
 ---
