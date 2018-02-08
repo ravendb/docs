@@ -1,6 +1,6 @@
 ﻿using Raven.Client.Documents;
+using Raven.Client.Documents.Operations.ETL;
 using Raven.Client.Documents.Operations.Indexes;
-using Raven.Client.ServerWide.Operations.ETL;
 
 namespace Raven.Documentation.Samples.ClientApi.Operations
 {
