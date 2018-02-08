@@ -37,6 +37,6 @@
 
 4. **The local server node**
 
-5. **Server & studio versions**
+5. **Server & Studio versions**
 
 {PANEL/}

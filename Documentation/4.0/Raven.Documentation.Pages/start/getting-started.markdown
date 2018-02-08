@@ -105,7 +105,7 @@ Our GUI, the RavenDB Management Studio, comes **free** with **every license type
 
 {SAFE/}
 
-After installation and setup, the studio can be accessed via the browser using the `ServerUrl` or the `ServerPublicUrl` value e.g. `http://localhost:8080`.
+After installation and setup, the Studio can be accessed via the browser using the `ServerUrl` or the `ServerPublicUrl` value e.g. `http://localhost:8080`.
 
 ---
 

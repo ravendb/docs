@@ -38,7 +38,7 @@ Lets start with reviewing the TestDriver's methods and properties and later we w
 | **protected virtual void SetupDatabase(IDocumentStore documentStore)** | Allows you to initialize the database. |
 | **protected event EventHandler DriverDisposed;** |An event that is raised when the test driver is been disposed of. |
 | **public void WaitForIndexing(IDocumentStore store, string database = null, TimeSpan? timeout = null)** | Allows you to wait for indexes to become non-stale. |
-| **public void WaitForUserToContinueTheTest(IDocumentStore store)** | Allows you to break the test and launch the studio to examine the state of the database. |
+| **public void WaitForUserToContinueTheTest(IDocumentStore store)** | Allows you to break the test and launch the Studio to examine the state of the database. |
 | **protected virtual void OpenBrowser(string url)** | Allows you to open the browser. |
 | **public virtual void Dispose()** | Allows you to dispose of the server. |
 
@@ -64,7 +64,7 @@ The example below depends on the `TestDocumentByName` index and `TestDocument` c
 {CODE test_driver_4@Start\RavenDBTestDriver.cs /}
 
 In the test we get an IDocumentStore to our test database, deploy an index and insert two documents into it. 
-We then wait for the indexing to complete and launch the studio so we can verify the documents and index are deployed (we can remove this line once the test is working).
+We then wait for the indexing to complete and launch the Studio so we can verify the documents and index are deployed (we can remove this line once the test is working).
 At the end of the test we query for TestDocument where their name contains the world 'hello' and assert that we have only one such document.
 
 {PANEL/}

@@ -134,7 +134,7 @@ If you are setting up a single node, the setup is complete and you can start wor
 
 ### Continuing The Cluster Setup
 
-When you access the studio please navigate to: Manage Server > Cluster. You will see something similar to this:
+When you access the Studio please navigate to: Manage Server > Cluster. You will see something similar to this:
 
 ![Figure 8. Incomplete Cluster](images/setup/9.png)
 
@@ -259,7 +259,7 @@ If you are setting up a single node, the setup is complete and you can start wor
 
 ### Continuing The Cluster Setup
 
-When you access the studio please navigate to: Manage Server > Cluster. You will see something similar to this:
+When you access the Studio please navigate to: Manage Server > Cluster. You will see something similar to this:
 
 ![Figure 8. Incomplete Cluster](images/setup/w5.png)  
 
@@ -305,7 +305,7 @@ When you are done configuring the server, click next and then restart. After a f
 
 ![Figure 3. Complete Cluster](images/setup/u1.png)
 
-Access the studio by entering the URL in the browser: "http://127.0.0.1:8080" or "http://localhost:8080".
+Access the Studio by entering the URL in the browser: "http://127.0.0.1:8080" or "http://localhost:8080".
 
 ![Figure 4. Complete Cluster](images/setup/u2.png)  
 

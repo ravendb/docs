@@ -16,7 +16,7 @@ The collection concept has a great meaning for three RavenDB features: [the stud
 
 The first time you encounter the collection will likely be while accessing the studio. You will see that, for example, the `Order` entity that you have just stored is visible under the `Orders` collection. By default, the client pluralizes the collection name based on the type name. 
 
-How that happens in the virtual concept of the collections is visualized in the studio. Each RavenDB database has a storage index per collection, which is used internally to query the database and retrieve only documents from the specified collection. This way the studio can group the documents into the collections.
+How that happens in the virtual concept of the collections is visualized in the studio. Each RavenDB database has a storage index per collection, which is used internally to query the database and retrieve only documents from the specified collection. This way the Studio can group the documents into the collections.
 
 ###Indexing
 
