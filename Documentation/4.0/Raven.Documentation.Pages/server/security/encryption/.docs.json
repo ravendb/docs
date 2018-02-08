@@ -1,5 +1,10 @@
 [
     {
+        "Path": "encryption-at-rest.markdown",
+        "Name": "Encryption at Rest",
+        "Mappings": []
+    },
+    {
         "Path": "database-encryption.markdown",
         "Name": "Database Encryption",
         "Mappings": []
