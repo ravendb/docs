@@ -1,2 +1,22 @@
 ﻿[
+    {
+        "Path": "put-compare-exchange-value.markdown",
+        "Name": "Put Compare Exchange Value",
+        "Mappings": []
+    },
+    {
+        "Path": "get-compare-exchange-value.markdown",
+        "Name": "Get Compare Exchange Value",
+        "Mappings": []
+    },
+    {
+        "Path": "get-compare-exchange-values.markdown",
+        "Name": "Get Compare Exchange Values",
+        "Mappings": []
+    },
+    {
+        "Path": "delete-compare-exchange-value.markdown",
+        "Name": "Delete Compare Exchange Value",
+        "Mappings": []
+    }
 ]
