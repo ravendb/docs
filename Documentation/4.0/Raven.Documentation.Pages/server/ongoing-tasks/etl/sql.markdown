@@ -14,16 +14,16 @@ Before you start with SQL ETL you need to create tables in a relational database
 
 {PANEL:SQL Tables}
 
-The SQL ETL configuration starts from defining which tables are going to be used in the ETL process. Each table needs to have specified a column name that
+The SQL ETL configuration starts from defining which tables are going to be used in the ETL process. Each table needs to have a column specified that
 is going to be used as the document ID column. RavenDB will put source document IDs there that will be used to handle updates and deletes of documents. 
-The column doesn't have to be the primary key.
+The column doesn't have to be the primary key of a table.
 
 ![Figure 1. Define SQL tables](images/sql-etl-tables.png)
 
 {INFO: Insert only}
 
 SQL ETL process performs updates of documents via DELETE and INSERT statements issued to the relational database. If your system is _append-only_ you can tell RavenDB to
-insert the data directly without running a set of DELETE statements first. It can be a nice performance boost when dealing with such kind of systems.
+insert the data directly without running a set of DELETE statements first. It can be a nice performance boost when dealing with those kind of systems.
 
 {INFO/}
 
@@ -88,7 +88,7 @@ var value = this['@metadata']['custom-metadata-key'];
 
 ### Loading to Multiple Tables
 
-The `loadTo` method can be called multiple time in a single script. That allows you to split a single `Order` document having `Lines` collection into two tables and insert multiple rows:
+The `loadTo` method can be called multiple times in a single script. That allows you to split a single `Order` document having `Lines` collection into two tables and insert multiple rows:
 
 {CODE-BLOCK:javascript}
 

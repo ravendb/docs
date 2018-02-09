@@ -72,7 +72,7 @@ var value = this['@metadata']['custom-metadata-key'];
 
 ### Multiple Documents from Single One
 
-The `loadTo` method can be called multiple time in a single script. That allows you for example to split a single document into a multiple ones:
+The `loadTo` method can be called multiple times in a single script. That allows you for example to split a single document into a multiple ones:
 
 {CODE-BLOCK:javascript}
 
@@ -102,7 +102,7 @@ batch and processed transactionally on the destination.
 
 Depending on the destination collection that documents are loaded into, they might have the same identifiers or get different ones.
 
-If documents are loaded to the same collection they will preserve their original identifiers. For example, ETL on `Employees` collection loading documents using:
+If documents are loaded to the same collection they will preserve their original identifiers. For example, ETL on `Employees` collection that loads documents according to the following script:
 
 {CODE-BLOCK:javascript}
 loadToEmployees({ ... });

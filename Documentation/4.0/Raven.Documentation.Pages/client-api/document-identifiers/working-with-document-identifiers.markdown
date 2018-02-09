@@ -84,7 +84,7 @@ RavenDB also supports the notion of the identifier without the usage of the HiLo
 Using `/` at the end of the ID will create an ID at the server side by appending a numeric value and the node tag.
 After executing the code above we will get from the server ID something that looks like `companies/000000000000000027-A`.
 
-{INFO Be aware that the only guarantee for the numeric part is that it will alway be increasing only within the same node. /}
+{INFO Be aware that the only guarantee for the numeric part is that it will always be increasing only within the same node. /}
 
 ### Identities
 

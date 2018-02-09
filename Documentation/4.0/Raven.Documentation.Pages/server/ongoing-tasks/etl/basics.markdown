@@ -42,7 +42,7 @@ them all in a single location.
 
 ### Extract
 
-ETL process starts from retrieving documents from a database. You can choose the documents will be processed by next two stages (transform and load). The possible options are:
+ETL process starts from retrieving documents from a database. You can choose which documents will be processed by next two stages (transform and load). The possible options are:
 
 - documents from a single collection
 - documents from multiple collections
@@ -51,7 +51,7 @@ ETL process starts from retrieving documents from a database. You can choose the
 ### Transform
 
 The essence of ETL process is being able to send only data that is relevant. This stage transforms and filters the extracted documents according to a provided script.
-The script is JavaScript code. The script input is a document. In addition to ECMAScript 5.1 API, RavenDB introduces the following functions and members:
+The script is written in JavaScript and its input is a document. In addition to ECMAScript 5.1 API, RavenDB introduces the following functions and members:
 
 | ------ |:------:| ------ |
 | `this` | object | Current document (with metadata) |
@@ -61,7 +61,7 @@ The script is JavaScript code. The script input is a document. In addition to EC
 The functions specific for ETL:
 
 | ------ |:------:| ------ |
-| `loadTo[Target](obj)]` | function | Indicates to load an object to a specified `[Target]`. The target must be either the name of a collection (RavenDB ETL) or a table (SQL ETL). |
+| `loadTo<Target>(obj)]` | function | Indicates to load an object to a specified `<Target>`. The target must be either the name of a collection (RavenDB ETL) or a table (SQL ETL). |
 | `loadAttachment(name)` | function | Loads an attachment (SQL ETL only) |
 
 You can do any transformation and send only data you are interested in sharing. Here is an example of RavenDB ETL script processing documents from `Employees` collection:
@@ -84,11 +84,11 @@ loadToEmployees({
 });
 {CODE-BLOCK/}
 
-{INFO: Filtering}
+{WARNING: Filtering}
 
 An object will be sent to the destination **only** if `loadTo` method was called.
 
-{INFO /}
+{WARNING /}
 
 Destination type specific details about ETL scripts can be found in dedicated articles about [RavenDB ETL]() and [SQL ETL]().
 
@@ -103,14 +103,14 @@ The documents are extracted and processed in batch manner. The behavior is that 
 
 ### Load
 
-The last stage is loading the results to a destination. The important note is that the ETL process doesn't replicate data but it writes it whenever documents from relevant collections get changed.
-It means it always overwrites existing entries on the target. The updates are implemented by DELETE and INSERT.
-When a document is modified the delete command is sent before the new data (everything is processed under the same transaction on the destination side). It applies to both types of ETLs.
+The last stage is loading the results to a destination. The important note is that the ETL, in contrast to the replication, is a push-only process that writes data to the destination
+whenever documents from relevant collections get changed. It means it always overwrites existing entries on the target. The updates are implemented by executing consecutive DELETEs and INSERTs.
+When a document is modified the delete command is sent before the new data is inserted (everything is processed under the same transaction on the destination side). It applies to both types of ETLs.
 
 There are two exceptions from this behavior:
 
 - in RavenDB ETL when documents are loaded to **the same** collection there is no need to sent DELETE because the document on the other side have the same identifier and it will just update it,
-- in SQL ETL you can configure it to use inserts only, it applies when you have an append-only system
+- in SQL ETL you can configure it to use inserts only, which is a viable option for append-only systems
 
 {PANEL/}
 
