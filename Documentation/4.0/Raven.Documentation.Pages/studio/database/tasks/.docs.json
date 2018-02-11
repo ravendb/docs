@@ -1,5 +1,10 @@
 ﻿[
     {
+        "Path": "/ongoing-tasks",
+        "Name": "Ongoing Tasks",
+        "Mappings": []
+    },
+    {
         "Path": "create-sample-data.markdown",
         "Name": "Create Sample Data",
         "Mappings": [
