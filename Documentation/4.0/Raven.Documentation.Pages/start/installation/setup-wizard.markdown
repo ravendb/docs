@@ -92,7 +92,7 @@ Check the box "Customize external IP and Ports" and supply the external IP addre
 
 ### Example IV
 
-In Docker, if you choose to use port mapping with the -p flag, You need to check the box "Customize external IP and Ports" and supply the external IP address as well as the exposed ports.  
+In Docker, if you choose to use port mapping with the `-p` flag, You need to check the box "Customize external IP and Ports" and supply the external IP address as well as the exposed ports.  
 
 So if a container was created using:
 

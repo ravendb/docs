@@ -8,7 +8,7 @@ In RavenDB this can be handled in two ways - depending on the user's choice:
 1. [Providing a master key to RavenDB](#providing-a-master-key-to-ravendb)
 2. [Relying on the OS protection methods](#relying-on-the-os-protection-methods)
 
-### Providing a master key to RavenDB
+## Providing a master key to RavenDB
 
 If a master key is provided, RavenDB will use it to encrypt the secret keys of encrypted databases.
 
@@ -16,13 +16,13 @@ You can provide a master key by setting `Security.MasterKey.Exec` and `Security.
 
 RavenDB expects to get a cryptographically secure 256-bit key through the standard output.
 
-For example, the following c# console app (GiveMeKey.cs) will generate a random key and write it to the standard output. Obviously this is just an example, and your executable should supply the same key every time it is invoked.
+For example, the following C# Console Application (GiveMeKey.cs) will generate a random key and write it to the standard output. Obviously this is just an example, and your executable should supply the same key every time it is invoked.
 
 {CODE-BLOCK:csharp}
 using System;
 using System.Security.Cryptography;
 
-namespace GiveMeMasterKey
+namespace GiveMeKey
 {
     class Program
     {
@@ -54,7 +54,7 @@ And `settings.json` can look like this:
 
 Another way to provide a master key is to use a file containing the raw key bytes. In that case set `Security.MasterKey.Path` in `settings.json` with the file path. RavenDB expects a cryptographically secure 256-bit key.
 
-### Relying on the OS protection methods
+## Relying on the OS protection methods
 
 If a master key is not provided by the user, RavenDB will use the following default behavior:
 
