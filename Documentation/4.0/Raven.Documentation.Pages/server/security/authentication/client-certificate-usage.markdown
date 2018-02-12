@@ -59,11 +59,24 @@ $cert = Get-PfxCertificate -FilePath c:/secrets/server.pfx
 Then make the request:
 
 {CODE-BLOCK:powershell}
-wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.pfx" -Body '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' "https://rvn-srv-1:8080/admin/certificates"
+wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.zip" -Body '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' "https://rvn-srv-1:8080/admin/certificates"
 {CODE-BLOCK/}
 
-### Example III : Using Curl in Linux
+### Example III : Using cURL in Linux
+
+At this point you only have a **server certificate** and you will use it (acting as the client certificate).  
+First, we will convert the .pfx certificate to .pem:
+{CODE-BLOCK:bash}
+openssl pkcs12 -in cluster.server.certificate.example.pfx -out server.pem -clcerts
+{CODE-BLOCK/}
+
+{NOTE You must provide a password when creating the .pem file, cURL will only accept a password protected certificate. /}
+
+Then make the request:
+{CODE-BLOCK:bash}
+curl -X POST -H "Content-Type: application/json" -d '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' -o cluster.admin.cert.zip https://rvn-srv-1:8080/admin/certificates --cert /home/secrets/server.pem:pem_password
+{CODE-BLOCK/}
 
 ### Example IV : Using the RavenDB Client
 
-Wiring a certificate in the RavenDB Client is described in the [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section.
+Wiring a certificate in the RavenDB Client is described in the [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section of the Client API.

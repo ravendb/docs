@@ -15,7 +15,7 @@ RavenDB will allow access only to client certificates which are explicitly regis
 
 In the Studio, administrators can use the [Certificates View](../../studio/server/certificates) to easily manage their certificates. It can be used to generate client certificates, register existing client certificates, import and export server certificates, rename, assign permissions and more.
 
-<strong>Read more:</strong>
+**Read more:**
 
 - [Certificate Configuration](../../server/security/authentication/certificate-configuration)
 - [Certificate Management](../../server/security/authentication/certificate-management)
@@ -33,7 +33,7 @@ Authorization in RavenDB is based on the same X.509 certificates.
 
 Every client certificate is associated with a security clearance and access permissions per database. 
 
-<strong>Read more:</strong>
+**Read more:**
 
 - [Security Clearance & Permissions](../../server/security/authorization/security-clearance-and-permissions)
 
@@ -47,7 +47,7 @@ Encryption is implemented at the storage level, with XChaCha20-Poly1305 authenti
 
 When database encryption is on, all the features of a database are automatically encrypted - documents, indexes and every piece of data that is written to disk.
 
-<strong>Read more:</strong>
+**Read more:**
 
 - [Encryption at Rest](../../server/security/encryption/encryption-at-rest)
 - [Database Encryption](../../server/security/encryption/database-encryption)

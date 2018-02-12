@@ -4,7 +4,7 @@ To make the setup process as smooth as possible, we introduced the "Setup Wizard
 
 You have 4 options to choose from:
 
-1. [Secure Setup with a Let's Encrypt certificate](#secure-setup-with-a-lets-encrypt-certificate)
+1. [Secure Setup with a Let's Encrypt certificate](#secure-setup-with-a-let)
 2. [Secure Setup with your own certificate](#secure-setup-with-your-own-certificate)
 3. [Unsecured Setup](#unsecured-setup)
 4. [Manual Setup](../../start/installation/manual)
@@ -15,7 +15,7 @@ When running the RavenDB server for the first time, you will be redirected to th
 
 We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning and to stay secure through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
 
-This section explains how to follow the setup wizard. It does not go into detail about security concerns. If you wish to learn about how authentication and authorization work in RavenDB or more about security in general, please read the [security section](../server/security/overview). 
+This section explains how to follow the setup wizard. It does not go into detail about security concerns. If you wish to learn about how authentication and authorization work in RavenDB or more about security in general, please read the [security section](../../server/security/overview). 
 
 {PANEL:Secure Setup with a Let's Encrypt Certificate}
 
@@ -47,7 +47,7 @@ The next step is to claim your subdomain. In the example below we choose the "ra
 
 In the next screen, you will choose the IP address and port that your server will bind to.
 
-If you wish to setup a cluster, this is the place to add nodes to the cluster and choose their addresses. You should configure the cluster only on the first node and **not** on each of them separately. The first node will generate the required configuration for the entire cluster, and will provide a ZIP file and detailed guidance on how to continue with the other nodes.
+If you wish to setup a cluster, this is the place to add nodes to the cluster and choose their addresses. You should configure the cluster only on the first node and **not** on each of them separately. The first node will generate the required configuration for the entire cluster, and will provide a Zip file and detailed guidance on how to continue with the other nodes.
 
 For a smooth setup experience, please make sure that the IP address and port are available in each machine. The wizard will validate this and throw an error if they are being used. When using port 443, you need to ensure that it hasn't already been taken by other applications like Skype, IIS, Apache, etc. On Linux, you might need to [allow port 443 for non-root processes](https://superuser.com/questions/710253/allow-non-root-process-to-bind-to-port-80-and-443). 
 
@@ -92,7 +92,7 @@ Check the box "Customize external IP and Ports" and supply the external IP addre
 
 ### Example IV
 
-In Docker, if you choose to use port mapping with the -p flag, You need to check the box "Customize external IP and Ports" and supply the external IP address as well as the exposed ports.  
+In Docker, if you choose to use port mapping with the `-p` flag, You need to check the box "Customize external IP and Ports" and supply the external IP address as well as the exposed ports.  
 
 So if a container was created using:
 
@@ -113,11 +113,11 @@ It usually takes this process a couple of minutes to complete. The wizard valida
 
 If the validation fails, you will receive a detailed error. You can go back in the wizard, change settings and try again.
 
-A common error is that DNS records didn't update locally. You may wait a bit and try again. An easy workaround is to configure (just for the setup) your network card to use google's DNS server (8.8.8.8), to bypass caching of DNS records.
+A [common error](../../server/security/common-errors-and-troubleshooting) is that DNS records didn't update locally. You may wait a bit and try again. An easy workaround is to configure (just for the setup) your network card to use Google's DNS server (8.8.8.8), to bypass caching of DNS records.
 
 TIP: you can use dns.google.com to see the dns record of your domain.
 
-When finished you will receive a ZIP file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this ZIP file to setup the other nodes.
+When finished you will receive a Zip file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this Zip file to setup the other nodes.
 
 ![Figure 6. Configuration Completed](images/setup/7.png)  
 
@@ -142,15 +142,15 @@ Nodes B and C are not running yet. As soon as we start them, node A will detect 
 
 Now, let's bring node B up.
 
-First, copy the configuration ZIP file to node B and download/copy a fresh RavenDB server folder. In <strong>Windows</strong>, start RavenDB using the `run.ps1` script. In <strong>Linux</strong>, use the `start.sh` script.
+First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In **Windows**, start RavenDB using the `run.ps1` script. In **Linux**, use the `start.sh` script.
 
 This time, we will choose to continue the cluster setup.
 
 ![Figure 9. Continue Setup](images/setup/10.png)  
 
-Now we will supply the downloaded ZIP file and select the node we are currently setting up.
+Now we will supply the downloaded Zip file and select the node we are currently setting up.
 
-![Figure 10. Upload ZIP File](images/setup/11.png)  
+![Figure 10. Upload Zip File](images/setup/11.png)  
 
 Click restart when finished and repeat the process for more nodes. When all the nodes are up, you can view the updated topology in the studio.
 
@@ -180,7 +180,7 @@ After choosing the Secure Setup with your own certificate option, you are requir
 
 In the next screen, you will choose the IP address and port that your server will bind to.
 
-If you wish to setup a cluster, this is the place to add nodes to the cluster and choose their addresses. You should configure the cluster only on the first node and **not** on each of them separately. The first node will generate the required configuration for the entire cluster, and will provide a ZIP file and detailed guidance on how to continue with the other nodes.
+If you wish to setup a cluster, this is the place to add nodes to the cluster and choose their addresses. You should configure the cluster only on the first node and **not** on each of them separately. The first node will generate the required configuration for the entire cluster, and will provide a Zip file and detailed guidance on how to continue with the other nodes.
 
 For a smooth setup experience, please make sure that the IP address and port are available in each machine. The wizard will validate this and throw an error if they are being used. When using port 443, you need to ensure that it hasn't already been taken by other applications like Skype, IIS, Apache, etc. On Linux, you might need to [allow port 443 for non-root processes](https://superuser.com/questions/710253/allow-non-root-process-to-bind-to-port-80-and-443). 
 
@@ -243,13 +243,13 @@ Then the following congifuration should be applied:
 
 ![Figure 2a. Configure Docker Node](images/setup/w2a.png)  
 
-When finished you will receive a ZIP file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this ZIP file to setup the other nodes.
+When finished you will receive a Zip file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this Zip file to setup the other nodes.
 
 ![Figure 3. Configuration Completed](images/setup/w3.png)
 
 At this point, click the "Restart Server" button, and wait until the browser redirects you to the new URL (in the example it's "https://a.ravendb.example.com").
 
-If you checked the relevant box in the previous stage, a client certificate is registered in the OS trusted store during setup. The Chrome and Edge browsers use the OS store, so they will let you choose your certificate right before you are redirected. Firefox users will have to manually import the certificate to the browser via Tools > Options > Advanced > Certificates > View Certificates.
+If you checked the relevant box in the previous stage, a client certificate is registered in the OS trusted store during setup. The Chrome and Edge browsers use the OS store, so they will let you choose your certificate right before you are redirected. Firefox users will have to manually import the certificate to the browser via Tools > Options > Advanced > Certificates > View Certificates > Your Certificates Tab > Import.
 
 If you didn't check the box, please register the client certificate in the OS store or import it to the browser before you continue.
 
@@ -267,15 +267,15 @@ Nodes B and C are not running yet. As soon as we start them, node A will detect 
 
 Now, let's bring node B up.
 
-First, copy the configuration ZIP file to node B and download/copy a fresh RavenDB server folder. In <strong>Windows</strong>, start RavenDB using the `run.ps1` script. In <strong>Linux</strong>, use the `start.sh` script.
+First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In **Windows**, start RavenDB using the `run.ps1` script. In **Linux**, use the `start.sh` script.
 
 This time, we will choose to continue the cluster setup.
 
 ![Figure 9. Continue Setup](images/setup/10.png)  
 
-Now we will supply the downloaded ZIP file and select the node we are currently setting up.
+Now we will supply the downloaded Zip file and select the node we are currently setting up.
 
-![Figure 10. Upload ZIP File](images/setup/w6.png)  
+![Figure 10. Upload Zip File](images/setup/w6.png)  
 
 Click restart when finished and repeat the process for more nodes. When all the nodes are up, you can view the updated topology in the studio.
 
