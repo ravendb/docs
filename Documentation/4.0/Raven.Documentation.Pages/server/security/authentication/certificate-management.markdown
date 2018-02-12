@@ -128,10 +128,13 @@ This options allows you to export the server certificate as a .pfx file. In case
 
 As mentioned above, RavenDB generates client certificates by signing them using the server certificate. A typical server certificate doesn't allow acting as an Intermediate Certificate Authority signing other certificates. This is the case with Let's Encrypt certificates.
 
-In that case, the generated client certificate will have a broken chain of trust, just like in the following screenshot:
+The left screenshot shows a newly generated client certificate, signed by a Let's Encrypt server certificate. You cannot see the full chain of trust because the OS (Windows) doesn't have knowledge of the server certificate.
+
+If you wish to view the full chain, add the server certificate to the OS trusted store. This step is **not necessary** for RavenDB and is explained here only to show how to view the full chain in Windows. The screenshot on the right side shows the full chain. 
+
 
 ![Figure 6. Client Cert Chain](images/client-cert.png)
 
-Because client certificates are managed by RavenDB directly and not through any PKI infrastructure <strong>this is perfectly acceptable</strong>. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server.
+Because client certificates are managed by RavenDB directly and not through any PKI infrastructure <strong>this is perfectly acceptable</strong>. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server and not by validating the chain of trust. 
 
 {PANEL/}

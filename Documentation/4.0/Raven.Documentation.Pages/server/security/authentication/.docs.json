@@ -28,11 +28,5 @@
         "Path": "authentication-in-the-cluster.markdown",
         "Name": "Authentication in the Cluster",
         "Mappings": []
-    },
-    {
-        "Path": "common-errors-and-troubleshooting.markdown",
-        "Name": "Common Errors & Troubleshooting",
-        "Mappings": []
     }
-
 ]

@@ -18,5 +18,10 @@
         "Path": "/encryption",
         "Name": "Encryption",
         "Mappings": []
+    },
+    {
+        "Path": "common-errors-and-troubleshooting.markdown",
+        "Name": "Common Errors & Troubleshooting",
+        "Mappings": []
     }
 ]
