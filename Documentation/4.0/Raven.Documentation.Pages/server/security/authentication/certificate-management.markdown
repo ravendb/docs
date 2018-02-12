@@ -135,6 +135,6 @@ If you wish to view the full chain, add the server certificate to the OS trusted
 
 ![Figure 6. Client Cert Chain](images/client-cert.png)
 
-Because client certificates are managed by RavenDB directly and not through any PKI infrastructure <strong>this is perfectly acceptable</strong>. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server and not by validating the chain of trust. 
+Because client certificates are managed by RavenDB directly and not through any PKI infrastructure **this is perfectly acceptable**. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server and not by validating the chain of trust. 
 
 {PANEL/}

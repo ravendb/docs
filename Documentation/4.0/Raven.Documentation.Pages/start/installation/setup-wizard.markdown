@@ -142,7 +142,7 @@ Nodes B and C are not running yet. As soon as we start them, node A will detect 
 
 Now, let's bring node B up.
 
-First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In <strong>Windows</strong>, start RavenDB using the `run.ps1` script. In <strong>Linux</strong>, use the `start.sh` script.
+First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In **Windows**, start RavenDB using the `run.ps1` script. In **Linux**, use the `start.sh` script.
 
 This time, we will choose to continue the cluster setup.
 
@@ -267,7 +267,7 @@ Nodes B and C are not running yet. As soon as we start them, node A will detect 
 
 Now, let's bring node B up.
 
-First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In <strong>Windows</strong>, start RavenDB using the `run.ps1` script. In <strong>Linux</strong>, use the `start.sh` script.
+First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In **Windows**, start RavenDB using the `run.ps1` script. In **Linux**, use the `start.sh` script.
 
 This time, we will choose to continue the cluster setup.
 

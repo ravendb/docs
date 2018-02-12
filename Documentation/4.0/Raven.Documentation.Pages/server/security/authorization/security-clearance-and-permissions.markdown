@@ -14,7 +14,7 @@ A client certificate's security clearance can be one of the following:
 
 {NOTE The server certificate security clearance is called `Cluster Node`. The server certificate can also be used as a client certificate, and in that case `Cluster Node` is equivalent to `Cluster Admin` in terms of permissions. /}
 
-The following operations are allowed <strong>only</strong> for `Cluster Admin` certificates:
+The following operations are allowed **only** for `Cluster Admin` certificates:
 
 - All cluster operations
 - Manage `Cluster Admin` certificates
@@ -30,7 +30,7 @@ The following operations are allowed <strong>only</strong> for `Cluster Admin` c
 
 A client certificate with an `Operator` security clearance has admin access to all databases, but is unable to modify the cluster. It cannot perform operations such as add/remove/promote/demote nodes from the cluster. This is useful in a hosted solution. If you are running on your own machines, you'll typically ignore that level in favor of `Cluster Admin` or `User`.
 
-The following operations are allowed for <strong>both</strong> `Operator` and `Cluster Admin` certificates and are not allowed for `User` certificates:
+The following operations are allowed for **both** `Operator` and `Cluster Admin` certificates and are not allowed for `User` certificates:
 
 - Operations on databases (put, delete, enable, disable)
 - Manage `Operator` and `User` certificates
