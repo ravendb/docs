@@ -9,9 +9,32 @@ In this section, we review some of the common security configuration errors and 
 
 ## Setup Wizard    
 
-#### Ports are blocked by firewall
+#### Server cannot bind to the provided private IP address
 
-When configuring a VM in Azure, AWS or any other provider, you should define firewall rules to allow both the **Http** and **Tcp** ports you have chosen during setup.
+If the IP/port combination is not accessible on your machine, you'll get the following error.
+
+{CODE-BLOCK:plain}
+System.InvalidOperationException: Setting up RavenDB in Let's Encrypt security mode failed. ---> 
+System.InvalidOperationException: Validation failed. ---> 
+System.InvalidOperationException: Failed to simulate running the server with the supplied settings using: https://a.example.ravendb.community:4433  ---> 
+System.InvalidOperationException: Failed to start webhost on node 'A'. The specified ip address might not be reachable due to network issues. 
+It can  happen if the ip is external (behind a firewall, docker). If this is the case, try going back to the previous screen and add the same ip as an external ip.
+Settings file:D:\temp\RavenDB-4.0.0-windows-x64\Server\settings.json.
+IP addresses: 10.0.0.65:4433. 
+---> Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking.UvException: Error -4092 EACCES permission denied
+{CODE-BLOCK/}
+
+This can be caused by two different reasons:
+
+1. Your private IP address is not reachable inside the machine or you provided the wrong IP/port combination.
+2. You are running behind a firewall (VM, docker...) and accidentaly provided the external IP address during setup.
+
+Make sure you provide the private IP address in the "IP Address / Hostname" field as seen in [this example](../../start/installation/setup-wizard#example-iii).
+
+
+#### Ports are blocked by the firewall
+
+When configuring a VM in Azure, AWS or any other provider, you should define firewall rules to allow both the **HTTP** and **TCP** ports you have chosen during setup.
 This should be done both inside the VM operating system **and** in the web dashboard or management console.
 
 If ports are blocked you'll get the following error.
