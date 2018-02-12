@@ -22,7 +22,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     var metadata = session.Advanced.GetMetadataFor(employee);
 
                     #endregion
+                }
 
+                using (var session = store.OpenSession())
+                {
                     #region modify_metadata_1
 
                     var user = new User
@@ -31,29 +34,30 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
                     };
 
                     session.Store(user);
-                    var userMetadata = session.Advanced.GetMetadataFor(user);
-                    userMetadata.Add("Permissions", "ReadOnly");
+                    var metadata = session.Advanced.GetMetadataFor(user);
+                    metadata["Permissions"] = "ReadOnly";
                     session.SaveChanges();
 
                     #endregion
                 }
 
-                #region modify_metadata_2
+                
 
                 using (var session = store.OpenSession())
                 {
+                    #region modify_metadata_2
+
                     var user = session.Load<User>("users/1-A");
                     var metadata = session.Advanced.GetMetadataFor(user);
 
-                    if (metadata.ContainsKey("Permissions"))
-                        metadata["Permissions"] = "ReadAndWrite";
-                    else
-                        metadata.Add("Permissions", "ReadAndWrite");
+                    metadata["Permissions"] = "ReadAndWrite";
 
                     session.SaveChanges();
+
+                    #endregion
                 }
 
-                #endregion
+
             }
         }
 
