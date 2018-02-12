@@ -27,7 +27,7 @@ Load the client certificate in Powershell:
 $cert = Get-PfxCertificate -FilePath C:\secrets\admin.client.certificate.example.pfx
 {CODE-BLOCK/}
 
-Make sure to use Tls1.2:
+Make sure to use TLS 1.2:
 {CODE-BLOCK:powershell}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 {CODE-BLOCK/}
@@ -76,4 +76,4 @@ Finally, create the encrypted database using the Client API:
 
 ## Remarks
 
-Database encryption must be enabled during creating of the database. If you wish to use encryption in an existing database, it must be exported and then imported back into a new encrypted database.
+Database encryption must be enabled when creating the database. If you wish to use encryption in an existing database, it must be exported and then imported back into a new encrypted database.

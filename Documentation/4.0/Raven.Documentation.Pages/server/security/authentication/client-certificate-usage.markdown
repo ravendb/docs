@@ -62,18 +62,18 @@ Then make the request:
 wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.zip" -Body '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' "https://rvn-srv-1:8080/admin/certificates"
 {CODE-BLOCK/}
 
-### Example III : Using Curl in Linux
+### Example III : Using cURL in Linux
 
 At this point you only have a **server certificate** and you will use it (acting as the client certificate).  
 First, we will convert the .pfx certificate to .pem:
-{CODE-BLOCK:plain}
+{CODE-BLOCK:bash}
 openssl pkcs12 -in cluster.server.certificate.example.pfx -out server.pem -clcerts
 {CODE-BLOCK/}
 
-{NOTE You must provide a password when creating the .pem file. Curl will only accept a password protected certificate. /}
+{NOTE You must provide a password when creating the .pem file, cURL will only accept a password protected certificate. /}
 
 Then make the request:
-{CODE-BLOCK:plain}
+{CODE-BLOCK:bash}
 curl -X POST -H "Content-Type: application/json" -d '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' -o cluster.admin.cert.zip https://rvn-srv-1:8080/admin/certificates --cert /home/secrets/server.pem:pem_password
 {CODE-BLOCK/}
 

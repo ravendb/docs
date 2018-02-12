@@ -1,15 +1,15 @@
 # Security : Common Errors & Troubleshooting
 
-In this section, we review some of the common security configuration errors and troublshooting.
+In this section, we review some of the common security configuration errors and explain how to handle them.
 
-[Setup Wizard](#setup-wizard)  
-[Authentication](#authentication)  
-[Authorization](#authorization)  
-[Encryption](#encryption)  
+[Setup Wizard Issues](../../server/security/common-errors-and-troubleshooting#setup-wizard-issues)  
+[Authentication Issues](../../server/security/common-errors-and-troubleshooting#authentication-issues)  
+[Authorization Issues](../../server/security/common-errors-and-troubleshooting#authorization-issues)  
+[Encryption Issues](../../server/security/common-errors-and-troubleshooting#encryption-issues)  
 
-## Setup Wizard    
+## Setup Wizard Issues  
 
-#### Server cannot bind to the provided private IP address
+### Server cannot bind to the provided private IP address
 
 If the IP/port combination is not accessible on your machine, you'll get the following error.
 
@@ -27,12 +27,12 @@ IP addresses: 10.0.0.65:4433.
 This can be caused by two different reasons:
 
 1. Your private IP address is not reachable inside the machine or you provided the wrong IP/port combination.
-2. You are running behind a firewall (VM, docker...) and accidentaly provided the external IP address during setup.
+2. You are running behind a firewall (VM, docker...) and accidentally provided the external IP address during setup.
 
 Make sure you provide the private IP address in the "IP Address / Hostname" field as seen in [this example](../../start/installation/setup-wizard#example-iii).
 
 
-#### Ports are blocked by the firewall
+### Ports are blocked by the firewall
 
 When configuring a VM in Azure, AWS or any other provider, you should define firewall rules to allow both the **HTTP** and **TCP** ports you have chosen during setup.
 This should be done both inside the VM operating system **and** in the web dashboard or management console.
@@ -42,7 +42,7 @@ If ports are blocked you'll get the following error.
 Setting up RavenDB in Let's Encrypt security mode failed.System.InvalidOperationException: Setting up RavenDB in Let's Encrypt security mode failed. ---> System.InvalidOperationException: Validation failed. ---> System.InvalidOperationException: Failed to simulate running the server with the supplied settings using: https://a.example.development.run:443 ---> System.InvalidOperationException: Client failed to contact webhost listening to 'https://a.example.development.run:443'.Are you blocked by a firewall? Make sure the port is open.Settings file: D:\RavenDB-4.0.0-windows-x64\Server\settings.json.IP addresses: 10.0.1.4:443.
 {CODE-BLOCK/}
 
-#### DNS is cached locally
+### DNS is cached locally
 
 Most networks cache DNS records. In some environments you can get an error such as this:
 
@@ -61,7 +61,7 @@ Another temporary solution is to configure your local network connection to use 
 This error probably means that the DNS is cached. You can wait a while or reset the network DNS cache but in many cases the easiest solution is to [temporarily switch your DNS server to 8.8.8.8](https://developers.google.com/speed/public-dns/docs/using) 
 You can click the Try Again button to restart the validation process of the Setup Wizard.
 
-#### Long DNS propogation time
+### Long DNS propogation time
 
 If you are trying to modify existing DNS records, for example running the Setup Wizard again for the same domain name, you may encounter errors such as this:
 
@@ -79,9 +79,9 @@ it might take hours to update because of DNS caching. If the issue persists, con
 
 If this happens, there is nothing you can do except wait for DNS propogation. When it's updated in dns.google.com click the `Try Again` button.
 
-## Authentication  
+## Authentication Issues  
 
-#### Getting the full error using powershell
+### Getting the full error using powershell
 
 You can use powershell to make requests using the REST API.
 
@@ -107,9 +107,9 @@ catch {
 {CODE-BLOCK/}
 
 
-#### Not using Tls1.2
+### Not using TLS 1.2
 
-The RavenDB clients use Tls1.2 by default. If you want to use other clients please make sure to use the Tls1.2 security protocol.
+The RavenDB clients use TLS 1.2 by default. If you want to use other clients please make sure to use the Tls1.2 security protocol.
 
 Example error:
 
@@ -132,6 +132,6 @@ In powershell for example it can be solved like this:
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 {CODE-BLOCK/}
 
-## Authorization    
+## Authorization Issues  
 
-## Encryption  
+## Encryption Issues  
