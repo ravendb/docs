@@ -58,7 +58,7 @@ Documents can be created based on indexing results using the `OutputReduceToColl
 
 {PANEL:SQL Replication}
 
-It is defined as an SQL ETL task.
+It is defined as a [SQL ETL](../../server/ongoing-tasks/etl/sql) task.
 
 {PANEL/}
 
