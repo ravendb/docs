@@ -20,7 +20,7 @@ The problem with Guids is that they are not human friendly. They are very hard t
 You know best what you need and how your keys should look like, so you can decide what ID the document will have before saving it. Then RavenDB will use the assigned key.
 It is most often used when you save documents which already have native ID, such as users; then you can use keys like `users/ayende`.
 
-##Identity - /
+##Server side ID generated - /
 
 You can ask RavenDB to assign a document ID to a new document when it is saved.
 There you can allow RavenDB to take care of creating your keys sequentially, by adding the incremented number value at the end of the key. 
@@ -44,7 +44,7 @@ SAVE 'users/' on server B with etag 3 -> will assign 'users/0000000000000000004-
 
 This approach is recommended for most scenarios, since it produces keys that are readable for humans.
 
-##Server side ID generated - |
+##Identity - |
 
 Providing a document ID that ends with the pipe symbol (`|`) is very similar to the (`/`) symbol but this option is cluster-wide.
 that mean that raven uses a simple always-incrementing value.
@@ -55,8 +55,8 @@ That means we need to go over the network and talk to the other members in the c
 increase the cost of saving a new document with identity so take it in account when using this option. 
 
 {CODE-BLOCK:plain}
-SAVE 'users/' -> will assign 'users/1'
-SAVE 'users/' -> will assign 'users/2'
+SAVE 'users|' -> will assign 'users/1'
+SAVE 'users|' -> will assign 'users/2'
 {CODE-BLOCK/}
 
 {NOTE:NOTE}
