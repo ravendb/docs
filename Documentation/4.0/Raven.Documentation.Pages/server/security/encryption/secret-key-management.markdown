@@ -18,27 +18,9 @@ RavenDB expects to get a cryptographically secure 256-bit key through the standa
 
 For example, the following C# Console Application (GiveMeKey.cs) will generate a random key and write it to the standard output. Obviously this is just an example, and your executable should supply the same key every time it is invoked.
 
-{CODE-BLOCK:csharp}
-using System;
-using System.Security.Cryptography;
-
-namespace GiveMeKey
-{
-    class Program
-    {
-        static void Main(string[] args)
-        {
-            var buffer = new byte[256 / 8];
-            using (var cryptoRandom = new RNGCryptoServiceProvider())
-            {
-                cryptoRandom.GetBytes(buffer);
-            }
-            var stream = Console.OpenStandardOutput();
-            stream.Write(buffer, 0, buffer.Length);
-        }
-    }
-}
-{CODE-BLOCK/}
+{CODE-TABS}
+{CODE-TAB:csharp:GiveMeKey.cs writing_key@Server\Security\GiveMeKey.cs /}
+{CODE-TABS/}
 
 And `settings.json` can look like this:
 
