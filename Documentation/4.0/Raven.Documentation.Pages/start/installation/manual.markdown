@@ -34,12 +34,12 @@ In some cases the port might be in use, this will prevent the Server from starti
 
 ## Security
 
-Read the [Certificate Configuration Section](../server/security/authentication/certificate-configuration) to learn how to setup security manually.
+Read the [Certificate Configuration Section](../../server/security/authentication/certificate-configuration) to learn how to setup security manually.
 
 ## Configuration
 
-Read the [Configuration Section](../server/configuration/configuration-options) to learn more about using `settings.json` and see a list of configuration options.
+Read the [Configuration Section](../../server/configuration/configuration-options) to learn more about using `settings.json` and see a list of configuration options.
 
 ## Related articles
 
-- [Security in RavenDB](../server/security/overview)
+- [Security in RavenDB](../../server/security/overview)

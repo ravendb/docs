@@ -4,7 +4,7 @@ To make the setup process as smooth as possible, we introduced the "Setup Wizard
 
 You have 4 options to choose from:
 
-1. [Secure Setup with a Let's Encrypt certificate](#secure-setup-with-a-lets-encrypt-certificate)
+1. [Secure Setup with a Let's Encrypt certificate](#secure-setup-with-a-let)
 2. [Secure Setup with your own certificate](#secure-setup-with-your-own-certificate)
 3. [Unsecured Setup](#unsecured-setup)
 4. [Manual Setup](../../start/installation/manual)
@@ -15,7 +15,7 @@ When running the RavenDB server for the first time, you will be redirected to th
 
 We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning and to stay secure through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
 
-This section explains how to follow the setup wizard. It does not go into detail about security concerns. If you wish to learn about how authentication and authorization work in RavenDB or more about security in general, please read the [security section](../server/security/overview). 
+This section explains how to follow the setup wizard. It does not go into detail about security concerns. If you wish to learn about how authentication and authorization work in RavenDB or more about security in general, please read the [security section](../../server/security/overview). 
 
 {PANEL:Secure Setup with a Let's Encrypt Certificate}
 
