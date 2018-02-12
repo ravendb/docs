@@ -11,8 +11,8 @@ The following keywords and methods are available in RQL:
 - DECLARE
 - [FROM](../../indexes/querying/what-is-rql#from)
   - INDEX
-- GROUP BY
-  - array()
+- [GROUP BY](../../indexes/querying/what-is-rql#group-by)
+  - [array()](../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
 - [WHERE](../../indexes/querying/what-is-rql#where)
   - id()
   - [search()](../../indexes/querying/searching)
@@ -107,6 +107,8 @@ This option is used to perform RQL operations against a given [static index].
 {PANEL/}
 
 {PANEL:GROUP BY}
+
+The keyword `group by` is used to create an aggregation query. Please refer to the article about [dynamic group by queries](../../client-api/session/querying/how-to-perform-group-by-query) to find out more.
 
 {PANEL/}
 
