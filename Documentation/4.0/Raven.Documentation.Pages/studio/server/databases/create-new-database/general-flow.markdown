@@ -3,15 +3,18 @@
 
 {NOTE: }
 
-From the Studio, the database creation options are:  
+* From the Studio, the database creation options are:  
+  * **Regular** database - see [below](../../studio/server/databases/create-new-database/general-flow#1.-new-database)  
+  * **Encrypted** database - see [Encrypted Database](encrypted.markdown)  
+  * Create a database from a **Backup** copy - see [From Backup](from-backup.markdown)  
+  * Create a database from a **Previous** RavenDB version database - see [From Legacy File](from-legacy-files)  
 
-* **Regular** database - see [below](general-flow#1.-new-database)  
-
-* **Encrypted** database - see [Encrypted Database](encrypted.markdown)  
-
-* Create a database from a **Backup** copy - see [From Backup](from-backup.markdown)  
-
-* Create a database from a **Previous** RavenDB version database - see [From Legacy File](from-legacy-files)  
+* In this page:  
+  * [1. New Database](../../../../studio/server/databases/create-new-database/general-flow#1.-new-database)  
+  * [2. Database Name](../../../../studio/server/databases/create-new-database/general-flow#2.-database-name)  
+  * [3. Configure Replication](../../../../studio/server/databases/create-new-database/general-flow#3.-configure-replication)  
+  * [4. Configure Path](../../../../studio/server/databases/create-new-database/general-flow#4.-configure-path)  
+  * [5. Create](../../../../studio/server/databases/create-new-database/general-flow#5.-create)
 
 {NOTE/}
 
@@ -51,12 +54,12 @@ A database name can be any sequence of characters except for the following rules
    The maximum number is the cluster size (number of nodes in the cluster).  
 
 2. **Dynamic Node Distribution**  
-   Upon a node failure, and if this option is checked, the RavenDB server will automatically replicate the database content to another available node in the cluster,  
+   Upon a node failure, and if this option is checked, the RavenDB server will automatically replicate the database content to another available node in the cluster, 
    (one that doesn't already contain the database) so that replication factor is maintained.  
 
 3. **Setting Replication Nodes Manually**  
    Select the specific initial replication nodes from the cluster for the database to replicate to.  
-   If they are not checked, then the replication nodes will be selected randomly from the cluster.  
+   If no node is checked, then the replication nodes will be selected randomly from the cluster.  
 {NOTE/}
 {PANEL/}
 
@@ -69,10 +72,12 @@ A database name can be any sequence of characters except for the following rules
 * Set the directory path for database data.  
 
 * You can use any of the following options:  
-  * **Full path** (e.g. Windows: _C:/MyWork/MyDatabaseFolder_, Linux: _/etc/MyWork/MyDatabaseFolder_ ) - A database will be created in this physical location  
-  * **Relative path** (e.g. _MyWork/MyDatabaseFolder_) - A database will be created under the `DataDir` folder  
-  * **Leave field empty** - A Database will be created in `Databases` directory under the `DataDir` folder  
-<br/>
+  * **Full path** (e.g. Windows: _C:/MyWork/MyDatabaseFolder_, Linux: _/etc/MyWork/MyDatabaseFolder_ )  
+    The database will be created in this physical location  
+  * **Relative path** (e.g. _MyWork/MyDatabaseFolder_)  
+    The database will be created under the `DataDir` folder  
+  * **Leave field empty**  
+    The Database will be created in `Databases` directory under the `DataDir` folder  
 
 * Note:  
 

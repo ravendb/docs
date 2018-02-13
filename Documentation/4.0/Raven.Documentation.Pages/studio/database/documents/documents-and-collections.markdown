@@ -3,13 +3,14 @@
 
 {NOTE: Documents}
 
-* A document holds your data in a JSON format object.  
+* A document holds your data in a JSON format object  
 * For more information about a document, see [Document View](../../../../todo-update-me-later)
 {NOTE/}
 
 {NOTE: Collections}
 
-* Collections are used to group documents together so that it is convenient to apply some operation to them. You can apply to all the documents in a group things like subscribing to changes, indexing, querying, ETL, etc.  
+* Collections are used to group documents together so that it is convenient to apply some operation to them,  
+  i.e. subscribing to changes, indexing, querying, ETL, etc.  
 
 * Every document belongs to exactly one collection.  
 
@@ -19,6 +20,14 @@
   The only requirement for documents to be in the same collection is that they must have the same `@collection` metadata property.  
 
 * For more information see [What is a Collection](../../../client-api/faq/what-is-a-collection)  
+{NOTE/}
+
+{NOTE: }
+
+* In this page:  
+  * [The Documents View](../../../studio/database/documents/documents-and-collections#the-documents-view)  
+  * [The @hilo Collection](../../../studio/database/documents/documents-and-collections#the-@hilo-collection)  
+  * [The @empty Collection](../../../studio/database/documents/documents-and-collections#the-@empty-collection)  
 {NOTE/}
 
 ---
@@ -33,11 +42,11 @@
 1.  **Recent**:
   *  Click on `Recent` to see a list of **all** documents from **all** collections in the selected database  
   *  Documents are ordered by the modification time  
-<br/>
+
 2.  **Collections**:
   *  The existing **collections** in the selected database  
   *  The number of documents each collection has is indicated  
-<br/>
+
 3.  **Documents**:
   *  The list of documents within the selected collection  
   *  Each **column** corresponds to a _property_ in the document JSON  
@@ -48,16 +57,14 @@
 
 ![Figure 2. Actions](images/documents-and-collections-2.png "Actions")
 
-1.  
+* 1  
   * **New Document**: Create a new document (in a new collection -or- in the current collection)  
   * **Delete**: Delete selected documents  
   * **Copy**: Copy documents or just document IDs of selected documents  
-<br/>
-2.  
+* 2  
   *  **Export CSV**: Export the collection data into a CSV file (visible columns only -or- all documents columns)  
   *  **Display**: Customize which columns to view. A custom column can be added  
-<br/>
-3.  
+* 3  
   * **Patch**: Patch documents in a collection or in an index. See [Patch Documents](../../../../todo-update-me-later)  
   * **Query**: Query documents in a collection or in an index. See [Query Documents](../../../../todo-update-me-later)  
   * **Conflicts**: View and resolve conflicting documents. See [Conflicts](../../../../todo-update-me-later)  
@@ -70,27 +77,25 @@ Click `Display` to:
 * Select which columns to view  
 * Reorder columns viewed  
 * Add a custom column  
-<br/>
+
 
 ![Figure 3. Manage Displayed Columns](images/documents-and-collections-3.png "Manage Displayed Columns")
 
 {PANEL/}
 
-{PANEL: The @hilo Collection:}  
+{PANEL: The @hilo Collection}  
 
 ![Figure 4. hilo collection](images/documents-and-collections-4.png "The @hilo Collection")
 
 * Documents in the _@hilo_ collection are created when the _RavenDB client_ (Not from the studio) is creating documents ([using a session](../../../client-api/session/storing-entities))
-**without an explicit ID**.
-
+**without an explicit ID**.  
   For more information about the various document identifiers that can be generated, see [Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers).  
 
 * The _'Max'_ property value that shows in the hilo doc represents the largest ID number that was used for a _client generated document_ in that collection.  
-
-  For more information about the HiLo Algorithm, see [HiLo Algorithm](../../../client-api/document-identifiers/hilo-algorithm)  
+  For more information about the HiLo Algorithm, see [HiLo Algorithm](../../../client-api/document-identifiers/hilo-algorithm).  
 {PANEL/}
 
-{PANEL: The @empty Collection:}  
+{PANEL: The @empty Collection}  
 
 ![Figure 5. empty collection](images/documents-and-collections-5.png "The @emtpy Collection")
 
