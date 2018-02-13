@@ -1,6 +1,6 @@
-﻿# Operations : Server : How to enable or disable database?
+﻿# Operations : Server : How to Enable or Disable a Database
 
-To enable or disable database, use the `ToggleDatabasesStateOperation`.
+To enable or disable a database, use the `ToggleDatabasesStateOperation`.
 
 ## Syntax
 

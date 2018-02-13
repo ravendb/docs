@@ -22,7 +22,7 @@ You can register an existing client certificate using **PutClientCertificateOper
 
 {CODE cert_put_2@ClientApi\Operations\Server\ClientCertificate.cs /}
 
-## Related articles
+## Related Articles
 
 - [How to **delete** client certificate?](../../../../client-api/operations/server-wide/certificates/delete-certificate) 
 - [How to **generate** client certificate?](../../../../client-api/operations/server-wide/certificates/create-client-certificate) 
