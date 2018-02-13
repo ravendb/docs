@@ -16,8 +16,7 @@ When sending a support ticket, it is good to include as much information about t
     - Click the **3. Save Capture** button. Save the .SAZ file to your desktop.
 3. Debug Info Package. RavenDB supports creating info package (replication, performance, i/o, storage, memory, etc.) that can be created for the entire cluster or for current server only. Go to `Studio -> Manage Server -> Gather Debug Info`.
 4. [Server logs](../../server/troubleshooting/enabling-logging)
-5. [Statistics](../../server/administration/statistics)
-6. Unit test
+5. Unit test. Please read our article that describes '[How to write a Unit Test using the TestDriver](../../start/test-driver)'
 
 {INFO: Monitoring local traffic }
 The easiest way to monitor traffic sent to `http://localhost` or `http://127.0.0.1` is to provide a machine name instead of **localhost** or **127.0.0.1**.
@@ -35,16 +34,3 @@ For an ASP.NET application you can also configure proxy server as follow:
 
 By default Fiddler listens on port `8888` and FiddlerCap on `8889`.
 {INFO/}
-
-## Writing unit tests
-
-The NuGet package has been created for easier RavenDB test creation and can be downloaded [here](https://www.nuget.org/packages/RavenDB.TestDriver/).
-
-The package contains base class (`RavenTestDriver`) with various methods useful for test creation:
-
-- `GetDocumentStore`
-- `WaitForIndexing`
-- `WaitForUserToContinueTheTest`
-- ...and more
-
-{CODE support_1@Server\Troubleshooting\Support.cs /}
