@@ -3,5 +3,10 @@
         "Path": "general-info.markdown",
         "Name": "General Info",
         "Mappings": []
+    },
+    {
+        "Path": "backup-task.markdown",
+        "Name": "Backup Task",
+        "Mappings": []
     }
 ]
