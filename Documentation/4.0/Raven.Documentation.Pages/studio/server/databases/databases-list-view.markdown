@@ -2,10 +2,17 @@
 ---
 
 {NOTE: }
-All your databases are listed in this view  
 
-* Database stats can be viewed  
-* Actions can be performed on each database  
+* All your databases are listed in this view  
+  * Database stats can be viewed  
+  * Actions can be performed on each database  
+
+* In this page:  
+  * [Database Stats](../../../studio/server/databases/databases-list-view#database-stats)  
+  * [Database Actions](../../../studio/server/databases/databases-list-view#database-actions)  
+  * [Creating New Database Options](../../../studio/server/databases/databases-list-view#creating-new-database-options)  
+  * [More Actions](../../../studio/server/databases/databases-list-view#more-actions)  
+  * [Remote Database](../../../studio/server/databases/databases-list-view#remote-database)  
 {NOTE/}
 
 ---

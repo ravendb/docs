@@ -11,6 +11,9 @@
 
 * The Database Record is Not editable
 
+* In this page:  
+  * [The Database Record](../../../studio/database/settings/database-record#the-database-record)  
+  * [The Database Record Fields](../../../studio/database/settings/database-record#the-database-record-fields)  
 {NOTE/}
 
 ---
@@ -45,5 +48,5 @@
 | `ConflictSolverConfig` | Conflict Resolution configuration. <br/> Can be set in [Conflict Resolution](../../../todo-update-me-later) |
 | `Etag` | The _etag_ of the Database Record document - representing only the changes to the database record document itself. <br/> (Not to be confused with the database _Last Document Etag_ - <br/> See [Database Stats](../../../todo-update-me-later)) |
 
-{NOTE Fields that are Not defined will Not show in this view /}
+{NOTE Fields that are _not_ defined will _not_ show in this view /}
 {PANEL/}
