@@ -96,8 +96,8 @@ Destination type specific details about ETL scripts can be found in dedicated ar
 
 The documents are extracted and processed in batch manner. The behavior is that the ETL process gets and transform as many documents as possible preserving the following configuration limits:
 
-- [`ETL.ExtractAndTransformTimeoutInSec`]() (default: 300 sec): the number of seconds after which the extraction and transformation will end and the loading stage will start
-- [`ETL.MaxNumberOfExtractedDocuments`]() (default: null): max number of extracted documents in ETL batch
+- [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration#etl.extractandtransformtimeoutinsec) (default: 300 sec): the number of seconds after which the extraction and transformation will end and the loading stage will start
+- [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null): max number of extracted documents in ETL batch
 
 {INFO/}
 
