@@ -1,7 +1,8 @@
-﻿# Operations : Server : How to Modify Conflict Solver?
+﻿# Operations : Server : How to Modify a Conflict Solver
 
-Conflict solver allows to set conflict resolution script per each collection or resolve conflict using latest version. 
-To modify solver configuration use **ModifyConflictSolverOperation**. 
+The conflict solver allows you to set a conflict resolution script for each collection or resolve conflicts using the latest version. 
+
+To modify the solver configuration, use **ModifyConflictSolverOperation**. 
 
 ## Syntax
 
@@ -13,13 +14,13 @@ To modify solver configuration use **ModifyConflictSolverOperation**.
 | ------------- | ------------- | ----- |
 | **database** | string | Name of a database |
 | **collectionByScript** | Dictionary&lt;string,ScriptResolver&gt; | Per collection conflict resolution script |
-| **resolveToLatest** | bool | Indicates if conflict should be resolved using latest version |
+| **resolveToLatest** | bool | Indicates if a conflict should be resolved using the latest version |
 
 
 | Return Value | |
 | ------------- | ----- |
 | **Key** | Name of database |
-| **RaftCommandIndex** | Raft command index |
+| **RaftCommandIndex** | RAFT command index |
 | **Solver** | Saved conflict solver configuration |
 
 ## Example I
