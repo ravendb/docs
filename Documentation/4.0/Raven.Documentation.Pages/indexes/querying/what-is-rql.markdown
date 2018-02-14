@@ -1,6 +1,6 @@
 ﻿# RQL - Raven Query Language
 
-RQL, the Raven Query Language, is a SQL-like language used to retrieve the data from the server when queries are being executed. 
+RQL, the Raven Query Language, is an SQL-like language used to retrieve the data from the server when queries are being executed. 
 
 It is designed to expose externally the RavenDB query pipeline in a way that is easy to understand, easy to use, and not overwhelming to the user.
 
@@ -122,7 +122,7 @@ The keyword `where` is used to filter-out the documents from final results.
 
 The operators above are considered basic and self-explanatory. They work on all value types including 'numbers' and 'strings'.
 
-The simplest example would be to return results with field value **equal** to a given input. If you want to return a document from `@companies` collection (more about collection can be read [here](../../client-api/faq/what-is-a-collection)), you need to execute following query:
+The simplest example would be to return results with the field value **equal** to a given input. If you want to return a document from the `@companies` collection (more about collection can be read [here](../../client-api/faq/what-is-a-collection)), you need to execute the following query:
 
 {CODE-BLOCK:csharp}
 from Companies
@@ -230,7 +230,7 @@ Projections can be performed by using `select`. Please read our dedicated projec
 
 {PANEL:UPDATE}
 
-To patch documents on the server-side, use `update` with desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based-patching).
+To patch documents on the server-side, use `update` with the desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based-patching).
 
 {PANEL/}
 

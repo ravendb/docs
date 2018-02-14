@@ -1,6 +1,6 @@
-﻿# Operations : Attachments : How to get an attachment?
+﻿# Operations : Attachments : How to Get an Attachment
 
-This operation is used to get attachment from document. 
+This operation is used to get an attachment from a document. 
 
 ## Syntax
 
@@ -10,19 +10,19 @@ This operation is used to get attachment from document.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **documentId** | string | ID of a document which will contain attachment |
+| **documentId** | string | ID of a document which will contain an attachment |
 | **name** | name | Name of an attachment |
 | **type** | AttachmentType | **Document** or **Revision** |
 | **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
 
 | Return Value | |
 | ------------- | ----- |
-| **Stream** | Stream containing attachment |
-| **ChangeVector** | Change vector of attachment |
+| **Stream** | Stream containing an attachment |
+| **ChangeVector** | Change vector of an attachment |
 | **DocumentId** | ID of document |
 | **Name** | Name of attachment |
 | **Hash** | Hash of attachment |
-| **ContentType** | MIME content type of attachment |
+| **ContentType** | MIME content type of an attachment |
 | **Size** | Size of attachment |
 
 ## Example

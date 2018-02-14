@@ -1,8 +1,7 @@
 # Session : How to Get and Modify Entity Metadata
 
-When a document is downloaded from the server, it contains various metadata information e.g. ID or current change-vector. This information is stored in session and is available for each entity using the `GetMetadataFor` method from the `Advanced` session operations.
-
-## Get the metadata
+When a document is downloaded from the server, it contains various metadata information like ID or current change-vector. This information is stored in a session and is available for each entity using the `GetMetadataFor` method from the `Advanced` session operations.
+## Get the Metadata
 
 {CODE get_metadata_1@ClientApi\Session\HowTo\GetMetadata.cs /}
 
@@ -19,7 +18,7 @@ When a document is downloaded from the server, it contains various metadata info
 {CODE get_metadata_2@ClientApi\Session\HowTo\GetMetadata.cs /}
 
 
-## Modify the metadata
+## Modify the Metadata
 After getting the metadata from `session.Advanced.GetMetadataFor` you can modify it just like any other dictionary.
 {NOTE Keys in the metadata that starting with @ are reserved for RavenDB use /}
 

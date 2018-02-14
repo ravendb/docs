@@ -1,6 +1,6 @@
-﻿# Operations : Attachments : How to delete an attachment?
+﻿# Operations : Attachments : How to Delete an Attachment
 
-This operation is used to delete attachment from document. 
+This operation is used to delete an attachment from a document. 
 
 ## Syntax
 
@@ -8,7 +8,7 @@ This operation is used to delete attachment from document.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **documentId** | string | ID of a document containing attachment |
+| **documentId** | string | ID of a document containing an attachment |
 | **name** | name | Name of an attachment |
 | **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
 

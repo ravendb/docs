@@ -1,6 +1,6 @@
-﻿# Operations : Attachments : How to put an attachment?
+﻿# Operations : Attachments : How to Put an Attachment
 
-This operation is used to put attachment to document. 
+This operation is used to put an attachment to a document. 
 
 ## Syntax
 
@@ -10,7 +10,7 @@ This operation is used to put attachment to document.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **documentId** | string | ID of a document which will contain attachment |
+| **documentId** | string | ID of a document which will contain an attachment |
 | **name** | name | Name of an attachment |
 | **stream** | Stream | Stream contains attachment raw bytes |
 | **contentType** | string | MIME type of attachment |
