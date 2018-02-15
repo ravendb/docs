@@ -18,5 +18,19 @@
         "Path": "running-in-docker-container.markdown",
         "Name": "Running in a Docker container",
         "Mappings": []
+    },
+    {
+        "Path": "upgrading-to-new-version.markdown",
+        "Name": "Upgrading to a new version",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "server/administration/upgrade"
+            },
+            {
+                "Version": 3.0,
+                "Key": "server/installation/upgrading-to-new-version"
+            }
+        ]
     }
 ]
