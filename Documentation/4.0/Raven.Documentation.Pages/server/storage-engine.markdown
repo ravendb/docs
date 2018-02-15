@@ -30,11 +30,20 @@ and the actual transaction lock handoff / early lock released is handled at a hi
 
 Voron is based on memory mapped files.
 
+{INFO: Running on 32 bits}
+
+Since RavenDB 4.0, Voron has no limits when running in 32 bits mode. The issue of running out of address space when mapping files into memory 
+has been adressed by providing a dedicated pager (component responsible for mapping) for 32 bits environments.
+
+Instead of mapping an entire file, it maps just the pages that are required and only for the duration of the transaction.
+
+{INFO/}
+
 ## Requirements
 
 - Disk must handle UNBUFFERED_IO / WRITE_THROUGH properly
-- [Windows] [Hotfix](http://support.microsoft.com/kb/2731284) for Windows 7 and Windows Server 2008 R2
-- [Posix] File system must support `fsync`
+- `[Windows]` [Hotfix](http://support.microsoft.com/kb/2731284) for Windows 7 and Windows Server 2008 R2
+- `[Posix]` File system must support `fsync`
 
 ## Limitations
 
