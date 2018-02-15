@@ -17,9 +17,9 @@ When a document ID is not specified, RavenDB will generate a globally unique ide
 
 ##Semantic ID
 
-The problem with GUIDs is that they are not human friendly. They are very hard to read, compareת etc. The better option is to have IDs that contain useful information about the documents.
+The problem with GUIDs is that they are not human friendly. They are very hard to read, compare etc. The better option is to have IDs that contain useful information about the documents.
 You know best what you need and how your keys should look like, so you can decide what ID the document will have before saving it. Then RavenDB will use the assigned key.
-It is most often used when you save documents which already have ש native ID, such as users; then you can use keys like `users/ayende`.
+It is most often used when you save documents which already have a native ID, such as users; then you can use keys like `users/ayende`.
 
 ##Server-Side ID Generated - /
 
