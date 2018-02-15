@@ -33,3 +33,7 @@ The transaction model is different when indexes are involved, because indexes ar
 * _Eventual consistency_ - The database will eventually become consistent once it stops receiving new documents and the indexing operation finishes.
 
 {PANEL/}
+
+## Related Articles
+
+- [Storage Engine](../../server/storage-engine)
