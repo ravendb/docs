@@ -74,6 +74,11 @@
         "Name": "Attachments",
         "Mappings": []
     },
+        {
+        "Path": "/revisions",
+        "Name": "Revisions",
+        "Mappings": []
+    },
     {
         "Path": "/how-to",
         "Name": "How to...",
