@@ -30,6 +30,11 @@
         "Mappings": []
     },
     {
+        "Path": "storage-configuration.markdown",
+        "Name": "Storage Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "cluster-configuration.markdown",
         "Name": "Cluster Configuration",
         "Mappings": []

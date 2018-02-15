@@ -1,4 +1,4 @@
-﻿# Query vs DocumentQuery
+﻿# Querying : Query vs DocumentQuery
 
 Why does the RavenDB client offer two ways of querying by exposing the `Query` as well as `DocumentQuery` methods? What are differences between them?
 

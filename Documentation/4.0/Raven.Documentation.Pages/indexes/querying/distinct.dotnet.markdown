@@ -1,4 +1,4 @@
-﻿# Distinct
+﻿# Querying : Distinct
 
 The `Distinct` method allows you to remove duplicates from the result. Items are compared based on fields listed in the `select` section of the query. 
 
