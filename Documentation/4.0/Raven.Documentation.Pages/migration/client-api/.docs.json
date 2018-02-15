@@ -15,11 +15,6 @@
         "Mappings": []
     },
     {
-        "Path": "/session",
-        "Name": "Session",
-        "Mappings": []
-    },
-    {
         "Path": "commands.markdown",
         "Name": "Commands",
         "Mappings": []
@@ -32,6 +27,11 @@
     {
         "Path": "list.markdown",
         "Name": "List of Differences in Public API",
+        "Mappings": []
+    },
+    {
+        "Path": "/session",
+        "Name": "Session",
         "Mappings": []
     }
 ]

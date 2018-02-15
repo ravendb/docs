@@ -5,13 +5,13 @@
         "Mappings": []
     },
     {
-        "Path": "/querying",
-        "Name": "Querying",
-        "Mappings": []
-    },
-    {
         "Path": "advanced.markdown",
         "Name": "Advanced",
         "Mappings": []
     },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    }
 ]
