@@ -109,6 +109,16 @@ tcp://example.com:38888
 
 {PANEL/}
 
+{PANEL:ExternalIp}
+
+External IP address.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
 {PANEL:RunInMemory}
 
 Set whether the database should run purely in memory.

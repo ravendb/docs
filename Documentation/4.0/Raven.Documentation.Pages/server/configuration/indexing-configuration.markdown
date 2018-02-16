@@ -38,7 +38,7 @@ Temporary path for indexing files.
 - **Default**: `null`
 - **Scope**: Server-wide or per database
 
-If not set, or set to null - use system's temp directory
+If not set, or set to null - use 'Temp' folder inside the index data directory
 
 {PANEL/}
 

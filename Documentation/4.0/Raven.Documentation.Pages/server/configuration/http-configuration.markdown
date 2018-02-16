@@ -1,6 +1,6 @@
 # Configuration : HTTP
 
-*RavenDB* uses *Kestrel* Server built in dotnet core. HTTP configuration options give a way to set *Kestrel's* options. See [Kestrel API](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-1.1)
+*RavenDB* uses *Kestrel* Server built in .NET Core. HTTP configuration options give a way to set *Kestrel's* options. See [Kestrel API](https://docs.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.server.kestrel?view=aspnetcore-1.1)
 
 <br>
 

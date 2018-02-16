@@ -90,7 +90,7 @@ TCP connection read/write timeout in milliseconds.
 
 {PANEL/}
 
-{PANEL:Cluster.TcpTimeoutInMs}
+{PANEL:Cluster.HardDeleteOnReplacement}
 
 Set hard/soft delete for a database that was removed by the observer form the cluster topology in order to maintain the replication factor.
 
