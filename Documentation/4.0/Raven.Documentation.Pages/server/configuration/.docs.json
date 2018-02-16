@@ -45,6 +45,11 @@
         "Mappings": []
     },
     {
+        "Path": "monitoring-configuration.markdown",
+        "Name": "Monitoring Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "security-configuration.markdown",
         "Name": "Security Configuration",
         "Mappings": []
