@@ -2,10 +2,10 @@
 
 {PANEL:Memory.LowMemoryLimitInMb}
 
-The minimum amount of available memory RavenDB will attempt to achieve (free memory lower than this value will trigger low memory behavior).
+The minimum amount of available memory RavenDB will attempt to achieve (free memory lower than this value will trigger low memory behavior). Value is in MB.
 
 - **Type**: `int`
-- **Default**: minimum of either `10% of total physical memory` or `2GB`
+- **Default**: minimum of either `10% of total physical memory` or `2048`
 - **Scope**: Server-wide only
 
 {PANEL/}

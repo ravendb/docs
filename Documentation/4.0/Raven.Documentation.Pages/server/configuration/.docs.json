@@ -41,12 +41,22 @@
     },
     {
         "Path": "memory-configuration.markdown",
-        "Name": "Logs Configuration",
+        "Name": "Memory Configuration",
         "Mappings": []
     },
     {
         "Path": "monitoring-configuration.markdown",
         "Name": "Monitoring Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "patching-configuration.markdown",
+        "Name": "Patching Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "performance-hints-configuration.markdown",
+        "Name": "Performance Hints Configuration",
         "Mappings": []
     },
     {
