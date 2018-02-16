@@ -108,5 +108,10 @@
         "Path": "tombstone-configuration.markdown",
         "Name": "Tombstone Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "transaction-merger-configuration.markdown",
+        "Name": "Transaction Merger Configuration",
+        "Mappings": []
     }
 ]
