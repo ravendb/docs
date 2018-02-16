@@ -10,18 +10,33 @@
         "Mappings": []
     },
     {
-        "Path": "http-configuration.markdown",
-        "Name": "HTTP Configuration",
-        "Mappings": []
-    },
-    {
         "Path": "database-configuration.markdown",
         "Name": "Database Configuration",
         "Mappings": []
     },
     {
+        "Path": "etl-configuration.markdown",
+        "Name": "ETL Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "http-configuration.markdown",
+        "Name": "HTTP Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "indexing-configuration.markdown",
         "Name": "Indexing Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "license-configuration.markdown",
+        "Name": "License Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "logs-configuration.markdown",
+        "Name": "Logs Configuration",
         "Mappings": []
     },
     {
@@ -37,11 +52,6 @@
     {
         "Path": "cluster-configuration.markdown",
         "Name": "Cluster Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "etl-configuration.markdown",
-        "Name": "ETL Configuration",
         "Mappings": []
     }
 ]
