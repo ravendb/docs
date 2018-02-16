@@ -28,7 +28,7 @@ namespace Raven.Documentation.Samples.Indexes
 						};
 
 				Analyzers.Add(x => x.Tags, typeof(SimpleAnalyzer).FullName);
-				Analyzers.Add(x => x.Content, typeof(SnowballAnalyzer).FullName);
+				Analyzers.Add(x => x.Content, typeof(SnowballAnalyzer).AssemblyQualifiedName);
 			}
 		}
 		#endregion
@@ -105,7 +105,7 @@ namespace Raven.Documentation.Samples.Indexes
 							Analyzers =
 							{
 								{ x => x.Tags, typeof(SimpleAnalyzer).FullName },
-								{ x => x.Content, typeof(SnowballAnalyzer).FullName }
+								{ x => x.Content, typeof(SnowballAnalyzer).AssemblyQualifiedName }
 							},
 						});
 
