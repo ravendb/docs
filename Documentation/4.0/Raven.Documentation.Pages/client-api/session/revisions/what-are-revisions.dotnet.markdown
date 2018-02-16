@@ -4,7 +4,7 @@ RavenDB can create snapshots of the documents (and their attachments) upon every
 
 ## Configuration
 
-Configuration can be set either per [collection]() or for _all collections_ (known as 'default configuration'). The 'default configuration' is applied only if collection-specific configuration is not present or enabled.
+Configuration can be set either per [collection](../../../client-api/faq/what-is-a-collection) or for _all collections_ (known as 'default configuration'). The 'default configuration' is applied only if collection-specific configuration is not present or enabled.
 
 Following three options are available per each configuration:
 
