@@ -52,7 +52,7 @@ Since version 4.0, there is no need for a `Raven/ServerPrefixForHilo` document. 
 
 {PANEL:Scripted Index Results}
 
-Documents can be created based on indexing results using the `OutputReduceToCollection` option for map-reduce indexes. It allows you to create recursive map-reduce indexes.
+Documents can be created based on indexing results using the `OutputReduceToCollection` option for map-reduce indexes. It allows you to create recursive map-reduce indexes. More details [here](../../indexes/map-reduce-indexes#reduce-results-as-artificial-documents).
 
 {PANEL/}
 

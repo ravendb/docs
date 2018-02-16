@@ -10,8 +10,11 @@ that was designed and optimized to the needs of RavenDB. It uses the following s
 
 ## Transaction Support
 
-Voron is fully transactional storage engine. It uses Write Ahead Journal to guarantee atomicity and durability of writes. All modifications made within a transaction
-are written to a journal file (unbuffered I/O, write-through) before they are applied to the main data file.
+Voron is fully transactional storage engine. It uses Write Ahead Journal (WAJ) to guarantee atomicity and durability features. All modifications made within a transaction
+are written to a journal file (unbuffered I/O, write-through) before they are applied to the main data file (and synced to disk). The WAJ application is done in
+the background. If the process stopped working and left some modifications not applied to the data file then the database will recover its state on load by replying
+the transactions persisted in the journal files. As the journals are flushed and synced to disk before returning on each transaction commit it guarantees they
+will survive the event of a process or system crash.
 
 The Multi Versioning Concurrency Control (MVCC) is implemented with the usage of scratch files. They are temporary files which keep concurrent versions of the data for running transactions.
 Each transaction has a snapshot of the database and can operate on that with guarantee that a write transaction won't modify the data it's looking at.

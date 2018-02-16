@@ -14,7 +14,7 @@ You can use this setting to specify a different path to temporary files. By defa
 
 {PANEL:Storage.TransactionsModeDurationInMin}
 
-How long transaction mode (Danger/Lazy) last before returning to Safe mode. Value in Minutes. Default one day. Zero for infinite time.
+How long transaction mode (Danger/Lazy) last before returning to Safe mode. Value in minutes with default set to 1440 (24 hours). Set value to 0 for infinite.
 
 - **Type**: `int`
 - **Default**: `1440`
