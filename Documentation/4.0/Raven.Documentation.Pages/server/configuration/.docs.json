@@ -60,6 +60,16 @@
         "Mappings": []
     },
     {
+        "Path": "query-configuration.markdown",
+        "Name": "Query Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "replication-configuration.markdown",
+        "Name": "Replication Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "security-configuration.markdown",
         "Name": "Security Configuration",
         "Mappings": []
