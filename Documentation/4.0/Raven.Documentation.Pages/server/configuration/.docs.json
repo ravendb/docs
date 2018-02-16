@@ -88,5 +88,15 @@
         "Path": "storage-configuration.markdown",
         "Name": "Storage Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "studio-configuration.markdown",
+        "Name": "Studio Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "subscription-configuration.markdown",
+        "Name": "Subscription Configuration",
+        "Mappings": []
     }
 ]
