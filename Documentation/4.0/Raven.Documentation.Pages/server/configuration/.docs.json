@@ -103,5 +103,10 @@
         "Path": "testing-configuration.markdown",
         "Name": "Testing Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "tombstone-configuration.markdown",
+        "Name": "Tombstone Configuration",
+        "Mappings": []
     }
 ]

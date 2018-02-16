@@ -1,4 +1,4 @@
-# Configuration : Studio Options
+# Configuration : Subscription Options
 
 {PANEL:Subscriptions.MaxNumberOfConcurrentConnections}
 

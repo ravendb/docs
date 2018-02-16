@@ -1,4 +1,4 @@
-# Configuration : Studio Options
+# Configuration : Testing Options
 
 {PANEL:Testing.ParentProcessId}
 
