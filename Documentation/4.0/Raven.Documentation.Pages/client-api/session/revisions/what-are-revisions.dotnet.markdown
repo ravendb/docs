@@ -9,8 +9,8 @@ Configuration can be set either per [collection]() or for _all collections_ (kno
 Following three options are available per each configuration:
 
 - **Purge on delete** - when this option is active then on document deletion all of the revisions will be also removed
-- **Limit # of revisions** - server can limit number of revisions to the given number (old ones will be removed)
-- **Limit # of revisions per age** - server will keep revisions at least for the provided time (takes precedence over '# of revisions' option)
+- **Limit # of revisions** - database can limit number of revisions to the given number (old ones will be removed)
+- **Limit # of revisions per age** - database will keep revisions at least for the provided time (takes precedence over '# of revisions' option)
 
 ## Related articles
 
