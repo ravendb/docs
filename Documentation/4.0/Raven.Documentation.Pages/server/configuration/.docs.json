@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "cluster-configuration.markdown",
+        "Name": "Cluster Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "core-configuration.markdown",
         "Name": "Core Configuration",
         "Mappings": []
@@ -75,13 +80,13 @@
         "Mappings": []
     },
     {
-        "Path": "storage-configuration.markdown",
-        "Name": "Storage Configuration",
+        "Path": "server-configuration.markdown",
+        "Name": "Server Configuration",
         "Mappings": []
     },
     {
-        "Path": "cluster-configuration.markdown",
-        "Name": "Cluster Configuration",
+        "Path": "storage-configuration.markdown",
+        "Name": "Storage Configuration",
         "Mappings": []
     }
 ]
