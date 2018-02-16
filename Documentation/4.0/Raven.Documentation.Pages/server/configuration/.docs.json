@@ -98,5 +98,10 @@
         "Path": "subscription-configuration.markdown",
         "Name": "Subscription Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "testing-configuration.markdown",
+        "Name": "Testing Configuration",
+        "Mappings": []
     }
 ]
