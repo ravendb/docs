@@ -33,16 +33,6 @@ The same queries and indexes that are used for data retrieval are used for the s
 | **queryToUpdate** | `string` or [IndexQuery](../../glossary/indexQuery) | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the javascript patch code
 | **options** | [QueryOperationOptions](../../glossary/queryOperationOptions) | Options defining how the operation will be performed and various constraints on how it is performed
 
-## Remarks
-
-{SAFE:Safe By Default}
-
-By default, set based operations will **not work** on indexes that are stale. The operation will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete. 
-
-For indexes that are updated all the time, you can set the AllowStale field of QueryOperationOptions to true if you want to patch on stale results. 
-
-{SAFE/}
-
 ## Examples
 
 ### Update whole collection
@@ -63,6 +53,23 @@ For indexes that are updated all the time, you can set the AllowStale field of Q
 ### Process patch results details
 {CODE patch-request-with-details@ClientApi\Operations\Patches\PatchRequests.cs /}
 
+## Remarks
+
+{SAFE:Safe By Default}
+
+By default, set based operations will **not work** on indexes that are stale. The operation will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete. 
+
+For indexes that are updated all the time, you can set the AllowStale field of QueryOperationOptions to true if you want to patch on stale results. 
+
+{SAFE/}
+
+{WARNING: Batching and Concurrency} 
+
+The patching of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation
+so it can happen than a document has been updated or deleted meanwhile.
+
+{WARNING/}
+
 ## Related Articles
 
-- [Single Document Based Patch Operation](../../../client-api/operations/patching/single-document-patching)
+- [Single Document Based Patch Operation](../../../client-api/operations/patching/single-document)

@@ -10,7 +10,7 @@ They are available in the DocumentStore under the **Operations**, **Maintenance*
 
 {PANEL:Common Operations}
 
-Common operations include set based operations for [Patching](../../client-api/operations/patching/set-based-patching) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query)).  
+Common operations include set based operations for [Patching](../../client-api/operations/patching/set-based) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query)).  
 There is also the ability to handle distributed [Compare-Exchange](../../client-api/operations/compare-exchange) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment).
 
 ### How to Send an Operation
@@ -35,8 +35,8 @@ In order to excecute an operation, you will need to use the `Send` or `SendAsync
 
 #### Patching
 
-* [PatchByQueryOperation](../../client-api/operations/patching/set-based-patching)   
-* [PatchOperation](../../client-api/operations/patching/single-document-patching)   
+* [PatchByQueryOperation](../../client-api/operations/patching/set-based)   
+* [PatchOperation](../../client-api/operations/patching/single-document)   
 
 #### Misc
 

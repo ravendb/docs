@@ -1,12 +1,12 @@
 ﻿[
     {
-        "Path": "single-document-patching.markdown",
-        "Name": "Single Document Patching",
+        "Path": "single-document.markdown",
+        "Name": "Single Document",
         "Mappings": []
     },
     {
-        "Path": "set-based-patching.markdown",
-        "Name": "Set Based Patching",
+        "Path": "set-based.markdown",
+        "Name": "Set Based",
         "Mappings": []
     }
 

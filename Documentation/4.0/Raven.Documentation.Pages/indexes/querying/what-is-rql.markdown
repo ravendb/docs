@@ -230,7 +230,7 @@ Projections can be performed by using `select`. Please read our dedicated projec
 
 {PANEL:UPDATE}
 
-To patch documents on the server-side, use `update` with the desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based-patching).
+To patch documents on the server-side, use `update` with the desired JS script that will be applied to any documents matching the query criteria. For more information, please refer to our [patching article](../../client-api/operations/patching/set-based).
 
 {PANEL/}
 
