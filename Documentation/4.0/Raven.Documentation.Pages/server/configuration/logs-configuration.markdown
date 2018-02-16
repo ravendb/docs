@@ -1,4 +1,4 @@
-# Configuration : ETL Options
+# Configuration : Logs Options
 
 {PANEL:Logs.Path}
 

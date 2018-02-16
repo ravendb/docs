@@ -1,4 +1,4 @@
-# Configuration : ETL Options
+# Configuration : License Options
 
 {PANEL:License}
 

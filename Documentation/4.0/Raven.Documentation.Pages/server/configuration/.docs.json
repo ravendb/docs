@@ -40,6 +40,11 @@
         "Mappings": []
     },
     {
+        "Path": "memory-configuration.markdown",
+        "Name": "Logs Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "security-configuration.markdown",
         "Name": "Security Configuration",
         "Mappings": []
