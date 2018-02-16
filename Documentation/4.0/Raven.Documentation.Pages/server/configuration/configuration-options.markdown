@@ -1,4 +1,4 @@
-# Server Configuration
+# Configuration Options
 
 RavenDB is **Safe by Default** which means its set of options are configured for the best safety.  
 However, these options can be manually configured in order to accommodate different server behavior.

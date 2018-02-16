@@ -1,4 +1,4 @@
-# Server Configuration : ETL Options
+# Configuration : ETL Options
 
 {PANEL:ETL.SQL.CommandTimeoutInSec}
 
