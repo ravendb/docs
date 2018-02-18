@@ -14,5 +14,6 @@
     <Folder Include="server\ongoing-tasks\etl\images\" />
     <Folder Include="server\security\authentication\images\snag\" />
     <Folder Include="server\security\encryption\images\" />
+    <Folder Include="server\security\images\" />
   </ItemGroup>
 </Project>
