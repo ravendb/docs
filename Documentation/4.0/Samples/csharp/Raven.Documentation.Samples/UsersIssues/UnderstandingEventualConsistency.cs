@@ -43,10 +43,6 @@ namespace Raven.Documentation.Samples.UsersIssues
                     var timeToWaitForIndexToUpdateInSec = TimeSpan.FromSeconds(5);
                     #region userissues_2                    
                     session.Advanced.WaitForIndexesAfterSaveChanges(timeToWaitForIndexToUpdateInSec);
-                    var results = session.Query<Product>()
-                        .OrderBy(x => x.Name)
-                        .Skip((pageNumber - 1) * pageSize)
-                        .Take(pageSize);
                     #endregion
                 }
             }

@@ -1,6 +1,6 @@
 ﻿# Operations : How to Get Database Statistics
 
-**GetStatisticsOperation** will retrieve database statistics like: count of documents, indexes, attachmets, and more.
+**GetStatisticsOperation** will retrieve database statistics like: count of documents, indexes, attachments, and more.
 
 ## Syntax
 

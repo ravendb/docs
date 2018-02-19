@@ -36,7 +36,7 @@ In results, all created Lucene queries are the same query (actually the same ins
 
 ## Default Query Operator
 
-Starting from version 4.0, the `Query` and `DocumentQuery` have an identical default operator `AND` (previosuly `Query` used `AND` and `DocumentQuery` used `OR`). You are able to change this behavior by using `UsingDefaultOperator`:
+Starting from version 4.0, the `Query` and `DocumentQuery` have an identical default operator `AND` (previously `Query` used `AND` and `DocumentQuery` used `OR`). You are able to change this behavior by using `UsingDefaultOperator`:
         
 {CODE default_operator@Indexes\Querying\QueryAndLuceneQuery.cs /}
 

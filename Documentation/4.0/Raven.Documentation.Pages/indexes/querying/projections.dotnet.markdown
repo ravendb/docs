@@ -51,7 +51,7 @@ This will issue a query to a database, requesting only `FirstName` and `LastName
 
 ### Example II - Projecting Stored Fields
 
-If we create an index that stores `FirstName` and `LastName` and requests only those fields in query, then **the data will come from the index directly**.
+If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, then **the data will come from the index directly**.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_1_stored@Indexes\Querying\Projections.cs /}

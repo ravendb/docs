@@ -3,8 +3,8 @@
 
 {NOTE: }
 
-* Configure the RavenDB client behaviour for **all** databases in the cluster  
-* These default values can be overwritten per databses in [Database Client Configuration](../../../../todo-update-me-later)  
+* Configure the RavenDB client behavior for **all** databases in the cluster  
+* These default values can be overwritten per databases in [Database Client Configuration](../../../../todo-update-me-later)  
 {NOTE/}
 
 ---
@@ -13,7 +13,7 @@
 
 ![Figure 1. Client Configuration](images/client-configuration.jpg "Client Configuration")
 
-**1. Read balance behaviour**  
+**1. Read balance behavior**  
 
 * Set the client API load-balancing behavior  
 * Effects the client API decision of which node to failover in case of issues  
