@@ -14,9 +14,9 @@ Path to the directory where logs will be placed. By default it is placed in 'Log
 
 Level of logs that should be written to the log files. Available options are:
 
-- `None`
-- `Operations`
-- `Information`
+- `None` (logging disabled)
+- `Operations` (high level info for operational users)
+- `Information` (low level debug info)
 
 - **Type**: `string`
 - **Default**: `Operations`
