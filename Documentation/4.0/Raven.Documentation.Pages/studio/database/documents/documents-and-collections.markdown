@@ -4,7 +4,7 @@
 {NOTE: Documents}
 
 * A document holds your data in a JSON format object  
-* For more information about a document, see [Document View](../../../../todo-update-me-later)
+* For more information about a document, see [Document View](../../../studio/database/documents/document-view)
 {NOTE/}
 
 {NOTE: Collections}
@@ -16,7 +16,7 @@
 
 * Typically, a collection holds similar structured documents based on the entity type of the document.  
 
-* Note: It is not required that documents within the same collection will share the same structure or have any sort of schema.
+* Note: It is not required that documents within the same collection will share the same structure or have any sort of schema.  
   The only requirement for documents to be in the same collection is that they must have the same `@collection` metadata property.  
 
 * For more information see [What is a Collection](../../../client-api/faq/what-is-a-collection)  
@@ -89,19 +89,21 @@ Click `Display` to:
 
 * Documents in the _@hilo_ collection are created when the _RavenDB client_ (Not from the studio) is creating documents ([using a session](../../../client-api/session/storing-entities))
 **without an explicit ID**.  
-  For more information about the various document identifiers that can be generated, see [Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers).  
 
 * The _'Max'_ property value that shows in the hilo doc represents the largest ID number that was used for a _client generated document_ in that collection.  
-  For more information about the HiLo Algorithm, see [HiLo Algorithm](../../../client-api/document-identifiers/hilo-algorithm).  
+
+* For more information about the HiLo Algorithm, see [HiLo Algorithm](../../../client-api/document-identifiers/hilo-algorithm).  
 {PANEL/}
 
 {PANEL: The @empty Collection}  
 
 ![Figure 5. empty collection](images/documents-and-collections-5.png "The @emtpy Collection")
 
-* A document that has been generated with a **GUID identifier** has no specific collection.  
-  Those documents will show under the _@empty_ collection.  
+* The _@empty_ collection includes:  
+  1. Documents that were created with a **GUID identifier** (but only from the 'Recent' tab)  
+  2. Documents that were created with a **Semantic ID** that was _not_ ended with (/) or (|)  
 
-* For more information about the various documents identifiers that can be generated, see [Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers).  
+* For more information about the various documents identifiers that can be generated, 
+  see [Create New Document](../../../studio/database/documents/create-new-document#create-new-document).  
 {PANEL/}
 

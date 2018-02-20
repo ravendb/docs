@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "create-new-document.markdown",
+        "Name": "Create New Document",
+        "Mappings": []
+    },   
+    {
         "Path": "document-view.markdown",
         "Name": "Document View",
         "Mappings": []
