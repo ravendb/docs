@@ -53,12 +53,12 @@ You can ask the server to wait until the replication is caught up with those par
 {CODE-TABS/} 
 
 {WARNING:Important}
-The `WaitForReplicationAfterSaveChanges` waits only replicas which are part of the cluster. It means that external replication destinations are not counted towards the number specified in `replicas` parameter, since they are not part of the cluster.
+The `WaitForReplicationAfterSaveChanges` waits only for replicas which are part of the cluster. It means that external replication destinations are not counted towards the number specified in `replicas` parameter, since they are not part of the cluster.
 {WARNING/}
 
 {WARNING:Important}
 
-The usage of `WaitForReplicationAfterSaveChanges` doesn't involve a distributed transaction (that are not supported since RavenDB 4.0). Even if RavenDB was not able
+The usage of `WaitForReplicationAfterSaveChanges` doesn't involve a distributed transaction (those are not supported since RavenDB 4.0). Even if RavenDB was not able
 to write your changes to the number of replicas you specified, the data has been already written to some nodes. You will get an error but data is already there.
 
 This is a powerful feature, but you need to be aware of the possible pitfalls of using it.
