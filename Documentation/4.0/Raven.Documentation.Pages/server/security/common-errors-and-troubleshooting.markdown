@@ -130,12 +130,20 @@ If it didn't help, you can use any other client certificate you have which works
 
 You can also generate your own self-signed client certificate by using OpenSSL or Powershell. 
 
+This is a known issue which has been reported many times to Mozilla.  
+
+Some references:
+
+[https://bugzilla.mozilla.org/show_bug.cgi?id=1049435](https://bugzilla.mozilla.org/show_bug.cgi?id=1049435)  
+[https://bugzilla.mozilla.org/show_bug.cgi?id=458161](https://bugzilla.mozilla.org/show_bug.cgi?id=458161)  
+[https://groups.google.com/forum/?fromgroups=#!topic/mozilla.dev.tech.crypto/RiIeY-R5Q4Y](https://groups.google.com/forum/?fromgroups=#!topic/mozilla.dev.tech.crypto/RiIeY-R5Q4Y)  
+
 
 ### Getting the full error using powershell
 
 You can use powershell to make requests using the REST API.
 
-If you are having trouble using certificates, take a look at this example which prints the full error (replace the `/certificates/whoami` endpoint with yours).
+If you are having trouble using certificates, take a look at this example which prints the full error (replace the server URL and the `/certificates/whoami` endpoint with yours).
 
 {CODE-BLOCK:powershell}
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
