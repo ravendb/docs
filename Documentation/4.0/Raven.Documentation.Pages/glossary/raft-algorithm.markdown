@@ -8,7 +8,7 @@ In case or RavenDB, Raft is used to coordinate the execution of cluster-wide ope
 This means, that if we want to create a database in a cluster, and this means creating the database on all cluster nodes,
 the Raft will be used to make sure that the database creation is executed in at least (n/2) + 1 nodes. (quorum of nodes)
 
-### Additonal Reading
+### Additional Reading
 
  * A website with visualization and links to publications -> [https://raft.github.io/](https://raft.github.io/)
  * A link to the original PhD dissertation on Raft Algorithm -> [https://github.com/ongardie/dissertation](https://github.com/ongardie/dissertation)

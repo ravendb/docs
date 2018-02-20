@@ -60,8 +60,15 @@ from People where Name = 'Bob' and Age >= 29
 
 ## Remarks
 
-{WARNING: Important} 
+{WARNING: Map only indexes} 
 `DeleteByQueryOperation` can only be performed on a map index. Executing it on map-reduce index will lead to an exception. 
+{WARNING/}
+
+{WARNING: Batching and Concurrency} 
+
+The deletion of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation
+so it can happen than a document has been updated or deleted meanwhile.
+
 {WARNING/}
 
 

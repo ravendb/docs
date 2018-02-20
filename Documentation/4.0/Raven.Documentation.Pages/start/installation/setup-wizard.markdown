@@ -65,7 +65,7 @@ All 3 nodes will run on the local machine:
 - Node B (https://b.raven.development.run) will listen to 127.0.0.2 on port 8080.
 - Node C (https://c.raven.development.run) will listen to 127.0.0.3 on port 8080.
 
-Each node will run in its own process and have its own data directory and settings.json file. You should have 3 seperate RavenDB folders.
+Each node will run in its own process and have its own data directory and settings.json file. You should have 3 separate RavenDB folders.
 
 ### Example II
 
@@ -98,7 +98,7 @@ So if a container was created using:
 
     sudo docker run -t -p 38889:38888 -p 443:8080 ravendb/ravendb
 
-Then the following congifuration should be applied:  
+Then the following configuration should be applied:  
 
 ![Figure 4b. Configure Docker Node](images/setup/5b.png)  
 <br/>
@@ -207,7 +207,7 @@ All 3 nodes will run on the local machine:
 - Node B (https://b.ravendb.example.com) will listen to 127.0.0.2 on port 8080.
 - Node C (https://c.ravendb.example.com) will listen to 127.0.0.3 on port 8080.
 
-Each node will run in its own process and have its own data directory and settings.json file. You should have 3 seperate RavenDB folders.
+Each node will run in its own process and have its own data directory and settings.json file. You should have 3 separate RavenDB folders.
 
 ### Example II
 

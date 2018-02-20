@@ -3,5 +3,11 @@
 		"Path": "sending-support-ticket.markdown",
 		"Name": "Sending support ticket",
 		"Mappings": [ ]
+	},
+    {
+		"Path": "logging.markdown",
+		"Name": "Logging",
+		"Mappings": [ ]
 	}
+    
 ]

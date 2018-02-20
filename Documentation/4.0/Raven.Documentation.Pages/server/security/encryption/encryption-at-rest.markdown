@@ -8,7 +8,7 @@ In `Voron`, the storage engine behind RavenDB, data is stored in memory mapped f
 
 If your disk is stolen or lost, an attacker will have full access to the raw data files and without encryption turned on, the data can be read with very little effort.
 
-On the other hand, when encryption is turned on - the raw data is encrypted and unreadable without possesion of the secret key.
+On the other hand, when encryption is turned on - the raw data is encrypted and unreadable without possession of the secret key.
 
 In RavenDB, encryption is done at the lowest possible layer, the storage engine. It is fully transparent to other levels of the server, making it super easy to use.
 

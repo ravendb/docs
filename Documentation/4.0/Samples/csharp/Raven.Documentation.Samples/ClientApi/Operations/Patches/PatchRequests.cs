@@ -622,6 +622,29 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 formattedResults.ForEach(Console.WriteLine);
                 #endregion
             }
+
+            using (var store = new DocumentStore())
+            {
+                #region change-collection-name   
+
+                // delete the document before recreating it with a different collection name
+                var operation = store
+                    .Operations
+                    .Send(new PatchByQueryOperation(new IndexQuery
+                    {
+                        Query = @"from Orders as c
+                                  update
+                                  {
+                                      del(id(c));
+                                      this[""@metadata""][""@collection""] = ""New_Orders"";
+                                      put(id(c), this);
+                                  }"
+                    }));
+
+                operation.WaitForCompletion();
+
+                #endregion
+            }
         }
     }
 }

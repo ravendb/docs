@@ -61,7 +61,7 @@ Another temporary solution is to configure your local network connection to use 
 This error probably means that the DNS is cached. You can wait a while or reset the network DNS cache but in many cases the easiest solution is to [temporarily switch your DNS server to 8.8.8.8](https://developers.google.com/speed/public-dns/docs/using) 
 You can click the Try Again button to restart the validation process of the Setup Wizard.
 
-### Long DNS propogation time
+### Long DNS propagation time
 
 If you are trying to modify existing DNS records, for example running the Setup Wizard again for the same domain name, you may encounter errors such as this:
 

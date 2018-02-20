@@ -9,7 +9,7 @@ Pending session operations e.g. `Store`, `Delete` and many others will not be se
 {CODE-TAB:csharp:Async saving_changes_1_async@ClientApi\Session\SavingChanges.cs /}
 {CODE-TABS/} 
 
-##Example
+###Example
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync saving_changes_2@ClientApi\Session\SavingChanges.cs /}
@@ -17,27 +17,35 @@ Pending session operations e.g. `Store`, `Delete` and many others will not be se
 {CODE-TABS/} 
 
 
-{NOTE:Waiting for indexes}
+{PANEL:Waiting for Indexes}
 
-You can ask the server to wait until the indexes are caught up with this particular write after save changes.
-You can also set a timeout and whatever to throw or not. 
-You can specify indexes that you want to wait for. If you don't specify anything, RavenDB will automatically select just the indexes that are impacted by this write.
+You can ask the server to wait until the indexes are caught up with changes made within the current session before the `SaveChanges` returns.
+
+* You can set a timeout (default: 15 seconds).
+* You can specify whether you want to throw on timeout (default: `false`).
+* You can specify indexes that you want to wait for. If you don't specify anything here, RavenDB will automatically select just the indexes that are impacted 
+by this write.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync saving_changes_3@ClientApi\Session\SavingChanges.cs /}
 {CODE-TAB:csharp:Async saving_changes_3_async@ClientApi\Session\SavingChanges.cs /}
 {CODE-TABS/} 
 
-{NOTE/}
+{PANEL/}
 
-{NOTE:Waiting for replication}
+{PANEL:Waiting for Replication - Write Assurance}
 
-You can ask the server to wait until the replication are caught up with this particular write after save changes.
+Sometimes you might need to ensure that changes made in the session will be replicated to more than one node of the cluster before the `SaveChanges` returns.
+It can be useful if you have some writes that are really important so you want to be sure the stored values will reside on multiple machines. Also it might be necessary to use
+when you customize [the read balance behavior](../../client-api/configuration/cluster#readbalancebehavior) and need to ensure the next request from the user 
+will be able to read what he or she just wrote (the next open session might access a different node).
 
-* You can also set a timeout and whatever to throw or not. 
-* You can specify whether you want to throw on timeout, which may happen in case of network issues.
-* You can specify to how many replicas (nodes) the currently saved write must be replicated, before the SaveChanges() returns.
-* You can specify whether the SaveChanges() will return only when the current write was replicated to majority of the nodes.
+You can ask the server to wait until the replication is caught up with those particular changes.
+
+* You can set a timeout (default: 15 seconds).
+* You can specify whether you want to throw on timeout, which may happen in case of network issues (default: `true`).
+* You can specify to how many replicas (nodes) the currently saved write must be replicated, before the `SaveChanges` returns (default: 1).
+* You can specify whether the `SaveChanges` will return only when the current write was replicated to majority of the nodes (default: `false`).
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync saving_changes_4@ClientApi\Session\SavingChanges.cs /}
@@ -45,14 +53,23 @@ You can ask the server to wait until the replication are caught up with this par
 {CODE-TABS/} 
 
 {WARNING:Important}
-The `WaitForReplicationAfterSaveChanges` waits only replicas which are part of the cluster. This means, for example, that external replication destinations are not counted towards the number specified in `replicas` parameter, since such destinations are not part of the cluster.
+The `WaitForReplicationAfterSaveChanges` waits only replicas which are part of the cluster. It means that external replication destinations are not counted towards the number specified in `replicas` parameter, since they are not part of the cluster.
 {WARNING/}
 
-{NOTE/}
+{WARNING:Important}
+
+The usage of `WaitForReplicationAfterSaveChanges` doesn't involve a distributed transaction (that are not supported since RavenDB 4.0). Even if RavenDB was not able
+to write your changes to the number of replicas you specified, the data has been already written to some nodes. You will get an error but data is already there.
+
+This is a powerful feature, but you need to be aware of the possible pitfalls of using it.
+
+{WARNING/}
+
+{PANEL/}
 
 
 ## Related articles
 
-- [Opening a session](./opening-a-session)  
-- [Deleting entities](./deleting-entities)  
-- [Storing entities](./storing-entities)  
+- [Opening a session](../../client-api/session/opening-a-session)  
+- [Deleting entities](../../client-api/session/deleting-entities)  
+- [Storing entities](../../client-api/session/storing-entities)  

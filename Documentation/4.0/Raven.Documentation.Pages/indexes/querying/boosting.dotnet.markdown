@@ -33,7 +33,7 @@ This shows users which name starts with letter 'G' or 'A'. Results which starts 
 
 ## Remarks
 
-{INFO Boosting is also available at the index definiton level. You can read more about it [here](../../indexes/boosting). /}
+{INFO Boosting is also available at the index definition level. You can read more about it [here](../../indexes/boosting). /}
 
 ## Related Articles
 

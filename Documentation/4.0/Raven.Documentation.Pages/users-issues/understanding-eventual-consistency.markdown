@@ -38,7 +38,7 @@ While on the customer's view of the catalog, you would *not* want to add that cu
 
 If you wanted to get super precise, you could use a slightly more optimized strategy:
 
-- When saving the "add product" page before going back to the "list products" page, call WaitForIndexesAfterSaveChanges to ensure that the changes made in the session are already indexed.
+- When saving the "add product" page before going back to the "list products" page, call `WaitForIndexesAfterSaveChanges` to ensure that the changes made in the session are already indexed.
 
 {CODE userissues_2@UsersIssues\UnderstandingEventualConsistency.cs /}
 

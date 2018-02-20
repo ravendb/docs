@@ -18,7 +18,7 @@ This dashboard provides a diagnostic overview of the RavenDB server performance 
    * Secured info
    * Number of members in cluster  
 2. **Traffic:**   
-   * Requestes - Number of requests handled by the server        
+   * Requests - Number of requests handled by the server        
    * Writes/s - Documents count written per sec by the server   
    * Data written/s - Number of bytes written by the server to disk        
 3. **Databases:**   

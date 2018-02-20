@@ -130,4 +130,4 @@ Renaming property supported only by the non-typed APIs
 
 ## Related Articles
 
-- [Set Based Patch Operation](../../../client-api/operations/patching/set-based-patching)
+- [Set Based Patch Operation](../../../client-api/operations/patching/set-based)

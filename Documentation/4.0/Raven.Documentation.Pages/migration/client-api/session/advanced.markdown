@@ -24,7 +24,7 @@ The method has been removed. Document Revisions configuration don't use `Exclude
 
 {PANEL:Dealing with Non Authoritative Information}
 
-DTC suppord has been dropped.
+DTC support has been dropped.
 
 {PANEL/}
 

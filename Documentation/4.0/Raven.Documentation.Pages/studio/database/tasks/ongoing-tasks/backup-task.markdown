@@ -137,7 +137,7 @@
 
 {PANEL: Backup Task -vs- Replication Task}
 
-* RavenDB's [External Replication](../../../todo-update-me-later) provides you with an offsite live replica/copy of the data.  
+* RavenDB's [External Replication](../../../todo-update-me-later) provides you with an off-site live replica/copy of the data.  
   ('live' meaning that any changes in the database will be reflected in the replica once they occur).  
   This is quite useful if you need to shift operations to a secondary data center.  
 

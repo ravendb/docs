@@ -44,7 +44,7 @@
 | `SqlEtls` | Current SQL ETL tasks configured. <br/> Can be managed in [SQL ETL Task](../../../todo-update-me-later) |
 | `Client` | The database Client Configuration. <br/> As set in [Database Client Configuration](../../../todo-update-me-later) |
 | `DeletionInProgress` | A list of nodes that are currently in the process of deleting this database |
-| `DeletionInProgressChangeVector` | The _change-vector_ that accompanies a _Delete Database_ command that is issued by the Cluster Observer when supervising the database replication factor after a partition scenario. <br/> Relevant only for a node that has come back from a Rehab state after a partition occured, in order to update the other nodes in the database group with database content updates that occured on this node at partition time. |
+| `DeletionInProgressChangeVector` | The _change-vector_ that accompanies a _Delete Database_ command that is issued by the Cluster Observer when supervising the database replication factor after a partition scenario. <br/> Relevant only for a node that has come back from a Rehab state after a partition occurred, in order to update the other nodes in the database group with database content updates that occurred on this node at partition time. |
 | `ConflictSolverConfig` | Conflict Resolution configuration. <br/> Can be set in [Conflict Resolution](../../../todo-update-me-later) |
 | `Etag` | The _etag_ of the Database Record document - representing only the changes to the database record document itself. <br/> (Not to be confused with the database _Last Document Etag_ - <br/> See [Database Stats](../../../todo-update-me-later)) |
 
