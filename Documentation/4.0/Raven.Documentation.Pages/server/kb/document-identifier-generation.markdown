@@ -80,7 +80,7 @@
 
 * **Description**:  
   * Upon document creation, providing a document ID string that ends with a _slash_ ( / ) will cause the server to generate a **server-side ID**.  
-  * The RavenDB server that is handling the request will increment the value of its [Last Document Etag](../../../todo-update-me-later)).  
+  * The RavenDB server that is handling the request will increment the value of its [Last Document Etag](../../../todo-update-me-later).  
     This _Etag_ and the _Server Node Tag_ are appended by the server to the end of the ID string provided.  
   * Since the etag on which the ID is based changes upon any adding, deleting or updating a document,  
     the only guarantee about the Server-Side ID is that it is always increasing, but not always sequential.  
