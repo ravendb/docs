@@ -1,18 +1,32 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Text.RegularExpressions;
+using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Parser.Helpers
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Text;
-    using System.Text.RegularExpressions;
-
-    using Raven.Documentation.Parser.Data;
-
     public class CodeBlockHelper
     {
-        private static readonly Regex CodeWithoutLanguageFinder = new Regex(@"{CODE\s+(.+)/}", RegexOptions.Compiled);
+        private const string CodeBlockPlaceholderPrefix = "_CODE_BLOCK_PLACEHOLDER_";
+
+        private const string CodeTabsPlaceholderPrefix = "_CODE_TABS_PLACEHOLDER_";
+
+        private const string CodeWithoutLanguagePlaceholderPrefix = "_CODE_WITHOUT_LANGUAGE_PLACEHOLDER_";
+
+        private const string CodeWithLanguagePlaceholderPrefix = "_CODE_WITH_LANGUAGE_PLACEHOLDER_";
+
+        private static readonly Regex CodeBlockPlaceholderFinder = new Regex($@"{CodeBlockPlaceholderPrefix}[0-9]*");
+
+        private static readonly Regex CodeTabsPlaceholderFinder = new Regex($@"{CodeTabsPlaceholderPrefix}[0-9]*");
+
+        private static readonly Regex CodeWithoutLanguagePlaceholderFinder = new Regex($@"{CodeWithoutLanguagePlaceholderPrefix}[0-9]*");
+
+        private static readonly Regex CodeWithLanguagePlaceholderFinder = new Regex($@"{CodeWithLanguagePlaceholderPrefix}[0-9]*");
+
+        private static readonly Regex CodeWithoutLanguageFinder = new Regex(@"{CODE\s+(.+?)/}", RegexOptions.Compiled);
 
         private static readonly Regex CodeWithLanguageFinder = new Regex(@"{CODE:(.+?)\s+(.+)/}", RegexOptions.Compiled);
 
@@ -26,17 +40,67 @@ namespace Raven.Documentation.Parser.Helpers
 
         private static readonly Regex FirstLineSpacesFinder = new Regex(@"^(\s|\t)+", RegexOptions.Compiled);
 
-        public static string GenerateCodeBlocks(string content, string documentationVersion, ParserOptions options)
+        public static string ReplaceCodeBlocksWithPlaceholders(string content, out IDictionary<string, string> placeholders)
         {
-            content = CodeTabsFinder.Replace(content, match => GenerateCodeTabsBlock(match.Groups[1].Value.Trim(), documentationVersion, options));
+            var localPlaceholders = new Dictionary<string, string>();
+
+            content = CodeTabsFinder.Replace(content, match => GenerateCodeTabsBlockPlaceholder(match, localPlaceholders));
+            content = CodeWithLanguageFinder.Replace(content, match => GenerateCodePlaceholder(match, localPlaceholders));
+            content = CodeWithoutLanguageFinder.Replace(content, match => GenerateCodeWithoutLanguagePlaceholder(match, localPlaceholders));
+            content = CodeBlockFinder.Replace(content, match => GenerateCodeBlockPlaceholder(match, localPlaceholders));
+
+            placeholders = localPlaceholders;
+            return content;
+        }
+
+        private static string GenerateCodeWithoutLanguagePlaceholder(Match match, Dictionary<string, string> placeholders)
+        {
+            var key = $"{CodeWithoutLanguagePlaceholderPrefix}{placeholders.Count}";
+            placeholders[key] = match.Value;
+
+            return key;
+        }
+
+        private static string GenerateCodePlaceholder(Match match, Dictionary<string, string> placeholders)
+        {
+            var key = $"{CodeWithLanguagePlaceholderPrefix}{placeholders.Count}";
+            placeholders[key] = match.Value;
+
+            return key;
+        }
+
+        private static string GenerateCodeTabsBlockPlaceholder(Match match, Dictionary<string, string> placeholders)
+        {
+            var key = $"{CodeTabsPlaceholderPrefix}{placeholders.Count}";
+            placeholders[key] = match.Value;
+
+            return key;
+        }
+
+        private static string GenerateCodeBlockPlaceholder(Match match, Dictionary<string, string> placeholders)
+        {
+            var key = $"{CodeBlockPlaceholderPrefix}{placeholders.Count}";
+            placeholders[key] = match.Value;
+
+            return key;
+        }
+
+        public static string GenerateCodeBlocks(string content, string documentationVersion, ParserOptions options, IDictionary<string, string> placeholders)
+        {
+            content = CodeTabsPlaceholderFinder.Replace(content, match => placeholders[match.Value]);
+            content = CodeWithLanguagePlaceholderFinder.Replace(content, match => placeholders[match.Value]);
+            content = CodeWithoutLanguagePlaceholderFinder.Replace(content, match => placeholders[match.Value]);
+            content = CodeBlockPlaceholderFinder.Replace(content, match => placeholders[match.Value]);
+
+            content = CodeTabsFinder.Replace(content, match => GenerateCodeTabsBlock(match.Groups[1].Value.Trim(), documentationVersion, options, placeholders));
             content = CodeWithLanguageFinder.Replace(content, match => GenerateCodeBlockFromFile(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim(), documentationVersion, options));
             content = CodeWithoutLanguageFinder.Replace(content, match => GenerateCodeBlockFromFile("csharp", match.Groups[1].Value.Trim(), documentationVersion, options));
-            content = CodeBlockFinder.Replace(content, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim()));
+            content = CodeBlockFinder.Replace(content, match => GenerateCodeBlock(match.Groups[1].Value.Trim(), match.Groups[2].Value.Trim(), placeholders));
 
             return content;
         }
 
-        private static string GenerateCodeBlock(string languageAsString, string content)
+        private static string GenerateCodeBlock(string languageAsString, string content, IDictionary<string, string> placeholders)
         {
             var language = (CodeBlockLanguage)Enum.Parse(typeof(CodeBlockLanguage), languageAsString, true);
 
@@ -79,7 +143,7 @@ namespace Raven.Documentation.Parser.Helpers
             return builder.ToString();
         }
 
-        private static string GenerateCodeTabsBlock(string content, string documentationVersion, ParserOptions options)
+        private static string GenerateCodeTabsBlock(string content, string documentationVersion, ParserOptions options, IDictionary<string, string> placeholders)
         {
             var tabs = new List<CodeTabBase>();
             var matches = CodeTabFinder.Matches(content);

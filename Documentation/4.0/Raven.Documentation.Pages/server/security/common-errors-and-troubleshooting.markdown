@@ -39,7 +39,14 @@ This should be done both inside the VM operating system **and** in the web dashb
 
 If ports are blocked you'll get the following error.
 {CODE-BLOCK:plain}
-Setting up RavenDB in Let's Encrypt security mode failed.System.InvalidOperationException: Setting up RavenDB in Let's Encrypt security mode failed. ---> System.InvalidOperationException: Validation failed. ---> System.InvalidOperationException: Failed to simulate running the server with the supplied settings using: https://a.example.development.run:443 ---> System.InvalidOperationException: Client failed to contact webhost listening to 'https://a.example.development.run:443'.Are you blocked by a firewall? Make sure the port is open.Settings file: D:\RavenDB-4.0.0-windows-x64\Server\settings.json.IP addresses: 10.0.1.4:443.
+Setting up RavenDB in Let's Encrypt security mode failed.
+System.InvalidOperationException: Setting up RavenDB in Let's Encrypt security mode failed. ---> 
+System.InvalidOperationException: Validation failed. ---> 
+System.InvalidOperationException: Failed to simulate running the server with the supplied settings using: https://a.example.development.run:443 ---> 
+System.InvalidOperationException: Client failed to contact webhost listening to 'https://a.example.development.run:443'.
+Are you blocked by a firewall? Make sure the port is open.
+Settings file: D:\RavenDB-4.0.0-windows-x64\Server\settings.json.
+IP addresses: 10.0.1.4:443.
 {CODE-BLOCK/}
 
 ### DNS is cached locally
@@ -139,9 +146,9 @@ Some references:
 [https://groups.google.com/forum/?fromgroups=#!topic/mozilla.dev.tech.crypto/RiIeY-R5Q4Y](https://groups.google.com/forum/?fromgroups=#!topic/mozilla.dev.tech.crypto/RiIeY-R5Q4Y)  
 
 
-### Getting the full error using powershell
+### Getting the full error using PowerShell
 
-You can use powershell to make requests using the REST API.
+You can use PowerShell to make requests using the REST API.
 
 If you are having trouble using certificates, take a look at this example which prints the full error (replace the server URL and the `/certificates/whoami` endpoint with yours).
 
@@ -163,7 +170,6 @@ catch {
     Write-Error $_.Exception
 }
 {CODE-BLOCK/}
-
 
 ### Not using TLS 1.2
 

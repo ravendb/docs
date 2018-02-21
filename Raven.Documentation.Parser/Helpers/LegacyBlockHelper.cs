@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -29,7 +28,7 @@ namespace Raven.Documentation.Parser.Helpers
 			return content;
 		}
 
-	    public static string ReplaceRawHtml(string content, out IDictionary<string, string> rawHtmlPlaceholders)
+	    public static string ReplaceRawHtmlWithPlaceholders(string content, out IDictionary<string, string> rawHtmlPlaceholders)
 	    {
             var htmlPlaceholders = new Dictionary<string, string>();
 

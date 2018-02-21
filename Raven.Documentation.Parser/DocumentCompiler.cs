@@ -1,16 +1,16 @@
 ﻿namespace Raven.Documentation.Parser
 {
-	using System;
-	using System.Collections.Generic;
-	using System.IO;
-	using System.Linq;
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
 
-	using HtmlAgilityPack;
+    using HtmlAgilityPack;
 
-	using MarkdownDeep;
+    using MarkdownDeep;
 
-	using Raven.Documentation.Parser.Data;
-	using Raven.Documentation.Parser.Helpers;
+    using Raven.Documentation.Parser.Data;
+    using Raven.Documentation.Parser.Helpers;
 
     public class DocumentCompiler : DocumentCompiler<DocumentationPage>
     {
@@ -55,241 +55,209 @@
         }
     }
 
-	public abstract class DocumentCompiler<TPage> where TPage : DocumentationPage
-	{
-		private readonly Markdown _parser;
+    public abstract class DocumentCompiler<TPage> where TPage : DocumentationPage
+    {
+        private readonly Markdown _parser;
 
-		protected readonly ParserOptions Options;
+        protected readonly ParserOptions Options;
 
-		private readonly IProvideGitFileInformation _repoAnalyzer;
+        private readonly IProvideGitFileInformation _repoAnalyzer;
 
-	    protected DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
-		{
-			_parser = parser;
-			Options = options;
-			_repoAnalyzer = repoAnalyzer;
-		}
+        protected DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
+        {
+            _parser = parser;
+            Options = options;
+            _repoAnalyzer = repoAnalyzer;
+        }
 
-	    protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent,
-	        string textContent, Language language, Category category, HashSet<DocumentationImage> images,
-	        string lastCommitSha, string relativePath, List<DocumentationMapping> mappings, 
+        protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent,
+            string textContent, Language language, Category category, HashSet<DocumentationImage> images,
+            string lastCommitSha, string relativePath, List<DocumentationMapping> mappings,
             string relatedArticlesContent,
-	        Dictionary<string, string> metadata = null,
-	        Dictionary<string, string> seoMetaProperties = null);
+            Dictionary<string, string> metadata = null,
+            Dictionary<string, string> seoMetaProperties = null);
 
-		public TPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
-		{
-			try
-			{
-				var key = ExtractKey(file, page, documentationVersion);
-				var category = CategoryHelper.ExtractCategoryFromPath(key);
-				var images = new HashSet<DocumentationImage>();
+        public TPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
+        {
+            try
+            {
+                var key = ExtractKey(file, page, documentationVersion);
+                var category = CategoryHelper.ExtractCategoryFromPath(key);
+                var images = new HashSet<DocumentationImage>();
 
-				_parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, tag);
+                _parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, tag);
 
-				var content = File.ReadAllText(file.FullName);
-			    content = TransformRawHtmlBlocks(content, out var rawHtmlPlaceholders);
-				content = TransformLegacyBlocks(file, content);
-				content = _parser.Transform(content);
-				content = TransformBlocks(content, documentationVersion);
+                var content = File.ReadAllText(file.FullName);
 
-			    string expectedPageUrl = null;
-			    page.Metadata?.TryGetValue("url", out expectedPageUrl);
-			    content = ReplaceSocialMediaBlocks(content, expectedPageUrl);
-                content = FillRawHtmlPlaceholders(content, rawHtmlPlaceholders);
+                var builder = new DocumentBuilder(_parser, Options, documentationVersion, content);
+                builder.TransformRawHtmlBlocks();
+                builder.TransformLegacyBlocks(file);
+                builder.TransformBlocks();
+                builder.ReplaceSocialMediaBlocks(page);
 
-				var htmlDocument = HtmlHelper.ParseHtml(content);
+                content = builder.Build();
 
-			    ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images);
+                var htmlDocument = HtmlHelper.ParseHtml(content);
 
-			    var title = ExtractTitle(htmlDocument);
-				var textContent = ExtractTextContent(htmlDocument, out var relatedArticlesContent);
+                ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images);
 
-				var caseSensitiveFileName = PathHelper.GetProperFilePathCapitalization(file.FullName);
+                var title = ExtractTitle(htmlDocument);
+                var textContent = ExtractTextContent(htmlDocument, out var relatedArticlesContent);
 
-				var fullName = caseSensitiveFileName ?? file.FullName;
+                var caseSensitiveFileName = PathHelper.GetProperFilePathCapitalization(file.FullName);
 
-				var repoRelativePath = _repoAnalyzer.MakeRelativePathInRepository(fullName);
+                var fullName = caseSensitiveFileName ?? file.FullName;
 
-				var relativeUrl = repoRelativePath.Replace(@"\", @"/");
+                var repoRelativePath = _repoAnalyzer.MakeRelativePathInRepository(fullName);
 
-				var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
+                var relativeUrl = repoRelativePath.Replace(@"\", @"/");
 
-				return CreatePage(
-				    key, 
-				    title, 
-				    documentationVersion, 
-				    htmlDocument.DocumentNode.OuterHtml, 
-				    textContent, 
-				    page.Language, 
-				    category, 
-				    images, 
-				    lastCommit, 
-				    relativeUrl, 
-				    mappings.OrderBy(x => x.Version).ToList(), 
-				    relatedArticlesContent, 
-				    page.Metadata, 
-				    page.SeoMetaProperties);
-			}
-			catch (Exception e)
-			{
-				throw new InvalidOperationException(string.Format("Could not compile '{0}'.", file.FullName), e);
-			}
-		}
+                var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-	    private void ProcessNonMarkdownImages(FileInfo file, string documentationVersion, HtmlDocument htmlDocument,
-	        HashSet<DocumentationImage> images)
-	    {
-	        var nonMarkdownImages = htmlDocument.DocumentNode.SelectNodes("//img[starts-with(@src, 'images/')]");
-	        if (nonMarkdownImages == null)
-	        {
-	            return;
-	        }
+                return CreatePage(
+                    key,
+                    title,
+                    documentationVersion,
+                    htmlDocument.DocumentNode.OuterHtml,
+                    textContent,
+                    page.Language,
+                    category,
+                    images,
+                    lastCommit,
+                    relativeUrl,
+                    mappings.OrderBy(x => x.Version).ToList(),
+                    relatedArticlesContent,
+                    page.Metadata,
+                    page.SeoMetaProperties);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException(string.Format("Could not compile '{0}'.", file.FullName), e);
+            }
+        }
 
-	        foreach (var node in nonMarkdownImages)
-	        {
-	            AddNonMarkdownImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, node);
-	        }
-	    }
+        private void ProcessNonMarkdownImages(FileInfo file, string documentationVersion, HtmlDocument htmlDocument,
+            HashSet<DocumentationImage> images)
+        {
+            var nonMarkdownImages = htmlDocument.DocumentNode.SelectNodes("//img[starts-with(@src, 'images/')]");
+            if (nonMarkdownImages == null)
+            {
+                return;
+            }
 
-	    private static string ReplaceSocialMediaBlocks(string content, string expectedPageUrl)
-	    {
-	        return SocialMediaBlockHelper.ReplaceSocialMediaBlocks(content, expectedPageUrl);
-	    }
+            foreach (var node in nonMarkdownImages)
+            {
+                AddNonMarkdownImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, node);
+            }
+        }
 
-	    private static bool AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory, string imagesUrl,
-	        string documentationVersion, HtmlNode node)
-	    {
-			if (node.Attributes.Contains("src"))
-			{
+        private static bool AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory, string imagesUrl,
+            string documentationVersion, HtmlNode node)
+        {
+            if (node.Attributes.Contains("src"))
+            {
                 string src = node.Attributes["src"].Value;
                 var imagePath = Path.Combine(directory, src);
 
-				src = src.Replace('\\', '/');
-				if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
-					src = src.Substring(7);
+                src = src.Replace('\\', '/');
+                if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
+                    src = src.Substring(7);
 
-				var newSrc = string.Format("{0}/{1}", documentationVersion, src);
+                var newSrc = string.Format("{0}/{1}", documentationVersion, src);
 
-				node.SetAttributeValue("src", imagesUrl + newSrc);
+                node.SetAttributeValue("src", imagesUrl + newSrc);
 
-				images.Add(new DocumentationImage
-				{
-					ImagePath = imagePath,
-					ImageKey = newSrc
-				});
-			}
+                images.Add(new DocumentationImage
+                {
+                    ImagePath = imagePath,
+                    ImageKey = newSrc
+                });
+            }
 
-			return true;
-	    }
+            return true;
+        }
 
         private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
-		{
-			string src;
-			if (tag.attributes.TryGetValue("src", out src))
-			{
-				var imagePath = Path.Combine(directory, src);
+        {
+            string src;
+            if (tag.attributes.TryGetValue("src", out src))
+            {
+                var imagePath = Path.Combine(directory, src);
 
-				src = src.Replace('\\', '/');
-				if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
-					src = src.Substring(7);
+                src = src.Replace('\\', '/');
+                if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
+                    src = src.Substring(7);
 
-				var newSrc = string.Format("{0}/{1}", documentationVersion, src);
+                var newSrc = string.Format("{0}/{1}", documentationVersion, src);
 
-				tag.attributes["src"] = imagesUrl + newSrc;
+                tag.attributes["src"] = imagesUrl + newSrc;
 
-				images.Add(new DocumentationImage
-				{
-					ImagePath = imagePath,
-					ImageKey = newSrc
-				});
-			}
+                images.Add(new DocumentationImage
+                {
+                    ImagePath = imagePath,
+                    ImageKey = newSrc
+                });
+            }
 
-			tag.attributes["class"] = "img-responsive img-thumbnail";
+            tag.attributes["class"] = "img-responsive img-thumbnail";
 
-			return true;
-		}
+            return true;
+        }
 
-		protected virtual string ExtractKey(FileInfo file, FolderItem page, string documentationVersion)
-		{
-			var pathToDocumentationPagesDirectory = Options.GetPathToDocumentationPagesDirectory(documentationVersion);
-			var key = file.FullName.Substring(pathToDocumentationPagesDirectory.Length, file.FullName.Length - pathToDocumentationPagesDirectory.Length);
-			key = key.Substring(0, key.Length - file.Extension.Length);
-			key = key.Replace(@"\", @"/");
-			key = key.StartsWith(@"/") ? key.Substring(1) : key;
+        protected virtual string ExtractKey(FileInfo file, FolderItem page, string documentationVersion)
+        {
+            var pathToDocumentationPagesDirectory = Options.GetPathToDocumentationPagesDirectory(documentationVersion);
+            var key = file.FullName.Substring(pathToDocumentationPagesDirectory.Length, file.FullName.Length - pathToDocumentationPagesDirectory.Length);
+            key = key.Substring(0, key.Length - file.Extension.Length);
+            key = key.Replace(@"\", @"/");
+            key = key.StartsWith(@"/") ? key.Substring(1) : key;
 
-			var extension = FileExtensionHelper.GetLanguageFileExtension(page.Language);
-			if (string.IsNullOrEmpty(extension) == false)
-			{
-				key = key.Substring(0, key.Length - extension.Length);
-			}
+            var extension = FileExtensionHelper.GetLanguageFileExtension(page.Language);
+            if (string.IsNullOrEmpty(extension) == false)
+            {
+                key = key.Substring(0, key.Length - extension.Length);
+            }
 
-			return key;
-		}
+            return key;
+        }
 
-		private static string ExtractTextContent(HtmlDocument htmlDocument, out string relatedArticlesHtmlContent)
-		{
-			var relatedArticles =
-				htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(
-					x => x.InnerText.Equals("Related articles", StringComparison.OrdinalIgnoreCase));
+        private static string ExtractTextContent(HtmlDocument htmlDocument, out string relatedArticlesHtmlContent)
+        {
+            var relatedArticles =
+                htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(
+                    x => x.InnerText.Equals("Related articles", StringComparison.OrdinalIgnoreCase));
 
-		    if (relatedArticles == null)
-		    {
-		        relatedArticlesHtmlContent = null;
-		        return htmlDocument.DocumentNode.InnerText;
-		    }
+            if (relatedArticles == null)
+            {
+                relatedArticlesHtmlContent = null;
+                return htmlDocument.DocumentNode.InnerText;
+            }
 
-		    var nodeToRemove = relatedArticles;
-			var nodesToRemove = new List<HtmlNode>();
-			while (nodeToRemove != null)
-			{
-				nodesToRemove.Add(nodeToRemove);
-				nodeToRemove = nodeToRemove.NextSibling;
-			}
+            var nodeToRemove = relatedArticles;
+            var nodesToRemove = new List<HtmlNode>();
+            while (nodeToRemove != null)
+            {
+                nodesToRemove.Add(nodeToRemove);
+                nodeToRemove = nodeToRemove.NextSibling;
+            }
 
-			foreach (var node in nodesToRemove)
-			{
-				htmlDocument.DocumentNode.RemoveChild(node);
-			}
+            foreach (var node in nodesToRemove)
+            {
+                htmlDocument.DocumentNode.RemoveChild(node);
+            }
 
-		    relatedArticlesHtmlContent = string.Join(Environment.NewLine, nodesToRemove.Skip(1).Select(x => x.OuterHtml));
+            relatedArticlesHtmlContent = string.Join(Environment.NewLine, nodesToRemove.Skip(1).Select(x => x.OuterHtml));
 
-			return htmlDocument.DocumentNode.InnerText;
-		}
+            return htmlDocument.DocumentNode.InnerText;
+        }
 
-		private static string ExtractTitle(HtmlDocument htmlDocument)
-		{
-			var node = htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(x => x.Name == "h1");
-			if (node == null)
-				return "No title";
+        private static string ExtractTitle(HtmlDocument htmlDocument)
+        {
+            var node = htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(x => x.Name == "h1");
+            if (node == null)
+                return "No title";
 
-			return node.InnerText;
-		}
-
-		private string TransformBlocks(string content, string documentationVersion)
-		{
-			content = NoteBlockHelper.GenerateNoteBlocks(content);
-			content = CodeBlockHelper.GenerateCodeBlocks(content, documentationVersion, Options);
-			content = PanelBlockHelper.GeneratePanelBlocks(content);
-
-			return content;
-		}
-
-		private string TransformLegacyBlocks(FileInfo file, string content)
-		{
-			return LegacyBlockHelper.GenerateLegacyBlocks(Path.GetDirectoryName(file.FullName), content);
-		}
-
-	    private string TransformRawHtmlBlocks(string content, out IDictionary<string, string> placeholders)
-	    {
-	        content = LegacyBlockHelper.ReplaceRawHtml(content, out var foundRawHtmlBlocks);
-	        placeholders = foundRawHtmlBlocks;
-	        return content;
-	    }
-
-	    private string FillRawHtmlPlaceholders(string content, IDictionary<string, string> placeholders)
-	    {
-	        return LegacyBlockHelper.ReplaceRawHtmlPlaceholdersAfterMarkdownTransformation(content, placeholders);
-	    }
-	}
+            return node.InnerText;
+        }
+    }
 }
