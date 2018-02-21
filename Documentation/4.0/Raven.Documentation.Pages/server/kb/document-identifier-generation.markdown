@@ -79,8 +79,8 @@
   The server  
 
 * **Description**:  
-  * Upon document creation, providing a string that ends with a _slash_ ( / ) for the document ID will cause the server to generate a **server-side ID**.  
-  * RavenDB server will create a new etag in the database scope (see 'Last Document Etag' in [Database Stats](../../../todo-update-me-later)).  
+  * Upon document creation, providing a document ID string that ends with a _slash_ ( / ) will cause the server to generate a **server-side ID**.  
+  * The RavenDB server that is handling the request will increment the value of its [Last Document Etag](../../../todo-update-me-later)).  
     This _Etag_ and the _Server Node Tag_ are appended by the server to the end of the ID string provided.  
   * Since the etag on which the ID is based changes upon any adding, deleting or updating a document,  
     the only guarantee about the Server-Side ID is that it is always increasing, but not always sequential.  
@@ -95,7 +95,10 @@
       * Creating the first document with 'users/' => will result with document ID: _'users/0000000000000000001-A'_  
       * Creating a second document with 'users/' => will result with document ID: _'users/0000000000000000002-A'_  
   * From a server running on node 'B':  
-      * Creating a third document with 'users/' => will result with document ID: _'users/0000000000000000003-B'_  
+      * Creating a third document with 'users/' => can result for example with document ID: _'users/0000000000000000034-B'_  
+      * Note: node tag 'B' was appended to the ID generated, as the server handling the request is on node 'B'.  
+        But, since each server has its own local Etag, this value will _not_ necessarily be sequential (or unique) across the nodes  
+        within the database group in the cluster, as can happen when creating documents at partition time.  
 
 * **Note**:  
   If you _manually_ generate a document ID with a pattern that matches the server-side generated IDs,  
@@ -109,8 +112,9 @@
   The server  
 
 * **Description**:  
-  *  Upon document creation, providing a string that ends with a _pipe symbol_ ( | ) for the document ID will cause the server to generate an **identity**.  
-  *  RavenDb will create a simple, always-incrementing value and append it to the ID string provided.  
+  *  Upon document creation, providing a document ID string that ends with a _pipe symbol_ ( | ) will cause the server to generate an **identity**.  
+  *  RavenDb will create a simple, always-incrementing value and append it to the ID string provided (replacing the pipe with a slash).  
+  *  As opposed to the Server-Side ID, This value _will be unique_ across all the nodes within the Database Group in the cluster.  
 
 * **When to use**:  
   * Use an identity only if you really need documents with absolute consecutive IDs,  
@@ -143,8 +147,8 @@
 
 * **Description**:  
   * The Hilo algorithm enables generating document IDs on the client.  
-  * The client reserves a range of identifiers from the server.  
-  * The server ensures that this range will be provided only to this client, different clients will receive different ranges.  
+  * The client reserves a range of identifiers from the server and the server ensures that this range will be provided only to this client.  
+  * Different clients will receive different ranges.  
   * Each client can then safely generate identifiers within the range it was given, no further coordination with the server is required.  
   * For a more detailed explanation see [HiLo Algorithm](../../client-api/document-identifiers/hilo-algorithm)  
 
@@ -160,7 +164,7 @@
 
 There are two limitations for document IDs:  
 
-* The maximum identifier length allowed is 512 chars  
+* The identifier length limit is 2025 bytes (in UTF8)  
 * The identifier cannot contain the character '\'  
 {PANEL/}
 
