@@ -97,7 +97,7 @@
   * From a server running on node 'B':  
       * Creating a third document with 'users/' => can result for example with document ID: _'users/0000000000000000034-B'_  
       * Note: node tag 'B' was appended to the ID generated, as the server handling the request is on node 'B'.  
-        But, since each server has its own local Etag, this value will _not_ necessarily be sequential (or unique) across the nodes  
+        But, since each server has its own local Etag, the numeric part in the ID will _not_ necessarily be sequential (or unique) across the nodes  
         within the database group in the cluster, as can happen when creating documents at partition time.  
 
 * **Note**:  
