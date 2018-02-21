@@ -87,17 +87,17 @@
   * [Cluster-wide operations](cluster-view#cluster-wide-operation--vs--database-operations) can't be done when the Leader is down.  
 
 * **Watcher**
-  * A Watcher is a non-voting node in the cluster that is still fully managed by it  
-  * A Watcher can be assigned databases and work to be done  
+  * A Watcher is a non-voting node in the cluster that is still fully managed by the cluster.  
+  * A Watcher can be assigned databases and work to be done.  
   * Grow your RavenDB cluster by adding Watchers without suffering from large voting majorities and the latencies they can incur,  
     as these nodes don’t take part in majority calculations and are only there to watch what’s going on in the cluster.  
     So cluster decisions can be made with a small majority of nodes while the actual size of the cluster can be much _higher_.  
-  * Any number of Watchers can be added to handle the workload  
+  * Any number of Watchers can be added to handle the workload.  
 
 * **Promotable**  
-  * Promotable is a pre-state before becoming a Watcher or a Member  
-  * Cannot make cluster decisions (i.e vote for leader, enter a new Raft command to the log)  
-  * Updated by the leader to the latest Raft state  
+  * Promotable is a pre-state before becoming a Watcher or a Member.  
+  * Cannot make cluster decisions (i.e vote for leader, enter a new Raft command to the log).  
+  * Updated by the leader to the latest Raft state.  
 {PANEL/}
 
 {PANEL: Cluster Nodes States & Types Flow}
