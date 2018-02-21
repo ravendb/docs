@@ -1,18 +1,17 @@
 ﻿#Storage Engine - Voron
 
-RavenDB uses in-house managed storage engine called Voron to persist the data (documents, indexes and configuration). It the high performance storage engine
-that was designed and optimized to the needs of RavenDB. It uses the following structures underneath that allow to organize the data on persistent storage efficiently:
+RavenDB uses an in-house managed storage engine called Voron to persist your data (documents, indexes and configuration). It's a high performance storage engine designed and optimized to the needs of RavenDB. It uses the following structures underneath that allow it to organize the data on persistent storage efficiently:
 
 - B+Tree - variable size key and value
-- Fixed Sized B+Tree - `Int64` key and fixed size value (defined at creation time). It allows to take advantage of various optimizations
-- Raw Data Section – it allows to store raw data (e.g. documents content) and gives an identifier that allows access the data in O(1) time
+- Fixed Sized B+Tree - `Int64` key and fixed size value (defined at creation time). It allows you to take advantage of various optimizations
+- Raw Data Section – it allows you to store raw data (e.g. documents content) and gives an identifier that allows access to the data in O(1) time
 - Table – combination of Raw Data Sections with any number of indexes that under the hood are regular or Fixed Size B+Trees
 
 ## Transaction Support
 
 Voron is fully transactional storage engine. It uses Write Ahead Journal (WAJ) to guarantee atomicity and durability features. All modifications made within a transaction
 are written to a journal file (unbuffered I/O, write-through) before they are applied to the main data file (and synced to disk). The WAJ application is done in
-the background. If the process stopped working and left some modifications not applied to the data file then the database will recover its state on load by replying
+the background. If the process stopped working and left some modifications not applied to the data file, then the database will recover its state on load by replying
 the transactions persisted in the journal files. As the journals are flushed and synced to disk before returning on each transaction commit it guarantees they
 will survive the event of a process or system crash.
 
@@ -23,11 +22,11 @@ Snapshot isolation for concurrent transactions is provided by Page Translation T
 
 ## Single Write Model
 
-Voron supports only single write process (but there can be multiple read processes). Having only a single write transaction simplifies handling of writes.
+Voron supports only single write processes (but there can be multiple read processes). Having only a single write transaction simplifies the handling of writes.
 In order to provide high performance, RavenDB implements transaction merging on top of that what gives us a tremendous performance boost in high load scenarios.
 
-In addition to that Voron has the notion of async transaction commit (with a list of requirements that must happen to be exactly fit in the transaction merging portion in RavenDB),
-and the actual transaction lock handoff / early lock released is handled at a higher layer, with a lot more information about the system.
+In addition to that, Voron has the notion of async transaction commit (with a list of requirements that must happen to be exactly fit in the transaction merging portion in RavenDB),
+and the actual transaction lock handoff / early lock released is handled at a higher layer with a lot more information about the system.
 
 ## Memory Mapped File
 
@@ -36,7 +35,7 @@ Voron is based on memory mapped files.
 {INFO: Running on 32 bits}
 
 Since RavenDB 4.0, Voron has no limits when running in 32 bits mode. The issue of running out of address space when mapping files into memory 
-has been addressed by providing a dedicated pager (component responsible for mapping) for 32 bits environments.
+has been addressed by providing a dedicated pager (component responsible for mapping) for a 32 bits environments.
 
 Instead of mapping an entire file, it maps just the pages that are required and only for the duration of the transaction.
 

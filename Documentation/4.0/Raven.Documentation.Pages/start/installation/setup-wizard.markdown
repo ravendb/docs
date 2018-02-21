@@ -25,12 +25,11 @@ During the wizard, RavenDB will give you a free subdomain. It lets you configure
 
 The free subdomain is given to you only for the purpose of proving ownership to Let's Encrypt. If you wish to use your own domain, you are welcome to acquire your own certificate and use that instead.
 
-
 {WARNING: Security consideration and ownership of certificates and domains} 
 
-The automatic setup is designed to be as convenient and as easy as possible, it takes care of all the nitpicks of setting up DNS records, generating certificates and doing their renewals. Because of those requirements, the ownership of the certificates and DNS records needs to stay within the Hibernating Rhinos company. This gives us the ability to generate valid certificates and modify DNS settings for your registered domains and should be a consideration to keep in mind while reviewing the security of your system. Hibernating Rhinos **will never** exploit these abilities and will never perform any modifications to the certificates and DNS records unless explicitly requested by the client.
+The automatic setup is designed to be as convenient and as easy as possible. It takes care of all the nitpicks of setting up DNS records, generating certificates, and doing their renewals. Because of those requirements, the ownership of the certificates and DNS records needs to stay within the Hibernating Rhinos company. This gives us the ability to generate valid certificates and modify DNS settings for your registered domains and should be a consideration to keep in mind while reviewing the security of your system. Hibernating Rhinos **will never** exploit these abilities and will never perform any modifications to the certificates and DNS records unless explicitly requested by the client.
 
-The purpose of this feature is to make it easy for users to get setup and running with a minimum of fuzz, but we **recommend** that for actual production deployments and for the highest level of security and control, you'll use **your own certificates and domains**, avoiding the need to rely on third party for such a critical part of your security.
+The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuzz. We **recommend** that for actual production deployments and for the highest level of security and control, you'll use **your own certificates and domains**, avoiding the need to rely on third party for such a critical part of your security.
 
 {WARNING/}
 
@@ -144,7 +143,7 @@ Now, let's bring node B up.
 
 First, copy the configuration Zip file to node B and download/copy a fresh RavenDB server folder. In **Windows**, start RavenDB using the `run.ps1` script. In **Linux**, use the `start.sh` script.
 
-This time, we will choose to continue the cluster setup.
+This time we will choose to continue the cluster setup.
 
 ![Figure 9. Continue Setup](images/setup/10.png)  
 
@@ -165,7 +164,7 @@ You have successfully finished setting up a secure cluster of RavenDB servers us
 
 In RavenDB, users can provide their own server certificate. The certificate can be issued by a trusted SSL vendor or it can be a self-signed certificate. In the latter case, it's the user's responsibility to have the self-signed CA registered in the OS stores on all the relevant machines.
 
-RavenDB will accept PFX server certificates which contain the private key, are not expired and have the following fields:
+RavenDB will accept PFX server certificates which contain the private key, are not expired, and have the following fields:
 
 - KeyUsage: DigitalSignature, KeyEncipherment
 - ExtendedKeyUsage: Client Authentication, Server Authentication
@@ -190,7 +189,7 @@ When you provide a wildcard certificate, node tags are assigned automatically in
 If you wish to use different domain names or build a cluster with more than 26 nodes you can either do a manual setup or use the wizard and provide a certificate with as many domains as you need under the "Subject Alternative Names" (SAN) property.
 {NOTE/}
 {WARNING: Important} 
-If you bring your own certificate you must also take care of the DNS records. If you choose to bind to 127.0.0.1, and provide a certificate with CN=my.domain, then the DNS record of my.domain must point to 127.0.0.1.
+If you bring your own certificate, you must also take care of the DNS records. If you choose to bind to 127.0.0.1, and provide a certificate with CN=my.domain, then the DNS record of my.domain must point to 127.0.0.1.
 
 If you are running behind a firewall, the DNS records must point to the **external** IP address.
 {WARNING/}
@@ -243,7 +242,7 @@ Then the following congifuration should be applied:
 
 ![Figure 2a. Configure Docker Node](images/setup/w2a.png)  
 
-When finished you will receive a Zip file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this Zip file to setup the other nodes.
+When finished, you will receive a Zip file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this Zip file to setup the other nodes.
 
 ![Figure 3. Configuration Completed](images/setup/w3.png)
 

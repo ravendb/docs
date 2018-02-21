@@ -4,7 +4,7 @@ Map-Reduce indexes allow you to perform complex aggregations of data. The first 
 Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.
 
 The idea behind map-reduce indexing is that aggregation queries using such indexes are very cheap. The aggregation is performed only once and the results are stored inside the index.
-Once new data come into the database or existing documents are modified, the map-reduce index will keep the aggregation results up-to-date. The aggregations are never done during
+Once new data comes into the database or existing documents are modified, the map-reduce index will keep the aggregation results up-to-date. The aggregations are never done during
 querying to avoid expensive calculations that could result in severe performance degradation. When you make the query, RavenDB immediately returns the matching results directly from the index.
 
 For a more in-depth look at how map reduce works, you can read this post: [RavenDB 4.0 Unsung Heroes: Map/reduce](https://ayende.com/blog/179938/ravendb-4-0-unsung-heroes-map-reduce).
@@ -31,11 +31,11 @@ where Category == 'Seafood'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-The above query will return one result for _Seafood_, with the appropriate number of products from that category.
+The above query will return one result for _Seafood_ with the appropriate number of products from that category.
 
 ### Example II - Average
 
-In this example, we will count average product price for each category. The index definition:
+In this example, we will count an average product price for each category. The index definition:
 
 {CODE map_reduce_1_0@Indexes\MapReduceIndexes.cs /}
 
@@ -52,7 +52,7 @@ where Category == 'Seafood'
 
 ### Example III - Calculations
 
-This example illustrates how we can put some calculations inside an index using on one of the indexes available in sample database (`Product/Sales`).
+This example illustrates how we can put some calculations inside an index using on one of the indexes available in the sample database (`Product/Sales`).
 
 We want to know how many times each product was ordered and how much we earned for it. In order to extract that information, we need to define the following index:
 
@@ -73,14 +73,14 @@ from 'Product/Sales'
 {PANEL:Reduce Results as Artificial Documents}
 
 In addition to storing the aggregation results in the index, the map-reduce indexes can also output reduce results as documents to a specified collection.
-In order to create such documents, called _artificial_, you need to define the target collection using `OutputReduceToCollection` property in the index definition.
+In order to create such documents, called _artificial_, you need to define the target collection using the `OutputReduceToCollection` property in the index definition.
 
 {CODE map_reduce_3_0@Indexes\MapReduceIndexes.cs /}
 
-Writing map-reduce outputs into documents allows to define additional indexes on top of them that gives you the option to create recursive map-reduce operations.
-This ways you can do daily/monthly/yearly summaries very cheaply and easy. 
+Writing map-reduce outputs into documents allows you to define additional indexes on top of them that give you the option to create recursive map-reduce operations.
+This way, you can do daily/monthly/yearly summaries very cheaply and easy. 
 
-In addition to that, you can also apply all the usual operations on documents (e.g. data subscriptions or ETL).
+In addition, you can also apply the usual operations on documents (e.g. data subscriptions or ETL).
 
 {INFO: Saving documents}
 
@@ -93,10 +93,10 @@ Artificial documents are stored immediately after the indexing transaction compl
 It's forbidden to output reduce results to the collection that:
 
 - the current index is already working on (e.g. index on `DailyInvoices` collections outputs to `DailyInvoices`),
-- the current index is loading document from it (e.g. index has `LoadDocument(id, "Invoices")` outputs to `Invoices`), 
-- it is processed by another map-reduce index that outputs result to a collection that the current index is working on (e.g. one index on `Invoices` collection outputs to `DailyInvoices`, another index on `DailyInvoices` outputs to `Invoices`)
+- the current index is loading a document from it (e.g. index has `LoadDocument(id, "Invoices")` outputs to `Invoices`), 
+- it is processed by another map-reduce index that outputs results to a collection that the current index is working on (e.g. one index on `Invoices` collection outputs to `DailyInvoices`, another index on `DailyInvoices` outputs to `Invoices`)
 
-because that would result in the infinite indexing loop (the index puts an artificial document what triggers the indexing and so on). You will get the detailed error on attempt to create such invalid construction.
+Since that would result in the infinite indexing loop (the index puts an artificial document what triggers the indexing and so on), you will get the detailed error on attempt to create such invalid construction.
 
 {WARNING/}
 

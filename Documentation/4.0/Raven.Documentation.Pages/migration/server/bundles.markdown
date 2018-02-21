@@ -10,7 +10,7 @@ Authorization is based on [client X.509 certificates](../../server/security/auth
 
 {PANEL:Cascade Delete}
 
-The attachments are always tied to their documents. The deletion of a documents results in removing all its attachments as well (in the same transaction).
+The attachments are always tied to their documents. The deletion of a document results in removing all its attachments as well (in the same transaction).
 
 Deletion of referenced / child documents needs to be handled by your application. You just simply need to call `session.Delete()` for related documents when deleting the main one.
 
