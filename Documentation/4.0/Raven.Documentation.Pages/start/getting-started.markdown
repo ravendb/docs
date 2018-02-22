@@ -5,7 +5,7 @@ Welcome to this introductory article that will guide you through all the parts o
 This article consists of two parts:
 
 - The [Server](../start/getting-started#server) part will focus on installation, setup & configuration of the RavenDB server
-- The [Client](../start/getting-started#client) part will describe general principles behind our client libraries 
+- The [Client](../start/getting-started#client) part will describe the general principles behind our client libraries 
 
 {PANEL: Server}
 
@@ -23,7 +23,7 @@ RavenDB is cross-platform with support for the following operating systems:
 
 ### Prerequisites
 
-RavenDB is written in .NET Core, because of that it requires the same set of prerequisites as .NET Core.
+RavenDB is written in .NET Core so it requires the same set of prerequisites as .NET Core.
 
 {NOTE: Windows}
 
@@ -33,7 +33,7 @@ Please install [Visual C++ 2015 Redistributable Package](https://support.microso
 
 {NOTE: Linux}
 
-We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Please also check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
+We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Also check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
 
 {NOTE/}
 
@@ -47,11 +47,11 @@ We highly recommend **updating** your **MacOS** and checking the [Prerequisites 
 
 ### Installation & Setup
 
-After extraction of the server package you can start the [Setup Wizard](../start/installation/setup-wizard) by running the `run.ps1` (or `run.sh`) script or by [disabling the 'Setup Wizard' and configuring the server manually](../start/installation/manual).
+After extraction of the server package, you can start the [Setup Wizard](../start/installation/setup-wizard) by running the `run.ps1` (or `run.sh`) script or by [disabling the 'Setup Wizard' and configuring the server manually](../start/installation/manual).
 
 {NOTE: Running in a Docker container}
 
-If you are interested in hosting the server in a Docker container. Please read our [dedicated article](../start/installation/running-in-docker-container).
+If you are interested in hosting the server in a Docker container, please read our [dedicated article](../start/installation/running-in-docker-container).
 
 {NOTE/}
 
@@ -117,7 +117,7 @@ To let a developer start coding an application quickly, RavenDB will run with th
 
 As long as the database is used inside the local machine and no outside connections are allowed, you can ignore security concerns 
 and you require no authentication. Once you set RavenDB to listen to connections outside your local machine, 
-your database will immediately block this now vulnerable configuration, and require the administrator to properly setup the security and 
+your database will immediately block this now vulnerable configuration and require the administrator to properly setup the security and 
 access control to prevent unauthorized access to your data or to explicitly allow the unsecured configuration.
 
 {WARNING/}
@@ -143,11 +143,11 @@ After your server is up and running, to write an application you need to acquire
 
 ### DocumentStore
 
-In order to start you need to create an instance of the `DocumentStore` - the main entry point for your application which is responsible for establishing and managing connections between a RavenDB server (or cluster) and your application.
+In order to start, you need to create an instance of the `DocumentStore` - the main entry point for your application which is responsible for establishing and managing connections between a RavenDB server (or cluster) and your application.
 
 {INFO:Examples}
 
-Before proceeding to the examples we would like to point out that most of the articles are using the `Northwind` database. You can read more about it and how to deploy it [here](../studio/database/tasks/create-sample-data).
+Before proceeding to the examples, we would like to point out that most of the articles are using the `Northwind` database. You can read more about it and how to deploy it [here](../studio/database/tasks/create-sample-data).
 
 {INFO/}
 
@@ -179,7 +179,7 @@ The `Session` is used to manipulate the data. It implements the `Unit of Work` p
 
 ### Example I - Storing
 
-RavenDB is a Document Database, which means that all stored objects are called `documents`. Each document contains a **unique ID** that identifies it, **data** and adjacent **metadata**, both stored in JSON format. The metadata contains information describing the document, e.g. the last modification date (`@last-modified` property) or the [collection](../client-api/faq/what-is-a-collection) (`@collection` property) assignment.
+RavenDB is a Document Database. All stored objects are called `documents`. Each document contains a **unique ID** that identifies it, **data** and adjacent **metadata**, both stored in JSON format. The metadata contains information describing the document, e.g. the last modification date (`@last-modified` property) or the [collection](../client-api/faq/what-is-a-collection) (`@collection` property) assignment.
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_2@Start/GettingStarted.cs /}
@@ -190,9 +190,9 @@ RavenDB is a Document Database, which means that all stored objects are called `
 
 ### Example II - Loading
 
-The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option to retrieve additional documents in the same request (using `.Include`), reducing the number of expensive calls to minimum.
+The `Session` was designed to help the user write efficient code easily. For example, when a document is being loaded (`.Load`) from the server, there is an option to retrieve additional documents in the same request (using `.Include`), keeping the number of expensive calls to minimum.
 
-Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. Worth noting at this point is that **all of those changes are send in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an **ACID database** [here](../client-api/faq/transaction-support)).
+Besides that, the session implements the `Unit of Work` pattern, meaning that all **changes** to loaded entities are **automatically tracked**. The `SaveChanges` call will synchronize (with the server) **only the documents that have changed within the session**. **All of those changes are sent in one request (saving network calls)** and **processed in one transaction** (you can read why RavenDB is an **ACID database** [here](../client-api/faq/transaction-support)).
 
 {CODE-TABS}
 {CODE-TAB:csharp:C# client_3@Start/GettingStarted.cs /}
@@ -205,7 +205,7 @@ Besides that, the session implements the `Unit of Work` pattern, meaning that al
 
 To satisfy queries, indexes are used. From the querying perspective, an index defines which document fields can be used to find a document. The whole indexing process is done asynchronously, which gives very quick querying response times, even when large amounts of data have been changed. However, an implication of this approach is that the index might be [stale](../indexes/stale-indexes).
 
-When no index is specified in the query (like in the query below), then RavenDB will use its **intelligent auto-indexes** feature that will either use an already existing index or create a new one if no match is found. The other options is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying#static-indexes).
+When no index is specified in the query (like in the query below), RavenDB will use its **intelligent auto-indexes** feature that will either use an already existing index or create a new one if no match is found. The other option is to write the index yourself and deploy it to the server. Those indexes are called [Static Indexes](../indexes/creating-and-deploying#static-indexes).
 
 Behind the scenes, queries are translated to the Raven Query Language (RQL) syntax. Read more about RQL [here](../indexes/querying/what-is-rql).
 
