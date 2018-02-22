@@ -47,16 +47,44 @@ Our final index looks like:
 
 {CODE indexes_6@Indexes/Map.cs /}
 
+{INFO:Field Types}
+
+Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
+
+For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
+
+{CODE-BLOCK:csharp}
+from employee in docs.Employees
+select new
+{
+	Age = employee.Age
+}
+{CODE-BLOCK/}
+
+...grant us the capability to issue numeric queries (**return all the Employees that Age is more than 30**). 
+
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
+
+{CODE-BLOCK:csharp}
+from employee in docs.Employees
+select new
+{
+	Age = employee.Age.ToString()
+}
+{CODE-BLOCK/}
+
+{INFO/}
+
 {WARNING: Convention}
 
 You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
 
-{CODE-BLOCK:json}
-from doc in docs.Employees
+{CODE-BLOCK:csharp}
+from employee in docs.Employees
 select new
 {
-	FirstName = doc.FirstName,
-	LastName = doc.LastName
+	FirstName = employee.FirstName,
+	LastName = employee.LastName
 }
 {CODE-BLOCK/}
 
