@@ -75,6 +75,11 @@
         "Mappings": []
     },
     {
+        "Path": "/smuggler",
+        "Name": "Smuggler",
+        "Mappings": []
+    },
+    {
         "Path": "/how-to",
         "Name": "How to...",
         "Mappings": []
