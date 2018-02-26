@@ -23,6 +23,18 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region distinct_1_1
+                    // returns number of countries
+                    var numberOfCountries = session
+                        .Query<Order>()
+                        .Select(x => x.ShipTo.Country)
+                        .Distinct()
+                        .Count();
+                    #endregion
+                }
             }
         }
     }
