@@ -1,5 +1,10 @@
 ﻿[
     {
+        "Path": "/SNMP",
+        "Name": "SNMP",
+        "Mappings": []
+    },
+    {
         "Path": "cli.markdown",
         "Name": "CLI (Command Line Interface)",
         "Mappings": []

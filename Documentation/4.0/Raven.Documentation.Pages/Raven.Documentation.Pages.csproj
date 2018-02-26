@@ -11,6 +11,26 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="server\administration\SNMP\images\monitoring-zabbix-add-host.PNG" />
+    <None Remove="server\administration\SNMP\images\monitoring-zabbix-create-action.PNG" />
+    <None Remove="server\administration\SNMP\images\monitoring-zabbix-create-trigger.PNG" />
+    <None Remove="server\administration\SNMP\images\monitoring-zabbix-cummunity-macro.PNG" />
+    <None Remove="server\administration\SNMP\images\monitoring-zabbix-dashboard.PNG" />
+    <None Remove="server\administration\SNMP\images\monitoring-zabbix-link-template.PNG" />
+    <None Remove="server\administration\SNMP\images\monitoring-zabbix-snmpget.PNG" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="server\administration\SNMP\images\monitoring-zabbix-add-host.PNG" />
+    <Content Include="server\administration\SNMP\images\monitoring-zabbix-create-action.PNG" />
+    <Content Include="server\administration\SNMP\images\monitoring-zabbix-create-trigger.PNG" />
+    <Content Include="server\administration\SNMP\images\monitoring-zabbix-cummunity-macro.PNG" />
+    <Content Include="server\administration\SNMP\images\monitoring-zabbix-dashboard.PNG" />
+    <Content Include="server\administration\SNMP\images\monitoring-zabbix-link-template.PNG" />
+    <Content Include="server\administration\SNMP\images\monitoring-zabbix-snmpget.PNG" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Folder Include="server\ongoing-tasks\etl\images\" />
     <Folder Include="server\security\authentication\images\snag\" />
     <Folder Include="server\security\encryption\images\" />
