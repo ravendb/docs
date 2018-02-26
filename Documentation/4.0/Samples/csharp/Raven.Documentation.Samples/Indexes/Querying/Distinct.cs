@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Raven.Client.Documents;
-using Raven.Client.Documents.Indexes;
 using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes.Querying
@@ -19,7 +18,6 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     IList<string> countries = session
                         .Query<Order>()
                         .OrderBy(x => x.ShipTo.Country)
-                        .Distinct()
                         .Select(x => x.ShipTo.Country)
                         .Distinct()
                         .ToList();
