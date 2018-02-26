@@ -5,12 +5,12 @@ about managed devices on IP networks, and is used primarily for monitoring netwo
 data in the form of variables (metrics) which describe the system status and configuration. These metrics can then be 
 remotely queried (and, in some circumstances, manipulated) by managing applications.
 
-In RavenDB 4.0 we have support for SNMP which allows monitoring tools like [Zabbix](https://www.zabbix.com), [PRTG](https://www.paessler.com/prtg) 
+In RavenDB we have support for SNMP which allows monitoring tools like [Zabbix](https://www.zabbix.com), [PRTG](https://www.paessler.com/prtg) 
 and [Datadog](https://www.datadoghq.com/) direct access to the internal details of RavenDB. We expose a long list of metrics: CPU and memory usage,
 server total requests, the loaded databases... And also database specific metrics like the number of indexed items per 
 second, document writes per second, storage space each database takes and so on. 
 
-You can still monitor what is going on with RavenDB directly from the studio, or by using one of our monitoring tools, 
+You can still monitor what is going on with RavenDB directly from the Studio, or by using one of our monitoring tools, 
 but using SNMP might be easier in some cases. As users start running large numbers of RavenDB instances, it 
 becomes unpractical to deal with each of them individually and using a monitoring system that can watch many servers 
 is preferable.
@@ -22,7 +22,7 @@ SNMP support is available for enterprise licenses only.
 
 ### Enabling SNMP in RavenDB
 
-RavenDB 4.0 is already configured to support SNMP and all you have to do is enable it and restart the server. 
+RavenDB is already configured to support SNMP and all you have to do is enable it and restart the server. 
 This is done by adding the following key to your settings.json file:
 {CODE-BLOCK:json}
 {
@@ -66,6 +66,10 @@ Where "ravendb" is the community string and "live-test.ravendb.net" is the host.
 ![Figure 7. Monitoring : How to setup Zabbix monitoring: snmpget result](images/monitoring-zabbix-snmpget.PNG) 
 
 For your convenience we've also added the list of metrics and their associated OIDs here:   
+
+{NOTE:Accessing a list of all available OIDs}
+You can list all OIDs along with its description using `{serverUrl}/monitoring/snmp/oids` endpoint.
+{NOTE/}
 
 RavenDB's root OID id: 1.3.6.1.4.1.45751.1.1.
 

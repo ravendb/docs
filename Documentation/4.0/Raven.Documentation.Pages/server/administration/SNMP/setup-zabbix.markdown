@@ -1,6 +1,6 @@
 ﻿# Monitoring : How to setup Zabbix monitoring
 
-RavenDB 4.0 supports [SNNP](./snmp), which means that with a few quick steps you can monitor your server using Zabbix.
+RavenDB supports [SNNP](./snmp), which means that with a few quick steps you can monitor your server using Zabbix.
 
 ### Installation
 
