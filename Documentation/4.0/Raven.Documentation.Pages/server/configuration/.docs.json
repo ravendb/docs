@@ -4,6 +4,11 @@
         "Name": "Configuration Options",
         "Mappings": []
     },
+        {
+        "Path": "backup-configuration.markdown",
+        "Name": "Backup Options",
+        "Mappings": []
+    },
     {
         "Path": "cluster-configuration.markdown",
         "Name": "Cluster Configuration",
