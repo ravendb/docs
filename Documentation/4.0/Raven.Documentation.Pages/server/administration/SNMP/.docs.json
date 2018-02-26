@@ -1,0 +1,12 @@
+﻿[
+  {
+    "Path": "snmp.markdown",
+    "Name": "What is SNMP?",
+    "Mappings": []
+  },
+  {
+    "Path": "setup-zabbix.markdown",
+    "Name": "Zabbix",
+    "Mappings": []
+  }
+]
