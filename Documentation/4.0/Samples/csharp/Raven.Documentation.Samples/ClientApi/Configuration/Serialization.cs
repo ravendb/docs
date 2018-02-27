@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reflection;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Conventions;
 using Sparrow;
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration
@@ -53,6 +56,16 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
     public class CustomJsonContractResolver : IContractResolver
     {
         public JsonContract ResolveContract(Type type)
+        {
+            throw new CodeOmitted();
+        }
+    }
+    #endregion
+
+    #region custom_json_contract_resolver_based_on_default
+    public class CustomizedRavenJsonContractResolver : DefaultRavenContractResolver
+    {
+        protected override JsonProperty CreateProperty(MemberInfo member, MemberSerialization memberSerialization)
         {
             throw new CodeOmitted();
         }
