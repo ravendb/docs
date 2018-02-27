@@ -145,6 +145,26 @@ for (var i = 0; i < attachments.length; i++) {
 }
 {CODE-BLOCK/}
 
+### Transforming to VARCHAR and NVARCHAR
+
+There also two additional functions created specifically for dealing with VARCHAR and NVARCHAR types:
+
+| ------ |:------:| ------ |
+| `varchar(value, size = 50)` | function | Defines parameter type as varchar with ability to specify its size (50 if not specified). |
+| `nvarchar(value, size = 50)` | function | Defines parameter type as nvarchar with ability to specify its size (50 if not specified). |
+
+{CODE-BLOCK:javascript}
+var names = this.Name.split(' ');
+
+loadToUsers(
+{
+    FirstName: varchar(names[0], 30),
+    LastName: nvarchar(names[1]),
+});
+{CODE-BLOCK/}
+
+
+
 {PANEL/}
 
 {PANEL:Transaction Processing}
