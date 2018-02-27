@@ -12,7 +12,7 @@ Timeout in which the node expects to receive a heartbeat from the leader, in mil
 
 {PANEL:Cluster.WorkerSamplePeriodInMs}
 
-Time in millisecond between sampling the information about the databases and send it to the maintenance supervisor.
+Time in milliseconds between sampling the information about the databases and sending it to the maintenance supervisor.
 
 - **Type**: `int`
 - **Default**: `250`
@@ -22,7 +22,7 @@ Time in millisecond between sampling the information about the databases and sen
 
 {PANEL:Cluster.SupervisorSamplePeriodInMs}
 
- As the maintenance supervisor, time in millisecond between sampling the information received from the nodes.
+ As the maintenance supervisor, time in milliseconds between sampling the information received from the nodes.
 
 - **Type**: `int`
 - **Default**: `500`
@@ -32,7 +32,7 @@ Time in millisecond between sampling the information about the databases and sen
 
 {PANEL:Cluster.ReceiveFromWorkerTimeoutInMs}
 
-  As the maintenance supervisor, time in millisecond to wait to hear from a worker before it is time out.
+  As the maintenance supervisor, time in milliseconds to wait to hear from a worker before it is timed out.
 
 - **Type**: `int`
 - **Default**: `5000`
@@ -62,7 +62,7 @@ As a cluster node, set timeout in seconds for operation between two cluster node
 
 {PANEL:Cluster.StatsStabilizationTimeInSec}
 
-As a cluster node, time in seconds in which it takes to timeout operation between two cluster nodes.
+As a cluster node, time in seconds in which it takes to timeout an operation between two cluster nodes.
 
 - **Type**: `int`
 - **Default**: `5`
@@ -92,7 +92,7 @@ TCP connection read/write timeout in milliseconds.
 
 {PANEL:Cluster.HardDeleteOnReplacement}
 
-Set hard/soft delete for a database that was removed by the observer form the cluster topology in order to maintain the replication factor.
+Set hard/soft delete for a database that was removed by the observer from the cluster topology in order to maintain the replication factor.
 
 - **Type**: `bool`
 - **Default**: `true`

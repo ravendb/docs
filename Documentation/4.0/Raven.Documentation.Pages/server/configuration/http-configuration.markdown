@@ -52,7 +52,7 @@ Set Kestrel's MaxRequestLineSize.
 - **Default**: `16`
 - **Scope**: Server-wide only
 
-Gets or sets the maximum allowed size for the HTTP request line
+Gets or sets the maximum allowed size for the HTTP request line.
 
 {PANEL/}
 

@@ -1,6 +1,6 @@
 # Querying : Projections
 
-There are couple a couple of ways to perform projections in RavenDB:
+There are couple of ways to perform projections in RavenDB:
 
 - projections using [Select](../../indexes/querying/projections#select)
 - using [ProjectInto](../../indexes/querying/projections#projectinto)
@@ -12,9 +12,9 @@ When performing a query, we usually pull the full document back from the server.
 
 However, we often need to display the data to the user. Instead of pulling the whole document back and picking just what we'll show, we can ask the server to send us just the details we want to show the user and thus reduce the amount of traffic on the network.   
 
-This saving can be very significant if we need to show just a bit of information on a large document.  
+The savings can be very significant if we need to show just a bit of information on a large document.  
 
-A good example in the sample data set would be the order document. If we'll ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
+A good example in the sample data set would be the order document. If we ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
 
 However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
 

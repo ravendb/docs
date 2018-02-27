@@ -10,7 +10,7 @@ The URLs which the server should listen to.
 
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use `0.0.0.0` to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (`http://` or `https://`) must be included with each URL.
 
-Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port can be specified after the address using ':' as a separator, or if the default is being used: *port 80* for *http* protocol, and *port 443* for *https* protocol.
+Valid IP addresses can be localhost, domains, IPv4 or IPv6. Ports can be specified after the address using ':' as a separator, or if the default is being used: *port 80* for *http* protocol, and *port 443* for *https* protocol.
 
 {SAFE Setting to a non loopback address using the ***http*** protocol will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent a startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
 
@@ -45,7 +45,7 @@ The TCP URLs which the server should listen to.
 - **Scope**: Server-wide only
 
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for incoming TCP connections, are used for inter-node communication.
-Valid IP address can be localhost, domains, IPv4 or IPv6 addresses. Port **must be specified** after the address using ':' as separator or just as number without address. 
+Valid IP addresses can be localhost, domains, IPv4 or IPv6 addresses. Ports **must be specified** after the address using ':' as separator or just as number without address. 
 
 If no URL is set, the ServerUrl will be used along with random port
 If just a number is set, the ServerUrl will be used with the specified number as port
@@ -55,7 +55,7 @@ If the address and port are set, RavenDB will listen to the address and port spe
 
 ### Examples
 
-* Server will listen to TCP connections in all the network devices available on the machine
+* The server will listen to TCP connections in all the network devices available on the machine
 
 {CODE-BLOCK:plain}
 tcp://0.0.0.0:38888
@@ -93,7 +93,7 @@ https://example.com:8080
 
 {PANEL:PublicServerUrl.Tcp}
 
-The TCP URL under which server is publicly listen to.
+The TCP URL under which server is publicly listened to.
 
 - **Type**: `string`
 - **Default**: `null`
