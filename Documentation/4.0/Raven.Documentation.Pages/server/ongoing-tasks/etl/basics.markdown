@@ -61,7 +61,7 @@ The script is written in JavaScript and its input is a document. In addition to 
 The functions specific for ETL:
 
 | ------ |:------:| ------ |
-| `loadTo<Target>(obj)]` | function | Indicates to load an object to a specified `<Target>`. The target must be either the name of a collection (RavenDB ETL) or a table (SQL ETL). |
+| `loadTo<Target>(obj)` | function | Indicates to load an object to a specified `<Target>`. The target must be either the name of a collection (RavenDB ETL) or a table (SQL ETL). |
 | `loadAttachment(name)` | function | Loads an attachment (SQL ETL only) |
 
 You can do any transformation and send only data you are interested in sharing. Here is an example of RavenDB ETL script processing documents from `Employees` collection:

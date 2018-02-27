@@ -25,3 +25,10 @@ The first example shows how to enable optimistic concurrency for a particular se
 Optimistic concurrency can be turned off for a single document by passing `null` as a change vector value to `Store` method even when it is turned on for an entire session (or globally).
 
 {CODE optimistic_concurrency_3@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
+
+## Turning On Optimistic Concurrency for a New Document when it is Disabled on Session
+
+Optimistic concurrency can be turned on for a new document by passing `string.Empty` as a change vector value to `Store` method even when it is turned off for an entire session (or globally).
+It will cause to throw `ConcurrencyException` if the document already exists.
+
+{CODE optimistic_concurrency_4@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}

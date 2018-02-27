@@ -5,6 +5,7 @@ Checks can be turned on by setting `UseOptimisticConcurrency` property from `Adv
 
 Another option is to control optimistic concurrency per specific document.   
 To enable it, you can [supply an ETag to Store](../storing-entities). If you don't supply an ETag or if the ETag is null, then optimistic concurrency will be disabled. 
+If you need to check concurrency when inserting a new document you must use `Etag.Empty`. It will cause to throw `ConcurrencyException` if the document already exists.
 Note that setting optimistic concurrency per specific document overrides the use of `UseOptimisticConcurrency` property from `Advanced` session operations.
 ## Example I
 

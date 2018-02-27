@@ -20,6 +20,11 @@
         "Mappings": []
     },
     {
+        "Path": "triggers.markdown",
+        "Name": "Triggers",
+        "Mappings": []
+    },
+    {
         "Path": "authentication.markdown",
         "Name": "Authentication",
         "Mappings": []
