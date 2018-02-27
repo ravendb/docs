@@ -26,7 +26,7 @@ Each attachment has the hash calculated based on its content. If multiple attach
 
 {PANEL:Encryption}
 
-The encryption can be turned on during a database creation. 
+The encryption can be turned on during a database creation. Data is encrypted by 'ChaCha20-Poly1305' algorithm from a well-known battle-tested encryption library called 'libsodium'.
 
 {PANEL/}
 
