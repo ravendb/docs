@@ -57,6 +57,22 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Configuration
                     session.SaveChanges(); // will NOT throw Concurrency exception
                 }
                 #endregion
+
+                #region optimistic_concurrency_4
+                using (IDocumentSession session = store.OpenSession())
+                {
+                    session.Store(new Product { Name = "Some Name" }, id: "products/999");
+                    session.SaveChanges();
+                }
+
+                using (IDocumentSession session = store.OpenSession())
+                {
+                    session.Advanced.UseOptimisticConcurrency = false; // default value
+
+                    session.Store(new Product { Name = "Some Other Name" }, changeVector: string.Empty, id: "products/999");
+                    session.SaveChanges(); // will throw Concurrency exception
+                }
+                #endregion
             }
         }
     }
