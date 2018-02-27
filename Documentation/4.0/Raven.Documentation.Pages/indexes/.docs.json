@@ -186,5 +186,10 @@
                 "Key": "client-api/advanced/dynamic-fields"
             }
         ]
+    },
+    {
+        "Path": "/troubleshooting",
+        "Name": "Troubleshooting",
+        "Mappings": []
     }
 ]
