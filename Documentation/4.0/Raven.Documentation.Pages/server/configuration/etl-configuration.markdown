@@ -2,7 +2,7 @@
 
 {PANEL:ETL.SQL.CommandTimeoutInSec}
 
-Number of seconds after which SQL command will timeout.
+Number of seconds after which the SQL command will timeout.
 
 - **Type**: `int`
 - **Default**: `null` (use provider default)
@@ -22,12 +22,12 @@ Number of seconds after which extraction and transformation will end and loading
 
 {PANEL:ETL.MaxNumberOfExtractedDocuments}
 
-Max number of extracted documents in ETL batch.
+Max number of extracted documents in an ETL batch.
 
 - **Type**: `int`
 - **Default**: `null`
 - **Scope**: Server-wide or per database
 
-If value is not set, or set to null - number of extracted documents is infinite per ETL batch 
+If value is not set, or set to null, the number of extracted documents is infinite per ETL batch 
 
 {PANEL/}

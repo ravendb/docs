@@ -1,8 +1,8 @@
 ﻿# Querying : Query vs DocumentQuery
 
-Why does the RavenDB client offer two ways of querying by exposing the `Query` as well as `DocumentQuery` methods? What are differences between them?
+Why does the RavenDB client offer two ways of querying by exposing the `Query` as well as `DocumentQuery` methods? What are the differences between them?
 
-`DocumentQuery` is the lower level API that we use to query RavenDB but it does not support LINQ - the mandatory data access solution in .NET. We created `Query` to be the LINQ endpoint for RavenDB. 
+`DocumentQuery` is the lower level API that we use to query RavenDB, but it does not support LINQ, the mandatory data access solution in .NET. We created `Query` to be the LINQ endpoint for RavenDB. 
 
 The entire LINQ API is a wrapper of `DocumentQuery` and is built on top on that. 
 When you use `Query`, it always is translated into the `DocumentQuery` object, which then builds a RQL-syntax query that is sent to the server.

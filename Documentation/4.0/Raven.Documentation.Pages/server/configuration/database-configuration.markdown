@@ -2,7 +2,7 @@
 
 {PANEL:Databases.QueryTimeoutInSec}
 
-The time in seconds to wait before canceling query.
+The time in seconds to wait before canceling a query.
 
 - **Type**: `int`
 - **Default**: `300`
@@ -17,7 +17,7 @@ query result is pushed to the stream. The timeout will be exceeded only if no re
 
 {PANEL:Databases.QueryOperationTimeoutInSec}
 
-The time in seconds to wait before canceling query related operation (patch/delete query).
+The time in seconds to wait before canceling a query related operation (patch/delete query).
 
 - **Type**: `int`
 - **Default**: `300`

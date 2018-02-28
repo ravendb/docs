@@ -8,7 +8,7 @@ Set if indexes should run purely in memory.
 - **Default**: `null`
 - **Scope**: Server-wide or per database
 
-When running in memory, the index information is not written to disk and if the server is restarted all indexing data will be lost. This is mostly useful for testing, or faster non-persistant indexing
+When running in memory, the index information is not written to disk and if the server is restarted all indexing data will be lost. This is mostly useful for testing or faster non-persistant indexing.
  
 If not set or set to **null** - indexing will run in memory if core settings *RunInMemory* is set to true.
 
