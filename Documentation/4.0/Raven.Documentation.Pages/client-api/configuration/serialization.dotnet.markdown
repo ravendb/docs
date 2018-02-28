@@ -20,7 +20,7 @@ The default `JsonContractResolver` used by RavenDB will serialize all properties
 
 {CODE custom_json_contract_resolver@ClientApi\Configuration\Serialization.cs /}
 
-You can also override some behavior of the default resolver used by the client by inheriting from `DefaultRavenContractResolver` and overriding specific methods:
+You can also customize behavior of the default resolver by inheriting from `DefaultRavenContractResolver` and overriding specific methods.
 
 {CODE custom_json_contract_resolver_based_on_default@ClientApi\Configuration\Serialization.cs /}
 
