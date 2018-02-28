@@ -33,7 +33,7 @@ Service can be also controlled using the `start` and `stop` commands:
 
 {PANEL:Linux}
 
-To run as a Service on Linux, you need to add the following command to your deamon script:
+To run as a Service on Linux, you need to add the following command to your daemon script:
 
 {CODE-BLOCK:bash}
 <path/to/ravendb>/Server/Raven.Server --non-interactive
