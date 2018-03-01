@@ -15,6 +15,11 @@
         "Mappings": []
     },
     {
+        "Path": "patching.markdown",
+        "Name": "Patching",
+        "Mappings": []
+    },
+    {
         "Path": "commands.markdown",
         "Name": "Commands",
         "Mappings": []
