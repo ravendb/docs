@@ -50,7 +50,7 @@ namespace Raven.Server.Documents.Indexes.Static.Generated
             }
         }
 
-        public Index_aaaa()
+        public Index_Posts_TitleLength()
         {
             this.AddMap("@all_docs", this.Map_0);
             this.OutputFields = new string[] { "Length" };
