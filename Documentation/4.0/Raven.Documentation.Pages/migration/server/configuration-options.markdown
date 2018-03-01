@@ -1,4 +1,4 @@
-﻿# Configuration options
+﻿# Migration : Configuration options
 
 In RavenDB 4.0 the configuration settings are defined in `settings.json` file which resides next to server binaries. Its default content is as follows:
 
