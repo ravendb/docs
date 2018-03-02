@@ -28,8 +28,6 @@ The ability to write your own custom functions and share them between patches ha
 
 {PANEL:Example I}
 
-### Example I
-
 | 3.x |
 |:---:|
 | {CODE-BLOCK:javascript}
