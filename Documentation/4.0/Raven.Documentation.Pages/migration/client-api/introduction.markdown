@@ -1,4 +1,4 @@
-﻿# Introduction to 3.x to 4.0 migration
+﻿# Migration : Introduction to 3.x to 4.0 migration
 
 RavenDB Client 4.0 is a major upgrade. It's not backward compatible and the API has a lot of breaking changes.
 

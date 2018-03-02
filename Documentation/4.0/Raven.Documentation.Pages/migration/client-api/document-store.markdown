@@ -1,4 +1,4 @@
-﻿# Changes in DocumentStore
+﻿# Migration : Changes in DocumentStore
 
 This article describes the changes in public API of `DocumentStore`.
 

@@ -1,4 +1,4 @@
-﻿# How to Migrate Data from 3.x Server to 4.0
+﻿# Migration : How to Migrate Data from 3.x Server to 4.0
 
 {WARNING:Backward compatibility}
 

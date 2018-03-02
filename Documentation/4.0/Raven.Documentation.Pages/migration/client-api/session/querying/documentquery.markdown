@@ -1,4 +1,4 @@
-﻿# How to migrate DocumentQuery from 3.x?
+﻿# Migration : How to migrate DocumentQuery from 3.x?
 
 There were many changes to `DocumentQuery` regarding specific functionalities, we encourage you to read about them in their respective articles, but the biggest change that this particular article wants to address is the **default operator change**.
 
