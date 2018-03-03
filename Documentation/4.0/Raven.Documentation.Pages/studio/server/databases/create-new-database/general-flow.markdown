@@ -53,7 +53,7 @@ A database name can be any sequence of characters except for the following rules
    The minimum required number is 1.  
    The maximum number is the cluster size (number of nodes in the cluster).  
 
-2. **Dynamic Node Distribution**  
+2. **Dynamic Database Distribution**  
    Upon a node failure, and if this option is checked, the RavenDB server will automatically replicate the database content to another available node in the cluster, 
    (one that doesn't already contain the database) so that replication factor is maintained.  
 

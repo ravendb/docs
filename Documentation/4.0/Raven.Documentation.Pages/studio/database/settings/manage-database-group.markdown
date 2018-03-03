@@ -67,8 +67,8 @@
 2. **Add a Node to the database group** - See [below](../../../studio/database/settings/manage-database-group#database-group-topology---add-new-node)  
 
 3. **Settings**  
-   Open settings to set ***Dynamic Node Distribution***  
-   When _Dynamic Node Distribution_ is turned on, then once a node is down,  
+   Open settings to set ***Dynamic Database Distribution***  
+   When _Dynamic Database Distribution_ is turned on, then once a node is down,  
    the cluster observer will handle finding a replacement node in order to maintain database replication factor.
    See [States Flow](../../server/cluster/cluster-observer#states-flow)  
 
