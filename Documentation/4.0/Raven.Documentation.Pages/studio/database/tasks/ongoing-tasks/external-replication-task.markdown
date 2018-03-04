@@ -8,13 +8,15 @@
   The replica is up to date at all times, any changes in the database will be reflected in the replica once they occur.  
   The External Replication task is _not_ creating a backup of your data, see more in [Backup -vs- Replication](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task--vs--replication-task)  
 
-* Note: External Replication _can_ be defined within the _same_ cluster.  
+* Note: External Replication _can_ be defined to another database within the _same_ cluster.  
   That can come into use for example when you want a copy of the data that wouldn't be a client failover target.  
 
 * The target database is _not_ considered part of the [Database Group](../../../../studio/database/settings/manage-database-group).  
 
 * What is being replicated:  
   * All database documents  
+  * Attachments  
+  * Revisions  
 
 * What is _not_ being replicated:  
   Any cluster level behaviours such as:  
@@ -22,8 +24,8 @@
   *  Indexes & indexes definitions  
 
 * Conflicts:  
-  * Two clusters that have an External Replication task defined between them will detect and resolve documents conflicts according to each cluster's conflict resolution policy.  
-  * It is recommended to have the same policy configuration on both clusters.  
+  * Two databases that have an External Replication task defined between them will detect and resolve document conflicts according to each database conflict resolution policy.  
+  * It is recommended to have the same policy configuration on both the source and the target databases.  
 
 * In this page:  
   * [External Replication Task - Definition](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication-task---definition)  
