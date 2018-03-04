@@ -23,7 +23,7 @@ In the Studio, administrators can use the [Certificates View](../../studio/serve
 - [Let's Encrypt Certificates](../../server/security/authentication/lets-encrypt-certificates)
 - [Client Certificate Usage](../../server/security/authentication/client-certificate-usage)
 - [Authentication in the Cluster](../../server/security/authentication/authentication-in-the-cluster)
-- [Common Errors & Troubleshooting](../../server/security/authentication/common-errors-and-troubleshooting)
+- [Common Errors & FAQ](../../server/security/authentication/common-errors-and-troubleshooting)
 
 {PANEL/}
 
