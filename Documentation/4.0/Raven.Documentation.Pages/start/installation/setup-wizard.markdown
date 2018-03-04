@@ -21,7 +21,7 @@ If you are having trouble using the wizard or with security in general, please v
 
 {PANEL:Secure Setup with a Let's Encrypt Certificate}
 
-[Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain (or website) as long as you can prove that you own it.
+[Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain as long as you can prove that you own it.
 
 During the wizard, RavenDB will give you a free subdomain. It lets you configure the DNS records for this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, but you can always update the DNS records by running the setup wizard.
 
@@ -120,7 +120,7 @@ If the validation fails, you will receive a detailed error. You can go back in t
 
 A [common error](../../server/security/common-errors-and-faq) is that DNS records didn't update locally. You may wait a bit and try again. An easy workaround is to configure (just for the setup) your network card to use Google's DNS server (8.8.8.8), to bypass caching of DNS records.
 
-TIP: you can use dns.google.com to see the dns record of your domain.
+Tip:  use dns.google.com to see the dns record of your domain.
 
 When finished you will receive a Zip file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this Zip file to setup the other nodes.
 

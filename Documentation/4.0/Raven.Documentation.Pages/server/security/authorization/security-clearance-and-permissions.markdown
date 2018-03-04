@@ -69,6 +69,5 @@ The following operations are allowed for `User` certificates with `Database Admi
 - Perform SQL migration (coming soon)
 
 A `User` certificate with `read/write` access level can perform all the operations which are not listed above.  
-The full list of endpoints and their required security clearance can be found [here]().
 
 {PANEL/}
