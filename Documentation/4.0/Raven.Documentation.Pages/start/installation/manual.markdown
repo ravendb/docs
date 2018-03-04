@@ -34,7 +34,7 @@ In some cases the port might be in use, this will prevent the Server from starti
 
 ## Security
 
-Read the [Certificate Configuration Section](../../server/security/authentication/certificate-configuration) to learn how to setup security manually.
+Read the [Manual Certificate Configuration](../../server/security/authentication/certificate-configuration) section to learn how to setup security manually.
 
 ## Configuration
 

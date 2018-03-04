@@ -24,7 +24,7 @@ In RavenDB, you don't need to worry about renewals. RavenDB takes care of this f
 
 When there are 30 days left until expiration, RavenDB will initiate the certificate renewal and replacement process. The actual request to Let's Encrypt will happen on the nearest coming Saturday.
 
-Once the renewed certificate is obtained, [it will be replaced](../../../server/authentication/certificate-renewal-and-rotation) in all the nodes of the cluster without needing to shut down any server.
+Once the renewed certificate is obtained, [it will be replaced](../../../server/security/authentication/certificate-renewal-and-rotation) in all the nodes of the cluster without needing to shut down any server.
 
 {WARNING: Warning} 
 Automatic renewals of certificates is available only if you obtained your certificate using the Setup Wizard and got your free RavenDB domain. It doesn't work for self-obtained certificates, even if issued by Let's Encrypt.
