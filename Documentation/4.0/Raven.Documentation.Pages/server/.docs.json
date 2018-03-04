@@ -1,5 +1,15 @@
 ﻿[
     {
+        "Path": "expiration.markdown",
+        "Name": "Expiration",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/expiration"
+            }
+        ]
+    },
+    {
         "Path": "storage-engine.markdown",
         "Name": "Storage Engine",
         "Mappings": [
