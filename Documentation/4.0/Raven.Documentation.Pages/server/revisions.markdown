@@ -18,16 +18,17 @@ Configuration optoins:
 | **Purge on delete** | Configure whether to delete the reivions upon document delete, or create a delete marker instead. |
 | **Limit # of revisions** | Configure how much revisions to keep. Default: unlimited. |
 | **Limit # of revisions by age** | Configure a minimum retention time before the revisions can be expired. Default: None. |
-| **Disable** | If true, disalbe the reivions feature for this configuration (default or specific collection). Defalut: false. |
+| **Disabled** | If true, disalbe the reivions feature for this configuration (default or specific collection). Defalut: false. |
 
 You can also configure the revisions feature using the client:
 
 {CODE configuration@Server\Revisions.cs /}
 
-It is possible to have a default configuration telling the revisions feature to revision all documents (`Disabled=false` on the defulat configuration) and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
+It is possible to have a default configuration telling the revisions feature to revision all documents 
+(by setting `Disabled=false`, which is the default, on the defulat configuration) and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
 Than we override the behavior of the reivions feature by specifing a configuration specifically to a collection. For example, let's say that we don't want to revision users.
 
-Conversely, we can disable the default configuration (`Disalbed = true`) but configure a collection to enable reivions.
+Conversely, we can disable the default configuration (`Disalbed = true`) but enable revisions for a specific collections.
 
 ## How it works
 
@@ -52,10 +53,15 @@ Or you can access a specific revision by its change vector.
 {CODE get_revisions@Server\Revisions.cs /}
 
 Now, let's delete the document. 
-The document would be removed the document but a revision will be created, so you aren't going to lose the audit trail if the document is deleted. 
-The new revision can be accessed using the studio under the Revisions Bin:
+The document would be removed but a revision will be created, so you aren't going to lose the audit trail if the document is deleted.
+
+In order to see orpand revisions (revisions of deleted documents), you can go to the `Documents > Revisions Bin` section in the studio, 
+which would list all revisions without exisintg document:
 
 ![Figure 3: Revisions, Deleted](images\revisoins3.png)
+
+If you'll go and create another document with this ID (users/1), than the revision won't be shown anymore in the Revision Bin section, 
+but you can navigate to the document and see it's revisions, including the deleted once.
 
 Clicking on the revision we can also navigate to the other revisions of this document:
 
