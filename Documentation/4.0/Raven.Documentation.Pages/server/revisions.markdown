@@ -9,24 +9,24 @@ You can configure the revisions feature using the studio:
 
 ![Configuring revisions feature on the database](images/configure-revisions.png)
 
-By default, the reivions feature will track history for all documents and never purge old revisions. 
+By default, the revisions feature will track history for all documents and never purge old revisions. 
 You can configure this for all collections (using the default configuration) and you can have a configuration for a specific collection.
 
-Configuration optoins:
+Configuration options:
 
 | Configuration option | Description |
-| **Purge on delete** | Configure whether to delete the reivions upon document delete, or create a delete marker instead. |
+| **Purge on delete** | Configure whether to delete the revisions upon document delete, or create a delete marker instead. |
 | **Limit # of revisions** | Configure how much revisions to keep. Default: unlimited. |
 | **Limit # of revisions by age** | Configure a minimum retention time before the revisions can be expired. Default: None. |
-| **Disabled** | If true, disalbe the reivions feature for this configuration (default or specific collection). Defalut: false. |
+| **Disabled** | If true, disable the revisions feature for this configuration (default or specific collection). Default: false. |
 
 You can also configure the revisions feature using the client:
 
 {CODE configuration@Server\Revisions.cs /}
 
 It is possible to have a default configuration telling the revisions feature to revision all documents 
-(by setting `Disabled=false`, which is the default, on the defulat configuration) and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
-Than we override the behavior of the reivions feature by specifing a configuration specifically to a collection. For example, let's say that we don't want to revision users.
+(by setting `Disabled=false`, which is the default, on the default configuration) and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
+Than we override the behavior of the revisions feature by specifying a configuration specifically to a collection. For example, let's say that we don't want to revision users.
 
 Conversely, we can disable the default configuration (`Disalbed = true`) but enable revisions for a specific collections.
 
@@ -55,8 +55,8 @@ Or you can access a specific revision by its change vector.
 Now, let's delete the document. 
 The document would be removed but a revision will be created, so you aren't going to lose the audit trail if the document is deleted.
 
-In order to see orpand revisions (revisions of deleted documents), you can go to the `Documents > Revisions Bin` section in the studio, 
-which would list all revisions without exisintg document:
+In order to see orphaned revisions (revisions of deleted documents), you can go to the `Documents > Revisions Bin` section in the studio, 
+which would list all revisions without existing document:
 
 ![Figure 3: Revisions, Deleted](images\revisoins3.png)
 
