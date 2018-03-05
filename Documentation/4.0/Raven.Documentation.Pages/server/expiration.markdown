@@ -1,4 +1,4 @@
-﻿# Bundle : Expiration
+﻿# Expiration
 
 The expiration feature serves a very simple purpose: it deletes the documents whose time has passed. 
 Usage scenarios for the Expiration feature include storing user sessions in RavenDB or using RavenDB as a cache.
@@ -23,7 +23,9 @@ Once the document is expired it can take up to the delete frequency interval (60
 We do not filter expired documents on load/query/indexing time, so need to a aware that the document might be still there after it expires up to the delete frequency interval timefarme.
 
 ## More details
-Internally we track each document with `@expires` property in the metadata, even if the expiration feature it turned off. T
-his way once the expirtaion feature is turned on we can delete all expired documents easily.
+Internally we track each document with `@expires` property in the metadata, even if the expiration feature it turned off. 
+This way once the expirtaion feature is turned on we can delete all expired documents easily.
 
 {NOTE Metadata properties starting with `@` are internal for RavenDB use, you should not use `@expires` property in metadata for other purpose than the built in expiration feature. /}
+
+You can turn on and off the revisions feature whlie the database is already live with data.
