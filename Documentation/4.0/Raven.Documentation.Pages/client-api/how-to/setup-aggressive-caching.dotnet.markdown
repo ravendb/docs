@@ -18,7 +18,13 @@ The client knows when it can serve the response from the cache, and when it has 
 Despite the fact that the aggressive cache uses the notifications to invalidate the cache, it is still possible to get stale data because of the time needed to receive the notification from the server.
 {WARNING/}
 
-To activate the aggressive caching mode, use the code:
+We can activate this mode globally from the store or per session.
+
+To activate this mode globally from the store we just need to add one of the following lines:
+
+{CODE aggressive_cache_global@ClientApi\HowTo\SetupAggressiveCaching.cs /}
+
+If we want to activate this mode only in the session we need to add this in the session:
 
 {CODE aggressive_cache_load@ClientApi\HowTo\SetupAggressiveCaching.cs /}
 
@@ -33,3 +39,10 @@ The usage of the notification system means that you can set an aggressive cache 
 which is equivalent to:
 
 {CODE aggressive_cache_for_one_day_2@ClientApi\HowTo\SetupAggressiveCaching.cs /}
+
+###Disable Aggressive Mode
+We can disable the aggressive mode by simply use `documentStore.DisableAggressiveCaching()`, In that way we will disable the aggressive caching 
+globally in the store, but what if we need to disable the aggressive caching only for a specific call, or to manually update the cache, just like before we can use `DisableAggressiveCaching()`
+per session.
+
+{CODE disable_aggressive_cache@ClientApi\HowTo\SetupAggressiveCaching.cs /}
