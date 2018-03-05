@@ -10,6 +10,16 @@
         ]
     },
     {
+        "Path": "revisions.markdown",
+        "Name": "Revisions",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/versioning"
+            }
+        ]
+    },
+    {
         "Path": "storage-engine.markdown",
         "Name": "Storage Engine",
         "Mappings": [

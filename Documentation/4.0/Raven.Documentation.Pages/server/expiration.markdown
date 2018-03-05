@@ -16,7 +16,11 @@ As you can see, all we need to do is to set the `@expires` property in the metad
 By default the expriation is turned off. You can turned it on using the studio. 
 The default delete frequency is 60 seconds, which is customizable.
 
-![Configuring expiration feature on the server](images/expiration.png)
+![Configuring expiration feature on the database](images/configure-expiration.png)
+
+You can also configure the expiration feature using the client:
+
+{CODE configuration@Server\Expiration.cs /}
 
 ## Eventual consistency
 Once the document is expired it can take up to the delete frequency interval (60 seconds, by default) until the expired documents would acutally be deleted. 
