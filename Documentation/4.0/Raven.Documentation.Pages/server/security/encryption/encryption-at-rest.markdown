@@ -4,7 +4,7 @@ Encryption at rest is implemented at the storage layer, using Daniel J. Bernstei
 
 ## What does it mean?
 
-In `Voron`, the storage engine behind RavenDB, data is stored in memory mapped files. This includes documents, indexes, attachments and transactions which are written to the journal.
+In [Voron](../../../server/storage-engine), the storage engine behind RavenDB, data is stored in memory mapped files. This includes documents, indexes, attachments and transactions which are written to the journal.
 
 If your disk is stolen or lost, an attacker will have full access to the raw data files and without encryption turned on, the data can be read with very little effort.
 
@@ -22,10 +22,10 @@ Once a request is made, RavenDB will start a transaction (either read or write) 
 1. RavenDB makes sure that **no data is written to disk as plain text**. It will always be encrypted.  
 2. Indexed fields (the actual data) will reside in memory as plain text.  
 3. Data of the current transaction will reside in memory as plain text, and only for the duration of the transaction. When the transaction ends, all this memory is safely zeroed.  
-4. Loading documents from the database (using the Studio, the Client API, REST API) means that they will be decrypted and sent to you as plain text.
+4. Loading documents from the database (using the Studio, the Client API, REST API) means that they will be decrypted to plain text on the server and then sent to the client (securely) by HTTPS. Once the data is received on the client side it is no longer encrypted. RavenDB does not provide encryption on the client side.
 {DANGER/}
 
-{NOTE Due to the overhead of the encryption algorithm, performance can be decreased slightly. However, it doesn't affect the ACID properties of RavenDB which remains both transactional and secured./}
+{NOTE Due to the overhead of the encryption algorithm, performance can be slightly decreased. However, it doesn't affect the ACID properties of RavenDB which remains both transactional and secured./}
 
 
 ## What about Encryption in Transit?

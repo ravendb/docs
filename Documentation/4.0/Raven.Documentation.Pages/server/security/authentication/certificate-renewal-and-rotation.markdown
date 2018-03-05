@@ -1,6 +1,6 @@
 # Security : Authentication : Certificate Renewal & Rotation
 
-X.509 certificates have expiration dates and must be renewd once in a while.
+X.509 certificates have expiration dates and must be renewed once in a while.
 
 When using the Setup Wizard to obtain a Let's Encrypt certificate, you don't have to worry about this. Read about [Automatic Let's Encrypt Renewals in RavenDB](../../../server/security/authentication/lets-encrypt-certificates).
 
