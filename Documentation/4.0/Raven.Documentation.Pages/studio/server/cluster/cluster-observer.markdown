@@ -78,7 +78,7 @@ Click `Refresh` to get latest actions performed by the Observer
 
 1. Set the node to a `Rehab` state.  
 
-2. If 'Allow Dynamic Node Distribution' is set (see [Create Database](../../../studio/server/databases/create-new-database/general-flow)),  
+2. If 'Allow Dynamic Database Distribution' is set (see [Create Database](../../../studio/server/databases/create-new-database/general-flow)),  
    then after a pre-configured time period, the Observer will add another node from the cluster to the Database Group in order to keep the replication factor.  
    The replacement node will be set to `Promotable` and will start catching up data from the other nodes in the group.  
 
@@ -92,7 +92,7 @@ Click `Refresh` to get latest actions performed by the Observer
 {NOTE: }
 ####**When the `Rehab` node is responsive again:**  
 
-**1.** If a replacement node was added when the node was down: (Dynamic Node distribution was set)  
+**1.** If a replacement node was added when the node was down: (Dynamic Database distribution was set)  
 
    * If the replacing node is fully updated (in a `Member` state)  
      then the Observer will delete the node that came back from the Database Group Topology.  
@@ -109,7 +109,7 @@ Click `Refresh` to get latest actions performed by the Observer
 
      ![Figure 4. Deleting Node D](images/cluster-observer-4.png "Node B is fully updated - Deleting Node D")
 
-**2.** If no replacement node was added: (Dynamic Node Distribution was _not_ set)  
+**2.** If no replacement node was added: (Dynamic Database Distribution was _not_ set)  
 
    * The `Rehab` node will start catching up data from the other members in the relevant Databases Groups.  
      (Note: the node can be part of multiple Databases Groups...)  
