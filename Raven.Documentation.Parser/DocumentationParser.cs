@@ -1,11 +1,10 @@
-﻿namespace Raven.Documentation.Parser
+﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using Raven.Documentation.Parser.Data;
+
+namespace Raven.Documentation.Parser
 {
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-
-    using Raven.Documentation.Parser.Data;
-
     public class DocumentationParser : ParserBase<DocumentationPage>
     {
         private readonly DocumentationDirectoryCompiler _directoryCompiler;
