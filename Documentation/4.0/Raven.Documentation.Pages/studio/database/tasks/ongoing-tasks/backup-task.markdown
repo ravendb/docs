@@ -3,10 +3,10 @@
 
 {NOTE: }
 
-* Schedule a Backup Task in order to backup your data.  
+* Schedule a **Backup Task** in order to backup your data.  
   This will allow you to [restore the database](../../../todo-update-me-later) to a previous state from a specific point in time.  
 
-* This task is _not_ replicating your data, see more below in [Backup -vs- Replication](...)  
+* This task is _not_ replicating your data, see more below in [Backup -vs- Replication](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task--vs--replication-task)  
 
 * Configure the following when creating a Backup Task:
   * **Backup Type** - Select Backup/Snapshot  
@@ -19,7 +19,7 @@
   * [Backup Task - Scheduling](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---content-&-scheduling)  
   * [Backup Task - Destination](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---destination)  
   * [Backup Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---details-in-tasks-list-view)  
-  * [Backup Task - Cluster or Node are Down](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---cluster-or-node-are-down)  
+  * [Backup Task - When Cluster or Node are Down](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down)  
   * [Backup Task -vs- Replication Task](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task--vs--replication-task)  
 {NOTE/}
 
@@ -35,7 +35,7 @@
 
 2. **Backup Task Type**:  
    * ***Backup***  
-     * Backed Up Data: The database data in a JSON format, including documents, indexes (definitions only) & [identities](../../../todo-update-me-later)  
+     * Backed Up Data: The database data in a JSON format, including documents, indexes (definitions only) & [identities](../../../../server/kb/document-identifier-generation#identity)  
        (same as exported database format)  
      * Size of backup data: Smaller  
      * Backup Speed: Faster  
@@ -47,7 +47,7 @@
      * Restoring: Faster, Indexes do not have to be rebuilt  
 
 3. **Preferred Node** (Optional)  
-  * Select a preferred mentor node from the [Database Group](../../../todo-update-me-later) to be the responsible node for this Backup Task  
+  * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this Backup Task  
   * If not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 {PANEL/}
 
@@ -101,7 +101,7 @@
 1. **Backup Task Details**:
    *  Task Status - Active / Not Active / Not on Node  
    *  Destinations - List of all backup destinations defined  
-   *  Last Full Backup -The last time a Full Backup was done 
+   *  Last Full Backup - The last time a Full Backup was done 
       (Snapshot / Backup type - depending on task definition)  
    *  Last Incremental Backup - The last time an Incremental Backup was done  
    *  Next Estimated Backup - Time for next backup 
@@ -118,7 +118,7 @@
    Click to refresh this panel viewed details  
 {PANEL/}
 
-{PANEL: Backup Task - Cluster or Node are Down}
+{PANEL: Backup Task - When Cluster or Node are Down}
 
 * **When the cluster is down** (and there is no leader):  
 
@@ -137,7 +137,7 @@
 
 {PANEL: Backup Task -vs- Replication Task}
 
-* RavenDB's [External Replication](../../../todo-update-me-later) provides you with an off-site live replica/copy of the data.  
+* RavenDB's [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) provides you with an off-site live replica/copy of the data.  
   ('live' meaning that any changes in the database will be reflected in the replica once they occur).  
   This is quite useful if you need to shift operations to a secondary data center.  
 
