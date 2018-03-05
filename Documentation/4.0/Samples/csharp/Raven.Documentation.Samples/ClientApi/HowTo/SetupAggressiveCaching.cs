@@ -19,16 +19,16 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
             })
             {
                 documentStore.Initialize();
+                #region aggressive_cache_global
 
+                documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5));
+
+                documentStore.AggressivelyCache(); // Defines the cache duration for 1 day
+
+                #endregion
                 using (var session = documentStore.OpenSession())
                 {
-                    #region aggressive_cache_global
-
-                    documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5));
-
-                    documentStore.AggressivelyCache();
-
-                    #endregion
+                    
 
                     #region aggressive_cache_load
                     using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
