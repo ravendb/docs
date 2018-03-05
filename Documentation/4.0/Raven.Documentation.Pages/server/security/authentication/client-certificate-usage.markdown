@@ -2,7 +2,7 @@
 
 In previous sections we described how to obtain a server certificate and how to configure RavenDB to use it. In this section we will cover how to use client certificates to connect to a RavenDB server.
 
-## Obtaining Your First Client Certificate
+## Obtaining Your First Admin Client Certificate
 
 When RavenDB is running with a server certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is to generate/register an admin client certificate.
 
@@ -16,11 +16,15 @@ If you have access to the server, the simplest way is to use the RavenDB CLI:
 ravendb> generateClientCert <name> <path-to-output-folder> [password]
 {CODE-BLOCK/}
 
-Or if you wish to use your own client certificate:
+This will generate a new certificate, with a `Cluster Admin` Security Clearance.
+
+If you wish to use your own client certificate you can have RavenDB trust it:
 
 {CODE-BLOCK:plain}
 ravendb> trustClientCert <name> <path-to-pfx> [password]
 {CODE-BLOCK/}
+
+The certificate will be registered as a trusted certificate with a `Cluster Admin` Security Clearance.
 
 ### Example II - Using Powershel and Wget in Windows 
 
@@ -33,10 +37,8 @@ Assume we started the server with the following settings.json:
     "ServerUrl": "https://rvn-srv-1:8080",
     "Setup.Mode": "None",
     "DataDir": "c:/RavenData",
-    "Security.Certificate": {
-        "Path": "c:/secrets/server.pfx",
-        "Password": "s3cr7t p@$$w0rd"
-    }
+    "Security.Certificate.Path": "c:/secrets/server.pfx",
+    "Security.Certificate.Password": "s3cr7t p@$$w0rd"
 } 
 {CODE-BLOCK/}
 
@@ -77,6 +79,11 @@ Then make the request:
 curl -X POST -H "Content-Type: application/json" -d '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' -o cluster.admin.cert.zip https://rvn-srv-1:8080/admin/certificates --cert /home/secrets/server.pem:pem_password
 {CODE-BLOCK/}
 
-### Example IV : Using the RavenDB Client
+## Using Client Certificates
 
+Once you have the admin client certificate you can access the server/cluster by using the Studio, the Client API or any other client. 
+
+It is recommended to generate additional certificates with reduced access rights for applications and users.
 Wiring a certificate in the RavenDB Client is described in the [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section of the Client API.
+
+

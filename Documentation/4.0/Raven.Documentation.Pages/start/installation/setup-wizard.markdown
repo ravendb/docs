@@ -1,5 +1,7 @@
 # Installation : Setup Wizard Walkthrough
 
+We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning and to stay secure through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
+
 To make the setup process as smooth as possible, we introduced the "Setup Wizard", a step-by-step guide to help you configure your desired level of security and easily deploy a secured cluster.
 
 You have 4 options to choose from:
@@ -13,13 +15,13 @@ When running the RavenDB server for the first time, you will be redirected to th
 
 ![Figure 1. Welcome Screen](images/setup/2.png)  
 
-We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning and to stay secure through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
-
 This section explains how to follow the setup wizard. It does not go into detail about security concerns. If you wish to learn about how authentication and authorization work in RavenDB or more about security in general, please read the [security section](../../server/security/overview). 
+
+If you are having trouble using the wizard or with security in general, please visit the [Security FAQ section](../../Server/Security/common-errors-and-faq).
 
 {PANEL:Secure Setup with a Let's Encrypt Certificate}
 
-[Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain (or website) as long as you can prove that you own it.
+[Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain as long as you can prove that you own it.
 
 During the wizard, RavenDB will give you a free subdomain. It lets you configure the DNS records for this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, but you can always update the DNS records by running the setup wizard.
 
@@ -108,13 +110,17 @@ When you click next, the wizard will establish a connection with Let's Encrypt t
 
 It usually takes this process a couple of minutes to complete. The wizard validates that the DNS records updated successfully and that the server can run with the supplied addresses and certificate and is reachable using the new domain name.
 
+{WARNING: Caching of Let's Encrypt Certificates} 
+In some scenarios you will run the setup wizard again. In that case, if none of the cluster domains changed, the wizard will use the cached certificate and not request a new one from Let's Encrypt.
+{WARNING/}
+
 ![Figure 5. Finishing Up](images/setup/6.png)  
 
 If the validation fails, you will receive a detailed error. You can go back in the wizard, change settings and try again.
 
-A [common error](../../server/security/common-errors-and-troubleshooting) is that DNS records didn't update locally. You may wait a bit and try again. An easy workaround is to configure (just for the setup) your network card to use Google's DNS server (8.8.8.8), to bypass caching of DNS records.
+A [common error](../../server/security/common-errors-and-faq) is that DNS records didn't update locally. You may wait a bit and try again. An easy workaround is to configure (just for the setup) your network card to use Google's DNS server (8.8.8.8), to bypass caching of DNS records.
 
-TIP: you can use dns.google.com to see the dns record of your domain.
+Tip:  use dns.google.com to see the dns record of your domain.
 
 When finished you will receive a Zip file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this Zip file to setup the other nodes.
 

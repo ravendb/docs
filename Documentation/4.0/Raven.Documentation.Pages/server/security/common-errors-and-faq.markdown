@@ -1,11 +1,11 @@
-# Security : Common Errors & Troubleshooting
+# Security : Common Errors & FAQ
 
 In this section, we review some of the common security configuration errors and explain how to handle them.
 
-[Setup Wizard Issues](../../server/security/common-errors-and-troubleshooting#setup-wizard-issues)  
-[Authentication Issues](../../server/security/common-errors-and-troubleshooting#authentication-issues)  
-[Authorization Issues](../../server/security/common-errors-and-troubleshooting#authorization-issues)  
-[Encryption Issues](../../server/security/common-errors-and-troubleshooting#encryption-issues)  
+[Setup Wizard Issues](../../server/security/common-errors-and-faq#setup-wizard-issues)  
+[Authentication Issues](../../server/security/common-errors-and-faq#authentication-issues)  
+[Authorization Issues](../../server/security/common-errors-and-faq#authorization-issues)  
+[Encryption Issues](../../server/security/common-errors-and-faq#encryption-issues)  
 
 ## Setup Wizard Issues  
 
@@ -86,13 +86,31 @@ it might take hours to update because of DNS caching. If the issue persists, con
 
 If this happens, there is nothing you can do except wait for DNS propogation. When it's updated in dns.google.com click the `Try Again` button.
 
+### After installing with Let's Encrypt, can I change the DNS records?
+
+Yes.  
+Running the setup wizard again will update the DNS records of your domain.  
+If any of the cluster domains is changed in the new configuration, the wizard will fetch a new certificate as well.
+
+### If I already have the Zip file, can I avoid repeating the setup process?
+
+Yes.  
+You can use the Zip file to re-install or deploy the cluster elsewhere.  
+Download a fresh copy of RavenDB and run the setup wizard. Then choose `Continue Cluster Setup` and select node A.
+This will use the existing Zip file and same configuration and certificate which were chosen during the first setup.
+
+### Can I change the IP address RavenDB binds to?
+
+Yes.  
+Open the settings.json file located in the RavenDB folder, change the `ServerUrl` setting and restart the server.
+
 ## Authentication Issues  
 
 ### Authentication Error Occurred in Chrome or Edge
 
 You cannot access the Studio using Chrome or Edge even though you have finished the setup wizard successfully and you also checked the box saying "Automatically register the admin client certificate in this (local) OS".
 
-![Figure 1. Authentication Error](images/1.png)
+![Figure 1. Authentication Error](../../server/security/images/1.png)
 
 {CODE-BLOCK:plain}
 There were problems authenticating the request:
@@ -105,7 +123,7 @@ The solution is very simple. Close **all instances** of the browser and restart 
 
 You cannot access the Studio using Firefox even though you have finished the setup wizard successfully and you also checked the box saying "Automatically register the admin client certificate in this (local) OS".
 
-![Figure 2. Authentication Error](images/1.png)
+![Figure 2. Authentication Error](../../server/security/images/1.png)
 
 {CODE-BLOCK:plain}
 There were problems authenticating the request:
@@ -114,13 +132,13 @@ This server requires client certificate for authentication, but none was provide
 
 Firefox doesn't use the OS certificate store like Chrome or Edge. Please import the certificate manually. Then close **all instances** of the browser and restart it.
 
-![Figure 3. Firefox Import](images/2.png)
+![Figure 3. Firefox Import](../../server/security/images/2.png)
 
 ### Cannot Import the Client Certificate to Firefox
 
 You're trying to import the client certificate received from RavenDB to Firefox but get the following error:
 
-![Figure 3. Unknown Reasons](images/3.png)
+![Figure 3. Unknown Reasons](../../server/security/images/3.png)
 
 {CODE-BLOCK:plain}
 The PKCS#12 operation failed for unknown reasons.
@@ -141,9 +159,9 @@ This is a known issue which has been reported many times to Mozilla.
 
 Some references:
 
-[https://bugzilla.mozilla.org/show_bug.cgi?id=1049435](https://bugzilla.mozilla.org/show_bug.cgi?id=1049435)  
-[https://bugzilla.mozilla.org/show_bug.cgi?id=458161](https://bugzilla.mozilla.org/show_bug.cgi?id=458161)  
-[https://groups.google.com/forum/?fromgroups=#!topic/mozilla.dev.tech.crypto/RiIeY-R5Q4Y](https://groups.google.com/forum/?fromgroups=#!topic/mozilla.dev.tech.crypto/RiIeY-R5Q4Y)  
+[Bugzilla: #1049435](https://bugzilla.mozilla.org/show_bug.cgi?id=1049435)  
+[Bugzilla: #458161](https://bugzilla.mozilla.org/show_bug.cgi?id=458161)  
+[mozilla.dev.tech.crypto issue](https://groups.google.com/forum/?fromgroups=#!topic/mozilla.dev.tech.crypto/RiIeY-R5Q4Y)  
 
 
 ### Getting the full error using PowerShell
