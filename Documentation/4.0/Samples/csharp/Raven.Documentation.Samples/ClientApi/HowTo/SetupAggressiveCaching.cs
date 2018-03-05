@@ -22,11 +22,28 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 
                 using (var session = documentStore.OpenSession())
                 {
+                    #region aggressive_cache_global
+
+                    documentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5));
+
+                    documentStore.AggressivelyCache();
+
+                    #endregion
+
                     #region aggressive_cache_load
                     using (session.Advanced.DocumentStore.AggressivelyCacheFor(TimeSpan.FromMinutes(5)))
                     {
                         Order user = session.Load<Order>("orders/1");
                     }
+                    #endregion
+
+                    #region disable_aggressive_cache
+
+                    using (session.Advanced.DocumentStore.DisableAggressiveCaching())
+                    {
+                        Order user = session.Load<Order>("orders/1");
+                    }
+
                     #endregion
                 }
 
