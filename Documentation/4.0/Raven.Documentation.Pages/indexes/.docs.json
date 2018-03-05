@@ -191,5 +191,11 @@
         "Path": "/troubleshooting",
         "Name": "Troubleshooting",
         "Mappings": []
+    } 
+    ,
+    {
+        "Path": "indexing-additional-sources.markdown",
+        "Name": "Additional sources",
+        "Mappings": []
     }
 ]
