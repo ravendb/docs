@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "revisions-and-concurrency-with-change-vectors.markdown",
+    "Name": "Revisions and concurrency with change vectors",
+    "Mappings": []
+  },
+  {
+    "Path": "using-optimistic-concurrency-in-real-world-scenarios.markdown",
+    "Name": "Using optimistic concurrency in real world scenarios",
+    "Mappings": []
+  }
+]
