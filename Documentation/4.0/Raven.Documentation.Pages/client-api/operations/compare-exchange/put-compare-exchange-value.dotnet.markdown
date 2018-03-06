@@ -2,7 +2,7 @@
 
 **PutCompareExchangeValueOperation** is used to save a compare-exchange value.
 
-{NOTE Compare-exchange values could be used on the client side to ensure [unique constraints](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-i).  /}
+{NOTE You can learn about 'Compare Exchange' concepts in [dedicated article](../../../server/compare-exchange) /}
 
 {WARNING When saving value first the index from request is compared to index on server (compare stage). When it is equal, value is updated (exchange stage).  /}
 

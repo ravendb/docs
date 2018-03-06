@@ -2,7 +2,7 @@
 
 **GetCompareExchangeValueOperation** is used to return a saved compare-exchange value by its key.
 
-{NOTE Compare-exchange values could be used on the client side to ensure [unique constraints](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-i).  /}
+{NOTE You can learn about 'Compare Exchange' concepts in [dedicated article](../../../server/compare-exchange) /}
 
 ## Syntax
 

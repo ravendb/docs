@@ -10,6 +10,16 @@
         ]
     },
     {
+        "Path": "compare-exchange.markdown",
+        "Name": "Compare Exchange",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/unique-constraints"
+            }
+        ]
+    },
+    {
         "Path": "revisions.markdown",
         "Name": "Revisions",
         "Mappings": [

@@ -2,7 +2,7 @@
 
 **DeleteCompareExchangeValueOperation** is used to delete a compare-exchange value.
 
-{NOTE Compare-exchange values could be used on the client side to ensure [unique constraints](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-i).  /}
+{NOTE You can learn about 'Compare Exchange' concepts in [dedicated article](../../../server/compare-exchange) /}
 
 {WARNING Value is deleted only if index in request matches index on server. /}
 
