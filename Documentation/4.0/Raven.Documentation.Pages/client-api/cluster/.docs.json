@@ -12,5 +12,9 @@
     {
         "Path": "speed-test.markdown",
         "Name": "Client Speed Test"
+    },
+    {
+        "Path": "health-check.markdown",
+        "Name": "Cluster Node Health Check"
     }
 ]
