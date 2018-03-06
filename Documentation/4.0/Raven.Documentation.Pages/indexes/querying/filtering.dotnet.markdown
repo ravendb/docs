@@ -56,7 +56,7 @@ where Lines_ProductName = 'Teatime Chocolate Biscuits'
 
 ## Where + In
 
-When you want to check a single value against multiple values, the `In` operator can become handy. To retrieve all employees that `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
+When you want to check a single value against multiple values, the `In` operator can become handy. To retrieve all employees where `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query filtering_4_1@Indexes\Querying\Filtering.cs /}
@@ -69,12 +69,12 @@ where FirstName IN ('Robert', 'Nancy')
 {CODE-TABS/}
 
 {WARNING:Important}
-Remember to add `Raven.Client.Documents.Linq` namespace to usings if you want to use `In` extension method.
+Remember to add the `Raven.Client.Documents.Linq` namespace to usings if you want to use `In` extension method.
 {WARNING/}
 
 ## Where + ContainsAny
 
-To check if enumeration contains **any** of the values from a specified collection you can use the `ContainsAny` method.
+To check if enumeration contains **any** of the values from a specified collection, you can use the `ContainsAny` method.
 
 Let's assume that we want to return all `BlogPosts` that contain any of the specified `Tags`.
 

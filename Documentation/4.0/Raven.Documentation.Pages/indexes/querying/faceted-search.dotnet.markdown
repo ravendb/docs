@@ -11,7 +11,7 @@ Let's start with defining a document like this:
 
 ## Step 1
 
-Create an index to work against. This can be setup like so:
+Create an index to work against. 
 
 {CODE step_2@Indexes\Querying\FacetedSearch.cs /}
 
@@ -23,7 +23,7 @@ Setup your facet definitions:
 
 This tells RavenDB that you would like to get the following facets:
 
-* For the **Manufacturer** field, look at the documents and return a count for each unique Term found
+* For the **Manufacturer** field, look at the documents and return a count for each unique Term found.
 
 * For the **Cost** field, return the count of the following ranges:
 

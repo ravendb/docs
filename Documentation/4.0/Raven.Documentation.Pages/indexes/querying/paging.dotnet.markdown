@@ -1,11 +1,11 @@
 ﻿# Querying : Paging
 
-Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic and hardware usage, or simply because no user can handle huge amounts of data at once.
+Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic and hardware usage or simply because no user can handle huge amounts of data at once.
 
 {WARNING:Warning}
-Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by the need of handling large quantities of documents.
+Starting from version 4.0, if the page size is not specified **on client side**, the server will assume **int.MaxValue** (2,147,483,647) and all the results will be downloaded. It is **recommended to set a page size explicitly** to avoid long response times caused by sending excessive amounts of data over the network or high memory consumption caused by handling large quantities of documents.
 
-You can also set `DocumentConventions.ThrowIfQueryPageSizeIsNotSet` convention to **true** to guard yourself from executing queries without page size explicitly set. We recommend turning this convention on, especially during development or testing phases to detect early the queries that potentially can return excessive amount of results.
+You can also set `DocumentConventions.ThrowIfQueryPageSizeIsNotSet` convention to **true** to guard yourself from executing queries without the page size explicitly set. We recommend turning this convention on, especially during development or testing phases to detect early the queries that potentially can return an excessive amount of results.
 {WARNING/}
 
 {INFO:Performance}
@@ -47,11 +47,11 @@ While the query will return with just 10 results, `totalResults` will hold the t
 
 ## Paging Through Tampered Results
 
-For some queries, the server will skip over some results internally, and invalidate the `TotalResults` value. When executing a `Distinct` query or index producing multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but it will not take into account results that were skipped as a result of the `Distinct` operator.
+For some queries, the server will skip over some results internally and invalidate the `TotalResults` value. When executing a `Distinct` query or index producing multiple index entries per document (a fanout index), then `TotalResults` will contain the total count of matching documents found, but it will not take into account results that were skipped as a result of the `Distinct` operator.
 
 Whenever `SkippedResults` is greater than 0 and a query involved some non-stored fields, it implies that we skipped over some results in the index.
     
-In order to do proper paging in those scenarios, you should use the `SkippedResults` when telling RavenDB how many documents to skip. For each page, the starting point should be `.Skip((currentPage * pageSize) + SkippedResults)`.
+In order to do proper paging in those scenarios, you should use `SkippedResults` when telling RavenDB how many documents to skip. For each page, the starting point should be `.Skip((currentPage * pageSize) + SkippedResults)`.
 
 For example, let's page through all the results:
 

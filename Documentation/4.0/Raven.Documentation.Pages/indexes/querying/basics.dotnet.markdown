@@ -47,7 +47,7 @@ By specifying `Employee` as a type parameter, we are also defining a result type
 
 ### Example II - Filtering
 
-To filter the results, use the suitable LINQ method e.g. `Where`:
+To filter the results, use the suitable LINQ method, like `Where`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync basics_0_1@Indexes\Querying\Basics.cs /}
@@ -73,7 +73,7 @@ You can read more about paging [here](../../indexes/querying/paging).
 
 ### Example IV - Querying a Specified Index
 
-In the above examples we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying).
+In the above examples, we **did not** specify an index that we want to query. RavenDB will try to locate an appropriate index or create a new one. You can read more about creating indexes [here](../../indexes/creating-and-deploying).
 
 In order to specify an index, we need to pass it as a second generic parameter to the `Query` method or pass the index name as a parameter.
 
