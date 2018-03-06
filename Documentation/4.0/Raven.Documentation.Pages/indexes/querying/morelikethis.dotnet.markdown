@@ -1,6 +1,6 @@
 ﻿# Querying : MoreLikeThis
 
-MoreLikeThis returns a list of similar documents that are related to a given document. This feature can be used, for example, when viewing an article. Many news sites show a list of the related articles at the bottom of the page. To accomplish this, the RavenDB MoreLikeThis uses the MoreLikeThis from the Lucene contrib project. To find out more about the algorithm, please read Aaron Johnson excellent blog post that is available [here](http://cephas.net/blog/2008/03/30/how-morelikethis-works-in-lucene/).      
+MoreLikeThis returns a list of similar documents that are related to a given document. This feature can be used for situations like when a user views an article. Many news sites show a list of the related articles at the bottom of the page. To accomplish this, the RavenDB MoreLikeThis uses the MoreLikeThis from the Lucene contrib project. To find out more about the algorithm, please read Aaron Johnson excellent blog post that is available [here](http://cephas.net/blog/2008/03/30/how-morelikethis-works-in-lucene/).      
 
 ## Setup
 
@@ -55,7 +55,7 @@ Default parameters can be changed by manipulating `MoreLikeThisOptions` properti
 
 Some of Lucene analyzers have a built-in list of common English words that are usually not useful for searching (like "a", "as", "the" etc.). Those words are called 
 *stop words* and they are considered to be uninteresting and ignored. If a used analyzer does not support stop words, or you need to overload them, you can specify your own set of stop words.
-A document with a list of stop words can be stored in the RavenDB by storing the `MoreLikeThisStopWords` document:
+A document with a list of stop words can be stored in RavenDB by storing the `MoreLikeThisStopWords` document:
 
 {CODE more_like_this_3@Indexes\Querying\MoreLikeThis.cs /}
 
@@ -65,6 +65,6 @@ The document ID is then set in the `MoreLikeThisOptions`.
 
 {INFO Please note that default values for settings, like `MinimumDocumentFrequency`, `MinimumTermFrequency`, and `MinimumWordLength`, may result in filtering out related articles, especially when there is little data set (e.g. during development). /}
 
-## Related articles
+## Related Articles
 
 - [Client API : Session : How to use MoreLikeThis?](../../client-api/session/querying/how-to-use-morelikethis)

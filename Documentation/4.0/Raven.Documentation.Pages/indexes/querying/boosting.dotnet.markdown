@@ -4,7 +4,7 @@ Indexing in RavenDB is built upon the Lucene engine that provides a boosting ter
 
 Each search term can be associated with a boost factor that influences the final search results. The higher the boost factor, the more relevant the term will be. 
 
-This way you can improve your searching mechanism and provide users with much more accurate results.
+You can improve your searching mechanism and provide users with much more accurate results.
 
 ## Examples
 

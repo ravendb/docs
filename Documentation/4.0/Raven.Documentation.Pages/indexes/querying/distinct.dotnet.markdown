@@ -1,6 +1,6 @@
 ﻿# Querying : Distinct
 
-The `Distinct` method allows you to remove duplicates from the result. Items are compared based on fields listed in the `select` section of the query. 
+The `Distinct` method allows you to remove duplicates from the result. Items are compared based on the fields listed in the `select` section of the query. 
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_1_1@Indexes\Querying\Distinct.cs /}
@@ -17,7 +17,7 @@ Please read the dedicated article about [paging through tampered results](../../
 
 ## Count
 
-RavenDB supports returning counts when distinct operation is used.
+RavenDB supports returning counts when the distinct operation is used.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query distinct_2_1@Indexes\Querying\Distinct.cs /}
@@ -28,7 +28,7 @@ RavenDB supports returning counts when distinct operation is used.
 
 Please keep in mind that this operation might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
-Same result might be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field that you want to have a distinct value of. E.g.
+The same result might be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field that you want to have a distinct value of. e.g.
 
 {CODE:csharp distinct_3_1@Indexes\Querying\Distinct.cs /}
 
