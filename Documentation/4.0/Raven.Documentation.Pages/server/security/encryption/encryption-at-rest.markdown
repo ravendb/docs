@@ -21,7 +21,7 @@ Once a request is made, RavenDB will start a transaction (either read or write) 
 {DANGER: Important things to be aware of:}
 1. RavenDB makes sure that **no data is written to disk as plain text**. It will always be encrypted.  
 2. Indexed fields (the actual data) will reside in memory as plain text.  
-3. Data of the current transaction will reside in memory as plain text, and only for the duration of the transaction. When the transaction ends, all this memory is safely zeroed.  
+3. Data of the current transaction will reside in memory as plain text, and only for the duration of the transaction. When the transaction ends, the used memory is safely zeroed.  
 4. Loading documents from the database (using the Studio, the Client API, REST API) means that they will be decrypted to plain text on the server and then sent to the client (securely) by HTTPS. Once the data is received on the client side it is no longer encrypted. RavenDB does not provide encryption on the client side.
 {DANGER/}
 
