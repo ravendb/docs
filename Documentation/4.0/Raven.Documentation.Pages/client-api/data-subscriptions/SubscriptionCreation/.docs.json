@@ -1,0 +1,17 @@
+[
+    {
+        "Path": "how-to-create-data-subscription.markdown",
+        "Name": "About subscription creation",
+        "Mappings": []
+    },
+    {
+        "Path": "Examples.markdown",
+        "Name": "Examples",
+        "Mappings": []
+    },
+    {
+        "Path": "ApiOverview.markdown",
+        "Name": "API overview",
+        "Mappings": []
+    }
+]

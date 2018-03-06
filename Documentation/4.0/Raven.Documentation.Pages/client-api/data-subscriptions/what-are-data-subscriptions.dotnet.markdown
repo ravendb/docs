@@ -1,14 +1,33 @@
 ﻿#What are Data Subscriptions?
+---
 
-{PANEL: General}
+{NOTE: }
 
-Data subscriptions provide a reliable and handy way to perform batch processing on documents. Data subscriptions stores the progress in the server, allowing reliably to continue processing from the point it was stopped. In addition to that, data subscription allows performing filtering on data and returning projections, instead of plain documents and even to return revisions of data (if versioning is activated). Finally, for Entrerprise license, subscriptions allows failover between servers, by storing progress on the cluster level.
+* Data subscription provides a reliable and handy way to perform documents processing on the client side.  
 
-{PANEL/}
+* Documents that match a pre-defined criteria are sent in batches from the server to the client. 
+  The documents' data can be transformed before being send. 
+  
+* Note: If the database has Revisions defined, then special handling can be done on the server before sending the data to the client.
+
+* The client sends an acknowledgment to the server once it is done processing the batch.
+   
+* The server keeps track of the latest document that was acknowledged by the client,
+  so that processing can be continued from the latest acknowledged position if it was paused or interrupted.
+  
+* Keeping track of latest document is done by storing that document ch. vector in the cluster.
+  
+* When the responsible node handling the subscription is down, the subscription task can be manually reassigned to another node in the cluster.
+  With Entrerprise license, the cluster will automatically reassign the work to another node for the duration.
+
+{NOTE/}
 
 {PANEL:Data subscription consumption}
 
-Data subscriptions consumed by clients, called subscription workers. In any given moment, only one worker can be connected to a data subscription. A worker connected to a data subscription receives a batch of documents and gets to process it. When it's done (depends on the code that the client gave the worker, can take from seconds to hours), it informs the server about the progress and the server is ready to send the next batch.
+Data subscriptions consumed by clients, called subscription workers. In any given moment, only one worker can be connected to a data subscription. 
+A worker connected to a data subscription receives a batch of documents and gets to process it. 
+When it's done (depends on the code that the client gave the worker, can take from seconds to hours), 
+it informs the server about the progress and the server is ready to send the next batch.
 
 {PANEL/}
 
@@ -26,7 +45,9 @@ For the common cases, RavenDB's API gives default values to many of the paramete
 
 {PANEL:Documents processing}
 
-Documents are sent in batches and progress will be registered only after the whole batch is processed and acknowledged. Documents are always sent in Etag order which means that data that already been processed and acknowledged won't be sent twice, except for these scenarios:
+Documents are sent in batches and progress will be registered only after the whole batch is processed and acknowledged. 
+Documents are always sent in Etag order which means that data that already been processed and 
+acknowledged won't be sent twice, except for these scenarios:
 
 1. If the document was changed after it was already sent
 
@@ -89,5 +110,6 @@ Data subscriptions are accessible by a document store. Here's an example of an a
 
 ## Related articles
 
-- [How to **create** a data subscription?](../../client-api/data-subscriptions/how-to-create-data-subscription)
-- [How to **consume** a data subscription?](../../client-api/data-subscriptions/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](SubscriptionCreation/how-to-create-data-subscription)
+- [How to **consume** a data subscription?](SubscriptionConsumption/how-to-consume-data-subscription)
+- [Maintainance operations](AdvancedTopics/MaintainanceOperations)
