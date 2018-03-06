@@ -30,7 +30,7 @@
 * In this page:  
   * [External Replication Task - Definition](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication-task---definition)  
   * [External Replication Task - Details in Tasks List View](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication---details-in-tasks-list-view)  
-  * [External Replication Task - When cluster or Node are Down](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication---when-cluster-or-node-are-down)
+  * [External Replication Task - Offline Behaviour](../../../../studio/database/tasks/ongoing-tasks/external-replication-task#external-replication---offline-behaviour)
 {NOTE/}
 
 ---
@@ -63,7 +63,7 @@
    *  Task Status - Active / Not Active / Not on Node / Reconnect  
    *  Connection String - The connection string used  
    *  Destination Database - The external database to which the data is being replicated  
-   *  Actual Destination URL - The server URL to which the data is being replicated,  
+   *  Actual Destination URL - The server URL to which the data is actually being replicated,  
       the one that is currently used out of the available _Topology Discovery URLs_  
    *  Topology Discovery URLs - List of the available destination Database Group servers URLs  
 
@@ -71,9 +71,9 @@
    Graph view of the responsible node for the External Replication Task  
 {PANEL/}
 
-{PANEL: External Replication - When Cluster or Node are Down}
+{PANEL: External Replication - Offline Behaviour}
 
-* **When the cluster is down** (and there is no leader):  
+* **When the source cluster is down** (and there is no leader):  
 
   * Creating a _new_ Ongoing Task is a Cluster-Wide operation,  
     thus, a new Ongoing External Replication Task ***cannot*** be scheduled.  
@@ -81,8 +81,15 @@
   * If an External Replication Task was _already_ defined and active when the cluster went down,  
     then the task will _not_ be active, no replication will take place.
 
-* **When the responsible node is down**  
+* **When the node responsible for the external replication task is down**  
 
-  * If the responsible node for the External Replication Task is down during the scheduled time,  
+  * If the responsible node for the External Replication Task is down,  
     then another node from the Database Group will take ownership of the task so that the external replica is up to date.  
+
+* **When the destination node is down:**  
+
+  * The external replication will wait until the destination is reachable again and proceed from where it left off.  
+
+  * If there is a cluster on the other side, and the URL addresses of the destination database group nodes are listed in the connection string, 
+    then when the destination node is down, the replication task will simply start transferring data to one of the other nodes specified.  
 {PANEL/}

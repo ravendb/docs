@@ -1,4 +1,4 @@
-﻿# Create A Database : From Legacy Files
+﻿# Create a Database : From Legacy Files
 ---
 
 Page under construction

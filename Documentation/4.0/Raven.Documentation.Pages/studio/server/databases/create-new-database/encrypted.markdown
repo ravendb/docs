@@ -1,13 +1,13 @@
-﻿# Create A Database : Encrypted
+﻿# Create a Database : Encrypted
 ---
 
 {NOTE: }
 
 * Encryption is possible only if authentication is enabled and a server certificate is defined
 
-* Learn more about encryption in: [Encryption At Rest](../../../../server/security/encryption/encryption-at-rest)  
-  Learn how to enable authentication in: [Automated Setup Wizard](../../../../start/installation/setup-wizard) or in [Manual Certificate Configuration](../../../../server/security/authentication/certificate-configuration)  
-  Learn about the secret key in: [Secret Key Management](../../../../server/security/encryption/secret-key-management)  
+* Learn more about **encryption** in: [Encryption At Rest](../../../../server/security/encryption/encryption-at-rest)  
+  Learn how to enable **authentication** in: [Certificate Configuration](../../../../server/security/authentication/certificate-configuration)  
+  Learn about the **secret key** in: [Secret Key Management](../../../../server/security/encryption/secret-key-management)  
 {NOTE/}
 
 ---

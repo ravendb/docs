@@ -1,4 +1,4 @@
-﻿# Create A Database : General Flow
+﻿# Create a Database : General Flow
 ---
 
 {NOTE: }
