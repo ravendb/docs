@@ -1,39 +1,56 @@
-﻿# Operations : Compare Exchange : How to Get Compare Exchange Values?
+﻿# Operations : Compare Exchange : How to Get Compare Exchange Values
 
-**GetCompareExchangeValuesOperation** is used to return a saved compare-exchange values.
+---
 
-{NOTE You can learn about 'Compare Exchange' concepts in [dedicated article](../../../server/compare-exchange) /}
+{NOTE: }
 
-## Syntax
+* Use `GetCompareExchangeValuesOperation` to return the saved compare-exchange _Values_ for the specified _Keys_.  
 
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/compare-exchange)
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)  
+  * [Example I - Get Value for Specified Keys](../../../client-api/operations/compare-exchange/get-compare-exchange-values#example-i---get-values-for-specified-keys)  
+  * [Example II - Get Values for Keys with Common Prefix](../../../client-api/operations/compare-exchange/get-compare-exchange-values#example-ii---get-values-for-keys-with-common-prefix)  
+{NOTE/}
+
+---
+
+{PANEL: Syntax}
+
+**Methods**:
 {CODE get_list_0@ClientApi\Operations\CompareExchange.cs /}
 
 {CODE get_list_1@ClientApi\Operations\CompareExchange.cs /}
 
+| Parameters | Type | Description |
+| ------------- | ------------- | ----- |
+| **keys** | string[] | List of keys to get |
+| **startWith** | string | A common prefix for those keys whose values should be returned |
+| **start** | int | The number of items that should be skipped |
+| **pageSize** | int | The maximum number of values that will be retrieved |
+
+**Returned object**:
 {CODE compare_exchange_value@ClientApi\Operations\CompareExchange.cs /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **keys** | string[] | List of compare-exchange names to get |
-| **startWith** | string | prefix for which compare-exchange values should be returned |
-| **start** | int | number of compare-exchange values that should be skipped  |
-| **pageSize** | int | maximum number of compare-exchange values that will be retrieved |
-
-
-| Return Value | |
+| Return Value | Description |
 | ------------- | ----- |
-| `Dictionary<string, CompareExchangeValue<T>>` | Dictionary contains key to value associations |
+| `Dictionary<string, CompareExchangeValue<T>>` | A Dictionary containing _'Key'_ to _'CompareExchangeValue'_ associations |
+{PANEL/}
 
-## Example I 
+{PANEL: Example I - Get Values for Specified Keys}
 
-{CODE get_list_2@ClientApi\Operations\CompareExchange.cs /}
+{CODE get_list_2@ClientApi\Operations\CompareExchange.cs /}  
+{PANEL/}
 
-## Example II
+{PANEL: Example II - Get Values for Keys with Common Prefix}
 
-{CODE get_list_3@ClientApi\Operations\CompareExchange.cs /}
+{CODE get_list_3@ClientApi\Operations\CompareExchange.cs /}  
+{PANEL/}
 
 ## Related Articles
 
-- [How to **get compare-exchange** value?](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [How to **put compare-exchange** value?](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
-- [How to **delete compare-exchange** value?](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Compare Exchange - Overview](../../../server/compare-exchange)
+- [Get compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
+- [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

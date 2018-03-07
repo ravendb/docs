@@ -10,6 +10,8 @@ namespace Raven.Documentation.Samples.Server
 {
     public class CompareExchange
     {
+        private DocumentStore store;
+
         private class User
         {
             public string Email { get; set; }
@@ -32,53 +34,50 @@ namespace Raven.Documentation.Samples.Server
                 using (IDocumentSession session = store.OpenSession())
                 {
                     session.Store(user);
-                    // at this point user has Id field assigned
+                    // At this point, the user document has an Id assigned
 
-                    // try to reserve user e-mail - please notice this operation
-                    // takes place outside session transaction
-                    // and performing cluster-wide reservation
+                    // Try to reserve a new user email 
+                    // Note: This operation takes place outside of the session transaction, 
+                    //       It is a cluster-wide reservation
                     CompareExchangeResult<string> cmpXchgResult
                         = store.Operations.Send(
                             new PutCompareExchangeValueOperation<string>("emails/" + email, user.Id, 0));
 
                     if (cmpXchgResult.Successful == false)
-                        throw new Exception("Name is taken");
+                        throw new Exception("Email is already in use");
 
-                    // we managed to reserve user e-mail - save changes
+                    // At this point we managed to reserve/save the user email -
+                    // The document can be saved in SaveChanges
                     session.SaveChanges();
                 }
                 #endregion
-
             }
         }
 
-        public async Task Sample2()
-        {
-            using (var store = new DocumentStore())
-            {
-                #region email2
-                string email = "user@example.com";
-
-                User user = new User
-                {
-                    Age = 35,
-                    Email = email
-                };
-
-                CompareExchangeResult<User> saveResult 
-                    = store.Operations.Send(new PutCompareExchangeValueOperation<User>("emails/" + email, user, 0));
-                #endregion
-
-            }
-        }
-
+        #region shared_resource
         private class SharedResource
         {
             public DateTime? ReservedUntil { get; set; }
         }
 
-        #region shared_resource
-        public long TryLockResource(IDocumentStore store, string resourceName, TimeSpan duration)
+        public void PrintWork() 
+        {
+            // Try to get hold of the printer resource
+            long reservationIndex = LockResource(store, "Printer/First-Floor", TimeSpan.FromMinutes(20));
+
+            try
+            {
+                // Do some work for the duration that was set.
+                // Don't exceed the duration, otherwise resource is available for someone else.
+            }
+
+            finally
+            {
+                ReleaseResource(store, "Printer/First-Floor", reservationIndex);
+            }
+        }
+
+        public long LockResource(IDocumentStore store, string resourceName, TimeSpan duration)
         {
             while (true)
             {
@@ -94,13 +93,14 @@ namespace Raven.Documentation.Samples.Server
 
                 if (saveResult.Successful)
                 {
-                    // value wasn't present - we managed to reserve
+                    // resourceName wasn't present - we managed to reserve
                     return saveResult.Index;
                 }
 
-                // put failed - someone else owns the lock or lock expired
+                // At this point, Put operation failed - someone else owns the lock or lock time expired
                 if (saveResult.Value.ReservedUntil < now)
                 {
+                    // Time expired - Update the existing key with the new value
                     CompareExchangeResult<SharedResource> takeLockWithTimeoutResult = store.Operations.Send(
                         new PutCompareExchangeValueOperation<SharedResource>(resourceName, resource, saveResult.Index));
 
@@ -110,24 +110,21 @@ namespace Raven.Documentation.Samples.Server
                     }
                 }
 
-                // wait a little bit and retry
+                // Wait a little bit and retry
                 Thread.Sleep(20);
             }
         }
 
         public void ReleaseResource(IDocumentStore store, string resourceName, long index)
         {
-            CompareExchangeResult<SharedResource> deleteResult 
+            CompareExchangeResult<SharedResource> deleteResult
                 = store.Operations.Send(new DeleteCompareExchangeValueOperation<SharedResource>(resourceName, index));
 
-            // we have 2 options here:
+            // We have 2 options here:
             // deleteResult.Successful is true - we managed to release resource
             // deleteResult.Successful is false - someone else took the look due to timeout 
-            //    it is also valid state
-
         }
 
         #endregion
-
     }
 }

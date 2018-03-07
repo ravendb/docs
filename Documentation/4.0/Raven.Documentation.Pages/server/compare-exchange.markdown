@@ -1,69 +1,102 @@
-# Compare Exchange 
+# Compare Exchange Overview 
+---
 
-Compare exchange feature allows you to perform cluster-wide interlocked distributed operations. 
-This gives ability to create unique constraints, because you can to reserve values for particular documents. 
+{NOTE: }
 
-{NOTE: Migration from 3.X}
-If you are migrating from RavenDB 3.X unique constraints feature, compare exchange is replacement for this functionality. 
+* The **Compare Exchange** feature allows you to perform cluster-wide _interlocked_ distributed operations.  
+
+* Unique **Keys** can be reserved in the [Database Group](../studio/database/settings/manage-database-group) accross the cluster.  
+  Each key has an associated **Value**.  
+
+* Modifying these values is an ***interlocked compare exchange*** operation.  
+
+* The Compare Exchange Values can be accessed using RQL in a query - see examples below 
+
+* In this page:  
+  * [Compare Exchange Transaction Scope](../server/compare-exchange#compare-exchange-transaction-scope)  
+  * [Creating a Key](../server/compare-exchange#creating-a-key)  
+  * [Updating a Key](../server/compare-exchange#updating-a-key)  
+  * [Example I - Email Address Reservation](../server/compare-exchange#example-i---email-address-reservation)  
+  * [Example II- Reserve a Shared Resource](../server/compare-exchange#example-ii---reserve-a-shared-resource)  
 {NOTE/}
 
-## How it works
+{NOTE: Migration from 3.X}
 
-Compare exchange value can be arbitrary object. When saving value, user has to provide:
+* This feature replaces the unique constraints feature from RavenDB 3.X
+{NOTE/}
+
+---
+
+{PANEL: Compare Exchange Transaction Scope}
+
+* Since the compare-exchange operations guarantee atomicity across the entire cluster, 
+  the feature is **not** using the transaction associated with a session object, as a session transaction spans only a single node.  
+
+* So if a compare-exchange operation has failed when used inside a session block, it will **not** be rolled back automatically upon a session transaction failure.  
+{PANEL/}
+
+{PANEL: Creating a Key}
+
+* Provide the following when saving a **key**:
 
 | Parameter | Description |
 | ------------- | ---- |
-| **key** | represents values under which value is saved |
-| **value** | any json value is permitted: string, boolean, number, array or object |
-| **index** | used for concurrency control |
+| **Key** | A string under which _Value_ is saved, unique in the database scope across the cluster. |
+| **Value** | The Value that is associated with the _Key_. <br/>Can be a number, string, boolean, array or any JSON formatted object. |
+| **Index** | The _Index_ number is indicating the version of _Value_.<br/>The _Index_ is used for the concurrency control, similar to documents Etags. |
 
-### Creating values
+* When creating a _new_ 'Compare Exchange Key', the index should be set to `0`.  
 
-When creating 'Compare Exchange' value index should be set to `0`. Put will succeed only if, value with given key doesn't exist. 
+* The [Put](../client-api/operations/compare-exchange/put-compare-exchange-value) operation will succeed only if this key doesn't exist yet.  
 
-### Updating values
-
-Updating 'Compare Exchange' values can be divied into 2 phases:
-
-- First we read value by its key (we get index and object value).
-- Once value is updated, we provide index obtained during read operation and updated value. Put operation will succeed only, if index on server side matches index from save request, which means value was not updated by someone else between read and write operation. 
-
-{WARNING: Scope of compare exchange operations}
-Please notice that compare exchange operations are not using transaction associated with current session. It is caused by the fact,
-that atomicity is guaranteed across entire cluster, but session transaction spans single node.
-{WARNING/}
-
-{PANEL:Example}
-Compare Exchange can be used to maintain uniqness across user account e-mails. In example below we first try to reserve user e-mail, then
-we save user account document. 
-
-Implications:
-
-- since `User` object is saved as document, it can be indexed, queried, etc. 
-- if `SaveChanges` fails, user reservation is not rolled back
-
-{CODE email@Server\CompareExchange.cs /}
-
+* Note: Two different keys _can_ have the same values as long as the keys are unique.  
 {PANEL/}
 
-{PANEL:Example II}
+{PANEL: Updating a Key}
 
-Instead of making reservation and storing User object, you can save entire value inside compare exchange value. 
+* Updating a 'Compare Exchange' key can be divided into 2 phases:
 
-- it is fully atomic operation across entire cluster
-- since `User` object is not saved as document, it *can not* be indexed, queried, etc.
-- no need to handle partial failures
+  1. [Get](../client-api/operations/compare-exchange/get-compare-exchange-value) the existing _Key_. The associated _Value_ and _Index_ are received.  
 
-{CODE email2@Server\CompareExchange.cs /}
-
+  2. The _Index_ obtained from the read operation is provided to the [Put](../client-api/operations/compare-exchange/put-compare-exchange-value) operation along with the new _Value_ to be saved.  
+     This save will succeed only if the index that is provided to the 'Put' operation is the **same** as the index that was received from the server in the previous 'Get', 
+     which means that the _Value_ was not modified by someone else between the read and write operations.
 {PANEL/}
 
+{PANEL: Example I - Email Address Reservation}  
 
-{PANEL:Example III}
+* Compare Exchange can be used to maintain uniqueness across users emails accounts.  
 
-In this example we use compare exchange for shared resource reservation system. This reservation is cluster-wide. 
-It has build-in protection against clients, who never release resource (i.e. due to failure), by using timeout. 
+* First try to reserve a new user email.  
+  If the email is successfully reserved then save the user account document.  
+
+{CODE email@Server\CompareExchange.cs /}  
+
+**Implications**:
+
+* The `User` object is saved as a document, hence it can be indexed, queried, etc.  
+
+* If `session.SaveChanges` fails, the email reservation is _not_ rolled back automatically. It is your responsibility to do so.  
+
+* The compare exchange value that was saved can be accessed from `RQL` inside of a query:  
+
+{CODE-BLOCK:SQL}
+from Users as s where id() == cmpxchg("emails/ayende@ayende.com")  
+{CODE-BLOCK/}
+{PANEL/}
+
+{PANEL: Example II - Reserve a Shared Resource}  
+
+* Use compare exchange for a shared resource reservation.  
+
+* The code also checks for clients who never release resources (i.e. due to failure) by using timeout.  
 
 {CODE shared_resource@Server\CompareExchange.cs /}
-
 {PANEL/}
+
+## Related Articles
+
+- [Get a compare-exchange value](../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get compare-exchange values](../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a compare-exchange value](../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Delete a compare-exchange value](../client-api/operations/compare-exchange/delete-compare-exchange-value)

@@ -2,7 +2,7 @@
 ---
 
 {NOTE: }
-This dashboard provides a diagnostic overview of the RavenDB server performance and databases statuses.  
+This dashboard provides a diagnostic overview of the RavenDB server performance and databases state.  
 {NOTE/}
 
 ---
@@ -12,7 +12,6 @@ This dashboard provides a diagnostic overview of the RavenDB server performance 
 ![Figure 1. Server Dashboard](images/server-dashboard.png "Server Dashboard")
 
 1. **Server Node Details:**  
-
    Data about the running server such as:   
    * The server IP address   
    * Time it is up and running   
@@ -31,7 +30,8 @@ This dashboard provides a diagnostic overview of the RavenDB server performance 
    CPU & memory usage by the machine and by RavenDB
 
 5. **Indexing:**    
-   Number of documents indexed per second (total & for each database) with detailed info about mapped and reduced actions
+   * Number of documents indexed per second with detailed info about mapped and reduced actions  
+   * Showing total documents and per database  
 
 6. **Storage:**   
    Databases size on disk

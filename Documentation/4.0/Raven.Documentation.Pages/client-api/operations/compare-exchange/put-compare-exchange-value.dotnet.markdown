@@ -1,39 +1,64 @@
-﻿# Operations : Compare Exchange : How to Put Compare Exchange Value?
+﻿# Operations : Compare Exchange : How to Put Compare Exchange Value
 
-**PutCompareExchangeValueOperation** is used to save a compare-exchange value.
+---
 
-{NOTE You can learn about 'Compare Exchange' concepts in [dedicated article](../../../server/compare-exchange) /}
+{NOTE: }
 
-{WARNING When saving value first the index from request is compared to index on server (compare stage). When it is equal, value is updated (exchange stage).  /}
+* Use `PutCompareExchangeValueOperation` to save a compare-exchange _Value_ for the specified _Key_.  
 
-## Syntax
+* Create a new _Key_ or modify an existing one.  
 
+* The _Value_ is saved only if the index passed is equal to the index currently stored in the server for the specified _Key_.  
+
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/compare-exchange)  
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value#syntax)  
+  * [Example I - Create a New Key](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-i---create-a-new-key)  
+  * [Example II - Update an Existing Key](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-ii---update-an-existing-key)  
+{NOTE/}
+
+---
+
+{PANEL: Syntax}
+
+**Method**:
 {CODE put_0@ClientApi\Operations\CompareExchange.cs /}
 
+| Parameter | Type | Description |
+| ----------| ---- |------------ |
+| **key** | string | Object identifier under which _value_ is saved, unique in the database scope accross the cluster. |
+| **value** | `T` | The value to be saved for the specified _key_. |
+| **index** | long |  * `0` if creating a new key<br/>* The current version of _Value_ when updating a value for an existing key. |
+
+**Returned object**:
 {CODE compare_exchange_result@ClientApi\Operations\CompareExchange.cs /}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **key** | string | Object identifier |
-| **value** | `T` | Actual value |
-| **index** | long |  Index representing version of value. Used for concurrency control - just like Etag for documents  |
+| Return Value | Type | Description |
+| ------------ | - | - |
+| **Successful** | bool | * _True_ if the save operation has completed successfully<br/>* _False_ if the save operation failed |
+| **Value** | `T` | * The value that was saved if operation was sucessful<br/>* The currently existing value in the server upon failure |
+| **Index** | long | * The version number of the value that was saved upon success<br/>* The currently existing version number in the server upon failure |
 
-| Return Value | | |
-| ------------- | ----- | ---- |
-| **Successful** | bool | True, if exchange was completed successfully |
-| **Index** | long | Index representing version of value. Used for concurrency control - just like Etag for documents |
-| **Value** | `T` | Current value |
+{NOTE: Note:}
+When calling the 'Put' operation, the index from the request is compared to the index that is currently stored in the server (compare stage).  
+The value is updated only if the two are **equal** (exchange stage).  
+{NOTE/}
+{PANEL/}
 
-## Example I 
+{PANEL: Example I - Create a New Key}
 
 {CODE put_1@ClientApi\Operations\CompareExchange.cs /}
+{PANEL/}
 
-## Example II
+{PANEL: Example II - Update an Existing Key}
 
 {CODE put_2@ClientApi\Operations\CompareExchange.cs /}
+{PANEL/}
 
 ## Related Articles
 
-- [How to **get compare-exchange** value?](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [How to **get compare-exchange** values?](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [How to **delete compare-exchange** value?](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Compare Exchange - Overview](../../../server/compare-exchange)
+- [Get a compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
