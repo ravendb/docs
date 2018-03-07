@@ -4,7 +4,12 @@
         "Name": "Configuration Options",
         "Mappings": []
     },
-        {
+    {
+        "Path": "command-line-arguments.markdown",
+        "Name": "Command Line Arguments",
+        "Mappings": []
+    },
+    {
         "Path": "backup-configuration.markdown",
         "Name": "Backup Options",
         "Mappings": []

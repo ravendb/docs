@@ -43,6 +43,10 @@ The server can be configured using command line arguments that can be passed to 
 ./Raven.Server --Setup.Mode=None
 {CODE-BLOCK/}
 
-{NOTE These command line arguments override the settings of environment variables and the `settings.json`. /}
+{NOTE These command line arguments override the settings of environment variables and the `settings.json`. More details about Command Line Arguments can be found [here](../../server/configuration/command-line-arguments). /}
 
 {PANEL/}
+
+## Related articles
+
+- [Command Line Arguments](../../server/configuration/command-line-arguments)
