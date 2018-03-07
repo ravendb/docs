@@ -3,7 +3,7 @@
         "Path": "blittable-json-reader-object.markdown",
         "Name": "BlittableJsonReaderObject",
         "Mappings": []
-    },        
+    },
     {
         "Path": "raft-algorithm.markdown",
         "Name": "Raft Consensus Algorithm",
@@ -28,7 +28,7 @@
         "Path": "ravendb-cluster.markdown",
         "Name": "RavenDB Cluster",
         "Mappings": []
-    },    
+    },
     {
         "Path": "database-group.markdown",
         "Name": "Database Group",
@@ -68,5 +68,9 @@
         "Path": "put-command-data.markdown",
         "Name": "PutCommandData",
         "Mappings": []
+    },
+    {
+        "Path": "voron-recovery-tool.markdown",
+        "Name": "Voron Recovery Tool"
     }
 ]

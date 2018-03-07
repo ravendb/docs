@@ -1,40 +1,31 @@
 ﻿#Recovering from Voron errors 
 
-##Symptoms: 
-- RavenDB server side error messages like:
-    - VoronUnrecoverableErrorException: `Index points to a non leaf page`
-    - VoronUnrecoverableErrorException: `Was unable to retrieve the correct node. Data corruption possible`
-    - VoronUnrecoverableErrorException: `Error syncing the data file. The last sync tx is...`
+Voron errors which are described in this article are indicators that something had horribly gone wrong.
+Thus, if such errors happen, they need to be reported as soon as possible to [RavenDB support](mailto:support@ravendb.net).
 
-##Cause:
-1. Hardware failure.
-2. File system doesn't support `fsync`.
+##Symptoms: 
+RavenDB info level logs will contain the following exceptions:  
+  1. VoronUnrecoverableErrorException: `Index points to a non leaf page`  
+  2. VoronUnrecoverableErrorException: `Was unable to retrieve the correct node. Data corruption possible`  
+  3. VoronUnrecoverableErrorException: `Error syncing the data file. The last sync tx is...`  
+
+##Possible Causes:
+Such exceptions are caued by the corruption of a Voron data file.
+First, it is possible that the data file is corrupted due to critical bug.
+Also, data file corruption is likely to happen due to a hardware failure,if the file system doesn't support `fsync` functionality, or the storage hardware does not respect the `fsync` commands.
+
+{NOTE In Unix based OS it is a `fsync` command, in Windows OS, it is a matter of creating a file with a 'Write-Through' flag. /}
+
+For more information about this see:  
+  1. For Unix based systems, see [this article](http://www.tutorialspoint.com/unix_system_calls/fsync.htm).  
+  2. For Windows systems, see [this article](https://msdn.microsoft.com/en-us/library/windows/desktop/aa364218(v=vs.85).aspx).  
 
 ##Resolution:
-1. Identify and replace faulty disk.
-2. Restore your database from backup.
-3. If you don't have a recent backup use the Voron's recovery tool to extract your data as smuggler dump and import it to a newly created database.
+{NOTE If the corruption is caused by a hardware failure, identify and replace the faulty disk. /}
 
-##Voron recovery
+For the best results, simply restore a new database from a backup. For more information, see an article about [backup configuration](../server/configuration/backup-configuration).  
 
-Voron recovery tool is designed to extract your data even on the worst corruption state imaginable.
-The ussage it pretty simple, you invoke Voron.Recovery.exe <Voron data-file directory> <Revcovery directory> and it should generate a `recovery.ravendump` under the selected direcory.
-The process may take a while to run, a few seconds per GByte of data.
-Voron.Recovery will produce a final report stating the amound of documents and attachments recovered, it will also state the number of corrupted pages found so you could estimate the size of lost data.
-
-Additional flags:
-
-`--OutputFileName`: overwrite the default output file name
-
-`--PageSizeInKB`: overwrite the expected Voron page size of 8KB, should never be used unless told by the support team.
-
-`--InitialContextSizeInMB`: overwrite the starting size of memory used by the recovery tool, default is 4KByte.
-
-`--InitialContextLongLivedSizeInKB`: overwirte the starting size of memory used by the recovery tool for long lived objects, default is 4KByte.
-
-`--ProgressIntervalInSec`: overwrite the time interval in which the recovery tool refreshes the report in the console.
-
-`--DisableCopyOnWriteMode`: disables the copy on write, this should be used when recovering the journals failed (probably because they are corrupted), you should backup the data-file before using this option.
-
-`--LoggingMode`: controls the logging level, either Operations or `Information` are `valid`.
-
+If there is no recent/relevant backup available, it is possible to use the [Voron Recovery Tool](../glossary/voron-recovery-tool).  
+This tool can be used to recover intact data from the corrupted file and import it to a newly created database.  
+  
+If the corruption has affected an index, it should be reset in order to restore normal functionality.
