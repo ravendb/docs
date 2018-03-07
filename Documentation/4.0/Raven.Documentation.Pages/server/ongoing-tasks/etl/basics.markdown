@@ -1,116 +1,145 @@
-﻿#Ongoing Tasks: ETL
+﻿# Ongoing Tasks: ETL Basics
+---
 
-RavenDB has the notion of extract, transform, load (ETL) process that transfers data from RavenDB to an external target. The target can be another
-RavenDB instance (outside the database group in a cluster environment) or a relational database.
+{NOTE: }
 
-ETL is the three stage process:
+* **ETL (Extract, Transform & Load)** is a three-stage RavenDB process that transfers data from a RavenDB database to an external target. 
+  The data can be filtered and transformed along the way.  
 
-- extract documents from a database,
-- transform (and filter) them according to the script (optional),
-- load transformed results into a destination.
+* The external target can be:  
+  * Another RavenDB database instance (outside of the [Database Group](../../../studio/database/settings/manage-database-group)) -or-  
+  * A relational database  
 
-## Why use ETL?
+* In this page:  
+  * [Why use ETL](../../../server/ongoing-tasks/etl/basics#why-use-etl)  
+  * [Defining ETL Tasks](../../../server/ongoing-tasks/etl/basics#defining-etl-tasks)  
+  * [ETL Stages:](../../../server/ongoing-tasks/etl/basics#etl-stages)  
+      * [Extract](../../../server/ongoing-tasks/etl/basics#extract)  
+      * [Transform](../../../server/ongoing-tasks/etl/basics#transform)  
+      * [Load](../../../server/ongoing-tasks/etl/basics#load)  
+{NOTE/}
 
-There are several reasons why you'll want to use this feature. In terms of deployment, it gives you an easy way to transfer part of a database's data 
-without the need to send full details.
+---
 
-A typical example would be a product catalog that is shared among multiple tenants where each tenant can modify the products or add new ones.
+{PANEL: Why use ETL}
 
-Another example is the reporting database. RavenDB is a wonderful database for OLTP scenarios but for reporting you might use an existing solution working on
-a relational database. In order to push RavenDB data there we need to transform it to match the relational model.
+* **Share relevant data**  
+  Data that needs to be shared can be sent in a well-defined format matching your requirements so that only relevant data is sent.  
 
+* **Protect your data - Share partial data**  
+  Limit access to sensitive data, details that should remain private can be filtered out as you can sare partial data.  
 
-## ETL Tasks
+* **Reduce system calls**  
+  Distribute data to related services in your system architecture so that they have their _own copy_ of the data and can access it without making a cross-service call.  
+  i.e. A product catalog can be shared among multiple stores where each can modify the products or add new ones.  
 
-As mentioned, RavenDB supports two types of ETL destinations:
+* **Transform the data**  
+  * Modify content sent as needed with a javascript script.  
+  * Multiple documents can be sent from a single source document.  
+  * Data can be transformed to match a _rational model_ used in the target destination.  
 
-- another RavenDB database
-- SQL database
+* **Aggregate your data**  
+  Data sent from multiple locations can be aggregated in a central server.  
+  For example:
+  *  Send data to an already existing reporting solution.  
+  *  Point of sales systems can send sales data to a central place for calculations.  
+{PANEL/}
 
-The ETL process can be defined in the Studio using the following tasks:
+{PANEL: Defining ETL Tasks}
 
-- RavenDB ETL
-- SQL ETL
+* The following two ETL tasks can be defined:  
+  * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven) - send data to another _RavenDB database_  
+  * [SQL ETL](../../../server/ongoing-tasks/etl/sql) - send data to a _SQL database_  
 
-## Connection String
+* The destination URL address is set by using a pre-defined named _connection string_.  
+  This makes deployment between environments easier.  
+  For RavenDB ETL, multiple URLs can be configured in the connection string as the target database can reside on multiple nodes within the Database Group in the destination cluster. 
+  Thus, if one of the destination nodes is down, RavenDB will run the ETL process against another node in the Database Group topology.  
+  See more in [Connection Strings](../../../todo-update-me-later)
 
-The URL address of a destination is defined using a named connection string. The connection string is defined separately. The ETL refers to it only. 
-It makes the deployment easier between environments. Also, because RavenDB ETL works between clusters, you may need to define multiple URLs and it's simpler to put
-them all in a single location.
+* The tasks can be defined from code or from the [Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
+{PANEL/}
 
-{PANEL:Stages}
+{PANEL: ETL Stages}
+
+ETL's three stages are:  
+
+* [Extract](../../../server/ongoing-tasks/etl/basics#extract) - Extract the documents from the database  
+* [Transform](../../../server/ongoing-tasks/etl/basics#transform) - Transform & filter the documents data according to the supplied script (optional)  
+* [Load](../../../server/ongoing-tasks/etl/basics#load) - Load (write) the transformed data into the target destination  
 
 ### Extract
 
-ETL process starts from retrieving documents from a database. You can choose which documents will be processed by next two stages (transform and load). The possible options are:
+ETL process starts with retrieving the documents from the database.  
+You can choose which documents will be processed by next two stages (Transform and Load).  
+The possible options are:  
 
-- documents from a single collection
-- documents from multiple collections
-- all documents (only for RavenDB ETL)
+* Documents from a single collection  
+* Documents from multiple collections  
+* All documents (RavenDB ETL only)  
 
 ### Transform
 
-The essence of ETL process is being able to send only data that is relevant. This stage transforms and filters the extracted documents according to a provided script.
-The script is written in JavaScript and its input is a document. In addition to ECMAScript 5.1 API, RavenDB introduces the following functions and members:
+This stage transforms and filters the extracted documents according to a provided script.  
+Any transformation can be done so that only relevant data is shared.  
+The script is written in JavaScript and its input is a document.  
+
+In addition to ECMAScript 5.1 API, RavenDB introduces the following functions and members:  
+
+| ------ | ------ | ------ |
+| `this` | object | The current document (with metadata) |
+| `id(document)` | function | Returns the document ID |
+| `load(id)` | function | Load another document.<br/>This will increase the maximum number of allowed steps in a script.<br/>**Note**: Changes made to the other _loaded_ document will _not_ trigger the ETL process.|
+
+Specific ETL functions:  
 
 | ------ |:------:| ------ |
-| `this` | object | Current document (with metadata) |
-| `id(document)` | function | Returns the ID of a document|
-| `load(id)` | function | Allows document loading, increases the maximum number of allowed steps in a script. |
+| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target must be either a collection name (RavenDB ETL) or a table name (SQL ETL).<br/>**An object will be sent to the destination only if** `loadTo` method was called.|
+| `loadAttachment(name)` | function | Load an attachment (SQL ETL only) |
 
-The functions specific for ETL:
+{INFO: Batch processing}
 
-| ------ |:------:| ------ |
-| `loadTo<Target>(obj)` | function | Indicates to load an object to a specified `<Target>`. The target must be either the name of a collection (RavenDB ETL) or a table (SQL ETL). |
-| `loadAttachment(name)` | function | Loads an attachment (SQL ETL only) |
+Documents are extracted and transformed by the ETL process in a batch manner.  
+The number of documents processed depends on the following configuration limits:  
 
-You can do any transformation and send only data you are interested in sharing. Here is an example of RavenDB ETL script processing documents from `Employees` collection:
+* [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration#etl.extractandtransformtimeoutinsec) (default: 300 sec)  
+  Timeframe for the extraction and transformation stages (in seconds), after which the loading stage will start.  
 
-{CODE-BLOCK:javascript}
-
-var managerName = null;
-
-if (this.ReportsTo !== null)
-{
-    var manager = load(this.ReportsTo);
-    managerName = manager.FirstName + " " + manager.LastName;
-}
-
-loadToEmployees({
-    Name: this.FirstName + " " + this.LastName,
-    Title: this.Title ,
-    BornOn: new Date(this.Birthday).getFullYear(),
-    Manager: managerName
-});
-{CODE-BLOCK/}
-
-{WARNING: Filtering}
-
-An object will be sent to the destination **only** if `loadTo` method was called.
-
-{WARNING /}
-
-Destination type specific details about ETL scripts can be found in dedicated articles about [RavenDB ETL]() and [SQL ETL]().
-
-{INFO:Batch processing}
-
-The documents are extracted and processed in batch manner. The behavior is that the ETL process gets and transform as many documents as possible preserving the following configuration limits:
-
-- [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration#etl.extractandtransformtimeoutinsec) (default: 300 sec): the number of seconds after which the extraction and transformation will end and the loading stage will start
-- [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null): max number of extracted documents in ETL batch
+* [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null)  
+  Max number of extracted documents in an ETL batch.  
 
 {INFO/}
 
 ### Load
 
-The last stage is loading the results to a destination. The important note is that the ETL, in contrast to the replication, is a push-only process that writes data to the destination
-whenever documents from relevant collections get changed. It means it always overwrites existing entries on the target. The updates are implemented by executing consecutive DELETEs and INSERTs.
-When a document is modified the delete command is sent before the new data is inserted (everything is processed under the same transaction on the destination side). It applies to both types of ETLs.
+* Loading the results to the target destination is the last stage.
 
-There are two exceptions from this behavior:
+* Note: In contrast to Replication, ETL is a push-only process that _writes_ data to the destination
+  whenever documents from the relevant collections were changed. Existing entries on the target will always be _overwritten_.  
 
-- in RavenDB ETL when documents are loaded to **the same** collection there is no need to sent DELETE because the document on the other side have the same identifier and it will just update it,
-- in SQL ETL you can configure it to use inserts only, which is a viable option for append-only systems
+* Updates are implemented by executing consecutive DELETEs and INSERTs.  
+  When a document is modified, the delete command is sent before the new data is inserted,  
+  and both are processed under the same transaction on the destination side.  
+  This applies to both ETL types.  
+
+* There are two exceptions to this behavior:  
+  * In RavenDB ETL - when documents are loaded to **the same** collection there is no need to send DELETE because the document on the other side has the same identifier and it will just update it.  
+  * in SQL ETL - you can configure to use inserts only, which is a viable option for append-only systems.  
 
 {PANEL/}
+
+{NOTE: }
+
+Type specific ETL scripts details and examples can be found in the following articles:  
+
+* [RavenDB ETL](../../../server/ongoing-tasks/etl/raven)  
+* [SQL ETL](../../../server/ongoing-tasks/etl/sql)  
+{NOTE/}
+
+## Related Articles
+
+- [RavenDB ETL Task](../../../server/ongoing-tasks/etl/raven)
+- [SQL ETL Task](../../../server/ongoing-tasks/etl/sql)
+- [Define RavenDB ETL Task in Studio](../../../todo-update-me-later)
+- [Define SQL ETL Task in Studio](../../../todo-update-me-later)
 

@@ -10,9 +10,9 @@
   * [External Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
       * Replicate the database documents to another RavenDB database that is not on this Database Group  
       * A live copy of the data, on the local cluster or another cluster  
-  * [RavenDB ETL](../../../todo-update-me-later)  
+  * [RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
       * Write all database documents, or just part of it, to another RavenDB database  
-      * Data can be mutated with transformation scripts  
+      * Data can be filtered and modified with transformation scripts  
   * [SQL ETL](../../../todo-update-me-later)  
       * Write the database data to a relational database  
       * Data can be mutated with transformation scripts  
@@ -69,12 +69,12 @@
 
 * Select the preferred task to add  
   1. See [adding Extrenal Replication](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) task  
-  2. See [adding RavenDB ETL](../../../todo-update-me-later) task  
+  2. See [adding RavenDB ETL](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) task  
   3. See [adding SQL ETL](../../../todo-update-me-later) task  
   4. See [adding Backup](../../../../studio/database/tasks/ongoing-tasks/backup-task) task  
   5. See [adding Subscription](../../../todo-update-me-later) task  
 
-* Once the task is defined and saved, it will be written to the [Database Record](../../../todo-update-me-later)  
+* Once the task is defined and saved, it will be written to the [Database Record](../../../../studio/database/settings/database-record)  
 
 * The cluster will decide which node will actually be responsible for doing the task - see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties)  
 {PANEL/}
