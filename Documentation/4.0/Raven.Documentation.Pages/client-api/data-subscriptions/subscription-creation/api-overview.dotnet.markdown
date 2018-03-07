@@ -1,5 +1,4 @@
 ﻿# API overview
----
 
 In this page:  
 [Subscription creation overloads summary](#create-and-createasync-overloads-summary)  
@@ -45,7 +44,7 @@ An RQL statement will be built based on the fields.
 |--------|:-----|-------------| 
 | **&lt;T&gt;** | type | Type of the object, from which the collection will be derived. |
 | **Name** | `string` | User defined name of the subscription: allows to have a human readable identification of a subscription. The name must be unique in the database. |
-| **Filter** | `Expression<Func<T, bool>>` | Lambda describing filter logic for the subscription. Will be transalted to a javascript function.
+| **Filter** | `Expression<Func<T, bool>>` | Lambda describing filter logic for the subscription. Will be translated to a javascript function.
 | **Projection** | `Expression<Func<T, object>>` | Lambda describing the projection of returned documents. |Will be translated to a javascript function
 | **ChangeVector** | `string` | Allows to define a change vector, from which the subscription will start processing. It might be useful for ad-hoc processes that need to process only recent changes in data, for that specific use, the field may receive a special value: "LastDocument", that will take the latest change vector in the machine. |
 | **MentorNode** | `string` | Allows to define a specific node in the cluster that we want to treat the subscription. That's useful in cases when one server is preffered over other, either because of stronger hardware or closer geographic proximity to clients etc. |
@@ -59,7 +58,7 @@ All subscriptions, are eventually translated to an RQL-like statement. These sta
 * Functions definition part, like in ordinary RQL. Those functions can contain any javascript code,
   and also supports `load` operations.
 
-* From statement, defining the socuments source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
+* From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
 send the documents to the worker or not. Those statements support the regular RQL syntax, 
@@ -108,4 +107,4 @@ The subscription should be defined in a special way:
 ## Related articles
 
 - [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../SubscriptionConsumption/how-to-consume-data-subscription)
+- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)

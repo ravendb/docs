@@ -1,5 +1,5 @@
 ﻿# Subscription consumption examples
----
+
 In this page:  
 
 [Worker with a specified batch size](#worker-with-a-specified-batch-size)  
@@ -9,7 +9,6 @@ In this page:
 [Subscription that works with lowest level API](#subscription-that-works-with-lowest-level-api)  
 [Two subscription workers that are waiting for each other](#two-subscription-workers-that-are-waiting-for-each-other)  
 
----
 
 {PANEL:Worker with a specified batch size}
 
@@ -30,7 +29,7 @@ Here we implement a client that treats exceptions thrown by worker, and retries 
 {PANEL:Subscription that ends when no documents left}
 
 Here we create a subscription client that runs only up to the point there are no more new documents left to process.  
-This is usefull for an ad-hoc single use processing, that user wants to be sure is performed entirely
+This is useful for an ad-hoc single use processing, that user wants to be sure is performed entirely
 
 {CODE single_run@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -47,8 +46,8 @@ Here we create a worker that processes received data as dynamic objects
 
 {PANEL:Subscription that works with lowest level API}
 
-Here we create a subscription that works with blittable document representation, that can be usefull in very high performance scenarios, 
-but may be dangersous due to the direct usage of unmanaged memory
+Here we create a subscription that works with blittable document representation, that can be useful in very high performance scenarios, 
+but may be dangerous due to the direct usage of unmanaged memory
 
 {CODE blittable_worker@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -74,4 +73,4 @@ Secondary worker:
 ## Related articles
 
 - [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **create** a data subscription?](../SubscriptionCreation/how-to-create-data-subscription)
+- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)

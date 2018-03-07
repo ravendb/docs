@@ -1,5 +1,4 @@
 ﻿# Common subscription creation examples
----
 
 In this page:  
 
@@ -9,7 +8,6 @@ In this page:
 [Create subscription with load document in filter projection](#create-subscription-with-load-document-in-filter-projection)  
 [Create revisions enabled subscription](#create-revisions-enabled-subscription)  
 
----
 
 {PANEL:Create subscription on all documents in a collection}
 
@@ -54,7 +52,7 @@ Here we create a subscription on Orders collection, which total order revenue is
 {PANEL:Create revisions enabled subscription}
 
 Here we create a subscription on Orders collection, which returns current and previous version of the subscriptions. 
-Please see the [page](../AdvancedTopics/SubscriptionWithRevisioning) dedicated to subscriptions with revisions for more details and exmpales.
+Please see the [page](../advanced-topics/subscription-with-revisioning) dedicated to subscriptions with revisions for more details and examples.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Generic-syntax create_simple_revisions_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
@@ -66,4 +64,4 @@ Please see the [page](../AdvancedTopics/SubscriptionWithRevisioning) dedicated t
 ## Related articles
 
 - [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../SubscriptionConsumption/how-to-consume-data-subscription)
+- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)

@@ -1,19 +1,17 @@
-﻿# Maintainance operation
----
+﻿# Maintenance operation
 
-{NOTE: }
-This page covers data subscriptions maintainance operations:  
+This page covers data subscriptions maintenance operations:  
+
 [Deletion](#deletion)  
 [Dropping Connection](#dropping-connection)  
 [Disabling subscription](#disabling-subscription)  
 [Updating subscription](#updating-subscription)  
 [Getting subscription status](#getting-subscription-status)  
 [DocumentSubscriptions class](#documentsubscriptions-class)  
-{NOTE/}
 
 {PANEL: Deletion}
 Subscriptions can be entirely deleted from the system.  
-This operation can be very usefull in ad-hoc subscription scenarios, when a lot of subscriptions tasks information may accamulate, making tasks management very hard.  
+This operation can be very useful in ad-hoc subscription scenarios, when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
 
 {CODE interface_subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -62,7 +60,7 @@ usage:
 | **MentorNode** | `string` | The mentor node that was manually set. |
 | **SubscriptionName** | `string` | Subscription's name, and also it's unique identifier |
 | **SubscriptionId** | `long` | Subscription's internal identifier (cluster's operation etag during subscription creation) |
-| **ChangeVectorForNextBatchStartingPoint** | `string` | Change vector, starting from which the subscription will send documents. This value is updated manually, or automatically on batch acknowledgement  |
+| **ChangeVectorForNextBatchStartingPoint** | `string` | Change vector, starting from which the subscription will send documents. This value is updated manually, or automatically on batch acknowledgment  |
 | **Disabled** | `bool` | If true, subscription will not allow workers to connect |
 | **LastClientConnectionTime** | `DateTime?` | Time when last client was connected (value sustained after disconnection) |                
 
@@ -99,5 +97,5 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 ## Related articles
 
 - [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../SubscriptionConsumption/how-to-consume-data-subscription)
-- [How to **create** a data subscription?](../SubscriptionCreation/how-to-create-data-subscription)
+- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)

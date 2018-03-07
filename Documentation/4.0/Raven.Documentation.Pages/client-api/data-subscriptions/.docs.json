@@ -5,17 +5,17 @@
         "Mappings": []
     },
     {
-        "Path": "/SubscriptionCreation",
+        "Path": "/subscription-creation",
         "Name": "Creation",
         "Mappings": []
     },
     {
-        "Path": "/SubscriptionConsumption",
+        "Path": "/subscription-consumption",
         "Name": "Consumption",
         "Mappings": []
     },
     {
-        "Path": "/AdvancedTopics",
+        "Path": "/advanced-topics",
         "Name": "Advanced topics",
         "Mappings": []
     }

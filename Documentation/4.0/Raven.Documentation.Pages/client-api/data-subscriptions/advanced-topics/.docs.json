@@ -1,0 +1,12 @@
+[
+    {
+        "Path": "subscription-with-revisioning.markdown",
+        "Name": "Revisions support",
+        "Mappings": []
+    },
+    {
+        "Path": "maintenance-operations.markdown",
+        "Name": "Maintenance operations",
+        "Mappings": []
+    }
+]

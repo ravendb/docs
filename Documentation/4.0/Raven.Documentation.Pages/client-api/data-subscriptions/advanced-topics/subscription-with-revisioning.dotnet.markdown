@@ -1,10 +1,7 @@
 ﻿# Revisions support
----
-
-{NOTE: }
 
 Data subscription supports subscribing not only on documents, but also on all their revisions.  
-Revision support should be defined in the subscription, it also requires revisions to be configured on the colleciton in question.  
+Revision support should be defined in the subscription, it also requires revisions to be configured on the collection in question.  
 While regular subscriptions process single documents, subscription on documents revisions processes pairs of subsequent document revisions.  
 Such functionality allows keeping track of each change that was performed on a document, and even to compare two subsequent versions of a document.  
 Both document revisions are accessible in the filtering and the projection process.
@@ -14,15 +11,13 @@ In this page:
 [Simple declaration and usage](#simple-declaration-and-usage)   
 [Revisions processing and projection](#revisions-processing-and-projection)  
 
-{NOTE/}
-
 {PANEL:Revisions processing order}
-Documents revisions will be processed in paris, meaning if a document was changed 6 times in a row, subscription will process 6 times 6 pairs of versions of that document.
-{WARNING For the subscription revisions to work properly, it's crucial to make sure that the revisioning configuration stores documents revisions enough time, without discarding unprocessed revisions/}
+Documents revisions will be processed in pairs, meaning if a document was changed 6 times in a row, subscription will process 6 times 6 pairs of versions of that document.
+{WARNING For the subscription revisions to work properly, it's crucial to make sure that the revisions configuration stores documents revisions enough time, without discarding unprocessed revisions/}
 {PANEL/}
 
 {PANEL:Simple declaration and usage}
-Here we declare a simple revisions subscription, that will send pairs of susbsequent document revisions to the client
+Here we declare a simple revisions subscription, that will send pairs of subsequent document revisions to the client
 
 Creation:
 {CODE-TABS}
@@ -35,7 +30,7 @@ Consumption:
 {PANEL/}
 
 {PANEL:Revisions processing and projection}
-Here we declare a revisions subscription, that will filter and project data from revisions paris:
+Here we declare a revisions subscription, that will filter and project data from revisions pairs:
 
 Creation:
 {CODE-TABS}
@@ -50,5 +45,5 @@ Consumption:
 ## Related articles
 
 - [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../SubscriptionConsumption/how-to-consume-data-subscription)
-- [How to **create** a data subscription?](../SubscriptionCreation/how-to-create-data-subscription)
+- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)

@@ -1,16 +1,16 @@
 [
     {
         "Path": "how-to-create-data-subscription.markdown",
-        "Name": "About subscription creation",
+        "Name": "How to create a data subscription",
         "Mappings": []
     },
     {
-        "Path": "Examples.markdown",
+        "Path": "examples.markdown",
         "Name": "Examples",
         "Mappings": []
     },
     {
-        "Path": "ApiOverview.markdown",
+        "Path": "api-overview.markdown",
         "Name": "API overview",
         "Mappings": []
     }

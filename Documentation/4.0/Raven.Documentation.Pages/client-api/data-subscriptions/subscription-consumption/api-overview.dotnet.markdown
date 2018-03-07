@@ -1,5 +1,4 @@
 ﻿# API overview
----
 
 In this page:  
 
@@ -22,7 +21,7 @@ Subscription worker generation is accessible through `DocumentStore`'s `Subscrip
 
 | Return value | |
 | ------------- | ----- |
-| `SubscriptionWorker` | Created data subscription worker. When returned, the worker is Idle, and it will start working only when the `Run` funciton is called. |
+| `SubscriptionWorker` | Created data subscription worker. When returned, the worker is Idle, and it will start working only when the `Run` function is called. |
 
 
 {PANEL/}
@@ -33,7 +32,7 @@ Subscription worker generation is accessible through `DocumentStore`'s `Subscrip
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
-| **SubscriptionName** | `string` | Returns the subscription name passed to the ctor. This name will be used by the server side to identify the subscription in question. |
+| **SubscriptionName** | `string` | Returns the subscription name passed to the constructor. This name will be used by the server side to identify the subscription in question. |
 | **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | Time to wait before reconnecting, in case of non aborting failure during the subscription processing. Default: 5 seconds. |
 | **IgnoreSubscriberErrors** | `bool` | If true, will not abort subscription processing if client code, passed to the `Run` function throws unhandled exception. Default: false. |
 | **Strategy** | `SubscriptionOpeningStrategy`(enum) | Sets the way the server will treat current and/or other clients when they will try to connect, see [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OpenIfFree`. |
@@ -45,7 +44,7 @@ Subscription worker generation is accessible through `DocumentStore`'s `Subscrip
 {PANEL:Running subscription worker}
 
 After receiving a subscription worker, the subscription worker is still not processing any documents. SubscriptionWorker's `Run` function allows to start processing worker operation.  
-The `Run` function receives the client side code as a delegate that will process the recieved batches:
+The `Run` function receives the client side code as a delegate that will process the received batches:
 
 {CODE subscriptionWorkerRunning@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -67,7 +66,7 @@ The `Run` function receives the client side code as a delegate that will process
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
-| **Items** | `List<SubscriptionBatch&lt;T&gt;.Item>` | Batche's items list. |
+| **Items** | `List<SubscriptionBatch&lt;T&gt;.Item>` | Batch's items list. |
 | **NumberOfItemsInBatch** | `int` | Amount of items in the batch. |
 
 {INFO:SubscriptionBatch&lt;T&gt;.Item}
@@ -78,8 +77,8 @@ The `Run` function receives the client side code as a delegate that will process
 |--------|:-----|-------------| 
 | **Result** | `T` | Current batch item. |
 | **ExceptionMessage** | `string` | Message of the exception, thrown during current document processing in the server side. |
-| **Id** | `string` | Current batche item's underlying document Id . |
-| **ChangeVector** | `string` | Current batche item's underlying document change vector of the current document document. |
+| **Id** | `string` | Current batch item's underlying document Id . |
+| **ChangeVector** | `string` | Current batch item's underlying document change vector of the current document. |
 | **RawResult** | `BlittableJsonReaderObject` | Current batch item , before serialization to `T`. |
 | **RawMetadata** | `BlittableJsonReaderObject` | Current batch item's underlying document metadata. |
 | **Metadata** | `IMetadataDictionary` | Current batch item's underlying metadata values |
@@ -102,7 +101,7 @@ The `Run` function receives the client side code as a delegate that will process
 | **DisposeAsync()** | `Task` | Async version of `Dispose()`. |
 | **Dispose(bool waitForSubscriptionTask)** | `void` | Aborts subscription worker, but allows deciding whether to wait for the `Run` function task or not. |
 | **DisposeAsync(bool waitForSubscriptionTask)** | `void` | Async version of `DisposeAsync(bool waitForSubscriptionTask)`. |
-| **Run (multiple overloads)** | `Task` | Starts thw subscription worker work of processing batches, receiving the batch processing delegates (see [above](#running-subscription-worker)). |
+| **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](#running-subscription-worker)). |
 
 {NOTE/}
 
@@ -144,5 +143,5 @@ The `Run` function receives the client side code as a delegate that will process
 ## Related articles
 
 - [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **create** a data subscription?](../SubscriptionCreation/how-to-create-data-subscription)
+- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
 
