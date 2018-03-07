@@ -17,6 +17,7 @@
       * [Extract](../../../server/ongoing-tasks/etl/basics#extract)  
       * [Transform](../../../server/ongoing-tasks/etl/basics#transform)  
       * [Load](../../../server/ongoing-tasks/etl/basics#load)  
+  * [Troubleshooting](../../../server/ongoing-tasks/etl/basics#troubleshooting)  
 {NOTE/}
 
 ---
@@ -125,6 +126,19 @@ The number of documents processed depends on the following configuration limits:
 * There are two exceptions to this behavior:  
   * In RavenDB ETL - when documents are loaded to **the same** collection there is no need to send DELETE because the document on the other side has the same identifier and it will just update it.  
   * in SQL ETL - you can configure to use inserts only, which is a viable option for append-only systems.  
+
+{PANEL/}
+
+{PANEL: Troubleshooting}
+
+ETL errors and warnings are [logged to the files](../../../server/troubleshooting/logging) and displayed in the notification center panel. You will be notified if any
+of the following events happen:
+
+- connection error to the target,
+- JS script is invalid,
+- transformation error,
+- load error,
+- slow SQL was detected.
 
 {PANEL/}
 
