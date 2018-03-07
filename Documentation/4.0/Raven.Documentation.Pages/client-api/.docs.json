@@ -70,11 +70,6 @@
         "Mappings": []
     },
     {
-        "Path": "/concurrency",
-        "Name": "Concurrency",
-        "Mappings": []
-    },
-    {
         "Path": "/configuration",
         "Name": "Configuration",
         "Mappings": []
