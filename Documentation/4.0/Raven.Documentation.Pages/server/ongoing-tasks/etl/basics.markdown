@@ -27,14 +27,14 @@
   Data that needs to be shared can be sent in a well-defined format matching your requirements so that only relevant data is sent.  
 
 * **Protect your data - Share partial data**  
-  Limit access to sensitive data, details that should remain private can be filtered out as you can sare partial data.  
+  Limit access to sensitive data, details that should remain private can be filtered out as you can share partial data.  
 
 * **Reduce system calls**  
   Distribute data to related services in your system architecture so that they have their _own copy_ of the data and can access it without making a cross-service call.  
   i.e. A product catalog can be shared among multiple stores where each can modify the products or add new ones.  
 
 * **Transform the data**  
-  * Modify content sent as needed with a javascript script.  
+  * Modify content sent as needed with javascript code.  
   * Multiple documents can be sent from a single source document.  
   * Data can be transformed to match a _rational model_ used in the target destination.  
 

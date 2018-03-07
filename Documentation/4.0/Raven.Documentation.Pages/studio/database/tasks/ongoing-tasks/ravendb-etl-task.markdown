@@ -66,7 +66,7 @@
 ![Figure 3. RavenDB ETL Task - Task List View](images/ravendb-etl-task-3.png "Tasks List View Details")
 
 1. **RavenDB ETL Task Details**:
-   *  Task Status - Active / Not Active / Not on Node / Reconnect ? (see issue RavenDB-10674)  
+   *  Task Status - Active / Not Active / Not on Node / Reconnect (see issue RavenDB-10674)  
    *  Connection String - The connection string used  
    *  Destination Database - The destination database to which the data is being sent  
    *  Actual Destination URL - The server URL to which the data is actually being sent,  
