@@ -1,17 +1,22 @@
 [
-  {
-    "Path": "what-are-data-subscriptions.markdown",
-    "Name": "What are data subscriptions?",
-    "Mappings": []
-  },
-  {
-    "Path": "how-to-create-data-subscription.markdown",
-    "Name": "How to create a data subscription",
-    "Mappings": []
-  },
-  {
-    "Path": "how-to-consume-data-subscription.markdown",
-    "Name": "How to consume a data subscription?",
-    "Mappings": []
-  }
+    {
+        "Path": "what-are-data-subscriptions.markdown",
+        "Name": "What are data subscriptions?",
+        "Mappings": []
+    },
+    {
+        "Path": "/SubscriptionCreation",
+        "Name": "Creation",
+        "Mappings": []
+    },
+    {
+        "Path": "/SubscriptionConsumption",
+        "Name": "Consumption",
+        "Mappings": []
+    },
+    {
+        "Path": "/AdvancedTopics",
+        "Name": "Advanced topics",
+        "Mappings": []
+    }
 ]

@@ -1,0 +1,17 @@
+[
+    {
+        "Path": "how-to-consume-data-subscription.markdown",
+        "Name": "About subscription consumption",
+        "Mappings": []
+    },
+    {
+        "Path": "Examples.markdown",
+        "Name": "Examples",
+        "Mappings": []
+    },
+    {
+        "Path": "ApiOverview.markdown",
+        "Name": "API overview",
+        "Mappings": []
+    }
+]
