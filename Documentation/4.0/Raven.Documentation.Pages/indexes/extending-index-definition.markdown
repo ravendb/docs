@@ -7,7 +7,7 @@
   
 * Writing a complex LINQ expression can be a non-trivial task.  
   You can extend your indexing processing capabilities by adding custom code to the index definition,  
-  by calling custom functions or using external libraries logic (e.g. NodaTime).  
+  which will allow you to call custom functions or using external libraries logic (e.g. NodaTime).  
 
 * The indexing process will execute the LINQ code and the invoked additional source code.  
 
