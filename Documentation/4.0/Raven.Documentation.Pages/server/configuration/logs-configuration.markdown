@@ -2,7 +2,7 @@
 
 {PANEL:Logs.Path}
 
-Path to the directory where logs will be placed. By default it is placed in 'Logs' directory in the same folder as the server.
+Path to the directory where logs will be placed. By default it is placed in the 'Logs' directory in the same folder as the server.
 
 - **Type**: `string`
 - **Default**: `Logs`
@@ -12,7 +12,7 @@ Path to the directory where logs will be placed. By default it is placed in 'Log
 
 {PANEL:Logs.Mode}
 
-Level of logs that should be written to the log files. Available options are:
+Level of logs that should be written to the log files. The available options are:
 
 - `None` (logging disabled)
 - `Operations` (high level info for operational users)

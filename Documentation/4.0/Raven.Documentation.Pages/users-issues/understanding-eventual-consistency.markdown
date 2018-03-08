@@ -21,16 +21,18 @@ So, in RavenDB:
 - At any time you query an index, you will get whatever is already in that index, regardless of the state of the copying that's going on in the background.  This is why sometimes indexes are "stale".
 - If you query without specifying an index, and Raven needs a new index to answer your query, it will start building an index on the fly and return you *some* of those results right away.  It only blocks long enough to give you one page of results.  It then continues building the index in the background so next time you query you will have more data available.
 
-So now lets give an example that shows the down side to this approach.
+Let's give an example that shows the down side to this approach.
 
 - A sales person goes to a "products list" page that is sorted alphabetically.
-- On the first page, they see that "Apples" aren't currently being sold.
-- So they click "add product", and go to a new page where they enter "Apples".
-- They are then returned to the "products list" page and they still don't see any Apples because the index is stale.  What the hack - right?
+- On the first page, he sees that "Apples" aren't currently being sold.
+- So he clicks "add product", and goes to a new page where they enter "Apples".
+- They are then returned to the "products list" page and they still don't see any Apples because the index is stale.  
+
+What's going on?
 
 Addressing this problem requires the understanding that not all viewers of data should be considered equal.  That particular sales person might demand to see the newly added product, but a customer isn't going to know or care about it with the same level of urgency.
 
-So on the "products list" page that the sales person is viewing, you might do something like:
+On the "products list" page that the sales person is viewing, you might do something like:
 
 {CODE userissues_1@UsersIssues\UnderstandingEventualConsistency.cs /}
 

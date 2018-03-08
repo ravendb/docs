@@ -23,6 +23,6 @@ handled by the dedicated thread responsible for executing the I/O operations.
 
 {PANEL:Studio: Admin Logs}
 
-Another option that allows to see the debug logging without the need to restart the server is to use Admin Logs feature available in the Studio: `Manage Server -> Admin Logs`.
+Another option that allows you to see the debug logging without the need to restart the server is to use the Admin Logs feature available in the Studio: `Manage Server -> Admin Logs`.
 
 {PANEL/}
