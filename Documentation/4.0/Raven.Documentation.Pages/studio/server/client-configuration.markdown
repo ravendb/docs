@@ -32,7 +32,7 @@
 **2. Max number of requests per session**  
 
 * Set this number to restrict the number of requests per session in the client API.  
-* Default value is 30.  
+* The default value is 30.  
 
 {NOTE: Failure to contact all nodes}
 If the client has tried to contact all nodes and failed, an `AllTopologyNodesDownException` will be thrown

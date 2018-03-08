@@ -1,4 +1,4 @@
-# Installation : Upgrading to a new version
+# Installation : Upgrading to a New Version
 
 {INFO On a live system, a minor version upgrade process typically takes around 30 seconds. /}
 
@@ -6,20 +6,24 @@
 
 Upgrading a RavenDB instance to a new version is very simple. In order to do so, you need to:
 
-0. Download distribution package from [here](https://ravendb.net/downloads).
-1. Shutdown the RavenDB server
-    * for service (or daemon) - shutdown it before upgrading
+1. Download distribution package from [here](https://ravendb.net/downloads).
+
+2. Shutdown the RavenDB server
+    * for service (or daemon) - shutdown before upgrading
     * for console application - execute 'shutdown' command in the RavenDB CLI
-2. Remove old RavenDB binaries
+
+3. Remove old RavenDB binaries
     * make sure to _not_ delete your actual data which is in the folders like `RavenData` and _not_ to overwrite your configuration files like `settings.json`.
-3. Copy new binaries 
-4. Start the server again.
 
-## High availability & Cluster
+4. Copy new binaries. 
 
-If you want a zero downtime, please upgrade single cluster node at a time and wait till it becomes a fully fledged node (either Member, Leader or Watcher). The state of the node can be checked in [Cluster View](../../studio/server/cluster/cluster-view).
+5. Start the server again.
 
-## Upgrading data files
+## High Availability & Cluster
+
+If you want a zero downtime, please upgrade a single cluster node at a time and wait until it becomes a fully fledged node (either Member, Leader or Watcher). The state of the node can be checked in [Cluster View](../../studio/server/cluster/cluster-view).
+
+## Upgrading Data Files
 
 You don't have to do anything when you upgrade RavenDB to migrate the stored data. However, sometimes our adjustments require changing the file format (called schema version). RavenDB includes support for performing of those kind of migrations automatically on startup if it finds that the stored database is using an old format.
 
@@ -35,6 +39,6 @@ Please read our [migration article](../../migration/server/data-migration) that 
 
 {INFO/}
 
-## Related articles
+## Related Articles
 
 - [Client API : Backward compatibility](../../client-api/faq/backward-compatibility)

@@ -32,11 +32,11 @@ Once a request is made, RavenDB will start a transaction (either read or write) 
 
 To enable encryption in RavenDB, the user must first [enable authentication](../../../server/security/authentication/certificate-configuration) and HTTPS (by providing a certificate).
 
-HTTPS (using the TLS 1.2 protocol) provides privacy and integrity of the data in transit. It protects against man-in-the-middle attacks, eavesdropping and tampering of the communication.
+HTTPS (using the TLS 1.2 protocol) provides privacy and integrity of the data in transit. It protects against man-in-the-middle attacks, eavesdropping, and tampering of the communication.
 
 Using encryption together with HTTPS provides assurance that your data is safe both at rest and in transit.
 
-## Related articles
+## Related Articles
 
 - [Database Encryption](database-encryption)
 - [Server Store Encryption](server-store-encryption)

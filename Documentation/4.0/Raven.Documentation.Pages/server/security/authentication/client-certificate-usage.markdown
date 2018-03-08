@@ -26,7 +26,7 @@ ravendb> trustClientCert <name> <path-to-pfx> [password]
 
 The certificate will be registered as a trusted certificate with a `Cluster Admin` Security Clearance.
 
-### Example II - Using Powershel and Wget in Windows 
+### Example II - Using Powershell and Wget in Windows 
 
 You can use a client to make an HTTP request to the server. At this point you only have a **server certificate** and you will use it (acting as the client certificate).
 
