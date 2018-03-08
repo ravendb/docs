@@ -5,9 +5,9 @@
 
 * An [index](../indexes/what-are-indexes) is defined with a mapping function that utilizes a LINQ-like syntax.  
   
-* Writing a complex LINQ expression can be a non-trivial task.  
-  You can extend your indexing processing capabilities by adding custom code to the index definition,  
-  which will allow you to call custom functions or using external libraries logic (e.g. NodaTime).  
+* Writing a _complex_ LINQ expression can be a non-trivial task.  
+  You can extend your indexing processing capabilities by adding custom code to the index definition.  
+  This will enable calling the added custom functions or using external libraries logic (e.g. NodaTime) in your LINQ expression.  
 
 * The indexing process will execute the LINQ code and the invoked additional source code.  
 
