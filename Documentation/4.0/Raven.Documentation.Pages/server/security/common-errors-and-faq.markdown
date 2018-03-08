@@ -89,17 +89,19 @@ If this happens, there is nothing you can do except wait for DNS propogation. Wh
 ### After installing with Let's Encrypt, can I change the DNS records?
 
 Yes.  
-Running the setup wizard again will update the DNS records of your domain.  
-If any of the cluster domains is changed in the new configuration, the wizard will fetch a new certificate as well.
+You can run the setup wizard again.
+If you supply different IP addresses then the wizard will update the DNS records of your domain.  
+If you use a new domain or if you add/remove nodes in the new configuration then the wizard will also fetch a new certificate.
 
 ### If I already have the Zip file, can I avoid repeating the setup process?
 
 Yes.  
-You can use the Zip file to re-install or deploy the cluster elsewhere.  
+You can use the Zip file to re-install or deploy the server/cluster elsewhere.  
 Download a fresh copy of RavenDB and run the setup wizard. Then choose `Continue Cluster Setup` and select node A.
-This will use the existing Zip file and same configuration and certificate which were chosen during the first setup.
+This will use the existing Zip file and same configuration and certificate which were previously chosen.  
+When building a cluster, repeat this step with nodes B,C and so on.
 
-### Can I change the IP address RavenDB binds to?
+### Can I change the (private) IP address RavenDB binds to?
 
 Yes.  
 Open the settings.json file located in the RavenDB folder, change the `ServerUrl` setting and restart the server.
@@ -216,4 +218,8 @@ In powershell for example it can be solved like this:
 
 ## Authorization Issues  
 
+Under construction
+
 ## Encryption Issues  
+
+Under construction

@@ -40,8 +40,44 @@ Another way to provide a master key is to use a file containing the raw key byte
 
 If a master key is not provided by the user, RavenDB will use the following default behavior:
 
-In **Windows**, secret keys are encrypted and stored using the [Data Protection API](https://msdn.microsoft.com/en-us/library/ms995355.aspx), which means they can only be retrieved by the user who stored them.
+In **Windows**, secret keys are encrypted and stored using the [Data Protection API (DPAPI)](https://msdn.microsoft.com/en-us/library/ms995355.aspx), which means they can only be retrieved by the user who stored them.
 
 In **Unix**, RavenDB will generate a random master key and store it in the user's Home folder with read/write permissions (octal 1600) only for the user who stored it. Then, RavenDB will use this master key to encrypt the secret keys of encrypted databases.
 
+## Changing/Resetting a Windows user password
 
+This section is relevant only on Windows and only if you didn't supply a master key and chose to rely on the Windows protection methods.  
+
+Windows uses the **user password** to encrypt secrets in [DPAPI](https://msdn.microsoft.com/en-us/library/ms995355.aspx).
+When a Windows password is **changed** the following actions are taken:  
+
+- DPAPI receives notification from Winlogon during a password change operation.
+- DPAPI decrypts all the secrets that were encrypted with the user's old passwords.
+- DPAPI re-encrypts all the secrets with the user's new password.
+
+Changing a password this way is supported, and RavenDB is not affected.
+
+On the other hand, if the password was **reset** (either by you or by the administrator) secrets **cannot be decrypted anymore**.
+Please see the [Microsoft Support article](https://support.microsoft.com/en-us/help/309408/how-to-troubleshoot-the-data-protection-api-dpapi#7) to understand the issue.
+
+If you still need to reset the password for some reason, please follow these steps to ensure that secret keys which are protected with DPAPI aren't lost.
+
+Navigate to the RavenDB application folder where you can find the `rvn` tool. 
+Run the following get-key command for **every** encrypted database (including `System` if it's encrypted):
+
+{CODE-BLOCK:bash}
+./rvn offline-operation get-key <path-to-database-dir>
+{CODE-BLOCK/}
+
+The output is the plaintext key which is not protected and not tied to a user.
+
+Now, reset the Windows password.
+
+Then, run the following put-key command for **every** encrypted database. Supply the path of the database folder and the key you just got (using get-key):
+
+{CODE-BLOCK:bash}
+./rvn offline-operation put-key <path-to-database-dir> <base64-plaintext-key>
+{CODE-BLOCK/}
+
+This operation takes the key and protects it with the new Windows user password.
+After doing this for all databases, you can run the server and continue working.
