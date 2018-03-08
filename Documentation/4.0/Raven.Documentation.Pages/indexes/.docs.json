@@ -194,8 +194,8 @@
     } 
     ,
     {
-        "Path": "indexing-additional-sources.markdown",
-        "Name": "Additional sources",
+        "Path": "extending-index-definition.markdown",
+        "Name": "Extending Index Definition",
         "Mappings": []
     }
 ]
