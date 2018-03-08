@@ -216,7 +216,7 @@ ravendb> logout
 
 {PANEL/}
 
-{PANEL:logout}
+{PANEL:logo}
 
 Prints initial logo.
 
