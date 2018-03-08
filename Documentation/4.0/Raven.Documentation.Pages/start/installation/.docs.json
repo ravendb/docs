@@ -5,8 +5,13 @@
         "Mappings": []
     },
     {
+        "Path": "/setup-scenarios",
+        "Name": "Setup Scenarios",
+        "Mappings": []
+    },
+    {
         "Path": "manual.markdown",
-        "Name": "Manual",
+        "Name": "Manual Setup",
         "Mappings": []
     },
     {
