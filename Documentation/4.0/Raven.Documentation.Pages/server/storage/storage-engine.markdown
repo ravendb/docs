@@ -1,4 +1,4 @@
-﻿#Storage Engine - Voron
+﻿# Storage: Storage Engine - Voron
 
 RavenDB uses an in-house managed storage engine called Voron to persist your data (documents, indexes, and configuration). It's a high performance storage engine designed and optimized to the needs of RavenDB. It uses the following structures underneath that allow it to organize the data on persistent storage efficiently:
 
@@ -57,7 +57,7 @@ The storage hardware / file system must support:
 
 ## Related Articles
 
-- [Transaction Support in RavenDB](../client-api/faq/transaction-support)
-- [Configuration : Storage](../server/configuration/storage-configuration)
+- [Transaction Support in RavenDB](../../client-api/faq/transaction-support)
+- [Configuration : Storage](../../server/configuration/storage-configuration)
 
 

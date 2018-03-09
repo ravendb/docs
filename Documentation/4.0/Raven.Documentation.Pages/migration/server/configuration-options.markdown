@@ -31,6 +31,13 @@ Below there are listings of 4.0 equivalents for 3.x settings. If there isn't an 
 |:---------------------|:---|
 | Raven/Cluster/ElectionTimeout (default: 1200 ms) | Cluster.ElectionTimeoutInMs (default: 300 ms) |
 
+## Data settings
+
+| 3.x | 4.0 |
+|:---------------------|:---|
+| Raven/TransactionJournalsPath | See [Storing Data in Custom Locations](../../server/storage/directory-structure#storing-data-in-custom-locations) |
+| Raven/Esent/LogsPath | See [Storing Data in Custom Locations](../../server/storage/directory-structure#storing-data-in-custom-locations) |
+
 ## Database settings
 
 | 3.x | 4.0 |
@@ -60,7 +67,7 @@ Below there are listings of 4.0 equivalents for 3.x settings. If there isn't an 
 | Raven/IndexingDisabled  (default: false) | Indexing.Disable (default: false) |
 | Raven/TimeToWaitBeforeMarkingAutoIndexAsIdle (default: 1 hour) | Indexing.TimeToWaitBeforeMarkingAutoIndexAsIdleInMin (default: 30 min) |
 | Raven/CreateAutoIndexesForAdHocQueriesIfNeeded (default: true) | Indexing.DisableQueryOptimizerGeneratedIndexes (default: false) |
-
+| Raven/IndexStoragePath | See [Storing Data in Custom Locations](../../server/storage/directory-structure#storing-data-in-custom-locations) |
 
 ## License settings
 
