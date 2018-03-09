@@ -1,5 +1,9 @@
 ﻿# Common subscription creation examples
 
+---
+
+{NOTE: }
+
 In this page:  
 
 [Create subscription on all documents in a collection](#create-subscription-on-all-documents-in-a-collection)  
@@ -8,6 +12,9 @@ In this page:
 [Create subscription with load document in filter projection](#create-subscription-with-load-document-in-filter-projection)  
 [Create revisions enabled subscription](#create-revisions-enabled-subscription)  
 
+{NOTE/}
+
+---
 
 {PANEL:Create subscription on all documents in a collection}
 

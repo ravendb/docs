@@ -1,5 +1,9 @@
 ﻿# Subscription consumption examples
 
+---
+
+{NOTE: }
+
 In this page:  
 
 [Worker with a specified batch size](#worker-with-a-specified-batch-size)  
@@ -9,6 +13,9 @@ In this page:
 [Subscription that works with lowest level API](#subscription-that-works-with-lowest-level-api)  
 [Two subscription workers that are waiting for each other](#two-subscription-workers-that-are-waiting-for-each-other)  
 
+{NOTE/}
+
+---
 
 {PANEL:Worker with a specified batch size}
 

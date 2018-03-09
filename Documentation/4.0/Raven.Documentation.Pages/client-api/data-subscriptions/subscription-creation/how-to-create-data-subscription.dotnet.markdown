@@ -1,5 +1,9 @@
 ﻿# How to create a data subscription?
 
+---
+
+{NOTE: }
+
 Subscriptions are created by performing a request to the server with certain subscription creations parameters, see [Creation API summary](api-overview#create-and-createasync-overloads-summary).  
 Once created, it's definition and progress will be stored on the cluster, and not in a single server.  
 Upon subscription creation, the cluster will choose a preferred node that will run the subscription (unless client has stated a mentor node).  
@@ -11,6 +15,9 @@ In this page:
 [Subscription name](#subscription-name)  
 [Responsible node](#responsible-node)  
 
+{NOTE/}
+
+---
 
 {PANEL:Subscription creation prerequisites}
 

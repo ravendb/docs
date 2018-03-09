@@ -1,5 +1,9 @@
 ﻿# Revisions support
 
+---
+
+{NOTE: }
+
 Data subscription supports subscribing not only on documents, but also on all their revisions.  
 Revision support should be defined in the subscription, it also requires revisions to be configured on the collection in question.  
 While regular subscriptions process single documents, subscription on documents revisions processes pairs of subsequent document revisions.  
@@ -10,6 +14,10 @@ In this page:
 [Revisions processing](#revisions-processing-order)  
 [Simple declaration and usage](#simple-declaration-and-usage)   
 [Revisions processing and projection](#revisions-processing-and-projection)  
+
+{NOTE/}
+
+---
 
 {PANEL:Revisions processing order}
 Documents revisions will be processed in pairs, meaning if a document was changed 6 times in a row, subscription will process 6 times 6 pairs of versions of that document.

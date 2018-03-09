@@ -1,10 +1,19 @@
 ﻿# API overview
 
+---
+
+{NOTE: }
+
+
 In this page:  
 [Subscription creation overloads summary](#create-and-createasync-overloads-summary)  
 [Subscription Creation Options](#subscriptioncreationoptions)  
 [SubscriptionCreationOptions&lt;T&gt;](#subscriptioncreationoptions<t>)  
 [Subscription query](#subscription-query)  
+
+{NOTE/}
+
+---
 
 {PANEL:Create and CreateAsync overloads summary}
 

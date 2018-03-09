@@ -1,5 +1,9 @@
 ﻿#What are Data Subscriptions?
 
+---
+
+{NOTE: }
+
 * Data subscription provides a reliable and handy way to perform documents processing on the client side.  
 
 * Documents that match a pre-defined criteria are sent in batches from the server to the client. 
@@ -17,6 +21,9 @@
 
 * Note: If the database has Revisions defined, then special handling can be done on the server before sending the data to the client
 
+{NOTE/}
+
+---
 
 {PANEL:Data subscription consumption}
 

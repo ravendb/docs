@@ -1,5 +1,9 @@
 ﻿# Maintenance operation
 
+---
+
+{NOTE: }
+
 This page covers data subscriptions maintenance operations:  
 
 [Deletion](#deletion)  
@@ -8,6 +12,10 @@ This page covers data subscriptions maintenance operations:
 [Updating subscription](#updating-subscription)  
 [Getting subscription status](#getting-subscription-status)  
 [DocumentSubscriptions class](#documentsubscriptions-class)  
+
+{NOTE/}
+
+---
 
 {PANEL: Deletion}
 Subscriptions can be entirely deleted from the system.  
