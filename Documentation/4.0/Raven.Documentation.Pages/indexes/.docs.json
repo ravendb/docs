@@ -188,14 +188,13 @@
         ]
     },
     {
+        "Path": "extending-indexes.markdown",
+        "Name": "Extending Indexes",
+        "Mappings": []
+    },
+    {
         "Path": "/troubleshooting",
         "Name": "Troubleshooting",
-        "Mappings": []
-    } 
-    ,
-    {
-        "Path": "extending-index-definition.markdown",
-        "Name": "Extending Index Definition",
         "Mappings": []
     }
 ]

@@ -7,7 +7,7 @@ using static Raven.Documentation.Samples.Indexes.PeopleUtil;
 
 namespace Raven.Documentation.Samples.Indexes
 {
-    public class AdditionalSources 
+    public class AdditionalSources
     {
 
         public class Person
@@ -16,43 +16,44 @@ namespace Raven.Documentation.Samples.Indexes
             public uint Age { get; set; }
         }
 
-#region additional_sources_1
-        public class PeopleByEmail : AbstractIndexCreationTask<Person>
+        #region additional_sources_1
+        public class People_ByEmail : AbstractIndexCreationTask<Person>
         {
-            public PeopleByEmail()
+            public People_ByEmail()
             {
-                Map = people => from person in people select new
-                        {
-                            // Calling the custom funcion
-                            Email = CalculatePersonEmail(person.Name, person.Age)
-                        };
+                Map = people => from person in people
+                                select new
+                                {
+                                    // Calling the custom function
+                                    Email = CalculatePersonEmail(person.Name, person.Age)
+                                };
 
                 // Add your custom logic here. 
                 AdditionalSources = new Dictionary<string, string>
                 {
                     {
-        "PeopleUtil",
-        @"
-        using System;
-        using NodaTime; /* using an external library */
-        using static Raven.Documentation.Samples.Indexes.PeopleUtil;
+                        "PeopleUtil",
+                        @"
+                        using System;
+                        using NodaTime; /* using an external library */
+                        using static Raven.Documentation.Samples.Indexes.PeopleUtil;
 
-        namespace Raven.Documentation.Samples.Indexes
-        {
-            public static class PeopleUtil
-            {
-                public static string CalculatePersonEmail(string name, uint age)
-                {
-                    return $""{name}.{Instant.FromDateTimeUtc(DateTime.Now.ToUniversalTime())
-                                    .ToDateTimeUtc().Year - age}@ayende.com"";
-                }
-            }
-        }"
+                        namespace Raven.Documentation.Samples.Indexes
+                        {
+                            public static class PeopleUtil
+                            {
+                                public static string CalculatePersonEmail(string name, uint age)
+                                {
+                                    return $""{name}.{Instant.FromDateTimeUtc(DateTime.Now.ToUniversalTime())
+                                                    .ToDateTimeUtc().Year - age}@ayende.com"";
+                                }
+                            }
+                        }"
                     }
                 };
             }
         }
-#endregion
+        #endregion
     }
 
     public static class PeopleUtil
