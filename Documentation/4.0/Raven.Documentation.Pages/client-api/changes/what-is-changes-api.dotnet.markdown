@@ -4,6 +4,17 @@ The RavenDB client offers a push notification feature that allows you to receive
 You are able to subscribe to events for all documents, indexes and operations as well as to indicate a particular one that you are interested in. 
 This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
 
+{DANGER:Changes API on Secured Server}
+
+Changes API uses WebSockets under the covers. Due to [the lack of support for client certificates in WebSockets implementation in .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761)
+the Changet API won't work for secured servers accessible over HTTPS.
+
+This issue will be fixed in the final version of .NET Core 2.1 (Q2 2018). The already applied fix is available in [daily builds of .NET Core 2.1](https://github.com/dotnet/core-setup#daily-builds). 
+In order to workaround this you can switch your aplication to use .NET Core 2.1 (build `2.1.0-preview2-26308-01` or newer). 
+
+The issue affects only the RavenDB client, the server can be running on .NET Core 2.0.
+{DANGER/}
+
 ## Accessing Changes API
 
 The changes subscription is accessible by a document store through its `IDatabaseChanges` interface.

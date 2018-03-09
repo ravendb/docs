@@ -30,6 +30,11 @@
         "Mappings": []
     },
     {
+        "Path": "changes-api.markdown",
+        "Name": "Changes API",
+        "Mappings": []
+    },
+    {
         "Path": "list.markdown",
         "Name": "List of Differences in Public API",
         "Mappings": []
