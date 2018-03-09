@@ -43,9 +43,12 @@ Instead of mapping an entire file, it maps just the pages that are required and 
 
 ## Requirements
 
-- Disk must handle UNBUFFERED_IO / WRITE_THROUGH properly
-- `[Windows]` [Hotfix](http://support.microsoft.com/kb/2731284) for Windows 7 and Windows Server 2008 R2
-- `[Posix]` File system must support `fsync`
+The storage hardware / file system must support:
+
+* fsync
+* `[Windows]` UNBUFFERED_IO / WRITE_THROUGH
+* `[Windows]` [Hotfix for Windows 7 and Windows Server 2008 R2](http://support.microsoft.com/kb/2731284)
+* `[Posix]` O_DIRECT
 
 ## Limitations
 
