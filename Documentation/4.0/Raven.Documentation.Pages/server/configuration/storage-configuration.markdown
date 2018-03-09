@@ -1,6 +1,6 @@
 ﻿# Configuration : Storage
 
-The following configuration options allow you configure [the storage engine](../../server/storage-engine).
+The following configuration options allow you configure [the storage engine](../../server/storage/storage-engine).
 
 {PANEL:Storage.TempPath}
 
@@ -72,7 +72,6 @@ Use the 32 bits memory mapped pager, even when running in 64 bits.
 
 {PANEL/}
 
-
 ## Related Articles
 
-- [Storage Engine](../../server/storage-engine)
+- [Storage Engine](../../server/storage/storage-engine)

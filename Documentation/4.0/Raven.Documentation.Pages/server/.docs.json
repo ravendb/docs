@@ -20,16 +20,6 @@
         ]
     },
     {
-        "Path": "storage-engine.markdown",
-        "Name": "Storage Engine",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "server/configuration/storage-engines"
-            }
-        ]
-    },
-    {
         "Path": "/administration",
         "Name": "Administration",
         "Mappings": []
@@ -47,6 +37,11 @@
     {
         "Path": "/security",
         "Name": "Security",
+        "Mappings": []
+    },
+    {
+        "Path": "/storage",
+        "Name": "Storage",
         "Mappings": []
     },
     {

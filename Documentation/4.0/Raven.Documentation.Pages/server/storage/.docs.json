@@ -1,0 +1,17 @@
+﻿[
+    {
+        "Path": "storage-engine.markdown",
+        "Name": "Storage Engine",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/configuration/storage-engines"
+            }
+        ]
+    },
+    {
+        "Path": "directory-structure.markdown",
+        "Name": "Directory Structure",
+        "Mappings": []
+    }
+]

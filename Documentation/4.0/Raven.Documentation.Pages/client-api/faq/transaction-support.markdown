@@ -36,4 +36,4 @@ The transaction model is different when indexes are involved, because indexes ar
 
 ## Related Articles
 
-- [Storage Engine](../../server/storage-engine)
+- [Storage Engine](../../server/storage/storage-engine)
