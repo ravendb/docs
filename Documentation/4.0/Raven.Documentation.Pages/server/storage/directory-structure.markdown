@@ -47,6 +47,11 @@ The following command will point `Journals` directory of _Northwind_ database to
 C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Journals E:\Journals\Northwind
 {CODE-BLOCK/}
 
+#### Linux
+
+{CODE-BLOCK:bash}
+ ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Journals /mnt/FastDrive/Databases/Northwind/Journals
+ {CODE-BLOCK/}
 
 ### Example - Moving Indexes
 
@@ -61,5 +66,13 @@ C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Indexes D:\Indexes\Nor
 {INFO Creation of junction / mount points requires a database to be offline /}
 
 {INFO If data already exists in the directory you want to define the junction / mount point for you need to backup it first and copy back after executing the command. /}
+
+#### Linux
+
+{CODE-BLOCK:bash}
+ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes /mnt/FastDrive/Databases/Northwind/Indexes
+{CODE-BLOCK/}
+
+{INFO Start RavenDB server _after_ creating soft link to a faster drive mount point: /}
 
 {PANEL/}
