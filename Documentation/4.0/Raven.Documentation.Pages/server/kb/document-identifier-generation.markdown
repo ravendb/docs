@@ -4,7 +4,7 @@
 {NOTE: }
 
 * A document identifier (**document ID**) is a string that is associated with the document.  
-  It is globally unique in the scope of the database, no two documents in the same database will have the same ID.  
+  It is globally unique in the scope of the database. No two documents in the same database will have the same ID.  
 
 * Usually, the document ID will be composed of the collection name as the prefix, a slash and then the actual unique portion of the ID. 
   But this is not a requirement, RavenDB doesn’t require that the collection prefix will be included within the document ID string.  
@@ -51,7 +51,7 @@
   Use a semantic ID when you want the document to have an identifier that has some meaningful value.  
 
 * **Example**:  
-  * Documents with a unique semantic ID containing a user's _email_ can be generated under 'Users' collection:  
+  * Documents with a unique semantic ID containing a user's _email_ can be generated under the 'Users' collection:  
       * users/ayende@ayende.com  
       * users/john@john.doe  
   * For clarity, the document content can be indicated within the Semantic ID string:  
@@ -65,7 +65,7 @@
   The server  
 
 * **Description**:  
-  * When a document ID is _not_ specified, RavenDB server will generate a **globally unique identifier** (GUID) for the stored new document.
+  * When a document ID is _not_ specified, the RavenDB server will generate a **globally unique identifier** (GUID) for the stored new document.
   * Although this is the simplest way to generate a document ID, Guids are _not_ human-friendly when it comes to debugging or troubleshooting 
     and are less recommended.  
 
@@ -82,7 +82,7 @@
   * Upon document creation, providing a document ID string that ends with a _slash_ ( / ) will cause the server to generate a **server-side ID**.  
   * The RavenDB server that is handling the request will increment the value of its [Last Document Etag](../../../todo-update-me-later).  
     This _Etag_ and the _Server Node Tag_ are appended by the server to the end of the ID string provided.  
-  * Since the etag on which the ID is based changes upon any adding, deleting or updating a document,  
+  * Since the etag on which the ID is based changes upon any adding, deleting, or updating a document,  
     the only guarantee about the Server-Side ID is that it is always increasing, but not always sequential.  
 
 * **When to use**:  
