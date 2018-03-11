@@ -1,10 +1,10 @@
-﻿# Migration : Changes related to IAdvancedDocumentSessionOperations
+﻿# Migration : Changes Related to IAdvancedDocumentSessionOperations
 
-Changes in advanced session operations accessible by `session.Advanced`.
+Changes in advanced session operations are accessible by `session.Advanced`.
 
 {PANEL:GetEtagFor}
 
-As [documents don't have etags any longer](../../../migration/client-api/introduction#etags) but they use change vectors instead the method `GetEtagFor` has been replaced by `GetChangeVectorFor`.
+[Documents don't have etags any longer](../../../migration/client-api/introduction#etags) but they use change vectors instead the method `GetEtagFor`. It has been replaced by `GetChangeVectorFor`.
 
 {PANEL/}
 
@@ -18,7 +18,7 @@ Marking documents as read-only isn't supported.
 
 {PANEL:ExplicitlyVersion}
 
-The method has been removed. Document Revisions configuration don't use `ExcludeUnlessExplicit` option anymore.
+The method has been removed. Document revisions configuration doesn't use the `ExcludeUnlessExplicit` option anymore.
 
 {PANEL/}
 

@@ -60,7 +60,7 @@ The same queries and indexes that are used for data retrieval are used for the s
 
 {SAFE:Safe By Default}
 
-By default, set based operations will **not work** on indexes that are stale. The operation will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete. 
+By default, set based operations will **not work** on indexes that are stale. The operations will **only succeed** if the specified **index is not stale**. This is to make sure you only delete what you intended to delete. 
 
 For indexes that are updated all the time, you can set the AllowStale field of QueryOperationOptions to true if you want to patch on stale results. 
 
