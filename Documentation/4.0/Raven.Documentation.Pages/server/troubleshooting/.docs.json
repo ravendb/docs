@@ -1,13 +1,18 @@
 ﻿[
-	{
-		"Path": "sending-support-ticket.markdown",
-		"Name": "Sending support ticket",
-		"Mappings": [ ]
-	},
     {
-		"Path": "logging.markdown",
-		"Name": "Logging",
-		"Mappings": [ ]
-	}
-    
+        "Path": "sending-support-ticket.markdown",
+        "Name": "Sending support ticket",
+        "Mappings": []
+    },
+    {
+        "Path": "logging.markdown",
+        "Name": "Logging",
+        "Mappings": []
+    },
+    {
+        "Path": "voron-recovery-tool.markdown",
+        "Name": "Voron Recovery Tool",
+        "Mappings": []
+    }
+
 ]
