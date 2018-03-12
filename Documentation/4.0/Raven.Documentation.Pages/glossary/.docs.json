@@ -73,10 +73,5 @@
         "Path": "change-vector.markdown",
         "Name": "Change Vector",
         "Mappings": []
-    },
-    {
-        "Path": "voron-recovery-tool.markdown",
-        "Name": "Voron Recovery Tool",
-        "Mappings": []
     }
 ]

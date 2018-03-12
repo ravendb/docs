@@ -1,31 +1,46 @@
 ﻿#Recovering from Voron errors 
+---
 
-Voron errors which are described in this article are indicators that something had horribly gone wrong.
-Thus, if such errors happen, they need to be reported as soon as possible to [RavenDB support](mailto:support@ravendb.net).
+Voron errors which are described in this article are indicators that something had horribly gone wrong.  
+Thus, if such errors happen, they need to be reported as soon as possible to [RavenDB support](mailto:support@ravendb.net).  
 
-##Symptoms: 
-RavenDB info level logs will contain the following exceptions:  
-  1. VoronUnrecoverableErrorException: `Index points to a non leaf page`  
-  2. VoronUnrecoverableErrorException: `Was unable to retrieve the correct node. Data corruption possible`  
-  3. VoronUnrecoverableErrorException: `Error syncing the data file. The last sync tx is...`  
+{PANEL: Symptoms}  
 
-##Possible Causes:
-Such exceptions are caued by the corruption of a Voron data file.
-First, it is possible that the data file is corrupted due to critical bug.
-Also, data file corruption is likely to happen due to a hardware failure,if the file system doesn't support `fsync` functionality, or the storage hardware does not respect the `fsync` commands.
+* RavenDB info level logs will contain the following exceptions:
+  * **VoronUnrecoverableErrorException**: `Index points to a non leaf page`  
+  * **VoronUnrecoverableErrorException**: `Was unable to retrieve the correct node. Data corruption possible`  
+  * **VoronUnrecoverableErrorException**: `Error syncing the data file. The last sync tx is...`  
 
-{NOTE In Unix based OS it is a `fsync` command, in Windows OS, it is a matter of creating a file with a 'Write-Through' flag. /}
+{PANEL/} 
 
-For more information about this see:  
-  1. For Unix based systems, see [this article](http://www.tutorialspoint.com/unix_system_calls/fsync.htm).  
-  2. For Windows systems, see [this article](https://msdn.microsoft.com/en-us/library/windows/desktop/aa364218(v=vs.85).aspx).  
+{PANEL: Possible Causes}  
 
-##Resolution:
-{NOTE If the corruption is caused by a hardware failure, identify and replace the faulty disk. /}
+* Such exceptions are caused by the corruption of a Voron _data file_, which could occur due to a few reasons:  
+  * Hardware failure of hard-drive or memory.  
+  * In compliance‏ with RavenDB [hardware and OS requeirements](#ravendb-hardware-and-os-requirements).  
+  * Critical bug in `Voron`.  
+{PANEL/}
 
-For the best results, simply restore a new database from a backup. For more information, see an article about [backup configuration](../server/configuration/backup-configuration).  
+{PANEL: RavenDB Hardware And OS Requirements}
 
-If there is no recent/relevant backup available, it is possible to use the [Voron Recovery Tool](../glossary/voron-recovery-tool).  
+* A _filesystem_ and _hard-drive_ backing up a RavenDB server should have the following properties:
+  * support for `fsync`  
+  * support for `write-through` on windows and `O_DIRECT` on Linux based OS.  
+ 
+ Read more about `fsync` across platforms [here](https://www.humboldt.co.uk/fsync-across-platforms/)
+  
+{PANEL/}
+
+{PANEL: Resolution}
+
+For the best results, simply restore a new database from a backup.  
+For more information, see an article about [backup configuration](../server/configuration/backup-configuration).  
+
+If there is no recent/relevant backup available, it is possible to use the [Voron Recovery Tool](../server/troubleshooting/voron-recovery-tool).  
 This tool can be used to recover intact data from the corrupted file and import it to a newly created database.  
   
-If the corruption has affected an index, it should be reset in order to restore normal functionality.
+If the corruption has affected an index, it should simply be reset in order to restore normal functionality.  
+
+{NOTE If the corruption is caused by a hardware failure, identify and replace the faulty disk. /}
+
+{PANEL/}
