@@ -35,20 +35,20 @@ RavenDB will typically use two ports. One for HTTPS traffic, for clients and bro
 communicate with each other. Both the HTTPS and TCP traffic are encrypted by default (unless you explicitly specify the unsecured setup)
 using TLS 1.2. Be sure to open both ports in the firewall to allow the cluster node to talk to one another. 
 
-RavenDB should _not_ typically be deployed behind a reversed proxy. The typical advantages of reverse proxies are based on their abitlity
+RavenDB should _not_ typically be deployed behind a reversed proxy. The typical advantages of reverse proxies are based on their ability
 to load balance, cache responses, etc. These features are great when proxying a web application, but actively harmful when you are talking
 to a stateful system like a database. Your application should be talking to RavenDB directly, given the URLs of the cluster nodes and let
-RavenDB itself handle issues such as high availibility, load balancing and security. 
+RavenDB itself handle issues such as high availability, load balancing and security. 
 
 ## Running RavenDB
 
 On Windows, RavenDB is usually run as a service. Make sure that the user running the RavenDB service has permissions to the RavenDB directory
 and the specified data directory. You can setup RavenDB as a service using the `setup-as-service.ps1` script. 
 
-On Linux, you'll typically run RavenDB as a daemon. The `install-daemon.sh` can handle the daemon registration for you (Ubunto only).
+On Linux, you'll typically run RavenDB as a daemon. The `install-daemon.sh` can handle the daemon registration for you (Ubuntu only).
 
 In either case, you can configure RavenDB using the `settings.json` file. The most important configurations are the data directory and the 
-ips and ports RavenDB will listen to. It is recommended that you'll pick the fastest drives for RavenDB's data directory, while the binaries
+IPs and ports RavenDB will listen to. It is recommended that you'll pick the fastest drives for RavenDB's data directory, while the binaries
 for RavenDB can reside anywhere in the system.
 
 ## Related articles
