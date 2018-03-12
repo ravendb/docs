@@ -193,22 +193,27 @@ catch {
 
 ### Not using TLS 1.2
 
-The RavenDB clients use TLS 1.2 by default. If you want to use other clients please make sure to use the Tls1.2 security protocol.
+The RavenDB clients use TLS 1.2 by default. If you want to use other clients please make sure to use the TLS 1.2 security protocol.
 
-Example error:
-
-{CODE-BLOCK:plain}
-The remote server returned an error: (400) Bad Request.
-{"Url":"/admin/secrets/generate","Type":"Raven.Client.Exceptions.Security.InsufficientTransportLayerProtectionException","Message":"RavenDB requires clients to connect us
-ing TLS 1.2, but the client used: 'Tls'.","Error":"Raven.Client.Exceptions.Security.InsufficientTransportLayerProtectionException: RavenDB requires clients to connect usi
-ng TLS 1.2, but the client used: 'Tls'.\r\n   at Raven.Server.RavenServer.AuthenticateConnection.ThrowException() in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Ra
-venServer.cs:line 570\r\n   at Raven.Server.Routing.RequestRouter.TryAuthorize(RouteInformation route, HttpContext context, DocumentDatabase database) in C:\\Builds\\Rave
-nDB-Stable-4.0\\src\\Raven.Server\\Routing\\RequestRouter.cs:line 168\r\n   at Raven.Server.Routing.RequestRouter.<HandlePath>d__6.MoveNext() in C:\\Builds\\RavenDB-Stabl
-e-4.0\\src\\Raven.Server\\Routing\\RequestRouter.cs:line 89\r\n--- End of stack trace from previous location where exception was thrown ---\r\n   at System.Runtime.Except
-ionServices.ExceptionDispatchInfo.Throw()\r\n   at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)\r\n   at System.Runtime.
-CompilerServices.TaskAwaiter`1.GetResult()\r\n   at System.Runtime.CompilerServices.ValueTaskAwaiter`1.GetResult()\r\n   at Raven.Server.RavenServerStartup.<RequestHandle
-r>d__11.MoveNext() in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\RavenServerStartup.cs:line 159"}
-{CODE-BLOCK/}
+{CODE-TABS}
+{CODE-TAB-BLOCK:json:Bad Request (400) sample response}
+{  
+   "Url":"/admin/secrets/generate",
+   "Type":"Raven.Client.Exceptions.Security.InsufficientTransportLayerProtectionException",
+   "Message":"RavenDB requires clients to connect using TLS 1.2, but the client used: 'Tls'.",
+   "Error":"Raven.Client.Exceptions.Security.InsufficientTransportLayerProtectionException: RavenDB requires clients to connect using TLS 1.2, but the client used: 'Tls'.
+       at Raven.Server.RavenServer.AuthenticateConnection.ThrowException() in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\RavenServer.cs:line 570
+       at Raven.Server.Routing.RequestRouter.TryAuthorize(RouteInformation route, HttpContext context, DocumentDatabase database) in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Routing\\RequestRouter.cs:line 168
+       at Raven.Server.Routing.RequestRouter.<HandlePath>d__6.MoveNext() in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\Routing\\RequestRouter.cs:line 89
+       --- End of stack trace from previous location where exception was thrown ---
+       at System.Runtime.ExceptionServices.ExceptionDispatchInfo.Throw()
+       at System.Runtime.CompilerServices.TaskAwaiter.HandleNonSuccessAndDebuggerNotification(Task task)
+       at System.Runtime.CompilerServices.TaskAwaiter`1.GetResult()
+       at System.Runtime.CompilerServices.ValueTaskAwaiter`1.GetResult()
+       at Raven.Server.RavenServerStartup.<RequestHandler>d__11.MoveNext() in C:\\Builds\\RavenDB-Stable-4.0\\src\\Raven.Server\\RavenServerStartup.cs:line 159"
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
 In powershell for example it can be solved like this:
 
