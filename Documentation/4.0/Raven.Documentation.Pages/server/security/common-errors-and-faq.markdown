@@ -112,7 +112,7 @@ Open the settings.json file located in the RavenDB folder, change the `ServerUrl
 
 You cannot access the Studio using Chrome or Edge even though you have finished the setup wizard successfully and you also checked the box saying "Automatically register the admin client certificate in this (local) OS".
 
-![Figure 1. Authentication Error](../../server/security/images/1.png)
+![Figure 1. Authentication Error](images/1.png)
 
 {CODE-BLOCK:plain}
 There were problems authenticating the request:
@@ -125,7 +125,7 @@ The solution is very simple. Close **all instances** of the browser and restart 
 
 You cannot access the Studio using Firefox even though you have finished the setup wizard successfully and you also checked the box saying "Automatically register the admin client certificate in this (local) OS".
 
-![Figure 2. Authentication Error](../../server/security/images/1.png)
+![Figure 2. Authentication Error](images/1.png)
 
 {CODE-BLOCK:plain}
 There were problems authenticating the request:
@@ -134,13 +134,13 @@ This server requires client certificate for authentication, but none was provide
 
 Firefox doesn't use the OS certificate store like Chrome or Edge. Please import the certificate manually. Then close **all instances** of the browser and restart it.
 
-![Figure 3. Firefox Import](../../server/security/images/2.png)
+![Figure 3. Firefox Import](images/2.png)
 
 ### Cannot Import the Client Certificate to Firefox
 
 You're trying to import the client certificate received from RavenDB to Firefox but get the following error:
 
-![Figure 3. Unknown Reasons](../../server/security/images/3.png)
+![Figure 3. Unknown Reasons](images/3.png)
 
 {CODE-BLOCK:plain}
 The PKCS#12 operation failed for unknown reasons.

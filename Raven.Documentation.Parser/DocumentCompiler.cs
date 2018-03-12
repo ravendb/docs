@@ -85,7 +85,7 @@
                 var category = CategoryHelper.ExtractCategoryFromPath(key);
                 var images = new HashSet<DocumentationImage>();
 
-                _parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, tag);
+                _parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, tag, key);
 
                 var content = File.ReadAllText(file.FullName);
 
@@ -177,7 +177,7 @@
             return true;
         }
 
-        private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag)
+        private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag, string key)
         {
             string src;
             if (tag.attributes.TryGetValue("src", out src))
@@ -185,6 +185,9 @@
                 var imagePath = Path.Combine(directory, src);
 
                 src = src.Replace('\\', '/');
+                if (src.StartsWith("."))
+                    throw new InvalidOperationException($"Invalid image path '{src}' in article '{key}'. It cannot start from dot ('.').");
+
                 if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
                     src = src.Substring(7);
 
