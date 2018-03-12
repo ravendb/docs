@@ -5,6 +5,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Assets\social-media-follow.html" />
+    <None Remove="Assets\social-media-like.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Assets\social-media-follow.html" />
+    <EmbeddedResource Include="Assets\social-media-like.html" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HtmlAgilityPack" Version="1.6.16" />
     <PackageReference Include="MarkdownDeep" Version="1.5.0.99" />
     <PackageReference Include="Newtonsoft.Json" Version="10.0.3" />
