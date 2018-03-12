@@ -25,6 +25,9 @@ burst capacity available and suffer because it is being throttled. If this happe
 the studio. If you are running on physical hardware, use an SSD or NVMe drives. Drives using HDD will work, but may result in high
 latencies under load because of the rotational disk seek times.
 
+Advanced scenarios may call to splitting I/O among multiple disks. Having separate drives for data, journals and indexes. You can
+read more about it in the document about the [structure of data on disk](../../server/storage/directory-structure).
+
 ## Network considerations
 
 RavenDB can be deployed either internally in your organization (secured network, only known good actors) or on the public internet.
@@ -55,3 +58,4 @@ for RavenDB can reside anywhere in the system.
 
 - [Configuration Section](../../server/configuration/configuration-options)
 - [Security in RavenDB](../../server/security/overview)
+- [Structure of data on disk](../../server/storage/directory-structure)
