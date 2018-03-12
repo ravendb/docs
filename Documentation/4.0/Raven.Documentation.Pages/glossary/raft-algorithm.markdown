@@ -1,12 +1,14 @@
 ﻿# Glossary : Raft Consensus Algorithm
 
 ### What is Raft?
-Raft is a [distributed consensus](https://en.wikipedia.org/wiki/Consensus_(computer_science)) algorithm, designed to be understandable and durable. 
-In general, the algorithm is useful when we want to order the events that happen on a distributed system in different nodes.
 
-In case or RavenDB, Raft is used to coordinate the execution of cluster-wide operations over the nodes. 
-This means, that if we want to create a database in a cluster, and this means creating the database on all cluster nodes,
-the Raft will be used to make sure that the database creation is executed in at least (n/2) + 1 nodes. (quorum of nodes)
+Raft is a [distributed consensus](https://en.wikipedia.org/wiki/Consensus_(computer_science)) algorithm designed to be understandable and durable. 
+
+In general, the algorithm is useful when we want to order the events that happen in a distributed system on different nodes.
+
+In RavenDB, Raft is used to coordinate the execution of cluster-wide operations over the nodes. 
+
+If we want to create a database in a cluster, creating the database on all cluster nodes, the Raft will be used to make sure that the database creation is executed in at least (n/2) + 1 nodes. (quorum of nodes)
 
 ### Additional Reading
 

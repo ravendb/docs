@@ -5,13 +5,15 @@
 
 * A **RavenDB Cluster** is one or more machines (nodes) that have been joined together, 
   working to achieve the same goal.  
-  Using the Raft consensus protocol, the cluster distributes work among the various nodes, handles failures, recovery and more.  
-  The cluster Member nodes elect a [Leader](../../server/cluster/cluster-view#cluster-nodes-types) - 
-  a node that manages the cluster state.  
+
+  Using the Raft consensus protocol, the cluster distributes work among the various nodes, handles failures, recovery, and more.  
+
+  The cluster Member nodes elect a [Leader](../../server/cluster/cluster-view#cluster-nodes-types) - a node that manages the cluster state.  
 
 * This view shows your cluster's current state and structure.  
 
 * You can manage the cluster by actions such as:  
+
   * Adding a node to the cluster  
   * Changing the Leader  
   * Reassigning cores  
