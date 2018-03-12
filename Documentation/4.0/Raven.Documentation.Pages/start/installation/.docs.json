@@ -10,6 +10,22 @@
         "Mappings": []
     },
     {
+        "Path": "deployment-considerations.markdown",
+        "Name": "Deployment considerations",
+        "Mappings": [
+            {
+
+                "Version": 3.0,
+                "Key": "server/installation/deployment-considerations"
+            },
+            {
+
+                "Version": 3.5,
+                "Key": "server/installation/deployment-considerations"
+            }
+        ]
+    },
+    {
         "Path": "running-as-service.markdown",
         "Name": "Running as a Service",
         "Mappings": []
