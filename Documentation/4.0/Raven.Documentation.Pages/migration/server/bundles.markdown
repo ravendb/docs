@@ -1,6 +1,8 @@
 ﻿# Migration : Bundles
 
-RavenDB 4.0 doesn't have the notion of bundles. All features are built into the RavenDB server. Many of RavenDB 3.x bundles have been designed to work in a cluster environment. You will find them as [Ongoing Tasks](). However, some of the bundles are no longer available in version 4.0 so it might be necessary to take a different approach during the migration of some functionalities. 
+RavenDB 4.0 doesn't have the notion of bundles. All features are built into the RavenDB server.  
+Many of RavenDB 3.x bundles have been designed to work in a cluster environment. You will find them as [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info).  
+However, some of the bundles are no longer available in version 4.0 so it might be necessary to take a different approach during the migration of some functionalities. 
 
 {PANEL:Authorization}
 
@@ -64,7 +66,8 @@ It is defined as a [SQL ETL](../../server/ongoing-tasks/etl/sql) task.
 
 {PANEL:Unique Constraints}
 
-`CompareExchangeValue` operations (`Get/Put/Delete`) and querying with the usage of the `CmpXchg` method are the way to achieve Unique Constraints bundle functionality.
+`CompareExchangeValue` operations (`Get/Put/Delete`) and querying with the usage of the `CmpXchg` method are the way to achieve Unique Constraints bundle functionality.  
+Please see [Compare Exchange Overview](../../server/compare-exchange).  
 
 {PANEL/}
 

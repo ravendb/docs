@@ -31,7 +31,7 @@
 
 1. **Task Name** (Optional)  
    * Choose a name of your choice  
-   * If no name is given then RavenDB server will create one for you based on your defined destination  
+   * If no name is given then RavenDB server will create one for you based on the defined destination  
 
 2. **Backup Task Type**:  
    * ***Backup***  
@@ -48,7 +48,7 @@
 
 3. **Preferred Node** (Optional)  
   * Select a preferred mentor node from the [Database Group](../../../../studio/database/settings/manage-database-group) to be the responsible node for this Backup Task  
-  * If one is not selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
+  * If no node is selected, then the cluster will assign a responsible node (see [Members Duties](../../../../studio/database/settings/manage-database-group#database-group-topology---members-duties))  
 {PANEL/}
 
 {PANEL: Backup Task - Content & Scheduling}

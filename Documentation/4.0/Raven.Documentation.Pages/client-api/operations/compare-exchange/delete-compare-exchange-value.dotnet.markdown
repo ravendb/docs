@@ -1,34 +1,50 @@
-﻿# Operations : Compare Exchange : How to Delete Compare Exchange Value?
+﻿# Operations : Compare Exchange : How to Delete Compare Exchange Value
 
-**DeleteCompareExchangeValueOperation** is used to delete a compare-exchange value.
+---
 
-{NOTE Compare-exchange values could be used on the client side to ensure [unique constraints](../../../client-api/operations/compare-exchange/put-compare-exchange-value#example-i).  /}
+{NOTE: }
 
-{WARNING Value is deleted only if index in request matches index on server. /}
+* Use `DeleteCompareExchangeValueOperation` to delete a _Key_ and its _Value_.  
 
-## Syntax
+* The _Key_ and its _Value_ are deleted only if the _index_ in the request matches the current index stored in the server for the specified key.  
 
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/clustering/compare-exchange)
+
+* In this page:  
+  * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)  
+  * [Example](../../../client-api/operations/compare-exchange/delete-compare-exchange-value#example)  
+{NOTE/}
+
+---
+
+{PANEL: Syntax}
+
+**Method**:
 {CODE delete_0@ClientApi\Operations\CompareExchange.cs /}
-
-{CODE compare_exchange_result@ClientApi\Operations\CompareExchange.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **key** | string | Object identifier |
-| **index** | long |  Index representing version of value. Used for concurrency control - just like Etag for documents  |
+| **key** | string | The key to be deleted |
+| **index** | long |  The version number of the value to be deleted |
+
+**Returned object**:
+{CODE compare_exchange_result@ClientApi\Operations\CompareExchange.cs /}
 
 | Return Value | | |
 | ------------- | ----- | ---- |
-| **Successful** | bool | True, if exchange was completed successfully |
-| **Index** | long | Index representing version of value. Used for concurrency control - just like Etag for documents |
-| **Value** | `T` | Current value |
+| **Successful** | bool | * _True_ if the delete operation was successfully completed<br/> * _True_ if _key_ doesn't exist<br/> * _False_ if the delete operation failed |  
+| **Value** | `T` | * The value that was deleted upon a sucessful delete<br/>* 'null' if _key_ doesn't exist<br/>* The currently existing value on the server if delete operation failed |  
+| **Index** | long | * The next available version number upon success<br/>* The next available version number if _key_ doesn't exist<br/>* The currently existing index on the server if the delete operation failed |  
+{PANEL/}
 
-## Example
+{PANEL: Example}
 
-{CODE delete_1@ClientApi\Operations\CompareExchange.cs /}
+{CODE delete_1@ClientApi\Operations\CompareExchange.cs /}  
+{PANEL/}
 
 ## Related Articles
 
-- [How to **get compare-exchange** value?](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [How to **get compare-exchange** values?](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [How to **put compare-exchange** value?](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
+- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
+- [Get compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)

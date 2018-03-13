@@ -47,17 +47,17 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             public class CompareExchangeValue<T>
             {
                 public readonly string Key;
-                public readonly long Index;
                 public readonly T Value;
+                public readonly long Index;
             }
             #endregion
 
             #region compare_exchange_result
             public class CompareExchangeResult<T>
             {
+                public bool Successful;
                 public T Value;
                 public long Index;
-                public bool Successful;
             }
             #endregion
         }
@@ -88,13 +88,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     #region get_list_2
                     Dictionary<string, CompareExchangeValue<string>> compareExchangeValues
                         = store.Operations.Send(
-                            new GetCompareExchangeValuesOperation<string>(new[] { "cmpXchg1", "cmpXchg2" }));
+                            new GetCompareExchangeValuesOperation<string>(new[] { "Key-1", "Key-2" }));
                     #endregion
                 }
 
                 {
                     #region get_list_3
-                    // get compare-exchange values starting from 'users' - max 20 entries
+                    // Get values for keys that have the common prefix 'users'
+                    // Retrieve maximum 20 entries
                     Dictionary<string, CompareExchangeValue<User>> compareExchangeValues
                         = store.Operations.Send(new GetCompareExchangeValuesOperation<User>("users", 0, 20));
                     #endregion
@@ -105,42 +106,44 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     CompareExchangeResult<string> compareExchangeResult
                         = store.Operations.Send(
                             new PutCompareExchangeValueOperation<string>("Emails/foo@example.org", "users/123", 0));
-
-                    // e-mail 'foo@example.org' was reserved for user 123.
+                    
                     bool successful = compareExchangeResult.Successful;
+                    // If successfull is true: then Key 'foo@example.org' now has the value of "users/123"
                     #endregion
                 }
 
                 {
                     #region put_2
-                    // get existing value
+                    // Get existing value
                     CompareExchangeValue<User> readResult =
                         store.Operations.Send(
                             new GetCompareExchangeValueOperation<User>("AdminUser"));
 
                     readResult.Value.Age++;
 
-                    // update value
+                    // Update value
                     CompareExchangeResult<User> saveResult 
                         = store.Operations.Send(
                             new PutCompareExchangeValueOperation<User>("AdminUser", readResult.Value, readResult.Index));
 
-                    // save result is successful only if object index wasn't changed between read and write operations
+                    // The save result is successful only if 'index' wasn't changed between the read and write operations
                     bool saveResultSuccessful = saveResult.Successful;
                     #endregion
                 }
 
                 {
                     #region delete_1
+                    // First, get existing value
                     CompareExchangeValue<User> readResult =
                         store.Operations.Send(
                             new GetCompareExchangeValueOperation<User>("AdminUser"));
 
+                    // Delete the key - use the index received from the 'Get' operation
                     CompareExchangeResult<User> deleteResult
                         = store.Operations.Send(
                             new DeleteCompareExchangeValueOperation<User>("AdminUser", readResult.Index));
 
-                    // delete result is successful only if object index wasn't changed between read and delete operations
+                    // The delete result is successful only if the index has not changed between the read and delete operations
                     bool deleteResultSuccessful = deleteResult.Successful;
                     #endregion
                 }
