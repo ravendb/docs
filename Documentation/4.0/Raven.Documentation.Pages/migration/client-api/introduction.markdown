@@ -38,7 +38,7 @@ The entity identifier can only be `string`. Value types identifiers (`int`, `Gui
 
 ### Metadata
 
-Document metadata is no longer sent via HTTP headers. It's part of JSON document under `@metdata` property.
+Document metadata is no longer sent via HTTP headers. It's part of JSON document under `@metadata` property.
 
 List of changed metadata properties:
 
