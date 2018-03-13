@@ -1,0 +1,22 @@
+﻿[
+    {
+        "Path": "azure-windows-vm.markdown",
+        "Name": "Azure Windows VM",
+        "Mappings": []
+    },
+    {
+        "Path": "aws-windows-vm.markdown",
+        "Name": "AWS Windows VM",
+        "Mappings": []
+    },
+    {
+        "Path": "azure-linux-vm.markdown",
+        "Name": "Azure Linux VM",
+        "Mappings": []
+    },
+    {
+        "Path": "aws-linux-vm.markdown",
+        "Name": "AWS Linux VM",
+        "Mappings": []
+    }
+]
