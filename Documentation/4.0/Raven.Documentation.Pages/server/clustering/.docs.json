@@ -3,5 +3,10 @@
         "Path": "how-clustering-and-replication-works.markdown",
         "Name": "How Clustering And Replication Works",
         "Mappings": []
+    },
+    {
+        "Path": "change-vector.markdown",
+        "Name": "Change Vector",
+        "Mappings": []
     }
 ]
