@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.CompareExchange;
 using Raven.Client.Documents.Session;
+using Raven.Client.Documents.Queries;
+using Raven.Client.Documents.Linq;
 
 namespace Raven.Documentation.Samples.Server
 {
@@ -51,6 +53,19 @@ namespace Raven.Documentation.Samples.Server
                     session.SaveChanges();
                 }
                 #endregion
+
+                #region query_cmpxchg
+                using (IDocumentSession session = store.OpenSession())
+                {
+                    var query = from u in session.Query<User>()
+                                where u.Email == RavenQuery.CmpXchg<string>("emails/ayende@ayende.com")
+                                select u;
+
+                    var q = session.Advanced
+                        .DocumentQuery<User>()
+                        .WhereEquals("Email", CmpXchg.Value("emails/ayende@ayende.com"));
+                }
+                #endregion
             }
         }
 
@@ -70,7 +85,6 @@ namespace Raven.Documentation.Samples.Server
                 // Do some work for the duration that was set.
                 // Don't exceed the duration, otherwise resource is available for someone else.
             }
-
             finally
             {
                 ReleaseResource(store, "Printer/First-Floor", reservationIndex);

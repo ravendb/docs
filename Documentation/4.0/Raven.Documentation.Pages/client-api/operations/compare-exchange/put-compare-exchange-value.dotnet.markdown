@@ -10,7 +10,7 @@
 
 * The _Value_ is saved only if the index passed is equal to the index currently stored in the server for the specified _Key_.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/compare-exchange)  
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/clustering/compare-exchange)  
 
 * In this page:  
   * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value#syntax)  
@@ -58,7 +58,7 @@ The value is updated only if the two are **equal** (exchange stage).
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/compare-exchange)
+- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
 - [Get a compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
 - [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
 - [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

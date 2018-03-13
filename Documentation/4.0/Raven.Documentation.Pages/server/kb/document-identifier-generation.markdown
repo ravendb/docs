@@ -65,7 +65,7 @@
   The server  
 
 * **Description**:  
-  * When a document ID is _not_ specified, the RavenDB server will generate a **globally unique identifier** (GUID) for the stored new document.
+  * When a document ID is _not_ specified, RavenDB server will generate a **globally unique identifier** (GUID) for the stored new document.
   * Although this is the simplest way to generate a document ID, Guids are _not_ human-friendly when it comes to debugging or troubleshooting 
     and are less recommended.  
 

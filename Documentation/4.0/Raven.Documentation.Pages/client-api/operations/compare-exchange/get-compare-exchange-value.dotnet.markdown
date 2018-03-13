@@ -6,7 +6,7 @@
 
 * Use `GetCompareExchangeValueOperation` to return the saved compare-exchange _Value_ for the specified _Key_.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/compare-exchange)
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/clustering/compare-exchange)
 
 * In this page:  
   * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-value#syntax)  
@@ -41,7 +41,7 @@
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/compare-exchange)
+- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
 - [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
 - [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
 - [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

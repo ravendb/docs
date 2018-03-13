@@ -8,7 +8,7 @@
 
 * The _Key_ and its _Value_ are deleted only if the _index_ in the request matches the current index stored in the server for the specified key.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/compare-exchange)
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/clustering/compare-exchange)
 
 * In this page:  
   * [Syntax](../../../client-api/operations/compare-exchange/get-compare-exchange-values#syntax)  
@@ -44,7 +44,7 @@
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/compare-exchange)
+- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
 - [Get compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
 - [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
 - [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
