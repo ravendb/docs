@@ -68,10 +68,5 @@
         "Path": "put-command-data.markdown",
         "Name": "PutCommandData",
         "Mappings": []
-    },
-    {
-        "Path": "change-vector.markdown",
-        "Name": "Change Vector",
-        "Mappings": []
     }
 ]

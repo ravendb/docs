@@ -1,9 +1,5 @@
 ﻿[
     {
-        "Path": "concurrency-control.markdown",
-        "Name": "Concurrency control & change vectors"
-    },
-    {
         "Path": "document-identifier-generation.markdown",
         "Name": "Document identifier generation",
         "Mappings": [
