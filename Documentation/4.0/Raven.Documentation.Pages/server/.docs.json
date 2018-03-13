@@ -1,25 +1,5 @@
 ﻿[
     {
-        "Path": "expiration.markdown",
-        "Name": "Expiration",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/bundles/expiration"
-            }
-        ]
-    },
-    {
-        "Path": "revisions.markdown",
-        "Name": "Revisions",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/bundles/versioning"
-            }
-        ]
-    },
-    {
         "Path": "/administration",
         "Name": "Administration",
         "Mappings": []
@@ -58,5 +38,25 @@
         "Path": "/kb",
         "Name": "Knowledge Base",
         "Mappings": []
+    },
+    {
+        "Path": "expiration.markdown",
+        "Name": "Expiration",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/expiration"
+            }
+        ]
+    },
+    {
+        "Path": "revisions.markdown",
+        "Name": "Revisions",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/versioning"
+            }
+        ]
     }
 ]
