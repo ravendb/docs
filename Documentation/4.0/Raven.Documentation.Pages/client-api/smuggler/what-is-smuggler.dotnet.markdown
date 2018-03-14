@@ -1,12 +1,12 @@
 ﻿# What is Smuggler
 
-Smuggler gives you an ability to export or import data from or to a database respectively using JSON format. It is exposed via the `DocumentStore.Smuggler` property.
+Smuggler gives you the ability to export or import data from or to a database using JSON format. It is exposed via the `DocumentStore.Smuggler` property.
 
 {PANEL:ForDatabase}
 
-By default the `DocumentStore.Smuggler` works on the default document store database from `DocumentStore.Database` property. 
+By default, the `DocumentStore.Smuggler` works on the default document store database from the `DocumentStore.Database` property. 
 
-In order to switch it to a different database use `.ForDatabase` method.
+In order to switch it to a different database use the `.ForDatabase` method.
 
 {CODE for_database@ClientApi\Smuggler\WhatIsSmuggler.cs /}
 
@@ -33,7 +33,7 @@ In order to switch it to a different database use `.ForDatabase` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **Collections** | `List<string>` | List specific of collections to export. If empty then all collections will be exported. Default: `empty` |
+| **Collections** | `List<string>` | List of specific collections to export. If empty, then all collections will be exported. Default: `empty` |
 | **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange` |
 | **IncludeExpired** | `bool` | Should expired documents be included in the export. Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
