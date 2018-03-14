@@ -28,7 +28,7 @@ RavenDB supports returning counts when the distinct operation is used.
 
 Please keep in mind that this operation might not be efficient for large sets of data due to the need to scan all of the index results in order to find all the unique values.
 
-The same result might be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field that you want to have a distinct value of. e.g.
+The same result might be achieved by creating a [Map-Reduce](../../indexes/map-reduce-indexes) index that aggregates data by the field where you want a distinct value of. e.g.
 
 {CODE:csharp distinct_3_1@Indexes\Querying\Distinct.cs /}
 

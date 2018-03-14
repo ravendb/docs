@@ -1,6 +1,6 @@
 # Installation : Running as a Service
 
-After completing the Server configuration process either via [Setup Wizard](../../start/installation/setup-wizard) or [Manually](../../start/installation/manual) you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server distribution package.
+After completing the Server configuration process either via [Setup Wizard](../../start/installation/setup-wizard) or [Manually](../../start/installation/manual), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server distribution package.
 
 {PANEL:Windows}
 
