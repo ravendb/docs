@@ -93,9 +93,8 @@
                 builder.TransformRawHtmlBlocks();
                 builder.TransformLegacyBlocks(file);
                 builder.TransformBlocks();
-                builder.ReplaceSocialMediaBlocks(page);
 
-                content = builder.Build();
+                content = builder.Build(page);
 
                 var htmlDocument = HtmlHelper.ParseHtml(content);
 

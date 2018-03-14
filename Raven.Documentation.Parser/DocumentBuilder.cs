@@ -42,15 +42,7 @@ namespace Raven.Documentation.Parser
             _content = CodeBlockHelper.ReplaceCodeBlocksWithPlaceholders(_content, out _codeBlocks); 
         }
 
-        public void ReplaceSocialMediaBlocks(FolderItem page)
-        {
-            string expectedPageUrl = null;
-            page.Metadata?.TryGetValue("url", out expectedPageUrl);
-
-            _content = SocialMediaBlockHelper.ReplaceSocialMediaBlocks(_content, expectedPageUrl);
-        }
-
-        public string Build()
+        public string Build(FolderItem page)
         {
             _content = _parser.Transform(_content);
 
@@ -65,6 +57,11 @@ namespace Raven.Documentation.Parser
 
             if (_rawHtmlBlocks != null)
                 _content = LegacyBlockHelper.ReplaceRawHtmlPlaceholdersAfterMarkdownTransformation(_content, _rawHtmlBlocks);
+
+            string expectedPageUrl = null;
+            page.Metadata?.TryGetValue("url", out expectedPageUrl);
+
+            _content = SocialMediaBlockHelper.ReplaceSocialMediaBlocks(_content, expectedPageUrl);
 
             return _content;
         }
