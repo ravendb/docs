@@ -303,5 +303,34 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg",
             "twitter:url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database"
         }
+    },
+    {
+        "Path": "ravendb40-passes-intense-security-check.markdown",
+        "Name": "RavenDB 4.0 Passes Intense Security Check",
+        "Mappings": [],
+        "Metadata": {
+            "title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check",
+            "publishedAt": ""
+        },
+        "SeoMetaProperties": {
+            "description": "",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
+            "og:description": "",
+            "og:url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb40-passes-intense-security-check.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
+            "twitter:description": "",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb40-passes-intense-security-check.jpg",
+            "twitter:url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check"
+        }
     }
 ]
