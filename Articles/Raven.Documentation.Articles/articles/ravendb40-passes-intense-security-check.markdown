@@ -38,7 +38,7 @@ An impenetrable fortress is useless if you forget to close all the locks properl
 
 Most security breaches occur in businesses where an employee made a minor mistake that was overlooked by the security team. The bigger the process for setting up security, the greater the vulnerability that someone in your organization will miss something and an unruly hacker will find it. Making installation and maintenance simple is its own security layer.
 
-Here is our <strong>CEO, Oren Eini</strong>, setting up a secure multi-node cluster, ready for deployment, <em>all in just 10 minutes</em>:
+Watch me set up a secure multi-node cluster, ready for deployment, <em>all in just 10 minutes</em>!
 
 <div class="youtube-frame">
     <div class="embed-responsive embed-responsive-16by9">
