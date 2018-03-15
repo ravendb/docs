@@ -67,7 +67,7 @@ Create a new rule for TCP ports 443 and 38888 (or the ones you choose).
 
 Now let's setup RavenDB, first we need to download it. 
 
-Dowload Chrome, you wil need to allow it in the Internet Explorer firewall.
+Dowload Chrome, you will need to allow it in the Internet Explorer firewall.
 
 ![20](images/aws-windows/20.png)
 ![21](images/aws-windows/21.png)
@@ -76,7 +76,7 @@ Install the [Visual C++ 2015 Redistributable Package](https://support.microsoft.
 
 ![19](images/aws-windows/19.png)
 
-Download RavenDB and extract the archive to a nice path (e.g. c:\Raven4\\).
+Download RavenDB and extract it to a path of your choice (e.g. C:\Raven4\).
 
 ![22](images/aws-windows/22.png)
 
@@ -106,7 +106,7 @@ Choose the Private IP address here.
 
 Check the External IP box and enter the public IP address. Then start the installation.
 
-If you are errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq).
+If you encounter errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq).
 
 ![29](images/aws-windows/29.png)
 
@@ -116,12 +116,12 @@ Restart the server.
 
 ![30](images/aws-windows/30.png)
 
-Some environments (like this one) don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the studio, and you get an authentication error, please **close all instances of Chrome** and install the admin client certificate manually. Double click on the certificate (from the extracted configuration ZIP file) and click next all the way through. It will add it to the OS user certificates store.
+Some environments (like this one) don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the Studio, and you get an authentication error, please **close all instances of Chrome** and install the admin client certificate manually. Double click on the certificate (from the extracted configuration ZIP file) and click next all the way through. It will add it to the OS user certificates store.
 
 ![32](images/aws-windows/32.png)
 ![33](images/aws-windows/33.png)
 
-Now you can access the studio, open Chrome and enter your new domain (e.g. https://a.tutorial.ravendb.community).
+Now you can access the Studio, open Chrome and enter your new domain (e.g. https://a.tutorial.ravendb.community).
 
 Chrome will let you select the certificate. 
 
