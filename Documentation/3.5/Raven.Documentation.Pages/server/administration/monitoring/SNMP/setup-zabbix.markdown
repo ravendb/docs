@@ -1,4 +1,4 @@
-﻿# Monitoring : How to setup Zabbix monitoring
+﻿# Monitoring : How to Setup Zabbix Monitoring
 
 RavenDB 3.5 supports [SNNP](./snmp), which means that with a few quick steps you can monitor your server using Zabbix.
 
@@ -13,13 +13,13 @@ Once installed, login to the frontend (the web interface provided with Zabbix). 
 
 ![Figure 1. Monitoring : How to setup Zabbix monitoring: Dashboard](images/monitoring-zabbix-dashboard.PNG) 
 
-### Importing the RavenDB template
+### Importing the RavenDB Template
 
 Navigate to `Configuration`->`Templates` and click the `Import` button on the top right corner.   
 Import the RavenDB template which can be downloaded from:   
 [https://github.com/ravendb/ravendb/blob/v3.5/Raven.Database/Plugins/Builtins/Monitoring/Snmp/Templates/zabbix_ravendb_template.xml](https://github.com/ravendb/ravendb/blob/v3.5/Raven.Database/Plugins/Builtins/Monitoring/Snmp/Templates/zabbix_ravendb_template.xml)
 
-### Adding a host
+### Adding a Host
 
 Navigate to `Configuration`->`Hosts` and click the `Create Host` button on the top right corner.
 This is where we define what host we will monitor, in our case it's the server which runs the RavenDB instance.   
@@ -40,7 +40,7 @@ Still under `Configuration`->`Hosts`, go to the tab: `Macros` and add the {$SNMP
 That's it! We've added our host and can start exploring.    
 Navigate to `Monitoring`->`Overview` and you should now see the different metrics RavenDB exposes.   
 
-### Configuring a trigger
+### Configuring a Trigger
 
 Let's see an example of what you can do with all these metrics.   
 We will create a trigger and action that will notify us when the server is up/down.   
@@ -75,6 +75,6 @@ the message you define in an action will be sent to your e-mail address every ti
 
 ![Figure 6. Monitoring : How to setup Zabbix monitoring: Create action](images/monitoring-zabbix-create-action.PNG) 
 
-## Related articles
+## Related Articles
 
 - [Monitoring: SNMP support](./snmp)
