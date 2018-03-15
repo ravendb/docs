@@ -1,19 +1,17 @@
 ﻿# Monitoring : SNMP Support
 
 Simple Network Management Protocol (SNMP) is an Internet-standard protocol for collecting and organizing information 
-about managed devices on IP networks, and is used primarily for monitoring network services. SNMP exposes management 
+about managed devices on IP networks. It is used primarily for monitoring network services. SNMP exposes management 
 data in the form of variables (metrics) which describe the system status and configuration. These metrics can then be 
 remotely queried (and, in some circumstances, manipulated) by managing applications.
 
 In RavenDB we have support for SNMP which allows monitoring tools like [Zabbix](https://www.zabbix.com), [PRTG](https://www.paessler.com/prtg) 
 and [Datadog](https://www.datadoghq.com/) direct access to the internal details of RavenDB. We expose a long list of metrics: CPU and memory usage,
-server total requests, the loaded databases... And also database specific metrics like the number of indexed items per 
-second, document writes per second, storage space each database takes and so on. 
+server total requests, the loaded databases, and also database specific metrics like the number of indexed items per 
+second, document writes per second, storage space each database takes, and so on. 
 
-You can still monitor what is going on with RavenDB directly from the Studio, or by using one of our monitoring tools, 
-but using SNMP might be easier in some cases. As users start running large numbers of RavenDB instances, it 
-becomes unpractical to deal with each of them individually and using a monitoring system that can watch many servers 
-is preferable.
+You can still monitor what is going on with RavenDB directly from the Studio, or by using one of our monitoring tools. However, using SNMP might be easier in some cases. 
+As users start running large numbers of RavenDB instances, it becomes unpractical to deal with each of them individually and using a monitoring system that can watch many servers is advisable.
 
 {NOTE:Note}
 SNMP support is available for enterprise licenses only.
@@ -22,7 +20,7 @@ SNMP support is available for enterprise licenses only.
 
 ### Enabling SNMP in RavenDB
 
-RavenDB is already configured to support SNMP and all you have to do is enable it and restart the server. 
+RavenDB is already configured to support SNMP. All you have to do is enable it and restart the server. 
 This is done by adding the following key to your settings.json file:
 {CODE-BLOCK:json}
 {
@@ -151,6 +149,6 @@ RavenDB's root OID id: 1.3.6.1.4.1.45751.1.1.
 For easier setup, we have prepared a few templates for monitoring tools which can be found [here](https://github.com/ravendb/ravendb/tree/v4.0/src/Raven.Server/Monitoring/Snmp/Templates).   
 These templates include the metrics and their associated OIDs.
 
-## Related articles
+## Related Articles
 
 - [Monitoring: How to setup Zabbix monitoring](./setup-zabbix)

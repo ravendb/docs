@@ -1,31 +1,31 @@
-﻿# Monitoring : How to setup Zabbix monitoring
+﻿# Monitoring : How to Setup Zabbix Monitoring
 
 RavenDB supports [SNNP](./snmp), which means that with a few quick steps you can monitor your server using Zabbix.
 
 ### Installation
 
-Before you setup Zabbix to monitor RavenDB make sure you have it up and running. If you haven't done so already, 
+Before you setup Zabbix to monitor RavenDB, make sure you have it up and running. If you haven't done so already, 
 you should [read about Zabbix](https://www.zabbix.com/documentation/3.4/start), 
-[install it](https://www.zabbix.com/documentation/3.4/manual/installation/getting_zabbix) 
+[install it](https://www.zabbix.com/documentation/3.4/manual/installation/getting_zabbix), 
 and [create your own user](https://www.zabbix.com/documentation/3.4/manual/quickstart/login). 
 
-Once installed, login to the frontend (the web interface provided with Zabbix). You should see the Zabbix dashboard.
+Once installed, login to the front end (the web interface provided with Zabbix). You should see the Zabbix dashboard.
 
 ![Figure 1. Monitoring : How to setup Zabbix monitoring: Dashboard](images/monitoring-zabbix-dashboard.PNG) 
 
-### Importing the RavenDB template
+### Importing the RavenDB Template
 
 Navigate to `Configuration`->`Templates` and click the `Import` button on the top right corner.   
 Import the RavenDB template which can be downloaded from:   
 [https://github.com/ravendb/ravendb/blob/v4.0/src/Raven.Server/Monitoring/Snmp/Templates/zabbix_ravendb_template.xml](https://github.com/ravendb/ravendb/blob/v4.0/src/Raven.Server/Monitoring/Snmp/Templates/zabbix_ravendb_template.xml)
 
-### Adding a host
+### Adding a Host
 
 Navigate to `Configuration`->`Hosts` and click the `Create Host` button on the top right corner.
-This is where we define what host we will monitor, in our case it's the server which runs the RavenDB instance.   
+This is where we define what host we will monitor. In our case it's the server which runs the RavenDB instance.   
 Name your host and choose the `Database servers` group.
 Remove the default `Agent interface` and instead add an `SNMP interface`, using either an IP address or a DNS name and a port. 
-Also, make sure you click the appropriate IP/DNS button.    
+Make sure you click the appropriate IP/DNS button.    
 
 ![Figure 2. Monitoring : How to setup Zabbix monitoring: Add host](images/monitoring-zabbix-add-host.PNG) 
 
@@ -40,10 +40,10 @@ Still under `Configuration`->`Hosts`, go to the tab: `Macros` and add the {$SNMP
 That's it! We've added our host and can start exploring.    
 Navigate to `Monitoring`->`Overview` and you should now see the different metrics RavenDB exposes.   
 
-### Configuring a trigger
+### Configuring a Trigger
 
 Let's see an example of what you can do with all these metrics.   
-We will create a trigger and action that will notify us when the server is up/down.   
+We will create a trigger and action that will notify us when the server is up or down.   
 Navigate to `Configuration`->`Hosts` and click the host name. Then, in the top navigation bar click on `Triggers`.
 Click on `Create trigger` on the top right corner.
 
@@ -52,8 +52,8 @@ Name the trigger "Server is down" and enter the following expression into the te
 {CODE-BLOCK:plain}
     {RavenDB Amazing Server v7.0:serverUpTime.nodata(1800)}=1
 {CODE-BLOCK/}
-Alternatively, you could click on `Add` button on the right and use the expression constructor to set your own conditions.   
-You will need to choose an item (one of the metrics we imported using the template), choose conditions and set the parameters.  
+Alternatively, you could click on the `Add` button on the right and use the expression constructor to set your own conditions.   
+You will need to choose an item (one of the metrics we imported using the template). Choose conditions and set the parameters.  
 
 {NOTE:Note}
 This stage must be done after importing the template into Zabbix (described earlier). If you didn't import the template,
@@ -75,6 +75,6 @@ the message you define in an action will be sent to your e-mail address every ti
 
 ![Figure 6. Monitoring : How to setup Zabbix monitoring: Create action](images/monitoring-zabbix-create-action.PNG) 
 
-## Related articles
+## Related Articles
 
 - [Monitoring: SNMP support](./snmp)
