@@ -38,12 +38,12 @@ With the Revisions feature enabled, let us execute this code:
 
 If we inspect the document we will see that the following revision were created:
 
-![Figure 1: Revisions](images\revisoins1.png)
+![Figure 1: Revisions](images\revisions1.png)
 
 This is a revision of the document (you can navigate to the document by clicking on `See the current document`) which is stored on the revisions storage.
 Now, let's modify the original document. This would create another revision:
 
-![Figure 2: Revisions, Modified](images\revisoins2.png)
+![Figure 2: Revisions, Modified](images\revisions2.png)
 
 As you can see, we have full audit record of all the changes that were made to the document.
 
@@ -58,13 +58,13 @@ The document would be removed but a revision will be created, so you aren't goin
 In order to see orphaned revisions (revisions of deleted documents), you can go to the `Documents > Revisions Bin` section in the studio, 
 which would list all revisions without existing document:
 
-![Figure 3: Revisions, Deleted](images\revisoins3.png)
+![Figure 3: Revisions, Deleted](images\revisions3.png)
 
 If you'll go and create another document with this ID (users/1), than the revision won't be shown anymore in the Revision Bin section, 
 but you can navigate to the document and see it's revisions, including the deleted once.
 
 Clicking on the revision we can also navigate to the other revisions of this document:
 
-![Figure 4: Revisions, Deleted - other revisions](images\revisoins4.png)
+![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png)
 
 As you can see, the revisions feature attempts to make things as simple as possible, and once it is enabled, you'll automatically get the appropriate audit trail.
