@@ -48,19 +48,34 @@ namespace Raven.Documentation.Samples.Server
                 #region store
                 using (var session = store.OpenAsyncSession())
                 {
-                    await session.StoreAsync(new User { Name = "Ayende Rahien" });
+                    await session.StoreAsync(new User
+                    {
+                        Name = "Ayende Rahien"
+                    });
+
                     await session.SaveChangesAsync();
                 }
                 #endregion
 
-                Loan loan = new Loan {Id = "loans/1"};
+                Loan loan = new Loan { Id = "loans/1" };
 
                 using (var session = store.OpenAsyncSession())
                 {
                     #region get_revisions
-                    List<User> revisions = await session.Advanced.Revisions.GetForAsync<User>("users/1", start: 0, pageSize: 25);
-                    List<MetadataAsDictionary> revisionsMetadata = await session.Advanced.Revisions.GetMetadataForAsync("users/1", start: 0, pageSize: 25);
-                    User revison = await session.Advanced.Revisions.GetAsync<User>(revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector));
+                    List<User> revisions = await session
+                        .Advanced
+                        .Revisions
+                        .GetForAsync<User>("users/1", start: 0, pageSize: 25);
+
+                    List<MetadataAsDictionary> revisionsMetadata = await session
+                        .Advanced
+                        .Revisions
+                        .GetMetadataForAsync("users/1", start: 0, pageSize: 25);
+
+                    User revison = await session
+                        .Advanced
+                        .Revisions
+                        .GetAsync<User>(revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector));
                     #endregion
                 }
             }
