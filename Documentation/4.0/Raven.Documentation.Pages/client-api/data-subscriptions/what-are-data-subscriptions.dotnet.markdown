@@ -19,7 +19,7 @@
 * When the responsible node handling the subscription is down, the subscription task can be manually reassigned to another node in the cluster.
   With Enterprise license, the cluster will automatically reassign the work to another node.
 
-* Note: If the database has Revisions defined, then special handling can be done on the server before sending the data to the client
+* If the database has Revisions defined, then the subscription can be configured to process pairs of subsequent document revisions. Read more in [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
 
 {NOTE/}
 
