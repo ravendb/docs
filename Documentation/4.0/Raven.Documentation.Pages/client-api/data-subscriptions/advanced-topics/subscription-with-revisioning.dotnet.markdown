@@ -20,8 +20,33 @@ In this page:
 ---
 
 {PANEL:Revisions processing order}
-Documents revisions will be processed in pairs, meaning if a document was changed 6 times in a row, subscription will process 6 times 6 pairs of versions of that document.
-{WARNING For the subscription revisions to work properly, it's crucial to make sure that the revisions configuration stores documents revisions enough time, without discarding unprocessed revisions/}
+Documents revisions feature allows tracking changes that were performed on a document, by storing the audit trail of its changes over time.  
+An audit trail entry is called a Document Revision and is comprised of a document snapshot.  
+
+In data subscription, Documents Revisions will be processed in pairs of subsequent entries.  
+Example: 
+Let us assume a user document that looks like:  
+
+`{  
+    Name:'Freidrich',  
+    Age:'21'  
+}`  
+
+We update the User document two times, in separate operations:  
+* We update the 'Age' field to the value of 22  
+* We update the 'Age' field to the value of 23  
+
+Data subscription's revision processing mechanism will receive pairs of revision in the following order:  
+
+
+| # | Previous | Current  |
+|---|---|-----| 
+| 1 | `null` | 21 |
+| 2 | 21 | 22 |
+| 3 | 22 | 23 |
+ 
+
+{WARNING In order for the subscription revisions to work properly, it's crucial to make sure that the revisions configuration stores documents revisions enough time, without discarding unprocessed revisions/}
 {PANEL/}
 
 {PANEL:Simple declaration and usage}
