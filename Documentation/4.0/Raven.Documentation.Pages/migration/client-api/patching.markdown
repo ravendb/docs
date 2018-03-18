@@ -1,6 +1,6 @@
 ﻿# Migration : Patching
 
-This article describes the differences between 3.x and 4.0. It is primarly focused on the JavaScript capabilities. If you are interested only in Client API changes, please visit [this article](../../client-api/operations/patching/single-document).
+This article describes the differences between 3.x and 4.0. It's primarily focused on the JavaScript capabilities. If you are interested only in Client API changes, please visit [this article](../../client-api/operations/patching/single-document).
 
 {PANEL:JavaScript Interpreter}
 
@@ -106,7 +106,7 @@ var myArray = this.MyArray.filter(i => i.Id == args.Id);
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [Client API : Patching : Single Document](../../client-api/operations/patching/single-document)
 - [Client API : Patching : Set Based](../../client-api/operations/patching/set-based)

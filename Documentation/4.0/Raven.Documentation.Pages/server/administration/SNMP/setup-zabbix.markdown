@@ -47,11 +47,13 @@ We will create a trigger and action that will notify us when the server is up or
 Navigate to `Configuration`->`Hosts` and click the host name. Then, in the top navigation bar click on `Triggers`.
 Click on `Create trigger` on the top right corner.
 
-Now let's assume you have imported the template earlier and that you named your host "RavenDB Amazing Server v7.0". 
+Let's assume you've imported the template earlier and that you named your host "RavenDB Amazing Server v7.0". 
+
 Name the trigger "Server is down" and enter the following expression into the text box:   
 {CODE-BLOCK:plain}
     {RavenDB Amazing Server v7.0:serverUpTime.nodata(1800)}=1
 {CODE-BLOCK/}
+
 Alternatively, you could click on the `Add` button on the right and use the expression constructor to set your own conditions.   
 You will need to choose an item (one of the metrics we imported using the template). Choose conditions and set the parameters.  
 

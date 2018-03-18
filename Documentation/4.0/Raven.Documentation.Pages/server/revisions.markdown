@@ -1,6 +1,6 @@
 # Revisions
 
-The revisions feature will create a revision (snapshot) for every document, upon every update received, or when it is deleted.
+The revisions feature will create a revision (snapshot) for every document, upon every update received or when it is deleted.
 It is useful when you need to track the history of the documents or when you need a full audit trail.
 
 ## Configuration
@@ -24,15 +24,15 @@ You can also configure the revisions feature using the client:
 
 {CODE configuration@Server\Revisions.cs /}
 
-It is possible to have a default configuration telling the revisions feature to revision all documents 
-(by setting `Disabled=false`, which is the default, on the default configuration) and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
-Than we override the behavior of the revisions feature by specifying a configuration specifically to a collection. For example, let's say that we don't want to revision users.
+It is possible to have a default configuration telling the revisions feature to revision all documents. 
+Set `Disabled=false`, which is the default, on the default configuration, and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
+Then override the behavior of the revisions feature by specifying a configuration specifically to a collection. 
 
 Conversely, we can disable the default configuration (`Disalbed = true`) but enable revisions for a specific collections.
 
 ## How it works
 
-With the Revisions feature enabled, let us execute this code:
+With the Revisions feature enabled, let's execute this code:
 
 {CODE store@Server\Revisions.cs /}
 
@@ -67,4 +67,4 @@ Clicking on the revision we can also navigate to the other revisions of this doc
 
 ![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png)
 
-As you can see, the revisions feature attempts to make things as simple as possible, and once it is enabled, you'll automatically get the appropriate audit trail.
+The revisions feature attempts to make things as simple as possible. Once it is enabled, you'll automatically get the appropriate audit trail.
