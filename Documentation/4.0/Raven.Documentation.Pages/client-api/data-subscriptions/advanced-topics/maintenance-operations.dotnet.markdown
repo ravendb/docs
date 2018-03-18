@@ -6,12 +6,12 @@
 
 This page covers data subscriptions maintenance operations:  
 
-[Deletion](#deletion)  
-[Dropping Connection](#dropping-connection)  
-[Disabling subscription](#disabling-subscription)  
-[Updating subscription](#updating-subscription)  
-[Getting subscription status](#getting-subscription-status)  
-[DocumentSubscriptions class](#documentsubscriptions-class)  
+[Deletion](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deletion)  
+[Dropping Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
+[Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
+[Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
+[Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
+[DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
 
 {NOTE/}
 
@@ -104,6 +104,6 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 
 ## Related articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)

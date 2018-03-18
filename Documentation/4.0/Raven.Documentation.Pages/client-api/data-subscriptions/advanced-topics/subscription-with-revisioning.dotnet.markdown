@@ -11,9 +11,9 @@ Such functionality allows keeping track of each change that was performed on a d
 Both document revisions are accessible in the filtering and the projection process.
 
 In this page:  
-[Revisions processing](#revisions-processing-order)  
-[Simple declaration and usage](#simple-declaration-and-usage)   
-[Revisions processing and projection](#revisions-processing-and-projection)  
+[Revisions processing](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
+[Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-declaration-and-usage)   
+[Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-and-projection)  
 
 {NOTE/}
 
@@ -52,6 +52,6 @@ Consumption:
 
 ## Related articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)

@@ -6,11 +6,11 @@
 
 In this page:  
 
-[Subscription worker generation](#subscription-worker-generation)  
-[SubscriptionWorkerOptions](#subscriptionworkeroptions)  
-[Running SubscriptionWorker](#running-subscription-worker)  
-[SubscriptionBatch&lt;T&gt;](#subscriptionbatch<t>)  
-[SubscriptionWorker&lt;T&gt;](#subscriptionworker<t>)  
+[Subscription worker generation](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscription-worker-generation)  
+[SubscriptionWorkerOptions](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworkeroptions)  
+[Running subscription worker](../../../client-api/data-subscriptions/subscription-consumption/api-overview#running-subscription-worker)  
+[SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionbatch<t>)  
+[SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworker<t>)  
 
 {NOTE/}
 
@@ -150,6 +150,6 @@ The `Run` function receives the client side code as a delegate that will process
 
 ## Related articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
 
