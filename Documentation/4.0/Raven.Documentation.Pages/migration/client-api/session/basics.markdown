@@ -2,7 +2,7 @@
 
 {PANEL:Namespace}
 
-`IDocumentSession` is can be referenced using `Raven.Client.Documents.Session` (previously `Raven.Client`).
+`IDocumentSession` can be referenced using `Raven.Client.Documents.Session` (previously `Raven.Client`).
 
 {PANEL/}
 
