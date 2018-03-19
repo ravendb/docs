@@ -22,7 +22,7 @@ There is no need to explicitly define sorting in definitions of static indexes a
 
 ### Constants.AllFields
 
-`Constants.AllFields` constant has been removed to `Constants.Documents.Indexing.Fields.AllFields`
+`Constants.AllFields` constant has been moved to `Constants.Documents.Indexing.Fields.AllFields`
 
 ### FieldIndexing.Analyzed
 
