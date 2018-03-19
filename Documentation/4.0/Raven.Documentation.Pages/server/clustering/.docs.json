@@ -15,6 +15,11 @@
         "Mappings": []
     },
     {
+        "Path": "database-global-change-vector.markdown",
+        "Name": "Database Global Change Vector",
+        "Mappings": []
+    },
+    {
         "Path": "compare-exchange.markdown",
         "Name": "Compare Exchange",
         "Mappings": [

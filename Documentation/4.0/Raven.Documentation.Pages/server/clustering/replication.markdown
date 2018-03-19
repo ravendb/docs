@@ -9,12 +9,12 @@ Replication in RavenDB is the process of transferring _data_ from one database t
   * Conflicts  
 
 {PANEL: How does replication works}
-The replication process sends _data_ over a _TCP connection_ by the modification order, meaning that the least modified data gets sent first.  
-Internally we keep an [ETag](../../glossary/etag) per data element, which is an incremental integer value, and this is how we are able to determine what is the order of modifications.  
+The replication process sends _data_ over a _TCP connection_ by the modification order, meaning that the oldest modification on the node gets sent first.  
+Internally we keep an [ETag](../../glossary/etag) per data element, which is an incrementing integer value, and this is how we are able to determine what is the order of modifications.  
 Each replication process has a _source_ , _destination_ and a last confirmed _ETag_ which is basically a cursor to where we have gotten to in the replication process.  
 The _data_ is sent from the _source_, in batches, to the _destination_.  
-When the _destination_ confirms getting the _data_ the _ETag_ is then advanced and the next batch of _data_ is sent.  
-In case of failure of the process, it will re-start with the [initial handshake procedure](../clustering/replication#replication-handshake-procedure).
+When the _destination_ confirms getting the _data_ the last accepted etag is then advanced and the next batch of _data_ is sent.  
+In case of failure of the process, it will re-start with the [initial handshake procedure](../clustering/replication#replication-handshake-procedure), which will make sure we will start replicating from the last accepted _ETag_.
 {PANEL/}
 
 {PANEL: Replication Handshake Procedure}
@@ -28,7 +28,7 @@ meaning we will skip documents with higher _Etag_ and lower _change vecotr_, thi
 {PANEL/}
 
 {PANEL: Preventing the ripple effect}
-RavenDB [_database group_](../../glossary/database-group) is a well connected graph of replication channels, meaning that if there are `n` nodes in a _database group_ there are `n*(n-1)` replication channels.  
+RavenDB [_database group_](../../glossary/database-group) is a fully connected graph of replication channels, meaning that if there are `n` nodes in a _database group_ there are `n*(n-1)` replication channels.  
 We wanted to prevent the case where inserting data into one database will cause the data to propagate multiple times through multiple paths to all the other nodes.  
 We have managed to do so by delaying the propagation of data coming from the replication logic itself.  
 If the sole source of incoming data is replication we will not replicate it right away, we will wait up to `15 seconds` before sending data.  
@@ -62,17 +62,15 @@ Luckily not all is lost there are a couple of solutions this problem:
 
 {PANEL: Rehab state and database group observer}
 
-In a [database group](../../glossary/database-group)  we might have a node that is behind the other nodes, and currently being updated by one of the other nodes in the _database group_.  
-This may happen for a few reason, it was just added, it was down for a while or it was just restored from a backup snapshot.  
+In a [database group](../../glossary/database-group) we might have a node that has a much lower [gloabl change vector](../clustering/database-global-change-vector), and currently being updated by one of the other nodes in the _database group_.  
+This may happen for a few reasons, it was just added, it was down for a while or it was just restored from a backup snapshot.  
 We consider such node to be in a _rehab_ state untill it caught up with the rest of the _database group_.  
 While a node is in a _rehab_ state it may not be assigned any tasks such as _backup_, _ETL_ or _subscriptions_.  
 
-Every _database group_ has an _observer_, the _observer_ is a node that is assigned to monitor a _database group_.  
-The _observer_ periodically pings all members of a _database group_ and checks that they are both up and that their data is up to date.  
+Every _cluster_ has an _observer_, the _observer_ is run by the _cluster leader_ and monitors the _database groups_.  
+The _observer_ periodically pings all nodes and checks that they are both up and that their data is up to date.  
 If the _observer_ notice that a node is down or lagging behind it will mark it as in _rehab_ state and thus it will not get assigned new tasks.  
-Moreover, if tasks were assigned to a node and it just got updated to a _rehand_ state his assigned task will get re-assgined to other nodes in the _database group_.   
-Note that although the _observer_ is making the decision to mark a node as in _rehab_ the actual modification of the state is done by the _cluster leader_.  
-If an _observer_  is not responding the cluster leader will assign a different node to become the _database group_ _observer_.
+Moreover if you have an _enterprise license_ then tasks that were assigned to that node will get re-assigned to other nodes in the _database group_.   
 {PANEL/}
 
 {PANEL: External Replication}
