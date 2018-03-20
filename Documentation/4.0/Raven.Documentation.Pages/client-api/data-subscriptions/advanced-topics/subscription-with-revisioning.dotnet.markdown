@@ -28,7 +28,7 @@ Example:
 Let us assume a user document that looks like:  
 
 `{  
-    Name:'Freidrich',  
+    Name:'James',  
     Age:'21'  
 }`  
 
@@ -46,7 +46,8 @@ Data subscription's revision processing mechanism will receive pairs of revision
 | 3 | 22 | 23 |
  
 
-{WARNING In order for the subscription revisions to work properly, it's crucial to make sure that the revisions configuration stores documents revisions enough time, without discarding unprocessed revisions/}
+{WARNING As seen above, in order for subscriptions on revisions to work properly, it needs the revisions entries to be available, otherwise, there will be no data to process. Therfore, it's crucial to make sure that the revisions configuration allows storing documents revisions enough time, without discarding unprocessed revisions /}
+
 {PANEL/}
 
 {PANEL:Simple declaration and usage}
@@ -80,3 +81,4 @@ Consumption:
 - [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
 - [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
+- [Revisions management](../../../server/revisions)
