@@ -1,11 +1,11 @@
-﻿# Revisions support
+﻿# Revisions Support
 
 ---
 
 {NOTE: }
 
 Data subscription supports subscribing not only on documents, but also on all their revisions.  
-Revision support should be defined in the subscription, it also requires revisions to be configured on the collection in question.  
+Revision support should be defined in the subscription. It also requires revisions to be configured on the collection in question.  
 While regular subscriptions process single documents, subscription on documents revisions processes pairs of subsequent document revisions.  
 Such functionality allows keeping track of each change that was performed on a document, and even to compare two subsequent versions of a document.  
 Both document revisions are accessible in the filtering and the projection process.
@@ -20,12 +20,12 @@ In this page:
 ---
 
 {PANEL:Revisions processing order}
-Documents revisions will be processed in pairs, meaning if a document was changed 6 times in a row, subscription will process 6 times 6 pairs of versions of that document.
-{WARNING For the subscription revisions to work properly, it's crucial to make sure that the revisions configuration stores documents revisions enough time, without discarding unprocessed revisions/}
+Documents revisions will be processed in pairs. If a document was changed 6 times in a row, the subscription will process 6 times 6 pairs of versions of that document.
+{WARNING For the subscription revisions to work properly, it's crucial to make sure that the revisions configuration gives documents revisions enough time, without discarding unprocessed revisions/}
 {PANEL/}
 
 {PANEL:Simple declaration and usage}
-Here we declare a simple revisions subscription, that will send pairs of subsequent document revisions to the client
+Here we declare a simple revisions subscription that will send pairs of subsequent document revisions to the client:
 
 Creation:
 {CODE-TABS}
@@ -38,7 +38,7 @@ Consumption:
 {PANEL/}
 
 {PANEL:Revisions processing and projection}
-Here we declare a revisions subscription, that will filter and project data from revisions pairs:
+Here we declare a revisions subscription that will filter and project data from revisions pairs:
 
 Creation:
 {CODE-TABS}
@@ -50,7 +50,7 @@ Consumption:
 {CODE use_simple_revision_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [What are data subscriptions?](../what-are-data-subscriptions)
 - [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
