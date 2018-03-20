@@ -10,8 +10,10 @@ The client utilizes the notion of the `304 Not Modified` server's response and w
 
 ## Aggressive Mode
 
-The aggressive caching feature goes even further. Enabling it means that the client doesn't need to ask the server. It will simply return the response directly from a local cache, without any usage of `304 Not Modified` status. 
-Result will be returned very fast. The way it works: The client subscribes to [server notifications](../changes/what-is-changes-api). By taking advantage of them, he is able to invalidate cached documents when they are changed.
+The aggressive caching feature goes even further. Enabling it means that the client doesn't need to ask the server. It will simply return the response directly from a local cache without any usage of `304 Not Modified` status. 
+Results will be returned very fast. 
+
+Here's how it works: The client subscribes to [server notifications](../changes/what-is-changes-api). By taking advantage of them, he is able to invalidate cached documents when they are changed.
 The client knows when it can serve the response from the cache, and when it has to send the request to get the up-to-date result. 
 
 {WARNING:Important}
@@ -41,8 +43,9 @@ which is equivalent to:
 {CODE aggressive_cache_for_one_day_2@ClientApi\HowTo\SetupAggressiveCaching.cs /}
 
 ###Disable Aggressive Mode
-We can disable the aggressive mode by simply use `documentStore.DisableAggressiveCaching()`, In that way we will disable the aggressive caching 
-globally in the store, but what if we need to disable the aggressive caching only for a specific call, or to manually update the cache, just like before we can use `DisableAggressiveCaching()`
-per session.
+
+We can disable the aggressive mode by simply using `documentStore.DisableAggressiveCaching()`. In that way we will disable the aggressive caching 
+globally in the store. But what if we need to disable the aggressive caching only for a specific call, or to manually update the cache, just like before we can use `DisableAggressiveCaching()`
+per session?
 
 {CODE disable_aggressive_cache@ClientApi\HowTo\SetupAggressiveCaching.cs /}
