@@ -141,8 +141,13 @@ In case one or more documents are in "conflicted" state, we need to resolve the 
   
 This can be done in two ways:
 * A **PUT** operation with the "conflicted" document Id will cause the conflict to be resolved to contain the value from the **PUT** operation.
-* The conflict can be resolved via the Management Studio, where a document which will resolve the conflict can be picked manually from all conflicting versions.
+* The conflict can be resolved via the Management Studio, where a document which will resolve the conflict can be picked manually from all conflicting versions. The Studio will attempt at merging the documents as much as possible, and where it is not possible, the studio will leave merge tags that will mark the merged areas.
+
   
 ![Conflict Resolution Script in Management Studio](images/resolve-conflicted-document-screen.jpg)  
 
 {NOTE In the case any document is conflicted and the conflict is not resolved, the conflicting document variants are stored as revisions to their original document, while the document itself is removed. /}
+  
+Now, in the example we have in the conflict, once we remove merging tags in the document and press "resolve and save", the resulting document will look like the following:
+
+![Document after resolved conflict](images/resolve-conflicted-document-screen2.jpg)  
