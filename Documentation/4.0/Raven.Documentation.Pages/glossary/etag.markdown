@@ -6,9 +6,9 @@ Thus, if comparing etags for two versions of the same document on specific Raven
 {NOTE Etags are local to each node, and are meaningless in the context of the cluster. /}
 
 ### Etags vs. Change Vectors
-Both etags and change vectors are used to track document changes. Etags have meaning per cluster nodes, and change vectors have meaning cluster-wide.
-* Etag is incremented when a document is modified and replicated
-* [Change vector](../server/clustering/change-vector) is incremented when a document is modified
+Both etags and change vectors are used to track document changes. Etags have meaning local to cluster nodes, and change vectors have meaning cluster-wide.
+* Etag is only incremented when a document is modified locally
+* [Change vector](../server/clustering/change-vector) may be changed when a document is modified locally or replicated.
 
 ### Etags in-depth
 In RavenDB, etags track changes on many different types of server entities. 
