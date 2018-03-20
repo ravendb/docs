@@ -11,17 +11,43 @@ Such functionality allows keeping track of each change that was performed on a d
 Both document revisions are accessible in the filtering and the projection process.
 
 In this page:  
-[Revisions processing](#revisions-processing-order)  
-[Simple declaration and usage](#simple-declaration-and-usage)   
-[Revisions processing and projection](#revisions-processing-and-projection)  
+[Revisions processing](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
+[Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-declaration-and-usage)   
+[Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-and-projection)  
 
 {NOTE/}
 
 ---
 
 {PANEL:Revisions processing order}
-Documents revisions will be processed in pairs. If a document was changed 6 times in a row, the subscription will process 6 times 6 pairs of versions of that document.
-{WARNING For the subscription revisions to work properly, it's crucial to make sure that the revisions configuration gives documents revisions enough time, without discarding unprocessed revisions/}
+Documents revisions feature allows tracking changes that were performed on a document, by storing the audit trail of its changes over time.  
+An audit trail entry is called a Document Revision and is comprised of a document snapshot.  
+
+In data subscription, Documents Revisions will be processed in pairs of subsequent entries.  
+Example: 
+Let us assume a user document that looks like:  
+
+`{  
+    Name:'James',  
+    Age:'21'  
+}`  
+
+We update the User document twice, in separate operations:  
+* We update the 'Age' field to the value of 22  
+* We update the 'Age' field to the value of 23  
+
+Data subscription's revision processing mechanism will receive pairs of revision in the following order:  
+
+
+| # | Previous | Current  |
+|---|---|-----| 
+| 1 | `null` | `{ Name:'James', Age:'21' }`  |
+| 2 | `{ Name:'James', Age:'21' }` | `{ Name:'James', Age:'22' }` |
+| 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
+ 
+
+{WARNING As seen above, in order for subscriptions on revisions to work properly, it needs the revisions entries to be available, otherwise, there will be no data to process. Therfore, it's crucial to make sure that the revisions configuration allows storing documents revisions enough time, without discarding unprocessed revisions /}
+
 {PANEL/}
 
 {PANEL:Simple declaration and usage}
@@ -52,6 +78,7 @@ Consumption:
 
 ## Related Articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
+- [Revisions management](../../../server/revisions)

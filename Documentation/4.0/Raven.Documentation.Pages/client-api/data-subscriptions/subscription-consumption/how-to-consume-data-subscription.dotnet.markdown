@@ -10,9 +10,9 @@ We've introduced several ways to create and configure a SubscriptionWorker, star
 
 In this page:
 
-[SubscriptionWorker lifecycle](#subscriptionworker-lifecycle)  
-[Error handling](#error-handling)  
-[Workers interplay](#workers-interplay)
+[SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
+[Error handling](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#error-handling)  
+[Workers interplay](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#workers-interplay)
 
 {NOTE/}
 
@@ -90,5 +90,5 @@ The strategy field is an enum, having the following values:
 
 ## Related Articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)

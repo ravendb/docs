@@ -6,12 +6,12 @@
 
 In this page:  
 
-[Worker with a specified batch size](#worker-with-a-specified-batch-size)  
-[Client with full exception handling and processing retries](#client-with-full-exception-handling-and-processing-retries)  
-[Subscription that ends when no documents left](#subscription-that-ends-when-no-documents-left)  
-[Worker that processes dynamic objects](#worker-that-processes-dynamic-objects)  
-[Subscription that works with lowest level API](#subscription-that-works-with-lowest-level-api)  
-[Two subscription workers that are waiting for each other](#two-subscription-workers-that-are-waiting-for-each-other)  
+[Worker with a specified batch size](../../../client-api/data-subscriptions/subscription-consumption/examples#worker-with-a-specified-batch-size)  
+[Client with full exception handling and processing retries](../../../client-api/data-subscriptions/subscription-consumption/examples#client-with-full-exception-handling-and-processing-retries)  
+[Subscription that ends when no documents left](../../../client-api/data-subscriptions/subscription-consumption/examples#subscription-that-ends-when-no-documents-left)  
+[Worker that processes dynamic objects](../../../client-api/data-subscriptions/subscription-consumption/examples#worker-that-processes-dynamic-objects)  
+[Subscription that works with lowest level API](../../../client-api/data-subscriptions/subscription-consumption/examples#subscription-that-works-with-lowest-level-api)  
+[Two subscription workers that are waiting for each other](../../../client-api/data-subscriptions/subscription-consumption/examples#two-subscription-workers-that-are-waiting-for-each-other)  
 
 {NOTE/}
 
