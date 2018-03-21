@@ -5,6 +5,26 @@
         "Mappings": []
     },
     {
+        "Path": "node-tag.markdown",
+        "Name": "Node Tag",
+        "Mappings": []
+    },
+    {
+        "Path": "database-id.markdown",
+        "Name": "Database Id",
+        "Mappings": []
+    },
+    {
+        "Path": "etag.markdown",
+        "Name": "Etag",
+        "Mappings": []
+    },
+    {
+        "Path": "tombstone.markdown",
+        "Name": "Tombstone",
+        "Mappings": []
+    },
+    {
         "Path": "raft-algorithm.markdown",
         "Name": "Raft Consensus Algorithm",
         "Mappings": []

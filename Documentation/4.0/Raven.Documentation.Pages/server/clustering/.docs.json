@@ -5,6 +5,16 @@
         "Mappings": []
     },
     {
+        "Path": "replication-conflicts.markdown",
+        "Name": "Replication Conflicts",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/scaling-out/replication/replication-conflicts"
+            }
+        ]
+    },
+    {
         "Path": "replication.markdown",
         "Name": "Replication",
         "Mappings": []
