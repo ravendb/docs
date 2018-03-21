@@ -13,11 +13,20 @@
                 "Key": "server/scaling-out/replication/replication-conflicts"
             }
         ]
-
+    },
+    {
+        "Path": "replication.markdown",
+        "Name": "Replication",
+        "Mappings": []
     },
     {
         "Path": "change-vector.markdown",
         "Name": "Change Vector",
+        "Mappings": []
+    },
+    {
+        "Path": "database-global-change-vector.markdown",
+        "Name": "Database Global Change Vector",
         "Mappings": []
     },
     {

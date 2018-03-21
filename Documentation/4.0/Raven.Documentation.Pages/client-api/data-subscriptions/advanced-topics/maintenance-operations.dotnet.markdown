@@ -1,4 +1,4 @@
-﻿# Maintenance operation
+﻿# Maintenance Operations
 
 ---
 
@@ -6,12 +6,12 @@
 
 This page covers data subscriptions maintenance operations:  
 
-[Deletion](#deletion)  
-[Dropping Connection](#dropping-connection)  
-[Disabling subscription](#disabling-subscription)  
-[Updating subscription](#updating-subscription)  
-[Getting subscription status](#getting-subscription-status)  
-[DocumentSubscriptions class](#documentsubscriptions-class)  
+[Deletion](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deletion)  
+[Dropping Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
+[Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
+[Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
+[Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
+[DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
 
 {NOTE/}
 
@@ -19,7 +19,8 @@ This page covers data subscriptions maintenance operations:
 
 {PANEL: Deletion}
 Subscriptions can be entirely deleted from the system.  
-This operation can be very useful in ad-hoc subscription scenarios, when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
+
+This operation can be very useful in ad-hoc subscription scenarios when a lot of subscriptions tasks information may accumulate, making tasks management very hard.  
 
 {CODE interface_subscription_deletion@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -32,7 +33,7 @@ usage:
 {PANEL: Dropping connection}
 
 Subscription connections with workers can be dropped remotely.  
-Dropped worker will not try to reconnect to the server.
+A dropped worker will not try to reconnect to the server.
 
 {CODE interface_subscription_dropping@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -80,7 +81,7 @@ usage:
 The `DocumentSubscriptions` class is the class that manages all interaction with the data subscriptions.  
 The class is available through `DocumentStore`'s `Subscriptions` property.
 
-| Method signature| Return type | Description |
+| Method Signature| Return type | Description |
 |--------|:---|-------------| 
 | **Create<T>(SubscriptionCreationOptions<T> options, string database)** | `string` | Creates a new data subscription. |
 | **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
@@ -95,15 +96,15 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 | **GetSubscriptionsAsync(int start, int take, string database)** | `Task<List<SubscriptionState>>` | Returns subscriptions list. |
 | **GetSubscriptionState(string subscriptionName, string database)** | `SubscriptionState ` | Get specific subscription state. |
 | **GetSubscriptionStateAsync(string subscriptionName, string database)** | `Task<SubscriptionState> ` | Get specific subscription state. |
-| **GetSubscriptionWorker<T>(string subscriptionName, string database)** | `SubscriptionWorker<T>` | Generate subscription worker, using default configurations, that processes documents deserialized to `T` type . |
-| **GetSubscriptionWorker(string subscriptionName, string database)** | `SubscriptionWorker<dynamic>` | Generate subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
-| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<T>` | Generate subscription worker, using default configurations, that processes documents deserialized to `T` type . |
-| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<dynamic>` | Generate subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
+| **GetSubscriptionWorker<T>(string subscriptionName, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **GetSubscriptionWorker(string subscriptionName, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
+| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)

@@ -54,7 +54,7 @@ Default operator for `session.Query` was and still is `AND`, but the operator fo
 
 {PANEL:Waiting for Non Stale Results}
 
-The following methods has been removed:
+The following methods have been removed:
 
 - `WaitForNonStaleResultsAsOf`
 - `WaitForNonStaleResultsAsOfNow`

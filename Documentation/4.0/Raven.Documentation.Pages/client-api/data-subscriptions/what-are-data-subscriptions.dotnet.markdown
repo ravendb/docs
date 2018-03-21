@@ -19,7 +19,7 @@
 * When the responsible node handling the subscription is down, the subscription task can be manually reassigned to another node in the cluster.
   With Enterprise license, the cluster will automatically reassign the work to another node.
 
-* Note: If the database has Revisions defined, then special handling can be done on the server before sending the data to the client
+* If the database has Revisions defined, then the subscription can be configured to process pairs of subsequent document revisions. Read more in [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
 
 {NOTE/}
 
@@ -38,11 +38,9 @@ it informs the server about the progress and the server is ready to send the nex
 
 Data subscription is defined by the server side definition and by the worker connecting to it:
 
-1. [Subscription Creation Options](../../client-api/data-subscriptions/SubscriptionCreation/how-to-create-data-subscriptions): The documents that will be received, it's filtering and projection.
+1. [Subscription Creation Options](../../client-api/data-subscriptions/subscription-creation/api-overview#subscriptioncreationoptions): The documents that will be received, it's filtering and projection.
 
-2. [Subscription Worker Options](../../glossary/subscription-worker-options): Worker batch processing logic, batch size, interaction with other connections
-
-For the common cases, RavenDB's API gives default values to many of the parameters, but they may be very useful for non-trivial usage, please see usage examples in articles below.
+2. [Subscription Worker Options](../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections
 
 {PANEL/}
 
@@ -99,7 +97,7 @@ In order to support various inter-worker scenarios, one worker is allowed to tak
 Thanks to subscriptions persistence, the worker will be able to continue the work from the point it's predecessor stopped. 
 
 It is possible to configure that a worker will wait for an existing connection to fail, 
-and takes it's place, or we can configure it to force close an existing connection etc. See more in [Subscription Opening Strategy](../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#workers-interplay)
+and takes it's place, or we can configure it to force close an existing connection etc. See more in [Workers interplay](../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#workers-interplay)
 
 {PANEL/}
 
@@ -113,6 +111,6 @@ Data subscriptions are accessible by a document store. Here's an example of an a
 
 ## Related articles
 
-- [How to **create** a data subscription?](subscription-creation/how-to-create-data-subscription)
-- [How to **consume** a data subscription?](subscription-consumption/how-to-consume-data-subscription)
-- [Maintenance operations](advanced-topics/maintenance-operations)
+- [How to **create** a data subscription?](../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
+- [How to **consume** a data subscription?](../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
+- [Maintenance operations](../../client-api/data-subscriptions/advanced-topics/maintenance-operations)

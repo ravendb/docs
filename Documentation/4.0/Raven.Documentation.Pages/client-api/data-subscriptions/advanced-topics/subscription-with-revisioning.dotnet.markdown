@@ -1,31 +1,57 @@
-﻿# Revisions support
+﻿# Revisions Support
 
 ---
 
 {NOTE: }
 
 Data subscription supports subscribing not only on documents, but also on all their revisions.  
-Revision support should be defined in the subscription, it also requires revisions to be configured on the collection in question.  
+Revision support should be defined in the subscription. It also requires revisions to be configured on the collection in question.  
 While regular subscriptions process single documents, subscription on documents revisions processes pairs of subsequent document revisions.  
 Such functionality allows keeping track of each change that was performed on a document, and even to compare two subsequent versions of a document.  
 Both document revisions are accessible in the filtering and the projection process.
 
 In this page:  
-[Revisions processing](#revisions-processing-order)  
-[Simple declaration and usage](#simple-declaration-and-usage)   
-[Revisions processing and projection](#revisions-processing-and-projection)  
+[Revisions processing](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-order)  
+[Simple declaration and usage](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#simple-declaration-and-usage)   
+[Revisions processing and projection](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning#revisions-processing-and-projection)  
 
 {NOTE/}
 
 ---
 
 {PANEL:Revisions processing order}
-Documents revisions will be processed in pairs, meaning if a document was changed 6 times in a row, subscription will process 6 times 6 pairs of versions of that document.
-{WARNING For the subscription revisions to work properly, it's crucial to make sure that the revisions configuration stores documents revisions enough time, without discarding unprocessed revisions/}
+Documents revisions feature allows tracking changes that were performed on a document, by storing the audit trail of its changes over time.  
+An audit trail entry is called a Document Revision and is comprised of a document snapshot.  
+
+In data subscription, Documents Revisions will be processed in pairs of subsequent entries.  
+Example: 
+Let us assume a user document that looks like:  
+
+`{  
+    Name:'James',  
+    Age:'21'  
+}`  
+
+We update the User document twice, in separate operations:  
+* We update the 'Age' field to the value of 22  
+* We update the 'Age' field to the value of 23  
+
+Data subscription's revision processing mechanism will receive pairs of revision in the following order:  
+
+
+| # | Previous | Current  |
+|---|---|-----| 
+| 1 | `null` | `{ Name:'James', Age:'21' }`  |
+| 2 | `{ Name:'James', Age:'21' }` | `{ Name:'James', Age:'22' }` |
+| 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
+ 
+
+{WARNING As seen above, in order for subscriptions on revisions to work properly, it needs the revisions entries to be available, otherwise, there will be no data to process. Therfore, it's crucial to make sure that the revisions configuration allows storing documents revisions enough time, without discarding unprocessed revisions /}
+
 {PANEL/}
 
 {PANEL:Simple declaration and usage}
-Here we declare a simple revisions subscription, that will send pairs of subsequent document revisions to the client
+Here we declare a simple revisions subscription that will send pairs of subsequent document revisions to the client:
 
 Creation:
 {CODE-TABS}
@@ -38,7 +64,7 @@ Consumption:
 {PANEL/}
 
 {PANEL:Revisions processing and projection}
-Here we declare a revisions subscription, that will filter and project data from revisions pairs:
+Here we declare a revisions subscription that will filter and project data from revisions pairs:
 
 Creation:
 {CODE-TABS}
@@ -50,8 +76,9 @@ Consumption:
 {CODE use_simple_revision_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 {PANEL/}
 
-## Related articles
+## Related Articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
+- [Revisions management](../../../server/revisions)

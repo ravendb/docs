@@ -68,3 +68,7 @@ Clicking on the revision we can also navigate to the other revisions of this doc
 ![Figure 4: Revisions, Deleted - other revisions](images\revisions4.png)
 
 The revisions feature attempts to make things as simple as possible. Once it is enabled, you'll automatically get the appropriate audit trail.
+
+## Related articles
+
+- [Revisions in subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)

@@ -6,11 +6,11 @@
 
 In this page:  
 
-[Subscription worker generation](#subscription-worker-generation)  
-[SubscriptionWorkerOptions](#subscriptionworkeroptions)  
-[Running SubscriptionWorker](#running-subscription-worker)  
-[SubscriptionBatch&lt;T&gt;](#subscriptionbatch<t>)  
-[SubscriptionWorker&lt;T&gt;](#subscriptionworker<t>)  
+[Subscription worker generation](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscription-worker-generation)  
+[SubscriptionWorkerOptions](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworkeroptions)  
+[Running subscription worker](../../../client-api/data-subscriptions/subscription-consumption/api-overview#running-subscription-worker)  
+[SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionbatch<t>)  
+[SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworker<t>)  
 
 {NOTE/}
 
@@ -18,41 +18,41 @@ In this page:
 
 {PANEL:Subscription worker generation}
 
-Subscription worker generation is accessible through `DocumentStore`'s `Subscriptions` Property, of type `DocumentSubscriptions`:
+Subscription worker generation is accessible through the `DocumentStore`'s `Subscriptions` Property, of type `DocumentSubscriptions`:
 {CODE subscriptionWorkerGeneration@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **subscriptionName** | `string` | Subscription's name, this parameter appears in more simple overloads allowing to start processing without creating a `SubscriptionCreationOptions` instance, relying on the default values |
-| **options** | `SubscriptionWorkerOptions` | Contains subscription worker , affecting the interaction of the specific worker with the subscription, but does not effect the subscription's definition |
-| **database** | `string` | Name of database to look for the data subscription at. If `null`, default database configured in DocumentStore will be used. |
+| **subscriptionName** | `string` | The subscription's name. This parameter appears in more simple overloads allowing to start processing without creating a `SubscriptionCreationOptions` instance, relying on the default values |
+| **options** | `SubscriptionWorkerOptions` | Contains subscription worker, affecting the interaction of the specific worker with the subscription, but does not affect the subscription's definition |
+| **database** | `string` | Name of the database to look for the data subscription. If `null`, the default database configured in DocumentStore will be used. |
 
 | Return value | |
 | ------------- | ----- |
-| `SubscriptionWorker` | Created data subscription worker. When returned, the worker is Idle, and it will start working only when the `Run` function is called. |
+| `SubscriptionWorker` | A created data subscription worker. When returned, the worker is Idle and it will start working only when the `Run` function is called. |
 
 
 {PANEL/}
 
 {PANEL:SubscriptionWorkerOptions}
 
-{NOTE The only mandatory parameter for SubscriptionWorkerOptions creation is the subscription's name /}
+{NOTE The only mandatory parameter for SubscriptionWorkerOptions creation is the subscription's name. /}
 
 | Member | Type | Description |
 |--------|:-----|-------------| 
 | **SubscriptionName** | `string` | Returns the subscription name passed to the constructor. This name will be used by the server side to identify the subscription in question. |
-| **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | Time to wait before reconnecting, in case of non aborting failure during the subscription processing. Default: 5 seconds. |
-| **IgnoreSubscriberErrors** | `bool` | If true, will not abort subscription processing if client code, passed to the `Run` function throws unhandled exception. Default: false. |
-| **Strategy** | `SubscriptionOpeningStrategy`(enum) | Sets the way the server will treat current and/or other clients when they will try to connect, see [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OpenIfFree`. |
+| **TimeToWaitBeforeConnectionRetry** | `TimeSpan` | Time to wait before reconnecting, in the case of non-aborting failure during the subscription processing. Default: 5 seconds. |
+| **IgnoreSubscriberErrors** | `bool` | If true, will not abort subscription processing if client code, passed to the `Run` function, throws an unhandled exception. Default: false. |
+| **Strategy** | `SubscriptionOpeningStrategy`(enum) | Sets the way the server will treat current and/or other clients when they will try to connect. See [Workers interplay](how-to-consume-data-subscription#workers-interplay). Default: `OpenIfFree`. |
 | **MaxDocsPerBatch** | `int` | Maximum amount of documents that the server will try sending in a batch. If the server will not find "enough" documents, it won't wait and send the amount it found. Default: 4096. |
-| **CloseWhenNoDocsLeft** | `bool` | If true, performs and "ad-hoc" operation that processes all possible documents in, until the server can't find any new documents to send. At that moment, the task returned by the `Run` function will fail with throw a `SubscriptionClosedException` exception. Default: false. |
+| **CloseWhenNoDocsLeft** | `bool` | If true, it performs an "ad-hoc" operation that processes all possible documents, until the server can't find any new documents to send. At that moment, the task returned by the `Run` function will fail and throw a `SubscriptionClosedException` exception. Default: false. |
 
 {PANEL/}
 
 {PANEL:Running subscription worker}
 
-After receiving a subscription worker, the subscription worker is still not processing any documents. SubscriptionWorker's `Run` function allows to start processing worker operation.  
-The `Run` function receives the client side code as a delegate that will process the received batches:
+After receiving a subscription worker, the subscription worker is still not processing any documents. SubscriptionWorker's `Run` function allows you to start processing worker operations.  
+The `Run` function receives the client-side code as a delegate that will process the received batches:
 
 {CODE subscriptionWorkerRunning@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
@@ -61,11 +61,11 @@ The `Run` function receives the client side code as a delegate that will process
 | ------------- | ------------- | ----- |
 | **processDocuments** | `Action<SubscriptionBatch<T>>` | Delegate for sync batches processing |
 | **processDocuments** | `Func<SubscriptionBatch<T>, Task>` | Delegate for async batches processing |
-| **ct** | `CancellationToken` | Cancellation token, used in order to halt the worker operation. |
+| **ct** | `CancellationToken` | Cancellation token used in order to halt the worker operation |
 
 | Return value | |
 | ------------- | ----- |
-| `Task` | Task that is alive as long as the subscription worker is processing or tries processing. If processing is aborted, the task exits with an exception | 
+| `Task` | Task that is alive as long as the subscription worker is processing or tries processing. If the processing is aborted, the task exits with an exception | 
 
 {PANEL/}
 
@@ -84,15 +84,14 @@ The `Run` function receives the client side code as a delegate that will process
 | Member | Type | Description |
 |--------|:-----|-------------| 
 | **Result** | `T` | Current batch item. |
-| **ExceptionMessage** | `string` | Message of the exception, thrown during current document processing in the server side. |
-| **Id** | `string` | Current batch item's underlying document Id . |
+| **ExceptionMessage** | `string` | Message of the exception thrown during current document processing in the server side. |
+| **Id** | `string` | Current batch item's underlying document ID. |
 | **ChangeVector** | `string` | Current batch item's underlying document change vector of the current document. |
-| **RawResult** | `BlittableJsonReaderObject` | Current batch item , before serialization to `T`. |
+| **RawResult** | `BlittableJsonReaderObject` | Current batch item before serialization to `T`. |
 | **RawMetadata** | `BlittableJsonReaderObject` | Current batch item's underlying document metadata. |
-| **Metadata** | `IMetadataDictionary` | Current batch item's underlying metadata values |
+| **Metadata** | `IMetadataDictionary` | Current batch item's underlying metadata values. |
 
-
-{WARNING Usage of `RawResult`, `RawMetadata` and `Metadata` values outside of the document processing delegate is not supported /}
+{WARNING Usage of `RawResult`, `RawMetadata`, and `Metadata` values outside of the document processing delegate are not supported /}
 
 
 {INFO/}
@@ -103,11 +102,11 @@ The `Run` function receives the client side code as a delegate that will process
 
 {NOTE:Methods}
 
-| Method signature| Return type | Description |
+| Method Signature| Return Type | Description |
 |--------|:-----|-------------| 
-| **Dispose()** | `void` | Aborts subscription worker operation ungracefully, but waiting for the task returned by the `Run` function to finish running. |
+| **Dispose()** | `void` | Aborts subscription worker operation ungracefully by waiting for the task returned by the `Run` function to finish running. |
 | **DisposeAsync()** | `Task` | Async version of `Dispose()`. |
-| **Dispose(bool waitForSubscriptionTask)** | `void` | Aborts subscription worker, but allows deciding whether to wait for the `Run` function task or not. |
+| **Dispose(bool waitForSubscriptionTask)** | `void` | Aborts the subscription worker, but allows deciding whether to wait for the `Run` function task or not. |
 | **DisposeAsync(bool waitForSubscriptionTask)** | `void` | Async version of `DisposeAsync(bool waitForSubscriptionTask)`. |
 | **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](#running-subscription-worker)). |
 
@@ -117,15 +116,15 @@ The `Run` function receives the client side code as a delegate that will process
 
 | Event | Type\Return type | Description |
 |--------|:-----|-------------| 
-| **AfterAcknowledgment** | `AfterAcknowledgmentAction` (event) | Event that is risen after each the server acknowledges batch processing progress |
-| **OnSubscriptionConnectionRetry** | `Action<Exception>` (event) | Event that is fired when subscription worker tries to reconnect to the server after a failure. The event receives as a parameter the exception that interrupted the processing. |
+| **AfterAcknowledgment** | `AfterAcknowledgmentAction` (event) | Event that is risen after each the server acknowledges batch processing progress. |
+| **OnSubscriptionConnectionRetry** | `Action<Exception>` (event) | Event that is fired when the subscription worker tries to reconnect to the server after a failure. The event receives as a parameter the exception that interrupted the processing. |
 | **OnDisposed** | `Action<SubscriptionWorker<T>>` (event) | Event that is fired after the subscription worker was disposed. |
 
 {INFO:AfterAcknowledgmentAction}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **batch** | `SubscriptionBatch&lt;T&gt;` | The batch which process was acknowledged |
+| **batch** | `SubscriptionBatch&lt;T&gt;` | The batch process which was acknowledged |
 
 | Return value | |
 | ------------- | ----- |
@@ -150,6 +149,6 @@ The `Run` function receives the client side code as a delegate that will process
 
 ## Related articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **create** a data subscription?](../subscription-creation/how-to-create-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
 

@@ -6,11 +6,11 @@
 
 In this page:  
 
-[Create subscription on all documents in a collection](#create-subscription-on-all-documents-in-a-collection)  
-[Create subscription with filtering](#create-subscription-with-filtering)  
-[Create subscription with filtering and projection](#create-subscription-with-filtering-and-projection)  
-[Create subscription with load document in filter projection](#create-subscription-with-load-document-in-filter-projection)  
-[Create revisions enabled subscription](#create-revisions-enabled-subscription)  
+[Create subscription on all documents in a collection](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-on-all-documents-in-a-collection)  
+[Create subscription with filtering](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-with-filtering)  
+[Create subscription with filtering and projection](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-with-filtering-and-projection)  
+[Create subscription with load document in filter projection](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-with-load-document-in-filter-projection)  
+[Create revisions enabled subscription](../../../client-api/data-subscriptions/subscription-creation/examples#create-revisions-enabled-subscription)  
 
 {NOTE/}
 
@@ -59,7 +59,7 @@ Here we create a subscription on Orders collection, which total order revenue is
 {PANEL:Create revisions enabled subscription}
 
 Here we create a subscription on Orders collection, which returns current and previous version of the subscriptions. 
-Please see the [page](../advanced-topics/subscription-with-revisioning) dedicated to subscriptions with revisions for more details and examples.
+Please see the [page](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning) dedicated to subscriptions with revisions for more details and examples.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Generic-syntax create_simple_revisions_subscription_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
@@ -70,5 +70,5 @@ Please see the [page](../advanced-topics/subscription-with-revisioning) dedicate
 
 ## Related articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)

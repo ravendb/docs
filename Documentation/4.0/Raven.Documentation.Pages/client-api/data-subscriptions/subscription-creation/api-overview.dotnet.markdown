@@ -6,10 +6,10 @@
 
 
 In this page:  
-[Subscription creation overloads summary](#create-and-createasync-overloads-summary)  
-[Subscription Creation Options](#subscriptioncreationoptions)  
-[SubscriptionCreationOptions&lt;T&gt;](#subscriptioncreationoptions<t>)  
-[Subscription query](#subscription-query)  
+[Subscription creation overloads summary](../../../client-api/data-subscriptions/subscription-creation/api-overview#create-and-createasync-overloads-summary)  
+[Subscription Creation Options](../../../client-api/data-subscriptions/subscription-creation/api-overview#subscriptioncreationoptions)  
+[SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/subscription-creation/api-overview#subscriptioncreationoptions<t>)  
+[Subscription query](../../../client-api/data-subscriptions/subscription-creation/api-overview#subscription-query)  
 
 {NOTE/}
 
@@ -115,5 +115,5 @@ The subscription should be defined in a special way:
 
 ## Related articles
 
-- [What are data subscriptions?](../what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../subscription-consumption/how-to-consume-data-subscription)
+- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
