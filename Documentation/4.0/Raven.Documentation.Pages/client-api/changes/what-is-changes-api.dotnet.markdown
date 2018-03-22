@@ -1,7 +1,7 @@
-# Changes API : What is Changes API?
+# Changes API 
 
 The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
-You are able to subscribe to events for all documents, indexes and operations as well as to indicate a particular one that you are interested in. 
+You are able to subscribe to events for all documents, indexes, and operations as well as to indicate a particular one that you are interested in. 
 This mechanism lets you notify users if something has changed without the need to do any expensive polling. 
 
 {DANGER:Changes API on Secured Server}
@@ -59,7 +59,7 @@ In order to end subscription (stop listening for particular notifications) you m
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
-## Related articles
+## Related Articles
 
 - [How to Subscribe to Document Changes?](../../client-api/changes/what-is-changes-api)
 - [How to Subscribe to Index Changes?](../../client-api/changes/how-to-subscribe-to-index-changes)

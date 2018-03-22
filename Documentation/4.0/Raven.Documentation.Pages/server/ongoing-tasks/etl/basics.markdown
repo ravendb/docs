@@ -7,7 +7,7 @@
   The data can be filtered and transformed along the way.  
 
 * The external target can be:  
-  * Another RavenDB database instance (outside of the [Database Group](../../../studio/database/settings/manage-database-group)) -or-  
+  * Another RavenDB database instance (outside of the [Database Group](../../../studio/database/settings/manage-database-group))
   * A relational database  
 
 * In this page:  
@@ -41,6 +41,7 @@
 
 * **Aggregate your data**  
   Data sent from multiple locations can be aggregated in a central server.  
+
   For example:
   *  Send data to an already existing reporting solution.  
   *  Point of sales systems can send sales data to a central place for calculations.  
@@ -71,8 +72,9 @@ ETL's three stages are:
 
 ### Extract
 
-ETL process starts with retrieving the documents from the database.  
+The ETL process starts with retrieving the documents from the database.  
 You can choose which documents will be processed by next two stages (Transform and Load).  
+
 The possible options are:  
 
 * Documents from a single collection  
@@ -95,7 +97,7 @@ In addition to ECMAScript 5.1 API, RavenDB introduces the following functions an
 Specific ETL functions:  
 
 | ------ |:------:| ------ |
-| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target must be either a collection name (RavenDB ETL) or a table name (SQL ETL).<br/>**An object will be sent to the destination only if** `loadTo` method was called.|
+| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target must be either a collection name (RavenDB ETL) or a table name (SQL ETL).<br/>**An object will be sent to the destination only if** the `loadTo` method was called.|
 | `loadAttachment(name)` | function | Load an attachment (SQL ETL only) |
 
 {INFO: Batch processing}
@@ -124,8 +126,8 @@ The number of documents processed depends on the following configuration limits:
   This applies to both ETL types.  
 
 * There are two exceptions to this behavior:  
-  * In RavenDB ETL - when documents are loaded to **the same** collection there is no need to send DELETE because the document on the other side has the same identifier and it will just update it.  
-  * in SQL ETL - you can configure to use inserts only, which is a viable option for append-only systems.  
+  * In RavenDB ETL, when documents are loaded to **the same** collection there is no need to send DELETE because the document on the other side has the same identifier and it will just update it.  
+  * in SQL ETL you can configure to use inserts only, which is a viable option for append-only systems.  
 
 {PANEL/}
 
@@ -134,17 +136,17 @@ The number of documents processed depends on the following configuration limits:
 ETL errors and warnings are [logged to the files](../../../server/troubleshooting/logging) and displayed in the notification center panel. You will be notified if any
 of the following events happen:
 
-- connection error to the target,
-- JS script is invalid,
-- transformation error,
-- load error,
-- slow SQL was detected.
+- connection error to the target
+- JS script is invalid
+- transformation error
+- load error
+- slow SQL was detected
 
 {PANEL/}
 
 {NOTE: }
 
-Type specific ETL scripts details and examples can be found in the following articles:  
+Details and examples for type specific ETL scripts can be found in the following articles:  
 
 * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven)  
 * [SQL ETL](../../../server/ongoing-tasks/etl/sql)  
