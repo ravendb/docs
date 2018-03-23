@@ -1,8 +1,6 @@
 ﻿# Voron Recovery Tool
----
 
-### What is it?
-Voron recovery tool is designed to extract your data even on the worst corruption state imaginable.  
+The Voron recovery tool is designed to extract your data even on the worst corruption state imaginable.  
 
 {PANEL: How to run it}
 
@@ -42,7 +40,7 @@ Recovery-1- was removed and is reserved for later use.
 
 `--OutputFileName`: overwrite the default output file name  
 
-`--PageSizeInKB`: overwrite the expected Voron page size of 8KB, should never be used unless told by the support team.  
+`--PageSizeInKB`: overwrite the expected Voron page size of 8KB. It should never be used unless told by the support team.  
 
 `--InitialContextSizeInMB`: overwrite the starting size of memory used by the recovery tool, the default is 4KByte.  
 

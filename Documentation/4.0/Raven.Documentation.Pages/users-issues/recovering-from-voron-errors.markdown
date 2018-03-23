@@ -1,8 +1,8 @@
-﻿#Recovering from Voron errors 
+﻿#Recovering from Voron Errors 
 ---
 
-Voron errors which are described in this article are indicators that something had horribly gone wrong.  
-Thus, if such errors happen, they need to be reported as soon as possible to [RavenDB support](mailto:support@ravendb.net).  
+Voron errors described in this article are indicators that something had horribly gone wrong.  
+If such errors happen, they need to be reported as soon as possible to [RavenDB support](mailto:support@ravendb.net).  
 
 {PANEL: Symptoms}  
 
@@ -16,9 +16,10 @@ Thus, if such errors happen, they need to be reported as soon as possible to [Ra
 {PANEL: Possible Causes}  
 
 * Such exceptions are caused by the corruption of a Voron _data file_, which could occur due to a few reasons:  
-  * Hardware failure of hard-drive or memory.  
-  * In compliance‏ with RavenDB [hardware and OS requeirements](#ravendb-hardware-and-os-requirements).  
-  * Critical bug in `Voron`.  
+  * Hardware failure of hard-drive or memory  
+  * In compliance‏ with RavenDB [hardware and OS requeirements](#ravendb-hardware-and-os-requirements)  
+  * Critical bug in `Voron`
+
 {PANEL/}
 
 {PANEL: RavenDB Hardware And OS Requirements}
@@ -34,7 +35,7 @@ Thus, if such errors happen, they need to be reported as soon as possible to [Ra
 {PANEL: Resolution}
 
 For the best results, simply restore a new database from a backup.  
-For more information, see an article about [backup configuration](../server/configuration/backup-configuration).  
+For more information, read this article about [backup configuration](../server/configuration/backup-configuration).  
 
 If there is no recent/relevant backup available, it is possible to use the [Voron Recovery Tool](../server/troubleshooting/voron-recovery-tool).  
 This tool can be used to recover intact data from the corrupted file and import it to a newly created database.  
