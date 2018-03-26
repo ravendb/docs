@@ -79,3 +79,18 @@ How the failover nodes are selected, depends on the configuration of *read balan
   * Fastest Node - Each request will go to the fastest node. The fastest node will be recalculated.  
 
 {PANEL/}
+
+### What happens if there are issues?
+There are two types of cluster issues which can happen:
+
+  * [Split brain](https://en.wikipedia.org/wiki/Split-brain_(computing)) - 
+  any network issue which causes one or more nodes to be inacessible. 
+  In this case, each group of nodes that still can communicate with each other, 
+  would form a new cluster, each with its own leader. 
+  Once the split is "healed", and all nodes can communicate again, 
+  one of the leaders will step down, and the cluster will return to normal. 
+  Such scenario may generate document conflicts.
+  * Too frequent leader elections - If a client sends a cluster-level operation to a 
+  non-leader node, it will redirect the operation to the leader. 
+  If in the meantime an election was held and the leader has changed, 
+  the former leader will throw `NoLeaderException` in order to prevent infinite loop.
