@@ -2,7 +2,16 @@
     {
         "Path": "how-clustering-and-replication-works.markdown",
         "Name": "How Clustering And Replication Works",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/scaling-out/replication/how-replication-works"
+            },
+            {
+                "Version": 1.0,
+                "Key": "server/scaling-out/replication"
+            }
+        ]
     },
     {
         "Path": "replication-conflicts.markdown",
