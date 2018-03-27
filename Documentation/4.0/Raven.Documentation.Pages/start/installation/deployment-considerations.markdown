@@ -1,22 +1,22 @@
-# Installation : Deployment considerations
+# Installation : Deployment Considerations
 
-Deployment of a RavenDB cluster requires some thought about how to setup the network, the cluster and the databases you'll use. 
+Deployment of a RavenDB cluster requires some thought about how to setup the network and the cluster and the databases you'll use. 
 In terms of hardware, while obviously more is generally better, RavenDB can do quite well on small instances (such as a resource
-limited Docker container) and scale upward to machines with hundreds of GB of RAM and large number of cores.
+limited Docker container) and scale upward to machines with hundreds of GB of RAM and a large number of cores.
 
-## Performance considerations
+## Performance Considerations
 
-For read-mostly scenarios, the more cores the machine have, the faster RavenDB will be, since reads take no locks and require no 
-coordination from RavenDB. For write-heavy scenario, faster cores are better than more cores, generally, but the usual limit is 
+For read-mostly scenarios, the more cores the machine have, the faster RavenDB will be since reads take no locks and require no 
+coordination from RavenDB. For write-heavy scenarios, faster cores are better than more cores generally, but the usual limit is 
 the speed of the storage. For both reads & writes, given the choice between more cores and more memory, the typical answer would
 be to get more memory. 
 
-RavenDB does just fine when the size of the databases exceed the size of the physical memory, it is important to note, but it will
-make use of all the memory that it can to ensure speedy queries and fast responses, so the more memory it has available, the better
+RavenDB does just fine when the size of the databases exceed the size of the physical memory. It will
+make use of all the memory that it can to ensure speedy queries and fast responses. So the more memory it has available, the better
 things are.
 
-In a cluster environment, avoid using a SAN or NAS to store the data from multiple RavenDB nodes in the same physical location, 
-it is much better to have each node use its local disks, because this way there is no contention between the different nodes on the
+In a cluster environment, avoid using a SAN or NAS to store the data from multiple RavenDB nodes in the same physical location.
+It is much better to have each node use its local disks because this way there is no contention between the different nodes on the
 same storage resources. 
 
 Storage latency is also a very important factor in RavenDB's performance. If you are running on cloud infrastructure, you should 
@@ -28,9 +28,9 @@ latencies under load because of the rotational disk seek times.
 Advanced scenarios may call to splitting I/O among multiple disks. Having separate drives for data, journals and indexes. You can
 read more about it in the document about the [structure of data on disk](../../server/storage/directory-structure).
 
-## Network considerations
+## Network Considerations
 
-RavenDB can be deployed either internally in your organization (secured network, only known good actors) or on the public internet.
+RavenDB can be deployed either internally in your organization (secured network, only known good actors), or on the public internet.
 Any deployment, aside from maybe on a developer machine, should use the secured mode. See the 
 [Setup Wizard](../../start/installation/setup-wizard) for the details on how to do that. 
 
@@ -54,7 +54,7 @@ In either case, you can configure RavenDB using the `settings.json` file. The mo
 IPs and ports RavenDB will listen to. It is recommended that you'll pick the fastest drives for RavenDB's data directory, while the binaries
 for RavenDB can reside anywhere in the system.
 
-## Related articles
+## Related Articles
 
 - [Configuration Section](../../server/configuration/configuration-options)
 - [Security in RavenDB](../../server/security/overview)
