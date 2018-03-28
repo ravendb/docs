@@ -3,7 +3,7 @@
 {PANEL:RavenDB Data}
 
 RavenDB keeps all data in a location specified in [`DataDir`](../../server/configuration/core-configuration#datadir) setting. 
-The structure of RavenDB data directories is as follows:
+The structure of RavenDB data directories are as follows:
 
 * _{DataDir}_
   * `Databases`
@@ -23,10 +23,10 @@ The structure of RavenDB data directories is as follows:
       * `Journals`
       * `Temp`
 
-The main directory has `Databases` folder, which contains subdirectories per each database, and `System` folder where server-wide data are stored (e.g. database records, cluster data).
+The main directory has a `Databases` folder, which contains subdirectories per each database, and a `System` folder where server-wide data are stored (e.g. database records, cluster data).
 
-The database is composed of such data items as documents, indexes and configuration. Each of them is a separate [Voron](../../server/storage/storage-engine) storage environment.
-The data is persisted in `Raven.voron` file and `.journal` files which are located in `Journals` directory. In addition, temporary files are put into `Temp` folder.
+The database is composed of such data items as documents, indexes, and configuration. Each of them is a separate [Voron](../../server/storage/storage-engine) storage environment.
+The data is persisted in a `Raven.voron` file and `.journal` files which are located in the `Journals` directory. In addition, temporary files are put into the `Temp` folder.
 
 {PANEL/}
 
@@ -38,8 +38,8 @@ However, you can store any RavenDB data in different locations by defining junct
 
 ### Example - Moving Journals
 
-A common practice is to store the journals on very fast drive to achieve better write performance.
-The following command will point `Journals` directory of _Northwind_ database to path on a different drive.
+A common practice is to store the journals on a very fast drive to achieve better write performance.
+The following command will point the `Journals` directory of _Northwind_ database to path on a different drive.
 
 #### Windows
 
@@ -55,7 +55,7 @@ C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Journals E:\Journals\N
 
 ### Example - Moving Indexes
 
-If you want to store data of _all_ indexes of _Northwind_ database in the custom location you can use the following command:
+If you want to store the data of _all_ indexes of _Northwind_ database in the custom location, you can use the following command:
 
 #### Windows
 
@@ -65,7 +65,7 @@ C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Indexes D:\Indexes\Nor
 
 {INFO Creation of junction / mount points requires a database to be offline /}
 
-{INFO If data already exists in the directory you want to define the junction / mount point for you need to backup it first and copy back after executing the command. /}
+{INFO If data already exists in the directory, you want to define the junction / mount point for you need to backup it first and copy back after executing the command. /}
 
 #### Linux
 
