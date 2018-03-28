@@ -332,5 +332,34 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb40-passes-intense-security-check.jpg",
             "twitter:url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check"
         }
+    },
+    {
+        "Path": "cost-benefits-ravendb-nosql-acid-database.markdown",
+        "Name": "7 Ways The Right Database Pays for Itself",
+        "Mappings": [],
+        "Metadata": {
+            "title": "7 Ways The Right Database Pays for Itself | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database",
+            "publishedAt": ""
+        },
+        "SeoMetaProperties": {
+            "description": "With the right database you don’t pay to play – we pay you! Discover the 7 features a database must have to generate a positive ROI for your investment in it.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "7 Ways The Right Database Pays for Itself | RavenDB",
+            "og:description": "With the right database you don’t pay to play – we pay you! Discover the 7 features a database must have to generate a positive ROI for your investment in it.",
+            "og:url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/cost-benefits-ravendb-nosql-acid-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "7 Ways The Right Database Pays for Itself | RavenDB",
+            "twitter:description": "With the right database you don’t pay to play – we pay you! Discover the 7 features a database must have to generate a positive ROI for your investment in it.",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/cost-benefits-ravendb-nosql-acid-database.jpg",
+            "twitter:url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database"
+        }
     }
 ]
