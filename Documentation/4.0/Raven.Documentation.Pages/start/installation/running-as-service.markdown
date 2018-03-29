@@ -12,7 +12,7 @@ To register as a Service on the Windows operating system you need to execute the
 .\rvn.exe windows-service register --service-name RavenDB
 {CODE-BLOCK/}
 
-If you want to run the service under non-default user (`LocalService` is default) then execute following command:
+If you want to run the service under a non-default user (`LocalService` is default) then execute following command:
 
 {CODE-BLOCK:powershell}
 .\rvn.exe windows-service register --service-name RavenDB --service-user-name MyUser --service-user-password MyPassword
@@ -20,7 +20,7 @@ If you want to run the service under non-default user (`LocalService` is default
 
 ### Unregistering
 
-To remove the Service use the 'unregister' command as follows:
+To remove the Service, use the 'unregister' command as follows:
 
 {CODE-BLOCK:powershell}
 .\rvn.exe windows-service unregister --service-name RavenDB
