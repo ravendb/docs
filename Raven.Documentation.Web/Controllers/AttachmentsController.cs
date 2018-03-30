@@ -1,32 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Web.Mvc;
 using Raven.Client.Documents;
-using Raven.Documentation.Web.Core;
-using Raven.Documentation.Web.Models;
+using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Web.Controllers
 {
     public partial class AttachmentsController : BaseController
     {
-        public const string AttachmentsPrefix = "attachments/";
-
-        public static readonly string AttachmentsForDocumentationPrefix = AttachmentsPrefix + ArticleType.Documentation.GetDescription();
-
-        public static readonly string AttachmentsForArticlesPrefix = AttachmentsPrefix + ArticleType.Articles.GetDescription();
-        
         public AttachmentsController(IDocumentStore store)
             : base(store)
         {
         }
 
-        public virtual ActionResult Get(string type, string id)
+        public virtual ActionResult Get(string v, string key, string fileName)
         {
-            var attachment = DocumentSession.Advanced.Attachments.Get(AttachmentsPrefix + type, id);
+            var documentId = v == "articles"
+                ? GetArticlePageId(key)
+                : GetDocumentationPageId(v, key);
+
+            if (documentId == null)
+                return HttpNotFound();
+
+            var attachment = DocumentSession.Advanced.Attachments.Get(documentId, fileName);
             if (attachment == null)
                 return HttpNotFound();
 
             return new FileStreamResult(attachment.Stream, attachment.Details.ContentType);
+        }
+
+        private string GetArticlePageId(string key)
+        {
+            var articlePage = DocumentSession.Query<ArticlePage>()
+                .SingleOrDefault(x => x.Key == key);
+
+            return articlePage?.Id;
+        }
+
+        private string GetDocumentationPageId(string version, string key)
+        {
+            var documentationPage = DocumentSession.Query<DocumentationPage>()
+                .SingleOrDefault(x => x.Version == version && x.Key == key);
+
+            return documentationPage?.Id;
         }
 
         public static readonly Dictionary<string, string> FileExtensionToContentTypeMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
@@ -49,9 +66,5 @@ namespace Raven.Documentation.Web.Controllers
             {".woff2", "application/font-woff2"},
             {".appcache", "text/cache-manifest; charset=utf-8"}
         };
-    }
-
-    public class Attachment
-    {
     }
 }
