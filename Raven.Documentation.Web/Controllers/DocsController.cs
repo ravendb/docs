@@ -407,7 +407,7 @@ namespace Raven.Documentation.Web.Controllers
             {
                 PathToDocumentationDirectory = GetDocumentationDirectory(),
                 RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
-                ImagesUrl = GetImagesUrl(HttpContext, DocumentStore, ArticleType.Documentation)
+                ImageUrlGenerator = GetImageUrlGenerator(HttpContext, DocumentStore)
             };
 
             var results = new DocumentationValidator(options, CurrentLanguage)
@@ -439,7 +439,7 @@ namespace Raven.Documentation.Web.Controllers
             {
                 PathToDocumentationDirectory = GetDocumentationDirectory(),
                 RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")) + "article/" + CurrentVersion + "/" + CurrentLanguage + "/",
-                ImagesUrl = GetImagesUrl(HttpContext, DocumentStore, ArticleType.Documentation)
+                ImageUrlGenerator = GetImageUrlGenerator(HttpContext, DocumentStore)
             };
 
             var results = new DocumentationValidator(options, CurrentLanguage)
@@ -476,10 +476,8 @@ namespace Raven.Documentation.Web.Controllers
                         PathToDocumentationDirectory = GetDocumentationDirectory(),
                         VersionsToParse = versionsToParse,
                         RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
-                        ImagesUrl = GetImagesUrl(HttpContext, DocumentStore, ArticleType.Documentation)
+                        ImageUrlGenerator = GetImageUrlGenerator(HttpContext, DocumentStore)
                     }, new NoOpGitFileInformationProvider());
-
-            DocumentSession.Delete(AttachmentsController.AttachmentsForDocumentationPrefix);
 
             var query = DocumentSession
                 .Advanced
@@ -504,12 +502,9 @@ namespace Raven.Documentation.Web.Controllers
             DocumentSession.SaveChanges();
 
             var toDispose = new List<IDisposable>();
-            var attachments = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             try
             {
-                DocumentSession.Store(new Attachment(), AttachmentsController.AttachmentsForDocumentationPrefix);
-
                 foreach (var page in parser.Parse())
                 {
                     DocumentSession.Store(page);
@@ -523,8 +518,10 @@ namespace Raven.Documentation.Web.Controllers
                         var file = fileInfo.OpenRead();
                         toDispose.Add(file);
 
-                        if (attachments.Add(image.ImageKey))
-                            DocumentSession.Advanced.Attachments.Store(AttachmentsController.AttachmentsForDocumentationPrefix, image.ImageKey, file, AttachmentsController.FileExtensionToContentTypeMapping[fileInfo.Extension]);
+                        var documentId = page.Id;
+                        var fileName = Path.GetFileName(image.ImagePath);
+
+                        DocumentSession.Advanced.Attachments.Store(documentId, fileName, file, AttachmentsController.FileExtensionToContentTypeMapping[fileInfo.Extension]);
                     }
                 }
 
@@ -559,9 +556,16 @@ namespace Raven.Documentation.Web.Controllers
                 new { language = CurrentLanguage, version = CurrentVersion, key = key });
         }
 
+        public static ParserOptions.GenerateImageUrl GetImageUrlGenerator(HttpContextBase httpContext,
+            IDocumentStore documentStore, ArticleType articleType = ArticleType.Documentation)
+        {
+            var url = GetImagesUrl(httpContext, documentStore, articleType);
+            return (docVersion, key, fileName) => $"{url}?v={docVersion}&key={key}&fileName={fileName}";
+        }
+
         public static string GetImagesUrl(HttpContextBase httpContext, IDocumentStore store, ArticleType articleType)
         {
-            return $"{httpContext.Request.Url.GetLeftPart(UriPartial.Authority)}/attachments/{articleType.GetDescription()}/?id=";
+            return $"{httpContext.Request.Url.GetLeftPart(UriPartial.Authority)}/attachments/{articleType.GetDescription()}/";
         }
 
         private static string GetDocumentationDirectory()
