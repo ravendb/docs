@@ -31,7 +31,7 @@ The free subdomain is given to you only for the purpose of proving ownership to 
 
 The automatic setup is designed to be as convenient and as easy as possible. It takes care of all the nitpicks of setting up DNS records, generating certificates, and doing their renewals. Because of those requirements, the ownership of the certificates and DNS records needs to stay within the Hibernating Rhinos company. This gives us the ability to generate valid certificates and modify DNS settings for your registered domains and should be a consideration to keep in mind while reviewing the security of your system. Hibernating Rhinos **will never** exploit these abilities and will never perform any modifications to the certificates and DNS records unless explicitly requested by the client.
 
-The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuzz. We **recommend** that for actual production deployments and for the highest level of security and control, you'll use **your own certificates and domains**, avoiding the need to rely on third party for such a critical part of your security.
+The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuss. We **recommend** that for actual production deployments and for the highest level of security and control, you'll use **your own certificates and domains**, avoiding the need to rely on third party for such a critical part of your security.
 
 {WARNING/}
 
