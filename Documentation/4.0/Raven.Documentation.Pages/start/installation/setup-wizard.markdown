@@ -39,7 +39,7 @@ After choosing the Let's Encrypt Secure Setup option, you are required to enter 
 
 ![Figure 2. Enter License](images/setup/3.png)  
 
-The next step is to claim your subdomain. In the example below we choose the "raven" subdomain.
+The next step is to claim your subdomain. In the example below, we choose the "raven" subdomain.
 
 ![Figure 3. Claim Domain](images/setup/4.png)  
 <br/>
@@ -48,7 +48,7 @@ The next step is to claim your subdomain. In the example below we choose the "ra
 
 In the next screen, you will choose the IP address and port that your server will bind to.
 
-If you wish to setup a cluster, this is the place to add nodes to the cluster and choose their addresses. You should configure the cluster only on the first node and **not** on each of them separately. The first node will generate the required configuration for the entire cluster, and will provide a Zip file and detailed guidance on how to continue with the other nodes.
+If you wish to setup a cluster, this is the place to add nodes to the cluster and choose their addresses. You should configure the cluster only on the first node and **not** on each of them separately. The first node will generate the required configuration for the entire cluster and will provide a Zip file and detailed guidance on how to continue with the other nodes.
 
 For a smooth setup experience, please make sure that the IP address and port are available in each machine. The wizard will validate this and throw an error if they are being used. When using port 443, you need to ensure that it hasn't already been taken by other applications like Skype, IIS, Apache, etc. On Linux, you might need to [allow port 443 for non-root processes](https://superuser.com/questions/710253/allow-non-root-process-to-bind-to-port-80-and-443). 
 
@@ -244,7 +244,7 @@ So if a container was created using:
 
     sudo docker run -t -p 38889:38888 -p 443:8080 ravendb/ravendb
 
-Then the following congifuration should be applied:  
+Then the following configuration should be applied:  
 
 ![Figure 2a. Configure Docker Node](images/setup/w2a.png)  
 
@@ -316,7 +316,7 @@ Access the Studio by entering the URL in the browser: "http://127.0.0.1:8080" or
 
 You have successfully finished setting up a RavenDB server.
 
-To construct a cluster, unzip the downloaded RavenDB package to more machines (or local folders), as many as the number of nodes you want. In each node, start the RavenDB server and complete the setup wizard , with a different IP address.
+To construct a cluster, unzip the downloaded RavenDB package to more machines (or local folders), as many as the number of nodes you want. In each node, start the RavenDB server and complete the setup wizard, with a different IP address.
 
 Once all the servers are up and running, building the cluster is simple. Access the studio, go to Manage Server > Cluster, and add nodes to the cluster by their URL.  
 
