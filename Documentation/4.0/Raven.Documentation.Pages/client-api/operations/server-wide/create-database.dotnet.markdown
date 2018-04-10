@@ -9,7 +9,7 @@ Create a new database on a server.
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **databaseRecord** | string | instance of `DatabaseRecord` containing database configuration |
-| **replicationFactor** | bool | indicates how many nodes should contain the database |
+| **replicationFactor** | int | indicates how many nodes should contain the database |
 
 ## Example
 
