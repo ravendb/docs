@@ -190,7 +190,7 @@
                 if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
                     src = src.Substring(7);
 
-                var newSrc = string.Format("{0}/{1}", documentationVersion, src);
+                var newSrc = string.Format("{0}/{1}/{2}", documentationVersion, key, src);
 
                 tag.attributes["src"] = imagesUrl + newSrc;
 
