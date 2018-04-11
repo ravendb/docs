@@ -63,18 +63,62 @@
   <ItemGroup>
     <None Include=".docs.json" />
     <None Include="articles\.docs.json" />
-    <None Include="articles\working-with-view-models.markdown" />
+    <None Include="articles\black-friday-cyber-monday-nosql-database-ravendb.markdown" />
+    <None Include="articles\choosing-the-best-nosql-database.markdown" />
+    <None Include="articles\cost-benefits-ravendb-nosql-acid-database.markdown" />
     <None Include="articles\cqrs-and-event-sourcing-made-easy-with-ravendb.markdown" />
+    <None Include="articles\holding-off-harvey-with-high-availability.markdown" />
+    <None Include="articles\how-nosql-mapreduce-can-boost-your-database-performance.markdown" />
+    <None Include="articles\making-how-to-set-up-a-database-easy-for-nosql-document-database.markdown" />
+    <None Include="articles\nosql-database-acid-non-relational-enjoy-full-support-ravendb.markdown" />
+    <None Include="articles\nosql-database-on-black-friday-ravendb-document-database.markdown" />
+    <None Include="articles\ravendb-best-nosql-database-example-for-startups.markdown" />
+    <None Include="articles\ravendb-presents-the-three-ps-of-database-high-availability.markdown" />
+    <None Include="articles\ravendb-python-client-the-transition-to-a-dynamic-language.markdown" />
+    <None Include="articles\ravendb40-passes-intense-security-check.markdown" />
+    <None Include="articles\why-are-so-many-nosql-databases-getting-hacked.markdown" />
+    <None Include="articles\working-with-view-models.markdown" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="articles\images\abandoned-shopping-carts.jpg" />
+    <Content Include="articles\images\beach_crossroads.jpg" />
+    <Content Include="articles\images\black-friday-cyber-monday-nosql-database-ravendb.jpg" />
+    <Content Include="articles\images\bottom-line.jpg" />
+    <Content Include="articles\images\broken_db.jpg" />
+    <Content Include="articles\images\cost-benefits-ravendb-nosql-acid-database.jpg" />
     <Content Include="articles\images\cqrs1.jpg" />
     <Content Include="articles\images\cqrs2.jpg" />
     <Content Include="articles\images\cqrs3.jpg" />
     <Content Include="articles\images\cqrs4.jpg" />
     <Content Include="articles\images\cqrs5.jpg" />
     <Content Include="articles\images\cqrs6.jpg" />
+    <Content Include="articles\images\devops.jpg" />
+    <Content Include="articles\images\download-ravendb.jpg" />
+    <Content Include="articles\images\enjoy-the-data.jpg" />
+    <Content Include="articles\images\fast-moving-cars.jpg" />
+    <Content Include="articles\images\flexibility.jpg" />
+    <Content Include="articles\images\how-nosql-mapreduce-can-boost-your-database-performance.jpg" />
+    <Content Include="articles\images\making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg" />
+    <Content Include="articles\images\management-studio-screenshot.jpg" />
+    <Content Include="articles\images\nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg" />
+    <Content Include="articles\images\nosql-database-on-black-friday-ravendb-document-database.jpg" />
+    <Content Include="articles\images\not-just-spike-in-traffic.jpg" />
+    <Content Include="articles\images\oren-on-acid.jpg" />
+    <Content Include="articles\images\oren-support-quote.jpg" />
+    <Content Include="articles\images\pymetadata.png" />
+    <Content Include="articles\images\ravendb-best-nosql-database-example-for-startups.jpg" />
+    <Content Include="articles\images\ravendb-presents-the-three-ps-of-database-high-availability-main.jpg" />
+    <Content Include="articles\images\ravendb-presents-the-three-ps-of-database-high-availability-pic1.jpg" />
+    <Content Include="articles\images\ravendb-presents-the-three-ps-of-database-high-availability-pic2.jpg" />
+    <Content Include="articles\images\ravendb-vs-mongodb.png" />
+    <Content Include="articles\images\ravendb40-passes-intense-security-check.png" />
+    <Content Include="articles\images\ready_to_run.jpg" />
+    <Content Include="articles\images\results-wait-for-you.jpg" />
+    <Content Include="articles\images\thanksgiving-turkey.jpg" />
+    <Content Include="articles\images\time-is-money.jpg" />
     <Content Include="articles\images\viewmodels1.png" />
+    <Content Include="articles\images\world-map-connections.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
