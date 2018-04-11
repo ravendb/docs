@@ -119,6 +119,6 @@ With RavenDB you don’t pay us to play, we pay you!
         <a href="http://ravendb.net/"><strong>RavenDB 4.0</strong></a> is an ACID document database that specializes in online transaction processing (OLTP). It's fully transactional (ACID) across entire database, and features an SQL-like querying language. You can have the best of relational databases while enjoying the high performance of a non-relational solution. RavenDB gives you a distributed data cluster, flexibility, and rapid scalability with low overhead. RavenDB is an easy to use all-in-one database, striving to minimize your need for third party applications, tools, or support. You can set up RavenDB in a matter of minutes. 
     </p>
     <p>
-        RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds up to 1,000,000 writes per second on a single node. You can build high-performance, low-latency applications quickly and efficiently.
+        RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds up to 1,000,000 reads and 100,000 writes per second on a single node. You can build high-performance, low-latency applications quickly and efficiently.
     </p>
 </div>
