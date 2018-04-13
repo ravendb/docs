@@ -81,4 +81,4 @@ Consumption:
 - [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
 - [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
-- [Revisions management](../../../server/revisions)
+- [Revisions management](../../../server/extensions/revisions)

@@ -1,0 +1,22 @@
+﻿[
+    {
+        "Path": "expiration.markdown",
+        "Name": "Expiration",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/expiration"
+            }
+        ]
+    },
+    {
+        "Path": "revisions.markdown",
+        "Name": "Revisions",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/bundles/versioning"
+            }
+        ]
+    }
+]
