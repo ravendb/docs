@@ -645,6 +645,27 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
                 #endregion
             }
+
+            using (var store = new DocumentStore())
+            {
+                #region change-all-documents   
+
+                // perform a patch on all documents using @all_docs keyword
+                var operation = store
+                    .Operations
+                    .Send(new PatchByQueryOperation(new IndexQuery
+                    {
+                        Query = @"from @all_docs
+                                  update
+                                  {
+                                      this.Updated = true;
+                                  }"
+                    }));
+
+                operation.WaitForCompletion();
+
+                #endregion
+            }
         }
     }
 }

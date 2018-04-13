@@ -47,6 +47,9 @@ The same queries and indexes that are used for data retrieval are used for the s
 ### Updating a collection name
 {CODE change-collection-name@ClientApi\Operations\Patches\PatchRequests.cs /}
 
+### Updating all documents
+{CODE change-all-documents@ClientApi\Operations\Patches\PatchRequests.cs /}
+
 ### Patch on stale results
 {CODE update-on-stale-results@ClientApi\Operations\Patches\PatchRequests.cs /}
 

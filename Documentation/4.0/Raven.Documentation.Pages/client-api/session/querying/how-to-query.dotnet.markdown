@@ -85,7 +85,7 @@ to shape using Linq.
 
 ## Session.Advanced.RawQuery
 
-Queries in RavenDB use a SQL-like language called RavenDB Query Language (RQL). All of the above queries generate RQL sent to the server. The session also gives you the way to express the query directly in RQL using `RawQuery` method.
+Queries in RavenDB use a SQL-like language called RavenDB Query Language ([RQL](../../../indexes/querying/what-is-rql)). All of the above queries generate RQL sent to the server. The session also gives you the way to express the query directly in RQL using `RawQuery` method.
 
 ### Example IV
 
