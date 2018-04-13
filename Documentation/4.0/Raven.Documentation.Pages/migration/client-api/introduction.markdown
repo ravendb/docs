@@ -49,6 +49,7 @@ List of changed metadata properties:
 
 * deleted:
   * `Raven-Last-Modified`
+  * `Raven-Read-Only`
   * `ETag`
 
 * new:
@@ -58,6 +59,10 @@ List of changed metadata properties:
 ### RavenDB.Abstractions
 
 RavenDB.Client doesn't have RavenDB.Abstractions dependency. Please remove all usings of `Raven.Abstractions*` namespace.
+
+### Marking Documents as Read-only
+
+Documents no longer cannot be marked as read-only. The metadata entry `Raven-Read-Only` is no longer supported and all of the Client API methods e.g. `session.Advanced.MarkReadOnly` were deleted.
 
 ### Tests
 
