@@ -47,6 +47,12 @@ The same queries and indexes that are used for data retrieval are used for the s
 ### Updating a collection name
 {CODE change-collection-name@ClientApi\Operations\Patches\PatchRequests.cs /}
 
+### Updating by document ID
+{CODE patch-by-id@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+### Updating by document ID using parameters
+{CODE patch-by-id-using-parameters@ClientApi\Operations\Patches\PatchRequests.cs /}
+
 ### Updating all documents
 {CODE change-all-documents@ClientApi\Operations\Patches\PatchRequests.cs /}
 
