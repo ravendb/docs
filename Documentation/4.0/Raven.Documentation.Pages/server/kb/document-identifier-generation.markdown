@@ -162,10 +162,12 @@
 
 {PANEL: Document IDs - Limitations}
 
-There are two limitations for document IDs:  
+There are following limitations for document IDs:  
 
 * The identifier length limit is 2025 bytes (in UTF8)  
-* The identifier cannot contain the character '\'  
+* The identifier cannot contain `\` character
+* You can't store identifier ending with `/` or `|` characters (reserved for Server-Side ID and Identity generation strategies)
+
 {PANEL/}
 
 ## Related Articles
