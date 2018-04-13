@@ -40,13 +40,6 @@
             }
         ]
     },
-
-    {
-        "Path": "get-serverwide-operation-state.markdown",
-        "Name": "Get Server Wide Operation State",
-        "Mappings": []
-    },
-
     {
         "Path": "modify-conflict-solver.markdown",
         "Name": "Modify Conflict Solver",
