@@ -64,13 +64,25 @@ Compress transactions above size (value in KB)
 
 {PANEL:Storage.ForceUsing32BitsPager}
 
-Use the 32 bits memory mapped pager, even when running in 64 bits.
+Use the 32 bits memory mapped pager, even when running on 64 bits.
 
 - **Type**: `bool`
 - **Default**: `false`
 - **Scope**: Server-wide only
 
 {PANEL/}
+
+{PANEL:Storage.MaxScratchBufferSizeInMb}
+
+Maximum size of `.buffers` files
+
+- **Type**: `int`
+- **Default**: `256` when running on 64 bits, `32` when running on 32 bits or `Storage.ForceUsing32BitsPager` is set to `true`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+
 
 ## Related Articles
 
