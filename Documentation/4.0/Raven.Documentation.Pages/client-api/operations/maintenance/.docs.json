@@ -33,10 +33,5 @@
         "Path": "/etl",
         "Name": "ETL",
         "Mappings": []
-    },
-    {
-        "Path": "/backups",
-        "Name": "Backups",
-        "Mappings": []
     }
 ]
