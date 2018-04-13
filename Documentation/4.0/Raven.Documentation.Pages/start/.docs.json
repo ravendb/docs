@@ -27,7 +27,12 @@
     {
         "Path": "test-driver.markdown",
         "Name": "Unit tests",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/troubleshooting/sending-support-ticket"
+            }
+        ]
     },
     {
         "Path": "/installation",
