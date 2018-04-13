@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using Raven.Client;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Commands.Batches;
 using Raven.Client.Documents.Operations;
@@ -638,6 +639,75 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                                       del(id(c));
                                       this[""@metadata""][""@collection""] = ""New_Orders"";
                                       put(id(c), this);
+                                  }"
+                    }));
+
+                operation.WaitForCompletion();
+
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region change-all-documents   
+
+                // perform a patch on all documents using @all_docs keyword
+                var operation = store
+                    .Operations
+                    .Send(new PatchByQueryOperation(new IndexQuery
+                    {
+                        Query = @"from @all_docs
+                                  update
+                                  {
+                                      this.Updated = true;
+                                  }"
+                    }));
+
+                operation.WaitForCompletion();
+
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region patch-by-id
+
+                // perform a patch by document ID
+                var operation = store
+                    .Operations
+                    .Send(new PatchByQueryOperation(new IndexQuery
+                    {
+                        Query = @"from @all_docs as d
+                                  where id() in ('orders/1-A', 'companies/1-A')
+                                  update
+                                  {
+                                      d.Updated = true;
+                                  }"
+                    }));
+
+                operation.WaitForCompletion();
+
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region patch-by-id-using-parameters 
+
+                // perform a patch by document ID
+                var operation = store
+                    .Operations
+                    .Send(new PatchByQueryOperation(new IndexQuery
+                    {
+                        QueryParameters = new Parameters
+                        {
+                            {"ids", new[] {"orders/1-A", "companies/1-A"}}
+                        },
+                        Query = @"from @all_docs as d
+                                  where id() in ($ids)
+                                  update
+                                  {
+                                      d.Updated = true;
                                   }"
                     }));
 

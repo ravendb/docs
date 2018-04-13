@@ -100,6 +100,15 @@ This option is used to perform:
 - Collection queries that are doing basic ID filtering only, e.g. `from Companies where id() == 'companies/1-A'` where there is no need to query an index, we can return the document from the storage directly
 - Dynamic queries that are being executed against [Auto Index](../../indexes/creating-and-deploying#auto-indexes)
 
+{INFO:All Documents}
+
+In order to query all documents, the `@all_docs` keyword can be used e.g. 
+
+- `from @all_docs where FirstName = 'Laura'`
+- `from @all_docs where id() = 'companies/1-A'`.
+
+{INFO/}
+
 2. `from INDEX <index-name>`
 
 This option is used to perform RQL operations against a given [static index].
@@ -127,6 +136,13 @@ The simplest example would be to return results with the field value **equal** t
 {CODE-BLOCK:csharp}
 from Companies
 where Name = 'The Big Cheese'
+{CODE-BLOCK/}
+
+Filtering on **nested properties** is also supported, so in order to return all companies from 'Albuquerque' we need to execute following query:
+
+{CODE-BLOCK:csharp}
+from Companies
+where Address.City = 'Albuquerque'
 {CODE-BLOCK/}
 
 ### Operator: BETWEEN

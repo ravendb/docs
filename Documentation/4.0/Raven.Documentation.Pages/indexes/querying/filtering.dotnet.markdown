@@ -31,6 +31,15 @@ where UnitsInStock > 50
 ## Where - Nested Property
 
 {CODE-TABS}
+{CODE-TAB:csharp:Query filtering_10_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_10_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Orders
+where ShipTo.City = 'Albuquerque'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{CODE-TABS}
 {CODE-TAB:csharp:Query filtering_2_1@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:DocumentQuery filtering_2_2@Indexes\Querying\Filtering.cs /}
 {CODE-TAB:csharp:Index filtering_2_4@Indexes\Querying\Filtering.cs /}
