@@ -43,6 +43,7 @@
   Data sent from multiple locations can be aggregated in a central server.  
 
   For example:
+
   *  Send data to an already existing reporting solution.  
   *  Point of sales systems can send sales data to a central place for calculations.  
 {PANEL/}
@@ -106,7 +107,7 @@ Documents are extracted and transformed by the ETL process in a batch manner.
 The number of documents processed depends on the following configuration limits:  
 
 * [`ETL.ExtractAndTransformTimeoutInSec`](../../../server/configuration/etl-configuration#etl.extractandtransformtimeoutinsec) (default: 300 sec)  
-  Timeframe for the extraction and transformation stages (in seconds), after which the loading stage will start.  
+  Time-frame for the extraction and transformation stages (in seconds), after which the loading stage will start.  
 
 * [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null)  
   Max number of extracted documents in an ETL batch.  
@@ -115,19 +116,21 @@ The number of documents processed depends on the following configuration limits:
 
 ### Load
 
-* Loading the results to the target destination is the last stage.
+ Loading the results to the target destination is the last stage.
 
-* Note: In contrast to Replication, ETL is a push-only process that _writes_ data to the destination
-  whenever documents from the relevant collections were changed. Existing entries on the target will always be _overwritten_.  
+ Updates are implemented by executing consecutive DELETEs and INSERTs.
+ When a document is modified, the delete command is sent before the new data is inserted, and both are processed under the same transaction on the destination side.
+ This applies to both ETL types.  
 
-* Updates are implemented by executing consecutive DELETEs and INSERTs.  
-  When a document is modified, the delete command is sent before the new data is inserted,  
-  and both are processed under the same transaction on the destination side.  
-  This applies to both ETL types.  
+ There are two exceptions to this behavior:  
 
-* There are two exceptions to this behavior:  
-  * In RavenDB ETL, when documents are loaded to **the same** collection there is no need to send DELETE because the document on the other side has the same identifier and it will just update it.  
-  * in SQL ETL you can configure to use inserts only, which is a viable option for append-only systems.  
+ * In RavenDB ETL, when documents are loaded to **the same** collection there is no need to send DELETE because the document on the other side has the same identifier and it will just update it.  
+ * in SQL ETL you can configure to use inserts only, which is a viable option for append-only systems.  
+
+{NOTE:Note}
+In contrast to Replication, ETL is a push-only process that _writes_ data to the destination
+ whenever documents from the relevant collections were changed. Existing entries on the target will always be _overwritten_.  
+{NOTE/}
 
 {PANEL/}
 
@@ -141,6 +144,16 @@ of the following events happen:
 - transformation error
 - load error
 - slow SQL was detected
+
+
+### Fallback Mode
+
+If the ETL cannot proceed the load stage (e.g. it can't connect to the destination) then it enters the fallback mode.
+The fallback mode means suspending the process and retrying it periodically. The fallback time starts from 5 seconds and
+it's doubled on every consecutive error according to the time passed since the last error but it never cross
+[`ETL.MaxFallbackTimeInSec`](../../../server/configuration/etl-configuration#etl.maxfallbacktimeinsec) configuration (default: 900 sec)  
+
+ Once the process is in the fallback mode then _Reconnect_ state is shown in the Studio.
 
 {PANEL/}
 
@@ -156,6 +169,6 @@ Details and examples for type specific ETL scripts can be found in the following
 
 - [RavenDB ETL Task](../../../server/ongoing-tasks/etl/raven)
 - [SQL ETL Task](../../../server/ongoing-tasks/etl/sql)
-- [Define RavenDB ETL Task in Studio](../../../todo-update-me-later)
+- [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
 - [Define SQL ETL Task in Studio](../../../todo-update-me-later)
 
