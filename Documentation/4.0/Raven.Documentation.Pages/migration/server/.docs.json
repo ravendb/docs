@@ -28,5 +28,10 @@
         "Path": "authentication.markdown",
         "Name": "Authentication",
         "Mappings": []
+    },
+    {
+        "Path": "snmp.markdown",
+        "Name": "SNMP",
+        "Mappings": []
     }
 ]
