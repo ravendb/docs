@@ -138,6 +138,13 @@ from Companies
 where Name = 'The Big Cheese'
 {CODE-BLOCK/}
 
+Filtering on **nested properties** is also supported, so in order to return all companies from 'Albuquerque' we need to execute following query:
+
+{CODE-BLOCK:csharp}
+from Companies
+where Address.City = 'Albuquerque'
+{CODE-BLOCK/}
+
 ### Operator: BETWEEN
 
 The operator `between` returns results inclusively, and the type of border values used must match. It works on both 'numbers' and 'strings' and can be substituted with the `>=` and `<=` operators (see the example below).

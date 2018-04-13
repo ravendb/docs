@@ -348,6 +348,32 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                     #endregion
                 }
             }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_10_1
+                    // return all orders that were shipped to 'Albuquerque'
+                    IList<Order> results = session
+                        .Query<Order>()
+                        .Where(x => x.ShipTo.City == "Albuquerque")
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_10_2
+                    // return all orders that were shipped to 'Albuquerque'
+                    IList<Order> results = session
+                        .Advanced
+                        .DocumentQuery<Order>()
+                        .WhereEquals(x => x.ShipTo.City, "Albuquerque")
+                        .ToList();
+                    #endregion
+                }
+            }
         }
     }
 }
