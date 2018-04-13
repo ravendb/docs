@@ -91,6 +91,16 @@ The port can be changed by editing the `ServerUrl` value.
 
 {WARNING/}
 
+{NOTE:Write Permissions}
+
+RavenDB requires write permissions to the following locations:
+
+- The folder where RavenDB server is running (to update `settings.json` by [Setup Wizard](../start/installation/setup-wizard))
+- The data folder ([`DataDir`](../server/configuration/core-configuration#datadir) setting)
+- The logs folder ([`Logs.Path`](../server/configuration/logs-configuration#logs.path) setting)
+
+{NOTE/}
+
 ---
 
 ### Studio
