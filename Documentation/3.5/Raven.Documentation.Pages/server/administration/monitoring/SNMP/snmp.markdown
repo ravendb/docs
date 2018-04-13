@@ -66,16 +66,16 @@ RavenDB's root OID id: 1.3.6.1.4.1.45751.1.1.
 | OID | Metric |
 | --- | ------ |
 |1. |Server |  
-|1.1. |Server name |   
-|1.2. |Server up time |   
-|1.3. |Server build version |   
-|1.4. |Server product version |   
-|1.5. |Server PID |   
-|1.6.1. |Server concurrent requests |   
-|1.6.2. |Server total requests |   
-|1.7. |Server CPU |   
-|1.8.1 |Server total memory |   
-|1.9. |Server url |   
+|1.1. |Server name |
+|1.2. |Server up time |
+|1.3. |Server build version |
+|1.4. |Server product version |
+|1.5. |Server PID |
+|1.6.1. |Server concurrent requests |
+|1.6.2. |Server total requests |
+|1.7. |Server CPU |
+|1.8.1 |Server total memory |
+|1.9. |Server url |
 |1.10 |Server indexing errors (global) |
 |5. |Resources | 
 |5.1.1 |Database total count |
