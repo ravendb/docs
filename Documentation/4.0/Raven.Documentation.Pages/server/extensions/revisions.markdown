@@ -69,6 +69,14 @@ Clicking on the revision we can also navigate to the other revisions of this doc
 
 The revisions feature attempts to make things as simple as possible. Once it is enabled, you'll automatically get the appropriate audit trail.
 
+# Enabling or disabling on existing database
+
+It's possible to enable the reivions feature on an existing database which have existing data. 
+In this case, a new revision would be created for any new save or delete operations, but existing data won't have revisions. So if you create a document, than turn on revisions, and then overwrite the document, there won't be a revision for the original document. However you would have a revision of the put operation after the revisions feature was enabled.
+
+It's possible also to dislabe the revisions feature on an existing database.
+In this case all exsisting revisions would still be sotred and not deleted but we won't create any new revisions.
+
 ## Related articles
 
 - [Revisions in subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
