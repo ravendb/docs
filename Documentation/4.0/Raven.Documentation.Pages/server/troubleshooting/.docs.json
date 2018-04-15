@@ -13,6 +13,10 @@
         "Path": "voron-recovery-tool.markdown",
         "Name": "Voron Recovery Tool",
         "Mappings": []
+    },
+    {
+        "Path": "running-with-logs",
+        "Name": "Running With Logs",
+        "Mappings": []
     }
-
 ]
