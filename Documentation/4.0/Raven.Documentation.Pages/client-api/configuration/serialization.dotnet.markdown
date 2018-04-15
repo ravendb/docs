@@ -37,3 +37,9 @@ For the bulk insert you can configure custom serialization implementation by pro
 
 {CODE TrySerializeEntityToJsonStream@ClientApi\Configuration\Serialization.cs /}
 
+
+##Numbers (de)serialization
+
+RavenDB client supports out of the box all common numeric value types: `int`, `long`, `double`, `decimal` etc.  
+Note that although the (de)serialization of `decimals` is fully supported, there are [server side limitations](../../server/kb/numbers-in-ravendb) to numbers in that range.  
+Other number types like `BigInteger` must be treated using custom (de)serialization.

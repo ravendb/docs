@@ -80,7 +80,7 @@ The TCP connection is kept alive and monitored using "heartbeat" messages. If it
 
 See the sequence diagram below that summarizes the lifetime of a subscription connection.
 
-![Subscription document processing](images\SubscriptionsDocumentProcessing.png)
+![Subscription document processing](images/SubscriptionsDocumentProcessing.png)
 
 {PANEL/}
 
