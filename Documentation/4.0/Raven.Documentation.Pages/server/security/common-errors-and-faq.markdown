@@ -231,4 +231,27 @@ Under construction
 
 ## Encryption Issues  
 
-Under construction
+### Insufficient Memory Exception
+
+With encrypted databases we lock some memory in order to avoid leaking secrets to disk. 
+
+This means that if we run out of memory, the OS is not allowed to page it to disk. By default RavenDB treats this as a catastrophic error and will not continue the operation.
+
+You can change this behavior, see the [Security Configuration Section](../../server/configuration/security-configuration#security.donotconsidermemorylockfailureascatastrophicerror).
+
+{CODE-BLOCK:plain}
+Memory exception occurred: System.InsufficientMemoryException: Failed to increase the min working set size so we can lock 4,294,967,296 for D:\so-encrypt-test\RavenData\Databases\SO\Indexes\Auto_Questions_ByBody\Temp\compression.0000000000.buffers. With encrypted databases we lock some memory in order to avoid leaking secrets to disk. Treating this as a catastrophic error and aborting the current operation. ---> System.ComponentModel.Win32Exception: Insufficient system resources exist to complete the requested service
+   at System.Diagnostics.Process.SetWorkingSetLimitsCore(Nullable`1 newMin, Nullable`1 newMax, IntPtr& resultingMin, IntPtr& resultingMax)
+   at System.Diagnostics.Process.set_MinWorkingSet(IntPtr value)
+   at Voron.Impl.Paging.AbstractPager.TryHandleFailureToLockMemory(PagerState newState, AllocationInfo info) in C:\workspace\ravendb-4.0\src\Voron\Impl\Paging\AbstractPager.cs:line 116
+   --- End of inner exception stack trace ---
+   at Voron.Impl.Paging.AbstractPager.TryHandleFailureToLockMemory(PagerState newState, AllocationInfo info) in C:\workspace\ravendb-4.0\src\Voron\Impl\Paging\AbstractPager.cs:line 120
+   at Voron.Impl.Paging.AbstractPager.SetPagerState(PagerState newState) in C:\workspace\ravendb-4.0\src\Voron\Impl\Paging\AbstractPager.cs:line 69
+   at Voron.Platform.Win32.WindowsMemoryMapPager.AllocateMorePages(Int64 newLength) in C:\workspace\ravendb-4.0\src\Voron\Platform\Win32\WindowsMemoryMapPager.cs:line 215
+   at Voron.Impl.Journal.WriteAheadJournal.PrepareToWriteToJournal(LowLevelTransaction tx) in C:\workspace\ravendb-4.0\src\Voron\Impl\Journal\WriteAheadJournal.cs:line 1326
+   at Voron.Impl.Journal.WriteAheadJournal.WriteToJournal(LowLevelTransaction tx, String& journalFilePath) in C:\workspace\ravendb-4.0\src\Voron\Impl\Journal\WriteAheadJournal.cs:line 1266
+   at Voron.Impl.LowLevelTransaction.CommitStage2_WriteToJournal() in C:\workspace\ravendb-4.0\src\Voron\Impl\LowLevelTransaction.cs:line 931
+   at Voron.Impl.LowLevelTransaction.Commit() in C:\workspace\ravendb-4.0\src\Voron\Impl\LowLevelTransaction.cs:line 804
+   at Raven.Server.Documents.Indexes.Index.DoIndexingWork(IndexingStatsScope stats, CancellationToken cancellationToken) in C:\workspace\ravendb-4.0\src\Raven.Server\Documents\Indexes\Index.cs:line 1405
+   at Raven.Server.Documents.Indexes.Index.ExecuteIndexing() in C:\workspace\ravendb-4.0\src\Raven.Server\Documents\Indexes\Index.cs:line 860
+{CODE-BLOCK/}
