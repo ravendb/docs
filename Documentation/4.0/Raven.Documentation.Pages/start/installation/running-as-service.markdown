@@ -37,12 +37,46 @@ Service can be also controlled using the `start` and `stop` commands:
 
 {PANEL/}
 
-{PANEL:Linux}
+{PANEL:Linux - Ubuntu 16.04}
 
-To run as a Service on Linux, you need to add the following command to your daemon script:
+Open a bash terminal, and create the following file /etc/systemd/system/ravendb.service, using super user permissions:
+    [Unit]
+    Description=RavenDB v4.0
+    After=network.target
 
+    [Service]
+    LimitCORE=infinity
+    LimitNOFILE=65536
+    LimitRSS=infinity
+    LimitAS=infinity
+    User=<desired-user>
+    Restart=on-failure
+    Type=simple
+    ExecStart=<path-to-RavenDB>/run.sh
+
+    [Install]
+    WantedBy=multi-user.target
+
+Note: Replace <desired-user> with your username and <path-to-RavenDB> with your path.
+
+Then register the service and enable it on startup:
 {CODE-BLOCK:bash}
-<path/to/ravendb>/Server/Raven.Server --non-interactive
+systemctl daemon-reload
+systemctl enable ravendb.service
+{CODE-BLOCK/}
+
+Start the service:
+{CODE-BLOCK:bash}
+systemctl start ravendb.service
+{CODE-BLOCK/}
+
+View its status using:
+{CODE-BLOCK:bash}
+systemctl status ravendb.service
+{CODE-BLOCK/}
+or
+{CODE-BLOCK:bash}
+journalctl -f -u ravendb.service
 {CODE-BLOCK/}
 
 {PANEL/}
