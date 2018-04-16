@@ -4,29 +4,17 @@
         "Name": "Document identifier generation",
         "Mappings": [
             {
-                "Version": 4.0,
+                "Version": 3.5,
                 "Key": "server/kb/document-key-generation"
             }
         ]
     },
     {
         "Path": "numbers-in-ravendb.markdown",
-        "Name": "Numbers in RavenDB",
-        "Mappings": [
-            {
-                "Version": 4.0,
-                "Key": "server/kb/numbers-in-ravendb"
-            }
-        ]
+        "Name": "Numbers in RavenDB"
     },
     {
-        "Path": "javascript-eingine.markdown",
-        "Name": "Javascript engine",
-        "Mappings": [
-            {
-                "Version": 4.0,
-                "Key": "server/kb/javascript-eingine"
-            }
-        ]
+        "Path": "javascript-engine.markdown",
+        "Name": "JavaScript Engine"
     }
 ]

@@ -1,9 +1,9 @@
-﻿# Javascript Engine
+﻿# JavaScript Engine
 ---
 
 {NOTE: }
 
-Several RavenDB mechanisms incorporate javascript scripts:  
+Several RavenDB mechanisms incorporate JavaScript scripts:  
 
 * [RQL](../../indexes/querying/what-is-rql)  
 * [Subscription](../../client-api/data-subscriptions/what-are-data-subscriptions)    
@@ -11,11 +11,11 @@ Several RavenDB mechanisms incorporate javascript scripts:
 * [Smuggler (data import/export)](../../client-api/smuggler/what-is-smuggler)    
 * [Single](../../client-api/operations/patching/single-document) or [Set based](../../client-api/operations/patching/set-based) document patches
 
-In order to execute javscript code, RavenDB uses [Jint](http://github.com/sebastienros/jint), an open source javascript interpreter, supporting ECMAScript 5.1.  
+In order to execute javscript code, RavenDB uses [Jint](http://github.com/sebastienros/jint), an open source JavaScript interpreter, supporting ECMAScript 5.1.  
 
 In this page:  
-* [How RavenDB uses Jint](../../server/kb/javascript-eingine#how-ravendb-uses-jint)  
-* [Predefined javascript functions](../../server/kb/javascript-eingine#predefined-javascript-functions)  
+* [How RavenDB uses Jint](../../server/kb/JavaScript-eingine#how-ravendb-uses-jint)  
+* [Predefined JavaScript functions](../../server/kb/JavaScript-eingine#predefined-JavaScript-functions)  
 
 
 {NOTE/}
@@ -23,7 +23,7 @@ In this page:
 ---
 
 {PANEL: How RavenDB uses Jint}
-As mentioned before, RavenDB uses [Jint](put link here) to execute javascript code in a variety of operations.  
+As mentioned before, RavenDB uses [Jint](https://github.com/sebastienros/jint) to execute JavaScript code in a variety of operations.  
 In order to perform an operation, Jint receives a function to run and a single document to process, therefore, the processing context of jint is a single document and there is no "long-term" execution context, even when it may look like it, in patch operations.  
 Jint engine initialization is an expansive operation, therefore, RavenDB caches Jint instances according to the user defined scripts and reuses them.  
 
@@ -35,7 +35,7 @@ RavenDB limits the depth of recursive calls to 64, this value is a constant.
 {INFO /}
 {PANEL/}
 
-{PANEL: Predefined javascript functions}
+{PANEL: Predefined JavaScript functions}
 RavenDB introduced a set of predefined function, in addition to Jint's Ecmascript5.1 implementation.
 
 | Method Signature| Return type | Description |
