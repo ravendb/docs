@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "conflict-resolution.markdown",
+        "Name": "Conflict Resolution",
+        "Mappings": []
+    },
+    {
         "Path": "manage-database-group.markdown",
         "Name": "Manage Database Group",
         "Mappings": []
