@@ -15,8 +15,8 @@
         "Mappings": []
     },
     {
-        "Path": "lazy-transactions.markdown",
-        "Name": "Lazy Transactions",
+        "Path": "transactions-mode.markdown",
+        "Name": "Transactions Mode",
         "Mappings": []
     }
 ]
