@@ -13,6 +13,8 @@ You can also stop and start a single index. The Client API operations are [StopI
 Indexing will be resumed automatically after a server restart.
 {NOTE /}
 
+Operation scope: Local node
+
 ## Disable & Enable
 
 Disabling an index can be done via [the Studio](../../studio/database/indexes/todo) or the Client API operations: [DisableIndex](../../client-api/operations/maintenance/indexes/disable-index), [EnableIndex](../../client-api/operations/maintenance/indexes/enable-index). 
@@ -22,6 +24,7 @@ Querying a disabled index is allowed but it may return stale results. Unlike sto
 even after a server restart.
 {NOTE /}
 
+Operation scope: Local node
 
 ## Reset
 
@@ -30,10 +33,13 @@ matched by the index definition (can be a lengthy process on large databases).
 
 You can reset an index using [the Studio](../../studio/database/indexes/todo) or [the Client API](../../client-api/operations/maintenance/indexes/reset-index).
 
+Operation scope: Local node
+
 ## Delete
 
 You can delete an index by using [the Studio](../../studio/database/indexes/todo) or [the Client API](../../client-api/operations/maintenance/indexes/delete-index).
 
+Operation scope: Cluster
 
 ## Lock Mode
 
@@ -55,6 +61,8 @@ The available modes are:
 * LockedIgnore
 * LockedError
 
+Operation scope: Cluster
+
 ## Priority
 
 Each index has a dedicated thread that handles all the work for the index. RavenDB uses thread priorities at the operating system level to hint what
@@ -75,5 +83,7 @@ You can control the affinity of indexing threads and number of cores that _won't
 
 - [Server.IndexingAffinityMask](../../server/configuration/server-configuration#server.indexingaffinitymask)
 - [Server.NumberOfUnusedCoresByIndexes](../../server/configuration/server-configuration#server.numberofunusedcoresbyindexes)
+
+Operation scope: Cluster
 
 {NOTE/}
