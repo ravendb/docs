@@ -204,11 +204,43 @@ A document containing the following memory statistics is retrieved:
     ],
 }
 {CODE-BLOCK/}
+
+### CPU Stats
+
+{NOTE: }
+To get server CPU stats use the `{serverUrl}/admin/debug/cpu/stats` endpoint
+{NOTE/}
+
+A document containing the following information is retrieved:
+{CODE-BLOCK:json}
+{
+	CpuStats: [
+		{
+			ProcessName: "Raven.Server",
+			ProcessorAffinity: 3,
+			PrivilegedProcessorTime: "00:10:49.9843750",
+			TotalProcessorTime: "00:57:11.9531250",
+			UserProcessorTime: "00:46:21.9687500",
+		}
+	],
+	ThreadPoolStats: [
+		{
+		AvailableThreadPoolWorkerThreads: 32765,
+		AvailableThreadPoolCompletionPortThreads: 1000,
+		MinThreadPoolWorkerThreads: 2,
+		MinThreadPoolCompletionPortThreads: 2,
+		MaxThreadPoolWorkerThreads: 32767,
+		MaxThreadPoolCompletionPortThreads: 1000,
+		}
+	],
+}
+{CODE-BLOCK/}
+
 {PANEL/}
 
 {PANEL: Database statistics}
 
-Database statistics are available in the `Studio`, and can also be retrieved by a dedicated endpoint  
+Database statistics are available in the `Studio`, and can also be retrieved by dedicated endpoints  
 or via the Client API (details [here](../../client-api/operations/maintenance/get-statistics)).
  
 ### Database Statistics via the Studio
@@ -248,8 +280,107 @@ The following information is presented :
         * Reduce Successes
         * Reduced Per Second Rate
 
+### Database Statistics via dedicated endpoint
 {NOTE: }
-The same information can be retrieved in a JSON format by using the  
+Database statistics can also be retrieved in a JSON format by using the  
 `{serverUrl}/databases/{databaseName}/stats` endpoint
 {NOTE/}
+
+A document containing the following database statistics is retrieved:
+{CODE-BLOCK:json}
+{
+	CountOfIndexes: 4,
+	CountOfDocuments: 1080,
+	CountOfRevisionDocuments: 4645,
+	CountOfTombstones: 0,
+	CountOfDocumentsConflicts: 0,
+	CountOfConflicts: 0,
+	CountOfAttachments: 17,
+	CountOfUniqueAttachments: 17,
+	DatabaseChangeVector: "A:5746-7aoBOQY250SGxlpFC/GcxQ",
+	DatabaseId: "7aoBOQY250SGxlpFC/GcxQ",
+	NumberOfTransactionMergerQueueOperations: 0,
+	Is64Bit: true,
+	Pager: "Voron.Platform.Win32.WindowsMemoryMapPager",
+	LastDocEtag: 5746,
+	LastIndexingTime: "2018-04-16T09:38:28.8303222Z",
+	SizeOnDisk: {
+		HumaneSize: "259 MBytes",
+		SizeInBytes: 271581184,
+	},
+	Indexes: [
+		{
+			IsStale: false,
+			Name: "Auto/Companies/ByAddress.CountryAndSearch(Name)",
+			LockMode: "Unlock",
+			Priority: "Normal",
+			State: "Normal",
+			Type: "AutoMap",
+			LastIndexingTime: "2018-04-16T09:38:28.8303222Z",
+		},
+		{
+			IsStale: false,
+			Name: "Auto/Employees/ByFirstNameAndLastName",
+			LockMode: "Unlock",
+			Priority: "Normal",
+			State: "Idle",
+			Type: "AutoMap",
+			LastIndexingTime: "2018-04-16T09:38:28.7994098Z",
+		},
+		{
+			IsStale: false,
+			Name: "Orders/ByCompany",
+			LockMode: "Unlock",
+			Priority: "Normal",
+			State: "Normal",
+			Type: "MapReduce",
+			LastIndexingTime: "2018-04-16T09:38:28.7270848Z",
+		},
+		{
+			IsStale: false,
+			Name: "Product/Search",
+			LockMode: "Unlock",
+			Priority: "Normal",
+			State: "Normal",
+			Type: "Map",
+			LastIndexingTime: "2018-04-16T09:38:28.7761331Z",
+		},
+	],
+}
+{CODE-BLOCK/}
+
+### Database Metrics
+{NOTE: }
+To get the database metrics use the `{serverUrl}/databases/{databaseName}/metrics` endpoint
+{NOTE/}
+
+Similarly to the server metrics endpoint, a document containing the following database metrics is retrieved:
+
+* **Requests** 
+    * RequestsPerSec
+    * ConcurrentRequestsCount
+* **Docs** 
+    * BytesPutsPerSec
+    * PutsPerSec 
+* **Attachments** 
+    * BytesPutsPerSec
+    * PutsPerSec   
+* **MapIndexes** 
+    * IndexedPerSec
+* **MapReduceIndexes** 
+    * MappedPerSec
+    * ReducedPerSec   
+
+where each meter has the following format:
+{CODE-BLOCK:json}
+{
+    Current: 3,
+    Count: 217937,
+    MeanRate: 0.2,
+    OneMinuteRate: 1.2,
+    FiveMinuteRate: 0.2,
+    FifteenMinuteRate: 0.1
+}
+{CODE-BLOCK/}
+
 {PANEL/}
