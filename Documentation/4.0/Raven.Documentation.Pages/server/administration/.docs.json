@@ -8,5 +8,10 @@
         "Path": "cli.markdown",
         "Name": "CLI (Command Line Interface)",
         "Mappings": []
+    },
+    {
+        "Path": "statistics.markdown",
+        "Name": "Statistics",
+        "Mappings": []
     }
 ]
