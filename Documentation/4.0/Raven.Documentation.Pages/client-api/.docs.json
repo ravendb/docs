@@ -1,7 +1,7 @@
 ﻿[
     {
         "Path": "what-is-a-document-store.markdown",
-        "Name": "What is a Document Store?",
+        "Name": "What is a Document Store",
         "Mappings": []
     },
     {
@@ -21,12 +21,12 @@
     },
     {
         "Path": "what-is-a-public-api.markdown",
-        "Name": "What is a public API?",
+        "Name": "What is a Public API",
         "Mappings": []
     },
     {
         "Path": "net-client-versions.markdown",
-        "Name": ".NET Client versions",
+        "Name": ".NET Client Versions",
         "Mappings": []
     },
     {
@@ -55,18 +55,13 @@
         "Mappings": []
     },
     {
-        "Path": "/cluster",
-        "Name": "Cluster Related",
-        "Mappings": []
-    },
-    {
         "Path": "/commands",
         "Name": "Commands",
         "Mappings": []
     },
     {
         "Path": "/document-identifiers",
-        "Name": "Document identifiers",
+        "Name": "Document Identifiers",
         "Mappings": []
     },
     {
@@ -77,6 +72,11 @@
     {
         "Path": "/smuggler",
         "Name": "Smuggler",
+        "Mappings": []
+    },
+    {
+        "Path": "/cluster",
+        "Name": "Cluster Related",
         "Mappings": []
     },
     {

@@ -1,4 +1,4 @@
-# Setup Scenarios : Azure Linux VM
+# Installation : Setup Scenarios : Azure Linux VM
 ---
 
 Page under construction

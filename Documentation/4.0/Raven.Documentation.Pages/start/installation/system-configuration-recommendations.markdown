@@ -69,3 +69,8 @@ swapon
 {CODE-BLOCK/}
 
 {PANEL/}
+
+## Related articles
+
+- [System Requirements](../../start/installation/system-requirements)
+- [Deployment Considerations](../../start/installation/deployment-considerations)

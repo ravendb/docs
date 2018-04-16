@@ -1,4 +1,4 @@
-# Setup Scenarios : AWS Linux VM
+# Installation : Setup Scenarios : AWS Linux VM
 
 In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro virtual machine.
 

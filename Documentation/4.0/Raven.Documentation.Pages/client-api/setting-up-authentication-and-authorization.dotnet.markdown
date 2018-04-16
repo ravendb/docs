@@ -1,4 +1,4 @@
-# Setting up Authentication and Authorization
+# Client API : Setting up Authentication and Authorization
 
 Authentication and authorization is based on [client X.509 certificates](../server/security/authorization/security-clearance-and-permissions).
 
@@ -12,5 +12,13 @@ The `Certificate` property allows you to pass a certificate which will be used b
 
 ## Related Articles
 
-- [How to create **secured server**?](../server/security/overview)
+### Security
+
+- [How to Create **Secured Server**](../server/security/overview)
 - [Security Clearance & Permissions](../server/security/authorization/security-clearance-and-permissions)
+
+### Document Store
+
+- [What is a Document Store](../client-api/what-is-a-document-store)
+- [Creating a Document Store](../client-api/creating-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)

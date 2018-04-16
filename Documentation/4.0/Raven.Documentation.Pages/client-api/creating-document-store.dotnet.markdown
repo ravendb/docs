@@ -1,4 +1,4 @@
-﻿# How to Create a Document Store
+﻿# Client API : How to Create a Document Store
 
 To create an instance of the `DocumentStore` you need to specify a list of URL addresses that point to RavenDB server nodes.
 
@@ -29,8 +29,14 @@ initialization looks like the following:
 
 {NOTE If you use more than one instance of `DocumentStore` you should dispose it after use. /}
 
-
 ## Related Articles
 
-- [What is a document store?](./what-is-a-document-store)
-- [How to setup a default database?](./setting-up-default-database)
+### Session
+
+- [What is a Session and How Does it Work](../client-api/session/what-is-a-session-and-how-does-it-work)
+
+### Document Store
+
+- [What is a Document Store](../client-api/what-is-a-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)
+- [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)

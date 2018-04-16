@@ -1,4 +1,4 @@
-# What is a Document Store?
+# Client API : What is a Document Store?
 
 A document store is our main client API object which establishes and manages the connection channel between an application and a database instance. 
 It acts as the connection manager and also exposes methods to perform all operations which you can run against an associated server instance.
@@ -19,4 +19,13 @@ The document store ensures access to the following client API features:
 
 ## Related Articles
 
-- [How to create a document store?](./creating-document-store)
+### Getting Started
+
+- [Getting Started](../start/getting-started)
+- [Setup Wizard](../start/installation/setup-wizard)
+
+### Document Store
+
+- [Creating a Document Store](../client-api/creating-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)
+- [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)
