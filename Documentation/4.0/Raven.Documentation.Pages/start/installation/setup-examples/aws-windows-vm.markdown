@@ -1,6 +1,6 @@
-# Installation : Setup Scenarios : AWS Windows VM
+# Setup Examples : AWS Windows VM
 
-In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro virtual machine.
+In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro Windows virtual machine.
 
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
@@ -143,7 +143,7 @@ If you want to access the RavenDB CLI, first find out the RavenDB process number
  
 Congratulations, you have a secure RavenDB server running on a simple EC2 machine. Have fun with it!
 
-Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard#continuing-the-cluster-setup) to construct a cluster during setup.
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 
 ## Related articles
 

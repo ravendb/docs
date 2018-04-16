@@ -10,6 +10,11 @@
         "Mappings": []
     },
     {
+        "Path": "aws-docker-linux-vm.markdown",
+        "Name": "Docker on AWS Linux VM",
+        "Mappings": []
+    },
+    {
         "Path": "azure-windows-vm.markdown",
         "Name": "Azure Windows VM",
         "Mappings": []

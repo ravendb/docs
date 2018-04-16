@@ -1,6 +1,6 @@
-# Installation : Setup Scenarios : AWS Linux VM
+# Setup Examples : AWS Linux VM
 
-In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro virtual machine.
+In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro virtual machine running Ubuntu 16.04.
 
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
@@ -91,12 +91,12 @@ sudo setcap CAP_NET_BIND_SERVICE=+eip ./RavenDB/Server/Raven.Server
 
 Locate the VM's private and public IP addresses in the AWS EC2 Management Console.
 
+![9](images/aws-linux/9.png)
+
 You have a few choices on how to run the RavenDB server. 
 We will use the [Setup Wizard](../../../start/installation/setup-wizard), but you can also configure things [manually](../../../start/installation/manual).
 
-![9](images/aws-linux/9.png)
-
-Now, let's edit the settings.json file so that we can perform the setup remotely using the browser.
+Let's edit the settings.json file so that we can perform the setup remotely using the browser.
 
 {CODE-BLOCK:bash}
 vi RavenDB/Server/settings.json
@@ -137,16 +137,16 @@ sudo systemctl enable ravendb.service
 sudo systemctl start ravendb.service
 {CODE-BLOCK/}
 
-RavenDB is running and you can access it from your (local) browser using the VM's Public DNS which we configured earlier in settings.json.
+RavenDB is running and you can access it from your (local) browser using the VM's Public DNS (e.g. http://ec2-35-160-249-162.us-west-2.compute.amazonaws.com:443).
 
 ![12](images/aws-linux/12.png)
 
 Accept the agreement and choose the setup type you want to do. In the example we choose to setup securely with a Let's Encrypt certificate.
 You will need to claim your domain, read more [here](../../../start/installation/setup-wizard#secure-setup-with-a-let).
 
-When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's IP addresees.
+When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's IP addresses.
 
-Choose the **Private IP address** here.
+Choose the **private IP address** here.
 
 ![13](images/aws-linux/13.png)
 
@@ -167,7 +167,7 @@ If everything went well, you should be redirected to the studio and Chrome shoul
 Some environments don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the Studio, and you get an authentication error, please **close all instances of the browser** and install the admin client certificate manually. 
 
 
-Now you can access the Studio, open the browser and enter your new domain (e.g. https://a.aws.developer.run).
+Now you can access the Studio, open the browser and enter your new domain (e.g. https://a.aws.development.run).
 
 Chrome will let you select the certificate. 
 
@@ -180,7 +180,7 @@ Access the certificate view to see both the loaded server certificate and the ad
 
 Congratulations, you have a secure RavenDB server running on a simple EC2 machine. Have fun with it!
 
-Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard#continuing-the-cluster-setup) to construct a cluster during setup.
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 
 ## Related articles
 
