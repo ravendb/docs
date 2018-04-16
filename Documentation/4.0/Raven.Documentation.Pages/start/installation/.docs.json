@@ -53,5 +53,10 @@
                 "Key": "server/installation/upgrading-to-new-version"
             }
         ]
+    },
+    {
+        "Path": "minimum-requirements.markdown",
+        "Name": "System Requirements",
+        "Mappings": []
     }
 ]
