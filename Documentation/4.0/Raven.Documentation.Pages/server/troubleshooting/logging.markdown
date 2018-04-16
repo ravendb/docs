@@ -10,7 +10,21 @@ is turned on with the following options:
 - logging level: `Operations` (high level info for operational users)
 - logs directory: 'Logs' (next to RavenDB executables)
 
-If you wan to see the low level debug information you need to set the logging level to `Information`. The server restart is required to apply the changes.
+If you want to see the low level debug information you need to set the logging level to `Information`. The server restart is required to apply the changes.
+
+{NOTE: RavenCLI}
+
+Modifying the `settings.json` file requires the server restart. In order to avoid that you can modify the current log level by using the [CLI](../../server/administration/cli). 
+
+This will change the logging level without the need of doing any server restarts, but will not modify the `settings.json` file, so please bare in mind that after restart the logging level be read from configuration file again.
+
+{CODE-BLOCK:plain}
+log <on|off|http-on|http-off>
+{CODE-BLOCK/}
+
+You can read more about the command [here](../../server/administration/cli#log).
+
+{NOTE/}
 
 {NOTE: Async log}
 
