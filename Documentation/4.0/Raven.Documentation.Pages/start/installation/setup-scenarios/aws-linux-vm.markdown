@@ -66,7 +66,12 @@ sudo apt-get update
 sudo apt-get install libunwind8 liblttng-ust0 libcurl3 libssl1.0.0 libuuid1 libkrb5-3 zlib1g libicu55 libsodium18
 {CODE-BLOCK/}
 
-Download your desired RavenDB version from the website, and trasfer the tar.bz2 file to the new VM using SCP. The following example shows how to transfer the file from the local machine to the /home/ubuntu directory in the VM.
+Download RavenDB's latest stable using the following command:
+{CODE-BLOCK:bash}
+wget -O ravendb.tar.bz2 https://hibernatingrhinos.com/downloads/RavenDB%20for%20Linux%20x64/latest
+{CODE-BLOCK/}
+
+If you wish to use another RavenDB version, download it to your local machine and trasfer the tar.bz2 file to the new VM using SCP. The following example shows how to transfer the file from the local machine to the /home/ubuntu directory in the VM.
 
 {CODE-BLOCK:bash}
 scp -i "RavenDBUbuntuVMKeyPair.pem" /local/download/location/RavenDB-4.0.3-nightly-20180414-0400-linux-x64.tar.bz2 ubuntu@ec2-35-160-249-162.us-west-2.compute.amazonaws.com:/home/ubuntu
