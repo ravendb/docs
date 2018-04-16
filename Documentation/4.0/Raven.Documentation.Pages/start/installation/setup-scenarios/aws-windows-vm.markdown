@@ -144,3 +144,14 @@ If you want to access the RavenDB CLI, first find out the RavenDB process number
 Congratulations, you have a secure RavenDB server running on a simple EC2 machine. Have fun with it!
 
 Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard#continuing-the-cluster-setup) to construct a cluster during setup.
+
+## Related articles
+
+### Getting Started
+
+- [Getting Started](../../../start/getting-started)
+
+### Installation
+
+- [Setup Wizard](../../../start/installation/setup-wizard)
+- [Manual Setup](../../../start/installation/manual)

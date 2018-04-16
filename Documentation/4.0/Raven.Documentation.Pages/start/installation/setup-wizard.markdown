@@ -321,3 +321,14 @@ To construct a cluster, unzip the downloaded RavenDB package to more machines (o
 Once all the servers are up and running, building the cluster is simple. Access the studio, go to Manage Server > Cluster, and add nodes to the cluster by their URL.  
 
 {PANEL/}
+
+## Related articles
+
+### Installation
+
+- [Common Setup Wizard Errors and FAQ](../../server/security/common-errors-and-faq#setup-wizard-issues)
+- [Manual Setup](../../start/installation/manual)
+
+### Security
+
+- [Security in RavenDB](../../server/security/overview)

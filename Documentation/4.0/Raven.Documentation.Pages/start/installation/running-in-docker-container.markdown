@@ -37,3 +37,8 @@ You can access the RavenDB Management Studio by going to `http://10.0.75.2:8080`
 ## Remarks
 
 For more detailed information on how to use and setup RavenDB on Docker please visit our **Docker Hub** page available [here](https://hub.docker.com/r/ravendb/ravendb/).
+
+## Related articles
+
+- [Running as a Service](../../start/installation/running-as-service)
+- [Upgrading to New Version](../../start/installation/upgrading-to-new-version)

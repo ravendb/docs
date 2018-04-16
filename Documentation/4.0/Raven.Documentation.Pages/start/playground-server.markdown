@@ -18,4 +18,10 @@ Our live-test server offers a full functionality of a RavenDB server and is avai
 
 ## Related Articles
 
-- [Getting started](../start/getting-started)
+### Getting Started
+
+- [Getting Started](../start/getting-started)
+
+### Installation
+
+- [Setup Wizard](../start/installation/setup-wizard)

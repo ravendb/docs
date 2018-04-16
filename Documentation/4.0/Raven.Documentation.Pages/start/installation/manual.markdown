@@ -42,4 +42,11 @@ Read the [Configuration Section](../../server/configuration/configuration-option
 
 ## Related articles
 
+### Installation
+
+- [Common Setup Wizard Errors and FAQ](../../server/security/common-errors-and-faq#setup-wizard-issues)
+- [Setup Wizard](../../start/installation/setup-wizard)
+
+### Security
+
 - [Security in RavenDB](../../server/security/overview)

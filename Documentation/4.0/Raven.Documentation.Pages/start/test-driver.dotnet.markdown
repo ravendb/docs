@@ -203,3 +203,6 @@ test-driver references that downloaded server, in your tests.
 
 {PANEL/}
 
+## Related articles
+
+- [Sending Support Ticket](../server/troubleshooting/sending-support-ticket)

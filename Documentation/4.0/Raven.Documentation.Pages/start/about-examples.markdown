@@ -10,4 +10,4 @@ Not everything can be showed in easy and understandable manner when `Northwind` 
 
 ## Related Articles
 
-- [Northwind page](http://northwinddatabase.codeplex.com/)
+- [Northwind page](https://docs.microsoft.com/en-us/dotnet/framework/data/adonet/sql/linq/downloading-sample-databases)

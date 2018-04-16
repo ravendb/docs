@@ -40,7 +40,7 @@ namespace Raven.Documentation.Samples.Indexes
     #endregion
 
     #region map_reduce_1_0
-    public class Products_Average_ByCategory : 
+    public class Products_Average_ByCategory :
         AbstractIndexCreationTask<Product, Products_Average_ByCategory.Result>
     {
         public class Result
@@ -61,7 +61,7 @@ namespace Raven.Documentation.Samples.Indexes
                               select new
                               {
                                   Category = categoryName,
-                                  PriceSum = product.PricePerUser,
+                                  PriceSum = product.PricePerUnit,
                                   PriceAverage = 0,
                                   ProductCount = 1
                               };
@@ -133,24 +133,24 @@ namespace Raven.Documentation.Samples.Indexes
         public Product_Sales_ByMonth()
         {
             Map = orders => from order in orders
-                from line in order.Lines
-                select new
-                {
-                    Product = line.Product,
-                    Month = new DateTime(order.OrderedAt.Year, order.OrderedAt.Month, 1),
-                    Count = 1,
-                    Total = ((line.Quantity * line.PricePerUnit) * (1 - line.Discount))
-                };
+                            from line in order.Lines
+                            select new
+                            {
+                                Product = line.Product,
+                                Month = new DateTime(order.OrderedAt.Year, order.OrderedAt.Month, 1),
+                                Count = 1,
+                                Total = ((line.Quantity * line.PricePerUnit) * (1 - line.Discount))
+                            };
 
             Reduce = results => from result in results
-                group result by new { result.Product, result.Month } into g
-                select new
-                {
-                    Product = g.Key.Product,
-                    Month = g.Key.Month,
-                    Count = g.Sum(x => x.Count),
-                    Total = g.Sum(x => x.Total)
-                };
+                                group result by new { result.Product, result.Month } into g
+                                select new
+                                {
+                                    Product = g.Key.Product,
+                                    Month = g.Key.Month,
+                                    Count = g.Sum(x => x.Count),
+                                    Total = g.Sum(x => x.Total)
+                                };
 
             OutputReduceToCollection = "MonthlyProductSales";
         }

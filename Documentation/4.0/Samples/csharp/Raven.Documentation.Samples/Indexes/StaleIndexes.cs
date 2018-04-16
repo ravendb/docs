@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.Indexes
                     QueryStatistics stats;
                     List<Product> results = session.Query<Product>()
                         .Statistics(out stats)
-                        .Where(x => x.PricePerUser > 10)
+                        .Where(x => x.PricePerUnit > 10)
                         .ToList();
 
                     if (stats.IsStale)
@@ -34,7 +34,7 @@ namespace Raven.Documentation.Samples.Indexes
                     #region stale2
                     List<Product> results = session.Query<Product>()
                         .Customize(x => x.WaitForNonStaleResults(TimeSpan.FromSeconds(5)))
-                        .Where(x => x.PricePerUser > 10)
+                        .Where(x => x.PricePerUnit > 10)
                         .ToList();
                     #endregion
                 }

@@ -151,22 +151,22 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 #endregion
 
                 #region increment_age_generic
-                // increment Age property value by 10
-                session.Advanced.Increment<Employee, int>("employees/1", x => x.Age, 10);
+                // increment UnitsInStock property value by 10
+                session.Advanced.Increment<Product, int>("products/1-A", x => x.UnitsInStock, 10);
 
                 session.SaveChanges();
                 #endregion
 
                 #region increment_age_non_generic_session
                 session.Advanced.Defer(new PatchCommandData(
-                    id: "employees/1",
+                    id: "products/1-A",
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @"this.Age += args.AgeToAdd",
+                        Script = @"this.UnitsInStock += args.UnitsToAdd",
                         Values =
                         {
-                            {"AgeToAdd", 10}
+                            {"UnitsToAdd", 10}
                         }
                     },
                     patchIfMissing: null));
@@ -177,14 +177,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 #region increment_age_non_generic_store
 
                 store.Operations.Send(new PatchOperation(
-                    id: "products/1",
+                    id: "products/1-A",
                     changeVector: null,
                     patch: new PatchRequest
                     {
-                        Script = @"this.Age += args.AgeToAdd",
+                        Script = @"this.UnitsInStock += args.UnitsToAdd",
                         Values =
                         {
-                            {"AgeToAdd", 10}
+                            {"UnitsToAdd", 10}
                         }
                     },
                     patchIfMissing: null));

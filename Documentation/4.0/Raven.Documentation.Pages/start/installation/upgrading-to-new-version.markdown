@@ -41,4 +41,11 @@ Please read our [migration article](../../migration/server/data-migration) that 
 
 ## Related Articles
 
-- [Client API : Backward compatibility](../../client-api/faq/backward-compatibility)
+### Installation
+
+- [System Requirements](../../start/installation/system-requirements)
+- [Deployment Considerations](../../start/installation/deployment-considerations)
+
+### Client API
+
+- [Backward Compatibility](../../client-api/faq/backward-compatibility)

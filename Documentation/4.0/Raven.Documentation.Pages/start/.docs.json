@@ -25,6 +25,11 @@
         "Mappings": []
     },
     {
+        "Path": "about-examples.markdown",
+        "Name": "About Examples",
+        "Mappings": []
+    },
+    {
         "Path": "test-driver.markdown",
         "Name": "Unit tests",
         "Mappings": [
