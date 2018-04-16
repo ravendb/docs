@@ -131,4 +131,4 @@ Renaming property supported only by the non-typed APIs
 ## Related Articles
 
 - [Set Based Patch Operation](../../../client-api/operations/patching/set-based)  
-- [Javascript engine](../../../server/kb/javascript-eingine#predefined-javascript-functions)
+- [JavaScript Engine](../../../server/kb/javascript-engine)

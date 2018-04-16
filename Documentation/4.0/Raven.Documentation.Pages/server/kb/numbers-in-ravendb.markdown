@@ -11,10 +11,10 @@ RavenDB's Client support of numbers depends on platform and chosen deserializati
 In this page:  
 * [About numbers](../../server/kb/numbers-in-ravendb#about-numbers)  
 * [Numbers in documents](../../server/kb/numbers-in-ravendb#numbers-in-documents)  
-* [Numbers in Javascript](../../server/kb/numbers-in-ravendb#numbers-in-javascript-engine)  
+* [Numbers in JavaScript](../../server/kb/numbers-in-ravendb#numbers-in-javascript-engine)  
 * [Numbers in indexes and queries](../../server/kb/numbers-in-ravendb#numbers-in-indexes-and-queries)  
 * [Numbers in studio](../../server/kb/numbers-in-ravendb#numbers-in-management-studio)  
-* [Numbers in client API](server/kb/numbers-in-ravendb#numbers-in-client-api)  
+* [Numbers in client API](../../server/kb/numbers-in-ravendb#numbers-in-client-api)  
 
 
 {NOTE/}
@@ -27,7 +27,7 @@ Simplest type of numbers known to computers are integers. RavenDB fully supports
 Simplest type of fraction known to computers are floating point numbers. RavenDB fully supports double precision floating point number with approximate range of 15-16 digits between [±5.0 × 10^(−324) to ±1.7 × 10^308].  
 
 RavenDB supports storing numbers in the range of the `double` type described above. RavenDB supports storing number in any precision, but it's indexing and JavaScript mechanisms are limited to the 16 digits precision of `double` numbers.  
-In order to better understand the terms precision and range, please observe the next diagram, comparing range and precision of 3 common .net types: `long`, `double` and `decimal`:
+In order to better understand the terms precision and range, please observe the next diagram, comparing range and precision of 3 common .NET types: `long`, `double` and `decimal`:
 
 ![precision and range in numeric types](images/NumberTypesprecisions.png)  
 
@@ -53,9 +53,9 @@ Numbers in documents represented by either:
 RavenDB server will accept document with numbers in the range of 'double' with any precision.
 {PANEL/}
 
-{PANEL: Numbers in javascript engine}
-RavenDB uses javascript in many mechanisms: projections in queries, subscriptions, ETL processes and more.  
-The only type of numbers supported by javascript is double precision floating point number, and `Jint`, the javascript engine RavenDB uses is no exception.  
+{PANEL: Numbers in JavaScript engine}
+RavenDB uses JavaScript in many mechanisms: projections in queries, subscriptions, ETL processes and more.  
+The only type of numbers supported by JavaScript is double precision floating point number, and `Jint`, the JavaScript engine RavenDB uses is no exception.  
 precision of any number that is outside of the precision range of `double` will be truncated to the digits amount of a double.  
 RavenDB provides a way to receive the original value, before the cast to double. The only limitation is that it won't be possible to treat it as a number, but you will be able to receive a string representation of the value.  
 The way to do that is using the `scalarToRawString` extension method, example:  
@@ -87,7 +87,7 @@ Note that alphanumeric sorting of string representation of numbers is accurate o
 {PANEL/}
 
 {PANEL: Numbers in management studio}
-The management studio treats documents as javascript objects, therefore, it treats it's numbers as a javascript number, which is always a `double`.  
+The management studio treats documents as JavaScript objects, therefore, it treats it's numbers as a JavaScript number, which is always a `double`.  
 Note that editing documents with numeric data outside of the precision range of double will end up with truncating those numbers to a proper `double` and unintentional modification of those fields.  
 {PANEL/}
 
@@ -100,6 +100,6 @@ Numbers in RavenDB clients depend on the limitations of the platforms and the se
 
 ## Related Articles
 
-- [Javascript engine](../../server/kb/javascript-eingine)
+- [JavaScript Engine](../../server/kb/javascript-engine)
 - [Indexing basics](../../indexes/indexing-basics)
 - [Querying : Basics](../../indexes/querying/basics)

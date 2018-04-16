@@ -85,4 +85,4 @@ so it can happen than a document has been updated or deleted meanwhile.
 ## Related Articles
 
 - [Single Document Based Patch Operation](../../../client-api/operations/patching/single-document)
-- [Javascript engine](../../../server/kb/javascript-eingine#predefined-javascript-functions)
+- [JavaScript Engine](../../../server/kb/javascript-engine)
