@@ -69,13 +69,14 @@ Clicking on the revision we can also navigate to the other revisions of this doc
 
 The revisions feature attempts to make things as simple as possible. Once it is enabled, you'll automatically get the appropriate audit trail.
 
-# Enabling or disabling on existing database
+## Enabling or disabling on existing database
 
-It's possible to enable the reivions feature on an existing database which have existing data. 
-In this case, a new revision would be created for any new save or delete operations, but existing data won't have revisions. So if you create a document, than turn on revisions, and then overwrite the document, there won't be a revision for the original document. However you would have a revision of the put operation after the revisions feature was enabled.
+The revisions feature can be enabled on a existing database with (or without) data with some restrictions. 
+You need to bare in mind that new revision will be created for any new save or delete operation, but this will not affect any existing data that was created prior turning that feature on.
+So if you create a document, then turn on revisions, and then overwrite the document, there won't be a revision for the original document. However you would have a revision of the put operation after the revisions feature was enabled.
 
-It's possible also to dislabe the revisions feature on an existing database.
-In this case all exsisting revisions would still be sotred and not deleted but we won't create any new revisions.
+It's possible also to disable the revisions feature on an existing database.
+In this case all existing revisions would still be stored and not deleted but we won't create any new revisions on any put or delete operations.
 
 ## Related articles
 
