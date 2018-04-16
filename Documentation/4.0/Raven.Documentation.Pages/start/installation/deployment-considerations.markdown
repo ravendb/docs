@@ -58,4 +58,6 @@ for RavenDB can reside anywhere in the system.
 
 - [Configuration Section](../../server/configuration/configuration-options)
 - [Security in RavenDB](../../server/security/overview)
+- [System Requirements](../../start/installation/system-requirements)
 - [Structure of data on disk](../../server/storage/directory-structure)
+
