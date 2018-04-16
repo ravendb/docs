@@ -8,7 +8,7 @@ with the correct IP addresses and ports.
 It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
-## Creating the VM
+## Create the VM
 
 Access the EC2 Dashboard,  and click on Launch Instance.
 
@@ -56,6 +56,8 @@ Connect to the VM, use the username "Administrator" and the password you just go
 
 ![12](images/aws-windows/12.png)
 
+## Configure the VM
+
 Open the "Windows Defender Firewall with Advanced Security" and go to the "Inbound Rules" tab. 
 
 Create a new rule for TCP ports 443 and 38888 (or the ones you choose).
@@ -75,6 +77,8 @@ Dowload Chrome, you will need to allow it in the Internet Explorer firewall.
 Install the [Visual C++ 2015 Redistributable Package](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) (or newer).
 
 ![19](images/aws-windows/19.png)
+
+## Run the RavenDB Setup Wizard
 
 Download RavenDB and extract it to a path of your choice (e.g. C:\Raven4\).
 
@@ -113,6 +117,8 @@ If you encounter errors during the process, please visit the [FAQ section](../..
 When the setup is finished, you will receive a configuration ZIP file which contains an admin client certificate which will allow you to connect using the browser. Keep the file safe.
 
 Restart the server. 
+
+## Access the Studio
 
 ![30](images/aws-windows/30.png)
 

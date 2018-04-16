@@ -8,7 +8,7 @@ with the correct IP addresses and ports.
 It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
-## Creating the VM
+## Create the VM
 
 Access the EC2 Dashboard,  and click on Launch Instance.
 
@@ -55,6 +55,8 @@ Follow the instructions and connect to the new machine using ssh.
 {CODE-BLOCK:bash}
 ssh -i "RavenDBUbuntuVMKeyPair.pem" ubuntu@ec2-35-160-249-162.us-west-2.compute.amazonaws.com
 {CODE-BLOCK/}
+
+## Configure the VM
 
 Let's update the OS and install the required libraries for RavenDB to run:
 
@@ -137,6 +139,8 @@ sudo systemctl enable ravendb.service
 sudo systemctl start ravendb.service
 {CODE-BLOCK/}
 
+## Run the RavenDB Setup Wizard
+
 RavenDB is running and you can access it from your (local) browser using the VM's Public DNS (e.g. http://ec2-35-160-249-162.us-west-2.compute.amazonaws.com:443).
 
 ![12](images/aws-linux/12.png)
@@ -162,10 +166,11 @@ Restart the server.
 
 ![15](images/aws-linux/15.png)
 
+## Access the Studio
+
 If everything went well, you should be redirected to the studio and Chrome should let you choose the client certificate to use (the one which was just created).
 
 Some environments don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the Studio, and you get an authentication error, please **close all instances of the browser** and install the admin client certificate manually. 
-
 
 Now you can access the Studio, open the browser and enter your new domain (e.g. https://a.aws.development.run).
 

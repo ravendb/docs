@@ -8,7 +8,7 @@ with the correct IP addresses and ports.
 It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
-## Creating the VM
+## Create the VM
 
 Access the EC2 Dashboard,  and click on Launch Instance.
 
@@ -34,17 +34,17 @@ for more information about securing your VM.
 Let's open ports 8080 and 38888 for use by RavenDB. You may choose other port numbers off course and restrict access by IP.
 RavenDB will use port 8080 for HTTPS requests and port 38888 for TCP connections. We allow all incoming traffic on these ports by using 0.0.0.0.
 
-![4](images/aws-docker/ports.png)
+![ports](images/aws-docker/ports.png)
 
 Review your settings and launch the VM.
 
-![5](images/aws-docker/review.png)
+![review](images/aws-docker/review.png)
 
 You will have to download a key pair which will be used later to connect to the machine using ssh.
 
 Wait a couple minutes for the machine to initialize and click connect.
 
-![7](images/aws-docker/connect.png)
+![connect](images/aws-docker/connect.png)
 
 Follow the instructions and connect to the new machine using ssh.
 
@@ -52,7 +52,9 @@ Follow the instructions and connect to the new machine using ssh.
 ssh -i "RavenDBUbuntuVMKeyPair.pem" ubuntu@ec2-54-200-27-219.us-west-2.compute.amazonaws.com
 {CODE-BLOCK/}
 
-Let's update the OS and install Docker, in Ubuntu for example it looks something like this:
+## Configure the VM
+
+Let's update the OS and install Docker. In Ubuntu it looks something like this:
 
 {CODE-BLOCK:bash}
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
@@ -72,7 +74,7 @@ Use this command to view the status of your containers
 sudo docker ps
 {CODE-BLOCK/}
 
-View the full details of the container and notice the IPAddress field (172.17.0.2 in our example). This is the **private IP address** that RavenDB binds to inside the container. You will use this address later in the wizard.
+With the following command, you can view the full details of the container. Notice the IPAddress field (e.g. 172.17.0.2). This is the **private IP address** that RavenDB binds to inside the container. You will use this address later in the wizard.
 {CODE-BLOCK:bash}
 sudo docker inspect raven4
 {CODE-BLOCK/}
@@ -87,27 +89,29 @@ And then you can connect to the RavenDB CLI using:
 ./rvn admin-channel
 {CODE-BLOCK/}
 
+## Run the RavenDB Setup Wizard
+
 You have a few choices on how to run the RavenDB server. 
 We will use the [Setup Wizard](../../../start/installation/setup-wizard), but you can also configure things [manually](../../../start/installation/manual).
 
 RavenDB is running and you can access it from your (local) browser using the VM's Public DNS (e.g. http://ec2-54-200-27-219.us-west-2.compute.amazonaws.com:8080).
 
-![12](images/aws-docker/browser.png)
+![browser](images/aws-docker/browser.png)
 
 Accept the agreement and choose the setup type you want to do. In the example we choose to setup securely with a Let's Encrypt certificate.
 You will need to claim your domain, read more [here](../../../start/installation/setup-wizard#secure-setup-with-a-let).
 
 When you reach the point where you have to enter the IP addresses, you can go to the EC2 management console and check the machine's public IP address.
 
-![9](images/aws-docker/addresses.png)
+![addresses](images/aws-docker/addresses.png)
 
-Back in the Wizard, enter the private IP address RavenDB binds to (172.17.0.2 in our example) in the "IP Address / Hostname" field.
+Back in the wizard, enter the private IP address RavenDB binds to (e.g. 172.17.0.2) in the "IP Address / Hostname" field.
 
-Check the External IP box and enter the **public IP address** of the VM (54.200.27.219 in our example). Make sure to enter the ports you exposed in the docker run command in the "External Port" fields (8080 and 38888 in our example). 
+Check the External IP box and enter the **public IP address** of the VM (e.g. 54.200.27.219). Make sure to enter the ports you exposed in the docker run command in the "External Port" fields (8080 and 38888 in our example). 
 
 Start the installation.
 
-![14](images/aws-docker/ips.png)
+![ips](images/aws-docker/ips.png)
 
 If you encounter errors during the process, please visit the [FAQ section](../../../server/security/common-errors-and-faq).
 
@@ -115,7 +119,9 @@ When the setup is finished, you will receive a configuration ZIP file which cont
 
 Restart the server. 
 
-![15](images/aws-docker/restart.png)
+![restart](images/aws-docker/restart.png)
+
+## Access the Studio
 
 If everything went well, you should be redirected to the studio and Chrome should let you choose the client certificate to use (the one which was just created).
 
@@ -125,13 +131,24 @@ Now you can access the Studio, open the browser and enter your new domain (e.g. 
 
 Chrome will let you select the certificate. 
 
-![16](images/aws-docker/cert.png)
-![17](images/aws-docker/studio.png)
+![cert](images/aws-docker/cert.png)
+![studio](images/aws-docker/studio.png)
 
 Access the certificate view to see both the loaded server certificate and the admin client certificate. Make sure to read the [security section](../../../server/security/overview) for better understanding of certificates and security issues.
 
-![18](images/aws-docker/certview.png)
+![certview](images/aws-docker/certview.png)
 
 Congratulations, you have a secure RavenDB server running on Docker on a simple EC2 machine. Have fun with it!
 
 Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
+
+## Related articles
+
+### Getting Started
+
+- [Getting Started](../../../start/getting-started)
+
+### Installation
+
+- [Setup Wizard](../../../start/installation/setup-wizard)
+- [Manual Setup](../../../start/installation/manual)
