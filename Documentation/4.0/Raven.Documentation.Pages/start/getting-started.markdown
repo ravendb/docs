@@ -259,6 +259,7 @@ If you wish to understand `Indexes` better, we recommend reading the following a
 ### Installation
 
 - [Setup Wizard](../start/installation/setup-wizard)
+- [System Requirements](../start/installation/system-requirements)
 
 ### Client API
 

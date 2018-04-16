@@ -44,6 +44,7 @@ Please read our [migration article](../../migration/server/data-migration) that 
 ### Installation
 
 - [System Requirements](../../start/installation/system-requirements)
+- [System Configuration Recommendations](../../start/installation/system-configuration-recommendations)
 - [Deployment Considerations](../../start/installation/deployment-considerations)
 
 ### Client API

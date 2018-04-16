@@ -59,6 +59,7 @@ for RavenDB can reside anywhere in the system.
 ### Installation
 
 - [System Requirements](../../start/installation/system-requirements)
+- [System Configuration Recommendations](../../start/installation/system-configuration-recommendations)
 - [Upgrading to New Version](../../start/installation/upgrading-to-new-version)
 
 ### Server

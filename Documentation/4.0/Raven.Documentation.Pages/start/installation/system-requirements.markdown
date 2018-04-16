@@ -22,4 +22,5 @@ If you have any questions regarding deployment, see [the dedicated article](../.
 
 ## Related articles
 
+- [System Configuration Recommendations](../../start/installation/system-configuration-recommendations)
 - [Deployment Considerations](../../start/installation/deployment-considerations)
