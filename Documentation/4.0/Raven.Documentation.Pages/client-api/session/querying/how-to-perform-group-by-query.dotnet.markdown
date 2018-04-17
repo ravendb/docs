@@ -139,7 +139,14 @@ In order to use the above extension methods you need to add the following **usin
 {CODE group_by_using@ClientApi\Session\Querying\HowToPerformGroupByQuery.cs /}
 {NOTE/}
 
-
-
 {PANEL/}
 
+## Related Articles
+
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Indexes
+
+- [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)

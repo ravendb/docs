@@ -14,6 +14,9 @@ Query statistics can provide important information about a query like duration, 
 
 {CODE stats_2@ClientApi\Session\Querying\HowToGetQueryStatistics.cs /}
 
-## Related Articles
+## Related articles
 
-- [How to **customize** query?](../../../client-api/session/querying/how-to-customize-query)
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to **Customize** Query?](../../../client-api/session/querying/how-to-customize-query)

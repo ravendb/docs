@@ -58,4 +58,10 @@ where suggest('FullName', 'johne')
 
 ## Related Articles
 
-- [Indexes : Suggestions](../../../indexes/querying/suggestions)
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Querying
+
+- [Suggestions](../../../indexes/querying/suggestions)

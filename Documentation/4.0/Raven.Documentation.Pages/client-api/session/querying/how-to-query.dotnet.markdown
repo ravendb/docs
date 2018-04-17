@@ -126,8 +126,24 @@ Available custom methods and extensions:
 - [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
 - ToListAsync
 
-### Related Articles
+## Related Articles
 
-- [What are indexes?](../../../indexes/what-are-indexes)   
-- [Indexes : Querying: Basics](../../../indexes/querying/basics)  
-- [Session : Querying : What is a Document Query?](../document-query/what-is-document-query)
+### Session
+
+- [How to Project Query Results](../../../client-api/session/querying/how-to-project-query-results)
+- [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
+- [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)
+
+### Querying
+
+- [Basics](../../../indexes/querying/basics)
+- [Filtering](../../../indexes/querying/filtering)
+- [Paging](../../../indexes/querying/paging)
+- [Sorting](../../../indexes/querying/sorting)
+- [Projections](../../../indexes/querying/projections)
+
+### Indexes
+
+- [What are Indexes](../../../indexes/what-are-indexes)  
+- [Indexing Basics](../../../indexes/indexing-basics)
+- [Map Indexes](../../../indexes/map-indexes)

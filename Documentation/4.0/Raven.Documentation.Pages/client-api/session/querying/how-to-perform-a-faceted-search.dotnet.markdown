@@ -92,4 +92,10 @@ select facet(id('facets/CameraFacets'))
 
 ## Related Articles
 
-- [Indexes : Querying : Faceted Search](../../../indexes/querying/faceted-search)   
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Indexes
+
+- [Faceted Search](../../../indexes/querying/faceted-search) 

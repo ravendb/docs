@@ -172,3 +172,19 @@ select Name, Phone
 {NOTE Projected entities (even named types) are not tracked by the session. /}
 
 {NOTE If the projected fields are stored inside the index itself (`FieldStorage.Yes` in the index definition), then the query results will be created directly from there instead of retrieving documents in order to project. /}
+
+## Related Articles
+
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Stream Query Results](../../../client-api/session/querying/how-to-stream-query-results)
+
+### Querying
+
+- [Basics](../../../indexes/querying/basics)
+- [Projections](../../../indexes/querying/projections)
+
+### Server
+
+- [JavaScript Engine](../../../server/kb/javascript-engine)  

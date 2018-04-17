@@ -17,6 +17,12 @@ where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Related Articles
+## Related articles
 
-- [Indexes : Querying : Intersection](../../../indexes/querying/intersection)
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Querying
+
+- [Intersection](../../../indexes/querying/intersection)

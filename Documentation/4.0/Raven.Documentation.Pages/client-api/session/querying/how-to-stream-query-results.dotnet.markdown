@@ -35,3 +35,10 @@ Query results can be streamed using the `Stream` method from the `Advanced` sess
 {CODE-TAB:csharp:Sync stream_4@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TAB:csharp:Async stream_4_async@ClientApi\Session\Querying\HowToStream.cs /}
 {CODE-TABS/}
+
+## Related Articles
+
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [What is a Document Query](../../../client-api/session/querying/document-query/what-is-document-query)

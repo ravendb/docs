@@ -15,3 +15,10 @@ where regex(Name, '^[NA]')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Related Articles
+
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Use Search](../../../client-api/session/querying/how-to-use-search)
+- [How to Query With Exact Match](../../../client-api/session/querying/how-to-query-with-exact-match)

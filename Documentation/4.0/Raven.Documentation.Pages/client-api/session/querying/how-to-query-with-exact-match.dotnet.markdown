@@ -34,8 +34,10 @@ where exact(Lines[].ProductName == 'Singaporean Hokkien Fried Mee')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Related Articles
+## Related Articles
 
-- [What are indexes?](../../../indexes/what-are-indexes)
-- [Indexes : Querying: Basics](../../../indexes/querying/basics)  
-- [Session : Querying : What is a Document Query?](../document-query/what-is-document-query.dotnet)
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Use Search](../../../client-api/session/querying/how-to-use-search)
+- [How to Use Regex](../../../client-api/session/querying/how-to-use-regex)

@@ -123,5 +123,14 @@ order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1
 
 ## Related Articles
 
-- [Indexes : Indexing spatial data](../../../indexes/indexing-spatial-data)   
-- [Indexes : Querying : Spatial](../../../indexes/querying/spatial)   
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Querying
+
+- [Spatial](../../../indexes/querying/spatial)
+
+### Indexes
+
+- [Indexing Spatial Data](../../../indexes/indexing-spatial-data) 

@@ -70,4 +70,10 @@ Do not forget to add the following **using** statement which contains necessary 
 
 ## Related Articles
 
-- [Indexes : Querying : MoreLikeThis](../../../indexes/querying/morelikethis)
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+
+### Querying
+
+- [MoreLikeThis](../../../indexes/querying/morelikethis)

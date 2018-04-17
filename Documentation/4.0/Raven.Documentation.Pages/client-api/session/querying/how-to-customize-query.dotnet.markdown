@@ -151,3 +151,19 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 {CODE customize_8_1@ClientApi\Session\Querying\HowToCustomize.cs /}
 
 {PANEL/}
+
+## Related Articles
+
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Subscribe to Events](../../../client-api/session/how-to/subscribe-to-events)
+
+### Configuration
+
+- [Conventions](../../../client-api/configuration/conventions)
+- [Querying](../../../client-api/configuration/querying)
+
+### Indexes
+
+- [Stale Indexes](../../../indexes/stale-indexes)  

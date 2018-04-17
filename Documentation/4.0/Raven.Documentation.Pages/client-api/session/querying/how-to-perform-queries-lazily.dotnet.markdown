@@ -67,4 +67,7 @@ In some situations, query execution must be delayed. To cover such a scenario, `
 
 ## Related Articles
 
-- [How to perform operations lazily?](../how-to/perform-operations-lazily)
+### Session
+
+- [How to Query](../../../client-api/session/querying/how-to-query)
+- [How to Perform Operations Lazily](../../../client-api/session/how-to/perform-operations-lazily)
