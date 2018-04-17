@@ -1,14 +1,12 @@
-﻿@using Raven.Documentation.Parser.Data
-@using Raven.Documentation.Web.Core.ViewModels
-@model List<Raven.Documentation.Web.Core.ViewModels.TableOfContentsViewModel>
+﻿@using Raven.Documentation.Web.Core.ViewModels
+@model List<TableOfContentsViewModel>
 @{
     string currentKey = ViewBag.Key != null ? ViewBag.Key.ToLowerInvariant() : string.Empty;
 }
 
 @foreach (var toc in Model)
 {
-    var isActive = currentKey.StartsWith(toc.Key.ToLowerInvariant()) && !string.IsNullOrWhiteSpace(toc.Key) && !string.IsNullOrWhiteSpace(currentKey);
-    isActive = isActive || currentKey == toc.Key;
+    var isActive = toc.IsActive(currentKey);
 
 
     if (toc.IsFolder)

@@ -74,6 +74,14 @@ namespace Raven.Documentation.Web.Core.ViewModels
 
             return string.Join(" ", this.Langs.Select(DocumentationLanguage.ToCssClass));
         }
+
+        public bool IsActive(string currentKey)
+        {
+            if (string.IsNullOrWhiteSpace(Key) || string.IsNullOrWhiteSpace(currentKey))
+                return false;
+
+            return IsFolder ? currentKey.StartsWith(Key.ToLowerInvariant()) : currentKey == Key;
+        }
     }
 
     public class DocsVersion
