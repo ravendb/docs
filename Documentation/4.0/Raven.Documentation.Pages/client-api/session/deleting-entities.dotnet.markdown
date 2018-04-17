@@ -53,5 +53,17 @@ You can read more about defer operations [here](./how-to/defer-operations).
 
 ## Related Articles
 
-- [Opening a session](./opening-a-session)  
-- [Loading entities](./loading-entities)  
+### Session
+
+- [What is a Session and How Does it Work?](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)

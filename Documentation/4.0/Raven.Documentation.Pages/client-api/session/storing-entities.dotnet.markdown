@@ -29,4 +29,17 @@ Third overload: Stores the entity in a session with given ID, forces concurrency
 
 ## Related Articles
 
-- [Saving changes](./saving-changes)  
+### Session
+
+- [What is a Session and How Does it Work?](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)

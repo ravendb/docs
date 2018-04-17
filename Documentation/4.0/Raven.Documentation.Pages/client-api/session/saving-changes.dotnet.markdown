@@ -67,9 +67,23 @@ This is a powerful feature, but you need to be aware of the possible pitfalls of
 
 {PANEL/}
 
+## Related Articles
 
-## Related articles
+### Transactions
 
-- [Opening a session](../../client-api/session/opening-a-session)  
-- [Deleting entities](../../client-api/session/deleting-entities)  
-- [Storing entities](../../client-api/session/storing-entities)  
+- [Transaction Support](../../client-api/faq/transaction-support)
+
+### Session
+
+- [What is a Session and How Does it Work?](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Deleting Entities](../../client-api/session/deleting-changes)
+- [Loading Entities](../../client-api/session/loading-entities)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)

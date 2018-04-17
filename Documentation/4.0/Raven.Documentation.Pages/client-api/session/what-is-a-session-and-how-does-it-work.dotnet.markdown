@@ -39,4 +39,17 @@ This can be changed by the DocumentConventions::MaxNumberOfRequestsPerSession pr
 
 ## Related Articles
 
-- [Opening a session](./opening-a-session)  
+### Session
+
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Storing Entities](../../client-api/session/storing-entities)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
