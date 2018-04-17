@@ -11,7 +11,12 @@
     },
     {
         "Path": "aws-docker-linux-vm.markdown",
-        "Name": "Docker on AWS Linux VM",
+        "Name": "Docker on AWS EC2 Linux VM",
+        "Mappings": []
+    },
+    {
+        "Path": "aws-docker-ecs.markdown",
+        "Name": "Docker on AWS ECS",
         "Mappings": []
     },
     {
