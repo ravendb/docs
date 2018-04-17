@@ -13,5 +13,10 @@
         "Path": "statistics.markdown",
         "Name": "Statistics",
         "Mappings": []
+    },
+    {
+        "Path": "index-administration.markdown",
+        "Name": "Index Administration",
+        "Mappings": []
     }
 ]
