@@ -3,5 +3,10 @@
         "Path": "/etl",
         "Name": "ETL",
         "Mappings": []
+    },
+	{
+        "Path": "external-replication.markdown",
+        "Name": "External Replication",
+        "Mappings": []
     }
 ]
