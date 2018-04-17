@@ -4,8 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="2.3.0-beta01" />
-    <PackageReference Include="RavenDB.Client" Version="4.0.2" />
-    <PackageReference Include="RavenDB.TestDriver" Version="4.0.2" />
+    <PackageReference Include="RavenDB.Client" Version="4.0.3-patch-40034" />
+    <PackageReference Include="RavenDB.TestDriver" Version="4.0.3-patch-40034" />
     <PackageReference Include="System.Reactive.Core" Version="3.1.1" />
     <PackageReference Include="xunit" Version="2.3.1" />
   </ItemGroup>
