@@ -1,6 +1,6 @@
-# Installation : Setup Scenarios : AWS Windows VM
+# Setup Examples : AWS Windows VM
 
-In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro virtual machine.
+In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro Windows virtual machine.
 
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
@@ -8,7 +8,7 @@ with the correct IP addresses and ports.
 It's recommended to read the [Setup Wizard](../../../start/installation/setup-wizard) section where you can find a detailed 
 explanation about the RavenDB setup process.
 
-## Creating the VM
+## Create the VM
 
 Access the EC2 Dashboard,  and click on Launch Instance.
 
@@ -56,6 +56,8 @@ Connect to the VM, use the username "Administrator" and the password you just go
 
 ![12](images/aws-windows/12.png)
 
+## Configure the VM
+
 Open the "Windows Defender Firewall with Advanced Security" and go to the "Inbound Rules" tab. 
 
 Create a new rule for TCP ports 443 and 38888 (or the ones you choose).
@@ -75,6 +77,8 @@ Dowload Chrome, you will need to allow it in the Internet Explorer firewall.
 Install the [Visual C++ 2015 Redistributable Package](https://support.microsoft.com/en-us/help/2977003/the-latest-supported-visual-c-downloads) (or newer).
 
 ![19](images/aws-windows/19.png)
+
+## Run the RavenDB Setup Wizard
 
 Download RavenDB and extract it to a path of your choice (e.g. C:\Raven4\).
 
@@ -114,6 +118,8 @@ When the setup is finished, you will receive a configuration ZIP file which cont
 
 Restart the server. 
 
+## Access the Studio
+
 ![30](images/aws-windows/30.png)
 
 Some environments (like this one) don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the Studio, and you get an authentication error, please **close all instances of Chrome** and install the admin client certificate manually. Double click on the certificate (from the extracted configuration ZIP file) and click next all the way through. It will add it to the OS user certificates store.
@@ -143,7 +149,7 @@ If you want to access the RavenDB CLI, first find out the RavenDB process number
  
 Congratulations, you have a secure RavenDB server running on a simple EC2 machine. Have fun with it!
 
-Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard#continuing-the-cluster-setup) to construct a cluster during setup.
+Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 
 ## Related articles
 

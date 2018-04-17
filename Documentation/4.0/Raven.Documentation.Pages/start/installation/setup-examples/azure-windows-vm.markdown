@@ -1,4 +1,4 @@
-# Installation : Setup Scenarios : Azure Linux VM
+# Setup Examples : Azure Windows VM
 ---
 
 Page under construction
@@ -13,3 +13,4 @@ Page under construction
 
 - [Setup Wizard](../../../start/installation/setup-wizard)
 - [Manual Setup](../../../start/installation/manual)
+

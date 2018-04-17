@@ -1,8 +1,8 @@
 # Getting Started
 
-Welcome to this introductory article that will guide you through all the parts of RavenDB needed for basic understanding and simple setup.
+Welcome to RavenDB! 
 
-This article consists of two parts:
+This article will get you started and guide you through all the parts of RavenDB needed for basic understanding and simple setup. It consists of two parts:
 
 - The [Server](../start/getting-started#server) part will focus on installation, setup & configuration of the RavenDB server
 - The [Client](../start/getting-started#client) part will describe the general principles behind our client libraries 
