@@ -25,9 +25,16 @@
    * This option is unchecked and the script is defined but returns null  
 
 3. **Resolution Script** (optional)  
-   * Supply a javascript to resolve the conflicted documents. 
-   * The script returns an object that is written as the new document object.  
+   * Supply a javaScript function to resolve the conflicting documents.  
+   
+   * The object that is returned by the script will be used as the conflict resolution in the document.  
+   
    * The sript is defined per collection  
+   
+   * Note: in case the script returns null (either intentionally, or upon some error),  
+           the server will resolve the conflict according to the defined default behaviour  
+           (i.e. resolve by using latest version or creating a conflict for the user to resolve).  
+   
    * Script Variables:  
      * ***docs*** - the conflicted documents objects array  
      * ***hasTombstone*** - true if either of the conflicted documents was deleted  
@@ -37,25 +44,65 @@
 
 {PANEL: Script Examples}
 
-* Resolve according to field content - return the highest value of the field
+{NOTE: }
+
+*  1. Resolve according to field content - return the highest value of the field  
 
 {CODE-BLOCK:javascript}
+// First conflicting document
+{
+    "Name": "John",
+    "MaxRecord": 43
+}
+{CODE-BLOCK/}
+
+{CODE-BLOCK:javascript}
+// Second conflicting document
+{
+    "Name": "John",
+    "MaxRecord": 80
+}
+{CODE-BLOCK/}
+
+{CODE-BLOCK:javascript}
+// The resolving script:
 var maxRecord = 0;
 for (var i = 0; i < docs.length; i++) {
-    maxRecord = Math.max(docs[i].maxRecord, maxRecord);   
+    maxRecord = Math.max(docs[i].maxRecord, maxRecord);
 }
 docs[0].MaxRecord = maxRecord;
 
-return docs[0];  
+return docs[0];
 {CODE-BLOCK/}
+{NOTE/}
 
-* Resolve by deleting the document
+{NOTE: }
+
+* 2. Resolve by deleting the document  
 
 {CODE-BLOCK:javascript}
 if (hasTombstone) {
     return resolveToTombstone;
 }
 {CODE-BLOCK/}
+{NOTE/}
+
+{NOTE: }
+
+* 3. The metadata can also be accessed - return the document that has the largest number of attachments  
+
+{CODE-BLOCK:javascript}
+var result = docs[0];
+
+for (var i = 1; i < docs.length; i++) {
+     if (docs[i]["@metadata"]["@attachments"].length > result["@metadata"]["@attachments"].length)
+        result = docs[i];
+    }
+}
+
+return result;
+{CODE-BLOCK/}
+{NOTE/}
 {PANEL/}
 
 ## Related Articles

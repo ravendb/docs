@@ -18,14 +18,15 @@
 
 ![Figure 1. Conflicts View](images/conflict-view-1.png "Resolve the Conflict")
 
-1. **The conflicted document** - Click to resolve
+1. **The conflicted document** - Click to open the resolve editor
 
 2. **The conflicted document versions** - Resolve to either version by clicking _'Use this'_  
 
 3. **The conflicted document body** - Resolve by modifying  the document body directly  
 
-4. **Resolve and Save**  - Click to save the resolved document version  
-   **Delete** - Click to delete this document  
+4. **Resolve Conflict By:**  
+   * ***Resolve and Save*** - Click to save the resolved document version, or -  
+   * ***Delete*** - Click to delete this document  
 {PANEL/}
 
 
