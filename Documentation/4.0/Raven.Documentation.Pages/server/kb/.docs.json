@@ -8,5 +8,13 @@
                 "Key": "server/kb/document-key-generation"
             }
         ]
+    },
+    {
+        "Path": "javascript-engine.markdown",
+        "Name": "JavaScript Engine"
+    },
+    {
+        "Path": "numbers-in-ravendb.markdown",
+        "Name": "Numbers in RavenDB"
     }
 ]
