@@ -1,51 +1,32 @@
 ﻿[
     {
-        "Path": "how-clustering-and-replication-works.markdown",
-        "Name": "How Clustering And Replication Works",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/scaling-out/replication/how-replication-works"
-            },
-            {
-                "Version": 1.0,
-                "Key": "server/scaling-out/replication"
-            }
-        ]
+        "Path": "clustring-overview.markdown",
+        "Name": "Clustering Overview",
+        "Mappings": []
     },
     {
-        "Path": "replication-conflicts.markdown",
-        "Name": "Replication Conflicts",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/scaling-out/replication/replication-conflicts"
-            }
-        ]
+        "Path": "/rachis",
+        "Name": "Rachis",
+        "Mappings": []
     },
     {
-        "Path": "replication.markdown",
+        "Path": "/replication",
         "Name": "Replication",
+        "Mappings":[]
+    },
+    {
+        "Path": "/distribution",
+        "Name": "Distribution",
         "Mappings": []
     },
     {
-        "Path": "change-vector.markdown",
-        "Name": "Change Vector",
+        "Path": "cluster-best-practice-and-configuration.markdown",
+        "Name": "Best Practice and Configuration",
         "Mappings": []
     },
     {
-        "Path": "database-global-change-vector.markdown",
-        "Name": "Database Global Change Vector",
+        "Path": "cluster-troubleshooting.markdown",
+        "Name": "Troubleshooting",
         "Mappings": []
-    },
-    {
-        "Path": "compare-exchange.markdown",
-        "Name": "Compare Exchange",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/bundles/unique-constraints"
-            }
-        ]
     }
 ]

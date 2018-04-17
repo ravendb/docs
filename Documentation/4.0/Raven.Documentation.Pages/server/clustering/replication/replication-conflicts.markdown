@@ -118,12 +118,12 @@ Corresponding etags in v2 are greater than the ones in v1. This means that v1 < 
 
 
 #### Example 3
-Let us assume two change vectors, v1 = [A:48, B:12, C:65], v2 = [A:58, B:12, C:51]  
+Let us assume two change vectors, v1 = [A:18, B:12, C:65], v2 = [A:58, B:12, C:51]  
 When we compare v1 and v2, we will do three comparisons:
 
-* A --> 48 (v1) < 58 (v2)
+* A --> 18 (v1) < 58 (v2)
 * B --> 12 (v1) = 12 (v2)
-* C --> 65 (v1) < 51 (v2)
+* C --> 65 (v1) > 51 (v2)
   
 Etag 'A' in v1 is smaller than in v2, and Etag 'C' is larger in v1 than in v2. This means that v1 conflicts with v2.  
 
