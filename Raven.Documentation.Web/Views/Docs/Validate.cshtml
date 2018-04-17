@@ -31,7 +31,7 @@
 	}
 
 	<div>
-		@Html.ActionLink(string.Format("[{0}] {1}", result.PageVersion, result.PageKey), MVC.Docs.ActionNames.Articles, MVC.Docs.Name, new { language = result.PageLanguage, version = result.PageVersion, key = result.PageKey }, null)
+		@Html.ActionLink(string.Format("[{0}] {1}", result.PageVersion, result.PageKey), MVC.Docs.ActionNames.ArticlePage, MVC.Docs.Name, new { language = result.PageLanguage, version = result.PageVersion, key = result.PageKey }, null)
 		<ul>
 			@foreach (var link in result.Links)
 			{
