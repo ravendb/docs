@@ -2,9 +2,9 @@
 
 ### What is a Conflict?
 
-A conflict occurs when the same document is updated on two nodes independently of one another. 
+A conflict occurs when the same document is updated on two nodes independently of one another.  
 This can happen because of a network split or because of several client updates that each talked to different 
-nodes faster than we could replicate the information between the nodes.
+nodes faster than we could replicate the information between the nodes.  
 
 In a distributed system, we can either choose to run a consensus (which requires consulting a majority on every decision)
 or accept the potential for conflicts. 
@@ -23,7 +23,7 @@ There are three options of resolving the conflict:
   * Manual resolution
 
 #### Conflict Resolution Script
-The conflict resolution script receives the `docs` object as a parameter, which is an array of conflicting documents. 
+The conflict resolution script receives the `docs` object as a parameter, which is an array of conflicting documents.  
 It is expected that the script returns an object which will resolve the conflict and gets written as a new object.
 
 {PANEL: Conflict Resolution}
@@ -33,7 +33,7 @@ Setting up conflict resolution strategy in the client is done via sending cluste
   
 ### Configuring Conflict Resolution Using the Management Studio
 Conflict resolution scripts can be set up also via the Management Studio as well.   
-Using resolution scripts, we can implement custom logic to be executed when a conflict occurs.
+Using resolution scripts, we can implement custom logic to be executed when a conflict occurs.  
 For example, given multiple conflicting Northwind's _Order_ document variants, the following script will merge the ordered items so there will be no missing items and the amount of items ordered will be maximal.
 
 {CODE-BLOCK:csharp}
@@ -107,10 +107,10 @@ When we compare v1 and v2, we will do three comparisons:
 Corresponding etags in v2 are greater than the ones in v1. This means that v1 < v2
 
 #### Example 2
-Let us assume two change vectors, v1 = [A:48, B:12, C:51], v2 = [A:23, B:12, C:65]  
+Let us assume two change vectors, v1 = [A:18, B:12, C:51], v2 = [A:23, B:12, C:65]  
 When we compare v1 and v2, we will do three comparisons:
 
-* A --> 48 (v1) < 23 (v2)
+* A --> 18 (v1) < 23 (v2)
 * B --> 12 (v1) = 12 (v2)
 * C --> 51 (v1) < 65 (v2)
   
@@ -151,8 +151,9 @@ This can be done in two ways:
   
 ![Conflict Resolution Script in Management Studio](images/resolve-conflicted-document-screen.jpg)  
 
-{NOTE In the case any document is conflicted and the conflict is not resolved, the conflicting document variants are stored as revisions to their original document while the document itself is removed. /}
+{NOTE In case any document is conflicted and the conflict is not resolved, the conflicting document variants are stored as revisions to their original document while the document itself is removed. /}
   
-In the example we have in this conflict, once we remove merging tags in the document and press "resolve and save", the resulting document will look like the following:
+In the example we have in this conflict, once we remove merging tags in the document and press "resolve and save",  
+the resulting document will look like the following:
 
 ![Document after resolved conflict](images/resolve-conflicted-document-screen2.jpg)  
