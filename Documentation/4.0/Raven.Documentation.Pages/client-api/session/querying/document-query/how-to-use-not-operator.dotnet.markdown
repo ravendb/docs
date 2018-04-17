@@ -18,4 +18,7 @@
 
 ## Related Articles
 
-- [How to use lucene in queries?](../../../../client-api/session/querying/document-query/how-to-use-lucene-in-queries)
+### Session
+
+- [What is Document Query](../../../../client-api/session/querying/document-query/what-is-document-query)
+- [How to Use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)

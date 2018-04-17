@@ -22,3 +22,8 @@ where lucene(Name, 'bistro')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Related Articles
+
+### Session
+
+- [What is Document Query](../../../../client-api/session/querying/document-query/what-is-document-query)
