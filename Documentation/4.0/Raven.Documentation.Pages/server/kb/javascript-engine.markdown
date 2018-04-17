@@ -40,15 +40,15 @@ RavenDB introduced a set of predefined function, in addition to Jint's Ecmascrip
 
 | Method Signature| Return type | Description |
 |--------|:---|-------------| 
-| **id(document)** | `string` | Returns document's Id. |
-| **load(documnetID)** | `object` | Returns the document with the given ID. |
+| **id(document)** | `string` | Returns document's ID. |
+| **load(documentId)** | `object` | Returns the document with the given ID. |
 | **loadPath(document, pathString)** | `Task` | Returns the document(s) according to the IDs that can be found in the given `document`, in the path `pathString`. The `pathString` can be of a simple Foo.Bar form, in that case, a single document will be returned. It also be of the form Foo.Bars[].Buzz, in that case it will return an array of documents, answering the path . |
 | **cmpxchg(compareExchangeKey)** | `object` | Returns stored  [Compare Exchange](../../server/clustering/compare-exchange) value for the received key. |
 | **getMetadata(document)** | `object` | Returns document's metadata, along with it's `ChangeVector`, `ID` and `LastModified`. |
 | **lastModified(document)** | `long` | Returns document's last modified metadata value as total miliseconds of UTC . |
-| **include(documnetID)** | `Task<string>` | Used for RQL [queries](../../indexes/querying/what-is-rql) in order to include the document with the given ID with the results |
-| **del(documnetID)** | `void` | Used in patches, deletes the document with the given ID. |
-| **put(documentID, document, [optional]changeVectorString)** | `Task` | Used in patches, saves a document with the given ID. This function can also be used for updating documents. In order to create a new document, it's possible to use "[collectionPrefix]/" [Server-Side ID](../../server/kb/document-identifier-generation#server-side-id) notation in order to generate a new document ID |
+| **include(documentId)** | `Task<string>` | Used for RQL [queries](../../indexes/querying/what-is-rql) in order to include the document with the given ID with the results |
+| **del(documentId)** | `void` | Used in patches, deletes the document with the given ID. |
+| **put(documentId, document, [optional]changeVectorString)** | `Task` | Used in patches, saves a document with the given ID. This function can also be used for updating documents. In order to create a new document, it's possible to use "[collectionPrefix]/" [Server-Side ID](../../server/kb/document-identifier-generation#server-side-id) notation in order to generate a new document ID |
 | **String.prototype.startsWith(searchString, position)** | `bool` | Returns true if at `position` the string starts with `searchString`. |
 | **String.prototype.endsWith(searchString, position)** | `bool` | Returns true if at `position` the string end with `searchString`  . |
 | **String.prototype.padStart(targetLength, padString)** | `string` | Returns a new string, that padded from it's start by the string `padString`(or white-space by default), until it reaches the length `targetlength`. The function will repeat `padString` if needed. |
