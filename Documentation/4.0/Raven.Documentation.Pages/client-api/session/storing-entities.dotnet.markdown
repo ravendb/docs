@@ -31,7 +31,7 @@ Third overload: Stores the entity in a session with given ID, forces concurrency
 
 ### Session
 
-- [What is a Session and How Does it Work?](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
 - [Opening a Session](../../client-api/session/opening-a-session)
 - [Loading Entities](../../client-api/session/loading-entities)
 - [Saving Changes](../../client-api/session/saving-changes)

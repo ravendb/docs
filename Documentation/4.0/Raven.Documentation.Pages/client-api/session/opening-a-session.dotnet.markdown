@@ -49,7 +49,7 @@ The second method is an equivalent of doing
 
 ### Session
 
-- [What is a Session and How Does it Work?](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
 - [Storing Entities](../../client-api/session/storing-entities)
 - [Loading Entities](../../client-api/session/loading-entities)
 - [Saving Changes](../../client-api/session/saving-changes)

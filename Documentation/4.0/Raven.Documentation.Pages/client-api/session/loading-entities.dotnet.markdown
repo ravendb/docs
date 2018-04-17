@@ -207,7 +207,7 @@ To check if an entity is attached to a session, e.g. it has been loaded previous
 
 ### Session
 
-- [What is a Session and How Does it Work?](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
 - [Opening a Session](../../client-api/session/opening-a-session)
 - [Deleting Entities](../../client-api/session/deleting-entities)
 - [Saving Changes](../../client-api/session/saving-changes)
