@@ -19,5 +19,8 @@ Attachments can be stored using one of the following `session.Advanced.Attachmen
 
 ## Related Articles
 
-- [Attachments : Loading](../../../client-api/session/attachments/loading)
-- [Attachments : Deleting](../../../client-api/session/attachments/deleting)
+### Attachments
+
+- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)
+- [Loading](../../../client-api/session/attachments/loading)
+- [Deleting](../../../client-api/session/attachments/deleting)

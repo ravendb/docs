@@ -20,5 +20,8 @@ There are a few methods that allow you to download attachments from a database:
 
 ## Related Articles
 
-- [Attachments : Storing](../../../client-api/session/attachments/storing)
-- [Attachments : Deleting](../../../client-api/session/attachments/deleting)
+### Attachments
+
+- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)
+- [Storing](../../../client-api/session/attachments/storing)
+- [Deleting](../../../client-api/session/attachments/deleting)

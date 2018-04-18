@@ -1,4 +1,4 @@
-# What are Attachments?
+# What are Attachments
 
 In RavenDB, attachments are binary streams which can be bound to an existing document. 
 Each attachment has a name, and you can specify the content type (`image/png` or `application/pdf` for example).
@@ -74,6 +74,8 @@ as there will be a change to the document's metadata, as shown in example #2.
 
 ## Related articles
 
-- [Attachments : Storing](../../../client-api/session/attachments/storing)
-- [Attachments : Loading](../../../client-api/session/attachments/loading)
-- [Attachments : Deleting](../../../client-api/session/attachments/deleting)
+### Attachments
+
+- [Storing](../../../client-api/session/attachments/storing)
+- [Loading](../../../client-api/session/attachments/loading)
+- [Deleting](../../../client-api/session/attachments/deleting)

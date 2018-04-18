@@ -15,5 +15,8 @@
 
 ## Related Articles
 
-- [Attachments : Storing](../../../client-api/session/attachments/storing)
-- [Attachments : Loading](../../../client-api/session/attachments/loading)
+### Attachments
+
+- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)
+- [Storing](../../../client-api/session/attachments/storing)
+- [Loading](../../../client-api/session/attachments/loading)
