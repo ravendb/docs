@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 using Raven.Client;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Commands.Batches;
@@ -16,28 +17,36 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
     {
         private interface IFoo
         {
-            #region patch_generic_interfact
-            void Increment<T, U>(T entity, Expression<Func<T, U>> path, U valToAdd);
+            #region patch_generic_interface_increment
+            void Increment<T, U>(T entity, Expression<Func<T, U>> fieldPath, U delta);
 
-            void Increment<T, U>(string id, Expression<Func<T, U>> path, U valToAdd);
+            void Increment<T, U>(string id, Expression<Func<T, U>> fieldPath, U delta);
 
-            void Patch<T, U>(string id, Expression<Func<T, U>> path, U value);
+            #endregion
 
-            void Patch<T, U>(T entity, Expression<Func<T, U>> path, U value);
+            #region patch_generic_interface_set_value
 
-            void Patch<T, U>(T entity, Expression<Func<T, IEnumerable<U>>> path,
-                Expression<Func<JavaScriptArray<U>, object>> arrayAdder);
+            void Patch<T, U>(string id, Expression<Func<T, U>> fieldPath, U value);
 
-            void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> path,
-                Expression<Func<JavaScriptArray<U>, object>> arrayAdder);
+            void Patch<T, U>(T entity, Expression<Func<T, U>> fieldPath, U value);
+            #endregion
+
+            #region patch_generic_interface_array_modification_lambda
+            void Patch<T, U>(T entity, Expression<Func<T, IEnumerable<U>>> fieldPath,
+                Expression<Func<JavaScriptArray<U>, object>> arrayMofificationLambda);
+
+            void Patch<T, U>(string id, Expression<Func<T, IEnumerable<U>>> fieldPath,
+                Expression<Func<JavaScriptArray<U>, object>> arrayMofificationLambda);
             #endregion
 
             #region patch_non_generic_interface_in_session
-            void Defer(ICommandData command, params ICommandData[] commands);
+            void Defer(ICommandData[] commands);
             #endregion
 
-            #region patch_non_generic_interface_in_store
+            #region patch_non_generic_interface_in_store            
             PatchStatus Send(PatchOperation operation);
+            Task<PatchStatus> SendAsync(PatchOperation operation, SessionInfo sessionInfo = null, CancellationToken token = default(CancellationToken));
+
             #endregion
         }
 
