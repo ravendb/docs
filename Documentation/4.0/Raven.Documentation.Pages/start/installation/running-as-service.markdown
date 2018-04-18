@@ -83,7 +83,9 @@ journalctl -f -u ravendb.service
 
 ## Related articles
 
+### Installation
+
 - [System Requirements](../../start/installation/system-requirements)
 - [System Configuration Recommendations](../../start/installation/system-configuration-recommendations)
-- [Running in a Docker container](../../start/installation/running-in-docker-container)
+- [Running in a Docker Container](../../start/installation/running-in-docker-container)
 - [Upgrading to New Version](../../start/installation/upgrading-to-new-version)

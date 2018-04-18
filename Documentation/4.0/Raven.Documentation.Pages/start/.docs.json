@@ -31,7 +31,7 @@
     },
     {
         "Path": "test-driver.markdown",
-        "Name": "Unit tests",
+        "Name": "Unit Tests",
         "Mappings": [
             {
                 "Version": 3.0,

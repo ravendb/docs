@@ -72,5 +72,7 @@ swapon
 
 ## Related articles
 
+### Installation
+
 - [System Requirements](../../start/installation/system-requirements)
 - [Deployment Considerations](../../start/installation/deployment-considerations)

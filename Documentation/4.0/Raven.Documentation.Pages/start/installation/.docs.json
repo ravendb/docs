@@ -16,7 +16,7 @@
     },
     {
         "Path": "deployment-considerations.markdown",
-        "Name": "Deployment considerations",
+        "Name": "Deployment Considerations",
         "Mappings": [
             {
 
@@ -32,12 +32,12 @@
     },
     {
         "Path": "running-in-docker-container.markdown",
-        "Name": "Running in a Docker container",
+        "Name": "Running in a Docker Container",
         "Mappings": []
     },
     {
         "Path": "upgrading-to-new-version.markdown",
-        "Name": "Upgrading to a new version",
+        "Name": "Upgrading to a New Version",
         "Mappings": [
             {
                 "Version": 1.0,

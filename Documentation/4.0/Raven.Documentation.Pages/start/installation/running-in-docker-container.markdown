@@ -1,4 +1,4 @@
-# Installation : Running in a Docker container
+# Installation : Running in a Docker Container
 
 A RavenDB Server can be run on [Docker](https://www.docker.com/) using our official images available in two channels:
 
@@ -39,6 +39,8 @@ You can access the RavenDB Management Studio by going to `http://10.0.75.2:8080`
 For more detailed information on how to use and setup RavenDB on Docker please visit our **Docker Hub** page available [here](https://hub.docker.com/r/ravendb/ravendb/).
 
 ## Related articles
+
+### Installation
 
 - [Running as a Service](../../start/installation/running-as-service)
 - [Upgrading to New Version](../../start/installation/upgrading-to-new-version)
