@@ -5,20 +5,20 @@
 
 * The **Compare Exchange** feature allows you to perform cluster-wide _interlocked_ distributed operations.  
 
-* Unique **Keys** can be reserved in the [Database Group](../../studio/database/settings/manage-database-group) accross the cluster.  
+* Unique **Keys** can be reserved in the [Database Group](../../../studio/database/settings/manage-database-group) accross the cluster.  
   Each key has an associated **Value**.  
 
 * Modifying these values is an ***interlocked compare exchange*** operation.  
 
-* Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValueOperation](../../client-api/operations/compare-exchange/get-compare-exchange-value),  
+* Once defined, the Compare Exchange Values can be accessed via [GetCompareExchangeValuesOperation](../../../client-api/operations/compare-exchange/get-compare-exchange-values),  
   or by using RQL in a query (see example-I below)  
 
 * In this page:  
-  * [Compare Exchange Transaction Scope](../../server/clustering/compare-exchange#compare-exchange-transaction-scope)  
-  * [Creating a Key](../../server/clustering/compare-exchange#creating-a-key)  
-  * [Updating a Key](../../server/clustering/compare-exchange#updating-a-key)  
-  * [Example I - Email Address Reservation](../../server/clustering/compare-exchange#example-i---email-address-reservation)  
-  * [Example II- Reserve a Shared Resource](../../server/clustering/compare-exchange#example-ii---reserve-a-shared-resource)  
+  * [Compare Exchange Transaction Scope](../../../client-api/operations/compare-exchange/overview#compare-exchange-transaction-scope)  
+  * [Creating a Key](../../../client-api/operations/compare-exchange/overview#creating-a-key)  
+  * [Updating a Key](../../../client-api/operations/compare-exchange/overview#updating-a-key)  
+  * [Example I - Email Address Reservation](../../../client-api/operations/compare-exchange/overview#example-i---email-address-reservation)  
+  * [Example II- Reserve a Shared Resource](../../../client-api/operations/compare-exchange/overview#example-ii---reserve-a-shared-resource)  
 {NOTE/}
 
 ---
@@ -43,7 +43,7 @@
 
 * When creating a _new_ 'Compare Exchange Key', the index should be set to `0`.  
 
-* The [Put](../../client-api/operations/compare-exchange/put-compare-exchange-value) operation will succeed only if this key doesn't exist yet.  
+* The [Put](../../../client-api/operations/compare-exchange/put-compare-exchange-value) operation will succeed only if this key doesn't exist yet.  
 
 * Note: Two different keys _can_ have the same values as long as the keys are unique.  
 {PANEL/}
@@ -52,9 +52,9 @@
 
 * Updating a 'Compare Exchange' key can be divided into 2 phases:
 
-  1. [Get](../../client-api/operations/compare-exchange/get-compare-exchange-value) the existing _Key_. The associated _Value_ and _Index_ are received.  
+  1. [Get](../../../client-api/operations/compare-exchange/get-compare-exchange-value) the existing _Key_. The associated _Value_ and _Index_ are received.  
 
-  2. The _Index_ obtained from the read operation is provided to the [Put](../../client-api/operations/compare-exchange/put-compare-exchange-value) operation along with the new _Value_ to be saved.  
+  2. The _Index_ obtained from the read operation is provided to the [Put](../../../client-api/operations/compare-exchange/put-compare-exchange-value) operation along with the new _Value_ to be saved.  
      This save will succeed only if the index that is provided to the 'Put' operation is the **same** as the index that was received from the server in the previous 'Get', 
      which means that the _Value_ was not modified by someone else between the read and write operations.
 {PANEL/}
@@ -95,7 +95,7 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 
 ## Related Articles
 
-- [Get a compare-exchange value](../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [Get compare-exchange values](../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [Put a compare-exchange value](../../client-api/operations/compare-exchange/delete-compare-exchange-value)
-- [Delete a compare-exchange value](../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Get a compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
