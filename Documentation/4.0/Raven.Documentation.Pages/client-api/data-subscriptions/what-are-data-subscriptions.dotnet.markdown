@@ -3,22 +3,20 @@
 ---
 
 {NOTE: }
+Data subscriptions provide a reliable and handy way to perform document processing on the client side.  
+The server sends batches of documents to the client.  
+The client then processes the batch and will receive the next one only after it acknowledges the batch was processed.  
+The server persists the processing progress, allowing to pause and continue the processing.  
 
-* Data subscriptions provide a reliable and handy way to perform document processing on the client side.  
+In this page:  
+[Data subscription consumption](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscription-consumption)  
+[What defines a data subscription](../../client-api/data-subscriptions/what-are-data-subscriptions#what-defines-a-data-subscription)  
+[Documents processing](../../client-api/data-subscriptions/what-are-data-subscriptions#documents-processing)  
+[Progress Persistence](../../client-api/data-subscriptions/what-are-data-subscriptions#progress-persistence)  
+[How the worker communicates with the server](../../client-api/data-subscriptions/what-are-data-subscriptions#how-the-worker-communicates-with-the-server)  
+[Working with multiple clients](../../client-api/data-subscriptions/what-are-data-subscriptions#working-with-multiple-clients)  
+[Data subscriptions usage example](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions-usage-example)  
 
-* Documents that match a pre-defined criteria are sent in batches from the server to the client. 
-  The document's data can be transformed before being sent. 
-
-* The client sends an acknowledgment to the server once it's done with processing the batch.
-   
-* The server keeps track of the latest document that was acknowledged by the client so that processing can be continued from the latest acknowledged position if it was paused or interrupted.
-  
-* Keeping track of latest document is done by storing its change vector in the cluster.
-  
-* When the responsible node handling the subscription is down, the subscription task can be manually reassigned to another node in the cluster.
-  With the Enterprise license the cluster will automatically reassign the work to another node.
-
-* If the database has Revisions defined, the subscription can be configured to process pairs of subsequent document revisions. Read more in [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
 
 {NOTE/}
 
@@ -55,6 +53,8 @@ Documents are always sent in Etag order which means that data that already been 
 
 A subscription worker will retry processing documents from the last acknowledged and processed document (by tracking its Change Vector).
 
+* If the database has Revisions defined, the subscription can be configured to process pairs of subsequent document revisions. Read more in [revisions support](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning).
+
 {PANEL/}
 
 {PANEL:Progress Persistence}
@@ -65,7 +65,7 @@ Subscriptions progress is stored in the cluster level, in `Enterprise edition`. 
 The usage of Change Vectors allows us to continue from a point that is close to the last point reached before failure, rather than starting the process from scratch.
 {PANEL/}
 
-{PANEL:How the worker communicates with the subscription}
+{PANEL:How the worker communicates with the server}
 
 A worker communicates with the data subscription using a custom protocol, on top of a long-lived TCP connection. Each successful batch processing consists of these stages:
 
@@ -74,6 +74,12 @@ A worker communicates with the data subscription using a custom protocol, on top
 2. Worker sends acknowledgment message after it finishes processing the batch.
 
 3. Server returns the client a notification that the acknowledgment persistence is done and it is ready to send the next batch.
+
+{INFO: Failover}
+When the responsible node handling the subscription is down, the subscription task can be manually reassigned to another node in the cluster.  
+With the Enterprise license the cluster will automatically reassign the work to another node.
+{INFO/}
+
 
 The TCP connection is also used as the "state" of the worker process and as long as it's alive, the server will not allow other clients to consume the subscription. 
 The TCP connection is kept alive and monitored using "heartbeat" messages. If it's found nonfunctional, the current batch progress will be restarted.
