@@ -18,3 +18,14 @@ The return value of `GetCurrentSessionNode` is a **ServerNode** object
 ## Example
 
 {CODE current_session_node_3@ClientApi\Session\HowTo\GetCurrentSessionNode.cs /}
+
+## Related articles
+
+### Client API
+
+- [How a Client Integrates with Replication and the Cluster](../../../client-api/cluster/how-client-integrates-with-replication-and-cluster)
+- [Cluster Node Health Check](../../../client-api/cluster/health-check)
+
+### Clustering
+
+- [Overview](../../../server/clustering/overview)

@@ -26,4 +26,6 @@ To execute all pending lazy operations use `ExecuteAllPendingLazyOperations` met
 
 ## Related Articles
 
-- [How to perform queries lazily?](../querying/how-to-perform-queries-lazily)
+### Session
+
+- [How to Perform Queries Lazily](../../../client-api/session/querying/how-to-perform-queries-lazily)

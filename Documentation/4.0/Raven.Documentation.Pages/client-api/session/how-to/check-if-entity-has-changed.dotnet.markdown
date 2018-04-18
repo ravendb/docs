@@ -20,4 +20,9 @@ To check if a specific entity differs from the one downloaded from server, the `
 
 ## Related Articles
 
-- [How to check if there are any changes on a session?](./check-if-there-are-any-changes-on-a-session)
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Check if There are Any Changes on a Session](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)

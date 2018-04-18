@@ -27,3 +27,13 @@ After getting the metadata from `session.Advanced.GetMetadataFor` you can modify
 
 ### Example II
 {CODE modify_metadata_2@ClientApi\Session\HowTo\GetMetadata.cs /}
+
+## Related articles
+
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get Entity Change-Vector](../../../client-api/session/how-to/get-entity-change-vector)
+- [How to Get Entity Last Modified](../../../client-api/session/how-to/get-entity-last-modified)
+
+

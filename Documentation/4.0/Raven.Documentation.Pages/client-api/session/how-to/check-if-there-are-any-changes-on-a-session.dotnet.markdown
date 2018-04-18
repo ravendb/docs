@@ -36,4 +36,9 @@ Method returns all changes for each entity stored within the session. Including 
 
 ## Related Articles
 
-- [How to check if entity has changed?](./check-if-entity-has-changed)
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)

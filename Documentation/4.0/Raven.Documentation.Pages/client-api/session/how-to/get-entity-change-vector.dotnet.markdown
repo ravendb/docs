@@ -18,3 +18,11 @@ When a document is downloaded from the server, it contains various metadata info
 ## Example
 
 {CODE get_change_vector_2@ClientApi\Session\HowTo\GetChangeVector.cs /}
+
+## Related articles
+
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
+- [How to Get Entity Last Modified](../../../client-api/session/how-to/get-entity-last-modified)

@@ -75,3 +75,13 @@ If you want each query to [wait for non-stale results](../../../indexes/stale-in
 {CODE on_before_query_execute_event_2@ClientApi\Session\Events.cs /}
 
 {PANEL/}
+
+## Related articles
+
+### Document Store
+
+- [What is a Document Store](../../../client-api/what-is-a-document-store)
+
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
