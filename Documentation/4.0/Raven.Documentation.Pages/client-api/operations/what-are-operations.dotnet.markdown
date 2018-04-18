@@ -11,7 +11,7 @@ They are available in the DocumentStore under the **Operations**, **Maintenance*
 {PANEL:Common Operations}
 
 Common operations include set based operations for [Patching](../../client-api/operations/patching/set-based) or removal of documents by using queries (more can be read [here](../../client-api/operations/delete-by-query)).  
-There is also the ability to handle distributed [Compare-Exchange](../../client-api/operations/compare-exchange) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment).
+There is also the ability to handle distributed [Compare Exchange](../../client-api/operations/compare-exchange/overview) operations and manage [Attachments](../../client-api/operations/attachments/get-attachment).
 
 ### How to Send an Operation
 

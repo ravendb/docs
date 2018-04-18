@@ -2,7 +2,7 @@
 ---
 
 Voron errors described in this article are indicators that something had horribly gone wrong.  
-If such errors happen, they need to be reported as soon as possible to [RavenDB support](mailto:support@ravendb.net).  
+If such errors happen, they need to be reported as soon as possible to [RavenDB Support](https://ravendb.net/support/supportrequest).  
 
 {PANEL: Symptoms}  
 
@@ -17,7 +17,7 @@ If such errors happen, they need to be reported as soon as possible to [RavenDB 
 
 * Such exceptions are caused by the corruption of a Voron _data file_, which could occur due to a few reasons:  
   * Hardware failure of hard-drive or memory  
-  * In compliance‏ with RavenDB [hardware and OS requeirements](#ravendb-hardware-and-os-requirements)  
+  * In compliance‏ with RavenDB [hardware and OS requirements](../users-issues/recovering-from-voron-errors#ravendb-hardware-and-os-requirements)  
   * Critical bug in `Voron`
 
 {PANEL/}

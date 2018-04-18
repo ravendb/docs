@@ -2,7 +2,7 @@
 
 {PANEL:RavenDB Data}
 
-RavenDB keeps all data in a location specified in [`DataDir`](../../../server/configuration/core-configuration#datadir) setting. 
+RavenDB keeps all data in a location specified in [`DataDir`](../../server/configuration/core-configuration#datadir) setting. 
 The structure of RavenDB data directories are as follows:
 
 * _{DataDir}_
@@ -32,7 +32,7 @@ The data is persisted in a `Raven.voron` file and `.journal` files which are loc
 
 {PANEL:Storing Data in Custom Locations}
 
-The structure of RavenDB directories cannot be changed except locations of temporary files for [documents](../../configuration/storage-configuration#storage.temppath) and [indexes](../../server/configuration/indexing-configuration#indexing.temppath) by setting appropriate configuration options.
+The structure of RavenDB directories cannot be changed except locations of temporary files for [documents](../../server/configuration/storage-configuration#storage.temppath) and [indexes](../../server/configuration/indexing-configuration#indexing.temppath) by setting appropriate configuration options.
 
 However, you can store any RavenDB data in different locations by defining junction points (Windows) or mount points (Linux).
 

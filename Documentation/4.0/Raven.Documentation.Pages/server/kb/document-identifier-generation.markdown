@@ -28,7 +28,7 @@
 
 * In this page:  
   * [Semantic ID](../../server/kb/document-identifier-generation#semantic-id)  
-  * [Guid](../../server/kb/document-identifier-generation#guid)  
+  * [GUID](../../server/kb/document-identifier-generation#guid)  
   * [Server-Side ID](../../server/kb/document-identifier-generation#server-side-id)  
   * [Identity](../../server/kb/document-identifier-generation#identity)  
   * [HiLo Algorithm](../../server/kb/document-identifier-generation#hilo-algorithm)  

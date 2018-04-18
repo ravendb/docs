@@ -10,7 +10,7 @@
 
 * The _Value_ is saved only if the index passed is equal to the index currently stored in the server for the specified _Key_.  
 
-* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../server/clustering/compare-exchange)  
+* For an overview of the 'Compare Exchange' feature click: [Compare Exchange Overview](../../../client-api/operations/compare-exchange/overview)  
 
 * In this page:  
   * [Syntax](../../../client-api/operations/compare-exchange/put-compare-exchange-value#syntax)  

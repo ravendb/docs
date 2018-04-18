@@ -62,7 +62,7 @@ The legacy auto indexes won't be used to satisfy dynamic queries because they wi
 
 ### Compilation Extensions
 
-As a replacement for Compilation Extensions you can use the [Additional Sources]() feature. It allows you to write your own C# code and use it during indexing. The code is attached to the index definition.
+As a replacement for Compilation Extensions you can use the [Additional Sources](../../indexes/extending-indexes) feature. It allows you to write your own C# code and use it during indexing. The code is attached to the index definition.
 
 You can also deploy custom DLLs next to RavenDB binaries and reference them in your extensions.
 

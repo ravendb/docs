@@ -67,7 +67,7 @@ It is defined as a [SQL ETL](../../server/ongoing-tasks/etl/sql) task.
 {PANEL:Unique Constraints}
 
 `CompareExchangeValue` operations (`Get/Put/Delete`) and querying with the usage of the `CmpXchg` method are the way to achieve Unique Constraints bundle functionality.  
-Please see [Compare Exchange Overview](../../server/compare-exchange).  
+Please see [Compare Exchange Overview](../../client-api/operations/compare-exchange/overview).  
 
 {PANEL/}
 

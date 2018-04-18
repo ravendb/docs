@@ -4,11 +4,10 @@
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **patch** | [PatchRequest](../client-api/commands/patches/how-to-work-with-patch-requests) | Patch to apply |
-| **PatcheIfMissing** | [PatchRequest](../client-api/commands/patches/how-to-work-with-patch-requests) | Patch to apply if document is missing |
-| **Id** | string | Document ID |
-| **Type** | CommandType | The Command Type (`PATCH`) |
-| **ChangeVector** | string | Document change-vector |
+| **id** | string | Document ID |
+| **changeVector** | string | Document Change Vector |
+| **patch** | [PatchRequest](../client-api/operations/patching/single-document) | Patch to apply |
+| **patcheIfMissing** | [PatchRequest](../client-api/operations/patching/single-document) | Patch to apply if document is missing |
 
 ### Methods
 
