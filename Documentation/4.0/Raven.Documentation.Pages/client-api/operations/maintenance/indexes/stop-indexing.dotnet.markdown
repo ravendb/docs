@@ -2,9 +2,9 @@
 
 **StopIndexingOperation** is used to stop indexing for the entire database.
 
-Use [StopIndexOperation](../../../client-api/operations/maintenance/stop-index-operation) to stop single index.
+Use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/stop-index) to stop single index.
 
-{NOTE Indexing will be resumed automatically after a server restart or after using [start indexing operation](../../../client-api/operations/maintenance/start-indexing-operation)./}
+{NOTE Indexing will be resumed automatically after a server restart or after using [start indexing operation](../../../../client-api/operations/maintenance/indexes/start-indexing)./}
 
 ### Syntax
 

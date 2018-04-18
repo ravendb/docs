@@ -8,7 +8,7 @@ Query statistics can provide important information about a query like duration, 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **stats** | [QueryStatistics](../../../glossary/raven-query-statistics) | Statistics for query. |
+| **stats** | `QueryStatistics` | Statistics for query. |
 
 ## Example
 

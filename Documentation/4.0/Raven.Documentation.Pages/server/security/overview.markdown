@@ -22,7 +22,7 @@ In the Studio, administrators can use the [Certificates View](../../server/secur
 - [Client Certificate Usage](../../server/security/authentication/client-certificate-usage)
 - [Certificate Renewal & Rotation](../../server/security/authentication/certificate-renewal-and-rotation)
 - [Let's Encrypt Certificates](../../server/security/authentication/lets-encrypt-certificates)
-- [Common Errors & FAQ](../../server/security/authentication/common-errors-and-faq)
+- [Common Errors & FAQ](../../server/security/common-errors-and-faq)
 
 {PANEL/}
 

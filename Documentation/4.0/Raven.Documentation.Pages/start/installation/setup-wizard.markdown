@@ -6,9 +6,9 @@ To make the setup process as smooth as possible, we introduced the "Setup Wizard
 
 You have 4 options to choose from:
 
-1. [Secure Setup with a Let's Encrypt certificate](#secure-setup-with-a-let)
-2. [Secure Setup with your own certificate](#secure-setup-with-your-own-certificate)
-3. [Unsecured Setup](#unsecured-setup)
+1. [Secure Setup with a Let's Encrypt certificate](../../start/installation/setup-wizard#secure-setup-with-a-let)
+2. [Secure Setup with your own certificate](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)
+3. [Unsecured Setup](../../start/installation/setup-wizard#unsecured-setup)
 4. [Manual Setup](../../start/installation/manual)
 
 When running the RavenDB server for the first time, you will be redirected to the setup wizard welcome screen where you can choose your preferred option.

@@ -12,7 +12,7 @@
 
 | Return Value | |
 | ------------- | ----- |
-| [IndexDefinition](../../../glossary/index-definition) | Instance of IndexDefinition representing index. |
+| `IndexDefinition` | Instance of IndexDefinition representing index. |
 
 ### Example
 

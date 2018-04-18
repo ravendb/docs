@@ -2,7 +2,7 @@
 
 {PANEL:RavenDB Data}
 
-RavenDB keeps all data in a location specified in [`DataDir`](../../server/configuration/core-configuration#datadir) setting. 
+RavenDB keeps all data in a location specified in [`DataDir`](../../../server/configuration/core-configuration#datadir) setting. 
 The structure of RavenDB data directories are as follows:
 
 * _{DataDir}_

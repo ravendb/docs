@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **indexDef** | [IndexDefinition](../../../glossary/index-definition) | index definition |
+| **indexDef** | `IndexDefinition` | index definition |
 
 | Return Value | |
 | ------------- | ----- |

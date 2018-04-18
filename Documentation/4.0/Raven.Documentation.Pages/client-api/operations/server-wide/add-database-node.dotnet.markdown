@@ -13,7 +13,7 @@
 
 | Return Value | |
 | ------------- | ----- |
-| [DatabasePutResult](../../../glossary/DatabasePutResult) | Database put result |
+| `DatabasePutResult` | Database put result |
 
 ## Example I
 

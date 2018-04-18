@@ -4,7 +4,7 @@ Indexes are used by RavenDB to satisfy queries.
 
 ## Query-Flow
 
-Each query in RavenDB must be expressed by [RQL](), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
+Each query in RavenDB must be expressed by [RQL](../../indexes/querying/what-is-rql), our query language. Each query must match an index in order to return the results. The full query flow is as follows:
 
 1. `from index | collection` 
   - First step. When a query is issued, it locates the appropriate index. If our query specifies that index, the task is simple - use this index. Otherwise, a query analysis takes place and an auto-index is created.
@@ -116,7 +116,7 @@ where FirstName = 'Robert'
 
 ### Remarks
 
-{INFO You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries). /}
+{INFO You can check the API reference for the `DocumentQuery` [here](../../client-api/session/querying/document-query/what-is-document-query). /}
 
 {INFO There are some differences between `Query` and `DocumentQuery`. They are described in [this article](../../indexes/querying/query-vs-document-query). /}
 

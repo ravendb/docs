@@ -33,7 +33,7 @@ The `SuggestUsing` method is an extension contained in the `Raven.Client.Documen
 
 ## Suggest Over Multiple Words
 
-RavenDB allows you to perform a suggestion query over multiple words. In order to use this functionality, you have to pass words that you are looking for in *Term* by using our special RavenDB syntax (more details [here](../../indexes/querying/full-query-syntax#suggestions-over-multiple-words)):
+RavenDB allows you to perform a suggestion query over multiple words.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query query_suggestion_over_multiple_words@Indexes\Querying\Suggestions.cs /}

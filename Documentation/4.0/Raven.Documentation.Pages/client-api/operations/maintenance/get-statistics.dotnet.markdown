@@ -8,7 +8,7 @@
 
 | Return Value | |
 | ------------- | ----- |
-| [DatabaseStatistics](../../../glossary/DatabaseStatistics) | Database statistics |
+| `DatabaseStatistics` | Database statistics |
 
 ## Example
 

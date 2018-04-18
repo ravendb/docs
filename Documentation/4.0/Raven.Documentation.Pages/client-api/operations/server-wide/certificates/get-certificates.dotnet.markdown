@@ -13,8 +13,8 @@ To get client certificates use **GetCertificatesOperation**.
 
 | Return Value | |
 | ------------- | ----- |
-| [CertificateDefinition](../../../../glossary/CertificateDefinition)[] | List of certificate definitions |
+| `CertificateDefinition[]` | Array of certificate definitions |
 
-###Example
+##Example
 
 {CODE:csharp get_certs_2@ClientApi\Operations\Server\ClientCertificate.cs /}

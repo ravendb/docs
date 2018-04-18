@@ -8,7 +8,7 @@
 
 | Return Value | | |
 | ------------- | ----- | ---- |
-| **configuration** | [ClientConfiguration](../../../glossary/ClientConfiguration) | configuration which will be used by client API |
+| **configuration** | `ClientConfiguration` | configuration which will be used by client API |
 
 ## Example
 

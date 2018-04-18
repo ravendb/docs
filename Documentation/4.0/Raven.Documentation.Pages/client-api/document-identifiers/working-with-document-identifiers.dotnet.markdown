@@ -7,7 +7,7 @@ The client can directly take advantage of them. You can always handle the identi
 
 If you choose to use the session, you don't have to pay any special attention to the identifiers of the stored entities. The session will take care of it by generating the identifiers automatically.
 
-It utilizes [conventions](../../client-api/configuration/what-are-conventions) and HiLo algorithms to produce the identifiers. Everything is handled by the session's mechanism and is transparent for the user. 
+It utilizes [conventions](../../client-api/configuration/conventions) and HiLo algorithms to produce the identifiers. Everything is handled by the session's mechanism and is transparent for the user. 
 However, you can influence the identifier generation strategy by overwriting [the identifier generation conventions](../../client-api/configuration/identifier-generation/global). 
 
 In this article we are going to consider the behavior in accordance with the default conventions.

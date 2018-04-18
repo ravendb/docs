@@ -16,11 +16,11 @@ The same queries and indexes that are used for data retrieval are used for the s
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **operation** | [PatchByQueryOperation](../../glossary/patchQueryOperation) | PatchByQueryOperation object, describing the query and the patch that will be performed |
+| **operation** | `PatchByQueryOperation` | PatchByQueryOperation object, describing the query and the patch that will be performed |
 
 | Return Value | |
 | ------------- | ----- |
-| [Operation](../../glossary/operation) | Object that allows waiting for operation to complete. It also may return information about a performed patch: see examples below. |
+| `Operation` | Object that allows waiting for operation to complete. It also may return information about a performed patch: see examples below. |
 
 ### PatchByQueryOperation
 
@@ -30,8 +30,8 @@ The same queries and indexes that are used for data retrieval are used for the s
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **queryToUpdate** | `string` or [IndexQuery](../../glossary/indexQuery) | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the javascript patch code
-| **options** | [QueryOperationOptions](../../glossary/queryOperationOptions) | Options defining how the operation will be performed and various constraints on how it is performed
+| **queryToUpdate** | `string` or `IndexQuery` | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the javascript patch code
+| **options** | `QueryOperationOptions` | Options defining how the operation will be performed and various constraints on how it is performed
 
 ## Examples
 

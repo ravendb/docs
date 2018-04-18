@@ -11,7 +11,7 @@
 | Return Value | | |
 | ------------- | ----- | ---- |
 | **Etag** | string | Etag of configuration |
-| **Configuration** | [ClientConfiguration](../../../glossary/ClientConfiguration) | configuration which will be used by the client API |
+| **Configuration** | `ClientConfiguration` | configuration which will be used by the client API |
 
 ## Example
 

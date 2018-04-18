@@ -4,7 +4,7 @@ A very common use case for many applications is to expose data to users as an Ex
 
 The integration of Excel with the data store is achieved by a designated query streaming endpoint that outputs a stream in a format acceptable by `Excel`, Comma Separated Values (CSV).
 
-In order to take advantage of this feature, you need to specify a valid query according to [RQL syntax]().
+In order to take advantage of this feature, you need to specify a valid query according to [RQL syntax](../../indexes/querying/what-is-rql).
 
 The generic HTTP request will have the following address:
 
@@ -26,7 +26,7 @@ In some cases it might be cumbersome to use the URL to send the query or the que
 
 ## Example
 
-First let's create a database, Northwind, and import the [sample data](..\..\studio\database\tasks\create-sample-data.markdown) into it.
+First let's create a database, Northwind, and import the [sample data](../../studio/database/tasks/create-sample-data) into it.
 
 Now let's query the product collection include the category document and project some of its properties using the below RQL:
 

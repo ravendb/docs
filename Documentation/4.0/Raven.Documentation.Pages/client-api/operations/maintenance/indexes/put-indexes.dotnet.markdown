@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **indexToAdd** | params [IndexDefinition](../../../glossary/index-definition)\[\] | Definitions of indexes |
+| **indexToAdd** | `params IndexDefinition[]` | Definitions of indexes |
 
 | Return Value | |
 | ------------- | ----- |

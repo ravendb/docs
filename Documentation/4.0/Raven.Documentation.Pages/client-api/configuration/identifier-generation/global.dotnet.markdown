@@ -2,7 +2,7 @@
 
 ##FindCollectionName and FindCollectionNameForDynamic
 
-Documents that have the same `@collection` metadata belong to the same [collection](../../../../client-api/faq/what-is-a-collection) on the server side. Collection names are also used to build document identifiers. There are two functions that the client uses to determine a collection name for a given type. The first one is used for standard objects with a well-defined type:
+Documents that have the same `@collection` metadata belong to the same [collection](../../../client-api/faq/what-is-a-collection) on the server side. Collection names are also used to build document identifiers. There are two functions that the client uses to determine a collection name for a given type. The first one is used for standard objects with a well-defined type:
 
 {CODE find_type_collection_name@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
 

@@ -27,7 +27,7 @@ The second method is an equivalent of doing
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **options** | [OpenSessionOptions](../../glossary/open-session-options) | Options **containing** information such as **name of database** and **RequestExecutor**. |
+| **options** | `OpenSessionOptions` | Options **containing** information such as **name of database** and **RequestExecutor**. |
 
 | Return Value | |
 | ------------- | ----- |

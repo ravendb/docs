@@ -108,7 +108,7 @@ The `Run` function receives the client-side code as a delegate that will process
 | **DisposeAsync()** | `Task` | Async version of `Dispose()`. |
 | **Dispose(bool waitForSubscriptionTask)** | `void` | Aborts the subscription worker, but allows deciding whether to wait for the `Run` function task or not. |
 | **DisposeAsync(bool waitForSubscriptionTask)** | `void` | Async version of `DisposeAsync(bool waitForSubscriptionTask)`. |
-| **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](#running-subscription-worker)). |
+| **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/subscription-consumption/api-overview#running-subscription-worker)). |
 
 {NOTE/}
 

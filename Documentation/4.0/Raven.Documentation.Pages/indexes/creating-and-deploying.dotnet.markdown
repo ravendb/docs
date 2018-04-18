@@ -58,7 +58,7 @@ Underneath, the `IndexCreation` will attempt to create all indexes in a single r
 
 ### Using Maintenance Operations
 
-The `PutIndexesOperation` maintenance operation (which API references can be found [here](../client-api/commands/indexes/put)) can be used also to send index(es) to the server.
+The `PutIndexesOperation` maintenance operation (which API references can be found [here](../client-api/operations/maintenance/indexes/put-indexes)) can be used also to send index(es) to the server.
 
 The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. But you lose the ability to deploy using the assembly scanner. You will also have to use string-based names of indexes when querying.
 

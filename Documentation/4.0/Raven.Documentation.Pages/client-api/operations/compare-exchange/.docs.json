@@ -1,7 +1,7 @@
 ﻿[
     {
-        "Path": "compare-exchange.markdown",
-        "Name": "Compare Exchange Overview",
+        "Path": "overview.markdown",
+        "Name": "Overview",
         "Mappings": [
             {
                 "Version": 3.5,

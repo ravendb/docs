@@ -25,7 +25,7 @@ In order to excecute an operation, you will need to use the `Send` or `SendAsync
 
 #### Compare Exchange
 
-* [CompareExchange](../../client-api/operations/compare-exchange)   
+* [CompareExchange](../../client-api/operations/compare-exchange/overview)   
 
 #### Attachments
 
@@ -137,7 +137,6 @@ These type of operations contain various administrative and miscellaneous config
 * [AddDatabaseNodeOperation](../../client-api/operations/server-wide/add-database-node)   
 * [CreateDatabaseOperation](../../client-api/operations/server-wide/create-database)   
 * [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)   
-* [GetDatabaseTopology](../../client-api/operations/server-wide/get-database-topology)   
 * [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node)   
 * [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)   
 

@@ -6,10 +6,14 @@ To get a client certificate by thumbprint use **GetCertificateOperation**.
 
 {CODE:csharp get_cert_1@ClientApi\Operations\Server\ClientCertificate.cs /}
 
-### Return Value
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **thumbprint** | string | Certificate thumbprint |
 
-The result of executing GetCertificateOperation is a [CertificateDefinition](../../../../glossary/CertificateDefinition) object.
+| Return Value | |
+| ------------- | ----- |
+| `CertificateDefinition` | Certificate definition |
 
-###Example
+##Example
 
 {CODE:csharp get_cert_2@ClientApi\Operations\Server\ClientCertificate.cs /}

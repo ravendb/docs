@@ -4,7 +4,7 @@ Encryption at rest is implemented at the storage layer, using Daniel J. Bernstei
 
 ## What does it mean?
 
-In [Voron](../../../server/storage-engine), the storage engine behind RavenDB, data is stored in memory mapped files. This includes documents, indexes, attachments and transactions which are written to the journal.
+In [Voron](../../../server/storage/storage-engine), the storage engine behind RavenDB, data is stored in memory mapped files. This includes documents, indexes, attachments and transactions which are written to the journal.
 
 If your disk is stolen or lost, an attacker will have full access to the raw data files and without encryption turned on, the data can be read with very little effort.
 

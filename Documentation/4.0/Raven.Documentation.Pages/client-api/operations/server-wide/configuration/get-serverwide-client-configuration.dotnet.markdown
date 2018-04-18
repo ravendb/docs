@@ -10,7 +10,7 @@
 
 | Return Value | |
 | ------------- | ---- |
-| [ClientConfiguration](../../../glossary/ClientConfiguration) | configuration which will be used by the RavenDB Client |
+| `ClientConfiguration` | configuration which will be used by the RavenDB Client |
 
 ## Example
 

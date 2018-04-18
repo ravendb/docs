@@ -25,7 +25,7 @@ where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-You can also create queries manually by using  [DocumentQuery](../client-api/session/querying/document-query/what-is-document-query) or [RawQuery](client-api/session/querying/how-to-query#session.advanced.rawquery), both available as a part of advanced session operations:
+You can also create queries manually by using  [DocumentQuery](../client-api/session/querying/document-query/what-is-document-query) or [RawQuery](../client-api/session/querying/how-to-query#session.advanced.rawquery), both available as a part of advanced session operations:
 
 {CODE-TABS}
 {CODE-TAB:csharp:DocumentQuery indexes_3@Indexes/IndexingBasics.cs /}

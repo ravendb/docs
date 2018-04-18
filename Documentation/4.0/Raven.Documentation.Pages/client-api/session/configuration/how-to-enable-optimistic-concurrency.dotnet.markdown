@@ -14,7 +14,7 @@ If the session were to try to save to `users/2-A` as well with optimstic concurr
 will be cancelled. 
 
 Another option is to control optimistic concurrency per specific document.   
-To enable it, you can [supply a Change Vector to Store](../../client-api/session/storing-entities). If you don't supply a 'Change Vector' or if the 'Change Vector' is null, 
+To enable it, you can [supply a Change Vector to Store](../../../client-api/session/storing-entities). If you don't supply a 'Change Vector' or if the 'Change Vector' is null, 
 then optimistic concurrency will be disabled. Setting the 'Change Vector' to an empty string will cause RavenDB to ensure that this document is a new one and doesn't already 
 exists.
 

@@ -15,7 +15,7 @@ When sending a support ticket, it is good to include as much information about t
     - Inside FiddlerCap, click the **2. Stop Capture** button
     - Click the **3. Save Capture** button. Save the .SAZ file to your desktop
 3. Debug Info Package. RavenDB supports creating an info package (replication, performance, i/o, storage, memory, etc.) that can be created for the entire cluster or for the current server only. Go to `Studio -> Manage Server -> Gather Debug Info`
-4. [Server logs](../../server/troubleshooting/enabling-logging)
+4. [Server logs](../../server/troubleshooting/logging)
 5. Unit test. Please read our article that describes '[How to write a Unit Test using the TestDriver](../../start/test-driver)'
 
 {INFO: Monitoring local traffic }

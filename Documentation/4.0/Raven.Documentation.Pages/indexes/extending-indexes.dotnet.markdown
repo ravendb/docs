@@ -12,7 +12,7 @@
 * The indexing process will execute the LINQ code and the invoked additional source code.  
 
 * Adding this custom code can be done from [Studio](../../../todo-upadte-me-later) or from code using the _additional sources_ feature.  
-  See [example](../indexes/extending-index-definition#including-additional-sources-from-client-code) below.  
+  See [example](../indexes/extending-indexes#including-additional-sources-from-client-code) below.  
 
 * Advantages:
   * **Readability**:   Index work logic is clearer and more readable  
