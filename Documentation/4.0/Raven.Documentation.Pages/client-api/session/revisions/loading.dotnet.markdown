@@ -72,4 +72,11 @@ There are a few methods that allow you to download revisions from a database:
 
 ## Related Articles
 
-- [What are Revisions?](../../../client-api/session/revisions/what-are-revisions)
+### Revisions
+
+- [What are Revisions](../../../client-api/session/revisions/what-are-revisions)
+- [Revisions in Data Subscriptions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
+
+### Server
+
+- [Revisions](../../../server/extensions/revisions)

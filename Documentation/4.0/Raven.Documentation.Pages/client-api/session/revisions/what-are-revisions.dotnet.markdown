@@ -14,4 +14,11 @@ The following three options are available for each configuration:
 
 ## Related Articles
 
-- [Revisions : Loading](../../../client-api/session/revisions/loading)
+### Revisions
+
+- [Loading](../../../client-api/session/revisions/loading)
+- [Revisions in Data Subscriptions](../../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
+
+### Server
+
+- [Revisions](../../../server/extensions/revisions)
