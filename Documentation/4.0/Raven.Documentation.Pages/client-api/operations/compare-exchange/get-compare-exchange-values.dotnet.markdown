@@ -50,7 +50,7 @@
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
+- [Compare Exchange - Overview](../../../client-api/operations/compare-exchange/overview)
 - [Get compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
 - [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
 - [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

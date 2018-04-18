@@ -18,10 +18,10 @@ The simplest example would be to check if the property name is equal to 'Identif
 
 ### Configuration
 
-- [Conventions](../../client-api/configuration/conventions)
-- [How to Customize ID Generation for Entities](../../client-api/session/configuration/how-to-customize-id-generation-for-entities)
-- [How to Customize Collection Assignment for Entities](../../client-api/session/configuration/how-to-customize-collection-assignment-for-entities)
+- [Conventions](../../../client-api/configuration/conventions)
+- [How to Customize ID Generation for Entities](../../../client-api/session/configuration/how-to-customize-id-generation-for-entities)
+- [How to Customize Collection Assignment for Entities](../../../client-api/session/configuration/how-to-customize-collection-assignment-for-entities)
 
 ### Knowledge Base
 
-- [Document Identifier Generation](../../server/kb/document-identifier-generation)
+- [Document Identifier Generation](../../../server/kb/document-identifier-generation)

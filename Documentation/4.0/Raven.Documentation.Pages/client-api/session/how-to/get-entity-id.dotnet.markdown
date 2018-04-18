@@ -25,8 +25,8 @@ Entities does not have to contain an ID property or field. In the case of such a
 ### Document Identifiers
 
 - [Working with Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
-- [Global ID Generation Conventions](../../../configuration/identifier-generation/global)
-- [Type-specific ID Generation Conventions](../../../configuration/identifier-generation/type-specific)
+- [Global ID Generation Conventions](../../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../../client-api/configuration/identifier-generation/type-specific)
 
 ### Knowledge Base
 

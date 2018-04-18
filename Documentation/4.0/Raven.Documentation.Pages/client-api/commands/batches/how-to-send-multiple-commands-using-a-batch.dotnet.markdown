@@ -35,4 +35,4 @@ To send **multiple commands** in a **single request**, reducing the number of re
 
 - [Put](../../../client-api/commands/documents/put)   
 - [Delete](../../../client-api/commands/documents/delete)   
-- [How to work with **patch requests**?](../../../client-api/operations/patch/single-doc-patch-operation)   
+- [How to Perform Single Document Patch Operations](../../../client-api/operations/patching/single-document)   

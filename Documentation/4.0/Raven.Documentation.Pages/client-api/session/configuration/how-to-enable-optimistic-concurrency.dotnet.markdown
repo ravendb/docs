@@ -48,4 +48,4 @@ It will cause to throw `ConcurrencyException` if the document already exists.
 
 ### Configuration
 
-- [Conventions](../../client-api/configuration/conventions)
+- [Conventions](../../../client-api/configuration/conventions)

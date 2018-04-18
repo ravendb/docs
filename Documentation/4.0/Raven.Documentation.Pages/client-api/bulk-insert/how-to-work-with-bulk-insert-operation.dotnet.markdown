@@ -45,7 +45,3 @@ Here we create a bulk insert operation and inserting a million documents of type
 {CODE-TAB:csharp:async bulk_inserts_5@ClientApi\BulkInsert\BulkInserts.cs /}
 {CODE-TABS/}
 
-
-## Related articles
-
-- [How to subscribe to bulk insert operation changes?](../changes/how-to-subscribe-to-bulk-insert-operation-changes)

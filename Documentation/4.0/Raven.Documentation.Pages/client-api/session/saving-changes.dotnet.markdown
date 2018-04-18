@@ -77,7 +77,7 @@ This is a powerful feature, but you need to be aware of the possible pitfalls of
 
 - [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
 - [Opening a Session](../../client-api/session/opening-a-session)
-- [Deleting Entities](../../client-api/session/deleting-changes)
+- [Deleting Entities](../../client-api/session/deleting-entities)
 - [Loading Entities](../../client-api/session/loading-entities)
 
 ### Querying

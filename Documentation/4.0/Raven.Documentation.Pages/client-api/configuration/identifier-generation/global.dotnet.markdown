@@ -62,7 +62,7 @@ You can overwrite it by using `IdentityPartsSeparator` convention. Its default d
 
 ##Related Articles
 
-- [Document identifier generation](../../../../server/kb/document-identifier-generation)
-- [Working with document identifiers](../../../document-identifiers/working-with-document-identifiers)
-- [What is a collection?](../../../faq/what-is-a-collection)
-- [Type-specific identifier generation](../../../../client-api/configuration/identifier-generation/type-specific)
+- [Document identifier generation](../../../server/kb/document-identifier-generation)
+- [Working with document identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)
+- [What is a collection?](../../../client-api/faq/what-is-a-collection)
+- [Type-specific identifier generation](../../../client-api/configuration/identifier-generation/type-specific)

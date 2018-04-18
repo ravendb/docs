@@ -32,4 +32,6 @@ Upgrading to a different Major version necessitates upgrading the server and all
 
 ## Related Articles
 
-- [Server : Upgrading to a new version](../../server/installation/upgrading-to-new-version)
+### Installation
+
+- [Upgrading to a New Version](../../start/installation/upgrading-to-new-version)

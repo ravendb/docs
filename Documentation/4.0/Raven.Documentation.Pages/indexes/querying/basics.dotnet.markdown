@@ -122,9 +122,17 @@ where FirstName = 'Robert'
 
 ## Related Articles
 
-- [Indexing : Basics](../../indexes/indexing-basics)
-- [Querying : Filtering](../../indexes/querying/filtering)
-- [Querying : Paging](../../indexes/querying/paging)
-- [Querying : Handling document relationships](../../indexes/querying/handling-document-relationships)
-- [Client API : What is a document store?](../../client-api/what-is-a-document-store)
-- [Client API : Opening a session](../../client-api/session/opening-a-session)
+### Indexing
+
+- [Basics](../../indexes/indexing-basics)
+
+### Querying
+
+- [Filtering](../../indexes/querying/filtering)
+- [Paging](../../indexes/querying/paging)
+
+### Client API
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [How to Handle Document Relationships](../../client-api/how-to/handle-document-relationships)

@@ -58,7 +58,7 @@ The value is updated only if the two are **equal** (exchange stage).
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
+- [Compare Exchange - Overview](../../../client-api/operations/compare-exchange/overview)
 - [Get a compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
 - [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
 - [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
