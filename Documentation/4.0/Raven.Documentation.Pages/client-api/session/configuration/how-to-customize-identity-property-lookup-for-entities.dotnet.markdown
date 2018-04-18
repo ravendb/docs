@@ -13,3 +13,15 @@ The client must know which property of your entity is considered as an identity.
 The simplest example would be to check if the property name is equal to 'Identifier'.
 
 {CODE identity_2@ClientApi\Session\Configuration\FindIdentityProperty.cs /}
+
+## Related articles
+
+### Configuration
+
+- [Conventions](../../client-api/configuration/conventions)
+- [How to Customize ID Generation for Entities](../../client-api/session/configuration/how-to-customize-id-generation-for-entities)
+- [How to Customize Collection Assignment for Entities](../../client-api/session/configuration/how-to-customize-collection-assignment-for-entities)
+
+### Knowledge Base
+
+- [Document Identifier Generation](../../server/kb/document-identifier-generation)

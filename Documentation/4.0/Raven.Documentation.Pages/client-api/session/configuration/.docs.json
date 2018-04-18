@@ -1,7 +1,7 @@
 [
     {
         "Path": "how-to-customize-id-generation-for-entities.markdown",
-        "Name": "How to customize ID generation for entities?",
+        "Name": "How to Customize ID Generation for Entities",
         "Mappings": [
             {
                 "Version": "3.0",
@@ -11,22 +11,22 @@
     },
     {
         "Path": "how-to-customize-collection-assignment-for-entities.markdown",
-        "Name": "How to customize collection assignment for entities?",
+        "Name": "How to Customize Collection Assignment for Entities",
         "Mappings": []
     },
     {
         "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
-        "Name": "How to customize identity property lookup for entities?",
+        "Name": "How to Customize Identity Property Lookup For Entities",
         "Mappings": []
     },
     {
         "Path": "how-to-change-maximum-number-of-requests-per-session.markdown",
-        "Name": "How to change maximum number of requests per session?",
+        "Name": "How to Change Maximum Number of Requests per Session",
         "Mappings": []
     },
     {
         "Path": "how-to-enable-optimistic-concurrency.markdown",
-        "Name": "How to enable optimistic concurrency?",
+        "Name": "How to Enable Optimistic Concurrency",
         "Mappings": []
     }
 ]

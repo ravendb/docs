@@ -43,3 +43,9 @@ Optimistic concurrency can be turned on for a new document by passing `string.Em
 It will cause to throw `ConcurrencyException` if the document already exists.
 
 {CODE optimistic_concurrency_4@ClientApi\Session\Configuration\OptimisticConcurrency.cs /}
+
+## Related articles
+
+### Configuration
+
+- [Conventions](../../client-api/configuration/conventions)
