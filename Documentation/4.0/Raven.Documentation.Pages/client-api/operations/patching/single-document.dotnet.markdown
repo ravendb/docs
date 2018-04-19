@@ -1,52 +1,134 @@
 ﻿# Patching : How to Perform Single Document Patch Operations
 
+{NOTE: }
 The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server-side and is useful as a performance enhancement or for updating denormalized data in entities.
 
 The current page deals with patch operations on single documents.
 
-Patching has three possible interfaces: typed session, non-typed session, and operation.
+Patching has three possible interfaces: [Typed Session API](../../../client-api/operations/patching/single-document#typed-session-api), [Non-Typed Session API](../../../client-api/operations/patching/single-document#non-typed-session-api), and [Operations API](../../../client-api/operations/patching/single-document#operations-api).
 
-## Typed Session API
-A type safe session interface that allows performing the most patch operations and uses the session facilities to perform multiple operations in one request.
+In this page:  
+[API overview](../../../client-api/operations/patching/single-document#api-overview)  
+[Examples](../../../client-api/operations/patching/single-document#examples)  
+{NOTE/}
 
-{CODE patch_generic_interfact@ClientApi\Operations\Patches\PatchRequests.cs /}
+## API overview
 
-## Non-Typed Session API
-A non-typed session interface that exposes the full functionality and uses the session facilities to perform multiple operations in one request.
+{PANEL: Typed Session API}
 
-{CODE patch_non_generic_interface_in_session@ClientApi\Operations\Patches\PatchRequests.cs /}
+A type safe session interface that allows performing the most common patch operations.  
+The patch request will be sent to server only after the call to `SaveChanges`, this way it's possile to perform multiple operations in one request to the server.  
 
-{CODE patch_command_data@Common.cs /}
+### Increment field value
+`Session.Advanced.Increment`
+{CODE patch_generic_interface_increment@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-{INFO:Parameters}
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type, must be of numeric type, or a `string` of `char` for string concatination |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **delta** | `U` | Value to be added. |
 
-We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through the "args" object, and passed using PatchRequest's "Values" parameter.
+* Note the numeric values [restrictions](../../../server/kb/numbers-in-ravendb) in JavaScript
 
-{CODE patch_request@Common.cs /}
+### Set field value
+`Session.Advanced.Patch`
+{CODE patch_generic_interface_set_value@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **delta** | `U` | Value to set. |
+
+### Array manipulation
+`Session.Advanced.Patch`
+{CODE patch_generic_interface_array_modification_lambda@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **T** | `Type` | Entity type |
+| **U** | `Type` | Field type|
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
+| **arrayMofificationLambda** | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
+
+{INFO:JavaScriptArray}
+`JavaScriptArray` allows buildin lambdas representing array manipulations for patches.  
+
+| Method Signature| Return Type | Description |
+|--------|:-----|-------------| 
+| **Put(T item)** | `JavaScriptArray` | Allows adding `item` to an array. |
+| **Put(params T[] items)** | `JavaScriptArray` | Items to be added to the array. |
+| **RemoveAt(int index)** | `JavaScriptArray` | Removes item in position `index` in array. |
 
 {INFO/}
 
-## Operations API
+{PANEL/}
 
-An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.
+{PANEL:Non-Typed Session API}
+The non-typed session api for patches uses the `Session.Advanced.Defer` function that allows registering single or several commands.  
+One of the possible commands is the `PatchCommandData`, describing single document patch command.  
+The patch request will be sent to server only after the call to `SaveChanges`, this way it's possile to perform multiple operations in one request to the server.  
+
+`Session.Advanced.Defer`
+{CODE patch_non_generic_interface_in_session@ClientApi\Operations\Patches\PatchRequests.cs /}
+
+{INFO: PatchCommandData}
+
+| Constructor|  | |
+|--------|:-----|-------------| 
+| **id** | `string` | ID of the document to be patched. |
+| **changeVector** | `string` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch** | `PatchRequest` | Patch request to be performed on the document. |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. |   
+
+{INFO/}
+
+{INFO: PatchRequest}
+
+We highly recommend using scripts with parameters. This allows RavenDB to cache scripts and boost performance. Parameters can be accessed in the script through the "args" object, and passed using PatchRequest's "Values" parameter.
+
+| Members | | |
+| ------------- | ------------- | ----- |
+| **Script** | `string` | JavaScript code to be run. |
+| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script. The parameters can be accessed using the '$' prefix. Parameter starting with a '$' will be used as is, without further concatination . |
+
+{INFO/}
+
+{PANEL/}
+
+
+{PANEL: Operations API}
+An operations interface that exposes the full functionality and allows performing ad-hoc patch operations without creating a session.  
+
+`Raven.Client.Documents.Operations.Send`
+`Raven.Client.Documents.Operations.SendAsync`
 
 {CODE patch_non_generic_interface_in_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-{CODE patch_operation@Common.cs /}
+{INFO: PatchOperation}
 
-## Built-in JavaScript Extensions
+| Constructor|  | |
+|--------|:-----|-------------| 
+| **id** | `string` | ID of the document to be patched. |
+| **changeVector** | `string` | [Can be null] Change vector of the document to be patched, used to verify that the document was not changed before the patch reached it. |
+| **patch** | `PatchRequest` | Patch request to be performed on the document. |
+| **patchIfMissing** | `PatchRequest` | [Can be null] Patch request to be performed if no document with the given ID was found. Will run only if no `changeVector` was passed. |   
+| **skipPatchIfChangeVectorMismatch** | `bool` | If false and `changeVector` has value, and document with that ID and change vector was not found, will throw exception. |   
 
-In addition to ECMAScript 5.1 API, RavenDB introduces a few built-in functions and members:
+{INFO/}
 
-| ------ |:------:| ------ |
-| `id(document)` | function | returns the ID of a document|
-| `this` | object | Current document (with metadata) |
-| `args` | object | Object containing arguments passed to the script |
-| `load(id)` | method | Allows document loading, increases the maximum number of allowed steps in a script. |
-| `put(id, data, metadata)` | method | Allows document putting, returns generated id |
-| `output(...)` | method | Allows debug on your patch, prints passed messages in output tab |
+{PANEL/}
 
-## Examples
+{PANEL: Examples}
 
 ###Change field's value
 
@@ -127,6 +209,8 @@ Renaming property supported only by the non-typed APIs
 {CODE-TAB:csharp:Session-syntax-untyped rename_property_age_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
+
+{PANEL/}
 
 ## Related Articles
 

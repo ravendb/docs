@@ -1,5 +1,6 @@
 ﻿# Patching : How to Perform Set Based Operations on Documents
 
+{NOTE: }
 Sometimes we need to update a large amount of documents answering certain criteria. A simple SQL query doing that will look like this:
 
 `UPDATE Users SET IsActive = 0 WHERE LastLogin < '2010-01-01'`   
@@ -8,7 +9,14 @@ This is usually not the case for NoSQL databases, where set based operations are
 
 The same queries and indexes that are used for data retrieval are used for the set based operations. The syntax defining which documents to work on is exactly the same as you'd specified for those documents to be pulled from the store.
 
-## Syntax
+In this page:  
+[Syntax overview](../../../client-api/operations/patching/set-based#syntax-overview)  
+[Examples](../../../client-api/operations/patching/set-based#examples)  
+[Additional notes](../../../client-api/operations/patching/set-based#additional-notes)  
+{NOTE/}
+
+
+{PANEL: Syntax overview}
 
 ### Sending patch request
 
@@ -33,7 +41,9 @@ The same queries and indexes that are used for data retrieval are used for the s
 | **queryToUpdate** | `string` or `IndexQuery` | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the javascript patch code
 | **options** | `QueryOperationOptions` | Options defining how the operation will be performed and various constraints on how it is performed
 
-## Examples
+{PANEL/}
+
+{PANEL:Examples}
 
 ### Update whole collection
 {CODE update_value_in_whole_collection@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -65,7 +75,9 @@ The same queries and indexes that are used for data retrieval are used for the s
 ### Process patch results details
 {CODE patch-request-with-details@ClientApi\Operations\Patches\PatchRequests.cs /}
 
-## Remarks
+{PANEL/}
+
+{PANEL: Additional notes}
 
 {SAFE:Safe By Default}
 
@@ -75,12 +87,14 @@ For indexes that are updated all the time, you can set the AllowStale field of Q
 
 {SAFE/}
 
-{WARNING: Batching and Concurrency} 
+{WARNING: Patching and Concurrency} 
 
 The patching of documents matching a specified query is run in batches of size 1024. RavenDB doesn't do concurrency checks during the operation
 so it can happen than a document has been updated or deleted meanwhile.
 
 {WARNING/}
+
+{PANEL/}
 
 ## Related Articles
 
