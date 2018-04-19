@@ -126,3 +126,23 @@ use it to create the identifiers for the whole collection of the same type objec
 There are dedicated commands that allow you to set identifier values for a single given prefix:
 
 {CODE commands_identity_set@ClientApi\DocumentIdentifiers\WorkingWithDocumentIdentifiers.cs /}
+
+## Related Articles
+
+### Document Identifiers
+
+- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+- [HiLo Algorithm](../../client-api/document-identifiers/hilo-algorithm)
+
+### Knowledge Base
+
+- [Document Identifier Generation](../../server/kb/document-identifier-generation)
+
+### Session
+
+- [How to Get Entity ID](../../client-api/session/how-to/get-entity-id)
+
+### Operations
+
+- [How to Get Identities](../../client-api/operations/maintenance/identities/get-identities)

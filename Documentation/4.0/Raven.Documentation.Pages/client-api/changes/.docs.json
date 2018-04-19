@@ -6,17 +6,17 @@
     },
     {
         "Path": "how-to-subscribe-to-document-changes.markdown",
-        "Name": "How to subscribe to document changes?",
+        "Name": "How to Subscribe to Document Changes",
         "Mappings": []
     },
     {
         "Path": "how-to-subscribe-to-index-changes.markdown",
-        "Name": "How to subscribe to index changes?",
+        "Name": "How to Subscribe to Index Changes",
         "Mappings": []
     },
     {
         "Path": "how-to-subscribe-to-operation-changes.markdown",
-        "Name": "How to subscribe to operation changes?",
+        "Name": "How to Subscribe to Operation Changes",
         "Mappings": []
     }
 ]

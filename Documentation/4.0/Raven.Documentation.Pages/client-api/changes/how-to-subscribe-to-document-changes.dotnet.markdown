@@ -1,4 +1,4 @@
-﻿# Changes API : How to subscribe to document changes?
+﻿# Changes API : How to Subscribe to Document Changes
 
 Following methods allow you to subscribe to document changes:
 
@@ -158,8 +158,10 @@ To observe all document changes use `ForAllDocuments` method.
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
-## Related articles
+## Related Articles
 
-- [What is Changes API?](../../client-api/changes/what-is-changes-api)
-- [How to Subscribe to Index Changes?](../../client-api/changes/how-to-subscribe-to-index-changes)
-- [How to Subscribe to Operation Changes?](../../client-api/changes/how-to-subscribe-to-operation-changes)
+### Changes API
+
+- [What is Changes API](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)

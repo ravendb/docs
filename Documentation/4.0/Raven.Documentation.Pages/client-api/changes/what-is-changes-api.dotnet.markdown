@@ -61,6 +61,8 @@ In order to end subscription (stop listening for particular notifications) you m
 
 ## Related Articles
 
-- [How to Subscribe to Document Changes?](../../client-api/changes/what-is-changes-api)
-- [How to Subscribe to Index Changes?](../../client-api/changes/how-to-subscribe-to-index-changes)
-- [How to Subscribe to Operation Changes?](../../client-api/changes/how-to-subscribe-to-operation-changes)
+### Changes API
+
+- [How to Subscribe to Document Changes](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)

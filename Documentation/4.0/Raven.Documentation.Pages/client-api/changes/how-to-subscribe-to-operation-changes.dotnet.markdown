@@ -92,8 +92,10 @@ Operations changes for all Operations can be observed using the `ForAllOperation
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add the [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
-## Related articles
+## Related Articles
 
-- [What is Changes API?](../../client-api/changes/what-is-changes-api)
-- [How to Subscribe to Document Changes?](../../client-api/changes/what-is-changes-api)
-- [How to Subscribe to Index Changes?](../../client-api/changes/how-to-subscribe-to-index-changes)
+### Changes API
+
+- [What is Changes API](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Document Changes](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)

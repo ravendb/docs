@@ -1,4 +1,4 @@
-# Changes API : How to subscribe to index changes?
+# Changes API : How to Subscribe to Index Changes
 
 Following methods allow you to subscribe to index changes:
 
@@ -81,8 +81,10 @@ Index changes for all indexex can be observed using `ForAllIndexes` method.
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
-## Related articles
+## Related Articles
 
-- [What is Changes API?](../../client-api/changes/what-is-changes-api)
-- [How to Subscribe to Document Changes?](../../client-api/changes/what-is-changes-api)
-- [How to Subscribe to Operation Changes?](../../client-api/changes/how-to-subscribe-to-operation-changes)
+### Changes API
+
+- [What is Changes API](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Document Changes](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)
