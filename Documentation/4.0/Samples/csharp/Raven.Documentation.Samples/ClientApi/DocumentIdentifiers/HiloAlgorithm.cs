@@ -29,7 +29,7 @@ namespace Raven.Documentation.Samples.ClientApi.DocumentIdentifiers
 
             #region return_hilo_2
             var newStore = new DocumentStore();
-            using (var session = store.OpenSession())
+            using (var session = newStore.OpenSession())
             {
                 // Store an entity after disposing the last store will give us  (ex. 2-33) 
                 session.Store(new Employee
