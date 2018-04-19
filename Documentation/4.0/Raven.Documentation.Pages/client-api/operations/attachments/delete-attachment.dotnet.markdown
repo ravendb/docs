@@ -20,6 +20,6 @@ This operation is used to delete an attachment from a document.
 
 ### Operations
 
-- [What are Operations](../../client-api/operations/what-are-operations)
+- [What are Operations](../../../client-api/operations/what-are-operations)
 - [Put Attachment](../../../client-api/operations/attachments/put-attachment) 
 - [Get Attachment](../../../client-api/operations/attachments/get-attachment)

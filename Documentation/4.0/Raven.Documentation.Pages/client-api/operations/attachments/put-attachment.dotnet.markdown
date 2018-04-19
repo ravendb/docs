@@ -33,6 +33,6 @@ This operation is used to put an attachment to a document.
 
 ### Operations
 
-- [What are Operations](../../client-api/operations/what-are-operations)
+- [What are Operations](../../../client-api/operations/what-are-operations)
 - [Get Attachment](../../../client-api/operations/attachments/get-attachment)
 - [Delete Attachment](../../../client-api/operations/attachments/delete-attachment)
