@@ -21,6 +21,17 @@
 
 ## Related Articles
 
-- [How to **get indexes names**?](../../../../client-api/operations/maintenance/indexes/get-index-names)
-- [How to **put indexes**?](../../../../client-api/operations/maintenance/indexes/put-indexes)
-- [How to **delete index**?](../../../../client-api/operations/maintenance/indexes/delete-index)
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)

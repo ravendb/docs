@@ -1,4 +1,4 @@
-﻿# Operations : How to Change Index Priorities
+﻿# Operations : How to Change Index Priority
 
 **SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.
 
@@ -26,4 +26,15 @@
 
 ## Related Articles
 
-- [How to **change index lock mode**?](../../../../client-api/operations/maintenance/indexes/set-indexes-lock)
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Change Index Lock Mode](../../../../client-api/operations/maintenance/indexes/set-indexes-lock)

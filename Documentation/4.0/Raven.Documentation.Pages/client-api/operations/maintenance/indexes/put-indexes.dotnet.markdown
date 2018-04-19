@@ -24,6 +24,17 @@
 
 ## Related Articles
 
-- [How to **reset index**?](../../../../client-api/operations/maintenance/indexes/reset-index)
-- [How to **get index**?](../../../../client-api/operations/maintenance/indexes/get-index)
-- [How to **delete index**?](../../../../client-api/operations/maintenance/indexes/delete-index)
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)

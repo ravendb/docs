@@ -14,3 +14,15 @@ ETL is processing documents from the point where the last batch finished. To sta
 ## Example
 
 {CODE reset_etl_2@ClientApi\Operations\ResetEtl.cs /}
+
+## Related Articles
+
+### ETL
+
+- [Basics](../../../../server/ongoing-tasks/etl/basics)
+- [RavenDB ETL](../../../../server/ongoing-tasks/etl/raven)
+- [SQL ETL](../../../../server/ongoing-tasks/etl/sql)
+
+### Studio
+
+- [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)

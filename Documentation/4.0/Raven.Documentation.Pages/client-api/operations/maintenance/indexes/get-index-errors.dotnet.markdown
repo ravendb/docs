@@ -22,3 +22,19 @@
 ## Example II
 
 {CODE errors_5@ClientApi\Operations\IndexError.cs /}
+
+## Related Articles
+
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+- [Debugging Index Errors](../../../../indexes/troubleshooting/debugging-index-errors)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Reset Index](../../../../client-api/operations/maintenance/indexes/reset-index)

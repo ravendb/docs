@@ -1,4 +1,4 @@
-﻿# Operations : How to get Index Names
+﻿# Operations : How to Get Index Names
 
 **GetIndexNamesOperation** is used to retrieve multiple index names from a database.
 
@@ -19,9 +19,19 @@
 
 {CODE get_3_1@ClientApi\Operations\Indexes\Get.cs /}
 
-
 ## Related Articles
 
-- [How to **get indexes**?](../../../../client-api/operations/maintenance/indexes/get-indexes)
-- [How to **put indexes**?](../../../../client-api/operations/maintenance/indexes/put-indexes)
-- [How to **delete index**?](../../../../client-api/operations/maintenance/indexes/delete-index)
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Get Indexes](../../../../client-api/operations/maintenance/indexes/get-indexes)
+- [How to Put Indexes](../../../../client-api/operations/maintenance/indexes/put-indexes)
+- [How to Delete Index](../../../../client-api/operations/maintenance/indexes/delete-index)

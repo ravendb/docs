@@ -30,8 +30,8 @@
         ]
     },
     {
-        "Path": "set-indexes-lock.markdown",
-        "Name": "Set Indexes Lock",
+        "Path": "set-index-lock.markdown",
+        "Name": "Set Index Lock",
         "Mappings": [
             {
                 "Version": 3.5,
@@ -40,8 +40,8 @@
         ]
     },
     {
-        "Path": "set-indexes-priority.markdown",
-        "Name": "Set Indexes Priority",
+        "Path": "set-index-priority.markdown",
+        "Name": "Set Index Priority",
         "Mappings": [
             {
                 "Version": 3.5,

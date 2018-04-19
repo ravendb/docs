@@ -16,6 +16,17 @@ Use [StopIndexOperation](../../../../client-api/operations/maintenance/indexes/s
 
 ## Related Articles
 
-- [How to **disable index**?](../../../../client-api/operations/maintenance/indexes/disable-index)
-- [How to **stop index** until restart?](../../../../client-api/operations/maintenance/indexes/stop-index)
-- [How to **resume indexing**?](../../../../client-api/operations/maintenance/indexes/start-indexing)
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
+- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Resume Indexing](../../../../client-api/operations/maintenance/indexes/start-indexing)
