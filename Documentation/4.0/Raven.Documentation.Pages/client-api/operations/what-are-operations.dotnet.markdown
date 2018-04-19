@@ -157,3 +157,13 @@ These type of operations contain various administrative and miscellaneous config
 ## Remarks
 
 {NOTE By default, operations available in `store.Operations` or `store.Maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[ForDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database)** method. /}
+
+## Related articles
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Operations
+
+- [How to Switch Operations to a Different Database](../../client-api/operations/how-to/switch-operations-to-a-different-database)

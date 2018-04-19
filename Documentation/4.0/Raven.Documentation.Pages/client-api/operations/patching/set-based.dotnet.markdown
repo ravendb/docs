@@ -1,4 +1,4 @@
-﻿# Operations : How to Perform Set Based Operations on Documents
+﻿# Patching : How to Perform Set Based Operations on Documents
 
 Sometimes we need to update a large amount of documents answering certain criteria. A simple SQL query doing that will look like this:
 
@@ -84,5 +84,11 @@ so it can happen than a document has been updated or deleted meanwhile.
 
 ## Related Articles
 
+### Patching
+
 - [Single Document Based Patch Operation](../../../client-api/operations/patching/single-document)
+
+### Knowledge Base
+
 - [JavaScript Engine](../../../server/kb/javascript-engine)
+- [Numbers in JavaScript Engine](../../../server/kb/numbers-in-ravendb#numbers-in-javascript-engine)

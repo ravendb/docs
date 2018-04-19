@@ -29,9 +29,10 @@ This operation is used to get an attachment from a document.
 
 {CODE get_1@ClientApi\Operations\Attachments.cs /}
 
-
 ## Related Articles
 
-- [How to **create** attachment?](../../../client-api/operations/attachments/put-attachment) 
-- [How to **delete** attachment?](../../../client-api/operations/attachments/delete-attachment)
+### Operations
 
+- [What are Operations](../../client-api/operations/what-are-operations)
+- [Put Attachment](../../../client-api/operations/attachments/put-attachment) 
+- [Delete Attachment](../../../client-api/operations/attachments/delete-attachment)

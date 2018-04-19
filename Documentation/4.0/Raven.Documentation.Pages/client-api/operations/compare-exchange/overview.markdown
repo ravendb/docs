@@ -95,7 +95,9 @@ from Users as s where id() == cmpxchg("emails/ayende@ayende.com")
 
 ## Related Articles
 
-- [Get a compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [Put a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
-- [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+### Compare Exchange
+
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

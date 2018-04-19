@@ -31,6 +31,8 @@ This operation is used to put an attachment to a document.
 
 ## Related Articles
 
-- [How to **delete** attachment?](../../../client-api/operations/attachments/delete-attachment)
-- [How to **get** attachment?](../../../client-api/operations/attachments/get-attachment)
+### Operations
 
+- [What are Operations](../../client-api/operations/what-are-operations)
+- [Get Attachment](../../../client-api/operations/attachments/get-attachment)
+- [Delete Attachment](../../../client-api/operations/attachments/delete-attachment)

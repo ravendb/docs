@@ -18,6 +18,8 @@ This operation is used to delete an attachment from a document.
 
 ## Related Articles
 
-- [How to **create** attachment?](../../../client-api/operations/attachments/put-attachment) 
-- [How to **get** attachment?](../../../client-api/operations/attachments/get-attachment)
+### Operations
 
+- [What are Operations](../../client-api/operations/what-are-operations)
+- [Put Attachment](../../../client-api/operations/attachments/put-attachment) 
+- [Get Attachment](../../../client-api/operations/attachments/get-attachment)

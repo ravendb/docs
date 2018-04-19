@@ -1,4 +1,4 @@
-﻿# Operations : Compare Exchange : How to Delete Compare Exchange Value
+﻿# Compare Exchange : How to Delete Compare Exchange Value
 
 ---
 
@@ -44,7 +44,9 @@
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../client-api/operations/compare-exchange/overview)
-- [Get compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
+### Compare Exchange
+
+- [Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

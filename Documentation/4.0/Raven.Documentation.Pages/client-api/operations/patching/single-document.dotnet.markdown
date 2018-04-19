@@ -1,4 +1,4 @@
-﻿# Patches: How to Perform Single Document Patch Operations
+﻿# Patching : How to Perform Single Document Patch Operations
 
 The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server-side and is useful as a performance enhancement or for updating denormalized data in entities.
 
@@ -130,5 +130,11 @@ Renaming property supported only by the non-typed APIs
 
 ## Related Articles
 
+### Patching
+
 - [Set Based Patch Operation](../../../client-api/operations/patching/set-based)  
+
+### Knowledge Base
+
 - [JavaScript Engine](../../../server/kb/javascript-engine)
+- [Numbers in JavaScript Engine](../../../server/kb/numbers-in-ravendb#numbers-in-javascript-engine)
