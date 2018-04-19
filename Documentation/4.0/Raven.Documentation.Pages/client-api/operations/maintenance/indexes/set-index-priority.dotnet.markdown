@@ -37,4 +37,4 @@
 
 ### Operations
 
-- [How to Change Index Lock Mode](../../../../client-api/operations/maintenance/indexes/set-indexes-lock)
+- [How to Change Index Lock Mode](../../../../client-api/operations/maintenance/indexes/set-index-lock)

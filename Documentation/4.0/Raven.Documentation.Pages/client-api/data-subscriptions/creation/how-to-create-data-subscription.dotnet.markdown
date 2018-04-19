@@ -11,9 +11,9 @@ From that point and on, clients that will connect to a server in order to consum
 
 In this page:  
 
-[Subscription creation prerequisites](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription#subscription-creation-prerequisites)   
-[Subscription name](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription#subscription-name)  
-[Responsible node](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription#responsible-node)  
+[Subscription creation prerequisites](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-creation-prerequisites)   
+[Subscription name](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#subscription-name)  
+[Responsible node](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription#responsible-node)  
 
 {NOTE/}
 
@@ -27,7 +27,7 @@ However, the criteria can be a complex RQL-like expression defining JavaScript f
 
 {CODE create_whole_collection_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
-Fore more complex usage examples see [examples](../../../client-api/data-subscriptions/subscription-creation/examples)  
+Fore more complex usage examples see [examples](../../../client-api/data-subscriptions/creation/examples)  
 
 {PANEL/}
 

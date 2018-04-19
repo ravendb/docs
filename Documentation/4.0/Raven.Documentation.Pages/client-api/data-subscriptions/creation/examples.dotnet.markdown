@@ -6,11 +6,11 @@
 
 In this page:  
 
-[Create subscription on all documents in a collection](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-on-all-documents-in-a-collection)  
-[Create subscription with filtering](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-with-filtering)  
-[Create subscription with filtering and projection](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-with-filtering-and-projection)  
-[Create subscription with load document in filter projection](../../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-with-load-document-in-filter-projection)  
-[Create revisions enabled subscription](../../../client-api/data-subscriptions/subscription-creation/examples#create-revisions-enabled-subscription)  
+[Create subscription on all documents in a collection](../../../client-api/data-subscriptions/creation/examples#create-subscription-on-all-documents-in-a-collection)  
+[Create subscription with filtering](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering)  
+[Create subscription with filtering and projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)  
+[Create subscription with load document in filter projection](../../../client-api/data-subscriptions/creation/examples#create-subscription-with-load-document-in-filter-projection)  
+[Create revisions enabled subscription](../../../client-api/data-subscriptions/creation/examples#create-revisions-enabled-subscription)  
 
 {NOTE/}
 

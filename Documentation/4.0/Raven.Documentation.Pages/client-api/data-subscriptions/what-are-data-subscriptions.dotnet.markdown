@@ -34,9 +34,9 @@ When it's done, depending on the code that the client gave the worker, it can ta
 
 Data subscriptions are defined by the server side definition and by the worker connecting to it:
 
-1. [Subscription Creation Options](../../client-api/data-subscriptions/subscription-creation/api-overview#subscriptioncreationoptions): The documents that will be received, it's filtering and projection.
+1. [Subscription Creation Options](../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions): The documents that will be received, it's filtering and projection.
 
-2. [Subscription Worker Options](../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections.
+2. [Subscription Worker Options](../../client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions): Worker batch processing logic, batch size, interaction with other connections.
 
 {PANEL/}
 
@@ -95,7 +95,7 @@ See the sequence diagram below that summarizes the lifetime of a subscription co
 In order to support various inter-worker scenarios, one worker is allowed to take the place of another in the processing of a subscription. 
 Thanks to subscriptions persistence, the worker will be able to continue the work from the point it's predecessor stopped. 
 
-It's possible to configure that a worker will wait for an existing connection to fail, and take it's place, or we can configure it to force close an existing connection etc. See more in [Workers interplay](../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#workers-interplay).
+It's possible to configure that a worker will wait for an existing connection to fail, and take it's place, or we can configure it to force close an existing connection etc. See more in [Workers interplay](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#workers-interplay).
 
 {PANEL/}
 

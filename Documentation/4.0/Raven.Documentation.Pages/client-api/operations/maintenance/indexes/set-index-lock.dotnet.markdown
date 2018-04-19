@@ -37,4 +37,4 @@
 
 ### Operations
 
-- [How to Change Index Priority](../../../../client-api/operations/maintenance/indexes/set-indexes-priority)
+- [How to Change Index Priority](../../../../client-api/operations/maintenance/indexes/set-index-priority)

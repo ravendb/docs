@@ -10,9 +10,9 @@ We've introduced several ways to create and configure a SubscriptionWorker, star
 
 In this page:
 
-[SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
-[Error handling](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#error-handling)  
-[Workers interplay](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription#workers-interplay)
+[SubscriptionWorker lifecycle](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#subscriptionworker-lifecycle)  
+[Error handling](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#error-handling)  
+[Workers interplay](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription#workers-interplay)
 
 {NOTE/}
 

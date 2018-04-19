@@ -6,11 +6,11 @@
 
 In this page:  
 
-[Subscription worker generation](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscription-worker-generation)  
-[SubscriptionWorkerOptions](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworkeroptions)  
-[Running subscription worker](../../../client-api/data-subscriptions/subscription-consumption/api-overview#running-subscription-worker)  
-[SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionbatch<t>)  
-[SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/subscription-consumption/api-overview#subscriptionworker<t>)  
+[Subscription worker generation](../../../client-api/data-subscriptions/consumption/api-overview#subscription-worker-generation)  
+[SubscriptionWorkerOptions](../../../client-api/data-subscriptions/consumption/api-overview#subscriptionworkeroptions)  
+[Running subscription worker](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)  
+[SubscriptionBatch&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview#subscriptionbatch<t>)  
+[SubscriptionWorker&lt;T&gt;](../../../client-api/data-subscriptions/consumption/api-overview#subscriptionworker<t>)  
 
 {NOTE/}
 
@@ -108,7 +108,7 @@ The `Run` function receives the client-side code as a delegate that will process
 | **DisposeAsync()** | `Task` | Async version of `Dispose()`. |
 | **Dispose(bool waitForSubscriptionTask)** | `void` | Aborts the subscription worker, but allows deciding whether to wait for the `Run` function task or not. |
 | **DisposeAsync(bool waitForSubscriptionTask)** | `void` | Async version of `DisposeAsync(bool waitForSubscriptionTask)`. |
-| **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/subscription-consumption/api-overview#running-subscription-worker)). |
+| **Run (multiple overloads)** | `Task` | Starts the subscription worker work of processing batches, receiving the batch processing delegates (see [above](../../../client-api/data-subscriptions/consumption/api-overview#running-subscription-worker)). |
 
 {NOTE/}
 

@@ -6,7 +6,7 @@
 Several RavenDB mechanisms incorporate JavaScript scripts:  
 
 * [RQL projections](../../indexes/querying/projections)  
-* [Subscriptions](../../client-api/data-subscriptions/subscription-creation/examples#create-subscription-with-filtering-and-projection)    
+* [Subscriptions](../../client-api/data-subscriptions/creation/examples#create-subscription-with-filtering-and-projection)    
 * [ETL](../../server/ongoing-tasks/etl/basics)    
 * [Smuggler (data import/export)](../../client-api/smuggler/what-is-smuggler#transformscript)    
 * [Single](../../client-api/operations/patching/single-document) or [Set based](../../client-api/operations/patching/set-based) document patches

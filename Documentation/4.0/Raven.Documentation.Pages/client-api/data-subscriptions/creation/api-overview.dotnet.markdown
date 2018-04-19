@@ -6,10 +6,10 @@
 
 
 In this page:  
-[Subscription creation overloads summary](../../../client-api/data-subscriptions/subscription-creation/api-overview#create-and-createasync-overloads-summary)  
-[Subscription Creation Options](../../../client-api/data-subscriptions/subscription-creation/api-overview#subscriptioncreationoptions)  
-[SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/subscription-creation/api-overview#subscriptioncreationoptions<t>)  
-[Subscription query](../../../client-api/data-subscriptions/subscription-creation/api-overview#subscription-query)  
+[Subscription creation overloads summary](../../../client-api/data-subscriptions/creation/api-overview#create-and-createasync-overloads-summary)  
+[Subscription Creation Options](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions)  
+[SubscriptionCreationOptions&lt;T&gt;](../../../client-api/data-subscriptions/creation/api-overview#subscriptioncreationoptions<t>)  
+[Subscription query](../../../client-api/data-subscriptions/creation/api-overview#subscription-query)  
 
 {NOTE/}
 
