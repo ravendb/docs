@@ -1,4 +1,4 @@
-﻿# How to create a data subscription?
+﻿# Data Subscriptions : How to Create a Data Subscription
 
 ---
 
@@ -62,7 +62,9 @@ Setting that node manually can help manually choosing a more fitting server from
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
-- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
-- [How to **consume** a data subscription?](../../../client-api/data-subscriptions/subscription-consumption/how-to-consume-data-subscription)
+### Data Subscriptions
+
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)

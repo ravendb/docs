@@ -1,4 +1,4 @@
-﻿# Bulk Insert : How to work with bulk insert operation?
+﻿# Bulk Insert : How to Work With Bulk Insert Operation
 
 One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
 
@@ -45,3 +45,12 @@ Here we create a bulk insert operation and inserting a million documents of type
 {CODE-TAB:csharp:async bulk_inserts_5@ClientApi\BulkInsert\BulkInserts.cs /}
 {CODE-TABS/}
 
+## Related articles
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Session
+
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work)

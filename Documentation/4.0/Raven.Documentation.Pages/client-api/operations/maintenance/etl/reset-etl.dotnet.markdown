@@ -1,6 +1,6 @@
 ﻿# Operations : How to Reset ETL
 
-ETL is processing documents from the point where the last batch finished. To start the processing from the very beginning you can reset the ETL by using **ResetEltOperation**.
+ETL is processing documents from the point where the last batch finished. To start the processing from the very beginning you can reset the ETL by using **ResetEtlOperation**.
 
 ## Syntax
 

@@ -1,16 +1,16 @@
 [
     {
         "Path": "what-are-data-subscriptions.markdown",
-        "Name": "What are data subscriptions?",
+        "Name": "What are Data Subscriptions",
         "Mappings": []
     },
     {
-        "Path": "/subscription-creation",
+        "Path": "/creation",
         "Name": "Creation",
         "Mappings": []
     },
     {
-        "Path": "/subscription-consumption",
+        "Path": "/consumption",
         "Name": "Consumption",
         "Mappings": []
     },

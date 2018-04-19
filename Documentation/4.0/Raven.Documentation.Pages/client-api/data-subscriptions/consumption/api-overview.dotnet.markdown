@@ -1,4 +1,4 @@
-﻿# API overview
+﻿# Data Subscriptions : Consumption API Overview
 
 ---
 
@@ -147,8 +147,11 @@ The `Run` function receives the client-side code as a delegate that will process
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
-- [What are data subscriptions?](../../../client-api/data-subscriptions/what-are-data-subscriptions)
-- [How to **create** a data subscription?](../../../client-api/data-subscriptions/subscription-creation/how-to-create-data-subscription)
+### Data Subscriptions
+
+- [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
+- [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
+- [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
 
