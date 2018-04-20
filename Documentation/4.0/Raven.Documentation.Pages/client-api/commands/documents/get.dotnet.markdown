@@ -108,7 +108,8 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ## Related Articles
 
-- [How to **get** document **metadata** only?](../../../client-api/commands/documents/how-to/get-document-metadata-only)  
+### Commands 
+
 - [Put](../../../client-api/commands/documents/put)  
-- [Delete](../../../client-api/commands/documents/delete)   
-- [How to **stream** documents?](../../../client-api/commands/documents/stream)   
+- [Delete](../../../client-api/commands/documents/delete)
+- [How to Send Multiple Commands Using a Batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)

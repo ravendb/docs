@@ -16,7 +16,10 @@
 
 {CODE put_sample@ClientApi\Commands\Documents\Put.cs /}
 
-## Related articles
+## Related Articles
+
+### Commands 
 
 - [Get](../../../client-api/commands/documents/get)  
-- [Delete](../../../client-api/commands/documents/delete)  
+- [Delete](../../../client-api/commands/documents/delete)
+- [How to Send Multiple Commands Using a Batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)

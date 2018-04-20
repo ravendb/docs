@@ -20,6 +20,9 @@
 
 ## Related Articles
 
+### Commands 
+
 - [Get](../../../../client-api/commands/documents/get)  
 - [Put](../../../../client-api/commands/documents/put)  
 - [Delete](../../../../client-api/commands/documents/delete)
+- [How to Send Multiple Commands Using a Batch](../../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
