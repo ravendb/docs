@@ -1,4 +1,4 @@
-# How to Setup Aggressive Caching
+# Client API : How to Setup Aggressive Caching
 
 ## Standard Cache Configuration
 

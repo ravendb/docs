@@ -1,4 +1,4 @@
-﻿#A Collection
+﻿# FAQ : What is a Collection
 
 A collection in RavenDB is a set of documents with the same `@collection` metadata property which is filled in by the client based on the type of entity object that you store (the function responsible for tagging documents can by overwritten by using [customizations](../../client-api/configuration/identifier-generation/global#findtypetagname-and-finddynamictagname)). 
 

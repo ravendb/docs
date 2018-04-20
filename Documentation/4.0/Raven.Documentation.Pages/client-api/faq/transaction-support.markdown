@@ -1,4 +1,4 @@
-﻿#Transaction Support in RavenDB
+﻿# FAQ : Transaction Support in RavenDB
 
 {PANEL:ACID storage}
 
@@ -35,5 +35,7 @@ The transaction model is different when indexes are involved, because indexes ar
 {PANEL/}
 
 ## Related Articles
+
+### Server
 
 - [Storage Engine](../../server/storage/storage-engine)
