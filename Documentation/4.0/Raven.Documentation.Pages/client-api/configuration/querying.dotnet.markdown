@@ -1,4 +1,4 @@
-﻿#Conventions Related to Querying
+﻿# Conventions : Querying
 
 ##FindPropertyNameForIndex and FindPropertyNameForDynamicIndex
 
@@ -18,3 +18,20 @@ Enabling this configuration at development stage can be useful to pinpoint all t
 
 {CODE throw_if_query_page_is_not_set@ClientApi\Configuration\Querying.cs /}
 
+## Related articles
+
+### Conventions
+
+- [Conventions](../../client-api/configuration/conventions)
+- [Serialization](../../client-api/configuration/serialization)
+- [Cluster](../../client-api/configuration/cluster)
+
+### Document Identifiers
+
+- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)

@@ -1,4 +1,4 @@
-﻿#Conventions Related to Cluster
+﻿# Conventions : Cluster
 
 ###ReadBalanceBehavior
 
@@ -27,3 +27,21 @@ what you just wrote, you need to use [write assurance](../../client-api/session/
 In many cases a short delay in replicating changes to other nodes is acceptable. There is no need for confirmation across the entire cluster then.
 
 {INFO/}
+
+## Related articles
+
+### Conventions
+
+- [Conventions](../../client-api/configuration/conventions)
+- [Querying](../../client-api/configuration/querying)
+- [Serialization](../../client-api/configuration/serialization)
+
+### Document Identifiers
+
+- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
