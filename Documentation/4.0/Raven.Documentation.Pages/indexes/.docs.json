@@ -6,7 +6,7 @@
     },
     {
         "Path": "what-are-indexes.markdown",
-        "Name": "What are Indexes?",
+        "Name": "What are Indexes",
         "Mappings": [
             {
                 "Version": "1.0",

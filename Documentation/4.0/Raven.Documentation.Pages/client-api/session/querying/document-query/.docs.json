@@ -1,7 +1,7 @@
 [
     {
         "Path": "what-is-document-query.markdown",
-        "Name": "What is a Document Query?",
+        "Name": "What is a Document Query",
         "Mappings": [
             {
                 "Version": 3.0,
@@ -11,7 +11,7 @@
     },
     {
         "Path": "how-to-use-not-operator.markdown",
-        "Name": "How to Use NOT Operator?",
+        "Name": "How to Use NOT Operator",
         "Mappings": [
             {
                 "Version": 3.0,
@@ -21,7 +21,7 @@
     },
     {
         "Path": "how-to-use-lucene.markdown",
-        "Name": "How to Use Lucene?",
+        "Name": "How to Use Lucene",
         "Mappings": []
     }
 ]
