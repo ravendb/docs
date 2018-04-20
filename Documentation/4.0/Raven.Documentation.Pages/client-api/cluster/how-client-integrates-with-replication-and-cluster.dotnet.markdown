@@ -1,4 +1,4 @@
-﻿# Replication : How a Client Integrates with Replication and the Cluster
+﻿# Cluster : How a Client Integrates with Replication and the Cluster
 
 {PANEL:**Failover Behavior**}
 
@@ -69,3 +69,15 @@ If there are some writes that are important, it is possible to make the client w
 {CODE WriteAssuranceSample@ClientApi\Cluster\HowClientApiIntegratesWithReplicationAndCluster.cs /}
 
 {PANEL/}
+
+## Related articles
+
+### Cluster
+
+- [Clustering Overview](../../server/clustering/overview)
+- [Client Speed Test](../../client-api/cluster/speed-test)
+- [Cluster Node Health Check](../../client-api/cluster/health-check)
+
+### Configuration
+
+- [Cluster](../../client-api/configuration/cluster)
