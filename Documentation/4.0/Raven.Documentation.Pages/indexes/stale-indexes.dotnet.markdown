@@ -1,4 +1,4 @@
-# Stale Indexes
+# Indexes : Stale Indexes
 
 RavenDB performs indexing in the background threads. The indexes start processing whenever the new data comes in, and the existing documents are updated or deleted.
 
@@ -76,6 +76,11 @@ If the last Etag processed by the index is greater than the cutoff, then the res
 
 ## Related Articles
 
-- [What are indexes?](../indexes/what-are-indexes)
-- [Indexing : Basics](../indexes/indexing-basics)
-- [Session : Querying : How to customize query?](../client-api/session/querying/how-to-customize-query)
+### Indexes
+
+- [What are Indexes](../indexes/what-are-indexes)
+- [Indexing Basics](../indexes/indexing-basics)
+
+### Client API
+
+- [How to Customize Query](../client-api/session/querying/how-to-customize-query)

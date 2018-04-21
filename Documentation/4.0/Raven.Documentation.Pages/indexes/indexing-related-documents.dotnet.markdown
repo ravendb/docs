@@ -1,4 +1,4 @@
-# Indexing Related Documents
+# Indexes : Indexing Related Documents
 
 To extend indexing capabilities and simplify many scenarios, we have introduced the possibility for indexing related documents.
 
@@ -40,8 +40,13 @@ To create an index with `Author Name` and list of `Book Names`, we need do the f
 
 ## Related Articles
 
-- [Indexing : Basics](../indexes/indexing-basics)
-- [Indexing hierarchical data](../indexes/indexing-hierarchical-data)
-- [Indexing spatial data](../indexes/indexing-spatial-data)
-- [Indexing polymorphic data](../indexes/indexing-polymorphic-data)
-- [Querying : Basics](../indexes/querying/basics)
+### Indexes
+
+- [Indexing Basics](../indexes/indexing-basics)
+- [Indexing Hierarchical Data](../indexes/indexing-hierarchical-data)
+- [Indexing Spatial Data](../indexes/indexing-spatial-data)
+- [Indexing Polymorphic Data](../indexes/indexing-polymorphic-data)
+
+### Querying
+
+- [Basics](../indexes/querying/basics)

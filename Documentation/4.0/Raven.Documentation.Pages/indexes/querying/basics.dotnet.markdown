@@ -122,9 +122,9 @@ where FirstName = 'Robert'
 
 ## Related Articles
 
-### Indexing
+### Indexes
 
-- [Basics](../../indexes/indexing-basics)
+- [Indexing Basics](../../indexes/indexing-basics)
 
 ### Querying
 

@@ -29,7 +29,7 @@ namespace Raven.Documentation.Parser.Data
 		Glossary,
 
 		[Prefix("start")]
-		[Description("Getting started")]
+		[Description("Getting Started")]
 		Start,
 
 		[Prefix("file-system")]

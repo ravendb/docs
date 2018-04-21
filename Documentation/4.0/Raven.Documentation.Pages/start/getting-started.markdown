@@ -263,7 +263,7 @@ If you wish to understand `Indexes` better, we recommend reading the following a
 
 ### Client API
 
-- [What is a Session and how does it work?](../client-api/session/what-is-a-session-and-how-does-it-work)
+- [What is a Session and How Does it Work](../client-api/session/what-is-a-session-and-how-does-it-work)
 - [Opening a Session](../client-api/session/opening-a-session)
 - [Storing Entities](../client-api/session/storing-entities)
 - [Deleting Entities](../client-api/session/deleting-entities)
@@ -273,11 +273,11 @@ If you wish to understand `Indexes` better, we recommend reading the following a
 ### Querying
 
 - [Basics](../indexes/querying/basics)
-- [What is RQL?](../indexes/querying/what-is-rql)
+- [What is RQL](../indexes/querying/what-is-rql)
 
 ### Indexes
 
-- [What are indexes?](../indexes/what-are-indexes)
-- [Creating and deploying indexes?](../indexes/creating-and-deploying)
-- [Indexing basics](../indexes/indexing-basics)
-- [Map indexes](../indexes/map-indexes)
+- [What are Indexes](../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+- [Indexing Basics](../indexes/indexing-basics)
+- [Map Indexes](../indexes/map-indexes)

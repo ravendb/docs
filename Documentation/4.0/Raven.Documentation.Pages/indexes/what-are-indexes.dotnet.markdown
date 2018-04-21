@@ -32,7 +32,15 @@ This behavior can be altered by [storing](../indexes/storing-data-in-index) fiel
 
 ## Related Articles
 
-- [Indexes : Creating and deploying indexes](../indexes/creating-and-deploying)
-- [Indexes : Basics](../indexes/indexing-basics)
-- [Querying : Basics](../indexes/querying/basics)
-- [Client API : How to create a document store?](../client-api/creating-document-store)
+### Indexes
+
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+- [Indexing Basics](../indexes/indexing-basics)
+
+### Querying
+
+- [Basics](../indexes/querying/basics)
+
+### Client API
+
+- [How to Query](../client-api/session/querying/how-to-query)

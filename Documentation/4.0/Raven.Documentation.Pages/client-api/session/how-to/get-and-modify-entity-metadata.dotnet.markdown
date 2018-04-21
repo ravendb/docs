@@ -36,4 +36,6 @@ After getting the metadata from `session.Advanced.GetMetadataFor` you can modify
 - [How to Get Entity Change-Vector](../../../client-api/session/how-to/get-entity-change-vector)
 - [How to Get Entity Last Modified](../../../client-api/session/how-to/get-entity-last-modified)
 
+### Indexes
 
+- [Converting to JSON and Accessing Metadata](../../../indexes/converting-to-json-and-accessing-metadata)

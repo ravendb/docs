@@ -1,4 +1,4 @@
-# Dynamic Fields
+# Indexes : Dynamic Fields
 
 While strongly typed entities are well processed by LINQ expressions, some scenarios demand the use of dynamic properties. 
 
@@ -45,7 +45,9 @@ Looking for products by attributes with the usage of such a defined index is sup
 
 ## Related Articles
 
+### Indexes
+
 - [Boosting](../indexes/boosting)
 - [Analyzers](../indexes/using-analyzers)
-- [Storing data in index](../indexes/storing-data-in-index)
+- [Storing Data in Index](../indexes/storing-data-in-index)
 - [Term Vectors](../indexes/using-term-vectors)

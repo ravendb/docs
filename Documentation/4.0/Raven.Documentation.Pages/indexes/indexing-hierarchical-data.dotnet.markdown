@@ -1,4 +1,4 @@
-# Indexing Hierarchical Data
+# Indexes : Indexing Hierarchical Data
 
 One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
 
@@ -22,8 +22,13 @@ This will index all the comments in the thread, regardless of their location in 
 
 ## Related articles
 
-- [Indexing : Basics](../indexes/indexing-basics)
-- [Indexing related documents](../indexes/indexing-related-documents)
-- [Indexing spatial data](../indexes/indexing-spatial-data)
-- [Indexing polymorphic data](../indexes/indexing-polymorphic-data)
-- [Querying : Basics](../indexes/querying/basics)
+### Indexes
+
+- [Indexing Basics](../indexes/indexing-basics)
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Indexing Spatial Data](../indexes/indexing-spatial-data)
+- [Indexing Polymorphic Data](../indexes/indexing-polymorphic-data)
+
+### Querying 
+
+- [Basics](../indexes/querying/basics)

@@ -1,4 +1,4 @@
-# Indexing Polymorphic Data
+# Indexes : Indexing Polymorphic Data
 
 By default, RavenDB indexes operate only on a specific entity type, or a `Collection`, that ignores the inheritance hierarchy.
 
@@ -67,8 +67,13 @@ It will generate an index that matches both Cats and Dogs.
 
 ## Related Articles
 
-- [Indexing : Basics](../indexes/indexing-basics)
-- [Indexing related documents](../indexes/indexing-related-documents)
-- [Indexing spatial data](../indexes/indexing-spatial-data)
-- [Indexing hierarchical data](../indexes/indexing-hierarchical-data)
-- [Querying : Basics](../indexes/querying/basics)
+### Indexes
+
+- [Indexing Basics](../indexes/indexing-basics)
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Indexing Spatial Data](../indexes/indexing-spatial-data)
+- [Indexing Hierarchical Data](../indexes/indexing-hierarchical-data)
+
+### Querying
+
+- [Basics](../indexes/querying/basics)

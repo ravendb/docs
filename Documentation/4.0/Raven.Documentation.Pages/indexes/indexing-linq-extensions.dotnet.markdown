@@ -1,4 +1,4 @@
-# Indexing LINQ Extensions
+# Indexes : Indexing LINQ Extensions
 
 Various indexing LINQ extensions are available to enhance the usability and reduce the complexity of the indexing functions. The available extensions are:
 
@@ -58,5 +58,7 @@ There are two overrides for each method: The first one returns the default value
 
 ## Related Articles
 
-- [Map indexes](../indexes/map-indexes)
+### Indexes
+
+- [Map Indexes](../indexes/map-indexes)
 - [Boosting](../indexes/boosting)

@@ -1,4 +1,4 @@
-﻿# Creating and Deploying Indexes
+﻿# Indexes : Creating and Deploying Indexes
 
 **Indexes are used by the server to satisfy queries.** Whenever a user issues a query, RavenDB will use an existing index if it matches the query. If it doesn't, RavenDB will create a new one.
 
@@ -112,6 +112,11 @@ Setting this configuration option to a high value may result in performance degr
 
 ## Related Articles
 
-- [What are indexes?](../indexes/what-are-indexes)
-- [Indexing : Basics](../indexes/indexing-basics)
-- [Querying : Basics](../indexes/querying/basics)
+### Indexes
+
+- [What are Indexes](../indexes/what-are-indexes)
+- [Indexing Basics](../indexes/indexing-basics)
+
+### Querying
+
+- [Basics](../indexes/querying/basics)

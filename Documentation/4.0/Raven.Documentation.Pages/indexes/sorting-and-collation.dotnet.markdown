@@ -1,4 +1,4 @@
-﻿# Sorting & Collation
+﻿#  Indexes : Sorting & Collation
 
 Starting from version 4.0, RavenDB automatically determines sorting based on an indexed value. All values will have a capability to be sorted `lexicographically`. Numerical values will also be sortable by their `double` and `long` value.
 
@@ -22,7 +22,12 @@ In general, you can sort using `Raven.Database.Indexing.Collation.Cultures.<two-
 
 ## Related Articles
 
-- [Map indexes](../indexes/map-indexes)
-- [What are indexes?](../indexes/what-are-indexes)
-- [Querying : Basics](../indexes/querying/basics)
-- [Querying : Sorting](../indexes/querying/sorting)
+### Indexes
+
+- [Map Indexes](../indexes/map-indexes)
+- [What are Indexes](../indexes/what-are-indexes)
+
+### Querying
+
+- [Basics](../indexes/querying/basics)
+- [Sorting](../indexes/querying/sorting)

@@ -1,4 +1,4 @@
-﻿# Indexing Basics
+﻿# Indexes : Indexing Basics
 
 To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../indexes/querying/what-is-rql) for querying.
 
@@ -54,8 +54,14 @@ More detailed information about `Map-Reduce` indexes can be found [here](../inde
 
 ## Related Articles
 
-- [Map indexes](../indexes/map-indexes)
-- [Stale indexes](../indexes/stale-indexes)
-- [What are indexes?](../indexes/what-are-indexes)
-- [Creating and deploying indexes](../indexes/creating-and-deploying)
-- [Querying : Basics](../indexes/querying/basics)
+### Indexes
+
+- [Map Indexes](../indexes/map-indexes)
+- [Stale Indexes](../indexes/stale-indexes)
+- [What are Indexes](../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+
+- [Basics](../indexes/querying/basics)
+- [What is RQL](../indexes/querying/what-is-rql)

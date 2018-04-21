@@ -1,4 +1,4 @@
-# Storing Data in Index
+# Indexes : Storing Data in Index
 
 Once the [tokenization and analysis](../indexes/using-analyzers) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
 By default, tokens saved in the index are available for searching. but their original field values aren't stored.
@@ -22,7 +22,13 @@ If **the projection requires only the fields that are stored**, then the documen
 
 ## Related Articles
 
+### Indexes
+
 - [Boosting](../indexes/boosting)
 - [Analyzers](../indexes/using-analyzers)
 - [Term Vectors](../indexes/using-term-vectors)
 - [Dynamic Fields](../indexes/using-dynamic-fields)
+
+### Querying
+
+- [Projections and Stored Fields](../indexes/querying/projections#projections-and-stored-fields)

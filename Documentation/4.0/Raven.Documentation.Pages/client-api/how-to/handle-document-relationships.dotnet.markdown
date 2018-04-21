@@ -190,9 +190,9 @@ For most cases where denormalization is not an option, Includes are probably the
 
 ## Related Articles
 
-### Indexing
+### Indexes
 
-- [Basics](../../indexes/indexing-basics)
+- [Indexing Basics](../../indexes/indexing-basics)
 - [Indexing Related Documents](../../indexes/indexing-related-documents)
 
 ### Querying

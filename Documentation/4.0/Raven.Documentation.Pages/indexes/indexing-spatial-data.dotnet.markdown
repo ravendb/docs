@@ -1,4 +1,4 @@
-# Indexing Spatial Data
+# Indexes : Indexing Spatial Data
 
 To support the ability to retrieve the data based on spatial coordinates, the spatial search has been introduced.
 
@@ -130,4 +130,10 @@ Source: [http://unterbahn.com](http://unterbahn.com/2009/11/metric-dimensions-of
 
 ## Related Articles
 
-- [Querying : Spatial](../indexes/querying/spatial)
+### Querying
+
+- [Spatial](../indexes/querying/spatial)
+
+### Client API
+
+- [How to Query a Spatial Index](../client-api/session/querying/how-to-query-a-spatial-index)

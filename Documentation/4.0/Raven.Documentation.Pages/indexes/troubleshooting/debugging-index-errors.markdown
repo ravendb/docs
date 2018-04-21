@@ -1,4 +1,4 @@
-# Debugging Index Errors
+# Indexes : Debugging Index Errors
 
 Indexes in RavenDB are user provided LINQ queries running on top of dynamic JSON data model. There is a wide space for errors here, either because of malformed index definition or missing / corrupt data on the JSON document itself.
 
@@ -169,3 +169,14 @@ Furthermore, in order to protect itself from indexes that always fail, RavenDB w
 A errored index cannot be queried, all queries to a errored index will result in an exception.
 
 The only thing that can be done with a errored index is to either delete it or replace the index definition with one that is resilient to those errors.
+
+## Related articles
+
+### Server
+
+- [Index Administration](../../server/administration/index-administration)
+
+### Client API
+
+- [How to Get Index Errors](../../client-api/operations/maintenance/indexes/get-index-errors)
+- [How to Reset Index](../../client-api/operations/maintenance/indexes/reset-index)

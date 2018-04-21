@@ -1,4 +1,4 @@
-﻿# Extending Indexes
+﻿# Indexes : Extending Indexes
 ---
 
 {NOTE: }
@@ -39,3 +39,9 @@
 * External DLLs that are referenced must be _manually deployed_ to the folder containing the Raven.Server executable.  
 
 {NOTE/}
+
+## Related articles
+
+### Indexes
+
+- [What are Indexes](../indexes/what-are-indexes)

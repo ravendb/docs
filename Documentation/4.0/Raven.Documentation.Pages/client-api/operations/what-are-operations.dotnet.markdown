@@ -73,7 +73,7 @@ Maintenance operations include operations for changing the configuration at runt
 
 * [ResetEtlOperation](../../client-api/operations/maintenance/etl/reset-etl)
 
-#### Indexing
+#### Indexes
 
 * [DeleteIndexOperation](../../client-api/operations/maintenance/indexes/delete-index)   
 * [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   

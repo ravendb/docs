@@ -1,4 +1,4 @@
-# Map Indexes
+# Indexes : Map Indexes
 
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
 
@@ -8,7 +8,7 @@ These **mapping functions** are **LINQ-based functions** and can be considered t
 
 You can:
 
-- [index single fields](../indexes/map-indexes#basics---indexing-single-fields)
+- [index single fields](../indexes/map-indexes#indexing-single-fields)
 - [combined multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
 - [index partial field data](../indexes/map-indexes#indexing-partial-field-data)
 - [index nested data](../indexes/map-indexes#indexing-nested-data)
@@ -181,7 +181,11 @@ Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-pol
 
 ## Related Articles
 
-- [Indexing related documents](../indexes/indexing-related-documents)
-- [Map-Reduce indexes](../indexes/map-reduce-indexes)
-- [Creating and deploying indexes](../indexes/creating-and-deploying)
-- [Querying : Basics](../indexes/querying/basics)
+### Indexes
+
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+- [Basics](../indexes/querying/basics)

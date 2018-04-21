@@ -1,4 +1,4 @@
-# Converting to JSON and Accessing Metadata
+# Indexes : Converting to JSON and Accessing Metadata
 
 Entities passed to an index can be converted to JSON using `AsJson` method. There is also a possibility to access metadata for a specified object using `MetadataFor` method.
 
@@ -14,7 +14,12 @@ Entities passed to an index can be converted to JSON using `AsJson` method. Ther
 
 {CODE indexes_4@Indexes/Metadata.cs /}
 
-## Related Articles
+## Related articles
 
-- [Indexing basics](../indexes/indexing-basics)
+### Indexes
 
+- [Indexing Basics](../indexes/indexing-basics)
+
+### Client API
+
+- [How to Get and Modify Entity Metadata](../client-api/session/how-to/get-and-modify-entity-metadata)

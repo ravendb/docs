@@ -1,4 +1,4 @@
-﻿#Fanout Indexes
+﻿# Indexes : Fanout Indexes
 
 The fanout index is the index that outputs multiple index entries per each document. Here is an example of such one:
 
@@ -41,3 +41,9 @@ You can control when a performance hint should be created using the `Performance
 
 Since the fanout index creates multiple entries for a single document and queries return documents by default (it can change if the query defines the projection) the paging of query results
 is a bit more complex. Please read the dedicated article about [paging through tampered results](../indexes/querying/paging#paging-through-tampered-results).
+
+## Related articles
+
+### Indexes
+
+- [What are Indexes](../indexes/what-are-indexes)

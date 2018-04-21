@@ -1,4 +1,4 @@
-# Analyzers
+# Indexes : Analyzers
 
 RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.
 
@@ -98,6 +98,8 @@ When field is marked as `Search` sorting must be done using additional field. Mo
 
 ## Related Articles
 
+### Indexes
+
 - [Boosting](../indexes/boosting)
-- [Storing data in index](../indexes/storing-data-in-index)
+- [Storing Data in Index](../indexes/storing-data-in-index)
 - [Dynamic Fields](../indexes/using-dynamic-fields)
