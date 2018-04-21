@@ -18,6 +18,8 @@ Level of logs that should be written to the log files. The available options are
 - `Operations` (high level info for operational users)
 - `Information` (low level debug info)
 
+<br />
+
 - **Type**: `string`
 - **Default**: `Operations`
 - **Scope**: Server-wide only

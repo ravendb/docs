@@ -47,13 +47,14 @@ ravendb> stats
 Enable (or disable) online log printing to the console.
 
 {CODE-BLOCK:plain}
-log <on|off|http-on|http-off>
+log <on|off|http-on|http-off|none|operations|information>
 {CODE-BLOCK/}
 
 | Parameters | |
 | ------------- | ------------- |
-| `on` or `off` | enables or disables log printing|
+| `on` or `off` | enables or disables log printing |
 | `http-on` or `http-off` | enables or disables HTTP request log information |
+| `none`, `operations` or `information` | sets the log mode to desired [level](../../server/configuration/logs-configuration#logs.mode) |
 
 {CODE-BLOCK:plain}
 ravendb> log on

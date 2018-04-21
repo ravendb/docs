@@ -19,7 +19,7 @@ Modifying the `settings.json` file requires the server restart. In order to avoi
 This will change the logging level without the need of doing any server restarts, but will not modify the `settings.json` file, so please bare in mind that after restart the logging level be read from configuration file again.
 
 {CODE-BLOCK:plain}
-log <on|off|http-on|http-off>
+log <on|off|http-on|http-off|none|operations|information>
 {CODE-BLOCK/}
 
 You can read more about the command [here](../../server/administration/cli#log).
