@@ -37,5 +37,10 @@ This shows users which name starts with letter 'G' or 'A'. Results which starts 
 
 ## Related Articles
 
-- [Indexing : Boosting](../../indexes/boosting)
-- [Indexing : Querying : Searching](../../indexes/querying/searching)
+### Indexes
+
+- [Boosting](../../indexes/boosting)
+
+### Querying
+
+- [Searching](../../indexes/querying/searching)

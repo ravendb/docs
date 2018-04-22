@@ -23,7 +23,7 @@ Each query in RavenDB must be expressed by [RQL](../../indexes/querying/what-is-
   - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
 
 4. `include` 
-  - If any [includes]() are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
 
 5. Return results.
 

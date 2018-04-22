@@ -158,4 +158,6 @@ As an alternative for creating a list of facets and passing it to the `Aggregate
 
 ## Related Articles
 
-- [Client API : Session : How to perform a faceted search?](../../client-api/session/querying/how-to-perform-a-faceted-search)
+### Client API
+
+- [How to Perform a Faceted Search](../../client-api/session/querying/how-to-perform-a-faceted-search)

@@ -24,6 +24,7 @@ The next step is to perform a query against that index:
 ### Querying
 
 - [Searching](../indexes/querying/searching)
+- [Boosting](../indexes/querying/boosting)
 
 ### Indexes
 

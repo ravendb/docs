@@ -41,4 +41,6 @@ The same result might be achieved by creating a [Map-Reduce](../../indexes/map-r
 
 ## Related Articles
 
-- [Indexing : Querying : Paging](../../indexes/querying/paging)
+### Querying
+
+- [Paging](../../indexes/querying/paging)

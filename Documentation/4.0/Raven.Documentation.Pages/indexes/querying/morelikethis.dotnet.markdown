@@ -67,4 +67,6 @@ The document ID is then set in the `MoreLikeThisOptions`.
 
 ## Related Articles
 
-- [Client API : Session : How to use MoreLikeThis?](../../client-api/session/querying/how-to-use-morelikethis)
+### Client API
+
+- [How to Use MoreLikeThis](../../client-api/session/querying/how-to-use-morelikethis)

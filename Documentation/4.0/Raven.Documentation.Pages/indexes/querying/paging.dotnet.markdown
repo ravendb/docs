@@ -78,7 +78,12 @@ into the paging formula. Let's take a look at the example (note the usage of `St
 
 ## Related Articles
 
-- [Indexing : Basics](../../indexes/indexing-basics)
-- [Querying : Basics](../../indexes/querying/basics)
-- [Querying : Filtering](../../indexes/querying/filtering)
-- [Querying : Sorting](../../indexes/querying/sorting)
+### Indexes
+
+- [Indexing Basics](../../indexes/indexing-basics)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+- [Filtering](../../indexes/querying/filtering)
+- [Sorting](../../indexes/querying/sorting)

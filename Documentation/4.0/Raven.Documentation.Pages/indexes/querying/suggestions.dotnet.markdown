@@ -59,4 +59,6 @@ Indexes with turned on suggestions tend to use a lot more CPU power than other i
 
 ## Related Articles
 
-- [Client API : Session : How to work with suggestions?](../../client-api/session/querying/how-to-work-with-suggestions)
+### Client API
+
+- [How to Work with Suggestions](../../client-api/session/querying/how-to-work-with-suggestions)

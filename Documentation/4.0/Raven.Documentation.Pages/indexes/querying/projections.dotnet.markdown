@@ -210,4 +210,14 @@ Because you are working with projections and not directly with documents, they a
 
 ## Related Articles
 
-- [Client API : Session : How to project query results?](../../client-api/session/querying/how-to-project-query-results)
+### Querying 
+
+- [Basics](../../indexes/querying/basics)
+
+### Client API
+
+- [How to Project Query Results](../../client-api/session/querying/how-to-project-query-results)
+
+### Knowledge Base
+
+- [JavaScript Engine](../../server/kb/javascript-engine)

@@ -191,6 +191,14 @@ where search(Query, 'John')
 
 ## Related Articles
 
-- [Indexing : Boosting](../../indexes/boosting)
-- [Indexing : Querying : Boosting](../../indexes/querying/boosting)
-- [Client API : Session : How to use search?](../../client-api/session/querying/how-to-use-search)
+### Indexes
+
+- [Boosting](../../indexes/boosting)
+
+### Querying
+
+- [Boosting](../../indexes/querying/boosting)
+
+### Client API
+
+- [How to Use Search](../../client-api/session/querying/how-to-use-search)

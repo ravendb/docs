@@ -257,3 +257,14 @@ To patch documents on the server-side, use `update` with the desired JS script t
 The keyword `include` has been introduced to support attaching additional documents to the query response. A dedicated article that tackles this subject can be found [here](../../client-api/how-to/handle-document-relationships#includes).
 
 {PANEL/}
+
+## Related articles
+
+### Client API
+
+- [How to Query](../../client-api/session/querying/how-to-query)
+- [How to Use RQL Directly When Querying](../../client-api/session/querying/how-to-query#session.advanced.rawquery)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
