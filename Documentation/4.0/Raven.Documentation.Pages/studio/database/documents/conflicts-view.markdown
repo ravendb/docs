@@ -5,7 +5,7 @@
 
 * Manually resolve a conflict between two documents in this view.  
 
-* For a conflict overview see: [What is a Conflict](../../../server/clustering/replication-conflicts#what-is-a-conflict)  
+* For a conflict overview see: [What is a Conflict](../../../server/clustering/replication/replication-conflicts)  
 
 * Note:  
   By default, conflicts are resolved using the latest document version when no script is defined.  
@@ -33,4 +33,4 @@
 ## Related Articles
 
 - [Conflict Resolution Definiton](../../../studio/database/settings/conflict-resolution)
-- [What is a Conflict](../../../server/clustering/replication-conflicts#what-is-a-conflict)  
+- [What is a Conflict](../../../server/clustering/replication/replication-conflicts)  

@@ -20,7 +20,7 @@
 
 1. **Document identifier (ID)**  
 
-   * For a detailed explanation about the possible identifiers, see [Create New Document](../../../../todo-update-me-later)  
+   * For a detailed explanation about the possible identifiers, see [Create New Document](../../../studio/database/documents/create-new-document)  
    * Clicking the link right by the ID will show the _raw document output_ that is received  from the server  
 
 2. **Document properties**  

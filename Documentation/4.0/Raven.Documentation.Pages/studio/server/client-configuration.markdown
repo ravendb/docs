@@ -25,8 +25,8 @@
       * For each request, the client API will address the next node in their TAG order.  
       * In case of a failover, the client will try the next node as well.  
   * **Fastest Node**  
-      * Each client API request will go to the fastest node (determined by a [speed test](../../../server/scaling-out/clustering/speed-test)).  
-      * Any topology change would trigger the [speed test](../../../client-api/cluster/speed-test) again.  
+      * Each client API request will go to the fastest node (determined by a [speed test](../../client-api/cluster/speed-test)).  
+      * Any topology change would trigger the [speed test](../../client-api/cluster/speed-test) again.  
       * Failover in this case would select the node with the next TAG.  
 
 **2. Max number of requests per session**  

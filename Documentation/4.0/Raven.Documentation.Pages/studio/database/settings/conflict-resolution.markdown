@@ -108,4 +108,4 @@ return result;
 ## Related Articles
 
 - [Documents Conflicts View](../../../studio/database/documents/conflicts-view)  
-- [What is a Conflict](../../../server/clustering/replication-conflicts#what-is-a-conflict)  
+- [What is a Conflict](../../../server/clustering/replication/replication-conflicts#replication--conflicts)  

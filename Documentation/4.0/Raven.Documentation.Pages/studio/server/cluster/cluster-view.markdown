@@ -154,7 +154,7 @@ Operations in RavenDB are usually divided into cluster-wide operations and inter
   Note: An action is accepted by the entire cluster if a majority of the nodes have approved that action - if a majority of the nodes isn't available, we can’t proceed.  
 * i.e.:  
   * Creating/deleting/enabling/disabling a database  
-  * Creating/deleting/modifying/enabling/disabling a [task](../../../todo-update-me-later)  
+  * Creating/deleting/modifying/enabling/disabling an [ongoing task](../../../studio/database/tasks/ongoing-tasks/general-info)  
   * Creating/deleting/modifying an [index](../../../todo-update-me-later)  
 
 ###Database Operation

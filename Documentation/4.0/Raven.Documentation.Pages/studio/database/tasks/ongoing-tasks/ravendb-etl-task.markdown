@@ -105,7 +105,7 @@
 1. **Data ownership**:  
 
     * When a RavenDB node performs an **ETL** to another node it is _not_ replicating the data, it is _writing_ it.  
-      In other words, we always _overwrite_ whatever exists on the other side, there is no [conflicts handling](../../../todo-update-me-later).  
+      In other words, we always _overwrite_ whatever exists on the other side, there is no [conflicts handling](../../../../studio/database/settings/conflict-resolution).  
 
     * The source database for the ETL process is the owner of the data.  
       This means that any modifications done to the ETL’ed data on the destination database side are lost when overwriting  occurs.  

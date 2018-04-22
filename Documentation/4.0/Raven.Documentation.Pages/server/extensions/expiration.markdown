@@ -1,36 +1,77 @@
-﻿# Expiration
+﻿# Documents Expiration
+---
 
-The Expiration feature serves a very simple purpose: It deletes the documents whose time has passed. 
+{NOTE: }
 
-Usage scenarios for the Expiration feature include storing user sessions in RavenDB or using RavenDB as a cache.
+* The Expiration feature deletes expired documents, documents whose time has passed.  
+  Documents that are set with a future expiration time will be automatically deleted.  
 
-## Usage
-You can set the expiration date for a document using the following code:
+* The Expiration feature can be turned on and off while the database is already live with data.  
 
-{CODE expiration1@Server\Expiration.cs /}
+* In this page:  
+  * [Expiration Feature Usages](../../server/extensions/expiration#usages)  
+  * [Configuring the Expiration Feature](../../server/extensions/expiration#configuring-the-expiration-feature)  
+  * [Setting the Document Expiration Time](../../server/extensions/expiration#setting-the-document-expiration-time)  
+  * [Eventual Consistency Considerations](../../server/extensions/expiration#eventual-consistency-considerations)  
+  * [More Details](../../server/extensions/expiration#more-details)  
+{NOTE/}
 
-All you need to do is to set the `@expires` property in the metadata for the appropriate date, and at the specified time the document will be automatically deleted.
+---
 
-{NOTE The date must be UTC, not local time. /}
+{PANEL: Expiration Feature Usages}
 
-## Configuration
-By default the expriation is turned off. You can turn it on using the studio. 
-The default delete frequency is 60 seconds, which is customizable.
+* Use the Expiration feature when data is needed to be kept for only a temporary time.  
 
-![Configuring expiration feature on the database](images/configure-expiration.png)
+* Examples:
+  * Shopping cart data that is kept for only a specific time  
+  * Email links that need to be expired after a few hours  
+  * Storing a web application login session details  
+  * When using RavenDB to hold cache data from a SQL server.  
+{PANEL/}
 
-You can also configure the expiration feature using the client:
+{PANEL: Configuring the Expiration Feature}
+
+* By default, the expiration feature is turned off.  
+
+* The delete frequency is configurable, the default value is 60 secs.  
+
+* The Expiration feature can be turned on and off using the **Studio**, see [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration).  
+
+* The Expiration feature can also be configured using the **Client**:
 
 {CODE configuration@Server\Expiration.cs /}
+{PANEL/}
 
-## Eventual Consistency
-Once the document is expired, it can take up to the delete frequency interval (60 seconds, by default) until the expired documents would acutally be deleted. 
-We do not filter expired documents on load/query/indexing time, so be aware that the document might be still there after it expires up to the delete frequency interval timeframe.
+{PANEL: Setting the Document Expiration Time}
 
-## More Details
-Internally we track each document with `@expires` property in the metadata, even if the expiration feature is turned off. 
-This way once the expirtaion feature is turned on we can delete all expired documents easily.
+* To set the document expiration time just add the `@expires` property to the document `@metadata` and set it to contain the appropriate expiration time.  
 
-{NOTE Metadata properties starting with `@` are internal for RavenDB use, you should not use `@expires` property in metadata for other purpose than the built in expiration feature. /}
+* Once the Expiration feature is enabled, the document will automatically be deleted at the specified time.  
 
-You can turn on and off the revisions feature whlie the database is already live with data.
+* **Note**: The date must be in **UTC** format, not local time.  
+
+* The document expiration time can be set using the following code from the client:  
+
+{CODE expiration1@Server\Expiration.cs /}
+{PANEL/}
+
+{PANEL: Eventual Consistency Considerations}
+
+* Once documents are expired, it can take up to the delete frequency interval (60 seconds by default) until these expired documents are actually deleted.  
+
+* Expired documents are _not_ filtered on load/query/indexing time, so be aware that an expired document might still be there after it has expired up to the 'delete frequency interval' timeframe.  
+{PANEL/}
+
+{PANEL: More Details}
+
+* Internally, each document that has the `@expires` property in the metadata is tracked by the RavenDB server  
+  even if the expiration feature is turned off.  
+This way, once the expiration feature is turned on we can easily delete all the expired documents.  
+
+* **Note**: Metadata properties starting with `@` are internal for RavenDB usage.  
+You should _not_ use the `@expires` property in the metadata for any other purpose other than the built-in expiration feature.  
+{PANEL/}
+
+## Related Articles
+
+- [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration).  
