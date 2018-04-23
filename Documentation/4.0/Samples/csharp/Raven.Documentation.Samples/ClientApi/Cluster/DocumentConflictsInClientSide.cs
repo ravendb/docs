@@ -75,7 +75,7 @@ namespace Raven.Documentation.Samples.ClientApi.Cluster
                                         }
                                     }
                                 }
-                                return final; //the conflict will be resolved to this variant
+                                return final; // the conflict will be resolved to this variant
                                 "
                             }
                         }
@@ -83,8 +83,10 @@ namespace Raven.Documentation.Samples.ClientApi.Cluster
 
                     var op = new ModifyConflictSolverOperation(
                         store.Database,
-                        resolveByCollection, //we specify conflict resolution scripts by document collection 
-                        resolveToLatest: false); //if true, RavenDB will resolve conflict to the latest.
+                        resolveByCollection,    //we specify conflict resolution scripts by document collection 
+                        resolveToLatest: true); // if true, RavenDB will resolve conflict to the latest
+                                                // if there is no resolver defined for a given collection or
+                                                // the script returns null
 
                     await store.Maintenance.Server.SendAsync(op);
                 }                

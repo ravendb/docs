@@ -14,11 +14,11 @@ Replication in RavenDB is the process of transferring data from one database to 
 How does replication works
 ---
 The replication process sends _data_ over a _TCP connection_ by the modification order, meaning that the oldest modification on the node gets sent first.  
-Internally we keep an [ETag](../../glossary/etag) per data element, which is an incrementing integer value, and this is how we are able to determine what is the order of modifications.  
+Internally we keep an [ETag](../../../glossary/etag) per data element, which is an incrementing integer value, and this is how we are able to determine what is the order of modifications.  
 Each replication process has a _source_ , _destination_ and a last confirmed _ETag_ which is basically a cursor to where we have gotten to in the replication process.  
 The _data_ is sent from the _source_, in batches, to the _destination_.  
 When the _destination_ confirms getting the _data_ the last accepted etag is then advanced and the next batch of _data_ is sent.  
-In case of failure of the process, it will re-start with the [initial handshake procedure](../clustering/replication#replication-handshake-procedure), which will make sure we will start replicating from the last accepted _ETag_.
+In case of failure of the process, it will re-start with the [initial handshake procedure](../../../server/clustering/replication/replication#replication-handshake-procedure), which will make sure we will start replicating from the last accepted _ETag_.
 
 Replication Handshake Procedure
 ---
@@ -26,13 +26,13 @@ Whenever the replication process between two databases start it has to determine
 The first message has been sent is a request to establish a TCP connection of type _replication_ with a _protocol version_.  
 At this point, the _destination server_ verifies that the protocol version matches and that the request is authorized.  
 Once the _source_ gets the OK message it queries the _destination_ about the lastest ETag it got from him.  
-The _destination_ sends back a _heartbeat_ message with both the latest _ETag_ he got from the _source_ and the current [change vector](../clustering/change-vector)of the database.  
+The _destination_ sends back a _heartbeat_ message with both the latest _ETag_ he got from the _source_ and the current [change vector](../../../server/clustering/replication/change-vector) of the database.  
 The _ETag_ is used as a starting point for the replication process but it is then been filtered by the _destination's_ current _change vector_,
-meaning we will skip documents with higher _Etag_ and lower _change vecotr_, this is done so we won't send the same data from multiple sources, you can read more about this [below](../clustering/replication#preventing-the-ripple-effect).  
+meaning we will skip documents with higher _Etag_ and lower _change vecotr_, this is done so we won't send the same data from multiple sources, you can read more about this [below](../../../server/clustering/replication/replication#preventing-the-ripple-effect).  
 
 Preventing the ripple effect
 ---
-RavenDB [_database group_](../../glossary/database-group) is a fully connected graph of replication channels, meaning that if there are `n` nodes in a _database group_ there are `n*(n-1)` replication channels.  
+RavenDB [_database group_](../../../glossary/database-group) is a fully connected graph of replication channels, meaning that if there are `n` nodes in a _database group_ there are `n*(n-1)` replication channels.  
 We wanted to prevent the case where inserting data into one database will cause the data to propagate multiple times through multiple paths to all the other nodes.  
 We have managed to do so by delaying the propagation of data coming from the replication logic itself.  
 If the sole source of incoming data is replication we will not replicate it right away, we will wait up to `15 seconds` before sending data.  
@@ -59,12 +59,12 @@ We can not calculate the tax in transaction #17 and modify `Y` accordingly since
 Now what could happen is that the replication batch will send `X` without `Y` since it was not modified in the same transaction and node `B` will have data inconsistency issues again.  
 Luckily not all is lost there are a couple of solutions this problem:  
 
-1. You can use [write assurence](../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
-2. You could enable [revisions](../revisions) and thus we will replicate the revisions along side the documents and this way `X` will be sent with `Y'` which is the revision of `Y` after we added one _Bitcoin_ to it but before we took the 0.1 _Bitcoin_ tax off.  
+1. You can use [write assurance](../../../client-api/session/saving-changes#waiting-for-replication---write-assurance).  
+2. You could enable [revisions](../../../server/extensions/revisions) and thus we will replicate the revisions along side the documents and this way `X` will be sent with `Y'` which is the revision of `Y` after we added one _Bitcoin_ to it but before we took the 0.1 _Bitcoin_ tax off.  
 
 Rehab state and database group observer
 ---
-In a [database group](../../glossary/database-group) we might have a node that has a much lower [gloabl change vector](../clustering/database-global-change-vector), and currently being updated by one of the other nodes in the _database group_.  
+In a [database group](../../../glossary/database-group) we might have a node that has a much lower [global change vector](../../../server/clustering/replication/change-vector#database-global-change-vector), and currently being updated by one of the other nodes in the _database group_.  
 This may happen for a few reasons, it was just added, it was down for a while or it was just restored from a backup snapshot.  
 We consider such node to be in a _rehab_ state untill it caught up with the rest of the _database group_.  
 While a node is in a _rehab_ state it may not be assigned any tasks such as _backup_, _ETL_ or _subscriptions_.  

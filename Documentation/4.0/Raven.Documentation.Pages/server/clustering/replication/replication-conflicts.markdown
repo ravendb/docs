@@ -11,7 +11,7 @@ or accept the potential for conflicts.
 For document writes, RavenDB chooses to accept conflicts as a tradeoff of always being able to accept writes on any node.
 
 ### Conflict Detection
-Each document in a RavenDB cluster has a [change vector](../../server/clustering/change-vector) which is used for conflict detection.
+Each document in a RavenDB cluster has a [change vector](../../../server/clustering/replication/change-vector) which is used for conflict detection.
 
 ### Conflict Resolution
 When there is a conflict between two or more document versions, it will need to be resolved. RavenDB must decide which of the versions should be kept.
@@ -29,7 +29,7 @@ It is expected that the script returns an object which will resolve the conflict
 {PANEL: Conflict Resolution}
 
 ### Configuring Conflict Resolution Using the Client  
-Setting up conflict resolution strategy in the client is done via sending cluster-level operation - [ModifyConflictSolverOperation](../../client-api/operations/server-wide/modify-conflict-solver), which is a [Raft command](../../glossary/raft-command).
+Setting up conflict resolution strategy in the client is done via sending cluster-level operation - [ModifyConflictSolverOperation](../../../client-api/operations/server-wide/modify-conflict-solver), which is a [Raft command](../../../glossary/raft-command).
   
 ### Configuring Conflict Resolution Using the Management Studio
 Conflict resolution scripts can be set up also via the Management Studio as well.   
@@ -70,19 +70,19 @@ On this screenshot, we can see the conflict resolution screen in which we would 
 {PANEL/}  
   
 ### What Happens at Server-Side?
-When the server receives an incoming replication batch, it compares the [change vector](../../server/clustering/change-vector) 
-of the incoming document with the [change vector](../../server/clustering/change-vector) of the local document. 
+When the server receives an incoming replication batch, it compares the [change vector](../../../server/clustering/replication/change-vector) 
+of the incoming document with the [change vector](../../../server/clustering/replication/change-vector) of the local document. 
 If there is no local document, i.e. document replicates for the first time, an empty change vector is assumed.
   
 Let's assume _remote_cv_ to be the change vector of a remote document, and _local_cv_ to be a change vector of a local document.
-The comparison of the [change vectors](../../server/clustering/change-vector) may yield three possible results:  
+The comparison of the [change vectors](../../../server/clustering/replication/change-vector) may yield three possible results:  
   
 * _remote_cv_ <= _local_cv_ --> Nothing to do in this case
 * _remote_cv_ > _local_cv_ -->  Remote document is more recent than local, replace local document with remote
 * _remote_cv_ **conflicts** with _local_cv_ --> Try to resolve conflict by using defined conflict resolvers
   
 {NOTE: Change Vector comparisons}
-[Change vectors](../../server/clustering/change-vector) is essentially a collection of **<[database ID](../../glossary/database-id)/[Node Tag](../../glossary/node-tag)/[Etag](../../glossary/etag)>** three-part tuples.
+[Change vectors](../../../server/clustering/replication/change-vector) is essentially a collection of **<[database ID](../../../glossary/database-id)/[Node Tag](../../glossary/node-tag)/[Etag](../../../glossary/etag)>** three-part tuples.
 Conceptually, comparing two change vectors means answering a question - which change vector refers to an earlier event.  
 
 The comparison is defined as follows:  
@@ -134,8 +134,8 @@ When trying to resolve a conflict, RavenDB will try multiple steps to resolve it
   
 * Step 1: If `ResolveToLatest` flag is set (by default it is set to true), resolve the conflict to the document variant where the "latest modified" is the latest.
 * Step 2: Check whether the document contents are identical, if yes, then there is no conflict. In this case, the change vector of the two documents is merged, and will retain the maximum entries for the corresponding **node Tag/Database IDs**.
-{NOTE The identity check applies to [tombstone](../../glossary/tombstone) as well, and it will always resolve to the local one, since the tombstones are always considered equal. /}
-* Step 3: Try to resolve the conflict by using a script, which is set up by [configuring a conflict resolver](#conflict-resolution).  
+{NOTE The identity check applies to [tombstone](../../../glossary/tombstone) as well, and it will always resolve to the local one, since the tombstones are always considered equal. /}
+* Step 3: Try to resolve the conflict by using a script, which is set up by [configuring a conflict resolver](../../../server/clustering/replication/replication-conflicts#conflict-resolution).  
 A resolution script is set-up per document collection.
   
 If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved manually. 

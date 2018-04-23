@@ -3,7 +3,7 @@
 ## What are conflicts?
 When two or more changes of a single document are done concurrently in two separate nodes, 
 RavenDB cannot know which one of the changes is the correct one. This is called document conflict.  
-For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication-conflicts).  
+For more information about conflicts and their resolution, see [article about conflicts](../../server/clustering/replication/replication-conflicts).  
 
 {NOTE By default, RavenDB will solve conflicts using "resolve to latest" strategy, thus the conflict will be resolved to a document with the latest 'modified date'./}
   

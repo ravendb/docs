@@ -80,5 +80,7 @@ Note that if data is considered contained by a database it doesn't mean it is pr
 
 ## Related Articles
 
-- [Client API: How to enable optimistic concurrency](../../client-api/session/configuration/how-to-enable-optimistic-concurrency)
+### Client API
+
+- [How to enable optimistic concurrency](../../../client-api/session/configuration/how-to-enable-optimistic-concurrency)
 
