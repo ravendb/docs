@@ -8,8 +8,8 @@ Lucene flavored syntax can be used with the `WhereLucene` method, a part of the 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fieldName** | string | Name of a field in an index |
-| **whereClause** | string | Lucene-syntax based clause for a given field |
+| **fieldName** | string | Name of a field in an index (default field) |
+| **whereClause** | string | Lucene-syntax based clause |
 
 ## Example
 
@@ -21,6 +21,10 @@ from Companies
 where lucene(Name, 'bistro')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
+
+## Advanced Usage
+
+The `fieldName` argument corresponds to Lucene's default field convention. It is mandatory to pass it to the `.WhereLucene` but the `whereClause` can contain clause that omits the field entirely giving you the opportunity to pass a complex expression e.g. `.WhereLucene("Name", "Name:bistro OR Phone:981-443655")`. It is advised to use this approach against Static Index where all fields are known, because there is no guarantee that a proper Auto Index will be created or used.
 
 ## Related Articles
 
