@@ -4,10 +4,10 @@
 {NOTE: }
 
 * From the Studio, the database creation options are:  
-  * **Regular** database - see [below](../../studio/server/databases/create-new-database/general-flow#1.-new-database)  
-  * **Encrypted** database - see [Encrypted Database](encrypted.markdown)  
-  * Create a database from a **Backup** copy - see [From Backup](from-backup.markdown)  
-  * Create a database from a **Previous** RavenDB version database - see [From Legacy File](from-legacy-files)  
+  * **Regular** database - see [below](../../../../studio/server/databases/create-new-database/general-flow#1.-new-database)  
+  * **Encrypted** database - see [Encrypted Database](../../../../studio/server/databases/create-new-database/encrypted)  
+  * Create a database from a **Backup** copy - see [From Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+  * Create a database from a **Previous** RavenDB version database - see [From Legacy File](../../../../studio/server/databases/create-new-database/from-legacy-files)  
 
 * In this page:  
   * [1. New Database](../../../../studio/server/databases/create-new-database/general-flow#1.-new-database)  

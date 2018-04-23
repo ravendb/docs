@@ -45,7 +45,7 @@
 
 2. **Tasks** for which a node is responsible for.  
    i.e. Node 'A' is responsible for an 'External Replication Task'.  
-   See more about the database tasks in [Ongoing Tasks](../../../todo-update-me-later)  
+   See more about the database tasks in [Ongoing Tasks](../../../studio/database/tasks/ongoing-tasks/general-info)  
 
 3. A node is marked as ***Rehab*** if it is down or unreachable.  
    i.e. Node 'E'  
@@ -124,7 +124,7 @@
 {NOTE: Who's Duty is it ?}
 
 * Topology changes (i.e. new node in the database group, delete node from Database Group), 
-as well as tasks that are defined on the database, are written to the [Database Record](../../../todo-update-me-later). 
+as well as tasks that are defined on the database, are written to the [Database Record](../../../studio/database/settings/database-record). 
 The database record exists in each node in the cluster.  
 
 * When a new node is added and a mentor is needed for the new node, or when a new task is added,  

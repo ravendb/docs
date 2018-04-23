@@ -67,7 +67,7 @@
 * 3  
   * **Patch**: Patch documents in a collection or in an index. See [Patch Documents](../../../../todo-update-me-later)  
   * **Query**: Query documents in a collection or in an index. See [Query Documents](../../../../todo-update-me-later)  
-  * **Conflicts**: View and resolve conflicting documents. See [Conflicts](../../../../todo-update-me-later)  
+  * **Conflicts**: View and resolve conflicting documents. See [Conflicts](../../../studio/database/documents/conflicts-view)  
 {PANEL/}
 
 {PANEL}  
