@@ -8,7 +8,11 @@
                 "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
             }
         ]
-    },  
+    },      
+    {
+        "Path": "document-conflicts-in-client-side.markdown",
+        "Name": "Document Conflict Exceptions at Client-Side"
+    },
     {
         "Path": "speed-test.markdown",
         "Name": "Client Speed Test"
