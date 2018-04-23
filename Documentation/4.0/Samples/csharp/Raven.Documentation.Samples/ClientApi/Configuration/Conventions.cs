@@ -51,6 +51,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #region RequestTimeout
                     RequestTimeout = TimeSpan.FromSeconds(90)
                     #endregion
+                    ,
+                    #region UseCompression
+                    UseCompression = true
+                    #endregion
 	            }
             };
 

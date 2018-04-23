@@ -69,6 +69,12 @@ It determines if C# `enum` types should be saved as integers or strings and inst
 
 {CODE SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.cs /}
 
+##UseCompression
+
+It determines if client will send headers to the Server indicating that it allows compression to be used. Default: `true`.
+
+{CODE UseCompression@ClientApi\Configuration\Conventions.cs /}
+
 ## Related articles
 
 ### Conventions
