@@ -15,6 +15,7 @@ You can configure this for all collections (using the default configuration) and
 Configuration options:
 
 | Configuration option | Description |
+| - | - |
 | **Purge on delete** | Configure whether to delete the revisions upon document delete, or create a delete marker instead. |
 | **Limit # of revisions** | Configure how much revisions to keep. Default: unlimited. |
 | **Limit # of revisions by age** | Configure a minimum retention time before the revisions can be expired. Default: None. |

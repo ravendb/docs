@@ -1,24 +1,51 @@
 # Distributed Database
 
-In RavenDB every replica is a full copy of the same database.
+In RavenDB a database can be replicated across multiple nodes.  
+A node where a database resides is referred as `Database Node`. The group of `Database Nodes` that assemble the distributed database, is called `Database Group`. 
 
-## Database Node
+{INFO: Important}
+Each database node is a **full copy**, so it contains _all_ the database documents and index them locally. This greatly simplifies executing query requests, since there is no need to orchestrate an aggregation from various nodes. 
+{INFO/}
 
-The node on which a specific database resides.
+When creating a database it is possible to specify the exact nodes of the `Database Group`, which implicitly will set the `Replication Factor` to the amount of the nodes. Or it is possible to pass the `Replication Factor` explicitly and let RavenDB to choose on which nodes to place the database.  
+Either way, once the database is created by getting a [Consensus](./../../server/clustering/rachis/consensus-operations), the [Cluster Observer](../../../server/distribution/cluster-observer) begins to monitor the `Database Group` to maintains the `Replication Factor`.
 
-## Database Group
+## Database Topology
+The `Database Topology` describes the relations inside the `Database Group` between the `Database Nodes`.
+Each `Database Node` can be in one of the following states:
 
-The collection of database nodes of the same database.
+| State | Description |
+| - | - |
+| **Member** | Fully updated and functional database node. |
+| **Promotable** | Recently added node to the group, which is being updated. |
+| **Rehab** | A former Member node that assumed to be _not_ up-to-dated due to partition. |
 
----
-### Failover
-When the client is initialized it gets a list of nodes that are in the [Database Group](../../glossary/database-group), so when one of the nodes is down (or there are network issues), the client will automatically and transparently try contacting other nodes.  
-If a topology is changed after the client was initialized, the client would have old topology etag, and this would make the client fetch the updated topology from the server.
-How the failover nodes are selected, depends on the configuration of *read balance behavior*, which can be configured either in the [Studio](../../studio/server/client-configuration) or in the client.  
+{INFO: Replication}
+All `Members` have master-master [Replication](../../../server/clustering/replication/replication) in order to keep the documents in sync across the nodes.
+{INFO/}
 
-### Load-balance
-The load-balance behavior can be one of three types:  
+In general, all nodes in a newly created database are in the state of `Member`.  
+When adding new `Database Node` to an already existing database group, a [Mentor Node](to-do) will be selected by the server in order to update it. The new node will be in a `Promotable` state until it will receive _and_ index all of the documents from the mentor node.
 
-  * None - No load balance behavior at all.  
-  * Round Robin - Each request from the client will address another node.  
-  * Fastest Node - Each request will go to the fastest node. The fastest node will be recalculated.  
+### Dynamic Database Distribution
+If any of the `Database Nodes` is down or partitioned, the [Cluster Observer](../../../server/distribution/cluster-observer) will recognize it and act as following:
+
+1. If [Cluster.TimeBeforeMovingToRehabInSec](../../../server/configuration/cluster-configuration#cluster.timebeforemovingtorehabinsec) (default: 60 seconds) time has passed and the node is still unreachable, the node will be moved to a `Rehab` state.
+2. If the node is for [Cluster.TimeBeforeAddingReplicaInSec](../../../server/configuration/cluster-configuration#cluster.timebeforeaddingreplicainsec) (default: 900 seconds) still in `Rehab`, a new database node will be automatically added to the database group to replace the `Rehab` node.
+3. If the `Rehab` node is online again, it will be assigned with a [Mentor Node](to-do) to update him with the recent changes.
+4. The first node to be up-to-date stays, while the other is deleted.
+
+
+It is possible to toggle this feature on and off with the following `HTTP` request:
+
+| URL | Method | URL Params |
+| - | - | - |
+| /admin/databases/dynamic-node-distribution | `POST` | name=[`database-name`], enable=[`bool`] |
+
+## Sharding
+
+RavenDB 4.x doesn't offer sharding as an out of the box solution, although it is on the development roadmap to be implemented in a future version (Track it [here](http://issues.hibernatingrhinos.com/issue/RavenDB-8115)).  
+
+## Related articles 
+- [Client API - Database Operations](../../../client-api/operations/server-wide)
+- [Create Database via Studio](../../../studio/server/databases/create-new-database/general-flow)
