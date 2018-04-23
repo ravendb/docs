@@ -102,7 +102,7 @@ This option is used to perform:
 
 {INFO:All Documents}
 
-In order to query all documents, the `@all_docs` keyword can be used e.g. 
+In order to query all documents, the `@all_docs` keyword can be used:
 
 - `from @all_docs where FirstName = 'Laura'`
 - `from @all_docs where id() = 'companies/1-A'`.
@@ -163,7 +163,7 @@ where PricePerUnit >= 10.5 and PricePerUnit <= 13.0
 
 ### Operator: IN
 
-Operator `in` is validating if a given field contains passed values. It will return results if a given field matches **any** of the passed values.
+The operator `in` is validating if a given field contains passed values. It will return results if a given field matches **any** of the passed values.
 
 {CODE-BLOCK:csharp}
 from Companies 
@@ -177,7 +177,7 @@ where Lines[].ProductName in ('Chang', 'Spegesild', 'Unknown product name')
 
 ### Operator: ALL IN
 
-This operator checks if **all** passes values are matching given field. Due to its mechanics, it is only useful when used on array fields.
+This operator checks if **all** passes values are matching a given field. Due to its mechanics, it is only useful when used on array fields.
 
 The following query will yield no results in contrast to an 'in' operator.
 
@@ -258,7 +258,7 @@ The keyword `include` has been introduced to support attaching additional docume
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 ### Client API
 
