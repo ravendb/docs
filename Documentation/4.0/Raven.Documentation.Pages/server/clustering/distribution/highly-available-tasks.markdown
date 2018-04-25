@@ -28,7 +28,7 @@ Each node checks whether he is the `Responsible Node` for the task by executing 
 Since the `Database Topology` is _eventually consistent_ across the cluster, there will be an _eventually consistent_ `Responsible Node`, which will answer the above constraints.
 
 ### Mentor Node
-When doing an update task, the `Responsible Node` is referred to as a `Mentor Node`.
+When node has the task to update another node. The updating node is called `Mentor Node`.
 
 ## Tasks Relocation
 
@@ -38,7 +38,7 @@ When doing an update task, the `Responsible Node` is referred to as a `Mentor No
 For example:  
 Let's assume that we have a 5 nodes cluster [A, B, C, D, E] with a database on [A, B, E] and a task on node B.  
 Node B has network issues and is separated from the cluster. So on one side we have nodes [A, C, D, E] and [B] on the other.
-The [Cluster Observer]() will note that he can't reach node B and issue [Raft Command](../../../server/clustering/rachis/consensus-operations) to move node B to `Rehab` state. 
+The [Cluster Observer](../../../server/clustering/distribution/cluster-observer) will note that he can't reach node B and issue [Raft Command](../../../server/clustering/rachis/consensus-operations) to move node B to `Rehab` state. 
 Once this change has propagated, it will trigger a reassessment of _all_ tasks in all reachable nodes. In our example the task will move to either A or E.   
 In the meanwhile, node B which has no communication with the [Cluster Leader](../../../server/clustering/rachis/cluster-topology), moves itself to be a `Candidate` and removes all tasks. 
 

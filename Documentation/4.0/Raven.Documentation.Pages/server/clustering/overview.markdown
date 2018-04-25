@@ -1,7 +1,7 @@
 ﻿# Clustering Overview
 
 [RavenDB Cluster](../../glossary/ravendb-cluster) consists of one or more RavenDB Instances which are called [Cluster Nodes](../../glossary/cluster-node).
-In RavenDB 4.x clustering and replication are complementary parts of the same feature. While [Rachis](./rachis/what-is-rachis) responsible for keeping the cluster nodes in consensus, the replication keeps the documents across nodes in sync.
+In RavenDB 4.x clustering and replication are complementary parts of the same feature. While [Rachis](../../../server/clustering/rachis/what-is-rachis) responsible for keeping the cluster nodes in consensus, the replication keeps the documents across nodes in sync.
 
 {INFO:Rachis is the RavenDB Raft Implementation}
 Raft is a "[distributed consensus](https://en.wikipedia.org/wiki/Consensus_(computer_science)) algorithm".  
@@ -14,11 +14,11 @@ However the decision on which nodes to created it, defined either by the user gi
 A group of nodes that contain the same database is called [Database Group](../../glossary/database-group) and there is a master-master replication between every member in that group.
 
 Any document related change, such as CRUD operation or query is _not_ going through Raft, but will be replicated to the other database replicas to keep the data up-to-date.
-However the operation of creating an index is a [Cluster Operation](./rachis/clsuter-operations) which requires majority in order to be applied.
+However the operation of creating an index is a [Cluster Operation](../../server/clustering/rachis/consensus-operations) which requires majority in order to be applied.
 
-Clustering introduce also [Task Distribution](./distribution/database-tasks), which allows for tasks such as [Backups](../../ongoing-tasks/backups/basic), [External Replication](../../ongoing-tasks/external-replication/basic), [ETL Replication](../../ongoing-tasks/etl/basics), [Subscriptions](../../ongoing-tasks/subscriptions/basic) to be operational even if the current node to which the client connect to is down. 
+Clustering introduce also [Task Distribution](../../server/clustering/distribution/highly-available-tasks), which allows for tasks such as [Backups](../../server/ongoing-tasks/backups/basic), [External Replication](../../ongoing-tasks/external-replication/basic), [ETL Replication](../../ongoing-tasks/etl/basics), [Subscriptions](../../ongoing-tasks/subscriptions/basic) to be operational even if the current node to which the client connect to is down. 
 
-Another important component in the RavenDB Cluster is the [Observer](./distribution/cluster-observer), his job is to monitor and maintain the status of every database in the cluster.   
+Another important component in the RavenDB Cluster is the [Observer](../../../server/clustering/distribution/cluster-observer), his job is to monitor and maintain the status of every database in the cluster.   
 
 {INFO:For Example}
 Let us assume a five node cluster, with servers A, B, C, D, E.  

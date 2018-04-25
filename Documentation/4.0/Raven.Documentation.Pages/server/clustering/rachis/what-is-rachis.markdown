@@ -40,6 +40,6 @@ cluster bootstrap, once that is done, all servers have the same configuration, a
 them.   
 
 ###Normal operations
-During normal operations, there is going to be a leader that is going to be accepting all the [Raft Commands](raft-commands) requests for the cluster, 
+During normal operations, there is going to be a leader that is going to be accepting all the [Raft Commands](../../../server/clustering/rachis/consensus-operations) requests for the cluster, 
 and handle committing them cluster wide. During those operations, you can spread reads across members in the cluster, 
 for better performance.    
