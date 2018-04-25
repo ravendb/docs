@@ -1,41 +1,39 @@
-﻿# Client Configuration
+﻿# Client Requests Configuration
 ---
 
 {NOTE: }
 
-* Configure the RavenDB client behavior for **all** databases in the cluster  
-* These default values can be overwritten per databases in [Database Client Configuration](../../../../todo-update-me-later)  
+* Configure the RavenDB client requests behaviour for ***all*** databases in the cluster  
+
+* These default values can be overwritten ***per database*** in [Client Requests Configuration - per database](../../studio/database/settings/client-configuration-per-database)  
 {NOTE/}
 
 ---
 
-{PANEL: Client Configuration}
+{PANEL: Client Requests Configuration}
 
-![Figure 1. Client Configuration](images/client-configuration.jpg "Client Configuration")
+![Figure 1. Client Requests Configuration](images/client-configuration.png "Client Requests Configuration")
 
-**1. Read balance behavior**  
+**1. Read Balance Behaviour**  
 
-* Set the client API load-balancing behavior  
-* Effects the client API decision of which node to failover in case of issues  
-* Options:  
-  * **None**  
-      * The client API will failover nodes in their TAG order. (Node A, then Node B, then Node C and so on).  
-      * No load balancing will occur.  
-  * **Round Robin**  
-      * For each request, the client API will address the next node in their TAG order.  
-      * In case of a failover, the client will try the next node as well.  
-  * **Fastest Node**  
-      * Each client API request will go to the fastest node (determined by a [speed test](../../client-api/cluster/speed-test)).  
-      * Any topology change would trigger the [speed test](../../client-api/cluster/speed-test) again.  
-      * Failover in this case would select the node with the next TAG.  
+  * Set the load-balance method that the client will use when accessing a node with ***Read*** requests.  
+  The method selected will also affect the client's decision of which node to failover to in case of issues with the ***Read*** request.  
+  Note: ***Write*** requests will always access the [preffered node](../../client-api/configuration/load-balance-and-failover#preferred-node) calculated by the client.  
+
+  * Available options are:  
+     * _None_  
+     * _Round Robin_  
+     * _Fastest Node_  
+
+  *  For detailed explanation about each option see: [Read Balance Behavior Options](../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options)  
 
 **2. Max number of requests per session**  
 
-* Set this number to restrict the number of requests per session in the client API.  
-* The default value is 30.  
-
-{NOTE: Failure to contact all nodes}
-If the client has tried to contact all nodes and failed, an `AllTopologyNodesDownException` will be thrown
-{NOTE/}
-
+  * Set this number to restrict the number of requests (***Reads*** & ***Writes***) per session in the client API.  
+  The default value is 30.  
 {PANEL/}
+
+## Related articles
+
+- [Requests Configuration Per Database](../../studio/database/settings/client-configuration-per-database)
+- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)

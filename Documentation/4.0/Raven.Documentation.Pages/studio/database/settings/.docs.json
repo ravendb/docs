@@ -10,6 +10,11 @@
         "Mappings": []
     },
     {
+        "Path": "client-configuration-per-database.markdown",
+        "Name": "Client Requests Configuration",
+        "Mappings": []
+    },
+    {
         "Path": "document-expiration.markdown",
         "Name": "Document Expiraton",
         "Mappings": []
@@ -18,5 +23,6 @@
         "Path": "manage-database-group.markdown",
         "Name": "Manage Database Group",
         "Mappings": []
-    }
+    },
+    
 ]
