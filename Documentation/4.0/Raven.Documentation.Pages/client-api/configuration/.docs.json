@@ -25,8 +25,8 @@
         "Mappings": []
     },
     {
-        "Path": "cluster.markdown",
-        "Name": "Cluster",
+        "Path": "load-balance-and-failover.markdown",
+        "Name": "Load Balance & Failover",
         "Mappings": [
             {
                 "Version": "3.0",

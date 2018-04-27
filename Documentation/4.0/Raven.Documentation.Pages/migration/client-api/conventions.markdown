@@ -62,7 +62,8 @@ It has been removed. Only string identifiers are supported.
 
 {PANEL:FailoverBehavior}
 
-The client will failover automatically to different node in the cluster. You can customize the reads by using the `ReadBalanceBehavior` convention.
+The client will failover automatically to a different node in the cluster.  
+The ***Read*** requests can be customized by using the [`ReadBalanceBehavior` convention](../../client-api/configuration/load-balance-and-failover).  
 
 {PANEL/}
 

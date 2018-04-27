@@ -10,7 +10,7 @@
   If the node is down and the request fails, it will select another node from this list.  
 
 * The choice of which node to select depends on the value of `ReadBalanceBehavior`, which is taken from the current conventions. 
-  For more information about the different values and the node selection process, see [Related Cluster Conventions](../configuration/cluster). 
+  For more information about the different values and the node selection process, see [Load balance & Failover Conventions](../../client-api/configuration/load-balance-and-failover). 
   
 {NOTE Each failure to connect to a node spawns a health check for that node. For more information see [Cluster Node Health Check](health-check)./}
 
