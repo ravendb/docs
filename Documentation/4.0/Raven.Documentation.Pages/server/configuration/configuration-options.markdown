@@ -49,4 +49,10 @@ The server can be configured using command line arguments that can be passed to 
 
 ## Related articles
 
+### Configuration
+
 - [Command Line Arguments](../../server/configuration/command-line-arguments)
+
+### Administration
+
+- [Command Line Interface (CLI)](../../server/administration/cli)

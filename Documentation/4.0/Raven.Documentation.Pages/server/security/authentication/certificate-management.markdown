@@ -1,4 +1,4 @@
-# Security : Authentication : Certificate Management
+# Authentication : Certificate Management
 
 Once authentication is set up, it's the administrator's responsibility to issue and manage client certificates.
 
@@ -138,3 +138,19 @@ If you wish to view the full chain, add the server certificate to the OS trusted
 Because client certificates are managed by RavenDB directly and not through any PKI infrastructure **this is perfectly acceptable**. Authenticating a client certificate is done explicitly by looking for the thumbprint in the registered certificates list in the server and not by validating the chain of trust. 
 
 {PANEL/}
+
+## Related articles
+
+### Security
+
+- [Overview](../../../server/security/overview)
+- [Manual Certificate Configuration](../../../server/security/authentication/certificate-configuration)
+
+### Installation
+
+- [Secure Setup with a Let's Encrypt Certificate](../../../start/installation/setup-wizard#secure-setup-with-a-let)
+- [Secure Setup with Your Own Certificate](../../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)
+
+### Configuration
+
+- [Security Configuration](../../../server/configuration/security-configuration)

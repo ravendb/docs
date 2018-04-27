@@ -1,4 +1,4 @@
-﻿# Documents Expiration
+﻿# Document Expiration
 ---
 
 {NOTE: }
@@ -74,4 +74,6 @@ You should _not_ use the `@expires` property in the metadata for any other purpo
 
 ## Related Articles
 
-- [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration).  
+### Studio
+
+- [Setting Document Expiration in Studio](../../studio/database/settings/document-expiration)

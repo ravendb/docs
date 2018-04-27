@@ -38,5 +38,10 @@ The environment variables available when running Docker are:
 
 ## Related articles
 
+### Configuration
+
 - [Configuration Options](../../server/configuration/configuration-options)
 
+### Administration
+
+- [Command Line Interface (CLI)](../../server/administration/cli)

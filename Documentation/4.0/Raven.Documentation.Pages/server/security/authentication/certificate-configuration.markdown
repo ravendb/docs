@@ -1,4 +1,4 @@
-# Security : Authentication : Manual Certificate Configuration
+# Authentication : Manual Certificate Configuration
 
 In RavenDB, configuration values can be set using environment variables, command line arguments or using the `settings.json` file. For more details, please read the [Configuration Section.](../../configuration/configuration-options)  
 
@@ -71,3 +71,18 @@ And `settings.json` will look something like this:
 When the server is running with a certificate for the first time, there are no client certificates registered in the server yet. The first action an administrator will do is to generate/register a new client certificate.
 You can do this by using the [RavenDB CLI](../../../server/administration/cli#generateclientcert) (generateClientCert) or by using a client, see the [Client Certificate Usage](../../../server/security/authentication/client-certificate-usage) section for a detailed example.
 {INFO/}
+
+## Related articles
+
+### Security
+
+- [Overview](../../../server/security/overview)
+- [Certificate Management](../../../server/security/authentication/certificate-management)
+
+### Installation
+
+- [Manual Setup](../../../start/installation/manual)
+
+### Configuration
+
+- [Security Configuration](../../../server/configuration/security-configuration)

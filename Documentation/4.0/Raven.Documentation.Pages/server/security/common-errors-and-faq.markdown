@@ -232,3 +232,14 @@ Under construction
 ## Encryption Issues  
 
 Under construction
+
+## Related articles
+
+### Installation
+
+- [Setup Wizard](../../start/installation/setup-wizard)
+- [Manual Setup](../../start/installation/manual)
+
+### Security
+
+- [Overview](../../server/security/overview)

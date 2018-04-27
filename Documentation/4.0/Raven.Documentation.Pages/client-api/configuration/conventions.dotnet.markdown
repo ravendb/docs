@@ -81,7 +81,7 @@ It determines if client will send headers to the Server indicating that it allow
 
 - [Querying](../../client-api/configuration/querying)
 - [Serialization](../../client-api/configuration/serialization)
-- [Cluster](../../client-api/configuration/cluster)
+- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)
 
 ### Document Identifiers
 

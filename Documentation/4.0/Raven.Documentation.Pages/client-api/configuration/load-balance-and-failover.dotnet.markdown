@@ -9,7 +9,7 @@
 * The method selected in the convention determines which node the client's _RequestExecuter_ will send the ***Read*** requests to,  
   and which node to **failover** to in case of issues with the ***Read*** request.  
 
-* Note: ***Write*** requests will always access the [Preffered Node](../../client-api/configuration/load-balance-and-failover#preferred-node) calculated by the client.  
+* Note: ***Write*** requests will always access the [Preferred Node](../../client-api/configuration/load-balance-and-failover#preferred-node) calculated by the client.  
 
 {CODE ReadBalanceBehavior@ClientApi\Configuration\Cluster.cs /}
 

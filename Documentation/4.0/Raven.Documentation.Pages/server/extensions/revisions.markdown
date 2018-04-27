@@ -81,4 +81,9 @@ In this case all existing revisions would still be stored and not deleted but we
 
 ## Related articles
 
-- [Revisions in subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
+### Client API
+
+- [What are Revisions](../../client-api/session/revisions/what-are-revisions)
+- [Loading Revisions](../../client-api/session/revisions/loading)
+- [Revisions in Data Subscriptions](../../client-api/data-subscriptions/advanced-topics/subscription-with-revisioning)
+

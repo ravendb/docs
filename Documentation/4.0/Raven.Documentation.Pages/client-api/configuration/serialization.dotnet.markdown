@@ -50,7 +50,7 @@ Other number types like `BigInteger` must be treated using custom (de)serializat
 
 - [Conventions](../../client-api/configuration/conventions)
 - [Querying](../../client-api/configuration/querying)
-- [Cluster](../../client-api/configuration/cluster)
+- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)
 
 ### Document Identifiers
 

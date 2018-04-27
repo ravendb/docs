@@ -1,4 +1,4 @@
-# Server Store Encryption
+# Encryption : Server Store Encryption
 
 The Server Store is an internal special database (sometimes called the `System` database) which is **not encrypted by default**. 
 It is used by RavenDB to hold server wide information and includes details such as the cluster state machine, database records, 
@@ -88,3 +88,15 @@ run the following command and supply the path of the `System` folder and the key
 This operation takes the key and protects it for the new OS user or new master key. 
 The protected key is then saved as a file in the same folder (secret.key.encrypted).
 Now, you can run the server, which will use this new protected key and you can work with the restored data.
+
+## Related Articles
+
+### Encryption
+
+- [Encryption at Rest](../../../server/security/encryption/encryption-at-rest)
+- [Database Encryption](../../../server/security/encryption/database-encryption)
+- [Secret Key Management](../../../server/security/encryption/secret-key-management)
+
+### Security
+
+- [Overview](../../../server/security/overview)

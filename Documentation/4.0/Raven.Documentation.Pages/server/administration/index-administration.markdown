@@ -1,4 +1,4 @@
-﻿# Administration : Index administration
+﻿# Administration : Index Administration
 
 RavenDB indexes can be administrated easily by the user with the Studio or via maintenance operations in the Client API.
 
@@ -87,3 +87,13 @@ You can control the affinity of indexing threads and number of cores that _won't
 Operation scope: Cluster
 
 {NOTE/}
+
+## Related articles
+
+### Indexes
+
+- [What are Indexes](../../indexes/what-are-indexes)
+
+### Troubleshooting
+
+- [Debugging Index Errors](../../indexes/troubleshooting/debugging-index-errors)

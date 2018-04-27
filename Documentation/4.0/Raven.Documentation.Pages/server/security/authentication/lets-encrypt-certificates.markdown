@@ -1,4 +1,4 @@
-# Security : Authentication : Let's Encrypt Certificates
+# Authentication : Let's Encrypt Certificates
 
 RavenDB 4.x uses X.509 certificates for authentication and authorization and has **built in support** for [Let's Encrypt](https://letsencrypt.org/).
 
@@ -36,4 +36,18 @@ At the moment, updating DNS records for your domain can only be acheived by runn
 
 We are working on a new dedicated page in our website that will allow to easily edit DNS records which are associated with your license. Once deployed, it will be described and explained here.
 
+## Related articles
 
+### Security 
+
+- [Overview](../../../server/security/overview)
+- [Certificate Management](../../../server/security/authentication/certificate-management)
+- [Common Errors and FAQ](../../../server/security/common-errors-and-faq)
+
+### Client API
+
+- [Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)
+
+### Installation
+
+- [Secure Setup with a Let's Encrypt Certificate](../../../start/installation/setup-wizard#secure-setup-with-a-let)

@@ -19,4 +19,4 @@ The frequency of pinging the non-responsive server will start from 100ms and wil
 
 ### Configuration
 
-- [Cluster](../../client-api/configuration/cluster)
+- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)

@@ -1,4 +1,4 @@
-# Security : Authorization : Security Clearance and Permissions
+# Authorization : Security Clearance and Permissions
 
 X.509 certificates are used for authentication - validating that users are who they say they are. Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
 
@@ -71,3 +71,10 @@ The following operations are allowed for `User` certificates with `Database Admi
 A `User` certificate with `read/write` access level can perform all the operations which are not listed above.  
 
 {PANEL/}
+
+## Related articles
+
+### Security
+
+- [Overview](../../../server/security/authorization/security-clearance-and-permissions)
+- [Common Errors and FAQ](../../../server/security/common-errors-and-faq)

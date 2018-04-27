@@ -1,4 +1,4 @@
-# Database Encryption
+# Encryption : Database Encryption
 
 In RavenDB, you can create encrypted databases. Each encrypted database will have its own secret key which is used to encrypt and decrypt data.
 
@@ -77,3 +77,15 @@ Finally, create the encrypted database using the Client API:
 ## Remarks
 
 Database encryption must be enabled when creating the database. If you wish to use encryption in an existing database, it must be exported and then imported back into a new encrypted database.
+
+## Related Articles
+
+### Encryption
+
+- [Encryption at Rest](../../../server/security/encryption/encryption-at-rest)
+- [Server Store Encryption](../../../server/security/encryption/server-store-encryption)
+- [Secret Key Management](../../../server/security/encryption/secret-key-management)
+
+### Security
+
+- [Overview](../../../server/security/overview)

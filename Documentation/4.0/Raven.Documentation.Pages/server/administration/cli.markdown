@@ -1,4 +1,4 @@
-# RavenDB CLI
+# Administration : RavenDB CLI
 
 Running RavenDB as a console application provides basic information along with a command line interface which can be used for getting additional information about the server and in performing specific commands.
 
@@ -262,3 +262,10 @@ timer <on|off|fire>
 {CODE-BLOCK/}
 
 {PANEL/}
+
+## Related articles
+
+### Configuration
+
+- [Configuration Options](../../server/configuration/configuration-options)
+- [Command Line Arguments](../../server/configuration/command-line-arguments)

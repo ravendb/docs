@@ -54,3 +54,22 @@ When database encryption is on, all the features of a database are automatically
 - [Secret Key Management](../../server/security/encryption/secret-key-management)
 
 {PANEL/}
+
+## Related articles
+
+### Security 
+
+- [Common Errors and FAQ](../../server/security/common-errors-and-faq)
+
+### Client API
+
+- [Setting up Authentication and Authorization](../../client-api/setting-up-authentication-and-authorization)
+
+### Installation
+
+- [Secure Setup with a Let's Encrypt Certificate](../../start/installation/setup-wizard#secure-setup-with-a-let)
+- [Secure Setup with Your Own Certificate](../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)
+
+### Configuration
+
+- [Security Configuration](../../server/configuration/security-configuration)

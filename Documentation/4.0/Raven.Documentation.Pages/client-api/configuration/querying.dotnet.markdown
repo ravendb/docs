@@ -24,7 +24,7 @@ Enabling this configuration at development stage can be useful to pinpoint all t
 
 - [Conventions](../../client-api/configuration/conventions)
 - [Serialization](../../client-api/configuration/serialization)
-- [Cluster](../../client-api/configuration/cluster)
+- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)
 
 ### Document Identifiers
 

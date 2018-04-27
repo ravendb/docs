@@ -1,4 +1,4 @@
-# Encryption At Rest
+# Encryption : Encryption At Rest
 
 Encryption at rest is implemented at the storage layer, using Daniel J. Bernstein's `XChaCha20-Poly1305` authenticated encryption algorithm.
 
@@ -38,6 +38,12 @@ Using encryption together with HTTPS provides assurance that your data is safe b
 
 ## Related Articles
 
-- [Database Encryption](database-encryption)
-- [Server Store Encryption](server-store-encryption)
-- [Secret Key Management](secret-key-management)
+### Encryption
+
+- [Database Encryption](../../../server/security/encryption/database-encryption)
+- [Server Store Encryption](../../../server/security/encryption/server-store-encryption)
+- [Secret Key Management](../../../server/security/encryption/secret-key-management)
+
+### Security
+
+- [Overview](../../../server/security/overview)

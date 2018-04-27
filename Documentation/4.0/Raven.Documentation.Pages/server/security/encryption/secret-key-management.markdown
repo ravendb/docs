@@ -1,4 +1,4 @@
-# Secret Key Management
+# Security : Encryption : Secret Key Management
 
 One of the challenges in cryptosystems is "secret protection" - how to protect the encryption key.  
 If the key is stored in plain text, then any user that can access the key can access the encrypted data. If the key is to be encrypted, another key is needed, and so on. 
@@ -81,3 +81,15 @@ Then, run the following put-key command for **every** encrypted database. Supply
 
 This operation takes the key and protects it with the new Windows user password.
 After doing this for all databases, you can run the server and continue working.
+
+## Related Articles
+
+### Encryption
+
+- [Encryption at Rest](../../../server/security/encryption/encryption-at-rest)
+- [Database Encryption](../../../server/security/encryption/database-encryption)
+- [Server Store Encryption](../../../server/security/encryption/server-store-encryption)
+
+### Security
+
+- [Overview](../../../server/security/overview)

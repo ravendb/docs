@@ -80,4 +80,4 @@ If there are some writes that are important, it is possible to make the client w
 
 ### Configuration
 
-- [Cluster](../../client-api/configuration/cluster)
+- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)

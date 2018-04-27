@@ -1,4 +1,4 @@
-# Security : Authentication : Certificate Renewal & Rotation
+# Authentication : Certificate Renewal & Rotation
 
 X.509 certificates have expiration dates and must be renewed once in a while.
 
@@ -15,3 +15,19 @@ You can also ignore these limits and replace the certificates immediately but be
 ## Replace the Cluster Certificate using the Studio
 
 This feature is under development and will be available in the Studio very soon. In the meantime please use the [RavenDB CLI command](../../../server/administration/cli#replaceclustercert).
+
+## Related articles
+
+### Security
+
+- [Overview](../../../server/security/overview)
+- [Certificate Management](../../../server/security/authentication/certificate-management)
+
+### Installation
+
+- [Secure Setup with a Let's Encrypt Certificate](../../../start/installation/setup-wizard#secure-setup-with-a-let)
+- [Secure Setup with Your Own Certificate](../../../start/installation/setup-wizard#secure-setup-with-your-own-certificate)
+
+### Configuration
+
+- [Security Configuration](../../../server/configuration/security-configuration)

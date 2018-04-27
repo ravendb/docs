@@ -1,4 +1,4 @@
-﻿# Document conflict in client-side
+﻿# Cluster : Document Conflicts in Client-side
   
 ## What are conflicts?
 When two or more changes of a single document are done concurrently in two separate nodes, 

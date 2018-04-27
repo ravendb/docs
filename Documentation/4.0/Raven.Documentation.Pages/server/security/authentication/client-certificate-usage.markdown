@@ -1,4 +1,4 @@
-# Security : Authentication : Client Certificate Usage
+# Authentication : Client Certificate Usage
 
 In previous sections we described how to obtain a server certificate and how to configure RavenDB to use it. In this section we will cover how to use client certificates to connect to a RavenDB server.
 
@@ -86,4 +86,13 @@ Once you have the admin client certificate you can access the server/cluster by 
 It is recommended to generate additional certificates with reduced access rights for applications and users.
 Wiring a certificate in the RavenDB Client is described in the [setting up authentication and authorization](../../../client-api/setting-up-authentication-and-authorization) section of the Client API.
 
+## Related articles
 
+### Client API
+
+[Setting up Authentication and Authorization](../../../client-api/setting-up-authentication-and-authorization)
+
+### Security
+
+- [Overview](../../../server/security/overview)
+- [Certificate Management](../../../server/security/authentication/certificate-management)
