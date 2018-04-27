@@ -167,8 +167,13 @@ Details and examples for type specific ETL scripts can be found in the following
 
 ## Related Articles
 
+### ETL
+
 - [RavenDB ETL Task](../../../server/ongoing-tasks/etl/raven)
 - [SQL ETL Task](../../../server/ongoing-tasks/etl/sql)
+
+### Studio
+
 - [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
 - [Define SQL ETL Task in Studio](../../../todo-update-me-later)
 

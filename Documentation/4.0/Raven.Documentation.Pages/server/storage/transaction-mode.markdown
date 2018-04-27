@@ -33,3 +33,14 @@ If _Lazy_ or _Danger_ is set and not changed explicitly within 24 hours then Rav
 {CODE-BLOCK:bash}
 curl -X GET http://127.0.0.1:8080/databases/myDB/admin/transactions-mode?mode=Safe
 {CODE-BLOCK/}
+
+## Related Articles
+
+### Transactions
+
+- [Transaction Support in RavenDB](../../client-api/faq/transaction-support)
+
+### Storage
+
+- [Storage Engine](../../storage/storage-engine)
+- [Directory Structure](../../storage/directory-structure)

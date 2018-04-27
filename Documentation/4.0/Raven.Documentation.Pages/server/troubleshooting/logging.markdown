@@ -40,3 +40,13 @@ handled by the dedicated thread responsible for executing the I/O operations.
 Another option that allows you to see the debug logging without the need to restart the server is to use the Admin Logs feature available in the Studio: `Manage Server -> Admin Logs`.
 
 {PANEL/}
+
+## Related Articles
+
+### Administration
+
+- [Command Line Interface (CLI)](../../server/administration/cli)
+
+### Configuration
+
+- [Logs](../../server/configuration/logs-configuration)

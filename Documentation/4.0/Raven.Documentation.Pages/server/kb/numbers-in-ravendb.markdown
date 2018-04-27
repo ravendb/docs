@@ -1,4 +1,4 @@
-﻿# Numbers in RavenDB
+﻿# Knowledge Base : Numbers in RavenDB
 ---
 
 {NOTE: }
@@ -100,6 +100,14 @@ Numbers in RavenDB clients depend on the limitations of the platforms and the se
 
 ## Related Articles
 
+### Knowledge Base
+
 - [JavaScript Engine](../../server/kb/javascript-engine)
-- [Indexing basics](../../indexes/indexing-basics)
-- [Querying : Basics](../../indexes/querying/basics)
+
+### Indexes
+
+- [Indexing Basics](../../indexes/indexing-basics)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)

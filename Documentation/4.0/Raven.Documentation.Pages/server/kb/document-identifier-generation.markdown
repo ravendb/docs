@@ -1,4 +1,4 @@
-﻿# Document Identifier Generation
+﻿# Knowledge Base : Document Identifier Generation
 ---
 
 {NOTE: }
@@ -172,6 +172,11 @@ There are following limitations for document IDs:
 
 ## Related Articles
 
-- [Working with document IDs in the client](../../client-api/document-identifiers/working-with-document-identifiers)
-- [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm)
+### Document Identifiers
+
+- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [HiLo Algorithm](../../client-api/document-identifiers/hilo-algorithm)
+
+### Studio
+
 - [Create New Document From Studio](../../studio/database/documents/create-new-document)

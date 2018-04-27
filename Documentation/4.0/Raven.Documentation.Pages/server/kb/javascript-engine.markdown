@@ -1,4 +1,4 @@
-﻿# JavaScript Engine
+﻿# Knowledge Base : JavaScript Engine
 ---
 
 {NOTE: }
@@ -65,3 +65,18 @@ RavenDB introduced a set of predefined function, in addition to Jint's ECMAScrip
 | **scalarToRawString(document, lambdaToField)** | Raw field value (`LazyStringValue` for strings, `LazyNumberValue` for floating point numbers). | Returns raw representation of a field. Useful when working with numbers that exceeds `double`'s numeric or accuracy range. See [Numbers in Jint](../../server/kb/numbers-in-ravendb). Also usefull for better memory consumption when projecting big string values. Note: returned value is immutable |
 | **output(message)** | `void` | Used for [single document patches](../../client-api/operations/patching/single-document) debug. |
 {PANEL/}
+
+## Related articles
+
+### Patching
+
+- [How to Perform Single Document Patch Operations](../../client-api/operations/patching/single-document)
+- [How to Perform Set Based Operations on Documents](../../client-api/operations/patching/set-based)
+
+### Querying
+
+- [Projections](../../indexes/querying/projections)
+
+### Knowledge Base
+
+- [Numbers in RavenDB](../../server/kb/numbers-in-ravendb)

@@ -200,7 +200,12 @@ loadToEmployees({
 
 ## Related Articles
 
+### ETL
+
 - [ETL Basics](../../../server/ongoing-tasks/etl/basics)
 - [SQL ETL Task](../../../server/ongoing-tasks/etl/sql)
+
+### Studio
+
 - [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
 - [Define SQL ETL Task in Studio](../../../todo-update-me-later)

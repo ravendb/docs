@@ -54,10 +54,19 @@ The storage hardware / file system must support:
 
 - The key size must be less than 2025 bytes in UTF8
 
-
 ## Related Articles
 
+### Transactions
+
 - [Transaction Support in RavenDB](../../client-api/faq/transaction-support)
-- [Configuration : Storage](../../server/configuration/storage-configuration)
+
+### Storage
+
+- [Directory Structure](../../storage/directory-structure)
+- [Transaction Mode](../../server/storage/transaction-mode)
+
+### Configuration
+
+- [Storage](../../server/configuration/storage-configuration)
 
 
