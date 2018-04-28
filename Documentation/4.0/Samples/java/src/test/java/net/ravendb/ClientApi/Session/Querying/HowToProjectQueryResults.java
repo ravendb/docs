@@ -211,4 +211,11 @@ public class HowToProjectQueryResults {
     }
     //endregion
 
+    //region projections_11
+    public static class Products_BySupplierName extends AbstractIndexCreationTask {
+        public static class Result {
+        }
+
+    }
+    //endregion
 }
