@@ -117,7 +117,7 @@ public class Events {
 
                 session.delete(product);
 
-                session.saveChanges(); // NotSupportedException will be thrown here
+                session.saveChanges(); // NotImplementedException will be thrown here
             }
             //endregion
 
