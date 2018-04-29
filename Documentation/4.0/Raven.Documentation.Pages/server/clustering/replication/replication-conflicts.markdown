@@ -1,32 +1,56 @@
-﻿# Replication : Conflicts
+﻿# Replication Conflicts
 
-### What is a Conflict?
+## What is a Conflict?
 
-A conflict occurs when the same document is updated on two nodes independently of one another.  
+A conflict occurs when the same document is updated concurrently on two different nodes.  
 This can happen because of a network split or because of several client updates that each talked to different 
 nodes faster than we could replicate the information between the nodes.  
 
 In a distributed system, we can either choose to run a consensus (which requires consulting a majority on every decision)
 or accept the potential for conflicts. 
-For document writes, RavenDB chooses to accept conflicts as a tradeoff of always being able to accept writes on any node.
 
-### Conflict Detection
-Each document in a RavenDB cluster has a [change vector](../../../server/clustering/replication/change-vector) which is used for conflict detection.
+For document writes, RavenDB chooses to accept conflicts as a trade-off of always being able to accept writes on any node.
 
-### Conflict Resolution
-When there is a conflict between two or more document versions, it will need to be resolved. RavenDB must decide which of the versions should be kept.
+## Conflict Detection
+Each document in a RavenDB cluster has a [Change Vector](../../../server/clustering/replication/change-vector) which is used for conflict detection.
+
+When the server receives an incoming replication batch, it compares the [Change Vector](../../../server/clustering/replication/change-vector) 
+of the incoming document with the [Change Vector](../../../server/clustering/replication/change-vector) of the local document. 
   
-There are three options of resolving the conflict:
+Let's assume _remote_cv_ to be the change vector of a remote document, and _local_cv_ to be a change vector of a local document.  
+The [Comparison](../../../server/clustering/replication/change-vector#change-vector-comparisons) of the [Change Vectors](../../../server/clustering/replication/change-vector) may yield three possible results:  
+  
+* _remote_cv_ <= _local_cv_ -> Nothing to do, the local document is more up-to-date.
+* _remote_cv_ > _local_cv_ ->  Remote document is more recent than local, replace local document with remote
+* _remote_cv_ **conflicts** with _local_cv_ -> Try to resolve conflict.
 
-  * Using "resolve to latest", which is the built-in resolution strategy
-  * Providing javascript code which would implement a resolution strategy
-  * Manual resolution
+When there is a conflict between two or more document versions, RavenDB will try multiple steps to resolve it. If any of the steps succeeds, the conflict resolution will end and resolved document will be written to the storage.
+  
+1. If `ResolveToLatest` flag is set (by default it is `true`), resolve the conflict to the document variant where the [Latest Modified](../../../client-api/session/how-to/get-entity-last-modified) property is the latest.
+2. Check whether the document contents are identical, if so, then there is no conflict and the change vector of the two documents is merged.
+{NOTE The identity check applies to [Tombstone](../../../glossary/tombstone) as well, and it will always resolve to the local one, since the tombstones are always considered equal. /}
+3. Try to resolve the conflict by using a script, which is set up by configuring a [Conflict Resolver](../../../server/clustering/replication/replication-conflicts#conflict-resolution-script).  
+4. If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved [Manually](../../../server/clustering/replication/replication-conflicts#manually-resolving-conflicts). 
 
-#### Conflict Resolution Script
-The conflict resolution script receives the `docs` object as a parameter, which is an array of conflicting documents.  
-It is expected that the script returns an object which will resolve the conflict and gets written as a new object.
+{PANEL: Conflict Resolution Script} 
+A resolution script is defined per collection and have the following input arguments:
 
-{PANEL: Conflict Resolution}
+| Name | Type | Description |
+| - | - | - |
+| `docs` | Array of Objects | An unsorted array of the conflicted documents, excluding the `Tombstones`. |
+| `hasTomestone` | boolean | Indicate if there is a `Tombstone` among the conflicted documents. |
+| `resolveToTombstone` | string | upon returning will resolve the conflict to `Tombstone`. |
+
+
+The returned value from the script, can be:
+
+* An object (any object), which will be the conflict resolution.
+* `null` or simply `return;`, which will leave the conflict as is.
+* The `resolveToTombstone` string, which will resolve the conflict to `Tombstone`.
+
+{NOTE: Script Exception}
+If the script will encounter an exception, the execution will aborted and the conflict will remain.
+{NOTE/}
 
 ### Configuring Conflict Resolution Using the Client  
 Setting up conflict resolution strategy in the client is done via sending cluster-level operation - [ModifyConflictSolverOperation](../../../client-api/operations/server-wide/modify-conflict-solver), which is a [Raft command](../../../glossary/raft-command).
@@ -68,79 +92,8 @@ On this screenshot, we can see the conflict resolution screen in which we would 
 ![Conflict Resolution Script in Management Studio](images/conflict-resolution-script-in-studio.jpg)  
 
 {PANEL/}  
-  
-### What Happens at Server-Side?
-When the server receives an incoming replication batch, it compares the [change vector](../../../server/clustering/replication/change-vector) 
-of the incoming document with the [change vector](../../../server/clustering/replication/change-vector) of the local document. 
-If there is no local document, i.e. document replicates for the first time, an empty change vector is assumed.
-  
-Let's assume _remote_cv_ to be the change vector of a remote document, and _local_cv_ to be a change vector of a local document.
-The comparison of the [change vectors](../../../server/clustering/replication/change-vector) may yield three possible results:  
-  
-* _remote_cv_ <= _local_cv_ --> Nothing to do in this case
-* _remote_cv_ > _local_cv_ -->  Remote document is more recent than local, replace local document with remote
-* _remote_cv_ **conflicts** with _local_cv_ --> Try to resolve conflict by using defined conflict resolvers
-  
-{NOTE: Change Vector comparisons}
-[Change vectors](../../../server/clustering/replication/change-vector) is essentially a collection of **<[database ID](../../../glossary/database-id)/[Node Tag](../../glossary/node-tag)/[Etag](../../../glossary/etag)>** three-part tuples.
-Conceptually, comparing two change vectors means answering a question - which change vector refers to an earlier event.  
 
-The comparison is defined as follows:  
-  
-* Two change vectors are equal when and only when all etags _equal_ between corresponding node and database IDs
-* Change vector A is larger than change vector B if and only if all etags are _larger or equal_ between corresponding node and database IDs
-* Change vector A conflicts with change vector B if and only if at least one etags is _larger, equal or has node etag (and the other don't)_ and at least one etags is _smaller_ between corresponding node and database IDs
-  
-Note that the change vectors are unsortable for two reasons:
-
-* Change vectors are unsorted collections of node tags/etag tuples, they can be sorted in multiple ways
-* Conflicting change vectors cannot be compared
-  
-#### Example 1
-Let us assume two change vectors, v1 = [A:8, B:10, C:34], v2 = [A:23, B:12, C:65]  
-When we compare v1 and v2, we will do three comparisons:
-
-* A --> 8 (v1) < 23 (v2)
-* B --> 10 (v1) < 12 (v2)
-* C --> 34 (v1) < 65 (v2)
-  
-Corresponding etags in v2 are greater than the ones in v1. This means that v1 < v2
-
-#### Example 2
-Let us assume two change vectors, v1 = [A:18, B:12, C:51], v2 = [A:23, B:12, C:65]  
-When we compare v1 and v2, we will do three comparisons:
-
-* A --> 18 (v1) < 23 (v2)
-* B --> 12 (v1) = 12 (v2)
-* C --> 51 (v1) < 65 (v2)
-  
-Corresponding etags in v2 are greater than the ones in v1. This means that v1 < v2
-
-
-#### Example 3
-Let us assume two change vectors, v1 = [A:18, B:12, C:65], v2 = [A:58, B:12, C:51]  
-When we compare v1 and v2, we will do three comparisons:
-
-* A --> 18 (v1) < 58 (v2)
-* B --> 12 (v1) = 12 (v2)
-* C --> 65 (v1) > 51 (v2)
-  
-Etag 'A' in v1 is smaller than in v2, and Etag 'C' is larger in v1 than in v2. This means that v1 conflicts with v2.  
-
-{NOTE/}
-
-### The Resolution Algorithm
-When trying to resolve a conflict, RavenDB will try multiple steps to resolve it. If any of the steps succeeds, the conflict resolution will end and resolved document will be written to the storage.
-  
-* Step 1: If `ResolveToLatest` flag is set (by default it is set to true), resolve the conflict to the document variant where the "latest modified" is the latest.
-* Step 2: Check whether the document contents are identical, if yes, then there is no conflict. In this case, the change vector of the two documents is merged, and will retain the maximum entries for the corresponding **node Tag/Database IDs**.
-{NOTE The identity check applies to [tombstone](../../../glossary/tombstone) as well, and it will always resolve to the local one, since the tombstones are always considered equal. /}
-* Step 3: Try to resolve the conflict by using a script, which is set up by [configuring a conflict resolver](../../../server/clustering/replication/replication-conflicts#conflict-resolution).  
-A resolution script is set-up per document collection.
-  
-If all else fails, record conflicting document variants as "Conflicted Documents" which will have to be resolved manually. 
-
-### Manually Resolving Conflicts
+{PANEL:Manually Resolving Conflicts}
 In case one or more documents are in a "conflicted" state, we need to resolve the conflict manually.  
   
 This can be done in two ways:
@@ -157,3 +110,4 @@ In the example we have in this conflict, once we remove merging tags in the docu
 the resulting document will look like the following:
 
 ![Document after resolved conflict](images/resolve-conflicted-document-screen2.jpg)  
+{PANEL/}

@@ -27,5 +27,10 @@
         "Path": "change-vector.markdown",
         "Name": "Change Vector",
         "Mappings": []
+    },
+    {
+        "Path" : "advanced-replication.markdown",
+        "Name" : "Advanced Replication",
+        "Mappings" : []
     }
 ]
