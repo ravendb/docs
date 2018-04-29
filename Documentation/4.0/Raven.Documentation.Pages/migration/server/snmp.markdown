@@ -1,6 +1,6 @@
 ﻿# Migration : SNMP
 
-{NOTE Complete list of OID can be found [here](../../server/administration/SNMP/snmp) /}
+{NOTE The complete list of OID can be found [here](../../server/administration/SNMP/snmp) /}
 
 The table below shows mapping of RavenDB 3.X OIDS to version 4.0.
 

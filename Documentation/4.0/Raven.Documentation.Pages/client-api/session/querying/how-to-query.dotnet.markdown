@@ -8,8 +8,7 @@ This session explains the following methods to query a database:
 
 ## Session.Query
 
-The most straightforward way to issue a query is by using the `Query` method which allows you to define queries using LINQ. In order to take advantage of querying capabilities specific for RavenDB,
-the querying API provides extension methods that will be described later.
+The most straightforward way to issue a query is by using the `Query` method which allows you to define queries using LINQ. In order to take advantage of querying capabilities specific for RavenDB, the querying API provides extension methods that will be described later.
 
 ### Syntax
 
@@ -35,10 +34,9 @@ the querying API provides extension methods that will be described later.
 
 The above is an example of a dynamic query which doesn't require you to specify an index name. RavenDB will create an auto index automatically if necessary.
 
-The provided `Employee` type as the generic type parameter does not only define the type of returned
-results, but it also indicates that the queried collection will be `Employees`. There is no need to specify it as the parameter.
+The provided `Employee` type as the generic type parameter does not only define the type of returned results, but it also indicates that the queried collection will be `Employees`. There is no need to specify it as the parameter.
 
-### Example II - Linq Syntax Support
+### Example II - LINQ Syntax Support
 
 Both LINQ syntaxes are supported:
 
