@@ -33,7 +33,7 @@
     * Failover: In case of a failure, the client will try the next node in the round robin order. 
 
   * `FastestNode`  
-    * Load-balance: Each client _Read_ request will go to the fastest node.  
+    * Load-balance: _Read_ request will go to the fastest node.  
       The fastest node is determined by a [Speed Test](../../client-api/cluster/speed-test).  
     * Failover: In case of a failure, speed test will be triggered again and in the meantime, the client will use the _preferred node_.  
 {PANEL/}
@@ -56,7 +56,7 @@
 
 ## Related articles
 
-### Conventions
+### Configuration
 
 - [Conventions](../../client-api/configuration/conventions)
 - [Querying](../../client-api/configuration/querying)

@@ -1,4 +1,4 @@
-﻿# Client Requests Configuration
+﻿# Client Configuration
 ---
 
 {NOTE: }
