@@ -8,7 +8,7 @@
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **start** | string | Number of index names that should be skipped |
+| **start** | int | Number of index names that should be skipped |
 | **pageSize** | int | Maximum number of index names that will be retrieved |
 
 | Return Value | |
