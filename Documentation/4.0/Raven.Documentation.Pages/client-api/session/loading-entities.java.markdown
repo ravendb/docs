@@ -6,32 +6,27 @@ There are various methods with many overloads that allow users to download docum
 - [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
 - [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
 - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
-- [Stream](../../client-api/session/loading-entities#stream)
 - [IsLoaded](../../client-api/session/loading-entities#isloaded)
+
+<!--  - [Stream](../../client-api/session/loading-entities#stream) -->
 
 {PANEL:Load}
 
-The most basic way to load a single entity is to use one of the `Load` methods.
+The most basic way to load a single entity is to use one of the `load` methods.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_1_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_1_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:java loading_entities_1_0@ClientApi\Session\LoadingEntities.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string | Identifier of a document that will be loaded. |
+| **id** | String | Identifier of a document that will be loaded. |
 
 | Return Value | |
 | ------------- | ----- |
-| TResult | Instance of `TResult` or `null` if a document with a given ID does not exist. |
+| T | Instance of `T` or `null` if a document with a given ID does not exist. |
 
 ### Example
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_1_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_1_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:java loading_entities_1_1@ClientApi\Session\LoadingEntities.java /}
 
 {NOTE In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
 
@@ -39,68 +34,49 @@ The most basic way to load a single entity is to use one of the `Load` methods.
 
 {PANEL:Load with Includes}
 
-When there is a 'relationship' between documents, those documents can be loaded in a single request call using the `Include + Load` methods.
+When there is a 'relationship' between documents, those documents can be loaded in a single request call using the `include + load` methods.
 
-{CODE loading_entities_2_0@ClientApi\Session\LoadingEntities.cs /}
+{CODE:java loading_entities_2_0@ClientApi\Session\LoadingEntities.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | string or Expression | Path in documents in which the server should look for 'referenced' documents. |
+| **path** | String | Path in documents in which the server should look for 'referenced' documents. |
 
 | Return Value | |
 | ------------- | ----- |
-| ILoaderWithInclude | The `Include` method by itself does not materialize any requests but returns loader containing methods such as `Load`. |
+| ILoaderWithInclude | The `include` method by itself does not materialize any requests but returns loader containing methods such as `load`. |
 
 ### Example I
 
 We can use this code to also load an employee which made the order.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_2_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_2_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
-
-### Example II
-
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_2_2@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_2_2_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:java loading_entities_2_1@ClientApi\Session\LoadingEntities.java /}
 
 {PANEL/}
 
 {PANEL:Load - multiple entities}
 
-To load multiple entities at once, use one of the following `Load` overloads.
+To load multiple entities at once, use one of the following `load` overloads.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_3_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_3_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:java loading_entities_3_0@ClientApi\Session\LoadingEntities.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **ids** | IEnumerable<string> | Multiple document identifiers to load |
+| **ids** | Collection&lt;string&gt; or String... | Multiple document identifiers to load |
 
 | Return Value | |
 | ------------- | ----- |
-| Dictionary<string, TResult> | Instance of Dictionary which maps document identifiers to `TResult` or `null` if a document with given ID doesn't exist. |
+| Map<String, T> | Instance of Map which maps document identifiers to `T` or `null` if a document with given ID doesn't exist. |
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_3_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_3_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/} 
+{CODE:java loading_entities_3_1@ClientApi\Session\LoadingEntities.java /}
 
 {PANEL/}
 
 {PANEL:LoadStartingWith}
 
-To load multiple entities that contain a common prefix, use the `LoadStartingWith` method from the `Advanced` session operations.
+To load multiple entities that contain a common prefix, use the `loadStartingWith` method from the `advanced` session operations.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_4_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_4_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:java loading_entities_4_0@ClientApi\Session\LoadingEntities.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -113,25 +89,19 @@ To load multiple entities that contain a common prefix, use the `LoadStartingWit
 
 | Return Value | |
 | ------------- | ----- |
-| TResult[] | Array of entities matching given parameters. |
-| Stream | Output entities matching given parameters as a stream. |
+| T[] | Array of entities matching given parameters. |
 
 ### Example I
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_4_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_4_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:java loading_entities_4_1@ClientApi\Session\LoadingEntities.java /}
 
 ### Example II
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_4_2@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_4_2_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:java loading_entities_4_2@ClientApi\Session\LoadingEntities.java /}
 
 {PANEL/}
 
+<!-- TODO:
 {PANEL:Stream}
 
 Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
@@ -179,27 +149,24 @@ Fetch documents for a ID prefix directly into a stream:
 {INFO Entities loaded using `Stream` will be transient (not attached to session). /}
 
 {PANEL/}
-
+-->
 {PANEL:IsLoaded}
 
-To check if an entity is attached to a session, e.g. it has been loaded previously, use the `IsLoaded` method from the `Advanced` session operations.
+To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded` method from the `advanced` session operations.
 
-{CODE loading_entities_6_0@ClientApi\Session\LoadingEntities.cs /}
+{CODE:java loading_entities_6_0@ClientApi\Session\LoadingEntities.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string | Entity ID for which the check should be performed. |
+| **id** | String | Entity ID for which the check should be performed. |
 
 | Return Value | |
 | ------------- | ----- |
-| bool | Indicates if an entity with a given ID is loaded. |
+| boolean | Indicates if an entity with a given ID is loaded. |
 
 ### Example
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_6_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_6_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:java loading_entities_6_1@ClientApi\Session\LoadingEntities.java /}
 
 {PANEL/}
 
