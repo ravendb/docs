@@ -118,3 +118,6 @@ Click `Refresh` to get latest actions performed by the Observer
 {NOTE/}
 {PANEL/}
 
+## Related articles 
+
+- [Cluster Observer Details](../../../server/clustering/distribution/cluster-observer)  
