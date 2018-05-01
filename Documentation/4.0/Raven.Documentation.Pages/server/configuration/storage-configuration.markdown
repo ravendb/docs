@@ -4,7 +4,7 @@ The following configuration options allow you configure [the storage engine](../
 
 {PANEL:Storage.TempPath}
 
-You can use this setting to specify a different path to temporary files. By default it is empty, which means that temporary files will be created at same location as data file under the `Temp` directory.
+You can use this setting to specify a different path to temporary files. By default, it is empty, which means that temporary files will be created at same location as data file under the `Temp` directory.
 
 - **Type**: `string`
 - **Default**: `null`
@@ -64,7 +64,7 @@ Compress transactions above size (value in KB)
 
 {PANEL:Storage.ForceUsing32BitsPager}
 
-Use the 32 bits memory mapped pager, even when running on 64 bits.
+Use the 32 bits memory mapped pager even when running on 64 bits.
 
 - **Type**: `bool`
 - **Default**: `false`
@@ -81,8 +81,6 @@ Maximum size of `.buffers` files
 - **Scope**: Server-wide or per database
 
 {PANEL/}
-
-
 
 ## Related Articles
 
