@@ -1,4 +1,4 @@
-﻿# Operations : Compare Exchange : How to Put Compare Exchange Value
+﻿# Compare Exchange : How to Put Compare Exchange Value
 
 ---
 
@@ -27,7 +27,7 @@
 
 | Parameter | Type | Description |
 | ----------| ---- |------------ |
-| **key** | String | Object identifier under which _value_ is saved, unique in the database scope accross the cluster. |
+| **key** | String | Object identifier under which _value_ is saved, unique in the database scope across the cluster. |
 | **value** | `T` | The value to be saved for the specified _key_. |
 | **index** | long |  * `0` if creating a new key<br/>* The current version of _Value_ when updating a value for an existing key. |
 
@@ -37,7 +37,7 @@
 | Return Value | Type | Description |
 | ------------ | - | - |
 | **Successful** | boolean | * _True_ if the save operation has completed successfully<br/>* _False_ if the save operation failed |
-| **Value** | `T` | * The value that was saved if operation was sucessful<br/>* The currently existing value in the server upon failure |
+| **Value** | `T` | * The value that was saved if operation was successful<br/>* The currently existing value in the server upon failure |
 | **Index** | long | * The version number of the value that was saved upon success<br/>* The currently existing version number in the server upon failure |
 
 {NOTE: Note:}
@@ -58,7 +58,9 @@ The value is updated only if the two are **equal** (exchange stage).
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
-- [Get a compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+### Compare Exchange
+
+- [Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

@@ -37,3 +37,23 @@ The next time that a client asks for a range of numbers from the server for this
 {CODE:java return_hilo_2@ClientApi\DocumentIdentifiers\HiloAlgorithm.java /}
 
 {NOTE/}
+
+## Related Articles
+
+### Document Identifiers
+
+- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+
+### Knowledge Base
+
+- [Document Identifier Generation](../../server/kb/document-identifier-generation)
+
+### Session
+
+- [How to Get Entity ID](../../client-api/session/how-to/get-entity-id)
+
+### Operations
+
+- [How to Get Identities](../../client-api/operations/maintenance/identities/get-identities)

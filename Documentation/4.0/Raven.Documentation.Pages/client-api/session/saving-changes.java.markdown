@@ -28,7 +28,7 @@ by this write.
 
 Sometimes you might need to ensure that changes made in the session will be replicated to more than one node of the cluster before the `saveChanges` returns.
 It can be useful if you have some writes that are really important so you want to be sure the stored values will reside on multiple machines. Also it might be necessary to use
-when you customize [the read balance behavior](../../client-api/configuration/cluster#readbalancebehavior) and need to ensure the next request from the user 
+when you customize [the read balance behavior](../../client-api/configuration/load-balance-and-failover#readbalancebehavior) and need to ensure the next request from the user 
 will be able to read what he or she just wrote (the next open session might access a different node).
 
 You can ask the server to wait until the replication is caught up with those particular changes.
@@ -66,7 +66,7 @@ This is a powerful feature, but you need to be aware of the possible pitfalls of
 
 - [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
 - [Opening a Session](../../client-api/session/opening-a-session)
-- [Deleting Entities](../../client-api/session/deleting-changes)
+- [Deleting Entities](../../client-api/session/deleting-entities)
 - [Loading Entities](../../client-api/session/loading-entities)
 
 ### Querying

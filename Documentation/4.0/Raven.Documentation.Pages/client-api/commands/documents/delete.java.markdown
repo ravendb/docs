@@ -15,7 +15,10 @@
 
 {CODE:java delete_sample@ClientApi\Commands\Documents\Delete.java /}
 
-## Related articles
+## Related Articles
+
+### Commands 
 
 - [Get](../../../client-api/commands/documents/get)  
-- [Put](../../../client-api/commands/documents/put) 
+- [Put](../../../client-api/commands/documents/put)  
+- [How to Send Multiple Commands Using a Batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)

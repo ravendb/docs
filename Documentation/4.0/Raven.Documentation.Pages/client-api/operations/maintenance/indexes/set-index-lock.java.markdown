@@ -26,4 +26,15 @@
 
 ## Related Articles
 
-- [How to **change index priority**?](../../../../client-api/operations/maintenance/indexes/set-indexes-priority)
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Change Index Priority](../../../../client-api/operations/maintenance/indexes/set-index-priority)

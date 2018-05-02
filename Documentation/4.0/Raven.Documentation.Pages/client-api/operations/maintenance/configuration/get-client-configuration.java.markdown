@@ -19,4 +19,13 @@
 
 ## Related Articles
 
-- [How to get server-wide **client configuration**?](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)
+### Studio
+
+- [Client Configuration](../../../../studio/server/client-configuration)
+
+### Operations
+
+- [What are Operations](../../../../client-api/operations/what-are-operations)
+- [How to Put Client Configuration](../../../../client-api/operations/maintenance/configuration/put-client-configuration)
+- [How to Get Server-Wide Client Configuration](../../../../client-api/operations/server-wide/configuration/get-serverwide-client-configuration)
+- [How to Put Server-Wide Client Configuration](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)

@@ -1,4 +1,4 @@
-﻿# Operations : Compare Exchange : How to Delete Compare Exchange Value
+﻿# Compare Exchange : How to Delete Compare Exchange Value
 
 ---
 
@@ -33,7 +33,7 @@
 | Return Value | | |
 | ------------- | ----- | ---- |
 | **Successful** | boolean | * _True_ if the delete operation was successfully completed<br/> * _True_ if _key_ doesn't exist<br/> * _False_ if the delete operation failed |  
-| **Value** | `T` | * The value that was deleted upon a sucessful delete<br/>* 'null' if _key_ doesn't exist<br/>* The currently existing value on the server if delete operation failed |  
+| **Value** | `T` | * The value that was deleted upon a successful delete<br/>* 'null' if _key_ doesn't exist<br/>* The currently existing value on the server if delete operation failed |  
 | **Index** | long | * The next available version number upon success<br/>* The next available version number if _key_ doesn't exist<br/>* The currently existing index on the server if the delete operation failed |  
 {PANEL/}
 
@@ -44,7 +44,9 @@
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
-- [Get compare-exchange value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
-- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
+### Compare Exchange
+
+- [Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get a Compare-Exchange Value](../../../client-api/operations/compare-exchange/get-compare-exchange-value)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

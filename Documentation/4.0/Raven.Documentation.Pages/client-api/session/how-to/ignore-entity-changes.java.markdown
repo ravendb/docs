@@ -18,3 +18,13 @@ The entity will still take part in the session, but will be ignored for `saveCha
 ## Example
 
 {CODE:java ignore_changes_2@ClientApi\Session\HowTo\IgnoreChanges.java /}
+
+## Related Articles
+
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Check if Entity has Changed](../../../client-api/session/how-to/check-if-entity-has-changed)
+- [How to Check if There are Any Changes on a Session](../../../client-api/session/how-to/check-if-there-are-any-changes-on-a-session)
+- [Evict Entity From a Session](../../../client-api/session/how-to/evict-entity-from-a-session)
+- [Refresh Entity](../../../client-api/session/how-to/refresh-entity)

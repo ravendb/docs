@@ -127,7 +127,12 @@ where endsWith(Name, 'ra')
 
 ## Related Articles
 
-- [Indexing : Basics](../../indexes/indexing-basics)
-- [Querying : Basics](../../indexes/querying/basics)
-- [Querying : Paging](../../indexes/querying/paging)
-- [Querying : Sorting](../../indexes/querying/sorting)
+### Indexes
+
+- [Indexing Basics](../../indexes/indexing-basics)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+- [Paging](../../indexes/querying/paging)
+- [Sorting](../../indexes/querying/sorting)

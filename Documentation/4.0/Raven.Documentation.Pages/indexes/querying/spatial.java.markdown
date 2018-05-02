@@ -53,5 +53,10 @@ In order to sort the results by distance, please use the `orderByDistance` or `o
 
 ## Related Articles
 
-- [Indexes : Indexing spatial data](../../indexes/indexing-spatial-data)
-- [Client API : Session : How to query a spatial index?](../../client-api/session/querying/how-to-query-a-spatial-index)
+### Indexes
+
+- [Indexing Spatial Data](../../indexes/indexing-spatial-data)
+
+### Client API
+
+- [How to Query a Spatial Index](../../client-api/session/querying/how-to-query-a-spatial-index)

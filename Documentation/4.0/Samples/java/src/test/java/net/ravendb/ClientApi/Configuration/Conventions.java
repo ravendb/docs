@@ -42,5 +42,9 @@ public class Conventions {
         //region disable_cache
         conventions.setMaxHttpCacheSize(0);
         //endregion
+
+        //region UseCompression
+        conventions.setUseCompression(true);
+        //endregion
     }
 }

@@ -20,3 +20,11 @@ Last modified date is stored within the metadata in session and is available for
 ## Example
 
 {CODE:java get_last_modified_2@ClientApi\Session\HowTo\GetLastModified.java /}
+
+## Related articles
+
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get and Modify Entity Metadata](../../../client-api/session/how-to/get-and-modify-entity-metadata)
+- [How to Get Entity Change-Vector](../../../client-api/session/how-to/get-entity-change-vector)

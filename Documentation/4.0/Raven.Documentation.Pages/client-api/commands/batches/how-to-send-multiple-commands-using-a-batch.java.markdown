@@ -1,4 +1,4 @@
-# Batches : How to send multiple commands using a batch?
+# Batches : How to Send Multiple Commands Using a Batch
 
 To send **multiple commands** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `BatchCommand` should be used.
 
@@ -34,6 +34,20 @@ TODO
 
 ## Related articles
 
+### Transactions
+
+- [Transaction Support](../../../client-api/faq/transaction-support)
+
+### Commands
+
 - [Put](../../../client-api/commands/documents/put)   
-- [Delete](../../../client-api/commands/documents/delete)   
-- [How to work with **patch requests**?](../../../client-api/operations/patch/single-doc-patch-operation)   
+- [Delete](../../../client-api/commands/documents/delete)
+- [How to Get Document Metadata Only](../../../client-api/commands/documents/how-to/get-document-metadata-only)
+
+### Patching
+
+- [How to Perform Single Document Patch Operations](../../../client-api/operations/patching/single-document)   
+
+### Attachments
+
+- [What are Attachments](../../../client-api/session/attachments/what-are-attachments)

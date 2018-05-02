@@ -23,7 +23,7 @@ Each query in RavenDB must be expressed by [RQL](../../indexes/querying/what-is-
   - If a query indicates that [projection](../../indexes/querying/projections) should be used, then all results that were not filtered out are processed by that projection. Fields defined in the projection are extracted from the index (if stored).
 
 4. `include` 
-  - If any [includes]() are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
+  - If any [includes](../../client-api/how-to/handle-document-relationships#includes) are defined, then the results are being traversed to extract the IDs of potential documents to include with the results.
 
 5. Return results.
 
@@ -98,9 +98,17 @@ If you are filtering by fields that are not present in an index, an exception wi
 
 ## Related Articles
 
-- [Indexing : Basics](../../indexes/indexing-basics)
-- [Querying : Filtering](../../indexes/querying/filtering)
-- [Querying : Paging](../../indexes/querying/paging)
-- [Querying : Handling document relationships](../../indexes/querying/handling-document-relationships)
-- [Client API : What is a document store?](../../client-api/what-is-a-document-store)
-- [Client API : Opening a session](../../client-api/session/opening-a-session)
+### Indexes
+
+- [Indexing Basics](../../indexes/indexing-basics)
+
+### Querying
+
+- [Filtering](../../indexes/querying/filtering)
+- [Paging](../../indexes/querying/paging)
+
+### Client API
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [How to Handle Document Relationships](../../client-api/how-to/handle-document-relationships)

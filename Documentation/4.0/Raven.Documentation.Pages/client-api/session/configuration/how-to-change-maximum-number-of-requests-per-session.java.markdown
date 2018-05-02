@@ -24,4 +24,4 @@ The maximum number of requests for all sessions can also be configured via injec
 
 ### Configuration
 
-- [Conventions](../../client-api/configuration/conventions)
+- [Conventions](../../../client-api/configuration/conventions)

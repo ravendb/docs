@@ -27,4 +27,6 @@ The above query will return `tshirts/1` and `tshirts/4` as a result. The documen
 
 ## Related Articles
 
-- [Client API : Session : How to use intersect?](../../client-api/session/querying/how-to-use-intersect)
+### Client API
+
+- [How to Use Intersect](../../client-api/session/querying/how-to-use-intersect)

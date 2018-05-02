@@ -6,6 +6,12 @@ Operations can be deferred till `saveChanges` is called by using `defer` method 
 - [DeleteCommandData](../../../glossary/delete-command-data)
 - [PatchCommandData](../../../glossary/patch-command-data)
 
+<!-- TODO
+DeletePrefixedCommandData
+PutAttachmentCommandData
+DeleteAttachmentCommandData
+-->
+
 ## Syntax
 
 {CODE:java defer_1@ClientApi\Session\HowTo\Defer.java /}
@@ -18,3 +24,11 @@ Operations can be deferred till `saveChanges` is called by using `defer` method 
 ## Example
 
 {CODE:java defer_2@ClientApi\Session\HowTo\Defer.java /}
+
+## Related articles
+
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [Storing Entities](../../../client-api/session/storing-entities)
+- [Saving Changes](../../../client-api/session/saving-changes)

@@ -28,3 +28,16 @@ After getting the metadata from `session.advanced().getMetadataFor` you can modi
 
 ### Example II
 {CODE:java modify_metadata_2@ClientApi\Session\HowTo\GetMetadata.java /}
+
+## Related articles
+
+### Session
+
+- [What is a Session and How Does it Work](../../../client-api/session/what-is-a-session-and-how-does-it-work)
+- [How to Get Entity Change-Vector](../../../client-api/session/how-to/get-entity-change-vector)
+- [How to Get Entity Last Modified](../../../client-api/session/how-to/get-entity-last-modified)
+
+### Indexes
+
+- [Converting to JSON and Accessing Metadata](../../../indexes/converting-to-json-and-accessing-metadata)
+

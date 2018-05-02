@@ -1,4 +1,4 @@
-﻿# How to Handle Document Relationships
+﻿# Client API : How to Handle Document Relationships
 
 One of the design principles that RavenDB adheres to is the idea that documents are independent, meaning all data required to process a document is stored within the document itself. However, this doesn't mean there should not be relations between objects.
 
@@ -190,5 +190,11 @@ For most cases where denormalization is not an option, Includes are probably the
 
 ## Related Articles
 
-- [Indexing : Basics](../../indexes/indexing-basics)
-- [Querying : Basics](../../indexes/querying/basics)
+### Indexes
+
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Indexing Related Documents](../../indexes/indexing-related-documents)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)

@@ -1,4 +1,4 @@
-﻿# Operations : How to get collections statistics?
+﻿# Operations : How to Get Collection Statistics
 
 **GetCollectionStatisticsOperation** is used to return total count of documents, conflicts and document count in each collection.
 
@@ -17,3 +17,14 @@
 ## Example
 
 {CODE:java stats_3@ClientApi\Operations\CollectionStats.java /}
+
+## Related Articles
+
+### Operations
+
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [How to Get Database Statistics](../../../client-api/operations/maintenance/get-statistics)
+
+### FAQ
+
+- [What is a Collection](../../../client-api/faq/what-is-a-collection)

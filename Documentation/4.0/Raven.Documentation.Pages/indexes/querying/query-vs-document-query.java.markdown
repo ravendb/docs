@@ -40,6 +40,12 @@ is equivalent to:
 
 ## Related Articles
 
-- [Querying : Basics](../../indexes/querying/basics)
-- [Client API : Session : How to query?](../../client-api/session/querying/how-to-query)
-- [Client API : Session : How to use lucene in queries?](../../client-api/session/querying/lucene/how-to-use-lucene-in-queries)
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+
+### Session 
+
+- [How to Query](../../client-api/session/querying/how-to-query)
+- [What is a Document Query](../../client-api/session/querying/document-query/what-is-document-query)
+- [How to use Lucene](../../client-api/session/querying/document-query/how-to-use-lucene)

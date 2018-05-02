@@ -13,3 +13,14 @@
 ## Example
 
 {CODE:java stats_2@ClientApi\Operations\Statistics.java /}
+
+## Related Articles
+
+### Operations
+
+- [What are Operations](../../../client-api/operations/what-are-operations)
+- [How to Get Collection Statistics](../../../client-api/operations/maintenance/get-collection-statistics)
+
+### FAQ
+
+- [Database Statistics](../../../server/administration/statistics#database-statistics)

@@ -69,4 +69,15 @@ so it can happen than a document has been updated or deleted meanwhile.
 
 ## Related Articles
 
-- [What are **operations**?](../../client-api/operations/what-are-operations)
+### Operations
+
+- [What are Operations](../../client-api/operations/what-are-operations)
+
+### Client API
+
+- [How to Query](../../client-api/session/querying/how-to-query)
+
+### Querying
+
+- [What is RQL](../../indexes/querying/what-is-rql)
+- [Basics](../../indexes/querying/basics)

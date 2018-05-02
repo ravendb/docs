@@ -1,4 +1,4 @@
-﻿# Operations : Compare Exchange : How to Get Compare Exchange Value
+﻿# Compare Exchange : How to Get Compare Exchange Value
 
 ---
 
@@ -41,7 +41,9 @@
 
 ## Related Articles
 
-- [Compare Exchange - Overview](../../../server/clustering/compare-exchange)
-- [Get compare-exchange values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
-- [Put a compare-exchange value](../../../client-api/operations/compare-exchange/put-compare-exchange-value)
-- [Delete a compare-exchange value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+### Compare Exchange
+
+- [Overview](../../../client-api/operations/compare-exchange/overview)
+- [Get Compare-Exchange Values](../../../client-api/operations/compare-exchange/get-compare-exchange-values)
+- [Put a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)
+- [Delete a Compare-Exchange Value](../../../client-api/operations/compare-exchange/delete-compare-exchange-value)

@@ -78,8 +78,8 @@ Maintenance operations include operations for changing the configuration at runt
 * [DisableIndexOperation](../../client-api/operations/maintenance/indexes/disable-index)   
 * [EnableIndexOperation](../../client-api/operations/maintenance/indexes/enable-index)   
 * [ResetIndexOperation](../../client-api/operations/maintenance/indexes/reset-index)   
-* [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-indexes-lock)   
-* [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-indexes-priority)   
+* [SetIndexesLockOperation](../../client-api/operations/maintenance/indexes/set-index-lock)   
+* [SetIndexesPriorityOperation](../../client-api/operations/maintenance/indexes/set-index-priority)  
 * [StartIndexOperation](../../client-api/operations/maintenance/indexes/start-index)   
 * [StartIndexingOperation](../../client-api/operations/maintenance/indexes/start-indexing)   
 * [StopIndexOperation](../../client-api/operations/maintenance/indexes/stop-index)   
@@ -135,3 +135,13 @@ These type of operations contain various administrative and miscellaneous config
 ## Remarks
 
 {NOTE By default, operations available in `store.operations` or `store.maintenance` are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **[forDatabase](../../client-api/operations/how-to/switch-operations-to-a-different-database)** method. /}
+
+## Related articles
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)
+
+### Operations
+
+- [How to Switch Operations to a Different Database](../../client-api/operations/how-to/switch-operations-to-a-different-database)

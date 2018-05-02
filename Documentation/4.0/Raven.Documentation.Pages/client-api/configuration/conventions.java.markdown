@@ -1,4 +1,4 @@
-#Conventions
+# Conventions
 
 Conventions give you an ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
 
@@ -55,3 +55,28 @@ Forces to disable updates of database topology. Default: `false`.
 It determines if Java `Enum` types should be saved as integers or strings. Default: `false`.
 
 {CODE:java SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.java /}
+
+
+##UseCompression
+
+It determines if client will send headers to the Server indicating that it allows compression to be used. Default: `true`.
+
+{CODE:java UseCompression@ClientApi\Configuration\Conventions.java /}
+
+## Related articles
+
+### Conventions
+
+- [Querying](../../client-api/configuration/querying)
+- [Serialization](../../client-api/configuration/serialization)
+- [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)
+
+### Document Identifiers
+
+- [Working with Document Identifiers](../../client-api/document-identifiers/working-with-document-identifiers)
+- [Global ID Generation Conventions](../../client-api/configuration/identifier-generation/global)
+- [Type-specific ID Generation Conventions](../../client-api/configuration/identifier-generation/type-specific)
+
+### Document Store
+
+- [What is a Document Store](../../client-api/what-is-a-document-store)

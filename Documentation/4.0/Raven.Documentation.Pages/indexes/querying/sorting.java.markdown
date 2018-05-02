@@ -105,7 +105,13 @@ order by Name as alphanumeric
 
 ## Related Articles
 
-- [Indexing : Basics](../../indexes/indexing-basics)
-- [Querying : Basics](../../indexes/querying/basics)
-- [Querying : Filtering](../../indexes/querying/filtering)
-- [Querying : Paging](../../indexes/querying/paging)
+### Indexes
+
+- [Indexing Basics](../../indexes/indexing-basics)
+- [Sorting & Collation](../../indexes/sorting-and-collation)
+
+### Querying
+
+- [Basics](../../indexes/querying/basics)
+- [Filtering](../../indexes/querying/filtering)
+- [Paging](../../indexes/querying/paging)

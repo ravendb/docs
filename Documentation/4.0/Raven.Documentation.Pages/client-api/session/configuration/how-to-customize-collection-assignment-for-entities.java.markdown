@@ -16,10 +16,10 @@ This can become very useful when there is a need to deal with [polymorphic data]
 
 ### Configuration
 
-- [Conventions](../../client-api/configuration/conventions)
-- [How to Customize ID Generation for Entities](../../client-api/session/configuration/how-to-customize-id-generation-for-entities)
-- [How to Customize the Identity Property Lookup for Entities](../../client-api/session/configuration/how-to-customize-identity-property-lookup-for-entities)
+- [Conventions](../../../client-api/configuration/conventions)
+- [How to Customize ID Generation for Entities](../../../client-api/session/configuration/how-to-customize-id-generation-for-entities)
+- [How to Customize the Identity Property Lookup for Entities](../../../client-api/session/configuration/how-to-customize-identity-property-lookup-for-entities)
 
 ### FAQ
 
-- [What is a Collection?](../../faq/what-is-a-collection)  
+- [What is a Collection?](../../../client-api/faq/what-is-a-collection)  

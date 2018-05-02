@@ -18,5 +18,17 @@ The **StopIndexOperation** is used to stop indexing for an index.
 
 ## Related Articles
 
-- [How to **enable index**?](../../../../client-api/operations/maintenance/indexes/enable-index)
-- [How to **stop indexing** until restart?](../../../../client-api/operations/maintenance/indexes/stop-indexing)
+### Indexes
+
+- [What are Indexes](../../../../indexes/what-are-indexes)
+- [Creating and Deploying Indexes](../../../../indexes/creating-and-deploying)
+
+### Server
+
+- [Index Administration](../../../../server/administration/index-administration)
+
+### Operations
+
+- [How to Enable Index](../../../../client-api/operations/maintenance/indexes/enable-index)
+- [How to Stop Index Until Restart](../../../../client-api/operations/maintenance/indexes/stop-index)
+- [How to Resume Index](../../../../client-api/operations/maintenance/indexes/start-index)
