@@ -49,7 +49,7 @@
 2. Edit or Delete an existing script  
 
 3. Enter the script to use.  
-   In the above example, each source document from the 'Products' collection will be sent to 'ProductsInfo' collection in the destination database db3 
+   In the above example, each source document from the 'Products' collection will be sent to the 'ProductsInfo' collection in the destination database db3 
    (which is external to the cluster).  
    Each new document will have 2 fields: 'ProductName' & 'SupplierName'.  
    For detailed script options see [Transformation Script Options](../../../../server/ongoing-tasks/etl/raven#transformation-script-options).  
@@ -108,9 +108,9 @@
       In other words, we always _overwrite_ whatever exists on the other side, there is no [conflicts handling](../../../../studio/database/settings/conflict-resolution).  
 
     * The source database for the ETL process is the owner of the data.  
-      This means that any modifications done to the ETL’ed data on the destination database side are lost when overwriting  occurs.  
+      This means that any modifications done to the ETL’ed data on the destination database side are lost when overwriting occurs.  
 
-    * So, if you need to modify the ETL'ed data in the destination side, you should create a companion document on the destination database instead of modifying the ETL’ed data directly.  
+    * If you need to modify the ETL'ed data in the destination side, you should create a companion document on the destination database instead of modifying the ETL’ed data directly.  
       The rule is: For ETL’ed data, you can look but not touch...  
 
     * On the other hand, Data that is replicated with RavenDB's [External Replication Task](../../../../studio/database/tasks/ongoing-tasks/external-replication-task) does _not_ overwrite existing documents.  

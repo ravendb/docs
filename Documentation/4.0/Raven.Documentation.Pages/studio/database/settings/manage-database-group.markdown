@@ -112,7 +112,7 @@
 
 {PANEL: Database Group Topology - Members Duties }
 
-####Members duties are:
+####Members Duties Are:
 
 * Replication of the database data to all other nodes in Database Group (Done by ***all*** nodes)  
 

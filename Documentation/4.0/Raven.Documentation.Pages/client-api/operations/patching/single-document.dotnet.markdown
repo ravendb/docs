@@ -17,7 +17,7 @@ In this page:
 {PANEL: Typed Session API}
 
 A type safe session interface that allows performing the most common patch operations.  
-The patch request will be sent to server only after the call to `SaveChanges`, this way it's possile to perform multiple operations in one request to the server.  
+The patch request will be sent to server only after the call to `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
 
 ### Increment field value
 `Session.Advanced.Increment`
@@ -26,7 +26,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
-| **U** | `Type` | Field type, must be of numeric type, or a `string` of `char` for string concatination |
+| **U** | `Type` | Field type, must be of numeric type, or a `string` of `char` for string concatenation |
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
@@ -61,7 +61,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 | **arrayMofificationLambda** | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
 
 {INFO:JavaScriptArray}
-`JavaScriptArray` allows buildin lambdas representing array manipulations for patches.  
+`JavaScriptArray` allows building lambdas representing array manipulations for patches.  
 
 | Method Signature| Return Type | Description |
 |--------|:-----|-------------| 
@@ -76,7 +76,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 {PANEL:Non-Typed Session API}
 The non-typed session api for patches uses the `Session.Advanced.Defer` function that allows registering single or several commands.  
 One of the possible commands is the `PatchCommandData`, describing single document patch command.  
-The patch request will be sent to server only after the call to `SaveChanges`, this way it's possile to perform multiple operations in one request to the server.  
+The patch request will be sent to server only after the call to `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
 
 `Session.Advanced.Defer`
 {CODE patch_non_generic_interface_in_session@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -99,7 +99,7 @@ We highly recommend using scripts with parameters. This allows RavenDB to cache 
 | Members | | |
 | ------------- | ------------- | ----- |
 | **Script** | `string` | JavaScript code to be run. |
-| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script. The parameters can be accessed using the '$' prefix. Parameter starting with a '$' will be used as is, without further concatination . |
+| **Values** | `Dictionary<string, object>` | Parameters to be passed to the script. The parameters can be accessed using the '$' prefix. Parameter starting with a '$' will be used as is, without further concatenation . |
 
 {INFO/}
 

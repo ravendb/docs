@@ -6,7 +6,7 @@
 Data subscriptions provide a reliable and handy way to perform document processing on the client side.  
 The server sends batches of documents to the client.  
 The client then processes the batch and will receive the next one only after it acknowledges the batch was processed.  
-The server persists the processing progress, allowing to pause and continue the processing.  
+The server persists the processing progress, allowing you to pause and continue the processing.  
 
 In this page:  
 [Data subscription consumption](../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscription-consumption)  
@@ -61,25 +61,24 @@ A subscription worker will retry processing documents from the last acknowledged
 
 Processing progress is persisted and therefore it can be paused and resumed from the last point it was stopped. 
 The persistence mechanism also ensures that no documents are missed even in the presence of failure, whether it's client side related, communication, or any other disaster. 
-Subscriptions progress is stored in the cluster level, in `Enterprise edition`. In the case of node failure, the processing can be automatically failed over to another node.
-The usage of Change Vectors allows us to continue from a point that is close to the last point reached before failure, rather than starting the process from scratch.
+Subscriptions progress is stored in the cluster level, in the `Enterprise edition`. In the case of node failure, the processing can be automatically failed over to another node.
+The usage of Change Vectors allows us to continue from a point that is close to the last point reached before failure rather than starting the process from scratch.
 {PANEL/}
 
 {PANEL:How the worker communicates with the server}
 
-A worker communicates with the data subscription using a custom protocol, on top of a long-lived TCP connection. Each successful batch processing consists of these stages:
+A worker communicates with the data subscription using a custom protocol on top of a long-lived TCP connection. Each successful batch processing consists of these stages:
 
-1. Server sends documents a batch.
+1. The server sends documents a batch.
 
 2. Worker sends acknowledgment message after it finishes processing the batch.
 
-3. Server returns the client a notification that the acknowledgment persistence is done and it is ready to send the next batch.
+3. The server returns the client a notification that the acknowledgment persistence is done and it is ready to send the next batch.
 
 {INFO: Failover}
 When the responsible node handling the subscription is down, the subscription task can be manually reassigned to another node in the cluster.  
 With the Enterprise license the cluster will automatically reassign the work to another node.
 {INFO/}
-
 
 The TCP connection is also used as the "state" of the worker process and as long as it's alive, the server will not allow other clients to consume the subscription. 
 The TCP connection is kept alive and monitored using "heartbeat" messages. If it's found nonfunctional, the current batch progress will be restarted.
