@@ -48,7 +48,7 @@ This feature applies to changing an index definition on the production server. I
 - any changes to the locked index will be ignored,
 - an error will be raised when someone tries to modify the index. 
 
-The typical flow is that you update the index definition on the server, next update it on the codebase, and finally deploy the application to match them.
+The typical flow is that you update the index definition on the server, then update it on the codebase, and finally deploy the application to match them.
 While the index is locked, at any time when `IndexCreation.CreateIndexes()` on start up is called, the changes you have introduced will not be reverted.
 
 It is important to note that this is not a security feature, and you can unlock an index at any time.
@@ -88,7 +88,7 @@ Operation scope: Cluster
 
 {NOTE/}
 
-## Related articles
+## Related Articles
 
 ### Indexes
 

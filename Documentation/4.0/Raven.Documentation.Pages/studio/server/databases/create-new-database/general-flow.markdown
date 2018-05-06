@@ -34,7 +34,7 @@ From the databases list view, click the **'New database'** button.
 ![Figure 2. Create New Database - Database name](images/new-database-general-2.png "Enter Database Name")
 
 {NOTE: }
-A database name can be any sequence of characters except for the following rules:  
+A database name can be any sequence of characters except for the following:  
 
 * A name cannot start or end with  ' . '  
 * A name cannot exceed 230 characters  

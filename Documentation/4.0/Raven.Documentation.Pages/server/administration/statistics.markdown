@@ -43,7 +43,7 @@ where each meter has the following format:
 ### Memory Stats
 
 {NOTE: }
-In order to get server memory statistics use the `{serverUrl}/admin/debug/memory/stats` endpoint
+In order to get server memory statistics, use the `{serverUrl}/admin/debug/memory/stats` endpoint
 {NOTE/}
 
 A document containing the following memory statistics is retrieved:
@@ -248,7 +248,7 @@ or via the Client API (details [here](../../client-api/operations/maintenance/ge
 ![Figure 1. Database Statistics](images/general-stats.png)  
 
 In the Studio, go to `Databases`, select a database and then go to `Stats`.  
-The following information is presented :
+The following information is presented:
 
 * **General Stats** 
     * Database ID
@@ -280,7 +280,8 @@ The following information is presented :
         * Reduce Successes
         * Reduced Per Second Rate
 
-### Database Statistics via dedicated endpoint
+### Database Statistics via Dedicated Endpoint
+
 {NOTE: }
 Database statistics can also be retrieved in a JSON format by using the  
 `{serverUrl}/databases/{databaseName}/stats` endpoint

@@ -14,7 +14,7 @@
 
 ![Figure 1. Client Requests Configuration](images/client-configuration.png "Client Requests Configuration")
 
-**1. Read Balance Behaviour**  
+**1. Read Balance Behavior**  
 
   * Set the load-balance method that the client will use when accessing a node with ***Read*** requests.  
   The method selected will also affect the client's decision of which node to failover to in case of issues with the ***Read*** request.  
@@ -25,7 +25,7 @@
      * _Round Robin_  
      * _Fastest Node_  
 
-  *  For detailed explanation about each option see: [Read Balance Behavior Options](../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options)  
+  *  For a detailed explanation about each option see: [Read Balance Behavior Options](../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options)  
 
 **2. Max number of requests per session**  
 
@@ -33,7 +33,7 @@
   The default value is 30.  
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 - [Requests Configuration Per Database](../../studio/database/settings/client-configuration-per-database)
 - [Load Balance & Failover](../../client-api/configuration/load-balance-and-failover)

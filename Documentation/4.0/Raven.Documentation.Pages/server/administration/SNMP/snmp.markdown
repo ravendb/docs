@@ -17,11 +17,11 @@ As users start running large numbers of RavenDB instances, it becomes unpractica
 SNMP support is available for enterprise licenses only.
 {NOTE/}
 
-
 ### Enabling SNMP in RavenDB
 
 RavenDB is already configured to support SNMP. All you have to do is enable it and restart the server. 
 This is done by adding the following key to your settings.json file:
+
 {CODE-BLOCK:json}
 {
     ...
@@ -42,8 +42,7 @@ You can change those with the following configuration keys:
 }
 {CODE-BLOCK/}
 
-The community string is used like a password. It is sent with each SNMP Get request and 
-allows or denies access to the monitored device.
+The community string is used like a password. It is sent with each SNMP Get request and allows or denies access to the monitored device.
 
 ### The Metrics
 
@@ -146,7 +145,7 @@ RavenDB's root OID id: 1.3.6.1.4.1.45751.1.1.
 
 ### Templates
 
-For easier setup, we have prepared a few templates for monitoring tools which can be found [here](https://github.com/ravendb/ravendb/tree/v4.0/src/Raven.Server/Monitoring/Snmp/Templates).   
+For easier setup we have prepared a few templates for monitoring tools which can be found [here](https://github.com/ravendb/ravendb/tree/v4.0/src/Raven.Server/Monitoring/Snmp/Templates).   
 These templates include the metrics and their associated OIDs.
 
 ## Related Articles
