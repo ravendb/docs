@@ -47,7 +47,7 @@
 {CODE-TAB:csharp:Async more_like_this_5@ClientApi\Session\Querying\MoreLikeThis.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Articles/MoreLikeThis' 
-where morelikethis(id() = 'articles/1', '{ Fields : [ "Body" ] }')
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "Body" ] }')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -58,7 +58,7 @@ where morelikethis(id() = 'articles/1', '{ Fields : [ "Body" ] }')
 {CODE-TAB:csharp:Async more_like_this_7@ClientApi\Session\Querying\MoreLikeThis.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Articles/MoreLikeThis' 
-where morelikethis(id() = 'articles/1', '{ Fields : [ "Body" ] }') and Category == 'IT'
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "Body" ] }') and Category == 'IT'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

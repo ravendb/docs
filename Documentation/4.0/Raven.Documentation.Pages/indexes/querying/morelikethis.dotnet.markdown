@@ -28,7 +28,7 @@ MoreLikeThis will use all the fields defined in an index. To use only a specific
 {CODE-TAB:csharp:DocumentQuery more_like_this_2_1@Indexes\Querying\MoreLikeThis.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Articles/ByArticleBody' 
-where morelikethis(id() = 'articles/1', '{ Fields : [ "ArticleBody" ] }')
+where morelikethis(id() = 'articles/1', '{ "Fields" : [ "ArticleBody" ] }')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
