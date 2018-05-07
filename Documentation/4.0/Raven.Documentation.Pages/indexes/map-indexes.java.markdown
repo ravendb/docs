@@ -1,0 +1,177 @@
+# Indexes : Map Indexes
+
+`Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. They indicate which documents can be searched by which fields. 
+
+These **mapping functions** are **LINQ-based functions** and can be considered the **core** of indexes.
+
+## What Can be Indexed
+
+You can:
+
+- [index single fields](../indexes/map-indexes#indexing-single-fields)
+- [combined multiple fields](../indexes/map-indexes#combining-multiple-fields-together) together
+- [index partial field data](../indexes/map-indexes#indexing-partial-field-data)
+- [index nested data](../indexes/map-indexes#indexing-nested-data)
+- [index fields from related documents](../indexes/indexing-related-documents)
+- [index fields from multiple collections](../indexes/indexing-polymorphic-data#multi-map-indexes)
+- ...and more. 
+
+## Indexing Single Fields
+
+Let's create an index that will help us search for `Employees` by their `firstName`, `lastName`, or both.
+
+- First, let's create an index called `Employees/ByFirstAndLastName`
+
+{CODE:java indexes_1@Indexes/Map.java /}
+
+- The next step is to create an indexing function itself. This is done by setting the `map` field with mapping function in a **parameterless constructor**.
+
+{CODE:java indexes_2@Indexes/Map.java /}
+
+- The final step is to [deploy it](../indexes/creating-and-deploying) to the server and issue a query using the session [Query](../client-api/session/querying/how-to-query) method:
+
+{CODE-TABS}
+{CODE-TAB:java:Query indexes_4@Indexes/Map.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Employees/ByFirstAndLastName'
+where firstName = 'Robert'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{INFO:Field Types}
+
+Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
+
+For example, if our `Employee` will have a property called `age` that is an `integer` then the following indexing function...
+
+{CODE-BLOCK:csharp}
+from employee in docs.Employees
+select new
+{
+	age = employee.age
+}
+{CODE-BLOCK/}
+
+...grant us the capability to issue numeric queries (**return all the Employees that `age` is more than 30**). 
+
+Changing the `age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `age` field...
+
+{CODE-BLOCK:csharp}
+from employee in docs.Employees
+select new
+{
+	age = employee.age.ToString()
+}
+{CODE-BLOCK/}
+
+{INFO/}
+
+{WARNING: Convention}
+
+You will probably notice that in the `Studio`, this function is a bit different from the one defined in the `Employees_ByFirstAndLastName` class:
+
+{CODE-BLOCK:csharp}
+from employee in docs.Employees
+select new
+{
+	firstName = employee.firstName,
+	lastName = employee.lastName
+}
+{CODE-BLOCK/}
+
+The part you should pay attention to is `docs.Employees`. This syntax indicates from which collection a server should take the documents for indexing. In our case, documents will be taken from the `Employees` collection. To change the collection, you need to change `Employees` to the desired collection name or remove it and leave only `docs` to index **all documents**.
+
+{WARNING/}
+
+## Combining Multiple Fields Together
+
+Since each index contains a LINQ function, you can combine multiple fields into one.
+
+### Example I
+
+{CODE:java indexes_7@Indexes/Map.java /}
+
+{CODE-TABS}
+{CODE-TAB:java:Query indexes_8@Indexes/Map.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Employees/ByFullName'
+where fullName = 'Robert King'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+### Example II
+
+{INFO: Information}
+
+In this example, the index field `query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
+
+You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers).
+
+{INFO/}
+
+{CODE:java indexes_1_6@Indexes/Map.java /}
+
+{CODE-TABS}
+{CODE-TAB:java:Query indexes_1_7@Indexes/Map.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Employees/Query'
+where search(query, 'John Doe')
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+## Indexing Partial Field Data
+
+Imagine that you would like to return all employees that were born in a specific year. You could of course do it by indexing `birthday` from `Employee` in the following way:
+
+{CODE:java indexes_1_2@Indexes/Map.java /}
+
+{CODE-TABS}
+{CODE-TAB:java:Query indexes_5_1@Indexes/Map.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Employees/ByBirthday '
+where birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+RavenDB gives you the ability to extract field data and to index by it. A different way to achieve our goal will look as follows:
+
+{CODE:java indexes_1_0@Indexes/Map.java /}
+
+{CODE-TABS}
+{CODE-TAB:java:Query indexes_6_1@Indexes/Map.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Employees/ByYearOfBirth'
+where yearOfBirth = 1963
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+## Indexing Nested Data
+
+If your document contains nested data, e.g. `Employee` contains `address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `country`:
+
+{CODE:java indexes_1_4@Indexes/Map.java /}
+
+{CODE-TABS}
+{CODE-TAB:java:Query indexes_7_1@Indexes/Map.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Employees/ByCountry'
+where country = 'USA'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+If a document relationship is represented by the document's ID, you can use the `LoadDocument` method to retrieve such a document. More about it can be found [here](../indexes/indexing-related-documents).
+
+## Indexing Multiple Collections
+
+Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-polymorphic-data#multi-map-indexes).
+
+## Related Articles
+
+### Indexes
+
+- [Indexing Related Documents](../indexes/indexing-related-documents)
+- [Map-Reduce Indexes](../indexes/map-reduce-indexes)
+- [Creating and Deploying Indexes](../indexes/creating-and-deploying)
+
+### Querying
+- [Basics](../indexes/querying/basics)
