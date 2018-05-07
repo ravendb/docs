@@ -1,48 +1,78 @@
 # Highly Available Tasks
+---
 
-RavenDB Task is one of the following:
+{NOTE: }
 
-* An [Ongoing Tasks](../../ongoing-tasks/general-info). 
-* Updating a `Rehab` or `Promotable` [Database Node](distributed-database#database-topology).
+* A **RavenDB Task** can be one of the following:  
 
-There is no single coordinator handing out tasks to a specific node. Rather, every node decides for himself if its his responsibility to execute the task.  
-Each node will reevaluate his responsibilities with every change made to the [Database Record](../../../client-api/operations/server-wide/create-database) such as defining new `Index`, configuring or modifying an `Outgoing Task`, `Database Topology` change, etc.
+  * An [Ongoing Task](../../../studio/database/tasks/ongoing-tasks/general-info)  
+  * Updating a `Rehab` or a `Promotable` [Database Node](../../../server/clustering/distribution/distributed-database#database-topology)  
 
-{NOTE: Constraints}
+* There is no single coordinator handing out tasks to a specific node.  
+  Instaed, each node decides on its own if it is the [Reponsible Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node) of the task.  
 
-1. Task is defined per [Database Group](../../../server/clustering/distribution/distributed-database).
-2. Task is executed by a single `Database Node` only.
-3. A `Database Node` can be assigned with many tasks.
-4. The node must be in a [Member](../../../server/clustering/distribution/distributed-database#database-topology) state in the `Database Group` in order to perform a task.
-5. Cluster must be in a [functional](../../../server/clustering/rachis/what-is-rachis#normal-operations) state.
+* Each node will re-evaluate its responsibilities with every change made to the [Database Record](../../../client-api/operations/server-wide/create-database),  
+  such as defining a new _index_, configuring or modifying an _Ongoing Task_, any _Database Topology_ change, etc.  
 
-**Note**: There are some exceptions to the above constraints in the behavior of the [Backup](../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down) task.
+* In this page:  
+  * [Constraints](../../../server/clustering/distribution/highly-available-tasks#constraints)  
+  * [Responsible Node](../../../server/clustering/distribution/highly-available-tasks#responsible-node)  
+  * [Tasks Relocation](../../../server/clustering/distribution/highly-available-tasks#tasks-relocation)  
+{NOTE/}
 
-{NOTE/} 
+---
 
-## Responsible Node
+{PANEL: Constraints}
 
-`Responsible Node` is the node that is responsible to perform a specific task.  
+1. Task is defined per [Database Group](../../../server/clustering/distribution/distributed-database).  
 
-Each node checks whether he is the `Responsible Node` for the task by executing a local function that is based on the current [Database Topology](../../../server/clustering/distribution/distributed-database#database-topology) and the unique hash value of the task.
-Since the `Database Topology` is _eventually consistent_ across the cluster, there will be an _eventually consistent_ `Responsible Node`, which will answer the above constraints.
+2. Task is executed by a single `Database Node` only.  
+   With Backup Task being an exception in case of a cluster partition, see [Backup Task - When Cluster or Node are Down](../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task---when-cluster-or-node-are-down).  
 
-### Mentor Node
-When node has the task to update another node. The updating node is called `Mentor Node`.
+3. A `Database Node` can be assigned with many tasks.  
 
-## Tasks Relocation
+4. The node must be in a [Member](../../../server/clustering/distribution/distributed-database#database-topology) state in the `Database Group` in order to perform a task.  
 
-* Upon `Database Topology` change, _all_ existing tasks will be reevaluated and redistributed among the functional nodes.   
-* Upon modification of an `Outgoing Task` the unique task hash value is changed so the `Responsible Node` for that task is reevaluated.
+5. Cluster must be in a functional state.  
+{PANEL/}
 
-For example:  
+{PANEL: Responsible Node}
+
+* `Responsible Node` is the node that is responsible to perform a specific Ongoing Task.  
+
+* Each node checks whether it is the `Responsible Node` for the task by executing a local function that is based on the  
+  _unique hash value_ of the task and the current [Database Topology](../../../server/clustering/distribution/distributed-database#database-topology).  
+
+* Since the `Database Topology` is _eventually consistent_ across the cluster,  
+  there will be an **eventually consistent single Responsible Node**, which will answer the above constraints.  
+
+{NOTE: Mentor Node}
+The node is called a `Mentor Node` when its task is updating a _Rehab_ or a _Promotable_.  
+{NOTE/}
+{PANEL/}
+
+{PANEL: Tasks Relocation}
+
+* Upon a `Database Topology` change, _all_ existing tasks will be re-evaluated and re-distributed among the functional nodes.   
+
+* The responsible node for an `Outgoing Task` is also re-evalutated upon a change in the [unique hash value](../../../todo-update-me-later) of the Ongoing Task.  
+
+{NOTE: }
+
+**For example**:  
+
 Let's assume that we have a 5 nodes cluster [A, B, C, D, E] with a database on [A, B, E] and a task on node B.  
-Node B has network issues and is separated from the cluster. So on one side we have nodes [A, C, D, E] and [B] on the other.
-The [Cluster Observer](../../../server/clustering/distribution/cluster-observer) will note that he can't reach node B and issue [Raft Command](../../../server/clustering/rachis/consensus-operations) to move node B to `Rehab` state. 
-Once this change has propagated, it will trigger a reassessment of _all_ tasks in all reachable nodes. In our example the task will move to either A or E.   
-In the meanwhile, node B which has no communication with the [Cluster Leader](../../../server/clustering/rachis/cluster-topology), moves itself to be a `Candidate` and removes all tasks. 
 
+Node B has network issues and is separated from the cluster. 
+So nodes [A, C, D, E] are on one side and node [B] is on the other side.  
 
+The [Cluster Observer](../../../server/clustering/distribution/cluster-observer) will note that it can't reach node B 
+and issue a [Raft Command](../../../server/clustering/rachis/consensus-operations) in order to move node B to a `Rehab` state.  
 
+Once this change has propagated, it will trigger a re-assessment of _all_ tasks in _all_ reachable nodes.  
+In our example the task will move to either A or E.  
 
-
+In the meanwhile, node B which has no communication with the [Cluster Leader](../../../server/clustering/rachis/cluster-topology),  
+moves itself to be a `Candidate` and removes all its tasks.  
+{NOTE/}
+{PANEL/}
