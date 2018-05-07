@@ -8,7 +8,7 @@ Create a new database on a server.
 
 | Parameters | Type | Description |
 | ------------- | ------------- | ----- |
-| **databaseRecord** | string | instance of `DatabaseRecord` containing database configuration |
+| **databaseRecord** | DatabaseRecord | instance of `DatabaseRecord` containing database configuration |
 | **replicationFactor** | int | indicates how many nodes should contain the database |
 
 

@@ -20,7 +20,7 @@ The most basic way to load a single entity is to use one of the `Load` methods.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string or ValueType | Identifier of a document that will be loaded. |
+| **id** | string | Identifier of a document that will be loaded. |
 
 | Return Value | |
 | ------------- | ----- |

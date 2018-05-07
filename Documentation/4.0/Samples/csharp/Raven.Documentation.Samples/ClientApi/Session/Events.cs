@@ -87,7 +87,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 // Subscribe to the event
                 store.OnBeforeDelete += OnBeforeDeleteEvent;
 
-                // Open a session and store some entities
+                // Open a session and delete entity
                 using (var session = store.OpenSession())
                 {
                     var product = session.Load<Product>("products/1-A");
