@@ -11,7 +11,7 @@
     },
     {
         "Path": "client-configuration-per-database.markdown",
-        "Name": "Client Requests Configuration",
+        "Name": "Client Configuration",
         "Mappings": []
     },
     {

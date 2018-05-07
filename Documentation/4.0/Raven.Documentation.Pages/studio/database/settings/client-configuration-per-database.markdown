@@ -1,4 +1,4 @@
-﻿# Client Requests Configuration (Per Database)
+﻿# Client Configuration (Per Database)
 ---
 
 {NOTE: }
@@ -27,6 +27,11 @@
 
 * **5**. This is the **Effective Configuration** that will actually be used.  
 {PANEL/}
+
+{NOTE: Note}
+This view will be as in the above image when a general configuration is defined.  
+If a general configuration is not yet defined then this view will be similar to the general server configuration view.  
+{NOTE/}
 
 ## Related articles
 
