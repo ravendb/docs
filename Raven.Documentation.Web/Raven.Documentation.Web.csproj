@@ -335,7 +335,6 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>54391</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost/Raven.Documentation.Web</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>
