@@ -154,7 +154,7 @@
 								   };
 
 					session.Store(user);
-                    session.Store(city);
+					session.Store(city);
 					session.SaveChanges();
 				}
 
