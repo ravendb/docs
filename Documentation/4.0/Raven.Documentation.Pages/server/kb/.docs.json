@@ -6,6 +6,24 @@
             {
                 "Version": 3.5,
                 "Key": "server/kb/document-key-generation"
+            },
+            {
+                "Version": 1.0,
+                "Key": "theory/document-key-generation"
+            }
+        ]
+    },
+    {
+        "Path": "advanced-replication-details.markdown",
+        "Name": "Replication: Advanced Replication Details",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/kb/advanced-replication-details"
+            },
+            {
+                "Version": 2.0,
+                "Key": "server/scaling-out/replication/advanced-replication-details"
             }
         ]
     },
