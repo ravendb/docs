@@ -42,6 +42,51 @@ subscription has already seen, what was sent to an ETL destination, etc) but can
 In particular, the change vector is _guaranteed_ to change whenever the document changes and can be used as part of optimistic concurrency checks. A document modification can all specify an expected change vector for a document (with an empty change vector signifying that the document does not exists). In such a case, all operations in the 
 transaction will be aborted and no changes will be applied to any of the documents modified in the transaction.
 
+## Change Vector Comparisons
+Conceptually, comparing two change vectors means answering a question - which change vector refers to an earlier event.  
+
+The comparison is defined as follows:  
+  
+* Two change vectors are equal when and only when all etags _equal_ between corresponding node and database IDs
+* Change vector A is larger than change vector B if and only if all etags are _larger or equal_ between corresponding node and database IDs
+* Change vector A conflicts with change vector B if and only if at least one etags is _larger, equal or has node etag (and the other don't)_ and at least one etags is _smaller_ between corresponding node and database IDs
+  
+Note that the change vectors are unsortable for two reasons:
+
+* Change vectors are unsorted collections of node tags/etag tuples, they can be sorted in multiple ways
+* Conflicting change vectors cannot be compared
+  
+### Example 1
+Let us assume two change vectors, v1 = [A:8, B:10, C:34], v2 = [A:23, B:12, C:65]  
+When we compare v1 and v2, we will do three comparisons:
+
+* A --> 8 (v1) < 23 (v2)
+* B --> 10 (v1) < 12 (v2)
+* C --> 34 (v1) < 65 (v2)
+  
+Corresponding etags in v2 are greater than the ones in v1. This means that v1 < v2
+
+### Example 2
+Let us assume two change vectors, v1 = [A:18, B:12, C:51], v2 = [A:23, B:12, C:65]  
+When we compare v1 and v2, we will do three comparisons:
+
+* A --> 18 (v1) < 23 (v2)
+* B --> 12 (v1) = 12 (v2)
+* C --> 51 (v1) < 65 (v2)
+  
+Corresponding etags in v2 are greater than the ones in v1. This means that v1 < v2
+
+
+### Example 3
+Let us assume two change vectors, v1 = [A:18, B:12, C:65], v2 = [A:58, B:12, C:51]  
+When we compare v1 and v2, we will do three comparisons:
+
+* A --> 18 (v1) < 58 (v2)
+* B --> 12 (v1) = 12 (v2)
+* C --> 65 (v1) > 51 (v2)
+  
+Etag 'A' in v1 is smaller than in v2, and Etag 'C' is larger in v1 than in v2. This means that v1 conflicts with v2.  
+
 ## Concurrency Control at the Cluster
 
 RavenDB implements a multi master strategy for handling database writes. This means that it will _never_ reject a valid write to a document (under the assumption that if you tried to write
