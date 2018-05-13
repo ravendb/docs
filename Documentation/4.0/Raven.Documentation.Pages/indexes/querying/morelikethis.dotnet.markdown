@@ -4,13 +4,13 @@ MoreLikeThis returns a list of similar documents that are related to a given doc
 
 ## Setup
 
-In order to work, MoreLikeThis requires access to the text in the index, therefore, the index being queried needs to [store](../../indexes/storing-data-in-index) the fields or store the [term vectors](../../indexes/using-term-vectors) for those fields.
+In order to work, MoreLikeThis requires access to the text in the index. Therefore, the index being queried needs to [store](../../indexes/storing-data-in-index) the fields or store the [term vectors](../../indexes/using-term-vectors) for those fields.
 
 {CODE more_like_this_4@Indexes\Querying\MoreLikeThis.cs /}
 
 ## Basic Usage
 
-MoreLikeThis has many defaults already set, and the simplest mode will satisfy the majority of the usage scenarios.
+MoreLikeThis has many defaults already set and the simplest mode will satisfy the majority of the usage scenarios.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query more_like_this_1@Indexes\Querying\MoreLikeThis.cs /}
