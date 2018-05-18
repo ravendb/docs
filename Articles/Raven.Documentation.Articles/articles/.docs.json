@@ -361,5 +361,34 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/cost-benefits-ravendb-nosql-acid-database.jpg",
             "twitter:url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database"
         }
+    },
+    {
+        "Path": "nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.markdown",
+        "Name": ".NET Rocks with Kamran Ayub Talking about RavenDB V4",
+        "Mappings": [],
+        "Metadata": {
+            "title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast",
+            "publishedAt": "2018-05-01"
+        },
+        "SeoMetaProperties": {
+            "description": "",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
+            "og:description": "",
+            "og:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
+            "twitter:description": "",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
+            "twitter:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast"
+        }
     }
 ]
