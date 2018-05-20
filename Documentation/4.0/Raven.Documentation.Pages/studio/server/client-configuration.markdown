@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* Configures the RavenDB client requests behavior for ***all*** databases in the cluster  
+* Configure the RavenDB client requests behaviour for ***all*** databases in the cluster  
 
 * These default values can be overwritten ***per database*** in [Client Requests Configuration - per database](../../studio/database/settings/client-configuration-per-database)  
 {NOTE/}
@@ -14,7 +14,7 @@
 
 ![Figure 1. Client Requests Configuration](images/client-configuration.png "Client Requests Configuration")
 
-**1. Read Balance Behavior**  
+**1. Read balance behavior**  
 
   * Set the load-balance method that the client will use when accessing a node with ***Read*** requests.  
   The method selected will also affect the client's decision of which node to failover to in case of issues with the ***Read*** request.  

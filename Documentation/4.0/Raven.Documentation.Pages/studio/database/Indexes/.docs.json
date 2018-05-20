@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "indexes-overview.markdown",
+        "Name": "Indexes Overview",
+        "Mappings": []
+    },
+    {
+        "Path": "indexes-list-view.markdown",
+        "Name": "Indexes List View",
+        "Mappings": []
+    }
+]

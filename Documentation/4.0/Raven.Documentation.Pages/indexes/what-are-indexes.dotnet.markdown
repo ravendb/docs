@@ -34,6 +34,8 @@ This behavior can be altered by [storing](../indexes/storing-data-in-index) fiel
 
 ### Indexes
 
+- [Indexes Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Indexes List View](../studio/database/indexes/indexes-list-view)
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 - [Indexing Basics](../indexes/indexing-basics)
 
