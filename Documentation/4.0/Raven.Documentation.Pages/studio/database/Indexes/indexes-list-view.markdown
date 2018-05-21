@@ -85,8 +85,8 @@
    **Priority** - Set the indexing-process thread priority with regards to the requests-threads priority. See [Indexing Priority](../../../server/administration/index-administration#priority)  
    **Mode** - Set modifications behaviour:  
    Unlocked - Changes to the index definitions will be applied. See [Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)  
-   Lock - Index definitions changes will not be applied ! No Error will be raised.  
-   Lock(Error) - Index definitions changes will not be applied ! An error is raised upon trying to modify.  
+   Locked - Index definitions changes will not be applied ! No Error will be raised.  
+   Locked(Error) - Index definitions changes will not be applied ! An error is raised upon trying to modify.  
 
 4. **Selected Indexes Options** - Can apply the following for selected/checked indexes from the list:  
    Delete, set indexes state (disable/pause), set lock mode  
@@ -115,9 +115,11 @@
    * When an index is already defined but the server fails to open its index data file from disk, or if this file is corrupted,  
      then the server will mark the index as _Faulty_, indicating that something is wrong with this index data files.  
 
-   * A possible solution is to reset the index - restart the indexing process from scratch,  
-     so that new data files for the index are created, replacing the corrupted ones.  
+   * If the issue with the index's data file is resolved, you can click **'Open Index'** (label **'3'** in above figure),  
+     so that the index is processed again.  
 
+   * A possible solution is to **reset** the index - restart the indexing process from scratch,  
+     so that new data files for the index are created, replacing the corrupted ones.  
 
 **Note**: A detailed errors list can be found in [Index Errors View](../../../todo-update-later).  
 {PANEL/}
