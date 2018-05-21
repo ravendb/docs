@@ -1,13 +1,15 @@
 ﻿# Administration : Index Administration
 
-RavenDB indexes can be administrated easily by the user with the Studio or via maintenance operations in the Client API.
+RavenDB indexes can be administrated easily by the user with the [Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view) or via maintenance operations in the Client API.
 
 ## Stop & Start 
 
-Stopping the indexing for a database will result in pausing all indexes. You can do that using [the Studio](../../studio/database/indexes/todo) or [the Client API](../../client-api/operations/maintenance/indexes/stop-indexing). 
+Stopping the indexing for a database will result in pausing all indexes. You can do that using [the Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+or [the Client API](../../client-api/operations/maintenance/indexes/stop-indexing). 
 The same way you can resume it (the operation to start indexing can be found [here](../../client-api/operations/maintenance/indexes/start-indexing)).
 
-You can also stop and start a single index. The Client API operations are [StopIndex](../../client-api/operations/maintenance/indexes/stop-index) and [StartIndex](../../client-api/operations/maintenance/indexes/start-index).
+You can also stop and start a single index. The Client API operations are [StopIndex](../../client-api/operations/maintenance/indexes/stop-index) and 
+[StartIndex](../../client-api/operations/maintenance/indexes/start-index).
 
 {NOTE: }
 Indexing will be resumed automatically after a server restart.
@@ -17,7 +19,8 @@ Operation scope: Local node
 
 ## Disable & Enable
 
-Disabling an index can be done via [the Studio](../../studio/database/indexes/todo) or the Client API operations: [DisableIndex](../../client-api/operations/maintenance/indexes/disable-index), [EnableIndex](../../client-api/operations/maintenance/indexes/enable-index). 
+Disabling an index can be done via [the Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+or the Client API operations: [DisableIndex](../../client-api/operations/maintenance/indexes/disable-index), [EnableIndex](../../client-api/operations/maintenance/indexes/enable-index). 
 
 {NOTE: }
 Querying a disabled index is allowed but it may return stale results. Unlike stopping the index, the disable index is a persistent operation, so the index remains disabled 
@@ -37,7 +40,8 @@ Operation scope: Local node
 
 ## Delete
 
-You can delete an index by using [the Studio](../../studio/database/indexes/todo) or [the Client API](../../client-api/operations/maintenance/indexes/delete-index).
+You can delete an index by using [the Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+or [the Client API](../../client-api/operations/maintenance/indexes/delete-index).
 
 Operation scope: Cluster
 
@@ -53,7 +57,8 @@ While the index is locked, at any time when `IndexCreation.CreateIndexes()` on s
 
 It is important to note that this is not a security feature, and you can unlock an index at any time.
 
-To lock the index you can use [the Studio](../../studio/database/indexes/todo) or [the Client API](../../client-api/operations/maintenance/indexes/set-indexes-lock).
+To lock the index you can use [the Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+or [the Client API](../../client-api/operations/maintenance/indexes/set-indexes-lock).
 
 The available modes are:
 
@@ -75,7 +80,8 @@ should be done first. You can increase or lower the index priority and RavenDB w
 | Normal (default) | BelowNormal |
 | High | Normal |
 
-You can change the index priority by using [the Studio](../../studio/database/indexes/todo) or [the Client API](../../client-api/operations/maintenance/indexes/set-indexes-priority).
+You can change the index priority by using [the Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+or [the Client API](../../client-api/operations/maintenance/indexes/set-indexes-priority).
 
 {NOTE:Expert configuration options}
 
@@ -92,6 +98,7 @@ Operation scope: Cluster
 
 ### Indexes
 
+- [Indexes Overview](../../studio/database/indexes/indexes-overview#indexes-overview)
 - [What are Indexes](../../indexes/what-are-indexes)
 
 ### Troubleshooting

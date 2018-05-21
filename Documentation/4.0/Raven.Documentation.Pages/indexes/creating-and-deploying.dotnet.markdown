@@ -120,3 +120,8 @@ Setting this configuration option to a high value may result in performance degr
 ### Querying
 
 - [Basics](../indexes/querying/basics)
+
+### Studio
+
+- [Indexes Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Indexes List View](../studio/database/indexes/indexes-list-view)

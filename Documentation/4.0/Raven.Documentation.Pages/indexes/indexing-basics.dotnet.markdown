@@ -65,3 +65,8 @@ More detailed information about `Map-Reduce` indexes can be found [here](../inde
 
 - [Basics](../indexes/querying/basics)
 - [What is RQL](../indexes/querying/what-is-rql)
+
+### Studio
+
+- [Indexes Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Indexes List View](../studio/database/indexes/indexes-list-view)
