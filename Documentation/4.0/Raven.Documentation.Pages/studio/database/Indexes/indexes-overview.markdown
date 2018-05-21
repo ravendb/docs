@@ -11,9 +11,9 @@
 
   * [Indexes - The General Concept](../../../studio/database/indexes/indexes-overview#indexes---the-general-concept)  
   * [Indexes - The Moving Parts](../../../studio/database/indexes/indexes-overview#indexes---the-moving-parts) : 
-    [Index Definition](../../../studio/database/indexes/indexes-overview#the-index-definition), 
-    [Indexing Process](../../../studio/database/indexes/indexes-overview#the-indexing-process), 
-    [Indexed Data](../../../studio/database/indexes/indexes-overview#the-indexed-data)  
+    [Index Definition](../../../studio/database/indexes/indexes-overview#index-definition), 
+    [Indexing Process](../../../studio/database/indexes/indexes-overview#indexing-process), 
+    [Indexed Data](../../../studio/database/indexes/indexes-overview#indexed-data)  
   * [Indexes Types](../../../studio/database/indexes/indexes-overview#indexes-types)  
   * [Fields Configuration Options](../../../studio/database/indexes/indexes-overview#fields-configuration-options)
   * [Modifying Index Definition](../../../studio/database/indexes/indexes-overview#modifying-index-definition)
@@ -25,13 +25,13 @@
 
 {PANEL: Indexes - The General Concept}
 
-* In order to be able to answer queries about your documents _without_ scanning the entire dataset each and every time,  
+* In order to be able to return query results about your documents _without_ scanning the entire dataset each and every time,  
   RavenDB uses **Indexes**.  
 
 * Once defined, the index iterates over the documents, and for every field (document property) that is requested to be indexed,  
   a **map** is built between the terms derived from these fields and the actual documents that contain them.  
 
-* A **Query** operating on these fields ends up with a simple search from the queried terms to the list of documents that contain them.  
+* A [Query](../../../todo-update-me-later) operating on these fields ends up with a simple search from the queried terms to the list of documents that contain them.  
 
 * After the first **indexing** run, the index will keep that map current _without_ re-processing the entire index data -  
   only update the relevant details when a document update happens in the database.  
@@ -49,30 +49,30 @@
 
 {NOTE: }
 
-#### 1. The Index Definition
+#### 1. Index Definition
 
-* **The index definition** tells RavenDB how to index the data  
+* **The index definition** tells RavenDB how to index the data.  
 
-* It specifies the fields to be indexed and how those fields should be indexed (i.e. allowing a full-text-search option)  
+* It specifies the fields to be indexed and how those fields should be indexed (i.e. allowing a full-text-search option).  
   These fields can be specified explicitly or defined dynamically supporting any document structure.  
 
-* The index definition is created by the client (**Static-Index**), or by the server Query Optimizer(**Auto-Index**)  
+* The index definition is created by the client (**Static-Index**), or by the server Query Optimizer(**Auto-Index**).  
 
-* Note: Data from related documents can also be indexed with 'LoadDocument'  
+* Note: Data from related documents can also be indexed using 'LoadDocument'. Learn more in [Indexing Related Documents](../../../indexes/indexing-related-documents).  
 {NOTE/}
 
 {NOTE: }
 
-#### 2. The Indexing Process
+#### 2. Indexing Process
 
 * **Indexing** is the process of indexing the data, iterating over the documents and creating a map  
   between the terms indexed and the actual documents that contain them.  
 
 * Indexing is a background operation, it is scheduled to occur in an async manner for any document change.  
-  i.e. A documet write operation doesn't wait for the index to complete processing -  
+  e.g. A document write operation doesn't wait for the index to complete processing -  
   The write operation is completed as soon as the transaction is written to disk.  
 
-* An index is considerd [Stale](../../../indexes/stale-indexes) if it had not yet processed all of the data.  
+* An index is considered [Stale](../../../indexes/stale-indexes) if it had not yet processed all of the data.  
 
 * A query can request that results are returned only when the index is up-to-date.  
   A write operation can wait for the indexing process to complete before acknowledging the write  
@@ -89,7 +89,7 @@
 
 {NOTE: }
 
-#### 3. The Indexed Data
+#### 3. Indexed Data
 
 * The resulting output of 'step 2' is also referred to as an Index.  
   It is the **indexed data** on which queries can operate on to get documents result.  
@@ -131,19 +131,20 @@ Indexes in RavenDB are split across the following multiple axes:
 {NOTE: Map Indexes -vs- Map-Reduce Indexes}
 
 * **Map Indexes**:  
-  Map indexes are simple indexes.  
-  Contain one or more LINQ-based mapping functions indicating what should be indexed from the document.  
+  [Map indexes](../../../todo-update-me-later) are simple indexes.  
+  Contain one or more LINQ-based mapping functions indicating what should be indexed from the document,  
+  and how it should be indexed, as these functions allow you to compute the indexed value.  
 
 * **Map-Reduce Indexes**:  
-  Map-Reduce indexes allow performing complex aggregations of data.  
+  [Map-Reduce indexes](../../../todo-update-me-later) allow performing complex **aggregations** of data.  
   The _Map_ stage is similar to a regular Map-Index, defining what data should be indexed.  
-  The _Reduce_ stage operates on the Map results, specifying how to aggregate.  
+  The _Reduce_ stage operates on the Map results, specifying how the data should be grouped and aggregated.  
 {NOTE/}
 
 {NOTE: Single-Collection Indexes -vs- Multi-Collection Indexes}
 
 * **Single-Collection Indexes**:  
-  Index definiton contains only one Map function defined on a specific collection.  
+  Index definition contains only one Map function defined on a specific collection.  
 
 * **Multi-Collection Indexes**:  
   Data from several collections can be indexed (each in a different Map) and the results are united in a single index.  
@@ -161,21 +162,26 @@ Additional settings can be specified per index-entry in the index definition, co
   * Suggestions - Allow to find similar results to the string in your query. i.e. Martin -> Martine.  
   * Term Vector - Allow to find similar documents based on shared indexed terms.  
   * Indexing - Allow options such as searching for individual words inside the indexed terms or exact case-sensitive matches
+  * Learn more in: [Analyzers](../../../indexes/using-analyzers#full-text-search)
 
 * **Spatial**  
-  Allow geographical querying on longitude and latitude values provided from the document.  
+  Allow geographical querying on longitude and latitude values or WKT values provided from the document.  
   Customize the spatial indexing strategy.  
+  Learn more in: [Indexing Spatial Data](../../../indexes/indexing-spatial-data)
 
 * **Store Field**  
   Field can be stored within the indexed-data.  
   This allows retrieving the value from the indexed-data at query time, instead of loading the original document.  
+  Learn more in: [Storing Data in Index](../../../indexes/storing-data-in-index)
 {PANEL/}
 
 {PANEL: Modifying Index Definition}
 
 * Only an index that is not set as 'Locked' can actually be modified.  
 
-* When an index-definition has been changed, the modification is handled in a **side-by-side** manner.  
+* When the index-definition has changed in a way that invalidates the previous indexing results,  
+  the modification is handled in a **side-by-side** manner.  
+  e.g. A mapping function change will invalidate previous results, while a change in priority will not.  
 
 * The original index is retained and is fully operable while the new index (with the new definition) is being built.  
   Once the new index is up-to-date the original index is removed in favor of the new one.  
@@ -188,8 +194,8 @@ Additional settings can be specified per index-entry in the index definition, co
 * Index & Auto-Index creation is a cluster operation, it goes through the [Raft protocol](../../todo...).  
   Index creation will fail if the majority of the nodes in the cluster is not reachable.  
 
-* Once an index is created against any node in the [Database Group](../../todo), RavenDB will make sure that it’s defintion is replicated to all the database’s nodes. 
-  The indexing-process will occur separatly on each node.  
+* Once an index is created against any node in the [Database Group](../../todo), RavenDB will make sure that it’s definition is replicated to all the database’s nodes. 
+  The indexing-process will occur separately on each node.  
 
 * Note: The [External Replication](../../../todo..) ongoing-task does NOT replicate indexes.  
 {PANEL/}
@@ -206,7 +212,12 @@ Additional settings can be specified per index-entry in the index definition, co
 
 ## Related Articles
 
+### Studio
+
 - [Studio Indexes List View](../../../studio/database/indexes/indexes-list-view)  
+
+### Indexes
+
 - [What are Indexes](../../../indexes/what-are-indexes)
 - [Creating & Deploying Indexes](../../../indexes/creating-and-deploying)
 - [Indexing Basics](../../../indexes/indexing-basics)

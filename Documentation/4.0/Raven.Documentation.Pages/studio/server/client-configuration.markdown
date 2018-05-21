@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* Configure the RavenDB client requests behaviour for ***all*** databases in the cluster  
+* Configure the RavenDB client requests behavior for ***all*** databases in the cluster  
 
 * These default values can be overwritten ***per database*** in [Client Requests Configuration - per database](../../studio/database/settings/client-configuration-per-database)  
 {NOTE/}

@@ -20,48 +20,51 @@
 
 ![Figure 1. Indexes List](images/indexes-list-view-1.png "Figure-1: The indexes List View")
 
-1. **Index name and type**  
+**1**. **Index name and type**  
 
    * `Name` - e.g. In the above example the index name is: 'Cities/Details'.  
    * `Type` - This is the [Index Type](../../../studio/database/indexes/indexes-overview#indexes-types)  
      Can be: Map | Map-Reduce | Auto Map | Auto Map-Reuce  
 
-2. **Collections**  
+**2**. **Collections**  
 
    * These are the collections that are defined in the Map part of the index-definition.  
    * Data from these collections documents is scanned and indexed.  
    * A simple `Map-index` operates on a single collection, while a `Multi-Map index` is defined with more than one collection.  
    * In the above example - Index _'Cities/Details'_ is a Multi-Map index operating on _'Companies, Employees, Orders, Suppliers'_ collections.  
 
-3. **Index State**  
+**3**. **Index State**  
 
    * `Normal` - 
-      Index is active, any new data is indexed.  
+      * Index is active, any new data is indexed.  
 
    * `Paused` - 
-      New data is not being indexed.  
-      Queries will be stale as new data is not indexed.  
-      Indexing process will resume upon setting _'Resume'_ or when the server is _restarted_.  
+      * New data is not being indexed.  
+        Queries will be stale as new data is not indexed.  
+      * Indexing process will resume upon setting _'Resume'_ or when the server is _restarted_.  
 
    * `Disabled` - 
-      New data is not being indexed.  
-      Queries will be stale as new data is not indexed.  
-      Indexing process will _not_ automatically resume upon a server restart but only when setting _'Enable'_.  
+      * New data is not being indexed.  
+        Queries will be stale as new data is not indexed.  
+      * Indexing process will _not_ automatically resume upon a server restart but only when setting _'Enable'_.  
 
    * `Idle` - 
-      An auto-index becomes _'idle'_ after a configurable time period where no query was made on the index (30 min default).  
-      The auto-index will resume its work and go back to the _'Normal'_ state upon a new query or when resetting the index.  
-      If not resumed, the idle auto-index will be deleted by the server after a configurable time period (72 hrs default).  
+      * An auto-index becomes idle when the time difference between its last-query-time and
+        the most recent time the database was queried on (with any other index) is greater than a configurable threshold (30 min by default).  
+        This is done in order to avoid marking indexes as idle for databases that were offline for a long period of time -  
+        not having new data to index and not queried in general, as well as for databases that were just restored from a snapshot or a backup.  
+      * The auto-index will resume its work and go back to the _'Normal'_ state upon a new query or when resetting the index.  
+        If not resumed, the idle auto-index will be deleted by the server after a configurable time period (72 hrs default).  
 
    * `Error` - 
-      A malformed index definition or missing/corrupted document data will result in an indexing error.  
-      See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
+      * A malformed indexing-function or missing/corrupted document data will result in an indexing error.  
+        See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 
    * `Faulty` - 
-      Index will be _'Faulty'_ if its data files are corrupted or if not accessible.  
-      See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
+      * Index will be _'Faulty'_ if its data files are corrupted or if not accessible.  
+        See more [below](../../../studio/database/indexes/indexes-list-view#indexes-list-view---errors).  
 
-4. **Index Status**
+**4**. **Index Status**
 
    * `Entries` - The number of documents that are the result for a basic query on this index. (e.g. _from index 'Cities/Details'_)  
    * `Status` - Indicate if the index is up-to-date or if it is [stale](../../../indexes/stale-indexes).  
@@ -82,8 +85,8 @@
    **Delete** - Click to delete the index.  
 
 3. **State** - _Disable_ index or set as _Paused_. See states explanation above (under the figure-1).  
-   **Priority** - Set the indexing-process thread priority with regards to the requests-threads priority. See [Indexing Priority](../../../server/administration/index-administration#priority)  
-   **Mode** - Set modifications behaviour:  
+   **Priority** - Set the indexing-process thread priority as RavenDB prioritizes requests-processing over [Indexing](../../../server/administration/index-administration#priority) by default.  
+   **Mode** - Set modifications behavior:  
    Unlocked - Changes to the index definitions will be applied. See [Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)  
    Locked - Index definitions changes will not be applied ! No Error will be raised.  
    Locked(Error) - Index definitions changes will not be applied ! An error is raised upon trying to modify.  
@@ -100,17 +103,17 @@
 
 ![Figure 3. Indexes Errors](images/indexes-list-view-3.png "Figure-3: Indexes List View - Errors")
 
-1. **Errored Index**
+**1**. **Errored Index**
 
-  * An indexing error can occur when the index-definition is malformed or when the document data is corrupted/missing.  
+  * An indexing error can occur when the indexing-function is malformed or when the document data is corrupted/missing.  
     Once the index errors rate exceeds a certain rate, the index state will be marked with _'Error'_ and queries can't be made to it.  
 
-  * Re-setting the index will re-index all documents matching its definition and clear the previous errors.  
+  * Resetting the index will re-index all documents matching its definition and clear the previous errors.  
 
   * In the above example, Index _'Cities/Details'_ state is _'Error'_ as 500 errors were encountered.  
     See more in [Degugging Index Errors](../../../indexes/troubleshooting/debugging-index-errors)  
 
-2. **Faulty Index** 
+**2**. **Faulty Index** 
 
    * When an index is already defined but the server fails to open its index data file from disk, or if this file is corrupted,  
      then the server will mark the index as _Faulty_, indicating that something is wrong with this index data files.  
@@ -121,7 +124,7 @@
    * A possible solution is to **reset** the index - restart the indexing process from scratch,  
      so that new data files for the index are created, replacing the corrupted ones.  
 
-**Note**: A detailed errors list can be found in [Index Errors View](../../../todo-update-later).  
+**Note**: The detailed errors list can be found in [Index Errors View](../../../todo-update-later).  
 {PANEL/}
 
 {PANEL: Indexes List View - Side by Side Indexing}
@@ -143,4 +146,12 @@
 
 ## Related Articles
 
+### Studio
+
 - [Indexes Overview](../../../studio/database/indexes/indexes-overview#indexes-overview)
+
+### Indexes
+
+- [What are Indexes](../../../indexes/what-are-indexes)
+- [Indexing Basics](../../../indexes/indexing-basics)
+

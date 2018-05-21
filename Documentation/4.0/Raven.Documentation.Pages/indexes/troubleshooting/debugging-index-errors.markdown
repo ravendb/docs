@@ -62,7 +62,7 @@ namespace Raven.Server.Documents.Indexes.Static.Generated
 
 {CODE-BLOCK/}
 
-Which clearly indicates that the error is at line 22, column 34: `if ((doc.Type == 'posts') == false)`.
+Which clearly indicates that the error is at line 20, column 34: `if ((doc.Type == 'posts') == false)`.
 
 This gives you enough information to figure out what is wrong. Those errors are immediate, and require no further action from the database. The only thing that the user can do is fix the index definition.
 

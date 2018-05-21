@@ -4,7 +4,7 @@
 
 ###ReadBalanceBehavior
 
-* This convention gets or sets the default load-balancing behaviour of ***Read*** requests done from the client to RavenDB cluster.  
+* This convention gets or sets the default load-balancing behavior of ***Read*** requests done from the client to RavenDB cluster.  
 
 * The method selected in the convention determines which node the client's _RequestExecuter_ will send the ***Read*** requests to,  
   and which node to **failover** to in case of issues with the ***Read*** request.  
