@@ -5,7 +5,7 @@
 
 * All the database indexes are listed in this view. 
 
-* Actions such as creating a new index, modifying an existing index, setting its desired state and much more can be performed.  
+* Actions such as creating a new index, modifying an existing index, setting its desired state, and much more can be performed.  
 
 * In this page:  
   * [Indexes List View](../../../studio/database/indexes/indexes-list-view#indexes-list-view)  
@@ -24,13 +24,13 @@
 
    * `Name` - e.g. In the above example the index name is: 'Cities/Details'.  
    * `Type` - This is the [Index Type](../../../studio/database/indexes/indexes-overview#indexes-types)  
-     Can be: Map | Map-Reduce | Auto Map | Auto Map-Reuce  
+     Can be: Map | Map-Reduce | Auto Map | Auto Map-Reduce  
 
 **2**. **Collections**  
 
    * These are the collections that are defined in the Map part of the index-definition.  
    * Data from these collections documents is scanned and indexed.  
-   * A simple `Map-index` operates on a single collection, while a `Multi-Map index` is defined with more than one collection.  
+   * A simple `Map-index` operates on a single collection while a `Multi-Map index` is defined with more than one collection.  
    * In the above example - Index _'Cities/Details'_ is a Multi-Map index operating on _'Companies, Employees, Orders, Suppliers'_ collections.  
 
 **3**. **Index State**  
@@ -79,8 +79,8 @@
 2. **Query** - Click to query the index. See more in [Index Query](../../../todo-update-me-later)  
    **Terms** - Click to view the index's terms that were actually indexed.  
    **Edit/View Index** - Click to edit/view the index definition.  
-   Static-index: view and edit the index definition.  
-   Auto-Index: view only.  
+   Static-index: View and edit the index definition.  
+   Auto-Index: View only.  
    **Reset Index** - Click to reset the index. All documents matched by the index definition will be re-indexed.  
    **Delete** - Click to delete the index.  
 
@@ -88,8 +88,8 @@
    **Priority** - Set the indexing-process thread priority as RavenDB prioritizes requests-processing over [Indexing](../../../server/administration/index-administration#priority) by default.  
    **Mode** - Set modifications behavior:  
    Unlocked - Changes to the index definitions will be applied. See [Side by Side Indexing](../../../studio/database/indexes/indexes-list-view#indexes-list-view---side-by-side-indexing)  
-   Locked - Index definitions changes will not be applied ! No Error will be raised.  
-   Locked(Error) - Index definitions changes will not be applied ! An error is raised upon trying to modify.  
+   Locked - Index definitions changes will not be applied! No Error will be raised.  
+   Locked(Error) - Index definitions changes will not be applied! An error is raised upon trying to modify.  
 
 4. **Selected Indexes Options** - Can apply the following for selected/checked indexes from the list:  
    Delete, set indexes state (disable/pause), set lock mode  

@@ -23,7 +23,7 @@ Disabling an index can be done via [the Studio](../../studio/database/indexes/in
 or the Client API operations: [DisableIndex](../../client-api/operations/maintenance/indexes/disable-index), [EnableIndex](../../client-api/operations/maintenance/indexes/enable-index). 
 
 {NOTE: }
-Querying a disabled index is allowed but it may return stale results. Unlike stopping the index, the disable index is a persistent operation, so the index remains disabled 
+Querying a disabled index is allowed but it may return stale results. Unlike stopping the index, the disable index is a persistent operation so the index remains disabled 
 even after a server restart.
 {NOTE /}
 
@@ -49,13 +49,13 @@ Operation scope: Cluster
 
 This feature applies to changing an index definition on the production server. Index locking has two possible results: 
 
-- any changes to the locked index will be ignored,
-- an error will be raised when someone tries to modify the index. 
+- Any changes to the locked index will be ignored,
+- An error will be raised when someone tries to modify the index. 
 
-The typical flow is that you update the index definition on the server, then update it on the codebase, and finally deploy the application to match them.
+The typical flow is that you update the index definition on the server, update it on the codebase, and finally deploy the application to match them.
 While the index is locked, at any time when `IndexCreation.CreateIndexes()` on start up is called, the changes you have introduced will not be reverted.
 
-It is important to note that this is not a security feature, and you can unlock an index at any time.
+It is important to note that this is not a security feature and you can unlock an index at any time.
 
 To lock the index you can use [the Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
 or [the Client API](../../client-api/operations/maintenance/indexes/set-indexes-lock).
