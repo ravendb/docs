@@ -14,7 +14,7 @@ RavenDB returns quickly for every client request, even if involves re-indexing h
 
 RavenDB uses `Raven Query Language (RQL)`, an SQL-like querying language for querying. The easiest way for us would be to expose a method in which you could pass your RQL-flavored query as a string (we [did](../client-api/session/querying/how-to-query#session.advanced.rawquery) that) and do not bother about anything else.
 
-The fact is, that we did not stop at this point, we went much further, by exposing LINQ-based querying with strong-type support that hides all Lucene syntax complexity:
+The fact is that we did not stop at this point. We went much further by exposing LINQ-based querying with strong-type support that hides all Lucene syntax complexity:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Method-syntax indexes_2@Indexes/IndexingBasics.cs /}
@@ -36,13 +36,13 @@ where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-## Type of Indexes
+## Types of Indexes
 
 You probably know that indexes can be divided by their source of origin to the `static` and `auto` indexes (if not, read about it [here](../indexes/creating-and-deploying)), but a more interesting division is by functionality. For this case we have `Map` and `Map-Reduce` indexes.
 
 `Map` indexes (sometimes referred as simple indexes) contain one (or more) mapping functions that indicate which fields from documents should be indexed. They indicate which documents can be searched by which fields.
 
-`Map-Reduce` indexes allow complex aggregations to be performed in a two-step process. First, by selecting appropriate records (using the Map function), then by applying a specified reduce function to these records to produce a smaller set of results.
+`Map-Reduce` indexes allow complex aggregations to be performed in a two-step process. First by selecting appropriate records (using the Map function), then by applying a specified reduce function to these records to produce a smaller set of results.
 
 {INFO:Map Indexes}
 You can read more about `Map` indexes [here](../indexes/map-indexes).
