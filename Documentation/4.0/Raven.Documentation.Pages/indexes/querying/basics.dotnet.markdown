@@ -58,6 +58,15 @@ where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{CODE-TABS}
+{CODE-TAB:csharp:Sync basics_3_0@Indexes\Querying\Basics.cs /}
+{CODE-TAB:csharp:Async basics_3_1@Indexes\Querying\Basics.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Employees
+where id() = 'employees/1-A'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 You can read more about filtering [here](../../indexes/querying/filtering).
 
 ### Example III - Paging

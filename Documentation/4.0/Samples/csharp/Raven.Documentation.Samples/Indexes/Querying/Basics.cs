@@ -172,6 +172,30 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToListAsync(); // send query
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region basics_3_0
+                    // load up entity from 'Employees' collection
+                    // with ID matching 'employees/1-A'
+                    Employee result = session
+                        .Query<Employee>()
+                        .Where(x => x.Id == "employees/1-A")
+                        .FirstOrDefault(); // send query
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region basics_3_1
+                    // load up entity from 'Employees' collection
+                    // with ID matching 'employees/1-A'
+                    Employee result = await asyncSession
+                        .Query<Employee>()
+                        .Where(x => x.Id == "employees/1-A")
+                        .FirstOrDefaultAsync(); // send query
+                    #endregion
+                }
             }
         }
     }
