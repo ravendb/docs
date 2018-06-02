@@ -8,7 +8,7 @@ There are various methods with many overloads that allow users to download docum
 - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
 - [IsLoaded](../../client-api/session/loading-entities#isloaded)
 
-<!--  - [Stream](../../client-api/session/loading-entities#stream) -->
+<!-- TODO  - [Stream](../../client-api/session/loading-entities#stream) -->
 
 {PANEL:Load}
 
