@@ -18,7 +18,7 @@ Allows you to modify the index query just before it's executed.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Consumer<[IndexQuery](../../../glossary/index-query)> | Action that will modify IndexQuery. |
+| **action** | Consumer<IndexQuery> | Action that will modify IndexQuery. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -38,7 +38,7 @@ Allows you to retrieve a raw query result after it's executed.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Consumer<[QueryResult](../../../glossary/query-result)> | Action that has the query result. |
+| **action** | Consumer<QueryResult> | Action that has the query result. |
 
 | Return Value | |
 | ------------- | ----- |

@@ -9,11 +9,11 @@ Query results can be streamed using the `stream` method from the `advanced` sess
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **query** | [IDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.documentquery) or [IRawDocumentQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) | Query to stream results for. |
-| `Reference` **streamQueryStats** | [StreamQueryStatistics](../../../glossary/stream-query-statistics) | Information about performed query. |
+| `Reference` **streamQueryStats** | StreamQueryStatistics | Information about performed query. |
 
 | Return Value | |
 | ------------- | ----- |
-| CloseableIterator<[StreamResult](../../../glossary/stream-result)> | Iterator with entities. |
+| CloseableIterator<StreamResult> | Iterator with entities. |
 
 ## Example I - Using Static Index
 
