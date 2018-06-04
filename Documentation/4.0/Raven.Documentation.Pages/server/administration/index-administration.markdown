@@ -23,7 +23,7 @@ Disabling an index can be done via [the Studio](../../studio/database/indexes/in
 or the Client API operations: [DisableIndex](../../client-api/operations/maintenance/indexes/disable-index), [EnableIndex](../../client-api/operations/maintenance/indexes/enable-index). 
 
 {NOTE: }
-Querying a disabled index is allowed but it may return stale results. Unlike stopping the index, the disable index is a persistent operation so the index remains disabled 
+Querying a disabled index is allowed but it may return stale results. Unlike stopping the index (pausing), disabling is a persistent operation so the index remains disabled 
 even after a server restart.
 {NOTE /}
 
