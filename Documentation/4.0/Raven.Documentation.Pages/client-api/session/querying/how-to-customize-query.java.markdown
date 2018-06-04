@@ -4,14 +4,11 @@ The following query customization options are available in the `IDocumentQueryCu
 
 - [BeforeQueryExecuted](../../../client-api/session/querying/how-to-customize-query#beforequeryexecuted)
 - [AfterQueryExecuted](../../../client-api/session/querying/how-to-customize-query#afterqueryexecuted)
+- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
 - [NoCaching](../../../client-api/session/querying/how-to-customize-query#nocaching)
 - [NoTracking](../../../client-api/session/querying/how-to-customize-query#notracking)
 - [RandomOrdering](../../../client-api/session/querying/how-to-customize-query#randomordering)
 - [WaitForNonStaleResults](../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
-
-<!-- TODO
-- [AfterStreamExecuted](../../../client-api/session/querying/how-to-customize-query#afterstreamexecuted)
--->
 
 {PANEL:BeforeQueryExecuted}
 
@@ -21,7 +18,7 @@ Allows you to modify the index query just before it's executed.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Consumer<[IndexQuery](../../../glossary/index-query)> | Action that will modify IndexQuery. |
+| **action** | Consumer<IndexQuery> | Action that will modify IndexQuery. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -41,7 +38,7 @@ Allows you to retrieve a raw query result after it's executed.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Consumer<[QueryResult](../../../glossary/query-result)> | Action that has the query result. |
+| **action** | Consumer<QueryResult> | Action that has the query result. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -53,16 +50,15 @@ Allows you to retrieve a raw query result after it's executed.
 
 {PANEL/}
 
-<!-- TODO
 {PANEL:AfterStreamExecuted}
 
-Allows you to retrieve a raw (blittable) result of the streaming query.
+Allows you to retrieve a raw result of the streaming query.
 
-{CODE customize_1_0_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_0_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **action** | Action<[BlittableJsonReaderObject](../../../glossary/blittable-json-reader-object)> | Action that has the single query result. |
+| **action** | Consumer<ObjectNode> | Action that has the single query result. |
 
 | Return Value | |
 | ------------- | ----- |
@@ -70,10 +66,9 @@ Allows you to retrieve a raw (blittable) result of the streaming query.
 
 ### Example
 
-{CODE customize_1_1_1@ClientApi\Session\Querying\HowToCustomize.cs /}
+{CODE:java customize_1_1_1@ClientApi\Session\Querying\HowToCustomize.java /}
 
 {PANEL/}
--->
 
 {PANEL:NoCaching}
 

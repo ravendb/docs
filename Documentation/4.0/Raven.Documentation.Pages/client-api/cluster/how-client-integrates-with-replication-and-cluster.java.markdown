@@ -60,17 +60,15 @@ By listing multiple the nodes in the cluster, we can ensure that if a single nod
 
 {PANEL/}
 
-<!-- TODO - update code SAMPLE as well!
 {PANEL:**Write assurance and database groups**}
 
-In RavenDB clusters, the databases are hosted in [database groups](../../glossary/database-group). 
+In RavenDB clusters, the databases are hosted in database groups. 
 Since there is a master-master replication configured between database group members, a write to one of the nodes will be replicated to all other instances of the group.
 If there are some writes that are important, it is possible to make the client wait until the transaction data gets replicated to multiple nodes. It is called a 'write assurance', and it is available with the `WaitForReplicationAfterSaveChanges()` method.
 
 {CODE:java WriteAssuranceSample@ClientApi\Cluster\HowClientApiIntegratesWithReplicationAndCluster.java /}
 
 {PANEL/}
--->
 
 
 ## Related articles

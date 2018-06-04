@@ -1,10 +1,10 @@
 # Conventions
 
-Conventions give you an ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
+Conventions give you the ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
 
 {CODE:java conventions_1@ClientApi\Configuration\Conventions.java /}
 
-You will find many settings to overwrite, allowing you to adjust the client according to your needs. The conventions apply to many different client behaviors, some of them are grouped and described in the separate articles of this section.
+You will find many settings to overwrite, allowing you to adjust the client according to your needs. The conventions apply to many different client behaviors. Some of them are grouped and described in the separate articles of this section.
 
 {INFO All customizations need to be set before `DocumentStore.initialize()` is called. /}
 
@@ -46,7 +46,7 @@ Controls whether optimistic concurrency is set to true by default for all future
 
 ##DisableTopologyUpdates
 
-Forces to disable updates of database topology. Default: `false`.
+Forces you to disable updates of database topology. Default: `false`.
 
 {CODE:java DisableTopologyUpdates@ClientApi\Configuration\Conventions.java /}
 
@@ -59,11 +59,11 @@ It determines if Java `Enum` types should be saved as integers or strings. Defau
 
 ##UseCompression
 
-It determines if client will send headers to the Server indicating that it allows compression to be used. Default: `true`.
+It determines if the client will send headers to the Server indicating that it allows compression to be used. Default: `true`.
 
 {CODE:java UseCompression@ClientApi\Configuration\Conventions.java /}
 
-## Related articles
+## Related Articles
 
 ### Conventions
 

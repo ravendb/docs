@@ -1,22 +1,22 @@
 # What are Indexes?
 
-Indexes are server-side functions that define which fields (and what values) documents can be searched on and are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoids costly table scan operations. A consequence of this choice is that the results might be stale, and you can read more about this (including mitigation techniques) on the [Stale Indexes](../indexes/stale-indexes) page.
+Indexes are server-side functions that define which fields and what values documents can be searched on. They are _the only way_ to satisfy queries in RavenDB. The whole indexing process is done in the background and is triggered whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed and avoids costly table scan operations. A consequence of this choice is that the results might be stale. You can read more about this (including mitigation techniques) on the [Stale Indexes](../indexes/stale-indexes) page.
 
-The core of every index is its mapping function that utilizes LINQ-like syntax, and the result of such a mapping is converted to a [Lucene](http://lucene.apache.org/) index entry, which is persisted for future use to avoid re-indexing each time the query is issued and keep response times minimal.
+The core of every index is its mapping function that utilizes LINQ-like syntax, and the result of such a mapping is converted to a [Lucene](http://lucene.apache.org/) index entry which is persisted for future use to avoid re-indexing each time the query is issued and keep response times minimal.
 
 ## Basic Example
 
 In our example, we will create an index that will map documents from the `Employees` [collection](../client-api/faq/what-is-a-collection) and enable querying by `firstName`, `lastName`, or both.
 
-- first, we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../indexes/creating-and-deploying)).
+- First we need to create an index. One way to create it is to use the `AbstractIndexCreationTask`, but there are other ways available as well (you can read about them [here](../indexes/creating-and-deploying)).
 
 {CODE:java indexes_1@Indexes/WhatAreIndexes.java /}
 
-- next step is to send an index to a server (more about index deployment options can be found [here](../indexes/creating-and-deploying)), so indexing process can start indexing documents.
+- The next step is to send an index to a server (more about index deployment options can be found [here](../indexes/creating-and-deploying)) so the indexing process can start indexing documents.
 
 {CODE:java indexes_2@Indexes/WhatAreIndexes.java /}
 
-- now, our index can be queried, and indexed results can be returned.
+- Now our index can be queried and indexed results can be returned.
 
 {CODE:java indexes_3@Indexes/WhatAreIndexes.java /}
 
@@ -44,3 +44,8 @@ This behavior can be altered by [storing](../indexes/storing-data-in-index) fiel
 ### Client API
 
 - [How to Query](../client-api/session/querying/how-to-query)
+
+### Studio
+
+- [Indexes Overview](../studio/database/indexes/indexes-overview#indexes-overview)
+- [Studio Indexes List View](../studio/database/indexes/indexes-list-view)

@@ -21,7 +21,10 @@ In order to use low-level commands directly, you will need to use the `execute` 
 ## The Following Low-Level Commands are Available:
 
 * BatchCommand  
+* CreateSubscriptionCommand  
 * DeleteDocumentCommand   
+* DeleteSubscriptionCommand  
+* DropSubscriptionConnectionCommand 
 * ExplainQueryCommand  
 * GetConflictsCommand  
 * GetDocumentsCommand  
@@ -30,7 +33,10 @@ In order to use low-level commands directly, you will need to use the `execute` 
 * GetOperationStateCommand  
 * GetRevisionsBinEntryCommand  
 * GetRevisionsCommand  
+* GetSubscriptionsCommand  
+* GetSubscriptionStateCommand  
 * GetStatisticsCommand  
+* HeadAttachmentCommand
 * HeadDocumentCommand  
 * HiLoReturnCommand  
 * KillOperationCommand  
@@ -39,21 +45,9 @@ In order to use low-level commands directly, you will need to use the `execute` 
 * PatchCommand
 * PutDocumentCommand   
 * QueryCommand   
-* SeedIdentityForCommand   
-
-
-
-<!-- TODO
-* CreateSubscriptionCommand  
-* DeleteSubscriptionCommand  
-* DropSubscriptionConnectionCommand 
-* GetSubscriptionsCommand  
-* GetSubscriptionStateCommand  
-* HeadAttachmentCommand
 * QueryStreamCommand   
-* StartBackupCommand   
+* SeedIdentityForCommand   
 * StreamCommand   
--->
 
 ## Related articles
 

@@ -1,5 +1,6 @@
 package net.ravendb.ClientApi.Session.Querying;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.queries.IndexQuery;
@@ -7,6 +8,7 @@ import net.ravendb.client.documents.queries.QueryResult;
 import net.ravendb.client.documents.session.IDocumentQuery;
 import net.ravendb.client.documents.session.IDocumentQueryCustomization;
 import net.ravendb.client.documents.session.IDocumentSession;
+import net.ravendb.client.primitives.Reference;
 
 import java.time.Duration;
 import java.util.List;
@@ -26,11 +28,12 @@ public class HowToCustomize {
         IDocumentQueryCustomization removeAfterQueryExecutedListener(Consumer<QueryResult> action);
         //endregion
 
-        /*
-         #region customize_1_0_1
-            IDocumentQueryCustomization AfterStreamExecuted(Action<BlittableJsonReaderObject> action);
-            #endregion
-         */
+
+        //region customize_1_0_1
+        IDocumentQueryCustomization addAfterStreamExecutedListener(Consumer<ObjectNode> action);
+        IDocumentQueryCustomization removeAfterStreamExecutedListener(Consumer<ObjectNode> action);
+        //endregion
+
 
         //region customize_2_0
         IDocumentQueryCustomization noCaching();
@@ -84,18 +87,16 @@ public class HowToCustomize {
             }
 
             try (IDocumentSession session = store.openSession()) {
+                //region customize_1_1_1
+                Reference<Long> totalStreamedResultsSize = new Reference<>(0L);
 
-                /*
-                 #region customize_1_1_1
+                session.query(Employee.class)
+                    .addAfterStreamExecutedListener(result -> {
+                        totalStreamedResultsSize.value += result.size();
+                    })
+                    .toList();
 
-                    long totalStreamedResultsSize = 0;
-
-                    List<Employee> results = session.Query<Employee>()
-                        .Customize(x => x.AfterStreamExecuted(
-                            result => totalStreamedResultsSize += result.Size))
-                        .ToList();
-                    #endregion
-                 */
+                //endregion
             }
 
             try (IDocumentSession session = store.openSession()) {

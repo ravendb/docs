@@ -9,7 +9,7 @@ The `Suggestion` feature is available through query extension methods. It gives 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **suggestion** | `SuggestionBase`  | Defines the type of suggestion that should be executed |
-| **builder** | `Action<ISuggestionFactory<T>>` | Builder with a fluent API that constructs a `SuggestionBase` instance |
+| **builder** | `Action<ISuggestionBuilder<T>>` | Builder with a fluent API that constructs a `SuggestionBase` instance |
 
 ### Builder
 

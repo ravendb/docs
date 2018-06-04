@@ -25,7 +25,7 @@ Data subscription is a batch processing mechanism, that send the clients documen
 In order to create a data subscription, we first need to define the criteria. The minimum is to provide the collection to which the data subscription belongs.
 However, the criteria can be a complex RQL-like expression defining JavaScript functions for the filtering and the projections. See a simple example:
 
-{CODE create_whole_collection_generic@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE create_whole_collection_generic1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 Fore more complex usage examples see [examples](../../../client-api/data-subscriptions/creation/examples)  
 

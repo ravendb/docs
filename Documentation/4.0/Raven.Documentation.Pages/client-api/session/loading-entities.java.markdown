@@ -7,8 +7,7 @@ There are various methods with many overloads that allow users to download docum
 - [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
 - [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
 - [IsLoaded](../../client-api/session/loading-entities#isloaded)
-
-<!--  - [Stream](../../client-api/session/loading-entities#stream) -->
+- [Stream](../../client-api/session/loading-entities#stream)
 
 {PANEL:Load}
 
@@ -62,7 +61,7 @@ To load multiple entities at once, use one of the following `load` overloads.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **ids** | Collection&lt;string&gt; or String... | Multiple document identifiers to load |
+| **ids** | Collection&lt;String&gt; or String... | Multiple document identifiers to load |
 
 | Return Value | |
 | ------------- | ----- |
@@ -80,12 +79,12 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **idPrefix** | string |  prefix for which the documents should be returned  |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
+| **idPrefix** | String |  prefix for which the documents should be returned  |
+| **matches** | String | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
-| **skipAfter** | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
+| **exclude** | String | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
+| **skipAfter** | String | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -101,28 +100,24 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 {PANEL/}
 
-<!-- TODO:
 {PANEL:Stream}
 
-Entities can be streamed from the server using one of the following `Stream` methods from the `Advanced` session operations.
+Entities can be streamed from the server using one of the following `stream` methods from the `advanced` session operations.
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_5_0@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_5_0_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:java loading_entities_5_0@ClientApi\Session\LoadingEntities.java /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **startsWith** | string | prefix for which documents should be streamed |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
+| **startsWith** | String | prefix for which documents should be streamed |
+| **matches** | String | pipe ('&#124;') separated values for which document IDs should be matched ('?' any single character, '*' any characters) |
 | **start** | int | number of documents that should be skipped  |
 | **pageSize** | int | maximum number of documents that will be retrieved |
-| **skipAfter** | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
-| streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
+| **skipAfter** | String | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| Reference streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 | Return Value | |
 | ------------- | ----- |
-| IEnumerator<[StreamResult](../../glossary/stream-result)> | Enumerator with entities. |
+| CloseableIterator<StreamResult<T>> | Iterator with entities. |
 | streamQueryStats (out parameter) | Information about the streaming query (amount of results, which index was queried, etc.) |
 
 
@@ -130,26 +125,20 @@ Entities can be streamed from the server using one of the following `Stream` met
 
 Stream documents for a ID prefix:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_5_1@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_5_1_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:java loading_entities_5_1@ClientApi\Session\LoadingEntities.java /}
 
 ## Example 2
 
 Fetch documents for a ID prefix directly into a stream:
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync loading_entities_5_2@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TAB:csharp:Async loading_entities_5_2_async@ClientApi\Session\LoadingEntities.cs /}
-{CODE-TABS/}
+{CODE:java loading_entities_5_2@ClientApi\Session\LoadingEntities.java /}
 
 ### Remarks
 
-{INFO Entities loaded using `Stream` will be transient (not attached to session). /}
+{INFO Entities loaded using `stream` will be transient (not attached to session). /}
 
 {PANEL/}
--->
+
 {PANEL:IsLoaded}
 
 To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded` method from the `advanced` session operations.

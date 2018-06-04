@@ -1,10 +1,17 @@
 package net.ravendb.ClientApi.Session;
 
+import net.ravendb.client.documents.CloseableIterator;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
+import net.ravendb.client.documents.commands.StreamResult;
+import net.ravendb.client.documents.session.IDocumentQuery;
 import net.ravendb.client.documents.session.IDocumentSession;
+import net.ravendb.client.documents.session.IRawDocumentQuery;
+import net.ravendb.client.documents.session.StreamQueryStatistics;
 import net.ravendb.client.documents.session.loaders.ILoaderWithInclude;
+import net.ravendb.client.primitives.Reference;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Collection;
 import java.util.Map;
 
@@ -36,6 +43,26 @@ public class LoadingEntities {
         <T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude);
 
         <T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude, String startAfter);
+        //endregion
+
+        //region loading_entities_5_0
+        <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
+
+        <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+        <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+
+        <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize, String startAfter);
         //endregion
 
         //region loading_entities_6_0
@@ -81,22 +108,18 @@ public class LoadingEntities {
                 //endregion
             }
 
-            /* TODO
-              using (var session = store.OpenSession())
-                {
-                    #region loading_entities_2_2
+            try (IDocumentSession session = store.openSession()) {
+                //region loading_entities_2_2
+                // loading 'products/1'
+                // including document found in 'supplier' property
+                Product product = session
+                    .include("supplier")
+                    .load(Product.class, "products/1");
 
-                    // loading 'products/1'
-                    // including document found in 'Supplier' property
-                    Product product = session
-                        .Include<Product>(x => x.Supplier)
-                        .Load<Product>("products/1");
+                Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call
+                //endregion
+            }
 
-                    Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
-
-                    #endregion
-                }
-             */
             try (IDocumentSession session = store.openSession()) {
                 //region loading_entities_3_1
                 Map<String, Employee> employees
@@ -124,39 +147,25 @@ public class LoadingEntities {
                 //endregion
             }
 
-            /*
-            TODO
-             using (var session = store.OpenSession())
-                {
-                    #region loading_entities_5_1
-
-                    IEnumerator<StreamResult<Employee>> enumerator = session
-                        .Advanced
-                        .Stream<Employee>("employees/");
-
-                    while (enumerator.MoveNext())
-                    {
-                        StreamResult<Employee> employee = enumerator.Current;
+            try (IDocumentSession session = store.openSession()) {
+                //region loading_entities_5_1
+                try (CloseableIterator<StreamResult<Employee>> iterator =
+                         session.advanced().stream(Employee.class, "employees/")) {
+                    while (iterator.hasNext()) {
+                        StreamResult<Employee> employee = iterator.next();
                     }
-
-                    #endregion
                 }
+                //endregion
+            }
 
-                 using (var session = store.OpenSession())
-                {
-                    #region loading_entities_5_2
-
-                    using (var outputStream = new MemoryStream())
-                    {
-                        session
-                            .Advanced
-                            .LoadStartingWithIntoStream("employees/", outputStream);
-                    }
-
-                    #endregion
-                }
-
-             */
+            try (IDocumentSession session = store.openSession()) {
+                //region loading_entities_5_2
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                session
+                    .advanced()
+                    .loadStartingWithIntoStream("employees/", baos);
+                //endregion
+            }
 
             try (IDocumentSession session = store.openSession()) {
                 //region loading_entities_6_1

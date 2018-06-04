@@ -30,7 +30,7 @@ Spatial indexes can be queried using the `spatial` method which contains a full 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **shapeWkt** | string | WKT-based shape to be used in operation |
+| **shapeWkt** | String | WKT-based shape to be used in operation |
 | **relation** | SpatialRelation | Shape relation. Can be `WITHIN`, `CONTAINS`, `DISJOINT`, `INTERSECTS` |
 | **distErrorPercent** | double | Maximum distance error tolerance in percents. Default: 0.025 |
 | **radius** or **latitude** or **longitude** | double | Used to define a radius circle |
@@ -66,9 +66,9 @@ To sort by distance from given point use the `orderByDistance` method. The close
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fieldName** | string | Path to spatial field in index |
+| **fieldName** | String | Path to spatial field in index |
 | **field** | DynamicSpatialField | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
-| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **shapeWkt** | String | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
 
 ### Example
@@ -92,9 +92,9 @@ To sort by distance from given point use the `OrderByDistanceDescending` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **fieldName** | string | Path to spatial field in index |
+| **fieldName** | String | Path to spatial field in index |
 | **field** | DynamicSpatialField | Field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
-| **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
+| **shapeWkt** | String | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
 
 ### Example

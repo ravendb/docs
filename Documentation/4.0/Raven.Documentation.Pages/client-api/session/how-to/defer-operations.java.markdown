@@ -2,15 +2,12 @@
 
 Operations can be deferred till `saveChanges` is called by using `defer` method in `advanced` session operations. There are three types of commands that can be deferred:
 
-- [PutCommandData](../../../glossary/put-command-data)
-- [DeleteCommandData](../../../glossary/delete-command-data)
-- [PatchCommandData](../../../glossary/patch-command-data)
-
-<!-- TODO
-DeletePrefixedCommandData
-PutAttachmentCommandData
-DeleteAttachmentCommandData
--->
+- PutCommandData
+- DeleteCommandData
+- DeletePrefixedCommandData
+- PatchCommandData
+- PutAttachmentCommandData
+- DeleteAttachmentCommandData
 
 ## Syntax
 
