@@ -4,13 +4,10 @@ Operations can be deferred till `saveChanges` is called by using `defer` method 
 
 - [PutCommandData](../../../glossary/put-command-data)
 - [DeleteCommandData](../../../glossary/delete-command-data)
+- DeletePrefixedCommandData
 - [PatchCommandData](../../../glossary/patch-command-data)
-
-<!-- TODO
-DeletePrefixedCommandData
-PutAttachmentCommandData
-DeleteAttachmentCommandData
--->
+- PutAttachmentCommandData
+- DeleteAttachmentCommandData
 
 ## Syntax
 

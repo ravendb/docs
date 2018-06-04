@@ -11,7 +11,7 @@ To override default document identifier generation algorithms, you can register 
 
 | Parameters | | |
 | ------------- | ------------- | ----- | 
-| **function** | BiFunction&lt;String, TEntity, String&gt; | Identifier generation function that supplies a result for given database name (`string`) and entity object (`TEntity`). |
+| **function** | BiFunction&lt;String, TEntity, String&gt; | Identifier generation function that supplies a result for given database name (`String`) and entity object (`TEntity`). |
 
 | Return Value | |
 | ------------- | ----- |

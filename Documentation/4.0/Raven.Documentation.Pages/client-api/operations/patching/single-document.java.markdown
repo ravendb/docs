@@ -26,7 +26,7 @@ The patch request will be sent to server only after the call to `saveChanges`, t
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **T** | `Class` | Entity class |
-| **U** | `Class` | Field class, must be of numeric type, or a `string` of `char` for string concatenation |
+| **U** | `Class` | Field class, must be of numeric type, or a `String` of `char` for string concatenation |
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation, this way, the session can track down the entity's ID |
 | **entity id** | `String` | Entity ID on which the operation should be performed. |
 | **delta** | `U` | Value to be added. |
@@ -42,7 +42,7 @@ The patch request will be sent to server only after the call to `saveChanges`, t
 | **T** | `Class` | Entity Class |
 | **U** | `Class` | Field class |
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `load` or `query` operation, this way, the session can track down the entity's ID |
-| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **entity id** | `String` | Entity ID on which the operation should be performed. |
 | **delta** | `U` | Value to set. |
 
 ### Array manipulation
@@ -54,7 +54,7 @@ The patch request will be sent to server only after the call to `saveChanges`, t
 | **T** | `Class` | Entity class |
 | **U** | `Class` | Field class |
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
-| **entity id** | `string` | Entity ID on which the operation should be performed. |
+| **entity id** | `String` | Entity ID on which the operation should be performed. |
 | **arrayAdder** | `Consumer<JavaScriptArray<U>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
 
 {INFO:JavaScriptArray}

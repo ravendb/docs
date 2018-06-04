@@ -38,7 +38,6 @@ You can also apply such customization at the document store level so all queries
 
 {CODE:java stale3@Indexes\StaleIndexes.java /}
 
-<!-- TODO
 ### Waiting for Documents Stored in Session
 
 If you need to ensure the indexes process, the documents stored in the current session before `saveChanges` returns, you can use:
@@ -56,8 +55,6 @@ The default parameters are:
   - throwOnTimeout - false,
   - indexes - null (will wait for all indexes impacted by the changes made in the session)
   
- -->
-
 {DANGER:Beware of waiting for non stale results overuse}
 
 The indexing mechanism in RavenDB is built on [a BASE model](../client-api/faq/transaction-support#base-for-query-operations). 

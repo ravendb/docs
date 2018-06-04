@@ -35,7 +35,7 @@
 
 | Return Value | Description |
 | ------------- | ----- |
-| `Map<string, CompareExchangeValue<T>>` | A map containing _'Key'_ to _'CompareExchangeValue'_ associations |
+| `Map<String, CompareExchangeValue<T>>` | A map containing _'Key'_ to _'CompareExchangeValue'_ associations |
 {PANEL/}
 
 {PANEL: Example I - Get Values for Specified Keys}

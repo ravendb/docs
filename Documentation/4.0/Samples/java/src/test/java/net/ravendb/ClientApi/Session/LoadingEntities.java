@@ -4,8 +4,12 @@ import net.ravendb.client.documents.CloseableIterator;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.commands.StreamResult;
+import net.ravendb.client.documents.session.IDocumentQuery;
 import net.ravendb.client.documents.session.IDocumentSession;
+import net.ravendb.client.documents.session.IRawDocumentQuery;
+import net.ravendb.client.documents.session.StreamQueryStatistics;
 import net.ravendb.client.documents.session.loaders.ILoaderWithInclude;
+import net.ravendb.client.primitives.Reference;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Collection;
@@ -39,6 +43,26 @@ public class LoadingEntities {
         <T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude);
 
         <T> T[] loadStartingWith(Class<T> clazz, String idPrefix, String matches, int start, int pageSize, String exclude, String startAfter);
+        //endregion
+
+        //region loading_entities_5_0
+        <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query);
+
+        <T> CloseableIterator<StreamResult<T>> stream(IDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+        <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query);
+
+        <T> CloseableIterator<StreamResult<T>> stream(IRawDocumentQuery<T> query, Reference<StreamQueryStatistics> streamQueryStats);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize);
+
+        <T> CloseableIterator<StreamResult<T>> stream(Class<T> clazz, String startsWith, String matches, int start, int pageSize, String startAfter);
         //endregion
 
         //region loading_entities_6_0

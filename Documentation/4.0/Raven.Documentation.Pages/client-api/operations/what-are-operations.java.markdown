@@ -27,14 +27,11 @@ In order to excecute an operation, you will need to use the `send` or `sendAsync
 
 * [CompareExchange](../../client-api/operations/compare-exchange/overview)   
 
-<!-- TODO
 #### Attachments
 
 * [GetAttachmentOperation](../../client-api/operations/attachments/get-attachment)
 * [PutAttachmentOperation](../../client-api/operations/attachments/put-attachment)
 * [DeleteAttachmentOperation](../../client-api/operations/attachments/delete-attachment)
-
--->
 
 #### Patching
 
@@ -45,15 +42,9 @@ In order to excecute an operation, you will need to use the `send` or `sendAsync
 
 * [DeleteByQueryOperation](../../client-api/operations/delete-by-query)   
 
-<!--TODO
 ### Example - Get Attachment
 
-{CODE-TABS}
-{CODE-TAB:csharp:Sync Client_Operations_1@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TAB:csharp:Async Client_Operations_1_async@ClientApi\Operations\WhatAreOperations.cs /}
-{CODE-TABS/}
-
--->
+{CODE:java Client_Operations_1@ClientApi\Operations\WhatAreOperations.java /}
 
 {PANEL/}
 

@@ -2,8 +2,11 @@ package net.ravendb.ClientApi.Operations;
 
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
+import net.ravendb.client.documents.attachments.AttachmentType;
 import net.ravendb.client.documents.conventions.DocumentConventions;
 import net.ravendb.client.documents.operations.*;
+import net.ravendb.client.documents.operations.attachments.CloseableAttachmentResult;
+import net.ravendb.client.documents.operations.attachments.GetAttachmentOperation;
 import net.ravendb.client.documents.operations.compareExchange.CompareExchangeValue;
 import net.ravendb.client.documents.operations.compareExchange.GetCompareExchangeValueOperation;
 import net.ravendb.client.documents.operations.configuration.GetClientConfigurationOperation;
@@ -63,8 +66,11 @@ public class WhatAreOperations {
     public WhatAreOperations() {
         try (IDocumentStore store = new DocumentStore()) {
             //region Client_Operations_1
-            CompareExchangeValue<Integer> res = store.operations()
-                .send(new GetCompareExchangeValueOperation<>(Integer.class, "test"));
+            try (CloseableAttachmentResult fetchedAttachment = store
+                .operations()
+                .send(new GetAttachmentOperation("users/1", "file.txt", AttachmentType.DOCUMENT, null))) {
+                // do stuff with the attachment stream --> fetchedAttachment.data
+            }
             //endregion
 
             {

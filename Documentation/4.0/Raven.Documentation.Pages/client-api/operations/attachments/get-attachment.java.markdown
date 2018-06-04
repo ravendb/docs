@@ -13,7 +13,7 @@ This operation is used to get an attachment from a document.
 | **documentId** | String | ID of a document which will contain an attachment |
 | **name** | String | Name of an attachment |
 | **type** | AttachmentType | **DOCUMENT** or **REVISION** |
-| **changeVector** | string | Entity changeVector, used for concurrency checks (`null` to skip check) |
+| **changeVector** | String | Entity changeVector, used for concurrency checks (`null` to skip check) |
 
 | Return Value | |
 | ------------- | ----- |

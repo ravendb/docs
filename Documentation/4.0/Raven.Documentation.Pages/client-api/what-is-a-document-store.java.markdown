@@ -13,12 +13,9 @@ The document store ensures access to the following client API features:
 * [Operations](../client-api/operations/what-are-operations)
 * [Conventions](../client-api/configuration/conventions)
 * [Events](../client-api/session/how-to/subscribe-to-events)
-
-<!-- TODO:
 * [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation)
 * [Changes API](../client-api/changes/what-is-changes-api)
 * [Aggressive cache](../client-api/how-to/setup-aggressive-caching)
--->
 
 ## Related Articles
 

@@ -60,7 +60,6 @@ By listing multiple the nodes in the cluster, we can ensure that if a single nod
 
 {PANEL/}
 
-<!-- TODO - update code SAMPLE as well!
 {PANEL:**Write assurance and database groups**}
 
 In RavenDB clusters, the databases are hosted in [database groups](../../glossary/database-group). 
@@ -70,7 +69,6 @@ If there are some writes that are important, it is possible to make the client w
 {CODE:java WriteAssuranceSample@ClientApi\Cluster\HowClientApiIntegratesWithReplicationAndCluster.java /}
 
 {PANEL/}
--->
 
 
 ## Related articles

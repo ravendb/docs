@@ -10,7 +10,6 @@ Pending session operations e.g. `store`, `delete` and many others will not be se
 
 {CODE:java saving_changes_2@ClientApi\Session\SavingChanges.java /}
 
-<!-- TODO
 {PANEL:Waiting for Indexes}
 
 You can ask the server to wait until the indexes are caught up with changes made within the current session before the `saveChanges` returns.
@@ -54,7 +53,6 @@ This is a powerful feature, but you need to be aware of the possible pitfalls of
 {WARNING/}
 
 {PANEL/} 
--->
 
 ## Related Articles
 

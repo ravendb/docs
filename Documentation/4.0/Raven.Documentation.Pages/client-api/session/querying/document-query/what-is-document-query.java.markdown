@@ -40,12 +40,15 @@ Available methods:
 - addBeforeQueryExecutedListener
 - addOrder
 - addParameter
+- [Query] [aggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
+- [Query] [aggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - andAlso
 - boost
 - closeSubclause
 - containsAll
 - containsAny
 - count
+- countLazily
 - distinct
 - first
 - firstOrDefault
@@ -56,6 +59,9 @@ Available methods:
 - include
 - intersect
 - invokeAfterQueryExecuted
+- invokeAfterStreamExecuted
+- [Query] [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily)
+- moreLikeThis
 - negateNext
 - [Query] [noCaching](../../../../client-api/session/querying/how-to-customize-query#nocaching)
 - [not](../../../../client-api/session/querying/document-query/how-to-use-not-operator)
@@ -79,6 +85,7 @@ Available methods:
 - skip
 - [Query] [spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 - statistics
+- suggestUsing
 - take
 - usingDefaultOperator
 - [Query] [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
@@ -100,17 +107,6 @@ Available methods:
 - [Query] [withinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 
 
-<!--
-TODO: after/before stream
-- CountLazily
-- [Query] [AggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
-- [Query] [AggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
-- ExplainScores
-- InvokeAfterStreamExecuted
-- [Query] [Lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily)
-- MoreLikeThis
-- SuggestUsing
--->
 ## Remarks
 
 By default, if the `page size` is not specified, all of the matching records will be retrieved from a database.

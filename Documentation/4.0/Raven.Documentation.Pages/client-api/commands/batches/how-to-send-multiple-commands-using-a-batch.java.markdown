@@ -8,18 +8,12 @@ To send **multiple commands** in a **single request**, reducing the number of re
 
 ### The following commands can be sent using a batch
 
-
 * DeleteCommandData
 * DeletePrefixedCommandData
 * PutCommandData
-
-<!--
-TODO
-
+* PatchCommandData
 * DeleteAttachmentCommandData
 * PutAttachmentCommandData
-* PatchCommandData
--->
 
 ### Batch Options
 
