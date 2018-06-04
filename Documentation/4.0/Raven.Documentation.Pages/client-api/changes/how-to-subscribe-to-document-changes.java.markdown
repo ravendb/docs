@@ -4,7 +4,6 @@ Following methods allow you to subscribe to document changes:
 
 - [forDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
 - [forDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
-- [forDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsoftype)
 - [forDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
 - [forAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
 

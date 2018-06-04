@@ -44,7 +44,6 @@ In order to retrieve notifications you have to subscribe to server-side events b
 - [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
 - [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
 - [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
-- [ForDocumentsOfType](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsoftype)
 - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
 - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
 - [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)

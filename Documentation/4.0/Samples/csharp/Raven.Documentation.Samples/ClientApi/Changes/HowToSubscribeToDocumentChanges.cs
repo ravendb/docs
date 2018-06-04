@@ -19,14 +19,6 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
             IChangesObservable<DocumentChange> ForDocumentsInCollection<TEntity>();
             #endregion
 
-            #region document_changes_6
-            IChangesObservable<DocumentChange> ForDocumentsOfType(string typeName);
-
-            IChangesObservable<DocumentChange> ForDocumentsOfType(Type type);
-
-            IChangesObservable<DocumentChange> ForDocumentsOfType<TEntity>();
-            #endregion
-
             #region document_changes_9
             IChangesObservable<DocumentChange> ForDocumentsStartingWith(string docIdPrefix);
             #endregion
@@ -77,27 +69,6 @@ namespace Raven.Documentation.Samples.ClientApi.Changes
                 IDisposable subscribtion = store
                     .Changes()
                     .ForDocumentsInCollection(collectionName)
-                    .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
-                #endregion
-            }
-
-            using (var store = new DocumentStore())
-            {
-                #region document_changes_7
-                IDisposable subscribtion = store
-                    .Changes()
-                    .ForDocumentsOfType<Employee>()
-                    .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
-                #endregion
-            }
-
-            using (var store = new DocumentStore())
-            {
-                #region document_changes_8
-                string typeName = store.Conventions.FindClrTypeName(typeof(Employee));
-                IDisposable subscribtion = store
-                    .Changes()
-                    .ForDocumentsOfType(typeName)
                     .Subscribe(change => Console.WriteLine("{0} on document {1}", change.Type, change.Id));
                 #endregion
             }
