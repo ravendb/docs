@@ -108,7 +108,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #endregion
 
 
-            #region create_whole_collection_generic
+            #region create_whole_collection_generic1
 
             name = await store.Subscriptions.CreateAsync<Order>();
 

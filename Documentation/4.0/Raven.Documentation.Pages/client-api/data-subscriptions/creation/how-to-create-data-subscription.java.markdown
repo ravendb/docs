@@ -25,7 +25,7 @@ Data subscription is a batch processing mechanism, that send the clients documen
 In order to create a data subscription, we first need to define the criteria. The minimum is to provide the collection to which the data subscription belongs.
 However, the criteria can be a complex RQL-like expression defining JavaScript functions for the filtering and the projections. See a simple example:
 
-{CODE create_whole_collection_generic1@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java create_whole_collection_generic1@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 Fore more complex usage examples see [examples](../../../client-api/data-subscriptions/creation/examples)  
 
@@ -35,7 +35,7 @@ Fore more complex usage examples see [examples](../../../client-api/data-subscri
 
 Another important, but not mandatory subscription property is its name: 
 
-{CODE create_whole_collection_generic_with_name@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java create_whole_collection_generic_with_name@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 In order to consume a data subscription, a subscription name is required to identify it.  
 By default, the server can generate a subscription name by its own, but it's also possible to pass a custom name. 
@@ -55,7 +55,7 @@ will be the node that will the only node to process the subscription. There is a
 failover between nodes, but eventually, as long as the originally assigned node is online, it will be the one to process the data subscription.  
 Nevertheless, there is an option to manually decide the node that will be responsible for the subscription processing, it's called the `MentorNode`:
 
-{CODE create_whole_collection_generic_with_mentor_node@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+{CODE:java create_whole_collection_generic_with_mentor_node@ClientApi\DataSubscriptions\DataSubscriptions.java /}
 
 The mentor node receives the responsible node tag, as can be seen in the subscription topology.  
 Setting that node manually can help manually choosing a more fitting server from resources, client proximity or any other point of view.
