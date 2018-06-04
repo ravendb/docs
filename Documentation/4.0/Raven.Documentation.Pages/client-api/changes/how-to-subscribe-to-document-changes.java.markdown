@@ -58,34 +58,6 @@ or
 
 {PANEL/}
 
-{PANEL:forDocumentsOfType}
-
-To observe all document changes for given type use `forDocumentsOfType` method. This method filters documents by `Raven-Java-Type` metadata property value.
-
-### Syntax
-
-{CODE:java document_changes_6@ClientApi\Changes\HowToSubscribeToDocumentChanges.java /}
-
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **typeName** or **class** | String or Class | Name of class or class for which notifications will be processed. If default conventions are used, the full class name should be passed. |
-
-| Return Value | |
-| ------------- | ----- |
-| IChangesObservable<[DocumentChange](../../client-api/changes/how-to-subscribe-to-document-changes#documentchange)> | Observable that allows to add subscriptions to notifications for given document type name. |
-
-{INFO Overloads with `TEntity` type or `Class` uses `Conventions.findJavaClassName` to get type name. /}
-
-### Example
-
-{CODE:java document_changes_7@ClientApi\Changes\HowToSubscribeToDocumentChanges.java /}
-
-or 
-
-{CODE:java document_changes_8@ClientApi\Changes\HowToSubscribeToDocumentChanges.java /}
-
-{PANEL/}
-
 {PANEL:forDocumentsStartingWith}
 
 To observe all document changes for documents with ID that contains given prefix use `forDocumentsStartingWith` method.

@@ -20,12 +20,6 @@ public class HowToSubscribeToDocumentChanges {
         IChangesObservable<DocumentChange> forDocumentsInCollection(Class<?> clazz);
         //endregion
 
-        //region document_changes_6
-        IChangesObservable<DocumentChange> forDocumentsOfType(String typeName);
-
-        IChangesObservable<DocumentChange> forDocumentsOfType(Class<?> clazz);
-        //endregion
-
         //region document_changes_9
         IChangesObservable<DocumentChange> forDocumentsStartingWith(String docIdPrefix);
         //endregion
@@ -74,29 +68,6 @@ public class HowToSubscribeToDocumentChanges {
             CleanCloseable subscription = store
                 .changes()
                 .forDocumentsInCollection(collectionName)
-                .subscribe(Observers.create(change -> {
-                    System.out.println(change.getType() + " on document " + change.getId());
-                }));
-            //endregion
-        }
-
-        try (IDocumentStore store = new DocumentStore()) {
-            //region document_changes_7
-            CleanCloseable subscription = store
-                .changes()
-                .forDocumentsOfType(Employee.class)
-                .subscribe(Observers.create(change -> {
-                    System.out.println(change.getType() + " on document " + change.getId());
-                }));
-            //endregion
-        }
-
-        try (IDocumentStore store = new DocumentStore()) {
-            //region document_changes_8
-            String className = store.getConventions().getFindJavaClassName().apply(Employee.class);
-            CleanCloseable subscription = store
-                .changes()
-                .forDocumentsOfType(className)
                 .subscribe(Observers.create(change -> {
                     System.out.println(change.getType() + " on document " + change.getId());
                 }));
