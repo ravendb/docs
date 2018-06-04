@@ -1,10 +1,13 @@
 package net.ravendb.ClientApi.Session;
 
+import net.ravendb.client.documents.CloseableIterator;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
+import net.ravendb.client.documents.commands.StreamResult;
 import net.ravendb.client.documents.session.IDocumentSession;
 import net.ravendb.client.documents.session.loaders.ILoaderWithInclude;
 
+import java.io.ByteArrayOutputStream;
 import java.util.Collection;
 import java.util.Map;
 
@@ -81,22 +84,18 @@ public class LoadingEntities {
                 //endregion
             }
 
-            /* TODO
-              using (var session = store.OpenSession())
-                {
-                    #region loading_entities_2_2
+            try (IDocumentSession session = store.openSession()) {
+                //region loading_entities_2_2
+                // loading 'products/1'
+                // including document found in 'supplier' property
+                Product product = session
+                    .include("supplier")
+                    .load(Product.class, "products/1");
 
-                    // loading 'products/1'
-                    // including document found in 'Supplier' property
-                    Product product = session
-                        .Include<Product>(x => x.Supplier)
-                        .Load<Product>("products/1");
+                Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call
+                //endregion
+            }
 
-                    Supplier supplier = session.Load<Supplier>(product.Supplier); // this will not make server call
-
-                    #endregion
-                }
-             */
             try (IDocumentSession session = store.openSession()) {
                 //region loading_entities_3_1
                 Map<String, Employee> employees
@@ -124,39 +123,25 @@ public class LoadingEntities {
                 //endregion
             }
 
-            /*
-            TODO
-             using (var session = store.OpenSession())
-                {
-                    #region loading_entities_5_1
-
-                    IEnumerator<StreamResult<Employee>> enumerator = session
-                        .Advanced
-                        .Stream<Employee>("employees/");
-
-                    while (enumerator.MoveNext())
-                    {
-                        StreamResult<Employee> employee = enumerator.Current;
+            try (IDocumentSession session = store.openSession()) {
+                //region loading_entities_5_1
+                try (CloseableIterator<StreamResult<Employee>> iterator =
+                         session.advanced().stream(Employee.class, "employees/")) {
+                    while (iterator.hasNext()) {
+                        StreamResult<Employee> employee = iterator.next();
                     }
-
-                    #endregion
                 }
+                //endregion
+            }
 
-                 using (var session = store.OpenSession())
-                {
-                    #region loading_entities_5_2
-
-                    using (var outputStream = new MemoryStream())
-                    {
-                        session
-                            .Advanced
-                            .LoadStartingWithIntoStream("employees/", outputStream);
-                    }
-
-                    #endregion
-                }
-
-             */
+            try (IDocumentSession session = store.openSession()) {
+                //region loading_entities_5_2
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                session
+                    .advanced()
+                    .loadStartingWithIntoStream("employees/", baos);
+                //endregion
+            }
 
             try (IDocumentSession session = store.openSession()) {
                 //region loading_entities_6_1

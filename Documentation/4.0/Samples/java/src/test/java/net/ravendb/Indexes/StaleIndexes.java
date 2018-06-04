@@ -49,16 +49,17 @@ public class StaleIndexes {
 
             try (IDocumentSession session = store.openSession()) {
                 //region stale4
-                //TODO: session.advanced().waitForIndexesAfterSaveChanges();
+                session.advanced().waitForIndexesAfterSaveChanges();
                 //endregion
 
                 //region stale5
-                /* TODO
-                session.Advanced.WaitForIndexesAfterSaveChanges(
-                        timeout: TimeSpan.FromSeconds(5),
-                        throwOnTimeout: false,
-                        indexes: new[] { "Products/ByName" });
-                 */
+                session
+                    .advanced()
+                    .waitForIndexesAfterSaveChanges(builder -> {
+                        builder.withTimeout(Duration.ofSeconds(5))
+                            .throwOnTimeout(false)
+                            .waitForIndexes("Products/ByName");
+                    });
                 //endregion
             }
 

@@ -4,6 +4,8 @@ import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.session.IDocumentSession;
 
+import java.time.Duration;
+
 public class SavingChanges {
 
     private interface IFoo {
@@ -48,42 +50,40 @@ public class SavingChanges {
 
             try (IDocumentSession session = store.openSession()) {
                 //region saving_changes_3
-                /* TODO
-                session.Advanced.WaitForIndexesAfterSaveChanges(
-                        timeout: TimeSpan.FromSeconds(30),
-                        throwOnTimeout: true,
-                        indexes: new[] { "index/1", "index/2" });
+                session.advanced().waitForIndexesAfterSaveChanges(builder -> {
+                    builder.withTimeout(Duration.ofSeconds(30))
+                        .throwOnTimeout(true)
+                        .waitForIndexes("index/1", "index/2");
 
-                    session.Store(new Employee
-                    {
-                        FirstName = "John",
-                        LastName = "Doe"
-                    });
+                    Employee employee = new Employee();
+                    employee.setFirstName("John");
+                    employee.setLastName("Doe");
+                    session.store(employee);
 
-                    session.SaveChanges();
-                 */
+                    session.saveChanges();
+                });
                 //endregion
             }
 
-            /* TODO
-             // storing new entity
-                    //region saving_changes_4
-
-                    session.Advanced.WaitForReplicationAfterSaveChanges(
-                        timeout: TimeSpan.FromSeconds(30),
-                        throwOnTimeout: false, //default true
-                        replicas: 2, //minimum replicas to replicate
-                        majority: false);
-
-                    session.Store(new Employee
-                    {
-                        FirstName = "John",
-                        LastName = "Doe"
+            try (IDocumentSession session = store.openSession()) {
+                //region saving_changes_4
+                session
+                    .advanced()
+                    .waitForReplicationAfterSaveChanges(builder -> {
+                        builder.withTimeout(Duration.ofSeconds(30))
+                            .throwOnTimeout(false) //default true
+                            .numberOfReplicas(2)//minimum replicas to replicate
+                            .majority(false);
                     });
 
-                    session.SaveChanges();
-                    //endregion
-             */
+                Employee employee = new Employee();
+                employee.setFirstName("John");
+                employee.setLastName("Doe");
+
+                session.store(employee);
+                session.saveChanges();
+                //endregion
+            }
         }
     }
 }

@@ -43,9 +43,9 @@ public class HowClientApiIntegratesWithReplicationAndCluster {
 
                 //make sure that the comitted data is replicated to 2 nodes
                 //before returning from the saveChanges() call.
-                //TODO: session.advanced()
-                 //TODO:   .waitForReplicationAfterSaveChanges()
-
+                session
+                    .advanced()
+                    .waitForReplicationAfterSaveChanges();
             }
             //endregion
         }
