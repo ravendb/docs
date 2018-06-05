@@ -47,26 +47,31 @@ Operation scope: Cluster
 
 ## Lock Mode
 
-This feature applies to changing an index definition on the production server. Index locking has two possible results: 
+This feature applies to changing the index definition on a production server.  
 
-- Any changes to the locked index will be ignored,
-- An error will be raised when someone tries to modify the index. 
+An index can be in one of the following locking modes:  
+* ***Unlocked*** - Any change to the index defintion is applied.  
+* ***LockedIgnore*** - Modifications to the index definition will _not_ be applied. Changes are ignored and no error is thrown.  
+* ***LockedError*** - Modifications are ignored but an _error_ is raised.  
 
-The typical flow is that you update the index definition on the server, update it on the codebase, and finally deploy the application to match them.
-While the index is locked, at any time when `IndexCreation.CreateIndexes()` on start up is called, the changes you have introduced will not be reverted.
+A typical flow can be:
 
-It is important to note that this is not a security feature and you can unlock an index at any time.
+1. Update the index definition on RavenDB server (from studio or from a new application version),  
+   and then set the index Lock Mode to `LockedIgnore` or `LockedError`.  
 
-To lock the index you can use [the Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
-or [the Client API](../../client-api/operations/maintenance/indexes/set-indexes-lock).
+2. A side-by-side index is created on the server. It indexes your dataset according to the new definition.  
 
-The available modes are:
+3. While the original index is locked, if any instance of your previous application version (that has the older defition) is restarted, 
+   calling IndexCreation.CreateIndexes() on start up, this will ***not*** have any effect on the new index definition.  
+   Note: If 'LockedError' was set, then an error will be raised.  
 
-* Unlock
-* LockedIgnore
-* LockedError
+4. Once the side-by-side index is done indexing, the original index will be replaced and you can safely deploy your new application to production.  
 
-Operation scope: Cluster
+To lock the index you can use the [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+or the [Client API](../../client-api/operations/maintenance/indexes/set-indexes-lock).  
+Note: This is not a security feature, an index can be unlocked at any time.  
+
+Operation scope: Cluster  
 
 ## Priority
 
