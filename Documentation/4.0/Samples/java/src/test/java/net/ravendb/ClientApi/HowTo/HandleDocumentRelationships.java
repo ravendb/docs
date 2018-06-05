@@ -489,7 +489,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_6_0
                 Order order = session
-                    .include("refferal.customerId")
+                    .include("referral.customerId")
                     .load(Order.class, "orders/1-A");
 
                 // this will not require querying the server!
@@ -502,7 +502,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_6_2
                 Order order = session
-                    .include("refferal.customerId")
+                    .include("referral.customerId")
                     .load(Order.class, "orders/1-A");
 
                 // this will not require querying the server!
