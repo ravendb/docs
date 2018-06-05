@@ -19,7 +19,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 
             public string[] SupplierIds { get; set; }
 
-            public Referral Refferal { get; set; }
+            public Referral Referral { get; set; }
 
             public LineItem[] LineItems { get; set; }
 
@@ -74,7 +74,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 
             public Guid[] SupplierIds { get; set; }
 
-            public Referral Refferal { get; set; }
+            public Referral Referral { get; set; }
 
             public LineItem[] LineItems { get; set; }
 
@@ -107,7 +107,7 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
 
             public string[] SupplierIds { get; set; }
 
-            public Referral Refferal { get; set; }
+            public Referral Referral { get; set; }
 
             public LineItem[] LineItems { get; set; }
 
@@ -264,22 +264,22 @@ namespace Raven.Documentation.Samples.ClientApi.HowTo
                 {
                     #region includes_6_0
                     Order order = session
-                        .Include<Order>(x => x.Refferal.CustomerId)
+                        .Include<Order>(x => x.Referral.CustomerId)
                         .Load("orders/1-A");
 
                     // this will not require querying the server!
-                    Customer customer = session.Load<Customer>(order.Refferal.CustomerId);
+                    Customer customer = session.Load<Customer>(order.Referral.CustomerId);
                     #endregion
                 }
 
                 using (var session = store.OpenSession())
                 {
                     #region includes_6_2
-                    Order order = session.Include("Refferal.CustomerId")
+                    Order order = session.Include("Referral.CustomerId")
                         .Load<Order>("orders/1-A");
 
                     // this will not require querying the server!
-                    Customer customer = session.Load<Customer>(order.Refferal.CustomerId);
+                    Customer customer = session.Load<Customer>(order.Referral.CustomerId);
                     #endregion
                 }
             }
