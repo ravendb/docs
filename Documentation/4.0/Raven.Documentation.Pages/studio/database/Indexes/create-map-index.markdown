@@ -3,8 +3,7 @@
 
 {NOTE: }
 
-* A Map index is a simple index containing one or more LINQ-based mapping functions that indicate what should be indexed from the document,
-and how it should be indexed.  
+* A Map index consists of one or more LINQ-based mapping functions that indicate how to index selected document fields.  
 
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
@@ -35,8 +34,7 @@ and how it should be indexed.
 4. **The Map Function** of the index.  
 
   * In the above example, the index will go over documents from the `Products` collection and 
-    will only index documents whose `Discontinued` property is _'true'_. 
-    At **query time**, when querying this index, these resulting documents can be searched on and be further filtered by the **Index Entries** defined.
+    will only index documents whose `Discontinued` property is _'true'_.  
 
   * Note: The range of documents from which the query on this index will supply results will be on only Products collection documents 
     that have _'true'_ in the _'Discontinued'_ document field property. If the index was defined without the _'where'_ clause, but only using _'from p in docs.Products'_, 
@@ -47,7 +45,8 @@ and how it should be indexed.
     The first 3 are taken directly from the document fields, while _SupplierName_ is a calculated index entry.  
     The supplier's name is taken from the _Name_ field taken from the _loaded_ supplier document.  
 
-  * See the query results on this index in [Query View](../../../todo-update-me-later)  
+  * At **query time**, when querying this index, the resulting documents can be searched on and further filtered by the **Index Entries** defined and the created **Terms**. 
+    See the query results on this index in [Query View](../../../todo-update-me-later)  
 
   * See more Map-Indexes examples in [Map Index defined from Code](../../../indexes/map-indexes)  
 {PANEL/}
@@ -77,34 +76,34 @@ and how it should be indexed.
    Override the default values with specific settings for selected index entries. 
 
 3. **Select Field**  
-   Select a field (Index Entry) from the drop-down. The settings will override the default settings.  
+   Select a field from the drop-down. The settings will override the default settings.  
 
-4. * `Store` - Setting 'Store' will store the value of this field (index entry) in the index itself.  
-               At query time, if 'Store' is set, then the value is fetched directly from the index, instead of from the original document.  
+4. * `Store` - Setting _'Store'_ will store the value of this field (index entry) in the index itself.  
+               At query time, if _'Store'_ is set, then the value is fetched directly from the index, instead of from the original document.  
                If the field value is not stored in the index then it will be fetched from the document.  
                Storing data in the index will increase the index size.  
                Learn more in [Storing Data in Index](../../../indexes/storing-data-in-index).  
 
-  *  `Full-Text-Search` - Set this to 'Yes' to allow searching for a particular text without having an exact match.  
+  *  `Full-Text-Search` - Set this to _'Yes'_ to allow searching for a particular text without having an exact match.  
                           The terms that are being indexed are _tokens_ that are split from the original string according to the specified [Analyzer](../../../indexes/using-analyzers).  
-                          The Analyzer is set in the 'Indexing' dropdown.  
+                          The Analyzer is set in the _'Indexing'_ dropdown. The default analyzer is a simple case-insensitive analyzer.  
 
   * `Indexing` -  Specify which ***Analyzer*** will be used (under Advanced):  
-     * ***Exact*** - A 'no-operation' analyzer. Text is not splitted and matches are case-sensitive.  
-     * ***Default*** - 'LowerCaseKeywordAnalyzer' is used. Matches are case-insensitive, the input string is converted to lowercase.  
+     * ***Exact*** - A no-operation analyzer. Text is not splitted and matches are case-sensitive.  
+     * ***Default*** - _'LowerCaseKeywordAnalyzer'_ is used. Matches are case-insensitive, the input string is converted to lowercase.  
      * ***Search*** - Set a specific analyzer to use.  
-               The default option is 'StandardAnalyzer'. Input strings are broken into individual terms on a word boundary and are lowercased, 
+               The default option is _'StandardAnalyzer'_. Input strings are broken into individual terms on a word boundary and are lowercased, 
                while omitting the 'stop words' (a, the, to, from, is, are, etc.) as well as possessive “s”.  
                Details about the available analyzers can be found in [Indexes: Analyzers](../../../indexes/using-analyzers).  
 
-  * `Suggestions` -  Setting 'Suggestions' will allow you to query what the user probably meant to ask about. i.e. spelling errors.  
+  * `Suggestions` -  Setting _'Suggestions'_ will allow you to query what the user probably meant to ask about. i.e. spelling errors.  
                       Learn more in this [Blog Post](https://ayende.com/blog/180899/queries-in-ravendb-i-suggest-you-can-do-better), 
                       and in [Querying: Suggestions](../../../indexes/querying/suggestions).  
 
-  *  `Term Vector` -  Term Vectors (under Advanced) are used in RavenDB's feature [More Like This](../../../indexes/querying/morelikethis), 
-                      which is suggesting similar documents to an existing one. i.e. similar catalogs.  
-                      Set full-text-search on the field (index entry) and define it to have a term vector.  
-                      A term vector for a text paragraph will contain a list of all unique words and how often they appeared.  
+  *  `Term Vector` -  Term Vectors (under Advanced) are used in RavenDB's query feature [More Like This](../../../indexes/querying/morelikethis), 
+                      which suggests documents that are similar to a selected document, based on shared indexed terms. i.e. suggest similar catalogs.  
+                      A _'Term Vector'_ for a text paragraph will contain a list of all unique words and how often they appeared.  
+                      Set _'full-text-search'_ on the field (index entry) and define it to have a _'Term Vector'_.  
                       Learn more in [Indexes: Term Vectors](../../../indexes/using-term-vectors), 
                       and in this [Blog Post](https://ayende.com/blog/180900/queries-in-ravendb-gimme-more-like-this).  
 
@@ -124,10 +123,10 @@ and how it should be indexed.
 
 ![Figure 5. Additional Sources](images/create-map-index-5.png "Figure-5: Additional Sources")
 
-* Use the Additional Sources feature to expose additional classes and methods that can be used in the index definition.  
+* Use the Additional Sources feature to introduce additional classes and methods that can be used in the index definition.  
   This enables advanced scenarios since complex logic can be performed in the indexing process.  
 
-* In the below example, file _'PeopleUtil.cs'_ was uploaded and method _'CalculatePersonEmail'_ is used to calculate the index entry _'SupplierEmail'_.  
+* In the above example, file _'PeopleUtil.cs'_ was uploaded and method _'CalculatePersonEmail'_ is used to calculate the index entry _'SupplierEmail'_.  
 {PANEL/}
 
 {PANEL: Spatial Field Options}

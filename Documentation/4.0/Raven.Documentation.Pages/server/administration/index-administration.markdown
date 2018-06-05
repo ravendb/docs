@@ -61,7 +61,7 @@ A typical flow can be:
 
 2. A side-by-side index is created on the server. It indexes your dataset according to the new definition.  
 
-3. While the original index is locked, if any instance of your previous application version (that has the older defition) is restarted, 
+3. While the original index is locked, if any instance of your previous application version (that has the older definition) is restarted, 
    calling IndexCreation.CreateIndexes() on start up, this will ***not*** have any effect on the new index definition.  
    Note: If 'LockedError' was set, then an error will be raised.  
 
