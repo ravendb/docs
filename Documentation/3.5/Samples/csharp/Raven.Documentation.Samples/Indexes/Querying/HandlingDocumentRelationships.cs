@@ -49,7 +49,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 			public Guid[] SupplierIds { get; set; }
 
-			public Referral Refferal { get; set; }
+			public Referral Referral { get; set; }
 
 			public LineItem[] LineItems { get; set; }
 
@@ -104,7 +104,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 			public Guid[] SupplierIds { get; set; }
 
-			public Referral Refferal { get; set; }
+			public Referral Referral { get; set; }
 
 			public LineItem[] LineItems { get; set; }
 
@@ -137,7 +137,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 
 			public string[] SupplierIds { get; set; }
 
-			public Referral Refferal { get; set; }
+			public Referral Referral { get; set; }
 
 			public LineItem[] LineItems { get; set; }
 
@@ -360,22 +360,22 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				{
 					#region includes_6_0
 					Order order = session
-						.Include<Order>(x => x.Refferal.CustomerId)
+						.Include<Order>(x => x.Referral.CustomerId)
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					Customer customer = session.Load<Customer>(order.Refferal.CustomerId);
+					Customer customer = session.Load<Customer>(order.Referral.CustomerId);
 					#endregion
 				}
 
 				using (var session = store.OpenSession())
 				{
 					#region includes_6_2
-					Order order = session.Include("Refferal.CustomerId")
+					Order order = session.Include("Referral.CustomerId")
 						.Load<Order>("orders/1234");
 
 					// this will not require querying the server!
-					Customer customer = session.Load<Customer>(order.Refferal.CustomerId);
+					Customer customer = session.Load<Customer>(order.Referral.CustomerId);
 					#endregion
 				}
 			}
@@ -385,7 +385,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				#region includes_6_1
 				MultiLoadResult result = store
 					.DatabaseCommands
-					.Get(ids: new[] { "orders/1234" }, includes: new[] { "Refferal.CustomerId" });
+					.Get(ids: new[] { "orders/1234" }, includes: new[] { "Referral.CustomerId" });
 
 				RavenJObject order = result.Results[0];
 				RavenJObject customer = result.Includes[0];
@@ -541,11 +541,11 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				{
 					#region includes_8_8
 					Order2 order = session
-						.Include<Order2, Customer2>(x => x.Refferal.CustomerId)
+						.Include<Order2, Customer2>(x => x.Referral.CustomerId)
 						.Load("order2s/1234");
 
 					// this will not require querying the server!
-					Customer2 customer = session.Load<Customer2>(order.Refferal.CustomerId);
+					Customer2 customer = session.Load<Customer2>(order.Referral.CustomerId);
 					#endregion
 				}
 			}
@@ -555,7 +555,7 @@ namespace Raven.Documentation.Samples.Indexes.Querying
 				#region includes_8_9
 				MultiLoadResult result = store
 					.DatabaseCommands
-					.Get(ids: new[] { "order2s/1234" }, includes: new[] { "Refferal.CustomerId" });
+					.Get(ids: new[] { "order2s/1234" }, includes: new[] { "Referral.CustomerId" });
 
 				RavenJObject order = result.Results[0];
 				RavenJObject customer = result.Includes[0];
