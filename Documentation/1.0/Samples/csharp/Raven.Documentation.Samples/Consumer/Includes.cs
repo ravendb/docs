@@ -107,11 +107,11 @@ namespace RavenCodeSamples.Consumer
 				{
 					#region includes4
 
-					var order = session.Include<Order>(x => x.Refferal.CustomerId)
+					var order = session.Include<Order>(x => x.Referral.CustomerId)
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var referrer = session.Load<Customer>(order.Refferal.CustomerId);
+					var referrer = session.Load<Customer>(order.Referral.CustomerId);
 
 					#endregion
 				}
@@ -120,11 +120,11 @@ namespace RavenCodeSamples.Consumer
 				{
 					#region includes4_2
 
-					var order = session.Include<Order2, Customer2>(x => x.Refferal2.Customer2Id)
+					var order = session.Include<Order2, Customer2>(x => x.Referral2.Customer2Id)
 						.Load("orders/1234");
 
 					// this will not require querying the server!
-					var referrer2 = session.Load<Customer2>(order.Refferal2.Customer2Id);
+					var referrer2 = session.Load<Customer2>(order.Referral2.Customer2Id);
 
 					#endregion
 				}

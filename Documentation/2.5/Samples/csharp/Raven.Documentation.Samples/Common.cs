@@ -67,7 +67,7 @@ namespace RavenCodeSamples
 	{
 		public string CustomerId { get; set; }
 		public string[] SupplierIds { get; set; }
-		public Referral Refferal { get; set; }
+		public Referral Referral { get; set; }
 		public LineItem[] LineItems { get; set; }
 		public double TotalPrice { get; set; }
 	}
@@ -99,7 +99,7 @@ namespace RavenCodeSamples
 	{
 		public DenormalizedCustomer Customer { get; set; }
 		public string[] SupplierIds { get; set; }
-		public Referral Refferal { get; set; }
+		public Referral Referral { get; set; }
 		public LineItem[] LineItems { get; set; }
 		public double TotalPrice { get; set; }
 	}
@@ -155,7 +155,7 @@ namespace RavenCodeSamples
 	{
 		public int Customer2Id { get; set; }
 		public Guid[] Supplier2Ids { get; set; }
-		public Referral2 Refferal2 { get; set; }
+		public Referral2 Referral2 { get; set; }
 		public LineItem2[] LineItem2s { get; set; }
 		public double TotalPrice { get; set; }
 	}

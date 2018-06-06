@@ -57,7 +57,7 @@ public class HandlingDocumentRelationships {
   public static class Order {
     private String customerId;
     private UUID[] supplierIds;
-    private Referral refferal;
+    private Referral referral;
     private List<LineItem> lineItems;
     private double totalPrice;
 
@@ -73,11 +73,11 @@ public class HandlingDocumentRelationships {
     public void setSupplierIds(UUID[] supplierIds) {
       this.supplierIds = supplierIds;
     }
-    public Referral getRefferal() {
-      return refferal;
+    public Referral getReferral() {
+      return referral;
     }
-    public void setRefferal(Referral refferal) {
-      this.refferal = refferal;
+    public void setReferral(Referral referral) {
+      this.referral = referral;
     }
     public List<LineItem> getLineItems() {
       return lineItems;
@@ -196,7 +196,7 @@ public class HandlingDocumentRelationships {
   public class Order2 {
     private int customerId;
     private UUID[] supplierIds;
-    private Referral refferal;
+    private Referral referral;
     private List<LineItem> lineItems;
     private double totalPrice;
 
@@ -212,11 +212,11 @@ public class HandlingDocumentRelationships {
     public void setSupplierIds(UUID[] supplierIds) {
       this.supplierIds = supplierIds;
     }
-    public Referral getRefferal() {
-      return refferal;
+    public Referral getReferral() {
+      return referral;
     }
-    public void setRefferal(Referral refferal) {
-      this.refferal = refferal;
+    public void setReferral(Referral referral) {
+      this.referral = referral;
     }
     public List<LineItem> getLineItems() {
       return lineItems;
@@ -278,7 +278,7 @@ public class HandlingDocumentRelationships {
   public class Order3 {
     private DenormalizedCustomer customer;
     private String[] supplierIds;
-    private Referral refferal;
+    private Referral referral;
     private LineItem[] lineItems;
     private double totalPrice;
 
@@ -294,11 +294,11 @@ public class HandlingDocumentRelationships {
     public void setSupplierIds(String[] supplierIds) {
       this.supplierIds = supplierIds;
     }
-    public Referral getRefferal() {
-      return refferal;
+    public Referral getReferral() {
+      return referral;
     }
-    public void setRefferal(Referral refferal) {
-      this.refferal = refferal;
+    public void setReferral(Referral referral) {
+      this.referral = referral;
     }
     public LineItem[] getLineItems() {
       return lineItems;
@@ -553,11 +553,11 @@ public class HandlingDocumentRelationships {
         QHandlingDocumentRelationships_Order o = QHandlingDocumentRelationships_Order.order;
         QHandlingDocumentRelationships_Referral r = QHandlingDocumentRelationships_Referral.referral;
         Order order = session
-          .include(o.refferal.customerId)
+          .include(o.referral.customerId)
           .load(Order.class, "orders/1234");
 
         // this will not require querying the server!
-        Customer customer = session.load(Customer.class, order.getRefferal().getCustomerId());
+        Customer customer = session.load(Customer.class, order.getReferral().getCustomerId());
         //endregion
       }
     }
@@ -566,11 +566,11 @@ public class HandlingDocumentRelationships {
       try (IDocumentSession session = store.openSession()) {
         //region includes_6_2
         Order order = session
-          .include("Refferal.CustomerId")
+          .include("Referral.CustomerId")
           .load(Order.class, "orders/1234");
 
         // this will not require querying the server!
-        Customer customer = session.load(Customer.class, order.getRefferal().getCustomerId());
+        Customer customer = session.load(Customer.class, order.getReferral().getCustomerId());
         //endregion
       }
     }
@@ -579,7 +579,7 @@ public class HandlingDocumentRelationships {
       //region includes_6_1
       MultiLoadResult result = store
         .getDatabaseCommands()
-        .get(new String[] { "orders/1234" }, new String[] { "Refferal.CustomerId" });
+        .get(new String[] { "orders/1234" }, new String[] { "Referral.CustomerId" });
 
       RavenJObject order = result.getResults().get(0);
       RavenJObject customer = result.getIncludes().get(0);
@@ -720,11 +720,11 @@ public class HandlingDocumentRelationships {
         //region includes_8_8
         QHandlingDocumentRelationships_Order2 o = QHandlingDocumentRelationships_Order2.order2;
         Order2 order = session
-          .include(Customer2.class, o.refferal.customerId)
+          .include(Customer2.class, o.referral.customerId)
           .load(Order2.class, "order2s/1234");
 
         // this will not require querying the server!
-        Customer2 customer = session.load(Customer2.class, order.getRefferal().getCustomerId());
+        Customer2 customer = session.load(Customer2.class, order.getReferral().getCustomerId());
         //endregion
       }
     }
@@ -733,7 +733,7 @@ public class HandlingDocumentRelationships {
       //region includes_8_9
       MultiLoadResult result = store
         .getDatabaseCommands()
-        .get(new String[] { "order2s/1234" }, new String[] { "Refferal.CustomerId" });
+        .get(new String[] { "order2s/1234" }, new String[] { "Referral.CustomerId" });
 
       RavenJObject order = result.getResults().get(0);
       RavenJObject customer = result.getIncludes().get(0);
