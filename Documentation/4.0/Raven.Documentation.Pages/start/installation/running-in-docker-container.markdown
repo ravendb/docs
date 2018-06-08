@@ -25,14 +25,10 @@ Beside tags matching the exact builds e.g. `4.0.0-rc-40025-ubuntu.16.04-x64` or 
 To install `latest` tag, you can issue a command as follows:
 
 {CODE-BLOCK:bash}
-docker run -d -e PUBLIC_SERVER_URL=http://10.0.75.2:8080 
-        -e PUBLIC_TCP_SERVER_URL=http://10.0.75.2:38888 
-        -p 8080:8080 
-        -p 38888:38888 
-        ravendb/ravendb
+docker run -d -p 8080:8080 -p 38888:38888 ravendb/ravendb
 {CODE-BLOCK/}
 
-You can access the RavenDB Management Studio by going to `http://10.0.75.2:8080` in your browser. This is assuming that you are using the default networking configuration with Docker, and that the Docker instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it externally, make sure to go through the security configuration first.
+You can access the RavenDB Management Studio by going to `http://localhost:8080` in your browser. This is assuming that you are using the default networking configuration with Docker, and that the Docker instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it externally, make sure to go through the security configuration first.
 
 ## Remarks
 
