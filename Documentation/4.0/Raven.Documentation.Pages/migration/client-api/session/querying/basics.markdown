@@ -81,6 +81,12 @@ You should use `WaitForNonStaleResults` instead. Its behavior has changed in 4.0
 
 {PANEL/}
 
+{PANEL:As}
+
+`As` has been removed in favor to built-in LINQ method `OfType`.
+
+{PANEL/}
+
 {PANEL:ProjectFromIndexFieldsInto}
 
 `ProjectFromIndexFieldsInto` has been renamed to `ProjectInto`.
