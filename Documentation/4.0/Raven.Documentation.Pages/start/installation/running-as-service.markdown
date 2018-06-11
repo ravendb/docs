@@ -40,22 +40,24 @@ Service can be also controlled using the `start` and `stop` commands:
 {PANEL:Linux - Ubuntu 16.04}
 
 Open a bash terminal, and create the following file /etc/systemd/system/ravendb.service, using super user permissions:
-    [Unit]
-    Description=RavenDB v4.0
-    After=network.target
+{CODE-BLOCK}
+[Unit]
+Description=RavenDB v4.0
+After=network.target
 
-    [Service]
-    LimitCORE=infinity
-    LimitNOFILE=65536
-    LimitRSS=infinity
-    LimitAS=infinity
-    User=<desired-user>
-    Restart=on-failure
-    Type=simple
-    ExecStart=<path-to-RavenDB>/run.sh
+[Service]
+LimitCORE=infinity
+LimitNOFILE=65536
+LimitRSS=infinity
+LimitAS=infinity
+User=<desired-user>
+Restart=on-failure
+Type=simple
+ExecStart=<path-to-RavenDB>/run.sh
 
-    [Install]
-    WantedBy=multi-user.target
+[Install]
+WantedBy=multi-user.target
+{CODE-BLOCK/}
 
 Note: Replace <desired-user> with your username and <path-to-RavenDB> with your path.
 
