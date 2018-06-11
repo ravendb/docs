@@ -26,7 +26,7 @@ Let's create an index that will help us search for `Employees` by their `FirstNa
 
 You might notice that we're passing `Employee` as a generic parameter to `AbstractIndexCreationTask`. This gives our indexing function a strongly-typed syntax. If you are not familiar with `AbstractIndexCreationTask`, you can read [this](../indexes/creating-and-deploying) article before proceeding.
 
-- The next step is to create an indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
+- The next step is to create the indexing function itself. This is done by setting the `Map` property with our function in a **parameterless constructor**.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query-syntax indexes_2@Indexes/Map.cs /}

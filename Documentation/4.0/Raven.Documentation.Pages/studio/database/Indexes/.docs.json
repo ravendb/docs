@@ -8,5 +8,10 @@
         "Path": "indexes-list-view.markdown",
         "Name": "Indexes List View",
         "Mappings": []
+    },
+    {
+        "Path": "create-map-index.markdown",
+        "Name": "Create Map Index",
+        "Mappings": []
     }
 ]
