@@ -7,8 +7,8 @@
 
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
-  * [Index Entries & Terms](../../../studio/database/indexes/create-map-index#index-entries-&-terms)  
-  * [Fields (Index Entries) Options](../../../studio/database/indexes/create-map-index#fields-(index-entries)-options)  
+  * [Index Fields & Terms](../../../studio/database/indexes/create-map-index#index-fields-&-terms)  
+  * [Index Fields Options](../../../studio/database/indexes/create-map-index#index-fields-options)  
   * [Configuration](../../../studio/database/indexes/create-map-index#configuration)  
   * [Additional Sources](../../../studio/database/indexes/create-map-index#additional-sources)  
   * [Spatial Field Options](../../../studio/database/indexes/create-map-index#spatial-field-options)  
@@ -40,45 +40,46 @@
     that have _'true'_ in the _'Discontinued'_ document field property. If the index was defined without the _'where'_ clause, but only using _'from p in docs.Products'_, 
     then the documents range for the query result would have been the whole Products collection.  
 
-  * The **Index Entries** that will be created for this index and which can be queried on are:  
+  * Each **Index Entry** that will be created for this index will be composed of the following 4 fields:  
     `Name`, `Category`, `PricePerUnit` & `SupplierName`.  
-    The first 3 are taken directly from the document fields, while _SupplierName_ is a calculated index entry.  
-    The supplier's name is taken from the _Name_ field taken from the _loaded_ supplier document.  
+    The first 3 are taken directly from the document fields, while _SupplierName_ is a calculated index field.  
+    The supplier's name is derived from the _Name_ field that is taken from the _loaded_ supplier document.  
 
-  * At **query time**, when querying this index, the resulting documents can be searched on and further filtered by the **Index Entries** defined and the created **Terms**. 
+  * At **query time**, when querying this index, the resulting documents can be searched on and further filtered  
+    by these **Index Fields** defined and by the created **Terms**. 
     See the query results on this index in [Query View](../../../todo-update-me-later)  
 
   * See more Map-Indexes examples in [Map Index defined from Code](../../../indexes/map-indexes)  
 {PANEL/}
 
-{PANEL: Index Entries & Terms}
+{PANEL: Index Fields & Terms}
 
-![Figure 2. Index Entries & Terms](images/create-map-index-2.png "Figure-2: Index Entries & Terms")
+![Figure 2. Index Fields & Terms](images/create-map-index-2.png "Figure-2: Index Fields & Terms")
 
-1. **Index Entries**  
-   The index entries that were created for this index are:  
+1. **Index Fields**  
+   The index-fields that are indexed per index-entry with the above index-definition are:  
    `Name`, `Category`, `PricePerUnit` & `SupplierName`.  
 
 2. **Terms**  
-   The terms are listed under each index entry.  
-   The terms are created from the value of the document field that corresponds to the index entry,  
-   and according to the specified [Field Options](../../../studio/database/indexes/create-map-index#fields-(index-entries)-options)  
+   The terms are listed under each field.  
+   The terms are created from the value of the field that was requested to be indexed 
+   according to the specified [Field Options](../../../studio/database/indexes/create-map-index#fields-(index-entries)-options).  
 {PANEL/}
 
-{PANEL: Fields (Index Entries) Options}
+{PANEL: Index Fields Options}
 
-![Figure 3. Fields Options](images/create-map-index-3.png "Figure-4: Fields (Index Entries) Options")
+![Figure 3. Index Fields Options](images/create-map-index-3.png "Figure-4: Index Fields Options")
 
 1. **Default values**  
-   Set the default values that will apply to _all_ fields (index entries).  
+   Set the default values that will apply to _all_ index fields.  
 
-2. **Add a Field (Index Entry)**  
+2. **Add a Field**  
    Override the default values with specific settings for selected index entries. 
 
 3. **Select Field**  
    Select a field from the drop-down. The settings will override the default settings.  
 
-4. * `Store` - Setting _'Store'_ will store the value of this field (index entry) in the index itself.  
+4. * `Store` - Setting _'Store'_ will store the value of this field in the index itself.  
                At query time, if _'Store'_ is set, then the value is fetched directly from the index, instead of from the original document.  
                If the field value is not stored in the index then it will be fetched from the document.  
                Storing data in the index will increase the index size.  
@@ -133,20 +134,20 @@
 
 ![Figure 6. Spatial Field Options](images/create-map-index-6.png "Figure-6: Spatial Field Options")
 
-* **Spatial Field (Index Entry)**  
+* **Spatial Field**  
   Spatial searches allow you to search using geographical data.  
-  In order to be able to do such searches, a _spatial index entry_ has to be defined.  
+  In order to be able to do such searches, a _spatial index field_ has to be defined.  
 
 * **CreateSpatialField()**  
   This method instructs RavenDB to use the provided longitude and latitude from the document field properties 
-  and create the spatial field (index entry) named _'Coordinates'_. 
+  and create the spatial field named _'Coordinates'_. 
   Spatial queries can then be made on the _'Coordinates'_ field.  
 
 * **Spatial Type**  
   RavenDB supports both the _'Geography'_ and _'Cartesian'_ systems.  
 
 * **Spatial Indexing Strategy**  
-  The strategy determines the format of the indexed term values.  
+  _'Strategy'_ determines the format of the indexed term values.  
   The following indexing strategies are supported:  
   • Bounding box  
   • Geohash prefix tree  

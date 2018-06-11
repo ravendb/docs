@@ -91,7 +91,7 @@
 
 #### 3. Indexed Data
 
-* The resulting output of 'step 2' is also referred to as an Index.  
+* The resulting output of 'step 2' (the indexing process) is also referred to as an Index.  
   It is the **indexed data** on which queries can operate on to get documents result.  
 
 * Note: The full document is _not_ stored in the index - only the document ID.  
@@ -154,7 +154,7 @@ Indexes in RavenDB are split across the following multiple axes:
 
 {PANEL: Fields Configuration Options}
 
-Additional settings can be specified per index-entry in the index definition, configuring how the terms are indexed inside RavenDB.  
+Additional settings can be specified per field in the index-entry definition, configuring how the terms are indexed inside RavenDB.  
 
 * **Full Text Search**  
   The original field data is split and tokenized according to the selected analyzer.      
