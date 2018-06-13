@@ -64,7 +64,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             {
                 {
                     #region cert_1_4
-                    // With user role set to Cluster Administator or Operator the user of this certificate 
+                    // With user role set to Cluster Administrator or Operator the user of this certificate 
                     // is going to have access to all databases
                     CreateClientCertificateOperation operation = 
                         new CreateClientCertificateOperation(
