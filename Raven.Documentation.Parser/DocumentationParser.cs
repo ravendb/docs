@@ -19,10 +19,12 @@ namespace Raven.Documentation.Parser
         public override IEnumerable<DocumentationPage> Parse()
         {
             var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
+            var compilationContext = new DocumentationCompilation.Context();
+
             return documentationDirectories
                 .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
                 .Where(documentationDirectory => Options.VersionsToParse.Count == 0 || Options.VersionsToParse.Contains(documentationDirectory.Name))
-                .SelectMany(_directoryCompiler.Compile);
+                .SelectMany(directoryInfo => _directoryCompiler.Compile(directoryInfo, compilationContext));
         }
 
         public override IEnumerable<TableOfContents> GenerateTableOfContents()

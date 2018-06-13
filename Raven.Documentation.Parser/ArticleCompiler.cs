@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.IO;
 using HtmlAgilityPack;
 using MarkdownDeep;
@@ -17,37 +16,23 @@ namespace Raven.Documentation.Parser
         {
         }
 
-        protected override ArticlePage CreatePage(
-            string key,
-            string title,
-            string documentationVersion,
-            string htmlContent,
-            string textContent,
-            Language language,
-            Category category,
-            HashSet<DocumentationImage> images,
-            string lastCommitSha,
-            string relativePath,
-            List<DocumentationMapping> mappings,
-            string relatedArticlesContent,
-            Dictionary<string, string> metadata = null,
-            Dictionary<string, string> seoMetaProperties = null)
+        protected override ArticlePage CreatePage(CreatePageParams parameters)
         {
             return new ArticlePage
             {
-                Key = key,
-                Title = title,
-                Version = documentationVersion,
-                HtmlContent = htmlContent,
-                TextContent = textContent,
-                Language = language,
-                Category = category,
-                Images = images,
-                LastCommitSha = lastCommitSha,
-                RelativePath = relativePath,
-                Mappings = mappings,
-                Metadata = metadata,
-                SeoMetaProperties = seoMetaProperties
+                Key = parameters.Key,
+                Title = parameters.Title,
+                Version = parameters.DocumentationVersion,
+                HtmlContent = parameters.HtmlContent,
+                TextContent = parameters.TextContent,
+                Language = parameters.Language,
+                Category = parameters.Category,
+                Images = parameters.Images,
+                LastCommitSha = parameters.LastCommitSha,
+                RelativePath = parameters.RelativePath,
+                Mappings = parameters.Mappings,
+                Metadata = parameters.Metadata,
+                SeoMetaProperties = parameters.SeoMetaProperties
             };
         }
 

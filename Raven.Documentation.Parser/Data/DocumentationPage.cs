@@ -1,18 +1,20 @@
 ﻿namespace Raven.Documentation.Parser.Data
 {
 	using System.Collections.Generic;
-	using System.Security.Cryptography;
 	using System.Text;
 
 	public class DocumentationPage
     {
 		public DocumentationPage()
 		{
+            this.SupportedVersions = new List<string>();
 			this.Images = new HashSet<DocumentationImage>();
 			this.Mappings = new List<DocumentationMapping>();
 		}
 
         public string Version { get; set; }
+
+        public List<string> SupportedVersions { get; set; }
 
 	    public string HtmlContent { get; set; }
 

@@ -21,14 +21,15 @@
 			_options = options;
 		}
 
-		public IEnumerable<DocumentationPage> Compile(DirectoryInfo directoryInfo)
+		public IEnumerable<DocumentationPage> Compile(DirectoryInfo directoryInfo, DocumentationCompilation.Context compilationContext)
 		{
 			var directoryName = directoryInfo.Name;
 			var documentationVersion = directoryName;
 
-			Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
+		    var pagesDirectory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
+		    Debug.Assert(Directory.Exists(pagesDirectory));
 
-            return CompileDocumentationDirectory(_options.GetPathToDocumentationPagesDirectory(documentationVersion), documentationVersion);
+		    return CompileDocumentationDirectory(pagesDirectory, documentationVersion, compilationContext);
 		}
 
 		public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo)
@@ -102,18 +103,30 @@
 			}
 		}
 
-		private DocumentationPage CompileDocumentationPage(FolderItem page, string directory, string documentationVersion, List<DocumentationMapping> mappings)
-		{
-			var path = Path.Combine(directory, page.Name + FileExtensionHelper.GetLanguageFileExtension(page.Language) + Constants.MarkdownFileExtension);
-			var fileInfo = new FileInfo(path);
+	    private DocumentationPage CompileDocumentationPage(FolderItem page, string directory,
+	        string documentationVersion, DocumentationCompilation.Context compilationContext, List<DocumentationMapping> mappings)
+	    {
+	        var path = Path.Combine(directory,
+	            page.Name + FileExtensionHelper.GetLanguageFileExtension(page.Language) +
+	            Constants.MarkdownFileExtension);
+	        var fileInfo = new FileInfo(path);
 
-			if (fileInfo.Exists == false)
-				throw new FileNotFoundException(string.Format("Documentaiton file '{0}' not found.", path));
+	        if (fileInfo.Exists == false)
+	            throw new FileNotFoundException(string.Format("Documentaiton file '{0}' not found.", path));
 
-			return _documentCompiler.Compile(fileInfo, page, documentationVersion, mappings);
-		}
+	        var compilationParams = new DocumentationCompilation.Parameters
+	        {
+	            File = fileInfo,
+	            Page = page,
+	            DocumentationVersion = documentationVersion,
+	            Mappings = mappings
+	        };
 
-		private IEnumerable<DocumentationPage> CompileDocumentationDirectory(string directory, string documentationVersion, List<DocumentationMapping> mappings = null)
+	        return _documentCompiler.Compile(compilationParams, compilationContext);
+	    }
+
+	    private IEnumerable<DocumentationPage> CompileDocumentationDirectory(string directory, string documentationVersion,
+	        DocumentationCompilation.Context context, List<DocumentationMapping> mappings = null)
 		{
 			var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
 			if (File.Exists(docsFilePath) == false)
@@ -123,7 +136,7 @@
 			{
 				if (item.IsFolder)
 				{
-					foreach (var page in CompileDocumentationDirectory(Path.Combine(directory, item.Name), documentationVersion, item.Mappings))
+					foreach (var page in CompileDocumentationDirectory(Path.Combine(directory, item.Name), documentationVersion, context, item.Mappings))
 					{
 						yield return page;
 					}
@@ -133,7 +146,7 @@
 
 				foreach (var pageToCompile in GetPages(directory, item))
 				{
-					yield return CompileDocumentationPage(pageToCompile, directory, documentationVersion, pageToCompile.Mappings);
+					yield return CompileDocumentationPage(pageToCompile, directory, documentationVersion, context, pageToCompile.Mappings);
 				}
 			}
 
@@ -148,7 +161,8 @@
 									Name = "index"
 								};
 
-			yield return CompileDocumentationPage(indexItem, directory, documentationVersion, mappings ?? new List<DocumentationMapping>());
+		    yield return CompileDocumentationPage(indexItem, directory, documentationVersion,
+		        context, mappings ?? new List<DocumentationMapping>());
 		}
 
 	    internal static IEnumerable<FolderItem> GetPages(string directory, FolderItem item)

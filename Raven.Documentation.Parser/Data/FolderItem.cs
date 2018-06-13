@@ -27,6 +27,8 @@ namespace Raven.Documentation.Parser.Data
 
         public Language Language { get; set; }
 
+        public List<string> SupportedVersions { get; set; }
+
         public Dictionary<string, string> Metadata { get; set; }
 
         public Dictionary<string, string> SeoMetaProperties { get; set; }
