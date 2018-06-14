@@ -1,7 +1,11 @@
-﻿[
-    {
-        "Path": "reset-etl.markdown",
-        "Name": "Reset ETL",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "reset-etl.markdown",
+    "Name": "Reset ETL",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

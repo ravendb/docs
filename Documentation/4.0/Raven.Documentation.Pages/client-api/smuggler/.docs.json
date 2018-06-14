@@ -1,7 +1,11 @@
-﻿[
-    {
-        "Path": "what-is-smuggler.markdown",
-        "Name": "What is Smuggler",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "what-is-smuggler.markdown",
+    "Name": "What is Smuggler",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

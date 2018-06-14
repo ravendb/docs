@@ -1,37 +1,65 @@
-﻿[
-    {
-        "Path": "basics.markdown",
-        "Name": "Basics",
-        "Mappings": []
-    },
-    {
-        "Path": "transformers.markdown",
-        "Name": "Transformers",
-        "Mappings": []
-    },
-    {
-        "Path": "spatial.markdown",
-        "Name": "Spatial",
-        "Mappings": []
-    },
-    {
-        "Path": "facets-and-dynamic-aggregation.markdown",
-        "Name": "Facets and Dynamic Aggregation",
-        "Mappings": []
-    },
-    {
-        "Path": "suggestions.markdown",
-        "Name": "Suggestions",
-        "Mappings": []
-    },
-    {
-        "Path": "morelikethis.markdown",
-        "Name": "MoreLikeThis",
-        "Mappings": []
-    },
-    {
-        "Path": "documentquery.markdown",
-        "Name": "DocumentQuery",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "transformers.markdown",
+    "Name": "Transformers",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "spatial.markdown",
+    "Name": "Spatial",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "facets-and-dynamic-aggregation.markdown",
+    "Name": "Facets and Dynamic Aggregation",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "suggestions.markdown",
+    "Name": "Suggestions",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "morelikethis.markdown",
+    "Name": "MoreLikeThis",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "documentquery.markdown",
+    "Name": "DocumentQuery",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

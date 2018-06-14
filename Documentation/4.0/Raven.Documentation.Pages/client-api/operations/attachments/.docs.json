@@ -1,17 +1,29 @@
-﻿[
-    {
-        "Path": "get-attachment.markdown",
-        "Name": "Get Attachment",
-        "Mappings": []
-    },
-    {
-        "Path": "put-attachment.markdown",
-        "Name": "Put Attachment",
-        "Mappings": []
-    },
-    {
-        "Path": "delete-attachment.markdown",
-        "Name": "Delete Attachment",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "get-attachment.markdown",
+    "Name": "Get Attachment",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "put-attachment.markdown",
+    "Name": "Put Attachment",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "delete-attachment.markdown",
+    "Name": "Delete Attachment",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

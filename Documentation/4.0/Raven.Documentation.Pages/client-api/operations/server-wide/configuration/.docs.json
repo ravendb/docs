@@ -1,12 +1,20 @@
-﻿[
-    {
-        "Path": "get-serverwide-client-configuration.markdown",
-        "Name": "Get Server Wide Client Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "put-serverwide-client-configuration.markdown",
-        "Name": "Put Server Wide Client Configuration",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "get-serverwide-client-configuration.markdown",
+    "Name": "Get Server Wide Client Configuration",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "put-serverwide-client-configuration.markdown",
+    "Name": "Put Server Wide Client Configuration",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

@@ -1,12 +1,16 @@
-﻿[
-    {
-        "Path": "/etl",
-        "Name": "ETL",
-        "Mappings": []
-    },
-	{
-        "Path": "external-replication.markdown",
-        "Name": "External Replication",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "/etl",
+    "Name": "ETL",
+    "Mappings": []
+  },
+  {
+    "Path": "external-replication.markdown",
+    "Name": "External Replication",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

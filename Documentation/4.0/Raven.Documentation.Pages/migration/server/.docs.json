@@ -1,37 +1,65 @@
-﻿[
-    {
-        "Path": "data-migration.markdown",
-        "Name": "Data migration",
-        "Mappings": []
-    },
-    {
-        "Path": "configuration-options.markdown",
-        "Name": "Configuration options",
-        "Mappings": []
-    },
-    {
-        "Path": "indexes.markdown",
-        "Name": "Indexes",
-        "Mappings": []
-    },
-    {
-        "Path": "bundles.markdown",
-        "Name": "Bundles",
-        "Mappings": []
-    },
-    {
-        "Path": "triggers.markdown",
-        "Name": "Triggers",
-        "Mappings": []
-    },
-    {
-        "Path": "authentication.markdown",
-        "Name": "Authentication",
-        "Mappings": []
-    },
-    {
-        "Path": "snmp.markdown",
-        "Name": "SNMP",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "data-migration.markdown",
+    "Name": "Data migration",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "configuration-options.markdown",
+    "Name": "Configuration options",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "indexes.markdown",
+    "Name": "Indexes",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "bundles.markdown",
+    "Name": "Bundles",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "triggers.markdown",
+    "Name": "Triggers",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "authentication.markdown",
+    "Name": "Authentication",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "snmp.markdown",
+    "Name": "SNMP",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

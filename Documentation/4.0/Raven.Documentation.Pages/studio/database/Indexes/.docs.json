@@ -1,17 +1,29 @@
-﻿[
-    {
-        "Path": "indexes-overview.markdown",
-        "Name": "Indexes Overview",
-        "Mappings": []
-    },
-    {
-        "Path": "indexes-list-view.markdown",
-        "Name": "Indexes List View",
-        "Mappings": []
-    },
-    {
-        "Path": "create-map-index.markdown",
-        "Name": "Create Map Index",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "indexes-overview.markdown",
+    "Name": "Indexes Overview",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "indexes-list-view.markdown",
+    "Name": "Indexes List View",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "create-map-index.markdown",
+    "Name": "Create Map Index",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

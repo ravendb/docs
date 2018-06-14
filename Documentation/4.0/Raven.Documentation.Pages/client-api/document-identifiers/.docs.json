@@ -1,17 +1,25 @@
 [
-    {
-        "Path": "working-with-document-identifiers.markdown",
-        "Name": "Working with Document Identifiers",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/document-identifiers/working-with-document-ids"
-            }
-        ]
-    },
-    {
-        "Path": "hilo-algorithm.markdown",
-        "Name": "HiLo Algorithm",
-        "Mappings": []
-    }
+  {
+    "Path": "working-with-document-identifiers.markdown",
+    "Name": "Working with Document Identifiers",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "client-api/document-identifiers/working-with-document-ids"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "hilo-algorithm.markdown",
+    "Name": "HiLo Algorithm",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

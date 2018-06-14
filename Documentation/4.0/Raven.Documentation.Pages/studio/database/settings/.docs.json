@@ -1,28 +1,47 @@
-﻿[
-    {
-        "Path": "database-record.markdown",
-        "Name": "Database Record",
-        "Mappings": []
-    },
-    {
-        "Path": "conflict-resolution.markdown",
-        "Name": "Conflict Resolution",
-        "Mappings": []
-    },
-    {
-        "Path": "client-configuration-per-database.markdown",
-        "Name": "Client Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "document-expiration.markdown",
-        "Name": "Document Expiraton",
-        "Mappings": []
-    },
-    {
-        "Path": "manage-database-group.markdown",
-        "Name": "Manage Database Group",
-        "Mappings": []
-    },
-    
+[
+  {
+    "Path": "database-record.markdown",
+    "Name": "Database Record",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "conflict-resolution.markdown",
+    "Name": "Conflict Resolution",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "client-configuration-per-database.markdown",
+    "Name": "Client Configuration",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "document-expiration.markdown",
+    "Name": "Document Expiraton",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "manage-database-group.markdown",
+    "Name": "Manage Database Group",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

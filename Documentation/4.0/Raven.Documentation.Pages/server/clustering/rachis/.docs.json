@@ -1,17 +1,29 @@
 [
-	{
-        "Path": "what-is-rachis.markdown",
-        "Name": "What Is Rachis",
-        "Mappings": []
-    },
-    {
-        "Path": "cluster-topology.markdown",
-        "Name": "Cluster Topology",
-        "Mappings": []
-    },
-    {
-        "Path": "consensus-operations.markdown",
-        "Name": "Consensus Operations",
-        "Mappings": []
-    }
+  {
+    "Path": "what-is-rachis.markdown",
+    "Name": "What Is Rachis",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "cluster-topology.markdown",
+    "Name": "Cluster Topology",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "consensus-operations.markdown",
+    "Name": "Consensus Operations",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

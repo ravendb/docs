@@ -1,13 +1,20 @@
-﻿[
-    {
-        "Path": "single-document.markdown",
-        "Name": "Single Document",
-        "Mappings": []
-    },
-    {
-        "Path": "set-based.markdown",
-        "Name": "Set Based",
-        "Mappings": []
-    }
-
+[
+  {
+    "Path": "single-document.markdown",
+    "Name": "Single Document",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "set-based.markdown",
+    "Name": "Set Based",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

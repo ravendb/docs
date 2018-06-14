@@ -1,7 +1,11 @@
-﻿[
-    {
-        "Path": "get-document-metadata-only.markdown",
-        "Name": "...get document metadata only",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "get-document-metadata-only.markdown",
+    "Name": "...get document metadata only",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

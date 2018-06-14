@@ -1,27 +1,39 @@
 [
-    {
-        "Path": "what-is-document-query.markdown",
-        "Name": "What is a Document Query",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "client-api/querying/lucene/how-to-use-lucene-in-queries"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-use-not-operator.markdown",
-        "Name": "How to Use NOT Operator",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "client-api/querying/lucene/how-to-use-not-operator"
-            }
-        ]
-    },
-    {
-        "Path": "how-to-use-lucene.markdown",
-        "Name": "How to Use Lucene",
-        "Mappings": []
-    }
+  {
+    "Path": "what-is-document-query.markdown",
+    "Name": "What is a Document Query",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/querying/lucene/how-to-use-lucene-in-queries"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "how-to-use-not-operator.markdown",
+    "Name": "How to Use NOT Operator",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/querying/lucene/how-to-use-not-operator"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "how-to-use-lucene.markdown",
+    "Name": "How to Use Lucene",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

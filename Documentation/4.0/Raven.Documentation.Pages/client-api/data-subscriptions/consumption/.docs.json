@@ -1,17 +1,29 @@
 [
-    {
-        "Path": "how-to-consume-data-subscription.markdown",
-        "Name": "How to Consume a Data Subscription",
-        "Mappings": []
-    },
-    {
-        "Path": "examples.markdown",
-        "Name": "Examples",
-        "Mappings": []
-    },
-    {
-        "Path": "api-overview.markdown",
-        "Name": "API Overview",
-        "Mappings": []
-    }
+  {
+    "Path": "how-to-consume-data-subscription.markdown",
+    "Name": "How to Consume a Data Subscription",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "examples.markdown",
+    "Name": "Examples",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "api-overview.markdown",
+    "Name": "API Overview",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

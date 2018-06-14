@@ -1,12 +1,16 @@
-﻿[
-    {
-        "Path": "databases-list-view.markdown",
-        "Name": "List View",
-        "Mappings": []
-    },
-    {
-        "Path": "/create-new-database",
-        "Name": "Create New Database",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "databases-list-view.markdown",
+    "Name": "List View",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/create-new-database",
+    "Name": "Create New Database",
+    "Mappings": []
+  }
 ]

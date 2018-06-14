@@ -1,47 +1,63 @@
 [
-    {
-        "Path": "conventions.markdown",
-        "Name": "Conventions",
-        "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/what-are-conventions"
-            }
-        ]
-    },
-    {
-        "Path": "querying.markdown",
-        "Name": "Querying",
-        "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/querying"
-            }
-        ]
-    },
-    {
-        "Path": "serialization.markdown",
-        "Name": "Serialization",
-        "Mappings": []
-    },
-    {
-        "Path": "load-balance-and-failover.markdown",
-        "Name": "Load Balance & Failover",
-        "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/replication"
-            }
-        ]
-    },
-    {
-        "Path": "/identifier-generation",
-        "Name": "Identifier generation",
-        "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/identifier-generation"
-            }
-        ]
-    },
+  {
+    "Path": "conventions.markdown",
+    "Name": "Conventions",
+    "Mappings": [
+      {
+        "Version": "3.0",
+        "Key": "client-api/configuration/conventions/what-are-conventions"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "querying.markdown",
+    "Name": "Querying",
+    "Mappings": [
+      {
+        "Version": "3.0",
+        "Key": "client-api/configuration/conventions/querying"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "serialization.markdown",
+    "Name": "Serialization",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "load-balance-and-failover.markdown",
+    "Name": "Load Balance & Failover",
+    "Mappings": [
+      {
+        "Version": "3.0",
+        "Key": "client-api/configuration/conventions/replication"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/identifier-generation",
+    "Name": "Identifier generation",
+    "Mappings": [
+      {
+        "Version": "3.0",
+        "Key": "client-api/configuration/conventions/identifier-generation"
+      }
+    ]
+  }
 ]

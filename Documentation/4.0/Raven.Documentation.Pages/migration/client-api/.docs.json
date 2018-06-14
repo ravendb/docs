@@ -1,47 +1,79 @@
-﻿[
-    {
-        "Path": "introduction.markdown",
-        "Name": "Introduction",
-        "Mappings": []
-    },
-    {
-        "Path": "document-store.markdown",
-        "Name": "Document Store",
-        "Mappings": []
-    },
-    {
-        "Path": "conventions.markdown",
-        "Name": "Conventions",
-        "Mappings": []
-    },
-    {
-        "Path": "patching.markdown",
-        "Name": "Patching",
-        "Mappings": []
-    },
-    {
-        "Path": "commands.markdown",
-        "Name": "Commands",
-        "Mappings": []
-    },
-    {
-        "Path": "indexes.markdown",
-        "Name": "Indexes",
-        "Mappings": []
-    },
-    {
-        "Path": "changes-api.markdown",
-        "Name": "Changes API",
-        "Mappings": []
-    },
-    {
-        "Path": "list.markdown",
-        "Name": "List of Differences in Public API",
-        "Mappings": []
-    },
-    {
-        "Path": "/session",
-        "Name": "Session",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "introduction.markdown",
+    "Name": "Introduction",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "document-store.markdown",
+    "Name": "Document Store",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "conventions.markdown",
+    "Name": "Conventions",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "patching.markdown",
+    "Name": "Patching",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "commands.markdown",
+    "Name": "Commands",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "indexes.markdown",
+    "Name": "Indexes",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "changes-api.markdown",
+    "Name": "Changes API",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "list.markdown",
+    "Name": "List of Differences in Public API",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/session",
+    "Name": "Session",
+    "Mappings": []
+  }
 ]
