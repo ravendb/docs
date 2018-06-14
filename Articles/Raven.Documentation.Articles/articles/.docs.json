@@ -379,7 +379,7 @@
             "og:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
             "og:description": "",
             "og:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -387,7 +387,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
             "twitter:description": "",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
             "twitter:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast"
         }
     },
@@ -408,7 +408,7 @@
             "og:title": "Security Vulnerability Advisory for RavenDB 4.0 | RavenDB",
             "og:description": "During routine internal security testing, a remotely exploitable issue was discovered. This issue has been addressed and is available in release: 4.0.5",
             "og:url": "https://ravendb.net/articles/security-vulnerability-advisory-for-ravendb-2018-06-12",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/security-vulnerability-advisory-for-ravendb-2018-06-12/security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -416,7 +416,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Security Vulnerability Advisory for RavenDB 4.0 | RavenDB",
             "twitter:description": "During routine internal security testing, a remotely exploitable issue was discovered. This issue has been addressed and is available in release: 4.0.5",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/security-vulnerability-advisory-for-ravendb-2018-06-12/security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
             "twitter:url": "https://ravendb.net/articles/security-vulnerability-advisory-for-ravendb-2018-06-12"
         }
     }
