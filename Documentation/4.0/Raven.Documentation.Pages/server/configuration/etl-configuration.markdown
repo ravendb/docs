@@ -15,7 +15,7 @@ Number of seconds after which the SQL command will timeout.
 Number of seconds after which extraction and transformation will end and loading will start.
 
 - **Type**: `int`
-- **Default**: `300`
+- **Default**: `60`
 - **Scope**: Server-wide or per database
 
 {PANEL/}
