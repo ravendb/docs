@@ -8,12 +8,14 @@ namespace Raven.Documentation.Parser
     public class DocumentationParser : ParserBase<DocumentationPage>
     {
         private readonly DocumentationDirectoryCompiler _directoryCompiler;
+        private readonly TableOfContentsCompiler _tableOfContentsCompiler;
 
         public DocumentationParser(ParserOptions options, IProvideGitFileInformation repoAnalyzer)
             : base(options)
         {
             var documentCompiler = new DocumentCompiler(Parser, options, repoAnalyzer);
             _directoryCompiler = new DocumentationDirectoryCompiler(documentCompiler, options);
+            _tableOfContentsCompiler = new TableOfContentsCompiler(options);
         }
 
         public override IEnumerable<DocumentationPage> Parse()
@@ -32,7 +34,7 @@ namespace Raven.Documentation.Parser
             var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
             return documentationDirectories
                 .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .SelectMany(_directoryCompiler.GenerateTableOfContents);
+                .SelectMany(_tableOfContentsCompiler.GenerateTableOfContents);
         }
     }
 }
