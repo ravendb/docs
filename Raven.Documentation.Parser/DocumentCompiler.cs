@@ -100,7 +100,7 @@
 
                 ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images);
 
-                var title = ExtractTitle(htmlDocument);
+                var title = ExtractTitle(page, htmlDocument);
                 var textContent = ExtractTextContent(htmlDocument, out var relatedArticlesContent);
 
                 var caseSensitiveFileName = PathHelper.GetProperFilePathCapitalization(file.FullName);
@@ -252,8 +252,8 @@
 
             return htmlDocument.DocumentNode.InnerText;
         }
-
-        private static string ExtractTitle(HtmlDocument htmlDocument)
+        
+        protected virtual string ExtractTitle(FolderItem page, HtmlDocument htmlDocument)
         {
             var node = htmlDocument.DocumentNode.ChildNodes.FirstOrDefault(x => x.Name == "h1");
             if (node == null)

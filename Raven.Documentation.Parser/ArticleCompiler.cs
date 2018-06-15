@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
-
+using HtmlAgilityPack;
 using MarkdownDeep;
 
 using Raven.Documentation.Parser.Data;
@@ -10,6 +10,8 @@ namespace Raven.Documentation.Parser
 {
     public class ArticleCompiler : DocumentCompiler<ArticlePage>
     {
+        private const string TitleSuffix = " | RavenDB";
+
         public ArticleCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
             : base(parser, options, repoAnalyzer)
         {
@@ -64,6 +66,23 @@ namespace Raven.Documentation.Parser
             }
 
             return key;
+        }
+
+        protected override string ExtractTitle(FolderItem page, HtmlDocument htmlDocument)
+        {
+            string title = null;
+            page.Metadata?.TryGetValue("title", out title);
+
+            return string.IsNullOrEmpty(title) ? base.ExtractTitle(page, htmlDocument) : RemoveTitleSuffix(title);
+        }
+
+        private string RemoveTitleSuffix(string title)
+        {
+            if (title.EndsWith(TitleSuffix) == false)
+                return title;
+
+            var resultLength = title.Length - TitleSuffix.Length;
+            return title.Substring(0, resultLength);
         }
     }
 }
