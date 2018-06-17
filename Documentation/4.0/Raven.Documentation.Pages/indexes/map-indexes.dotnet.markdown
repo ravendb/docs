@@ -132,7 +132,7 @@ where search(Query, 'John Doe')
 
 ## Indexing Partial Field Data
 
-Imagine that you would like to return all employees that were born in a specific year. You could of course do it by indexing `Birthday` from `Employee` in the following way:
+Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `Birthday` from `Employee` in the following way:
 
 {CODE indexes_1_2@Indexes/Map.cs /}
 

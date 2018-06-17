@@ -191,7 +191,7 @@ Additional settings can be specified per field in the index-entry definition, co
 
 {PANEL: Indexes in the Cluster}
 
-* Index & Auto-Index creation is a cluster operation, it goes through the [Raft protocol](../../todo...).  
+* Index & Auto-Index creation is a cluster operation. It goes through the [Raft protocol](../../todo...).  
   Index creation will fail if the majority of the nodes in the cluster is not reachable.  
 
 * Once an index is created against any node in the [Database Group](../../todo), RavenDB will make sure that it’s definition is replicated to all the database’s nodes. 
@@ -202,7 +202,7 @@ Additional settings can be specified per field in the index-entry definition, co
 
 {PANEL: Indexing Errors}
 
-* An error in indexing a document means that this particular document is not indexed, and you will not see it in the query result.  
+* An error in indexing a document means that this particular document is not indexed and you will not see it in the query result.  
 
 * An index is only allowed a certain failure rate, above which it is marked in an error state.  
   An index in an error state cannot be queried and will return an immediate error.  
