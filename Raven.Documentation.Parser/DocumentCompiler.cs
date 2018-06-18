@@ -85,7 +85,7 @@
                 var category = CategoryHelper.ExtractCategoryFromPath(key);
                 var images = new HashSet<DocumentationImage>();
 
-                _parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, tag, key);
+                _parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImageUrlGenerator, documentationVersion, tag, key);
 
                 var content = File.ReadAllText(file.FullName);
 
@@ -98,7 +98,7 @@
 
                 var htmlDocument = HtmlHelper.ParseHtml(content);
 
-                ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images);
+                ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images, key);
 
                 var title = ExtractTitle(page, htmlDocument);
                 var textContent = ExtractTextContent(htmlDocument, out var relatedArticlesContent);
@@ -136,7 +136,7 @@
         }
 
         private void ProcessNonMarkdownImages(FileInfo file, string documentationVersion, HtmlDocument htmlDocument,
-            HashSet<DocumentationImage> images)
+            HashSet<DocumentationImage> images, string key)
         {
             var nonMarkdownImages = htmlDocument.DocumentNode.SelectNodes("//img[starts-with(@src, 'images/')]");
             if (nonMarkdownImages == null)
@@ -146,12 +146,12 @@
 
             foreach (var node in nonMarkdownImages)
             {
-                AddNonMarkdownImage(images, file.DirectoryName, Options.ImagesUrl, documentationVersion, node);
+                AddNonMarkdownImage(images, file.DirectoryName, Options.ImageUrlGenerator, documentationVersion, node, key);
             }
         }
 
-        private static bool AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory, string imagesUrl,
-            string documentationVersion, HtmlNode node)
+        private static bool AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory,
+            ParserOptions.GenerateImageUrl generateImageUrl, string documentationVersion, HtmlNode node, string key)
         {
             if (node.Attributes.Contains("src"))
             {
@@ -162,21 +162,23 @@
                 if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
                     src = src.Substring(7);
 
-                var newSrc = string.Format("{0}/{1}", documentationVersion, src);
+                var fileName = Path.GetFileName(src);
+                var imageUrl = generateImageUrl(documentationVersion, key, fileName);
 
-                node.SetAttributeValue("src", imagesUrl + newSrc);
+                node.SetAttributeValue("src", imageUrl);
 
                 images.Add(new DocumentationImage
                 {
                     ImagePath = imagePath,
-                    ImageKey = newSrc
+                    ImageKey = $"{documentationVersion}/{src}"
                 });
             }
 
             return true;
         }
 
-        private static bool PrepareImage(ICollection<DocumentationImage> images, string directory, string imagesUrl, string documentationVersion, HtmlTag tag, string key)
+        private static bool PrepareImage(ICollection<DocumentationImage> images, string directory,
+            ParserOptions.GenerateImageUrl generateImageUrl, string documentationVersion, HtmlTag tag, string key)
         {
             string src;
             if (tag.attributes.TryGetValue("src", out src))
@@ -190,14 +192,15 @@
                 if (src.StartsWith("images/", StringComparison.InvariantCultureIgnoreCase))
                     src = src.Substring(7);
 
-                var newSrc = string.Format("{0}/{1}/{2}", documentationVersion, key, src);
+                var fileName = Path.GetFileName(src);
+                var imageUrl = generateImageUrl(documentationVersion, key, fileName);
 
-                tag.attributes["src"] = imagesUrl + newSrc;
+                tag.attributes["src"] = imageUrl;
 
                 images.Add(new DocumentationImage
                 {
                     ImagePath = imagePath,
-                    ImageKey = newSrc
+                    ImageKey = $"{documentationVersion}/{src}"
                 });
             }
 
