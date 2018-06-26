@@ -85,7 +85,7 @@
                 var category = CategoryHelper.ExtractCategoryFromPath(key);
                 var images = new HashSet<DocumentationImage>();
 
-                _parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImageUrlGenerator, documentationVersion, tag, key);
+                _parser.PrepareImage = (tag, b) => PrepareImage(images, file.DirectoryName, Options.ImageUrlGenerator, documentationVersion, page.Language, tag, key);
 
                 var content = File.ReadAllText(file.FullName);
 
@@ -98,7 +98,7 @@
 
                 var htmlDocument = HtmlHelper.ParseHtml(content);
 
-                ProcessNonMarkdownImages(file, documentationVersion, htmlDocument, images, key);
+                ProcessNonMarkdownImages(file, documentationVersion, page.Language, htmlDocument, images, key);
 
                 var title = ExtractTitle(page, htmlDocument);
                 var textContent = ExtractTextContent(htmlDocument, out var relatedArticlesContent);
@@ -135,7 +135,7 @@
             }
         }
 
-        private void ProcessNonMarkdownImages(FileInfo file, string documentationVersion, HtmlDocument htmlDocument,
+        private void ProcessNonMarkdownImages(FileInfo file, string documentationVersion, Language lang, HtmlDocument htmlDocument,
             HashSet<DocumentationImage> images, string key)
         {
             var nonMarkdownImages = htmlDocument.DocumentNode.SelectNodes("//img[starts-with(@src, 'images/')]");
@@ -146,12 +146,12 @@
 
             foreach (var node in nonMarkdownImages)
             {
-                AddNonMarkdownImage(images, file.DirectoryName, Options.ImageUrlGenerator, documentationVersion, node, key);
+                AddNonMarkdownImage(images, file.DirectoryName, Options.ImageUrlGenerator, documentationVersion, lang, node, key);
             }
         }
 
         private static bool AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory,
-            ParserOptions.GenerateImageUrl generateImageUrl, string documentationVersion, HtmlNode node, string key)
+            ParserOptions.GenerateImageUrl generateImageUrl, string documentationVersion, Language lang, HtmlNode node, string key)
         {
             if (node.Attributes.Contains("src"))
             {
@@ -163,7 +163,7 @@
                     src = src.Substring(7);
 
                 var fileName = Path.GetFileName(src);
-                var imageUrl = generateImageUrl(documentationVersion, key, fileName);
+                var imageUrl = generateImageUrl(documentationVersion, lang, key, fileName);
 
                 node.SetAttributeValue("src", imageUrl);
 
@@ -178,7 +178,7 @@
         }
 
         private static bool PrepareImage(ICollection<DocumentationImage> images, string directory,
-            ParserOptions.GenerateImageUrl generateImageUrl, string documentationVersion, HtmlTag tag, string key)
+            ParserOptions.GenerateImageUrl generateImageUrl, string documentationVersion, Language lang, HtmlTag tag, string key)
         {
             string src;
             if (tag.attributes.TryGetValue("src", out src))
@@ -193,7 +193,7 @@
                     src = src.Substring(7);
 
                 var fileName = Path.GetFileName(src);
-                var imageUrl = generateImageUrl(documentationVersion, key, fileName);
+                var imageUrl = generateImageUrl(documentationVersion, lang, key, fileName);
 
                 tag.attributes["src"] = imageUrl;
 
