@@ -61,7 +61,7 @@ namespace Raven.Documentation.Parser
 
         public string RootUrl { get; set; }
 
-        public delegate string GenerateImageUrl(string documentationVersion, string key, string fileName);
+        public delegate string GenerateImageUrl(string documentationVersion, Language lang, string key, string fileName);
 
         public GenerateImageUrl ImageUrlGenerator { get; set; }
 
