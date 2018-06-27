@@ -11,7 +11,7 @@ RavenDB supports the process of access audits at the level of database connectio
 Access the settings.json file and set the following configuration values: 
 
 * Security.AuditLog.FolderPath 
-* Security.AuditLog.RetentionTimeInHours (optional, default is one year)
+* Security.AuditLog.RetentionTimeInHrs (optional, default is one year)
 
 ## What is being logged
 
@@ -44,4 +44,5 @@ you can use a proxy in front of RavenDB that will log the appropriate requests a
 
 - [Overview](../../../server/security/authorization/security-clearance-and-permissions)
 - [Authorization](../authorization/security-clearance-and-permissions)
+- [Security Configuration](../../configuration/security-configuration)
 - [Common Errors and FAQ](../../../server/security/common-errors-and-faq)
