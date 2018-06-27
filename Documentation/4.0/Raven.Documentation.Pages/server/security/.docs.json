@@ -20,6 +20,11 @@
         "Mappings": []
     },
     {
+        "Path": "/audit-log",
+        "Name": "Audit Log",
+        "Mappings": []
+    },
+    {
         "Path": "common-errors-and-faq.markdown",
         "Name": "Common Errors & FAQ",
         "Mappings": []
