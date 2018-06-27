@@ -147,7 +147,7 @@ The path to a folder where RavenDB will store the access audit logs.
 
 {PANEL/}
 
-{PANEL:Security.AuditLog.RetentionTimeInHrs}
+{PANEL:Security.AuditLog.RetentionTimeInHours}
 
 How far back we should retain audit log entries.
 

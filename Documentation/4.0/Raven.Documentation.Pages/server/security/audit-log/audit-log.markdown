@@ -11,7 +11,7 @@ RavenDB supports the process of access audits at the level of database connectio
 Access the settings.json file and set the following configuration values: 
 
 * Security.AuditLog.FolderPath 
-* Security.AuditLog.RetentionTimeInHrs (optional, default is one year)
+* Security.AuditLog.RetentionTimeInHours (optional, default is one year)
 
 ## What is being logged
 
