@@ -111,7 +111,7 @@ If authentication is disabled, set address range type for which server access is
 
 - **Type**: `flags`
 - **Default**: `Local`
-- **Scope**: Server-wide or only
+- **Scope**: Server-wide only
 
 {PANEL/}
 
@@ -124,5 +124,46 @@ Whether RavenDB will consider memory lock error to be catastrophic. This is used
 - **Scope**: Server-wide or per database
 
 {WARNING Use with caution. /}
+
+{PANEL/}
+
+{PANEL:Security.DisableHttpsRedirection}
+
+Disable automatic redirection when listening to HTTPS. By default, when using port 443, RavenDB redirects all incoming HTTP traffic on port 80 to HTTPS on port 443.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Security.AuditLog.FolderPath}
+
+The path to a folder where RavenDB will store the access audit logs.
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Security.AuditLog.RetentionTimeInHrs}
+
+How far back we should retain audit log entries.
+
+- **Type**: `int`
+- **Default**: `365 * 24`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Security.WellKnownCertificates.Admin}
+
+Allow to specify well known certificate thumbprints that will be trusted by the server as cluster admins.
+
+- **Type**: `strings seperated by ;`
+- **Example**: `297430d6d2ce259772e4eccf97863a4dfe6b048c;e6a3b45b062d509b3382282d196efe97d5956ccb`
+- **Default**: `null`
+- **Scope**: Server-wide only
 
 {PANEL/}
