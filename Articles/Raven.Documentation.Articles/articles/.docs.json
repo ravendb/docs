@@ -31,7 +31,7 @@
             "og:title": "RavenDB or Elastic: The best database for you? | RavenDB",
             "og:description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
             "og:url": "https://ravendb.net/articles/choosing-the-best-nosql-database",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/beach_crossroads.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/choosing-the-best-nosql-database&fileName=beach_crossroads.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -39,7 +39,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "RavenDB or Elastic: The best database for you? | RavenDB",
             "twitter:description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/beach_crossroads.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/choosing-the-best-nosql-database&fileName=beach_crossroads.jpg",
             "twitter:url": "https://ravendb.net/articles/choosing-the-best-nosql-database"
         }
     },
@@ -60,7 +60,7 @@
             "og:title": "Holding Off Harvey with High Availability | RavenDB",
             "og:description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
             "og:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/holding-off-harvey-with-high-availability&fileName=world-map-connections.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -68,7 +68,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Holding Off Harvey with High Availability",
             "twitter:description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/world-map-connections.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/holding-off-harvey-with-high-availability&fileName=world-map-connections.jpg",
             "twitter:url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability"
         }
     },
@@ -89,7 +89,7 @@
             "og:title": "Why are so Many NoSQL Databases Getting Hacked? | RavenDB",
             "og:description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
             "og:url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/broken_db.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/why-are-so-many-nosql-databases-getting-hacked&fileName=broken_db.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -97,7 +97,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Why are so Many NoSQL Databases Getting Hacked?",
             "twitter:description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/broken_db.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/why-are-so-many-nosql-databases-getting-hacked&fileName=broken_db.jpg",
             "twitter:url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked"
         }
     },
@@ -118,7 +118,7 @@
             "og:title": "RavenDB Presents the Three Ps of Database High Availability | RavenDB",
             "og:description": "How RavenDB Proliferates, Preserves, and Perpetuates your Data. To maintain high-availability for your database, we set up multiple lines of defense.",
             "og:url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-presents-the-three-ps-of-database-high-availability&fileName=ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -126,7 +126,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "RavenDB Presents the Three Ps of Database High Availability",
             "twitter:description": "How RavenDB Proliferates, Preserves, and Perpetuates your Data. To maintain high-availability for your database, we set up multiple lines of defense.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-presents-the-three-ps-of-database-high-availability&fileName=ravendb-presents-the-three-ps-of-database-high-availability-main.jpg",
             "twitter:url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability"
         }
     },
@@ -147,7 +147,7 @@
             "og:title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
             "og:description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
             "og:url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-on-black-friday-ravendb-document-database.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-on-black-friday-ravendb-document-database&fileName=nosql-database-on-black-friday-ravendb-document-database.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -155,7 +155,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
             "twitter:description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-on-black-friday-ravendb-document-database.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-on-black-friday-ravendb-document-database&fileName=nosql-database-on-black-friday-ravendb-document-database.jpg",
             "twitter:url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database"
         }
     },
@@ -176,7 +176,7 @@
             "og:title": "Enjoy Our Full Support | RavenDB",
             "og:description": "Our NoSQL database was developed to provide you with a lot of built in fixes so can you spend less time on the phone with us, and more time completing your app.",
             "og:url": "https://ravendb.net/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb&fileName=nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -184,7 +184,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Enjoy Our Full Support | RavenDB",
             "twitter:description": "Our NoSQL database was developed to provide you with a lot of built in fixes so can you spend less time on the phone with us, and more time completing your app.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb&fileName=nosql-database-acid-non-relational-enjoy-full-support-ravendb.jpg",
             "twitter:url": "https://ravendb.net/articles/nosql-database-acid-non-relational-enjoy-full-support-ravendb"
         }
     },
@@ -205,7 +205,7 @@
             "og:title": "3 Hidden Challenges for Your Database on Black Friday | RavenDB",
             "og:description": "From Black Friday through New Year’s, a NoSQL database that scales up quickly is like opening up extra cash registers to serve a growing line.",
             "og:url": "https://ravendb.net/articles/black-friday-cyber-monday-nosql-database-ravendb",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/black-friday-cyber-monday-nosql-database-ravendb.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/black-friday-cyber-monday-nosql-database-ravendb&fileName=black-friday-cyber-monday-nosql-database-ravendb.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -213,7 +213,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "3 Hidden Challenges for Your Database on Black Friday | RavenDB",
             "twitter:description": "From Black Friday through New Year’s, a NoSQL database that scales up quickly is like opening up extra cash registers to serve a growing line.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/black-friday-cyber-monday-nosql-database-ravendb.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/black-friday-cyber-monday-nosql-database-ravendb&fileName=black-friday-cyber-monday-nosql-database-ravendb.jpg",
             "twitter:url": "https://ravendb.net/articles/black-friday-cyber-monday-nosql-database-ravendb"
         }
     },
@@ -234,7 +234,7 @@
             "og:title": "How A NoSQL MapReduce Can Boost Your Database Performance | RavenDB",
             "og:description": "MapReduce Aggregation is great for your business, but it costs precious time and server resources. A NoSQL database like RavenDB can do it for free.",
             "og:url": "https://ravendb.net/articles/how-nosql-mapreduce-can-boost-your-database-performance",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/how-nosql-mapreduce-can-boost-your-database-performance.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-nosql-mapreduce-can-boost-your-database-performance&fileName=how-nosql-mapreduce-can-boost-your-database-performance.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -242,7 +242,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "How A NoSQL MapReduce Can Boost Your Database Performance | RavenDB",
             "twitter:description": "MapReduce Aggregation is great for your business, but it costs precious time and server resources. A NoSQL database like RavenDB can do it for free.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/how-nosql-mapreduce-can-boost-your-database-performance.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/how-nosql-mapreduce-can-boost-your-database-performance&fileName=how-nosql-mapreduce-can-boost-your-database-performance.jpg",
             "twitter:url": "https://ravendb.net/articles/how-nosql-mapreduce-can-boost-your-database-performance"
         }
     },
@@ -263,7 +263,7 @@
             "og:title": "Why a NoSQL Database is the Best Solution for a Startup | RavenDB",
             "og:description": "Choosing the right NoSql database can feel like adding another member to your development team. It’s great for ROI, brand reputation, and reducing cash burn.",
             "og:url": "https://ravendb.net/articles/ravendb-best-nosql-database-example-for-startups",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-best-nosql-database-example-for-startups.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-best-nosql-database-example-for-startups&fileName=ravendb-best-nosql-database-example-for-startups.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -271,7 +271,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Why a NoSQL Database is the Best Solution for a Startup | RavenDB",
             "twitter:description": "Choosing the right NoSql database can feel like adding another member to your development team. It’s great for ROI, brand reputation, and reducing cash burn.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb-best-nosql-database-example-for-startups.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-best-nosql-database-example-for-startups&fileName=ravendb-best-nosql-database-example-for-startups.jpg",
             "twitter:url": "https://ravendb.net/articles/ravendb-best-nosql-database-example-for-startups"
         }
     },
@@ -292,7 +292,7 @@
             "og:title": "Making &quot;How to set up a Database&quot; Really Easy | RavenDB",
             "og:description": "Perform a simple NoSql Database download. Includes easy install, raven security encryption, and setup. How to set up a database is easy with our setup wizard.",
             "og:url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/making-how-to-set-up-a-database-easy-for-nosql-document-database&fileName=making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -300,7 +300,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Making &quot;How to set up a Database&quot; Really Easy | RavenDB",
             "twitter:description": "Perform a simple NoSql Database download. Includes easy install, raven security encryption, and setup. How to set up a database is easy with our setup wizard.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/making-how-to-set-up-a-database-easy-for-nosql-document-database&fileName=making-how-to-set-up-a-database-easy-for-nosql-document-database.jpg",
             "twitter:url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database"
         }
     },
@@ -321,7 +321,7 @@
             "og:title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
             "og:description": "",
             "og:url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb40-passes-intense-security-check.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb40-passes-intense-security-check&fileName=ravendb40-passes-intense-security-check.png",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -329,7 +329,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
             "twitter:description": "",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/ravendb40-passes-intense-security-check.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb40-passes-intense-security-check&fileName=ravendb40-passes-intense-security-check.png",
             "twitter:url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check"
         }
     },
@@ -350,7 +350,7 @@
             "og:title": "7 Ways The Right Database Pays for Itself | RavenDB",
             "og:description": "With the right database you don’t pay to play – we pay you! Discover the 7 features a database must have to generate a positive ROI for your investment in it.",
             "og:url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/cost-benefits-ravendb-nosql-acid-database.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/cost-benefits-ravendb-nosql-acid-database&fileName=cost-benefits-ravendb-nosql-acid-database.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -358,7 +358,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "7 Ways The Right Database Pays for Itself | RavenDB",
             "twitter:description": "With the right database you don’t pay to play – we pay you! Discover the 7 features a database must have to generate a positive ROI for your investment in it.",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/cost-benefits-ravendb-nosql-acid-database.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/cost-benefits-ravendb-nosql-acid-database&fileName=cost-benefits-ravendb-nosql-acid-database.jpg",
             "twitter:url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database"
         }
     },
@@ -379,7 +379,7 @@
             "og:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
             "og:description": "",
             "og:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast&fileName=nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -387,7 +387,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
             "twitter:description": "",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast&fileName=nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
             "twitter:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast"
         }
     },
@@ -408,7 +408,7 @@
             "og:title": "Security Vulnerability Advisory for RavenDB 4.0 | RavenDB",
             "og:description": "During routine internal security testing, a remotely exploitable issue was discovered. This issue has been addressed and is available in release: 4.0.5",
             "og:url": "https://ravendb.net/articles/security-vulnerability-advisory-for-ravendb-2018-06-12",
-            "og:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/security-vulnerability-advisory-for-ravendb-2018-06-12/security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/security-vulnerability-advisory-for-ravendb-2018-06-12&fileName=security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
             "og:image:width": "280",
             "og:image:height": "280",
             "twitter:card": "summary_large_image",
@@ -416,7 +416,7 @@
             "twitter:site": "@RavenDB",
             "twitter:title": "Security Vulnerability Advisory for RavenDB 4.0 | RavenDB",
             "twitter:description": "During routine internal security testing, a remotely exploitable issue was discovered. This issue has been addressed and is available in release: 4.0.5",
-            "twitter:image": "https://ravendb.net/RavenFS/GetImage?filePath=/docs/articles/articles/security-vulnerability-advisory-for-ravendb-2018-06-12/security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
+            "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/security-vulnerability-advisory-for-ravendb-2018-06-12&fileName=security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
             "twitter:url": "https://ravendb.net/articles/security-vulnerability-advisory-for-ravendb-2018-06-12"
         }
     }
