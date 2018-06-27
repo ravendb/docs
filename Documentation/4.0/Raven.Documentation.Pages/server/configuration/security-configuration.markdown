@@ -147,7 +147,7 @@ The path to a folder where RavenDB will store the access audit logs.
 
 {PANEL/}
 
-{PANEL:Security.AuditLog.RetentionTimeInHours}
+{PANEL:Security.AuditLog.RetentionTimeInHrs}
 
 How far back we should retain audit log entries.
 
@@ -161,7 +161,8 @@ How far back we should retain audit log entries.
 
 Allow to specify well known certificate thumbprints that will be trusted by the server as cluster admins.
 
-- **Type**: `string[]`
+- **Type**: `strings seperated by ;`
+- **Example**: `297430d6d2ce259772e4eccf97863a4dfe6b048c;e6a3b45b062d509b3382282d196efe97d5956ccb`
 - **Default**: `null`
 - **Scope**: Server-wide only
 
