@@ -560,7 +560,7 @@ namespace Raven.Documentation.Web.Controllers
             IDocumentStore documentStore, ArticleType articleType = ArticleType.Documentation)
         {
             var url = GetImagesUrl(httpContext, documentStore, articleType);
-            return (docVersion, key, fileName) => $"{url}?v={docVersion}&key={key}&fileName={fileName}";
+            return (docVersion, lang, key, fileName) => $"{url}?v={docVersion}&lang={lang}&key={key}&fileName={fileName}";
         }
 
         public static string GetImagesUrl(HttpContextBase httpContext, IDocumentStore store, ArticleType articleType)

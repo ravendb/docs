@@ -14,11 +14,11 @@ namespace Raven.Documentation.Web.Controllers
         {
         }
 
-        public virtual ActionResult Get(string v, string key, string fileName)
+        public virtual ActionResult Get(string v, string lang, string key, string fileName)
         {
             var documentId = v == "articles"
                 ? GetArticlePageId(key)
-                : GetDocumentationPageId(v, key);
+                : GetDocumentationPageId(v, lang, key);
 
             if (documentId == null)
                 return HttpNotFound();
@@ -38,10 +38,10 @@ namespace Raven.Documentation.Web.Controllers
             return articlePage?.Id;
         }
 
-        private string GetDocumentationPageId(string version, string key)
+        private string GetDocumentationPageId(string version, string lang, string key)
         {
             var documentationPage = DocumentSession.Query<DocumentationPage>()
-                .SingleOrDefault(x => x.Version == version && x.Key == key);
+                .SingleOrDefault(x => x.Version == version && x.Language.ToString() == lang && x.Key == key);
 
             return documentationPage?.Id;
         }

@@ -95,6 +95,7 @@ namespace Raven.Documentation.Web.Controllers
         public class ActionParamsClass_Get
         {
             public readonly string v = "v";
+            public readonly string lang = "lang";
             public readonly string key = "key";
             public readonly string fileName = "fileName";
         }
@@ -118,16 +119,17 @@ namespace Raven.Documentation.Web.Controllers
         public T4MVC_AttachmentsController() : base(Dummy.Instance) { }
 
         [NonAction]
-        partial void GetOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string v, string key, string fileName);
+        partial void GetOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string v, string lang, string key, string fileName);
 
         [NonAction]
-        public override System.Web.Mvc.ActionResult Get(string v, string key, string fileName)
+        public override System.Web.Mvc.ActionResult Get(string v, string lang, string key, string fileName)
         {
             var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Get);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "v", v);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "lang", lang);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "fileName", fileName);
-            GetOverride(callInfo, v, key, fileName);
+            GetOverride(callInfo, v, lang, key, fileName);
             return callInfo;
         }
 
