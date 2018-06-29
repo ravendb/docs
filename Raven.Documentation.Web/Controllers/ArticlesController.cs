@@ -4,7 +4,6 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Mvc;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
@@ -53,10 +52,8 @@ namespace Raven.Documentation.Web.Controllers
                     {
                         PathToDocumentationDirectory = GetArticleDirectory(),
                         RootUrl = string.Format("{0}://{1}{2}", Request.Url.Scheme, Request.Url.Authority, Url.Content("~")),
-                        ImagesUrl = DocsController.GetImagesUrl(HttpContext, DocumentStore, ArticleType.Articles)
+                        ImageUrlGenerator = DocsController.GetImageUrlGenerator(HttpContext, DocumentStore, ArticleType.Articles)
                     }, new NoOpGitFileInformationProvider());
-
-            DocumentSession.Delete(AttachmentsController.AttachmentsForArticlesPrefix);
 
             var query = DocumentSession
                 .Advanced
@@ -71,12 +68,9 @@ namespace Raven.Documentation.Web.Controllers
             DocumentSession.SaveChanges();
 
             var toDispose = new List<IDisposable>();
-            var attachments = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             try
             {
-                DocumentSession.Store(new Attachment(), AttachmentsController.AttachmentsForArticlesPrefix);
-
                 foreach (var page in parser.Parse())
                 {
                     DocumentSession.Store(page);
@@ -90,8 +84,10 @@ namespace Raven.Documentation.Web.Controllers
                         var file = fileInfo.OpenRead();
                         toDispose.Add(file);
 
-                        if (attachments.Add(image.ImageKey))
-                            DocumentSession.Advanced.Attachments.Store(AttachmentsController.AttachmentsForArticlesPrefix, image.ImageKey, file, AttachmentsController.FileExtensionToContentTypeMapping[fileInfo.Extension]);
+                        var documentId = page.Id;
+                        var fileName = Path.GetFileName(image.ImagePath);
+
+                        DocumentSession.Advanced.Attachments.Store(documentId, fileName, file, AttachmentsController.FileExtensionToContentTypeMapping[fileInfo.Extension]);
                     }
                 }
 
