@@ -1,6 +1,6 @@
 # Encryption : Database Encryption
 
-In RavenDB, you can create encrypted databases. Each encrypted database will have its own secret key which is used to encrypt and decrypt data.
+In RavenDB you can create encrypted databases. Each encrypted database will have its own secret key which is used to encrypt and decrypt data.
 
 ## Creating An Encrypted Database Using The Studio
 
@@ -18,11 +18,11 @@ Download, print, or copy and save the secret key in a safe place. It will NOT be
 Before creating the database, a secret key must be generated. Generating and storing secret keys is restricted to `Operator` or `ClusterAdmin` Security Clearances.
 RavenDB uses a [cryptographically secure pseudo-random number generator](https://en.wikipedia.org/wiki/Cryptographically_secure_pseudorandom_number_generator) and it is recommended that you use it. If you must use your own secret key, please make sure it is 256 bits long and cryptographically secure.
 
-You must use a client certificate to make the request, because the server is using authentication.
+You must use a client certificate to make the request because the server is using authentication.
 
 ## Windows Example
 
-Load the client certificate in Powershell:
+Load the client certificate in PowerShell:
 {CODE-BLOCK:powershell}
 $cert = Get-PfxCertificate -FilePath C:\secrets\admin.client.certificate.example.pfx
 {CODE-BLOCK/}
@@ -37,7 +37,7 @@ Ask RavenDB to generate a key for you:
 $response = Invoke-WebRequest https://your-server-url/admin/secrets/generate -Certificate $cert
 {CODE-BLOCK/}
 
-Then, send the key to the RavenDB server on which the database will be created. Note that the database doesn't exist yet, but you will still need to supply its name. Make the following POST request to assign the secret key to a specific database:
+Then send the key to the RavenDB server on which the database will be created. Note that the database doesn't exist yet, but you will still need to supply its name. Make the following POST request to assign the secret key to a specific database:
 {CODE-BLOCK:powershell}
 $payload = [System.Text.Encoding]::ASCII.GetString($response.Content) 
 Invoke-WebRequest https://your-server-url/admin/secrets?name=MyEncryptedDatabase -Certificate $cert -Method POST -Body $payload
@@ -63,7 +63,7 @@ Ask RavenDB to generate a key for you:
 key=$(curl --cert clientCert.pem  https://your-server-url/admin/secrets/generate)
 {CODE-BLOCK/}
 
-Then, send the key to the RavenDB server on which the database will be created. Note that the database doesn't exist yet, but you will still need to supply its name. Make the following POST request to assign the secret key to a specific database:
+Then send the key to the RavenDB server on which the database will be created. Note that the database doesn't exist yet, but you will still need to supply its name. Make the following POST request to assign the secret key to a specific database:
 {CODE-BLOCK:plain}
 curl -X POST -H "Content-Type: text/plain" --data $key --cert clientCert.pem https://your-server-url/admin/secrets?name=MyEncryptedDatabase
 {CODE-BLOCK/}

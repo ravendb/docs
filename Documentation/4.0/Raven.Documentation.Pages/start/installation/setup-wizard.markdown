@@ -322,7 +322,7 @@ Once all the servers are up and running, building the cluster is simple. Access 
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 ### Installation
 
