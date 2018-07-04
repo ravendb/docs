@@ -10,15 +10,15 @@ explanation about the RavenDB setup process.
 
 ## Create the VM
 
-Access the EC2 Dashboard,  and click on Launch Instance.
+Access the EC2 Dashboard and click on Launch Instance.
 
 ![1](images/aws-linux/1.png)
 
-Select your operating system. In our example we choose "Ubuntu Server 16.04 LTS (HVM), SSD Volume Type".
+Select your operating system. In our example we chose "Ubuntu Server 16.04 LTS (HVM), SSD Volume Type".
 
 ![2](images/aws-linux/2.png)
 
-Select the machine type. We choose the t2.micro with 1 core and 1 GB of memory.
+Select the machine type. We chose the t2.micro with 1 core and 1 GB of memory.
 
 ![3](images/aws-linux/3.png)
 
@@ -26,7 +26,7 @@ We stick with the basic default settings of the machine and configure just the m
 You would probably want to go over the entire set of options and customize your VM. 
 
 {WARNING:Security Concerns}
-The following settings are fine if you just want to experiment with RavenDB, however when security is needed you should set 
+The following settings are fine if you just want to experiment with RavenDB. However, when security is needed you should set 
 proper firewall rules and restrict access by IP. Please visit the [AWS security documentation](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/EC2_Network_and_Security.html)
 for more information about securing your VM.
 {WARNING/}
@@ -73,7 +73,7 @@ Download RavenDB's latest stable using the following command:
 wget -O ravendb.tar.bz2 https://hibernatingrhinos.com/downloads/RavenDB%20for%20Linux%20x64/latest
 {CODE-BLOCK/}
 
-If you wish to use another RavenDB version, download it to your local machine and trasfer the tar.bz2 file to the new VM using SCP. The following example shows how to transfer the file from the local machine to the /home/ubuntu directory in the VM.
+If you wish to use another RavenDB version, download it to your local machine and transfer the tar.bz2 file to the new VM using SCP. The following example shows how to transfer the file from the local machine to the /home/ubuntu directory in the VM.
 
 {CODE-BLOCK:bash}
 scp -i "RavenDBUbuntuVMKeyPair.pem" /local/download/location/RavenDB-4.0.3-nightly-20180414-0400-linux-x64.tar.bz2 ubuntu@ec2-35-160-249-162.us-west-2.compute.amazonaws.com:/home/ubuntu
@@ -168,11 +168,11 @@ Restart the server.
 
 ## Access the Studio
 
-If everything went well, you should be redirected to the studio and Chrome should let you choose the client certificate to use (the one which was just created).
+If everything went well you should be redirected to the studio and Chrome should let you choose the client certificate to use (the one which was just created).
 
-Some environments don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the Studio, and you get an authentication error, please **close all instances of the browser** and install the admin client certificate manually. 
+Some environments don't allow to set the client certificate automatically in the setup wizard so if you are not redirected to the Studio and you get an authentication error, please **close all instances of the browser** and install the admin client certificate manually. 
 
-Now you can access the Studio, open the browser and enter your new domain (e.g. https://a.aws.development.run).
+Now you can access the Studio. Open the browser and enter your new domain (e.g. https://a.aws.development.run).
 
 Chrome will let you select the certificate. 
 
@@ -183,11 +183,11 @@ Access the certificate view to see both the loaded server certificate and the ad
 
 ![18](images/aws-linux/18.png)
 
-Congratulations, you have a secure RavenDB server running on a simple EC2 machine. Have fun with it!
+Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
 
 Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 
-## Related articles
+## Related Articles
 
 ### Getting Started
 
