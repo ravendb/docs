@@ -70,5 +70,10 @@
         "Path": "/configuration",
         "Name": "Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "/logs",
+        "Name": "Logs",
+        "Mappings": []
     }
 ]

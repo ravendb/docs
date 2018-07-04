@@ -1,0 +1,12 @@
+﻿[
+    {
+        "Path": "get-logs-configuration.markdown",
+        "Name": "Get Logs Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "set-logs-configuration.markdown",
+        "Name": "Set Logs Configuration",
+        "Mappings": []
+    }
+]
