@@ -25,3 +25,13 @@ Level of logs that should be written to the log files. The available options are
 - **Scope**: Server-wide only
 
 {PANEL/}
+
+{PANEL:Logs.UseUtcTime}
+
+Indicates if logs should be written with UTC or server-local time.
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+{PANEL/}
