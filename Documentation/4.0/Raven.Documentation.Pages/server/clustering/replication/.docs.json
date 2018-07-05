@@ -1,36 +1,52 @@
-﻿[ 
-    {
-        "Path": "replication.markdown",
-        "Name": "How Replication Works",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/scaling-out/replication/how-replication-works"
-            },
-            {
-                "Version": 1.0,
-                "Key": "server/scaling-out/replication"
-            }
-        ]
-    },
-    {
-        "Path": "replication-conflicts.markdown",
-        "Name": "Replication Conflicts",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/scaling-out/replication/replication-conflicts"
-            }
-        ]
-    },
-    {
-        "Path": "change-vector.markdown",
-        "Name": "Change Vector",
-        "Mappings": []
-    },
-    {
-        "Path" : "advanced-replication.markdown",
-        "Name" : "Advanced Replication",
-        "Mappings" : []
-    }
+[
+  {
+    "Path": "replication.markdown",
+    "Name": "How Replication Works",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "server/scaling-out/replication/how-replication-works"
+      },
+      {
+        "Version": 1.0,
+        "Key": "server/scaling-out/replication"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "replication-conflicts.markdown",
+    "Name": "Replication Conflicts",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "server/scaling-out/replication/replication-conflicts"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "change-vector.markdown",
+    "Name": "Change Vector",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "advanced-replication.markdown",
+    "Name": "Advanced Replication",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

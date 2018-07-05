@@ -1,22 +1,26 @@
 [
-    {
-        "Path": "what-are-data-subscriptions.markdown",
-        "Name": "What are Data Subscriptions",
-        "Mappings": []
-    },
-    {
-        "Path": "/creation",
-        "Name": "Creation",
-        "Mappings": []
-    },
-    {
-        "Path": "/consumption",
-        "Name": "Consumption",
-        "Mappings": []
-    },
-    {
-        "Path": "/advanced-topics",
-        "Name": "Advanced topics",
-        "Mappings": []
-    }
+  {
+    "Path": "what-are-data-subscriptions.markdown",
+    "Name": "What are Data Subscriptions",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/creation",
+    "Name": "Creation",
+    "Mappings": []
+  },
+  {
+    "Path": "/consumption",
+    "Name": "Consumption",
+    "Mappings": []
+  },
+  {
+    "Path": "/advanced-topics",
+    "Name": "Advanced topics",
+    "Mappings": []
+  }
 ]

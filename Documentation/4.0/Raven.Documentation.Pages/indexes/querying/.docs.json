@@ -1,123 +1,182 @@
-﻿[
-    {
-        "Path": "what-is-rql.markdown",
-        "Name": "What is RQL",
-        "Mappings": []
-    },
-    {
-        "Path": "basics.markdown",
-        "Name": "Basics",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/querying/using-linq-to-query-ravendb"
-            }
-        ]
-    },
-    {
-        "Path": "filtering.markdown",
-        "Name": "Filtering",
-        "Mappings": []
-    },
-    {
-        "Path": "paging.markdown",
-        "Name": "Paging",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/querying/paging"
-            }
-        ]
-    },
-    {
-        "Path": "sorting.markdown",
-        "Name": "Sorting",
-        "Mappings": []
-    },
-    {
-        "Path": "boosting.markdown",
-        "Name": "Boosting",
-        "Mappings": []
-    },
-    {
-        "Path": "projections.markdown",
-        "Name": "Projections",
-        "Mappings": []
-    },
-    {
-        "Path": "distinct.markdown",
-        "Name": "Distinct",
-        "Mappings": []
-    },
-    {
-        "Path": "searching.markdown",
-        "Name": "Searching",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/static-indexes/searching"
-            }
-        ]
-    },
-    {
-        "Path": "intersection.markdown",
-        "Name": "Intersection",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/intersection"
-            }
-        ]
-    },
-    {
-        "Path": "suggestions.markdown",
-        "Name": "Suggestions",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/static-indexes/suggestions"
-            }
-        ]
-    },
-    {
-        "Path": "spatial.markdown",
-        "Name": "Spatial",
-        "Mappings": [
-            {
-                "Version": 2.0,
-                "Key": "client-api/querying/static-indexes/spatial-search"
-            }
-        ]
-    },
-    {
-        "Path": "faceted-search.markdown",
-        "Name": "Faceted search",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "client-api/faceted-search"
-            }
-        ]
-    },
-
-    {
-        "Path": "morelikethis.markdown",
-        "Name": "MoreLikeThis",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "server/bundles/more-like-this"
-            }
-        ]
-    },
-    {
-        "Path": "query-vs-document-query.markdown",
-        "Name": "Query vs DocumentQuery",
-        "Mappings": [
-            {
-                "Version": 2.5,
-                "Key": "client-api/querying/query-and-lucene-query"
-            }
-        ]
-    }
+[
+  {
+    "Path": "what-is-rql.markdown",
+    "Name": "What is RQL",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/using-linq-to-query-ravendb"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "filtering.markdown",
+    "Name": "Filtering",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "paging.markdown",
+    "Name": "Paging",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/paging"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "sorting.markdown",
+    "Name": "Sorting",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "boosting.markdown",
+    "Name": "Boosting",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "projections.markdown",
+    "Name": "Projections",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "distinct.markdown",
+    "Name": "Distinct",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "searching.markdown",
+    "Name": "Searching",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/searching"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "intersection.markdown",
+    "Name": "Intersection",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/intersection"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "suggestions.markdown",
+    "Name": "Suggestions",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/suggestions"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "spatial.markdown",
+    "Name": "Spatial",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/spatial-search"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "faceted-search.markdown",
+    "Name": "Faceted search",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/faceted-search"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "morelikethis.markdown",
+    "Name": "MoreLikeThis",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/more-like-this"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "query-vs-document-query.markdown",
+    "Name": "Query vs DocumentQuery",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/querying/query-and-lucene-query"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

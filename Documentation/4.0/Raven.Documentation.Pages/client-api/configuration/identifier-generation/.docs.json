@@ -3,20 +3,28 @@
     "Path": "global.markdown",
     "Name": "Global",
     "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/identifier-generation/global"
-            }
-        ]
+      {
+        "Version": "3.0",
+        "Key": "client-api/configuration/conventions/identifier-generation/global"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
   },
   {
     "Path": "type-specific.markdown",
     "Name": "Type-specific",
     "Mappings": [
-            {
-                "Version": "3.0",
-                "Key": "client-api/configuration/conventions/identifier-generation/type-specific"
-            }
-        ]
+      {
+        "Version": "3.0",
+        "Key": "client-api/configuration/conventions/identifier-generation/type-specific"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
   }
 ]

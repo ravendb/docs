@@ -1,32 +1,52 @@
-﻿[
-    {
-        "Path": "overview.markdown",
-        "Name": "Overview",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "server/bundles/unique-constraints"
-            }
-        ]
-    },
-    {
-        "Path": "put-compare-exchange-value.markdown",
-        "Name": "Put Compare Exchange Value",
-        "Mappings": []
-    },
-    {
-        "Path": "get-compare-exchange-value.markdown",
-        "Name": "Get Compare Exchange Value",
-        "Mappings": []
-    },
-    {
-        "Path": "get-compare-exchange-values.markdown",
-        "Name": "Get Compare Exchange Values",
-        "Mappings": []
-    },
-    {
-        "Path": "delete-compare-exchange-value.markdown",
-        "Name": "Delete Compare Exchange Value",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "server/bundles/unique-constraints"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "put-compare-exchange-value.markdown",
+    "Name": "Put Compare Exchange Value",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "get-compare-exchange-value.markdown",
+    "Name": "Get Compare Exchange Value",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "get-compare-exchange-values.markdown",
+    "Name": "Get Compare Exchange Values",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "delete-compare-exchange-value.markdown",
+    "Name": "Delete Compare Exchange Value",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

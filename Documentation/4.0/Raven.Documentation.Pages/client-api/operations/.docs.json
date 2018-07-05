@@ -1,47 +1,55 @@
-﻿[
-    {
-        "Path": "what-are-operations.markdown",
-        "Name": "What are Operations",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "/client-api/commands/what-are-commands"
-            }
-        ]
-    },
-    {
-        "Path": "delete-by-query.markdown",
-        "Name": "Delete By Query",
-        "Mappings": []
-    },
-    {
-        "Path": "/attachments",
-        "Name": "Attachments",
-        "Mappings": []
-    },
-    {
-        "Path": "/patching",
-        "Name": "Patching",
-        "Mappings": []
-    },
-    {
-        "Path": "/compare-exchange",
-        "Name": "Compare Exchange",
-        "Mappings": []
-    },
-    {
-        "Path": "/maintenance",
-        "Name": "Maintenance",
-        "Mappings": []
-    },
-    {
-        "Path": "/server-wide",
-        "Name": "Server-Wide",
-        "Mappings": []
-    },
-    {
-        "Path": "/how-to",
-        "Name": "How to...",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "what-are-operations.markdown",
+    "Name": "What are Operations",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "/client-api/commands/what-are-commands"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "delete-by-query.markdown",
+    "Name": "Delete By Query",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/attachments",
+    "Name": "Attachments",
+    "Mappings": []
+  },
+  {
+    "Path": "/patching",
+    "Name": "Patching",
+    "Mappings": []
+  },
+  {
+    "Path": "/compare-exchange",
+    "Name": "Compare Exchange",
+    "Mappings": []
+  },
+  {
+    "Path": "/maintenance",
+    "Name": "Maintenance",
+    "Mappings": []
+  },
+  {
+    "Path": "/server-wide",
+    "Name": "Server-Wide",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  }
 ]

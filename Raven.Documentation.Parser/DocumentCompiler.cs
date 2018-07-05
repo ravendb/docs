@@ -19,38 +19,30 @@
         {
         }
 
-        protected override DocumentationPage CreatePage(
-            string key,
-            string title,
-            string documentationVersion,
-            string htmlContent,
-            string textContent,
-            Language language,
-            Category category,
-            HashSet<DocumentationImage> images,
-            string lastCommitSha,
-            string relativePath,
-            List<DocumentationMapping> mappings,
-            string relatedArticlesContent,
-            Dictionary<string, string> metadata = null,
-            Dictionary<string, string> seoMetaProperties = null)
+        protected override DocumentationPage CreatePage(CreatePageParams parameters)
         {
+            var supportedVerions = parameters.SupportedVersions ?? new List<string>();
+
+            if (supportedVerions.Contains(parameters.DocumentationVersion) == false)
+                supportedVerions.Add(parameters.DocumentationVersion);
+
             return new DocumentationPage
             {
-                Key = key,
-                Title = title,
-                Version = documentationVersion,
-                HtmlContent = htmlContent,
-                TextContent = textContent,
-                Language = language,
-                Category = category,
-                Images = images,
-                LastCommitSha = lastCommitSha,
-                RelativePath = relativePath,
-                Mappings = mappings,
-                Metadata = metadata,
-                SeoMetaProperties = seoMetaProperties,
-                RelatedArticlesContent = relatedArticlesContent
+                Key = parameters.Key,
+                Title = parameters.Title,
+                Version = parameters.DocumentationVersion,
+                SupportedVersions = supportedVerions,
+                HtmlContent = parameters.HtmlContent,
+                TextContent = parameters.TextContent,
+                Language = parameters.Language,
+                Category = parameters.Category,
+                Images = parameters.Images,
+                LastCommitSha = parameters.LastCommitSha,
+                RelativePath = parameters.RelativePath,
+                Mappings = parameters.Mappings,
+                Metadata = parameters.Metadata,
+                SeoMetaProperties = parameters.SeoMetaProperties,
+                RelatedArticlesContent = parameters.RelatedArticlesContent
             };
         }
     }
@@ -70,15 +62,34 @@
             _repoAnalyzer = repoAnalyzer;
         }
 
-        protected abstract TPage CreatePage(string key, string title, string documentationVersion, string htmlContent,
-            string textContent, Language language, Category category, HashSet<DocumentationImage> images,
-            string lastCommitSha, string relativePath, List<DocumentationMapping> mappings,
-            string relatedArticlesContent,
-            Dictionary<string, string> metadata = null,
-            Dictionary<string, string> seoMetaProperties = null);
+        protected abstract TPage CreatePage(CreatePageParams parameters);
 
-        public TPage Compile(FileInfo file, FolderItem page, string documentationVersion, List<DocumentationMapping> mappings)
+        protected class CreatePageParams
         {
+            public string Key { get; set; }
+            public string Title { get; set; }
+            public string DocumentationVersion { get; set; }
+            public List<string> SupportedVersions { get; set; }
+            public string HtmlContent { get; set; }
+            public string TextContent { get; set; }
+            public Language Language { get; set; }
+            public Category Category { get; set; }
+            public HashSet<DocumentationImage> Images { get; set; }
+            public string LastCommitSha { get; set; }
+            public string RelativePath { get; set; }
+            public List<DocumentationMapping> Mappings { get; set; }
+            public string RelatedArticlesContent { get; set; }
+            public Dictionary<string, string> Metadata { get; set; }
+            public Dictionary<string, string> SeoMetaProperties { get; set; }
+        }
+
+        public TPage Compile(DocumentationCompilation.Parameters parameters, DocumentationCompilation.Context context)
+        {
+            var file = parameters.File;
+            var page = parameters.Page;
+            var documentationVersion = parameters.DocumentationVersion;
+            var mappings = parameters.Mappings;
+
             try
             {
                 var key = ExtractKey(file, page, documentationVersion);
@@ -113,21 +124,28 @@
 
                 var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-                return CreatePage(
-                    key,
-                    title,
-                    documentationVersion,
-                    htmlDocument.DocumentNode.OuterHtml,
-                    textContent,
-                    page.Language,
-                    category,
-                    images,
-                    lastCommit,
-                    relativeUrl,
-                    mappings.OrderBy(x => x.Version).ToList(),
-                    relatedArticlesContent,
-                    page.Metadata,
-                    page.SeoMetaProperties);
+                context.RegisterCompilation(key, page.Language, documentationVersion, page.SupportedVersions);
+
+                var createPageParams = new CreatePageParams
+                {
+                    Key = key,
+                    Title = title,
+                    DocumentationVersion = documentationVersion,
+                    SupportedVersions = page.SupportedVersions,
+                    HtmlContent = htmlDocument.DocumentNode.OuterHtml,
+                    TextContent = textContent,
+                    Language = page.Language,
+                    Category = category,
+                    Images = images,
+                    LastCommitSha = lastCommit,
+                    RelativePath = relativeUrl,
+                    Mappings = mappings.OrderBy(x => x.Version).ToList(),
+                    RelatedArticlesContent = relatedArticlesContent,
+                    Metadata = page.Metadata,
+                    SeoMetaProperties = page.SeoMetaProperties
+                };
+
+                return CreatePage(createPageParams);
             }
             catch (Exception e)
             {

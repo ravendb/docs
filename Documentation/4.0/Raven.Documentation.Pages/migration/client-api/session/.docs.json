@@ -1,17 +1,25 @@
-﻿[
-    {
-        "Path": "basics.markdown",
-        "Name": "Basics",
-        "Mappings": []
-    },
-    {
-        "Path": "advanced.markdown",
-        "Name": "Advanced",
-        "Mappings": []
-    },
-    {
-        "Path": "/querying",
-        "Name": "Querying",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "advanced.markdown",
+    "Name": "Advanced",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/querying",
+    "Name": "Querying",
+    "Mappings": []
+  }
 ]

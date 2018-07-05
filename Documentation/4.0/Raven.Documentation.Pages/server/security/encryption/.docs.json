@@ -1,22 +1,38 @@
 [
-    {
-        "Path": "encryption-at-rest.markdown",
-        "Name": "Encryption at Rest",
-        "Mappings": []
-    },
-    {
-        "Path": "database-encryption.markdown",
-        "Name": "Database Encryption",
-        "Mappings": []
-    },
-    {
-        "Path": "server-store-encryption.markdown",
-        "Name": "Server Store Encryption",
-        "Mappings": []
-    },
-    {
-        "Path": "secret-key-management.markdown",
-        "Name": "Secret Key Management",
-        "Mappings": []
-    }
+  {
+    "Path": "encryption-at-rest.markdown",
+    "Name": "Encryption at Rest",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "database-encryption.markdown",
+    "Name": "Database Encryption",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "server-store-encryption.markdown",
+    "Name": "Server Store Encryption",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "secret-key-management.markdown",
+    "Name": "Secret Key Management",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

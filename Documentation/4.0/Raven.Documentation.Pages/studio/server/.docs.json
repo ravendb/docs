@@ -1,22 +1,30 @@
-﻿[
-    {
-        "Path": "server-dashboard.markdown",
-        "Name": "Server Dashboard",
-        "Mappings": []
-    },
-    {
-        "Path": "client-configuration.markdown",
-        "Name": "Client Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "/databases",
-        "Name": "Databases",
-        "Mappings": []
-    },
-    {
-        "Path": "/cluster",
-        "Name": "Cluster",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "server-dashboard.markdown",
+    "Name": "Server Dashboard",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "client-configuration.markdown",
+    "Name": "Client Configuration",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/databases",
+    "Name": "Databases",
+    "Mappings": []
+  },
+  {
+    "Path": "/cluster",
+    "Name": "Cluster",
+    "Mappings": []
+  }
 ]

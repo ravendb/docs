@@ -1,24 +1,40 @@
-﻿[
-    {
-        "Path": "how-client-integrates-with-replication-and-cluster.markdown",
-        "Name": "How Client Integrates With Replication and Cluster",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
-            }
-        ]
-    },      
-    {
-        "Path": "document-conflicts-in-client-side.markdown",
-        "Name": "Document Conflict Exceptions at Client-Side"
-    },
-    {
-        "Path": "speed-test.markdown",
-        "Name": "Client Speed Test"
-    },
-    {
-        "Path": "health-check.markdown",
-        "Name": "Cluster Node Health Check"
-    }
+[
+  {
+    "Path": "how-client-integrates-with-replication-and-cluster.markdown",
+    "Name": "How Client Integrates With Replication and Cluster",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "document-conflicts-in-client-side.markdown",
+    "Name": "Document Conflict Exceptions at Client-Side",
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "speed-test.markdown",
+    "Name": "Client Speed Test",
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "health-check.markdown",
+    "Name": "Cluster Node Health Check",
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

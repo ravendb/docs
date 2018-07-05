@@ -1,7 +1,11 @@
 [
-    {
-        "Path": "switch-operations-to-a-different-database.markdown",
-        "Name": "...switch operations to a different database",
-        "Mappings": []
-    }
+  {
+    "Path": "switch-operations-to-a-different-database.markdown",
+    "Name": "...switch operations to a different database",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

@@ -22,16 +22,17 @@ namespace Raven.Documentation.Web.Indexes
             Map =
                 pages =>
                 from page in pages
+                from supportedVersion in page.SupportedVersions
                 select new
                 {
                     Key = page.Key,
                     Ids = new Dictionary<string, string>
                                     {
-                                        { page.Version + "/" + page.Language, page.Id }
+                                        { supportedVersion + "/" + page.Language, page.Id }
                                     },
                     Languages = new Dictionary<string, string[]>
                                     {
-                                        { page.Version, new [] { page.Language.ToString() } }
+                                        { supportedVersion, new [] { page.Language.ToString() } }
                                     }
                 };
 

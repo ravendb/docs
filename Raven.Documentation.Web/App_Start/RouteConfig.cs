@@ -10,6 +10,9 @@ namespace Raven.Documentation.Web
 {
     public class RouteConfig
     {
+        private const string RouteAvailableVersions = "1.0|2.0|2.5|3.0|3.5|4.0|4.1";
+        private const string RouteAvailableLanguages = "csharp|java|http|python";
+
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
@@ -27,8 +30,8 @@ namespace Raven.Documentation.Web
                 },
                 new
                 {
-                    version = "1.0|2.0|2.5|3.0|3.5|4.0",
-                    language = "csharp|java|http|python"
+                    version = RouteAvailableVersions,
+                    language = RouteAvailableLanguages
                 },
                 new[] { "Raven.Documentation.Web.Controllers" });
 
@@ -41,8 +44,8 @@ namespace Raven.Documentation.Web
                 },
                 new
                 {
-                    version = "1.0|2.0|2.5|3.0|3.5|4.0",
-                    language = "csharp|java|http|python"
+                    version = RouteAvailableVersions,
+                    language = RouteAvailableLanguages
                 },
                 new[] { "Raven.Documentation.Web.Controllers" });
 
@@ -58,8 +61,8 @@ namespace Raven.Documentation.Web
                 },
                 new
                 {
-                    version = "1.0|2.0|2.5|3.0|3.5|4.0",
-                    language = "csharp|java|http|python"
+                    version = RouteAvailableVersions,
+                    language = RouteAvailableLanguages
                 },
                 new[] { "Raven.Documentation.Web.Controllers" });
 
@@ -84,7 +87,7 @@ namespace Raven.Documentation.Web
                 },
                 new
                 {
-                    version = "1.0|2.0|2.5|3.0|3.5|4.0",
+                    version = RouteAvailableVersions,
                     language = "csharp|java|http"
                 },
                 new[] { "Raven.Documentation.Web.Controllers" });

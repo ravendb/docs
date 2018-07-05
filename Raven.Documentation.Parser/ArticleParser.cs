@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 using Raven.Documentation.Parser.Data;
@@ -20,7 +19,9 @@ namespace Raven.Documentation.Parser
         public override IEnumerable<ArticlePage> Parse()
         {
             var articleDirectory = new DirectoryInfo(Options.PathToDocumentationDirectory);
-            return _directoryCompiler.Compile(articleDirectory);
+            var compilationContext = new DocumentationCompilation.Context();
+
+            return _directoryCompiler.Compile(articleDirectory, compilationContext);
         }
 
         public override IEnumerable<TableOfContents> GenerateTableOfContents()

@@ -17,6 +17,7 @@ namespace Raven.Documentation.Parser.Data
             Description = item.Description;
             Language = item.Language;
             Mappings = item.Mappings;
+            SupportedVersions = item.SupportedVersions;
         }
 
         public bool IsFolder { get; private set; }
@@ -26,6 +27,8 @@ namespace Raven.Documentation.Parser.Data
         public string Description { get; set; }
 
         public Language Language { get; set; }
+
+        public List<string> SupportedVersions { get; set; }
 
         public Dictionary<string, string> Metadata { get; set; }
 

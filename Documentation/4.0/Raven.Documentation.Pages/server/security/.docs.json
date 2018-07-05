@@ -1,32 +1,40 @@
 [
-    {
-        "Path": "overview.markdown",
-        "Name": "Overview",
-        "Mappings": []
-    },
-    {
-        "Path": "/authentication",
-        "Name": "Authentication",
-        "Mappings": []
-    },
-    {
-        "Path": "/authorization",
-        "Name": "Authorization",
-        "Mappings": []
-    },
-    {
-        "Path": "/encryption",
-        "Name": "Encryption",
-        "Mappings": []
-    },
-    {
-        "Path": "/audit-log",
-        "Name": "Audit Log",
-        "Mappings": []
-    },
-    {
-        "Path": "common-errors-and-faq.markdown",
-        "Name": "Common Errors & FAQ",
-        "Mappings": []
-    }
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/authentication",
+    "Name": "Authentication",
+    "Mappings": []
+  },
+  {
+    "Path": "/authorization",
+    "Name": "Authorization",
+    "Mappings": []
+  },
+  {
+    "Path": "/encryption",
+    "Name": "Encryption",
+    "Mappings": []
+  },
+  {
+    "Path": "/audit-log",
+    "Name": "Audit Log",
+    "Mappings": []
+  },
+  {
+    "Path": "common-errors-and-faq.markdown",
+    "Name": "Common Errors & FAQ",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

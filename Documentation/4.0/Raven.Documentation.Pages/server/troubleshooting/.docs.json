@@ -1,17 +1,29 @@
-﻿[
-    {
-        "Path": "sending-support-ticket.markdown",
-        "Name": "Sending Support Ticket",
-        "Mappings": []
-    },
-    {
-        "Path": "logging.markdown",
-        "Name": "Logging",
-        "Mappings": []
-    },
-    {
-        "Path": "voron-recovery-tool.markdown",
-        "Name": "Voron Recovery Tool",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "sending-support-ticket.markdown",
+    "Name": "Sending Support Ticket",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "logging.markdown",
+    "Name": "Logging",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "voron-recovery-tool.markdown",
+    "Name": "Voron Recovery Tool",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

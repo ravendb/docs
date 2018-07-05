@@ -6,12 +6,15 @@ namespace Raven.Documentation.Parser.Data
     {
         public DocumentationFile()
         {
+            SupportedVersions = new List<string>();
             Mappings = new List<DocumentationMapping>();
         }
 
         public string Path { get; set; }
 
         public string Name { get; set; }
+
+        public List<string> SupportedVersions { get; set; }
 
         public Dictionary<string, string> Metadata { get; set; }
 

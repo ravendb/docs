@@ -1,12 +1,20 @@
 [
-    {
-        "Path": "what-are-revisions.markdown",
-        "Name": "What are Revisions",
-        "Mappings": []
-    },
-    {
-        "Path": "loading.markdown",
-        "Name": "Loading",
-        "Mappings": []
-    }
+  {
+    "Path": "what-are-revisions.markdown",
+    "Name": "What are Revisions",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "loading.markdown",
+    "Name": "Loading",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

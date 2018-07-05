@@ -1,79 +1,117 @@
-﻿[
-    {
-        "Path": "add-database-node.markdown",
-        "Name": "Add Database Node",
-        "Mappings": []
-    },
-    {
-        "Path": "compact-database.markdown",
-        "Name": "Compact Database",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/commands/admin/compaction"
-            }
-        ]
-    },
-    {
-        "Path": "create-database.markdown",
-        "Name": "Create Database",
-        "Mappings": []
-    },
-    {
-        "Path": "delete-database.markdown",
-        "Name": "Delete Databases",
-        "Mappings": []
-    },
-    {
-        "Path": "get-build-number.markdown",
-        "Name": "Get Build Number",
-        "Mappings": []
-    },
-
-    {
-        "Path": "get-database-names.markdown",
-        "Name": "Get Database Names",
-        "Mappings": [
-            {
-                "Version": 3.5,
-                "Key": "client-api/commands/how-to/get-names-of-all-databases-on-a-server"
-            }
-        ]
-    },
-    {
-        "Path": "modify-conflict-solver.markdown",
-        "Name": "Modify Conflict Solver",
-        "Mappings": []
-    },
-
-    {
-        "Path": "promote-database-node.markdown",
-        "Name": "Promote Database Node",
-        "Mappings": []
-    },
-    {
-        "Path": "restore-backup.markdown",
-        "Name": "Restore Backup",
-        "Mappings": []
-    },
-    {
-        "Path": "toggle-databases-state.markdown",
-        "Name": "Toggle Databases State",
-        "Mappings": []
-    },
-    {
-        "Path": "/certificates",
-        "Name": "Certificates",
-        "Mappings": []
-    },
-    {
-        "Path": "/configuration",
-        "Name": "Configuration",
-        "Mappings": []
-    },
-    {
-        "Path": "/logs",
-        "Name": "Logs",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "add-database-node.markdown",
+    "Name": "Add Database Node",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "compact-database.markdown",
+    "Name": "Compact Database",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "client-api/commands/admin/compaction"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "create-database.markdown",
+    "Name": "Create Database",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "delete-database.markdown",
+    "Name": "Delete Databases",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "get-build-number.markdown",
+    "Name": "Get Build Number",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "get-database-names.markdown",
+    "Name": "Get Database Names",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "client-api/commands/how-to/get-names-of-all-databases-on-a-server"
+      }
+    ],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "modify-conflict-solver.markdown",
+    "Name": "Modify Conflict Solver",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "promote-database-node.markdown",
+    "Name": "Promote Database Node",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "restore-backup.markdown",
+    "Name": "Restore Backup",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "toggle-databases-state.markdown",
+    "Name": "Toggle Databases State",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "/certificates",
+    "Name": "Certificates",
+    "Mappings": []
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+      "Path": "/logs",
+      "Name": "Logs",
+      "Mappings": []
+  }
 ]

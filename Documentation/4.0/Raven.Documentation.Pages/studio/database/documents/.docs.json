@@ -1,22 +1,38 @@
-﻿[
-    {
-        "Path": "documents-and-collections.markdown",
-        "Name": "Documents and Collections",
-        "Mappings": []
-    },
-    {
-        "Path": "create-new-document.markdown",
-        "Name": "Create New Document",
-        "Mappings": []
-    },   
-    {
-        "Path": "document-view.markdown",
-        "Name": "Document View",
-        "Mappings": []
-    },
-    {
-        "Path": "conflicts-view.markdown",
-        "Name": "Conflicts View",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "documents-and-collections.markdown",
+    "Name": "Documents and Collections",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "create-new-document.markdown",
+    "Name": "Create New Document",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "document-view.markdown",
+    "Name": "Document View",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "conflicts-view.markdown",
+    "Name": "Conflicts View",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]

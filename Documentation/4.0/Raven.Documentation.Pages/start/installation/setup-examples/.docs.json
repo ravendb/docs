@@ -1,17 +1,29 @@
-﻿[
-    {
-        "Path": "aws-windows-vm.markdown",
-        "Name": "AWS Windows VM",
-        "Mappings": []
-    },
-    {
-        "Path": "aws-linux-vm.markdown",
-        "Name": "AWS Linux VM",
-        "Mappings": []
-    },
-    {
-        "Path": "aws-docker-linux-vm.markdown",
-        "Name": "Docker on AWS EC2 Linux VM",
-        "Mappings": []
-    }
+[
+  {
+    "Path": "aws-windows-vm.markdown",
+    "Name": "AWS Windows VM",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "aws-linux-vm.markdown",
+    "Name": "AWS Linux VM",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  },
+  {
+    "Path": "aws-docker-linux-vm.markdown",
+    "Name": "Docker on AWS EC2 Linux VM",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
+  }
 ]
