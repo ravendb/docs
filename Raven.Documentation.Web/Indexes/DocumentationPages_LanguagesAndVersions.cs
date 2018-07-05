@@ -15,13 +15,13 @@ namespace Raven.Documentation.Web.Indexes
 
         public DocumentationPages_LanguagesAndVersions()
         {
-            Map =
-                pages =>
+            Map = pages =>
                 from page in pages
-                select new DocumentationLanguageAndVersion()
+                from supportedVersion in page.SupportedVersions
+                select new DocumentationLanguageAndVersion
                 {
                     Language = page.Language.ToString(),
-                    Version = page.Version
+                    Version = supportedVersion
                 };
 
             Store("Language", FieldStorage.Yes);
