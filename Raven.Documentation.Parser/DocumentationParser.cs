@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Raven.Documentation.Parser.Data;
@@ -19,23 +18,27 @@ namespace Raven.Documentation.Parser
             _tableOfContentsCompiler = new TableOfContentsCompiler(options);
         }
 
-        public override IEnumerable<DocumentationPage> Parse()
+        public override ParserOutput Parse()
         {
-            var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
-            var compilationContext = new DocumentationCompilation.Context();
+            var tableOfContents = GenerateTableOfContents().ToList();
+            var docs = GenerateDocumentationPages(tableOfContents);
 
-            return documentationDirectories
-                .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .Where(documentationDirectory => Options.VersionsToParse.Count == 0 || Options.VersionsToParse.Contains(documentationDirectory.Name))
-                .SelectMany(directoryInfo => _directoryCompiler.Compile(directoryInfo, compilationContext));
+            return new ParserOutput
+            {
+                TableOfContents = tableOfContents,
+                Pages = docs
+            };
         }
 
-        public override IEnumerable<TableOfContents> GenerateTableOfContents()
+        private IEnumerable<TableOfContents> GenerateTableOfContents()
         {
+            var compilationContext = new DocumentationCompilation.Context();
+
             var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
+
             var tableOfContents = documentationDirectories
                 .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .SelectMany(_tableOfContentsCompiler.GenerateTableOfContents)
+                .SelectMany(directory => _tableOfContentsCompiler.GenerateTableOfContents(directory, compilationContext))
                 .ToList();
 
             var duplicatedTocs = tableOfContents.GroupBy(x => new { x.Version, x.Category })
@@ -80,6 +83,32 @@ namespace Raven.Documentation.Parser
         {
             tableOfContents.RemoveAll(x => x.Version == mergedToc.Version && x.Category == mergedToc.Category);
             tableOfContents.Add(mergedToc);
+        }
+
+        private IEnumerable<DocumentationPage> GenerateDocumentationPages(IEnumerable<TableOfContents> tocs)
+        {
+            foreach (var indexPage in GenerateDocumentationPagesFromIndex())
+                yield return indexPage;
+
+            foreach (var pageFromToc in GenerateDocumentationPagesFromToc(tocs))
+                yield return pageFromToc;
+        }
+
+        private IEnumerable<DocumentationPage> GenerateDocumentationPagesFromIndex()
+        {
+            var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
+
+            return documentationDirectories
+                .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
+                .Where(documentationDirectory => Options.VersionsToParse.Count == 0 || Options.VersionsToParse.Contains(documentationDirectory.Name))
+                .SelectMany(_directoryCompiler.CompileIndexFiles);
+        }
+
+        private IEnumerable<DocumentationPage> GenerateDocumentationPagesFromToc(IEnumerable<TableOfContents> tocs)
+        {
+            return tocs
+                .Where(toc => Options.VersionsToParse.Count == 0 || Options.VersionsToParse.Contains(toc.Version))
+                .SelectMany(_directoryCompiler.Compile);
         }
     }
 }

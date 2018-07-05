@@ -68,10 +68,11 @@ namespace Raven.Documentation.Web.Controllers
             DocumentSession.SaveChanges();
 
             var toDispose = new List<IDisposable>();
+            var parserOutput = parser.Parse();
 
             try
             {
-                foreach (var page in parser.Parse())
+                foreach (var page in parserOutput.Pages)
                 {
                     DocumentSession.Store(page);
 
@@ -91,7 +92,7 @@ namespace Raven.Documentation.Web.Controllers
                     }
                 }
 
-                foreach (var toc in parser.GenerateTableOfContents())
+                foreach (var toc in parserOutput.TableOfContents)
                 {
                     DocumentSession.Store(toc);
                 }

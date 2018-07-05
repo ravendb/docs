@@ -12,6 +12,7 @@ namespace Raven.Documentation.Parser
             public FileInfo File { get; set; }
             public FolderItem Page { get; set; }
             public string DocumentationVersion { get; set; }
+            public string SourceDocumentationVersion { get; set; }
             public List<DocumentationMapping> Mappings { get; set; }
         }
 

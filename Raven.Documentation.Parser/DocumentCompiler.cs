@@ -83,11 +83,12 @@
             public Dictionary<string, string> SeoMetaProperties { get; set; }
         }
 
-        public TPage Compile(DocumentationCompilation.Parameters parameters, DocumentationCompilation.Context context)
+        public TPage Compile(DocumentationCompilation.Parameters parameters)
         {
             var file = parameters.File;
             var page = parameters.Page;
             var documentationVersion = parameters.DocumentationVersion;
+            var sourceDocumentationVersion = parameters.SourceDocumentationVersion;
             var mappings = parameters.Mappings;
 
             try
@@ -100,7 +101,7 @@
 
                 var content = File.ReadAllText(file.FullName);
 
-                var builder = new DocumentBuilder(_parser, Options, documentationVersion, content);
+                var builder = new DocumentBuilder(_parser, Options, sourceDocumentationVersion, content);
                 builder.TransformRawHtmlBlocks();
                 builder.TransformLegacyBlocks(file);
                 builder.TransformBlocks();
@@ -123,8 +124,6 @@
                 var relativeUrl = repoRelativePath.Replace(@"\", @"/");
 
                 var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
-
-                context.RegisterCompilation(key, page.Language, documentationVersion, page.SupportedVersions);
 
                 var createPageParams = new CreatePageParams
                 {

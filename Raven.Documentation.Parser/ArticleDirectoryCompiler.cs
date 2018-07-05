@@ -18,12 +18,12 @@ namespace Raven.Documentation.Parser
             _options = options;
         }
 
-        public IEnumerable<ArticlePage> Compile(DirectoryInfo directoryInfo, DocumentationCompilation.Context context)
+        public IEnumerable<ArticlePage> Compile(DirectoryInfo directoryInfo)
         {
-            return CompileArticleDirectory(_options.GetPathToArticlePagesDirectory(), context);
+            return CompileArticleDirectory(_options.GetPathToArticlePagesDirectory());
         }
 
-        private IEnumerable<ArticlePage> CompileArticleDirectory(string directory, DocumentationCompilation.Context context)
+        private IEnumerable<ArticlePage> CompileArticleDirectory(string directory)
         {
             var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
             if (File.Exists(docsFilePath) == false)
@@ -33,7 +33,7 @@ namespace Raven.Documentation.Parser
             {
                 if (item.IsFolder)
                 {
-                    foreach (var page in CompileArticleDirectory(Path.Combine(directory, item.Name), context))
+                    foreach (var page in CompileArticleDirectory(Path.Combine(directory, item.Name)))
                     {
                         yield return page;
                     }
@@ -43,7 +43,7 @@ namespace Raven.Documentation.Parser
 
                 foreach (var pageToCompile in DocumentationDirectoryCompiler.GetPages(directory, item))
                 {
-                    yield return CompileArticlePage(pageToCompile, directory, context);
+                    yield return CompileArticlePage(pageToCompile, directory);
                 }
             }
 
@@ -58,10 +58,10 @@ namespace Raven.Documentation.Parser
                 Name = "index"
             };
 
-            yield return CompileArticlePage(indexItem, directory, context);
+            yield return CompileArticlePage(indexItem, directory);
         }
 
-        private ArticlePage CompileArticlePage(FolderItem page, string directory, DocumentationCompilation.Context compilationContext)
+        private ArticlePage CompileArticlePage(FolderItem page, string directory)
         {
             var path = Path.Combine(directory, page.Name + FileExtensionHelper.GetLanguageFileExtension(page.Language) + Constants.MarkdownFileExtension);
             var fileInfo = new FileInfo(path);
@@ -74,10 +74,11 @@ namespace Raven.Documentation.Parser
                 File = fileInfo,
                 Page = page,
                 DocumentationVersion = "articles",
+                SourceDocumentationVersion = "articles",
                 Mappings = new List<DocumentationMapping>()
             };
 
-            return _articleCompiler.Compile(compilationParams, compilationContext);
+            return _articleCompiler.Compile(compilationParams);
         }
     }
 }
