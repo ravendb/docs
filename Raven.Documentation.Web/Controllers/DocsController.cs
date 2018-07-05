@@ -466,8 +466,14 @@ namespace Raven.Documentation.Web.Controllers
                 return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
 
             var versionsToParse = new List<string>();
+
             if (all == false)
+            {
                 versionsToParse.Add(CurrentVersion);
+
+                if (version == "4.1")
+                    versionsToParse.Add("4.0");
+            }
 
             var parser =
                 new DocumentationParser(
