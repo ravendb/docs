@@ -58,15 +58,13 @@ ssh -i "RavenDBUbuntuVMKeyPair.pem" ubuntu@ec2-35-160-249-162.us-west-2.compute.
 
 ## Configure the VM
 
-Let's update the OS and install the required libraries for RavenDB to run:
+RavenDB is written in .NET Core so it requires the same set of prerequisites as .NET Core.
 
-{CODE-BLOCK:bash}
-sudo apt-get update
-{CODE-BLOCK/}
+{NOTE: Linux}
 
-{CODE-BLOCK:bash}
-sudo apt-get install libunwind8 liblttng-ust0 libcurl3 libssl1.0.0 libuuid1 libkrb5-3 zlib1g libicu55 libsodium18
-{CODE-BLOCK/}
+We highly recommend **updating** your **Linux OS** prior to launching the RavenDB server. Also check if .NET Core requires any other prerequisites in the [Prerequisites for .NET Core on Linux](https://docs.microsoft.com/en-us/dotnet/core/linux-prerequisites) article written by Microsoft.
+
+{NOTE/}
 
 Download RavenDB's latest stable using the following command:
 {CODE-BLOCK:bash}
