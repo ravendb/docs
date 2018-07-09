@@ -1,7 +1,7 @@
 using System.IO;
 using HtmlAgilityPack;
 using MarkdownDeep;
-
+using Raven.Documentation.Parser.Compilation;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 

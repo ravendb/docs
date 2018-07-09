@@ -5,7 +5,7 @@ using System.Linq;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 
-namespace Raven.Documentation.Parser
+namespace Raven.Documentation.Parser.Compilation.ToC
 {
     internal class TableOfContentsCompiler
     {
@@ -16,7 +16,7 @@ namespace Raven.Documentation.Parser
             _options = options;
         }
 
-        public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo, DocumentationCompilation.Context context)
+        public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo, CompilationUtils.Context context)
         {
             var documentationVersion = directoryInfo.Name;
             var directory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
@@ -35,7 +35,6 @@ namespace Raven.Documentation.Parser
                 var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), item.Name, documentationVersion, context).ToList();
 
                 var tocItems = ConvertToTableOfContentItems(compilationResults).ToList();
-
                 var category = CategoryHelper.ExtractCategoryFromPath(item.Name);
 
                 var tableOfContents = new TableOfContents
@@ -62,7 +61,7 @@ namespace Raven.Documentation.Parser
             return supportedVersions.Where(x => x != baseVersion);
         }
 
-        private IEnumerable<CompilationResult> GenerateTableOfContentItems(string directory, string keyPrefix, string documentationVersion, DocumentationCompilation.Context context)
+        private IEnumerable<CompilationResult> GenerateTableOfContentItems(string directory, string keyPrefix, string documentationVersion, CompilationUtils.Context context)
         {
             var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
             if (File.Exists(docsFilePath) == false)

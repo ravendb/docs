@@ -1,17 +1,14 @@
-﻿namespace Raven.Documentation.Parser
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using HtmlAgilityPack;
+using MarkdownDeep;
+using Raven.Documentation.Parser.Data;
+using Raven.Documentation.Parser.Helpers;
+
+namespace Raven.Documentation.Parser.Compilation
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-
-    using HtmlAgilityPack;
-
-    using MarkdownDeep;
-
-    using Raven.Documentation.Parser.Data;
-    using Raven.Documentation.Parser.Helpers;
-
     public class DocumentCompiler : DocumentCompiler<DocumentationPage>
     {
         public DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
@@ -76,7 +73,7 @@
             public Dictionary<string, string> SeoMetaProperties { get; set; }
         }
 
-        public TPage Compile(DocumentationCompilation.Parameters parameters)
+        public TPage Compile(CompilationUtils.Parameters parameters)
         {
             var file = parameters.File;
             var page = parameters.Page;

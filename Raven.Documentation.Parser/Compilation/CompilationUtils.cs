@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using Raven.Documentation.Parser.Data;
 
-namespace Raven.Documentation.Parser
+namespace Raven.Documentation.Parser.Compilation
 {
-    public class DocumentationCompilation
+    public class CompilationUtils
     {
         public class Parameters
         {
@@ -16,7 +16,7 @@ namespace Raven.Documentation.Parser
             public List<DocumentationMapping> Mappings { get; set; }
         }
 
-        public class Context
+        internal class Context
         {
             private readonly HashSet<CompiledEntry> _compiled = new HashSet<CompiledEntry>(new CompiledEntryEqualityComparer());
 

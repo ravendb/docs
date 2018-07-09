@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-
+using Raven.Documentation.Parser.Compilation.DocumentationDirectory;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 
-namespace Raven.Documentation.Parser
+namespace Raven.Documentation.Parser.Compilation
 {
     public class ArticleDirectoryCompiler
     {
@@ -69,7 +69,7 @@ namespace Raven.Documentation.Parser
             if (fileInfo.Exists == false)
                 throw new FileNotFoundException(string.Format("Documentation file '{0}' not found.", path));
 
-            var compilationParams = new DocumentationCompilation.Parameters
+            var compilationParams = new CompilationUtils.Parameters
             {
                 File = fileInfo,
                 Page = page,
