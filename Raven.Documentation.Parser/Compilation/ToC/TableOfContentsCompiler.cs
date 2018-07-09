@@ -5,7 +5,7 @@ using System.Linq;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 
-namespace Raven.Documentation.Parser
+namespace Raven.Documentation.Parser.Compilation.ToC
 {
     internal class TableOfContentsCompiler
     {
@@ -16,10 +16,9 @@ namespace Raven.Documentation.Parser
             _options = options;
         }
 
-        public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo)
+        public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo, CompilationUtils.Context context)
         {
-            var directoryName = directoryInfo.Name;
-            var documentationVersion = directoryName;
+            var documentationVersion = directoryInfo.Name;
             var directory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
 
             Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
@@ -33,9 +32,9 @@ namespace Raven.Documentation.Parser
                 if (!item.IsFolder)
                     continue;
 
-                var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), item.Name).ToList();
-                var tocItems = ConvertToTableOfContentItems(compilationResults).ToList();
+                var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), item.Name, documentationVersion, context).ToList();
 
+                var tocItems = ConvertToTableOfContentItems(compilationResults).ToList();
                 var category = CategoryHelper.ExtractCategoryFromPath(item.Name);
 
                 var tableOfContents = new TableOfContents
@@ -62,7 +61,7 @@ namespace Raven.Documentation.Parser
             return supportedVersions.Where(x => x != baseVersion);
         }
 
-        private IEnumerable<CompilationResult> GenerateTableOfContentItems(string directory, string keyPrefix)
+        private IEnumerable<CompilationResult> GenerateTableOfContentItems(string directory, string keyPrefix, string documentationVersion, CompilationUtils.Context context)
         {
             var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
             if (File.Exists(docsFilePath) == false)
@@ -79,7 +78,7 @@ namespace Raven.Documentation.Parser
 
                 if (tableOfContentsItem.IsFolder)
                 {
-                    var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), tableOfContentsItem.Key).ToList();
+                    var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), tableOfContentsItem.Key, documentationVersion, context).ToList();
                     tableOfContentsItem.Items = compilationResults;
                     var supportedVersions = compilationResults.SelectMany(x => x.SupportedVersions);
                     tableOfContentsItem.AddSupportedVersions(supportedVersions);
@@ -88,6 +87,8 @@ namespace Raven.Documentation.Parser
                 {
                     tableOfContentsItem.Languages = GetLanguagesForTableOfContentsItem(directory, item.Name).ToList();
                     tableOfContentsItem.AddSupportedVersions(item.SupportedVersions);
+                    tableOfContentsItem.SourceVersion = documentationVersion;
+                    context.RegisterCompilation(tableOfContentsItem.Key, item.Language, documentationVersion, item.SupportedVersions);
                 }
 
                 yield return tableOfContentsItem;
@@ -130,6 +131,7 @@ namespace Raven.Documentation.Parser
             {
                 Key = compilationResult.Key,
                 Title = compilationResult.Title,
+                SourceVersion = compilationResult.SourceVersion,
                 IsFolder = compilationResult.IsFolder,
                 Languages = compilationResult.Languages
             };
@@ -178,6 +180,8 @@ namespace Raven.Documentation.Parser
             public string Key { get; set; }
 
             public string Title { get; set; }
+
+            public string SourceVersion { get; set; }
 
             public bool IsFolder { get; set; }
 

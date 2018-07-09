@@ -17,11 +17,10 @@ namespace Raven.Documentation.Web.Indexes
         {
             Map = pages =>
                 from page in pages
-                from supportedVersion in page.SupportedVersions
                 select new DocumentationLanguageAndVersion
                 {
                     Language = page.Language.ToString(),
-                    Version = supportedVersion
+                    Version = page.Version
                 };
 
             Store("Language", FieldStorage.Yes);

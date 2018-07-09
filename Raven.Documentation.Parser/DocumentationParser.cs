@@ -1,85 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Raven.Documentation.Parser.Compilation;
+using Raven.Documentation.Parser.Compilation.DocumentationDirectory;
+using Raven.Documentation.Parser.Compilation.ToC;
 using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Parser
 {
     public class DocumentationParser : ParserBase<DocumentationPage>
     {
-        private readonly DocumentationDirectoryCompiler _directoryCompiler;
         private readonly TableOfContentsCompiler _tableOfContentsCompiler;
+        private readonly TocBasedPagesCompiler _tocBasedPagesCompiler;
+        private readonly IndexPagesCompiler _indexPagesCompiler;
 
         public DocumentationParser(ParserOptions options, IProvideGitFileInformation repoAnalyzer)
             : base(options)
         {
             var documentCompiler = new DocumentCompiler(Parser, options, repoAnalyzer);
-            _directoryCompiler = new DocumentationDirectoryCompiler(documentCompiler, options);
             _tableOfContentsCompiler = new TableOfContentsCompiler(options);
+            _tocBasedPagesCompiler = new TocBasedPagesCompiler(documentCompiler, Options);
+            _indexPagesCompiler = new IndexPagesCompiler(documentCompiler, Options);
         }
 
-        public override IEnumerable<DocumentationPage> Parse()
-        {
-            var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
-            var compilationContext = new DocumentationCompilation.Context();
+        private bool CompileAllVersions => Options.VersionsToParse.Count == 0;
 
-            return documentationDirectories
-                .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .Where(documentationDirectory => Options.VersionsToParse.Count == 0 || Options.VersionsToParse.Contains(documentationDirectory.Name))
-                .SelectMany(directoryInfo => _directoryCompiler.Compile(directoryInfo, compilationContext));
+        public override ParserOutput Parse()
+        {
+            var tableOfContents = GenerateTableOfContents().ToList();
+            var docs = GenerateDocumentationPages(tableOfContents);
+
+            return new ParserOutput
+            {
+                TableOfContents = tableOfContents,
+                Pages = docs
+            };
         }
 
-        public override IEnumerable<TableOfContents> GenerateTableOfContents()
+        private IEnumerable<TableOfContents> GenerateTableOfContents()
         {
+            var compilationContext = new CompilationUtils.Context();
+
             var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
+
             var tableOfContents = documentationDirectories
                 .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .SelectMany(_tableOfContentsCompiler.GenerateTableOfContents)
+                .SelectMany(directory => _tableOfContentsCompiler.GenerateTableOfContents(directory, compilationContext))
                 .ToList();
 
-            var duplicatedTocs = tableOfContents.GroupBy(x => new { x.Version, x.Category })
-                .Where(g => g.Count() > 1)
-                .ToList();
-
-            foreach (var duplicatedTocGroup in duplicatedTocs)
-            {
-                var mergedToc = MergeTocs(duplicatedTocGroup.ToList());
-                ReplaceToc(mergedToc, tableOfContents);
-            }
-
+            TableOfContentsMerger.Merge(tableOfContents);
             return tableOfContents;
         }
 
-        private TableOfContents MergeTocs(List<TableOfContents> tocs)
+        private IEnumerable<DocumentationPage> GenerateDocumentationPages(IEnumerable<TableOfContents> tocs)
         {
-            var toc = tocs.First();
+            foreach (var indexPage in GenerateDocumentationPagesFromIndex())
+                yield return indexPage;
 
-            for (var i = 1; i < tocs.Count; i++)
-            {
-                MergeTocItems(tocs[i].Items, toc.Items);
-            }
-
-            return toc;
+            foreach (var pageFromToc in GenerateDocumentationPagesFromToc(tocs))
+                yield return pageFromToc;
         }
 
-        private void MergeTocItems(List<TableOfContents.TableOfContentsItem> source, List<TableOfContents.TableOfContentsItem> destination)
+        private IEnumerable<DocumentationPage> GenerateDocumentationPagesFromIndex()
         {
-            foreach (var sourceItem in source)
-            {
-                var matchedItem = destination.SingleOrDefault(x => x.Key == sourceItem.Key);
+            var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
 
-                if (matchedItem == null)
-                    destination.Add(sourceItem);
-                else
-                    MergeTocItems(sourceItem.Items, matchedItem.Items);
-            }
+            return documentationDirectories
+                .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
+                .Where(documentationDirectory => CompileAllVersions || Options.VersionsToParse.Contains(documentationDirectory.Name))
+                .SelectMany(_indexPagesCompiler.Compile);
         }
 
-        private void ReplaceToc(TableOfContents mergedToc, List<TableOfContents> tableOfContents)
+        private IEnumerable<DocumentationPage> GenerateDocumentationPagesFromToc(IEnumerable<TableOfContents> tocs)
         {
-            tableOfContents.RemoveAll(x => x.Version == mergedToc.Version && x.Category == mergedToc.Category);
-            tableOfContents.Add(mergedToc);
+            return tocs
+                .Where(toc => CompileAllVersions || Options.VersionsToParse.Contains(toc.Version))
+                .SelectMany(_tocBasedPagesCompiler.Compile);
         }
     }
 }

@@ -466,14 +466,8 @@ namespace Raven.Documentation.Web.Controllers
                 return RedirectToAction(MVC.Docs.ActionNames.Index, MVC.Docs.Name);
 
             var versionsToParse = new List<string>();
-
             if (all == false)
-            {
                 versionsToParse.Add(CurrentVersion);
-
-                if (version == "4.1")
-                    versionsToParse.Add("4.0");
-            }
 
             var parser =
                 new DocumentationParser(
@@ -508,10 +502,11 @@ namespace Raven.Documentation.Web.Controllers
             DocumentSession.SaveChanges();
 
             var toDispose = new List<IDisposable>();
+            var parserOutput = parser.Parse();
 
             try
             {
-                foreach (var page in parser.Parse())
+                foreach (var page in parserOutput.Pages)
                 {
                     DocumentSession.Store(page);
 
@@ -531,7 +526,7 @@ namespace Raven.Documentation.Web.Controllers
                     }
                 }
 
-                foreach (var toc in parser.GenerateTableOfContents())
+                foreach (var toc in parserOutput.TableOfContents)
                 {
                     DocumentSession.Store(toc);
                 }

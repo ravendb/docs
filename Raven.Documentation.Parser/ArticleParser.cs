@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-
+using Raven.Documentation.Parser.Compilation;
 using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Parser
@@ -16,17 +16,19 @@ namespace Raven.Documentation.Parser
             _directoryCompiler = new ArticleDirectoryCompiler(articleCompiler, options);
         }
 
-        public override IEnumerable<ArticlePage> Parse()
+        public override ParserOutput Parse()
         {
-            var articleDirectory = new DirectoryInfo(Options.PathToDocumentationDirectory);
-            var compilationContext = new DocumentationCompilation.Context();
-
-            return _directoryCompiler.Compile(articleDirectory, compilationContext);
+            return new ParserOutput
+            {
+                Pages = GenerateArticles()
+            };
         }
 
-        public override IEnumerable<TableOfContents> GenerateTableOfContents()
+        private IEnumerable<ArticlePage> GenerateArticles()
         {
-            yield break;
+            var articleDirectory = new DirectoryInfo(Options.PathToDocumentationDirectory);
+
+            return _directoryCompiler.Compile(articleDirectory);
         }
     }
 }

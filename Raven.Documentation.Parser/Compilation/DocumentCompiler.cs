@@ -1,17 +1,14 @@
-﻿namespace Raven.Documentation.Parser
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using HtmlAgilityPack;
+using MarkdownDeep;
+using Raven.Documentation.Parser.Data;
+using Raven.Documentation.Parser.Helpers;
+
+namespace Raven.Documentation.Parser.Compilation
 {
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
-
-    using HtmlAgilityPack;
-
-    using MarkdownDeep;
-
-    using Raven.Documentation.Parser.Data;
-    using Raven.Documentation.Parser.Helpers;
-
     public class DocumentCompiler : DocumentCompiler<DocumentationPage>
     {
         public DocumentCompiler(Markdown parser, ParserOptions options, IProvideGitFileInformation repoAnalyzer)
@@ -21,17 +18,11 @@
 
         protected override DocumentationPage CreatePage(CreatePageParams parameters)
         {
-            var supportedVerions = parameters.SupportedVersions ?? new List<string>();
-
-            if (supportedVerions.Contains(parameters.DocumentationVersion) == false)
-                supportedVerions.Add(parameters.DocumentationVersion);
-
             return new DocumentationPage
             {
                 Key = parameters.Key,
                 Title = parameters.Title,
                 Version = parameters.DocumentationVersion,
-                SupportedVersions = supportedVerions,
                 HtmlContent = parameters.HtmlContent,
                 TextContent = parameters.TextContent,
                 Language = parameters.Language,
@@ -69,7 +60,6 @@
             public string Key { get; set; }
             public string Title { get; set; }
             public string DocumentationVersion { get; set; }
-            public List<string> SupportedVersions { get; set; }
             public string HtmlContent { get; set; }
             public string TextContent { get; set; }
             public Language Language { get; set; }
@@ -83,11 +73,12 @@
             public Dictionary<string, string> SeoMetaProperties { get; set; }
         }
 
-        public TPage Compile(DocumentationCompilation.Parameters parameters, DocumentationCompilation.Context context)
+        public TPage Compile(CompilationUtils.Parameters parameters)
         {
             var file = parameters.File;
             var page = parameters.Page;
             var documentationVersion = parameters.DocumentationVersion;
+            var sourceDocumentationVersion = parameters.SourceDocumentationVersion;
             var mappings = parameters.Mappings;
 
             try
@@ -100,7 +91,7 @@
 
                 var content = File.ReadAllText(file.FullName);
 
-                var builder = new DocumentBuilder(_parser, Options, documentationVersion, content);
+                var builder = new DocumentBuilder(_parser, Options, sourceDocumentationVersion, content);
                 builder.TransformRawHtmlBlocks();
                 builder.TransformLegacyBlocks(file);
                 builder.TransformBlocks();
@@ -124,14 +115,11 @@
 
                 var lastCommit = _repoAnalyzer.GetLastCommitThatAffectedFile(repoRelativePath);
 
-                context.RegisterCompilation(key, page.Language, documentationVersion, page.SupportedVersions);
-
                 var createPageParams = new CreatePageParams
                 {
                     Key = key,
                     Title = title,
                     DocumentationVersion = documentationVersion,
-                    SupportedVersions = page.SupportedVersions,
                     HtmlContent = htmlDocument.DocumentNode.OuterHtml,
                     TextContent = textContent,
                     Language = page.Language,

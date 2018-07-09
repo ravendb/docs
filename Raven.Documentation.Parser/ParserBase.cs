@@ -28,8 +28,19 @@
             };
         }
 
-        public abstract IEnumerable<TPage> Parse();
+        public abstract ParserOutput Parse();
 
-        public abstract IEnumerable<TableOfContents> GenerateTableOfContents();
+        public class ParserOutput
+        {
+            public ParserOutput()
+            {
+                TableOfContents = new List<TableOfContents>();
+                Pages = new List<TPage>();
+            }
+
+            public List<TableOfContents> TableOfContents { get; set; }
+
+            public IEnumerable<TPage> Pages { get; set; }
+        }
     }
 }

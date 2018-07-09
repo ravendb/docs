@@ -11,18 +11,18 @@ namespace Raven.Documentation.Parser
         private readonly Markdown _parser;
         private readonly ParserOptions _options;
         private string _content;
-        private readonly string _documentationVersion;
+        private readonly string _sourceDocumentationVersion;
 
         private IDictionary<string, string> _rawHtmlBlocks;
         private IDictionary<string, string> _codeBlocks;
         private bool _transformBlocks;
 
-        public DocumentBuilder(Markdown parser, ParserOptions options, string documentationVersion, string content)
+        public DocumentBuilder(Markdown parser, ParserOptions options, string sourceDocumentationVersion, string content)
         {
             _parser = parser;
             _options = options;
             _content = content;
-            _documentationVersion = documentationVersion;
+            _sourceDocumentationVersion = sourceDocumentationVersion;
         }
 
         public void TransformRawHtmlBlocks()
@@ -53,7 +53,7 @@ namespace Raven.Documentation.Parser
             }
 
             if (_codeBlocks != null)
-                _content = CodeBlockHelper.GenerateCodeBlocks(_content, _documentationVersion, _options, _codeBlocks);
+                _content = CodeBlockHelper.GenerateCodeBlocks(_content, _sourceDocumentationVersion, _options, _codeBlocks);
 
             if (_rawHtmlBlocks != null)
                 _content = LegacyBlockHelper.ReplaceRawHtmlPlaceholdersAfterMarkdownTransformation(_content, _rawHtmlBlocks);
