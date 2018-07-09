@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Raven.Documentation.Parser.Data;
 
 namespace Raven.Documentation.Parser.Compilation
@@ -22,7 +23,7 @@ namespace Raven.Documentation.Parser.Compilation
 
             public void RegisterCompilation(string key, Language language, string baseVersion, List<string> supportedVersions)
             {
-                RegisterCompilation(key, language, baseVersion);
+                RegisterBaseVersionCompilation(key, language, baseVersion, supportedVersions?.Any() ?? false);
 
                 if (supportedVersions == null)
                     return;
@@ -36,14 +37,20 @@ namespace Raven.Documentation.Parser.Compilation
                 }
             }
 
+            private void RegisterBaseVersionCompilation(string key, Language language, string version,
+                bool hasSupportedVersions)
+            {
+                var entry = CompiledEntry.New(key, language, version);
+
+                if (hasSupportedVersions && _compiled.Contains(entry))
+                    throw new InvalidOperationException($"The document '{key}' has already been compiled for {language} {version}");
+
+                _compiled.Add(entry);
+            }
+
             private void RegisterCompilation(string key, Language language, string version)
             {
-                var entry = new CompiledEntry
-                {
-                    Key = key,
-                    Language = language,
-                    Version = version
-                };
+                var entry = CompiledEntry.New(key, language, version);
 
                 if (_compiled.Contains(entry))
                     throw new InvalidOperationException($"The document '{key}' has already been compiled for {language} {version}");
@@ -53,11 +60,21 @@ namespace Raven.Documentation.Parser.Compilation
 
             private class CompiledEntry
             {
-                public string Key { get; set; }
+                public string Key { get; private set; }
 
-                public Language Language { get; set; }
+                public Language Language { get; private set; }
 
-                public string Version { get; set; }
+                public string Version { get; private set; }
+
+                public static CompiledEntry New(string key, Language language, string version)
+                {
+                    return new CompiledEntry
+                    {
+                        Key = key,
+                        Language = language,
+                        Version = version
+                    };
+                }
             }
 
             private class CompiledEntryEqualityComparer : IEqualityComparer<CompiledEntry>
