@@ -21,17 +21,11 @@
 
         protected override DocumentationPage CreatePage(CreatePageParams parameters)
         {
-            var supportedVerions = parameters.SupportedVersions ?? new List<string>();
-
-            if (supportedVerions.Contains(parameters.DocumentationVersion) == false)
-                supportedVerions.Add(parameters.DocumentationVersion);
-
             return new DocumentationPage
             {
                 Key = parameters.Key,
                 Title = parameters.Title,
                 Version = parameters.DocumentationVersion,
-                SupportedVersions = supportedVerions,
                 HtmlContent = parameters.HtmlContent,
                 TextContent = parameters.TextContent,
                 Language = parameters.Language,
@@ -69,7 +63,6 @@
             public string Key { get; set; }
             public string Title { get; set; }
             public string DocumentationVersion { get; set; }
-            public List<string> SupportedVersions { get; set; }
             public string HtmlContent { get; set; }
             public string TextContent { get; set; }
             public Language Language { get; set; }
@@ -130,7 +123,6 @@
                     Key = key,
                     Title = title,
                     DocumentationVersion = documentationVersion,
-                    SupportedVersions = page.SupportedVersions,
                     HtmlContent = htmlDocument.DocumentNode.OuterHtml,
                     TextContent = textContent,
                     Language = page.Language,
