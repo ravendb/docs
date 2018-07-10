@@ -22,6 +22,8 @@ namespace Raven.Documentation.Parser.Data
 
         public bool IsFolder { get; private set; }
 
+        public bool IsPlaceholder { get; set; }
+
         public string Name { get; set; }
 
         public string Description { get; set; }
