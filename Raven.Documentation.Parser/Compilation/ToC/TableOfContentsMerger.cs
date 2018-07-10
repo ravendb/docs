@@ -6,17 +6,32 @@ namespace Raven.Documentation.Parser.Compilation.ToC
 {
     internal class TableOfContentsMerger
     {
-        public static void Merge(List<TableOfContents> tableOfContents)
+        public static List<TableOfContents> Merge(List<TableOfContentsCompiler.TocFolderCompilationResult> folderCompilationResults)
         {
-            var duplicatedTocs = tableOfContents.GroupBy(x => new { x.Version, x.Category })
-                .Where(g => g.Count() > 1)
-                .ToList();
+            var mergeContext = new MergeContext();
 
-            foreach (var duplicatedTocGroup in duplicatedTocs)
+            foreach (var folderCompilationResult in folderCompilationResults)
             {
-                var mergedToc = MergeTocs(duplicatedTocGroup.ToList());
-                ReplaceToc(mergedToc, tableOfContents);
+                mergeContext.AddCompiled(folderCompilationResult);
             }
+
+            var resultTocs = mergeContext.GetUnique();
+
+            var duplicatedEntries = mergeContext.GetDuplicated();
+
+            foreach (var duplicateGroup in duplicatedEntries)
+            {
+                var orderedDuplicates = OrderDuplicateTocsByPriority(duplicateGroup.Value);
+                var mergedToc = MergeTocs(orderedDuplicates);
+                resultTocs.Add(mergedToc);
+            }
+
+            return resultTocs;
+        }
+
+        private static List<TableOfContents> OrderDuplicateTocsByPriority(List<MergeContext.Entry> duplicateEntries)
+        {
+            return duplicateEntries.OrderByDescending(x => x.SourceDirectoryVerion).Select(x => x.TableOfContents).ToList();
         }
 
         private static TableOfContents MergeTocs(List<TableOfContents> tocs)
@@ -38,16 +53,72 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 var matchedItem = destination.SingleOrDefault(x => x.Key == sourceItem.Key);
 
                 if (matchedItem == null)
+                {
                     destination.Add(sourceItem);
-                else
-                    MergeTocItems(sourceItem.Items, matchedItem.Items);
+                    continue;
+                }
+
+                if (matchedItem.SourceVersion == null)
+                {
+                    matchedItem.SourceVersion = sourceItem.SourceVersion;
+                    matchedItem.Languages = sourceItem.Languages;
+                }
+
+                MergeTocItems(sourceItem.Items, matchedItem.Items);
             }
         }
 
-        private static void ReplaceToc(TableOfContents mergedToc, List<TableOfContents> tableOfContents)
+        private class MergeContext
         {
-            tableOfContents.RemoveAll(x => x.Version == mergedToc.Version && x.Category == mergedToc.Category);
-            tableOfContents.Add(mergedToc);
+            private readonly Dictionary<string, List<Entry>> _compiledTocs = new Dictionary<string, List<Entry>>();
+
+            private static string GetKey(TableOfContents toc) => $"{toc.Version}/{toc.Category}";
+
+            public void AddCompiled(TableOfContentsCompiler.TocFolderCompilationResult folderCompilationResult)
+            {
+                var sourceDirVersion = folderCompilationResult.SourceDirectoryVersion;
+
+                foreach (var toc in folderCompilationResult.CompiledTocs)
+                {
+                    AddCompiled(sourceDirVersion, toc);
+                }
+            }
+
+            private void AddCompiled(string sourceDirectoryVerion, TableOfContents tableOfContents)
+            {
+                var key = GetKey(tableOfContents);
+                var entry = new Entry
+                {
+                    TableOfContents = tableOfContents,
+                    SourceDirectoryVerion = sourceDirectoryVerion
+                };
+
+                if (_compiledTocs.ContainsKey(key))
+                    _compiledTocs[key].Add(entry);
+                else
+                    _compiledTocs[key] = new List<Entry> {entry};
+            }
+
+            public List<KeyValuePair<string, List<Entry>>> GetDuplicated()
+            {
+                return _compiledTocs.Where(x => x.Value.Count > 1).ToList();
+            }
+
+            public List<TableOfContents> GetUnique()
+            {
+                return _compiledTocs
+                    .Where(x => x.Value.Count == 1)
+                    .SelectMany(x => x.Value)
+                    .Select(x => x.TableOfContents)
+                    .ToList();
+            }
+
+            internal class Entry
+            {
+                public TableOfContents TableOfContents { get; set; }
+
+                public string SourceDirectoryVerion { get; set; }
+            }
         }
     }
 }

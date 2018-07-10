@@ -10,15 +10,27 @@ namespace Raven.Documentation.Parser.Compilation.ToC
     internal class TableOfContentsCompiler
     {
         private readonly ParserOptions _options;
+        private readonly TocConverter _converter = new TocConverter();
 
         public TableOfContentsCompiler(ParserOptions options)
         {
             _options = options;
         }
 
-        public IEnumerable<TableOfContents> GenerateTableOfContents(DirectoryInfo directoryInfo, CompilationUtils.Context context)
+        public TocFolderCompilationResult Compile(DirectoryInfo directoryInfo, CompilationUtils.Context context)
         {
             var documentationVersion = directoryInfo.Name;
+            var compiledTocs = GenerateTableOfContents(documentationVersion, context).ToList();
+
+            return new TocFolderCompilationResult
+            {
+                CompiledTocs = compiledTocs,
+                SourceDirectoryVersion = documentationVersion
+            };
+        }
+
+        private IEnumerable<TableOfContents> GenerateTableOfContents(string documentationVersion, CompilationUtils.Context context)
+        {
             var directory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
 
             Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
@@ -32,19 +44,11 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 if (!item.IsFolder)
                     continue;
 
-                var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), item.Name, documentationVersion, context).ToList();
-
-                var tocItems = ConvertToTableOfContentItems(compilationResults).ToList();
                 var category = CategoryHelper.ExtractCategoryFromPath(item.Name);
 
-                var tableOfContents = new TableOfContents
-                {
-                    Version = documentationVersion,
-                    Category = category,
-                    Items = tocItems
-                };
+                var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), item.Name, documentationVersion, context).ToList();
 
-                yield return tableOfContents;
+                yield return _converter.ConvertToTableOfContents(compilationResults, documentationVersion, category);
 
                 var additionalSupportedVersions = GetAdditionalSupportedVersions(documentationVersion, compilationResults);
 
@@ -76,7 +80,7 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                     IsFolder = item.IsFolder
                 };
 
-                if (tableOfContentsItem.IsFolder)
+                if (item.IsFolder)
                 {
                     var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), tableOfContentsItem.Key, documentationVersion, context).ToList();
                     tableOfContentsItem.Items = compilationResults;
@@ -87,7 +91,10 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 {
                     tableOfContentsItem.Languages = GetLanguagesForTableOfContentsItem(directory, item.Name).ToList();
                     tableOfContentsItem.AddSupportedVersions(item.SupportedVersions);
-                    tableOfContentsItem.SourceVersion = documentationVersion;
+
+                    if (item.IsPlaceholder == false)
+                        tableOfContentsItem.SourceVersion = documentationVersion;
+
                     context.RegisterCompilation(tableOfContentsItem.Key, item.Language, documentationVersion, item.SupportedVersions);
                 }
 
@@ -114,30 +121,6 @@ namespace Raven.Documentation.Parser.Compilation.ToC
             }
         }
 
-        private IEnumerable<TableOfContents.TableOfContentsItem> ConvertToTableOfContentItems(IEnumerable<CompilationResult> compilationResults)
-        {
-            foreach (var compilationResult in compilationResults)
-            {
-                var tocItem = ConvertToTableOfContentsItem(compilationResult);
-                tocItem.Items = ConvertToTableOfContentItems(compilationResult.Items).ToList();
-
-                yield return tocItem;
-            }
-        }
-
-        private TableOfContents.TableOfContentsItem ConvertToTableOfContentsItem(CompilationResult compilationResult)
-        {
-            var tocItem = new TableOfContents.TableOfContentsItem
-            {
-                Key = compilationResult.Key,
-                Title = compilationResult.Title,
-                SourceVersion = compilationResult.SourceVersion,
-                IsFolder = compilationResult.IsFolder,
-                Languages = compilationResult.Languages
-            };
-            return tocItem;
-        }
-
         private TableOfContents GetAdditionalSupportedTableOfContent(string supportedVersion, Category category, List<CompilationResult> compilationResults)
         {
             var tableOfContents = new TableOfContents
@@ -160,14 +143,14 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 if (hasSupportedVersion == false)
                     continue;
 
-                var tocItem = ConvertToTableOfContentsItem(compilationResult);
+                var tocItem = _converter.ConvertToTableOfContentsItem(compilationResult);
                 tocItem.Items = GetAdditionalSupportedTableOfContentItems(supportedVersion, compilationResult.Items).ToList();
 
                 yield return tocItem;
             }
         }
 
-        private class CompilationResult
+        internal class CompilationResult
         {
             private readonly HashSet<string> _supportedVersions = new HashSet<string>();
 
@@ -195,6 +178,13 @@ namespace Raven.Documentation.Parser.Compilation.ToC
             {
                 _supportedVersions.UnionWith(supportedVersions);
             }
+        }
+
+        internal class TocFolderCompilationResult
+        {
+            public List<TableOfContents> CompiledTocs { get; set; }
+
+            public string SourceDirectoryVersion { get; set; }
         }
     }
 }

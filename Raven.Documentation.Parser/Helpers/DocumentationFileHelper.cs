@@ -34,6 +34,7 @@ namespace Raven.Documentation.Parser.Helpers
                     Description = name,
                     Name = isFolder ? path.Substring(1, path.Length - 1) : path.Substring(0, path.Length - Constants.MarkdownFileExtension.Length),
                     SupportedVersions = file.SupportedVersions,
+                    IsPlaceholder = file.IsPlaceholder,
                     Mappings = file.Mappings,
                     Metadata = file.Metadata,
                     SeoMetaProperties = file.SeoMetaProperties

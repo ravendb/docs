@@ -16,6 +16,8 @@ namespace Raven.Documentation.Parser.Data
 
         public List<string> SupportedVersions { get; set; }
 
+        public bool IsPlaceholder { get; set; }
+
         public Dictionary<string, string> Metadata { get; set; }
 
         public Dictionary<string, string> SeoMetaProperties { get; set; }

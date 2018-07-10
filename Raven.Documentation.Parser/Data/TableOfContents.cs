@@ -29,8 +29,6 @@
 
             public string SourceVersion { get; set; }
 
-            public string SourcePath { get; set; }
-
 			public bool IsFolder { get; set; }
 
 			public List<TableOfContentsItem> Items { get; set; }

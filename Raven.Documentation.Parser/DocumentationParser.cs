@@ -43,13 +43,13 @@ namespace Raven.Documentation.Parser
 
             var documentationDirectories = Directory.GetDirectories(Options.PathToDocumentationDirectory);
 
-            var tableOfContents = documentationDirectories
+            var compiledTocs = documentationDirectories
                 .Select(documentationDirectory => new DirectoryInfo(documentationDirectory))
-                .SelectMany(directory => _tableOfContentsCompiler.GenerateTableOfContents(directory, compilationContext))
+                .Select(directory => _tableOfContentsCompiler.Compile(directory, compilationContext))
                 .ToList();
 
-            TableOfContentsMerger.Merge(tableOfContents);
-            return tableOfContents;
+            var mergedTocs = TableOfContentsMerger.Merge(compiledTocs);
+            return mergedTocs;
         }
 
         private IEnumerable<DocumentationPage> GenerateDocumentationPages(IEnumerable<TableOfContents> tocs)
