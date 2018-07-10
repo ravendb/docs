@@ -419,5 +419,33 @@
             "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/security-vulnerability-advisory-for-ravendb-2018-06-12&fileName=security-vulnerability-advisory-for-ravendb-2018-06-12.jpg",
             "twitter:url": "https://ravendb.net/articles/security-vulnerability-advisory-for-ravendb-2018-06-12"
         }
+    },
+    {
+        "Path": "acid-cluster-distributed-nonrelational-database.markdown",
+        "Name": "ACID 2020: The Next Generation of Data Consistency",
+        "Mappings": [],
+        "Metadata": {
+            "title": "ACID 2020: The Next Generation of Data Consistency | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/acid-cluster-distributed-nonrelational-database",
+            "publishedAt": ""
+        },
+        "SeoMetaProperties": {
+            "description": "ACID for multiple documents was fine in 2010. Today, nonrelational distributed databases handle far more data requiring a new generation of fully transactional.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "ACID 2020: The Next Generation of Data Consistency | RavenDB",
+            "og:description": "ACID for multiple documents was fine in 2010. Today, nonrelational distributed databases handle far more data requiring a new generation of fully transactional.",
+            "og:url": "https://ravendb.net/articles/acid-cluster-distributed-nonrelational-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/acid-cluster-distributed-nonrelational-database&fileName=acid-cluster-distributed-nonrelational-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "ACID 2020: The Next Generation of Data Consistency | RavenDB",
+            "twitter:description": "ACID for multiple documents was fine in 2010. Today, nonrelational distributed databases handle far more data requiring a new generation of fully transactional.",
+            "twitter:url": "https://ravendb.net/articles/acid-cluster-distributed-nonrelational-database"
+        }
     }
 ]
