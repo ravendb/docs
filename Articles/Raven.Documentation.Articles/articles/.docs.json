@@ -312,7 +312,7 @@
             "title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check",
-            "publishedAt": ""
+            "publishedAt": "2018-03-14"
         },
         "SeoMetaProperties": {
             "description": "",
@@ -341,7 +341,7 @@
             "title": "7 Ways The Right Database Pays for Itself | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database",
-            "publishedAt": ""
+            "publishedAt": "2018-03-28"
         },
         "SeoMetaProperties": {
             "description": "With the right database you don’t pay to play – we pay you! Discover the 7 features a database must have to generate a positive ROI for your investment in it.",
@@ -428,7 +428,7 @@
             "title": "ACID 2020: The Next Generation of Data Consistency | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/acid-cluster-distributed-nonrelational-database",
-            "publishedAt": ""
+            "publishedAt": "2018-07-12"
         },
         "SeoMetaProperties": {
             "description": "ACID for multiple documents was fine in 2010. Today, nonrelational distributed databases handle far more data requiring a new generation of fully transactional.",
