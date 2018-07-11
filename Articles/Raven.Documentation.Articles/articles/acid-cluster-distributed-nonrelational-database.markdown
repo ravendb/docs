@@ -67,6 +67,6 @@ This is <em>the next generation of ACID</em>, a fully transactional solution tha
         Go schemaless and take advantage of our dynamic indexing to stay agile and keep your release cycle efficient. Expand to IoT by fitting RavenDB onto a Raspberry Pi or an ARM Chip. We perform faster on these smaller servers than anyone else. 
     </p>
     <p>
-        <a href="https://ravendb.net/">Watch our Explainer Video</a> or <a href="https://ravendb.net/downloads">Grab RavenDB 4.0 for free</a> and get 3 cores, our state of the art GUI, and a 6 gigabyte RAM database with up to a 3-server cluster up and running quickly for your next project.
+        <a href="https://ravendb.net/"><strong>Watch our Explainer Video</strong></a> or <a href="https://ravendb.net/downloads"><strong>Grab RavenDB 4.0 for free</strong></a> and get 3 cores, our state of the art GUI, and a 6 gigabyte RAM database with up to a 3-server cluster up and running quickly for your next project.
     </p>
 </div>
