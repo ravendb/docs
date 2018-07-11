@@ -1,8 +1,26 @@
-﻿<div class="fb-like" data-href="{{URL}}" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
-
-<script src="//platform.linkedin.com/in.js" type="text/javascript"> lang: en_US</script>
-<script type="IN/Share" data-counter="right">
-</script>
-
-<a href="https://twitter.com/share" class="twitter-share-button" data-via="RavenDB" data-related="RavenDB" data-dnt="true">Tweet</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+﻿<div class="flex-horizontal">
+    <div>
+        <div class="fb-like" data-href="{{URL}}" data-layout="button" data-action="like" data-size="small" data-show-faces="false" data-share="false"></div>
+    </div>
+    <div>&nbsp;</div>
+    <div>
+        <script src="//platform.linkedin.com/in.js" type="text/javascript">lang: en_US</script>
+        <script type="IN/Share" data-counter="right">
+        </script>
+    </div>
+    <div>&nbsp;</div>
+    <div>
+        <a href="https://twitter.com/share" class="twitter-share-button" data-via="RavenDB" data-related="RavenDB" data-dnt="true">Tweet</a>
+        <script>
+    !function (d, s, id) {
+                var js, fjs = d.getElementsByTagName(s)[0], p = /^http:/.test(d.location) ? 'http' : 'https';
+                if (!d.getElementById(id)) {
+                    js = d.createElement(s);
+                    js.id = id;
+                    js.src = p + '://platform.twitter.com/widgets.js';
+                    fjs.parentNode.insertBefore(js, fjs);
+                }
+            }(document, 'script', 'twitter-wjs');
+        </script>
+    </div>
+</div>
