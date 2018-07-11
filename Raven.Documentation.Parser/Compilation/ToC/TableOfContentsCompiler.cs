@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 
@@ -73,6 +75,8 @@ namespace Raven.Documentation.Parser.Compilation.ToC
 
             foreach (var item in DocumentationFileHelper.ParseFile(docsFilePath))
             {
+                Validate(item, docsFilePath);
+
                 var tableOfContentsItem = new CompilationResult
                 {
                     Key = keyPrefix + "/" + item.Name,
@@ -99,6 +103,21 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 }
 
                 yield return tableOfContentsItem;
+            }
+        }
+
+        private void Validate(FolderItem item, string docsFilePath)
+        {
+            var supportsAnyVersion = item.SupportedVersions != null && item.SupportedVersions.Any();
+
+            if (item.IsPlaceholder && supportsAnyVersion)
+            {
+                var messageBuilder = new StringBuilder();
+                messageBuilder.Append($"Entry cannot contain {nameof(item.IsPlaceholder)} and {nameof(item.SupportedVersions)} values at the same time. ");
+                messageBuilder.Append("Please set only one of them. ");
+                messageBuilder.Append($"Name: {item.Name}. Path: {docsFilePath}");
+
+                throw new InvalidOperationException(messageBuilder.ToString());
             }
         }
 
