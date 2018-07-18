@@ -1,6 +1,6 @@
 ﻿# Operations : Server : How to Get Logs Configuration
 
-To set the server logs configuration use **SetLogsConfigurationOperation** from `Maintenance.Server`
+To set the server logs configuration, use **SetLogsConfigurationOperation** from `Maintenance.Server`
 
 ## Syntax
 
