@@ -1,6 +1,6 @@
 # Setup Examples : AWS Linux VM
 
-In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro virtual machine running Ubuntu 16.04.
+In this walkthrough, we will setup RavenDB on an AWS EC2 t2.micro virtual machine running Ubuntu 16.04.
 
 We will go through the necessary steps that are required for RavenDB to run securely including how to configure RavenDB 
 with the correct IP addresses and ports.
@@ -22,7 +22,7 @@ Select the machine type. We chose the t2.micro with 1 core and 1 GB of memory.
 
 ![3](images/aws-linux/3.png)
 
-We stick with the basic default settings of the machine and configure just the minimal requirements for RavenDB. 
+We will stick with the basic default settings of the machine and configure just the minimal requirements for RavenDB. 
 You would probably want to go over the entire set of options and customize your VM. 
 
 {WARNING:Security Concerns}
@@ -108,7 +108,7 @@ Edit the `ServerUrl` field to contain the **Private IP** and the `PublicServerUr
 
 Now we will setup and start the RavenDB service. 
 
-Open a terminal, and create the file /etc/systemd/system/ravendb.service, using super user permissions, containing:
+Open a terminal and create the file /etc/systemd/system/ravendb.service, using super user permissions containing:
 
     [Unit]
     Description=RavenDB v4.0

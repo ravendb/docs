@@ -1,6 +1,6 @@
 ﻿# Operations : Server : How to Get Logs Configuration
 
-To get the server logs configuration use **GetLogsConfigurationOperation** from `Maintenance.Server`
+To get the server logs configuration, use **GetLogsConfigurationOperation** from `Maintenance.Server`
 
 ## Syntax
 
@@ -14,7 +14,7 @@ The result of executing GetLogsConfigurationOperation is a **GetLogsConfiguratio
 
 | ------------- |----- |
 | **CurrentMode** | Current mode that is active |
-| **Mode** | Mode that is written in the configuration file and which will be used after server restart |
+| **Mode** | Mode that is written in the configuration file and which will be used after a server restart |
 | **Path** | Path to which logs will be written |
 | **UseUtcTime** | Indicates if logs will be written in UTC or in server local time |
 

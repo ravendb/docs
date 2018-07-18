@@ -2,7 +2,7 @@
 
 {PANEL:Logs.Path}
 
-Path to the directory where logs will be placed. By default it is placed in the 'Logs' directory in the same folder as the server.
+The path to the directory where logs will be placed. By default it is placed in the 'Logs' directory in the same folder as the server.
 
 - **Type**: `string`
 - **Default**: `Logs`
@@ -12,7 +12,7 @@ Path to the directory where logs will be placed. By default it is placed in the 
 
 {PANEL:Logs.Mode}
 
-Level of logs that should be written to the log files. The available options are:
+The level of logs that should be written to the log files. The available options are:
 
 - `None` (logging disabled)
 - `Operations` (high level info for operational users)
@@ -28,7 +28,7 @@ Level of logs that should be written to the log files. The available options are
 
 {PANEL:Logs.UseUtcTime}
 
-Indicates if logs should be written with UTC or server-local time.
+This indicates if logs should be written with UTC or server-local time.
 
 - **Type**: `bool`
 - **Default**: `true`

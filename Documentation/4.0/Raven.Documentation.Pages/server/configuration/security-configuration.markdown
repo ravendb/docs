@@ -107,7 +107,7 @@ The number of seconds to wait for the Master Key executable to exit.
 
 {PANEL:Security.UnsecuredAccessAllowed}
 
-If authentication is disabled, set address range type for which server access is unsecured (`None | Local | PrivateNetwork | PublicNetwork`).
+If authentication is disabled, set the address range type for which server access is unsecured (`None | Local | PrivateNetwork | PublicNetwork`).
 
 - **Type**: `flags`
 - **Default**: `Local`
@@ -117,7 +117,7 @@ If authentication is disabled, set address range type for which server access is
 
 {PANEL:Security.DoNotConsiderMemoryLockFailureAsCatastrophicError}
 
-Whether RavenDB will consider memory lock error to be catastrophic. This is used with encrypted databases to ensure that temporary buffers are never written to disk and are locked to memory. Setting this to true is not recommended and should be done only after proper security analysis has been performed.
+Determines whether RavenDB will consider memory lock error to be catastrophic. This is used with encrypted databases to ensure that temporary buffers are never written to disk and are locked to memory. Setting this to true is not recommended and should be done only after a proper security analysis has been performed.
 
 - **Type**: `bool`
 - **Default**: `false`
