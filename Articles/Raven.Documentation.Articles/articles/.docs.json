@@ -447,5 +447,33 @@
             "twitter:description": "ACID for multiple documents was fine in 2010. Today, nonrelational distributed databases handle far more data requiring a new generation of fully transactional.",
             "twitter:url": "https://ravendb.net/articles/acid-cluster-distributed-nonrelational-database"
         }
+    },
+    {
+        "Path": "big-data-document-database-etl-replication-ravendb-case-study.markdown",
+        "Name": "RavenDB Web Analytics Use Case: Big Data Creates Big Revenue",
+        "Mappings": [],
+        "Metadata": {
+            "title": "RavenDB Web Analytics Use Case: Big Data Creates Big Revenue | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/big-data-document-database-etl-replication-ravendb-case-study",
+            "publishedAt": "2018-07-20"
+        },
+        "SeoMetaProperties": {
+            "description": "A Case Study in how RavenDB, a Document Database, uses ETL Replication to utilize Big Data and Analytics to enable a company to create a new source of revenue.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB Web Analytics Use Case: Big Data Creates Big Revenue | RavenDB",
+            "og:description": "A Case Study in how RavenDB, a Document Database, uses ETL Replication to utilize Big Data and Analytics to enable a company to create a new source of revenue.",
+            "og:url": "https://ravendb.net/articles/big-data-document-database-etl-replication-ravendb-case-study",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/big-data-document-database-etl-replication-ravendb-case-study&fileName=big-data-document-database-etl-replication-ravendb-case-study.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB Web Analytics Use Case: Big Data Creates Big Revenue | RavenDB",
+            "twitter:description": "A Case Study in how RavenDB, a Document Database, uses ETL Replication to utilize Big Data and Analytics to enable a company to create a new source of revenue.",
+            "twitter:url": "https://ravendb.net/articles/big-data-document-database-etl-replication-ravendb-case-study"
+        }
     }
 ]
