@@ -475,5 +475,33 @@
             "twitter:description": "A Case Study in how RavenDB, a Document Database, uses ETL Replication to utilize Big Data and Analytics to enable a company to create a new source of revenue.",
             "twitter:url": "https://ravendb.net/articles/big-data-document-database-etl-replication-ravendb-case-study"
         }
+    },
+    {
+        "Path": "ravendb-point-of-sale-raspberry-pi-acid.markdown",
+        "Name": "Performing Well on Older Machines and Smaller Hardware",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Performing Well on Older Machines and Smaller Hardware | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-point-of-sale-raspberry-pi-acid",
+            "publishedAt": "2018-07-25"
+        },
+        "SeoMetaProperties": {
+            "description": "Imagine having to operate your database on a server the size of your hand, or even your thumb. It’s like asking Beyonce to dance with Steve Wozniak.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Performing Well on Older Machines and Smaller Hardware | RavenDB",
+            "og:description": "Imagine having to operate your database on a server the size of your hand, or even your thumb. It’s like asking Beyonce to dance with Steve Wozniak.",
+            "og:url": "https://ravendb.net/articles/ravendb-point-of-sale-raspberry-pi-acid",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-point-of-sale-raspberry-pi-acid&fileName=ravendb-point-of-sale-raspberry-pi-acid.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Performing Well on Older Machines and Smaller Hardware | RavenDB",
+            "twitter:description": "Imagine having to operate your database on a server the size of your hand, or even your thumb. It’s like asking Beyonce to dance with Steve Wozniak.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-point-of-sale-raspberry-pi-acid"
+        }
     }
 ]
