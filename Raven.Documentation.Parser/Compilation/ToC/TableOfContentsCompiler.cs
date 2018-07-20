@@ -119,6 +119,9 @@ namespace Raven.Documentation.Parser.Compilation.ToC
 
                 throw new InvalidOperationException(messageBuilder.ToString());
             }
+
+            if (string.IsNullOrWhiteSpace(item.Description))
+                throw new InvalidOperationException($"'Name' parameter cannot be empty. Entry: {item.Name}. Path: {docsFilePath}");
         }
 
         private IEnumerable<Language> GetLanguagesForTableOfContentsItem(string directory, string tableOfContentsItemName)

@@ -109,6 +109,7 @@
   },
   {
     "Path": "monitoring-configuration.markdown",
+    "Name": "Monitoring Configuration",
     "Mappings": [],
     "SupportedVersions": [
       "4.0",
