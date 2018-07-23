@@ -90,6 +90,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{4581E0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\4.1\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{8027C7AC-A56C-429A-8F51-A5DB62B61FD5}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "python", "python", "{67166E1C-0FCE-4939-870F-D0E31AD42F9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{429B6842-05B1-41E8-A1A1-C74763B50317}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\4.1\Samples\python\server\embedded.py = Documentation\4.1\Samples\python\server\embedded.py
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -209,6 +216,8 @@ Global
 		{0935EA0B-78DB-45F6-8576-133C2DCA2254} = {0814AC92-CB2C-47F9-97EC-B4E5013708EB}
 		{4581E048-399A-4F6F-88D0-946C078FA2D0} = {0935EA0B-78DB-45F6-8576-133C2DCA2254}
 		{8027C7AC-A56C-429A-8F51-A5DB62B61FD5} = {4581E048-399A-4F6F-88D0-946C078FA2D0}
+		{67166E1C-0FCE-4939-870F-D0E31AD42F9E} = {0935EA0B-78DB-45F6-8576-133C2DCA2254}
+		{429B6842-05B1-41E8-A1A1-C74763B50317} = {67166E1C-0FCE-4939-870F-D0E31AD42F9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4542080-0E46-4D6E-80B7-DCBFA1100C43}
