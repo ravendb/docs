@@ -59,7 +59,7 @@ namespace Raven.Documentation.Samples.Server
             #endregion
 
             #region start_server
-            // Will start RavenDB Server with deafult values
+            // Start RavenDB Embedded Server with default option
             EmbeddedServer.Instance.StartServer();
             #endregion
 
@@ -67,7 +67,7 @@ namespace Raven.Documentation.Samples.Server
             
             EmbeddedServer.Instance.StartServer(new ServerOptions
             {
-                DataDirectory = "C:/DataDir",
+                DataDirectory = "C:\\RavenData",
                 ServerUrl = "http://127.0.0.1:8080"
             });
 

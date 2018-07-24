@@ -16,12 +16,12 @@ class Embedded:
             # endregion
 
         # region start_server
-        # Will start RavenDB Server with deafult values
+        # Start RavenDB Embedded Server with default option
         EmbeddedServer().start_server()
         # endregion
 
         # region start_server_with_options
-        server_options = ServerOptions(data_directory="C:/DataDir", server_url="http://127.0.0.1:8080")
+        server_options = ServerOptions(data_directory="C:\\RavenData", server_url="http://127.0.0.1:8080")
         EmbeddedServer().start_server(server_options)
         # endregion
 
