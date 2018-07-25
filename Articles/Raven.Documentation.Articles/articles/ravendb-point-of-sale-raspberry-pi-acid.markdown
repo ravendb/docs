@@ -1,4 +1,4 @@
-# Performing Well on Older Machines and Smaller Hardware<br/><small>by <a href="mailto:grisha@ravendb.net">Grisha Kotler</a></small>
+# Performing Well on Older Machines and Smaller Hardware<br/><small>by <a href="mailto:ayende@ravendb.net">Oren Eini</a></small>
 
 ![Performing Well on Older Machines and Smaller Hardware](images/ravendb-point-of-sale-raspberry-pi-acid.jpg)
 
@@ -34,7 +34,7 @@ When it comes to brick and mortar companies, as long as computer performance doe
 
 Upgrading hardware can be costly.
 
-This client is a leading fast food company with over 36,000 restaurants worldwide. That means hundreds of thousands of point-of-sale machines serve <em>millions of customers worldwide</em>. Upgrading can cost the company billions, so they are done sparingly. RavenDB will often find itself operating on machines that haven’t been upgraded for 10 years. They have limited processing power, even more limited memory, but still must serve demands made on state of the art machines.
+This client is a leading fast food company with over 36,000 restaurants worldwide. That means hundreds of thousands of point-of-sale machines serve <em>billions of customers worldwide</em>. Upgrading can cost the company billions, so they are done sparingly. RavenDB will often find itself operating on machines that haven’t been upgraded for 10 years. They have limited processing power, even more limited memory, but still must serve demands made on state of the art machines.
 
 It’s like asking Steve Wozniak to keep up with Beyonce’s best. You better be one heck of a choreographer.
 
