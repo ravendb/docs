@@ -78,7 +78,24 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Web", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Web.Core", "Raven.Documentation.Web.Core\Raven.Documentation.Web.Core.csproj", "{2E8E4867-144F-4C2C-8041-6DF1D794DABC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Parser", "Raven.Documentation.Parser\Raven.Documentation.Parser.csproj", "{7F36FD76-EE52-4D36-9A41-6A7DB277B863}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Parser", "Raven.Documentation.Parser\Raven.Documentation.Parser.csproj", "{7F36FD76-EE52-4D36-9A41-6A7DB277B863}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.1", "4.1", "{0814AC92-CB2C-47F9-97EC-B4E5013708EB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\4.1\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{52351344-A017-4C8E-AF31-6879100E8865}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{0935EA0B-78DB-45F6-8576-133C2DCA2254}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{4581E048-399A-4F6F-88D0-946C078FA2D0}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\4.1\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{8027C7AC-A56C-429A-8F51-A5DB62B61FD5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "python", "python", "{67166E1C-0FCE-4939-870F-D0E31AD42F9E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{429B6842-05B1-41E8-A1A1-C74763B50317}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\4.1\Samples\python\server\embedded.py = Documentation\4.1\Samples\python\server\embedded.py
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -150,6 +167,14 @@ Global
 		{7F36FD76-EE52-4D36-9A41-6A7DB277B863}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7F36FD76-EE52-4D36-9A41-6A7DB277B863}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7F36FD76-EE52-4D36-9A41-6A7DB277B863}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52351344-A017-4C8E-AF31-6879100E8865}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52351344-A017-4C8E-AF31-6879100E8865}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52351344-A017-4C8E-AF31-6879100E8865}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52351344-A017-4C8E-AF31-6879100E8865}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8027C7AC-A56C-429A-8F51-A5DB62B61FD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8027C7AC-A56C-429A-8F51-A5DB62B61FD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8027C7AC-A56C-429A-8F51-A5DB62B61FD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8027C7AC-A56C-429A-8F51-A5DB62B61FD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -186,6 +211,13 @@ Global
 		{E2231393-3A44-4BD4-95C8-6D263C139C48} = {ED0F4CCE-F14D-4A81-8C53-ECC8001FDD80}
 		{4955D933-2032-4F99-A88E-4AE535AAF072} = {B901F3C3-12D9-4990-9516-DB9CE573B65A}
 		{5C0C6DF8-4E44-4985-B2FF-51A50364AF84} = {9F08F599-D7B1-489F-972A-C9404B7ECA61}
+		{0814AC92-CB2C-47F9-97EC-B4E5013708EB} = {02197DA7-3859-4919-98A7-4FAFC4D75F2B}
+		{52351344-A017-4C8E-AF31-6879100E8865} = {0814AC92-CB2C-47F9-97EC-B4E5013708EB}
+		{0935EA0B-78DB-45F6-8576-133C2DCA2254} = {0814AC92-CB2C-47F9-97EC-B4E5013708EB}
+		{4581E048-399A-4F6F-88D0-946C078FA2D0} = {0935EA0B-78DB-45F6-8576-133C2DCA2254}
+		{8027C7AC-A56C-429A-8F51-A5DB62B61FD5} = {4581E048-399A-4F6F-88D0-946C078FA2D0}
+		{67166E1C-0FCE-4939-870F-D0E31AD42F9E} = {0935EA0B-78DB-45F6-8576-133C2DCA2254}
+		{429B6842-05B1-41E8-A1A1-C74763B50317} = {67166E1C-0FCE-4939-870F-D0E31AD42F9E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4542080-0E46-4D6E-80B7-DCBFA1100C43}
