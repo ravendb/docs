@@ -1,0 +1,10 @@
+﻿[
+    {
+        "Path": "embedded.markdown",
+        "Name": "Embedded",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    }
+]
