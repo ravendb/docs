@@ -206,7 +206,7 @@ namespace Raven.Documentation.Samples.Indexes
                     })"
                 };
 
-                Reduce = @"groupBy( x => x.Category )
+                Reduce = @"groupBy(x => x.Category)
                             .aggregate(g => {
                                 return {
                                     Category: g.key,
@@ -236,9 +236,9 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Maps = new HashSet<string>()
                 {
-                    @"map('products', function(product ){
+                    @"map('products', function(product){
                         return {
-                            Category: load(product .Category, 'Categories').Name,
+                            Category: load(product.Category, 'Categories').Name,
                             PriceSum: product.PricePerUnit,
                             PriceAverage: 0,
                             ProductCount: 1
@@ -246,7 +246,7 @@ namespace Raven.Documentation.Samples.Indexes
                     })"
                 };
 
-                Reduce = @"groupBy( x => x.Category )
+                Reduce = @"groupBy(x => x.Category)
                             .aggregate(g => {
                                 var pricesum = g.values.reduce((sum,x) => x.PriceSum + sum,0);
                                 var productcount = g.values.reduce((sum,x) => x.ProductCount + sum,0);
@@ -290,7 +290,7 @@ namespace Raven.Documentation.Samples.Indexes
                         })"
                 };
 
-                Reduce = @"groupBy( x => x.Product  )
+                Reduce = @"groupBy(x => x.Product)
                     .aggregate(g => {
                         return {
                             Product : g.key,
@@ -327,14 +327,14 @@ namespace Raven.Documentation.Samples.Indexes
                                     Product: l.Product,
                                     Month: new Date( (new Date(order.OrderedAt)).getFullYear(),(new Date(order.OrderedAt)).getMonth(),1),
                                     Count: 1,
-                                    Total:  (l.Quantity * l.PricePerUnit) * (1- l.Discount)
+                                    Total: (l.Quantity * l.PricePerUnit) * (1- l.Discount)
                                 })
                             });
                             return res;
                         })"
                     };
 
-                Reduce = @"groupBy( x => ({Product: x.Product , Month: x.Month}) )
+                Reduce = @"groupBy(x => ({Product: x.Product, Month: x.Month}))
                     .aggregate(g => {
                     return {
                         Product: g.key.Product,
@@ -372,30 +372,29 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region static_sorting2
-        public class Products_ByName : AbstractJavaScriptIndexCreationTask
+        private class Products_ByName : AbstractJavaScriptIndexCreationTask
         {
             public Products_ByName()
             {
                 Maps = new HashSet<string>
                 {
-                    @"map('products', function (product){
+                    @"map('products', function (u){
                                     return {
-                                        Name: product.Name,
-                                        _: {$value: product.Name, $name:'AnalyzedName'}
+                                        Name: u.Name,
+                                        _: {$value: u.Name, $name:'AnalyzedName'}
                                     };
                                 })",
                 };
                 Fields = new Dictionary<string, IndexFieldOptions>
                 {
                     {
-                        Constants.Documents.Indexing.Fields.AllFields, new IndexFieldOptions()
+                        "AnalyzedName", new IndexFieldOptions()
                         {
                             Indexing = FieldIndexing.Search,
-                            Analyzer = "Raven.Server.Documents.Indexes.Persistence.Lucene.Analyzers.Collation.Cultures.SvCollationAnalyzer"
+                            Analyzer = "StandardAnalyzer"
                         }
                     }
                 };
-
             }
             public class Result
             {
@@ -473,7 +472,7 @@ namespace Raven.Documentation.Samples.Indexes
                 };
                 AdditionalSources = new Dictionary<string, string>
                 {
-                    ["The Script"] = @"function  getNames(x , names){
+                    ["The Script"] = @"function getNames(x, names){
                                         names.push(x.Author);
                                         x.Comments.forEach(x => getNames(x, names));
                                  }"
@@ -489,7 +488,7 @@ namespace Raven.Documentation.Samples.Indexes
             {
                 Maps = new HashSet<string>
                 {
-                    @"map('events', function (ce){ 
+                    @"map('events', function (e){
                         return { 
                             Name: e.Name  ,
                             Coordinates: createSpatialField(e.Latitude, e.Longitude)
