@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
-using System.Text;
 using System.Threading.Tasks;
 using Raven.Client.ServerWide;
 using Raven.Embedded;
@@ -59,12 +57,12 @@ namespace Raven.Documentation.Samples.Server
             #endregion
 
             #region start_server
-            // Start RavenDB Embedded Server with default option
+            // Start RavenDB Embedded Server with default options
             EmbeddedServer.Instance.StartServer();
             #endregion
 
             #region start_server_with_options
-            
+
             EmbeddedServer.Instance.StartServer(new ServerOptions
             {
                 DataDirectory = "C:\\RavenData",
@@ -95,8 +93,8 @@ namespace Raven.Documentation.Samples.Server
             #region security
             var serverOptions = new ServerOptions();
             serverOptions.Secured(
-                certificate:"PathToServerCertificate", 
-                certPassword:"CertificatePassword");
+                certificate: "PathToServerCertificate",
+                certPassword: "CertificatePassword");
             #endregion
 
             #region security2
@@ -112,6 +110,7 @@ namespace Raven.Documentation.Samples.Server
             #region run_with_dotnet_path
             EmbeddedServer.Instance.StartServer(new ServerOptions
             {
+                FrameworkVersion = "2.1.2",
                 DotNetPath = "PATH_TO_DOTNET_EXEC"
             });
 

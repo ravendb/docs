@@ -1,23 +1,38 @@
-﻿# Server : Running an embedded instance
+﻿# Server : Running an Embedded Instance
 
-## Overview
+{PANEL:Overview}
 
-RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you 
-don't need to do anything only download the package and start your own RavenDB Embedded server.
+RavenDB makes it very easy to be embedded within your application, with RavenDB Embedded package you can integrate your RavenDB server with few easy steps.
+
 {CODE-TABS}
 {CODE-TAB:csharp:Sync embedded_example@Server\Embedded.cs /}
 {CODE-TAB:csharp:Async embedded_async_example@Server\Embedded.cs /}
 {CODE-TABS/}
 
-## Getting Started
----
-* Create a new project (.NET Standard 2.0+, .NET Core 2.0+, .NET Framework 4.6.1+).
-* Grab the [pre-release bits from MyGet](https://myget.org/feed/ravendb/package/nuget/RavenDB.embedded).
-`Install-Package RavenDB.Embedded -Version 4.1.0 -Source https://www.myget.org/F/ravendb/api/v3/index.json` 
-* Start a new Embedded Server
-* Get the new Embedded Document Store, and start working with the database.
+{PANEL/}
 
-### Start The Server
+{PANEL:Prerequisites}
+
+RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
+
+By default the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and `ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
+
+We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning of the Server. The .NET Core runtime can be downloaded from [here](https://www.microsoft.com/net/download).
+
+{PANEL/}
+
+{PANEL:Getting Started}
+
+### Installation
+
+* Create a new project (.NET Standard 2.0+, .NET Core 2.0+, .NET Framework 4.6.1+).
+* Grab the pre-release bits from our [MyGet](https://myget.org/feed/ravendb/package/nuget/RavenDB.Embedded)
+{CODE-BLOCK:powershell}
+Install-Package RavenDB.Embedded -Version 4.1.0 -Source https://www.myget.org/F/ravendb/api/v3/index.json
+{CODE-BLOCK/}
+
+### Starting the Server
+
 RavenDB Embedded Server is available under `EmbeddedServer.Instance`. In order to start it call `StartServer` method.
 {CODE start_server@Server\Embedded.cs /}
 
@@ -27,22 +42,22 @@ For more control on how to start the server just pass to `StartServer` method a 
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **FrameworkVersion** | string | The framework version to run the server |
-| **DataDirectory** | string | Where to store our database files |
-| **DotNetPath** | string | The path to exec dotnet (If dotnet is in PATH leave it)|
-| **AcceptEula** |  bool | If set to false, will ask to accept our terms |
-| **ServerUrl** | string | What address we want to start our server (default 127.0.0.1:0) |
-| **MaxServerStartupTimeDuration** | TimeSpan | The timeout for the server to start |
-| **CommandLineArgs** | List&lt;string&gt; | The command lines arguments to start the server with |
+| **FrameworkVersion** | string | The .NET Core framework version to run the server with |
+| **DataDirectory** | string | Indicates where your data should be stored |
+| **DotNetPath** | string | The path to exec `dotnet` (if it is in PATH, leave it)|
+| **AcceptEula** |  bool | If set to `false`, will ask to accept our terms & conditions |
+| **ServerUrl** | string | What address we want to start our server (default `127.0.0.1:0`) |
+| **MaxServerStartupTimeDuration** | `TimeSpan` | The timeout for the server to start |
+| **CommandLineArgs** | `List<string>` | The [command lines arguments](../server/configuration/configuration-options#command-line-arguments) to start the server with |
 
 {INFO /}
 
-
 {CODE start_server_with_options@Server\Embedded.cs /}
 
-{NOTE  Without the `ServerOptions`, RavenDB server will start with a default values on 127.0.0.1:{Random Port}  /}
+{NOTE  Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`  /}
 
-##### Security
+### Security
+
 RavenDB Embedded support running a secured server.
 Just run `Secured` method in `ServerOptions` object.
 
@@ -59,8 +74,9 @@ RavenDB will invoke a process you specify, so you can write your own scripts / m
 RavenDB expects to get the raw binary representation (byte array) of the .pfx certificate through the standard output.
 In this options you can control on your client certificate and to use in a different certificate for your client.
 
-### Get Document Store
-After Starting the server you can get the DocumentStore from the Embedded Server and start working with RavenDB.
+### Document Store
+
+After starting the server you can get the DocumentStore from the Embedded Server and start working with RavenDB.
 Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `GetDocumentStore` or `GetDocumentStoreAsync` with the name of the database you like to work with. 
 
 {CODE-TABS}
@@ -74,7 +90,7 @@ For more control on the process you can call the methods with `DatabaseOptions` 
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **databaseRecord** | DatabaseRecord | Instance of `DatabaseRecord` containing database configuration |
+| **DatabaseRecord** | DatabaseRecord | Instance of `DatabaseRecord` containing database configuration |
 | **SkipCreatingDatabase** | bool | If set to true, will skip try creating the database  |
 
 {INFO /}
@@ -85,19 +101,17 @@ For more control on the process you can call the methods with `DatabaseOptions` 
 {CODE-TABS/}
 
 ### Get Server Url
-For getting the server url you only need to call `GetServerUriAsync` method, this async method will return `Uri` object.
-If `StartServer` is not yet complete this method will wait for the server to start.
+
+The `GetServerUriAsync` method can be used to retrieve the Embedded server URL. It must be called after server was started, because it waits for the server initialization to complete.
+The URL can be used for example for creating a custom document store, omitting the `GetDocumentStore` method entirely.
 
 {CODE get_server_url_async@Server/Embedded.cs /}
 
-## Remarks
-* You can have only one instance of `EmbeddedServer`.
-* {NOTE: Open RavenDB studio in the browser}
-You can open the studio in the browser with `OpenStudioInBrowser` method
-  {CODE open_in_browser@Server/Embedded.cs /}
-{NOTE /}
-*RavenDB Embedded by deafult runs the server with dotnet that can be found in PATH, if you want to use a different one
-or if you don't have dotnet installed you can download it from [here](https://www.microsoft.com/net/download/dotnet-core/2.1),
-and change `DotNetPath` from `ServerOptions` to the path of the new **dotnet.exe** and use it to run the server.
-{CODE run_with_dotnet_path@Server\Embedded.cs /}
+{PANEL/}
 
+{PANEL:Remarks}
+
+* You can have only one instance of `EmbeddedServer`
+* Method `EmbeddedServer.Instance.OpenStudioInBrowser()` can be used to open an browser instance with Studio
+
+{PANEL/}
