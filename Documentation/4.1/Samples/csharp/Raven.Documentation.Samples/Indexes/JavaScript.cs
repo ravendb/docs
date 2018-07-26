@@ -7,7 +7,7 @@ using Raven.Documentation.Samples.Orders;
 
 namespace Raven.Documentation.Samples.Indexes
 {
-    public class Map
+    public class JavaScript
     {
         /*
         #region javaScriptindexes_1
@@ -218,7 +218,7 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region map_reduce_1_0
-        public class Products_Average_ByCategory : 
+        public class Products_Average_ByCategory :
                                 AbstractJavaScriptIndexCreationTask
         {
             public class Result
@@ -426,7 +426,7 @@ namespace Raven.Documentation.Samples.Indexes
         #endregion
 
         #region indexing_related_documents_5
-        public class Products_ByCategoryName : AbstractJavaScriptIndexCreationTask
+        public class Authors_ByNameAndBookNames : AbstractJavaScriptIndexCreationTask
         {
             public class Result
             {
@@ -435,7 +435,7 @@ namespace Raven.Documentation.Samples.Indexes
                 public IList<string> Books { get; set; }
             }
 
-            public Products_ByCategoryName()
+            public Authors_ByNameAndBookNames()
             {
                 Maps = new HashSet<string>()
                 {
