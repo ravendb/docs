@@ -25,7 +25,7 @@ They indicate which documents can be searched by which fields.
    map(<collection-name>, function (document){
         return {
             // indexed properties go here e.g:
-            // Name: doc.Name
+            // Name: document.Name
         };
     })
 {CODE-BLOCK/}
@@ -76,7 +76,7 @@ Upon completion of the first phase, reduction is applied to the map results and 
 Read more about map reduce indexes [here](../indexes/multi-map-indexes).
 
 {INFO:Information}
-Supported version : ECMAScript 5.1
+Supported JavaScript version : ECMAScript 5.1
 {INFO/}
 
 ## Related Articles
