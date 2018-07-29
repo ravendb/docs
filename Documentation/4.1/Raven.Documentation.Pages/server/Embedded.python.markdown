@@ -1,12 +1,27 @@
-﻿# Server : Running an embedded instance
+﻿# Server : Running an Embedded Instance
 
-## Overview
+{PANEL:Overview}
 
-RavenDB makes it very easy to be embedded within your application, with PyRavenDB Embedded package you 
-don't need to do anything only download the package and start your own PyRavenDB Embedded server.
+RavenDB makes it very easy to be embedded within your application, 
+with PyRavenDB Embedded package you can integrate your RavenDB server with few easy steps.
 {CODE:python embedded_example@server\embedded.py /}
 
-## Getting Started
+{PANEL/}
+
+{PANEL:Prerequisites}
+ PyRavenDB Embedded **does not include .NET Core runtime required for it to run**. 
+ By default the `ServerOptions.framework_version` is set to the .NET Core version that we compiled the server with and `ServerOptions.dotnet_path` is set to `dotnet` meaning that it will require to have it declared in PATH. 
+ We highly recommend using the .NET Core framework version defined in `ServerOptions.framework_version` for proper functioning of the Server.
+ If you don't have dotnet installed The .NET Core runtime can be downloaded from [here](https://www.microsoft.com/net/download),
+to use it just add it to the PATH or change `ServerOptions.dotnet_path` to **dotnet.exe** path you just downloaded.
+
+{CODE:python run_with_dotnet_path@server\embedded.py /}
+
+{PANEL/}
+
+{PANEL:Getting Started}
+
+### Installation
 ---
 * Create a new project.
 * Install from [PyPi](https://pypi.python.org/pypi), 
@@ -15,7 +30,7 @@ as [pyravendb-embedded](https://pypi.python.org/project/pyravendb-embedded).<br 
 * Start a new Embedded Server
 * Get the new Embedded Document Store, and start working with the database.
 
-### Start The Server
+### Starting the Server
 RavenDB Embedded Server is available under `EmbeddedServer` Instance. In order to start it call `start_server` method.
 {CODE:python start_server@server\embedded.py /}
 
@@ -25,22 +40,22 @@ or more control on how to start the server just pass to `start_server` method a 
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
-| **framework_version** | str | The framework version to run the server |
-| **data_directory** | str | Where to store our database files |
+| **framework_version** | str | The .NET Core framework version to run the server with |
+| **data_directory** | str | Indicates where your data should be stored |
 | **server_directory** | str | The path to the server binary files (.dll) |
-| **dotnet_path** | str | The path to exec dotnet (If dotnet is in PATH leave it)|
-| **accept_eula** |  bool | If set to false, will ask to accept our terms |
-| **server_url** | str | What address we want to start our server (default 127.0.0.1:0) |
+| **dotnet_path** | str | The path to exec `dotnet` (if it is in PATH, leave it)|
+| **accept_eula** |  bool | If set to `false`, will ask to accept our terms & conditions |
+| **server_url** | str | What address we want to start our server (default `127.0.0.1:0`) |
 | **max_server_startup_time_duration** | timedelta | The timeout for the server to start |
-| **command_line_args** | list | The command lines arguments to start the server with 
+| **command_line_args** | list | The [command lines arguments](../server/configuration/configuration-options#command-line-arguments) to start the server with |
 
 {INFO /}
 
 {CODE:python start_server_with_options@server\embedded.py /}
 
-{NOTE  Without the `server_options`, RavenDB server will start with a default values on 127.0.0.1:{Random Port}  /}
+{NOTE  Without the `server_options`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`  /}
 
-##### Security
+### Security
 PyRavenDB Embedded support running a secured server.
 There are two options to make ravendb secured in Pyravendb-Embedded:<br />
 
@@ -61,7 +76,7 @@ RavenDB expects to get the raw binary representation (byte array) of the .pfx ce
 In this options you can control on your client certificate and to use in a different certificate for your client.
 {NOTE /}
 
-### Get Document Store
+### Document Store
 After Starting the server you can get the DocumentStore from the Embedded Server and start working with PyRavenDB.
 Getting the DocumentStore from The Embedded Server is pretty easy you only need to call `get_document_store` method with database name 
 or with `DatabaseOptions`.
@@ -75,20 +90,16 @@ or with `DatabaseOptions`.
 
 {INFO /}
 
-{CODE:python get_document_store@server\embedded.py /}
+{CODE-TABS}
+{CODE-TAB:python:database_name: get_document_store@server\embedded.py /}
+{CODE-TAB:python:DatabaseOptions: get_document_store_with_database_options@server\embedded.py /}
+{CODE-TABS/}
 
-{CODE:python get_document_store_with_database_options@server\embedded.py /}
+{PANEL/}
 
-### Open RavenDB studio in the browser
-To open RavenDB studio from Pyravendb-Embedded you can use `open_studio_in_browser` method and the studio will open automatically
-one your default browser.
+{PANEL:Remarks}
 
-{CODE:python open_in_browser@server\embedded.py /}
+* You can have only one instance of EmbeddedServer
+* Method EmbeddedServer().open_studio_in_browser() can be used to open an browser instance with Studio
 
-## Remarks
-* **EmbeddedServer** class is a singleton!.<br/> 
-Every time we use `EmbeddedServer()` we will get the same instance.
-* PyRavenDB Embedded by deafult runs the server with dotnet that can be found in the PATH, if you want to use a different one
-or if you don't have dotnet installed you can download it from [here](https://www.microsoft.com/net/download/dotnet-core/2.1),
-and change `dotnet_path` from `ServerOptions` to the path of the new **dotnet.exe** and use it to run the server.
-{CODE:python run_with_dotnet_path@server\embedded.py /}
+{PANEL/}

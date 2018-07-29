@@ -16,7 +16,7 @@ class Embedded:
             # endregion
 
         # region start_server
-        # Start RavenDB Embedded Server with default option
+        # Start RavenDB Embedded Server with default options
         EmbeddedServer().start_server()
         # endregion
 
@@ -32,10 +32,6 @@ class Embedded:
         # region get_document_store_with_database_options
         database_options = DatabaseOptions(database_name="Embedded", skip_creating_database=True)
         EmbeddedServer().get_document_store(database_options)
-        # endregion
-
-        # region open_in_browser
-        EmbeddedServer().open_studio_in_browser()
         # endregion
 
         # region security
@@ -55,5 +51,5 @@ class Embedded:
         
         
         # region run_with_dotnet_path
-        EmbeddedServer.start_server(ServerOptions(dotnet_path="PATH_TO_DOTNET_EXEC"))
+        EmbeddedServer().start_server(ServerOptions(dotnet_path="PATH_TO_DOTNET_EXEC"))
         # endregion
