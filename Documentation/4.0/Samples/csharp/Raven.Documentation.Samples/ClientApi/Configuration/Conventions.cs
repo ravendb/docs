@@ -1,5 +1,6 @@
 ﻿using System;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Operations;
 using Sparrow;
 
 namespace Raven.Documentation.Samples.ClientApi.Configuration
@@ -54,6 +55,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     ,
                     #region UseCompression
                     UseCompression = true
+                    #endregion
+                    ,
+                    #region OperationStatusFetchMode
+                    OperationStatusFetchMode = OperationStatusFetchMode.ChangesApi
                     #endregion
 	            }
             };

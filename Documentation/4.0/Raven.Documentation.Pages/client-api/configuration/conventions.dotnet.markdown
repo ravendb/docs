@@ -75,6 +75,12 @@ It determines if the client will send headers to the Server indicating that it a
 
 {CODE UseCompression@ClientApi\Configuration\Conventions.cs /}
 
+## OperationStatusFetchMode
+
+Changes the way the Operation is fetching the operation status when waiting for completion. By default the value is set to `ChangesApi` which underneath is using WebSocket protocol when connection is established with the server. On some older systems e.g. Windows 7, the WebSocket protocol might not be available due to the OS and .NET Framework limitations. For that reason, the value can be changed to `Polling` to bypass this issue.
+
+{CODE OperationStatusFetchMode@ClientApi\Configuration\Conventions.cs /}
+
 ## Related Articles
 
 ### Conventions
