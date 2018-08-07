@@ -53,24 +53,24 @@
     <Reference Include="HtmlAgilityPack, Version=1.6.16.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <HintPath>..\packages\HtmlAgilityPack.1.6.16\lib\Net45\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="Lambda2Js.Signed.Custom, Version=3.0.2.0, Culture=neutral, PublicKeyToken=9ba16f7edfc48fe6, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.4.0.3\lib\netstandard2.0\Lambda2Js.Signed.Custom.dll</HintPath>
+    <Reference Include="Lambda2Js.Signed, Version=3.1.0.0, Culture=neutral, PublicKeyToken=9ba16f7edfc48fe6, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lambda2Js.Signed.3.1.0\lib\net40\Lambda2Js.Signed.dll</HintPath>
     </Reference>
     <Reference Include="MarkdownDeep, Version=1.5.0.99, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MarkdownDeep.1.5.0.99\lib\netstandard2.0\MarkdownDeep.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Raven.Client, Version=4.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.4.0.3\lib\netstandard2.0\Raven.Client.dll</HintPath>
+    <Reference Include="Raven.Client, Version=4.0.6.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\packages\RavenDB.Client.4.0.6\lib\netstandard2.0\Raven.Client.dll</HintPath>
     </Reference>
-    <Reference Include="Sparrow, Version=4.0.3.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
-      <HintPath>..\packages\RavenDB.Client.4.0.3\lib\netstandard2.0\Sparrow.dll</HintPath>
+    <Reference Include="Sparrow, Version=4.0.6.0, Culture=neutral, PublicKeyToken=37f41c7f99471593, processorArchitecture=MSIL">
+      <HintPath>..\packages\RavenDB.Client.4.0.6\lib\netstandard2.0\Sparrow.dll</HintPath>
     </Reference>
-    <Reference Include="StructureMap, Version=4.6.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\StructureMap.4.6.1\lib\net45\StructureMap.dll</HintPath>
+    <Reference Include="StructureMap, Version=4.7.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\StructureMap.4.7.0\lib\net45\StructureMap.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -145,7 +145,7 @@
     </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="T4MVCExtensions, Version=3.0.0.0, Culture=neutral, PublicKeyToken=7b26dc2a43f6a0d4, processorArchitecture=MSIL">
-      <HintPath>..\packages\T4MVCExtensions.4.2.0\lib\net45\T4MVCExtensions.dll</HintPath>
+      <HintPath>..\packages\T4MVCExtensions.4.2.1\lib\net45\T4MVCExtensions.dll</HintPath>
     </Reference>
     <Reference Include="WebActivator">
       <HintPath>..\packages\WebActivator.1.4.2\lib\net40\WebActivator.dll</HintPath>
