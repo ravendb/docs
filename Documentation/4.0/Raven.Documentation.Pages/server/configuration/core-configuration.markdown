@@ -10,9 +10,9 @@ The URLs which the server should listen to.
 
 Indicates the IP addresses or host addresses with ports and protocols that the server should listen on for requests. Use `0.0.0.0` to indicate that the server should listen for requests on any IP address or hostname using the specified port and protocol. The protocol (`http://` or `https://`) must be included with each URL.
 
-Valid IP addresses can be localhost, domains, IPv4 or IPv6. Ports can be specified after the address using ':' as a separator, or if the default is being used: *port 80* for *http* protocol, and *port 443* for *https* protocol.
+Valid IP addresses can be localhost, domains, IPv4 or IPv6. Ports can be specified after the address using ':' as a separator, or if the default is being used: *port 80* for *http* protocol, and *port 443* for *HTTPS* protocol.
 
-{SAFE Setting to a non loopback address using the ***http*** protocol will expose the server to the network and requires security measurements (using https, certificates). When set, RavenDB will prevent a startup unless UnsecuredAccessAllowed=PublicNetwork is set manually. see LINK_TO_SETUP_SECURITY /}
+{SAFE Setting to a non loopback address using the ***HTTP*** protocol will expose the server to the network and requires security measurements (using HTTPS, certificates). When set, RavenDB will prevent a startup unless **UnsecuredAccessAllowed** is set to **PublicNetwork** manually. /}
 
 ### Examples
 
