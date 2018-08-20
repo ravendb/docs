@@ -1,4 +1,5 @@
-﻿using Raven.Client;
+﻿using System.Dynamic;
+using Raven.Client;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Conventions;
 using Sparrow.Json;
@@ -19,7 +20,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGenerati
 
                         #endregion
 
-                            string.Empty,
+                        string.Empty,
 
                     #region find_clr_type
 
@@ -40,7 +41,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGenerati
 
                         #endregion
 
-                            string.Empty,
+                        string.Empty,
 
                     #region find_dynamic_collection_name
 
@@ -49,7 +50,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGenerati
 
                             #endregion
 
-                                string.Empty,
+                            string.Empty,
 
                     #region transform_collection_name_to_prefix
 
@@ -58,7 +59,7 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGenerati
 
                             #endregion
 
-                                string.Empty,
+                            string.Empty,
 
                     #region find_identity_property
 
@@ -83,10 +84,36 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration.IdentifierGenerati
                     #endregion
                 }
             };
+        }
 
+        private void Sample()
+        {
+            var store = new DocumentStore()
+            {
+                Conventions =
+                {
+                    #region find_dynamic_collection_name_sample_1
+                    FindCollectionNameForDynamic = o => o.Collection
+                    #endregion
+                }
+            };
 
+            using (var session = store.OpenSession())
+            {
+                #region find_dynamic_collection_name_sample_2
+                dynamic car = new ExpandoObject();
+                car.Name = "Ford";
+                car.Collection = "Cars";
 
+                session.Store(car);
 
+                dynamic animal = new ExpandoObject();
+                animal.Name = "Rhino";
+                animal.Collection = "Animals";
+
+                session.Store(animal);
+                #endregion
+            }
         }
     }
 }

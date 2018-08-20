@@ -10,6 +10,20 @@ The second one is dedicated for dynamic objects:
 
 {CODE find_dynamic_collection_name@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
 
+{INFO:What is a Dynamic Object?}
+
+The `FindCollectionNameForDynamic` only works on objects that inherit from [IDynamicMetaObjectProvider](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.idynamicmetaobjectprovider) interface. In .NET there are two built-in types that implement that interface, the [ExpandoObject](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.expandoobject) and [DynamicObject](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject).
+
+For example if we want to determine a collection using a `Collection` property from a dynamic object we need to set `FindCollectionNameForDynamic` as follows:
+
+{CODE find_dynamic_collection_name_sample_1@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
+
+After that we can store our dynamic object as follows:
+
+{CODE find_dynamic_collection_name_sample_2@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
+
+{INFO/}
+
 ##TransformTypeCollectionNameToDocumentIdPrefix
 
 Collection names determined by recently described convention functions aren't directly used as prefixes in document identifiers. There is a convention function called `TransformTypeCollectionNameToDocumentIdPrefix` which takes the collection name and produces the prefix:
