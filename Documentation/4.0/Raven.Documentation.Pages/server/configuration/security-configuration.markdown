@@ -167,3 +167,13 @@ Allow to specify well known certificate thumbprints that will be trusted by the 
 - **Scope**: Server-wide only
 
 {PANEL/}
+
+{PANEL:Security.DisableHttpsRedirection}
+
+Disable automatic redirection when listening to HTTPS. By default, when using port 443, RavenDB redirects all incoming HTTP traffic on port 80 to HTTPS on port 443.
+
+- **Type**: `bool`
+- **Default**: `false`
+- **Scope**: Server-wide only
+
+{PANEL/}
