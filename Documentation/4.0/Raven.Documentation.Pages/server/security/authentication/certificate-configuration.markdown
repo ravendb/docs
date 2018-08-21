@@ -1,10 +1,10 @@
 # Authentication : Manual Certificate Configuration
 
-In RavenDB, configuration values can be set using environment variables, command line arguments or using the `settings.json` file. For more details, please read the [Configuration Section.](../../configuration/configuration-options)  
+In RavenDB, configuration values can be set using environment variables, command line arguments or using the [settings.json](../../configuration/configuration-options#json) file. For more details, please read the [Configuration Section.](../../configuration/configuration-options)  
 
 {NOTE This section explains how to setup authentication **manually**. Please also take a look at the automated [Setup Wizard](../../../start/installation/setup-wizard) which lets you setup authentication in a much easier and faster way. /}
 
-To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Exec` must be set in `settings.json`.
+To enable authentication, either `Security.Certificate.Path` or `Security.Certificate.Exec` must be set in [settings.json](../../configuration/configuration-options#json).
 
 RavenDB will accept PFX server certificates which contain the private key, are not expired and have the following fields:
 
@@ -15,7 +15,7 @@ The first way to enable authentication is to set `Security.Certificate.Path` wit
 
 When providing a certificate for authentication, you **must** also set the `ServerUrl` configuration option to an HTTPS address.
 
-For example, this is a typical settings.json:
+For example, this is a typical [settings.json](../../configuration/configuration-options#json):
 
 {CODE-BLOCK:json}
 {
@@ -53,7 +53,7 @@ catch
 }
 {CODE-BLOCK/}
 
-And `settings.json` will look something like this:
+And [settings.json](../../configuration/configuration-options#json) will look something like this:
 
 {CODE-BLOCK:json}
 {

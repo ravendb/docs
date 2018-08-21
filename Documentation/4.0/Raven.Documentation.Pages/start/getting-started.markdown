@@ -59,7 +59,7 @@ If you are interested in hosting the server in a Docker container, please read o
 
 ### Configuration
 
-The RavenDB server is using a `settings.json` file to store the server-wide configuration options. This file is located in the `Server` directory, but please note that after making changes to this file, a server restart is required in order for them to be applied.
+The RavenDB server is using a [settings.json](../server/configuration/configuration-options#json) file to store the server-wide configuration options. This file is located in the `Server` directory, but please note that after making changes to this file, a server restart is required in order for them to be applied.
 
 You can read more about the available configuration options in our [dedicated article](../server/configuration/configuration-options).
 
@@ -95,7 +95,7 @@ The port can be changed by editing the `ServerUrl` value.
 
 RavenDB requires write permissions to the following locations:
 
-- The folder where RavenDB server is running (to update `settings.json` by [Setup Wizard](../start/installation/setup-wizard))
+- The folder where RavenDB server is running (to update [settings.json](../server/configuration/configuration-options#json) by the [Setup Wizard](../start/installation/setup-wizard))
 - The data folder ([`DataDir`](../server/configuration/core-configuration#datadir) setting)
 - The logs folder ([`Logs.Path`](../server/configuration/logs-configuration#logs.path) setting)
 

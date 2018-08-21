@@ -96,10 +96,11 @@ Locate the VM's private and public IP addresses in the AWS EC2 Management Consol
 You have a few choices on how to run the RavenDB server. 
 We will use the [Setup Wizard](../../../start/installation/setup-wizard), but you can also configure things [manually](../../../start/installation/manual).
 
-Let's edit the settings.json file so that we can perform the setup remotely using the browser.
+Let's edit the [settings.json](../../../server/configuration/configuration-options#json) file so that we can perform the setup remotely using the browser.
+Notice that when we run the server for the first time, `settings.json` is created from `settings.default.json`. So if `settings.json` doesn't exist, edit `settings.default.json` instead.
 
 {CODE-BLOCK:bash}
-vi RavenDB/Server/settings.json
+vi RavenDB/Server/settings.default.json
 {CODE-BLOCK/}
 
 Edit the `ServerUrl` field to contain the **Private IP** and the `PublicServerUrl` to contain the **Public DNS**. Also make sure to set the `Security.UnsecuredAccessAllowed` field to **PublicNetwork** which will allow you to connect remotely.

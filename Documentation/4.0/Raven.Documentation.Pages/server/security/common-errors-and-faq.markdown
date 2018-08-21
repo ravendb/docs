@@ -19,7 +19,7 @@ System.InvalidOperationException: Validation failed. --->
 System.InvalidOperationException: Failed to simulate running the server with the supplied settings using: https://a.example.ravendb.community:4433  ---> 
 System.InvalidOperationException: Failed to start webhost on node 'A'. The specified ip address might not be reachable due to network issues. 
 It can  happen if the ip is external (behind a firewall, docker). If this is the case, try going back to the previous screen and add the same ip as an external ip.
-Settings file:D:\temp\RavenDB-4.0.0-windows-x64\Server\settings.json.
+Settings file: D:\temp\RavenDB-4.0.0-windows-x64\Server\settings.json.
 IP addresses: 10.0.0.65:4433. 
 ---> Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking.UvException: Error -4092 EACCES permission denied
 {CODE-BLOCK/}
@@ -104,7 +104,7 @@ When building a cluster, repeat this step with nodes B,C and so on.
 ### Can I change the (private) IP address RavenDB binds to?
 
 Yes.  
-Open the settings.json file located in the RavenDB folder, change the `ServerUrl` setting and restart the server.
+Open the [settings.json](../configuration/configuration-options#json) file located in the RavenDB folder, change the `ServerUrl` setting and restart the server.
 
 ### The Let's Encrypt certificate is about to expire but doesn't renew automatically
 
@@ -117,7 +117,7 @@ configuration setting is: Raven.Server.Config.Settings.UriSetting.There is a mis
 cannot automatically renew the Lets Encrypt certificate. Please contact support.
 {CODE-BLOCK/} 
 
-If it's not the same error as above, please open settings.json and make sure you have all the field defined properly. Take a look at the following example:
+If it's not the same error as above, please open [settings.json](../configuration/configuration-options#json) and make sure you have all the field defined properly. Take a look at the following example:
 
 {CODE-BLOCK:JSON}
 {

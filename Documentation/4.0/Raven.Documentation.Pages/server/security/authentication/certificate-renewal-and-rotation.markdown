@@ -8,7 +8,7 @@ If you provided your own certificate to RavenDB, it is **your responsibility** t
 
 Once you have a new valid certificate for your server/cluster you need to make RavenDB use it instead of the currently loaded certificate. Replacing a certificate in the cluster is a distributed operation which requires all the nodes to confirm the replacement. The actual update will happen when all nodes of the cluster confirm the replacement or when there are 3 days left for expiration. 
 
-You can also ignore these limits and replace the certificates immediately but beware of this option. Nodes which didn't confirm the replacement, will not be able to re-join the cluster and will have to be setup manually. This means the new certificate will have to be placed manually in that node and `settings.json` will have to be edited, to contain the new certificate path. Then a server restart is required.
+You can also ignore these limits and replace the certificates immediately but beware of this option. Nodes which didn't confirm the replacement, will not be able to re-join the cluster and will have to be setup manually. This means the new certificate will have to be placed manually in that node and [settings.json](../../configuration/configuration-options#json) will have to be edited, to contain the new certificate path. Then a server restart is required.
 
 {DANGER The new certificate must contain all of the cluster domain names in the CN or ASN properties of the certificate. Otherwise you will get an authentication error because SSL/TLS requires the domain in the certificate to match with the actual domain being used. /}
 

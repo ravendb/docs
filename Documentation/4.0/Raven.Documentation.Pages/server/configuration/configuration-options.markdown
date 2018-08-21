@@ -18,7 +18,7 @@ RAVEN_Setup.Mode=None
 {PANEL:JSON}
 
 The `settings.json` file which can be found in the same directory as the server executable can also be used to change the configuration of the server. 
-The file is read and applied on the server startup only.
+The file is read and applied on the server startup only. It is created when running the server for the first time from the `settings.default.json` file.
 
 ### Example
 
