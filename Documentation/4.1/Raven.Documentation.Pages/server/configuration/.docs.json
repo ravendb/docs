@@ -68,7 +68,9 @@
         "Path": "indexing-configuration.markdown",
         "Name": "Indexing Configuration",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "license-configuration.markdown",
