@@ -143,3 +143,23 @@ Number of minutes after which mapping will end even if there is more to map. Thi
 This will only be applied if we pass the last etag in collection that we saw when batch was started.
 
 {PANEL/}
+
+{PANEL:Indexing.MaxStepsForScript}
+
+The maximum number of steps in the script execution of a JavaScript index.
+
+- **Type**: `int`
+- **Default**: `10000`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Indexing.CleanupIntervalInMin}
+
+Time (in minutes) between auto index cleanup.
+
+- **Type**: `int`
+- **Default**: `10`
+- **Scope**: Server-wide only
+
+{PANEL/}
