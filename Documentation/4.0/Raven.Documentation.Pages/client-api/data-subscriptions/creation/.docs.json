@@ -4,8 +4,8 @@
     "Name": "How to Create a Data Subscription",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1"
     ]
   },
   {
@@ -13,8 +13,8 @@
     "Name": "Examples",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1"
     ]
   },
   {
@@ -22,8 +22,7 @@
     "Name": "API Overview",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   }
 ]
