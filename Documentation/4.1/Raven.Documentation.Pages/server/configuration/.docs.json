@@ -1,0 +1,154 @@
+[
+    {
+        "Path": "configuration-options.markdown",
+        "Name": "Configuration Options",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "command-line-arguments.markdown",
+        "Name": "Command Line Arguments",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "backup-configuration.markdown",
+        "Name": "Backup Options",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "cluster-configuration.markdown",
+        "Name": "Cluster Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "core-configuration.markdown",
+        "Name": "Core Configuration",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
+        "Path": "database-configuration.markdown",
+        "Name": "Database Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "etl-configuration.markdown",
+        "Name": "ETL Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "http-configuration.markdown",
+        "Name": "HTTP Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-configuration.markdown",
+        "Name": "Indexing Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "license-configuration.markdown",
+        "Name": "License Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "logs-configuration.markdown",
+        "Name": "Logs Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "memory-configuration.markdown",
+        "Name": "Memory Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "monitoring-configuration.markdown",
+        "Name": "Monitoring Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "patching-configuration.markdown",
+        "Name": "Patching Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "performance-hints-configuration.markdown",
+        "Name": "Performance Hints Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "query-configuration.markdown",
+        "Name": "Query Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "replication-configuration.markdown",
+        "Name": "Replication Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "security-configuration.markdown",
+        "Name": "Security Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "server-configuration.markdown",
+        "Name": "Server Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "storage-configuration.markdown",
+        "Name": "Storage Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "studio-configuration.markdown",
+        "Name": "Studio Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "subscription-configuration.markdown",
+        "Name": "Subscription Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "testing-configuration.markdown",
+        "Name": "Testing Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "tombstone-configuration.markdown",
+        "Name": "Tombstone Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "transaction-merger-configuration.markdown",
+        "Name": "Transaction Merger Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]
