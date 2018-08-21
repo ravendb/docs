@@ -9,6 +9,7 @@ One of the features that is particularly useful when inserting large amount of d
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **database** | string | Name of database for which bulk operation should be performed. If `null` then the `Database` from DocumentStore will be used. |
+| **token** | CancellationToken | Cancellation token used in order to halt the worker operation. |
 
 | Return Value | |
 | ------------- | ----- |

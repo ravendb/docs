@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Threading;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.BulkInsert;
 using Raven.Documentation.Samples.Orders;
@@ -10,7 +11,7 @@ namespace Raven.Documentation.Samples.ClientApi.BulkInsert
         private interface IFoo
         {
             #region bulk_inserts_1
-            BulkInsertOperation BulkInsert(string database = null);
+            BulkInsertOperation BulkInsert(string database = null, CancellationToken token = default);
             #endregion
         }
 
