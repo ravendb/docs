@@ -31,6 +31,11 @@ proper firewall rules and restrict access by IP. Please visit the [AWS security 
 for more information about securing your VM.
 {WARNING/}
 
+{NOTE:Elastic IP address}
+By default, in AWS, an instance is assigned an IP addresses through DHCP. When the DHCP lease expires, or you restart the instance, this IP is released back to the pool and you will have to re-configure the RavenDB IP address.
+To solve this problem, use an [Elastic IP address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html) which doesn't change, and can even be dynamically re-assigned to other instances as you wish.
+{NOTE/}
+
 Let's open ports 8080 and 38888 for use by RavenDB. You may choose other port numbers off course and restrict access by IP.
 RavenDB will use port 8080 for HTTPS requests and port 38888 for TCP connections. We allow all incoming traffic on these ports by using 0.0.0.0.
 
