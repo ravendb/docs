@@ -199,10 +199,14 @@
   {
     "Path": "testing-configuration.markdown",
     "Name": "Testing Configuration",
-    "Mappings": [],
+	"Mappings": [
+		{
+			"Version": 4.1,
+			"Key": "server/configuration/embedded-configuration"
+		}
+	],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   },
   {

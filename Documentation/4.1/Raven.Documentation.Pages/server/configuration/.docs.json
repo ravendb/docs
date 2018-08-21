@@ -44,6 +44,19 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "embedded-configuration.markdown",
+        "Name": "Embedded Configuration",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "server/configuration/testing-configuration"
+            }
+        ],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "http-configuration.markdown",
         "Name": "HTTP Configuration",
         "Mappings": [],
@@ -130,12 +143,6 @@
     {
         "Path": "subscription-configuration.markdown",
         "Name": "Subscription Configuration",
-        "Mappings": [],
-        "IsPlaceholder": "true"
-    },
-    {
-        "Path": "testing-configuration.markdown",
-        "Name": "Testing Configuration",
         "Mappings": [],
         "IsPlaceholder": "true"
     },
