@@ -56,7 +56,7 @@ namespace Raven.Documentation.Web
                 {
                     controller = MVC.Docs.Name,
                     action = MVC.Docs.ActionNames.Index,
-                    version = "4.0",
+                    version = "4.1",
                     language = Language.Csharp
                 },
                 new
