@@ -24,7 +24,8 @@ Subscription creation is accessible through `DocumentStore`'s `Subscriptions` Pr
 | ------------- | ------------- | ----- |
 | **predicate** | `Expression<Func<T, bool>>` | Predicate that returns a boolean, describing filter of the subscription documents |
 | **options** | `SubscriptionCreationOptions<T>` | Contains subscription creation options |
-| **database** | `string` | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. |
+| **database** | `string` | Name of database to create a data subscription. If `null`, default database configured in DocumentStore will be used. 
+| **token** | `CancellationToken` | Cancellation token used in order to halt the worker operation. ||
 
 | Return value | |
 | ------------- | ----- |

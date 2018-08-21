@@ -27,9 +27,9 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             string Create<T>(Expression<Func<T, bool>> predicate = null, SubscriptionCreationOptions options = null, string database = null);
             string Create<T>(SubscriptionCreationOptions<T> options, string database = null);
 
-            Task<string> CreateAsync(SubscriptionCreationOptions options, string database = null);
-            Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null, SubscriptionCreationOptions options = null, string database = null);
-            Task<string> CreateAsync<T>(SubscriptionCreationOptions<T> options, string database = null);
+            Task<string> CreateAsync(SubscriptionCreationOptions options, string database = null, CancellationToken token = default);
+            Task<string> CreateAsync<T>(Expression<Func<T, bool>> predicate = null, SubscriptionCreationOptions options = null, string database = null, CancellationToken token = default);
+            Task<string> CreateAsync<T>(SubscriptionCreationOptions<T> options, string database = null, CancellationToken token = default);
             #endregion
         }
 
@@ -324,20 +324,18 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
         {
             #region interface_subscription_deletion
             void Delete(string name, string database = null);
-            Task DeleteAsync(string name, string database = null);
+            Task DeleteAsync(string name, string database = null, CancellationToken token = default);
             #endregion
 
             #region interface_subscription_dropping
             void DropConnection(string name, string database = null);
-            Task DropConnectionAsync(string name, string database = null);
+            Task DropConnectionAsync(string name, string database = null, CancellationToken token = default);
             #endregion
 
             #region interface_subscription_state
             SubscriptionState GetSubscriptionState(string subscriptionName, string database = null);
-            Task<SubscriptionState> GetSubscriptionStateAsync(string subscriptionName, string database = null);
+            Task<SubscriptionState> GetSubscriptionStateAsync(string subscriptionName, string database = null, CancellationToken token = default);
             #endregion
-
-
         }
         public async Task SubscriptionMaintainance()
         {

@@ -86,16 +86,16 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 | **Create<T>(SubscriptionCreationOptions<T> options, string database)** | `string` | Creates a new data subscription. |
 | **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
 | **Create(SubscriptionCreationOptions criteria, string database)** | `string` | Creates a new data subscription. |
-| **CreateAsync<T>(SubscriptionCreationOptions<T> options, string database)** | `Task<string>` | Creates a new data subscription. |
-| **CreateAsync<T>(Expression<Func<T, bool>> predicate, SubscriptionCreationOptions options, string database)** | `Task<string>` | Creates a new data subscription. |
+| **CreateAsync<T>(SubscriptionCreationOptions<T> options, string database, CancellationToken token = default))** | `Task<string>` | Creates a new data subscription. |
+| **CreateAsync<T>(Expression<Func<T, bool>> predicate, SubscriptionCreationOptions options, string database, CancellationToken token = default))** | `Task<string>` | Creates a new data subscription. |
 | **Delete(string name, string database)** | `void` | Deletes subscription. |
-| **DeleteAsync(string name, string database)** | `Task` | Deletes subscription. |
+| **DeleteAsync(string name, string database, CancellationToken token = default))** | `Task` | Deletes subscription. |
 | **DropConnection(string name, string database)** | `void` | Drops existing subscription connection with worker. |
-| **DropConnectionAsync(string name, string database)** | `Task` | Drops existing subscription connection with worker. |
+| **DropConnectionAsync(string name, string database, CancellationToken token = default))** | `Task` | Drops existing subscription connection with worker. |
 | **GetSubscriptions(int start, int take, string database)** | `List<SubscriptionState>` | Returns subscriptions list. |
-| **GetSubscriptionsAsync(int start, int take, string database)** | `Task<List<SubscriptionState>>` | Returns subscriptions list. |
+| **GetSubscriptionsAsync(int start, int take, string database, CancellationToken token = default))** | `Task<List<SubscriptionState>>` | Returns subscriptions list. |
 | **GetSubscriptionState(string subscriptionName, string database)** | `SubscriptionState ` | Get specific subscription state. |
-| **GetSubscriptionStateAsync(string subscriptionName, string database)** | `Task<SubscriptionState> ` | Get specific subscription state. |
+| **GetSubscriptionStateAsync(string subscriptionName, string database, CancellationToken token = default))** | `Task<SubscriptionState> ` | Get specific subscription state. |
 | **GetSubscriptionWorker<T>(string subscriptionName, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
 | **GetSubscriptionWorker(string subscriptionName, string database)** | `SubscriptionWorker<dynamic>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `BlittableJsonReader`, wrapped by dynamic object. |
 | **GetSubscriptionWorker(SubscriptionWorkerOptions options, string database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
