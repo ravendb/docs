@@ -15,3 +15,4 @@
 | **LastQueryTime** | DateTime | The timestamp of the last time the index was queried. |
 | **DurationInMs** | long | The duration of actually executing the query server side. |
 | **ResultSize** | long | The size of the response which was sent from the server. This value is the _uncompressed_ size.  |
+| **NodeTag** | string | Tag of a cluster node which responded to the query.  |
