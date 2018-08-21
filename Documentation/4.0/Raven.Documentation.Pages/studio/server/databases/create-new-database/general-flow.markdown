@@ -34,11 +34,13 @@ From the databases list view, click the **'New database'** button.
 ![Figure 2. Create New Database - Database name](images/new-database-general-2.png "Enter Database Name")
 
 {NOTE: }
-A database name can be any sequence of characters except for the following:  
 
-* A name cannot start or end with  ' . '  
-* A name cannot exceed 230 characters  
-* A name cannot contain any of the following:   /, \, :, *, ?, ", <, >, |  
+* A database name can be any sequence of **letters**, **digits** and characters that match the **regex**: **[ _ \ - \ . ]+**  
+* A name cannot exceed 128 characters  
+* Spaces are not allowed  
+* For example:  
+  * car_orders_2018  
+  * users.payments-2019  
 {NOTE/}
 {PANEL/}
 
