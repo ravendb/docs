@@ -49,7 +49,10 @@ Now, let's modify the original document. This would create another revision:
 As you can see, we have a full audit record of all the changes that were made to the document.
 
 You can access the revisions of a specific document by the document's ID ("users/1").
-Or you can access a specific revision by its change vector.
+Or you can access a specific revision by its change vector or by a specific date.
+Accessing a revision by a change vector would reutrn a specific revision, 
+while accessing a revision by a date would return the revision on this specific date if exists,
+and if not it would reutrn the revision right this date.
 
 {CODE get_revisions@Server\Revisions.cs /}
 

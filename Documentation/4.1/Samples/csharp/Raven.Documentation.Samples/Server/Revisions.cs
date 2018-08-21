@@ -76,6 +76,11 @@ namespace Raven.Documentation.Samples.Server
                         .Advanced
                         .Revisions
                         .GetAsync<User>(revisionsMetadata[0].GetString(Constants.Documents.Metadata.ChangeVector));
+
+                    User revisonAtYearAgo = await session
+                        .Advanced
+                        .Revisions
+                        .GetAsync<User>("users/1", DateTime.Now.AddYears(-1));
                     #endregion
                 }
             }
