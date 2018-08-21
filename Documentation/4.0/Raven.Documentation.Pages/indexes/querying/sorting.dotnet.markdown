@@ -59,6 +59,22 @@ order by score()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Chaining Orderings
+
+It is also possible to chain multiple orderings of the query results, 
+i.e. sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`), etc..  
+This can be achived by using the `ThenBy` (`ThenByDescending`) and `ThenByScore` (`ThenByScoreDescending`) methods.
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query sorting_4_3@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Index sorting_1_5@Indexes\Querying\Sorting.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Products/ByUnitsInStockAndName' 
+where UnitsInStock > 10
+order by UnitsInStock, score(), Name desc
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 ## Random Ordering
 
 If you want to randomize the order of your results each time the query is executed, use the `RandomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):

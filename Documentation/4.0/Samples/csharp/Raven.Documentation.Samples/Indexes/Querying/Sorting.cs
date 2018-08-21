@@ -41,6 +41,21 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         }
         #endregion
 
+        #region sorting_1_5
+        public class Products_ByUnitsInStockAndName : AbstractIndexCreationTask<Product>
+        {
+            public Products_ByUnitsInStockAndName()
+            {
+                Map = products => from product in products
+                    select new
+                    {
+                        product.UnitsInStock,
+                        product.Name
+                    };
+            }
+        }
+        #endregion
+
         #region sorting_6_4
         public class Products_ByName_Search : AbstractIndexCreationTask<Product>
         {
@@ -202,6 +217,19 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .DocumentQuery<Product, Products_ByUnitsInStock>()
                         .WhereGreaterThan(x => x.UnitsInStock, 10)
                         .OrderByScore()
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region sorting_4_3
+                    IList<Product> results = session
+                        .Query<Product, Products_ByUnitsInStockAndName>()
+                        .Where(x => x.UnitsInStock > 10)
+                        .OrderBy(x => x.UnitsInStock)
+                        .ThenByScore()
+                        .ThenByDescending(x => x.Name)
                         .ToList();
                     #endregion
                 }
