@@ -32,6 +32,18 @@ If value is not set, or set to null, the number of extracted documents fallbacks
 
 {PANEL/}
 
+{PANEL:ETL.MaxNumberOfExtractedItems}
+
+Max number of extracted items (documents, counters, etc) in an ETL batch.
+
+- **Type**: `int`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+If value is not set, or set to null, the number of extracted items is infinite per ETL batch.
+
+{PANEL/}
+
 {PANEL:ETL.MaxFallbackTimeInSec}
 
 Maximum number of seconds the ETL process will be in a fallback mode after a load connection failure to a destination. The fallback mode means suspending the process.
