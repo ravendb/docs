@@ -4,16 +4,13 @@
     "Name": "Single Document",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0"
+      "4.1"
     ]
   },
   {
     "Path": "set-based.markdown",
     "Name": "Set Based",
     "Mappings": [],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
+    "IsPlaceholder": "true"
   }
 ]
