@@ -479,10 +479,14 @@ namespace Raven.Documentation.Web.Controllers
                         ImageUrlGenerator = GetImageUrlGenerator(HttpContext, DocumentStore)
                     }, new NoOpGitFileInformationProvider());
 
-            var query = DocumentSession
+            var indexQuery = DocumentSession
                 .Advanced
-                .DocumentQuery<DocumentationPage>()
-                .GetIndexQuery();
+                .DocumentQuery<DocumentationPage>();
+
+            if (all == false)
+                indexQuery = indexQuery.WhereEquals(x => x.Version, CurrentVersion);
+
+            var query = indexQuery.GetIndexQuery();
 
             DocumentStore
                 .Operations
