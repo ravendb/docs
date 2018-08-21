@@ -20,7 +20,7 @@ SNMP support is available for enterprise licenses only.
 ### Enabling SNMP in RavenDB
 
 RavenDB is already configured to support SNMP. All you have to do is enable it and restart the server. 
-This is done by adding the following key to your settings.json file:
+This is done by adding the following key to your [settings.json](../../configuration/configuration-options#json) file:
 
 {CODE-BLOCK:json}
 {

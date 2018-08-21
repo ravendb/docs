@@ -4,7 +4,7 @@ RavenDB has extensive support for logging, enabling you to figure out exactly wh
 
 {PANEL:Logging to Files}
 
-The logging to files can be setup by [logs configuration](../../server/configuration/logs-configuration) defined in `settings.json` file. By default, the logging
+The logging to files can be setup by [logs configuration](../../server/configuration/logs-configuration) defined in the [settings.json](../configuration/configuration-options#json) file. By default, the logging
 is turned on with the following options:
 
 - logging level: `Operations` (high level info for operational users)
@@ -14,9 +14,9 @@ If you want to see the low level debug information you need to set the logging l
 
 {NOTE: RavenCLI}
 
-Modifying the `settings.json` file requires the server restart. In order to avoid that you can modify the current log level by using the [CLI](../../server/administration/cli). 
+Modifying the [settings.json](../configuration/configuration-options#json) file requires the server restart. In order to avoid that you can modify the current log level by using the [CLI](../../server/administration/cli). 
 
-This will change the logging level without the need of doing any server restarts, but will not modify the `settings.json` file, so please bare in mind that after restart the logging level be read from configuration file again.
+This will change the logging level without the need of doing any server restarts, but will not modify the [settings.json](../configuration/configuration-options#json) file, so please bare in mind that after restart the logging level be read from configuration file again.
 
 {CODE-BLOCK:plain}
 log <on|off|http-on|http-off|none|operations|information>
