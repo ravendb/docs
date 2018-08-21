@@ -446,6 +446,15 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 session.SaveChanges();
                 #endregion
 
+                #region filter_items_from_array_session_generic
+                // filter out all comments of a blogpost which contains the word "wrong" in their contents 
+                session.Advanced.Patch<BlogPost, BlogComment>("blogposts/1",
+                    x => x.Comments,
+                    comments => comments.RemoveAll(y => y.Content.Contains("wrong")));
+
+                session.SaveChanges();
+                #endregion
+
                 #region filter_items_from_array_store
                 // filter out all comments of a blogpost which contains the word "wrong" in their contents
                 store.Operations.Send(new PatchOperation(

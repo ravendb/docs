@@ -181,8 +181,8 @@ Inserting item into specific position is supported only by the non-typed APIs
 
 ###Filter out items from an array
 
-Filtering items from an array supported only by the non-typed APIs
 {CODE-TABS}
+{CODE-TAB:csharp:Session-typed-syntax filter_items_from_array_session_generic@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Session-syntax-untyped filter_items_from_array_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Operations-syntax filter_items_from_array_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
