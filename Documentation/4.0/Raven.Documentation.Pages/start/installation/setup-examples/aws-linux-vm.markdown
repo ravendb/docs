@@ -107,6 +107,16 @@ Edit the `ServerUrl` field to contain the **Private IP** and the `PublicServerUr
 
 ![10](images/aws-linux/10.png)
 
+{NOTE:Write Permissions}
+
+RavenDB requires write permissions to the following locations:
+
+- The folder where RavenDB server is running
+- The data folder
+- The logs folder
+
+{NOTE/}
+
 Now we will setup and start the RavenDB service. 
 
 Open a terminal and create the file /etc/systemd/system/ravendb.service, using super user permissions containing:

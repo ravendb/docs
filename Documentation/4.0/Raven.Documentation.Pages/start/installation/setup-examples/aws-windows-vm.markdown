@@ -84,6 +84,17 @@ Install the [Visual C++ 2015 Redistributable Package](https://support.microsoft.
 
 Download RavenDB and extract it to a path of your choice (e.g. C:\Raven4\).
 
+{NOTE:Write Permissions}
+
+RavenDB requires write permissions to the following locations:
+
+- The folder where RavenDB server is running
+- The data folder
+- The logs folder
+
+If you intend to run as a service, the write permissions should be granted to the user running the service (e.g. "Local Service").
+{NOTE/}
+
 ![22](images/aws-windows/22.png)
 
 You have a few choices on how to run the RavenDB server. 
