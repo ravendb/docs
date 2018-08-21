@@ -194,6 +194,8 @@ Access the certificate view to see both the loaded server certificate and the ad
 
 Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
 
+Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options#json). It's not necessary anymore because access to the server now requires using a registered client certificate. 
+
 Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 
 ## Related Articles
