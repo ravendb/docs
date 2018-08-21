@@ -3,7 +3,9 @@
         "Path": "configuration-options.markdown",
         "Name": "Configuration Options",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "command-line-arguments.markdown",
