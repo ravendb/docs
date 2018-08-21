@@ -119,6 +119,7 @@ You can store binary data that are kept as attachments in RavenDB using `loadAtt
 
 {RAW}
 <pre>
+<code>
 CREATE TABLE [dbo].[Attachments]
 (
     [Id] int identity primary key,
@@ -126,6 +127,7 @@ CREATE TABLE [dbo].[Attachments]
     [AttachmentName] [nvarchar](50) NULL,
     [Data] [varbinary](max) NULL
 )
+</code>
 </pre>
 {RAW/}
 
