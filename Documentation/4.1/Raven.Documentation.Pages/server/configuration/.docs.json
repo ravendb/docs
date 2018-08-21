@@ -41,7 +41,9 @@
         "Path": "etl-configuration.markdown",
         "Name": "ETL Configuration",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "embedded-configuration.markdown",
