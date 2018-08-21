@@ -210,6 +210,24 @@ Renaming property supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
+###Add document
+
+Adding a new document supported only by the non-typed APIs
+{CODE-TABS}
+{CODE-TAB:csharp:Session-syntax-untyped add_document_session@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TAB:csharp:Operations-syntax add_document_store@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TABS/}
+
+###Clone document
+
+Coloning document supported only by the non-typed APIs
+{CODE-TABS}
+{CODE-TAB:csharp:Session-syntax-untyped clone_document_session@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TAB:csharp:Operations-syntax clone_document_store@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TABS/}
+
+* Cloning document with attachments will generate a new ducoment without attachments
+
 {PANEL/}
 
 ## Related Articles
