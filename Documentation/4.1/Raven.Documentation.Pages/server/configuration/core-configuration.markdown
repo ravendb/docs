@@ -186,3 +186,18 @@ The URLs which the server should contact when requesting certificates from using
 - **Scope**: Server-wide or per database
 
 {PANEL/}
+
+{PANEL:Features.Availability}
+
+ Indicates what set of features should be available.
+
+- **Type**: `enum`
+- **Default**: `Stable`
+- **Scope**: Server-wide only
+
+Possible values:
+
+- `Stable` : Standard set of features
+- `Experimental` : Enables experimental features
+
+{PANEL/}
