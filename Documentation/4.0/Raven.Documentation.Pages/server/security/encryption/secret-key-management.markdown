@@ -12,7 +12,7 @@ In RavenDB this can be handled in either of two ways:
 
 If a master key is provided, RavenDB will use it to encrypt the secret keys of encrypted databases.
 
-You can provide a master key by setting `Security.MasterKey.Exec` and `Security.MasterKey.Exec.Arguments` in `settings.json`. RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use. This option is useful when you want to protect your master key with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection.
+You can provide a master key by setting `Security.MasterKey.Exec` and `Security.MasterKey.Exec.Arguments` in [settings.json](../../configuration/configuration-options#json). RavenDB will invoke a process you specify, so you can write your own scripts / mini programs and apply whatever logic you need. It creates a clean separation between RavenDB and the secret store in use. This option is useful when you want to protect your master key with other solutions such as "Azure Key Vault", "HashiCorp Vault" or even Hardware-Based Protection.
 
 RavenDB expects to get a cryptographically secure 256-bit key through the standard output.
 
@@ -22,7 +22,7 @@ For example, the following C# Console Application (GiveMeKey.cs) will generate a
 {CODE-TAB:csharp:GiveMeKey.cs writing_key@Server\Security\GiveMeKey.cs /}
 {CODE-TABS/}
 
-And `settings.json` can look like this:
+And [settings.json](../../configuration/configuration-options#json) can look like this:
 
 {CODE-BLOCK:json}
 {
@@ -34,7 +34,7 @@ And `settings.json` can look like this:
 }
 {CODE-BLOCK/}
 
-Another way to provide a master key is to use a file containing the raw key bytes. In that case, set `Security.MasterKey.Path` in `settings.json` with the file path. RavenDB expects a cryptographically secure 256-bit key.
+Another way to provide a master key is to use a file containing the raw key bytes. In that case, set `Security.MasterKey.Path` in [settings.json](../../configuration/configuration-options#json) with the file path. RavenDB expects a cryptographically secure 256-bit key.
 
 ## Relying on the OS Protection Methods
 

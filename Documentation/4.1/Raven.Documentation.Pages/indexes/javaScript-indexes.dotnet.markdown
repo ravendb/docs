@@ -6,7 +6,7 @@ All other capabilities and features are the same as C# indexes.
 
 {INFO:Information}
 This is an experimental feature.
-You need to enable the featured by adding the following key to your settings.json file:
+You need to enable the featured by adding the following key to your [settings.json](../server/configuration/configuration-options#json) file:
 
 {CODE-BLOCK:json}
 {

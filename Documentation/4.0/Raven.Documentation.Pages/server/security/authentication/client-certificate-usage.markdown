@@ -30,7 +30,7 @@ The certificate will be registered as a trusted certificate with a `Cluster Admi
 
 You can use a client to make an HTTP request to the server. At this point you only have a **server certificate** and you will use it (acting as the client certificate).
 
-Assume we started the server with the following settings.json:
+Assume we started the server with the following [settings.json](../../configuration/configuration-options#json):
 
 {CODE-BLOCK:json}
 {
