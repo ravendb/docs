@@ -31,6 +31,20 @@ The file is read and applied on the server startup only. It is created when runn
 
 {NOTE Changes in `settings.json` override the environment variables settings. /}
 
+{INFO:JSON Arrays}
+
+All configuration options that support multiple values (for example strings separated by `;`) can be configured via regular JSON array e.g. [`Security.WellKnownCertificates.Admin`](../../server/configuration/security-configuration#security.wellknowncertificates.admin)
+
+{CODE-BLOCK:json}
+{
+    "ServerUrl": "http://127.0.0.1:8080",
+    "Setup.Mode": "None",
+    "Security.WellKnownCertificates.Admin" : [ "297430d6d2ce259772e4eccf97863a4dfe6b048c", "e6a3b45b062d509b3382282d196efe97d5956ccb" ]
+}
+{CODE-BLOCK/}
+
+{INFO/}
+
 {PANEL/}
 
 {PANEL:Command Line Arguments}
