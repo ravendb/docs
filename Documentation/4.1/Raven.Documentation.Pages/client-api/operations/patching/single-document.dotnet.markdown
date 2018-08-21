@@ -68,6 +68,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 | **Put(T item)** | `JavaScriptArray` | Allows adding `item` to an array. |
 | **Put(params T[] items)** | `JavaScriptArray` | Items to be added to the array. |
 | **RemoveAt(int index)** | `JavaScriptArray` | Removes item in position `index` in array. |
+| **RemoveAll(Func<T, bool> predicate)** | `JavaScriptArray` | Removes all the items in the array that satisfy the given predicate. |
 
 {INFO/}
 
