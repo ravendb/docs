@@ -6,5 +6,50 @@
         "SupportedVersions": [
             "4.1"
         ]
+    },
+    {
+        "Path": "/administration",
+        "Name": "Administration",
+        "Mappings": []
+    },
+    {
+        "Path": "/clustering",
+        "Name": "Clustering",
+        "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/extensions",
+        "Name": "Extensions",
+        "Mappings": []
+    },
+    {
+        "Path": "/security",
+        "Name": "Security",
+        "Mappings": []
+    },
+    {
+        "Path": "/storage",
+        "Name": "Storage",
+        "Mappings": []
+    },
+    {
+        "Path": "/ongoing-tasks",
+        "Name": "Ongoing Tasks",
+        "Mappings": []
+    },
+    {
+        "Path": "/troubleshooting",
+        "Name": "Troubleshooting",
+        "Mappings": []
+    },
+    {
+        "Path": "/kb",
+        "Name": "Knowledge Base",
+        "Mappings": []
     }
 ]
