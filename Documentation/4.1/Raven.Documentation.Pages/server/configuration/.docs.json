@@ -122,7 +122,9 @@
         "Path": "security-configuration.markdown",
         "Name": "Security Configuration",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "server-configuration.markdown",
