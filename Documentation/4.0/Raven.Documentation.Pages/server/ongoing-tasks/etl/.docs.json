@@ -4,8 +4,7 @@
     "Name": "ETL Basics",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   },
   {
@@ -13,8 +12,7 @@
     "Name": "RavenDB ETL",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   },
   {
@@ -22,8 +20,7 @@
     "Name": "SQL ETL",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   }
 ]
