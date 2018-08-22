@@ -5,7 +5,7 @@ However, these options can be manually configured in order to accommodate differ
 
 {PANEL:Environment Variables}
 
-Configuration can be adjusted by preceding configuration keys with `RAVEN_` or `RAVEN.` prefix. 
+Configuration can be adjusted by preceding configuration keys with `RAVEN_` or `RAVEN.` prefix. All `.` in configuration keys can be substituted with `_` if needed so from Server perspective `RAVEN_Setup.Mode` and `RAVEN_Setup_Mode` are equivalent.
 
 ### Example
 
