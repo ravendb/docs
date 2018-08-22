@@ -14,6 +14,14 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "how-to-subscribe-to-counter-changes.markdown",
+        "Name": "How to Subscribe to Counter Changes",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "how-to-subscribe-to-index-changes.markdown",
         "Name": "How to Subscribe to Index Changes",
         "Mappings": [],

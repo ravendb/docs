@@ -9,10 +9,9 @@ This mechanism lets you notify users if something has changed without the need t
 Changes API uses WebSockets under the covers. Due to [the lack of support for client certificates in WebSockets implementation in .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761)
 the Changes API won't work for secured servers accessible over HTTPS.
 
-This issue will be fixed in the final version of .NET Core 2.1 (Q2 2018). The fix is already available in [daily builds of .NET Core 2.1](https://github.com/dotnet/core-setup#daily-builds). 
-In order to workaround this you can switch your application to use .NET Core 2.1 (build `2.1.0-preview2-26308-01` or newer). 
+This issue is fixed in the final version of .NET Core 2.1 available [here](https://www.microsoft.com/net/download). In order to workaround this you can switch your application to use .NET Core 2.1.
 
-The issue affects only the RavenDB client, the server can be running on .NET Core 2.0.
+The issue affects only the RavenDB client.
 {DANGER/}
 
 ## Accessing Changes API
@@ -40,11 +39,15 @@ The changes subscription is accessible by a document store through its `IDatabas
 In order to retrieve notifications you have to subscribe to server-side events by using one of the following methods:
 
 - [ForAllDocuments](../../client-api/changes/how-to-subscribe-to-document-changes#foralldocuments)
+- [ForAllCounters](../../client-api/changes/how-to-subscribe-to-counter-changes#forallcounters)
 - [ForAllIndexes](../../client-api/changes/how-to-subscribe-to-index-changes#forallindexes)
 - [ForAllOperations](../../client-api/changes/how-to-subscribe-to-operation-changes#foralloperations)
 - [ForDocument](../../client-api/changes/how-to-subscribe-to-document-changes#fordocument)
 - [ForDocumentsInCollection](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsincollection)
 - [ForDocumentsStartingWith](../../client-api/changes/how-to-subscribe-to-document-changes#fordocumentsstartingwith)
+- [ForCounter](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounter)
+- [ForCounterOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcounterofdocument)
+- [ForCountersOfDocument](../../client-api/changes/how-to-subscribe-to-counter-changes#forcountersofdocument)
 - [ForIndex](../../client-api/changes/how-to-subscribe-to-index-changes#forindex)
 - [ForOperationId](../../client-api/changes/how-to-subscribe-to-operation-changes#foroperation)
 
@@ -63,5 +66,6 @@ In order to end subscription (stop listening for particular notifications) you m
 ### Changes API
 
 - [How to Subscribe to Document Changes](../../client-api/changes/what-is-changes-api)
+- [How to Subscribe to Counter Changes](../../client-api/changes/what-is-changes-api)
 - [How to Subscribe to Index Changes](../../client-api/changes/how-to-subscribe-to-index-changes)
 - [How to Subscribe to Operation Changes](../../client-api/changes/how-to-subscribe-to-operation-changes)
