@@ -211,6 +211,27 @@ Renaming property supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
+###Add document
+
+Adding a new document is supported only by the non-typed APIs
+{CODE-TABS}
+{CODE-TAB:csharp:Session-syntax-untyped add_document_session@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TAB:csharp:Operations-syntax add_document_store@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TABS/}
+
+###Clone document
+
+In order to clone a document use put method as follows
+{CODE-TABS}
+{CODE-TAB:csharp:Session-syntax-untyped clone_document_session@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TAB:csharp:Operations-syntax clone_document_store@ClientApi\Operations\Patches\PatchRequests.cs /}
+{CODE-TABS/}
+
+{INFO:Cloning, Attachments & Counters} 
+The attachments and/or counters from source document will not be copied to the new one automatically.
+{INFO/}
+
+
 {PANEL/}
 
 ## Related Articles

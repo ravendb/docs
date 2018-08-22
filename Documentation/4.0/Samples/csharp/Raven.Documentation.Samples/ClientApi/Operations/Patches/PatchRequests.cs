@@ -731,20 +731,20 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 using (var session = store.OpenSession())
                 {
                     #region add_document_session
-                    session.Advanced.Defer(new PatchCommandData("dogOwners/A-1", null,
+                    session.Advanced.Defer(new PatchCommandData("employees/A-1", null,
                         new PatchRequest
                         {
-                            Script = "put('dogs/', { name: this.dogName });",
+                            Script = "put('orders/', { Employee: id(this) });",
                         }, null));
 
                     session.SaveChanges();
                     #endregion
 
                     #region clone_document_session
-                    session.Advanced.Defer(new PatchCommandData("users/A-1", null,
+                    session.Advanced.Defer(new PatchCommandData("employees/A-1", null,
                         new PatchRequest
                         {
-                            Script = "put('users/', this);",
+                            Script = "put('employees/', this);",
                         }, null));
 
                     session.SaveChanges();
@@ -752,16 +752,16 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 }
 
                 #region add_document_store
-                store.Operations.Send(new PatchOperation("dogOwners/A-1", null, new PatchRequest
+                store.Operations.Send(new PatchOperation("employees/A-1", null, new PatchRequest
                 {
-                    Script = "put('dogs/', { name: this.dogName });",
+                    Script = "put('orders/', { Employee: id(this) });",
                 }));
                 #endregion
 
                 #region clone_document_store
-                store.Operations.Send(new PatchOperation("users/A-1", null, new PatchRequest
+                store.Operations.Send(new PatchOperation("employees/A-1", null, new PatchRequest
                 {
-                    Script = "put('users/', this);",
+                    Script = "put('employees/', this);",
                 }));
                 #endregion
             }

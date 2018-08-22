@@ -212,7 +212,7 @@ Renaming property supported only by the non-typed APIs
 
 ###Add document
 
-Adding a new document supported only by the non-typed APIs
+Adding a new document is supported only by the non-typed APIs
 {CODE-TABS}
 {CODE-TAB:csharp:Session-syntax-untyped add_document_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Operations-syntax add_document_store@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -220,13 +220,15 @@ Adding a new document supported only by the non-typed APIs
 
 ###Clone document
 
-Coloning document supported only by the non-typed APIs
+In order to clone a document use put method as follows
 {CODE-TABS}
 {CODE-TAB:csharp:Session-syntax-untyped clone_document_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Operations-syntax clone_document_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-* Cloning document with attachments will generate a new ducoment without attachments
+{INFO:Cloning & Attachments} 
+The attachments from source document will not be copied to the new one automatically.
+{INFO/}
 
 {PANEL/}
 
