@@ -99,6 +99,8 @@ RavenDB requires write permissions to the following locations:
 - The data folder ([`DataDir`](../server/configuration/core-configuration#datadir) setting)
 - The logs folder ([`Logs.Path`](../server/configuration/logs-configuration#logs.path) setting)
 
+If you intend to run as a service, the write permissions should be granted to the user running the service (e.g. "Local Service").
+
 {NOTE/}
 
 ---

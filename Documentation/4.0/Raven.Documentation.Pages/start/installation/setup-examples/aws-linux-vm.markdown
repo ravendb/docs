@@ -31,6 +31,11 @@ proper firewall rules and restrict access by IP. Please visit the [AWS security 
 for more information about securing your VM.
 {WARNING/}
 
+{NOTE:Elastic IP address}
+By default, in AWS, an instance is assigned an IP addresses through DHCP. When the DHCP lease expires, or you restart the instance, this IP is released back to the pool and you will have to re-configure the RavenDB IP address.
+To solve this problem, use an [Elastic IP address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html) which doesn't change, and can even be dynamically re-assigned to other instances as you wish.
+{NOTE/}
+
 Let's open ports 443 and 38888 for use by RavenDB. You may choose other port numbers off course and restrict access by IP.
 RavenDB will use port 443 for HTTPS requests and port 38888 for TCP connections. We allow all incoming traffic on these ports by using 0.0.0.0.
 
@@ -106,6 +111,16 @@ vi RavenDB/Server/settings.default.json
 Edit the `ServerUrl` field to contain the **Private IP** and the `PublicServerUrl` to contain the **Public DNS**. Also make sure to set the `Security.UnsecuredAccessAllowed` field to **PublicNetwork** which will allow you to connect remotely.
 
 ![10](images/aws-linux/10.png)
+
+{NOTE:Write Permissions}
+
+RavenDB requires write permissions to the following locations:
+
+- The folder where RavenDB server is running
+- The data folder
+- The logs folder
+
+{NOTE/}
 
 Now we will setup and start the RavenDB service. 
 
@@ -183,6 +198,8 @@ Access the certificate view to see both the loaded server certificate and the ad
 ![18](images/aws-linux/18.png)
 
 Congratulations! You have a secure RavenDB server running on a simple EC2 machine. 
+
+Don't forget to delete the `Security.UnsecuredAccessAllowed` property from [settings.json](../../../server/configuration/configuration-options#json). It's not necessary anymore because access to the server now requires using a registered client certificate. 
 
 Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 

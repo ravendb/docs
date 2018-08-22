@@ -179,6 +179,10 @@ Value type: REG_DWORD
 Value data: 0 (False)  
 {CODE-BLOCK/}
 
+### RavenDB is running as a service in Windows and Chrome doesn't use the client certificate from the OS store
+
+That is because the certificate was installed to the OS by the service user (during setup) but Chrome can't access it because it's running as another user (or as Administrator). The solution is to import the certificate manually to Chrome or to install it again to the OS store, this time with the same user as Chrome.
+
 ### Authentication Error Occurred in Firefox
 
 You cannot access the Studio using Firefox even though you have finished the setup wizard successfully and you also checked the box saying "Automatically register the admin client certificate in this (local) OS".

@@ -31,6 +31,11 @@ proper firewall rules and restrict access by IP. Please visit the [AWS security 
 for more information about securing your VM.
 {WARNING/}
 
+{NOTE:Elastic IP address}
+By default, in AWS, an instance is assigned an IP addresses through DHCP. When the DHCP lease expires, or you restart the instance, this IP is released back to the pool and you will have to re-configure the RavenDB IP address.
+To solve this problem, use an [Elastic IP address](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html) which doesn't change, and can even be dynamically re-assigned to other instances as you wish.
+{NOTE/}
+
 Let's open ports 443 and 38888 for use by RavenDB. You may choose other port numbers of course and restrict access by IP.
 RavenDB will use port 443 for HTTPS requests and port 38888 for TCP connections. We allow all incoming traffic on these ports by using 0.0.0.0.
 
@@ -83,6 +88,17 @@ Install the [Visual C++ 2015 Redistributable Package](https://support.microsoft.
 ## Run the RavenDB Setup Wizard
 
 Download RavenDB and extract it to a path of your choice (e.g. C:\Raven4\).
+
+{NOTE:Write Permissions}
+
+RavenDB requires write permissions to the following locations:
+
+- The folder where RavenDB server is running
+- The data folder
+- The logs folder
+
+If you intend to run as a service, the write permissions should be granted to the user running the service (e.g. "Local Service").
+{NOTE/}
 
 ![22](images/aws-windows/22.png)
 
