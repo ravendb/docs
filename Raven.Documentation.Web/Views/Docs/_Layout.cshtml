@@ -47,7 +47,7 @@
                                 <input autocomplete="off" type="text" id="search-docs" data-bind="hasFocus: isSearchFocused, value: input, valueUpdate: 'afterkeydown'" class="form-control" name="searchTerm" placeholder="Search in @Model.SelectedVersion documentation" />
                                 <div class="dropdown-sugestions" data-bind="style: { display: shouldShowSuggest() ? 'block' : 'none' }, foreach: items">
                                     <p>
-                                        <a data-bind="attr:{href:$root.getLink($data)}"><span data-bind="text: Path"></span> / <span href="#" data-bind="text:Title"></span></a>
+                                        <a data-bind="attr:{href:$root.getLink($data)}"><span data-bind="text: path"></span> / <span href="#" data-bind="text: title"></span></a>
                                     </p>
                                 </div>
                                 <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></button>
