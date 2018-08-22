@@ -41,7 +41,7 @@ Open the down arrow and click `New database from legacy files`.
     
     ![Figure 3. Create New Database From Legacy Files - Advanced](images/new-database-from-legacy-3.png "Advanced source properties")
 
-    * Journals directory: use if custom path to journals / transaction logs was specified (value of Raven/TransactionJournalsPath or Raven/Esent/LogsPath setting)
+    * Journals directory: use if custom path to journals / transaction logs was specified (value of 'Raven/TransactionJournalsPath' or 'Raven/Esent/LogsPath' 3.x setting)
 
     * Batch size: size of documents / files batch when exporting from 3.x data (default: 1024)
 
@@ -51,14 +51,13 @@ Open the down arrow and click `New database from legacy files`.
 
         * Encryption: 
         
-            The data directory contains the encryption information as a plain text in Database.Document file. 
-            You need to insert :
+            You need to insert values of the following settings from 3.x resource:
 
-            * Encryption key : value of 'Raven/Encryption/Key'
+            * Encryption key : 'Raven/Encryption/Key'
             
-            * Encryption algorithm : value of 'Raven/Encryption/Algorithm'
+            * Encryption algorithm : 'Raven/Encryption/Algorithm'
 
-            * Encryption key size : value of 'Raven/Encryption/KeyBitsPreference'   
+            * Encryption key size : 'Raven/Encryption/KeyBitsPreference'   
            
             ![Figure 4. Create New Database From Legacy Files - Encryption](images/new-database-from-legacy-4.png "Encryption")
 
@@ -68,9 +67,8 @@ Open the down arrow and click `New database from legacy files`.
 {PANEL/}
 
 
-
 {NOTE: }
- Note: The backup will be restored only to the current node After restore, this database can be added to other nodes using the 'Manage group' button.
+ Note: The legacy database / file system will be migrated only to the current node, this database can be added to other nodes using the 'Manage group' button.
  Learn more about **Manage group** in : [Manage group](../../../database/settings/manage-database-group)  
 {NOTE/}
 
