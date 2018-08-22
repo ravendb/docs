@@ -1,0 +1,108 @@
+﻿# Getting Started : Writing your Unit Test using TestDriver
+
+In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
+TestDriver now uses [RavenEmbedded](../server/Embedded) to run the server, in this way we can just start using it without preparations.
+
+- [RavenTestDriver](../start/test-driver#raventestdriver)
+- [Pre-initializing the store](../start/test-driver#preinitialize)
+- [ConfigureServer](../start/test-driver#configureserver)
+- [Unit test](../start/test-driver#unittest)
+- [Complete example](../start/test-driver#complete-example)
+- [CI Servers](../start/test-driver#continuous-integration-servers)
+
+{PANEL:RavenTestDriver}
+
+First we define a class that derives from Raven's TestDriver.
+Lets start with reviewing the TestDriver's methods and properties and later we will get into implementation (complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver##complete-example) of the page).
+
+### Properties and Methods
+| Signature | Description |
+| ----------| ----- |
+| **protected virtual string DatabaseDumpFilePath => null;** | Allows you to override the path to the database dump file that will be loaded when calling ImportDatabase. |
+| **protected virtual Stream DatabaseDumpFileStream => null;** |  Allows you to override the stream containing the database dump that will be loaded when calling ImportDatabase.  |
+| **public static bool Debug { get; set; }** | Indicates if the test driver is running in debug mode or not. |
+| **public static Process GlobalServerProcess => globalServerProcess;** |Gives you access to the server's process. |
+| **public IDocumentStore GetDocumentStore([CallerMemberName] string database = null, TimeSpan? waitForIndexingTimeout = null)** | Gets you an IDocumentStore instance for the requested database. |
+| **protected virtual void PreInitialize(IDocumentStore documentStore)** |Allows you to pre-initialize the IDocumentStore. |
+| **protected virtual void SetupDatabase(IDocumentStore documentStore)** | Allows you to initialize the database. |
+| **protected event EventHandler DriverDisposed;** |An event that is raised when the test driver is been disposed of. |
+| **public static void ConfigureServer(TestServerOptions options)** |Allows you to configure your server before running it|
+| **public void WaitForIndexing(IDocumentStore store, string database = null, TimeSpan? timeout = null)** | Allows you to wait for indexes to become non-stale. |
+| **public void WaitForUserToContinueTheTest(IDocumentStore store)** | Allows you to break the test and launch the Studio to examine the state of the database. |
+| **protected virtual void OpenBrowser(string url)** | Allows you to open the browser. |
+| **public virtual void Dispose()** | Allows you to dispose of the server. |
+
+{PANEL/}
+
+{PANEL:PreInitialize}
+
+Pre-Initializing the IDocumentStore allows you to mutate the conventions used by the document store.
+
+### Example
+
+{CODE test_driver_PreInitialize@Start\RavenDBTestDriver.cs /}
+
+{PANEL/}
+
+{PANEL:UnitTest}
+I'm using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
+Note that the test itself is meant to show diffrent capabilities of the test driver and is not meant to be the most efficient.
+The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#complete-example)
+
+### Example
+
+{CODE test_driver_MyFirstTest@Start\RavenDBTestDriver.cs /}
+
+In the test we get an IDocumentStore to our test database, deploy an index and insert two documents into it. 
+We then wait for the indexing to complete and launch the Studio so we can verify the documents and index are deployed (we can remove this line once the test is working).
+At the end of the test we query for TestDocument where their name contains the world 'hello' and assert that we have only one such document.
+
+{PANEL/}
+
+{PANEL: ConfigureServer}
+`ConfigureServer` allows you to be more in control on your server. 
+You can use it with `ServerTestOptions` to change the path to you server dll or to specify where your RavenDB data is stored, security, etc.
+
+{INFO:ServerTestOptions}
+
+`ServerTestOptions` inherits from `ServerOptions` in that way you can be more in control on how the embedded server going to run.
+with just minor change, here you can change your ServerDirectory.
+
+| Name | Type | Description |
+| ------------- | ------------- | ----- |
+| **ServerDirectory** | string | The path to the server binary files (.dll) |
+
+For more inforamtion go to [ServerOptions](../server/Embedded#getting-started)
+
+{INFO /}
+
+### Example
+
+{CODE test_driver_ConfigureServer@Start\RavenDBTestDriver.cs /}
+
+{PANEL/}
+
+{PANEL:Complete Example}
+
+{CODE test_full_example@Start\RavenDBTestDriverFull.cs /}
+
+{PANEL/}
+
+
+{PANEL:Continuous Integration Servers}
+
+Best practice is to use a CI/CD server to help automate the testing and deployment of your new code. 
+Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://www.visualstudio.com/team-services/). Some customization is required for any
+CI/CD product you use, because you will need to manually download the RavenDb Server _before_ any tests are kicked off. Remember, the Test Driver
+requires a `path location` for a `Raven.Server.exe` or `Raven.Server.dll` to be located, where the path on your CI/CD server 
+will most likely be different to the path on your localhost-development machine.
+
+{PANEL/}
+
+## Related articles
+
+- [RavenEmbedded](../server/Embedded)
+
+### Troubleshooting
+
+- [Sending Support Ticket](../server/troubleshooting/sending-support-ticket)
