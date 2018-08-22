@@ -40,7 +40,7 @@ Max number of extracted items (documents, counters, etc) in an ETL batch.
 - **Default**: `null`
 - **Scope**: Server-wide or per database
 
-If value is not set, or set to null, the number of extracted items is infinite per ETL batch.
+If value is not set, or set to null, the number of extracted items isn't limited in the processed ETL batch.
 
 {PANEL/}
 
