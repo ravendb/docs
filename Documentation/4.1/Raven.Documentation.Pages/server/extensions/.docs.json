@@ -8,10 +8,7 @@
         "Key": "server/bundles/expiration"
       }
     ],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
+    "IsPlaceholder": "true"
   },
   {
     "Path": "revisions.markdown",
@@ -23,7 +20,7 @@
       }
     ],
     "SupportedVersions": [
-      "4.0"
+      "4.1"
     ]
   }
 ]
