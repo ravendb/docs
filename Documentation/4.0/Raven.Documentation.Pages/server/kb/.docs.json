@@ -17,8 +17,7 @@
     "Path": "javascript-engine.markdown",
     "Name": "JavaScript Engine",
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   },
   {
