@@ -110,6 +110,7 @@ RavenDB's root OID id: 1.3.6.1.4.1.45751.1.1.
 | 5.2.X.1.12 | Database up-time |
 | 5.2.X.1.13 | Indicates if database is loaded |
 | 5.2.X.1.14 | Number of rehabs |
+| 5.2.X.1.15 | Number of performance hints |
 | 5.2.X.2.1 | Documents storage allocated size in MB |
 | 5.2.X.2.2 | Documents storage used size in MB |
 | 5.2.X.2.3 | Index storage allocated size in MB |
