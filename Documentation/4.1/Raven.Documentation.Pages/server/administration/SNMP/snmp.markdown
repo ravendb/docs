@@ -58,7 +58,7 @@ snmpget -v 2c -c ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.1.1
 snmpget -v 3 -l authNoPriv -u ravendb -a SHA -A ravendb live-test.ravendb.net 1.3.6.1.4.1.45751.1.1.1.2
 {CODE-BLOCK/}
 
-Where "ravendb" is the community string and "live-test.ravendb.net" is the host.
+Where **ravendb** is the community string (configured via `Monitoring.Snmp.Community` configuration option) and "live-test.ravendb.net" is the host.
 
 ![Figure 7. Monitoring : How to setup Zabbix monitoring: snmpget result](images/monitoring-zabbix-snmpget.PNG) 
 
@@ -68,7 +68,19 @@ For your convenience we've also added the list of metrics and their associated O
 You can list all OIDs along with its description using `{serverUrl}/monitoring/snmp/oids` endpoint.
 {NOTE/}
 
-RavenDB's root OID id: 1.3.6.1.4.1.45751.1.1.
+{NOTE:Accessing OID value via HTTP}
+For convenience, single OID value can be retrieved via HTTP GET endpoint `{serverUrl}/monitoring/snmp?oid=<oid>`.
+
+Example:
+{CODE-BLOCK:bash}
+curl -X GET http://live-test.ravendb.net/monitoring/snmp?oid=1.3.6.1.4.1.45751.1.1.1.3
+
+{"Value":"4.21:32:56.0700000"}
+{CODE-BLOCK/}
+
+{NOTE/}
+
+RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 
 | OID | Metric |
 | --- | ------ |
