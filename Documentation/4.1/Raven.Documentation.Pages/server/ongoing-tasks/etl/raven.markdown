@@ -16,7 +16,8 @@
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
   * [Empty Script](../../../server/ongoing-tasks/etl/raven#empty-script)  
-  * [Attachments & Revisions](../../../server/ongoing-tasks/etl/raven#attachments-&-revisions)  
+  * [Attachments](../../../server/ongoing-tasks/etl/raven#attachments)  
+  * [Revisions](../../../server/ongoing-tasks/etl/raven#revisions)  
   * [Deletions](../../../server/ongoing-tasks/etl/raven#deletions)  
   * [Example](../../../server/ongoing-tasks/etl/raven#example)  
 {NOTE/}
@@ -68,7 +69,7 @@ loadToEmployees(this);
 
 * If the specified collection is the _same_ as the original one then the document is loaded to the _same_ collection and the original identifier is preserved.  
 
-* For example, the following ETL script defined on `Employees` collection will keep the same idenifiers in the target database:  
+* For example, the following ETL script defined on `Employees` collection will keep the same identifiers in the target database:  
 
 {CODE-BLOCK:javascript}
 // original identifier will be preserved
@@ -126,7 +127,7 @@ var value = this['@metadata']['custom-metadata-key'];
 
 {CODE-BLOCK:javascript}
 
-// documents will be creaed in `Addresses` collection
+// documents will be created in `Addresses` collection
 loadToAddresses({
     City: this.Address.City ,
     Country: this.Address.Country ,
@@ -147,10 +148,67 @@ loadToEmployees(this);
 * The documents will be transferred _without_ any modifications to the _same_ collection as the source document.  
 {PANEL/}
 
-{PANEL: Attachments & Revisions}
+{PANEL: Attachments}
 
-* Attachments are sent automatically only when you send a _full_ collection to the destination using an _empty_ script.  
-  If you do use a script, there is currently _no_ way to indicate that attachments should also be sent.  
+* Attachments are sent automatically when you send a _full_ collection to the destination using an _empty_ script.  
+* If you use a script you can indicate that an attachment should also be sent by using dedicated functions:
+
+   - `loadAttachment(name)` returns a reference to an attachment that is meant be passed to `addAttachment()`
+   - `<doc>.addAttachment([name,] attachmentRef)` adds an attachment to a document that will be sent in the process, `<doc>` is a reference returned by `loadTo<CollectionName>()`
+
+{NOTE: Sending attachments together with documents}
+
+* Attachment is sent along with a transformed document if it's explicitly defined in the script by using `addAttachment()` method. By default attachment name is preserved.
+* The below script sends _all_ attachments of a current document by taking advantage of `getAttachments()` function, loads each of them during transformation and adds to
+a document that will be sent to 'Users' collection on destination side
+
+{CODE-BLOCK:javascript}
+var doc = loadToUsers(this);
+
+var attachments = getAttachments();
+
+for (var i = 0; i < attachments.length; i++) {
+    doc.addAttachment(loadAttachment(attachments[i].Name));
+}
+{CODE-BLOCK/}
+{NOTE/}
+
+{NOTE: Changing attachment name}
+
+* If `addAttachment()` is called with two arguments, the first one can indicate a new name for an attachment. In the below example attachment `photo`
+will be sent and stored under `picture` name.
+* In order to check the existence of an attachment `hasAttachment()` function is used
+
+{CODE-BLOCK:javascript}
+var employee = loadToEmployees({
+    Name: this.FirstName + " " + this.LastName
+});
+
+if (hasAttachment('photo')) {
+  employee.addAttachment('picture', loadAttachment('photo'));
+}
+{CODE-BLOCK/}
+{NOTE/}
+
+{NOTE: Loading non existing attachment}
+
+* Function `loadAttachment()` returns `null` if a document doesn't have an attachment with a given name. Passing such reference to `addAttachment()` will be no-op and no error will be thrown.
+
+{NOTE/}
+
+{NOTE: Accessing attachments from metadata}
+
+* The collection of attachments of the currently transformed document can be accessed either by `getAttachments()` helper function or directly from document metadata:
+
+{CODE-BLOCK:javascript}
+var attachments = this['@metadata']['@attachments'];
+{CODE-BLOCK/}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Revisions}
 
 * Revisions are _not_ sent by the ETL process.  
   But, if revisions are configured on the destination database, then when the target document is overwritten by the ETL process a revision will be created as expected.  

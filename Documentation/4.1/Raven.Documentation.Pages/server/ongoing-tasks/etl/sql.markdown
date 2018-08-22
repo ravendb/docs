@@ -147,6 +147,9 @@ for (var i = 0; i < attachments.length; i++) {
 }
 {CODE-BLOCK/}
 
+Attachments can be also accessed by using `getAttachments()` helper function (instead of grabbing them from metadata). The existence of an attachment can be checked by
+`hasAttachment(name)` function.
+
 ### Transforming to VARCHAR and NVARCHAR
 
 There also two additional functions created specifically for dealing with VARCHAR and NVARCHAR types:
