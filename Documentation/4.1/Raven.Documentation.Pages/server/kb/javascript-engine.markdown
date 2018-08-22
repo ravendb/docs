@@ -63,7 +63,7 @@ RavenDB introduced a set of predefined function, in addition to Jint's ECMAScrip
 | **Raven_Max(num1, num2)** | `bool` | Find maximum out of num1 and num2. Parameters can be numbers or strings, but there is no raw number support (see `scalarToRawString` below). Strings will be parsed to double upon processing |
 | **convertJsTimeToTimeSpanString(ticksNumber)** | `bool` | Returns human readable TimeSpan of the received `ticksNumber`. |
 | **scalarToRawString(document, lambdaToField)** | Raw field value (`LazyStringValue` for strings, `LazyNumberValue` for floating point numbers). | Returns raw representation of a field. Useful when working with numbers that exceeds `double`'s numeric or accuracy range. See [Numbers in Jint](../../server/kb/numbers-in-ravendb). Also usefull for better memory consumption when projecting big string values. Note: returned value is immutable |
-| **output(message)** | `void` | Used for [single document patches](../../client-api/operations/patching/single-document) debug. |
+| **output(message)** or **console.log(message)** | `void` | Used for [single document patches](../../client-api/operations/patching/single-document) debug. |
 {PANEL/}
 
 ## Related articles
