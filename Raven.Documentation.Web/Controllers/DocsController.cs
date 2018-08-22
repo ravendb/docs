@@ -12,6 +12,8 @@ using Raven.Documentation.Parser.Data;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Web.Mvc;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
@@ -109,7 +111,15 @@ namespace Raven.Documentation.Web.Controllers
                     .Take(5)
                     .ToArray();
 
-            return Json(results, JsonRequestBehavior.AllowGet);
+            return CamelCaseJsonResult(results);
+        }
+
+        private ContentResult CamelCaseJsonResult(object data)
+        {
+            var camelCaseFormatter = new JsonSerializerSettings();
+            camelCaseFormatter.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            var converted = JsonConvert.SerializeObject(data, camelCaseFormatter);
+            return Content(converted, "application/json");
         }
 
         private static SearchTokens GetSearchTokens(string searchTerm)
