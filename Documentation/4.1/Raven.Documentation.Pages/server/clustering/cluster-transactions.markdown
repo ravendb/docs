@@ -11,7 +11,7 @@ This page contains:
 - [Concurrent Cluster and Single-Node Transactions](../../server/clustering/cluster-transactions#oncurrent-cluster-and-single-node-transactions)
 - [Flow of a cluster transaction request](../../server/clustering/cluster-transactions#flow-of-a-cluster-transaction-request)
 
-The client API to this feature can be found [here](../../client-api/session/saving-changes#transaction-mode).
+The client API to this feature can be found [here](../../client-api/session/saving-changes#transaction-mode---cluster-wide).
 
 ## What is ACID in a RavenDB Cluster Transaction
 
