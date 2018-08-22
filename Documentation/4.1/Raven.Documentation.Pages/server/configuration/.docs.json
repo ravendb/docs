@@ -3,7 +3,9 @@
         "Path": "configuration-options.markdown",
         "Name": "Configuration Options",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "command-line-arguments.markdown",
@@ -41,7 +43,22 @@
         "Path": "etl-configuration.markdown",
         "Name": "ETL Configuration",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
+        "Path": "embedded-configuration.markdown",
+        "Name": "Embedded Configuration",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "server/configuration/testing-configuration"
+            }
+        ],
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "http-configuration.markdown",
@@ -53,7 +70,9 @@
         "Path": "indexing-configuration.markdown",
         "Name": "Indexing Configuration",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "license-configuration.markdown",
@@ -107,7 +126,9 @@
         "Path": "security-configuration.markdown",
         "Name": "Security Configuration",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "server-configuration.markdown",
@@ -130,12 +151,6 @@
     {
         "Path": "subscription-configuration.markdown",
         "Name": "Subscription Configuration",
-        "Mappings": [],
-        "IsPlaceholder": "true"
-    },
-    {
-        "Path": "testing-configuration.markdown",
-        "Name": "Testing Configuration",
         "Mappings": [],
         "IsPlaceholder": "true"
     },
