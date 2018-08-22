@@ -26,34 +26,41 @@ Open the down arrow and click `New database from legacy files`.
 
 ![Figure 2. Create New Database From Legacy Files - Data Source Configuration](images/new-database-from-legacy-2.png "Data Source Configuration")
 
-1. **Database Name**
-    A database name can be any sequence of characters except for the following:  
-
-    * A name cannot start or end with  ' . '  
-    * A name cannot exceed 230 characters  
-    * A name cannot contain any of the following:   /, \, :, *, ?, ", <, >, |  
+1. [Database Name](../../../../studio/server/databases/create-new-database/general-flow#2.-database-name)
 
 2. **Resource type**
     * RavenFS files will be saved as documents with attachments in @files collection.
 
 3. **Data directory**
     * Absolute path to data directory. 
-    * This folder should contain file Data.jfm or Raven.voron.
+    * Depending on used storage in 3.x version, this folder should contain the file:
+        * Esent: Data / Data.ravenfs
+        * Voron: Raven.voron
 
 4. **Advanced source properties**
     
-    * Source bundles : Encryption   
-        In v3.x by default, backup of an encrypted database contains the encryption information as a plain text in Database.Document file found in backup. 
-        This is required to make RavenDB able to restore the backup on a different machine.
-        You need to insert :
+    ![Figure 3. Create New Database From Legacy Files - Advanced](images/new-database-from-legacy-3.png "Advanced source properties")
 
-        * Encryption key : value of 'Raven/Encryption/Key'
+    * Journals directory: use if custom path to journals / transaction logs was specified (value of Raven/TransactionJournalsPath or Raven/Esent/LogsPath setting)
+
+    * Batch size: size of documents / files batch when exporting from 3.x data (default: 1024)
+
+    * Source bundles: 
+    
+        * Compression: needs to be enabled if compression bundle was turned on
+
+        * Encryption: 
+        
+            The data directory contains the encryption information as a plain text in Database.Document file. 
+            You need to insert :
+
+            * Encryption key : value of 'Raven/Encryption/Key'
             
-        * Encryption algorithm : value of 'Raven/Encryption/Algorithm'
+            * Encryption algorithm : value of 'Raven/Encryption/Algorithm'
 
-        * Encryption key size : value of 'Raven/Encryption/KeyBitsPreference'   
+            * Encryption key size : value of 'Raven/Encryption/KeyBitsPreference'   
            
-        ![Figure 3. Create New Database From Legacy Files - Encryption](images/new-database-from-legacy-3.png "Encryption")
+            ![Figure 4. Create New Database From Legacy Files - Encryption](images/new-database-from-legacy-4.png "Encryption")
 
 5. **Data Exporter**
     * RavenDB 3.5 tool that can be found on [ravendb.net](http://ravendb.net/download) as a part of the tools package.
@@ -69,7 +76,7 @@ Open the down arrow and click `New database from legacy files`.
 
 ## Related Articles
 
-- [Create a Database : General Flow](general-flow)
-- [Create a Database : Encrypted](encrypted)
+- [Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)
+- [Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)
 
 

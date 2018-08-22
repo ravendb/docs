@@ -24,29 +24,24 @@ Open the down arrow and click `New database from backup`.
 
 ![Figure 2. Backup Source Configuration](images/new-database-from-backup-2.png "Backup Source Configuration")
 
-1. **Database Name**
-    A database name can be any sequence of characters except for the following:  
-
-    * A name cannot start or end with  ' . '  
-    * A name cannot exceed 230 characters  
-    * A name cannot contain any of the following:   /, \, :, *, ?, ", <, >, |  
+1. [Database Name](../../../../studio/server/databases/create-new-database/general-flow#2.-database-name)
 
 2. **Backup directory**
 
 3. **Disable ongoing tasks after restore**
-    * Disable all ongoing tasks. Learn more about **Ongoind task** in [Onging tasks](../../../database/tasks/ongoing-tasks/general-info)
+    * Disable all ongoing tasks. Learn more about **Ongoing task** in [Onging tasks](../../../database/tasks/ongoing-tasks/general-info)
 
 4. **Restore point**
     * You can choose restore point from the one available
    
 {NOTE: }
- Note: The backup will be restored only to the current node After restore, this database can be added to other nodes using the 'Manage group' button.
+ Note: The backup will be restored only to the current node after restore, this database can be added to other nodes using the 'Manage group' button.
  Learn more about **Manage group** in : [Manage group](../../../database/settings/manage-database-group)  
 {NOTE/}
 {PANEL/}
 
 ## Related Articles
 
-- [Create a Database : General Flow](general-flow)
-- [Create a Database : Encrypted](encrypted)
+- [Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)
+- [Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)
 
