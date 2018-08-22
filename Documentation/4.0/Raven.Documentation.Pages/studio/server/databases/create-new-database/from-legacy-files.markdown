@@ -7,13 +7,9 @@ This database creation option is designed for importing database from data files
 
 * In this page:  
   * [1. New Database From Backup](../../../../studio/server/databases/create-new-database/from-legacy-files#1.-new-database)  
-  * [2. Database Name](../../../../studio/server/databases/create-new-database/from-legacy-files#2.-database-name)  
-  * [3. Encryption](../../../../studio/server/databases/create-new-database/from-legacy-files#3.-encryption)  
-  * [4. Replication Configuration](../../../../studio/server/databases/create-new-database/from-legacy-files#4.-replication-configuration)
-  * [5. Configure Path](../../../../studio/server/databases/create-new-database/from-legacy-files#5.-configure-path)
-  * [6. Create](../../../../studio/server/databases/create-new-database/from-legacy-files#6.-create)
-
-{NOTE/}
+  * [2. Data Source Configuration](../../../../studio/server/databases/create-new-database/from-legacy-files#2.-source-configuration)  
+ 
+ {NOTE/}
 
 ---
 
@@ -26,66 +22,54 @@ Open the down arrow and click `New database from legacy files`.
 {NOTE/}
 {PANEL/}
 
-{PANEL: 2. Database Name}
+{PANEL: 2. Data Source Configuration}
 
-![Figure 2. Create New Database From Legacy Files - Database name](images/new-database-from-legacy-2.png "Enter Database Name")
+![Figure 2. Create New Database From Legacy Files - Data Source Configuration](images/new-database-from-legacy-2.png "Data Source Configuration")
 
-{NOTE: }
-A database name can be any sequence of characters except for the following:  
+1. **Database Name**
+    A database name can be any sequence of characters except for the following:  
 
-* A name cannot start or end with  ' . '  
-* A name cannot exceed 230 characters  
-* A name cannot contain any of the following:   /, \, :, *, ?, ", <, >, |  
-{NOTE/}
+    * A name cannot start or end with  ' . '  
+    * A name cannot exceed 230 characters  
+    * A name cannot contain any of the following:   /, \, :, *, ?, ", <, >, |  
+
+2. **Resource type**
+    * RavenFS files will be saved as documents with attachments in @files collection.
+
+3. **Data directory**
+    * Absolute path to data directory. 
+    * This folder should contain file Data.jfm or Raven.voron.
+
+4. **Advanced source properties**
+    
+    * Source bundles : Encryption   
+        In v3.x by default, backup of an encrypted database contains the encryption information as a plain text in Database.Document file found in backup. 
+        This is required to make RavenDB able to restore the backup on a different machine.
+        You need to insert :
+
+        * Encryption key : value of 'Raven/Encryption/Key'
+            
+        * Encryption algorithm : value of 'Raven/Encryption/Algorithm'
+
+        * Encryption key size : value of 'Raven/Encryption/KeyBitsPreference'   
+           
+        ![Figure 3. Create New Database From Legacy Files - Encryption](images/new-database-from-legacy-3.png "Encryption")
+
+5. **Data Exporter**
+    * RavenDB 3.5 tool that can be found on [ravendb.net](http://ravendb.net/download) as a part of the tools package.
+    
 {PANEL/}
 
-{PANEL: 3. Encryption}
+
 
 {NOTE: }
-For **Encrypted** database - see [Encrypted Database](../../../../studio/server/databases/create-new-database/encrypted)  
+ Note: The backup will be restored only to the current node After restore, this database can be added to other nodes using the 'Manage group' button.
+ Learn more about **Manage group** in : [Manage group](../../../database/settings/manage-database-group)  
 {NOTE/}
-{PANEL/}
 
-{PANEL: 4. Replication Configuration}
+## Related Articles
 
-{NOTE: }
-* Note: 
-The backup will be restored only to the current node 
-After restore, this database can be added to other nodes using the 'Manage group' button.
+- [Create a Database : General Flow](general-flow)
+- [Create a Database : Encrypted](encrypted)
 
-Learn more about **Manage group** in : [Manage group](../../../database/settings/manage-database-group)  
-{NOTE/}
-{PANEL/}
 
-{PANEL: 5. Configure Path}
-
-![Figure 5. Create New Database From Legacy Files - Path](images/new-database-from-legacy-5.png "Configure Path")
-
-{NOTE: }
-* Set the directory path for database data.  
-
-* You can use any of the following options:  
-  * **Full path** (e.g. Windows: _C:/MyWork/MyDatabaseFolder_, Linux: _/etc/MyWork/MyDatabaseFolder_ )  
-    The database will be created in this physical location  
-  * **Relative path** (e.g. _MyWork/MyDatabaseFolder_)  
-    The database will be created under the `DataDir` folder  
-  * **Leave field empty**  
-    The Database will be created in `Databases` directory under the `DataDir` folder  
-
-* Note:  
-
-  * The `DataDir` folder can be set in the `settings.json` configuration file (e.g. "DataDir": "RavenData").  
-  * If `DataDir` is Not specified in the configuration file, then the database will be created under the RavenDB binaries folder  
-    (where the RavenDB dlls are located).  
-  * A path can't start with:  $home, '~' or 'appdrive:'
-{NOTE/}
-{PANEL/}
-
-{PANEL: 6. Create}
-
-![Figure 6. Create New Database From Legacy Files - Create](images/new-database-from-legacy-6.png "Create Database")
-
-{NOTE: }
-Click **'Create'** to finish.  
-{NOTE/}
-{PANEL/}
