@@ -14,7 +14,44 @@ You can also ignore these limits and replace the certificates immediately but be
 
 ## Replace the Cluster Certificate using the Studio
 
-This feature is under development and will be available in the Studio very soon. In the meantime please use the [RavenDB CLI command](../../../server/administration/cli#replaceclustercert).
+Access the certificate view and click on `Replace cluster certificate`. Upload the PFX file and name it.
+
+This will start the certificate replacement process.
+
+When running as a cluster the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm receipt and replacement of the certificate.
+
+Only when all nodes have confirmed, the cluster will start using this new certificate. 
+
+If a node is not responding during the replacement, the operation will not complete until one of the following happens:
+
+* The node will come back online. It should pick up the replacement command and join the replacement process automatically.
+
+* There are only 3 days left for the expiration of the certificate. In this case, the cluster will complete the operation without the node which is down. When bringing that node up, the certificate must be replaced manually.
+
+* `Replace immediately` is chosen. In this case, the cluster will complete the operation without the node which is down. When bringing that node up, the certificate must be replaced manually.
+
+During the process you will receive alerts in the studio and in the logs indicating the status of the operation and any errors if they occur. The alerts are displayed for each node independently.
+
+## Replace the Cluster Certificate using Powershell
+
+Here is a little example of using the REST API directly with powershell to replace the cluster certificate:
+
+{CODE-BLOCK:powershell}
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+$clientCert = Get-PfxCertificate -FilePath C:\path\to\client\cert\admin.client.certificate.raven.pfx
+
+$newCert = get-content 'C:\path\to\server\cert\new.certificate.pfx' -Encoding Byte
+
+$newCertBase64 = [System.Convert]::ToBase64String($newCert)
+
+$payload = @{
+    Name              = "MyNewCert";
+    Certificate       = $newCertBase64;
+} | ConvertTo-Json
+
+$response = Invoke-WebRequest https://b.raven.development.run:8080/admin/certificates/replace-cluster-cert -Certificate $clientCert -Method POST -Body $payload -ContentType "application/json"
+{CODE-BLOCK/}
 
 ## Related articles
 

@@ -14,7 +14,7 @@ You can also ignore these limits and replace the certificates immediately but be
 
 ## Replace the Cluster Certificate using the Studio
 
-Access the certificate view and click on `Replace cluster certificate`. Upload the PFX file and name it.
+Access the certificate view and click on `Cluster certificate` -> `Replace cluster certificate`. Upload the PFX file and name it.
 
 This will start the certificate replacement process.
 
