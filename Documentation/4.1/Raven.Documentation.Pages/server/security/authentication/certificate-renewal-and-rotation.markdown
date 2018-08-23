@@ -14,15 +14,23 @@ You can also ignore these limits and replace the certificates immediately but be
 
 ## Replace the Cluster Certificate using the Studio
 
-Access the certificate view and click on `Cluster certificate` -> `Replace cluster certificate`. Upload the PFX file and name it.
+Access the certificate view and click on `Replace cluster certificate`. Upload the PFX file and name it.
 
 This will start the certificate replacement process.
 
-If you encounter a problem during the replacement process, and there are no alerts in tne studio telling you what's wrong, please check the logs for errors and exceptions.
+When running as a cluster the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm receipt and replacement of the certificate.
 
-If your logs are turned off, open Manage Server->Admin Logs in the Studio, and keep them open while you perform the certificate replacement.
+Only when all nodes have confirmed, the cluster will start using this new certificate. 
 
-When running in a cluster, please look at the logs of all nodes.
+If a node is not responding during the replacement, the operation will not complete until one of the following happens:
+
+* The node will come back online. It should pick up the replacement command and join the replacement process automatically.
+
+* There are only 3 days left for the expiration of the certificate. In this case, the cluster will complete the operation without the node which is down. When bringing that node up, the certificate must be replaced manually.
+
+* `Replace immediately` is chosen. In this case, the cluster will complete the operation without the node which is down. When bringing that node up, the certificate must be replaced manually.
+
+During the process you will receive alerts in the studio and in the logs indicating the status of the operation and any errors if they occur. The alerts are displayed for each node independently.
 
 ## Replace the Cluster Certificate using Powershell
 
