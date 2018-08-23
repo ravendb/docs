@@ -136,7 +136,7 @@ namespace Raven.Documentation.Samples.Server
 
             // We have 2 options here:
             // deleteResult.Successful is true - we managed to release resource
-            // deleteResult.Successful is false - someone else took the look due to timeout 
+            // deleteResult.Successful is false - someone else took the lock due to timeout 
         }
 
         #endregion
