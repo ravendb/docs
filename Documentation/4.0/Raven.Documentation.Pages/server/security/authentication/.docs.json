@@ -31,8 +31,7 @@
     "Name": "Certificate Renewal & Rotation",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   },
   {
@@ -40,8 +39,7 @@
     "Name": "Let's Encrypt Certificates",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   }
 ]
