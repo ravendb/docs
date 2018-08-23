@@ -322,6 +322,52 @@ Counters sent by ETL process always _override_ the existing value on the destina
 * If you output multiple documents from a single document then multiple delete commands will be sent, one for each prefix containing the destination collection name.  
 
 * When documents are sent to the same collection and IDs don't change then deletion on the source results in sending a single delete command for a given ID.  
+
+* Deletions can be filtered by defining the deletion behavior function the script. It should have the following signature:
+
+{CODE-BLOCK:javascript}
+function deleteDocumentsOf<CollectionName>Behavior(docId) {
+   return [true | false]; 
+}
+{CODE-BLOCK/}
+
+   - `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
+
+   - The first parameter is the identifier of a deleted document.
+
+   - A document deletion is propagated to a destination only if the function returns `true`.
+
+   - By the time that ETL process runs this function, the document is already deleted. If you want to filter deletions, you need some way to store that information
+   in order to be able to determine if a document should be deleted in the delete behavior function.
+
+
+#### Example - filtering out all deletions
+
+{CODE-BLOCK:javascript}
+loadToUsers(this);
+
+function deleteDocumentsOfUsersBehavior(docId) {
+    return false;
+}
+{CODE-BLOCK/}
+
+#### Example - storing deletion info in additional document
+
+* When you delete a document you can store a deletion marker document that will prevent from propagating the deletion by ETL. In the below example if `LocalOnlyDeletions/{docId}`
+exists then we skip this deletion during ETL. You can add `@expires` tag to the metadata when storing the marker document, so it would be automatically cleanup after a certain time
+by [the expiration extension](../../../server/extensions/expiration).
+
+{CODE-BLOCK:javascript}
+loadToUsers(this);
+
+function deleteDocumentsOfUsersBehavior(docId)
+{
+    var localOnlyDeletion = load('LocalOnlyDeletions/' + docId);
+
+    return !localOnlyDeletion;
+}
+{CODE-BLOCK/}
+
 {PANEL/}
 
 {PANEL: Example}
