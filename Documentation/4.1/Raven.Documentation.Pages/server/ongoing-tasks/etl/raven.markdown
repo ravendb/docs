@@ -16,7 +16,8 @@
 * In this page:  
   * [Transformation Script Options](../../../server/ongoing-tasks/etl/raven#transformation-script-options)  
   * [Empty Script](../../../server/ongoing-tasks/etl/raven#empty-script)  
-  * [Attachments](../../../server/ongoing-tasks/etl/raven#attachments)  
+  * [Attachments](../../../server/ongoing-tasks/etl/raven#attachments) 
+  * [Counters](../../../server/ongoing-tasks/etl/raven#counters)  
   * [Revisions](../../../server/ongoing-tasks/etl/raven#revisions)  
   * [Deletions](../../../server/ongoing-tasks/etl/raven#deletions)  
   * [Example](../../../server/ongoing-tasks/etl/raven#example)  
@@ -203,6 +204,98 @@ if (hasAttachment('photo')) {
 {CODE-BLOCK:javascript}
 var attachments = this['@metadata']['@attachments'];
 {CODE-BLOCK/}
+
+{NOTE/}
+
+{PANEL/}
+
+{PANEL: Counters}
+
+* Counters are sent automatically when you send a _full_ collection to the destination using an _empty_ script.
+* If a script is defined RavenDB doesn't send counters by default.
+* In order to indicate that a counter should also be sent, the behavior function needs to be defined in the script which decides if the counter should be sent if it's modified
+(e.g. by increment operation). It the relevant function doesn't exist a counter isn't loaded.
+* The reason that counters require special functions is that incrementing a counter _doesn't_ modify the etag of a related document so the document _isn't_ processed
+by ETL on a counter change.
+* Another option of sending a counter is to explicitly add it in a script to a loaded document.
+
+{NOTE: Counter behavior function}
+
+* Every time a counter of a document from a collection that ETL script is defined on is modified then the behavior function is called to check
+if the counter should be loaded to a destination database.
+
+{INFO: Important}
+
+The counter behavior function can be defined _only_ for counters of documents from collections that are ETLed to _the same_ collections e.g.: 
+a script is defined on `Products` collection and it loads documents to `Products` collection in a destination database using `loadToProducts()` method. 
+
+{INFO/}
+
+* The function is defined in the script and should have the following signature:
+
+{CODE-BLOCK:javascript}
+function loadCountersOf<CollectionName>Behavior(docId, counterName) {
+   return [true | false]; 
+}
+{CODE-BLOCK/}
+
+* `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
+
+* The first parameter is the identifier of a document, the second one is the name of a modified counter for that doc.
+
+* If function returns `true` then a change value is propagated to a destination.
+
+#### Example
+
+* The following script is defined on `Products` collection:
+
+{CODE-BLOCK:javascript}
+
+if (this.Category == 'software') {
+    loadToProducts({
+        ProductName: this.Name
+    });
+}
+
+function loadCountersOfProductsBehavior(docId, counterName) {
+   var doc = load(docId);
+
+   if (doc.Category == 'software' && counterName = 'downloads')
+        return true;
+}
+
+{CODE-BLOCK/}
+{NOTE/}
+
+{NOTE: Adding counter explicitly in a script}
+
+* The usage of counter behavior functions is limited to dealing with counters of documents that are loaded to the same collection. If a transformation script for `Employees`
+collection specifies that they are loaded to `People` collection in a target database then due to document ID generation strategy by ETL process (see above 'Documents Identifiers' paragraph)
+the counters won't be sent as the final ID of loaded document isn't known on the source side. Although you can use special functions in the script code to deal with counters then:
+
+{CODE-BLOCK:javascript}
+var person = loadToPeople({ Name: this.Name + ' ' + this.LastName });
+
+person.addCounter(loadCounter('likes'));
+{CODE-BLOCK/}
+
+* The above example indicates that `likes` counter will be sent together with a document. It uses the following functions to accomplish that:
+  - `loadCounter(name)` returns a reference to a counter that is meant be passed to `addCounter()`
+  - `<doc>.addCounter(counterRef)` adds a counter to a document that will be sent in the process, `<doc>` is a reference returned by `loadTo<CollectionName>()`
+
+{INFO: Important}
+
+As the transformation script is run on a document update then counters added explicitly (`addCounter()`) will be loaded along with documents _only_ if document is changed.
+It means that incremented counter value won't be sent until a document is modified and the ETL process will run the transformation for it.
+
+{INFO/}
+
+
+{NOTE/}
+
+{NOTE: Counter value override by ETL}
+
+Counters sent by ETL process always _override_ the existing value on the destination. ETL doesn't send _increment_ counter command but it sets the value using _put_ command.
 
 {NOTE/}
 

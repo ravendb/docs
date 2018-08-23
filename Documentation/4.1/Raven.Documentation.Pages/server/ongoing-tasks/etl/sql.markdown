@@ -163,6 +163,10 @@ for (var i = 0; i < attachments.length; i++) {
 Attachments can be also accessed by using `getAttachments()` helper function (instead of grabbing them from metadata). The existence of an attachment can be checked by
 `hasAttachment(name)` function.
 
+### Counters
+
+Counters aren't supported by SQL ETL.
+
 ### Transforming to VARCHAR and NVARCHAR
 
 There also two additional functions created specifically for dealing with VARCHAR and NVARCHAR types:
