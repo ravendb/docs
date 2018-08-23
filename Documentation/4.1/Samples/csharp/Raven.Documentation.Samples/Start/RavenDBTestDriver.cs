@@ -49,8 +49,8 @@ namespace RavenDBTestDriver
 
             var testServerOptions = new TestServerOptions
             {
-                ServerDirectory = "PATH_TO_RAVENDB_SERVER", // If we want to specify ravendb server location
-                DataDirectory = "PATH_TO_RAVENDB_DATADIR", // Specify where ravendb data
+                ServerDirectory = "PATH_TO_RAVENDB_SERVER", // Specify where ravendb server binaries are located (Optional)
+                DataDirectory = "PATH_TO_RAVENDB_DATADIR", // Specify where ravendb data will be placed/located (Optional)
             };
 
             ConfigureServer(testServerOptions);

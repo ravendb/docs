@@ -36,7 +36,11 @@
     {
         "Path": "test-driver.markdown",
         "Name": "Unit Tests",
-        "Mappings": [],
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/troubleshooting/sending-support-ticket"
+            }],
         "SupportedVersions": [
             "4.1"
         ]

@@ -1,7 +1,7 @@
 ﻿# Getting Started : Writing your Unit Test using TestDriver
 
 In this section we will explain how to use [RavenDB.TestDriver](https://www.nuget.org/packages/RavenDB.TestDriver/) in order to write unit tests for working with RavenDB.
-TestDriver now uses [RavenEmbedded](../server/Embedded) to run the server, in this way we can just start using it without preparations.
+TestDriver uses [RavenDB.Embedded](../server/Embedded) to run the server.
 
 - [RavenTestDriver](../start/test-driver#raventestdriver)
 - [Pre-initializing the store](../start/test-driver#preinitialize)
@@ -45,7 +45,7 @@ Pre-Initializing the IDocumentStore allows you to mutate the conventions used by
 {PANEL/}
 
 {PANEL:UnitTest}
-I'm using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
+We'll be using [xunit](https://www.nuget.org/packages/xunit/) for my test framework in the below example.
 Note that the test itself is meant to show diffrent capabilities of the test driver and is not meant to be the most efficient.
 The example below depends on the `TestDocumentByName` index and `TestDocument` class that can be seen in the [full example](../start/test-driver#complete-example)
 
@@ -60,19 +60,17 @@ At the end of the test we query for TestDocument where their name contains the w
 {PANEL/}
 
 {PANEL: ConfigureServer}
-`ConfigureServer` allows you to be more in control on your server. 
-You can use it with `ServerTestOptions` to change the path to you server dll or to specify where your RavenDB data is stored, security, etc.
+`ConfigureServer` method allows you to be more in control on your server. 
+You can use it with `ServerTestOptions` to change the path to the Raven server binaries or to specify where your RavenDB data is stored, security, etc.
 
 {INFO:ServerTestOptions}
 
-`ServerTestOptions` inherits from `ServerOptions` in that way you can be more in control on how the embedded server going to run.
+`ServerTestOptions` inherits from [ServerOptions](../server/Embedded#getting-started) in that way you can be more in control on how the embedded server going to run
 with just minor change, here you can change your ServerDirectory.
 
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **ServerDirectory** | string | The path to the server binary files (.dll) |
-
-For more inforamtion go to [ServerOptions](../server/Embedded#getting-started)
 
 {INFO /}
 
@@ -92,16 +90,13 @@ For more inforamtion go to [ServerOptions](../server/Embedded#getting-started)
 {PANEL:Continuous Integration Servers}
 
 Best practice is to use a CI/CD server to help automate the testing and deployment of your new code. 
-Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://www.visualstudio.com/team-services/). Some customization is required for any
-CI/CD product you use, because you will need to manually download the RavenDb Server _before_ any tests are kicked off. Remember, the Test Driver
-requires a `path location` for a `Raven.Server.exe` or `Raven.Server.dll` to be located, where the path on your CI/CD server 
-will most likely be different to the path on your localhost-development machine.
+Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://www.visualstudio.com/team-services/).
 
 {PANEL/}
 
 ## Related articles
 
-- [RavenEmbedded](../server/Embedded)
+- [Running an Embedded Instance](../server/Embedded)
 
 ### Troubleshooting
 
