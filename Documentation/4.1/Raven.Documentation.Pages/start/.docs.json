@@ -40,9 +40,10 @@
             {
                 "Version": 3.0,
                 "Key": "server/troubleshooting/sending-support-ticket"
-            }
-        ],
-        "IsPlaceholder": "true"
+            }],
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
   {
     "Path": "/installation",
