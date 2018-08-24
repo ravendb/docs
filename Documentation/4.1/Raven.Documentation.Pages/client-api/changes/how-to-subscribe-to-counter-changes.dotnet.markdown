@@ -21,7 +21,7 @@ Counter changes can be observed using `ForCounter` method. This will subscribe c
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to notifications for given counter. |
+| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
@@ -44,7 +44,7 @@ Specific counter changes of a given document can be observed using `ForCounterOf
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to notifications for given counter. |
+| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
@@ -66,7 +66,7 @@ Counter changes of a specified document can be observed using `ForCountersOfDocu
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to notifications for given counter. |
+| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
@@ -84,7 +84,7 @@ Changes for all counters can be observed using `ForAllCounters` method.
 
 | Return Value | |
 | ------------- | ----- |
-| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to notifications for given counter. |
+| IChangesObservable<[CounterChange](../../client-api/changes/how-to-subscribe-to-counter-changes#counterchange)> | Observable that allows to add subscriptions to counter notifications. |
 
 ### Example
 
