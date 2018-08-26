@@ -740,7 +740,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 using (var session = store.OpenSession())
                 {
                     #region add_document_session
-                    session.Advanced.Defer(new PatchCommandData("employees/A-1", null,
+                    session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
                         new PatchRequest
                         {
                             Script = "put('orders/', { Employee: id(this) });",
@@ -750,7 +750,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                     #endregion
 
                     #region clone_document_session
-                    session.Advanced.Defer(new PatchCommandData("employees/A-1", null,
+                    session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
                         new PatchRequest
                         {
                             Script = "put('employees/', this);",
@@ -761,14 +761,14 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 }
 
                 #region add_document_store
-                store.Operations.Send(new PatchOperation("employees/A-1", null, new PatchRequest
+                store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
                 {
                     Script = "put('orders/', { Employee: id(this) });",
                 }));
                 #endregion
 
                 #region clone_document_store
-                store.Operations.Send(new PatchOperation("employees/A-1", null, new PatchRequest
+                store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
                 {
                     Script = "put('employees/', this);",
                 }));
