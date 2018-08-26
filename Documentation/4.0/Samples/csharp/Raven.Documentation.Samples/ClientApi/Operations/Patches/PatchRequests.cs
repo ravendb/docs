@@ -725,6 +725,46 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
 
                 #endregion
             }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region add_document_session
+                    session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
+                        new PatchRequest
+                        {
+                            Script = "put('orders/', { Employee: id(this) });",
+                        }, null));
+
+                    session.SaveChanges();
+                    #endregion
+
+                    #region clone_document_session
+                    session.Advanced.Defer(new PatchCommandData("employees/1-A", null,
+                        new PatchRequest
+                        {
+                            Script = "put('employees/', this);",
+                        }, null));
+
+                    session.SaveChanges();
+                    #endregion
+                }
+
+                #region add_document_store
+                store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
+                {
+                    Script = "put('orders/', { Employee: id(this) });",
+                }));
+                #endregion
+
+                #region clone_document_store
+                store.Operations.Send(new PatchOperation("employees/1-A", null, new PatchRequest
+                {
+                    Script = "put('employees/', this);",
+                }));
+                #endregion
+            }
         }
     }
 }
