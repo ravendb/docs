@@ -30,7 +30,7 @@ Collection names determined by recently described convention functions aren't di
 
 {CODE transform_collection_name_to_prefix@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
 
-Its default behavior is for a collection which contains one upper character. It simply converts it to lower case string. `Users` would be transformed into `users`. For collection names containing more upper characters, there will be no change. The collection name: `LineItems` would output the following prefix: `LineItems`.
+Its default behavior for a collection which contains one upper character is to simply convert it to lower case string. `Users` would be transformed into `users`. For collection names containing more upper characters, there will be no change. The collection name: `LineItems` would output the following prefix: `LineItems`.
 
 ##FindClrTypeName and FindClrType
 
