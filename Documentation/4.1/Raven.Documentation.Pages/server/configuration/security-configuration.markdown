@@ -77,7 +77,7 @@ The path of the (256-bit) Master Key. If specified, RavenDB will use this key to
 
 {PANEL:Security.MasterKey.Exec}
 
-A command or executable to run which will provide a (256-bit) Master Key, If specified, RavenDB will use this key to protect secrets.
+A command or executable to run which will provide a (256-bit) Master Key. If specified, RavenDB will use this key to protect secrets.
 
 - **Type**: `string`
 - **Default**: `null`
@@ -159,9 +159,9 @@ How far back we should retain audit log entries.
 
 {PANEL:Security.WellKnownCertificates.Admin}
 
-Allow to specify well known certificate thumbprints that will be trusted by the server as cluster admins.
+Allows you to specify well known certificate thumbprints that will be trusted by the server as cluster admins.
 
-- **Type**: `strings seperated by ;`
+- **Type**: `strings separated by ;`
 - **Example**: `297430d6d2ce259772e4eccf97863a4dfe6b048c;e6a3b45b062d509b3382282d196efe97d5956ccb`
 - **Default**: `null`
 - **Scope**: Server-wide only

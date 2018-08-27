@@ -10,11 +10,11 @@ The second one is dedicated for dynamic objects:
 
 {CODE find_dynamic_collection_name@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
 
-{INFO:What is a Dynamic Object?}
+{INFO: What is a Dynamic Object?}
 
 The `FindCollectionNameForDynamic` only works on objects that inherit from [IDynamicMetaObjectProvider](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.idynamicmetaobjectprovider) interface. In .NET there are two built-in types that implement that interface, the [ExpandoObject](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.expandoobject) and [DynamicObject](https://docs.microsoft.com/en-us/dotnet/api/system.dynamic.dynamicobject).
 
-For example if we want to determine a collection using a `Collection` property from a dynamic object we need to set `FindCollectionNameForDynamic` as follows:
+For example, if we want to determine a collection using a `Collection` property from a dynamic object, we need to set `FindCollectionNameForDynamic` as follows:
 
 {CODE find_dynamic_collection_name_sample_1@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
 
@@ -30,7 +30,7 @@ Collection names determined by recently described convention functions aren't di
 
 {CODE transform_collection_name_to_prefix@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
 
-Its default behavior is that for a collection which contains one upper character it simply converts it to lower case string. `Users` would be transformed into `users`. For collection names containing more upper characters there will be no change. The collection name: `LineItems` would output the following prefix: `LineItems`.
+Its default behavior is for a collection which contains one upper character. It simply converts it to lower case string. `Users` would be transformed into `users`. For collection names containing more upper characters, there will be no change. The collection name: `LineItems` would output the following prefix: `LineItems`.
 
 ##FindClrTypeName and FindClrType
 
@@ -50,7 +50,6 @@ To properly perform the revert conversion that is from a JSON result into a .NET
 
 {CODE find_clr_type@ClientApi\Configuration\IdentifierGeneration\Global.cs /}
 
-
 ##FindIdentityProperty
 
 The client must know where in your entity an identifier is stored to be properly able to transform it into JSON document. It uses the `FindIdentityProperty` convention for that. The default and very common convention is that a property named `Id` is the identifier, so is the default one:
@@ -61,7 +60,7 @@ You can provide a customization based on the `MemberInfo` parameter to indicate 
 
 ##FindIdentityPropertyNameFromCollectionName
 
-It can happen that sometimes the results returned by the server don't have identifiers defined (for example if you run a projection query) however they have `@collection` in metadata.
+It can happen that sometimes the results returned by the server don't have identifiers defined (for example if you run a projection query). However, they have `@collection` in metadata.
 
 To perform the conversion into a .NET object, a function that finds the identity property name for a given entity name is applied:
 
