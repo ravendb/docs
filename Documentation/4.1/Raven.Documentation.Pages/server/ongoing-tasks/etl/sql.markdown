@@ -6,6 +6,19 @@ It can be defined using the Studio by creating `SQL ETL` task in `Settings -> Ma
 
 ![Figure 1. Configure SQL ETL task](images/sql-etl-setup.png)
 
+{PANEL:Supported Databases}
+
+RavenDB can ETL to the following relational databases:
+
+- Microsoft SQL Server
+- MySQL
+- PostgreSQL 
+- Oracle
+
+You need to choose the provider type when defining a connection string.
+
+{PANEL/}
+
 {PANEL:Relational Database Setup}
 
 Before you start with SQL ETL you need to create tables in a relational database. Those will be the destinations for records produced by ETL scripts.
@@ -147,6 +160,13 @@ for (var i = 0; i < attachments.length; i++) {
 }
 {CODE-BLOCK/}
 
+Attachments can be also accessed by using `getAttachments()` helper function (instead of grabbing them from metadata). The existence of an attachment can be checked by
+`hasAttachment(name)` function.
+
+### Counters
+
+Counters aren't supported by SQL ETL.
+
 ### Transforming to VARCHAR and NVARCHAR
 
 There also two additional functions created specifically for dealing with VARCHAR and NVARCHAR types:
@@ -177,6 +197,7 @@ All records created in a single ETL run, one per each `loadTo` call, will be sen
 
 {PANEL:Advanced Options}
 
+- Command timeout - number of seconds after which SQL command will timeout. It overrides value defined in [`ETL.SQL.CommandTimeoutInSec`](../../../server/configuration/etl-configuration#etl.sql.commandtimeoutinsec) setting. Default: null (use provider default).
 - Parameterized deletes - toggles the parameterization of DELETE statements
 - Force recompile query - forces statement recompilation on SQL Server (`OPTION(RECOMPILE)`)
 - Table quotation - toggles table name quotation

@@ -98,8 +98,12 @@ In addition to ECMAScript 5.1 API, RavenDB introduces the following functions an
 Specific ETL functions:  
 
 | ------ |:------:| ------ |
-| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target must be either a collection name (RavenDB ETL) or a table name (SQL ETL).<br/>**An object will be sent to the destination only if** the `loadTo` method was called.|
-| `loadAttachment(name)` | function | Load an attachment (SQL ETL only) |
+| `loadTo<Target>(obj)` | function | Load an object to a specified `<Target>`.<br/>The target must be either a collection name (RavenDB ETL) or a table name (SQL ETL).<br/>**An object will be sent to the destination only if the `loadTo` method was called**.|
+| Attachments: |||
+| `loadAttachment(name)` | function | Load an attachment of the current document |
+| `hasAttachment(name)` | function | Check if an attachment with a given name exists for the current document |
+| `getAttachments()` | function | Get a collection of attachments details for the current document. Each item has the following properties `Name`, `Hash`, `ContentType`, `Size` |
+| `<doc>.addAttachment([name,] attachmentRef)` | function | Add an attachment to a transformed document that will be sent to a target (`<doc>`). Specific for Raven ETL only, see [here](../../../server/ongoing-tasks/etl/raven#attachments) for details |
 
 {INFO: Batch processing}
 
@@ -111,6 +115,9 @@ The number of documents processed depends on the following configuration limits:
 
 * [`ETL.MaxNumberOfExtractedDocuments`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null)  
   Max number of extracted documents in an ETL batch.  
+
+* [`ETL.MaxNumberOfExtractedItems`](../../../server/configuration/etl-configuration#etl.maxnumberofextracteddocuments) (default: null)  
+  Max number of extracted items (documents, counters) in an ETL batch.
 
 {INFO/}
 
