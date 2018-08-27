@@ -57,7 +57,7 @@ When a Windows password is **changed** the following actions are taken:
 
 Changing a password this way is supported and RavenDB is not affected.
 
-On the other hand, if the password was **reset** (either by you or by the administrator) secrets **cannot be decrypted anymore**.
+On the other hand, if the password was **reset** (either by you or by the administrator), secrets **cannot be decrypted anymore**.
 Please see the [Microsoft Support article](https://support.microsoft.com/en-us/help/309408/how-to-troubleshoot-the-data-protection-api-dpapi#7) to understand the issue.
 
 If you still need to reset the password for some reason, please follow these steps to ensure that secret keys which are protected with DPAPI aren't lost.
@@ -71,9 +71,9 @@ Run the following get-key command for **every** encrypted database (including `S
 
 The output is the plaintext key which is not protected and not tied to a user.
 
-Now, reset the Windows password.
+Now reset the Windows password.
 
-Then run the following put-key command for **every** encrypted database. Supply the path of the database folder and the key you just got (using get-key):
+Then, run the following put-key command for **every** encrypted database. Supply the path of the database folder and the key you just got (using get-key):
 
 {CODE-BLOCK:bash}
 ./rvn offline-operation put-key <path-to-database-dir> <base64-plaintext-key>
