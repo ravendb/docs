@@ -16,7 +16,7 @@ To manually replace the server certificate you can either edit [settings.json](.
 
 ## Replace the Cluster Certificate using the Studio
 
-Access the certificate view, click on `Replace cluster certificate` and upload the new certificate PFX file.
+Access the certificate view, click on `Cluster certificate` -> `Replace cluster certificate` and upload the new certificate PFX file.
 
 This will start the certificate replacement process.
 
@@ -54,6 +54,7 @@ $payload = @{
 
 $response = Invoke-WebRequest https://b.raven.development.run:8080/admin/certificates/replace-cluster-cert -Certificate $clientCert -Method POST -Body $payload -ContentType "application/json"
 {CODE-BLOCK/}
+
 
 ## Related articles
 

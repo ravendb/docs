@@ -6,15 +6,7 @@ RavenDB 4.x uses X.509 certificates for authentication and authorization and has
 
 The [Setup Wizard Walkthrough](../../../start/installation/setup-wizard) explains how to obtain a free Let's Encrypt certificate for your server or cluster.
 
-The certificate contains all of the domain names of the cluster in the ASN (Alternative Subject Name) property. For example, if you setup a 3 node cluster and choose the domain "example.ravendb.community", the certificate will contain 3 ASN entries:  
-
-- a.example.ravendb.community  
-- b.example.ravendb.community  
-- c.example.ravendb.community  
-
-This way, the same certificate is used in all the nodes of the cluster.
-
-Let's Encrypt [recently announced](https://letsencrypt.org/2017/07/06/wildcard-certificates-coming-jan-2018.html) support for wildcard certificates, and RavenDB will start using them soon.
+It is a wildcard certificate, so if you choose the domain `example` during the wizard (with the community license), the generated certificate will have the common name (CN) `*.example.ravendb.community`.
 
 ## Automatic Renewal
 
@@ -47,6 +39,7 @@ During the process you will receive alerts in the studio and in the logs indicat
 You may initiate the renewal process manually by going to the certificate view in the studio and clicking `Renew` on the server certificate. It will trigger the same certificate replacement process which was described in `Automatic Renewal`.
 
 If a node is down and you click `Renew`, the cluster will complete the operation without the node which is down. When bringing that node up, the certificate must be replaced manually.
+
 
 ## Updating DNS records
 
