@@ -1,0 +1,93 @@
+[
+  {
+    "Path": "what-is-a-session-and-how-does-it-work.markdown",
+    "Name": "What is a Session and How Does it Work",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/basic-operations/understanding-session-object"
+      }
+    ],
+    "IsPlaceholder": "true"
+  },
+    {
+        "Path": "opening-a-session.markdown",
+        "Name": "Opening a Session",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/opening-a-session"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "storing-entities.markdown",
+        "Name": "Storing Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "deleting-entities.markdown",
+        "Name": "Deleting Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/deleting-documents"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "loading-entities.markdown",
+        "Name": "Loading Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/loading-editing-existing-document"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "saving-changes.markdown",
+        "Name": "Saving changes",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "/attachments",
+    "Name": "Attachments",
+    "Mappings": []
+  },
+  {
+    "Path": "/revisions",
+    "Name": "Revisions",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to...",
+    "Mappings": []
+  }
+]
