@@ -60,6 +60,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #region OperationStatusFetchMode
                     OperationStatusFetchMode = OperationStatusFetchMode.ChangesApi
                     #endregion
+                    ,
+                    #region TopologyCacheLocation
+                    TopologyCacheLocation = @"C:\RavenDB\TopologyCache"
+                    #endregion
 	            }
             };
 
