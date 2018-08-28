@@ -56,7 +56,6 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
                     new SqlEtlConfiguration
                     {
                         ConnectionStringName = "sql-connection-string-name",
-                        FactoryName = "System.Data.SqlClient",
                         Name = "Orders to SQL",
                         SqlTables = {
                             new SqlEtlTable {TableName = "Orders", DocumentIdColumn = "Id", InsertOnlyMode = false},
