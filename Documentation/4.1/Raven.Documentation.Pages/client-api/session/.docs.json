@@ -8,86 +8,68 @@
         "Key": "client-api/basic-operations/understanding-session-object"
       }
     ],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
+    "IsPlaceholder": "true"
   },
-  {
-    "Path": "opening-a-session.markdown",
-    "Name": "Opening a Session",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/basic-operations/opening-a-session"
-      }
-    ],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
-  },
-  {
-    "Path": "storing-entities.markdown",
-    "Name": "Storing Entities",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/basic-operations/saving-new-document"
-      }
-    ],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
-  },
-  {
-    "Path": "deleting-entities.markdown",
-    "Name": "Deleting Entities",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/basic-operations/deleting-documents"
-      }
-    ],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
-  },
-  {
-    "Path": "loading-entities.markdown",
-    "Name": "Loading Entities",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/basic-operations/loading-editing-existing-document"
-      }
-    ],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
-  },
-  {
-    "Path": "saving-changes.markdown",
-    "Name": "Saving changes",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/basic-operations/saving-new-document"
-      }
-    ],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
-  },
-  {
-    "Path": "/querying",
-    "Name": "Querying",
-    "Mappings": []
-  },
+    {
+        "Path": "opening-a-session.markdown",
+        "Name": "Opening a Session",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/opening-a-session"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "storing-entities.markdown",
+        "Name": "Storing Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "deleting-entities.markdown",
+        "Name": "Deleting Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/deleting-documents"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "loading-entities.markdown",
+        "Name": "Loading Entities",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/loading-editing-existing-document"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "saving-changes.markdown",
+        "Name": "Saving changes",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/saving-new-document"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    },
   {
     "Path": "/configuration",
     "Name": "Configuration",
