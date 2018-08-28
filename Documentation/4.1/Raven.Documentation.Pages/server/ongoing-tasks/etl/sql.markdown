@@ -207,6 +207,12 @@ All records created in a single ETL run, one per each `loadTo` call, will be sen
 - [ETL Basics](../../../server/ongoing-tasks/etl/basics)
 - [RavenDB ETL Task](../../../server/ongoing-tasks/etl/raven)
 
+### Client API
+
+- [How to Add ETL](../../../client-api/operations/maintenance/etl/add-etl)
+- [How to Update ETL](../../../client-api/operations/maintenance/etl/update-etl)
+- [How to Reset ETL](../../../client-api/operations/maintenance/etl/reset-etl)
+
 ### Studio
 
 - [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
