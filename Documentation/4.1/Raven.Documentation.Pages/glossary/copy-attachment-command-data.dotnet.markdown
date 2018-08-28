@@ -5,9 +5,9 @@
 | Name | Type | Description |
 | ------------- | ------------- | ----- |
 | **sourceDocumentId** | string | Source document id |
-| **sourceName** | string | Source name |
+| **sourceName** | string | Source attachment name |
 | **destinationDocumentId** | string | Destination document id |
-| **destinationName** | string | Destination name |
+| **destinationName** | string | Destination attachment name |
 | **changeVector** | string | Document change-vector |
 
 ### Methods

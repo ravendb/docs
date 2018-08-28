@@ -111,7 +111,7 @@
     },
     {
         "Path": "copy-attachment-command-data.markdown",
-        "Name": "CopyAttachmentCommandDat",
+        "Name": "CopyAttachmentCommandData",
         "Mappings": [],
         "SupportedVersions": [
             "4.1"
