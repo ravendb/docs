@@ -9,7 +9,7 @@ You can modify ETL task by using **UpdateEtlOperation**.
 | Parameters | | |
 | ------------- | ----- | ---- |
 | **taskId** | long | Current ETL task ID | 
-| **configuration** | EtlConfiguration<T> | ETL configuration where `T` is connection string type |
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
 ## Example
 

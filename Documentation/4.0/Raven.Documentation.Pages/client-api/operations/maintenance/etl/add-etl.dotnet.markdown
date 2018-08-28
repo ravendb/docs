@@ -8,7 +8,7 @@ You can add ETL task by using **AddEtlOperation**.
 
 | Parameters | | |
 | ------------- | ----- | ---- |
-| **configuration** | EtlConfiguration<T> | ETL configuration where `T` is connection string type |
+| **configuration** | `EtlConfiguration<T>` | ETL configuration where `T` is connection string type |
 
 ## Example - Add Raven ETL
 
