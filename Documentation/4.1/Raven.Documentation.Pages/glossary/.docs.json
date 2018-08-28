@@ -108,5 +108,13 @@
         "Name": "PutCommandData",
         "Mappings": [],
         "IsPlaceholder": "true"
+    },
+    {
+        "Path": "copy-attachment-command-data.markdown",
+        "Name": "CopyAttachmentCommandDat",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
     }
 ]
