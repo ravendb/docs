@@ -124,5 +124,13 @@
         "SupportedVersions": [
             "4.1"
         ]
+    },
+    {
+        "Path": "put-compare-exchange-command-data.markdown",
+        "Name": "PutCompareExchangeCommandData",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
     }
 ]
