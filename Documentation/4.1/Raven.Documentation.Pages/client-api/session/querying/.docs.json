@@ -127,6 +127,23 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "how-to-use-highlighting.markdown",
+        "Name": "How to Use Highlighting",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "client-api/session/querying/how-to-use-highlighting"
+            },
+            {
+                "Version": 4.0,
+                "Key": null
+            }
+        ],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "how-to-use-regex.markdown",
         "Name": "How to Use Regex",
         "Mappings": [],
