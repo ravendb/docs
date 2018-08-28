@@ -215,7 +215,7 @@ var attachments = this['@metadata']['@attachments'];
 * If a script is defined RavenDB doesn't send counters by default.
 * In order to indicate that a counter should also be sent, the behavior function needs to be defined in the script which decides if the counter should be sent if it's modified
 (e.g. by increment operation). It the relevant function doesn't exist a counter isn't loaded.
-* The reason that counters require special functions is that incrementing a counter _doesn't_ modify the etag of a related document so the document _isn't_ processed
+* The reason that counters require special functions is that incrementing a counter _doesn't_ modify the change vector of a related document so the document _isn't_ processed
 by ETL on a counter change.
 * Another option of sending a counter is to explicitly add it in a script to a loaded document.
 
