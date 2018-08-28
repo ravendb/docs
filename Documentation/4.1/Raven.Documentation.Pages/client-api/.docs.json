@@ -1,10 +1,10 @@
 [
-  {
-    "Path": "what-is-a-document-store.markdown",
-    "Name": "What is a Document Store",
-    "Mappings": [],
-    "IsPlaceholder": "true"
-  },
+    {
+        "Path": "what-is-a-document-store.markdown",
+        "Name": "What is a Document Store",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
     {
         "Path": "creating-document-store.markdown",
         "Name": "Creating Document Store",
@@ -40,59 +40,59 @@
         "Name": "Session",
         "Mappings": []
     },
-  {
-    "Path": "/operations",
-    "Name": "Operations",
-    "Mappings": []
-  },
-  {
-    "Path": "/bulk-insert",
-    "Name": "Bulk Insert",
-    "Mappings": []
-  },
-  {
-    "Path": "/data-subscriptions",
-    "Name": "Data Subscriptions",
-    "Mappings": []
-  },
-  {
-    "Path": "/changes",
-    "Name": "Changes API",
-    "Mappings": []
-  },
-  {
-    "Path": "/commands",
-    "Name": "Commands",
-    "Mappings": []
-  },
-  {
-    "Path": "/document-identifiers",
-    "Name": "Document Identifiers",
-    "Mappings": []
-  },
-  {
-    "Path": "/configuration",
-    "Name": "Configuration",
-    "Mappings": []
-  },
-  {
-    "Path": "/smuggler",
-    "Name": "Smuggler",
-    "Mappings": []
-  },
-  {
-    "Path": "/cluster",
-    "Name": "Cluster Related",
-    "Mappings": []
-  },
-  {
-    "Path": "/how-to",
-    "Name": "How to...",
-    "Mappings": []
-  },
-  {
-    "Path": "/faq",
-    "Name": "FAQ",
-    "Mappings": []
-  }
+    {
+        "Path": "/operations",
+        "Name": "Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/bulk-insert",
+        "Name": "Bulk Insert",
+        "Mappings": []
+    },
+    {
+        "Path": "/data-subscriptions",
+        "Name": "Data Subscriptions",
+        "Mappings": []
+    },
+    {
+        "Path": "/changes",
+        "Name": "Changes API",
+        "Mappings": []
+    },
+    {
+        "Path": "/commands",
+        "Name": "Commands",
+        "Mappings": []
+    },
+    {
+        "Path": "/document-identifiers",
+        "Name": "Document Identifiers",
+        "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/smuggler",
+        "Name": "Smuggler",
+        "Mappings": []
+    },
+    {
+        "Path": "/cluster",
+        "Name": "Cluster Related",
+        "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    },
+    {
+        "Path": "/faq",
+        "Name": "FAQ",
+        "Mappings": []
+    }
 ]
