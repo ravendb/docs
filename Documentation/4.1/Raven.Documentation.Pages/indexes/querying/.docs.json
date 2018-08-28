@@ -1,0 +1,137 @@
+[
+    {
+        "Path": "what-is-rql.markdown",
+        "Name": "What is RQL",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "basics.markdown",
+        "Name": "Basics",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/using-linq-to-query-ravendb"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "filtering.markdown",
+        "Name": "Filtering",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "paging.markdown",
+        "Name": "Paging",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/paging"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "sorting.markdown",
+        "Name": "Sorting",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "boosting.markdown",
+        "Name": "Boosting",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "projections.markdown",
+        "Name": "Projections",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "distinct.markdown",
+        "Name": "Distinct",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "searching.markdown",
+        "Name": "Searching",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/searching"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "intersection.markdown",
+        "Name": "Intersection",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/intersection"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "suggestions.markdown",
+        "Name": "Suggestions",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/suggestions"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "spatial.markdown",
+        "Name": "Spatial",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "faceted-search.markdown",
+        "Name": "Faceted search",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/faceted-search"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "morelikethis.markdown",
+        "Name": "MoreLikeThis",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/bundles/more-like-this"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "query-vs-document-query.markdown",
+        "Name": "Query vs DocumentQuery",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/querying/query-and-lucene-query"
+            }
+        ],
+        "IsPlaceholder": "true"
+    }
+]
