@@ -116,5 +116,13 @@
         "SupportedVersions": [
             "4.1"
         ]
+    },
+    {
+        "Path": "move-attachment-command-data.markdown",
+        "Name": "MoveAttachmentCommandData",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
     }
 ]

@@ -9,6 +9,7 @@ Operations can be deferred till `SaveChanges` is called by using `Defer` method 
 - PutAttachmentCommandData
 - DeleteAttachmentCommandData
 - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
+- [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
 
 ## Syntax
 

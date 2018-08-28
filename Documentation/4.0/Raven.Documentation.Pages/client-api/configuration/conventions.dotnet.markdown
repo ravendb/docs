@@ -81,6 +81,12 @@ Changes the way the Operation is fetching the operation status when waiting for 
 
 {CODE OperationStatusFetchMode@ClientApi\Configuration\Conventions.cs /}
 
+## TopologyCacheLocation
+
+Changes the location of topology cache files. Setting this value will check directory existance and write permissions. By default it is set to application base directory (`AppContext.BaseDirectory`).
+
+{CODE TopologyCacheLocation@ClientApi\Configuration\Conventions.cs /}
+
 ## Related Articles
 
 ### Conventions
