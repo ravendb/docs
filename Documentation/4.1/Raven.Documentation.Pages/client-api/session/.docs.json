@@ -1,15 +1,15 @@
 [
-  {
-    "Path": "what-is-a-session-and-how-does-it-work.markdown",
-    "Name": "What is a Session and How Does it Work",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/basic-operations/understanding-session-object"
-      }
-    ],
-    "IsPlaceholder": "true"
-  },
+    {
+        "Path": "what-is-a-session-and-how-does-it-work.markdown",
+        "Name": "What is a Session and How Does it Work",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/basic-operations/understanding-session-object"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
     {
         "Path": "opening-a-session.markdown",
         "Name": "Opening a Session",
@@ -70,24 +70,24 @@
         "Name": "Querying",
         "Mappings": []
     },
-  {
-    "Path": "/configuration",
-    "Name": "Configuration",
-    "Mappings": []
-  },
-  {
-    "Path": "/attachments",
-    "Name": "Attachments",
-    "Mappings": []
-  },
-  {
-    "Path": "/revisions",
-    "Name": "Revisions",
-    "Mappings": []
-  },
-  {
-    "Path": "/how-to",
-    "Name": "How to...",
-    "Mappings": []
-  }
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/attachments",
+        "Name": "Attachments",
+        "Mappings": []
+    },
+    {
+        "Path": "/revisions",
+        "Name": "Revisions",
+        "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    }
 ]
