@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
+using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Indexes;
 using Raven.Client.Documents.Linq;
@@ -76,18 +78,42 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             #endregion
         }
 
-        public HowToUseHighlighting()
+        public async Task Sample()
         {
             using (var store = new DocumentStore())
             {
                 using (var session = store.OpenSession())
                 {
                     #region highlight_2
-                    SearchItem[] results = session
+                    List<SearchItem> results = session
                         .Query<SearchItem, ContentSearchIndex>()
                         .Highlight(x => x.Text, 128, 1, out Highlightings highlightings)
                         .Search(x => x.Text, "raven")
-                        .ToArray();
+                        .ToList();
+
+                    StringBuilder builder = new StringBuilder()
+                        .AppendLine("<ul>");
+
+                    foreach (SearchItem result in results)
+                    {
+                        string[] fragments = highlightings.GetFragments(result.Id);
+                        builder.AppendLine($"<li>{fragments.First()}</li>");
+                    }
+
+                    string ul = builder
+                        .AppendLine("</ul>")
+                        .ToString();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region highlight_3
+                    List<SearchItem> results = await asyncSession
+                        .Query<SearchItem, ContentSearchIndex>()
+                        .Highlight(x => x.Text, 128, 1, out Highlightings highlightings)
+                        .Search(x => x.Text, "raven")
+                        .ToListAsync();
 
                     StringBuilder builder = new StringBuilder()
                         .AppendLine("<ul>");

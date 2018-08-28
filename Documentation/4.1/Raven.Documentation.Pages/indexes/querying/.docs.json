@@ -124,6 +124,23 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "highlighting.markdown",
+        "Name": "Highlighting",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "indexes/querying/highlights"
+            },
+            {
+                "Version": 4.0,
+                "Key": null
+            }
+        ],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "query-vs-document-query.markdown",
         "Name": "Query vs DocumentQuery",
         "Mappings": [
