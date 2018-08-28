@@ -41,9 +41,9 @@ Open the down arrow and click `New database from legacy files`.
     
     ![Figure 3. Create New Database From Legacy Files - Advanced](images/new-database-from-legacy-3.png "Advanced source properties")
 
-    * Journals directory: use if custom path to journals / transaction logs was specified (value of 'Raven/TransactionJournalsPath' or 'Raven/Esent/LogsPath' 3.x setting)
+    * Journals directory: Use if custom path to journals / transaction logs was specified (value of 'Raven/TransactionJournalsPath' or 'Raven/Esent/LogsPath' 3.x setting)
 
-    * Batch size: size of documents / files batch when exporting from 3.x data (default: 1024)
+    * Batch size: Size of documents / files batch when exporting from 3.x data (default: 1024)
 
     * Source bundles: 
     

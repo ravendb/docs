@@ -147,7 +147,7 @@ Congratulations, you have a secure RavenDB server running on Docker on a simple 
 
 Connecting a few servers in a cluster is easy. Follow [these instructions](../../../start/installation/setup-wizard) to construct a cluster during setup.
 
-## Related articles
+## Related Articles
 
 ### Getting Started
 

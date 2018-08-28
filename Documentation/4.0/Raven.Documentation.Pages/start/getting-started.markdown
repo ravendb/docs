@@ -83,7 +83,7 @@ Which means that the server will run:
 
 {INFO/}
 
-{WARNING:Port in Use}
+{WARNING: Port in Use}
 
 In some cases the port might be in use. This will prevent the Server from starting with an "address in use" error (`EADDRINUSE`).
 
@@ -91,7 +91,7 @@ The port can be changed by editing the `ServerUrl` value.
 
 {WARNING/}
 
-{NOTE:Write Permissions}
+{NOTE: Write Permissions}
 
 RavenDB requires write permissions to the following locations:
 
@@ -125,7 +125,7 @@ After installation and setup, the Studio can be accessed via the browser using t
 
 To let a developer start coding an application quickly, RavenDB will run with the following default security mode:
 
-{WARNING:Default Security Mode}
+{WARNING: Default Security Mode}
 
 As long as the database is used inside the local machine and no outside connections are allowed, you can ignore security concerns 
 and you require no authentication. Once you set RavenDB to listen to connections outside your local machine, 
@@ -140,7 +140,7 @@ Read more about security and how to enable authentication [here](../server/secur
 
 {PANEL/}
 
-{PANEL:Client}
+{PANEL: Client}
 
 After your server is up and running, to write an application you need to acquire one of the `Client` access libraries:
 
@@ -157,7 +157,7 @@ After your server is up and running, to write an application you need to acquire
 
 In order to start, you need to create an instance of the `DocumentStore` - the main entry point for your application which is responsible for establishing and managing connections between a RavenDB server (or cluster) and your application.
 
-{INFO:Examples}
+{INFO: Examples}
 
 Before proceeding to the examples, we would like to point out that most of the articles are using the `Northwind` database. You can read more about it and how to deploy it [here](../studio/database/tasks/create-sample-data).
 
@@ -170,7 +170,7 @@ Before proceeding to the examples, we would like to point out that most of the a
 {CODE-TAB:python:Python client_1@start\getting_started.py /}
 {CODE-TABS/}
 
-{INFO:Singleton}
+{INFO: Singleton}
 
 The `DocumentStore` is capable of working with multiple databases and for proper operation we **recommend** having only one instance of it per application.
 
@@ -256,7 +256,7 @@ If you wish to understand `Indexes` better, we recommend reading the following a
 
 {PANEL/}
 
-## Related articles
+## Related Articles
 
 ### Installation
 
