@@ -11,7 +11,7 @@ Several RavenDB mechanisms incorporate JavaScript scripts:
 * [Smuggler (data import/export)](../../client-api/smuggler/what-is-smuggler#transformscript)    
 * [Single](../../client-api/operations/patching/single-document) or [Set based](../../client-api/operations/patching/set-based) document patches
 
-In order to execute JavScript code, RavenDB uses [Jint](http://github.com/sebastienros/jint), an open source JavaScript interpreter supporting ECMAScript 5.1.  
+In order to execute JavaScript code, RavenDB uses [Jint](http://github.com/sebastienros/jint), an open source JavaScript interpreter supporting ECMAScript 5.1.  
 
 In this page:  
 * [How RavenDB uses Jint](../../server/kb/javascript-engine#how-ravendb-uses-jint)  
