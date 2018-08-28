@@ -108,5 +108,13 @@
         "Name": "PutCommandData",
         "Mappings": [],
         "IsPlaceholder": "true"
+    },
+    {
+        "Path": "move-attachment-command-data.markdown",
+        "Name": "MoveAttachmentCommandData",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
     }
 ]
