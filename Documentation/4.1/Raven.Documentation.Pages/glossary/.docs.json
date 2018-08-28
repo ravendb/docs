@@ -110,6 +110,14 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "copy-attachment-command-data.markdown",
+        "Name": "CopyAttachmentCommandData",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "move-attachment-command-data.markdown",
         "Name": "MoveAttachmentCommandData",
         "Mappings": [],

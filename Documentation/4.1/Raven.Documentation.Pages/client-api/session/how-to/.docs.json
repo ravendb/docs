@@ -1,10 +1,10 @@
 [
-  {
-    "Path": "clear-a-session.markdown",
-    "Name": "...clear a session",
-    "Mappings": [],
-    "IsPlaceholder": "true"
-  },
+    {
+        "Path": "clear-a-session.markdown",
+        "Name": "...clear a session",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
     {
         "Path": "evict-entity-from-a-session.markdown",
         "Name": "...evict entity from a session",
@@ -25,17 +25,17 @@
             "4.1"
         ]
     },
-  {
-    "Path": "perform-operations-lazily.markdown",
-    "Name": "...perform operations lazily",
-    "Mappings": [
-      {
-        "Version": 3.5,
-        "Key": "client-api/session/how-to/perform-operations-lazily"
-      }
-    ],
-    "IsPlaceholder": "true"
-  },
+    {
+        "Path": "perform-operations-lazily.markdown",
+        "Name": "...perform operations lazily",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/session/how-to/perform-operations-lazily"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
     {
         "Path": "subscribe-to-events.markdown",
         "Name": "...subscribe to events",
