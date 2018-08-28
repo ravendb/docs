@@ -29,7 +29,7 @@ Open the down arrow and click `New database from backup`.
 2. **Backup directory**
 
 3. **Disable ongoing tasks after restore**
-    * Disable all ongoing tasks. Learn more about **Ongoing tasks** in [Onging tasks](../../../database/tasks/ongoing-tasks/general-info)
+    * Disable all ongoing tasks. Learn more about **Ongoing tasks** in [Ongoing tasks](../../../database/tasks/ongoing-tasks/general-info)
 
 4. **Restore point**
     * You can choose restore point from the one available
