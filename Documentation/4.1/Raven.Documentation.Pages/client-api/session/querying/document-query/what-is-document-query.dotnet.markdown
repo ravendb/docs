@@ -59,6 +59,7 @@ Available custom methods and extensions:
 - [GroupBy](../../../../client-api/session/querying/how-to-perform-group-by-query)
 - [GroupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
 - [GroupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
+- [Query] [Highlight](../../../../client-api/session/querying/how-to-use-highlighting)
 - Include
 - Intersect
 - InvokeAfterQueryExecuted
