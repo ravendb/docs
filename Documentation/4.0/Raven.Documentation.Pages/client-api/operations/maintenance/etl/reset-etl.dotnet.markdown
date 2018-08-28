@@ -6,7 +6,7 @@ ETL is processing documents from the point where the last batch finished. To sta
 
 {CODE reset_etl_1@ClientApi\Operations\ResetEtl.cs /}
 
-| Return Value | | |
+| Parameters | | |
 | ------------- | ----- | ---- |
 | **configurationName** | string | ETL configuration name |
 | **transformationName** | string | Name of ETL transformation |
