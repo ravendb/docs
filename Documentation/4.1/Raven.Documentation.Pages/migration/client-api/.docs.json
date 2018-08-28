@@ -1,0 +1,61 @@
+[
+    {
+        "Path": "introduction.markdown",
+        "Name": "Introduction",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "document-store.markdown",
+        "Name": "Document Store",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "conventions.markdown",
+        "Name": "Conventions",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1"
+        ]
+    },
+    {
+        "Path": "patching.markdown",
+        "Name": "Patching",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "commands.markdown",
+        "Name": "Commands",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexes.markdown",
+        "Name": "Indexes",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1"
+        ]
+    },
+    {
+        "Path": "changes-api.markdown",
+        "Name": "Changes API",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "list.markdown",
+        "Name": "List of Differences in Public API",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/session",
+        "Name": "Session",
+        "Mappings": []
+    }
+]
