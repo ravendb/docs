@@ -18,7 +18,7 @@ System.InvalidOperationException: Setting up RavenDB in Let's Encrypt security m
 System.InvalidOperationException: Validation failed. ---> 
 System.InvalidOperationException: Failed to simulate running the server with the supplied settings using: https://a.example.ravendb.community:4433  ---> 
 System.InvalidOperationException: Failed to start webhost on node 'A'. The specified ip address might not be reachable due to network issues. 
-It can  happen if the ip is external (behind a firewall, docker). If this is the case, try going back to the previous screen and add the same ip as an external ip.
+It can happen if the ip is external (behind a firewall, docker). If this is the case, try going back to the previous screen and add the same ip as an external ip.
 Settings file: D:\temp\RavenDB-4.0.0-windows-x64\Server\settings.json.
 IP addresses: 10.0.0.65:4433. 
 ---> Microsoft.AspNetCore.Server.Kestrel.Transport.Libuv.Internal.Networking.UvException: Error -4092 EACCES permission denied
@@ -84,7 +84,7 @@ Please wait a while until DNS propagation is finished and try again. If you are 
 it might take hours to update because of DNS caching. If the issue persists, contact RavenDB's support.
 {CODE-BLOCK/}  
 
-If this happens, there is nothing you can do except wait for DNS propogation. When it's updated in dns.google.com click the `Try Again` button.
+If this happens, there is nothing you can do except wait for DNS propagation. When it's updated in dns.google.com click the `Try Again` button.
 
 ### After installing with Let's Encrypt, can I change the DNS records?
 
@@ -99,7 +99,7 @@ Yes.
 You can use the Zip file to re-install or deploy the server/cluster elsewhere.  
 Download a fresh copy of RavenDB and run the setup wizard. Then choose `Continue Cluster Setup` and select node A.
 This will use the existing Zip file and same configuration and certificate which were previously chosen.  
-When building a cluster, repeat this step with nodes B,C and so on.
+When building a cluster, repeat this step with nodes B, C and so on.
 
 ### Can I change the (private) IP address RavenDB binds to?
 
@@ -135,7 +135,7 @@ If it's not the same error as above, please open [settings.json](../configuratio
 {CODE-BLOCK/}
 Things to check:
 
-* "Setup.Mode" must be "LetsEncrypt" and the automatic renew proccess only works if you got your certificate through the RavenDB setup wizard.  
+* "Setup.Mode" must be "LetsEncrypt" and the automatic renew process only works if you got your certificate through the RavenDB setup wizard.  
 * "Security.Certificate.LetsEncrypt.Email" must be identical to the e-mail which is associated with your license.  
 * "PublicServerUrl" and "PublicServerUrl.Tcp" must contain the same domain as the one chosen during the setup wizard and is associated with your license.  
 * "ExternalIp" should be defined only if you are running behind a firewall (cloud VM, docker, etc...).  
@@ -291,7 +291,7 @@ Under construction
 
 Under construction
 
-## Related articles
+## Related Articles
 
 ### Installation
 
