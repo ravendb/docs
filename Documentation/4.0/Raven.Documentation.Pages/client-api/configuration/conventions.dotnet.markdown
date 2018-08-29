@@ -31,11 +31,11 @@ The cache is created per database you use.
 
 {NOTE: Disable caching} 
 
-To disable the caching you can set the `MaxHttpCacheSize` value to zero:
+To disable the caching, you can set the `MaxHttpCacheSize` value to zero:
 
 {CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
 
-**In this scenario all the requests will be sent to the server to fetch the data.**
+**In this scenario, all the requests will be sent to the server to fetch the data.**
 
 {NOTE/}
 
@@ -71,13 +71,13 @@ It determines if C# `enum` types should be saved as integers or strings and inst
 
 ##UseCompression
 
-It determines if the client will send headers to the Server indicating that it allows compression to be used. Default: `true`.
+It determines if the client will send headers to the server indicating that it allows compression to be used. Default: `true`.
 
 {CODE UseCompression@ClientApi\Configuration\Conventions.cs /}
 
 ## OperationStatusFetchMode
 
-Changes the way the Operation is fetching the operation status when waiting for completion. By default the value is set to `ChangesApi` which underneath is using WebSocket protocol when connection is established with the server. On some older systems e.g. Windows 7, the WebSocket protocol might not be available due to the OS and .NET Framework limitations. For that reason, the value can be changed to `Polling` to bypass this issue.
+Changes the way the operation is fetching the operation status when waiting for completion. By default the value is set to `ChangesApi` which underneath is using WebSocket protocol when connection is established with the server. On some older systems e.g. Windows 7, the WebSocket protocol might not be available due to the OS and .NET Framework limitations. For that reason, the value can be changed to `Polling` to bypass this issue.
 
 {CODE OperationStatusFetchMode@ClientApi\Configuration\Conventions.cs /}
 
