@@ -315,11 +315,11 @@
             "publishedAt": "2018-03-14"
         },
         "SeoMetaProperties": {
-            "description": "",
+            "description": "To protect our users from any data breach, we hired a third-party security firm and told them to do their worst with RavenDB.",
             "og:site_name": "RavenDB",
             "og:type": "website",
             "og:title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
-            "og:description": "",
+            "og:description": "To protect our users from any data breach, we hired a third-party security firm and told them to do their worst with RavenDB.",
             "og:url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb40-passes-intense-security-check&fileName=ravendb40-passes-intense-security-check.png",
             "og:image:width": "280",
@@ -328,7 +328,7 @@
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
             "twitter:title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
-            "twitter:description": "",
+            "twitter:description": "To protect our users from any data breach, we hired a third-party security firm and told them to do their worst with RavenDB.",
             "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb40-passes-intense-security-check&fileName=ravendb40-passes-intense-security-check.png",
             "twitter:url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check"
         }
@@ -373,11 +373,11 @@
             "publishedAt": "2018-05-01"
         },
         "SeoMetaProperties": {
-            "description": "",
+            "description": ".NET Rocks Carl Franklin and Richard Campbell talk RavenDB and NoSQL with Kamran Ayub. They discuss use cases, new features, and how it compares to MongoDB.",
             "og:site_name": "RavenDB",
             "og:type": "website",
             "og:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
-            "og:description": "",
+            "og:description": ".NET Rocks Carl Franklin and Richard Campbell talk RavenDB and NoSQL with Kamran Ayub. They discuss use cases, new features, and how it compares to MongoDB.",
             "og:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast",
             "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast&fileName=nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
             "og:image:width": "280",
@@ -386,7 +386,7 @@
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
             "twitter:title": ".NET Rocks with Kamran Ayub Talking about RavenDB V4 | RavenDB",
-            "twitter:description": "",
+            "twitter:description": ".NET Rocks Carl Franklin and Richard Campbell talk RavenDB and NoSQL with Kamran Ayub. They discuss use cases, new features, and how it compares to MongoDB.",
             "twitter:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast&fileName=nosql-ravendb-dot-net-rocks-kamran-ayub-podcast.jpg",
             "twitter:url": "https://ravendb.net/articles/nosql-ravendb-dot-net-rocks-kamran-ayub-podcast"
         }
