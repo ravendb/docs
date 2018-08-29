@@ -36,6 +36,14 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "highlighting.markdown",
+        "Name": "Highlighting",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "documentquery.markdown",
         "Name": "DocumentQuery",
         "Mappings": [],

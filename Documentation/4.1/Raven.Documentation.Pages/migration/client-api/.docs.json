@@ -15,10 +15,7 @@
         "Path": "conventions.markdown",
         "Name": "Conventions",
         "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1"
-        ]
+        "IsPlaceholder": "true"
     },
     {
         "Path": "patching.markdown",
@@ -36,10 +33,7 @@
         "Path": "indexes.markdown",
         "Name": "Indexes",
         "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1"
-        ]
+        "IsPlaceholder": "true"
     },
     {
         "Path": "changes-api.markdown",
