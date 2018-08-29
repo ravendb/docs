@@ -35,7 +35,7 @@ From the databases list view, click the **'New database'** button.
 
 {NOTE: }
 
-* A database name can be any sequence of **letters**, **digits** and characters that match the **regex**: **[ _ \ - \ . ]+**  
+* A database name can be any sequence of **letters**, **digits**, and characters that match the **regex**: **[ _ \ - \ . ]+**  
 * A name cannot exceed 128 characters  
 * Spaces are not allowed  
 * For example:  
