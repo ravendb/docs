@@ -254,7 +254,12 @@ To patch documents on the server-side, use `update` with the desired JS script t
 
 {PANEL:INCLUDE}
 
-The keyword `include` has been introduced to support attaching additional documents to the query response. A dedicated article that tackles this subject can be found [here](../../client-api/how-to/handle-document-relationships#includes).
+The keyword `include` has been introduced to support:
+
+- [including additional documents](../../client-api/how-to/handle-document-relationships#includes) or counters to the query response
+- [highlighting](../../client-api/session/querying/how-to-use-highlighting) results
+- query timings
+- explanations
 
 {PANEL/}
 
