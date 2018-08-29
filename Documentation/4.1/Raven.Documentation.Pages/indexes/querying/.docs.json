@@ -3,7 +3,9 @@
         "Path": "what-is-rql.markdown",
         "Name": "What is RQL",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "basics.markdown",
