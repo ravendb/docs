@@ -41,7 +41,7 @@ namespace Raven.Documentation.Web.Indexes
                                 select new
                                 {
                                     Key = g.Key,
-                                    Ids = g.SelectMany(x => x.Ids).ToDictionary(x => x.Key, x => x.Value),
+                                    Ids = g.SelectMany(x => x.Ids).GroupBy(p => p.Key).ToDictionary(x => x.Key, x => x.First().Value),
                                     Languages = g.SelectMany(x => x.Languages).GroupBy(x => x.Key).ToDictionary(x => x.Key, x => x.SelectMany(y => y.Value).Distinct())
                                 };
         }
