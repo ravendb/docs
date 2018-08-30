@@ -275,7 +275,7 @@ namespace Raven.Documentation.Web.Controllers
                         .LastOrDefault();
                 }
 
-                if (map == null)
+                if (map?.Key == null)
                     continue;
 
                 if (article.Languages.Any(versionWithLangs => float.Parse(versionWithLangs.Key) == v))

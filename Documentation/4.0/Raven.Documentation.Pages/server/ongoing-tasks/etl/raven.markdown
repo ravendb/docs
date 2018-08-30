@@ -205,6 +205,13 @@ loadToEmployees({
 - [ETL Basics](../../../server/ongoing-tasks/etl/basics)
 - [SQL ETL Task](../../../server/ongoing-tasks/etl/sql)
 
+### Client API
+
+- [How to Add ETL](../../../client-api/operations/maintenance/etl/add-etl)
+- [How to Update ETL](../../../client-api/operations/maintenance/etl/update-etl)
+- [How to Reset ETL](../../../client-api/operations/maintenance/etl/reset-etl)
+
+
 ### Studio
 
 - [Define RavenDB ETL Task in Studio](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
