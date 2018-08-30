@@ -126,6 +126,14 @@
         ]
     },
     {
+        "Path": "put-compare-exchange-command-data.markdown",
+        "Name": "PutCompareExchangeCommandData",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "delete-compare-exchange-command-data.markdown",
         "Name": "DeleteCompareExchangeCommandData",
         "Mappings": [],
