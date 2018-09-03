@@ -8,7 +8,9 @@
                 "Key": "client-api/basic-operations/understanding-session-object"
             }
         ],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "opening-a-session.markdown",
