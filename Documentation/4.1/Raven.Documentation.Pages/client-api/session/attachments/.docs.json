@@ -1,0 +1,34 @@
+[
+    {
+        "Path": "what-are-attachments.markdown",
+        "Name": "What are Attachments",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "storing.markdown",
+        "Name": "Storing",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "loading.markdown",
+        "Name": "Loading",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "deleting.markdown",
+        "Name": "Deleting",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "copying-moving-renaming.markdown",
+        "Name": "Copying, Moving & Renaming",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    }
+]
