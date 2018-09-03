@@ -63,7 +63,9 @@
                 "Key": "client-api/basic-operations/saving-new-document"
             }
         ],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+          "4.1"
+        ]
     },
     {
         "Path": "/querying",
