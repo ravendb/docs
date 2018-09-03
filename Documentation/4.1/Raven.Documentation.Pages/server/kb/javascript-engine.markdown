@@ -64,6 +64,14 @@ RavenDB introduced a set of predefined functions in addition to Jint's ECMAScrip
 | **convertJsTimeToTimeSpanString(ticksNumber)** | `bool` | Returns human readable TimeSpan of the received `ticksNumber`. |
 | **scalarToRawString(document, lambdaToField)** | Raw field value (`LazyStringValue` for strings, `LazyNumberValue` for floating point numbers). | Returns raw representation of a field. Useful when working with numbers that exceeds `double`'s numeric or accuracy range. See [Numbers in Jint](../../server/kb/numbers-in-ravendb). Also usefull for better memory consumption when projecting big string values. Note: returned value is immutable |
 | **output(message)** or **console.log(message)** | `void` | Used for [single document patches](../../client-api/operations/patching/single-document) debug. |
+| **incrementCounter(documentId, counterName, value)** | `void` | Increment the counter. If the chosen counter doesn't exist, it is created and its value is set to zero. A counter value can also be negative, so as the increment value<sup>[[ex]](../../client-api/operations/patching/single-document#increment-counter)</sup>. |
+| **incrementCounter(document, counterName, value)** | `void` | Increment the counter. If the chosen counter doesn't exist, it is created and its value is set to zero. A counter value can also be negative, so as the increment value<sup>[[ex]](../../client-api/operations/patching/single-document#increment-counter)</sup>. |
+| **deleteCounter(documentId, counterName)** | `void` | Delete the counter<sup>[[ex]](../../client-api/operations/patching/single-document#delete-counter)</sup>. |
+| **deleteCounter(document, counterName)** | `void` | Delete the counter<sup>[[ex]](../../client-api/operations/patching/single-document#delete-counter)</sup>. |
+| **counter(documentId, counterName)** | `long` | Get the counter value<sup>[[ex]](../../client-api/operations/patching/single-document#get-counter)</sup>. |
+| **counter(document, counterName)** | `long` | Get the counter value<sup>[[ex]](../../client-api/operations/patching/single-document#get-counter)</sup>. |
+| **counterRaw(documentId, counterName)** | `long` | Return a dictionary of counter value per database node (The overall value is a summary of all database node values). |
+| **counterRaw(document, counterName)** | `long` | Return a dictionary of counter value per database node (The overall value is a summary of all database node values). |
 {PANEL/}
 
 ## Related Articles

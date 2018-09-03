@@ -774,6 +774,109 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 }));
                 #endregion
             }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    {
+                        #region increment_counter_by_document_reference_generic_session
+                        var order = session.Load<Order>("orders/1-A");
+                        session.CountersFor(order).Increment("Likes", 1);
+                        session.SaveChanges();
+                        #endregion
+                    }
+
+                    #region increment_counter_by_document_id_non_generic_session
+                    session.Advanced.Defer(new PatchCommandData("orders/1-A", null,
+                        new PatchRequest
+                        {
+                            Script = "incrementCounter(this.Company, args.name, args.val);",
+                            Values =
+                            {
+                                { "name", "Likes" },
+                                { "val", 20 }
+                            }
+                        }, null));
+                    session.SaveChanges();
+                    #endregion
+
+                    #region delete_counter_by_document_id_generic_session
+                    session.CountersFor("orders/1-A").Delete("Likes");
+                    session.SaveChanges();
+                    #endregion
+
+                    #region delete_counter_by_document_refference_non_generic_session
+                    session.Advanced.Defer(new PatchCommandData("products/1-A", null,
+                        new PatchRequest
+                        {
+                            Script = "deleteCounter(this, args.name);",
+                            Values =
+                            {
+                                { "name", "Likes" },
+                            }
+                        }, null));
+                    session.SaveChanges();
+                    #endregion
+
+                    {
+                        #region get_counter_by_document_id_generic_session
+                        var order = session.Load<Order>("orders/1-A");
+                        var counters = session.Advanced.GetCountersFor(order);
+                        #endregion
+                    }
+
+
+                    #region get_counter_by_document_id_non_generic_session
+                    session.Advanced.Defer(new PatchCommandData("orders/1-A", null,
+                        new PatchRequest
+                        {
+                            Script = @"var likes = counter(this.Company, args.name);
+                                       put('result/', {company: this.Company, likes: likes});",
+                            Values =
+                            {
+                                { "name", "Likes" },
+                            }
+                        }, null));
+                    session.SaveChanges();
+                    #endregion
+                }
+
+                #region increment_counter_by_document_id_store
+                store.Operations.Send(new PatchOperation("orders/1-A", null, new PatchRequest
+                {
+                    Script = "incrementCounter(this.Company, args.name, args.val);",
+                    Values =
+                    {
+                        { "name", "Likes" },
+                        { "val", -1 }
+                    }
+                }));
+                #endregion
+
+                #region delete_counter_by_document_refference_store
+                store.Operations.Send(new PatchOperation("products/1-A", null, new PatchRequest
+                {
+                    Script = "deleteCounter(this, args.name);",
+                    Values =
+                    {
+                        { "name", "Likes" },
+                    }
+                }));
+                #endregion
+
+                #region get_counter_by_document_id_store
+                store.Operations.Send(new PatchOperation("orders/1-A", null, new PatchRequest
+                {
+                    Script = @"var likes = counter(this.Company, args.name);
+                               put('result/', {company: this.Company, likes: likes});",
+                    Values =
+                    {
+                        { "name", "Likes" },
+                    }
+                }));
+                #endregion
+            }
         }
     }
 }
