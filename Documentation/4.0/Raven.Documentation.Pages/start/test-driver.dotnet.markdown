@@ -113,8 +113,8 @@ init:
       Write-Output "Lets see what all our Environmental variables are now defined as:"
       Get-ChildItem Env:
 
-      Write-Output "Downloading RavenDb 4.0.0-rc-40025 ..."
-      (new-object net.webclient).DownloadFile('https://daily-builds.s3.amazonaws.com/RavenDB-4.0.0-rc-40025-windows-x64.zip', $env:RavenServerDownloadDestinationFile)
+      Write-Output "Downloading RavenDb 4.0.7 ..."
+      (new-object net.webclient).DownloadFile('https://daily-builds.s3.amazonaws.com/RavenDB-4.0.7-windows-x64.zip', $env:RavenServerDownloadDestinationFile)
 
       Write-Output "Unzipping RavenDb from $env:RavenServerDownloadDestinationFile to $env:RavenServerDirectory"
       expand-archive -Path $env:RavenServerDownloadDestinationFile -DestinationPath $env:RavenServerDirectory
@@ -189,8 +189,8 @@ here's the code to quickly copy/paste the script into your VSTS task settings:
 Write-Output "Lets see what all our Environmental variables are now defined as:"
 Get-ChildItem Env:
 
-Write-Output "Downloading RavenDb 4.0.0-rc-40025 ..."
-(new-object net.webclient).DownloadFile('https://daily-builds.s3.amazonaws.com/RavenDB-4.0.0-rc-40025-windows-x64.zip',  $env:RavenServerDownloadDestinationFile)
+Write-Output "Downloading RavenDb 4.0.7 ..."
+(new-object net.webclient).DownloadFile('https://daily-builds.s3.amazonaws.com/RavenDB-4.0.7-windows-x64.zip',  $env:RavenServerDownloadDestinationFile)
 
 Write-Output "Unzipping RavenDb from" + $env:RavenServerDownloadDestinationFile + " to " + $env:RavenServerDirectory
 expand-archive -Path $env:RavenServerDownloadDestinationFile -DestinationPath  $env:RavenServerDirectory
