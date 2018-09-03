@@ -1,4 +1,4 @@
-# Cluster Transactions
+# Cluster : Cluster-Wide Transactions
 
 {SAFE:Experimental}
 This is an experimental feature and might be a subject to change.

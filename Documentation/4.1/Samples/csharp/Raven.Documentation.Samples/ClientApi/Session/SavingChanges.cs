@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
 using Xunit.Sdk;
 
@@ -149,52 +150,55 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             }
 
             #region cluster_store_with_compare_exchange
-            using (var session = store.OpenSession(new SessionOptions
+            using (var store = new DocumentStore())
             {
-                //default is:     TransactionMode.SingleNode
-                TransactionMode = TransactionMode.ClusterWide
-            }))
-            {
-                var user = new User
+                using (var session = store.OpenSession(new SessionOptions
                 {
-                    Name = "John",
-                    LastName = "Doe"
-                };
-                session.Store(user);
-
-                // this transaction is now conditional on this being 
-                // successfully created (so, no other users with this name)
-                // it also creates an association to the new user's id
-                session.Advanced.ClusterTransaction
-                    .CreateCompareExchangeValue("usernames/John", user.Id);
-
-                session.SaveChanges();
-            }
-            #endregion
-
-            #region cluster_store_with_compare_exchange_async
-            using (var session = store.OpenAsyncSession(new SessionOptions
-            {
-                //default is:     TransactionMode.SingleNode
-                TransactionMode = TransactionMode.ClusterWide
-            }))
-            {
-                var user = new User
+                    //default is:     TransactionMode.SingleNode
+                    TransactionMode = TransactionMode.ClusterWide
+                }))
                 {
-                    Name = "John",
-                    LastName = "Doe"
-                };
-                await session.StoreAsync(user);
+                    var user = new Employee
+                    {
+                        FirstName = "John",
+                        LastName = "Doe"
+                    };
+                    session.Store(user);
 
-                // this transaction is now conditional on this being 
-                // successfully created (so, no other users with this name)
-                // it also creates an association to the new user's id
-                session.Advanced.ClusterTransaction
-                    .CreateCompareExchangeValue("usernames/John", user.Id);
+                    // this transaction is now conditional on this being 
+                    // successfully created (so, no other users with this name)
+                    // it also creates an association to the new user's id
+                    session.Advanced.ClusterTransaction
+                        .CreateCompareExchangeValue("usernames/John", user.Id);
 
-                await session.SaveChangesAsync();
+                    session.SaveChanges();
+                }
+                #endregion
+
+                #region cluster_store_with_compare_exchange_async
+                using (var session = store.OpenAsyncSession(new SessionOptions
+                {
+                    //default is:     TransactionMode.SingleNode
+                    TransactionMode = TransactionMode.ClusterWide
+                }))
+                {
+                    var user = new Employee
+                    {
+                        FirstName = "John",
+                        LastName = "Doe"
+                    };
+                    await session.StoreAsync(user);
+
+                    // this transaction is now conditional on this being 
+                    // successfully created (so, no other users with this name)
+                    // it also creates an association to the new user's id
+                    session.Advanced.ClusterTransaction
+                        .CreateCompareExchangeValue("usernames/John", user.Id);
+
+                    await session.SaveChangesAsync();
+                }
+                #endregion
             }
-            #endregion
         }
     }
 }
