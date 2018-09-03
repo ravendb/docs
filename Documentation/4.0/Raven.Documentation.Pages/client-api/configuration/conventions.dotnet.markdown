@@ -31,7 +31,7 @@ The cache is created per database you use.
 
 {NOTE: Disable caching} 
 
-To disable the caching, you can set the `MaxHttpCacheSize` value to zero:
+To disable the caching globally, you can set the `MaxHttpCacheSize` value to zero:
 
 {CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
 

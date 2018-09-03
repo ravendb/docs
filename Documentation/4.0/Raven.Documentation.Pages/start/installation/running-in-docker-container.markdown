@@ -14,11 +14,11 @@ Server images are published on Docker for the following platforms:
 
 ## Tags
 
-Beside tags matching the exact builds e.g. `4.0.0-rc-40025-ubuntu.16.04-x64` or `4.0.0-rc-40025-windows-nanoserver` each of the repositories contain the following tags for your convenience:
+Beside tags matching the exact builds e.g. `4.0.7-ubuntu.16.04-x64` or `4.0.7-windows-nanoserver` each of the repositories contain the following tags for your convenience:
 
-- `latest` this is an alias to `ubuntu-latest`
-- `ubuntu-latest` is an alias to the latest RavenDB Ubuntu image
-- `windows-nanoserver-latest` is an alias to the latest RavenDB Windows Nano Server image
+- `4.0-latest` this is an alias to `4.0-ubuntu-latest`
+- `4.0-ubuntu-latest` is an alias to the latest RavenDB Ubuntu image
+- `4.0-windows-nanoserver-latest` is an alias to the latest RavenDB Windows Nano Server image
 
 ## Example
 
