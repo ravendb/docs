@@ -99,8 +99,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     Employee employee2 = session.Load<Employee>("employees/1-A");
 
                     // because NoTracking is set to 'true'
-                    // each load will call a server
-                    // and return different Employee instance
+                    // each load will create a new Employee instance
                     Assert.NotEqual(employee1, employee2);
                 }
                 #endregion
@@ -115,8 +114,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     Employee employee2 = await session.LoadAsync<Employee>("employees/1-A");
 
                     // because NoTracking is set to 'true'
-                    // each load will call a server
-                    // and return different Employee instance
+                    // each load will create a new Employee instance
                     Assert.NotEqual(employee1, employee2);
                 }
                 #endregion
