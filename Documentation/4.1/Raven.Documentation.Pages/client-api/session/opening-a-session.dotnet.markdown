@@ -40,8 +40,8 @@ The second method is an equivalent of doing
 | Options | | |
 | ------------- | ------------- | ----- |
 | **Database** | string | Name of database that session should operate on. If `null` then [default database set in DocumentStore](../../client-api/setting-up-default-database) is used. |
-| **NoTracking** | bool | Indicates if session should **not** keep track of the changes. Default: `false`. |
-| **NoCaching** | bool | Indicates if session should **not** cache responses. Default: `false`. |
+| **NoTracking** | bool | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-tracking). |
+| **NoCaching** | bool | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching). |
 | **RequestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
 | **TransactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SingleNode`, but session can operate also 'ClusterWide'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
 

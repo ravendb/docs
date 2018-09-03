@@ -35,8 +35,6 @@ To disable the caching globally, you can set the `MaxHttpCacheSize` value to zer
 
 {CODE disable_cache@ClientApi\Configuration\Conventions.cs /}
 
-Another option is to disable caching per each session using [SessionOptions.NoCaching](../../client-api/session/opening-a-session#options) property.
-
 **In this scenario, all the requests will be sent to the server to fetch the data.**
 
 {NOTE/}

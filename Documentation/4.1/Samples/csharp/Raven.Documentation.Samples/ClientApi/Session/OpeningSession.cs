@@ -118,6 +118,26 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     Assert.NotEqual(employee1, employee2);
                 }
                 #endregion
+
+                #region open_session_caching_1
+                using (IDocumentSession session = store.OpenSession(new SessionOptions
+                {
+                    NoCaching = true
+                }))
+                {
+                    // code here
+                }
+                #endregion
+
+                #region open_session_caching_2
+                using (IAsyncDocumentSession session = store.OpenAsyncSession(new SessionOptions
+                {
+                    NoCaching = true
+                }))
+                {
+                    // async code here
+                }
+                #endregion
             }
         }
     }
