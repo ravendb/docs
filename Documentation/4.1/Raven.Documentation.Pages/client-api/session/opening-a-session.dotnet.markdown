@@ -43,14 +43,23 @@ The second method is an equivalent of doing
 | **NoTracking** | bool | Indicates if session should **not** keep track of the changes. Default: `false`. |
 | **NoCaching** | bool | Indicates if session should **not** cache responses. Default: `false`. |
 | **RequestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
-| **TransactionMode** | `TransactionMode` | Sets the 'TransactionMode' for the session. By default it is set to `SingleNode`. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
+| **TransactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SingleNode`, but session can operate also 'ClusterWide'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
 
-## Example
+## Example I
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_4@ClientApi\Session\OpeningSession.cs /}
 {CODE-TAB:csharp:Async open_session_5@ClientApi\Session\OpeningSession.cs /}
 {CODE-TABS/}
+
+## Example II - Disabling Entities Tracking
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync open_session_tracking_1@ClientApi\Session\OpeningSession.cs /}
+{CODE-TAB:csharp:Async open_session_tracking_2@ClientApi\Session\OpeningSession.cs /}
+{CODE-TABS/}
+
+## Remarks
 
 {DANGER:Important}
 **Always remember to release session allocated resources after usage by invoking the `Dispose` method or wrapping the session object in the `using` statement.**

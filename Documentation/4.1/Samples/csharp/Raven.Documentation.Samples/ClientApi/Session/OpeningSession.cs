@@ -1,6 +1,9 @@
-﻿using Raven.Client.Documents;
+﻿using System.Threading.Tasks;
+using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Client.Http;
+using Raven.Documentation.Samples.Orders;
+using Xunit;
 
 namespace Raven.Documentation.Samples.ClientApi.Session
 {
@@ -44,7 +47,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             #endregion
         }
 
-        public OpeningSession()
+        public async Task Sample()
         {
             string databaseName = "DB1";
 
@@ -83,6 +86,38 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 using (IAsyncDocumentSession session = store.OpenAsyncSession())
                 {
                     // async code here
+                }
+                #endregion
+
+                #region open_session_tracking_1
+                using (IDocumentSession session = store.OpenSession(new SessionOptions
+                {
+                    NoTracking = true
+                }))
+                {
+                    Employee employee1 = session.Load<Employee>("employees/1-A");
+                    Employee employee2 = session.Load<Employee>("employees/1-A");
+
+                    // because NoTracking is set to 'true'
+                    // each load will call a server
+                    // and return different Employee instance
+                    Assert.NotEqual(employee1, employee2);
+                }
+                #endregion
+
+                #region open_session_tracking_2
+                using (IAsyncDocumentSession session = store.OpenAsyncSession(new SessionOptions
+                {
+                    NoTracking = true
+                }))
+                {
+                    Employee employee1 = await session.LoadAsync<Employee>("employees/1-A");
+                    Employee employee2 = await session.LoadAsync<Employee>("employees/1-A");
+
+                    // because NoTracking is set to 'true'
+                    // each load will call a server
+                    // and return different Employee instance
+                    Assert.NotEqual(employee1, employee2);
                 }
                 #endregion
             }

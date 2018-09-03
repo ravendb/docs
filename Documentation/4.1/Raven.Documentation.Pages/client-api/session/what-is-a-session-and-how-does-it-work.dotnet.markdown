@@ -10,7 +10,6 @@ The Client API, and using the Session object in particular, is very straightforw
 You can read more about storing data with the session [here](./storing-entities).
 {NOTE/}
 
-
 ## Unit of Work
 
 The Client API implements the Unit of Work pattern. That has several implications:
@@ -22,6 +21,12 @@ The Client API implements the Unit of Work pattern. That has several implication
 * The session manages change tracking for all the entities that it has either loaded or stored.
 
 {CODE session_usage_2@ClientApi\Session\WhatIsSession.cs /}
+
+{INFO:How to Disable Entities Tacking}
+
+Entities tracking can be disabled using the `SessionOptions.NoTracking` property when session is being [opened](../../client-api/session/opening-a-session#example-ii---disabling-entities-tracking).
+
+{INFO/}
 
 ## Batching
 
