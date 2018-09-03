@@ -19,7 +19,9 @@
                 "Key": "client-api/basic-operations/opening-a-session"
             }
         ],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "storing-entities.markdown",
@@ -64,7 +66,7 @@
             }
         ],
         "SupportedVersions": [
-          "4.1"
+            "4.1"
         ]
     },
     {
