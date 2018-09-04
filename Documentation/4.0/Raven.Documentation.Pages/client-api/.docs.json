@@ -49,8 +49,7 @@
     "Name": ".NET Client Versions",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+      "4.0"
     ]
   },
   {
