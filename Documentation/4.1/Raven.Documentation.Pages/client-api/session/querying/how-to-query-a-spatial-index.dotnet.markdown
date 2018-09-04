@@ -12,10 +12,10 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | Expression<Func<T, object>> | Path to spatial field in an index |
+| **path** | `Expression<Func<T, object>>` | Path to spatial field in an index |
 | **fieldName** | string | Path to spatial field in an index |
-| **field** | Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> or DynamicSpatialField | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
-| **clause** | Func<SpatialCriteriaFactory, SpatialCriteria> | Spatial criteria that will be executed on a given spatial field from the `path` parameter. |
+| **field** | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>` or `DynamicSpatialField` | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **clause** | `Func<SpatialCriteriaFactory, SpatialCriteria>` | Spatial criteria that will be executed on a given spatial field from the `path` parameter. |
 
 ### DynamicSpatialFieldFactory
 
@@ -23,7 +23,7 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **latitudePath** or **longitudePath** or **wktPath** | Expression<Func<T, object>> | Path to the field in a document containing either longitude, latitude or WKT |
+| **latitudePath** or **longitudePath** or **wktPath** | `Expression<Func<T, object>>` | Path to the field in a document containing either longitude, latitude or WKT |
 
 ### SpatialCriteriaFactory
 
@@ -32,10 +32,10 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **shapeWkt** | string | WKT-based shape to be used in operation |
-| **relation** | SpatialRelation | Shape relation. Can be `Within`, `Contains`, `Disjoint`, `Intersects` |
+| **relation** | `SpatialRelation` | Shape relation. Can be `Within`, `Contains`, `Disjoint`, `Intersects` |
 | **distErrorPercent** | double | Maximum distance error tolerance in percents. Default: 0.025 |
 | **radius** or **latitude** or **longitude** | double | Used to define a radius circle |
-| **radiusUnits** or **units** | SpatialUnits | Determines if circle or shape should be calculated in `Kilometers` or `Miles` |
+| **radiusUnits** or **units** | `SpatialUnits` | Determines if circle or shape should be calculated in `Kilometers` or `Miles` |
 
 ### Example I
 
@@ -69,9 +69,9 @@ To sort by distance from given point use the `OrderByDistance` method. The close
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | Expression<Func<T, object>> | Path to spatial field in index |
+| **path** | `Expression<Func<T, object>>` | Path to spatial field in index |
 | **fieldName** | string | Path to spatial field in index |
-| **field** | Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> or DynamicSpatialField | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **field** | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>` or `DynamicSpatialField` | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
 | **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
 
@@ -97,9 +97,9 @@ To sort by distance from given point use the `OrderByDistanceDescending` method.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **path** | Expression<Func<T, object>> | Path to spatial field in an index |
+| **path** | `Expression<Func<T, object>>` | Path to spatial field in an index |
 | **fieldName** | string | Path to spatial field in an index |
-| **field** | Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField> or DynamicSpatialField | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
+| **field** | `Func<DynamicSpatialFieldFactory<T>, DynamicSpatialField>` or `DynamicSpatialField` | Factory or field that points to a dynamic field (used with auto-indexes). Either `PointField` or `WktField` |
 | **shapeWkt** | string | WKT-based shape to be used as a point from which distance will be measured. If the shape is not a single point, then the center of the shape will be used as a reference. |
 | **latitude** or **longitude** | double | Used to define a point from which distance will be measured |
 
