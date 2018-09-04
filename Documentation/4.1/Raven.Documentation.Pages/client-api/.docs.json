@@ -33,7 +33,9 @@
         "Path": "net-client-versions.markdown",
         "Name": ".NET Client Versions",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "/session",
