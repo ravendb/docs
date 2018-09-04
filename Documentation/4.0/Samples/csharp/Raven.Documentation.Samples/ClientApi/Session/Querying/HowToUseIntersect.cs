@@ -25,13 +25,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region intersect_2
                     // return all T-shirts that are manufactured by 'Raven'
                     // and contain both 'Small Blue' and 'Large Gray' types
-                    List<TShirt> tshirts = session
-                        .Query<TShirt, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+                    IList<TShirt> tshirts = session.Query<TShirts_ByManufacturerColorSizeAndReleaseYear.Result, TShirts_ByManufacturerColorSizeAndReleaseYear>()
                         .Where(x => x.Manufacturer == "Raven")
                         .Intersect()
-                        .Where(x => x.Types.Any(t => t.Color == "Blue" && t.Size == "Small"))
+                        .Where(x => x.Color == "Blue" && x.Size == "Small")
                         .Intersect()
-                        .Where(x => x.Types.Any(t => t.Color == "Gray" && t.Size == "Large"))
+                        .Where(x => x.Color == "Gray" && x.Size == "Large")
+                        .OfType<TShirt>()
                         .ToList();
                     #endregion
                 }
@@ -41,13 +41,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     #region intersect_3
                     // return all T-shirts that are manufactured by 'Raven'
                     // and contain both 'Small Blue' and 'Large Gray' types
-                    List<TShirt> tshirts = await asyncSession
-                        .Query<TShirt, TShirts_ByManufacturerColorSizeAndReleaseYear>()
+                    IList<TShirt> tshirts = await asyncSession.Query<TShirts_ByManufacturerColorSizeAndReleaseYear.Result, TShirts_ByManufacturerColorSizeAndReleaseYear>()
                         .Where(x => x.Manufacturer == "Raven")
                         .Intersect()
-                        .Where(x => x.Types.Any(t => t.Color == "Blue" && t.Size == "Small"))
+                        .Where(x => x.Color == "Blue" && x.Size == "Small")
                         .Intersect()
-                        .Where(x => x.Types.Any(t => t.Color == "Gray" && t.Size == "Large"))
+                        .Where(x => x.Color == "Gray" && x.Size == "Large")
+                        .OfType<TShirt>()
                         .ToListAsync();
                     #endregion
                 }
