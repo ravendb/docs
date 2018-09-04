@@ -35,7 +35,7 @@ Spatial indexes can be queried using the `Spatial` method which contains a full 
 | **relation** | SpatialRelation | Shape relation. Can be `Within`, `Contains`, `Disjoint`, `Intersects` |
 | **distErrorPercent** | double | Maximum distance error tolerance in percents. Default: 0.025 |
 | **radius** or **latitude** or **longitude** | double | Used to define a radius circle |
-| **radiusUnits** | SpatialUnits | Determines if circle should be calculated in `Kilometers` or `Miles` units |
+| **radiusUnits** or **units** | SpatialUnits | Determines if circle or shape should be calculated in `Kilometers` or `Miles` |
 
 ### Example I
 
@@ -55,7 +55,7 @@ where spatial.within(spatial.point(Latitude, Longitude), spatial.circle(10, 32.1
 {CODE-TAB:csharp:Async spatial_5_1@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Houses
-where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(32.1234 23.4321 d=10.0000)'))
+where spatial.within(spatial.point(Latitude, Longitude), spatial.wkt('Circle(32.1234 23.4321 d=10.0000)', 'Miles'))
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

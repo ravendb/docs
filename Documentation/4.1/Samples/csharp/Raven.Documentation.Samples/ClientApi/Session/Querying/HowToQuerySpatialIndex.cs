@@ -47,20 +47,46 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 SpatialRelation relation,
                 double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
 
+            SpatialCriteria RelatesToShape(
+                string shapeWkt,
+                SpatialRelation relation,
+                SpatialUnits units,
+                double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
             SpatialCriteria Intersects(
                 string shapeWkt,
+                double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+            SpatialCriteria Intersects(
+                string shapeWkt,
+                SpatialUnits units,
                 double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
 
             SpatialCriteria Contains(
                 string shapeWkt,
                 double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
 
+            SpatialCriteria Contains(
+                string shapeWkt,
+                SpatialUnits units,
+                double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
             SpatialCriteria Disjoint(
+                string shapeWkt,
+                double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+            SpatialCriteria Disjoint(
+                string shapeWkt,
+                SpatialUnits units,
+                double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
+
+            SpatialCriteria Within(
                 string shapeWkt,
                 double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
 
             SpatialCriteria Within(
                 string shapeWkt,
+                SpatialUnits units,
                 double distErrorPercent = Constants.Documents.Indexing.Spatial.DefaultDistanceErrorPct);
 
             SpatialCriteria WithinRadius(
@@ -186,14 +212,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region spatial_5
                     // return all matching entities
-                    // within 10 kilometers radius
+                    // within 10 miles radius
                     // from 32.1234 latitude and 23.4321 longitude coordinates
                     // this equals to WithinRadius(10, 32.1234, 23.4321)
                     List<House> results = session
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            criteria => criteria.RelatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
+                            criteria => criteria.RelatesToShape(
+                                "Circle(32.1234 23.4321 d=10.0000)",
+                                SpatialRelation.Within,
+                                SpatialUnits.Miles))
                         .ToList();
                     #endregion
                 }
@@ -202,14 +231,17 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                 {
                     #region spatial_5_1
                     // return all matching entities
-                    // within 10 kilometers radius
+                    // within 10 miles radius
                     // from 32.1234 latitude and 23.4321 longitude coordinates
                     // this equals to WithinRadius(10, 32.1234, 23.4321)
                     List<House> results = await asyncSession
                         .Query<House>()
                         .Spatial(
                             factory => factory.Point(x => x.Latitude, x => x.Longitude),
-                            criteria => criteria.RelatesToShape("Circle(32.1234 23.4321 d=10.0000)", SpatialRelation.Within))
+                            criteria => criteria.RelatesToShape(
+                                "Circle(32.1234 23.4321 d=10.0000)",
+                                SpatialRelation.Within,
+                                SpatialUnits.Miles))
                         .ToListAsync();
                     #endregion
                 }
