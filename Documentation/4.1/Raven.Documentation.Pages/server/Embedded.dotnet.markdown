@@ -13,11 +13,28 @@ RavenDB makes it very easy to be embedded within your application, with RavenDB 
 
 {PANEL:Prerequisites}
 
+There are two prerequsites for the Embedded package:
+
+- **.NET Core runtime** must be installed manually
+- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages must be **migrated to `PackageReference` package management**
+
+{NOTE:.NET Core Runtime}
+
 RavenDB Embedded **does not include .NET Core runtime required for it to run**. 
 
 By default the `ServerOptions.FrameworkVersion` is set to the .NET Core version that we compiled the server with and `ServerOptions.DotNetPath` is set to `dotnet` meaning that it will require to have it declared in PATH. 
 
 We highly recommend using the .NET Core framework version defined in `ServerOptions.FrameworkVersion` for proper functioning of the Server. The .NET Core runtime can be downloaded from [here](https://www.microsoft.com/net/download).
+
+{NOTE/}
+
+{NOTE:Migrating from `packages.config` to `PackageReference` in old csproj projects}
+
+Due to the NuGet limitations, the Embedded package requires newer package management via `PackageReference` instead of old `packages.config`. 
+
+The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
+
+{NOTE/}
 
 {PANEL/}
 
@@ -26,9 +43,9 @@ We highly recommend using the .NET Core framework version defined in `ServerOpti
 ### Installation
 
 * Create a new project (.NET Standard 2.0+, .NET Core 2.0+, .NET Framework 4.6.1+).
-* Grab the pre-release bits from our [MyGet](https://myget.org/feed/ravendb/package/nuget/RavenDB.Embedded)
+* Grab the package from our [NuGet](https://www.nuget.org/packages/RavenDB.Embedded)
 {CODE-BLOCK:powershell}
-Install-Package RavenDB.Embedded -Version 4.1.0 -Source https://www.myget.org/F/ravendb/api/v3/index.json
+Install-Package RavenDB.Embedded -Version 4.1.0
 {CODE-BLOCK/}
 
 ### Starting the Server
@@ -100,7 +117,7 @@ For more control on the process you can call the methods with `DatabaseOptions` 
 {CODE-TAB:csharp:Async get_async_document_store_with_database_options@Server\Embedded.cs /}}
 {CODE-TABS/}
 
-### Get Server Url
+### Get Server URL
 
 The `GetServerUriAsync` method can be used to retrieve the Embedded server URL. It must be called after server was started, because it waits for the server initialization to complete.
 The URL can be used for example for creating a custom document store, omitting the `GetDocumentStore` method entirely.
