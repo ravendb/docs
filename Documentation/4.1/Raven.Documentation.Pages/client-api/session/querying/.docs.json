@@ -73,7 +73,9 @@
                 "Key": "client-api/querying/static-indexes/spatial-search"
             }
         ],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "how-to-get-query-statistics.markdown",
