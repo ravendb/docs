@@ -39,8 +39,9 @@ Service can be also controlled using the `start` and `stop` commands:
 
 {PANEL:Linux - Ubuntu 16.04}
 
-Open a bash terminal, and create the following file /etc/systemd/system/ravendb.service, using super user permissions:
-{CODE-BLOCK}
+Open a bash terminal, and create the following file `/etc/systemd/system/ravendb.service`, using super user permissions:
+
+{CODE-BLOCK:bash}
 [Unit]
 Description=RavenDB v4.0
 After=network.target
@@ -59,7 +60,7 @@ ExecStart=<path-to-RavenDB>/run.sh
 WantedBy=multi-user.target
 {CODE-BLOCK/}
 
-Note: Replace <desired-user> with your username and <path-to-RavenDB> with your path.
+Note: Replace `<desired-user>` with your **username** and `<path-to-RavenDB>` with your **path**.
 
 Then register the service and enable it on startup:
 {CODE-BLOCK:bash}
