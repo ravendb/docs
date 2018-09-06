@@ -233,7 +233,7 @@ The attachments and/or counters from source document will not be copied to the n
 
 ###Increment Counter
 
-In order to increment or create a counter use incrementCounter method as follows
+In order to increment or create a counter use <code>incrementCounter</code> method as follows
 {CODE-TABS}
 {CODE-TAB:csharp:Session-syntax-typed increment_counter_by_document_reference_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Session-syntax-untyped increment_counter_by_document_id_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -241,12 +241,12 @@ In order to increment or create a counter use incrementCounter method as follows
 {CODE-TABS/}
 
 {INFO:Method Overloading & Value restrictions}
-The method can be called by document id or by document reference and the value can be negative
+The method can be called by document ID or by document reference and the value can be negative
 {INFO/}
 
 ###Delete Counter
 
-In order to delete a counter use deleteCounter method as follows
+In order to delete a counter use <code>deleteCounter</code> method as follows
 {CODE-TABS}
 {CODE-TAB:csharp:Session-syntax-typed delete_counter_by_document_id_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Session-syntax-untyped delete_counter_by_document_refference_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -254,12 +254,12 @@ In order to delete a counter use deleteCounter method as follows
 {CODE-TABS/}
 
 {INFO:Method Overloading}
-The method can be called by document id or by document reference
+The method can be called by document ID or by document reference
 {INFO/}
 
 ###Get Counter
 
-In order to get a counter while patching use counter method as follows
+In order to get a counter while patching use <code>counter</code> method as follows
 {CODE-TABS}
 {CODE-TAB:csharp:Session-syntax-typed get_counter_by_document_id_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TAB:csharp:Session-syntax-untyped get_counter_by_document_id_non_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -267,7 +267,7 @@ In order to get a counter while patching use counter method as follows
 {CODE-TABS/}
 
 {INFO:Method Overloading}
-The method can be called by document id or by document reference
+The method can be called by document ID or by document reference
 {INFO/}
 
 {PANEL/}
