@@ -503,5 +503,33 @@
             "twitter:description": "Imagine having to operate your database on a server the size of your hand, or even your thumb. It’s like asking Beyonce to dance with Steve Wozniak.",
             "twitter:url": "https://ravendb.net/articles/ravendb-point-of-sale-raspberry-pi-acid"
         }
+    },
+    {
+        "Path": "inside-ravendb-book.markdown",
+        "Name": "Inside RavenDB 4.0",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Inside RavenDB 4.0 | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/inside-ravendb-book",
+            "publishedAt": "2018-09-10"
+        },
+        "SeoMetaProperties": {
+            "description": "Oren Eini, CEO of RavenDB, shares everything you need to know about the latest version of his distributed, non-relational document database. A book-length blog post, designed not only to give you full knowledge of what RavenDB does, but also all the reasoning behind each feature.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Inside RavenDB 4.0 | RavenDB",
+            "og:description": "Oren Eini, CEO of RavenDB, shares everything you need to know about the latest version of his distributed, non-relational document database. A book-length blog post, designed not only to give you full knowledge of what RavenDB does, but also all the reasoning behind each feature.",
+            "og:url": "https://ravendb.net/articles/inside-ravendb-book",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/inside-ravendb-book&fileName=inside-ravendb-book.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Inside RavenDB 4.0 | RavenDB",
+            "twitter:description": "Oren Eini, CEO of RavenDB, shares everything you need to know about the latest version of his distributed, non-relational document database. A book-length blog post, designed not only to give you full knowledge of what RavenDB does, but also all the reasoning behind each feature.",
+            "twitter:url": "https://ravendb.net/articles/inside-ravendb-book"
+        }
     }
 ]
