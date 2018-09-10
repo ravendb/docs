@@ -29,7 +29,7 @@ It is possible to have a default configuration telling the revisions feature to 
 Set `Disabled=false`, which is the default, on the default configuration, and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
 Then override the behavior of the revisions feature by specifying a configuration specifically to a collection. 
 
-Conversely, we can disable the default configuration (`Disalbed = true`) but enable revisions for a specific collection.
+Conversely, we can disable the default configuration (`Disabled = true`) but enable revisions for a specific collection.
 
 ## How it Works
 
