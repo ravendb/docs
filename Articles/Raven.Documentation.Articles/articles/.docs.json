@@ -512,7 +512,7 @@
             "title": "Inside RavenDB 4.0 | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/inside-ravendb-book",
-            "publishedAt": "2018-09-10"
+            "publishedAt": "2018-09-09"
         },
         "SeoMetaProperties": {
             "description": "Oren Eini, CEO of RavenDB, shares everything you need to know about the latest version of his distributed, non-relational document database. A book-length blog post, designed not only to give you full knowledge of what RavenDB does, but also all the reasoning behind each feature.",
@@ -530,6 +530,34 @@
             "twitter:title": "Inside RavenDB 4.0 | RavenDB",
             "twitter:description": "Oren Eini, CEO of RavenDB, shares everything you need to know about the latest version of his distributed, non-relational document database. A book-length blog post, designed not only to give you full knowledge of what RavenDB does, but also all the reasoning behind each feature.",
             "twitter:url": "https://ravendb.net/articles/inside-ravendb-book"
+        }
+    },
+	{
+        "Path": "data-migration-from-cosmosdb-mongodb-sql-to-ravendb.markdown",
+        "Name": "Migrating data to RavenDB",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Migrating data to RavenDB | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/data-migration-from-cosmosdb-mongodb-sql-to-ravendb",
+            "publishedAt": "2018-09-10"
+        },
+        "SeoMetaProperties": {
+            "description": "Need a high performance database for your next project? Worried about the costs of a NoSQL solution? Have no fear! RavenDB is simple to install and easy to use.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Migrating data to RavenDB | RavenDB",
+            "og:description": "How to migrate data to RavenDB from another RavenDB database, a relational database like Oracle or MySQL, or a nonrelational one like MongoDB or CosmosDB.",
+            "og:url": "https://ravendb.net/articles/data-migration-from-cosmosdb-mongodb-sql-to-ravendb",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/data-migration-from-cosmosdb-mongodb-sql-to-ravendb&fileName=data-migration-from-cosmosdb-mongodb-sql-to-ravendb.png",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Migrating data to RavenDB | RavenDB",
+            "twitter:description": "How to migrate data to RavenDB from another RavenDB database, a relational database like Oracle or MySQL, or a nonrelational one like MongoDB or CosmosDB.",
+            "twitter:url": "https://ravendb.net/articles/data-migration-from-cosmosdb-mongodb-sql-to-ravendb"
         }
     }
 ]
