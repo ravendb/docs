@@ -1,4 +1,4 @@
-# 7 Ways The Right Database Pays for Itself<br/><small>by <a href="mailto:grisha@hibernatingrhinos.com">Grisha Kotler</a></small>
+# 7 Ways The Right Database Pays for Itself<br/><small>by <a href="mailto:grisha@ravendb.net">Grisha Kotler</a></small>
 
 ![7 Ways The Right Database Pays for Itself](images/cost-benefits-ravendb-nosql-acid-database.jpg)
 

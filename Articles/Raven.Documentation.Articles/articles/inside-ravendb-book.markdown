@@ -1,4 +1,4 @@
-# Inside RavenDB 4.0<br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a></small>
+# Inside RavenDB 4.0<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![Inside RavenDB 4.0 by Oren Eini](images/inside-ravendb-book.jpg)
 
