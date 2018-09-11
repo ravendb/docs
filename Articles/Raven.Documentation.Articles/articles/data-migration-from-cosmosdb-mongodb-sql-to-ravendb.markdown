@@ -1,4 +1,4 @@
-# Migrating data to RavenDB<br/><small>by <a href="mailto:ayende@hibernatingrhinos.com">Oren Eini</a>, CEO RavenDB</small>
+# Migrating data to RavenDB<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![Migrating data to RavenDB](images/data-migration-from-cosmosdb-mongodb-sql-to-ravendb.png)
 

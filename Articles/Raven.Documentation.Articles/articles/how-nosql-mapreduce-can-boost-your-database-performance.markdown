@@ -1,4 +1,4 @@
-# How A NoSQL MapReduce Can Boost Your Database Performance<br/><small>by <a href="mailto:fitzchak@ravendb.net">Fitzchak Yitzchaki</a></small>
+# How A NoSQL MapReduce Can Boost Your Database Performance<br/><small>by <a href="mailto:ayende@ayende.com">Oren Eini</a>, CEO RavenDB</small>
 
 ![How A NoSQL MapReduce Can Boost Your Database Performance](images/how-nosql-mapreduce-can-boost-your-database-performance.jpg)
 
