@@ -162,6 +162,22 @@
         ]
     },
     {
+        "Path": "indexing-attachments.markdown",
+        "Name": "Indexing Attachments",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
+        "Path": "indexing-counters.markdown",
+        "Name": "Indexing Counters",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1"
+        ]
+    },
+    {
         "Path": "indexing-linq-extensions.markdown",
         "Name": "Indexing LINQ Extensions",
         "Mappings": [],
