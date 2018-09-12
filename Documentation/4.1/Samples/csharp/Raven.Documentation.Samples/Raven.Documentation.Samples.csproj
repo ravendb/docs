@@ -6,8 +6,8 @@
 
   <ItemGroup>
     <PackageReference Include="NodaTime" Version="2.4.0" />
-    <PackageReference Include="RavenDB.Embedded" Version="4.1.0" />
-    <PackageReference Include="RavenDB.TestDriver" Version="4.1.0" />
+    <PackageReference Include="RavenDB.Embedded" Version="4.1.1-nightly-20180912-0430" />
+    <PackageReference Include="RavenDB.TestDriver" Version="4.1.1-nightly-20180912-0430" />
     <PackageReference Include="System.Reactive.Core" Version="4.1.0" />
     <PackageReference Include="xunit" Version="2.4.0" />
   </ItemGroup>
