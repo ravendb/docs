@@ -15,7 +15,7 @@ There are two ways to get data into RavenDB. You can create brand new data insid
 
 ## Getting data from another RavenDB instance
 
-If you already have your data inside another RavenDB instance, there are several ways you can get into your new RavenDB database:
+If you already have your data inside another RavenDB instance, there are several ways you can get the data into your new RavenDB database:
 
 <img class="floating-right img-responsive" alt="Migration" src="images/demo-migration.jpg" />
 
@@ -29,15 +29,15 @@ External replication is a good idea if you want to do more than just import the 
 
 Full sync is useful if you need an offsite clone of your data, you want a separate instance to run large scale computation, or you just need a copy of production so your UAT environment will feel real.
 
-The RavenDB ETL process, on the other hand, is more involved. Instead of simply syncing a full copy of the data, you get to chose what will be sent from the source to the destination. This choice includes what collections (and what documents in these collections) to send as well as the ability to transform the data through the process. A common use case for this feature is to have a copy of your data with all the personally identifying details stripped. 
+The RavenDB ETL process, on the other hand, is more involved. Instead of simply syncing a full copy of the data, you get to choose what will be sent from the source to the destination. This choice includes what collections (and what documents in these collections) to send as well as the ability to transform the data through the process. A common use case for this feature is to have a copy of your data with all the personally identifying details stripped. 
 
-Finally, if you just want to get the data from another database, you can simply point your new RavenDB instance to the database and it will take of fetching everything. This is by far the simplest option. 
+Finally, if you just want to get the data from another RavenDB database, you can simply point your new RavenDB instance to the database and it will take care of fetching everything. This is by far the simplest option. 
 
-Of course, RavenDB to RavenDB migrations are easiest. But what happens when we don’t have the same database on both ends?
+Of course, RavenDB to RavenDB migrations are the easiest. But what happens when we don’t have the same type of database on both ends?
 
 ## Migrating data from a SQL database to RavenDB
 
-The first time you start using RavenDB, your data will most likely be stored inside a relational database of some kind (MS SQL Server, MySQL, etc). RavenDB has native support for pulling the data from such databases into RavenDB and into a document format.
+If this is your first time using RavenDB, your data will most likely be stored inside a relational database of some kind (MS SQL Server, MySQL, etc). RavenDB has native support for pulling the data from such databases and inserting it into RavenDB in a document format.
 
 <div class="margin-bottom flex-vertical" style="align-items: center;">
     <div>
@@ -46,13 +46,13 @@ The first time you start using RavenDB, your data will most likely be stored ins
     </div>
 </div>
 
-All you need is to provide the connection string and specify how you want the data to be transformed during the migration process. You can select which tables to migrate, which references should be stored as linked documents or embedded values, etc. 
+All you need is to provide the connection string and specify how you want the data to be transformed during the migration process. You can select which tables to migrate, whether references should be stored as linked documents or embedded values, etc. 
 
 You can even supply your own logic to control the conversion of the data from the relational store into RavenDB.
 
 This approach is very common when you are just starting out with RavenDB. The <em>SQL Migration</em> allows you to very quickly get your own data into RavenDB and start operating with full capacity. You can start developing with real data and work within your own domain. Typically, you’ll use this process several times, each time refining the transformations you use in the migration until you hit the right document model for your needs.
 
-Going in the other direction, RavenDB has [SQL ETL](https://ravendb.net/docs/article-page/4.0/csharp/server/ongoing-tasks/etl/sql) capabilities. This allows you to sync <em>any data</em> from RavenDB back to a relational database. RavenDB takes on itself the responsibility to issue all the appropriate commands to ensure that the relational database has all the updates that were made directly on RavenDB. You can customize the behavior and control what gets sent to the relational database and how the document model is translated to the relational model.
+Going in the other direction, RavenDB has [SQL ETL](https://ravendb.net/docs/article-page/4.0/csharp/server/ongoing-tasks/etl/sql) capabilities, allowing you to sync <em>any data</em> from RavenDB back to a relational database. RavenDB takes on itself the responsibility to issue all the appropriate commands to ensure that the relational database has all the updates that were made directly on RavenDB. You can customize the behavior and control the content that is sent to the relational database and how the document model is translated to the relational model.
 
 ## Importing data from non-relational source
 
@@ -70,17 +70,17 @@ We have also seen many cases where teams migrating to RavenDB take advantage of 
 
 RavenDB contains several features you might want to take advantage of to positively impact your modeling. For example, following document references is easy with RavenDB and there are several features dedicated to this (includes, load, etc). You can even query for documents using data that is present in a linked document. 
 
-When performing such a migration, we recommend that you’ll look at your model with an eye toward how you can best take advantage of the <em>rich feature set</em> that RavenDB has to offer. There are several scenarios in which operations that are awkward in another database are quite natural in RavenDB. One such example is full text search. You’ll typically need to plug in another product here (Elastic or Azure Search) but it is a built-in core capability for RavenDB.
+When performing such a migration, we recommend that you’ll look at your model with an eye toward how you can best take advantage of the <em>rich feature set</em> that RavenDB has to offer. There are several scenarios in which operations that are awkward in another database are quite natural in RavenDB. One such example is full text search. While other databases need to plug in another product (Elastic or Azure Search), full text search is a built-in core capability in RavenDB. 
 
 ## Loading CSV data into RavenDB
 
-The final way in which you can get data into RavenDB is by loading a CSV file. Even in today’s world, a lot of data is being schlepped around as flat files and CSV is the most common file format. RavenDB allows you to point to a CSV file and specify what collection it should go to. RavenDB will read the CSV file, create documents from each of the rows, and store them in the specified collection. It’s that simple!
+The final way in which you can get data into RavenDB is by loading a CSV file. Even in today’s world, a lot of data is being schlepped around as flat files and CSV is the most common file format. RavenDB allows you to point to a CSV file and specify what collection it should go to. RavenDB will read the CSV file, create a document from each row, and store the documents in the specified collection. It’s that simple!
 
 CSV files are common because there is very little that is actually required of them. It’s just a bunch of rows with comma separated values. They are also well known for their troublesome nature precisely because they have so little structure. Regardless, they are ubiquitous in many organizations.
 
-One of the primary reasons in which CSV files are used is the ease of integration with one of the best business intelligence tools, Excel. For this reason, beyond just being able to import and ingest CSV files, RavenDB also has an easy way to [export data to Excel.](https://ravendb.net/docs/article-page/4.1/Csharp/client-api/how-to/integrate-with-excel)
+One of the primary reasons why CSV files are used is the ease of integration with one of the best business intelligence tools, Excel. For this reason, beyond just being able to import and ingest CSV files, RavenDB also has an easy way to [export data to Excel.](https://ravendb.net/docs/article-page/4.1/Csharp/client-api/how-to/integrate-with-excel)
 
-This completes the cycle and allows you to get some data of RavenDB and into the hands of a business analyst who may work with the data as they wish and then send it back to be loaded into the database.
+This completes the cycle and allows you to get some data from RavenDB and into the hands of a business analyst who may work with the data as they wish and then send it back to be loaded into the database.
 
 RavenDB is simple, easy and <em>It Just Works</em>. Just the way we like it.
 
