@@ -4,7 +4,7 @@ After creating a RavenDB document store, we are ready to use the database server
 
 {CODE session_usage_1@ClientApi\Session\WhatIsSession.cs /}
 
-The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server, and do something with it.
+The Client API and the Session object in particular is very straightforward. Open the session, do some operations, and apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server, and do something with it.
 
 {NOTE: Storing Entities} 
 You can read more about storing data with the session [here](./storing-entities).
@@ -35,10 +35,11 @@ One of the most expensive operations in an application is making remote calls. T
 ## Remarks
 
 A very common problem with all ORMs and ORM-like APIs is the Select N+1 problem. This is relevant to any database API which is designed to work like an ORM, RavenDB Client API included.
-How RavenDB API attempts to mitigate this is not immediate, and should never be reached if RavenDB is being utilized correctly. Remote calls are expensive and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other misuse of the RavenDB session.
+
+How RavenDB API attempts to mitigate this is not immediate and should never be reached if RavenDB is being utilized correctly. Remote calls are expensive and the number of remote calls per "session" should be as close to "1" as possible. If the limit is reached, it is a sure sign of either a Select N+1 problem or other misuse of the RavenDB session.
 
 {NOTE: Configuring the maximum requests in a session} 
-By default, the maximum requests count in the session is 30.
+By default the maximum requests count in the session is 30.
 This can be changed by the DocumentConventions::MaxNumberOfRequestsPerSession property.
 {NOTE/}
 

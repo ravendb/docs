@@ -1,6 +1,6 @@
 # Installation : Running in a Docker Container
 
-A RavenDB Server can be run on [Docker](https://www.docker.com/) using our official images available in two channels:
+A RavenDB Server can run on [Docker](https://www.docker.com/) using our official images available in these channels:
 
 - [ravendb/ravendb](https://hub.docker.com/r/ravendb/ravendb/) containing stable, patch, rc and beta images
 - [ravendb/ravendb-nightly](https://hub.docker.com/r/ravendb/ravendb-nightly/) containing our nightly releases
@@ -22,19 +22,19 @@ Beside tags matching the exact builds e.g. `4.0.7-ubuntu.16.04-x64` or `4.0.7-wi
 
 ## Example
 
-To install `latest` tag, you can issue a command as follows:
+To install the `latest` tag, you can issue a command as follows:
 
 {CODE-BLOCK:bash}
 docker run -d -p 8080:8080 -p 38888:38888 ravendb/ravendb
 {CODE-BLOCK/}
 
-You can access the RavenDB Management Studio by going to `http://localhost:8080` in your browser. This is assuming that you are using the default networking configuration with Docker, and that the Docker instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it externally, make sure to go through the security configuration first.
+You can access the RavenDB Management Studio by going to `http://localhost:8080` in your browser. This assumes that you are using the default networking configuration with Docker, and that the Docker instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it externally, make sure to go through the security configuration first.
 
 ## Remarks
 
-For more detailed information on how to use and setup RavenDB on Docker please visit our **Docker Hub** page available [here](https://hub.docker.com/r/ravendb/ravendb/).
+For more detailed information on how to use and setup RavenDB on Docker, please visit our **Docker Hub** page available [here](https://hub.docker.com/r/ravendb/ravendb/).
 
-## Related articles
+## Related Articles
 
 ### Installation
 

@@ -1,6 +1,6 @@
 # Session : Opening a Session
 
-To open synchronous session use the `OpenSession` method from `DocumentStore` or `OpenAsyncSession` if you prefer working in an asynchronous manner.
+To open a synchronous session, use the `OpenSession` method from `DocumentStore`. If you prefer working in an asynchronous manner, use `OpenAsyncSession`.
 
 ## Syntax
 
@@ -43,7 +43,7 @@ The second method is an equivalent of doing
 | **NoTracking** | bool | Indicates if session should **not** keep track of the changes. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-tracking). |
 | **NoCaching** | bool | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching). |
 | **RequestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
-| **TransactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SingleNode`, but session can operate also 'ClusterWide'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
+| **TransactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SingleNode`, but session can also operate 'ClusterWide'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
 
 ## Example I
 
