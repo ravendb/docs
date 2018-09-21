@@ -17,7 +17,7 @@ In order to prevent security issues in commercial systems related to a temporary
 ## Windows Authentication
 
 When an action (request) needs to be authenticated and no other authentication method is detected, then Windows Authentication is chosen. Worth noting is that all `/admin` endpoint requests are processed using this method.
-By default all windows users and groups have access to all the databases, but this can be easily changed by editing the `Raven/Authorization/WindowsSettings` document in the `system` database. The document consists of list of users and groups that contain the list of accessible databases.
+By default only admins and backup operator users have access to all databases. Other users and groups don't have any access to resources, but this can be easily changed by editing the `Raven/Authorization/WindowsSettings` document in the `system` database. The document consists of list of users and groups that contain the list of accessible databases.
 
 ### Example:
 
