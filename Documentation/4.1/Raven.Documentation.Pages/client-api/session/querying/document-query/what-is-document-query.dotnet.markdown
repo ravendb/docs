@@ -38,7 +38,7 @@ To convert `DocumentQuery` to `Query` and using LINQ to project you only need to
 
 {CODE document_query_toqueryable@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
-See [Projections](../../../../indexes/querying/projections) for more inforamtion.
+See [Projections](../../../../indexes/querying/projections) for more information.
 
 {PANEL/}
 
