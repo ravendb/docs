@@ -30,6 +30,18 @@ or
 
 {CODE document_query_5@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
 
+{PANEL:ToQueryable}
+
+To convert `DocumentQuery` to `Query` and using LINQ to project you only need to use `ToQueryable` method.
+
+### Example - Converting DocumentQuery to Query and using LINQ to project
+
+{CODE document_query_toqueryable@ClientApi\Session\Querying\DocumentQuery\WhatIsDocumentQuery.cs /}
+
+See [Projections](../../../../indexes/querying/projections) for more inforamtion.
+
+{PANEL/}
+
 ## Custom Methods and Extensions
 
 {NOTE Functionality of most of the methods match the functionality of their `Query` counterparts and therefore will not be described again. Please refer to the appropriate counterpart documentation articles. Links starting with `[Query]` are marking those articles. /}
@@ -123,3 +135,4 @@ By default, if the `page size` is not specified, all of the matching records wil
 ### Querying 
 
 - [Query vs DocumentQuery](../../../../indexes/querying/query-vs-document-query)
+- [Projections](../../../../indexes/querying/projections)

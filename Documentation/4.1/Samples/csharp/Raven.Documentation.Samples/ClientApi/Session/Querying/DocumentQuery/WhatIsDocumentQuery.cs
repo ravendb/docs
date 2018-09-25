@@ -79,6 +79,26 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying.DocumentQuery
                         .WhereEquals("FirstName", "Robert")
                         .ToList();
                     #endregion
+
+                    #region document_query_toqueryable
+                    // load all entities from 'Order' collection
+                    var dq = session.Advanced.DocumentQuery<Order>()
+                        .WhereGreaterThan("Freight", 8)
+                        .ToQueryable();
+
+                    var q = from order in dq
+                        let company = session.Load<Company>(order.Company)
+                        select new
+                        {
+                            order.Freight,
+                            company.Name
+                            
+                        };
+
+                    var results = q.ToList();
+
+                    #endregion
+
                 }
             }
         }
