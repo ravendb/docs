@@ -132,6 +132,18 @@ In contrast to Replication, ETL is a push-only process that _writes_ data to the
  whenever documents from the relevant collections were changed. Existing entries on the target will always be _overwritten_.  
 {NOTE/}
 
+{NOTE:Loading data from encrypted database}
+
+If a database is encrypted then you must not send data in ETL process using a non encrypted channel by default. It means that a connection to a target must be secured:
+
+- in Raven ETL an URL of a destination server has to use HTTPS (a server certificate of the source server needs to be registered as a client certificate on the destination server)
+- in SQL ETL a connection string to SQL database must specify encrypted connection (specific per SQL engine provided)
+
+This validation can be turned off by selecting _Allow ETL on a non-encrypted communication channel_ option in the Studio (or setting `AllowEtlOnNonEncryptedChannel` if a task is defined using the client API).
+Please note that your data encrypted at rest _won't_ be protected in transit then.
+
+{NOTE/}
+
 {PANEL/}
 
 {PANEL: Troubleshooting}
