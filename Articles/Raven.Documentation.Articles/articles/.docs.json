@@ -583,9 +583,37 @@
             "twitter:card": "summary_large_image",
             "twitter:creator": "@RavenDB",
             "twitter:site": "@RavenDB",
-            "twitter:title": "Code-A-Like: Using RavenDB for Developer Analytics | RavenDB",
+            "twitter:title": "Codealike: Using RavenDB for Developer Analytics | RavenDB",
             "twitter:description": "Developer analytics enable you to optimize your budget by rationally planning a timetable for each project. They do this by tracking and generating real time data from over 130 countries, hundreds of thousands of hours of detailed activity, hundreds of millions of activities to generate specific and aggregate metrics powered by a RavenDB solution.",
             "twitter:url": "https://ravendb.net/articles/document-database-analytics-code-a-like-ravendb-case-study"
+        }
+    },
+	{
+        "Path": "migrating-to-ravendb-at-36000-locations.markdown",
+        "Name": "Migrating to RavenDB 4.0 in 36,000 Locations",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Migrating to RavenDB 4.0 in 36,000 Locations | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/migrating-to-ravendb-at-36000-locations",
+            "publishedAt": "2018-10-26"
+        },
+        "SeoMetaProperties": {
+            "description": "How does a Fortune 100 company migrate its database to RavenDB 4.0 at 36,000 locations? Find out in this webinar.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Migrating to RavenDB 4.0 in 36,000 Locations | RavenDB",
+            "og:description": "How does a Fortune 100 company migrate its database to RavenDB 4.0 at 36,000 locations? Find out in this webinar.",
+            "og:url": "https://ravendb.net/articles/migrating-to-ravendb-at-36000-locations",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/migrating-to-ravendb-at-36000-locations&fileName=migrating-to-ravendb-at-36000-locations.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Migrating to RavenDB 4.0 in 36,000 Locations | RavenDB",
+            "twitter:description": "How does a Fortune 100 company migrate its database to RavenDB 4.0 at 36,000 locations? Find out in this webinar.",
+            "twitter:url": "https://ravendb.net/articles/migrating-to-ravendb-at-36000-locations"
         }
     }
 ]
