@@ -532,7 +532,7 @@
             "twitter:url": "https://ravendb.net/articles/inside-ravendb-book"
         }
     },
-	{
+    {
         "Path": "data-migration-from-cosmosdb-mongodb-sql-to-ravendb.markdown",
         "Name": "Migrating data to RavenDB",
         "Mappings": [],
@@ -558,6 +558,34 @@
             "twitter:title": "Migrating data to RavenDB | RavenDB",
             "twitter:description": "How to migrate data to RavenDB from another RavenDB database, a relational database like Oracle or MySQL, or a nonrelational one like MongoDB or CosmosDB.",
             "twitter:url": "https://ravendb.net/articles/data-migration-from-cosmosdb-mongodb-sql-to-ravendb"
+        }
+    },
+    {
+        "Path": "document-database-analytics-code-a-like-ravendb-case-study.markdown",
+        "Name": "Codealike: Using RavenDB for Developer Analytics",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Codealike: Using RavenDB for Developer Analytics | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/document-database-analytics-code-a-like-ravendb-case-study",
+            "publishedAt": "2018-10-25"
+        },
+        "SeoMetaProperties": {
+            "description": "Developer analytics enable you to optimize your budget by rationally planning a timetable for each project. They do this by tracking and generating real time data from over 130 countries, hundreds of thousands of hours of detailed activity, hundreds of millions of activities to generate specific and aggregate metrics powered by a RavenDB solution.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Codealike: Using RavenDB for Developer Analytics | RavenDB",
+            "og:description": "Developer analytics enable you to optimize your budget by rationally planning a timetable for each project. They do this by tracking and generating real time data from over 130 countries, hundreds of thousands of hours of detailed activity, hundreds of millions of activities to generate specific and aggregate metrics powered by a RavenDB solution.",
+            "og:url": "https://ravendb.net/articles/document-database-analytics-code-a-like-ravendb-case-study",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/document-database-analytics-code-a-like-ravendb-case-study&fileName=document-database-analytics-code-a-like-ravendb-case-study.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Code-A-Like: Using RavenDB for Developer Analytics | RavenDB",
+            "twitter:description": "Developer analytics enable you to optimize your budget by rationally planning a timetable for each project. They do this by tracking and generating real time data from over 130 countries, hundreds of thousands of hours of detailed activity, hundreds of millions of activities to generate specific and aggregate metrics powered by a RavenDB solution.",
+            "twitter:url": "https://ravendb.net/articles/document-database-analytics-code-a-like-ravendb-case-study"
         }
     }
 ]
