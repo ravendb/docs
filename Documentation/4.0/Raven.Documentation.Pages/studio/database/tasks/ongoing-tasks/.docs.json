@@ -4,8 +4,9 @@
     "Name": "General Info",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -13,8 +14,9 @@
     "Name": "External Replication Task",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -22,8 +24,9 @@
     "Name": "RavenDB ETL Task",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -31,8 +34,9 @@
     "Name": "Backup Task",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   }
 ]

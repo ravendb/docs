@@ -1,0 +1,25 @@
+[
+    {
+        "Path": "/SNMP",
+        "Name": "SNMP",
+        "Mappings": []
+    },
+    {
+        "Path": "cli.markdown",
+        "Name": "CLI (Command Line Interface)",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "statistics.markdown",
+        "Name": "Statistics",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "index-administration.markdown",
+        "Name": "Index Administration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

@@ -9,8 +9,9 @@
       }
     ],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -18,8 +19,9 @@
     "Name": "Disable Index",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -27,8 +29,9 @@
     "Name": "Enable Index",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -41,8 +44,9 @@
       }
     ],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -55,8 +59,9 @@
       }
     ],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -69,8 +74,9 @@
       }
     ],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -78,8 +84,9 @@
     "Name": "Start Index",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -87,8 +94,9 @@
     "Name": "Start Indexing",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -96,8 +104,9 @@
     "Name": "Stop Index",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -105,8 +114,9 @@
     "Name": "Stop Indexing",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -114,8 +124,9 @@
     "Name": "Get Index Errors",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -123,8 +134,9 @@
     "Name": "Get Index Names",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -132,8 +144,9 @@
     "Name": "Get Index",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -141,8 +154,9 @@
     "Name": "Get Indexes",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -155,8 +169,9 @@
       }
     ],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -169,8 +184,9 @@
       }
     ],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -178,8 +194,9 @@
     "Name": "Put Indexes",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   }
 ]

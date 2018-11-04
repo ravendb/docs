@@ -21,16 +21,18 @@
       "Path": "certificate-renewal-and-rotation.markdown",
       "Name": "Certificate Renewal & Rotation",
       "Mappings": [],
-      "SupportedVersions": [
-        "4.1"
-      ]
+        "SupportedVersions": [
+            "4.1",
+            "4.2"
+        ]
     },
     {
       "Path": "lets-encrypt-certificates.markdown",
       "Name": "Let's Encrypt Certificates",
       "Mappings": [],
-      "SupportedVersions": [
-        "4.1"
-      ]
+        "SupportedVersions": [
+            "4.1",
+            "4.2"
+        ]
     }
 ]

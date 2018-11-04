@@ -1,0 +1,23 @@
+[
+  {
+    "Path": "what-are-data-subscriptions.markdown",
+    "Name": "What are Data Subscriptions",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+    {
+        "Path": "/creation",
+        "Name": "Creation",
+        "Mappings": []
+    },
+  {
+    "Path": "/consumption",
+    "Name": "Consumption",
+    "Mappings": []
+  },
+  {
+    "Path": "/advanced-topics",
+    "Name": "Advanced topics",
+    "Mappings": []
+  }
+]

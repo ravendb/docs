@@ -4,7 +4,8 @@
         "Name": "Configuration Options",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -30,7 +31,8 @@
         "Name": "Core Configuration",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -44,7 +46,8 @@
         "Name": "ETL Configuration",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -57,7 +60,8 @@
             }
         ],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -71,7 +75,8 @@
         "Name": "Indexing Configuration",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -127,7 +132,8 @@
         "Name": "Security Configuration",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {

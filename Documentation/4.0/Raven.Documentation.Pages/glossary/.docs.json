@@ -4,8 +4,9 @@
     "Name": "BlittableJsonReaderObject",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -13,8 +14,9 @@
     "Name": "Node Tag",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -22,8 +24,9 @@
     "Name": "Database Id",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -31,8 +34,9 @@
     "Name": "Etag",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -40,8 +44,9 @@
     "Name": "Tombstone",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -49,8 +54,9 @@
     "Name": "Raft Consensus Algorithm",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -58,8 +64,9 @@
     "Name": "Raft Command",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -67,8 +74,9 @@
     "Name": "Replication Factor",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -76,8 +84,9 @@
     "Name": "Cluster Node",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -85,8 +94,9 @@
     "Name": "RavenDB Cluster",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -94,8 +104,9 @@
     "Name": "Database Group",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -103,8 +114,9 @@
     "Name": "DeleteCommandData",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -112,8 +124,9 @@
     "Name": "IndexQuery",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -129,8 +142,9 @@
     "Name": "StreamQueryStatistics",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -138,8 +152,9 @@
     "Name": "StreamResult",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -147,8 +162,9 @@
     "Name": "PatchCommandData",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -156,8 +172,9 @@
     "Name": "PutCommandData",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   }
 ]

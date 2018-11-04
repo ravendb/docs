@@ -1,0 +1,23 @@
+[
+    {
+        "Path": "document-identifier-generation.markdown",
+        "Name": "Document Identifier Generation",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/kb/document-key-generation"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "javascript-engine.markdown",
+        "Name": "JavaScript Engine",
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "numbers-in-ravendb.markdown",
+        "Name": "Numbers in RavenDB",
+        "IsPlaceholder": "true"
+    }
+]

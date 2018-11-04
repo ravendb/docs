@@ -4,8 +4,9 @@
     "Name": "Get Server Wide Client Configuration",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -13,8 +14,9 @@
     "Name": "Put Server Wide Client Configuration",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   }
 ]

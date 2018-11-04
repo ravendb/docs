@@ -1,0 +1,32 @@
+[
+    {
+        "Path": "what-is-changes-api.markdown",
+        "Name": "What is Changes API",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "how-to-subscribe-to-document-changes.markdown",
+        "Name": "How to Subscribe to Document Changes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "how-to-subscribe-to-counter-changes.markdown",
+        "Name": "How to Subscribe to Counter Changes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "how-to-subscribe-to-index-changes.markdown",
+        "Name": "How to Subscribe to Index Changes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "how-to-subscribe-to-operation-changes.markdown",
+        "Name": "How to Subscribe to Operation Changes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

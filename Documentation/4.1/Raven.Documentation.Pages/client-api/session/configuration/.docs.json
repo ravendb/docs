@@ -39,7 +39,8 @@
         "Name": "How to Disable Tracking",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -47,7 +48,8 @@
         "Name": "How to Disable Caching",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     }
 ]

@@ -9,32 +9,36 @@
       }
     ],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
     "Path": "document-conflicts-in-client-side.markdown",
     "Name": "Document Conflict Exceptions at Client-Side",
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
     "Path": "speed-test.markdown",
     "Name": "Client Speed Test",
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
     "Path": "health-check.markdown",
     "Name": "Cluster Node Health Check",
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   }
 ]

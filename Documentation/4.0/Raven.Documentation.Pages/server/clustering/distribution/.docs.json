@@ -4,8 +4,9 @@
     "Name": "Distributed Database",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -13,8 +14,9 @@
     "Name": "Highly Available Tasks",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   },
   {
@@ -22,8 +24,9 @@
     "Name": "Cluster Observer",
     "Mappings": [],
     "SupportedVersions": [
-      "4.0",
-      "4.1"
+        "4.0",
+        "4.1",
+        "4.2"
     ]
   }
 ]

@@ -1,0 +1,40 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Clustering Overview",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/rachis",
+        "Name": "Rachis",
+        "IsPlaceholder": "true",
+        "Mappings": [
+
+        ]
+    },
+    {
+        "Path": "/replication",
+        "Name": "Replication",
+        "IsPlaceholder": "true",
+        "Mappings": []
+    },
+    {
+        "Path": "/distribution",
+        "Name": "Distribution",
+        "IsPlaceholder": "true",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-transactions.markdown",
+        "Name": "Cluster Transactions",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "cluster-best-practice-and-configuration.markdown",
+        "Name": "Best Practice and Configuration",
+        "IsPlaceholder": "true",
+        "Mappings": []
+    }
+]

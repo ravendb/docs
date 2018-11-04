@@ -82,7 +82,8 @@
         "Name": "QueryResult",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -114,7 +115,8 @@
         "Name": "CopyAttachmentCommandData",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -122,7 +124,8 @@
         "Name": "MoveAttachmentCommandData",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -130,7 +133,8 @@
         "Name": "PutCompareExchangeCommandData",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -138,7 +142,8 @@
         "Name": "DeleteCompareExchangeCommandData",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     }
 ]

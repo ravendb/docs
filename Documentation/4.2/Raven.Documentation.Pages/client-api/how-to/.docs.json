@@ -1,0 +1,46 @@
+[
+    {
+        "Path": "setup-aggressive-caching.markdown",
+        "Name": "...setup aggressive caching",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/advanced/aggressive-caching"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "store-dates.markdown",
+        "Name": "...store dates",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "handle-document-relationships.markdown",
+        "Name": "...handle document relationships",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "indexes/querying/handling-document-relationships"
+            },
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/handling-document-relationships"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "use-low-level-commands.markdown",
+        "Name": "...use low-level commands",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "integrate-with-excel.markdown",
+        "Name": "...integrate with Excel",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

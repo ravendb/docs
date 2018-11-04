@@ -1,0 +1,20 @@
+[
+    {
+        "Path": "add-etl.markdown",
+        "Name": "Add ETL",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "update-etl.markdown",
+        "Name": "Update ETL",
+        "Mappings": [],
+        "IsPlaceholder": "true"    
+    },
+    {
+        "Path": "reset-etl.markdown",
+        "Name": "Reset ETL",
+        "Mappings": [],
+        "IsPlaceholder": "true"    
+    }
+]

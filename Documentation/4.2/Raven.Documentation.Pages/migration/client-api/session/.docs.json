@@ -1,0 +1,19 @@
+[
+    {
+        "Path": "basics.markdown",
+        "Name": "Basics",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "advanced.markdown",
+        "Name": "Advanced",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    }
+]

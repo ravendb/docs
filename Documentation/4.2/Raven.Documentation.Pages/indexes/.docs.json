@@ -1,0 +1,240 @@
+[
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    },
+    {
+        "Path": "what-are-indexes.markdown",
+        "Name": "What are Indexes",
+        "Mappings": [
+            {
+                "Version": "1.0",
+                "Key": "client-api/querying"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "creating-and-deploying.markdown",
+        "Name": "Creating and Deploying Indexes",
+        "Mappings": [
+            {
+                "Version": "1.0",
+                "Key": "client-api/querying/static-indexes/defining-static-index"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-basics.markdown",
+        "Name": "Indexing Basics",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "map-indexes.markdown",
+        "Name": "Map Indexes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "multi-map-indexes.markdown",
+        "Name": "Multi-Map Indexes",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "faq/indexing-across-entities"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "map-reduce-indexes.markdown",
+        "Name": "Map-Reduce Indexes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "javascript-indexes.markdown",
+        "Name": "JavaScript Indexes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "stale-indexes.markdown",
+        "Name": "Stale Indexes",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/stale-indexes"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "fanout-indexes.markdown",
+        "Name": "Fanout Indexes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "sorting-and-collation.markdown",
+        "Name": "Sorting & Collation",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/customizing-results-order"
+            },
+            {
+                "Version": 3.0,
+                "Key": "indexes/customizing-results-order"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-related-documents.markdown",
+        "Name": "Indexing Related Documents",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/indexing-related-documents"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-hierarchical-data.markdown",
+        "Name": "Indexing Hierarchical Data",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/indexing-hierarchies"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-polymorphic-data.markdown",
+        "Name": "Indexing Polymorphic Data",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/polymorphism"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-spatial-data.markdown",
+        "Name": "Indexing Spatial Data",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/advanced/spatial-search"
+            },
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/spatial-search"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-attachments.markdown",
+        "Name": "Indexing Attachments",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-counters.markdown",
+        "Name": "Indexing Counters",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "indexing-linq-extensions.markdown",
+        "Name": "Indexing LINQ Extensions",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "converting-to-json-and-accessing-metadata.markdown",
+        "Name": "Converting to JSON and Accessing Metadata",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/defining-static-index#using--and-"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "boosting.markdown",
+        "Name": "Boosting",
+        "Mappings": [
+            {
+                "Version": 2.0,
+                "Key": "client-api/querying/static-indexes/boosting"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "using-analyzers.markdown",
+        "Name": "Analyzers",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/configuring-index-options"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "storing-data-in-index.markdown",
+        "Name": "Storing Data in Index",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/static-indexes/configuring-index-options#field-options"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "using-term-vectors.markdown",
+        "Name": "Term Vectors",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "client-api/querying/static-indexes/configuring-index-options#term-vectors"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "using-dynamic-fields.markdown",
+        "Name": "Dynamic Fields",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/advanced/dynamic-fields"
+            }
+        ],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "extending-indexes.markdown",
+        "Name": "Extending Indexes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/troubleshooting",
+        "Name": "Troubleshooting",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]
