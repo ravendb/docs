@@ -10,7 +10,7 @@ You can improve your searching mechanism and provide users with much more accura
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query boosting_1_0@Indexes\Querying\Boosting.cs /}
-{CODE-TAB:csharp:DocumentQuery boosting_2_1@Indexes\Querying\Boosting.cs /}
+{CODE-TAB:csharp:DocumentQuery boosting_1_1@Indexes\Querying\Boosting.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Users
 where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
