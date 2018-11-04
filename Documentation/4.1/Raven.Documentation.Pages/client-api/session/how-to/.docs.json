@@ -98,7 +98,9 @@
         "Path": "check-if-document-exists.markdown",
         "Name": "...check if document exists",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "ignore-entity-changes.markdown",

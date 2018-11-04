@@ -1,4 +1,6 @@
-﻿using Raven.Client.Documents;
+﻿using System.Threading;
+using System.Threading.Tasks;
+using Raven.Client.Documents;
 
 namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 {
@@ -7,10 +9,15 @@ namespace Raven.Documentation.Samples.ClientApi.Session.HowTo
 		private interface IExists
 		{
             #region exists_1
-            bool Exists(string id)
-		    #endregion
-		    ;
-		}
+		    bool Exists(string id)
+		        #endregion
+	        ;
+
+            #region asyn_exists_1
+		    Task<bool> ExistsAsync(string documentId, string name, CancellationToken token = default)
+            #endregion
+            ;
+        }
 
         public Exists()
 		{

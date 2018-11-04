@@ -4,7 +4,10 @@ In order to check if a document with specific ID exists in the database, use the
 
 ## Syntax
 
-{CODE exists_1@ClientApi\Session\HowTo\Exists.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync exists_1@ClientApi\Session\HowTo\Exists.cs /}
+{CODE-TAB:csharp:Async asyn_exists_1@ClientApi\Session\HowTo\Exists.cs /}
+{CODE-TABS/}
 
 | Parameters | | |
 | ---------- | ---------- | ----- |
