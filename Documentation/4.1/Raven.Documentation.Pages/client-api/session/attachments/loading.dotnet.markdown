@@ -9,7 +9,10 @@ There are a few methods that allow you to download attachments from a database:
 
 ## Syntax
 
-{CODE GetSyntax@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TABS}
+{CODE-TAB:csharp:Sync GetSyntax@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TAB:csharp:Async GetSyntaxAsync@ClientApi\Session\Attachments\Attachments.cs /}
+{CODE-TABS/}
 
 ## Example
 
