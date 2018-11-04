@@ -27,14 +27,34 @@ Once a request is made, RavenDB will start a transaction (either read or write) 
 
 {NOTE Due to the overhead of the encryption algorithm, performance can be slightly decreased. However, it doesn't affect the ACID properties of RavenDB which remains both transactional and secured./}
 
+## Locking memory
+
+RavenDB uses memory-mapped files to keep its data. During normal operations, a process's memory regions may be paged by the OS to a file on disk when RAM has become scarce.
+
+With encrypted databases, we must ensure that plaintext is never written to disk. 
+Most of the memory-mapped files used by RavenDB are always encrypted so even if the OS decides to page out a part of a file, it will be written to disk encrypted.
+
+However, the memory-mapped files used for **special temporary buffers** (compression, recovery, etc.) are the exception and are not encrypted since they only reside in memory.  
+We lock the memory regions used by these buffers in order to avoid leaking secrets to disk. This means that if we run out of memory, the OS is not allowed to page these buffers to disk. 
+
+The downside to this approach is that the OS will close our process if we run out of physical RAM! By default RavenDB treats this error as catastrophic and will not continue the operation.
+You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../../server/configuration/security-configuration#security.donotconsidermemorylockfailureascatastrophicerror).
+
+If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying the operation.   
+In **Linux**, it is the admin's responibility to configure higher limits manually using:
+{CODE-BLOCK:plain}
+sudo prlimit --pid [process-id] --memlock=[new-limit-in-bytes]
+{CODE-BLOCK/}
+
+To figure out what the new limit should be, look at the exception thrown by RavenDB, which includes this size.
 
 ## What about Encryption in Transit?
 
 To enable encryption in RavenDB, the user must first [enable authentication](../../../server/security/authentication/certificate-configuration) and HTTPS (by providing a certificate).
 
-HTTPS (using the TLS 1.2 protocol) provides privacy and integrity of the data in transit. It protects against man-in-the-middle attacks, eavesdropping, and tampering of the communication.
+Enabling Authentication and HTTPS (using the TLS 1.2 protocol) provides privacy and integrity of the data in transit. It protects against man-in-the-middle attacks, eavesdropping, and tampering of the communication.
 
-Using encryption together with HTTPS provides assurance that your data is safe both at rest and in transit.
+Using the encryption feature together with HTTPS provides assurance that your data is safe both at rest and in transit.
 
 ## Related Articles
 
