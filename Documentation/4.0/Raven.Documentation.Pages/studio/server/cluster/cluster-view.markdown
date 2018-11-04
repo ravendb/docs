@@ -71,6 +71,8 @@
 5. **Force Timeout**  
    The default configuration for the RavenDB cluster is that each node expects to get a heartbeat from the cluster leader every 300 milliseconds.  
    Clicking 'Force Timeout' will trigger actions on the node as if it did Not hear from the Leader in this time period.  
+6. **Remove Node from Cluster**  
+   Remove the node from the cluster. Note: The server on this node is not shut down.
 {PANEL/}
 
 {PANEL: Cluster Nodes Types}
@@ -98,8 +100,8 @@
   * Promotable is a pre-state before becoming a Watcher or a Member.  
   * Cannot make cluster decisions (i.e vote for leader, enter a new Raft command to the log).  
   * Updated by the leader to the latest Raft state.  
-{PANEL/}
 
+{PANEL/}
 {PANEL: Cluster Nodes States & Types Flow}
 
 ![Figure 3. States Flow](images/cluster-states.png "States Flow")
@@ -107,6 +109,7 @@
 {PANEL}
 
 * **1.** A new server/node will start as **Passive**, meaning it is _not_ part of any cluster yet.  
+         Learn how to add a node to a cluster in: [Adding a Node to a Cluster](../../../studio/server/cluster/add-node-to-cluster).  
 
 * **2.** When a node is added to a cluster, it immediately becomes the **Leader** if it is the only node in the cluster.  
 

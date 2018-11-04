@@ -3,23 +3,36 @@
 
 {NOTE: }
 
-* When a server is started for the first time, it is in a `passive` state.  
+* A server will be in a `Passive` state in either one of the following:  
+  * When the server is started for the very first time  
+  * When the server is removed from an existing cluster  
 
-* Performing any RAFT command (such as listed below) will make the server become part of a cluster.  
+* To make a server become part of a cluster you can do _either_ of the following:  
 
-  * Adding a license
-  * Creating a database on this server
-  * Adding another node to this server cluster (will cause both to be part of the same cluster)
+  1. **Bootstrap Cluster**  
+  2. **Adding another node** to this server cluster (will cause both to be part of the same cluster)  
+  3. **Performing any RAFT command** on the `Passive` server will make the server become part of a cluster, e.g.:  
+     * Adding a license  
+     * Creating a database on this server  
 
 * In this page:  
-  * [Add Node to the Cluster](../../../studio/server/cluster/add-node-to-cluster#add-node-to-the-cluster)  
+  * [Bootstrap Cluster](../../../studio/server/cluster/add-node-to-cluster#bootstrap-cluster)  
+  * [Add Another Node to the Cluster](../../../studio/server/cluster/add-node-to-cluster#add-another-node-to-the-cluster)  
   * [A Cluster with 2 nodes](../../../studio/server/cluster/add-node-to-cluster#a-cluster-with-2-nodes)  
 
 {NOTE/}
 
 ---
 
-{PANEL: Add Node to the Cluster}
+{PANEL: Bootstrap Cluster}
+
+Click _'Bootstrap Cluster'_ to make the current passive sever be a part of a cluster.  
+Note: This option is only available when the server is in the `Passive` state.  
+
+![Figure 0. Click to add a new node](images/cluster-add-node-0.png "Bootstrap Cluster")
+{PANEL/}
+
+{PANEL: Add Another Node to the Cluster}
 
 ![Figure 1. Click to add a new node](images/cluster-add-node-1.png "Click to add a new node")
 
