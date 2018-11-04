@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Attachments;
@@ -20,6 +21,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Attachments
             AttachmentName[] GetNames(object entity);
             AttachmentResult GetRevision(string documentId, string name, string changeVector);
             bool Exists(string documentId, string name);
+            #endregion
+
+            #region GetSyntaxAsync
+            Task<AttachmentResult> GetAsync(string documentId, string name, CancellationToken token = default);
+            Task<AttachmentResult> GetAsync(object entity, string name, CancellationToken token = default);
+            Task<AttachmentResult> GetRevisionAsync(string documentId, string name, string changeVector, CancellationToken token = default);
+            Task<bool> ExistsAsync(string documentId, string name, CancellationToken token = default);
             #endregion
 
             #region DeleteSyntax
