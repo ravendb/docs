@@ -81,6 +81,17 @@ public class Basics {
                     .toList(); // send query
                 //endregion
             }
+
+            try (IDocumentSession session = store.openSession()) {
+                //region basics_3_0
+                // load up entity from 'Employees' collection
+                // with ID matching 'employees/1-A'
+                Employee result = session
+                    .query(Employee.class)
+                    .whereEquals("id", "employees/1-A")
+                    .firstOrDefault();
+                //endregion
+            }
         }
     }
 }

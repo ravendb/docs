@@ -554,5 +554,48 @@ public class PatchRequests {
             //endregion
         }
 
+        try (IDocumentStore store = new DocumentStore()) {
+            try (IDocumentSession session = store.openSession()) {
+                //region add_document_session
+                PatchRequest patchRequest = new PatchRequest();
+                patchRequest.setScript("put('orders/', { Employee: id(this) });");
+                PatchCommandData commandData =
+                    new PatchCommandData("employees/1-A", null, patchRequest, null);
+                session.advanced().defer(commandData);
+                session.saveChanges();
+                //endregion
+            }
+
+            try (IDocumentSession session = store.openSession()) {
+                //region clone_document_session
+                PatchRequest patchRequest = new PatchRequest();
+                patchRequest.setScript("put('employees/', this);");
+                PatchCommandData commandData =
+                    new PatchCommandData("employees/1-A", null, patchRequest, null);
+                session.advanced().defer(commandData);
+                session.saveChanges();
+                //endregion
+            }
+
+            {
+                //region add_document_store
+                PatchRequest patchRequest = new PatchRequest();
+                patchRequest.setScript("put('orders/', { Employee: id(this) });");
+
+                store.operations().send(new PatchOperation("employees/1-A", null, patchRequest));
+                //endregion
+            }
+
+
+            {
+                //region clone_document_store
+                PatchRequest patchRequest = new PatchRequest();
+                patchRequest.setScript("put('employees/', this);");
+
+                store.operations().send(new PatchOperation("employees/1-A", null, patchRequest));
+                //endregion
+            }
+        }
+
     }
 }
