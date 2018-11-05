@@ -103,7 +103,9 @@
                 "Key": "client-api/querying/lazy-operations"
             }
         ],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "how-to-work-with-suggestions.markdown",
