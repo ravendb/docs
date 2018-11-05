@@ -28,5 +28,14 @@
         "4.1",
         "4.2"
     ]
+  },
+  {
+    "Path": "create-multi-map-index.markdown",
+    "Name": "Create Multi Map Index",
+    "Mappings": [],
+    "SupportedVersions": [
+      "4.0",
+      "4.1"
+    ]
   }
 ]

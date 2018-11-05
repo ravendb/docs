@@ -182,10 +182,13 @@ Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-pol
 ## Related Articles
 
 ### Indexes
-
 - [Indexing Related Documents](../indexes/indexing-related-documents)
 - [Map-Reduce Indexes](../indexes/map-reduce-indexes)
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 
 ### Querying
 - [Basics](../indexes/querying/basics)
+
+### Studio
+- [Create Map Index](../studio/database/indexes/create-map-index)
+
