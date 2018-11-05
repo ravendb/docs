@@ -25,5 +25,14 @@
         "4.1",
         "4.2"
     ]
+  },
+  {
+    "Path": "test-scripts.markdown",
+    "Name": "Testing Scripts",
+    "Mappings": [],
+    "SupportedVersions": [
+        "4.1",
+        "4.2"
+    ]
   }
 ]
