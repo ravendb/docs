@@ -15,7 +15,9 @@
         "Path": "loading.markdown",
         "Name": "Loading",
         "Mappings": [],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1"
+        ]
     },
     {
         "Path": "deleting.markdown",
