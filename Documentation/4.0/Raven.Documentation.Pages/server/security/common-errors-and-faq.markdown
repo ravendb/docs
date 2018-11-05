@@ -283,6 +283,14 @@ In powershell for example it can be solved like this:
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 {CODE-BLOCK/}
 
+### How to regain access to a server when you have physical access but no client certificate
+
+An admin client certificate can be generated through the [RavenDB CLI](../../server/administration/cli). If RavenDB runs as a console application, the CLI is just there. When running as a service, please use the `rvn admin-channel`.  
+Use either the [generateClientCert](../../server/administration/cli#generateclientcert) command, or (if you already have a certificate) the [trustClientCert](../../server/administration/cli#trustclientcert) command.
+
+Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration#security.wellknowncertificates.admin) configuration to `settings.json` with your existing certificate's thumbprint.
+In this case, a server restart is required.
+
 ## Authorization Issues  
 
 Under construction
