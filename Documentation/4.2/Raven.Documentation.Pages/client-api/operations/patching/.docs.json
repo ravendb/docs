@@ -1,0 +1,14 @@
+[
+    {
+        "Path": "single-document.markdown",
+        "Name": "Single Document",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "set-based.markdown",
+        "Name": "Set Based",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

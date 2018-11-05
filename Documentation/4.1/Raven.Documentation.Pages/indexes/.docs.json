@@ -37,7 +37,8 @@
         "Name": "Map Indexes",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -50,7 +51,8 @@
             }
         ],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -58,7 +60,8 @@
         "Name": "Map-Reduce Indexes",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -66,7 +69,8 @@
         "Name": "JavaScript Indexes",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -85,7 +89,8 @@
         "Name": "Fanout Indexes",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -102,7 +107,8 @@
             }
         ],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -115,7 +121,8 @@
             }
         ],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -128,7 +135,8 @@
             }
         ],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -141,7 +149,8 @@
             }
         ],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -158,7 +167,8 @@
             }
         ],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -166,7 +176,8 @@
         "Name": "Indexing Attachments",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -174,7 +185,8 @@
         "Name": "Indexing Counters",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {

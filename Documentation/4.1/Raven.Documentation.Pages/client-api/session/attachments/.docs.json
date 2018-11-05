@@ -16,7 +16,8 @@
         "Name": "Loading",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -30,7 +31,8 @@
         "Name": "Copying, Moving & Renaming",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     }
 ]

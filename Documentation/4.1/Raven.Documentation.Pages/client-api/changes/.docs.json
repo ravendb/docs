@@ -4,7 +4,8 @@
         "Name": "What is Changes API",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {
@@ -18,7 +19,8 @@
         "Name": "How to Subscribe to Counter Changes",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {

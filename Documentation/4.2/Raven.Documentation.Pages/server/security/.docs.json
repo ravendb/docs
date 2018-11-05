@@ -1,0 +1,34 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+      "Path": "/authentication",
+      "Name": "Authentication",
+      "Mappings": []
+    },
+    {
+      "Path": "/authorization",
+      "Name": "Authorization",
+      "Mappings": []
+    },
+    {
+      "Path": "/encryption",
+      "Name": "Encryption",
+      "Mappings": []
+    },
+    {
+      "Path": "/audit-log",
+      "Name": "Audit Log",
+      "Mappings": []
+    },
+    {
+        "Path": "common-errors-and-faq.markdown",
+        "Name": "Common Errors & FAQ",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

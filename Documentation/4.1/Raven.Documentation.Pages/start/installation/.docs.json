@@ -4,7 +4,8 @@
         "Name": "Setup Wizard",
         "Mappings": [],
         "SupportedVersions": [
-            "4.1"
+            "4.1",
+            "4.2"
         ]
     },
     {

@@ -1,0 +1,20 @@
+[
+  {
+    "Path": "how-to-create-data-subscription.markdown",
+    "Name": "How to Create a Data Subscription",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+  {
+    "Path": "examples.markdown",
+    "Name": "Examples",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+    {
+        "Path": "api-overview.markdown",
+        "Name": "API Overview",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

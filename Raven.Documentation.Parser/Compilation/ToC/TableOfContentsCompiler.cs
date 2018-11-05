@@ -95,7 +95,6 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 {
                     tableOfContentsItem.Languages = GetLanguagesForTableOfContentsItem(directory, item.Name).ToList();
                     tableOfContentsItem.AddSupportedVersions(item.SupportedVersions);
-
                     if (item.IsPlaceholder == false)
                         tableOfContentsItem.SourceVersion = documentationVersion;
 

@@ -1,0 +1,98 @@
+[
+    {
+        "Path": "what-is-a-document-store.markdown",
+        "Name": "What is a Document Store",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "creating-document-store.markdown",
+        "Name": "Creating Document Store",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "setting-up-authentication-and-authorization.markdown",
+        "Name": "Setting up Authentication and Authorization",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "setting-up-default-database.markdown",
+        "Name": "Setting up Default Database",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "what-is-a-public-api.markdown",
+        "Name": "What is a Public API",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "net-client-versions.markdown",
+        "Name": ".NET Client Versions",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/session",
+        "Name": "Session",
+        "Mappings": []
+    },
+    {
+        "Path": "/operations",
+        "Name": "Operations",
+        "Mappings": []
+    },
+    {
+        "Path": "/bulk-insert",
+        "Name": "Bulk Insert",
+        "Mappings": []
+    },
+    {
+        "Path": "/data-subscriptions",
+        "Name": "Data Subscriptions",
+        "Mappings": []
+    },
+    {
+        "Path": "/changes",
+        "Name": "Changes API",
+        "Mappings": []
+    },
+    {
+        "Path": "/commands",
+        "Name": "Commands",
+        "Mappings": []
+    },
+    {
+        "Path": "/document-identifiers",
+        "Name": "Document Identifiers",
+        "Mappings": []
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/smuggler",
+        "Name": "Smuggler",
+        "Mappings": []
+    },
+    {
+        "Path": "/cluster",
+        "Name": "Cluster Related",
+        "Mappings": []
+    },
+    {
+        "Path": "/how-to",
+        "Name": "How to...",
+        "Mappings": []
+    },
+    {
+        "Path": "/faq",
+        "Name": "FAQ",
+        "Mappings": []
+    }
+]
