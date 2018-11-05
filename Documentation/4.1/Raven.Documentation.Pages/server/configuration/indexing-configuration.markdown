@@ -163,3 +163,45 @@ Time (in minutes) between auto index cleanup.
 - **Scope**: Server-wide only
 
 {PANEL/}
+
+{PANEL:Indexing.TransactionSizeLimitInMb}
+
+Transaction size limit in megabytes after which an index will stop and complete the current batch.
+
+- **Type**: `int`
+- **Default**: `null` (no limit)
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Indexing.ScratchSpaceLimitInMb}
+
+Amount of scratch space in megabytes that we allow to use for the index storage. After exceeding this limit the current indexing batch will complete and the index will force flush and sync storage environment.
+
+- **Type**: `int`
+- **Default**: `null` (no limit)
+- **Scope**: Server-wide only or per database
+
+{PANEL/}
+
+
+{PANEL:Indexing.GlobalScratchSpaceLimitInMb}
+
+Maximum amount of scratch space in megabytes that we allow to use for all index storages per server. After exceeding this limit the indexes will complete their current indexing batches and force flush and sync storage environments.
+
+- **Type**: `int`
+- **Default**: `null` (no limit)
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+
+{PANEL:Indexing.MaxTimeToWaitAfterFlushAndSyncWhenExceedingScratchSpaceLimit}
+
+Max time to wait in seconds when forcing the storage environment flush and sync after exceeding the scratch space limit.
+
+- **Type**: `int`
+- **Default**: `30`
+- **Scope**: Server-wide only
+
+{PANEL/}
