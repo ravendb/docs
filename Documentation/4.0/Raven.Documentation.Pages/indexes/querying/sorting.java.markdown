@@ -91,7 +91,7 @@ For example, "Abc9" will come after "Abc10" because if treated as single charact
 
 If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
 
-To order in this mode, you can pass the `OrderingType.ALPHA_NUMERIC` type into `orderBy` or `orderByDescending`:   
+To order in this mode you can pass the `OrderingType.ALPHA_NUMERIC` type into `orderBy` or `orderByDescending`:   
 
 {CODE-TABS}
 {CODE-TAB:java:Java sorting_7_1@Indexes\Querying\Sorting.java /}

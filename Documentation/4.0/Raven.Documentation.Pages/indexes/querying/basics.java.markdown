@@ -56,6 +56,15 @@ where firstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+{CODE-TABS}
+{CODE-TAB:java:Java basics_3_0@Indexes\Querying\Basics.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Employees
+where id() == 'employees/1-A'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+
 You can read more about filtering [here](../../indexes/querying/filtering).
 
 ### Example III - Paging
