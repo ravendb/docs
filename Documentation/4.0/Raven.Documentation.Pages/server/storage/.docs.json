@@ -1,37 +1,47 @@
 [
-  {
-    "Path": "storage-engine.markdown",
-    "Name": "Storage Engine",
-    "Mappings": [
-      {
-        "Version": 3.0,
-        "Key": "server/configuration/storage-engines"
-      }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
-  {
-    "Path": "directory-structure.markdown",
-    "Name": "Directory Structure",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
-  {
-    "Path": "transaction-mode.markdown",
-    "Name": "Transaction Mode",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  }
+    {
+        "Path": "storage-engine.markdown",
+        "Name": "Storage Engine",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/configuration/storage-engines"
+            }
+        ],
+        "SupportedVersions": [
+            "4.0",
+        	"4.1",
+        	"4.2"
+        ]
+    },
+    {
+        "Path": "directory-structure.markdown",
+        "Name": "Directory Structure",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+        	"4.1",
+       		"4.2"
+        ]
+    },
+    {
+        "Path": "customize-data-locations.markdown",
+        "Name": "Customize Data Location",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+        	"4.2"
+        ]
+    },
+    {
+        "Path": "transaction-mode.markdown",
+        "Name": "Transaction Mode",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+        	"4.1",
+        	"4.2"
+        ]
+    }
 ]
