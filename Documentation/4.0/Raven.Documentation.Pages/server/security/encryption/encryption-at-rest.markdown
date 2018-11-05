@@ -37,7 +37,7 @@ Most of the memory-mapped files used by RavenDB are always encrypted so even if 
 However, the memory-mapped files used for **special temporary buffers** (compression, recovery, etc.) are the exception and are not encrypted since they only reside in memory.  
 We lock the memory regions used by these buffers in order to avoid leaking secrets to disk. This means that if we run out of memory, the OS is not allowed to page these buffers to disk. 
 
-The downside to this approach is that the OS will close our process if we run out of physical RAM! By default RavenDB treats this error as catastrophic and will not continue the operation.
+The downside to this approach is that if we run out of physical RAM RavenDB won't be able to lock memory and will abort the current operation.
 You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../../server/configuration/security-configuration#security.donotconsidermemorylockfailureascatastrophicerror).
 
 If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying the operation.   
