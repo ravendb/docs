@@ -10,15 +10,15 @@ Consider the following graph that models employees, their managers and reporting
 
 If we want to know which is the direct manager of each employee, we would simply issue a regular pattern match query. 
 Now, if we would like to fetch all managers ranking above a certain employee (managers of managers and so on), 
-we would use a **recursive** query, and such 'chain' of vertices that point to each other we would call a _**path**_.
+we would use a ```recursive``` query, and such 'chain' of vertices that point to each other we would call a _**path**_.
 
 #### Simple example
-The following query would fetch all manager IDs ranking above of _"employee/6"_:
+The following query would fetch all manager IDs ranking above of ```"employee/6"```:
 {CODE-BLOCK:sql}
-match (Employees as employee where id() = 'employees/6-A') //starting vertex of the recursion
+match (Employees as employee where id() = 'employees/6-A') //starting node of the recursion
     -recursive as chainOfManagers //here we specify that we want to recursive over a pattern
         { [ReportsTo as reportsTo] } //recurse over those vertices. 
-            ->(Employees as manager) //recursion 'destination' vertex
+            ->(Employees as manager) //recursion 'destination' node
 select { managerIdsAsPath : chainOfManagers.map(x => x.reportsTo) }
 {CODE-BLOCK/}
 
@@ -44,20 +44,31 @@ The following **RecursiveMatchType** values are possible:
 | All | Return **_all_ distinct paths** that are matched by query conditions |
 
 {NOTE:RecursiveMatchType values}
-It is possible there would be multiple paths in the query results. If only one path is retrieved, **RecursiveMatchType** value will cause the same query results for all values.
+It is possible there would be multiple paths in the query results. If only one path is retrieved, ```RecursiveMatchType``` value will cause the same query results for all values.
 {NOTE/}
 
-## Examples
+{NOTE: Recursive query examples }
 
-{NOTE: Source data for example queries}
-For the following samples we will be using RavenDB Sample data set - the Northwind database. You can read about it and how to set it up [here](../../../studio/database/tasks/create-sample-data).
+#### Sample dataset
+For the following examples we will be using RavenDB Sample data set - the Northwind database. You can read about it and how to set it up [here](../../../studio/database/tasks/create-sample-data).
+
+#### The examples
+In all of the example queries we will be using JavaScript projection in the ```select``` clause. As in regular graph queries, this is not required, because recursive queries are essentially a special type of a graph query.
+In general, recursive queries have the same syntax as regular graph queries, with the exception of ```recursive``` clause and it's scope.
+
+  * [Example I](../../../indexes/querying/graph/graph-recursive#example-i---basic-recursive-query) - in this example we show the most basic form of a recursive query.
+  * [Example II](../../../indexes/querying/graph/graph-recursive#example-ii---traversal-limits) - in this example we show how we can limit traversal of a recrusive query.
+  * [Example III](../../../indexes/querying/graph/graph-recursive#example-iii---specifying-recursive-match-type) - in this example we show how we can specify recursive match strategy type.
+  * [Example IV](../../../indexes/querying/graph/graph-recursive#example-iv---including-both-nodes-and-edges-in-recursion-pattern) - in this example we show how we can include both nodes and edges in the recursion pattern.
+  * [Example V](../../../indexes/querying/graph/graph-recursive#example-v---) - in this example we show how the usage of ```all``` matching strategy would return all possible paths.
+  
 {NOTE/}
 
 
-### Example I
+{PANEL: Example I - Basic Recursive Query}
 
-The following query would fetch the management chain of each employees. Notice the use of **recursive** block over **ReportsTo** edge. This allows traversal down the reporting chain to fetch all the managers in the "command" chain. 
-Also, note that **chainOfManagers** would return an ordered array of IDs - which are a path traversed by the recursive query between the initial vertex to the final vertex of the path.
+The following query would fetch the management chain of each employees. Notice the use of ```recursive``` block over ```ReportsTo``` edge. This allows traversal down the reporting chain to fetch all the managers in the "command" chain. 
+Also, note that ```chainOfManagers``` would return an ordered array of IDs - which are a path traversed by the recursive query between the initial node to the final node of the path.
 {CODE-BLOCK:sql}
 match (Employees as employee)-recursive as chainOfManagers { [ReportsTo as reportsTo] }->(Employees as manager)
 select 
@@ -67,11 +78,11 @@ select
     ManagerName: manager.FirstName
 }
 {CODE-BLOCK/}
-This query would yield the following results.  Note how **chainOfManagers** yields array of IDs traversed as part of recursive query.
+This query would yield the following results.  Note how ```chainOfManagers``` yields array of IDs traversed as part of recursive query.
 ![Example I query results.](images/recursive_query_results_1.png)
+{PANEL/}
 
-
-### Example II
+{PANEL: Example II - Traversal limits}
 
 The following query would retrieve the management chain of each employees when there is a minimum of two managers and maximum of three managers above an employee.
 {CODE-BLOCK:sql}
@@ -83,14 +94,12 @@ select
     ManagerName: manager.FirstName
 }
 {CODE-BLOCK/}
-This query would yield the following results.  Notice how the addition of **(2,3)** to the **recursive** definition in the query limits the results to only those that have between two and three hops in the path.
+This query would yield the following results.  Notice how the addition of ```(2,3)``` to the ```recursive``` definition in the query limits the results to only those that have between two and three hops in the path.
 ![Example II query results.](images/recursive_query_results_2.png)
+{PANEL/}
 
-{NOTE: Recursive queries that match multiple possible paths}
 
-{NOTE/}
-
-### Example III
+{PANEL: Example III - Specifying recursive match type}
 
 The following query would retrieve the management chain of each employees that is the longest out of all possible.
 {CODE-BLOCK:sql}
@@ -102,12 +111,14 @@ select
     ManagerName: manager.FirstName
 }
 {CODE-BLOCK/}
-This query would yield the following results. The amount of results is the same as in _Example I_, but since we specified **longest** in **recursive** definition, when there is a longer path available, the query chooses the longest path available.
+This query would yield the following results. The amount of results is the same as in _Example I_, but since we specified ```longest``` in ```recursive``` definition, when there is a longer path available, the query chooses the longest path available.
 ![Example III query results.](images/recursive_query_results_3.png)
 
-### Example IV
+{PANEL/}
 
-What if we want to retrieve not only the _IDs_ of documents in traversal path, but vertices that appear along the path as well? Then we would expand the scope of **recursive** statement so it contains the vertex as well, as can be seen in the following query.
+{PANEL: Example IV - Including both nodes and edges in recursion pattern}
+
+What if we want to retrieve not only the _IDs_ of documents in traversal path, but vertices that appear along the path as well? Then we would expand the scope of ```recursive``` statement so it contains the node as well, as can be seen in the following query.
 {CODE-BLOCK:sql}
 //since the match expression here is complex, 
 //we simply break it into multiple rows - to increase readability
@@ -121,5 +132,36 @@ select
     managementChain: chainOfManagers.map(x => x.manager.FirstName).join(' >> ')
 }
 {CODE-BLOCK/}
-As we can see, expanding the **recursive** scope to a **manager** vertex allows them to be included in retrieved path. In those results we retrieved names of managers in a chain of management without doing any additional 'load document' operations.
+As we can see, expanding the ```recursive``` scope to a ```manager``` node allows them to be included in retrieved path. In those results we retrieved names of managers in a chain of management without doing any additional 'load document' operations.
 ![Example IV query results.](images/recursive_query_results_4.png)
+{PANEL/}
+
+{PANEL: Example V - 'all' as a special recursive match strategy}
+For many use-cases it is enough to determine whether a path exists or not, or to fetch one valid path. But what if we want to fetch all possible paths between two nodes?
+For such use-cases, we would use ```all``` matching strategy.
+Consider the following graph data:
+![Example V - graph with multiple path.](images/MultiplePossibleTraversalPaths.png)
+
+The query itself:
+{CODE-BLOCK:sql}
+match(Dogs as Buddy where id() = 'dogs/1') 
+    -recursive as RecursiveLikes (all) 
+        { [Likes as PathElement] } -> 
+            (Dogs as TraversalDestination)
+select 
+{
+    IdOfTraversalStart : id(Buddy), 
+    LikesPath : RecursiveLikes.map(x => x.PathElement).join(' >> '), 
+    IdOfTraversalEnd : id(TraversalDestination)
+}
+{CODE-BLOCK/}
+When executed, the following results would be displayed:
+![Example V query results.](images/recursive_query_results_5.png)
+
+We are seeing two different paths, since there are two paths possible for ```"dogs/1"``` node.
+
+{NOTE: Bug in the implementation}
+This is a [bug](http://issues.hibernatingrhinos.com/issue/RavenDB-12263) that is yet to be fixed, since the results for this query should be two pathes : ```"dogs/3 >> dogs/5 >> dogs/6"``` and ```"dogs/2 >> dogs/4 >> dogs/6"```
+{NOTE/}
+
+{PANEL/}
