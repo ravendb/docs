@@ -16,6 +16,16 @@ You need to enable the featured by adding the following key to your [settings.js
 }
 {CODE-BLOCK/}
 {INFO/}
+
+## creating  JavaScript index
+
+If we want to create JavaScript index we need to create an instance of our class that inherits 
+from AbstractJavaScriptIndexCreationTask.   
+AbstractJavaScriptIndexCreationTask inherits from AbstractIndexCreationTask 
+(Read more about AbstractIndexCreationTask [here](../indexes/creating-and-deploying#Using-AbstractIndexCreationTask).)
+
+{CODE javaScriptindexes_1@Indexes\JavaScript.cs /}
+
 ## Map index
 
 `Map` indexes, sometimes referred to as simple indexes, contain one (or more) mapping functions that indicate which fields from the documents should be indexed. 
