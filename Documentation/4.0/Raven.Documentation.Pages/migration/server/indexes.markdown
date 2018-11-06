@@ -35,6 +35,18 @@ There are also the following changes:
 |:---:|
 | {CODE indexes_4@Migration\Server\Indexes.cs /} |
 
+### AsDocument 
+
+`AsDocument` call should be replaced by [`AsJson`](../../indexes/converting-to-json-and-accessing-metadata#asjson---converting-to-json) method.
+
+| 3.x |
+|:---:|
+| {CODE indexes_5@Migration\Server\Indexes.cs /} |
+
+| 4.0 |
+|:---:|
+| {CODE indexes_6@Migration\Server\Indexes.cs /} |
+
 ### DynamicList
 
 Any occurrence of `new Raven.Abstractions.Linq.DynamicList()` should be removed from an index definition.

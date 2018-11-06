@@ -47,12 +47,22 @@
         */
 
         /*
-        #region indexes_
+        #region indexes_5
+        from user in users
+        select new
+        {
+            Query = AsDocument(user).Select(x => x.Value)
+        };
         #endregion
         */
 
         /*
-        #region indexes_
+        #region indexes_6
+        from user in users
+        select new
+        {
+            Query = AsJson(user).Select(x => x.Value)
+        };
         #endregion
         */
     }
