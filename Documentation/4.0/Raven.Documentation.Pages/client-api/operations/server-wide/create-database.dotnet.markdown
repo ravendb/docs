@@ -53,6 +53,17 @@ If `Topology` is specified, the `replicationFactor` will be ignored.
 {CODE-TAB:csharp:Async CreateDatabaseAsync@ClientApi\Operations\Server\CreateDeleteDatabase.cs /}
 {CODE-TABS/}
 
+{INFO:Information}
+To ensure database exists before creating it we can use the following example
+
+###Exapmle I - EnsureDatabaseExists
+{CODE-TABS}
+{CODE-TAB:csharp:Sync EnsureDatabaseExists@ClientApi\Operations\Server\CreateDeleteDatabase.cs /}
+{CODE-TAB:csharp:Async EnsureDatabaseExistsAsync@ClientApi\Operations\Server\CreateDeleteDatabase.cs /}
+{CODE-TABS/}
+
+{INFO/}
+
 ## Related articles
 - [Distributed Database](../../../server/clustering/distribution/distributed-database)
 - [Create Database via Studio](../../../studio/server/databases/create-new-database/general-flow)
