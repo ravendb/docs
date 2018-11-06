@@ -13,10 +13,15 @@ RavenDB makes it very easy to be embedded within your application, with RavenDB 
 
 {PANEL:Prerequisites}
 
-There are two prerequsites for the Embedded package:
+There is one prerequsite and one recommendation for the Embedded package:
+
+Prerequsite:
 
 - **.NET Core runtime** must be installed manually
-- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages must be **migrated to `PackageReference` package management**
+
+Recommendation:
+
+- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages should be **migrated to `PackageReference` package management**
 
 {NOTE:.NET Core Runtime}
 
@@ -30,7 +35,7 @@ We highly recommend using the .NET Core framework version defined in `ServerOpti
 
 {NOTE:Migrating from `packages.config` to `PackageReference` in old csproj projects}
 
-Due to the NuGet limitations, the Embedded package requires newer package management via `PackageReference` instead of old `packages.config`. 
+Due to the NuGet limitations, we recommend that the Embedded package should be installed via newer package management using `PackageReference` instead of old `packages.config`. 
 
 The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
 
