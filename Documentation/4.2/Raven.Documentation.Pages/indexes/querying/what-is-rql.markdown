@@ -264,7 +264,7 @@ The keyword `include` has been introduced to support attaching additional docume
 
 {PANEL:WITH}
 
-The keyword `with` is used to determine the data source of a [graph query]().  
+The keyword `with` is used to determine the data source of a [graph query](../../indexes/querying/graph/graph-queries).  
 There are two types of `with` clauses, regular `with` and `with edges`.
 
 - with: `with {from Orders} as o`  
@@ -274,18 +274,27 @@ There are two types of `with` clauses, regular `with` and `with edges`.
   The above statment means that our data source is the property `Lines` of the source documents and we filter all lines that match `Discount >= 0.25` query
   the destination refered to by the `cheap` alias is the product pointed by the `Product` property of the order line  
     
-For more details regarding graph queries please read the following article about [graph query]() 
+For more details regarding graph queries please read the following article about [graph query](../../indexes/querying/graph/graph-queries) 
 
 {PANEL/}
 
 {PANEL:MATCH}
 
-The keyword `match` is used to determine the pattern of a [graph query]().  
+The keyword `match` is used to determine the pattern of a [graph query](../../indexes/querying/graph/graph-queries).  
 `match (Orders as o)-[Lines as cheap where Discount >= 0.25 select Product]->(Products as p)`  
 The above statment means that we are searching for a pattern that starts with an order and traverse using the
 order lines refered to by the `Lines` property where their `Discount` property is larger than 25%  and the destination is the product refered to by the `Product` property.  
 
-For more details regarding graph queries please read the following article about [graph query]()  
+A match may contain an edge in both direction, a right edge would look like so `(node1)-[right]->(node2)` and a left one would look like so `(node1)<-[left]-(node2)`.  
+Any combination of edges is allowed in a match clause e.g.  
+`(node1)-[right]->(node2)<-[left]-(node3)`  
+The above match will actually be translated to:  
+`(node1)-[right]->(node2)`  
+and  
+`(node3)-[left]->(node2)`  
+where the `and` is a set intersection between the two patterns.  
+
+For more details regarding graph queries please read the following article about [graph query](../../indexes/querying/graph/graph-queries)  
 {PANEL/}
 
 ## Related Articles
