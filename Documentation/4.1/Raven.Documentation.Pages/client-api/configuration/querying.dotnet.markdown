@@ -19,19 +19,19 @@ This can be useful when you want to use a static index to project nested propert
 Same as in the two conventions above, the arguments in the order of appearance: an indexed document type, an index name, a current path and a property path.
 
 By default `FindProjectionPropertyNameForIndex` is set to `null`.  
-When `FindProjectionPropertyNameForIndex` is `null` (or returns `null`),  
-the `FindPropertyNameForIndex` convention is used instead.
+When `FindProjectionPropertyNameForIndex` is `null` (or returns `null`), the `FindPropertyNameForIndex` convention is used instead.
 
 ###Example
 Consider we have the following index, and we want to query `School.Id`:
 {CODE users_index@ClientApi\Configuration\Querying.cs /}
 
-{CODE find_projected_prop_exmple1@ClientApi\Configuration\Querying.cs /}
-
-And without setting `FindProjectedPropertyNameForIndex`:
+Without setting `FindProjectedPropertyNameForIndex`:
 {CODE find_projected_prop_exmple2@ClientApi\Configuration\Querying.cs /}
 `School_Id` is indexed but not `Stored`, meaning that we will try to
 fetch `School_Id` from the document - which doesn't have this property.
+
+Setting the `FindProjectedPropertyNameForIndex` can solve this issue:
+{CODE find_projected_prop_exmple1@ClientApi\Configuration\Querying.cs /}
 
 ##ThrowIfQueryPageSizeIsNotSet
 
