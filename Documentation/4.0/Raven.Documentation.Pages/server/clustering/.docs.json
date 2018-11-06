@@ -37,8 +37,8 @@
         ]
     },
     {
-        "Path": "common-operations.markdown",
-        "Name": "Common Operations",
+        "Path": "cluster-api.markdown",
+        "Name": "Cluster API",
         "Mappings": [],
         "SupportedVersions": [
             "4.0",
