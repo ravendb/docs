@@ -34,6 +34,17 @@ public class Sorting {
     }
     //endregion
 
+    //region sorting_1_5
+    public static class Products_ByUnitsInStockAndName extends AbstractIndexCreationTask {
+        public Products_ByUnitsInStockAndName() {
+            map = "docs.Products.Select(product => new {" +
+                "    unitsInStock = product.unitsInStock" +
+                "    name = product.name" +
+                "})";
+        }
+    }
+    //endregion
+
     //region sorting_6_4
     public static class Products_ByName_Search extends AbstractIndexCreationTask {
         public static class Result {
@@ -128,13 +139,24 @@ public class Sorting {
             }
 
             try (IDocumentSession session = store.openSession()) {
+                //region sorting_4_3
+                List<Product> results = session
+                    .query(Product.class, Products_ByUnitsInStockAndName.class)
+                    .whereGreaterThan("unitsInStock", 10)
+                    .orderBy("unitsInStock")
+                    .orderByScore()
+                    .orderByDescending("name")
+                    .toList();
+                //endregion
+            }
+
+            try (IDocumentSession session = store.openSession()) {
                 //region sorting_6_1
                 List<Product> results = session
                     .query(Product.class, Products_ByName_Search.class)
                     .search("name", "Louisiana")
                     .orderByDescending("nameForSorting")
                     .toList();
-
                 //endregion
             }
 
