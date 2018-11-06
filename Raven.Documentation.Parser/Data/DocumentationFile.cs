@@ -6,7 +6,6 @@ namespace Raven.Documentation.Parser.Data
     {
         public DocumentationFile()
         {
-            SupportedVersions = new List<string>();
             Mappings = new List<DocumentationMapping>();
         }
 
@@ -14,9 +13,7 @@ namespace Raven.Documentation.Parser.Data
 
         public string Name { get; set; }
 
-        public List<string> SupportedVersions { get; set; }
-
-        public bool IsPlaceholder { get; set; }
+        public string LastSupportedVersion { get; set; }
 
         public Dictionary<string, string> Metadata { get; set; }
 

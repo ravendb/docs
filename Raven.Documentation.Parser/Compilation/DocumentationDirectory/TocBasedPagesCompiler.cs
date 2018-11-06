@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Raven.Documentation.Parser.Data;
@@ -40,12 +41,22 @@ namespace Raven.Documentation.Parser.Compilation.DocumentationDirectory
                 yield break;
             }
 
+            ValidateTableOfContentsItem(tocItem, version);
+
             var directory = tocItem.GetSourceBaseDirectory(Options);
             var pagesToCompile = GetPagesForTocItem(tocItem, directory);
 
             foreach (var pageToCompile in pagesToCompile)
             {
                 yield return CompileDocumentationPage(pageToCompile, directory, version, pageToCompile.Mappings, tocItem.SourceVersion);
+            }
+        }
+
+        private void ValidateTableOfContentsItem(TableOfContents.TableOfContentsItem tocItem, string version)
+        {
+            if (string.IsNullOrEmpty(tocItem.SourceVersion))
+            {
+                throw new InvalidOperationException($"Could not find markdown file for {tocItem.Key} version {version}.");
             }
         }
 

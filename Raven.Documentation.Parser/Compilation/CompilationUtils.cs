@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+using System.Text;
 using Raven.Documentation.Parser.Data;
+using Raven.Documentation.Parser.Helpers;
 
 namespace Raven.Documentation.Parser.Compilation
 {
@@ -19,67 +20,105 @@ namespace Raven.Documentation.Parser.Compilation
 
         internal class Context
         {
-            private readonly HashSet<CompiledEntry> _compiled = new HashSet<CompiledEntry>(new CompiledEntryEqualityComparer());
+            private readonly VersionsParser _versionsParser = new VersionsParser();
 
-            public void RegisterCompilation(string key, Language language, string baseVersion, List<string> supportedVersions)
+            private readonly Dictionary<LastSupportedVersionKey, string> _lastSupportedVersions =
+                new Dictionary<LastSupportedVersionKey, string>(new KeyComparer());
+
+            public void RegisterCompilation(RegistrationInput input)
             {
-                RegisterBaseVersionCompilation(key, language, baseVersion, supportedVersions?.Any() ?? false);
+                var majorVersion = _versionsParser.GetMajorVersion(input.DocumentationVersion);
+                var key = GetKey(input, majorVersion);
 
-                if (supportedVersions == null)
+                if (_lastSupportedVersions.ContainsKey(key))
+                {
+                    ValidateLastSupportedVersion(input, key);
+                    UpdateLastSupportedVersion(input, key);
+                }
+                else
+                {
+                    _lastSupportedVersions[key] = input.LastSupportedVersion;
+                }
+            }
+
+            private void ValidateLastSupportedVersion(RegistrationInput input, LastSupportedVersionKey key)
+            {
+                var registeredVersion = _lastSupportedVersions[key];
+
+                if (string.IsNullOrEmpty(registeredVersion))
                     return;
 
-                foreach (var version in supportedVersions)
-                {
-                    if (string.Equals(version, baseVersion))
-                        continue;
+                ValidateLastSupportedVersion(input, registeredVersion, input.DocumentationVersion);
 
-                    RegisterCompilation(key, language, version);
+                foreach (var supportedVersion in input.SupportedVersions)
+                {
+                    ValidateLastSupportedVersion(input, registeredVersion, supportedVersion);
                 }
             }
 
-            private void RegisterBaseVersionCompilation(string key, Language language, string version,
-                bool hasSupportedVersions)
+            private void ValidateLastSupportedVersion(RegistrationInput input, string registeredVersion, string versionToTest)
             {
-                var entry = CompiledEntry.New(key, language, version);
+                var exceedsLastSupportedVersion = _versionsParser.IsGreaterThan(versionToTest, registeredVersion);
 
-                if (hasSupportedVersions && _compiled.Contains(entry))
-                    throw new InvalidOperationException($"The document '{key}' has already been compiled for {language} {version}");
-
-                _compiled.Add(entry);
-            }
-
-            private void RegisterCompilation(string key, Language language, string version)
-            {
-                var entry = CompiledEntry.New(key, language, version);
-
-                if (_compiled.Contains(entry))
-                    throw new InvalidOperationException($"The document '{key}' has already been compiled for {language} {version}");
-
-                _compiled.Add(entry);
-            }
-
-            private class CompiledEntry
-            {
-                public string Key { get; private set; }
-
-                public Language Language { get; private set; }
-
-                public string Version { get; private set; }
-
-                public static CompiledEntry New(string key, Language language, string version)
+                if (exceedsLastSupportedVersion)
                 {
-                    return new CompiledEntry
-                    {
-                        Key = key,
-                        Language = language,
-                        Version = version
-                    };
+                    var message = GetExceptionMessage(input, registeredVersion);
+                    throw new InvalidOperationException(message);
                 }
             }
 
-            private class CompiledEntryEqualityComparer : IEqualityComparer<CompiledEntry>
+            private void UpdateLastSupportedVersion(RegistrationInput input, LastSupportedVersionKey key)
             {
-                public bool Equals(CompiledEntry x, CompiledEntry y)
+                var versionToSet = input.LastSupportedVersion;
+
+                if (string.IsNullOrEmpty(versionToSet))
+                    return;
+
+                var registeredVersion = _lastSupportedVersions[key];
+
+                if (string.IsNullOrEmpty(registeredVersion) == false && _versionsParser.IsGreaterThan(registeredVersion, versionToSet))
+                    return;
+
+                _lastSupportedVersions[key] = versionToSet;
+            }
+
+            private string GetExceptionMessage(RegistrationInput input, string lastSupportedVersion)
+            {
+                var builder = new StringBuilder($"The document {input.Key} [{input.Language}] has ");
+                builder.Append($"{nameof(RegistrationInput.LastSupportedVersion)} set to {lastSupportedVersion} ");
+                builder.Append($"but its definition was also included in .docs.json for {input.DocumentationVersion}. ");
+                builder.Append($"Please either remove the {nameof(RegistrationInput.LastSupportedVersion)} field ");
+                builder.Append($"or the .docs.json entry from {input.DocumentationVersion}.");
+                return builder.ToString();
+            }
+
+            private LastSupportedVersionKey GetKey(RegistrationInput input, string majorVersion) =>
+                new LastSupportedVersionKey
+                {
+                    Language = input.Language,
+                    Key = input.Key,
+                    MajorVersion = majorVersion
+                };
+
+            public class RegistrationInput
+            {
+                public string Key { get; set; }
+                public Language Language { get; set; }
+                public string DocumentationVersion { get; set; }
+                public List<string> SupportedVersions { get; set; }
+                public string LastSupportedVersion { get; set; }
+            }
+
+            private class LastSupportedVersionKey
+            {
+                public string Key { get; set; }
+                public Language Language { get; set; }
+                public string MajorVersion { get; set; }
+            }
+
+            private class KeyComparer : IEqualityComparer<LastSupportedVersionKey>
+            {
+                public bool Equals(LastSupportedVersionKey x, LastSupportedVersionKey y)
                 {
                     if (x == null && y == null)
                         return true;
@@ -87,12 +126,14 @@ namespace Raven.Documentation.Parser.Compilation
                     if (x == null || y == null)
                         return false;
 
-                    return string.Equals(x.Key, y.Key) && string.Equals(x.Version, y.Version) && x.Language == y.Language;
+                    return string.Equals(x.Key, y.Key, StringComparison.OrdinalIgnoreCase)
+                           && string.Equals(x.MajorVersion, y.MajorVersion, StringComparison.OrdinalIgnoreCase)
+                           && x.Language == y.Language;
                 }
 
-                public int GetHashCode(CompiledEntry obj)
+                public int GetHashCode(LastSupportedVersionKey obj)
                 {
-                    return $"{obj.Key}_{obj.Language}_{obj.Version}".GetHashCode();
+                    return $"{obj.Language}_{obj.Key}_{obj.MajorVersion}".GetHashCode();
                 }
             }
         }
