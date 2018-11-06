@@ -1,39 +1,39 @@
 [
-  {
-    "Path": "/querying",
-    "Name": "Querying",
-    "Mappings": []
-  },
-  {
-    "Path": "what-are-indexes.markdown",
-    "Name": "What are Indexes",
-    "Mappings": [
-      {
-        "Version": "1.0",
-        "Key": "client-api/querying"
-      }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
-  {
-    "Path": "creating-and-deploying.markdown",
-    "Name": "Creating and Deploying Indexes",
-    "Mappings": [
-      {
-        "Version": "1.0",
-        "Key": "client-api/querying/static-indexes/defining-static-index"
-      }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
+    {
+        "Path": "/querying",
+        "Name": "Querying",
+        "Mappings": []
+    },
+    {
+        "Path": "what-are-indexes.markdown",
+        "Name": "What are Indexes",
+        "Mappings": [
+            {
+                "Version": "1.0",
+                "Key": "client-api/querying"
+            }
+        ],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    },
+    {
+        "Path": "creating-and-deploying.markdown",
+        "Name": "Creating and Deploying Indexes",
+        "Mappings": [
+            {
+                "Version": "1.0",
+                "Key": "client-api/querying/static-indexes/defining-static-index"
+            }
+        ],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    },
     {
         "Path": "indexing-basics.markdown",
         "Name": "Indexing Basics",
@@ -52,42 +52,42 @@
             "4.0"
         ]
     },
-  {
-    "Path": "multi-map-indexes.markdown",
-    "Name": "Multi-Map Indexes",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "faq/indexing-across-entities"
-      }
-    ],
-    "SupportedVersions": [
-      "4.0"
-    ]
-  },
-  {
-    "Path": "map-reduce-indexes.markdown",
-    "Name": "Map-Reduce Indexes",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
-  },
-  {
-    "Path": "stale-indexes.markdown",
-    "Name": "Stale Indexes",
-    "Mappings": [
-      {
-        "Version": 1.0,
-        "Key": "client-api/querying/stale-indexes"
-      }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
+    {
+        "Path": "multi-map-indexes.markdown",
+        "Name": "Multi-Map Indexes",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "faq/indexing-across-entities"
+            }
+        ],
+        "SupportedVersions": [
+            "4.0"
+        ]
+    },
+    {
+        "Path": "map-reduce-indexes.markdown",
+        "Name": "Map-Reduce Indexes",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0"
+        ]
+    },
+    {
+        "Path": "stale-indexes.markdown",
+        "Name": "Stale Indexes",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "client-api/querying/stale-indexes"
+            }
+        ],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    },
     {
         "Path": "fanout-indexes.markdown",
         "Name": "Fanout Indexes",
@@ -264,9 +264,7 @@
             }
         ],
         "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
+            "4.0"
         ]
     },
     {
