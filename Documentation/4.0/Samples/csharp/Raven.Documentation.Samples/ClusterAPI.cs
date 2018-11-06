@@ -23,6 +23,41 @@ namespace Raven.Documentation.Samples
                 #endregion
             }
 
+            using (var store = new DocumentStore())
+            {
+                #region promote_node
+                store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Post, "http://<server-url>/admin/cluster/promote?nodeTag=<node-tag>"));
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region demote_node
+                store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Post, "http://<server-url>/admin/cluster/demote?nodeTag=<node-tag>"));
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region force_election
+                store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Post, "http://<server-url>/admin/cluster/reelect"));
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region force_timeout
+                store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Post, "http://<server-url>/admin/cluster/timeout"));
+                #endregion
+            }
+
+            using (var store = new DocumentStore())
+            {
+                #region bootstrap
+                store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Post, "http://<server-url>/admin/cluster/bootstrap"));
+                #endregion
+            }
+
         }
     }
 }
