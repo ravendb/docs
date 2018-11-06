@@ -82,6 +82,27 @@ Maximum size of `.buffers` files
 
 {PANEL/}
 
+
+{PANEL:Storage.PrefetchBatchSizeInKb}
+
+Size of the batch in kilobytes that will be requested to the OS from disk when prefetching (value in powers of 2). Some OSs may not honor certain values. Experts only.
+
+- **Type**: `int`
+- **Default**: `1024`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Storage.PrefetchResetThresholdInGb}
+
+How many gigabytes of memory should be prefetched before restarting the prefetch tracker table. Experts only.
+
+- **Type**: `int`
+- **Default**: `8`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 ## Related Articles
 
 - [Storage Engine](../../server/storage/storage-engine)
