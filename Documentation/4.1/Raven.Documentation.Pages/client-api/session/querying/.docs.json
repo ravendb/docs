@@ -161,5 +161,14 @@
         "Name": "How to Query With Exact Match",
         "Mappings": [],
         "IsPlaceholder": "true"
+    },
+    {
+        "Path": "how-to-perform-proximity-search.markdown",
+        "Name": "How to Perform Proximity Search",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1",
+            "4.2"
+        ]
     }
 ]
