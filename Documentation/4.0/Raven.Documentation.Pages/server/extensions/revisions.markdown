@@ -29,7 +29,7 @@ It is possible to have a default configuration telling the revisions feature to 
 Set `Disabled=false`, which is the default, on the default configuration, and only keep up to 5 revisions, purging older ones (`MinimumRevisionsToKeep=5`).
 Then override the behavior of the revisions feature by specifying a configuration specifically to a collection. 
 
-Conversely, we can disable the default configuration (`Disalbed = true`) but enable revisions for a specific collection.
+Conversely, we can disable the default configuration (`Disabled = true`) but enable revisions for a specific collection.
 
 ## How it Works
 
@@ -78,6 +78,11 @@ If you create a document, then turn on revisions, and then overwrite the documen
 
 It's possible also to disable the revisions feature on an existing database.
 In this case all existing revisions would still be stored and not deleted but we won't create any new revisions on any put or delete operations.
+
+## Storage Concerns
+
+Enabling the revisions will affect the usage of storage space. Each revision of a document is stored in full. The revisions of documents use the same blittable JSON format as regular 
+documents so the compression of individual fields is enabled (any text field that is greater than 128 bytes will be compressed).
 
 ## Related Articles
 
