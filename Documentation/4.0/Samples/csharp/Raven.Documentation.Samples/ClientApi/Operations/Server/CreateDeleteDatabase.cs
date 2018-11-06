@@ -59,7 +59,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             database = database ?? store.Database;
 
             if (string.IsNullOrWhiteSpace(database))
-                return;
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(database));
 
             try
             {
@@ -67,16 +67,18 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             }
             catch (DatabaseDoesNotExistException)
             {
-                if (createDatabaseIfNotExists)
+                if (createDatabaseIfNotExists == false)
+                    throw;
+
+                try
                 {
-                    try
-                    {
-                        store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(database)));
-                    }
-                    catch (ConcurrencyException)
-                    {
-                    }
+                    store.Maintenance.Server.Send(new CreateDatabaseOperation(new DatabaseRecord(database)));
                 }
+                catch (ConcurrencyException)
+                {
+                    // The database was already created before calling CreateDatabaseOperation
+                }
+
             }
         }
         #endregion
@@ -87,7 +89,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             database = database ?? store.Database;
 
             if (string.IsNullOrWhiteSpace(database))
-                return;
+                throw new ArgumentException("Value cannot be null or whitespace.", nameof(database));
 
             try
             {
@@ -95,15 +97,15 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Server
             }
             catch (DatabaseDoesNotExistException)
             {
-                if (createDatabaseIfNotExists)
+                if (createDatabaseIfNotExists == false)
+                    throw;
+
+                try
                 {
-                    try
-                    {
-                        await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord(database)));
-                    }
-                    catch (ConcurrencyException)
-                    {
-                    }
+                    await store.Maintenance.Server.SendAsync(new CreateDatabaseOperation(new DatabaseRecord(database)));
+                }
+                catch (ConcurrencyException)
+                {
                 }
             }
         }

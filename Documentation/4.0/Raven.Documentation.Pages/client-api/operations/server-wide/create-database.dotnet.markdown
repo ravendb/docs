@@ -56,13 +56,15 @@ If `Topology` is specified, the `replicationFactor` will be ignored.
 {INFO:Information}
 To ensure database exists before creating it we can use the following example
 
-###Exapmle I - EnsureDatabaseExists
+###Exapmle - EnsureDatabaseExists
 {CODE-TABS}
 {CODE-TAB:csharp:Sync EnsureDatabaseExists@ClientApi\Operations\Server\CreateDeleteDatabase.cs /}
 {CODE-TAB:csharp:Async EnsureDatabaseExistsAsync@ClientApi\Operations\Server\CreateDeleteDatabase.cs /}
 {CODE-TABS/}
 
 {INFO/}
+
+{NOTE Creation of a database requires admin certificate /}
 
 ## Related articles
 - [Distributed Database](../../../server/clustering/distribution/distributed-database)
