@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 
@@ -21,9 +22,7 @@ namespace Raven.Documentation.Parser.Compilation.DocumentationDirectory
             string documentationVersion, List<DocumentationMapping> mappings,
             string sourceDocumentationVersion = null)
         {
-            var path = Path.Combine(directory,
-                page.Name + FileExtensionHelper.GetLanguageFileExtension(page.Language) +
-                Constants.MarkdownFileExtension);
+            var path = FileExtensionHelper.GetMarkdownFilePath(directory, page);
 
             var fileInfo = new FileInfo(path);
 
@@ -44,28 +43,8 @@ namespace Raven.Documentation.Parser.Compilation.DocumentationDirectory
 
         internal static IEnumerable<FolderItem> GetPages(string directory, FolderItem item)
         {
-            var path = Path.Combine(directory, item.Name + Constants.MarkdownFileExtension);
-            if (File.Exists(path))
-            {
-                yield return item;
-                yield break;
-            }
-
-            var languageFileExtensions = FileExtensionHelper.GetLanguageFileExtensions();
-
-            foreach (var language in languageFileExtensions.Keys)
-            {
-                var extension = languageFileExtensions[language];
-                var name = item.Name + extension;
-                path = Path.Combine(directory, name + Constants.MarkdownFileExtension);
-                if (File.Exists(path))
-                {
-                    yield return new FolderItem(item)
-                    {
-                        Language = language
-                    };
-                }
-            }
+            var itemsForLanguages = FileExtensionHelper.GetItemsForLanguages(directory, item);
+            return itemsForLanguages.Select(x => x.Item);
         }
     }
 }

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Text;
 using Raven.Documentation.Parser.Data;
 using Raven.Documentation.Parser.Helpers;
 
@@ -12,11 +11,13 @@ namespace Raven.Documentation.Parser.Compilation.ToC
     internal class TableOfContentsCompiler
     {
         private readonly ParserOptions _options;
+        private readonly VersionsContainer _versions;
         private readonly TocConverter _converter = new TocConverter();
 
         public TableOfContentsCompiler(ParserOptions options)
         {
             _options = options;
+            _versions = new VersionsContainer(options.PathToDocumentationDirectory);
         }
 
         public TocFolderCompilationResult Compile(DirectoryInfo directoryInfo, CompilationUtils.Context context)
@@ -67,7 +68,8 @@ namespace Raven.Documentation.Parser.Compilation.ToC
             return supportedVersions.Where(x => x != baseVersion);
         }
 
-        private IEnumerable<CompilationResult> GenerateTableOfContentItems(string directory, string keyPrefix, string documentationVersion, CompilationUtils.Context context)
+        private IEnumerable<CompilationResult> GenerateTableOfContentItems(string directory, string keyPrefix,
+            string documentationVersion, CompilationUtils.Context context)
         {
             var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
             if (File.Exists(docsFilePath) == false)
@@ -86,7 +88,9 @@ namespace Raven.Documentation.Parser.Compilation.ToC
 
                 if (item.IsFolder)
                 {
-                    var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name), tableOfContentsItem.Key, documentationVersion, context).ToList();
+                    var compilationResults = GenerateTableOfContentItems(Path.Combine(directory, item.Name),
+                        tableOfContentsItem.Key, documentationVersion, context).ToList();
+
                     tableOfContentsItem.Items = compilationResults;
                     var supportedVersions = compilationResults.SelectMany(x => x.SupportedVersions);
                     tableOfContentsItem.AddSupportedVersions(supportedVersions);
@@ -94,31 +98,38 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 else
                 {
                     tableOfContentsItem.Languages = GetLanguagesForTableOfContentsItem(directory, item.Name).ToList();
-                    tableOfContentsItem.AddSupportedVersions(item.SupportedVersions);
-                    if (item.IsPlaceholder == false)
-                        tableOfContentsItem.SourceVersion = documentationVersion;
 
-                    context.RegisterCompilation(tableOfContentsItem.Key, item.Language, documentationVersion, item.SupportedVersions);
+                    if (MarkdownFileExists(directory, item))
+                    {
+                        var supportedVersions =
+                            _versions.GetMinorVersionsInRange(documentationVersion, item.LastSupportedVersion);
+
+                        tableOfContentsItem.AddSupportedVersions(supportedVersions);
+                        tableOfContentsItem.SourceVersion = documentationVersion;
+                    }
+
+                    context.RegisterCompilation(new CompilationUtils.Context.RegistrationInput
+                    {
+                        Key = tableOfContentsItem.Key,
+                        Language = item.Language,
+                        DocumentationVersion = documentationVersion,
+                        LastSupportedVersion = item.LastSupportedVersion,
+                        SupportedVersions = tableOfContentsItem.SupportedVersions?.ToList()
+                    });
                 }
 
                 yield return tableOfContentsItem;
             }
         }
 
+        private bool MarkdownFileExists(string directory, FolderItem item)
+        {
+            var itemsForLanguages = FileExtensionHelper.GetItemsForLanguages(directory, item);
+            return itemsForLanguages.Any();
+        }
+
         private void Validate(FolderItem item, string docsFilePath)
         {
-            var supportsAnyVersion = item.SupportedVersions != null && item.SupportedVersions.Any();
-
-            if (item.IsPlaceholder && supportsAnyVersion)
-            {
-                var messageBuilder = new StringBuilder();
-                messageBuilder.Append($"Entry cannot contain {nameof(item.IsPlaceholder)} and {nameof(item.SupportedVersions)} values at the same time. ");
-                messageBuilder.Append("Please set only one of them. ");
-                messageBuilder.Append($"Name: {item.Name}. Path: {docsFilePath}");
-
-                throw new InvalidOperationException(messageBuilder.ToString());
-            }
-
             if (string.IsNullOrWhiteSpace(item.Description))
                 throw new InvalidOperationException($"'Name' parameter cannot be empty. Entry: {item.Name}. Path: {docsFilePath}");
         }
