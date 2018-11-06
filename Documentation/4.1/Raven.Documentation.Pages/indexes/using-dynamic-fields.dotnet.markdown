@@ -22,17 +22,27 @@ that you want to query by is defined in `CreateField(...)`. It will generate an 
 
 The index can have more fields defined, just like in any other ordinary index.
 
-{INFO: Options}
-Field options like `FieldStorage` and `FieldIndexing` are configurable by arguments of the `CreateField` method:   
+## Syntax
 
-  * stored   
-    * false (default) - `FieldStorage.No`   
-    * true - `FieldStorage.Yes`   
-  * analyzed   
-    * null (default) - `FieldIndexing.Default`   
-    * true - `FieldIndexing.Search`   
-    * false - `FieldIndexing.Exact`  
-{INFO/}
+{CODE syntax@Indexes\DynamicFields.cs /}
+
+| Parameters | | |
+| ------------- | ------------- | ----- |
+| **name** | `string` | Name of the dynamic field |
+| **value** | `object` | Value of the dynamic field |
+| **stored** | `bool` | Sets [FieldStorage](../indexes/storing-data-in-index). By default value is set to `false` which equals to `FieldStorage.No`. |
+| **analyzed** | `bool` | Sets [FieldIndexing](../indexes/using-analyzers).<br/><br/>Values:<br/>`null` - `FieldIndexing.Default` (set by overloads without this 'parameter')<br/>`false` - `FieldIndexing.Exact`<br/>`true` - `FieldIndexing.Search` |
+| **options** | `CreateFieldOptions` | Dynamic field options |
+
+### Options
+
+| CreateFieldOptions | | |
+| ------------- | ------------- | ----- |
+| **Storage** | `FieldStorage?` | More information about storing data in index can be found [here](../indexes/storing-data-in-index). |
+| **Indexing** | `FieldIndexing?` | More information about analyzers in index can be found [here](../indexes/using-analyzers). |
+| **TermVector** | `FieldTermVector?` | More information about term vectors in index can be found [here](../indexes/using-term-vectors). |
+
+## Example
 
 Looking for products by attributes with the usage of such a defined index is supported as if it were real object properties:
 
