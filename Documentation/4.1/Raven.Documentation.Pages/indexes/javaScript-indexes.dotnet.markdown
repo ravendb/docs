@@ -17,7 +17,7 @@ You need to enable the featured by adding the following key to your [settings.js
 {CODE-BLOCK/}
 {INFO/}
 
-## creating  JavaScript index
+## Creating  JavaScript index
 
 If we want to create JavaScript index we need to create an instance of our class that inherits 
 from AbstractJavaScriptIndexCreationTask.   
