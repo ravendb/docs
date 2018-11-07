@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/debugging",
+        "Name": "Debugging",
+        "Mappings" : []
+    },
+    {
         "Path": "how-to-query.markdown",
         "Name": "How to Query",
         "Mappings": [
