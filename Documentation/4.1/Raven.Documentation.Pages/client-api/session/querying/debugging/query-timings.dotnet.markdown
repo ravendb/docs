@@ -1,0 +1,25 @@
+# Session : Querying : Debugging : How to include Query Timings
+
+By default, detailed timings (duration of Lucene search, loading documents, transforming results) in queries are turned off, this is due to small overhead that calculation of such timings produces.
+
+## Syntax
+
+{CODE timing_1@ClientApi\Session\Debugging\IncludeQueryTimings.cs /}
+
+## Example
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync timing_2@ClientApi\Session\Debugging\IncludeQueryTimings.cs /}
+{CODE-TAB:csharp:Async timing_3@ClientApi\Session\Debugging\IncludeQueryTimings.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Products 
+where search(Name, 'Syrup')
+include timings()
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+<hr />
+
+When you run the query with `include timings()` in Studio, extra tab appears. 
+
+![Figure 1. Include timings graphical results](images/include-timings-1.png "Include timings results")
