@@ -33,14 +33,18 @@ or by using the following REST API calls:
 | Action | Method | URL |
 | - | - | - |
 | Add Node | `PUT` | /admin/cluster/node?url=`node-url` |
-| Remove Node | `DELETE` | /admin/cluster/node?url=`node-url` |
+| Remove Node | `DELETE` | /admin/cluster/node?url=`node-tag` |
 
-Optional parameters:
+Optional parameters (for the Add Node endpoint):
 
 | Name | Value Type | Description |
 | - | - | - |
-| watcher | `bool` | Ad the node as a [Watcher](../../../server/clustering/rachis/cluster-topology#watcher) (default: `false`) |
-| assignedCores | `unit` | Number of cores to assign to this node (default: number of processors) |
+| tag | `string` | 1-4 uppercase unicode letters (default: 'A' - 'Z' assigned by order of addition) |
+| watcher | `bool` | Add the node as a [Watcher](../../../server/clustering/rachis/cluster-topology#watcher) (default: `false`) |
+| assignedCores | `uint` | Number of cores to assign to this node (default: number of processors) |
+
+See the [Cluster API page](../../../server/clustering/cluster-api) for usage examples.
+
 {PANEL/}
 
 {PANEL: Nodes States and Types}

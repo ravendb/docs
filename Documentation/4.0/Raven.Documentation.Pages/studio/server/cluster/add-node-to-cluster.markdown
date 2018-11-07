@@ -45,6 +45,8 @@ Note: This option is only available when the server is in the `Passive` state.
 **4.** Click _Test connection_ to test the connection for the above url entered  
 
 When done, click *Save* to add this server as a node to the cluster  
+
+This operation can also be done programatically. Read more [here](../../../server/clustering/common-operations).
 {PANEL/}
 
 {PANEL: A Cluster with 2 nodes}
