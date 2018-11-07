@@ -26,11 +26,32 @@ the studio. If you are running on physical hardware, use an SSD or NVMe drives. 
 latencies under load because of the rotational disk seek times.
 
 Advanced scenarios may call to splitting I/O among multiple disks. Having separate drives for data, journals and indexes. You can
-read more about it in the document about the [structure of data on disk](../../server/storage/directory-structure).
+read more about it in the document about the [customizing RavenDB Data files location](../../server/storage/customizing-raven-data-files-locations).
+
+## Storage Considerations
+
+The requirements of the storage can be found in the article describing [Voron](../../server/storage/storage-engine#requirements), the storage engine used by RavenDB.
+
+{NOTE: SMB / CIFS is not supported for production scenarios}
+
+[SMB / CIFS](https://en.wikipedia.org/wiki/Server_Message_Block) is a protocol that can be used to access remote files over then network, between machines running different operating systems.
+It is widely used in two scenarios:
+
+-  Azure File Storage service aka [CloudStor:Azure](https://azure.microsoft.com/en-us/services/storage/files)   
+-  Linux Docker container running under Windows Docker host with [sharing volumes](https://docs.docker.com/storage/volumes/#share-data-among-machines)
+
+What is supported:
+
+- On Windows, Linux and any Docker instance: NTFS, ext4 and other non NFS volumes mounts
+- Azure: using dedicated storage such as NTFS and ext4   
+
+_Note_: RavenDB does operate with ext2 and other lack of journaling mechanism file systems, however ungraceful restart (or catastrophic failure) might enter database into corrupted state, and therefor not supported.
+
+{NOTE /}
 
 ## Network Considerations
 
-RavenDB can be deployed either internally in your organization (secured network, only known good actors), or on the public internet.
+RavenDB can be deployed either internally in your organization (secured network, only known good actors), or on the public Internet.
 Any deployment, aside from maybe on a developer machine, should use the secured mode. See the 
 [Setup Wizard](../../start/installation/setup-wizard) for the details on how to do that. 
 
@@ -66,6 +87,7 @@ for RavenDB can reside anywhere in the system.
 
 - [Configuration Options](../../server/configuration/configuration-options)
 - [Structure of Data on Disk](../../server/storage/directory-structure)
+- [Customizing RavenDB Data Files Locations](../../server/storage/customizing-raven-data-files-locations)
 
 ### Security
 
