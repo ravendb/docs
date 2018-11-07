@@ -57,7 +57,7 @@ In all of the example queries we will be using JavaScript projection in the ```s
 In general, recursive queries have the same syntax as regular graph queries, with the exception of ```recursive``` clause and it's scope.
 
   * [Example I](../../../indexes/querying/graph/graph-recursive#example-i---basic-recursive-query) - in this example we show the most basic form of a recursive query.
-  * [Example II](../../../indexes/querying/graph/graph-recursive#example-ii---traversal-limits) - in this example we show how we can limit traversal of a recrusive query.
+  * [Example II](../../../indexes/querying/graph/graph-recursive#example-ii---traversal-limits) - in this example we show how we can limit traversal of a recursive query.
   * [Example III](../../../indexes/querying/graph/graph-recursive#example-iii---specifying-recursive-match-type) - in this example we show how we can specify recursive match strategy type.
   * [Example IV](../../../indexes/querying/graph/graph-recursive#example-iv---including-both-nodes-and-edges-in-recursion-pattern) - in this example we show how we can include both nodes and edges in the recursion pattern.
   * [Example V](../../../indexes/querying/graph/graph-recursive#example-v---) - in this example we show how the usage of ```all``` matching strategy would return all possible paths.
