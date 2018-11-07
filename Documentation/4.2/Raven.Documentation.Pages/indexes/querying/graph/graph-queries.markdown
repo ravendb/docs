@@ -1,7 +1,83 @@
 ﻿# Querying : Graph Queries
 
-Graph queries are a new type of queries that allows you to query your documents as if they were a graph.
-The nodes which we query are your regular documents and the edges are just plain properties of your documents.
+Graph queries are a new type of queries that allows you to query your documents as if they were a graph.  
+The nodes which we query are your regular documents and the edges are just any string property that holds the id of another document.  
+
+### How to graph query
+For the following examples we will use the `Northwind` database, you can read how to generate it [here](../../../studio/database/tasks/create-sample-data).  
+Lets start with the simplest of queries match an order:  
+
+{CODE-BLOCK:plain}
+match (Orders as o)
+{CODE-BLOCK/}  
+
+![Figure 1. Simple graph query result](images/simple_graph_query.JPG "Simple graph query result")
+
+As we can see the results are simmilar to the following `RQL` query
+
+{CODE-BLOCK:plain}
+from Orders as o
+{CODE-BLOCK/} 
+
+Lets add an edge to the query  
+
+{CODE-BLOCK:plain}
+match (Orders as o)-[Employee as edge]->(Employees as e)
+{CODE-BLOCK/}  
+
+![Figure 2. Simple pattern query result](images/basic_pattern_query.JPG "Simple pattern query result")
+
+As we can see the result of the above query is a tuple of an order as `o`, employee as `e` and the employee id as `edge`.  
+
+The result is simmilar to the following `RQL` query but not exactly:  
+
+{CODE-BLOCK:plain}
+from Orders as o 
+select o, o.Employee
+include o.Employee
+{CODE-BLOCK/} 
+
+The above query will return the order, emploee id but the employee document is included and not part of the result.  
+The fact that the emploee is part of the result means that we can actually query it too. 
+
+Lets query the employee:  
+
+{CODE-BLOCK:plain}
+match (Orders as o)-[Employee as edge]->(Employees as e where HiredAt.Year = 1993)
+{CODE-BLOCK/} 
+
+![Figure 3. Filter destination pattern query result](images/filtering_destination_pattern.JPG "Filter destination pattern query result")
+
+As you can see there are now `265` result rather than `830` as before since we filtered all tuples where their employee didn't match the query.  
+
+We can concatenate more edges to the query, lets fetch the employee boss too:  
+
+{CODE-BLOCK:plain}
+match (Orders as o)-[Employee as _ ]->(Employees as e where HiredAt.Year = 1993)-[ReportsTo as __ ]->(Employees as boss)
+{CODE-BLOCK/} 
+
+![Figure 4. Concatenate pattern query result](images/concatenate_pattern_query.JPG "Concatenate pattern query result")
+
+As you can see the query yields the order as `o` the employee as `e` and the employee boss as `boss`.  
+You can also notice that the edge disappeared that is because we used the `as _` and `as __` aliases which means don't fetch.   
+
+Now lets add projection to the query to make it leaner:  
+{CODE-BLOCK:plain}
+match (Orders as o)-[Employee as _ ]->(Employees as e where HiredAt.Year = 1993)-[ReportsTo as __ ]->(Employees as boss)
+select 
+{
+    OrderId: id(o), 
+    "Employee Name": e.FirstName+ " " + e.LastName, 
+    "Boss Name": boss.FirstName+ " " + boss.LastName
+}
+{CODE-BLOCK/} 
+
+![Figure 5. Projecting graph query results](images/projecting_graph_query.JPG "Projecting graph query results")
+
+As you can see we can mix regular `RQL` clauses with the graph query to get complex queries answered.
+
+Lets dive a little deeper into the moving parts of a graph queries.  
+
 
 ### Nodes
 Nodes are documents, you select nodes using regular [RQL](../what-is-rql) queries inside a with clause.  
@@ -19,18 +95,18 @@ Edges are properties of documents they could be:
 {CODE-BLOCK:plain}
 {
     ...
-    User: Users/1-A
+    "User": "users/1-A"
     ...
 }
 {CODE-BLOCK/}  
-- Properties that are nested objects that have a property that is a document key, the nested object is considered an edge in this case.  
+- For properties that contain nested objects where that nested object has a property that is a document key, the nested object as a whole is considered an edge in this case.  
 {CODE-BLOCK:plain}
 {
     ...
     User: 
     {
         ...
-        UserId:Users/1-A
+        "UserId":"users/1-A"
         ...
     }
     ...
@@ -40,7 +116,7 @@ Edges are properties of documents they could be:
 {CODE-BLOCK:plain}
 {
     ...
-    Users: [Users/1-A, Users/3-A, ...,Users/283-A]
+    "Users": ["users/1-A", "users/3-A", ...,"users/283-A"]
     ...
 }
 {CODE-BLOCK/}  
@@ -48,22 +124,22 @@ Edges are properties of documents they could be:
 {CODE-BLOCK:plain}
 {
     ...
-    Users:  [ 
+    "Users":  [ 
     {
         ...
-        UserId:Users/1-A
+        "UserId":"users/1-A"
         ...
     },
     {
         ...
-        UserId:Users/3-A
+        "UserId":"users/3-A"
         ...
     },
     ...
     ,
     {
         ...
-        UserId:Users/283-A
+        "UserId":"users/283-A"
         ...
     }
     ]
