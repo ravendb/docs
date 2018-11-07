@@ -161,7 +161,7 @@
 * You can set up indexes on top of the Artificial Documents collection, including additional MapReduce indexes,  
   giving you the option to create recursive map-reduce operations.  
 
-* You can set up an [External Replication](../../../studio/database/tasks/ongoing-tasks/external-replication-task) 
+* You can set up a [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
   on the Artificial Documents collection to a dedicated database,  
   (on the same cluster or on a separate one) for further processing.  
 {NOTE/}
