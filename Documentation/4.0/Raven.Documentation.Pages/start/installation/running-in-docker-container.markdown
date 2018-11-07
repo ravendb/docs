@@ -12,6 +12,16 @@ Server images are published on Docker for the following platforms:
 - Ubuntu 16.04
 - Windows Nano Server
 
+## Storage Requirements
+
+NTFS, ext4 file systems and other non NFS volumes mounts are supported.
+
+{NOTE: SMB / CIFS mounts}
+
+Linux Docker container running under Windows Docker host with sharing volumes [isn't supported due to CIFS protocol usage](../../start/installation/deployment-considerations#storage-considerations) 
+
+{NOTE /}
+
 ## Tags
 
 Beside tags matching the exact builds e.g. `4.0.7-ubuntu.16.04-x64` or `4.0.7-windows-nanoserver` each of the repositories contain the following tags for your convenience:
