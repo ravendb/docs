@@ -19,7 +19,7 @@
 {PANEL: Creating Multi-Map index}
 
 **Define a Map Function:**  
-![Figure 1. Initital Map Function](images/create-multi-map-index-1.png)  
+![Figure 1. Initial Map Function](images/create-multi-map-index-1.png)  
 
 {NOTE: }
 
@@ -58,5 +58,5 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 - [Indexes Overview](../../../studio/database/indexes/indexes-overview)
 - [Indexes List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
-- [Create Map-Reduce Index](../../../todo-update-me-later)
+- [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
 
