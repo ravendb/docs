@@ -17,6 +17,11 @@
     "IsPlaceholder": "true"
   },
   {
+    "Path": "get-detailed-statistics.markdown",
+    "Name": "Get Detailed Statistics",
+	"Mappings": []
+  },
+  {
     "Path": "/configuration",
     "Name": "Configuration",
     "Mappings": []
