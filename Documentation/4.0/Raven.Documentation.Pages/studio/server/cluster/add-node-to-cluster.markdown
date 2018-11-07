@@ -46,7 +46,7 @@ Note: This option is only available when the server is in the `Passive` state.
 
 When done, click *Save* to add this server as a node to the cluster  
 
-This operation can also be done programatically. Read more [here](../../../server/clustering/common-operations).
+This operation can also be done programatically. Read more [here](../../../server/clustering/cluster-api).
 {PANEL/}
 
 {PANEL: A Cluster with 2 nodes}
