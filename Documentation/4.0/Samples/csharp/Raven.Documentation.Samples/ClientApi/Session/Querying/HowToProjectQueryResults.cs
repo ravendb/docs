@@ -127,6 +127,21 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
                 using (var session = store.OpenSession())
                 {
+                    #region projections_count_in_projection
+                    var results = (from o in session.Query<Order>()
+                                    let c = RavenQuery.Load<Company>(o.Company)
+                        select new
+                        {
+                            CompanyName = c.Name,
+                            ShippedAt = o.ShippedAt,
+                            TotalProducts = o.Lines.Count(), //both empty syntax and with a predicate is supported
+                            TotalDiscountedProducts = o.Lines.Count(x => x.Discount > 0)
+                        }).ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
                     #region projections_5
                     var results = (from o in session.Query<Order>()
                                    let c = RavenQuery.Load<Company>(o.Company)
