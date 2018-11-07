@@ -3,5 +3,10 @@
         "Path": "include-explanations.markdown",
         "Name": "How to Include Query Explanations",
         "Mappings": []
+    },
+    {
+        "Path": "query-timings.markdown",
+        "Name": "How to Include Query Timings",
+        "Mappings": []
     }
 ]
