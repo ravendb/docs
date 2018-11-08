@@ -41,7 +41,7 @@ There are a few methods that allow you to download revisions from a database:
 
 ### Example
 
-{CODE:java example_1_sync@ClientApi\Session\Revisions\Loading.java /}
+{CODE:java example_2_sync@ClientApi\Session\Revisions\Loading.java /}
 
 {PANEL/}
 
