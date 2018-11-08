@@ -15,14 +15,6 @@ namespace Raven.Documentation.Samples
                 store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Put, "http://<server-url>/admin/cluster/node?url=<new-node-url>&tag=<new-node-tag>&watcher=<is-watcher>&assignedCores=<assigned-cores>"));
                 #endregion
             }
-
-            using (var store = new DocumentStore())
-            {
-                #region delete_node
-                store.GetRequestExecutor().HttpClient.SendAsync(new HttpRequestMessage(HttpMethod.Delete, "http://<server-url>/admin/cluster/node?nodeTag=<node-tag>"));
-                #endregion
-            }
-
         }
     }
 }

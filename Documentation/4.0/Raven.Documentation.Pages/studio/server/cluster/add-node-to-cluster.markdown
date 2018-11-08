@@ -26,7 +26,7 @@
 
 {PANEL: Bootstrap Cluster}
 
-Click _'Bootstrap Cluster'_ to make the current passive sever be a part of a cluster.  
+Click _'Bootstrap Cluster'_ to make the current passive server a part of a cluster.  
 Note: This option is only available when the server is in the `Passive` state.  
 
 ![Figure 0. Click to add a new node](images/cluster-add-node-0.png "Bootstrap Cluster")
@@ -41,7 +41,7 @@ Note: This option is only available when the server is in the `Passive` state.
 
 **1.** Enter the URL of the server for the new node  
 **2.** Decide if to add the new node as a `Member` -or- as a `Watcher` (difference explained in [Cluster View](cluster-view))  
-**3.** Click to use all available nodes -or- Enter the number of cores to be assigned for this node  
+**3.** Click to use all available cores -or- Enter the number of cores to be assigned for this node  
 **4.** Click _Test connection_ to test the connection for the above url entered  
 
 When done, click *Save* to add this server as a node to the cluster  

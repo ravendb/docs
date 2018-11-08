@@ -127,4 +127,6 @@ Node types can be altered on the fly by using the following REST API calls:
 | Promote Watcher to be a Member | `POST` | /admin/cluster/promote |
 | Demote Member to be a Watcher | `POST` | /admin/cluster/demote |
 | Force Elections | `POST` | /admin/cluster/reelect |
+
+See the [Cluster API page](../../../server/clustering/cluster-api) for usage examples.
 {PANEL/}
