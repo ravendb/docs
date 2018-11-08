@@ -162,8 +162,7 @@
   giving you the option to create recursive map-reduce operations.  
 
 * You can set up a [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
-  on the Artificial Documents collection to a dedicated database, 
-  (on the same cluster or on a separate one) for further processing, 
+  on the Artificial Documents collection to a dedicated database on a separate cluster for further processing, 
   as well as other ongoing tasks such as: [SQL ETL](../todo-update-me-later) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions).
 {NOTE/}
 
