@@ -2,7 +2,7 @@
 
 [Replication](../../../server/scaling-out/replication/how-replication-works) works using plain HTTP requests to replicate all changes from one server instance to another. When running in embedded mode, you can't replicate to that instance (since it has no HTTP endpoints), unless you use [Embedded+HTTP mode](../../../server/installation/embedded) but you can replicate from that instance.
 
-## Replicating **from** Embedded instance
+## Replicating from embedded instance
 
 To replicate from Embedded instance to another HTTP-enabled server instance you need to:
 
@@ -14,7 +14,7 @@ To replicate from Embedded instance to another HTTP-enabled server instance you 
 
 {CODE from_embedded_server_2@Server\ScalingOut\Replication\FromEmbeddedServer.cs /}
 
-## Replicating **to** Embedded instance
+## Replicating to embedded instance
 
 Replication requires HTTP endpoints on destination server to be running, yet, by default, when  an Embedded instance is used, internal HTTP-server is disabled. To turn it on initialize `EmbeddableDocumentStore` with `UseEmbeddedHttpServer` set to `true` (you can read more [here](../../../server/installation/embedded)).
 
