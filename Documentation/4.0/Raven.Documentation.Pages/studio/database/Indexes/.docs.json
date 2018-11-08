@@ -1,41 +1,52 @@
 [
-  {
-    "Path": "indexes-overview.markdown",
-    "Name": "Indexes Overview",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
-  {
-    "Path": "indexes-list-view.markdown",
-    "Name": "Indexes List View",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
-  {
-    "Path": "create-map-index.markdown",
-    "Name": "Create Map Index",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
-  },
-  {
-    "Path": "create-multi-map-index.markdown",
-    "Name": "Create Multi Map Index",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0",
-      "4.1"
-    ]
-  }
+    {
+        "Path": "indexes-overview.markdown",
+        "Name": "Indexes Overview",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    },
+    {
+        "Path": "indexes-list-view.markdown",
+        "Name": "Indexes List View",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    },
+    {
+        "Path": "create-map-index.markdown",
+        "Name": "Create Map Index",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    },
+    {
+        "Path": "create-multi-map-index.markdown",
+        "Name": "Create Multi Map Index",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    },
+    {
+        "Path": "create-map-reduce-index.markdown",
+        "Name": "Create Map-Reduce Index",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.0",
+            "4.1",
+            "4.2"
+        ]
+    }
 ]
