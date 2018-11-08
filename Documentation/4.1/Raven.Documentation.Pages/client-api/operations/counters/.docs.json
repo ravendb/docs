@@ -1,11 +1,16 @@
 [
-  {
-    "Path": "get-counters.markdown",
-    "Name": "Get Counters",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.1",
-        "4.2"
-    ]
-  }
+    {
+        "Path": "get-counters.markdown",
+        "Name": "Get Counters",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1",
+            "4.2"
+        ]
+    },
+    {
+        "Path": "counter-batch.markdown",
+        "Name": "Counter Batch",
+        "Mappings": []
+    }
 ]
