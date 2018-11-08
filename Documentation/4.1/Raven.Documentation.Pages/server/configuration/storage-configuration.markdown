@@ -103,6 +103,40 @@ How many gigabytes of memory should be prefetched before restarting the prefetch
 
 {PANEL/}
 
+{PANEL:Storage.OnCreateDirectory.Exec or Storage.OnDirectoryInitialize.Exec}
+
+A command or executable to run when creating/opening a directory (storage environment). Experts only.
+RavenDB will execute:  
+{CODE-BLOCK:plain}
+command [user-arg-1] ... [user-arg-n] <environment-type> <database-name> <data-dir-path> <temp-dir-path> <journal-dir-path>  
+{CODE-BLOCK/}
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Storage.OnCreateDirectory.Exec.Arguments or Storage.OnDirectoryInitialize.Exec.Arguments}
+
+The optional user arguments for the 'Storage.OnDirectoryInitialize.Exec' command or executable. The arguments must be escaped for the command line. Experts only.  
+
+- **Type**: `string`
+- **Default**: `null`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Storage.OnCreateDirectory.Exec.TimeoutInSec or Storage.OnDirectoryInitialize.Exec.TimeoutInSec}
+
+The number of seconds to wait for the OnDirectoryInitialize executable to exit. Default: 30 seconds. Experts only.  
+
+- **Type**: `int`
+- **Default**: `30`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
 ## Related Articles
 
 - [Storage Engine](../../server/storage/storage-engine)
