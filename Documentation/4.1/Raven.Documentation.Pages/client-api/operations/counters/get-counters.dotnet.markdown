@@ -165,4 +165,4 @@ Assume we have a document "users/1" which holds 3 counters -
 ### Operations
 
 - [What are Operations](../../../client-api/operations/what-are-operations)
-- [CounterBatchOperation](../../../client-api/operations/counters/counter-batch)
+- [Counter Batch Operation](../../../client-api/operations/counters/counter-batch)
