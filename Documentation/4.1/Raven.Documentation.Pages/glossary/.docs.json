@@ -147,8 +147,8 @@
         ]
     },
     {
-        "Path": "counter-batch-command-data.markdown",
-        "Name": "CounterBatchCommandData",
+        "Path": "counters-batch-command-data.markdown",
+        "Name": "CountersBatchCommandData",
         "Mappings": []
     }
 ]

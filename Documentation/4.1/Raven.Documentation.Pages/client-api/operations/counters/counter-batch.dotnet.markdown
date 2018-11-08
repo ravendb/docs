@@ -179,6 +179,6 @@ Assume we have two documents, *"users/1"* and *"users/2"*, that hold 3 counters 
 ### Operations
 
 - [What are Operations](../../../client-api/operations/what-are-operations)
-- [GetCountersOperatio](../../../client-api/operations/counters/get-counters)
+- [Get Counters Operation](../../../client-api/operations/counters/get-counters)
 
 

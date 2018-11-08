@@ -1,6 +1,6 @@
 # Session : How to Defer Operations
 
-Operations can be deferred till `SaveChanges` is called by using `Defer` method in `Advanced` session operations. All of the operations will update session state approprietly after `SaveChanges` is called.
+Operations can be deferred till `SaveChanges` is called by using `Defer` method in `Advanced` session operations. All of the operations will update session state appropriately after `SaveChanges` is called.
 
 Types of commands that can be deferred:
 
@@ -12,7 +12,7 @@ Types of commands that can be deferred:
 - DeleteAttachmentCommandData
 - [CopyAttachmentCommandData](../../../glossary/copy-attachment-command-data)
 - [MoveAttachmentCommandData](../../../glossary/move-attachment-command-data)
-- [CounterBatchCommandData](../../../glossary/counter-batch-command-data)
+- [CountersBatchCommandData](../../../glossary/counters-batch-command-data)
 
 ## Syntax
 
