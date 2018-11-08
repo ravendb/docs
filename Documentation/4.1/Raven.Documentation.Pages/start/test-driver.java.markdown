@@ -11,12 +11,25 @@ TestDriver uses an [ravendb-embedded](https://search.maven.org/search?q=g:net.ra
 
 {PANEL:RavenTestDriver}
 
-First, we define a class that derives from Raven's TestDriver.
+First, make sure you added Raven's TestDriver to your project dependencies:
+
+```
+<dependency>
+    <groupId>net.ravendb</groupId>
+    <artifactId>ravendb-test-driver</artifactId>
+    <version>4.1.3</version>
+    <scope>test</scope>
+</dependency>
+```
+
+After that, we define a class that derives from Raven's TestDriver.
 Lets start with reviewing the TestDriver's methods and later we will get into implementation (a complete code sample of a RavenTestDriver can be found at the [bottom](../start/test-driver##complete-example) of the page).
 
 ### Methods
 | Signature | Description |
 | ----------| ----- |
+| **protected String getDatabaseDumpFilePath()** | Allows you to override the path to the database dump file that will be loaded when calling importDatabase. |
+| **protected InputStream getDatabaseDumpFileStream()** |  Allows you to override the stream containing the database dump that will be loaded when calling importDatabase.  |
 | **public IDocumentStore getDocumentStore()** | Gets you an IDocumentStore instance. |
 | **public IDocumentStore getDocumentStore(String database)** | Gets you an IDocumentStore instance for the requested database. |
 | **public IDocumentStore getDocumentStore(GetDocumentStoreOptions options)** | Gets you an IDocumentStore instance. |
