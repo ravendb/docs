@@ -2,8 +2,7 @@
     {
         "Path": "what-are-operations.markdown",
         "Name": "What are Operations",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "delete-by-query.markdown",
