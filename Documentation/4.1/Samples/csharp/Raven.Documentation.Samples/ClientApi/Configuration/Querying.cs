@@ -57,46 +57,26 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                 };
             }
             {
-                #region find_projected_prop_exmple1
                 using (var store = new DocumentStore
                 {
+                    #region find_projected_prop_usage
                     Conventions =
                     {
                         FindProjectedPropertyNameForIndex = (indexedType, indexName, path, prop) => path + prop
                     }
+                    #endregion
                 })
                 {
                     using (var session = store.OpenSession())
                     {
-                        var query1 = session.Query<User, UsersIndex>()
-                            .Select(u => u.School.Id).ToList();
-
-                        // Generated RQL : "from index 'UsersIndex' select School.Id"
-
-                        var query2 = session.Query<User, UsersIndex>()
-                            .Where(u => u.School.Id != null).ToList();
-
-                        // Generated RQL : "from index 'UsersIndex' where School_Id != null"
-
-                    }
-                }
-                #endregion
-            }
-            {
-                #region find_projected_prop_exmple2
-                using (var store = new DocumentStore())
-                {
-                    using (var session = store.OpenSession())
-                    {
-                        // FindProjectedPropertyNameForIndex is null, FindPropertyNameForIndex will be used instead
-
+                        #region find_projected_prop_query
                         var query = session.Query<User, UsersIndex>()
-                            .Select(u => u.School.Id).ToList();
-
-                        // Generated RQL : "from index 'UsersIndex' select School_Id"
+                            .Where(u => u.School.Id != null)
+                            .Select(u => u.School.Id)
+                            .ToList();
+                        #endregion
                     }
                 }
-                #endregion
             }
         }
     }

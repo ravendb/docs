@@ -22,16 +22,34 @@ By default `FindProjectionPropertyNameForIndex` is set to `null`.
 When `FindProjectionPropertyNameForIndex` is `null` (or returns `null`), the `FindPropertyNameForIndex` convention is used instead.
 
 ###Example
-Consider we have the following index, and we want to query `School.Id`:
+Consider we have the following index, and we want to project `School.Id`:
 {CODE users_index@ClientApi\Configuration\Querying.cs /}
 
-Without setting `FindProjectedPropertyNameForIndex`:
-{CODE find_projected_prop_exmple2@ClientApi\Configuration\Querying.cs /}
+Without setting `FindProjectedPropertyNameForIndex`, `FindPropertyNameForIndex` will be used :
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query find_projected_prop_query@ClientApi\Configuration\Querying.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'UsersIndex'
+where School_Id != null
+select School_Id
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 `School_Id` is indexed but not `Stored`, meaning that we will try to
 fetch `School_Id` from the document - which doesn't have this property.
 
-Setting the `FindProjectedPropertyNameForIndex` can solve this issue:
-{CODE find_projected_prop_exmple1@ClientApi\Configuration\Querying.cs /}
+Setting the `FindProjectedPropertyNameForIndex` convention can solve this issue:
+{CODE find_projected_prop_usage@ClientApi\Configuration\Querying.cs /}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query find_projected_prop_query@ClientApi\Configuration\Querying.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'UsersIndex'
+where School_Id != null
+select School.Id
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
 ##ThrowIfQueryPageSizeIsNotSet
 
