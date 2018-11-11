@@ -52,7 +52,7 @@
         "4.1",
         "4.2"
     ]
-  },
+    },
     
     {
         "Path": "replication-and-embedded-instance.markdown",
@@ -73,5 +73,5 @@
             "4.1",
             "4.2"
         ]  
-    }   
+  }  
 ]

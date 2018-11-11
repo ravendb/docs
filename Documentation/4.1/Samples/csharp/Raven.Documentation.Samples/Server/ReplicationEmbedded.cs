@@ -1,6 +1,9 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using Raven.Client.Documents;
+using Raven.Client.Documents.Operations.ConnectionStrings;
+using Raven.Client.Documents.Operations.ETL;
+using Raven.Client.Documents.Operations.Replication;
 using Raven.Client.ServerWide.Commands;
 using Raven.Client.ServerWide.Operations;
 using Raven.Embedded;
@@ -37,9 +40,11 @@ namespace Raven.Documentation.Samples.Server
                 store.Initialize();
 
                 //first, start the embedded server
+                //note: by default the embedded server will use a random port.
+                // if there is a need to replicate TO the embedded server, we would need to specify the port directly
                 EmbeddedServer.Instance.StartServer(new ServerOptions
                 {
-                    ServerUrl = "http://localhost:8090" //if we don't specify a port, it will have random port
+                    ServerUrl = "http://localhost:8090"
                 });
 
                 //then, add embedded instance to existing cluster
@@ -74,6 +79,53 @@ namespace Raven.Documentation.Samples.Server
                                                              node: embeddedTag))
                            .ConfigureAwait(false);
             }
+            #endregion
+
+        }
+
+        private static async Task ExternalReplication()
+        {
+            #region External_Replication_And_Embedded
+
+            //first, initialize connection with one of cluster nodes
+            var ravenClusterNodeUrl = "http://localhost:8080";
+            using (var store = new DocumentStore
+            {
+                Urls = new[] {ravenClusterNodeUrl},
+                Database = "Northwind"
+            })
+            {
+                store.Initialize();
+
+                //first, start the embedded server
+                EmbeddedServer.Instance.StartServer(new ServerOptions
+                {
+                    ServerUrl = "http://localhost:8090",
+                    AcceptEula = true
+                });
+
+                var embeddedServerUrl =
+                    (await EmbeddedServer.Instance.GetServerUriAsync().ConfigureAwait(false)).ToString();
+
+                // create watcher definition that will be added to existing cluster
+                var externalReplicationWatcher = new ExternalReplication(
+                    database: "Northwind",
+                    connectionStringName: "Embedded Northwind Instance");
+
+                //create the connection string for the embedded instance on the existing cluster
+                await store.Maintenance.SendAsync(
+                    new PutConnectionStringOperation<RavenConnectionString>(new RavenConnectionString
+                    {
+                        Name = externalReplicationWatcher.ConnectionStringName,
+                        Database = externalReplicationWatcher.Database,
+                        TopologyDiscoveryUrls = new[] {embeddedServerUrl} //urls to discover topology at destination
+                    })).ConfigureAwait(false);
+
+                //create External Replication task from the cluster to the embedded RavenDB instance
+                await store.Maintenance.SendAsync(new UpdateExternalReplicationOperation(externalReplicationWatcher))
+                    .ConfigureAwait(false);
+            }
+
             #endregion
         }
     }
