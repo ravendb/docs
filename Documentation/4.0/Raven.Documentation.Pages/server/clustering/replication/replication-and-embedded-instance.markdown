@@ -2,7 +2,7 @@
 
 ## Overview
 [Replication](../../../server/clustering/replication/replication) works by using long-living TCP connections between cluster nodes, or in case of [External Replication](../../../server/ongoing-tasks/external-replication) instances external to the cluster. 
-Esentially, Embedded RavenDB is the same as non-embedded, their only difference is what process is a host. [Here](../../../server/embedded) you can read more in-depth about Embedded RavenDB functionality.
+Essentially, Embedded RavenDB is the same as non-embedded, their only difference is what process is a host. [Here](../../../server/embedded) you can read more in-depth about Embedded RavenDB functionality.
 
 ## Configuring replication between embedded instance and a cluster
 One possibility would be to configure it through [the studio](../../../studio/server/cluster/add-node-to-cluster#add-another-node-to-the-cluster), by adding the Embedded instance to the cluster, then adding the database replicated to relevant [database group](../../../server/clustering/distribution/distributed-database).  
