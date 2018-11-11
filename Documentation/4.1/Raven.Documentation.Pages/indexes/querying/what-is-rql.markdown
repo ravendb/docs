@@ -1,8 +1,25 @@
 ﻿# Querying : RQL - Raven Query Language
 
-RQL, the Raven Query Language, is an SQL-like language used to retrieve the data from the server when queries are being executed. 
+##Overview
 
+Queries in RavenDB use a SQL-like language called "RavenDB Query Language," henceforth known as RQL.  
 It is designed to expose externally the RavenDB query pipeline in a way that is easy to understand, easy to use, and not overwhelming to the user.
+
+### Query Optimizer
+When a query hits a RavenDB instance, the very first thing that happens is that it will be analyzed by the query optimizer. The role of the query optimizer is to determine what indexes should be used by this particular query.   
+In RavenDB, there are two types of queries.  
+We may have a *dynamic query*, such as ```from Orders where ...```, which gives the query optimizer full freedom with regards to which index that query will use.  
+Alternatively, a query can specify a specific index to be used, such as ```from index 'Orders/ByCompany' where ...```, which instructs RavenDB to use the ```Orders/ByCompany``` index.
+
+{NOTE: Queries are always going to use an index}
+In other databases, the query optimizer may fail to find a suitable index and fall back into querying using a full scan, RavenDB doesn't include support for full scans, and the query optimizer will _create_ a new index for the query if it cannot find an relevant index.  
+You can read more about indexes [here](../indexing-basics).   
+Queries in RavenDB will always use an index. RavenDB queries always use an index and can return results with the same speed regardless of the size of the data.  
+{NOTE/}
+
+{NOTE: Indexing and queries in RavenDB }
+Indexing in RavenDB is a background operation, which means the new query will be waiting for the index to complete indexing (or timeout). But at the same time, queries that can be answered using the existing indexes will proceed normally using these indexes. When the new index has caught up, RavenDB will clean up all the old indexes that are now superseded by the new one.
+{NOTE/}
 
 {PANEL:Keywords and methods}
 
