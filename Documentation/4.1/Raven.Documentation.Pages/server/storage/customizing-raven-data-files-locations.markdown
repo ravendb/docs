@@ -10,7 +10,7 @@
 
 * Better concurrency.
 
-* Directing each file or directory (e.g. `Voron` files, `Journals`, etc.) to a data storage according to its speed, durability, etc.
+* Directing each file or directory (e.g. `Raven.voron` file, `Journals`, etc.) to a data storage according to its speed, durability, etc.
 
 {NOTE/}
 
@@ -82,11 +82,11 @@ ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes /mnt/FastDrive/Data
 
 {NOTE: Automation}
 
-To help you automate the process, we have added the [Storage.OnDirectoryInitialize](../../server/configuration/storage-configuration#storage.oncreatedirectory.exec-or-storage.ondirectoryinitialize.exec) extension point.
+To help you automate the process, we have added the [Storage.OnDirectoryInitialize](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) extension point.
 Whenever RavenDB creates or opens a directory, it will invoke a process of your choice.
 It allows you to create a script with your own logic, defining juction points as needed.
 
-RavenDB will invoke the process with [optional user arguments](../../server/configuration/storage-configuration#storage.oncreatedirectory.exec.arguments-or-storage.ondirectoryinitialize.exec.arguments) followed by:  
+RavenDB will invoke the process with [optional user arguments](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec.arguments) followed by:  
 
 * The environment type (System, Database, Index, Configuration, Compaction)
 * The database name
