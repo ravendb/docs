@@ -148,5 +148,13 @@
             }
         ],
         "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/graph",
+        "Name": "Graph API",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.2"
+        ]        
     }
 ]
