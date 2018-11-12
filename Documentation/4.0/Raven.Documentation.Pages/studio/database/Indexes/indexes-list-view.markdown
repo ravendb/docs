@@ -74,7 +74,7 @@
 
 ![Figure 2. Indexes Actions](images/indexes-list-view-2.png "Figure-2: Indexes List View - Actions")
 
-1. **Crate a new index** - See more in [Create New Index](../../../todo-update-me-later).  
+1. **Crate a new index** - See more in [Create New Index](../../../studio/database/indexes/create-map-index).  
 
 2. **Query** - Click to query the index. See more in [Index Query](../../../todo-update-me-later)  
    **Terms** - Click to view the index's terms that were actually indexed.  
@@ -146,12 +146,12 @@
 
 ## Related Articles
 
-### Studio
-
-- [Indexes Overview](../../../studio/database/indexes/indexes-overview#indexes-overview)
-
 ### Indexes
-
 - [What are Indexes](../../../indexes/what-are-indexes)
 - [Indexing Basics](../../../indexes/indexing-basics)
+- 
+### Studio
+- [Indexes Overview](../../../studio/database/indexes/indexes-overview#indexes-overview)
+
+
 

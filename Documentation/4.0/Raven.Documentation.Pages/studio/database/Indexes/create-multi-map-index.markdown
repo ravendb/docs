@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* A Multi-Map index allows to index data from _multiple_ different collections.  
+* A **Multi-Map index** allows to index data from _multiple_ different collections.  
 
 * RavenDB will generate a _single_ Multi-Map index.  
   The results of querying the Multi-Map index will include data from _all_ these collections.  
@@ -49,7 +49,7 @@ The `Collection` field indexed in the above example is not mandatory but can be 
 
 ## Related Articles
 
-### Server
+### Indexes
 - [Map Indexes](../../../indexes/map-indexes)
 - [Multi-Map Indexes](../../../indexes/multi-map-indexes)
 - [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)

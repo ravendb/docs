@@ -21,7 +21,7 @@
   This second stage groups the specified requested fields that were indexed in the Map stage,  
   and then runs the Reduce function to get a final aggregation result per field value.  
 
-* The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](../todo-update-me-later).  
+* The Map-Reduce results can be visualized in the [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer).  
 
 * In this page:  
   * [The Map Stage](../../../studio/database/indexes/create-map-reduce-index#the-map-stage)  
@@ -111,7 +111,7 @@
   The total amount of all orders per company is represented in the `TotalOrdersAmount` column.  
   The column names correspond to the Map-Reduce fields definition.  
 
-* The Map-Reduce results can also be visualized in [Map-Reduce Visualizer](../todo-update-me-later).  
+* The Map-Reduce results can also be visualized in [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer).  
 
 {PANEL/}
 
@@ -149,8 +149,8 @@
 * Artificial documents are created by the index directly.  
 
 * They behave just like standard documents except for that they are _not_ replicated to other nodes in the database group.  
-  So while loading or querying them is just fine, modifying an artificial document by hand is _not_ recommended, 
-  as the next update to the index will overwrite any changes that you made to the document.  
+  So while loading or querying them is just fine, modifying the content of an artificial document by hand is _not_ recommended, 
+  as the next index results update will overwrite any changes that you have made to the document.  
 
 * Artificial documents are updated whenever the index completes indexing a batch of documents.  
 {NOTE/}
@@ -196,7 +196,7 @@
 
 ## Related Articles
 
-### Server
+### Indexes
 - [Map Indexes](../../../indexes/map-indexes)
 - [Multi-Map Indexes](../../../indexes/multi-map-indexes)
 - [Map-Reduce Indexes](../../../indexes/map-reduce-indexes)
@@ -206,4 +206,4 @@
 - [Indexes List View](../../../studio/database/indexes/indexes-list-view)
 - [Create Map Index](../../../studio/database/indexes/create-map-index)
 - [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
-- [Map-Reduce Visualizer](../todo-update-me-later)
+- [Map-Reduce Visualizer](../../../studio/database/indexes/map-reduce-visualizer)
