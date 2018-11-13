@@ -10,6 +10,7 @@ To return only documents that match **all** provided sub-queries, use the `inter
 
 {CODE-TABS}
 {CODE-TAB:java:Java intersect_2@ClientApi\Session\Querying\HowToUseIntersect.java /}
+{CODE-TAB:java:Index intersection_2@Indexes\Querying\Intersection.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'TShirts/ByManufacturerColorSizeAndReleaseYear' 
 where intersect(Manufacturer = 'Raven', Color = 'Blue' and Size = 'Small', Color = 'Gray' and Size = 'Large')

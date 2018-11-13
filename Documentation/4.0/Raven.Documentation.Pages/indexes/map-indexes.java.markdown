@@ -24,7 +24,7 @@ Let's create an index that will help us search for `Employees` by their `firstNa
 
 {CODE:java indexes_1@Indexes/Map.java /}
 
-- The next step is to create an indexing function itself. This is done by setting the `map` field with mapping function in a **parameterless constructor**.
+- The next step is to create the indexing function itself. This is done by setting the `map` field with mapping function in a **parameterless constructor**.
 
 {CODE:java indexes_2@Indexes/Map.java /}
 
@@ -121,7 +121,7 @@ where search(query, 'John Doe')
 
 ## Indexing Partial Field Data
 
-Imagine that you would like to return all employees that were born in a specific year. You could of course do it by indexing `birthday` from `Employee` in the following way:
+Imagine that you would like to return all employees that were born in a specific year. You can do it by indexing `birthday` from `Employee` in the following way:
 
 {CODE:java indexes_1_2@Indexes/Map.java /}
 
@@ -168,10 +168,12 @@ Read the article dedicated to `Multi-Map` indexes [here](../indexes/indexing-pol
 ## Related Articles
 
 ### Indexes
-
 - [Indexing Related Documents](../indexes/indexing-related-documents)
 - [Map-Reduce Indexes](../indexes/map-reduce-indexes)
 - [Creating and Deploying Indexes](../indexes/creating-and-deploying)
 
 ### Querying
 - [Basics](../indexes/querying/basics)
+
+### Studio
+- [Create Map Index](../studio/database/indexes/create-map-index)

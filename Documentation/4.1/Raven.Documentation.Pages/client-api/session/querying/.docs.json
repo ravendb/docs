@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "/debugging",
+        "Name": "Debugging",
+        "Mappings" : []
+    },
+    {
         "Path": "how-to-query.markdown",
         "Name": "How to Query",
         "Mappings": [
@@ -161,5 +166,23 @@
         "Name": "How to Query With Exact Match",
         "Mappings": [],
         "IsPlaceholder": "true"
+    },
+    {
+        "Path": "how-to-use-fuzzy.markdown",
+        "Name": "How to Use Fuzzy",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1",
+            "4.2"
+        ]
+    },
+    {
+        "Path": "how-to-perform-proximity-search.markdown",
+        "Name": "How to Perform Proximity Search",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.1",
+            "4.2"
+        ]
     }
 ]

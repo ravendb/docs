@@ -21,7 +21,7 @@ Aside from allowing you to pick only a portion of the data, projection functions
 
 ## Projections are Applied as the Last Stage in the Query
 
-It is important to understand that projections are applied after the query has been processed, filtered, sorted, and paged. The project doesn't apply to all the documents in the database, only to the results that are actually returned.  
+It is important to understand that projections are applied after the query has been processed, filtered, sorted, and paged. The projection doesn't apply to all the documents in the database, only to the results that are actually returned.  
 This reduces the load on the server significantly, since we can avoid doing work only to throw it immediately after. It also means that we cannot do any filtering work as part of the projection. You can filter what will be returned, but not which documents will be returned. That has already been determined earlier in the query pipeline.  
 
 ## The Cost of Running a Projection

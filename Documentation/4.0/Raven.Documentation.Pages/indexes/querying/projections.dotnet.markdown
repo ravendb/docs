@@ -118,7 +118,26 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VII - Projection Using a Loaded Document
+### Example VII - Projection With a Count() Predicate
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query projections_count_in_projection@ClientApi\Session\Querying\HowToProjectQueryResults.cs /}
+{CODE-TAB:csharp:Index indexes_4@Indexes\Querying\Projections.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Orders as o 
+load o.Company as c 
+select 
+{ 
+    CompanyName : c.Name, 
+    ShippedAt : o.ShippedAt, 
+    TotalProducts : o.Lines.length, 
+    TotalDiscountedProducts : o.Lines.filter(x => x.Discount > 0 ).length 
+}
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+
+### Example VIII - Projection Using a Loaded Document
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_5@Indexes\Querying\Projections.cs /}
@@ -133,7 +152,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example VIII - Projection with Dates
+### Example IX - Projection with Dates
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_6@Indexes\Querying\Projections.cs /}
@@ -148,7 +167,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example IX - Projection with Raw JavaScript Code
+### Example X - Projection with Raw JavaScript Code
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_7@Indexes\Querying\Projections.cs /}
@@ -162,7 +181,7 @@ select {
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-### Example X - Projection with Metadata
+### Example XI - Projection with Metadata
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query projections_8@Indexes\Querying\Projections.cs /}

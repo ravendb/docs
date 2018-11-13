@@ -53,7 +53,9 @@ and query it using:
 ## Related Articles
 
 ### Indexes
-
 - [Map Indexes](../indexes/map-indexes)
 - [Map-Reduce Indexes](../indexes/map-reduce-indexes)
 - [Indexing Polymorphic Data](../indexes/indexing-polymorphic-data)
+
+### Studio
+- [Create Multi-Map Index](../studio/database/indexes/create-multi-map-index)

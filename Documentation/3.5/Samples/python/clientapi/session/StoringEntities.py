@@ -21,26 +21,26 @@ class StoringEntities(object):
         with store.open_session() as session:
             entity = Employee("first_name", "second_name")
             etag = ""
-            # region store_entities_1
+            # region store_entities_2
             session.store(entity)
             # endregion
 
-            # region store_entities_2
+            # region store_entities_3
             session.store(entity, etag=etag)
             # endregion
 
-            # region store_entities_3
+            # region store_entities_4
             session.store(entity, key="doc/1")
             # endregion
 
-            # region store_entities_4
+            # region store_entities_5
             session.store(entity, key="doc/1", etag=etag)
             # endregion
 
         with store.open_session() as session:
-            # region store_entities_5
+            # region store_entities_6
             # generate Id automatically
-            # when database is new and empty database and conventions are not changed: 'employees/1'
+            # # when we have a new and empty database and conventions are not changed: 'employees/1'
             employee = Employee("John", "Doe")
             session.store(employee)
             session.save_changes()

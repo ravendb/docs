@@ -144,3 +144,7 @@ Those flags are used internally by the database to filter out artificial documen
 
 - [Basics](../indexes/querying/basics)
 
+### Studio
+
+- [Create Map-Reduce Index](../studio/database/indexes/create-map-reduce-index)
+

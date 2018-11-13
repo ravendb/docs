@@ -1,0 +1,40 @@
+[
+  {
+    "Path": "conventions.markdown",
+    "Name": "Conventions",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+  {
+    "Path": "querying.markdown",
+    "Name": "Querying",
+    "Mappings": [
+      {
+          "Version": "3.0",
+          "Key": "client-api/configuration/conventions/querying"
+      }
+    ],
+    "SupportedVersions": [
+        "4.1",
+        "4.2"
+    ]
+  },
+  {
+    "Path": "serialization.markdown",
+    "Name": "Serialization",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+  {
+    "Path": "load-balance-and-failover.markdown",
+    "Name": "Load Balance & Failover",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+  {
+    "Path": "/identifier-generation",
+    "Name": "Identifier generation",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  }
+]

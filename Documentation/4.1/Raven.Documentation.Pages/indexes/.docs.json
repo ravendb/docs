@@ -259,7 +259,10 @@
                 "Key": "client-api/advanced/dynamic-fields"
             }
         ],
-        "IsPlaceholder": "true"
+        "SupportedVersions": [
+            "4.1",
+            "4.2"
+        ]
     },
     {
         "Path": "extending-indexes.markdown",

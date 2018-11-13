@@ -145,5 +145,10 @@
             "4.1",
             "4.2"
         ]
+    },
+    {
+        "Path": "counters-batch-command-data.markdown",
+        "Name": "CountersBatchCommandData",
+        "Mappings": []
     }
 ]

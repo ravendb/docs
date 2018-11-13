@@ -45,8 +45,8 @@ There are a few methods that allow you to download revisions from a database:
 ### Example
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync example_1_sync@ClientApi\Session\Revisions\Loading.cs /}
-{CODE-TAB:csharp:Async example_1_async@ClientApi\Session\Revisions\Loading.cs /}
+{CODE-TAB:csharp:Sync example_2_sync@ClientApi\Session\Revisions\Loading.cs /}
+{CODE-TAB:csharp:Async example_2_async@ClientApi\Session\Revisions\Loading.cs /}
 {CODE-TABS/}
 
 {PANEL/}

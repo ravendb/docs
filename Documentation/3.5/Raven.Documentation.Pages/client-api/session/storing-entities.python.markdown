@@ -24,7 +24,7 @@ Stores entity in session with given id and forces concurrency check with given e
 
 ## Example
 
-{CODE:python store_entities_5@ClientApi\Session\StoringEntities.py /}
+{CODE:python store_entities_6@ClientApi\Session\StoringEntities.py /}
 
 ## Related articles
 

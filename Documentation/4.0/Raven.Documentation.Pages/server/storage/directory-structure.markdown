@@ -30,56 +30,10 @@ The data is persisted in a `Raven.voron` file and `.journal` files which are loc
 
 {PANEL/}
 
-{PANEL:Storing Data in Custom Locations}
-
-The structure of RavenDB directories cannot be changed except locations of temporary files for [documents](../../server/configuration/storage-configuration#storage.temppath) and [indexes](../../server/configuration/indexing-configuration#indexing.temppath) by setting appropriate configuration options.
-
-However, you can store any RavenDB data in different locations by defining junction points (Windows) or mount points (Linux).
-
-### Example - Moving Journals
-
-A common practice is to store the journals on a very fast drive to achieve better write performance.
-The following command will point the `Journals` directory of _Northwind_ database to path on a different drive.
-
-#### Windows
-
-{CODE-BLOCK:powershell}
-C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Journals E:\Journals\Northwind
-{CODE-BLOCK/}
-
-#### Linux
-
-{CODE-BLOCK:bash}
- ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Journals /mnt/FastDrive/Databases/Northwind/Journals
- {CODE-BLOCK/}
-
-### Example - Moving Indexes
-
-If you want to store the data of _all_ indexes of _Northwind_ database in the custom location, you can use the following command:
-
-#### Windows
-
-{CODE-BLOCK:powershell}
-C:\RavenDB\Server\RavenData\Databases\Northwind>mklink /J Indexes D:\Indexes\Northwind
-{CODE-BLOCK/}
-
-{INFO Creation of junction / mount points requires a database to be offline /}
-
-{INFO If data already exists in the directory, you want to define the junction / mount point for you need to backup it first and copy back after executing the command. /}
-
-#### Linux
-
-{CODE-BLOCK:bash}
-ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes /mnt/FastDrive/Databases/Northwind/Indexes
-{CODE-BLOCK/}
-
-{INFO Start RavenDB server _after_ creating soft link to a faster drive mount point: /}
-
-{PANEL/}
-
 ## Related Articles
 
 ### Storage
 
+- [Customize Data Location](customize-data-locations)
 - [Storage Engine](../../storage/storage-engine)
 - [Transaction Mode](../../server/storage/transaction-mode)

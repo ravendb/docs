@@ -24,11 +24,11 @@ The cache is created per database you use.
 
 {NOTE: Disable caching} 
 
-To disable the caching you can set the `maxHttpCacheSize` value to zero:
+To disable the caching globally you can set the `maxHttpCacheSize` value to zero:
 
 {CODE:java disable_cache@ClientApi\Configuration\Conventions.java /}
 
-**In this scenario all the requests will be sent to the server to fetch the data.**
+**In this scenario, all the requests will be sent to the server to fetch the data.**
 
 {NOTE/}
 
@@ -59,7 +59,7 @@ It determines if Java `Enum` types should be saved as integers or strings. Defau
 
 ##UseCompression
 
-It determines if the client will send headers to the Server indicating that it allows compression to be used. Default: `true`.
+It determines if the client will send headers to the server indicating that it allows compression to be used. Default: `true`.
 
 {CODE:java UseCompression@ClientApi\Configuration\Conventions.java /}
 

@@ -55,6 +55,23 @@ order by score()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+
+## Chaining Orderings
+
+It is also possible to chain multiple orderings of the query results. 
+You can sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`).  
+This can be achived by using the `orderBy` (`orderByDescending`) and `orderByScore` (`orderByScoreDescending`) methods.
+
+{CODE-TABS}
+{CODE-TAB:java:Query sorting_4_3@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:Index sorting_1_5@Indexes\Querying\Sorting.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Products/ByUnitsInStockAndName' 
+where unitsInStock > 10
+order by unitsInStock, score(), name desc
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 ## Random Ordering
 
 If you want to randomize the order of your results each time the query is executed, use the `randomOrdering` method (API reference [here](../../client-api/session/querying/how-to-customize-query#randomordering)):
@@ -91,7 +108,7 @@ For example, "Abc9" will come after "Abc10" because if treated as single charact
 
 If you want digit characters in a string to be treated as numbers and not as text, you should use alphanumeric ordering. In that case, when comparing "Abc10" to "Abc9", the digits 1 and 0 will be treated as the number 10 which will be considered greater than 9.
 
-To order in this mode, you can pass the `OrderingType.ALPHA_NUMERIC` type into `orderBy` or `orderByDescending`:   
+To order in this mode you can pass the `OrderingType.ALPHA_NUMERIC` type into `orderBy` or `orderByDescending`:   
 
 {CODE-TABS}
 {CODE-TAB:java:Java sorting_7_1@Indexes\Querying\Sorting.java /}

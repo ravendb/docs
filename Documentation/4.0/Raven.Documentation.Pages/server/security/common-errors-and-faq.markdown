@@ -283,13 +283,38 @@ In powershell for example it can be solved like this:
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 {CODE-BLOCK/}
 
+### How to regain access to a server when you have physical access but no client certificate
+
+An admin client certificate can be generated through the [RavenDB CLI](../../server/administration/cli). If RavenDB runs as a console application, the CLI is just there. When running as a service, please use the `rvn admin-channel`.  
+Use either the [generateClientCert](../../server/administration/cli#generateclientcert) command, or (if you already have a certificate) the [trustClientCert](../../server/administration/cli#trustclientcert) command.
+
+Another way to gain access for an existing certificate is to add the [Security.WellKnownCertificates.Admin](../../server/configuration/security-configuration#security.wellknowncertificates.admin) configuration to `settings.json` with your existing certificate's thumbprint.
+In this case, a server restart is required.
+
 ## Authorization Issues  
 
 Under construction
 
 ## Encryption Issues  
 
-Under construction
+### Insufficient Memory Exception
+
+{CODE-BLOCK:plain}
+Memory exception occurred: System.InsufficientMemoryException: Failed to increase the min working set size so we can lock 4,294,967,296 for D:\stackoverflow\RavenData\Databases\SO\Indexes\Auto_Questions_ByBody\Temp\compression.0000000000.buffers. With encrypted databases we lock some memory in order to avoid leaking secrets to disk. Treating this as a catastrophic error and aborting the current operation.
+{CODE-BLOCK/}
+
+When encryption is turned on, RavenDB locks memory in order to avoid leaking secrets to disk. Read more [here](../../server/security/encryption/encryption-at-rest#locking-memory).
+
+By default RavenDB treats this error as catastrophic and will not continue the operation.
+You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../server/configuration/security-configuration#security.donotconsidermemorylockfailureascatastrophicerror).
+
+If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying the operation.   
+In **Linux**, it is the admin's responibility to configure higher limits manually using:
+{CODE-BLOCK:plain}
+sudo prlimit --pid [process-id] --memlock=[new-limit-in-bytes]
+{CODE-BLOCK/}
+
+To figure out what the new limit should be, look at the exception thrown by RavenDB, which includes this size.
 
 ## Related Articles
 

@@ -205,6 +205,26 @@ Renaming property supported only by the non-typed APIs
 {CODE-TAB:java:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.java /}
 {CODE-TABS/}
 
+###Add document
+
+Adding a new document is supported only by the non-typed APIs
+{CODE-TABS}
+{CODE-TAB:java:Session-defer-syntax add_document_session@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TAB:java:Operations-syntax add_document_store@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TABS/}
+
+###Clone document
+
+In order to clone a document use put method as follows
+{CODE-TABS}
+{CODE-TAB:java:Session-defer-syntax clone_document_session@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TAB:java:Operations-syntax clone_document_store@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TABS/}
+
+{INFO:Cloning & Attachments} 
+The attachments from source document will not be copied to the new one automatically.
+{INFO/}
+
 {PANEL/}
 
 ## Related Articles

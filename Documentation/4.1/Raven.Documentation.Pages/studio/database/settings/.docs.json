@@ -1,0 +1,37 @@
+[
+    {
+        "Path": "database-record.markdown",
+        "Name": "Database Record",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "conflict-resolution.markdown",
+        "Name": "Conflict Resolution",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "client-configuration-per-database.markdown",
+        "Name": "Client Configuration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "document-expiration.markdown",
+        "Name": "Document Expiration",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "import-from-sql.markdown",
+        "Name": "Import from SQL",
+        "Mappings":  []
+    },
+    {
+        "Path": "manage-database-group.markdown",
+        "Name": "Manage Database Group",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

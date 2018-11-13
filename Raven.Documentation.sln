@@ -105,7 +105,28 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "csharp", "csharp", "{6FF201
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Samples", "Documentation\4.2\Samples\csharp\Raven.Documentation.Samples\Raven.Documentation.Samples.csproj", "{02CE4F85-00F0-4B26-BBAC-F91534F0F04E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Raven.Documentation.Pages", "Documentation\4.2\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{5B9CFCFB-FACC-4940-9BDC-4800A6CBDB0F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Raven.Documentation.Pages", "Documentation\4.2\Raven.Documentation.Pages\Raven.Documentation.Pages.csproj", "{5B9CFCFB-FACC-4940-9BDC-4800A6CBDB0F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "python", "python", "{CC30DAD1-A797-476C-A45C-A2C78801C3A7}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "clientapi", "clientapi", "{C88AC7B6-8A58-480E-BF84-78AE54158EEC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "session", "session", "{3685941D-AE26-4EDD-9082-E0B4D71AC5D9}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\4.0\Samples\python\clientapi\session\DeletingEntities.py = Documentation\4.0\Samples\python\clientapi\session\DeletingEntities.py
+		Documentation\4.0\Samples\python\clientapi\session\LoadingEntities.py = Documentation\4.0\Samples\python\clientapi\session\LoadingEntities.py
+		Documentation\4.0\Samples\python\clientapi\session\OpeningSession.py = Documentation\4.0\Samples\python\clientapi\session\OpeningSession.py
+		Documentation\4.0\Samples\python\clientapi\session\SavingChanges.py = Documentation\4.0\Samples\python\clientapi\session\SavingChanges.py
+		Documentation\4.0\Samples\python\clientapi\session\StoringEntities.py = Documentation\4.0\Samples\python\clientapi\session\StoringEntities.py
+		Documentation\4.0\Samples\python\clientapi\session\WhatIsSession.py = Documentation\4.0\Samples\python\clientapi\session\WhatIsSession.py
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "clientapi", "clientapi", "{95B60E29-F453-4DC6-ABEC-0E48BC00269D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "session", "session", "{F136D675-74B8-4A9D-AD15-B04B7EE453AC}"
+	ProjectSection(SolutionItems) = preProject
+		Documentation\4.1\Samples\python\clientapi\session\OpeningSession.py = Documentation\4.1\Samples\python\clientapi\session\OpeningSession.py
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -241,6 +262,11 @@ Global
 		{6FF20129-DB9F-4094-87E6-782D711989FD} = {FB80E5FF-87D4-448D-8704-AE287C3DA449}
 		{02CE4F85-00F0-4B26-BBAC-F91534F0F04E} = {6FF20129-DB9F-4094-87E6-782D711989FD}
 		{5B9CFCFB-FACC-4940-9BDC-4800A6CBDB0F} = {03AA82D8-748F-4199-85D6-4AFCBDF8F6DF}
+		{CC30DAD1-A797-476C-A45C-A2C78801C3A7} = {F10F0B5D-E66E-4D22-950D-B06DB3320DD4}
+		{C88AC7B6-8A58-480E-BF84-78AE54158EEC} = {CC30DAD1-A797-476C-A45C-A2C78801C3A7}
+		{3685941D-AE26-4EDD-9082-E0B4D71AC5D9} = {C88AC7B6-8A58-480E-BF84-78AE54158EEC}
+		{95B60E29-F453-4DC6-ABEC-0E48BC00269D} = {67166E1C-0FCE-4939-870F-D0E31AD42F9E}
+		{F136D675-74B8-4A9D-AD15-B04B7EE453AC} = {95B60E29-F453-4DC6-ABEC-0E48BC00269D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4542080-0E46-4D6E-80B7-DCBFA1100C43}

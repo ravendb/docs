@@ -16,7 +16,6 @@
     {
         "Path": "/replication",
         "Name": "Replication",
-        "IsPlaceholder": "true",
         "Mappings": []
     },
     {

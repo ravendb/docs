@@ -323,7 +323,11 @@ Counters sent by ETL process always _override_ the existing value on the destina
 
 * When documents are sent to the same collection and IDs don't change then deletion on the source results in sending a single delete command for a given ID.  
 
-* Deletions can be filtered by defining the deletion behavior function the script. It should have the following signature:
+* Deletions can be filtered by defining deletion behavior functions in the script.
+
+{NOTE: Collection specific function deletion handling}
+
+In order to define deletion handling for a specific collection use the following signature:
 
 {CODE-BLOCK:javascript}
 function deleteDocumentsOf<CollectionName>Behavior(docId) {
@@ -332,12 +336,28 @@ function deleteDocumentsOf<CollectionName>Behavior(docId) {
 {CODE-BLOCK/}
 
    - `<CollectionName>` needs to be substituted by a real collection name that ETL script is working on (same convention as for `loadTo` method)
+   - The first parameter is the identifier of a deleted document.
+
+{NOTE/}
+
+{NOTE: Generic function for deletion handling}
+
+Another option is the usage of generic function for deletion handling:
+
+{CODE-BLOCK:javascript}
+function deleteDocumentsBehavior(docId, collection) {
+   return [true | false]; 
+}
+{CODE-BLOCK/}
 
    - The first parameter is the identifier of a deleted document.
+   - The second parameter is the name of a collection.
+
+{NOTE/}
 
    - A document deletion is propagated to a destination only if the function returns `true`.
 
-   - By the time that ETL process runs this function, the document is already deleted. If you want to filter deletions, you need some way to store that information
+   - By the time that ETL process runs a delete behavior function, a document is already deleted. If you want to filter deletions, you need some way to store that information
    in order to be able to determine if a document should be deleted in the delete behavior function.
 
 
@@ -360,11 +380,20 @@ by [the expiration extension](../../../server/extensions/expiration).
 {CODE-BLOCK:javascript}
 loadToUsers(this);
 
-function deleteDocumentsOfUsersBehavior(docId)
-{
+function deleteDocumentsOfUsersBehavior(docId) {
     var localOnlyDeletion = load('LocalOnlyDeletions/' + docId);
 
     return !localOnlyDeletion;
+}
+{CODE-BLOCK/}
+
+#### Example - filtering deletions using generic function
+
+- If you define ETL for all documents, regardless a collection they belong to, then the generic function might become very handy to filter out deletions using a collection name
+
+{CODE-BLOCK:javascript}
+function deleteDocumentsBehavior(docId, collection) {
+    return 'Users' != collection;
 }
 {CODE-BLOCK/}
 

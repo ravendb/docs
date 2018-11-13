@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* A Map index consists of one or more LINQ-based mapping functions that indicate how to index selected document fields.  
+* A **Map index** consists of one or more LINQ-based mapping functions that indicate how to index selected document fields.  
 
 * In this page:  
   * [Edit Index View](../../../studio/database/indexes/create-map-index#edit-index-view)  
@@ -168,7 +168,7 @@
 
 ## Related Articles
 
-### Server
+### Indexes
 
 - [Map Indexes](../../../indexes/map-indexes)
 - [Multi-Map Indexes](../../../indexes/multi-map-indexes)
@@ -178,5 +178,6 @@
 
 - [Indexes Overview](../../../studio/database/indexes/indexes-overview)
 - [Indexes List View](../../../studio/database/indexes/indexes-list-view)
-- [Create Map-Reduce Index](../../../todo-update-me-later)
+- [Create Multi-Map Index](../../../studio/database/indexes/create-multi-map-index)
+- [Create Map-Reduce Index](../../../studio/database/indexes/create-map-reduce-index)
 
