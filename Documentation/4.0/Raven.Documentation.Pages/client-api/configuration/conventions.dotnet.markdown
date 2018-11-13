@@ -81,11 +81,34 @@ Changes the way the operation is fetching the operation status when waiting for 
 
 {CODE OperationStatusFetchMode@ClientApi\Configuration\Conventions.cs /}
 
+## Changing fields/properties naming convention 
+
+
+RavenDB clients use different field/properties naming conventions by default:
+
+| Client | Default convention | Example |
+| ------------- | ----- | --- |
+| C# | PascalCase | OrderLines |
+| Java | camelCase | orderLines |
+| Node | camelCase | orderLines |
+
+However this option can be configured to allow inter-language operability.
+
+### Using camelCase in C# client
+
+You have to customize *JsonSerializer* and *PropertyNameConverter*.  
+
+{CODE FirstChar@ClientApi\Configuration\Conventions.cs /}
+
+{CODE PropertyCasing@ClientApi\Configuration\Conventions.cs /}
+
 ## TopologyCacheLocation
 
 Changes the location of topology cache files. Setting this value will check directory existance and write permissions. By default it is set to the application base directory (`AppContext.BaseDirectory`).
 
 {CODE TopologyCacheLocation@ClientApi\Configuration\Conventions.cs /}
+
+
 
 ## Related Articles
 
