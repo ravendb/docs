@@ -1,4 +1,4 @@
-from pyravendb.store.document_store import documentstore
+from pyravendb.store.document_store import DocumentStore
 
 
 class Employee(object):
@@ -10,23 +10,23 @@ class Employee(object):
 class StoringEntities(object):
     @staticmethod
     def open_session():
-        store = documentstore()
+        store = DocumentStore()
         store.initialize()
 
         # region store_entities_1
-        def store(self, entity, key=None, etag=None, force_concurrency_check=False):
+        def store(self, entity, key=None, change_vector=None):
             # endregion
             pass
 
         with store.open_session() as session:
             entity = Employee("first_name", "second_name")
-            etag = ""
+            change_vector = ""
             # region store_entities_2
             session.store(entity)
             # endregion
 
             # region store_entities_3
-            session.store(entity, etag=etag)
+            session.store(entity, change_vector=change_vector)
             # endregion
 
             # region store_entities_4
@@ -34,13 +34,13 @@ class StoringEntities(object):
             # endregion
 
             # region store_entities_5
-            session.store(entity, key="doc/1", etag=etag)
+            session.store(entity, key="doc/1", change_vector=change_vector)
             # endregion
 
         with store.open_session() as session:
             # region store_entities_6
             # generate Id automatically
-            # # when we have a new and empty database and conventions are not changed: 'employees/1'
+            # when we have a new and empty database and conventions are not changed: 'employees/1-A'
             employee = Employee("John", "Doe")
             session.store(employee)
             session.save_changes()
