@@ -2,19 +2,16 @@
     {
         "Path": "overview.markdown",
         "Name": "Overview",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "/server",
         "Name": "Server Management",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "/database",
         "Name": "Database Management",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

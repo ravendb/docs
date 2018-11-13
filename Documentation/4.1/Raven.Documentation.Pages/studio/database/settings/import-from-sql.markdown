@@ -24,7 +24,12 @@ No extra table/collection is needed.
 * Primary / Foreign keys must be defined in source SQL database so migrator can work correctly.   
 
 * In this page:
-  * TODO: Finish me once review is done!
+  * [Pointing to source database](../../../studio/database/settings/import-from-sql#pointing-to-source-database)
+  * [Sql Migration - View Properties](../../../studio/database/settings/import-from-sql#sql-migration---view-properties)
+  * [Sql Migration - Handling relationships](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
+  * [Filtering / Transforming documents](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
+  * [Test 'filter / transform' scripts](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
+  * [Data integrity helpers](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
 {NOTE/}
 
 ---
@@ -79,9 +84,9 @@ At this point user have many options to alter target document structure.
 
 7. **Batch size** - Allows to change batch size of document insertion
 
-8. **Convert binary columns to attachments** - If this option is check, then binary columns are added to document as attachment, in other case binary content is inserted as string to target document. 
+8. **Convert binary columns to attachments** - If this option is checked, then binary columns are added to document as attachment, in other case binary content is inserted as base64 string to target document. 
 
-9. **Partial migration** - Allows to limit amount of items being imported per each table. Please notice this option can introduce broken links, between documents. 
+9. **Partial migration** - Allows to limit number of items being imported per each table. Please notice this option can introduce broken links, between documents. 
 
 
 ![Figure 3.](images/sql-migration-properties.png "Properties conversion explained")
@@ -211,7 +216,7 @@ Target document structure depends on side of relationship and chosen mode:
   
   * Mode set to **embed** - Property value contains single nested document 
 
-{NOTE Embedded documents don't contain target table identifier as it is redundant. /}
+{NOTE Embedded documents don't contain identifier as it is redundant. /}
 
 {PANEL/}
 
@@ -221,7 +226,7 @@ Sql Migration allows to filter and/or transform rows being imported. Click on 'F
 
 Flow goes like this:
 
-1. Rows are read from source SQL database by executing query defined in filter section. 
+1. Rows are read from source SQL database by executing query defined in filter section. This query can contain **where** which gives the ability to filter out as SQL statement level. 
 
 2. Initial transformation is applied: embedded properties are calculated, foreign key columns are filled in based on user choice. 
 
@@ -231,6 +236,8 @@ Flow goes like this:
 
  
 ![Figure 8.](images/sql-migration-filter-transform.png "Filter / Transform")
+
+{NOTE You can write **throw 'skip'** in transformation script to skip given document /}
 
 {PANEL/}
 
@@ -251,7 +258,6 @@ We have 2 test modes available:
 ![Figure 10.](images/sql-migration-test-results.png "Test script results")
 
 {PANEL/}
-
 
 {PANEL: Data integrity helpers}
 
