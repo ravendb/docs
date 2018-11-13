@@ -7,43 +7,36 @@
                 "Version": "3.0",
                 "Key": "client-api/session/configuration/how-to-customize-key-generation-for-entities"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-customize-collection-assignment-for-entities.markdown",
         "Name": "How to Customize Collection Assignment for Entities",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
         "Name": "How to Customize Identity Property Lookup For Entities",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-change-maximum-number-of-requests-per-session.markdown",
         "Name": "How to Change Maximum Number of Requests per Session",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-enable-optimistic-concurrency.markdown",
         "Name": "How to Enable Optimistic Concurrency",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-disable-tracking.markdown",
         "Name": "How to Disable Tracking",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-disable-caching.markdown",
         "Name": "How to Disable Caching",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

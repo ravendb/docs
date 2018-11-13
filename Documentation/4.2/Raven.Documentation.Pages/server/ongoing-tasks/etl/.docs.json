@@ -2,19 +2,16 @@
     {
         "Path": "basics.markdown",
         "Name": "ETL Basics",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "raven.markdown",
         "Name": "RavenDB ETL",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "sql.markdown",
         "Name": "SQL ETL",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

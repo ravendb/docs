@@ -2,37 +2,21 @@
   {
     "Path": "basics.markdown",
     "Name": "ETL Basics",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "raven.markdown",
     "Name": "RavenDB ETL",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "sql.markdown",
     "Name": "SQL ETL",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "test-scripts.markdown",
     "Name": "Testing Scripts",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

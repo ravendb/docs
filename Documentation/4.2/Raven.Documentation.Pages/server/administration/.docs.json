@@ -7,19 +7,16 @@
     {
         "Path": "cli.markdown",
         "Name": "CLI (Command Line Interface)",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "statistics.markdown",
         "Name": "Statistics",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "index-administration.markdown",
         "Name": "Index Administration",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

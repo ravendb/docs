@@ -2,8 +2,7 @@
     {
         "Path": "overview.markdown",
         "Name": "Overview",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
       "Path": "/authentication",
@@ -28,7 +27,6 @@
     {
         "Path": "common-errors-and-faq.markdown",
         "Name": "Common Errors & FAQ",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

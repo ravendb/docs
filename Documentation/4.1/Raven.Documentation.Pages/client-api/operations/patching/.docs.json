@@ -2,16 +2,11 @@
     {
         "Path": "single-document.markdown",
         "Name": "Single Document",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "set-based.markdown",
         "Name": "Set Based",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

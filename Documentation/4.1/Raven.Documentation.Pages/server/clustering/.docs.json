@@ -2,13 +2,11 @@
     {
         "Path": "overview.markdown",
         "Name": "Clustering Overview",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "/rachis",
         "Name": "Rachis",
-        "IsPlaceholder": "true",
         "Mappings": [
 
         ]
@@ -21,22 +19,16 @@
     {
         "Path": "/distribution",
         "Name": "Distribution",
-        "IsPlaceholder": "true",
         "Mappings": []
     },
     {
         "Path": "cluster-transactions.markdown",
         "Name": "Cluster Transactions",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "cluster-best-practice-and-configuration.markdown",
         "Name": "Best Practice and Configuration",
-        "IsPlaceholder": "true",
         "Mappings": []
     }
 ]

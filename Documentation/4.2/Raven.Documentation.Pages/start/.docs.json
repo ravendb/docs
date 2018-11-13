@@ -7,8 +7,7 @@
                 "Version": 1.0,
                 "Key": "intro/ravendb-in-a-nutshell"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "whats-new.markdown",
@@ -18,20 +17,17 @@
                 "Version": 2.5,
                 "Key": "intro/what-is-new"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "playground-server.markdown",
         "Name": "Playground Server",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "about-examples.markdown",
         "Name": "About Examples",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "test-driver.markdown",
@@ -41,8 +37,7 @@
                 "Version": 3.0,
                 "Key": "server/troubleshooting/sending-support-ticket"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
   {
     "Path": "/installation",

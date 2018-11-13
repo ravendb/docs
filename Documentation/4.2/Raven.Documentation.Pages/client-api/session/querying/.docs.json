@@ -12,8 +12,7 @@
                 "Version": 1.0,
                 "Key": "client-api/querying/using-linq-to-query-ravendb"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-stream-query-results.markdown",
@@ -23,14 +22,12 @@
                 "Version": 2.5,
                 "Key": "client-api/advanced/unbounded-results"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-customize-query.markdown",
         "Name": "How to Customize Query",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-project-query-results.markdown",
@@ -44,14 +41,12 @@
                 "Version": 3.0,
                 "Key": "client-api/session/querying/how-to-perform-projection"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-perform-group-by-query.markdown",
         "Name": "How to Perform Group By Query",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-perform-a-faceted-search.markdown",
@@ -61,8 +56,7 @@
                 "Version": 1.0,
                 "Key": "client-api/faceted-search"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-query-a-spatial-index.markdown",
@@ -72,14 +66,12 @@
                 "Version": 2.0,
                 "Key": "client-api/querying/static-indexes/spatial-search"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-get-query-statistics.markdown",
         "Name": "How to Get Query Statistics",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-use-intersect.markdown",
@@ -89,8 +81,7 @@
                 "Version": 2.0,
                 "Key": "client-api/querying/intersection"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-perform-queries-lazily.markdown",
@@ -100,8 +91,7 @@
                 "Version": 2.0,
                 "Key": "client-api/querying/lazy-operations"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-work-with-suggestions.markdown",
@@ -111,20 +101,17 @@
                 "Version": 2.0,
                 "Key": "client-api/querying/static-indexes/suggestions"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-use-morelikethis.markdown",
         "Name": "How to Use MoreLikeThis",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-use-search.markdown",
         "Name": "How to Use Search",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-use-highlighting.markdown",
@@ -138,19 +125,16 @@
                 "Version": 4.0,
                 "Key": null
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "how-to-use-regex.markdown",
         "Name": "How to Use Regex",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "how-to-query-with-exact-match.markdown",
         "Name": "How to Query With Exact Match",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

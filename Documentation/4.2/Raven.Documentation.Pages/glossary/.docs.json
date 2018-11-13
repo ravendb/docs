@@ -2,133 +2,111 @@
     {
         "Path": "blittable-json-reader-object.markdown",
         "Name": "BlittableJsonReaderObject",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "node-tag.markdown",
         "Name": "Node Tag",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "database-id.markdown",
         "Name": "Database Id",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "etag.markdown",
         "Name": "Etag",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "tombstone.markdown",
         "Name": "Tombstone",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "raft-algorithm.markdown",
         "Name": "Raft Consensus Algorithm",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "raft-command.markdown",
         "Name": "Raft Command",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "replication-factor.markdown",
         "Name": "Replication Factor",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "cluster-node.markdown",
         "Name": "Cluster Node",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "ravendb-cluster.markdown",
         "Name": "RavenDB Cluster",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "database-group.markdown",
         "Name": "Database Group",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "delete-command-data.markdown",
         "Name": "DeleteCommandData",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "index-query.markdown",
         "Name": "IndexQuery",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "query-result.markdown",
         "Name": "QueryResult",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "stream-query-statistics.markdown",
         "Name": "StreamQueryStatistics",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "stream-result.markdown",
         "Name": "StreamResult",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "patch-command-data.markdown",
         "Name": "PatchCommandData",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "put-command-data.markdown",
         "Name": "PutCommandData",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "copy-attachment-command-data.markdown",
         "Name": "CopyAttachmentCommandData",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "move-attachment-command-data.markdown",
         "Name": "MoveAttachmentCommandData",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "put-compare-exchange-command-data.markdown",
         "Name": "PutCompareExchangeCommandData",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "delete-compare-exchange-command-data.markdown",
         "Name": "DeleteCompareExchangeCommandData",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

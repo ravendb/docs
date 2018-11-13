@@ -2,22 +2,16 @@
   {
     "Path": "how-to-create-data-subscription.markdown",
     "Name": "How to Create a Data Subscription",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "Mappings": []
   },
   {
     "Path": "examples.markdown",
     "Name": "Examples",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "Mappings": []
   },
   {
     "Path": "api-overview.markdown",
     "Name": "API Overview",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

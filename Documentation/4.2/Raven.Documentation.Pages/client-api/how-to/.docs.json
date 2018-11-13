@@ -7,14 +7,12 @@
                 "Version": 2.0,
                 "Key": "client-api/advanced/aggressive-caching"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "store-dates.markdown",
         "Name": "...store dates",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "handle-document-relationships.markdown",
@@ -28,19 +26,16 @@
                 "Version": 1.0,
                 "Key": "client-api/querying/handling-document-relationships"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "use-low-level-commands.markdown",
         "Name": "...use low-level commands",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "integrate-with-excel.markdown",
         "Name": "...integrate with Excel",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

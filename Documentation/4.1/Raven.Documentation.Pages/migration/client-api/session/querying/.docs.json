@@ -2,52 +2,41 @@
     {
         "Path": "basics.markdown",
         "Name": "Basics",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "transformers.markdown",
         "Name": "Transformers",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "spatial.markdown",
         "Name": "Spatial",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "facets-and-dynamic-aggregation.markdown",
         "Name": "Facets and Dynamic Aggregation",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "suggestions.markdown",
         "Name": "Suggestions",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "morelikethis.markdown",
         "Name": "MoreLikeThis",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "highlighting.markdown",
         "Name": "Highlighting",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "documentquery.markdown",
         "Name": "DocumentQuery",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

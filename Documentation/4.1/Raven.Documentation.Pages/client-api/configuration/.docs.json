@@ -2,8 +2,7 @@
   {
     "Path": "conventions.markdown",
     "Name": "Conventions",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "Mappings": []
   },
   {
     "Path": "querying.markdown",
@@ -18,19 +17,16 @@
   {
     "Path": "serialization.markdown",
     "Name": "Serialization",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "Mappings": []
   },
   {
     "Path": "load-balance-and-failover.markdown",
     "Name": "Load Balance & Failover",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "Mappings": []
   },
   {
     "Path": "/identifier-generation",
     "Name": "Identifier generation",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "Mappings": []
   }
 ]

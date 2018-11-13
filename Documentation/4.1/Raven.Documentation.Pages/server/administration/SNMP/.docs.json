@@ -2,16 +2,11 @@
     {
         "Path": "snmp.markdown",
         "Name": "What is SNMP",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "setup-zabbix.markdown",
         "Name": "Zabbix",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]

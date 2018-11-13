@@ -27,10 +27,6 @@
     {
         "Path": "map-reduce-visualizer.markdown",
         "Name": "Map-Reduce Visualizer",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1"
-        ]
+        "Mappings": []
     }
 ]

@@ -2,37 +2,26 @@
     {
         "Path": "certificate-configuration.markdown",
         "Name": "Manual Certificate Configuration",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "certificate-management.markdown",
         "Name": "Certificate Management",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "client-certificate-usage.markdown",
         "Name": "Client Certificate Usage",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
       "Path": "certificate-renewal-and-rotation.markdown",
       "Name": "Certificate Renewal & Rotation",
-      "Mappings": [],
-        "SupportedVersions": [
-            "4.1",
-            "4.2"
-        ]
+      "Mappings": []
     },
     {
       "Path": "lets-encrypt-certificates.markdown",
       "Name": "Let's Encrypt Certificates",
-      "Mappings": [],
-        "SupportedVersions": [
-            "4.1",
-            "4.2"
-        ]
+      "Mappings": []
     }
 ]
