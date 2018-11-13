@@ -103,7 +103,7 @@ Edges are properties of documents they could be:
 {CODE-BLOCK:plain}
 {
     ...
-    User: 
+    "User": 
     {
         ...
         "UserId":"users/1-A"
