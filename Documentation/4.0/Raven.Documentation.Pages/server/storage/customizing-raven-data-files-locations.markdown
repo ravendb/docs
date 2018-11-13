@@ -10,7 +10,7 @@
 
 * Better concurrency.
 
-* Directing each file or directory (e.g. `Voron` files, `Journals`, etc.) to a data storage according to its speed, durability, etc.
+* Directing each file or directory (e.g. `Raven.voron` file, `Journals`, etc.) to a data storage according to its speed, durability, etc.
 
 {NOTE/}
 
