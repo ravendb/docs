@@ -1,0 +1,46 @@
+[
+  {
+    "Path": "replication.markdown",
+    "Name": "How Replication Works",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+  {
+    "Path": "replication-conflicts.markdown",
+    "Name": "Replication Conflicts",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+  {
+    "Path": "change-vector.markdown",
+    "Name": "Change Vector",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+  {
+    "Path": "advanced-replication.markdown",
+    "Name": "Advanced Replication",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+    
+    {
+        "Path": "replication-and-embedded-instance.markdown",
+        "Name": "Replication And Embedded Instances",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "server/scaling-out/replication/replication-and-embedded-instance"
+            },
+            {
+                "Version": 1.0,
+                "Key": "server/scaling-out/replication/from-embedded-server"
+            }
+        ],
+        "SupportedVersions": 
+        [
+            "4.1",
+            "4.2"
+        ]  
+    }   
+]
