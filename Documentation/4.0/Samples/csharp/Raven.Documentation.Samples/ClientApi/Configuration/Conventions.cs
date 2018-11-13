@@ -1,4 +1,5 @@
 ﻿using System;
+using Newtonsoft.Json.Serialization;
 using Raven.Client.Documents;
 using Raven.Client.Documents.Operations;
 using Sparrow;
@@ -22,6 +23,10 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
             }
             #endregion
         }
+        
+        #region FirstChar
+        private string FirstCharToLower(string str) => $"{Char.ToLower(str[0])}{str.Substring(1)}";
+        #endregion
 
         public void Examples()
         {
@@ -64,9 +69,14 @@ namespace Raven.Documentation.Samples.ClientApi.Configuration
                     #region TopologyCacheLocation
                     TopologyCacheLocation = @"C:\RavenDB\TopologyCache"
                     #endregion
+                    ,
+                    #region PropertyCasing
+                    CustomizeJsonSerializer = s => s.ContractResolver = new CamelCasePropertyNamesContractResolver(),
+                    PropertyNameConverter = mi => FirstCharToLower(mi.Name)
+                    #endregion
 	            }
             };
-
+            
             var stor2e = new DocumentStore()
             {
                 Conventions =

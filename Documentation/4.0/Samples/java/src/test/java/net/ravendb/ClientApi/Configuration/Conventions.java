@@ -1,8 +1,10 @@
 package net.ravendb.ClientApi.Configuration;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.conventions.DocumentConventions;
+import net.ravendb.client.extensions.JsonExtensions;
 
 public class Conventions {
     public Conventions() {
@@ -45,6 +47,12 @@ public class Conventions {
 
         //region UseCompression
         conventions.setUseCompression(true);
+        //endregion
+
+        //region PropertyCasing
+        conventions.getEntityMapper()
+            .setPropertyNamingStrategy(
+                new JsonExtensions.DotNetNamingStrategy());
         //endregion
     }
 }

@@ -63,6 +63,26 @@ It determines if the client will send headers to the server indicating that it a
 
 {CODE:java UseCompression@ClientApi\Configuration\Conventions.java /}
 
+## Changing fields/properties naming convention 
+
+
+RavenDB clients use different field/properties naming conventions by default:
+
+| Client | Default convention | Example |
+| ------------- | ----- | --- |
+| C# | PascalCase | OrderLines |
+| Java | camelCase | orderLines |
+| Node | camelCase | orderLines |
+
+However this option can be configured to allow inter-language operability.
+
+### Using PascalCase in Java client
+
+You have to set *property naming strategy*:
+
+{CODE:java PropertyCasing@ClientApi\Configuration\Conventions.java /}
+
+
 ## Related Articles
 
 ### Conventions
