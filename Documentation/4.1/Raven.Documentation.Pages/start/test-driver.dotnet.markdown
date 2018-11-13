@@ -20,8 +20,6 @@ Lets start with reviewing the TestDriver's methods and properties and later we w
 | ----------| ----- |
 | **protected virtual string DatabaseDumpFilePath => null;** | Allows you to override the path to the database dump file that will be loaded when calling ImportDatabase. |
 | **protected virtual Stream DatabaseDumpFileStream => null;** |  Allows you to override the stream containing the database dump that will be loaded when calling ImportDatabase.  |
-| **public static bool Debug { get; set; }** | Indicates if the test driver is running in debug mode or not. |
-| **public static Process GlobalServerProcess => globalServerProcess;** |Gives you access to the server's process. |
 | **public IDocumentStore GetDocumentStore([CallerMemberName] string database = null, TimeSpan? waitForIndexingTimeout = null)** | Gets you an IDocumentStore instance for the requested database. |
 | **protected virtual void PreInitialize(IDocumentStore documentStore)** |Allows you to pre-initialize the IDocumentStore. |
 | **protected virtual void SetupDatabase(IDocumentStore documentStore)** | Allows you to initialize the database. |
