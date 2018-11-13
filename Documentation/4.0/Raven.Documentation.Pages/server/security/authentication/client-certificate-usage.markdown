@@ -61,7 +61,7 @@ $cert = Get-PfxCertificate -FilePath c:/secrets/server.pfx
 Then make the request:
 
 {CODE-BLOCK:powershell}
-wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.zip" -Body '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' "https://rvn-srv-1:8080/admin/certificates"
+wget -UseBasicParsing -Method POST -Certificate $cert -OutFile "cluster.admin.cert.zip" -Body '{"Name": "cluster.admin.client.certificate","SecurityClearance": "ClusterAdmin","Password": "p@$$w0rd"}' -ContentType application/json "https://rvn-srv-1:8080/admin/certificates"
 {CODE-BLOCK/}
 
 ### Example III : Using cURL in Linux
