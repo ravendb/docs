@@ -2,10 +2,7 @@
   {
     "Path": "what-is-rql.markdown",
     "Name": "What is RQL",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "basics.markdown",
@@ -15,22 +12,12 @@
         "Version": 1.0,
         "Key": "client-api/querying/using-linq-to-query-ravendb"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "filtering.markdown",
     "Name": "Filtering",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "paging.markdown",
@@ -40,52 +27,27 @@
         "Version": 1.0,
         "Key": "client-api/querying/paging"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "sorting.markdown",
     "Name": "Sorting",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "boosting.markdown",
     "Name": "Boosting",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "projections.markdown",
     "Name": "Projections",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "distinct.markdown",
     "Name": "Distinct",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "searching.markdown",
@@ -95,11 +57,6 @@
         "Version": 2.0,
         "Key": "client-api/querying/static-indexes/searching"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -110,11 +67,6 @@
         "Version": 2.0,
         "Key": "client-api/querying/intersection"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -125,11 +77,6 @@
         "Version": 2.0,
         "Key": "client-api/querying/static-indexes/suggestions"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -140,11 +87,6 @@
         "Version": 2.0,
         "Key": "client-api/querying/static-indexes/spatial-search"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -155,11 +97,6 @@
         "Version": 1.0,
         "Key": "client-api/faceted-search"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -170,11 +107,6 @@
         "Version": 3.0,
         "Key": "server/bundles/more-like-this"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -185,11 +117,6 @@
         "Version": 2.5,
         "Key": "client-api/querying/query-and-lucene-query"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   }
 ]

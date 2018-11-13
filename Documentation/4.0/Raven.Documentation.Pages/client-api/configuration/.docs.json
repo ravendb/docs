@@ -7,11 +7,6 @@
         "Version": "3.0",
         "Key": "client-api/configuration/conventions/what-are-conventions"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -22,20 +17,12 @@
         "Version": "3.0",
         "Key": "client-api/configuration/conventions/querying"
       }
-    ],
-    "SupportedVersions": [
-        "4.0"
     ]
   },
   {
     "Path": "serialization.markdown",
     "Name": "Serialization",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "load-balance-and-failover.markdown",
@@ -45,11 +32,6 @@
         "Version": "3.0",
         "Key": "client-api/configuration/conventions/replication"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {

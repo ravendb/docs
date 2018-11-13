@@ -7,11 +7,6 @@
         "Version": "3.0",
         "Key": "client-api/configuration/conventions/identifier-generation/global"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -22,11 +17,6 @@
         "Version": "3.0",
         "Key": "client-api/configuration/conventions/identifier-generation/type-specific"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   }
 ]

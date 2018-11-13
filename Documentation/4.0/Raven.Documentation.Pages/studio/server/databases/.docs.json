@@ -2,12 +2,7 @@
   {
     "Path": "databases-list-view.markdown",
     "Name": "List View",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "/create-new-database",

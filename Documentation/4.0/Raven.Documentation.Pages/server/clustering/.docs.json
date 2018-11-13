@@ -2,12 +2,7 @@
     {
         "Path": "overview.markdown",
         "Name": "Clustering Overview",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "/rachis",
@@ -29,21 +24,11 @@
     {
         "Path": "cluster-best-practice-and-configuration.markdown",
         "Name": "Best Practice and Configuration",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "cluster-api.markdown",
         "Name": "Cluster API",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     }
 ]

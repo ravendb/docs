@@ -2,41 +2,21 @@
   {
     "Path": "azure-router-timeout.markdown",
     "Name": "Azure Router Timeout",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "tcp-offloading.markdown",
     "Name": "TCP Offloading",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "recovering-from-voron-errors.markdown",
     "Name": "Recovering from Voron errors",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "understanding-eventual-consistency.markdown",
     "Name": "Understanding eventual consistency",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

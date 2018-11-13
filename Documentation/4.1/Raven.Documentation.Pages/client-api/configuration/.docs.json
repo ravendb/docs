@@ -13,10 +13,6 @@
           "Version": "3.0",
           "Key": "client-api/configuration/conventions/querying"
       }
-    ],
-    "SupportedVersions": [
-        "4.1",
-        "4.2"
     ]
   },
   {

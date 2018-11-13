@@ -7,9 +7,6 @@
         "Version": 3.0,
         "Key": "client-api/querying/lucene/how-to-use-lucene-in-queries"
       }
-    ],
-    "SupportedVersions": [
-      "4.0"
     ]
   },
   {
@@ -20,21 +17,11 @@
         "Version": 3.0,
         "Key": "client-api/querying/lucene/how-to-use-not-operator"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "how-to-use-lucene.markdown",
     "Name": "How to Use Lucene",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

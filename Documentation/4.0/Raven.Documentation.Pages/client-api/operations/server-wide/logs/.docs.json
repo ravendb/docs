@@ -2,21 +2,11 @@
     {
         "Path": "get-logs-configuration.markdown",
         "Name": "Get Logs Configuration",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "set-logs-configuration.markdown",
         "Name": "Set Logs Configuration",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     }
 ]

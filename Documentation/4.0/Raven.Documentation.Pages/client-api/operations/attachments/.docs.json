@@ -2,31 +2,16 @@
   {
     "Path": "get-attachment.markdown",
     "Name": "Get Attachment",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "put-attachment.markdown",
     "Name": "Put Attachment",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "delete-attachment.markdown",
     "Name": "Delete Attachment",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

@@ -2,11 +2,6 @@
   {
     "Path": "how-to-send-multiple-commands-using-a-batch.markdown",
     "Name": "How to Send Multiple Commands Using a Batch",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

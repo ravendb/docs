@@ -2,12 +2,7 @@
   {
     "Path": "get-collection-statistics.markdown",
     "Name": "Get Collection Statistics",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "get-statistics.markdown",
@@ -17,11 +12,6 @@
         "Version": 3.5,
         "Key": "client-api/commands/how-to/get-database-and-server-statistics"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {

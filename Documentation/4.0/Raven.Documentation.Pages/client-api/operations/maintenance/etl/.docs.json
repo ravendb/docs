@@ -2,29 +2,16 @@
     {
         "Path": "add-etl.markdown",
         "Name": "Add ETL",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0"
-        ]
+        "Mappings": []
     },
     {
         "Path": "update-etl.markdown",
         "Name": "Update ETL",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "reset-etl.markdown",
         "Name": "Reset ETL",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     }
 ]

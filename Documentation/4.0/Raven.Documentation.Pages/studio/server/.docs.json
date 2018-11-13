@@ -2,22 +2,12 @@
   {
     "Path": "server-dashboard.markdown",
     "Name": "Server Dashboard",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "client-configuration.markdown",
     "Name": "Client Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "/databases",
