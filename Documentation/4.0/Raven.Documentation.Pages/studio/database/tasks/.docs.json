@@ -12,11 +12,6 @@
         "Version": 1.0,
         "Key": "studio/tasks"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   }
 ]

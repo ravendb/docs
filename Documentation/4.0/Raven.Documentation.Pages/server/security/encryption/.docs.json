@@ -2,41 +2,21 @@
   {
     "Path": "encryption-at-rest.markdown",
     "Name": "Encryption at Rest",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "database-encryption.markdown",
     "Name": "Database Encryption",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "server-store-encryption.markdown",
     "Name": "Server Store Encryption",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "secret-key-management.markdown",
     "Name": "Secret Key Management",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

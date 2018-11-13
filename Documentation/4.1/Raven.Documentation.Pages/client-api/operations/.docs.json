@@ -7,8 +7,7 @@
     {
         "Path": "delete-by-query.markdown",
         "Name": "Delete By Query",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "/attachments",

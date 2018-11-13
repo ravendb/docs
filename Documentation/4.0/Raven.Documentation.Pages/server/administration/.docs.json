@@ -7,31 +7,16 @@
   {
     "Path": "cli.markdown",
     "Name": "CLI (Command Line Interface)",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "statistics.markdown",
     "Name": "Statistics",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "index-administration.markdown",
     "Name": "Index Administration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

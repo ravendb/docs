@@ -2,25 +2,16 @@
   {
     "Path": "basics.markdown",
     "Name": "ETL Basics",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "raven.markdown",
     "Name": "RavenDB ETL",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "sql.markdown",
     "Name": "SQL ETL",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   }
 ]

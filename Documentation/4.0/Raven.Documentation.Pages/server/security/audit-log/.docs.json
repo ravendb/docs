@@ -2,9 +2,6 @@
     {
         "Path": "audit-log.markdown",
         "Name": "Audit Log",
-        "Mappings": [],
-        "SupportedVersions": [
-          "4.0"
-        ]
+        "Mappings": []
     }
 ]

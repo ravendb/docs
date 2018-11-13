@@ -2,9 +2,6 @@
     {
         "Path": "graph-queries.markdown",
         "Name": "Graph Queries",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.2"
-        ]
+        "Mappings": []
     }
 ]

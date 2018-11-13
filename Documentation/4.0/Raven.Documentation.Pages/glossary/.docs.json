@@ -2,179 +2,91 @@
   {
     "Path": "blittable-json-reader-object.markdown",
     "Name": "BlittableJsonReaderObject",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "node-tag.markdown",
     "Name": "Node Tag",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "database-id.markdown",
     "Name": "Database Id",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "etag.markdown",
     "Name": "Etag",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "tombstone.markdown",
     "Name": "Tombstone",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "raft-algorithm.markdown",
     "Name": "Raft Consensus Algorithm",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "raft-command.markdown",
     "Name": "Raft Command",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "replication-factor.markdown",
     "Name": "Replication Factor",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "cluster-node.markdown",
     "Name": "Cluster Node",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "ravendb-cluster.markdown",
     "Name": "RavenDB Cluster",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "database-group.markdown",
     "Name": "Database Group",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "delete-command-data.markdown",
     "Name": "DeleteCommandData",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "index-query.markdown",
     "Name": "IndexQuery",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "query-result.markdown",
     "Name": "QueryResult",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "stream-query-statistics.markdown",
     "Name": "StreamQueryStatistics",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "stream-result.markdown",
     "Name": "StreamResult",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "patch-command-data.markdown",
     "Name": "PatchCommandData",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "put-command-data.markdown",
     "Name": "PutCommandData",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

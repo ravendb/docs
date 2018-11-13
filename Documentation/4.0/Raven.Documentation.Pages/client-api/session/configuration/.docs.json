@@ -7,51 +7,26 @@
         "Version": "3.0",
         "Key": "client-api/session/configuration/how-to-customize-key-generation-for-entities"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "how-to-customize-collection-assignment-for-entities.markdown",
     "Name": "How to Customize Collection Assignment for Entities",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "how-to-customize-identity-property-lookup-for-entities.markdown",
     "Name": "How to Customize Identity Property Lookup For Entities",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "how-to-change-maximum-number-of-requests-per-session.markdown",
     "Name": "How to Change Maximum Number of Requests per Session",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "how-to-enable-optimistic-concurrency.markdown",
     "Name": "How to Enable Optimistic Concurrency",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

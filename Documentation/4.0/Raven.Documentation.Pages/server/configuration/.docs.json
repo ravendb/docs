@@ -2,242 +2,132 @@
   {
     "Path": "configuration-options.markdown",
     "Name": "Configuration Options",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "command-line-arguments.markdown",
     "Name": "Command Line Arguments",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "backup-configuration.markdown",
     "Name": "Backup Options",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "cluster-configuration.markdown",
     "Name": "Cluster Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "core-configuration.markdown",
     "Name": "Core Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "database-configuration.markdown",
     "Name": "Database Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "etl-configuration.markdown",
     "Name": "ETL Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "http-configuration.markdown",
     "Name": "HTTP Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "indexing-configuration.markdown",
     "Name": "Indexing Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "license-configuration.markdown",
     "Name": "License Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "logs-configuration.markdown",
     "Name": "Logs Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "memory-configuration.markdown",
     "Name": "Memory Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "monitoring-configuration.markdown",
     "Name": "Monitoring Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "patching-configuration.markdown",
     "Name": "Patching Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "performance-hints-configuration.markdown",
     "Name": "Performance Hints Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "query-configuration.markdown",
     "Name": "Query Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "replication-configuration.markdown",
     "Name": "Replication Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "security-configuration.markdown",
     "Name": "Security Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "server-configuration.markdown",
     "Name": "Server Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "storage-configuration.markdown",
     "Name": "Storage Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "studio-configuration.markdown",
     "Name": "Studio Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "subscription-configuration.markdown",
     "Name": "Subscription Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "testing-configuration.markdown",
     "Name": "Testing Configuration",
-	"Mappings": [
-		{
-			"Version": 4.1,
-			"Key": "server/configuration/embedded-configuration"
-		}
-	],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": [
+      {
+        "Version": 4.1,
+        "Key": "server/configuration/embedded-configuration"
+      }
+    ],
+    "LastSupportedVersion": "4.0"
   },
   {
     "Path": "tombstone-configuration.markdown",
     "Name": "Tombstone Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "transaction-merger-configuration.markdown",
     "Name": "Transaction Merger Configuration",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

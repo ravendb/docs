@@ -2,22 +2,12 @@
   {
     "Path": "basics.markdown",
     "Name": "Basics",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "advanced.markdown",
     "Name": "Advanced",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "/querying",

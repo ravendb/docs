@@ -2,39 +2,21 @@
   {
     "Path": "what-are-attachments.markdown",
     "Name": "What are Attachments",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "storing.markdown",
     "Name": "Storing",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "loading.markdown",
     "Name": "Loading",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "deleting.markdown",
     "Name": "Deleting",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

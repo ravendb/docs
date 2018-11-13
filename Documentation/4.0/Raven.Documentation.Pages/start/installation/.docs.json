@@ -2,10 +2,7 @@
   {
     "Path": "setup-wizard.markdown",
     "Name": "Setup Wizard",
-    "Mappings": [],
-    "SupportedVersions": [
-      "4.0"
-    ]
+    "Mappings": []
   },
   {
     "Path": "/setup-examples",
@@ -15,12 +12,7 @@
   {
     "Path": "manual.markdown",
     "Name": "Manual Setup",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "deployment-considerations.markdown",
@@ -30,32 +22,17 @@
         "Version": 3.0,
         "Key": "server/installation/deployment-considerations"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "running-as-service.markdown",
     "Name": "Running as a Service",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "running-in-docker-container.markdown",
     "Name": "Running in a Docker Container",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "upgrading-to-new-version.markdown",
@@ -69,31 +46,16 @@
         "Version": 3.0,
         "Key": "server/installation/upgrading-to-new-version"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "system-requirements.markdown",
     "Name": "System Requirements",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "system-configuration-recommendations.markdown",
     "Name": "System Configuration Recommendations",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

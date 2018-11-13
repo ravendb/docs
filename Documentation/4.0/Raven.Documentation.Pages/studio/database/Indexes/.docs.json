@@ -2,60 +2,31 @@
     {
         "Path": "indexes-overview.markdown",
         "Name": "Indexes Overview",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "indexes-list-view.markdown",
         "Name": "Indexes List View",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "create-map-index.markdown",
         "Name": "Create Map Index",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "create-multi-map-index.markdown",
         "Name": "Create Multi Map Index",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "create-map-reduce-index.markdown",
         "Name": "Create Map-Reduce Index",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "map-reduce-visualizer.markdown",
         "Name": "Map-Reduce Visualizer",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.0",
-            "4.1"
-        ]
+        "Mappings": []
     }
 ]

@@ -2,8 +2,7 @@
     {
         "Path": "embedded.markdown",
         "Name": "Embedded",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "/administration",

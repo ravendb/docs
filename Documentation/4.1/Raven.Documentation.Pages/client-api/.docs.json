@@ -2,41 +2,32 @@
     {
         "Path": "what-is-a-document-store.markdown",
         "Name": "What is a Document Store",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "creating-document-store.markdown",
         "Name": "Creating Document Store",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "setting-up-authentication-and-authorization.markdown",
         "Name": "Setting up Authentication and Authorization",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "setting-up-default-database.markdown",
         "Name": "Setting up Default Database",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "what-is-a-public-api.markdown",
         "Name": "What is a Public API",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "net-client-versions.markdown",
         "Name": ".NET Client Versions",
-        "Mappings": [],
-        "SupportedVersions": [
-            "4.1",
-            "4.2"
-        ]
+        "Mappings": []
     },
     {
         "Path": "/session",

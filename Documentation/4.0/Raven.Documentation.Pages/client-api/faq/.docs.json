@@ -2,22 +2,12 @@
   {
     "Path": "what-is-a-collection.markdown",
     "Name": "What is a Collection",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "transaction-support.markdown",
     "Name": "Transaction Support",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "backward-compatibility.markdown",
@@ -27,11 +17,6 @@
         "Version": 2.0,
         "Key": "client-api/backward-compatibility"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   }
 ]

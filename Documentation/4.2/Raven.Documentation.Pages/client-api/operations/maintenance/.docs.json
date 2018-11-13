@@ -2,8 +2,7 @@
   {
     "Path": "get-collection-statistics.markdown",
     "Name": "Get Collection Statistics",
-    "Mappings": [],
-    "IsPlaceholder": "true"
+    "Mappings": []
   },
   {
     "Path": "get-statistics.markdown",
@@ -13,8 +12,7 @@
         "Version": 3.5,
         "Key": "client-api/commands/how-to/get-database-and-server-statistics"
       }
-    ],
-    "IsPlaceholder": "true"
+    ]
   },
   {
     "Path": "/configuration",

@@ -2,12 +2,7 @@
   {
     "Path": "what-are-data-subscriptions.markdown",
     "Name": "What are Data Subscriptions",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "/creation",

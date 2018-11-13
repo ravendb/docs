@@ -7,32 +7,17 @@
         "Version": 3.5,
         "Key": "client-api/commands/indexes/delete"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "disable-index.markdown",
     "Name": "Disable Index",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "enable-index.markdown",
     "Name": "Enable Index",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "reset-index.markdown",
@@ -42,11 +27,6 @@
         "Version": 3.5,
         "Key": "client-api/commands/indexes/how-to/reset-index"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -57,11 +37,6 @@
         "Version": 3.5,
         "Key": "client-api/commands/indexes/how-to/change-index-lock-mode"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -72,92 +47,47 @@
         "Version": 3.5,
         "Key": "client-api/commands/indexes/how-to/change-index-priority"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "start-index.markdown",
     "Name": "Start Index",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "start-indexing.markdown",
     "Name": "Start Indexing",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "stop-index.markdown",
     "Name": "Stop Index",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "stop-indexing.markdown",
     "Name": "Stop Indexing",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "get-index-errors.markdown",
     "Name": "Get Index Errors",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "get-index-names.markdown",
     "Name": "Get Index Names",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "get-index.markdown",
     "Name": "Get Index",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "get-indexes.markdown",
     "Name": "Get Indexes",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "get-terms.markdown",
@@ -167,11 +97,6 @@
         "Version": 3.5,
         "Key": "client-api/commands/indexes/how-to/get-index-terms"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -182,21 +107,11 @@
         "Version": 3.5,
         "Key": "client-api/commands/indexes/how-to/check-if-index-has-changed"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
     "Path": "put-indexes.markdown",
     "Name": "Put Indexes",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

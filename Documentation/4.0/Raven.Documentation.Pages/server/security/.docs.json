@@ -2,12 +2,7 @@
   {
     "Path": "overview.markdown",
     "Name": "Overview",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "/authentication",
@@ -32,11 +27,6 @@
   {
     "Path": "common-errors-and-faq.markdown",
     "Name": "Common Errors & FAQ",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

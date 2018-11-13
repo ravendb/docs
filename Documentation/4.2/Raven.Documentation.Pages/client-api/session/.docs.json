@@ -7,8 +7,7 @@
                 "Version": 1.0,
                 "Key": "client-api/basic-operations/understanding-session-object"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "opening-a-session.markdown",
@@ -18,8 +17,7 @@
                 "Version": 1.0,
                 "Key": "client-api/basic-operations/opening-a-session"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "storing-entities.markdown",
@@ -29,8 +27,7 @@
                 "Version": 1.0,
                 "Key": "client-api/basic-operations/saving-new-document"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "deleting-entities.markdown",
@@ -40,8 +37,7 @@
                 "Version": 1.0,
                 "Key": "client-api/basic-operations/deleting-documents"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "loading-entities.markdown",
@@ -51,8 +47,7 @@
                 "Version": 1.0,
                 "Key": "client-api/basic-operations/loading-editing-existing-document"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "saving-changes.markdown",
@@ -62,8 +57,7 @@
                 "Version": 1.0,
                 "Key": "client-api/basic-operations/saving-new-document"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "/querying",

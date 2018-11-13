@@ -2,31 +2,16 @@
   {
     "Path": "cluster-view.markdown",
     "Name": "Cluster View",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "add-node-to-cluster.markdown",
     "Name": "Add Node to Cluster",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   },
   {
     "Path": "cluster-observer.markdown",
     "Name": "Cluster Observer",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

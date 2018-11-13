@@ -7,9 +7,6 @@
         "Version": 1.0,
         "Key": "client-api/basic-operations/understanding-session-object"
       }
-    ],
-    "SupportedVersions": [
-      "4.0"
     ]
   },
   {
@@ -20,9 +17,6 @@
         "Version": 1.0,
         "Key": "client-api/basic-operations/opening-a-session"
       }
-    ],
-    "SupportedVersions": [
-      "4.0"
     ]
   },
   {
@@ -33,11 +27,6 @@
         "Version": 1.0,
         "Key": "client-api/basic-operations/saving-new-document"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -48,11 +37,6 @@
         "Version": 1.0,
         "Key": "client-api/basic-operations/deleting-documents"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -63,11 +47,6 @@
         "Version": 1.0,
         "Key": "client-api/basic-operations/loading-editing-existing-document"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   },
   {
@@ -78,9 +57,6 @@
         "Version": 1.0,
         "Key": "client-api/basic-operations/saving-new-document"
       }
-    ],
-    "SupportedVersions": [
-      "4.0",
     ]
   },
   {

@@ -7,11 +7,6 @@
         "Version": 1.0,
         "Key": "client-api/querying/static-indexes/indexes-error-handling"
       }
-    ],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
     ]
   }
 ]

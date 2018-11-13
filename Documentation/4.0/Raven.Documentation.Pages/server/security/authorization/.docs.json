@@ -2,11 +2,6 @@
   {
     "Path": "security-clearance-and-permissions.markdown",
     "Name": "Security Clearance and Permissions",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.0",
-        "4.1",
-        "4.2"
-    ]
+    "Mappings": []
   }
 ]

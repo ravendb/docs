@@ -2,26 +2,22 @@
     {
         "Path": "clear-a-session.markdown",
         "Name": "...clear a session",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "evict-entity-from-a-session.markdown",
         "Name": "...evict entity from a session",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "refresh-entity.markdown",
         "Name": "...refresh entity",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "defer-operations.markdown",
         "Name": "...defer operations",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "perform-operations-lazily.markdown",
@@ -31,8 +27,7 @@
                 "Version": 3.5,
                 "Key": "client-api/session/how-to/perform-operations-lazily"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "subscribe-to-events.markdown",
@@ -42,20 +37,17 @@
                 "Version": 3.0,
                 "Key": "client-api/listeners/what-are-listeners"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "get-entity-id.markdown",
         "Name": "...get entity id",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "get-and-modify-entity-metadata.markdown",
         "Name": "...get and modify entity metadata",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "get-entity-change-vector.markdown",
@@ -65,43 +57,36 @@
                 "Version": 3.0,
                 "Key": "client-api/session/how-to/get-entity-etag"
             }
-        ],
-        "IsPlaceholder": "true"
+        ]
     },
     {
         "Path": "get-entity-last-modified.markdown",
         "Name": "...get entity last modified",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "get-current-session-node.markdown",
         "Name": "...get current session node",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "check-if-entity-has-changed.markdown",
         "Name": "...check if entity has changed",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "check-if-there-are-any-changes-on-a-session.markdown",
         "Name": "...check if there are any changes on a session",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "check-if-document-exists.markdown",
         "Name": "...check if document exists",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     },
     {
         "Path": "ignore-entity-changes.markdown",
         "Name": "...ignore entity changes",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]
