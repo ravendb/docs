@@ -80,7 +80,9 @@ ln -s ~/RavenDB/Server/RavenData/Databases/Northwind/Indexes /mnt/FastDrive/Data
 
 {NOTE/}
 
-{NOTE: Automation}
+{PANEL/}
+
+{PANEL: Automation}
 
 To help you automate the process, we have added the [Storage.OnDirectoryInitialize](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) extension point.
 Whenever RavenDB creates or opens a directory, it will invoke a process of your choice.
@@ -94,7 +96,42 @@ RavenDB will invoke the process with [optional user arguments](../../server/conf
 * Path of the `Temp` directory
 * Path of the `Journals` directory
 
-{NOTE/}
+Let's look at an example which demonstrates how the mechanism works.  
+Here is a very simple powershell script which will append a line to a text file every time it is called. The path of the output text file is supplied as a user argument.
+
+{CODE-BLOCK:powershell}
+param([string]$userArg ,[string]$type, [string]$name, [string]$dataPath, [string]$tempPath, [string]$journalPath)
+Add-Content $userArg "$type $name $dataPath $tempPath $journalPath\r\n"
+exit 0
+{CODE-BLOCK/}
+
+We supply this script to RavenDB via the [Storage.OnDirectoryInitialize](../../server/configuration/storage-configuration#storage.ondirectoryinitialize.exec) configuration option:
+
+{CODE-BLOCK:json}
+{
+    "Setup.Mode": "None",
+    "ServerUrl": "http://127.0.0.1:8080",
+    "License.Eula.Accepted": true,
+    "Storage.OnDirectoryInitializeExec" :"powershell",
+    "Storage.OnDirectoryInitializeExecArguments" :"c:\\example\\script.ps1 c:\\example\\outFile.txt"
+}
+{CODE-BLOCK/}
+
+When launching the RavenDB server and creating the `Northwind` sample data, the script is invoked 6 times.  
+Following the example above, the content of outFile.txt will be:
+
+{CODE-BLOCK:plain}
+{
+System System C:\Raven4\Server\System C:\Raven4\Server\System\Temp C:\Raven4\Server\System\Journals\r\n
+Configuration Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Configuration C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Configuration\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Configuration\Journals\r\n
+Database Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Journals\r\n
+Index Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_ByCompany C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_ByCompany\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_ByCompany\Journals\r\n
+Index Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Product_Search C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Product_Search\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Product_Search\Journals\r\n
+Index Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_Totals C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_Totals\Temp C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwind\Indexes\Orders_Totals\Journals\r\n
+}
+{CODE-BLOCK/}
+
+
 
 {PANEL/}
 
