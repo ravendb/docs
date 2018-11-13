@@ -1,10 +1,10 @@
-﻿[
-{
-    "Path": "graph-recursive.markdown",
-    "Name": "Recursive Queries",
-    "Mappings": [],
-    "SupportedVersions": [
-        "4.2"
-    ]
-}
+[
+    {
+        "Path": "graph-queries.markdown",
+        "Name": "Graph Queries",
+        "Mappings": [],
+        "SupportedVersions": [
+            "4.2"
+        ]
+    }
 ]
