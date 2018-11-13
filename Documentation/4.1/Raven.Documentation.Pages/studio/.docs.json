@@ -1,0 +1,20 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/server",
+        "Name": "Server Management",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/database",
+        "Name": "Database Management",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]

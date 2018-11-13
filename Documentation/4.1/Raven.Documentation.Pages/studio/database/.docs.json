@@ -1,0 +1,26 @@
+﻿[
+    {
+        "Path": "/documents",
+        "Name": "Documents",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/settings",
+        "Name": "Settings",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/tasks",
+        "Name": "Tasks",
+        "Mappings": [],
+        "IsPlaceholder": "true"
+    }
+]
