@@ -66,7 +66,7 @@ An RQL statement will be built based on the fields.
 All subscriptions, are eventually translated to an RQL-like statement. These statements has four parts:
 
 * Functions definition part, like in ordinary RQL. Those functions can contain any javascript code,
-  and also supports `load` operations.
+  and also supports `load` and `include` operations.
 
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
@@ -79,6 +79,8 @@ allowing performing complex filtering logic.
 * Select statement, that defines the projection to be performed. 
 The select statements can contain function calls, allowing complex transformations.
 
+* Include statement allowing to define include path in document.  
+
 {INFO: Syntax limitations}
 Although subscription's query syntax is RQL-like there are keywords that are not supported:  
 * `Distinct`  
@@ -90,7 +92,6 @@ Although subscription's query syntax is RQL-like there are keywords that are not
 * `Min`  
 * `Max`  
 * `Avg`  
-* `Include`   
 * `Update`  
 * `Count`  
 * `Lucene`  

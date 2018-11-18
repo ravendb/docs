@@ -1,0 +1,24 @@
+[
+  {
+    "Path": "how-to-consume-data-subscription.markdown",
+    "Name": "How to Consume a Data Subscription",
+    "Mappings": [],
+    "IsPlaceholder": "true"
+  },
+    {
+        "Path": "examples.markdown",
+        "Name": "Examples",
+        "Mappings": [],
+        "SupportedVersions": [            
+            "4.1"
+        ]
+    },
+  {
+    "Path": "api-overview.markdown",
+    "Name": "API Overview",
+    "Mappings": [],
+    "SupportedVersions": [      
+      "4.1"
+    ]
+  }
+]
