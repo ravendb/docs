@@ -39,7 +39,7 @@ The `suggestion` feature is available through query extension methods. It gives 
 {CODE-TAB:java:Java suggest_5@ClientApi\Session\Querying\HowToWorkWithSuggestions.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName' 
-select suggest('fullName', 'johne', '{ Accuracy : 0.4, PageSize : 5, Distance : "JaroWinkler", SortMode : "Popularity" }')
+select suggest('fullName', 'johne', '{ "Accuracy" : 0.4, "PageSize" : 5, "Distance" : "JaroWinkler", "SortMode" : "Popularity" }')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

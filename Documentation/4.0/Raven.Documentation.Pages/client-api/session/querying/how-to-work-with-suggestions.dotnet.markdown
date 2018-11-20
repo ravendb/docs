@@ -41,7 +41,7 @@ The `Suggestion` feature is available through query extension methods. It gives 
 {CODE-TAB:csharp:Async suggest_6@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName' 
-select suggest('FullName', 'johne', '{ Accuracy : 0.4, PageSize : 5, Distance : "JaroWinkler", SortMode : "Popularity" }')
+select suggest('FullName', 'johne', '{ "Accuracy" : 0.4, "PageSize" : 5, "Distance" : "JaroWinkler", "SortMode" : "Popularity" }')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
