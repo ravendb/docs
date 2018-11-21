@@ -66,6 +66,6 @@ To ensure database exists before creating it we can use the following example
 
 {NOTE Creation of a database requires admin certificate /}
 
-## Related articles
+## Related Articles
 - [Distributed Database](../../../server/clustering/distribution/distributed-database)
 - [Create Database via Studio](../../../studio/server/databases/create-new-database/general-flow)

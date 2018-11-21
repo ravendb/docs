@@ -305,11 +305,11 @@ Memory exception occurred: System.InsufficientMemoryException: Failed to increas
 
 When encryption is turned on, RavenDB locks memory in order to avoid leaking secrets to disk. Read more [here](../../server/security/encryption/encryption-at-rest#locking-memory).
 
-By default RavenDB treats this error as catastrophic and will not continue the operation.
+By default, RavenDB treats this error as catastrophic and will not continue the operation.
 You can change this behavior but it's not recommended and should be done only after a proper security analysis is performed, see the [Security Configuration Section](../../server/configuration/security-configuration#security.donotconsidermemorylockfailureascatastrophicerror).
 
 If such a catastrophic error occurs in **Windows**, RavenDB will try to recover automatically by increasing the size of the minimum working set and retrying the operation.   
-In **Linux**, it is the admin's responibility to configure higher limits manually using:
+In **Linux**, it is the admin's responsibility to configure higher limits manually using:
 {CODE-BLOCK:plain}
 sudo prlimit --pid [process-id] --memlock=[new-limit-in-bytes]
 {CODE-BLOCK/}

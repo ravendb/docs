@@ -14,13 +14,13 @@ To manually replace the server certificate you can either edit [settings.json](.
 
 {DANGER The new certificate must contain all of the cluster domain names in the CN or ASN properties of the certificate. Otherwise you will get an authentication error because SSL/TLS requires the domain in the certificate to match with the actual domain being used. /}
 
-## Replace the Cluster Certificate using the Studio
+## Replace the Cluster Certificate Using the Studio
 
 Access the certificate view, click on `Cluster certificate` -> `Replace cluster certificate` and upload the new certificate PFX file.
 
 This will start the certificate replacement process.
 
-When running as a cluster the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm receipt and replacement of the certificate.
+When running as a cluster, the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm receipt and replacement of the certificate.
 
 Only when all nodes have confirmed, the cluster will start using this new certificate. 
 
@@ -34,7 +34,7 @@ If a node is not responding during the replacement, the operation will not compl
 
 During the process you will receive alerts in the studio and in the logs indicating the status of the operation and any errors if they occur. The alerts are displayed for each node independently.
 
-## Replace the Cluster Certificate using Powershell
+## Replace the Cluster Certificate Using Powershell
 
 Here is a little example of using the REST API directly with powershell to replace the cluster certificate:
 
@@ -56,7 +56,7 @@ $response = Invoke-WebRequest https://b.raven.development.run:8080/admin/certifi
 {CODE-BLOCK/}
 
 
-## Related articles
+## Related Articles
 
 ### Security
 
