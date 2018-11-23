@@ -12,7 +12,7 @@ Create a new database on a server.
 | **replicationFactor** | int | indicates how many nodes should contain the database |
 
 
-## DatabaseRecrod
+## DatabaseRecord
 
 `DatabaseRecord` is a collection of database configurations.  
 
@@ -27,7 +27,7 @@ Create a new database on a server.
 | - | - | - |
 | Disabled | `bool` (default: false) | [Disable](to-do) the database. |
 | Encrypted | `bool` (default: false) | Enables database [encryption](../../../server/security/encryption/database-encryption). |
-| DeletionInProgess | `Dictionary<string, DeletionInProgess>` | Mark the deletion of the database from specific nodes. |
+| DeletionInProgress | `Dictionary<string, DeletionInProgress>` | Mark the deletion of the database from specific nodes. |
 | Topology | `DatabaseTopology` | By default it is `null` and the server will decided on which nodes to place the database according to the `Replication Factor`. |
 | ConflictSolverConfig | `ConflictSolver` | Specify the strategy to resolve [Conflicts](../replication/replication-conflicts). |
 | Indexes | `Dictionary<string, IndexDefinition>` | Define [Indexes](../../../Indexes/creating-and-deploying#using-maintenance-operations) |
@@ -56,7 +56,7 @@ If `Topology` is specified, the `replicationFactor` will be ignored.
 {INFO:Information}
 To ensure database exists before creating it we can use the following example
 
-###Exapmle - EnsureDatabaseExists
+###Example - EnsureDatabaseExists
 {CODE-TABS}
 {CODE-TAB:csharp:Sync EnsureDatabaseExists@ClientApi\Operations\Server\CreateDeleteDatabase.cs /}
 {CODE-TAB:csharp:Async EnsureDatabaseExistsAsync@ClientApi\Operations\Server\CreateDeleteDatabase.cs /}
