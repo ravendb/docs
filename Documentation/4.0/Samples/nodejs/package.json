@@ -1,5 +1,5 @@
 {
     "dependencies": {
-        "ravendb": "^4.0.0-rc2"
+        "ravendb": "4.0.5"
     }
 }

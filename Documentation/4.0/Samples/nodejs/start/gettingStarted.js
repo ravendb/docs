@@ -1,7 +1,7 @@
 //region client_1
-const { DocumentStore } = require('ravendb');
+import { DocumentStore } from 'ravendb';
 
-const store = DocumentStore.create(
+const store = new DocumentStore(
     ['http://live-test.ravendb.net'],   // URL to the Server
                                         // or list of URLs
                                         // to all Cluster Servers (Nodes)
@@ -15,7 +15,7 @@ store.initialize();                     // Each DocumentStore needs to be initia
                                         // and downloads various configurations
                                         // e.g. cluster topology or client configuration
 
-await store.dispose();                  // Dispose the resources claimed by the DocumentStore
+store.dispose();                  // Dispose the resources claimed by the DocumentStore
 //endregion
 
 class Category {
@@ -38,13 +38,13 @@ function c2() {
     //region client_2
     const session = store.openSession();                // Open a session for a default 'Database'
 
-    let category = new Category("Database Category");
+    const category = new Category('Database Category');
 
     await session.store(category);                      // Assign an 'Id' and collection (Categories)
                                                         // and start tracking an entity
 
-    let product = new Product(
-        "RavenDB Database",
+    const product = new Product(
+        'RavenDB Database',
         category.Id, 
         10);
 
@@ -60,11 +60,11 @@ function c2(productId) {
     //region client_3
     const session = store.openSession();                // Open a session for a default 'Database'
 
-    let product = await session
+    const product = await session
         .include('Category')                            // Include Category
-        .load(productId)                                // Load the Product and start tracking
+        .load(productId);                                // Load the Product and start tracking
 
-    let category = await session
+    const category = await session
         .load(product.Category);                        // No remote calls,
                                                         // Session contains this entity from .include
 
@@ -80,11 +80,11 @@ function c3() {
     //region client_4
     const session = store.openSession();                // Open a session for a default 'Database'
 
-    let productNames = await session
+    const productNames = await session
         .query({ collection: 'Products' })              // Query for Products
         .whereGreaterThan('UnitsInStock', 5)            // Filter
         .skip(0).take(10)                               // Page
-        .selectFields(["Name"])                         // Project
+        .selectFields('Name')                           // Project
         .all();                                         // Materialize query
     //endregion
 }
