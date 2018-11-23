@@ -318,6 +318,32 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
                 IgnoreSubscriberErrors = true
             });
             #endregion
+
+            #region create_subscription_with_includes_rql_path
+            store.Subscriptions.Create(new SubscriptionCreationOptions()
+            {
+                Query = @"from Orders include Lines[].Product"
+            });
+            #endregion
+
+            #region create_subscription_with_includes_rql_javascript
+            store.Subscriptions.Create(new SubscriptionCreationOptions()
+            {
+                Query = @"
+                            declare function includeProducts(doc) 
+                            {
+                                doc.IncludedFields=0;
+                                doc.LinesCount = doc.Lines.length;
+                                for (let i=0; i< doc.Lines.length; i++)
+                                {
+                                    doc.IncludedFields++;
+                                    include(doc.Lines[i].Product);
+                                }
+                                return doc;
+                            }
+                            from Orders as o select includeProducts(o)"
+            });
+            #endregion
         }
 
         public interface IMaintainanceOperations
@@ -550,15 +576,17 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             }
         }
 
-        public async Task DynamicWorkerSubscription(DocumentStore store, string subscriptionId)
+        public async Task DynamicWorkerSubscription(DocumentStore store)
         {
             #region dynamic_worker
+            var subscriptionName = "My dynamic subscription";
             await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions<Order>()
-            {
-                Projection = order => new { DynanamicField_1 = "Order: " + order.Company + " Company: " + order.Employee }
+            {                
+                Name = "My dynamic subscription",
+                Projection = order => new { DynanamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee }
             });
 
-            var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker(subscriptionId);
+            var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker(subscriptionName);
             _ = subscriptionWorker.Run(async batch =>
             {
                 foreach (var item in batch.Items)
@@ -573,6 +601,72 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
             }
         }
+
+        public async Task SubscriptionWithIncludesPath(DocumentStore store)
+        {
+            #region subscription_with_includes_path_usage
+            var subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            {
+                Query = @"from Orders include Lines[].Product"
+            });
+
+            var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+            _ = subscriptionWorker.Run(async batch =>
+            {
+                using (var session = batch.OpenAsyncSession())
+                {
+                    foreach (var order in batch.Items.Select(x=>x.Result))
+                    {                        
+                        foreach(var orderLine in order.Lines)
+                        {
+                            // this line won't generate a request, because orderLine.Product was included
+                            var product = await session.LoadAsync<Product>(orderLine.Product);
+                            await RaiseNotification(order, product);
+                        }
+                        
+                    }
+                }
+            });
+            #endregion
+
+            async Task RaiseNotification(Order modifiedOrder, Product productInOrder)
+            {
+
+            }
+        }
+
+        public async Task SubscriptionsWithOpenSession(DocumentStore store)
+        {
+            #region subscription_with_open_session_usage
+            var subscriptionName = await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions()
+            {
+                Query = @"from Orders as o where o.ShippedAt = null"
+            });
+
+            var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker<Order>(subscriptionName);
+            _ = subscriptionWorker.Run(async batch =>
+            {                
+                using (var session = batch.OpenAsyncSession())
+                {                    
+                    foreach (var order in batch.Items.Select(x => x.Result))
+                    {                        
+                        await TransferOrderToShipmentCompanyAsync(order);                        
+                        order.ShippedAt = DateTime.UtcNow;
+                                                
+                    }
+
+                    // we know that we have at least one order to ship,
+                    // because the subscription query above has that in it's WHERE clause
+                    await session.SaveChangesAsync();
+                }
+            });
+            #endregion
+
+            async Task TransferOrderToShipmentCompanyAsync(Order modifiedOrder)
+            {                
+            }
+        }
+
 
         public async Task BlittableWorkerSubscription(DocumentStore store, string subscriptionId)
         {
@@ -743,5 +837,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
 
         //public delegate void AfterBatch(int documentsProcessed);
         //#endregion
+
+        
     }
 }

@@ -557,7 +557,7 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             #region dynamic_worker
             await store.Subscriptions.CreateAsync(new SubscriptionCreationOptions<Order>()
             {
-                Projection = order => new { DynanamicField_1 = "Order: " + order.Company + " Company: " + order.Employee }
+                Projection = order => new { DynanamicField_1 = "Company: " + order.Company + " Employee: " + order.Employee }
             });
 
             var subscriptionWorker = store.Subscriptions.GetSubscriptionWorker(subscriptionId);
