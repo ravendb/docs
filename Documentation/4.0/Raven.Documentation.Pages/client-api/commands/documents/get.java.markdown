@@ -18,7 +18,7 @@ There are a few methods that allow you to retrieve documents from a database:
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **id** | String | ID of the documents to get |
-| **includes** | String | Related documents to fetch along with the document |
+| **includes** | String[] | Related documents to fetch along with the document |
 | **metadataOnly** | boolean | Whether to fetch the whole document or just the metadata. |
 
 ### Example
