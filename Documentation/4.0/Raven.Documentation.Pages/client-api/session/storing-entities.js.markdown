@@ -18,7 +18,7 @@ You can pass the following arguments to the `store()` method:
 
 {CODE:nodejs store_entities_3@client-api\session\storingEntities.js /}
 
-All of the above calls accept a *callback* function as the last argument.
+All of the above calls accept an optional *callback* function as the last argument.
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -27,7 +27,7 @@ All of the above calls accept a *callback* function as the last argument.
 | **options** | object | Options object with the below properties: |
 | &nbsp;&nbsp;&nbsp;*changeVector* | string | entity *change vector* used for concurrency checks (`null` to skip check) |
 | &nbsp;&nbsp;&nbsp;*documentType* | class | class used to determine collection of the entity (extracted from entity by default)|
-| **callback** | error-first callback | callback function called when finished |
+| **callback** | error-first callback | (optional) callback function called when finished |
 
 | Return value | |
 | ------------- | ----- |

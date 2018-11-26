@@ -4,15 +4,15 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region store_entities_1
-session.store(entity); 
+session.store(entity, callback); 
 //endregion
 
 //region store_entities_2
-session.store(entity, id);
+session.store(entity, id, callback);
 //endregion
 
 //region store_entities_3
-session.store(entity, id, options);
+session.store(entity, id, options, callback);
 //endregion
 
 class Employee {
