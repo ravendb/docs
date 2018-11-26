@@ -22,7 +22,11 @@ Here is the list of available SessionOption object properties:
 | ------------- | ------------- | ----- |
 | **database** | `string` | name of database |
 | **requestExecutor** | `RequestExecutor` | RequestExecutor instance |
-| Return Value | `IDocumentSession` | Instance of a session object. |
+
+
+| Return Value | |
+| ---------- | --------- |
+|`IDocumentSession` | session instance |
 
 ## Example
 
