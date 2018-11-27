@@ -2,7 +2,7 @@
 
 {PANEL:Breaking changes in index definition}
 
-Regardless of [the data migration strategy](../../migration/server/data-migration), you have chosen you might get warnings complaining about an inability to import some indexes.
+Regardless of [the data migration strategy](../../migration/server/data-migration) you have chosen, you might get warnings complaining about an inability to import some indexes.
 
 This is due to breaking changes to index definitions and requires a manual change.
 
