@@ -21,7 +21,7 @@ function whatIsSession() {
 
         // after calling saveChanges(), an id field if exists
         // is filled by the entity's id
-        companyId = entity.getId();
+        companyId = entity.id;
     }
 
     {

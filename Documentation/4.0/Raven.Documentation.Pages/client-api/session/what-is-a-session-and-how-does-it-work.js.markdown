@@ -2,7 +2,7 @@
 
 After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on RavenDB, we start by obtaining a new *Session* object from the document store. The *Session* object will contain everything we need to perform any operation necessary.
 
-{CODE:nodejs session_usage_1@client-api\session\WhatIsSession.js /}
+{CODE:nodejs session_usage_1@client-api\session\whatIsSession.js /}
 
 The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server, and do something with it.
 
