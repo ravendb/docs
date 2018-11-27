@@ -2,10 +2,10 @@
 
 There are a few methods that allow you to retrieve documents from a database:   
 
-- [Get single document](../../../client-api/commands/documents/get#get-single-document)   
-- [Get multiple documents](../../../client-api/commands/documents/get#get-multiple-documents)   
-- [Get paged documents](../../../client-api/commands/documents/get#get-paged-documents)   
-- [Get documents by starts with](../../../client-api/commands/documents/get#get-by-starts-with)  
+- [Get single document](../../../clientApi/commands/documents/get#get-single-document)   
+- [Get multiple documents](../../../clientApi/commands/documents/get#get-multiple-documents)   
+- [Get paged documents](../../../clientApi/commands/documents/get#get-paged-documents)   
+- [Get documents by starts with](../../../clientApi/commands/documents/get#get-by-starts-with)  
 
 {PANEL:Get single document}
 
@@ -13,7 +13,7 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Syntax
 
-{CODE:nodejs get_interface_single@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_interface_single@clientApi\commands\documents\get\get.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -25,7 +25,7 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Example
 
-{CODE:nodejs get_sample_single@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_single@clientApi\commands\documents\get\get.js /}
 
 {PANEL/}
 
@@ -35,7 +35,7 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Syntax
 
-{CODE:nodejs get_interface_multiple@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_interface_multiple@clientApi\commands\documents\get\get.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -47,15 +47,15 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Example I
 
-{CODE:nodejs get_sample_multiple@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_multiple@clientApi\commands\documents\get\get.js /}
 
 ### Example II - Using Includes
 
-{CODE:nodejs get_sample_includes@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_includes@clientApi\commands\documents\get\get.js /}
 
 ### Example III - Missing Documents
 
-{CODE:nodejs get_sample_missing@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_missing@clientApi\commands\documents\get\get.js /}
 
 {PANEL/}
 
@@ -65,7 +65,7 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Syntax
 
-{CODE:nodejs get_interface_paged@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_interface_paged@clientApi\commands\documents\get\get.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -76,7 +76,7 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Example
 
-{CODE:nodejs get_sample_paged@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_paged@clientApi\commands\documents\get\get.js /}
 
 {PANEL/}
 
@@ -86,7 +86,7 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Syntax
 
-{CODE:nodejs get_interface_startswith@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_interface_startswith@clientApi\commands\documents\get\get.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -102,15 +102,15 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Example I
 
-{CODE:nodejs get_sample_startswith@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_startswith@clientApi\commands\documents\get\get.js /}
 
 ### Example II
 
-{CODE:nodejs get_sample_startswith_matches@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_startswith_matches@clientApi\commands\documents\get\get.js /}
 
 ### Example III
 
-{CODE:nodejs get_sample_startswith_matches_end@client-api\commands\documents\get\get.js /}
+{CODE:nodejs get_sample_startswith_matches_end@clientApi\commands\documents\get\get.js /}
 
 {PANEL/}
 
@@ -118,6 +118,6 @@ There are a few methods that allow you to retrieve documents from a database:
 
 ### Commands 
 
-- [Put](../../../client-api/commands/documents/put)  
-- [Delete](../../../client-api/commands/documents/delete)
-- [How to Send Multiple Commands Using a Batch](../../../client-api/commands/batches/how-to-send-multiple-commands-using-a-batch)
+- [Put](../../../clientApi/commands/documents/put)  
+- [Delete](../../../clientApi/commands/documents/delete)
+- [How to Send Multiple Commands Using a Batch](../../../clientApi/commands/batches/how-to-send-multiple-commands-using-a-batch)

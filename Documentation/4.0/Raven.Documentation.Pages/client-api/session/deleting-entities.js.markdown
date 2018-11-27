@@ -4,7 +4,7 @@ Entities can be marked for deletion by using the `delete()` method, but will *no
 
 ## Syntax
 
-{CODE:nodejs deleting_1@client-api\session\deletingEntities.js /}
+{CODE:nodejs deleting_1@clientApi\session\deletingEntities.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -13,7 +13,7 @@ Entities can be marked for deletion by using the `delete()` method, but will *no
 
 ## Example I
 
-{CODE:nodejs deleting_2@client-api\session\deletingEntities.js /}
+{CODE:nodejs deleting_2@clientApi\session\deletingEntities.js /}
 
 {NOTE: Concurrency on Delete}
 If `useOptimisticConcurrency` is set to *true* (default *false*), the `delete()` method will use loaded *employees/1* change vector for concurrency check and might throw `ConcurrencyException`.
@@ -21,7 +21,7 @@ If `useOptimisticConcurrency` is set to *true* (default *false*), the `delete()`
 
 ## Example II
 
-{CODE:nodejs deleting_3@client-api\session\deletingEntities.js /}
+{CODE:nodejs deleting_3@clientApi\session\deletingEntities.js /}
 
 {NOTE: Concurrency on Delete}
 In this example, the `delete()` method will not do any change vector based concurrency checks because the change vector for *employees/1* is unknown.
@@ -31,11 +31,11 @@ In this example, the `delete()` method will not do any change vector based concu
 
 If entity is **not** tracked by session, then executing
 
-{CODE:nodejs deleting_4@client-api\session\deletingEntities.js /}
+{CODE:nodejs deleting_4@clientApi\session\deletingEntities.js /}
 
 is equal to doing
 
-{CODE:nodejs deleting_5@client-api\session\deletingEntities.js /}
+{CODE:nodejs deleting_5@clientApi\session\deletingEntities.js /}
 
 {NOTE: Change Vector in DeleteCommandData}
 In this sample the change vector is null - this means that there will be no concurrency checks. A non-null and valid change vector value will trigger a concurrency check. 
@@ -49,10 +49,10 @@ You can read more about defer operations [here](./how-to/defer-operations).
 
 ### Session
 
-- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
-- [Opening a Session](../../client-api/session/opening-a-session)
-- [Loading Entities](../../client-api/session/loading-entities)
-- [Saving Changes](../../client-api/session/saving-changes)
+- [What is a Session and How Does it Work](../../clientApi/session/what-is-a-session-and-how-does-it-work) 
+- [Opening a Session](../../clientApi/session/opening-a-session)
+- [Loading Entities](../../clientApi/session/loading-entities)
+- [Saving Changes](../../clientApi/session/saving-changes)
 
 ### Querying
 
@@ -60,4 +60,4 @@ You can read more about defer operations [here](./how-to/defer-operations).
 
 ### Document Store
 
-- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [What is a Document Store](../../clientApi/what-is-a-document-store)

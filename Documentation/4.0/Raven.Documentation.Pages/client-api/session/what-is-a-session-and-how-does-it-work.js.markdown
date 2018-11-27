@@ -2,7 +2,7 @@
 
 After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on RavenDB, we start by obtaining a new *Session* object from the document store. The *Session* object will contain everything we need to perform any operation necessary.
 
-{CODE:nodejs session_usage_1@client-api\session\whatIsSession.js /}
+{CODE:nodejs session_usage_1@clientApi\session\whatIsSession.js /}
 
 The Client API, and using the Session object in particular, is very straightforward. Open the session, do some operations, and apply the changes to the RavenDB server. The usage of the second session is similar: open the session, get a document from the server, and do something with it.
 
@@ -17,11 +17,11 @@ The Client API implements the *Unit of Work* pattern. That has several implicati
 
 * In the context of a single session, a single document (identified by its ID) always resolves to the *same* instance.
 
-{CODE:nodejs session_usage_3@client-api\session\whatIsSession.js /}
+{CODE:nodejs session_usage_3@clientApi\session\whatIsSession.js /}
 
 * The session manages change tracking for all the entities that it has either loaded or stored.
 
-{CODE:nodejs session_usage_2@client-api\session\whatIsSession.js /}
+{CODE:nodejs session_usage_2@clientApi\session\whatIsSession.js /}
 
 ## Batching
 
@@ -41,10 +41,10 @@ This can be changed by setting `maxNumberOfRequestsPerSession` property of the `
 
 ### Session
 
-- [Opening a Session](../../client-api/session/opening-a-session)
-- [Storing Entities](../../client-api/session/storing-entities)
-- [Loading Entities](../../client-api/session/loading-entities)
-- [Saving Changes](../../client-api/session/saving-changes)
+- [Opening a Session](../../clientApi/session/opening-a-session)
+- [Storing Entities](../../clientApi/session/storing-entities)
+- [Loading Entities](../../clientApi/session/loading-entities)
+- [Saving Changes](../../clientApi/session/saving-changes)
 
 ### Querying
 
@@ -52,4 +52,4 @@ This can be changed by setting `maxNumberOfRequestsPerSession` property of the `
 
 ### Document Store
 
-- [What is a Document Store](../../client-api/what-is-a-document-store)
+- [What is a Document Store](../../clientApi/what-is-a-document-store)

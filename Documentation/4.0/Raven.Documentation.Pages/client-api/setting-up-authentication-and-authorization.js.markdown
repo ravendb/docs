@@ -8,7 +8,7 @@ The authentication options argument in `DocumentStore` constructor property allo
 
 ## Example
 
-{CODE:nodejs client_cert@client-api\certificate.js /}
+{CODE:nodejs client_cert@clientApi\certificate.js /}
 
 ## Related Articles
 
@@ -19,6 +19,6 @@ The authentication options argument in `DocumentStore` constructor property allo
 
 ### Document Store
 
-- [What is a Document Store](../client-api/what-is-a-document-store)
-- [Creating a Document Store](../client-api/creating-document-store)
-- [Setting up Default Database](../client-api/setting-up-default-database)
+- [What is a Document Store](../clientApi/what-is-a-document-store)
+- [Creating a Document Store](../clientApi/creating-document-store)
+- [Setting up Default Database](../clientApi/setting-up-default-database)
