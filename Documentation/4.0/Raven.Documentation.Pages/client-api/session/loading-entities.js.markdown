@@ -18,7 +18,8 @@ The most basic way to load a single entity is to use session's `load()` method.
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **id** | string | Identifier of a document that will be loaded. |
-| **callback** | function | returns loaded document |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **callback** | function | error-first callback, returns loaded document |
 
 | Return Value | |
 | ------------- | ----- |
@@ -63,7 +64,8 @@ To load multiple entities at once, use one of the following ways to call `load()
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **idsArray** | string[] | Multiple document identifiers to load |
-| **callback** | function | returns an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist (see Return Value below) |
+| **documentType** | function | A class constructor used for reviving the results' entities |
+| **callback** | function | error-first callback, returns an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist (see Return Value below) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -88,7 +90,8 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 | &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
 | &nbsp;&nbsp;*exclude* | string | pipe ('&#124;') separated values for which document IDs (after 'idPrefix') should **not** be matched ('?' any single character, '*' any characters) |
 | &nbsp;&nbsp;*skipAfter* | string | skip document fetching until given ID is found and return documents after that ID (default: `null`) |
-| **callback** | function | returns an array of entities matching given parameters (see Return Value below) |
+| &nbsp;&nbsp;*documentType* | function | A class constructor used for reviving the results' entities |
+| **callback** | function | error-first callback, returns an array of entities matching given parameters (see Return Value below) |
 
 | Return Value | |
 | ------------- | ----- |
@@ -120,6 +123,7 @@ Entities can be streamed from the server using the `stream()` method from the `a
 | &nbsp;&nbsp;*start* | number | number of documents that should be skipped  |
 | &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
 | &nbsp;&nbsp;*skipAfter* | string | skip document fetching until a given ID is found and returns documents after that ID (default: `null`) |
+| &nbsp;&nbsp;*documentType* | function | A class constructor used for reviving the results' entities |
 | **statsCallback** | function | callback returning information about the streaming query (amount of results, which index was queried, etc.) |
 | **callback** | function | returns a readable stream with query results (same as Return Value result below) |
 
@@ -134,13 +138,11 @@ Stream documents for a ID prefix:
 
 {CODE:nodejs loading_entities_5_1@clientApi\session\loadingEntities.js /}
 
-## Example 2
+### Example 2
 
 Fetch documents for a ID prefix directly into a writable stream:
 
 {CODE:nodejs loading_entities_5_2@clientApi\session\loadingEntities.js /}
-
-### Remarks
 
 {INFO Entities loaded using `stream()` will be transient (not attached to session). /}
 
@@ -165,6 +167,19 @@ To check if an entity is attached to a session, e.g. it has been loaded previous
 {CODE:nodejs loading_entities_6_1@clientApi\session\loadingEntities.js /}
 
 {PANEL/}
+
+### On entities loading, JS classes and the&nbsp;*documentType*&nbsp;parameter
+
+Type information about the entity and its contents is by default stored in the document metadata. Based on that its types are revived when loaded from the server.
+
+{INFO: Entity type registration }
+In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
+
+{CODE:nodejs query_1_8@clientApi\session\querying\howToQuery.js /}
+
+{INFO/}
+
+If you fail to do so, entities (and all subobjects) loaded from the server are going to be plain object literals and not instances of the original type they were stored with.
 
 ## Related Articles
 

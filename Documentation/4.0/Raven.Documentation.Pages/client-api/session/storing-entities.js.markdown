@@ -24,6 +24,7 @@ All of the above calls accept an optional *callback* function as the last argume
 | ------------- | ------------- | ----- |
 | **entity** | object | Entity that will be stored |
 | **id** | string | Entity will be stored under this ID, (`null` to generate automatically) |
+| **documentType** | class | class used to determine collection of the entity (extracted from entity by default)|
 | **options** | object | Options object with the below properties: |
 | &nbsp;&nbsp;&nbsp;*changeVector* | string | entity *change vector* used for concurrency checks (`null` to skip check) |
 | &nbsp;&nbsp;&nbsp;*documentType* | class | class used to determine collection of the entity (extracted from entity by default)|
@@ -37,7 +38,7 @@ All of the above calls accept an optional *callback* function as the last argume
 `store()` method is asynchronous (since it reaches out to server to get a new ID) and returns a `Promise`, so don't forget to use either `await`, `.then()` it or wait for the `callback` to be called *before* saving changes. 
 {WARNING/}
 
-{INFO: Storing object literals }
+{INFO: On collection name when storing object literals }
 In order to comfortably use object literals as entities set the function getting collection name based on the content of the object - `store.conventions.findCollectionNameForObjectLiteral()`
 
 {CODE:nodejs storing_literals_1@clientApi\session\storingEntities.js /}

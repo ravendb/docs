@@ -8,7 +8,7 @@ Querying capabilities can be accessed via the `documentQuery()` method in advanc
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **documentType** | function | A class constructor used for reviving the results' entities from which the collection name is determined |
+| **documentType** | class | A class constructor used for reviving the results' entities from which the collection name is determined |
 | **options** | object | |
 | &nbsp;&nbsp;*indexName* | string | Name of an index to perform a query on (exclusive with *collectionName*)  |
 | &nbsp;&nbsp;*collection* | string | Name of a collection to perform a query on (exclusive with *indexName*) |
@@ -17,7 +17,7 @@ Querying capabilities can be accessed via the `documentQuery()` method in advanc
 
 | Return Value | |
 | ------------- | ----- |
-| **Promise&lt;IDocumentQuery&gt;** | Promise resolving to query instance implementing IDocumentQuery interface containing additional query methods and extensions |
+| `Promise<IDocumentQuery>` | Promise resolving to query instance implementing IDocumentQuery interface containing additional query methods and extensions |
 
 ## Example I - Basic
 

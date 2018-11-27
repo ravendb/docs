@@ -4,6 +4,7 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region saving_changes_1
+session.saveChanges();
 session.saveChanges(callback);
 //endregion
 
