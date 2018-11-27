@@ -2,40 +2,40 @@ import { GetDocumentsCommand, DocumentStore } from "ravendb";
 
 //region get_interface_single
 new GetDocumentsCommand({
-    id: "users/1",                 // string
-    includes: [ "kids" ],          // string[]
-    metadataOnly: false,           // boolean
-    conventions                    // DocumentConventions object
+    id,
+    includes,
+    metadataOnly,
+    conventions
 });
 //endregion
 
 //region get_interface_multiple
 new GetDocumentsCommand({
-    id: [ "users/1", "users/2" ],      // string[]
-    includes: [ "field1", "field2" ],  // string[]
-    metadataOnly: false,               // boolean
-    conventions                        // DocumentConventions object
+    ids,
+    includes,
+    metadataOnly,
+    conventions
 });
 //endregion
 
 //region get_interface_paged
 new GetDocumentsCommand({
-    start: 0,                // number
-    pageSize: 100,           // number
-    conventions              // DocumentConventions object
+    start,
+    pageSize,
+    conventions
 });
 //endregion
 
 //region get_interface_startswith
 new GetDocumentsCommand({
-    start: 0,                                   // number
-    pageSize: 100,                              // number
-    startsWith: "orchestra/",                   // string
-    startsAfter: "orchestra/ny-symphony/flute", // string
-    matches: "*/violin",                        // string
-    exclude: "orchestra/paris/*",               // string
-    metadataOnly: false,                        // boolean
-    conventions                                 // DocumentConventions object
+    start,
+    pageSize,
+    startsWith,
+    startsAfter,
+    matches,
+    exclude,
+    metadataOnly,
+    conventions
 });
 //endregion
 
