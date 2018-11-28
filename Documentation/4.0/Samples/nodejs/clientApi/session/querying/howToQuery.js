@@ -21,7 +21,7 @@ session.query({
 const employees = await session.query(Employee)
     .all();
 
-// or without passing class
+// or without passing type
 const employees2 = await session.query({ collection: "Employees" })
     .all();
 
@@ -56,7 +56,7 @@ const employees = await session.advanced.documentQuery(Employee)
 //region query_1_7
 // load all entities from 'Employees' collection
 // where FirstName equals 'Robert
-const employees = session.advanced
+const employees = await session.advanced
     .rawQuery("from Employees where FirstName = 'Robert'")
     .all();
 //endregion

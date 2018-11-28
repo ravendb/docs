@@ -41,9 +41,13 @@ session.advanced.loadStartingWith(
 
 //region loading_entities_5_0
 // stream query results
+session.stream(query);          
+session.stream(query, statsCallback);          
 session.stream(query, statsCallback, callback);          
 
 // stream documents with ID starting with
+session.stream(idPrefix);          
+session.stream(idPrefix, callback);          
 session.stream(
     idPrefix,           
     {                   
