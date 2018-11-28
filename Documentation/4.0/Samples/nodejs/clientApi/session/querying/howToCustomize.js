@@ -3,6 +3,8 @@ import { DocumentStore } from "ravendb";
 const store = new DocumentStore();
 const session = store.openSession();
 
+let action, queryCustomization, seed, waitTimeout;
+
 {
     const query = session.query({ collection: "test" });
 
@@ -41,83 +43,86 @@ const session = store.openSession();
 
 class Employee {}
 
-{
-    //region customize_1_1
-    await session
-        .query(Employee)
-        .on("beforeQueryExecuted", indexQuery => {
-            // set 'pageSize' to 10
-            indexQuery.pageSize = 10;  
-        })
-        .all();
-    //endregion
-}
+async function customizeExamples() {
+    {
+        //region customize_1_1
+        await session
+            .query(Employee)
+            .on("beforeQueryExecuted", indexQuery => {
+                // set 'pageSize' to 10
+                indexQuery.pageSize = 10;  
+            })
+            .all();
+        //endregion
+    }
 
-{
-    //region customize_1_1_0
-    let queryDuration;
+    {
+        //region customize_1_1_0
+        let queryDuration;
 
-    await session.query(Employee)
-        .on("afterQueryExecuted", result => {
-            queryDuration = result.durationInMs;
-        })
-        .all();
-    //endregion
-}
+        await session.query(Employee)
+            .on("afterQueryExecuted", result => {
+                queryDuration = result.durationInMs;
+            })
+            .all();
+        //endregion
+    }
 
-{
-    //region customize_1_1_1
-    let totalStreamedResultsSize;
+    {
+        //region customize_1_1_1
+        let totalStreamedResultsSize;
 
-    await session.query(Employee)
-        .on("afterStreamExecuted", result => {
-            totalStreamedResultsSize += result.size;
-        });
+        await session.query(Employee)
+            .on("afterStreamExecuted", result => {
+                totalStreamedResultsSize += result.size;
+            });
 
-    //endregion
-}
+        //endregion
+    }
 
-{
-    //region customize_2_1
-    session.advanced.on("beforeQuery",
-        event => event.queryCustomization.noCaching());
+    {
+        //region customize_2_1
+        session.advanced.on("beforeQuery",
+            event => event.queryCustomization.noCaching());
 
-    const results = await session.query({ collection: "Employees" })
-        .whereEquals("firstName", "Robert")
-        .all();
-    //endregion
-}
+        const results = await session.query({ collection: "Employees" })
+            .whereEquals("FirstName", "Robert")
+            .all();
+        //endregion
+    }
 
-{
-    //region customize_3_1
-    session.advanced.on("beforeQuery",
-        event => event.queryCustomization.noTracking());
+    {
+        //region customize_3_1
+        session.advanced.on("beforeQuery",
+            event => event.queryCustomization.noTracking());
 
-    const results = await session.query({ collection: "Employees" })
-        .whereEquals("firstName", "Robert")
-        .all();
-    //endregion
-}
+        const results = await session.query({ collection: "Employees" })
+            .whereEquals("FirstName", "Robert")
+            .all();
+        //endregion
+    }
 
-{
-    //region customize_4_1
-    session.advanced.on("beforeQuery",
-        event => event.queryCustomization.randomOrdering());
+    {
+        //region customize_4_1
+        session.advanced.on("beforeQuery",
+            event => event.queryCustomization.randomOrdering());
 
-    // result will be ordered randomly each time
-    const results = await session.query({ collection: "Employees" })
-        .whereEquals("firstName", "Robert")
-        .all();
-    //endregion
-}
+        // result will be ordered randomly each time
+        const results = await session.query({ collection: "Employees" })
+            .whereEquals("FirstName", "Robert")
+            .all();
+        //endregion
+    }
 
-{
-    //region customize_8_1
-    session.advanced.on("beforeQuery",
-        event => event.queryCustomization.waitForNonStaleResults());
+    {
+        //region customize_8_1
+        session.advanced.on("beforeQuery",
+            event => event.queryCustomization.waitForNonStaleResults());
 
-    const results = await session.query({ collection: "Employees" })
-        .whereEquals("firstName", "Robert")
-        .all();
-    //endregion
+        const results = await session.query({ collection: "Employees" })
+            .whereEquals("FirstName", "Robert")
+            .all();
+        //endregion
+    }
+
 }

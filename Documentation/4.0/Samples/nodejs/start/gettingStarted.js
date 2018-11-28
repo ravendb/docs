@@ -1,12 +1,12 @@
 //region client_1
-import { DocumentStore } from 'ravendb';
+import { DocumentStore } from "ravendb";
 
 const store = new DocumentStore(
-    ['http://live-test.ravendb.net'],   // URL to the Server
+    ["http://live-test.ravendb.net"],   // URL to the Server
                                         // or list of URLs
                                         // to all Cluster Servers (Nodes)
 
-    'Northwind');                       // Default database that DocumentStore will interact with
+    "Northwind");                       // Default database that DocumentStore will interact with
 
 const conventions = store.conventions;  // DocumentStore customizations
 
@@ -34,17 +34,17 @@ class Product {
     }
 }
 
-function c2() {
+async function c2() {
     //region client_2
     const session = store.openSession();                // Open a session for a default 'Database'
 
-    const category = new Category('Database Category');
+    const category = new Category("Database Category");
 
     await session.store(category);                      // Assign an 'Id' and collection (Categories)
                                                         // and start tracking an entity
 
     const product = new Product(
-        'RavenDB Database',
+        "RavenDB Database",
         category.Id, 
         10);
 
@@ -56,35 +56,35 @@ function c2() {
     //endregion
 }
 
-function c2(productId) {
+async function c22(productId) {
     //region client_3
     const session = store.openSession();                // Open a session for a default 'Database'
 
     const product = await session
-        .include('Category')                            // Include Category
+        .include("Category")                            // Include Category
         .load(productId);                                // Load the Product and start tracking
 
     const category = await session
         .load(product.Category);                        // No remote calls,
                                                         // Session contains this entity from .include
 
-    product.Name = 'RavenDB';                           // Apply changes
-    category.Name = 'Database';
+    product.Name = "RavenDB";                           // Apply changes
+    category.Name = "Database";
 
     await session.saveChanges();                        // Synchronize with the Server
                                                         // one request processed in one transaction
     //endregion
 }
 
-function c3() {
+async function c3() {
     //region client_4
     const session = store.openSession();                // Open a session for a default 'Database'
 
     const productNames = await session
-        .query({ collection: 'Products' })              // Query for Products
-        .whereGreaterThan('UnitsInStock', 5)            // Filter
+        .query({ collection: "Products" })              // Query for Products
+        .whereGreaterThan("UnitsInStock", 5)            // Filter
         .skip(0).take(10)                               // Page
-        .selectFields('Name')                           // Project
+        .selectFields("Name")                           // Project
         .all();                                         // Materialize query
     //endregion
 }

@@ -1,5 +1,16 @@
 import { GetDocumentsCommand, DocumentStore } from "ravendb";
 
+let start,
+    pageSize,
+    startsWith,
+    startsAfter,
+    matches,
+    exclude,
+    metadataOnly,
+    conventions,
+    id,
+    ids;
+
 //region get_interface_single
 new GetDocumentsCommand({
     id,
@@ -40,7 +51,7 @@ new GetDocumentsCommand({
 //endregion
 
 
-function single() {
+async function single() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_single
@@ -50,7 +61,7 @@ function single() {
     //endregion
 }
 
-function multiple() {
+async function multiple() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_multiple
@@ -63,7 +74,7 @@ function multiple() {
     //endregion
 }
 
-function includes() {
+async function includes() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_includes
@@ -80,7 +91,7 @@ function includes() {
     //endregion
 }
 
-function missing() {
+async function missing() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_missing
@@ -93,7 +104,7 @@ function missing() {
     //endregion
 }
 
-function paged() {
+async function paged() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_paged
@@ -106,7 +117,7 @@ function paged() {
     //endregion
 }
 
-function startsWith() {
+async function startsWithExample() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_startswith
@@ -121,7 +132,7 @@ function startsWith() {
     //endregion
 }
 
-function startsWithMatches() {
+async function startsWithMatches() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_startswith_matches
@@ -136,7 +147,7 @@ function startsWithMatches() {
     //endregion
 }
 
-function startsWithMatchesEnd() {
+async function startsWithMatchesEnd() {
     const store = new DocumentStore();
     const session = store.openSession();
     //region get_sample_startswith_matches_end

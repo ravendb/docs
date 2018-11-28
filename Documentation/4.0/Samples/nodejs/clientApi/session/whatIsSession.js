@@ -7,7 +7,7 @@ class Company {
     }
 }
 
-function whatIsSession() {
+async function whatIsSession() {
     const store = new DocumentStore();
     //region session_usage_1
     let companyId;
