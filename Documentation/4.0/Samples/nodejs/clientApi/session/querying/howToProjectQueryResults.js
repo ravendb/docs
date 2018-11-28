@@ -1,3 +1,4 @@
+import * as assert from "assert";
 import { DocumentStore, QueryData, AbstractIndexCreationTask } from "ravendb";
 
 class Product { }
@@ -14,7 +15,7 @@ async function examples() {
             [ "Name", "City", "Country"]);
         const results = await session
             .query({ collection: "Companies" })
-            .selectFields()
+            .selectFields(queryData)
             .all();
         //endregion
     }
@@ -111,6 +112,7 @@ async function examples() {
             .whereEquals("Name", "Norske Meierier")
             .ofType(Product)
             .all();
+        assert.ok(results[0] instanceof Product);
         //endregion
     }
 
@@ -144,7 +146,11 @@ async function examples() {
     class Companies_ByContact extends AbstractIndexCreationTask {
         constructor() {
             super();
-            this.map = "from c in docs.Companies select new  { Name = c.Contact.Name, phone = c.Phone } ";
+            this.map = `from c in docs.Companies 
+                        select new { 
+                            Name = c.Contact.Name, 
+                            Phone = c.Phone 
+                        }`;
             this.storeAllFields("Yes"); // name and phone fields can be retrieved directly from index
         }
     }
