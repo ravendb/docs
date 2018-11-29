@@ -17,10 +17,11 @@ There are a few methods that allow you to retrieve documents from a database:
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **id** | string | ID of the document to get |
-| **includes** | string | Related documents to fetch along with the document |
-| **metadataOnly** | boolean | Whether to fetch the whole document or just the metadata. |
-| **conventions** | DocumentConventions | Document conventions |
+| **options** | object | |
+| &nbsp;&nbsp;*id* | string | ID of the document to get |
+| &nbsp;&nbsp;*includes* | string[] | Related documents to fetch along with the document |
+| &nbsp;&nbsp;*metadataOnly* | boolean | Whether to fetch the whole document or just the metadata. |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
 
 ### Example
 
@@ -36,12 +37,13 @@ There are a few methods that allow you to retrieve documents from a database:
 
 {CODE:nodejs get_interface_multiple@client-api\commands\documents\get\get.js /}
 
-| Options | | |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **ids** | string[] | IDs of the documents to get |
-| **includes** | string | Related documents to fetch along with the documents |
-| **metadataOnly** | boolean | Whether to fetch whole documents or just the metadata |
-| **conventions** | DocumentConventions | Document conventions |
+| **options** | object | |
+| &nbsp;&nbsp;*ids* | string[] | IDs of the documents to get |
+| &nbsp;&nbsp;*includes* | string[] | Related documents to fetch along with the documents |
+| &nbsp;&nbsp;*metadataOnly* | boolean | Whether to fetch whole documents or just the metadata |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
 
 ### Example I
 
@@ -65,11 +67,12 @@ There are a few methods that allow you to retrieve documents from a database:
 
 {CODE:nodejs get_interface_paged@client-api\commands\documents\get\get.js /}
 
-| Options | | |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **start** | number | number of documents that should be skipped  |
-| **pageSize** | number | maximum number of documents that will be retrieved |
-| **conventions** | DocumentConventions | Document conventions |
+| **options** | object | |
+| &nbsp;&nbsp;*start* | number | number of documents that should be skipped  |
+| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
 
 ### Example
 
@@ -85,16 +88,17 @@ There are a few methods that allow you to retrieve documents from a database:
 
 {CODE:nodejs get_interface_startswith@client-api\commands\documents\get\get.js /}
 
-| Options | | |
+| Parameters | | |
 | ------------- | ------------- | ----- |
-| **startsWith** | string | prefix for which documents should be returned |
-| **startAfter** | string | skip 'document fetching' until the given ID is found, and return documents after that ID (default: null) |
-| **matches** | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
-| **exclude** | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
-| **start** | number | number of documents that should be skipped |
-| **pageSize** | number | maximum number of documents that will be retrieved |
-| **metadataOnly** | boolean | specifies whether or not only document metadata should be returned |
-| **conventions** | DocumentConventions | Document conventions |
+| **options** | object | |
+| &nbsp;&nbsp;*startsWith* | string | prefix for which documents should be returned |
+| &nbsp;&nbsp;*startAfter* | string | skip 'document fetching' until the given ID is found, and return documents after that ID (default: null) |
+| &nbsp;&nbsp;*matches* | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should be matched ('?' any single character, '*' any characters) |
+| &nbsp;&nbsp;*exclude* | string | pipe ('&#124;') separated values for which document IDs (after 'startsWith') should **not** be matched ('?' any single character, '*' any characters) |
+| &nbsp;&nbsp;*start* | number | number of documents that should be skipped |
+| &nbsp;&nbsp;*pageSize* | number | maximum number of documents that will be retrieved |
+| &nbsp;&nbsp;*metadataOnly* | boolean | specifies whether or not only document metadata should be returned |
+| &nbsp;&nbsp;*conventions* | DocumentConventions | Document conventions |
 
 ### Example I
 

@@ -7,7 +7,7 @@ class Company {
     }
 }
 
-function whatIsSession() {
+async function whatIsSession() {
     const store = new DocumentStore();
     //region session_usage_1
     let companyId;
@@ -21,7 +21,7 @@ function whatIsSession() {
 
         // after calling saveChanges(), an id field if exists
         // is filled by the entity's id
-        companyId = entity.getId();
+        companyId = entity.id;
     }
 
     {

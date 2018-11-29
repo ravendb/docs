@@ -1,5 +1,12 @@
 {
+    "scripts": {
+        "lint": "eslint ."
+    },
     "dependencies": {
         "ravendb": "4.0.5"
+    },
+    "devDependencies": {
+        "eslint": "^5.9.0",
+        "eslint-plugin-import": "^2.14.0"
     }
 }

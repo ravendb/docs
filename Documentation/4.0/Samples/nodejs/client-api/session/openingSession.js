@@ -1,15 +1,16 @@
 import { DocumentStore } from "ravendb";
 
-const docStore = new DocumentStore();
+const store = new DocumentStore();
+let requestExecutor;
 
 //region open_session_1
 // Open session for a 'default' database configured in the 'DocumentStore' instance
-docStore.openSession();
+store.openSession();
 
 // Open session for a specified database
-docStore.openSession("Database1"); // database name string
+store.openSession("Database1"); // database name string
 
-docStore.openSession({
+store.openSession({
     database: "Db1",    // string (optional, defaults to 'default' database)
     requestExecutor	    // RequestExecutor instance (optional)
 });

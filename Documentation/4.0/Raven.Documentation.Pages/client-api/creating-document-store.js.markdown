@@ -2,6 +2,8 @@
 
 To create an instance of the `DocumentStore` you need to specify a list of URL addresses that point to RavenDB server nodes.
 
+{CODE:nodejs document_store_ctor@client-api\creatingDocumentStore.js /}
+
 {WARNING:Important}
 Do not open a `DocumentStore` using URL addresses that point to nodes outside your cluster.
 {WARNING/}
@@ -22,7 +24,7 @@ After `DocumentStore` initialization, the conventions are frozen - modification 
 
 ##Singleton
 
-Because the document store is a heavyweight object, there should only be one instance created per application (a singleton). Typical initialization of a document store looks as follows:
+Because the document store is a heavyweight object, there should only be one instance created per application (a singleton - simple to achieve in Node.js by wrapping it in a module). Typical initialization of a document store looks as follows:
 
 {CODE:nodejs document_store_holder@client-api\creatingDocumentStore.js /}
 
