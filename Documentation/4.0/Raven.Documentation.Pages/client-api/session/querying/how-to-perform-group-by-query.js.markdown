@@ -14,7 +14,7 @@ The supported aggregation operations are:
 {PANEL: Group By Single Field}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_1@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_1@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders
 group by ShipTo.City
@@ -27,7 +27,7 @@ select ShipTo.City as Country, sum(Lines[].Quantity) as TotalQuantity
 {PANEL: Group By Multiple Fields}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_2@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_2@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders
 group by Employee, Company
@@ -40,7 +40,7 @@ select Employee as EmployeeIdentifier, Company, count() as Count
 {PANEL: Select Composite GroupBy Key}
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_3@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_3@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Employee, Company
@@ -58,7 +58,7 @@ In order to group by values of array, you need to use `groupBy(array(...))`. The
 and calculate the count per ordered products. Underneath a [fanout](../../../indexes/fanout-indexes), an auto map-reduce index will be created to handle such query. 
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_4@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_4@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Lines[].Product
@@ -69,7 +69,7 @@ select Lines[].Product, count() as Count
 Inside a single group by statement you can mix collection values and value of another property. That's supported by `DocumentQuery` only:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_5@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_5@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Lines[].Product, ShipTo.Country 
@@ -80,7 +80,7 @@ select Lines[].Product as Product, ShipTo.Country as Country, count() as Count
 Grouping by multiple values from **the same** collection is supported as well:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_6@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_6@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by Lines[].Product, Lines[].Quantity 
@@ -94,7 +94,7 @@ Another option is to group by array content. The reduction key will be calculate
 The client API exposes the `GroupByArrayContent` extension method for that purpose.
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_7@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_7@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders
 group by array(Lines[].Product)
@@ -105,7 +105,7 @@ select key() as Products, count() as Count
 Grouping by array content and a value of another property is supported by `DocumentQuery`:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_8@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_8@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by array(Lines[].Product), ShipTo.Country 
@@ -116,7 +116,7 @@ select Lines[].Product as Products, ShipTo.Country as Country, count() as Count
 Grouping by multiple values from **the same** collection is also supported by `DocumentQuery`:
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js group_by_9@clientApi\session\querying\howToPerformGroupByQuery.js /}
+{CODE-TAB:nodejs:Node.js group_by_9@client-api\session\querying\howToPerformGroupByQuery.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders 
 group by array(Lines[].Product), array(Lines[].Quantity) 

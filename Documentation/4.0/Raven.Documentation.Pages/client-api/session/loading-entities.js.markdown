@@ -2,18 +2,18 @@
 
 There are various methods with many overloads that allow users to download documents from a database and convert them to entities. This article will cover the following methods:
 
-- [Load](../../clientApi/session/loading-entities#load)
-- [Load with Includes](../../clientApi/session/loading-entities#load-with-includes)
-- [Load - multiple entities](../../clientApi/session/loading-entities#load---multiple-entities)
-- [LoadStartingWith](../../clientApi/session/loading-entities#loadstartingwith)
-- [IsLoaded](../../clientApi/session/loading-entities#isloaded)
-- [Stream](../../clientApi/session/loading-entities#stream)
+- [Load](../../client-api/session/loading-entities#load)
+- [Load with Includes](../../client-api/session/loading-entities#load-with-includes)
+- [Load - multiple entities](../../client-api/session/loading-entities#load---multiple-entities)
+- [LoadStartingWith](../../client-api/session/loading-entities#loadstartingwith)
+- [IsLoaded](../../client-api/session/loading-entities#isloaded)
+- [Stream](../../client-api/session/loading-entities#stream)
 
 {PANEL:Load}
 
 The most basic way to load a single entity is to use session's `load()` method.
 
-{CODE:nodejs loading_entities_1_0@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_1_0@client-api\session\loadingEntities.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -27,7 +27,7 @@ The most basic way to load a single entity is to use session's `load()` method.
 
 ### Example
 
-{CODE:nodejs loading_entities_1_1@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_1_1@client-api\session\loadingEntities.js /}
 
 {NOTE In 4.x RavenDB, only string identifiers are supported. If you are upgrading from 3.x, this is a major change, because in 3.x non-string identifiers are supported. /}
 
@@ -37,7 +37,7 @@ The most basic way to load a single entity is to use session's `load()` method.
 
 When there is a *relationship* between documents, those documents can be loaded in a single request call using the `include()` and `load()` methods.
 
-{CODE:nodejs loading_entities_2_0@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_2_0@client-api\session\loadingEntities.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -45,13 +45,13 @@ When there is a *relationship* between documents, those documents can be loaded 
 
 | Return Value | |
 | ------------- | ----- |
-| object { load() } | The `include()` method by itself does not materialize any requests but returns loader containing methods such as `load()`. |
+| `object { load() }` | The `include()` method by itself does not materialize any requests but returns loader containing methods such as `load()`. |
 
 ### Example I
 
 We can use this code to also load an employee which made the order.
 
-{CODE:nodejs loading_entities_2_1@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_2_1@client-api\session\loadingEntities.js /}
 
 {PANEL/}
 
@@ -59,7 +59,7 @@ We can use this code to also load an employee which made the order.
 
 To load multiple entities at once, use one of the following ways to call `load()`.
 
-{CODE:nodejs loading_entities_3_0@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_3_0@client-api\session\loadingEntities.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -71,7 +71,7 @@ To load multiple entities at once, use one of the following ways to call `load()
 | ------------- | ----- |
 | `Promise<{ [id]: object }>` | A `Promise` resolving to an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist |
 
-{CODE:nodejs loading_entities_3_1@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_3_1@client-api\session\loadingEntities.js /}
 
 {PANEL/}
 
@@ -79,7 +79,7 @@ To load multiple entities at once, use one of the following ways to call `load()
 
 To load multiple entities that contain a common prefix, use the `loadStartingWith()` method from the `advanced` session operations.
 
-{CODE:nodejs loading_entities_4_0@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_4_0@client-api\session\loadingEntities.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -99,11 +99,11 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 ### Example I
 
-{CODE:nodejs loading_entities_4_1@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_4_1@client-api\session\loadingEntities.js /}
 
 ### Example II
 
-{CODE:nodejs loading_entities_4_2@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_4_2@client-api\session\loadingEntities.js /}
 
 {PANEL/}
 
@@ -111,7 +111,7 @@ To load multiple entities that contain a common prefix, use the `loadStartingWit
 
 Entities can be streamed from the server using the `stream()` method from the `advanced` session operations.
 
-{CODE:nodejs loading_entities_5_0@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_5_0@client-api\session\loadingEntities.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -136,13 +136,13 @@ Entities can be streamed from the server using the `stream()` method from the `a
 
 Stream documents for a ID prefix:
 
-{CODE:nodejs loading_entities_5_1@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_5_1@client-api\session\loadingEntities.js /}
 
 ### Example 2
 
 Fetch documents for a ID prefix directly into a writable stream:
 
-{CODE:nodejs loading_entities_5_2@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_5_2@client-api\session\loadingEntities.js /}
 
 {INFO Entities loaded using `stream()` will be transient (not attached to session). /}
 
@@ -152,7 +152,7 @@ Fetch documents for a ID prefix directly into a writable stream:
 
 To check if an entity is attached to a session, e.g. it has been loaded previously, use the `isLoaded()` method from the `advanced` session operations.
 
-{CODE:nodejs loading_entities_6_0@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_6_0@client-api\session\loadingEntities.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -164,7 +164,7 @@ To check if an entity is attached to a session, e.g. it has been loaded previous
 
 ### Example
 
-{CODE:nodejs loading_entities_6_1@clientApi\session\loadingEntities.js /}
+{CODE:nodejs loading_entities_6_1@client-api\session\loadingEntities.js /}
 
 {PANEL/}
 
@@ -175,7 +175,7 @@ Type information about the entity and its contents is by default stored in the d
 {INFO: Entity type registration }
 In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
 
-{CODE:nodejs query_1_8@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_8@client-api\session\querying\howToQuery.js /}
 
 {INFO/}
 
@@ -185,10 +185,10 @@ If you fail to do so, entities (and all subobjects) loaded from the server are g
 
 ### Session
 
-- [What is a Session and How Does it Work](../../clientApi/session/what-is-a-session-and-how-does-it-work) 
-- [Opening a Session](../../clientApi/session/opening-a-session)
-- [Deleting Entities](../../clientApi/session/deleting-entities)
-- [Saving Changes](../../clientApi/session/saving-changes)
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Deleting Entities](../../client-api/session/deleting-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
 
 ### Querying
 
@@ -196,4 +196,4 @@ If you fail to do so, entities (and all subobjects) loaded from the server are g
 
 ### Document Store
 
-- [What is a Document Store](../../clientApi/what-is-a-document-store)
+- [What is a Document Store](../../client-api/what-is-a-document-store)

@@ -16,7 +16,7 @@ Query is an `EventEmitter`. It emits few events allowing you to customize its be
 
 Allows you to modify the index query just before it's executed.
 
-{CODE:nodejs customize_1_0@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_1_0@client-api\session\querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -28,7 +28,7 @@ Allows you to modify the index query just before it's executed.
 
 ### Example
 
-{CODE:nodejs customize_1_1@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_1_1@client-api\session\querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -36,7 +36,7 @@ Allows you to modify the index query just before it's executed.
 
 Allows you to retrieve a raw query result after it's executed.
 
-{CODE:nodejs customize_1_0_0@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_1_0_0@client-api\session\querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -48,7 +48,7 @@ Allows you to retrieve a raw query result after it's executed.
 
 ### Example
 
-{CODE:nodejs customize_1_1_0@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_1_1_0@client-api\session\querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -56,7 +56,7 @@ Allows you to retrieve a raw query result after it's executed.
 
 Allows you to retrieve a raw result of the streaming query.
 
-{CODE:nodejs customize_1_0_1@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_1_0_1@client-api\session\querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -68,7 +68,7 @@ Allows you to retrieve a raw result of the streaming query.
 
 ### Example
 
-{CODE:nodejs customize_1_1_1@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_1_1_1@client-api\session\querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -76,7 +76,7 @@ Allows you to retrieve a raw result of the streaming query.
 
 By default, queries are cached. To disable query caching use the `noCaching()` customization.
 
-{CODE:nodejs customize_2_0@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_2_0@client-api\session\querying\howToCustomize.js /}
 
 | Return Value | |
 | ------------- | ----- |
@@ -84,7 +84,7 @@ By default, queries are cached. To disable query caching use the `noCaching()` c
 
 ### Example
 
-{CODE:nodejs customize_2_1@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_2_1@client-api\session\querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -92,7 +92,7 @@ By default, queries are cached. To disable query caching use the `noCaching()` c
 
 To disable entity tracking by `session` use `noTracking()`. Usage of this option will prevent holding the query results in memory.
 
-{CODE:nodejs customize_3_0@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_3_0@client-api\session\querying\howToCustomize.js /}
 
 | Return Value | |
 | ------------- | ----- |
@@ -100,7 +100,7 @@ To disable entity tracking by `session` use `noTracking()`. Usage of this option
 
 ### Example
 
-{CODE:nodejs customize_3_1@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_3_1@client-api\session\querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -108,7 +108,7 @@ To disable entity tracking by `session` use `noTracking()`. Usage of this option
 
 To order results randomly, use the `randomOrdering()` method.
 
-{CODE:nodejs customize_4_0@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_4_0@client-api\session\querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -120,7 +120,7 @@ To order results randomly, use the `randomOrdering()` method.
 
 ### Example
 
-{CODE:nodejs customize_4_1@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_4_1@client-api\session\querying\howToCustomize.js /}
 
 {PANEL/}
 
@@ -138,7 +138,7 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 {NOTE/}
 
 
-{CODE:nodejs customize_8_0@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_8_0@client-api\session\querying\howToCustomize.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -150,7 +150,7 @@ If the last Etag processed by the index is greater than the cutoff then the resu
 
 ### Example
 
-{CODE:nodejs customize_8_1@clientApi\session\querying\howToCustomize.js /}
+{CODE:nodejs customize_8_1@client-api\session\querying\howToCustomize.js /}
 
 {PANEL/}
 

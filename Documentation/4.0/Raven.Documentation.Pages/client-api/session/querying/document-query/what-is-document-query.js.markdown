@@ -4,7 +4,7 @@ Querying capabilities can be accessed via the `documentQuery()` method in advanc
 
 ## Syntax
 
-{CODE:nodejs document_query_1@clientApi\session\querying\documentQuery\whatIsDocumentQuery.js /}
+{CODE:nodejs document_query_1@client-api\session\querying\documentQuery\whatIsDocumentQuery.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -21,13 +21,13 @@ Querying capabilities can be accessed via the `documentQuery()` method in advanc
 
 ## Example I - Basic
 
-{CODE:nodejs document_query_2@clientApi\session\querying\documentQuery\whatIsDocumentQuery.js /}
+{CODE:nodejs document_query_2@client-api\session\querying\documentQuery\whatIsDocumentQuery.js /}
 
-{CODE:nodejs document_query_3@clientApi\session\querying\documentQuery\whatIsDocumentQuery.js /}
+{CODE:nodejs document_query_3@client-api\session\querying\documentQuery\whatIsDocumentQuery.js /}
 
 ## Example II - Querying Specified Index
 
-{CODE:nodejs document_query_4@clientApi\session\querying\documentQuery\whatIsDocumentQuery.js /}
+{CODE:nodejs document_query_4@client-api\session\querying\documentQuery\whatIsDocumentQuery.js /}
 
 ## Custom Methods and Extensions
 
@@ -42,8 +42,8 @@ Available methods:
 
 - addOrder
 - addParameter
-- [Query] [aggregateBy](../../../../clientApi/session/querying/how-to-perform-a-faceted-search)
-- [Query] [aggregateUsing](../../../../clientApi/session/querying/how-to-perform-a-faceted-search)
+- [Query] [aggregateBy](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
+- [Query] [aggregateUsing](../../../../client-api/session/querying/how-to-perform-a-faceted-search)
 - andAlso
 - boost
 - closeSubclause
@@ -55,43 +55,43 @@ Available methods:
 - first
 - firstOrDefault
 - fuzzy
-- [groupBy](../../../../clientApi/session/querying/how-to-perform-group-by-query)
-- [groupByArrayValues](../../../../clientApi/session/querying/how-to-perform-group-by-query#by-array-values)
-- [groupByArrayContent](../../../../clientApi/session/querying/how-to-perform-group-by-query#by-array-content)
+- [groupBy](../../../../client-api/session/querying/how-to-perform-group-by-query)
+- [groupByArrayValues](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-values)
+- [groupByArrayContent](../../../../client-api/session/querying/how-to-perform-group-by-query#by-array-content)
 - include
 - intersect
 - invokeAfterQueryExecuted
 - invokeAfterStreamExecuted
-- [Query] [lazily](../../../../clientApi/session/querying/how-to-perform-queries-lazily)
+- [Query] [lazily](../../../../client-api/session/querying/how-to-perform-queries-lazily)
 - moreLikeThis
 - negateNext
-- [Query] [noCaching](../../../../clientApi/session/querying/how-to-customize-query#nocaching)
-- [not](../../../../clientApi/session/querying/document-query/how-to-use-not-operator)
-- [Query] [noTracking](../../../../clientApi/session/querying/how-to-customize-query#notracking)
+- [Query] [noCaching](../../../../client-api/session/querying/how-to-customize-query#nocaching)
+- [not](../../../../client-api/session/querying/document-query/how-to-use-not-operator)
+- [Query] [noTracking](../../../../client-api/session/querying/how-to-customize-query#notracking)
 - ofType
 - openSubclause
 - orderBy
 - orderByDescending
-- [Query] [orderByDistance](../../../../clientApi/session/querying/how-to-query-a-spatial-index)
-- [Query] [orderByDistanceDescending](../../../../clientApi/session/querying/how-to-query-a-spatial-index)
+- [Query] [orderByDistance](../../../../client-api/session/querying/how-to-query-a-spatial-index)
+- [Query] [orderByDistanceDescending](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 - orderByScore
 - orderByScoreDescending
 - orElse
 - proximity
 - randomOrdering
-- [Query] [relatesToShape](../../../../clientApi/session/querying/how-to-query-a-spatial-index)
+- [Query] [relatesToShape](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 - search
 - selectFields
 - single
 - singleOrDefault
 - skip
-- [Query] [spatial](../../../../clientApi/session/querying/how-to-query-a-spatial-index)
+- [Query] [spatial](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 - statistics
 - suggestUsing
 - take
 - usingDefaultOperator
-- [Query] [waitForNonStaleResults](../../../../clientApi/session/querying/how-to-customize-query#waitfornonstaleresults)
-- [Query] [waitForNonStaleResultsAsOf](../../../../clientApi/session/querying/how-to-customize-query#waitfornonstaleresultsasof)
+- [Query] [waitForNonStaleResults](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresults)
+- [Query] [waitForNonStaleResultsAsOf](../../../../client-api/session/querying/how-to-customize-query#waitfornonstaleresultsasof)
 - where
 - whereBetween
 - whereEndsWith
@@ -102,11 +102,11 @@ Available methods:
 - whereIn
 - whereLessThan
 - whereLessThanOrEqual
-- [whereLucene](../../../../clientApi/session/querying/document-query/how-to-use-lucene)
+- [whereLucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 - whereNotEquals
-- [whereRegex](../../../../clientApi/session/querying/how-to-use-regex)
+- [whereRegex](../../../../client-api/session/querying/how-to-use-regex)
 - whereStartsWith
-- [Query] [withinRadiusOf](../../../../clientApi/session/querying/how-to-query-a-spatial-index)
+- [Query] [withinRadiusOf](../../../../client-api/session/querying/how-to-query-a-spatial-index)
 
 
 ## Remarks
@@ -117,8 +117,8 @@ By default, if the `page size` is not specified, all of the matching records wil
 
 ### Session
 
-- [How to Query](../../../../clientApi/session/querying/how-to-query)
-- [How to Use Lucene](../../../../clientApi/session/querying/document-query/how-to-use-lucene)
+- [How to Query](../../../../client-api/session/querying/how-to-query)
+- [How to Use Lucene](../../../../client-api/session/querying/document-query/how-to-use-lucene)
 
 ### Querying 
 

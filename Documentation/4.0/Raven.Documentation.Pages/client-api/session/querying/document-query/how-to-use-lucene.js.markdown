@@ -1,10 +1,10 @@
 # Session : Querying : How to use Lucene
 
-Lucene flavored syntax can be used with the `whereLucene` method, a part of the filtering methods available in `IDocumentQuery`.
+Lucene flavored syntax can be used with the `whereLucene()` method, a part of the filtering methods available in `IDocumentQuery`.
 
 ## Syntax
 
-{CODE:nodejs lucene_1@clientApi\session\querying\documentQuery\howToUseLucene.js /}
+{CODE:nodejs lucene_1@client-api\session\querying\documentQuery\howToUseLucene.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -15,7 +15,7 @@ Lucene flavored syntax can be used with the `whereLucene` method, a part of the 
 ## Example
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js lucene_2@clientApi\session\querying\documentQuery\howToUseLucene.js /}
+{CODE-TAB:nodejs:Node.js lucene_2@client-api\session\querying\documentQuery\howToUseLucene.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Companies 
 where lucene(name, 'bistro')

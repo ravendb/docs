@@ -4,7 +4,7 @@ Query results can be streamed using the `stream()` method from the `advanced` se
 
 ## Syntax
 
-{CODE:nodejs stream_1@clientApi\session\querying\howToStream.js /}
+{CODE:nodejs stream_1@client-api\session\querying\howToStream.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -18,15 +18,15 @@ Query results can be streamed using the `stream()` method from the `advanced` se
 
 ## Example I - Using Static Index
 
-{CODE:nodejs stream_2@clientApi\session\querying\howToStream.js /}
+{CODE:nodejs stream_2@client-api\session\querying\howToStream.js /}
 
 ## Example II - Dynamic Document Query
 
-{CODE:nodejs stream_3@clientApi\session\querying\howToStream.js /}
+{CODE:nodejs stream_3@client-api\session\querying\howToStream.js /}
 
 ## Example III - Dynamic Raw Query
 
-{CODE:nodejs stream_4@clientApi\session\querying\howToStream.js /}
+{CODE:nodejs stream_4@client-api\session\querying\howToStream.js /}
 
 ## Related Articles
 

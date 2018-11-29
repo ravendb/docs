@@ -12,7 +12,7 @@ The most straightforward way to issue a query is by using the `query()` method.
 
 ### Syntax
 
-{CODE:nodejs query_1_0@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_0@client-api\session\querying\howToQuery.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
@@ -29,7 +29,7 @@ The most straightforward way to issue a query is by using the `query()` method.
 
 ###Example I - Basic Dynamic Query
 
-{CODE:nodejs query_1_1@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_1@client-api\session\querying\howToQuery.js /}
 
 The above is an example of a dynamic query which doesn't require you to specify an index name. RavenDB will create an auto index automatically if necessary.
 
@@ -38,18 +38,18 @@ results, but it also indicates that the queried collection will be `Employees`.
 
 ### Example II - Query Syntax
 
-{CODE:nodejs query_1_2@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_2@client-api\session\querying\howToQuery.js /}
 
 ### Example III - Using Specific Index
 
-{CODE:nodejs query_1_4@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_4@client-api\session\querying\howToQuery.js /}
 
 
 ## session.advanced.documentQuery()
 
 ### Example IV
 
-{CODE:nodejs query_1_6@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_6@client-api\session\querying\howToQuery.js /}
 
 ## session.advanced.rawQuery()
 
@@ -57,7 +57,7 @@ Queries in RavenDB use a SQL-like language called RavenDB Query Language ([RQL](
 
 ### Example IV
 
-{CODE:nodejs query_1_7@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_7@client-api\session\querying\howToQuery.js /}
 
 ### On entities loading, JS classes and the&nbsp;*documentType*&nbsp;parameter
 
@@ -66,7 +66,7 @@ Type information about the entity and its contents is by default stored in the d
 {INFO: Entity type registration }
 In order to avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
 
-{CODE:nodejs query_1_8@clientApi\session\querying\howToQuery.js /}
+{CODE:nodejs query_1_8@client-api\session\querying\howToQuery.js /}
 
 {INFO/}
 

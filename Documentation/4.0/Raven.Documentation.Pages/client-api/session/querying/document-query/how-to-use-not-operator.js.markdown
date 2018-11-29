@@ -6,15 +6,15 @@
 
 ## Example I
 
-{CODE:nodejs not_1@clientApi\session\querying\documentQuery\howToUseNotOperator.js /}
+{CODE:nodejs not_1@client-api\session\querying\documentQuery\howToUseNotOperator.js /}
 
 ## Example II
 
-{CODE:nodejs not_2@clientApi\session\querying\documentQuery\howToUseNotOperator.js /}
+{CODE:nodejs not_2@client-api\session\querying\documentQuery\howToUseNotOperator.js /}
 
 ## Example III
 
-{CODE:nodejs not_3@clientApi\session\querying\documentQuery\howToUseNotOperator.js /}
+{CODE:nodejs not_3@client-api\session\querying\documentQuery\howToUseNotOperator.js /}
 
 ## Related Articles
 

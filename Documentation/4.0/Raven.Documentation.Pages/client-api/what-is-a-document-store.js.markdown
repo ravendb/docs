@@ -9,12 +9,12 @@ The document store object has a list of URL addresses that points to RavenDB ser
 
 The document store ensures access to the following client API features:
 
-* [Session](../clientApi/session/what-is-a-session-and-how-does-it-work)
-* [Operations](../clientApi/operations/what-are-operations)
-* [Conventions](../clientApi/configuration/conventions)
-* [Events](../clientApi/session/how-to/subscribe-to-events)
-* [Bulk insert](../clientApi/bulk-insert/how-to-work-with-bulk-insert-operation)
-* [Changes API](../clientApi/changes/what-is-changes-api)
+* [Session](../client-api/session/what-is-a-session-and-how-does-it-work)
+* [Operations](../client-api/operations/what-are-operations)
+* [Conventions](../client-api/configuration/conventions)
+* [Events](../client-api/session/how-to/subscribe-to-events)
+* [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation)
+* [Changes API](../client-api/changes/what-is-changes-api)
 
 ## Related Articles
 
@@ -25,6 +25,6 @@ The document store ensures access to the following client API features:
 
 ### Document Store
 
-- [Creating a Document Store](../clientApi/creating-document-store)
-- [Setting up Default Database](../clientApi/setting-up-default-database)
-- [Setting up Authentication and Authorization](../clientApi/setting-up-authentication-and-authorization)
+- [Creating a Document Store](../client-api/creating-document-store)
+- [Setting up Default Database](../client-api/setting-up-default-database)
+- [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)

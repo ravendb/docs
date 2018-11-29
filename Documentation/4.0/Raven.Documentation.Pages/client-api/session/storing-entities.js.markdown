@@ -8,15 +8,15 @@ You can pass the following arguments to the `store()` method:
 
 - entity only: Stores the entity in the session, then extracts the ID from the entity or generates a new one if it's not available.
 
-{CODE:nodejs store_entities_1@clientApi\session\storingEntities.js /}
+{CODE:nodejs store_entities_1@client-api\session\storingEntities.js /}
 
 - entity and an id: Stores the entity in a session with given ID.
 
-{CODE:nodejs store_entities_2@clientApi\session\storingEntities.js /}
+{CODE:nodejs store_entities_2@client-api\session\storingEntities.js /}
 
 - entity, an id and store options: Stores the entity in a session with given ID, forces concurrency check with given change vector.
 
-{CODE:nodejs store_entities_3@clientApi\session\storingEntities.js /}
+{CODE:nodejs store_entities_3@client-api\session\storingEntities.js /}
 
 All of the above calls accept an optional *callback* function as the last argument.
 
@@ -41,7 +41,7 @@ All of the above calls accept an optional *callback* function as the last argume
 {INFO: On collection name when storing object literals }
 In order to comfortably use object literals as entities set the function getting collection name based on the content of the object - `store.conventions.findCollectionNameForObjectLiteral()`
 
-{CODE:nodejs storing_literals_1@clientApi\session\storingEntities.js /}
+{CODE:nodejs storing_literals_1@client-api\session\storingEntities.js /}
 
 This needs to be done before an `initialize()` call on `DocumentStore` instance. If you fail to do so, your entites will land up in *@empty* collection having an *UUID* for an ID.
 
@@ -49,16 +49,16 @@ This needs to be done before an `initialize()` call on `DocumentStore` instance.
 
 ## Example
 
-{CODE:nodejs store_entities_5@clientApi\session\storingEntities.js /}
+{CODE:nodejs store_entities_5@client-api\session\storingEntities.js /}
 
 ## Related Articles
 
 ### Session
 
-- [What is a Session and How Does it Work](../../clientApi/session/what-is-a-session-and-how-does-it-work) 
-- [Opening a Session](../../clientApi/session/opening-a-session)
-- [Loading Entities](../../clientApi/session/loading-entities)
-- [Saving Changes](../../clientApi/session/saving-changes)
+- [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
+- [Opening a Session](../../client-api/session/opening-a-session)
+- [Loading Entities](../../client-api/session/loading-entities)
+- [Saving Changes](../../client-api/session/saving-changes)
 
 ### Querying
 
@@ -66,4 +66,4 @@ This needs to be done before an `initialize()` call on `DocumentStore` instance.
 
 ### Document Store
 
-- [What is a Document Store](../../clientApi/what-is-a-document-store)
+- [What is a Document Store](../../client-api/what-is-a-document-store)

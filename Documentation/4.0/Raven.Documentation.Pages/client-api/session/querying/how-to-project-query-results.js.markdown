@@ -13,7 +13,7 @@ The most common way to perform a query with projection is to use the `selectFiel
 ### Example I - Projecting Individual Fields of the Document
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_1@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_1@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Companies
 select Name, Address.City as City, Address.Country as Country
@@ -23,7 +23,7 @@ select Name, Address.City as City, Address.Country as Country
 ### Example II - Projecting Arrays and Objects
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_2@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_2@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders
 select ShipTo, Lines[].ProductName as Products
@@ -33,7 +33,7 @@ select ShipTo, Lines[].ProductName as Products
 ### Example III - Projection with Expression
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_3@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_3@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e
 select {
@@ -45,7 +45,7 @@ select {
 ### Example IV - Projection with `declared function`
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_12@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_12@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 declare function output(e) {
 	var format = function(p){ return p.FirstName + " " + p.LastName; };
@@ -58,7 +58,7 @@ from Employees as e select output(e)
 ### Example V - Projection with Calculation
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_4@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_4@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders as o
 select {
@@ -71,7 +71,7 @@ select {
 ### Example VI - Projection Using a Loaded Document
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_5@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_5@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders as o
 load o.Company as c
@@ -85,7 +85,7 @@ select {
 ### Example VII - Projection with Dates
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_6@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_6@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select { 
@@ -99,7 +99,7 @@ select {
 ### Example VIII - Projection with Raw JavaScript Code
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_7@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_7@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select {
@@ -112,7 +112,7 @@ select {
 ### Example IX - Projection with Metadata
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_13@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_13@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e 
 select {
@@ -125,12 +125,12 @@ select {
 ### Example X
 
 {CODE-TABS}
-{CODE-TAB:nodejs:Node.js projections_8@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Node.js projections_8@client-api\session\querying\howToProjectQueryResults.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Companies/ByContact' 
 select Name, Phone
 {CODE-TAB-BLOCK/}
-{CODE-TAB:nodejs:Index projections_9_0@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE-TAB:nodejs:Index projections_9_0@client-api\session\querying\howToProjectQueryResults.js /}
 
 {CODE-TABS/}
 
@@ -142,7 +142,7 @@ select Name, Phone
 
 ### Example
 
-{CODE:nodejs projections_10@clientApi\session\querying\howToProjectQueryResults.js /}
+{CODE:nodejs projections_10@client-api\session\querying\howToProjectQueryResults.js /}
 
 {PANEL/}
 
