@@ -20,11 +20,16 @@ To execute facet (aggregation) query using the session `query()` method, use the
 {INFO/}
 
 `FacetAggregation` is one of the following:
-* `None` 
-* `Max` 
-* `Min` 
-* `Average`
-* `Sum`;
+
+* `"None"` 
+
+* `"Max"` 
+
+* `"Min"` 
+
+* `"Average"`
+
+* `"Sum"`
 
 #### Facet
 
