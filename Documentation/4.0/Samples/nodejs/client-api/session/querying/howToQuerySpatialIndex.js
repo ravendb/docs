@@ -137,7 +137,7 @@ async function sample() {
                 f => f.withinRadius(10, 32.1234, 23.4321)
             )
             .orderByDistance(
-                new PointField("latitude", "longtude"),
+                new PointField("latitude", "longitude"),
                 32.12324, 23.4321)
             .all();
         //endregion
@@ -156,7 +156,7 @@ async function sample() {
                 f => f.withinRadius(10, 32.1234, 23.4321)
             )
             .orderByDistanceDescending(
-                new PointField("latitude", "longtude"),
+                new PointField("latitude", "longitude"),
                 32.12324, 23.4321)
             .all();
         //endregion
