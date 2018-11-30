@@ -8,7 +8,7 @@ Query statistics can provide important information about a query like duration, 
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **stats** | `QueryStatistics` | Statistics for query. |
+| **statsCallback** | `(stats) => void` | Callback passing the `QueryStatistics` object for query. |
 
 ## Example
 
