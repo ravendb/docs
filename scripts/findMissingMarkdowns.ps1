@@ -3,6 +3,8 @@ param (
     [array] $LanguagesToCheck = @("dotnet", "java", "js")
 )
 
+$ErrorActionPreference = "Stop"
+
 $validationFailed = $false;
 
 function Get-MarkdownKey($file) {
@@ -24,7 +26,7 @@ function Validate-Markdown($key, $languages, $folder) {
 
     foreach ($expectedLang in $LanguagesToCheck) {
         if (-not ($languages -contains $expectedLang)) {
-            $validationFailed = $true;
+            $global:validationFailed = $true;
             Write-Host "Missing $expectedLang for $key in $folder"
         }
     }
@@ -69,7 +71,7 @@ function Traverse-Documentation() {
     $path = [io.path]::combine(".", $Version, "Raven.Documentation.Pages");
     Traverse-Pages $path;
 
-    if ($validationFailed) {
+    if ($global:validationFailed) {
         Write-Error "Validation failed"
     }
     else {
