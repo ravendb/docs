@@ -4,15 +4,13 @@ import { DocumentStore } from "ravendb";
 const store = new DocumentStore();
 const session = store.openSession();
 
-{
+class Employee {}
 
-    class Employee {}
-
-    class User {
-        constructor(name) {
-            this.name = name;
-        }
+class User {
+    constructor(name) {
+        this.name = name;
     }
+}
 
 async function sample() {
     {
@@ -46,6 +44,7 @@ async function sample() {
 }
 
 {
+    let entity;
     //region get_metadata_1
     session.advanced.getMetadataFor(entity);
     //endregion

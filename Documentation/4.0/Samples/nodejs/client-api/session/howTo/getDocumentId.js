@@ -14,9 +14,9 @@ class Comment {
 //endregion
 
 {
-    let entity;
+    let instance;
     //region get_document_id_1
-    session.advanced.getDocumentId(entity);
+    session.advanced.getDocumentId(instance);
     //endregion
 }
 
@@ -26,9 +26,7 @@ async function sample() {
     {
         const session = store.openSession();
         //region get_document_id_2
-        const commentId = session
-            .advanced
-            .getDocumentId(comment);    // e.g. comments/1-A
+        const commentId = session.advanced.getDocumentId(comment);    // e.g. comments/1-A
         //endregion
     }
 }

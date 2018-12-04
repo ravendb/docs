@@ -30,6 +30,7 @@
         ],
         "no-unused-vars": "off",
         "import/named": "error",
-        "import/no-unresolved": "error"
+        "import/no-unresolved": "error",
+        "no-console": "off"
     }
 }
