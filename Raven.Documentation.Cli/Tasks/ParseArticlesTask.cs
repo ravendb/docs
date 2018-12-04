@@ -15,7 +15,7 @@ namespace Raven.Documentation.Cli.Tasks
         {
         }
 
-        private static string DefaultArticleDirectory => Path.Combine(GetSolutionPath, "Articles\\");
+        private static string DefaultArticleDirectory => Path.Combine(GetSolutionPath, "Articles");
 
         public override void Run(Options options = null)
         {
