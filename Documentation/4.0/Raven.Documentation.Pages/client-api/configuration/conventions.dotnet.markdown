@@ -83,16 +83,17 @@ Changes the way the operation is fetching the operation status when waiting for 
 
 ## Changing fields/properties naming convention 
 
+By default whatever casing convention you use in your entities' fields will be reflected server-side.
 
-RavenDB clients use different field/properties naming conventions by default:
+If following language-specific field casing conventions RavenDB clients use different field/properties naming conventions:
 
-| Client | Default convention | Example |
+| Language | Default convention | Example |
 | ------------- | ----- | --- |
 | C# | PascalCase | OrderLines |
 | Java | camelCase | orderLines |
-| Node | camelCase | orderLines |
+| JavaScript | camelCase | orderLines |
 
-However this option can be configured to allow inter-language operability.
+This can be configured to allow inter-language operability e.g. store data PascalCase, but keep fields in the application code camelCase.
 
 ### Using camelCase in C# client
 
