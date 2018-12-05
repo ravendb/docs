@@ -24,7 +24,7 @@ async function examples() {
         const stream = await session.advanced.stream(query);
 
         stream.on("data", data => {
-            // Employee { firstName: "Robert", lastName: "Smith" id: "employees/1-A" }
+            // Employee { FirstName: "Robert", LastName: "Smith" id: "employees/1-A" }
         });
 
         stream.on("error", err => {
@@ -48,7 +48,7 @@ async function examples() {
             .stream(query, stats => streamStats = stats);
 
         stream.on("data", data => {
-            // Employee { firstName: "Robert", lastName: "Smith" id: "employees/1-A" }
+            // Employee { FirstName: "Robert", LastName: "Smith" id: "employees/1-A" }
         });
 
         stream.on("error", err => {
@@ -69,7 +69,7 @@ async function examples() {
         const stream = session.advanced.stream(rawQuery);
 
         stream.on("data", data => {
-            // Employee { firstName: "Robert", lastName: "Smith" id: "employees/1-A" }
+            // Employee { FirstName: "Robert", LastName: "Smith" id: "employees/1-A" }
         });
 
         stream.on("error", err => {

@@ -12,7 +12,7 @@ async function examples() {
             .groupBy("ShipTo.Country")
             .selectKey("ShipTo.Country", "Country")
             .selectSum(new GroupByField("Lines[].Quantity", "OrderedQuantity"))
-            .ofType(CountryAndQuantity.class)
+            .ofType(CountryAndQuantity)
             .all();
         //endregion
     }
