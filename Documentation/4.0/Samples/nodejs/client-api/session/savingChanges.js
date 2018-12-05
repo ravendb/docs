@@ -6,8 +6,7 @@ const store = new DocumentStore();
 const session = store.openSession();
 
 //region saving_changes_1
-session.saveChanges();
-session.saveChanges(callback);
+session.saveChanges([callback]);
 //endregion
 
 class Employee {

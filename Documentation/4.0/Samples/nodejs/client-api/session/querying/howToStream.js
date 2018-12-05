@@ -7,9 +7,7 @@ const session = documentStore.openSession();
 
 {
     //region stream_1
-    session.advanced.stream(query);
-    session.advanced.stream(query, statsCallback);
-    session.advanced.stream(query, statsCallback, callback);
+    session.advanced.stream(query, [statsCallback], [callback]);
     //endregion
 }
 

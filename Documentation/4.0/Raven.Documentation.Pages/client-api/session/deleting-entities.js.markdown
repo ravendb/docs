@@ -9,7 +9,7 @@ Entities can be marked for deletion by using the `delete()` method, but will *no
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **entity** or **id** | object or string | instance of the entity to delete or the entity ID |
-| **expectedChangeVector** | string | a change vector to use for concurrency checks |
+| **changeVector** | string | a change vector to use for concurrency checks |
 
 ## Example I
 

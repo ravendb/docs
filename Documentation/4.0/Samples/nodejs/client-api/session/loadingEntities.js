@@ -14,15 +14,14 @@ let query,
     start,
     pageSize,
     exclude,
-    startAfter;
+    startAfter,
+    options;
 
 const store = new DocumentStore();
 const session = store.openSession();
 
 //region loading_entities_1_0
-session.load(id);
-session.load(id, callback);
-session.load(id, documentType, callback);
+session.load(id, [documentType], [callback]);
 //endregion
 
 //region loading_entities_2_0
@@ -30,52 +29,20 @@ session.include(path);
 //endregion
 
 //region loading_entities_3_0
-session.load(idsArray, callback); 
-session.load(idsArray, documentType, callback); 
-session.load(
-    idsArray, 
-    { 
-        includes, 
-        documentType 
-    }, 
-    callback); 
+session.load(idsArray, [documentType], [callback]); 
+session.load(idsArray, [options], [callback]);
 //endregion
 
 //region loading_entities_4_0
-session.advanced.loadStartingWith(
-    idPrefix,           
-    { 
-        matches,        
-        start,          
-        pageSize,       
-        exclude,        
-        startAfter,
-        documentType	    
-    },
-    callback);
+session.advanced.loadStartingWith(idPrefix, [options], [callback]);          
 //endregion
 
 //region loading_entities_5_0
 // stream query results
-session.stream(query);          
-session.stream(query, statsCallback);          
-session.stream(query, statsCallback, callback);          
+session.stream(query, [statsCallback], [callback]);          
 
 // stream documents with ID starting with
-session.stream(idPrefix);          
-session.stream(idPrefix, callback);          
-session.stream(
-    idPrefix,           
-    {                   
-        matches,        
-        start,          
-        pageSize,       
-        exclude,        
-        startAfter,
-        documentType	    
-    },
-    callback);          
-
+session.stream(idPrefix, [options], [callback]);          
 //endregion
 
 //region loading_entities_6_0

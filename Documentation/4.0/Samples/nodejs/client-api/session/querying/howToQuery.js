@@ -1,6 +1,6 @@
 import { DocumentStore, AbstractIndexCreationTask } from "ravendb";
 
-let documentType, indexName, collection;
+let documentType, indexName, collection, options;
 
 const documentStore = new DocumentStore();
 const session = documentStore.openSession();
@@ -10,12 +10,7 @@ class Employee {}
 
 //region query_1_0
 session.query(documentType);
-
-session.query({
-    collection,
-    indexName,
-    documentType
-});
+session.query(options);
 //endregion
 
 async function examples() {

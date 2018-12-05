@@ -7,8 +7,8 @@ const session = documentStore.openSession();
     let fieldName, value, exact;
     const query = session.query();
     //region query_1_0
-    query.whereEquals(fieldName, value, exact);
-    query.whereNotEquals(fieldName, value, exact);
+    query.whereEquals(fieldName, value, [exact]);
+    query.whereNotEquals(fieldName, value, [exact]);
 
     // ... rest of where methods
     //endregion

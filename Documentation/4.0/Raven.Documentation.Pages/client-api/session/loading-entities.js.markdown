@@ -65,6 +65,9 @@ To load multiple entities at once, use one of the following ways to call `load()
 | ------------- | ------------- | ----- |
 | **idsArray** | string[] | Multiple document identifiers to load |
 | **documentType** | function | A class constructor used for reviving the results' entities |
+| **options** | string | Options with the following properties |
+| &nbsp;&nbsp;*documentType* | function | A class construcor used for reviving the results' entities |
+| &nbsp;&nbsp;*includes* | string[] | Field paths in documents in which the server should look for 'referenced' documents. |
 | **callback** | function | error-first callback, returns an object mapping document identifiers to `object` or `null` if a document with given ID doesn't exist (see Return Value below) |
 
 | Return Value | |

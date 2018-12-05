@@ -31,13 +31,11 @@ let action, queryCustomization, seed, waitTimeout;
     //endregion
 
     //region customize_4_0
-    queryCustomization.randomOrdering();
-    queryCustomization.randomOrdering(seed);
+    queryCustomization.randomOrdering([seed]);
     //endregion
 
     //region customize_8_0
-    queryCustomization.waitForNonStaleResults();
-    queryCustomization.waitForNonStaleResults(waitTimeout);
+    queryCustomization.waitForNonStaleResults([waitTimeout]);
     //endregion
 }
 
