@@ -60,7 +60,7 @@ It determines if the client will send headers to the server indicating that it a
 
 By default whatever casing convention you use in your entities' fields will be reflected server-side.
 
-If following language-specific key casing conventions RavenDB clients use different field/properties naming conventions:
+If following language-specific field casing conventions RavenDB clients use different field/properties naming conventions:
 
 | Language | Default convention | Example |
 | ------------- | ----- | --- |
