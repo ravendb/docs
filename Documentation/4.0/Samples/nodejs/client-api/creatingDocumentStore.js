@@ -4,9 +4,7 @@ let urls, database, authOptions;
 
 {
     //region document_store_ctor
-    new DocumentStore(urls);
-    new DocumentStore(urls, database);
-    new DocumentStore(urls, database, authOptions);
+    new DocumentStore(urls, [database], [authOptions]);
     //endregion
 }
 

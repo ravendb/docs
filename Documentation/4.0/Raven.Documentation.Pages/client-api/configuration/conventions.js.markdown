@@ -2,7 +2,7 @@
 
 Conventions give you the ability to customize the Client API behavior. They are accessible from `DocumentStore` object:
 
-{CODE:java conventions_1@ClientApi\Configuration\Conventions.java /}
+{CODE:nodejs conventions_1@client-api\configuration\conventions.js /}
 
 You will find many settings to overwrite, allowing you to adjust the client according to your needs. The conventions apply to many different client behaviors. Some of them are grouped and described in the separate articles of this section.
 
@@ -12,7 +12,7 @@ You will find many settings to overwrite, allowing you to adjust the client acco
 
 If you need to modify the maximum http cache size, you can use the following setting:
 
-{CODE:java MaxHttpCacheSize@ClientApi\Configuration\Conventions.java /}
+{CODE:nodejs MaxHttpCacheSize@client-api\configuration\conventions.js /}
 
 {NOTE: Default size}
 
@@ -26,7 +26,7 @@ The cache is created per database you use.
 
 To disable the caching globally you can set the `maxHttpCacheSize` value to zero:
 
-{CODE:java disable_cache@ClientApi\Configuration\Conventions.java /}
+{CODE:nodejs disable_cache@client-api\configuration\conventions.js /}
 
 **In this scenario, all the requests will be sent to the server to fetch the data.**
 
@@ -36,32 +36,25 @@ To disable the caching globally you can set the `maxHttpCacheSize` value to zero
 
 Gets or sets maximum number of GET requests per session. Default: `30`.
 
-{CODE:java MaxNumberOfRequestsPerSession@ClientApi\Configuration\Conventions.java /}
+{CODE:nodejs MaxNumberOfRequestsPerSession@client-api\configuration\conventions.js /}
 
 ##UseOptimisticConcurrency
 
 Controls whether optimistic concurrency is set to true by default for all future sessions. Default: `false`.
 
-{CODE:java UseOptimisticConcurrency@ClientApi\Configuration\Conventions.java /}
+{CODE:nodejs UseOptimisticConcurrency@client-api\configuration\conventions.js /}
 
 ##DisableTopologyUpdates
 
 Forces you to disable updates of database topology. Default: `false`.
 
-{CODE:java DisableTopologyUpdates@ClientApi\Configuration\Conventions.java /}
-
-##SaveEnumsAsIntegers
-
-It determines if Java `Enum` types should be saved as integers or strings. Default: `false`.
-
-{CODE:java SaveEnumsAsIntegers@ClientApi\Configuration\Conventions.java /}
-
+{CODE:nodejs DisableTopologyUpdates@client-api\configuration\conventions.js /}
 
 ##UseCompression
 
 It determines if the client will send headers to the server indicating that it allows compression to be used. Default: `true`.
 
-{CODE:java UseCompression@ClientApi\Configuration\Conventions.java /}
+{CODE:nodejs UseCompression@client-api\configuration\conventions.js /}
 
 ## Changing fields/properties naming convention 
 
@@ -77,11 +70,17 @@ If following language-specific field casing conventions RavenDB clients use diff
 
 This can be configured to allow inter-language operability e.g. store data PascalCase, but keep fields in the application code camelCase.
 
-### Using PascalCase in Java client
+### Example: storing data PascalCase, have camelCase in application entities
+
+If you'd like to transform field names to be PascalCase server-side, but keep using camelCase in your Node.js application. You need to set 2 properties (since JS is not aware of local classes/objects field names):
+
+* `conventions.remoteEntityFieldNameConvention` - for transforming data before it's sent *to* the server
+
+* `conventions.entityFieldNameConvention` - for transforming data once it's loaded *from* the server
 
 You have to set *property naming strategy*:
 
-{CODE:java PropertyCasing@ClientApi\Configuration\Conventions.java /}
+{CODE:nodejs PropertyCasing@client-api\configuration\conventions.js /}
 
 
 ## Related Articles

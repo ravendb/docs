@@ -7,8 +7,7 @@ let entity, id, changeVector;
 
 //region deleting_1
 session.delete(entity);
-session.delete(id);
-session.delete(id, changeVector);
+session.delete(id, [changeVector]);
 //endregion
 
 class Employee {}

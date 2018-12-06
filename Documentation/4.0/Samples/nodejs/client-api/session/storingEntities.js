@@ -6,18 +6,16 @@ const session = store.openSession();
 let id, entity, callback, documentType, options, urls, database;
 
 //region store_entities_1
-session.store(entity); 
-session.store(entity, callback); 
-session.store(entity, documentType, callback); 
+session.store(entity, [documentType], [callback]); 
 //endregion
 
 //region store_entities_2
-session.store(entity, id, callback);
+session.store(entity, id, [callback]);
 //endregion
 
 //region store_entities_3
-session.store(entity, id, options, callback);
-session.store(entity, id, documentType, callback);
+session.store(entity, id, [options], [callback]);
+session.store(entity, id, [documentType], [callback]);
 //endregion
 
 class Employee {
