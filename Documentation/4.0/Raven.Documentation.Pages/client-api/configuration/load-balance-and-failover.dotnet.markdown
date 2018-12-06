@@ -6,8 +6,8 @@
 
 * This convention gets or sets the default load-balancing behavior of ***Read*** requests from the client to RavenDB cluster.  
 
-* The method selected in the convention determines which node the client's _RequestExecuter_ will send the ***Read*** requests to,  
-  and which node to **failover** to in case of issues with the ***Read*** request.  
+* The method selected in the convention determines which node the client's `RequestExecutor` will send the ***Read*** requests to,  
+  and which node to *failover* to in case of issues with the ***Read*** request.  
 
 * Note: ***Write*** requests will always access the [Preferred Node](../../client-api/configuration/load-balance-and-failover#preferred-node) calculated by the client.  
 

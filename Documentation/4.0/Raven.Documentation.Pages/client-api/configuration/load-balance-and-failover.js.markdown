@@ -23,16 +23,16 @@
 
 {PANEL: ReadBalanceBehavior Options}
 
-  * `NONE`  
+  * `None`  
     * **Load-balance**: No load balancing will occur. The client will always select the _preferred node_.  
     * **Failover**: The client will failover nodes in the order they appear in the _topology nodes list_.  
       Note: The list can be reordered, see [Database Group Actions](../../studio/database/settings/manage-database-group#database-group-topology---actions).  
 
-  * `ROUND_ROBIN`  
+  * `RoundRobin`  
     * **Load-balance**: For each _Read_ request, the client will address the next node from the _topology nodes list_.  
     * **Failover**: In case of a failure, the client will try the next node in the round robin order. 
 
-  * `FASTEST_NODE`  
+  * `FastestNode`  
     * **Load-balance**: _Read_ request will go to the fastest node.  
       The fastest node is determined by a [Speed Test](../../client-api/cluster/speed-test).  
     * **Failover**: In case of a failure, a speed test will be triggered again and in the meantime the client will use the _preferred node_.  
@@ -47,7 +47,7 @@
 
 {PANEL: Session Usage}
 
-* When using `ROUND_ROBIN` or `FASTEST_NODE` it might happen that the next [session](../../client-api/session/opening-a-session) you open will access a different node.  
+* When using `RoundRobin` or `FastestNode` it might happen that the next [session](../../client-api/session/opening-a-session) you open will access a different node.  
 
 * A short delay in replicating changes to all nodes in the cluster is acceptable in most cases.  
   If you need to ensure that the next request will be able to _immediately_ read what you just wrote, 
