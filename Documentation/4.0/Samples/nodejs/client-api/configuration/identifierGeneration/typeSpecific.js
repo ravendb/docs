@@ -4,12 +4,16 @@ import { DocumentStore, PutCommandDataWithJson, DeleteCommandData } from "ravend
 const store = new DocumentStore();
 const session = store.openSession();
 
+let idConvention, clazz;
+
+const conventions = store.conventions;
+
 class Employee {}
 
 {
     //region employees_custom_async_convention
     store.conventions.registerIdConvention(Employee,
-        (dbName, entity) => Promise.resolve(`employees/${entity.lastName}/${entity.firstName}`); 
+        (dbName, entity) => Promise.resolve(`employees/${entity.lastName}/${entity.firstName}`)); 
 
     // or using async keyword
     store.conventions.registerIdConvention(Employee,
