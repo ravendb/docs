@@ -1,7 +1,7 @@
 import * as assert from "assert";
 import { DocumentStore } from "ravendb";
 
-let database, options, clazz, subscriptionName, subscriptionWorker;
+let database, options, clazz, subscriptionName;
 
 class InvalidOperationException extends Error {}
 
@@ -10,10 +10,11 @@ const session = store.openSession();
 
 {
     //region subscriptionCreationOverloads
+    store.subscriptions.create(clazz, [database]);
     store.subscriptions.create(options, [database]);
-    store.subscriptions.create(clazz, [options], [database]);
 
-    store.subscriptions.createForRevisions(clazz, [options], [database]);
+    store.subscriptions.createForRevisions(clazz, [database]);
+    store.subscriptions.createForRevisions(options, [database]);
     //endregion
 }
 
@@ -29,6 +30,7 @@ const session = store.openSession();
     }
 
     {
+        let subscriptionWorker;
         //region subscriptionWorkerRunning
         subscriptionWorker.on("batch", (batch, callback) => { });
         subscriptionWorker.on("error", (error) => {});
@@ -53,22 +55,21 @@ const session = store.openSession();
     //endregion
 
     async function createExamples() {
-        let name;
 
         class Order {}
 
         {
             //region create_whole_collection_generic_with_name
-            name = await store.subscriptions.create({ 
-                documentType: Order,
-                name: "OrdersProcessingSubscription"
+            const name = await store.subscriptions.create({ 
+                name: "OrdersProcessingSubscription",
+                documentType: Order
             });
             //endregion
         }
 
         {
             //region create_whole_collection_generic_with_mentor_node
-            name = store.subscriptions.create({
+            const name = await store.subscriptions.create({
                 documentType: Order,
                 mentorNode: "D"
             });
@@ -77,13 +78,13 @@ const session = store.openSession();
 
         {
             //region create_whole_collection_generic1
-            name = store.subscriptions.create({ documentType: Order });
+            store.subscriptions.create(Order);
             //endregion
         }
 
         {
             //region create_whole_collection_RQL
-            name = store.subscriptions.create({ query: "from Orders" });
+            store.subscriptions.create({ query: "from Orders" });
             //endregion
         }
 
@@ -97,7 +98,7 @@ const session = store.openSession();
                 from Orders as o 
                 where getOrderLinesSum(o) > 100`;
 
-            name = store.subscriptions.create({ query });
+            const name = await store.subscriptions.create({ query });
             //endregion
         }
 
@@ -123,19 +124,19 @@ const session = store.openSession();
                  where getOrderLinesSum(o) > 100 
                  select projectOrder(o)`;
 
-            name = store.subscriptions.create({ query });
+            const name = await store.subscriptions.create({ query });
             //endregion
         }
 
         {
             //region create_simple_revisions_subscription_generic
-            name = store.subscriptions.createForRevisions({ documentType: Order });
+            const name = await store.subscriptions.createForRevisions(Order);
             //endregion
         }
 
         {
             //region create_simple_revisions_subscription_RQL
-            name = store.subscriptions().createForRevisions({
+            const name = await store.subscriptions.createForRevisions({
                 query: "from orders (Revisions = true)"
             });
             //endregion
@@ -175,7 +176,7 @@ const session = store.openSession();
                     CurrentRevenue: getOrderLinesSum(this.Current)
                 }`;
 
-            name = store.subscriptions.create({ query });
+            const name = await store.subscriptions.create({ query });
             //endregion
         }
 
@@ -239,13 +240,10 @@ const session = store.openSession();
 
     async function openingExamples() {
         let name;
-        let subscriptionWorker;
         let subscriptionName;
 
         //region subscription_open_simple
-        subscriptionWorker = store.subscriptions.getSubscriptionWorker({ 
-            subscriptionName 
-        });
+        const subscriptionWorker = store.subscriptions.getSubscriptionWorker({ subscriptionName });
         //endregion
 
         //region subscription_run_simple
@@ -256,6 +254,7 @@ const session = store.openSession();
             // callback(err)
             callback();
         });
+
         subscriptionWorker.on("error", error => {
             // handle errors
         });
@@ -265,10 +264,11 @@ const session = store.openSession();
             //region subscription_worker_with_batch_size
             const options = { 
                 subscriptionName,
-                setMaxDocsPerBatch: 20
+                maxDocsPerBatch: 20
             };
+
             const workerWBatch = store.subscriptions.getSubscriptionWorker(options);
-            workerWBatch.on("batch", () => { /* custom logic */});
+            workerWBatch.on("batch", (batch, callback) => { /* custom logic */});
             //endregion
         }
 
