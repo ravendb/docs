@@ -93,10 +93,13 @@ By default all dates are stored in local time with no timezone information. Ther
 
 This convention allows you to store dates along with the timezone information, by storing dates in the following format: `YYYY-MM-DDTHH:mm:ss.SSS0000Z`. JavaScript's Date object's minimal precision is 1 ms, hence the zeroes in the date format for the nanoseconds. Default: `false`.
 
+{CODE:nodejs StoreDatesWithTimezoneInfo@client-api\configuration\conventions.js /}
 
 ### StoreDatesInUtc
 
 If enabled, dates are going to be stored in UTC instead of local time. Default: `false`.
+
+{CODE:nodejs StoreDatesInUtc@client-api\configuration\conventions.js /}
 
 ## Entity types registration - registerEntityType()
 
