@@ -9,8 +9,8 @@ modifications in the current transaction) when the document has been modified on
 You can see the sample code below on the specific on
 
 Note that `UseOptimisticConcurrency` only applies to documents that has been _modified_ by the session. Loading documents `users/1-A` and `users/2-A` in a session, modifying
-`users/1-A` and then calling `SaveChanges` will succeed, regardless of the optimstic concurrency setting, even if `users/2-A` has changed in the meantime. 
-If the session were to try to save to `users/2-A` as well with optimstic concurrency turned on, then an exception will be raised and the updates to both `users/1-A` and `users/2-A`
+`users/1-A` and then calling `SaveChanges` will succeed, regardless of the optimistic concurrency setting, even if `users/2-A` has changed in the meantime. 
+If the session were to try to save to `users/2-A` as well with optimistic concurrency turned on, then an exception will be raised and the updates to both `users/1-A` and `users/2-A`
 will be cancelled. 
 
 Another option is to control optimistic concurrency per specific document.   

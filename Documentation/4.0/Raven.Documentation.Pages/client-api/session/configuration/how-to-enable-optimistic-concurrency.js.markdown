@@ -9,7 +9,7 @@ modifications in the current transaction) when the document has been modified on
 You can see the sample code below on the specific on
 
 Note that `useOptimisticConcurrency` only applies to documents that has been _modified_ by the session. Loading documents `users/1-A` and `users/2-A` in a session, modifying
-`users/1-A` and then calling `saveChanges` will succeed, regardless of the optimistic concurrency setting, even if `users/2-A` has changed in the meantime. 
+`users/1-A` and then calling `saveChanges()` will succeed, regardless of the optimistic concurrency setting, even if `users/2-A` has changed in the meantime. 
 If the session were to try to save to `users/2-A` as well with optimistic concurrency turned on, then an exception will be raised and the updates to both `users/1-A` and `users/2-A`
 will be cancelled. 
 
@@ -22,27 +22,27 @@ Setting optimistic concurrency per specific document overrides the use of the `u
 
 ## Enabling for a specific Session
 
-{CODE:java optimistic_concurrency_1@ClientApi\Session\Configuration\OptimisticConcurrency.java /}
+{CODE:nodejs optimistic_concurrency_1@client-api\session\configuration\optimisticConcurrency.js /}
 
 ## Enabling Globally
 
 The first example shows how to enable optimistic concurrency for a particular session. 
-This can be also turned on globally, for all opened sessions by using the convention `store.getConventions().setUseOptimisticConcurrency`.
+This can be also turned on globally, for all opened sessions by using the convention `store.conventions.useOptimisticConcurrency`.
 
-{CODE:java optimistic_concurrency_2@ClientApi\Session\Configuration\OptimisticConcurrency.java /}
+{CODE:nodejs optimistic_concurrency_2@client-api\session\configuration\optimisticConcurrency.js /}
 
 ## Turning Off Optimistic Concurrency for a Single Document when it is Enabled on Session
 
-Optimistic concurrency can be turned off for a single document by passing `null` as a change vector value to `store` method even when it is turned on for an entire session (or globally).
+Optimistic concurrency can be turned off for a single document by passing `null` as a change vector value to `store()` method even when it is turned on for an entire session (or globally).
 
-{CODE:java optimistic_concurrency_3@ClientApi\Session\Configuration\OptimisticConcurrency.java /}
+{CODE:nodejs optimistic_concurrency_3@client-api\session\configuration\optimisticConcurrency.js /}
 
 ## Turning On Optimistic Concurrency for a New Document when it is Disabled on Session
 
-Optimistic concurrency can be turned on for a new document by passing `""` as a change vector value to `store` method even when it is turned off for an entire session (or globally).
+Optimistic concurrency can be turned on for a new document by passing `""` as a change vector value to `store()` method even when it is turned off for an entire session (or globally).
 It will cause to throw `ConcurrencyException` if the document already exists.
 
-{CODE:java optimistic_concurrency_4@ClientApi\Session\Configuration\OptimisticConcurrency.java /}
+{CODE:nodejs optimistic_concurrency_4@client-api\session\configuration\optimisticConcurrency.js /}
 
 ## Related articles
 
