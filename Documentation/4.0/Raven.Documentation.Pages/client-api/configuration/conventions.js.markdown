@@ -82,6 +82,49 @@ You have to set *property naming strategy*:
 
 {CODE:nodejs PropertyCasing@client-api\configuration\conventions.js /}
 
+## Dates storage conventions
+
+By default all dates are stored in local time with no timezone information. There are 2 document conventions allowing to adjust storage of dates:
+
+- store.conventions.storeDatesWithTimezoneInfo 
+- store.conventions.storeDatesInUtc 
+
+### StoreDatesWithTimezoneInfo
+
+This convention allows you to store dates along with the timezone information, by storing dates in the following format: `YYYY-MM-DDTHH:mm:ss.SSS0000Z`. JavaScript's Date object's minimal precision is 1 ms, hence the zeroes in the date format for the nanoseconds. Default: `false`.
+
+{CODE:nodejs StoreDatesWithTimezoneInfo@client-api\configuration\conventions.js /}
+
+### StoreDatesInUtc
+
+If enabled, dates are going to be stored in UTC instead of local time. Default: `false`.
+
+{CODE:nodejs StoreDatesInUtc@client-api\configuration\conventions.js /}
+
+## Entity types registration - registerEntityType()
+
+Type information about the entity and its contents is by default stored in the document metadata. Based on that its types are revived when loaded from the server. Conventions object exposes a method `registerEntityType(type)` allowing you to register types of your entities and their subobjects in order to:
+
+* revive object types when loading from the server
+
+* avoid passing **documentType** argument every time on methods loading entites e.g. `load()`, `query()` etc.
+
+{INFO: Entity type registration }
+To avoid passing **documentType** argument every time, you can register the type in the document conventions using the `registerEntityType()` method before calling DocumentStore's `initialize()` like so:
+
+{CODE:nodejs query_1_8@client-api\session\querying\howToQuery.js /}
+
+{INFO/}
+
+If you fail to do so, entities (and all subobjects) loaded from the server are going to be plain object literals and not instances of the original type they were stored with.
+
+## Storing object literals - findCollectionNameForObjectLiteral()
+
+In order to comfortably use object literals as entities set the function getting collection name based on the content of the object - `store.conventions.findCollectionNameForObjectLiteral()`
+
+{CODE:nodejs storing_literals_1@client-api\session\storingEntities.js /}
+
+If you fail to do so, your object literal based entites will land up in *@empty* collection having an *UUID* for an ID.
 
 ## Related Articles
 

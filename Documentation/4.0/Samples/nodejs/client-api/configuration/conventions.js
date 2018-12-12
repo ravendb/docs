@@ -47,4 +47,12 @@ function examples() {
     conventions.entityFieldNameConvention = "camel";
 
     //endregion
+
+    //region StoreDatesWithTimezoneInfo
+    conventions.storeDatesWithTimezoneInfo = true;
+    //endregion
+
+    //region StoreDatesInUtc
+    conventions.storeDatesInUtc = true;
+    //endregion
 }
