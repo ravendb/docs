@@ -26,10 +26,12 @@ In order to store an album of pictures in RavenDB, you can create the following 
 
 This document can have the following attachments:
 
-- Name: `001.jpg`, Content-Type: `image/jpeg`
-- Name: `002.jpg`, Content-Type: `image/jpeg`
-- Name: `003.jpg`, Content-Type: `image/jpeg`
-- Name: `004.mp4`, Content-Type: `video/mp4`
+| Name | Content type |
+| - | - |
+| `001.jpg` | `image/jpeg` |
+| `002.jpg` | `image/jpeg` |
+| `003.jpg` | `image/jpeg` |
+| `004.mp4` | `video/mp4`  |
 
 ## Example II
 

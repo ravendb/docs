@@ -59,7 +59,7 @@ When requesting the document from the server the results would be:
 }
 {CODE-BLOCK/}
 
-Note that this document has an HasAttachments flag and an @attachments array with the attachment's info.
+Note that this document has an *HasAttachments* flag and an *@attachments* array with the attachment's info.
 
 You can see the attachment's name, content type, hash and size.
 
