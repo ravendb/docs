@@ -4,7 +4,7 @@
 
 {INFO:Remember}
 
-Indexes are created by issuing a query are called `dynamic` or `Auto` indexes. They can be easily identified. Their name starts with `Auto/` prefix.
+Indexes created by issuing a query are called `dynamic` or `Auto` indexes. They can be easily identified. Their name starts with `Auto/` prefix.
 
 Indexes created explicitly by the user are called `static`.
 

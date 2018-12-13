@@ -60,7 +60,7 @@ public class Metadata {
                 "    product = product, " +
                 "    metadata = this.MetadataFor(product) " +
                 "}).Select(this0 => new { " +
-                "    lastModified = this0.metadata.Value < DateTime > (\"Last-Modified\") " +
+                "    lastModified = this0.metadata.Value<DateTime>(\"Last-Modified\") " +
                 "})";
         }
     }

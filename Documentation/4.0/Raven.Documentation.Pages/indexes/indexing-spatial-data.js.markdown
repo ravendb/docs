@@ -8,7 +8,7 @@ To support the ability to retrieve the data based on spatial coordinates, the sp
 
 To take an advantage of the spatial search, first we need to create an index with a spatial field. To mark field as the spatial field, we need to use the `CreateSpatialField` method:
 
-{CODE:java spatial_search_0@Indexes\SpatialIndexes.java /}
+{CODE:nodejs spatial_search_0@indexes\spatialIndexes.js /}
 
 Where:   
      
@@ -18,26 +18,26 @@ Where:
 ### Example
 
 {CODE-TABS}
-{CODE-TAB:java:Coordinates spatial_search_1@Indexes\SpatialIndexes.java /}
-{CODE-TAB:java:WKT spatial_search_2@Indexes\SpatialIndexes.java /}
+{CODE-TAB:nodejs:Coordinates spatial_search_1@indexes\spatialIndexes.js /}
+{CODE-TAB:nodejs:WKT spatial_search_2@indexes\spatialIndexes.js /}
 {CODE-TABS/}
 
 ### Options
 
 RavenDB supports both the `Geography` and `Cartesian` systems and multiple strategies for each one of them.
 
-{CODE:java spatial_search_enhancements_3@Indexes\SpatialIndexes.java /}
+{CODE:nodejs spatial_search_enhancements_3@indexes\spatialIndexes.js /}
 
 {CODE-TABS}
-{CODE-TAB:java:GeographySpatialOptionsFactory spatial_search_enhancements_4@Indexes\SpatialIndexes.java /}
-{CODE-TAB:java:CartesianSpatialOptionsFactory spatial_search_enhancements_5@Indexes\SpatialIndexes.java /}
+{CODE-TAB:nodejs:GeographySpatialOptionsFactory spatial_search_enhancements_4@indexes\spatialIndexes.js /}
+{CODE-TAB:nodejs:CartesianSpatialOptionsFactory spatial_search_enhancements_5@indexes\spatialIndexes.js /}
 {CODE-TABS/}
 
 ### Changing Default Behavior
 
-By default, if no action is taken, the `GeohashPrefixTree` strategy is used with `GeohashLevel` set to **9**. This behavior can be changed by using the `spatial()` method from `AbstractIndexCreationTask`
+By default, if no action is taken, the `GeohashPrefixTree` strategy is used with `GeohashLevel` set to **9**. This behavior can be changed by using the `spatial` method from `AbstractIndexCreationTask`
 
-{CODE:java spatial_search_3@Indexes\SpatialIndexes.java /}
+{CODE:nodejs spatial_search_3@indexes\spatialIndexes.js /}
 
 ## Spatial search strategies
 

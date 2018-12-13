@@ -18,7 +18,7 @@ There are a couple of ways to create a `static index` and send it to the server.
 
 ### Using AbstractIndexCreationTask
 
-AbstractIndexCreationTask let you avoid hard-coding index names in every query.
+`AbstractIndexCreationTask` lets you avoid hard-coding index names in every query.
 
 {NOTE We recommend creating and using indexes in this form due to its simplicity. There are many benefits and few disadvantages. /}
 
@@ -28,23 +28,23 @@ There is only one naming convention: each `_` in the class name will be translat
 
 e.g.
 
-In the `Northwind` samples, there is a index called `Orders/Totals`. To get such a index name, we need to create a class called `Orders_Totals`.
+In the `Northwind` samples, there is a index called `Orders/Totals`. To get such index name, we need to create a class called `Orders_Totals`.
 
-{CODE:java indexes_1@Indexes/Creating.java /}
+{CODE:nodejs indexes_1@indexes/creating.js /}
 
 #### Sending to Server
 
 There is not much use from an index if it is not deployed to the server. To do so, we need to create an instance of our class that inherits from `AbstractIndexCreationTask` and use `execute` method.
 
-{CODE:java indexes_2@Indexes/Creating.java /}
+{CODE:nodejs indexes_2@indexes/creating.js /}
 
-{CODE:java indexes_3@Indexes/Creating.java /}
+{CODE:nodejs indexes_3@indexes/creating.js /}
 
 {SAFE If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch. /}
 
 #### Example
 
-{CODE:java indexes_8@Indexes/Creating.java /}
+{CODE:nodejs indexes_8@indexes/creating.js /}
 
 <hr />
 
@@ -54,7 +54,7 @@ The `PutIndexesOperation` maintenance operation (which API references can be fou
 
 The benefit of this approach is that you can choose the name as you feel fit, and change various settings available in `IndexDefinition`. You will have to use string-based names of indexes when querying.
 
-{CODE:java indexes_5@Indexes/Creating.java /}
+{CODE:nodejs indexes_5@indexes/creating.js /}
 
 #### Remarks
 
@@ -77,10 +77,10 @@ Auto-indexes can be recognized by the `Auto/` prefix in their name. Their name a
 For instance, issuing a query like this
 
 {CODE-TABS}
-{CODE-TAB:java:Java indexes_7@Indexes/Creating.java /}
+{CODE-TAB:nodejs:Node.js indexes_7@indexes/creating.js /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees
-where firstName = 'Robert' and lastName = 'King'
+where FirstName = 'Robert' and LastName = 'King'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
