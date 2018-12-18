@@ -1,4 +1,4 @@
-﻿[
+[
     {
         "Path": "/documents",
         "Name": "Documents",
@@ -22,5 +22,10 @@
         "Name": "Tasks",
         "Mappings": [],
         "IsPlaceholder": "true"
+    },
+    {
+        "Path": "/tasks",
+        "Name": "Tasks",
+        "Mappings": []
     }
 ]

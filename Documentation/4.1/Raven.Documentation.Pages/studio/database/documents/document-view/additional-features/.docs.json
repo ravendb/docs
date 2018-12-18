@@ -1,0 +1,27 @@
+[
+    {
+        "Path": "attachments.markdown",
+        "Name": "Attachments",
+        "Mappings": []
+    },
+    {
+        "Path": "recent.markdown",
+        "Name": "Recent",
+        "Mappings": []
+    },
+    {
+        "Path": "related.markdown",
+        "Name": "Related",
+        "Mappings": []
+    },
+    {
+        "Path": "revisions.markdown",
+        "Name": "Revisions",
+        "Mappings": []
+    },
+    {
+        "Path": "counters.markdown",
+        "Name": "Counters",
+        "Mappings": []
+    }
+]
