@@ -26,7 +26,7 @@ class TShirtType {
         constructor(data) {
             this.manufacturer = data.manufacturer;
             this.color = data.color;
-            this.size= data.size;
+            this.size = data.size;
             this.releaseYear = data.releaseYear;
         }
     }
@@ -101,8 +101,7 @@ async function intersection() {
     {
         //region intersection_4
         const result = await session.query({ 
-                indexName: "TShirts/ByManufacturerColorSizeAndReleaseYear",
-                documentType: TShirts_ByManufacturerColorSizeAndReleaseYearResult
+                indexName: "TShirts/ByManufacturerColorSizeAndReleaseYear"
             })
             .whereEquals("manufacturer", "Raven")
             .intersect()
@@ -113,6 +112,7 @@ async function intersection() {
             .whereEquals("color", "Gray")
             .andAlso()
             .whereEquals("size", "large")
+            .ofType(TShirts_ByManufacturerColorSizeAndReleaseYearResult)
             .all();
         //endregion
     }

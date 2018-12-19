@@ -22,6 +22,7 @@ public class Searching {
     }
     //endregion
 
+    //region search_21_2
     public static class Users_Search extends AbstractIndexCreationTask {
         public Users_Search() {
             map = "docs.Users.Select(user => new {" +

@@ -14,7 +14,7 @@ Collection names determined by recently described convention functions aren't di
 
 Its default behavior is that for a collection which contains one upper character it simply converts it to lower case string. `Users` would be transformed into `users`. For collection names containing more upper characters there will be no change. The collection name: `LineItems` would output the following prefix: `LineItems`.
 
-##FindJsClassName and FindJavaClass
+##FindJsTypeName and FindJsType
 
 In the metadata of all documents stored by RavenDB Node.js Client, you can find the following property which specifies the client-side type. For instance:
 
@@ -24,7 +24,7 @@ In the metadata of all documents stored by RavenDB Node.js Client, you can find 
 }
 {CODE-BLOCK/}
 
-This property is used by RavenDB client to perform a conversion between a Java object and a JSON document stored in a database. A function responsible for retrieving the JS type of an entity is defined by `findJsTypeName()` convention:
+This property is used by RavenDB client to perform a conversion between a JS object and a JSON document stored in a database. A function responsible for retrieving the JS type of an entity is defined by `findJsTypeName()` convention:
 
 {CODE:nodejs find_type_name@client-api\configuration\identifierGeneration\global.js /}
 
