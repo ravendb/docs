@@ -340,6 +340,18 @@ namespace Rvn.Ch02
             public int Votes { get; set; }
         }
 
+        #region counters_region_CounterItem
+        // The value given to a Counter by each node, is placed in a CounterItem object.
+        public struct CounterItem
+        {
+            public string Name;
+            public string DocId;
+            public string ChangeVector;
+            public long Value;
+        }
+        #endregion
+
+
         private interface IFoo
         {
             #region Increment-definition
@@ -357,18 +369,6 @@ namespace Rvn.Ch02
             #region GetAll-definition
             Dictionary<string, long?> GetAll();
             #endregion
-
-            #region counters_region_CounterItem
-            // The value given to a Counter by each node, is placed in a CounterItem object.
-            public struct CounterItem
-            {
-                public string Name;
-                public string DocId;
-                public string ChangeVector;
-                public long Value;
-            }
-            #endregion
-
         }
     }
 }
