@@ -39,21 +39,27 @@ public class DataSubscriptions {
     public interface ISubscriptionConsumptionOverloads {
         //region subscriptionWorkerGeneration
         SubscriptionWorker<ObjectNode> getSubscriptionWorker(SubscriptionWorkerOptions options);
+
         SubscriptionWorker<ObjectNode> getSubscriptionWorker(SubscriptionWorkerOptions options, String database);
 
         SubscriptionWorker<ObjectNode> getSubscriptionWorker(String subscriptionName);
+
         SubscriptionWorker<ObjectNode> getSubscriptionWorker(String subscriptionName, String database);
 
         <T> SubscriptionWorker<T> getSubscriptionWorker(Class<T> clazz, SubscriptionWorkerOptions options);
+
         <T> SubscriptionWorker<T> getSubscriptionWorker(Class<T> clazz, SubscriptionWorkerOptions options, String database);
 
         <T> SubscriptionWorker<T> getSubscriptionWorker(Class<T> clazz, String subscriptionName);
+
         <T> SubscriptionWorker<T> getSubscriptionWorker(Class<T> clazz, String subscriptionName, String database);
 
         <T> SubscriptionWorker<Revision<T>> getSubscriptionWorkerForRevisions(Class<T> clazz, SubscriptionWorkerOptions options);
+
         <T> SubscriptionWorker<Revision<T>> getSubscriptionWorkerForRevisions(Class<T> clazz, SubscriptionWorkerOptions options, String database);
 
         <T> SubscriptionWorker<Revision<T>> getSubscriptionWorkerForRevisions(Class<T> clazz, String subscriptionName);
+
         <T> SubscriptionWorker<Revision<T>> getSubscriptionWorkerForRevisions(Class<T> clazz, String subscriptionName, String database);
         //endregion
     }
@@ -498,6 +504,7 @@ public class DataSubscriptions {
         }
         //endregion
     }
+
     public void twoSubscription2(DocumentStore store, String subscriptionName) {
         //region waiting_subscription_2
         SubscriptionWorkerOptions options2 = new SubscriptionWorkerOptions(subscriptionName);

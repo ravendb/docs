@@ -2,9 +2,14 @@ package net.ravendb.ClientApi.Operations.Server;
 
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
+import net.ravendb.client.documents.operations.GetStatisticsOperation;
+import net.ravendb.client.exceptions.ConcurrencyException;
+import net.ravendb.client.exceptions.database.DatabaseDoesNotExistException;
 import net.ravendb.client.serverwide.DatabaseRecord;
 import net.ravendb.client.serverwide.operations.CreateDatabaseOperation;
 import net.ravendb.client.serverwide.operations.DeleteDatabasesOperation;
+import org.apache.commons.lang3.ObjectUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.time.Duration;
 
@@ -70,6 +75,32 @@ public class CreateDeleteDatabase {
 
         public void setTimeToWaitForConfirmation(Duration timeToWaitForConfirmation) {
             this.timeToWaitForConfirmation = timeToWaitForConfirmation;
+        }
+    }
+    //endregion
+
+    //region EnsureDatabaseExists
+    public void ensureDatabaseExists(IDocumentStore store, String database, boolean createDatabaseIfNotExists) {
+        database = ObjectUtils.firstNonNull(database, store.getDatabase());
+
+        if (StringUtils.isBlank(database)) {
+            throw new IllegalArgumentException("Value cannot be null or whitespace");
+        }
+
+        try {
+            store.maintenance().forDatabase(database).send(new GetStatisticsOperation());
+        } catch (DatabaseDoesNotExistException e) {
+            if (!createDatabaseIfNotExists) {
+                throw e;
+            }
+
+            try {
+                DatabaseRecord databaseRecord = new DatabaseRecord();
+                databaseRecord.setDatabaseName(database);
+                store.maintenance().server().send(new CreateDatabaseOperation(databaseRecord));
+            } catch (ConcurrencyException ce) {
+                // The database was already created before calling CreateDatabaseOperation
+            }
         }
     }
     //endregion
