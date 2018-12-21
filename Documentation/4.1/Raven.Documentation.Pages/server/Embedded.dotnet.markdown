@@ -21,7 +21,7 @@ Prerequsite:
 
 Recommendation:
 
-- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages should be **migrated to `PackageReference` package management**
+- **Projects targeting .NET Framework 4.6.1+** that use old `packages.config` for maintaining NuGet packages should be **migrated to `PackageReference` package management** (please refer to section below on how to achieve this)
 
 {NOTE:.NET Core Runtime}
 
@@ -38,6 +38,35 @@ We highly recommend using the .NET Core framework version defined in `ServerOpti
 Due to the NuGet limitations, we recommend that the Embedded package should be installed via newer package management using `PackageReference` instead of old `packages.config`. 
 
 The transition between those two is easy due to built-in into Visual Studio 2017 migrator written by Microsoft. Please read following [article](https://docs.microsoft.com/en-us/nuget/reference/migrate-packages-config-to-package-reference) written by Microsoft that will guide you through the process.
+
+Please note that **binding redirects** in `App.config` are still required when 'PackageReference' is used in old csproj project. Not doing so might result in an assembly load exception e.g.
+
+```
+Could not load file or assembly 'System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a' or one of its dependencies. The located assembly's manifest definition does not match the assembly reference. (Exception from HRESULT: 0x80131040)
+```
+
+{CODE-TABS}
+{CODE-TAB-BLOCK:xml:Sample App.config}
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+    <startup> 
+        <supportedRuntime version="v4.0" sku=".NETFramework,Version=v4.7.2" />
+    </startup>
+  <runtime>
+    <assemblyBinding xmlns="urn:schemas-microsoft-com:asm.v1">
+      <dependentAssembly>
+        <assemblyIdentity name="System.Runtime.CompilerServices.Unsafe" publicKeyToken="b03f5f7f11d50a3a" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.4.1" newVersion="4.0.4.1" />
+      </dependentAssembly>
+      <dependentAssembly>
+        <assemblyIdentity name="System.Buffers" publicKeyToken="cc7b13ffcd2ddd51" culture="neutral" />
+        <bindingRedirect oldVersion="0.0.0.0-4.0.3.0" newVersion="4.0.3.0" />
+      </dependentAssembly>
+    </assemblyBinding>
+  </runtime>
+</configuration>
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
 
 {NOTE/}
 
