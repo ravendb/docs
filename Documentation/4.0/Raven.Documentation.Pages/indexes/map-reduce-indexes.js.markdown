@@ -18,7 +18,7 @@ To deploy an index we need to create a definition and deploy it using one of the
 
 Let's assume that we want to count the number of products for each category. To do it, we can create the following index using `LoadDocument` inside:
 
-{CODE:java map_reduce_0_0@Indexes\MapReduceIndexes.java /}
+{CODE:nodejs map_reduce_0_0@indexes\mapReduceIndexes.js /}
 
 and issue the query:
 

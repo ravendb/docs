@@ -62,7 +62,7 @@ where spatial.within(spatial.point(latitude, longitude), spatial.wkt('Circle(32.
 
 To sort by distance from given point use the `orderByDistance()` method. The closest results will come first.
 
-{CODE:java spatial_6@ClientApi\Session\Querying\HowToQuerySpatialIndex.java /}
+{CODE:nodejs spatial_6@client-api\session\querying\howToQuerySpatialIndex.js /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
