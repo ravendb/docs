@@ -44,7 +44,7 @@ This is useful for an ad-hoc single use processing that the user wants to be sur
 
 {PANEL/}
 
-{PANEL:Subscription that processes ObjectNode objects}
+{PANEL:Worker that processes raw objects}
 
 Here we create a worker that processes received data as ObjectNode objects.
 

@@ -3,14 +3,19 @@ package net.ravendb.ClientApi.DataSubscriptions;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
+import net.ravendb.client.documents.session.IDocumentSession;
 import net.ravendb.client.documents.subscriptions.*;
 import net.ravendb.client.exceptions.database.DatabaseDoesNotExistException;
 import net.ravendb.client.exceptions.documents.subscriptions.*;
 import net.ravendb.client.exceptions.security.AuthorizationException;
 import net.ravendb.client.primitives.ExceptionsUtils;
+import net.ravendb.northwind.Order;
+import net.ravendb.northwind.OrderLine;
+import net.ravendb.northwind.Product;
 import org.apache.commons.logging.Log;
 
 import java.time.Duration;
+import java.util.Date;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Consumer;
 
@@ -62,27 +67,6 @@ public class DataSubscriptions {
         //region subscriptionWorkerRunning
         CompletableFuture<Void> run(Consumer<SubscriptionBatch<T>> processDocuments);
         //endregion
-    }
-
-    private static class Order {
-        private String id;
-        private String shipVia;
-
-        public String getShipVia() {
-            return shipVia;
-        }
-
-        public void setShipVia(String shipVia) {
-            this.shipVia = shipVia;
-        }
-
-        public String getId() {
-            return id;
-        }
-
-        public void setId(String id) {
-            this.id = id;
-        }
     }
 
     //region subscriptions_example
@@ -518,146 +502,113 @@ public class DataSubscriptions {
     }
 
 
-       public void createSubscriptionWithIncludeStatement(DocumentStore store, String subscriptionName) {
-        //region create_subscription_with_includes_rql_path
-        store.subscriptions().create(
-            new SubscriptionCreationOptions(){
-                {
-                    setQuery("from Orders include Lines[].Product");
-                }
-            });
-        //endregion
-
-        //region create_subscription_with_includes_rql_javascript
-        store.subscriptions().create(
-            new SubscriptionCreationOptions(){
-                {
-                    setQuery("declare function includeProducts(doc) " +
-                        "                            {" +
-                        "                                doc.IncludedFields=0;" +
-                        "                                doc.LinesCount = doc.Lines.length;" +
-                        "                                for (let i=0; i< doc.Lines.length; i++)" +
-                        "                                {" +
-                        "                                    doc.IncludedFields++;" +
-                        "                                    include(doc.Lines[i].Product);" +
-                        "                                }" +
-                        "                                return doc;" +
-                        "                            }" +
-                        "                            from Orders as o select includeProducts(o)");
-                }
-            });
-        //endregion
-
-
-        //region dynamic_worker
-        store.subscriptions().create(
-            new SubscriptionCreationOptions(){
-                {
-                    setName("My dynamic subscription");
-                    setQuery("from Orders as o \n" +
-                        "select { \n" +
-                        "   DynamicField1: 'Company:' + o.Company + ' Employee: ' + o.Employee \n" +
-                        "}");
-                }
-            });
-
-        SubscriptionWorker<ObjectNode> worker = store.subscriptions().getSubscriptionWorker("My dynamic subscription");
-        worker.run(x->{
-            for (var item: x.getItems()) {
-                var result = item.getResult();
-                RaiseNotification(result.get("DynamicField1"));
-            }
-        });
-        //endregion
-    }
-
-    public void RaiseNotification(String str)
-    {
-
-    }
-
-    public void consumeSubscriptionWithIncludeStatement(DocumentStore store, String subscriptionName) {
-        //region subscription_with_open_session_usage
-        var subscriptionName = store.subscriptions().create(new SubscriptionCreationOptions()
+    public void createSubscriptionWithIncludeStatement(DocumentStore store) {
         {
-            {
-                setQuery ("from Orders as o where o.ShippedAt = null");
-            }
-        });
+            //region create_subscription_with_includes_rql_path
+            SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+            options.setQuery("from Orders include Lines[].Product");
+            store.subscriptions().create(options);
+            //endregion
+        }
+
+        {
+            //region create_subscription_with_includes_rql_javascript
+            SubscriptionCreationOptions options = new SubscriptionCreationOptions();
+            options.setQuery("declare function includeProducts(doc) " +
+                "   {" +
+                "       doc.IncludedFields=0;" +
+                "       doc.LinesCount = doc.Lines.length;" +
+                "       for (let i=0; i< doc.Lines.length; i++)" +
+                "       {" +
+                "           doc.IncludedFields++;" +
+                "           include(doc.Lines[i].Product);" +
+                "       }" +
+                "       return doc;" +
+                "   }" +
+                "   from Orders as o select includeProducts(o)");
+            store.subscriptions().create(options);
+            //endregion
+        }
+
+        {
+            //region dynamic_worker
+            String subscriptionName = "My dynamic subscription";
+
+            SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreationOptions();
+            subscriptionCreationOptions.setName("My dynamic subscription");
+            subscriptionCreationOptions.setQuery("from Orders as o \n" +
+                "select { \n" +
+                "   DynamicField_1: 'Company:' + o.Company + ' Employee: ' + o.Employee \n" +
+                "}");
+
+            SubscriptionWorker<ObjectNode> worker = store.subscriptions().getSubscriptionWorker(subscriptionName);
+            worker.run(x -> {
+                for (SubscriptionBatch.Item<ObjectNode> item : x.getItems()) {
+                    ObjectNode result = item.getResult();
+                    raiseNotification(result.get("DynamicField_1"));
+                }
+            });
+            //endregion
+        }
+
+    }
+
+    public void raiseNotification(Object str) {
+    }
+
+    public void consumeSubscriptionWithIncludeStatement(DocumentStore store) {
+        //region subscription_with_open_session_usage
+        SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreationOptions();
+        subscriptionCreationOptions.setQuery("from Orders as o where o.ShippedAt = null");
+        String subscriptionName = store.subscriptions().create(subscriptionCreationOptions);
 
         SubscriptionWorker<Order> subscriptionWorker = store.subscriptions().getSubscriptionWorker(Order.class, subscriptionName);
 
-        subscriptionWorker.run(batch ->
-        {
-            try (var session = batch.openSession())
-            {
-                for (var item : batch.getItems())
-                {
-                    var order = item.getResult();
-                    TransferOrderToShipmentCompanyAsync(order);
-                    order.ShippedAt = new Date();
+        subscriptionWorker.run(batch -> {
+            try (IDocumentSession session = batch.openSession()) {
+                for (SubscriptionBatch.Item<Order> orderItem : batch.getItems()) {
+                    transferOrderToShipmentCompany(orderItem.getResult());
+                    orderItem.getResult().setShippedAt(new Date());
                 }
 
+                // we know that we have at least one order to ship,
+                // because the subscription query above has that in it's WHERE clause
                 session.saveChanges();
             }
         });
         //endregion
     }
 
-    public void consumeSubscriptionWithSession(DocumentStore store, String subscriptionName) {
-        //region subscription_with_open_session_usage
-        var subscriptionName = store.subscriptions().create(new SubscriptionCreationOptions()
-        {
-            {
-                setQuery ("from Orders as o where o.ShippedAt = null");
-            }
-        });
+    private void transferOrderToShipmentCompany(Order order) {
 
-        SubscriptionWorker<Order> subscriptionWorker = store.subscriptions().getSubscriptionWorker(Order.class, subscriptionName);
-
-        subscriptionWorker.run(batch ->
-        {
-            try (var session = batch.openSession())
-            {
-                for (var item : batch.getItems())
-                {
-                    var order = item.getResult();
-                    TransferOrderToShipmentCompanyAsync(order);
-                    order.ShippedAt = new Date();
-                }
-
-                session.saveChanges();
-            }
-        });
-        //endregion
     }
 
-    public void consumeSubscriptionWithIncludeStatements(DocumentStore store, String subscriptionName) {
+    public void consumeSubscriptionWithIncludeStatements(DocumentStore store) {
         //region subscription_with_includes_path_usage
-        var subscriptionName = store.subscriptions().create(new SubscriptionCreationOptions()
-        {
-            {
-                setQuery ("from Orders as o where o.ShippedAt = null");
-            }
-        });
+        SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreationOptions();
+        subscriptionCreationOptions.setQuery("from Orders include Lines[].Product");
+
+
+        String subscriptionName = store.subscriptions().create(subscriptionCreationOptions);
 
         SubscriptionWorker<Order> subscriptionWorker = store.subscriptions().getSubscriptionWorker(Order.class, subscriptionName);
 
-        subscriptionWorker.run(batch ->
-        {
-            try (var session = batch.openSession())
-            {
-                for (var item : batch.getItems())
-                {
-                    var order = item.getResult();
-                    TransferOrderToShipmentCompanyAsync(order);
-                    order.ShippedAt = new Date();
+        subscriptionWorker.run(batch -> {
+            try (IDocumentSession session = batch.openSession()) {
+                for (SubscriptionBatch.Item<Order> orderItem : batch.getItems()) {
+                    Order order = orderItem.getResult();
+                    for (OrderLine orderLine : order.getLines()) {
+                        // this line won't generate a request, because orderLine.Product was included
+                        Product product = session.load(Product.class, orderLine.getProduct());
+                        raiseProductNotification(order, product);
+                    }
                 }
-
-                session.saveChanges();
             }
         });
         //endregion
+    }
+
+    private void raiseProductNotification(Order order, Product product) {
     }
 
 }

@@ -5,13 +5,12 @@
 ## Syntax
 
 
-{CODE explain_1@ClientApi\Session\Debugging\IncludeExplanations.cs /}
+{CODE:java explain_1@ClientApi\Session\Debugging\IncludeExplanations.java /}
 
 ## Example
 
 {CODE-TABS}
-{CODE-TAB:csharp:Sync explain_2@ClientApi\Session\Debugging\IncludeExplanations.cs /}
-{CODE-TAB:csharp:Async explain_3@ClientApi\Session\Debugging\IncludeExplanations.cs /}
+{CODE-TAB:java:Java explain_2@ClientApi\Session\Debugging\IncludeExplanations.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products 
 where search(Name, 'Syrup')

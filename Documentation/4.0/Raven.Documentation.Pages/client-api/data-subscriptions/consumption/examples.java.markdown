@@ -43,6 +43,14 @@ This is useful for an ad-hoc single use processing that the user wants to be sur
 
 {PANEL/}
 
+{PANEL:Worker that processes raw objects}
+
+Here we create a worker that processes received data as ObjectNode objects.
+
+{CODE:java dynamic_worker@ClientApi\DataSubscriptions\DataSubscriptions.java /}
+
+{PANEL/}
+
 
 {PANEL:Two subscription workers that are waiting for each other}
 
