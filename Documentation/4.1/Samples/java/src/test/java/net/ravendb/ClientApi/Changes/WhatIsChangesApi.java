@@ -1,4 +1,4 @@
-package net.ravendb.ClientApi.changes;
+package net.ravendb.ClientApi.Changes;
 
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
