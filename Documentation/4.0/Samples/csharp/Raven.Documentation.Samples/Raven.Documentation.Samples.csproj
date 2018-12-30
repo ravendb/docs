@@ -22,6 +22,9 @@
     <Compile Update="ClientApi\Operations\Indexes\Get.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="ClientApi\Operations\Maintenance\Backup\Backup.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="ClientApi\Operations\Server\GetDatabaseNames.cs">
       <SubType>Code</SubType>
     </Compile>

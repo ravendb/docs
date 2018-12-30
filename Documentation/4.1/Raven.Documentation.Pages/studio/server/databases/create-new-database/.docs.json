@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "general-flow.markdown",
+    "Name": "General Flow",
+    "Mappings": []
+  },
+  {
+    "Path": "encrypted.markdown",
+    "Name": "Encrypted",
+    "Mappings": []
+  },
+  {
+    "Path": "from-backup.markdown",
+    "Name": "From Backup",
+    "Mappings": []
+  },
+  {
+    "Path": "from-legacy-files.markdown",
+    "Name": "From Legacy Files",
+    "Mappings": []
+  }
+]

@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "general-info.markdown",
+    "Name": "General Info",
+    "Mappings": []
+  },
+  {
+    "Path": "external-replication-task.markdown",
+    "Name": "External Replication Task",
+    "Mappings": []
+  },
+  {
+    "Path": "ravendb-etl-task.markdown",
+    "Name": "RavenDB ETL Task",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-task.markdown",
+    "Name": "Backup Task",
+    "Mappings": []
+  }
+]
