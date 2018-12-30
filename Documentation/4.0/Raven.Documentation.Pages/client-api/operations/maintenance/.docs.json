@@ -1,37 +1,42 @@
 [
-  {
-    "Path": "get-collection-statistics.markdown",
-    "Name": "Get Collection Statistics",
-    "Mappings": []
-  },
-  {
-    "Path": "get-statistics.markdown",
-    "Name": "Get Statistics",
-    "Mappings": [
-      {
-        "Version": 3.5,
-        "Key": "client-api/commands/how-to/get-database-and-server-statistics"
-      }
-    ]
-  },
-  {
-    "Path": "/configuration",
-    "Name": "Configuration",
-    "Mappings": []
-  },
-  {
-    "Path": "/identities",
-    "Name": "Identities",
-    "Mappings": []
-  },
-  {
-    "Path": "/indexes",
-    "Name": "Indexes",
-    "Mappings": []
-  },
-  {
-    "Path": "/etl",
-    "Name": "ETL",
-    "Mappings": []
-  }
+    {
+        "Path": "get-collection-statistics.markdown",
+        "Name": "Get Collection Statistics",
+        "Mappings": []
+    },
+    {
+        "Path": "get-statistics.markdown",
+        "Name": "Get Statistics",
+        "Mappings": [
+            {
+                "Version": 3.5,
+                "Key": "client-api/commands/how-to/get-database-and-server-statistics"
+            }
+        ]
+    },
+    {
+        "Path": "/configuration",
+        "Name": "Configuration",
+        "Mappings": []
+    },
+    {
+        "Path": "/identities",
+        "Name": "Identities",
+        "Mappings": []
+    },
+    {
+        "Path": "/indexes",
+        "Name": "Indexes",
+        "Mappings": []
+    },
+    {
+        "Path": "/etl",
+        "Name": "ETL",
+        "Mappings": []
+    },
+    {
+        "Path": "/backup",
+        "Name": "Backup",
+        "Mappings": []
+    }
 ]

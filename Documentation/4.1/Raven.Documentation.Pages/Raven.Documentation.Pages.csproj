@@ -4,4 +4,11 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="studio\database\documents\document-view\additional-features\attachments.markdown" />
+    <None Remove="studio\database\documents\document-view\additional-features\recent.markdown" />
+    <None Remove="studio\database\documents\document-view\additional-features\related.markdown" />
+    <None Remove="studio\database\documents\document-view\additional-features\revisions.markdown" />
+  </ItemGroup>
+
 </Project>

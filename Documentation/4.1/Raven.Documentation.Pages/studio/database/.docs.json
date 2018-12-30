@@ -20,7 +20,6 @@
     {
         "Path": "/tasks",
         "Name": "Tasks",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]
