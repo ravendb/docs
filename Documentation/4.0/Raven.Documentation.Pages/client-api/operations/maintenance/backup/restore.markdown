@@ -8,14 +8,10 @@ You can restore backed up databases using the Studio, or client API methods.
 
 * In this page:  
   * [Restoring a Database](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database)  
-     * [Restoration Procedure](../../../../client-api/operations/maintenance/backup/restore#restoration-procedure)  
-     * [Typical Backup Folder](../../../../client-api/operations/maintenance/backup/restore#typical-backup-folder)  
-     * [RestoreBackupConfiguration](../../../../client-api/operations/maintenance/backup/restore#restorebackupconfiguration)  
-  * [Restore Database to a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
-  * [Restore Database to multiple nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
-  * [Restore Database to multiple nodes AT ONCE](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes-at-once)  
-  * [Restore data from a precise point in time](../../../../client-api/operations/maintenance/backup/restore#restore-data-from-a-precise-point-in-time)  
-  * [Caution](../../../../client-api/operations/maintenance/backup/restore#caution)  
+     * [To a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
+     * [To multiple nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
+     * [To multiple nodes AT ONCE](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes-at-once)  
+  * [Recommended Cautions](../../../../client-api/operations/maintenance/backup/restore#recommended-cautions)  
 
 {NOTE/}
 
@@ -23,26 +19,7 @@ You can restore backed up databases using the Studio, or client API methods.
 
 {PANEL: Restoring a database}
 
-####Restoration procedure  
-
-* In order to restore a database, RavenDB -
-   * Browses the folder in which backup files are kept.  
-      You need to provide only the containing folder's path.  
-   * Restores the **full backup** it finds in this folder.  
-      A backup folder contains a single Full backup, and the incremental backups that supplement it.  
-   * Restores the **incremental backups** one by one.  
-      You can set RavenDB to stop incremental backup restorations, when it reaches a certain file.  
-
-####Typical Backup Folder  
-
-* A typical backup folder may contain files like
-   * 2018-12-26-09-00.ravendb-full-backup
-   * 2018-12-26-12-00.ravendb-incremental-backup
-   * 2018-12-26-15-00.ravendb-incremental-backup
-   * 2018-12-26-18-00.ravendb-incremental-backup
-
-
-####RestoreBackupConfiguration  
+####Configure restoration  
 
 * Use `RestoreBackupConfiguration` to initiate restoration.  
   * **Syntax**
@@ -56,7 +33,7 @@ You can restore backed up databases using the Studio, or client API methods.
         | **DatabaseName** | string | Name for the restored database |
         | **DataDirectory** | string | Database data directory <br> Optional (use default directory by not setting DataDirectory) |
         | **BackupLocation** | string | Backup files local path |
-        | **LastFileNameToRestore** | string | Last incremental backup file to restore from |
+        | **LastFileNameToRestore** | string | Last backup file to restore from |
         | **EncryptionKey** | string | A key for an encrypted database |
         | **DisableOngoingTasks** | boolean | ongoing tasks will be disabled when backup is restored  |
    
@@ -71,12 +48,18 @@ You can restore backed up databases using the Studio, or client API methods.
   * Choose the destination folder (Optional).  
      * Set `DataDirectory` to the new database folder.  
      * If you don't set **DataDirectory** RavenDB will use its default folder.  
-        * The default folder is named "Databases", under the RavenDB directory.  
+        * The default folder will bear the name of the database, inside the "Databases" directory.  
   * Provide the backup files' folder.  
     Backup source path has to be local for the restoration to continue.  
      * Set `BackupLocation` with the local path.  
-  * You can make the restoration stop with a chosen incremental-backup file.  
-     * Set `LastFileNameToRestore` to the name of the last incremental-backup file you want to restore.  
+  * By default, restoration will include the full backup and all the incremental files that follow it.  
+    But you can also choose to end the restoration when a chosen file is reached.  
+     * Set `LastFileNameToRestore` with the name of the last backup file to restore.  
+       E.g. -
+        * If you want to restore only the full backup and skip incremental-backup files,  
+          set LastFileNameToRestore with the full-backup file name.  
+        * If you want to restore incremental-backup files up to a certain file,  
+          set LastFileNameToRestore with the name of the last incremental-backup file to restore.  
   * If the backup is encrypted, provide a key to decrypt it.  
      * Set `EncryptionKey` to provide the key.  
         * A Snapshot of an encrypted database, is encrypted as well.  
@@ -91,15 +74,12 @@ You can restore backed up databases using the Studio, or client API methods.
 * Code Sample:  
      {CODE backup_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
-####Restore incremental backups  
-In order to restore incremental backups,. RavenDB restores the full backup they supplement. You can restore incremental backups, only after restoring You can restore an incremental backup only after restoring the full backup it supplements.  
-
 {PANEL/}
 
 {PANEL: Restore Database to multiple nodes}
 
 * [Restore the backup to a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)    
-* Modify the database group topology, to spread the database to the other nodes.  
+* [Modify the database group topology](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology), to spread the database to the other nodes.  
 
 ####Restore Database to multiple nodes AT ONCE  
 
@@ -115,32 +95,29 @@ In order to restore incremental backups,. RavenDB restores the full backup they 
    * Rename the database folder on all nodes to the original database name.  
    * Expand the database group to all the other relevant nodes.  
 
-* Restore Cluster
-
 {PANEL/}
 
-{PANEL: Restore data from a precise point in time}
-
-* It is sometimes [desirable](../../../../client-api/operations/maintenance/backup/backup#point-in-time-backup) to return the data to its state in a precise point in time.  
-  You can maintain precise restoration points, by maintaining and backing up [Revisions](../../../../server/extensions/revisions).  
-  To restore a certain revision -  
-   * Restore the database  
-   * Re-create the cluster, if needed  
-   * Restore the relevant revision.  
-
-{PANEL/}
-
-{PANEL: Caution}
+{PANEL: Recommended Cautions}
 {WARNING: }
 
 When you create a backup of a database on one machine and restore it to another, you may be interested more in the database itself than in behaviors accompanying it like its ongoing tasks.  
-E.g., an ETL ongoing task that suited a testing machine, may not be suitable for a production environment.  
-In such cases, disable ongoing tasks using the .  
+
+* E.g., an ETL ongoing task from a production cluster may have unwanted results in a testing environment.  
+
+In such cases, disable ongoing tasks using the `DisableOngoingTasks` flag.  
+DisableOngoingTasks's default setting is FALSE, **allowing** tasks to run when backup is restored.  
+
+* Code Sample:  
+  {CODE backup_restore_DisableOngoingTasks@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
 {WARNING/}
 {PANEL/}
 
-## Related Articles
+## Related Articles  (to be revised, ignore)
 
+####Client
 [Backup using code](../../../../client-api/operations/maintenance/backup/backup)  
+
+####Studio
 [Backup using the Studio](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
 [Restore using the Studio](../../../../studio/server/databases/create-new-database/from-backup)  

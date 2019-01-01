@@ -131,6 +131,13 @@ namespace Rvn.Ch02
             }.Initialize())
             {
 
+
+                #region backup_restore_DisableOngoingTasks
+                //Do or do not run ongoing tasks after restoration.
+                //Default setting is FALSE, to allow tasks' execution when backup is restored.
+                restoreConfiguration.DisableOngoingTasks = true;
+                #endregion
+
                 #region backup_restore
                 var backupPath = @"C:\Users\Beth\backups\2018-12-26-16-17.ravendb-Products-A-backup";
 
