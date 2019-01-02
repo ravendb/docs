@@ -7,6 +7,7 @@ public class FanoutIndexes {
     private static class Order {
     }
 
+
     //region fanout_index_def_1
     public static class Orders_ByProduct extends AbstractIndexCreationTask {
         public Orders_ByProduct() {

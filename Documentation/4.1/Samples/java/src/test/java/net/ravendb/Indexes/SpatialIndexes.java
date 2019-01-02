@@ -1,7 +1,6 @@
 package net.ravendb.Indexes;
 
 import net.ravendb.client.documents.indexes.AbstractIndexCreationTask;
-import net.ravendb.client.documents.indexes.spatial.SpatialOptionsFactory;
 
 public class SpatialIndexes {
 

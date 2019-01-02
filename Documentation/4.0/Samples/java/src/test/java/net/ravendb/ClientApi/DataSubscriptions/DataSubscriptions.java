@@ -1,5 +1,6 @@
 package net.ravendb.ClientApi.DataSubscriptions;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
@@ -257,6 +258,31 @@ public class DataSubscriptions {
             });
             //endregion
         }
+
+        {
+            //region dynamic_worker
+            String subscriptionName = "My dynamic subscription";
+
+            SubscriptionCreationOptions subscriptionCreationOptions = new SubscriptionCreationOptions();
+            subscriptionCreationOptions.setName("My dynamic subscription");
+            subscriptionCreationOptions.setQuery("from Orders as o \n" +
+                "select { \n" +
+                "   DynamicField_1: 'Company:' + o.Company + ' Employee: ' + o.Employee \n" +
+                "}");
+
+            SubscriptionWorker<ObjectNode> worker = store.subscriptions().getSubscriptionWorker(subscriptionName);
+            worker.run(x -> {
+                for (SubscriptionBatch.Item<ObjectNode> item : x.getItems()) {
+                    ObjectNode result = item.getResult();
+                    raiseNotification(result.get("DynamicField_1"));
+                }
+            });
+            //endregion
+        }
+    }
+
+    void raiseNotification(JsonNode node) {
+
     }
 
     void processOrderChanges(Order prev, Order cur) {
