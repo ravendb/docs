@@ -3,25 +3,27 @@
 
 {NOTE: }
 
-* Use this overview to learn about creating and restoring a backup of your database.  
-   * **Backup**  
-      * The two principle reasons for backing up your database are -  
-         * **Securing data** in case catastrophe strikes.  
-         * **Freezing data in chosen points-in-time** to retain access to it in [various stages](../../../../client-api/operations/maintenance/backup/backup#point-in-time-backup) of its existence/development.  
-      * RavenDB's Backup is an **Ongoing task**.  
-         * RavenDB considers **Routine backup** a fundamental aspect of your database maintenance.  
-           Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../../../studio/database/tasks/ongoing-tasks/general-info).  
-           It is configured and executed once, and then continuously produces updated backups.  
-         * The Backup tasks works **in the background**.  
-           Like the other ongoing tasks, Backup runs in the background as an asynchronous task.  
-   * **Restore**  
-       Maintaining a proper backup routine ensures that you'd be able to restore your data to its state at nearly any chosen point of time.  
+* Use this overview as an introduction to backing up and restoring your databases.  
+
+* **Backup**  
+   * The two principle reasons for backing up your database are -  
+      * **Securing data** in case catastrophe strikes.  
+      * **Freezing data in chosen points-in-time** to retain access to it in [various stages](../../../../client-api/operations/maintenance/backup/backup#point-in-time-backup) of its existence/development.  
+   * RavenDB's Backup is an **Ongoing task**.  
+      * RavenDB considers **Routine backup** a fundamental aspect of your database maintenance.  
+        Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../../../studio/database/tasks/ongoing-tasks/general-info).  
+        It is configured and executed once, and then continuously produces updated backups.  
+      * The Backup tasks works **in the background**.  
+        Like the other ongoing tasks, Backup runs in the background as an asynchronous task.  
+
+* **Restore**  
+    Maintaining a proper backup routine ensures that you'd be able to restore your data to its state at nearly any chosen point of time.  
 
 * In this page:  
   * [Backing up and Restoring a database](../../../../client-api/operations/maintenance/backup/overview#backing-up-and-restoring-a-database)  
-     * Backup scope: **full** or **incremental**  
-     * A typical backup folder  
-     * Restoration procedure  
+     * **Backup scope: FULL or INCREMENTAL**  
+     * **A typical backup folder**  
+     * **Restoration procedure**  
   * [Overview](../../../../client-api/operations/maintenance/backup/overview#overview)  
       * [Backup Type: Logical Backup and Snapshot](../../../../client-api/operations/maintenance/backup/overview#backup-type-logical-backup-or-snapshot)  
       * [Encryption](../../../../client-api/operations/maintenance/backup/overview#encryption)  
@@ -45,7 +47,7 @@
                    * Backup will create a **full backup** first.  
                    * Subsequent backups will be incremental.  
 
-* A **typical backup folder**  
+* **A typical backup folder**  
      * A typical backup folder holds a single full-backup file, and a list of incremental-backup files.  
         * Each incremental backup updates its predecessors, and the whole structure illustrates the backup's chronology.  
         * Folder contents sample:  
@@ -54,8 +56,8 @@
            * 2018-12-26-15-00.ravendb-incremental-backup
            * 2018-12-26-18-00.ravendb-incremental-backup
 
-* **Restoration procedure**
-     * In order to restore a database, RavenDB -
+* **Restoration procedure**  
+     * In order to restore a database, RavenDB -  
         * Browses the backup folder.  
            You need only to provide the backup-folder's path.  
         * Restores the **full backup** it finds in this folder.  
@@ -70,10 +72,10 @@
 
 ####Backup Type: Logical Backup or Snapshot  
 
-* There are two backup types, named **Logical backup** (or simply "Backup") and **Snapshot**.  
+* There are two backup types: [Logical backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) (or simply "Backup") and [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot).  
    * A Logical backup is a compressed JSON dump of database contents, including documents and other data.  
    * A SnapShot is a binary image of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
-     Using Snapshots is available only for Enterprise subscribers.  
+      * Using Snapshots is available only for _Enterprise subscribers_.  
 
 ---
 
@@ -81,7 +83,7 @@
 
 * Stored data can be **Encrypted** or **Unencrypter**.  
    * Snapshot encryption  
-      * The snapshot of an encrypted database, is encrypted.  
+      * The snapshot of an [encrypted database](../../../../server/security/encryption/database-encryption), is encrypted.  
       * The snapshot of an unencrypted database, is unencrypted.  
    * Logical backup encryption  
       * With RavenDB 4.0 and 4.1, you can create only an unencrypted logical backup.  
@@ -91,27 +93,28 @@
 
 ####Compression
 
-* All backup files are gzipped: Full "standard" backup dumps, snapshot images, and the incremental backups that supplement both.  
-   * Data is compressed using [gzip](https://www.gzip.org/).  
+* A backup always consists of a single compressed file.  
+  It is so for all backup formats: full "Logical" backup dumps, snapshot images, and the incremental backups that supplement both.  
+* Data is compressed using [gzip](https://www.gzip.org/).  
 
 ---
 
 ####Backup Name
 
 * Backup folders and files are named automatically. Their names are constructed of:  
-   * Current Date and Time
-   * Backed-up Database Name
-   * Owner-Node Tag
-   * Backup Type ("backup" or "snapshot")
-   * Backup Scope ("full-backup" or "incremental-backup")
+   * Current Date and Time  
+   * Backed-up Database Name  
+   * Owner-Node Tag  
+   * Backup Type ("backup" or "snapshot")  
+   * Backup Scope ("full-backup" or "incremental-backup")  
 
 * For example:  
-   * `2018-12-26-16-17.ravendb-Products-A-backup` is the automatically-generated name of a backup-file's _folder_.  
+   * `2018-12-26-16-17.ravendb-Products-A-backup` is the name automatically given to a backup _folder_.  
        * "**2018-12-26-16-17**" - Backup Date and time  
        * "**Products**" - Backed-up Database name  
        * "**A**" - Executing node's tag
        * "**backup**" - Backup type (backup/snapshot)  
-   * `2018-12-26-16-17.ravendb-full-backup` is the automatically-generated name of the actual backup _file_.  
+   * `2018-12-26-16-17.ravendb-full-backup` is the name automatically given to the backup file inside this folder.  
        * "**full-backup**" - For a full backup; an incremental backup's name will state "incremental-backup".  
 
 ---

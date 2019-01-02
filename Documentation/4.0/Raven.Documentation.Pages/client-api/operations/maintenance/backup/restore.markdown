@@ -9,8 +9,10 @@ You can restore backed up databases using the Studio, or client API methods.
 * In this page:  
   * [Restoring a Database](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database)  
      * [To a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
+         * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore#optional-settings)  
      * [To multiple nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
-     * [To multiple nodes AT ONCE](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes-at-once)  
+         * **Restore Database to a single node, and replicate it to other nodes**  
+         * **Restore Database to multiple nodes simultaneously**  
   * [Recommended Cautions](../../../../client-api/operations/maintenance/backup/restore#recommended-cautions)  
 
 {NOTE/}
@@ -19,81 +21,91 @@ You can restore backed up databases using the Studio, or client API methods.
 
 {PANEL: Restoring a database}
 
-####Configure restoration  
+####Configuration and Execution  
 
-* Use `RestoreBackupConfiguration` to initiate restoration.  
-  * **Syntax**
-{CODE:csharp restore_1@ClientApi\Operations\Server\Restore.cs /}
-{CODE:csharp restore_2@ClientApi\Operations\Server\Restore.cs /}
+* To restore your database, configure a `RestoreBackupConfiguration` instance and pass it to `RestoreBackupOperation` for execution.  
 
-  * **Parameters**
+* `RestoreBackupOperation`
+  {CODE restore_restorebackupoperation@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
-        | Parameter | Value | Functionality |
-        | ------------- | ------------- | ----- |
-        | **DatabaseName** | string | Name for the restored database |
-        | **DataDirectory** | string | Database data directory <br> Optional (use default directory by not setting DataDirectory) |
-        | **BackupLocation** | string | Backup files local path |
-        | **LastFileNameToRestore** | string | Last backup file to restore from |
-        | **EncryptionKey** | string | A key for an encrypted database |
-        | **DisableOngoingTasks** | boolean | ongoing tasks will be disabled when backup is restored  |
-   
+* `RestoreBackupConfiguration`
+  {CODE restore_restorebackupconfiguration@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+   * Parameters:
 
+    | Parameter | Value | Functionality |
+    | ------------- | ------------- | ----- |
+    | **DatabaseName** | string | Name for the new database. |
+    | **BackupLocation** | string | Backup file local path. <br> Backup source path **has to be local** for the restoration to continue.|
+    | **LastFileNameToRestore** <br> (Optional -<br> omit for default) | string | Last backup file to restore. <br> **Default behavior: Restore all backup files in the folder.** |
+    | **DataDirectory** <br> (Optional -<br> omit for default) | string | Database data directory. <br> **Default folder: Under the "Databases" folder, in a folder that carries the restored database's name.** |
+    | **EncryptionKey** <br> (Optional -<br> omit for default) | string | A key for an encrypted database. <br> **Default behavior: Try to restore as if DB is unencrypted.**|
+    | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | boolean | `true` to disable ongoing tasks after restoring, <br> `false` to enable tasks after restoring. <br> **Default: `false` (tasks DO run when backup is restored)**|
+  
 {PANEL/}
 
 {PANEL: Restore database to a single node}
 
 *  **Configuration**  
-  * Provide a name for the new database.  
-     * Set `DatabaseName` with the new name.  
-  * Choose the destination folder (Optional).  
-     * Set `DataDirectory` to the new database folder.  
-     * If you don't set **DataDirectory** RavenDB will use its default folder.  
-        * The default folder will bear the name of the database, inside the "Databases" directory.  
-  * Provide the backup files' folder.  
-    Backup source path has to be local for the restoration to continue.  
-     * Set `BackupLocation` with the local path.  
-  * By default, restoration will include the full backup and all the incremental files that follow it.  
-    But you can also choose to end the restoration when a chosen file is reached.  
-     * Set `LastFileNameToRestore` with the name of the last backup file to restore.  
-       E.g. -
-        * If you want to restore only the full backup and skip incremental-backup files,  
-          set LastFileNameToRestore with the full-backup file name.  
-        * If you want to restore incremental-backup files up to a certain file,  
-          set LastFileNameToRestore with the name of the last incremental-backup file to restore.  
-  * If the backup is encrypted, provide a key to decrypt it.  
-     * Set `EncryptionKey` to provide the key.  
-        * A Snapshot of an encrypted database, is encrypted as well.  
-        * Starting with RavenDB version 4.2, you can encrypt a standard backup as well.  
-  * Disable ongoing tasks (Optional)  
-     * Set `DisableOngoingTasks` to **true** to disable ongoing tasks.  
-       Default settings is **false**.  
-       There are circumstances in which disabling ongoing tasks after restoration is advisable, e.g. when backup has been created on a testing machine and the database is restored to a production environment.  
-*  **Restore**  
-     * Execute `RestoreBackupOperation` with the chosen configuration.  
+     * Set `DatabaseName` with the **new database name**.  
+     * Set `BackupLocation` with a **local path for the backup files**.  
+
+*  **Execution**  
+     * Pass `RestoreBackupOperation` the configured `RestoreBackupConfiguration`.  
+     * Restore tha database by sending the task to the server.  
 
 * Code Sample:  
-     {CODE backup_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+     {CODE restore_to_single_node@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
+
+{NOTE: }
+####Optional settings:
+
+* `LastFileNameToRestore`
+    * Use **LastFileNameToRestore** if you want to restore backed up files up to a certain file, and omit the rest.  
+       * For example - 
+          * These are the files in your backup folder:  
+             2018-12-26-09-00.ravendb-full-backup  
+             2018-12-26-12-00.ravendb-incremental-backup  
+             2018-12-26-15-00.ravendb-incremental-backup  
+             2018-12-26-18-00.ravendb-incremental-backup  
+          * Feed **LastFileNameToRestore** with the 12:00 incremental-backup file name:
+             {CODE restore_last_file_name_to_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+          * The full-backup and 12:00 incremental-backup files **will** be restored.  
+            The 15:00 and 18:00 files will be **omitted**.  
+
+* `DataDirectory`  
+   Choose the location and name of the directory the database will be restored to.  
+   {CODE restore_to_specific__data_directory@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
+* `EncryptionKey`  
+   This is where you need to provide your encryption key if your backup is encrypted.  
+
+* `DisableOngoingTasks`  
+   set **DisableOngoingTasks** to **true** to [disable ongoing tasks](../../../../client-api/operations/maintenance/backup/restore#recommended-cautions) after restoration.  
+   {CODE restore_disable_ongoing_tasks_true@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+{NOTE/}
 
 {PANEL/}
 
 {PANEL: Restore Database to multiple nodes}
 
-* [Restore the backup to a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)    
-* [Modify the database group topology](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology), to spread the database to the other nodes.  
+* **Restore Database to a single node, and replicate it to other nodes**  
+   * [Restore the backup to a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node).  
+   * Modify the database group [topology](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) using [the Studio](../../../../studio/server/cluster/cluster-view#cluster-view-operations) or [code](../../../../server/clustering/cluster-api#cluster--cluster-api) to spread the database to the other nodes.  
 
-####Restore Database to multiple nodes AT ONCE  
-
-* This procedure is advisable only when restoring a Snapshot.
-  Simultaneously restoring a regular backup by multiple nodes, triggers the nodes to send a large amount of change-vector updates to each other.  
-  When restoring this way from a Snapshot on the other hand, the databases are considered identical and change-vectors are not sent.  
-* Simultaneous restoration procedure:
-   * On the first node, restore the database using its original name.  
-   * On other nodes, restore the DB using different names.  
-   * Wait for the restoration to complete on all nodes.  
-   * **Soft** delete the additional databases (with the different names) on all nodes.  
-     This will remove the databases from the cluster, but retain the data files on disk.  
-   * Rename the database folder on all nodes to the original database name.  
-   * Expand the database group to all the other relevant nodes.  
+* **Restore Database to multiple nodes simultaneously**  
+   * This procedure is advisable only when restoring a [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot).
+      * Simultaneously restoring a Logical backup by multiple nodes, triggers each node to send change-vector updates to all other nodes.  
+      * Simultaneously restoring Snapshots does **not** trigger this behavior, because the databases kept by all nodes are considered identical.  
+   * Simultaneous restoration procedure:
+      * On the first node, restore the database using its original name.  
+      * On other nodes, restore the database using different names.  
+      * Wait for the restoration to complete on all nodes.  
+      * **Soft-delete** the additional databases (with altered names) on all nodes.  
+         * [Delete](../../../../client-api/operations/server-wide/delete-database#operations--server--how-to-delete-a-database) the databases from the cluster, but retain the data files on disk.  
+             * `HardDelete = false`
+      * Rename the database folder on all nodes to the original database name.  
+      * [Expand](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) the database group to all relevant nodes.  
 
 {PANEL/}
 
@@ -108,7 +120,7 @@ In such cases, disable ongoing tasks using the `DisableOngoingTasks` flag.
 DisableOngoingTasks's default setting is FALSE, **allowing** tasks to run when backup is restored.  
 
 * Code Sample:  
-  {CODE backup_restore_DisableOngoingTasks@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+  {CODE restore_disable_ongoing_tasks_true@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 {WARNING/}
 {PANEL/}

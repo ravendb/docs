@@ -27,13 +27,13 @@
 
 ####Logical Backup (or simply "Backup")
 
-* Data is stored in [compressed](../../../../client-api/operations/maintenance/backup/overview#compression) JSON files.  
+* Data is backed-up in [compressed](../../../../client-api/operations/maintenance/backup/overview#compression) JSON files.  
 
 * During restoration, RavenDB -  
    * Re-inserts all data into the database.  
    * Re-indexes the data.  
 
-* Restoration Time is therefore **slower** than that required for a Snapshot restoration.  
+* Restoration Time is therefore **slower** than that required when restoring a Snapshot.  
 
 * Needed storage space is **smaller** than that required to store a Snapshot image.  
 
@@ -44,7 +44,7 @@
 ####Snapshot
 
 * **Snapshot** backups are available for **Enterprise subscribers only**.  
-  A "Snapshot" image is a bitwise duplication of the current database structure.  
+    A SnapShot is a binary duplication of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) file structure at a given point-in-time.  
 
 * During restoration -
    * Re-indexing is not required.  

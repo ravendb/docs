@@ -7,6 +7,7 @@ using System.Collections.Generic;
 //using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 using System.Threading;
+using Raven.Client.Documents.Operations.Counters;
 using System.Threading.Tasks;
 using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.Documents.Smuggler;
@@ -41,7 +42,7 @@ namespace Rvn.Ch02
                     LocalSettings = new LocalSettings
                     {
                         //Backup files local path
-                        FolderPath = @"C:\Users\Beth\backups"
+                        FolderPath = @"C:\Users\John\backups"
                     },
 
                     //Full Backup period (Cron expression for a 3-hours period)
@@ -67,7 +68,7 @@ namespace Rvn.Ch02
                 {
                     LocalSettings = new LocalSettings
                     {
-                        FolderPath = @"C:\Users\Beth\backups"
+                        FolderPath = @"C:\Users\John\backups"
                     },
 
                     #region backup_type_snapshot
@@ -98,7 +99,7 @@ namespace Rvn.Ch02
                 {
                     LocalSettings = new LocalSettings
                     {
-                        FolderPath = @"C:\Users\Beth\backups"
+                        FolderPath = @"C:\Users\John\backups"
                     },
 
                     //FTP Backup settings
@@ -106,8 +107,8 @@ namespace Rvn.Ch02
                     {
                         Url = "192.168.10.4",
                         Port = 8080,
-                        UserName = "Beth",
-                        Password = "Bethlehem38"
+                        UserName = "John",
+                        Password = "JohnDoe38"
                     },
 
                     //Azure Backup settings
@@ -115,7 +116,7 @@ namespace Rvn.Ch02
                     {
                         StorageContainer = "storageContainer",
                         RemoteFolderName = "remoteFolder",
-                        AccountName = "BethAccount",
+                        AccountName = "JohnAccount",
                         AccountKey = "key"
                     }
                 };
@@ -130,18 +131,54 @@ namespace Rvn.Ch02
                 Database = "Products"
             }.Initialize())
             {
+                #region restore_to_single_node
+                var restoreConfiguration = new RestoreBackupConfiguration();
 
+                //New database name
+                restoreConfiguration.DatabaseName = "newProductsDatabase";
 
-                #region backup_restore_DisableOngoingTasks
+                //Local path with a backup file
+                var backupPath = @"C:\Users\John\backups\2018-12-26-16-17.ravendb-Products-A-backup";
+                restoreConfiguration.BackupLocation = backupPath;
+
+                var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+                docStore.Maintenance.Server.Send(restoreBackupTask);
+                #endregion
+
+                #region restore_disable_ongoing_tasks_false
+                //Disable or Enable ongoing tasks after restoration.
+                //Default setting is FALSE, so tasks DO run when backup is restored.
+                restoreConfiguration.DisableOngoingTasks = false;
+                #endregion
+
+                #region restore_last_file_name_to_restore
+                //Last incremental backup file to restore from
+                restoreConfiguration.LastFileNameToRestore = @"2018-12-26-12-00.ravendb-incremental-backup";
+                #endregion
+
+                #region restore_to_specific__data_directory
+                //Restore to a pre-chosen folder
+                var dataPath = @"C:\Users\John\backups\2018-12-26-16-17.ravendb-Products-A-backup\restoredDatabaseLocation";
+                restoreConfiguration.DataDirectory = dataPath;
+                #endregion
+
+                #region restore_disable_ongoing_tasks_true
                 //Do or do not run ongoing tasks after restoration.
                 //Default setting is FALSE, to allow tasks' execution when backup is restored.
                 restoreConfiguration.DisableOngoingTasks = true;
                 #endregion
+            }
 
-                #region backup_restore
-                var backupPath = @"C:\Users\Beth\backups\2018-12-26-16-17.ravendb-Products-A-backup";
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region restore_up_to_certain_faile
+                var backupPath = @"C:\Users\John\backups\2018-12-26-16-17.ravendb-Products-A-backup";
 
-                var dataPath = @"C:\Users\Beth\backups\2018-12-26-16-17.ravendb-Products-A-backup\restoredDatabaseLocation";
+                var dataPath = @"C:\Users\John\backups\2018-12-26-16-17.ravendb-Products-A-backup\restoredDatabaseLocation";
 
                 var restoreConfiguration = new RestoreBackupConfiguration();
 
@@ -164,7 +201,50 @@ namespace Rvn.Ch02
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
                 docStore.Maintenance.Server.Send(restoreBackupTask);
                 #endregion
+
+                #region restore_disable_ongoing_tasks
+                //Do or do not run ongoing tasks after restoration.
+                //Default setting is FALSE, to allow tasks' execution when backup is restored.
+                restoreConfiguration.DisableOngoingTasks = true;
+                #endregion
             }
+
+            * private class Foo
+            {
+                public class DeleteDatabasesOperation
+                {
+                    #region restore_restorebackupoperation
+                    public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
+                    #endregion
+
+                    #region restore_restorebackupconfiguration
+                    public class RestoreBackupConfiguration
+                    {
+                        public string DatabaseName { get; set; }
+                        public string BackupLocation { get; set; }
+                        public string LastFileNameToRestore { get; set; }
+                        public string DataDirectory { get; set; }
+                        public string EncryptionKey { get; set; }
+                        public bool DisableOngoingTasks { get; set; }
+                    }
+
+                    #endregion
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
         }
+    }
     }
 }
