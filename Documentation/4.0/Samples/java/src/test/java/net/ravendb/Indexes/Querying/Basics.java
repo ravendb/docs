@@ -39,7 +39,7 @@ public class Basics {
                 // where 'firstName' is 'Robert'
                 List<Employee> results = session
                     .query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList(); // send query
                 //endregion
             }
@@ -51,7 +51,7 @@ public class Basics {
                 // skip first 5 results
                 List<Product> results = session
                     .query(Product.class)
-                    .whereGreaterThan("unitsInStock", 10)
+                    .whereGreaterThan("UnitsInStock", 10)
                     .skip(5)
                     .take(10)
                     .toList();//send query
@@ -65,7 +65,7 @@ public class Basics {
                 // using 'Employees/ByFirstName' index
                 session
                     .query(Employee.class, Employees_ByFirstName.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList(); // send query
                 //endregion
             }
@@ -77,7 +77,7 @@ public class Basics {
                 // using 'Employees/ByFirstName' index
                 session
                     .query(Employee.class, Query.index("Employees/ByFirstName"))
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList(); // send query
                 //endregion
             }
@@ -88,7 +88,7 @@ public class Basics {
                 // with ID matching 'employees/1-A'
                 Employee result = session
                     .query(Employee.class)
-                    .whereEquals("id", "employees/1-A")
+                    .whereEquals("Id", "employees/1-A")
                     .firstOrDefault();
                 //endregion
             }

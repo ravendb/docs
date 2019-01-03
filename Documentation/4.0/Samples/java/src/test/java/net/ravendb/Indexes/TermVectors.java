@@ -43,12 +43,12 @@ public class TermVectors {
     public static class BlogPosts_ByTagsAndContent extends AbstractIndexCreationTask {
         public BlogPosts_ByTagsAndContent() {
             map = "docs.Posts.Select(post => new { " +
-                "    tags = post.tags, " +
-                "    content = post.content " +
+                "    Tags = post.Tags, " +
+                "    Content = post.Content " +
                 "})";
 
-            index("content", FieldIndexing.SEARCH);
-            termVector("content", FieldTermVector.WITH_POSITIONS_AND_OFFSETS);
+            index("Content", FieldIndexing.SEARCH);
+            termVector("Content", FieldTermVector.WITH_POSITIONS_AND_OFFSETS);
         }
     }
     //endregion
@@ -58,12 +58,12 @@ public class TermVectors {
             //region term_vectors_2
             IndexDefinitionBuilder builder = new IndexDefinitionBuilder("BlogPosts/ByTagsAndContent");
             builder.setMap("docs.Posts.Select(post => new { " +
-                "    tags = post.tags, " +
-                "    content = post.content " +
+                "    Tags = post.Tags, " +
+                "    Content = post.Content " +
                 "})");
 
-            builder.getIndexesStrings().put("content", FieldIndexing.SEARCH);
-            builder.getTermVectorsStrings().put("content", FieldTermVector.WITH_POSITIONS_AND_OFFSETS);
+            builder.getIndexesStrings().put("Content", FieldIndexing.SEARCH);
+            builder.getTermVectorsStrings().put("Content", FieldTermVector.WITH_POSITIONS_AND_OFFSETS);
 
             IndexDefinition indexDefinition = builder.toIndexDefinition(store.getConventions());
 

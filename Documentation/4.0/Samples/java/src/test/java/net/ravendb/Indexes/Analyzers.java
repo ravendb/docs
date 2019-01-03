@@ -31,11 +31,11 @@ public class Analyzers {
     public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastName() {
             map = "docs.Employees.Select(employee => new { " +
-                "    lastName = employee.lastName, " +
-                "    firstName = employee.firstName " +
+                "    LastName = employee.LastName, " +
+                "    FirstName = employee.FirstName " +
                 "})";
 
-            index("firstName", FieldIndexing.EXACT);
+            index("FirstName", FieldIndexing.EXACT);
         }
     }
     //endregion

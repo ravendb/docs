@@ -32,11 +32,11 @@ public class Metadata {
         public Products_AllProperties() {
             map = "docs.Products.Select(product => new { " +
                 // convert product to JSON and select all properties from it
-                "    query = this.AsJson(product).Select(x => x.Value) " +
+                "    Query = this.AsJson(product).Select(x => x.Value) " +
                 "})";
 
             // mark 'query' field as analyzed which enables full text search operations
-            index("query", FieldIndexing.SEARCH);;
+            index("Query", FieldIndexing.SEARCH);;
         }
     }
     //endregion
@@ -57,10 +57,10 @@ public class Metadata {
 
         public Products_WithMetadata() {
             map = "docs.Products.Select(product => new { " +
-                "    product = product, " +
-                "    metadata = this.MetadataFor(product) " +
+                "    Product = Product, " +
+                "    Metadata = this.MetadataFor(product) " +
                 "}).Select(this0 => new { " +
-                "    lastModified = this0.metadata.Value<DateTime>(\"Last-Modified\") " +
+                "    LastModified = this0.metadata.Value<DateTime>(\"Last-Modified\") " +
                 "})";
         }
     }
@@ -72,7 +72,7 @@ public class Metadata {
                 //region indexes_2
                 List<Product> results = session
                     .query(Products_AllProperties.Result.class, Products_AllProperties.class)
-                    .whereEquals("query", "Chocolade")
+                    .whereEquals("Query", "Chocolade")
                     .ofType(Product.class)
                     .toList();
                 //endregion
@@ -82,7 +82,7 @@ public class Metadata {
                 //region indexes_4
                 List<Product> results = session
                     .query(Products_WithMetadata.Result.class, Products_WithMetadata.class)
-                    .orderByDescending("lastModified")
+                    .orderByDescending("LastModified")
                     .ofType(Product.class)
                     .toList();
                 //endregion

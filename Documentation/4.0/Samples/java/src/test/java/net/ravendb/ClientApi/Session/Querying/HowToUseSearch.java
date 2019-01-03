@@ -67,7 +67,7 @@ public class HowToUseSearch {
                 //region search_4
                 List<User> users = session
                     .query(User.class)
-                    .search("name", "a*")
+                    .search("Name", "a*")
                     .toList();
                 //endregion
             }
@@ -75,8 +75,8 @@ public class HowToUseSearch {
             try (IDocumentSession session = store.openSession()) {
                 //region search_2
                 List<User> users = session.query(User.class, Users_ByNameAndHobbies.class)
-                    .search("name", "Adam")
-                    .search("hobbies", "sport")
+                    .search("Name", "Adam")
+                    .search("Hobbies", "sport")
                     .toList();
                 //endregion
             }
@@ -85,9 +85,9 @@ public class HowToUseSearch {
                 //region search_3
                 List<User> users = session
                     .query(User.class, index("Users/ByHobbies"))
-                    .search("hobbies", "I love sport")
+                    .search("Hobbies", "I love sport")
                     .boost(10)
-                    .search("hobbies", "but also like reading books")
+                    .search("Hobbies", "but also like reading books")
                     .boost(5)
                     .toList();
                 //endregion

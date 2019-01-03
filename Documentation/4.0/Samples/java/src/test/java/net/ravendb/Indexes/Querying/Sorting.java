@@ -16,10 +16,10 @@ public class Sorting {
     public static class Employee_ByFirstName extends AbstractIndexCreationTask {
         public Employee_ByFirstName() {
             map = "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName" +
+                "    FirstName = employee.FirstName" +
                 "})";
 
-            store("firstName", FieldStorage.YES);
+            store("FirstName", FieldStorage.YES);
         }
     }
     //endregion
@@ -28,7 +28,7 @@ public class Sorting {
     public static class Products_ByUnitsInStock extends AbstractIndexCreationTask {
         public Products_ByUnitsInStock() {
             map = "docs.Products.Select(product => new {" +
-                "    unitsInStock = product.unitsInStock" +
+                "    UnitsInStock = product.UnitsInStock" +
                 "})";
         }
     }
@@ -38,8 +38,8 @@ public class Sorting {
     public static class Products_ByUnitsInStockAndName extends AbstractIndexCreationTask {
         public Products_ByUnitsInStockAndName() {
             map = "docs.Products.Select(product => new {" +
-                "    unitsInStock = product.unitsInStock" +
-                "    name = product.name" +
+                "    UnitsInStock = product.UnitsInStock" +
+                "    Name = product.Name" +
                 "})";
         }
     }
@@ -70,11 +70,11 @@ public class Sorting {
 
         public Products_ByName_Search() {
             map = "docs.Products.Select(product => new {" +
-                "    name = product.name," +
-                "    nameForSorting = product.name" +
+                "    Name = product.Name," +
+                "    NameForSorting = product.Name" +
                 "})";
 
-            index("name", FieldIndexing.SEARCH);
+            index("Name", FieldIndexing.SEARCH);
         }
     }
     //endregion
@@ -93,7 +93,7 @@ public class Sorting {
                 //region sorting_1_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
-                    .whereGreaterThan("unitsInStock", 10)
+                    .whereGreaterThan("UnitsInStock", 10)
                     .toList();
                 //endregion
             }
@@ -102,8 +102,8 @@ public class Sorting {
                 //region sorting_2_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
-                    .whereGreaterThan("unitsInStock", 10)
-                    .orderByDescending("unitsInStock")
+                    .whereGreaterThan("UnitsInStock", 10)
+                    .orderByDescending("UnitsInStock")
                     .toList();
                 //endregion
             }
@@ -112,8 +112,8 @@ public class Sorting {
                 //region sorting_8_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
-                    .whereGreaterThan("unitsInStock", 10)
-                    .orderByDescending("unitsInStock", OrderingType.STRING)
+                    .whereGreaterThan("UnitsInStock", 10)
+                    .orderByDescending("UnitsInStock", OrderingType.STRING)
                     .toList();
                 //endregion
             }
@@ -123,7 +123,7 @@ public class Sorting {
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
                     .randomOrdering()
-                    .whereGreaterThan("unitsInStock", 10)
+                    .whereGreaterThan("UnitsInStock", 10)
                     .toList();
                 //endregion
             }
@@ -132,7 +132,7 @@ public class Sorting {
                 //region sorting_4_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
-                    .whereGreaterThan("unitsInStock", 10)
+                    .whereGreaterThan("UnitsInStock", 10)
                     .orderByScore()
                     .toList();
                 //endregion
@@ -142,10 +142,10 @@ public class Sorting {
                 //region sorting_4_3
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStockAndName.class)
-                    .whereGreaterThan("unitsInStock", 10)
-                    .orderBy("unitsInStock")
+                    .whereGreaterThan("UnitsInStock", 10)
+                    .orderBy("UnitsInStock")
                     .orderByScore()
-                    .orderByDescending("name")
+                    .orderByDescending("Name")
                     .toList();
                 //endregion
             }
@@ -154,8 +154,8 @@ public class Sorting {
                 //region sorting_6_1
                 List<Product> results = session
                     .query(Product.class, Products_ByName_Search.class)
-                    .search("name", "Louisiana")
-                    .orderByDescending("nameForSorting")
+                    .search("Name", "Louisiana")
+                    .orderByDescending("NameForSorting")
                     .toList();
                 //endregion
             }
@@ -164,8 +164,8 @@ public class Sorting {
                 //region sorting_7_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
-                    .whereGreaterThan("unitsInStock", 10)
-                    .orderBy("name", OrderingType.ALPHA_NUMERIC)
+                    .whereGreaterThan("UnitsInStock", 10)
+                    .orderBy("Name", OrderingType.ALPHA_NUMERIC)
                     .toList();
                 //endregion
             }

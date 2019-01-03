@@ -17,12 +17,12 @@ public class Storing {
     public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastName() {
             map =  "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName," +
+                "    LastName = employee.LastName" +
                 "})";
 
-            store("firstName", FieldStorage.YES);
-            store("lastName", FieldStorage.YES);
+            store("FirstName", FieldStorage.YES);
+            store("LastName", FieldStorage.YES);
         }
     }
     //endregion
@@ -33,8 +33,8 @@ public class Storing {
             IndexDefinition indexDefinition = new IndexDefinition();
             indexDefinition.setName("Employees_ByFirstAndLastName");
             indexDefinition.setMaps(Collections.singleton("docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName," +
+                "    LastName = employee.LastName" +
                 "})"));
 
             java.util.Map<String, IndexFieldOptions> fields = new HashMap<>();
@@ -42,11 +42,11 @@ public class Storing {
 
             IndexFieldOptions firstNameOptions = new IndexFieldOptions();
             firstNameOptions.setStorage(FieldStorage.YES);
-            fields.put("firstName", firstNameOptions);
+            fields.put("FirstName", firstNameOptions);
 
             IndexFieldOptions lastNameOptions = new IndexFieldOptions();
             lastNameOptions.setStorage(FieldStorage.YES);
-            fields.put("lastName", lastNameOptions);
+            fields.put("LastName", lastNameOptions);
 
             store
                 .maintenance()

@@ -22,7 +22,7 @@ public class StaleIndexes {
 
                 List<Product> results = session.query(Product.class)
                     .statistics(stats)
-                    .whereGreaterThan("pricePerUnit", 10)
+                    .whereGreaterThan("PricePerUnit", 10)
                     .toList();
 
                 if (stats.value.isStale()) {
@@ -36,7 +36,7 @@ public class StaleIndexes {
                 List<Product> results = session
                     .query(Product.class)
                     .waitForNonStaleResults(Duration.ofSeconds(5))
-                    .whereGreaterThan("pricePerUnit", 10)
+                    .whereGreaterThan("PricePerUnit", 10)
                     .toList();
                 //endregion
 

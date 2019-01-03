@@ -32,7 +32,7 @@ public class HowToStream {
                 //region stream_2
                 IDocumentQuery<Employee> query = session
                     .query(Employee.class, Employees_ByFirstName.class)
-                    .whereEquals("firstName", "Robert");
+                    .whereEquals("FirstName", "Robert");
 
                 CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
 
@@ -47,7 +47,7 @@ public class HowToStream {
                 IDocumentQuery<Employee> query = session
                     .advanced()
                     .documentQuery(Employee.class)
-                    .whereEquals("firstName", "Robert");
+                    .whereEquals("FirstName", "Robert");
 
                 Reference<StreamQueryStatistics> streamQueryStatsRef = new Reference<>();
                 CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query, streamQueryStatsRef);
@@ -61,7 +61,7 @@ public class HowToStream {
             try (IDocumentSession session = store.openSession()) {
                 //region stream_4
                 IRawDocumentQuery<Employee> query = session.advanced()
-                    .rawQuery(Employee.class, "from Employees where firstName = 'Robert'");
+                    .rawQuery(Employee.class, "from Employees where FirstName = 'Robert'");
 
                 CloseableIterator<StreamResult<Employee>> results = session.advanced().stream(query);
 
@@ -81,7 +81,7 @@ public class HowToStream {
         public Employees_ByFirstName() {
             map = "from employee in docs.Employees " +
                 "select new { " +
-                "   employee.firstName " +
+                "   employee.FirstName " +
                 "} ";
         }
     }

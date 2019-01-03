@@ -411,7 +411,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_1_0
                 Order order = session
-                    .include("customerId")
+                    .include("CustomerId")
                     .load(Order.class, "orders/1-A");
 
                 // this will not require querying the server!
@@ -424,7 +424,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_2_0
                 Map<String, Order> orders = session
-                    .include("customerId")
+                    .include("CustomerId")
                     .load(Order.class, "orders/1-A", "orders/2-A");
 
                 for (Order order : orders.values()) {
@@ -439,8 +439,8 @@ public class HandleDocumentRelationships {
                 //region includes_3_0
                 List<Order> orders = session
                     .query(Order.class)
-                    .include("customerId")
-                    .whereGreaterThan("totalPrice", 100)
+                    .include("CustomerId")
+                    .whereGreaterThan("TotalPrice", 100)
                     .toList();
 
                 for (Order order : orders) {
@@ -456,7 +456,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_4_0
                 Order order = session
-                    .include("supplierIds")
+                    .include("SupplierIds")
                     .load(Order.class, "orders/1-A");
 
                 for (String supplierId : order.getSupplierIds()) {
@@ -471,7 +471,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_5_0
                 Map<String, Order> orders = session
-                    .include("supplierIds")
+                    .include("SupplierIds")
                     .load(Order.class, "orders/1-A", "orders/2-A");
 
                 for (Order order : orders.values()) {
@@ -489,7 +489,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_6_0
                 Order order = session
-                    .include("referral.customerId")
+                    .include("Referral.CustomerId")
                     .load(Order.class, "orders/1-A");
 
                 // this will not require querying the server!
@@ -502,7 +502,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_7_0
                 Order order = session
-                    .include("lineItems[].productId")
+                    .include("LineItems[].ProductId")
                     .load(Order.class, "orders/1-A");
 
                 for (LineItem lineItem : order.getLineItems()) {
@@ -518,7 +518,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_9_0
                 Order3 order = session
-                    .include("customer.id")
+                    .include("Customer.Id")
                     .load(Order3.class, "orders/1-A");
 
                 // this will not require querying the server!
@@ -557,7 +557,7 @@ public class HandleDocumentRelationships {
                 //endregion
 
                 //region includes_10_1
-                Person person = session.include("attributes.values")
+                Person person = session.include("Attributes.Values")
                     .load(Person.class, "people/1-A");
 
                 Person mother = session
@@ -575,7 +575,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_10_3
                 Person person = session
-                    .include("attributes.keys")
+                    .include("Attributes.Keys")
                     .load(Person.class, "people/1-A");
                 //endregion
             }
@@ -616,7 +616,7 @@ public class HandleDocumentRelationships {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_11_1
                 PersonWithAttribute person = session
-                    .include("attributes[].ref")
+                    .include("Attributes[].Ref")
                     .load(PersonWithAttribute.class, "people/1-A");
 
                 Person mother = session

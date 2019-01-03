@@ -25,9 +25,9 @@ public class HowToPerformGroupByQuery {
                 //region group_by_1
 
                 List<CountryAndQuantity> orders = session.query(Order.class)
-                    .groupBy("shipTo.country")
-                    .selectKey("shipTo.country", "country")
-                    .selectSum(new GroupByField("lines[].quantity", "orderedQuantity"))
+                    .groupBy("ShipTo.Country")
+                    .selectKey("ShipTo.Country", "Country")
+                    .selectSum(new GroupByField("Lines[].Quantity", "OrderedQuantity"))
                     .ofType(CountryAndQuantity.class)
                     .toList();
 
@@ -37,9 +37,9 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_2
                 List<CountByCompanyAndEmployee> results = session.query(Order.class)
-                    .groupBy("employee", "company")
-                    .selectKey("employee", "employeeIdentifier")
-                    .selectKey("company")
+                    .groupBy("Employee", "Company")
+                    .selectKey("Employee", "EmployeeIdentifier")
+                    .selectKey("Company")
                     .selectCount()
                     .ofType(CountByCompanyAndEmployee.class)
                     .toList();
@@ -49,9 +49,9 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_3
                 List<CountOfEmployeeAndCompanyPairs> orders = session.query(Order.class)
-                    .groupBy("employee", "company")
-                    .selectKey("key()", "employeeCompanyPair")
-                    .selectCount("count")
+                    .groupBy("Employee", "Company")
+                    .selectKey("key()", "EmployeeCompanyPair")
+                    .selectCount("Count")
                     .ofType(CountOfEmployeeAndCompanyPairs.class)
                     .toList();
                 //endregion
@@ -60,8 +60,8 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_4
                 List<ProductsInfo> products = session.query(Order.class)
-                    .groupBy(array("lines[].product"))
-                    .selectKey("key()", "products")
+                    .groupBy(array("Lines[].Product"))
+                    .selectKey("key()", "Products")
                     .selectCount()
                     .ofType(ProductsInfo.class)
                     .toList();
@@ -71,9 +71,9 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_5
                 List<ProductInfo> results = session.advanced().documentQuery(Order.class)
-                    .groupBy("lines[].product", "shipTo.country")
-                    .selectKey("line[].product", "product")
-                    .selectKey("shipTo.country", "country")
+                    .groupBy("Lines[].Product", "ShipTo.Country")
+                    .selectKey("Lines[].Product", "Product")
+                    .selectKey("ShipTo.Country", "Country")
                     .selectCount()
                     .ofType(ProductInfo.class)
                     .toList();
@@ -83,9 +83,9 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_6
                 List<ProductInfo> results = session.query(Order.class)
-                    .groupBy(array("lines[].product"), array("lines[].quantity"))
-                    .selectKey("lines[].product", "product")
-                    .selectKey("lines[].quantity", "quantity")
+                    .groupBy(array("Lines[].Product"), array("Lines[].Quantity"))
+                    .selectKey("Lines[].Product", "Product")
+                    .selectKey("Lines[].Quantity", "Quantity")
                     .selectCount()
                     .ofType(ProductInfo.class)
                     .toList();
@@ -95,8 +95,8 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_7
                 List<ProductsInfo> results = session.query(Order.class)
-                    .groupBy(array("lines[].product"))
-                    .selectKey("key()", "products")
+                    .groupBy(array("Lines[].Product"))
+                    .selectKey("key()", "Products")
                     .selectCount()
                     .ofType(ProductsInfo.class)
                     .toList();
@@ -106,9 +106,9 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_8
                 List<ProductsInfo> results = session.query(Order.class)
-                    .groupBy(array("lines[].product"), field("shipTo.country"))
-                    .selectKey("lines[].product", "products")
-                    .selectKey("shipTo.country", "country")
+                    .groupBy(array("Lines[].Product"), field("ShipTo.Country"))
+                    .selectKey("Lines[].Product", "Products")
+                    .selectKey("ShipTo.Country", "Country")
                     .selectCount()
                     .ofType(ProductsInfo.class)
                     .toList();
@@ -118,9 +118,9 @@ public class HowToPerformGroupByQuery {
             try (IDocumentSession session = store.openSession()) {
                 //region group_by_9
                 List<ProductsInfo> results = session.query(Order.class)
-                    .groupBy(array("lines[].product"), array("lines[].quantity"))
-                    .selectKey("lines[].product", "products")
-                    .selectKey("lines[].quantity", "quantities")
+                    .groupBy(array("Lines[].Product"), array("Lines[].Quantity"))
+                    .selectKey("Lines[].Product", "Products")
+                    .selectKey("Lines[].Quantity", "Quantities")
                     .selectCount()
                     .ofType(ProductsInfo.class)
                     .toList();

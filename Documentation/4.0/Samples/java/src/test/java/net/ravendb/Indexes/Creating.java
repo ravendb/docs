@@ -54,9 +54,9 @@ public class Creating {
 
         public Orders_Totals() {
             map = "docs.Orders.Select(order => new { " +
-                "    employee = order.employee, " +
-                "    company = order.company, " +
-                "    total = Enumerable.Sum(order.lines, l => ((decimal)((((decimal) l.quantity) * l.pricePerUnit) * (1M - l.discount)))) " +
+                "    Employee = order.Employee, " +
+                "    Company = order.Company, " +
+                "    Total = Enumerable.Sum(order.Lines, l => ((decimal)((((decimal) l.Quantity) * l.PricePerUnit) * (1M - l.Discount)))) " +
                 "})";
         }
 
@@ -69,7 +69,7 @@ public class Creating {
                 try (IDocumentSession session = store.openSession()) {
                     List<Order> orders = session
                         .query(Result.class, Orders_Totals.class)
-                        .whereGreaterThan("total", 100)
+                        .whereGreaterThan("Total", 100)
                         .ofType(Order.class)
                         .toList();
                 }

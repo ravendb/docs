@@ -46,8 +46,8 @@ public class Distinct {
                 // returns sorted list of countries w/o duplicates
                 List<String> countries = session
                     .query(Order.class)
-                    .orderBy("shipTo.country")
-                    .selectFields(String.class, "shipTo.country")
+                    .orderBy("ShipTo.Country")
+                    .selectFields(String.class, "ShipTo.Country")
                     .distinct()
                     .toList();
                 //endregion
@@ -57,7 +57,7 @@ public class Distinct {
                 //region distinct_2_1
                 int numberOfCountries = session
                     .query(Order.class)
-                    .selectFields(String.class, "shipTo.country")
+                    .selectFields(String.class, "ShipTo.Country")
                     .distinct()
                     .count();
                 //endregion

@@ -46,7 +46,7 @@ public class MoreLikeThis {
 
     public class Articles_ByArticleBody extends AbstractIndexCreationTask {
         public Articles_ByArticleBody() {
-            map = "from doc in docs.Articles " +
+            map = "from doc in docs.articles " +
                 "select new {" +
                 "   doc.articleBody " +
                 "}";

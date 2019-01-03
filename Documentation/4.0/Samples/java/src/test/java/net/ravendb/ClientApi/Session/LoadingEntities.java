@@ -101,7 +101,7 @@ public class LoadingEntities {
                 // loading 'products/1'
                 // including document found in 'supplier' property
                 Product product = session
-                    .include("supplier")
+                    .include("Supplier")
                     .load(Product.class, "products/1");
 
                 Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call
@@ -113,7 +113,7 @@ public class LoadingEntities {
                 // loading 'products/1'
                 // including document found in 'supplier' property
                 Product product = session
-                    .include("supplier")
+                    .include("Supplier")
                     .load(Product.class, "products/1");
 
                 Supplier supplier = session.load(Supplier.class, product.getSupplier()); // this will not make server call

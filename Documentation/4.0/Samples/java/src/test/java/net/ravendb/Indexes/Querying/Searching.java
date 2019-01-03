@@ -14,10 +14,10 @@ public class Searching {
     public static class Users_ByName extends AbstractIndexCreationTask {
         public Users_ByName() {
             map = "docs.Users.Select(user => new {" +
-                "    name = user.name" +
+                "    Name = user.Name" +
                 "})";
 
-            index("name", FieldIndexing.SEARCH);
+            index("Name", FieldIndexing.SEARCH);
         }
     }
     //endregion
@@ -26,14 +26,14 @@ public class Searching {
     public static class Users_Search extends AbstractIndexCreationTask {
         public Users_Search() {
             map = "docs.Users.Select(user => new {" +
-                "    query = new object[] {" +
-                "        user.name," +
-                "        user.hobbies," +
-                "        user.age" +
+                "    Query = new object[] {" +
+                "        user.Name," +
+                "        user.Hobbies," +
+                "        user.Age" +
                 "    }" +
                 "}))";
 
-            index("query", FieldIndexing.SEARCH);
+            index("Query", FieldIndexing.SEARCH);
         }
     }
     //endregion
@@ -85,7 +85,7 @@ public class Searching {
                 //region search_3_0
                 List<User> users = session
                     .query(User.class)
-                    .search("name", "John Adam")
+                    .search("Name", "John Adam")
                     .toList();
                 //endregion
             }
@@ -94,7 +94,7 @@ public class Searching {
                 //region search_4_0
                 List<User> users = session
                     .query(User.class)
-                    .search("hobbies", "looking for someone who likes sport books computers")
+                    .search("Hobbies", "looking for someone who likes sport books computers")
                     .toList();
                 //endregion
             }
@@ -103,8 +103,8 @@ public class Searching {
                 //region search_5_0
                 List<User> users = session
                     .query(User.class)
-                    .search("name", "Adam")
-                    .search("hobbies", "sport")
+                    .search("Name", "Adam")
+                    .search("Hobbies", "sport")
                     .toList();
                 //endregion
             }
@@ -113,9 +113,9 @@ public class Searching {
                 //region search_6_0
                 List<User> users = session
                     .query(User.class)
-                    .search("hobbies", "I love sport")
+                    .search("Hobbies", "I love sport")
                     .boost(10)
-                    .search("hobbies", "but also like reading books")
+                    .search("Hobbies", "but also like reading books")
                     .boost(5)
                     .toList();
                 //endregion
@@ -125,9 +125,9 @@ public class Searching {
                 //region search_7_0
                 List<User> users = session
                     .query(User.class)
-                    .search("hobbies", "computers")
-                    .search("name", "James")
-                    .whereEquals("age", 20)
+                    .search("Hobbies", "computers")
+                    .search("Name", "James")
+                    .whereEquals("Age", 20)
                     .toList();
                 //endregion
             }
@@ -136,9 +136,9 @@ public class Searching {
                 //region search_8_0
                 List<User> users = session
                     .query(User.class)
-                    .search("name", "Adam")
+                    .search("Name", "Adam")
                     .andAlso()
-                    .search("hobbies", "sport")
+                    .search("Hobbies", "sport")
                     .toList();
                 //endregion
             }
@@ -148,7 +148,7 @@ public class Searching {
                 List<User> users = session
                     .query(User.class)
                     .not()
-                    .search("name", "James")
+                    .search("Name", "James")
                     .toList();
                 //endregion
             }
@@ -157,10 +157,10 @@ public class Searching {
                 //region search_10_1
                 List<User> users = session
                     .query(User.class)
-                    .search("name", "Adam")
+                    .search("Name", "Adam")
                     .andAlso()
                     .not()
-                    .search("hobbies", "sport")
+                    .search("Hobbies", "sport")
                     .toList();
                 //endregion
             }
@@ -169,7 +169,7 @@ public class Searching {
                 //region search_11_0
                 List<User> users = session
                     .query(User.class)
-                    .search("name", "Jo* Ad*")
+                    .search("Name", "Jo* Ad*")
                     .toList();
                 //endregion
             }
@@ -178,7 +178,7 @@ public class Searching {
                 //region search_12_0
                 List<User> users = session
                     .query(User.class)
-                    .search("name", "*oh* *da*")
+                    .search("Name", "*oh* *da*")
                     .toList();
                 //endregion
             }
@@ -187,7 +187,7 @@ public class Searching {
                 //region search_20_0
                 List<User> users = session
                     .query(User.class, Users_ByName.class)
-                    .search("name", "John")
+                    .search("Name", "John")
                     .toList();
                 //endregion
             }
@@ -196,7 +196,7 @@ public class Searching {
                 //region search_21_0
                 List<User> users = session
                     .query(User.class, Users_Search.class)
-                    .search("query", "John")
+                    .search("Query", "John")
                     .toList();
                 //endregion
             }

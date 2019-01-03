@@ -16,8 +16,8 @@ public class Boosting {
     public class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastName() {
             map = "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName.Boost(10)," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName.Boost(10)," +
+                "    LastName = employee.LastName" +
                 "})";
         }
     }
@@ -35,8 +35,8 @@ public class Boosting {
                 // will be higher in results
                 // than the ones with 'lastName' match
                 List<Employee> results = session.query(Employee.class, Employees_ByFirstAndLastName.class)
-                    .whereEquals("firstName", "Bob")
-                    .whereEquals("lastName", "Bob")
+                    .whereEquals("FirstName", "Bob")
+                    .whereEquals("LastName", "Bob")
                     .toList();
                 //endregion
             }
@@ -46,8 +46,8 @@ public class Boosting {
             indexDefinition.setName("Employees/ByFirstAndLastName");
             indexDefinition.setMaps(Collections.singleton(
                 "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName.Boost(10)," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName.Boost(10)," +
+                "    LastName = employee.LastName" +
                 "})"));
 
             store.maintenance().send(new PutIndexesOperation(indexDefinition));
