@@ -4,7 +4,6 @@ import net.ravendb.client.documents.DocumentStore;
 import net.ravendb.client.documents.IDocumentStore;
 import net.ravendb.client.documents.session.IDocumentSession;
 import org.junit.Assert;
-import org.w3c.dom.Attr;
 
 import java.util.*;
 import java.util.function.Supplier;
@@ -450,6 +449,24 @@ public class HandleDocumentRelationships {
                 }
                 //endregion
             }
+
+            try (IDocumentSession session = store.openSession()) {
+                //region includes_3_0_builder
+                List<Order> orders = session
+                    .query(Order.class)
+                    .include(i -> i.
+                        includeDocuments("CustomerId").
+                        includeCounter("OrderUpdateCount"))
+                    .whereGreaterThan("TotalPrice", 100)
+                    .toList();
+
+                for (Order order : orders) {
+                    // this will not require querying the server!
+                    Customer customer = session
+                        .load(Customer.class, order.getCustomerId());
+                }
+                //endregion
+            }
         }
 
         try (IDocumentStore store = new DocumentStore()) {
@@ -458,6 +475,20 @@ public class HandleDocumentRelationships {
                 Order order = session
                     .include("supplierIds")
                     .load(Order.class, "orders/1-A");
+
+                for (String supplierId : order.getSupplierIds()) {
+                    // this will not require querying the server!
+                    Supplier supplier = session.load(Supplier.class, supplierId);
+                }
+                //endregion
+            }
+        }
+
+        try (IDocumentStore store = new DocumentStore()) {
+            try (IDocumentSession session = store.openSession()) {
+                //region includes_4_0_builder
+                Order order = session.load(Order.class, "orders/1-A",
+                    i -> i.includeDocuments("SupplierIds"));
 
                 for (String supplierId : order.getSupplierIds()) {
                     // this will not require querying the server!
@@ -496,6 +527,17 @@ public class HandleDocumentRelationships {
                 Customer customer = session.load(Customer.class, order.getReferral().getCustomerId());
                 //endregion
             }
+
+            try (IDocumentSession session = store.openSession()) {
+                //region includes_6_0_builder
+                Order order = session
+                    .load(Order.class, "orders/1-A",
+                        i -> i.includeDocuments("Referral.CustomerId"));
+
+                // this will not require querying the server!
+                Customer customer = session.load(Customer.class, order.getReferral().getCustomerId());
+                //endregion
+            }
         }
 
         try (IDocumentStore store = new DocumentStore()) {
@@ -509,7 +551,18 @@ public class HandleDocumentRelationships {
                     // this will not require querying the server!
                     Product product = session.load(Product.class, lineItem.getProductId());
                 }
+                //endregion
+            }
 
+            try (IDocumentSession session = store.openSession()) {
+                //region includes_7_0_builder
+                Order order = session.load(Order.class, "orders/1-A",
+                    i -> i.includeDocuments("lineItems[].productId"));
+
+                for (LineItem lineItem : order.getLineItems()) {
+                    // this will not require querying the server!
+                    Product product = session.load(Product.class, lineItem.getProductId());
+                }
                 //endregion
             }
         }
@@ -569,14 +622,37 @@ public class HandleDocumentRelationships {
                 Assert.assertEquals(1, session.advanced().getNumberOfRequests());
                 //endregion
             }
+
+            try (IDocumentSession session = store.openSession()) {
+                //region includes_10_1_builder
+                Person person = session.load(Person.class, "people/1-A",
+                    i -> i.includeDocuments("attributes.values"));
+
+                Person mother = session
+                    .load(Person.class, person.getAttributes().get("Mother"));
+
+                Person father = session
+                    .load(Person.class, person.getAttributes().get("Father"));
+
+                Assert.assertEquals(1, session.advanced().getNumberOfRequests());
+                //endregion
+            }
         }
 
         try (IDocumentStore store = new DocumentStore()) {
             try (IDocumentSession session = store.openSession()) {
                 //region includes_10_3
                 Person person = session
-                    .include("attributes.keys")
+                    .include("Attributes.Keys")
                     .load(Person.class, "people/1-A");
+                //endregion
+            }
+
+            try (IDocumentSession session = store.openSession()) {
+                //region includes_10_3_builder
+                Person person = session
+                    .load(Person.class, "people/1-A",
+                        i -> i.includeDocuments("Attributes.Keys"));
                 //endregion
             }
         }

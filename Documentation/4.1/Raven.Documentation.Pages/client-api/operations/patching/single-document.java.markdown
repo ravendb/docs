@@ -221,8 +221,45 @@ In order to clone a document use put method as follows
 {CODE-TAB:java:Operations-syntax clone_document_store@ClientApi\Operations\Patches\PatchRequests.java /}
 {CODE-TABS/}
 
-{INFO:Cloning & Attachments} 
-The attachments from source document will not be copied to the new one automatically.
+
+{INFO:Cloning, Attachments & Counters} 
+The attachments and/or counters from source document will not be copied to the new one automatically.
+{INFO/}
+
+###Increment Counter
+
+In order to increment or create a counter use <code>incrementCounter</code> method as follows
+{CODE-TABS}
+{CODE-TAB:java:Session-defer-syntax increment_counter_by_document_id_non_generic_session@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TAB:java:Operations-syntax increment_counter_by_document_id_store@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TABS/}
+
+{INFO:Method Overloading & Value restrictions}
+The method can be called by document ID or by document reference and the value can be negative
+{INFO/}
+
+###Delete Counter
+
+In order to delete a counter use <code>deleteCounter</code> method as follows
+{CODE-TABS}
+{CODE-TAB:java:Session-defer-syntax delete_counter_by_document_refference_non_generic_session@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TAB:java:Operations-syntax delete_counter_by_document_refference_store@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TABS/}
+
+{INFO:Method Overloading}
+The method can be called by document ID or by document reference
+{INFO/}
+
+###Get Counter
+
+In order to get a counter while patching use <code>counter</code> method as follows
+{CODE-TABS}
+{CODE-TAB:java:Session-defer-syntax get_counter_by_document_id_non_generic_session@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TAB:java:Operations-syntax get_counter_by_document_id_store@ClientApi\Operations\Patches\PatchRequests.java /}
+{CODE-TABS/}
+
+{INFO:Method Overloading}
+The method can be called by document ID or by document reference
 {INFO/}
 
 {PANEL/}

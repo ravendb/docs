@@ -69,20 +69,32 @@ You can also use Includes with queries:
 
 {CODE-TABS}
 {CODE-TAB:java:DocumentQuery includes_3_0@ClientApi/HowTo/HandleDocumentRelationships.java /}
-{CODE-TAB-BLOCK:sql:RQL}
+{CODE-TAB:java:DocumentQuery(Builder) includes_3_0_builder@ClientApi/HowTo/HandleDocumentRelationships.java /}
+{CODE-TAB-BLOCK:sql:RQL(Embedded)}
 from Orders
 where TotalPrice > 100
 include CustomerId
 {CODE-TAB-BLOCK/}
+{CODE-TAB-BLOCK:sql:RQL(Builder)}
+from Orders as o
+where TotalPrice > 100
+include CustomerId,counters(o,'OrderUpdateCount')
+{CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 This works because RavenDB has two channels through which it can return information in response to a load request. The first is the Results channel, through which the root object retrieved by the `load()` method call is returned. The second is the Includes channel, through which any included documents are sent back to the client. Client side, those included documents are not returned from the `load()` method call, but they are added to the session unit of work, and subsequent requests to load them are served directly from the session cache, without requiring any additional queries to the server.
+
+{NOTE Embedded and builder variants of Include clause are essentially syntax sugar and are equivalent at the server side. /}
 
 ### One to Many Includes
 
 Include can be used with a many to one relationship. In the above classes, an `Order` has a field `supplierIds` which contains an array of references to `Supplier` documents. The following code will cause the suppliers to be pre-loaded:
 
 {CODE:java includes_4_0@ClientApi/HowTo/HandleDocumentRelationships.java /}
+
+Alternatively, it is possible to use the fluent builder syntax.
+
+{CODE:java includes_4_0_builder@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
 The calls to `load()` within the `foreach` loop will not require a call to the server as the `Supplier` objects will already be loaded into the session cache.
 
@@ -100,13 +112,21 @@ This class contains an identifier for a `Customer`. The following code will incl
 
 {CODE:java includes_6_0@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
-This secondary level include will also work with collections. The `Order.lineItems` field holds a collection of `LineItem` objects which each contain a reference to a `Product`:
+It is possible to execute the same code with the fluent builder syntax:
+
+{CODE:java includes_6_0_builder@ClientApi/HowTo/HandleDocumentRelationships.java /}
+
+This secondary level include will also work with collections. The `Order.LineItems` field holds a collection of `LineItem` objects which each contain a reference to a `Product`:
 
 {CODE:java line_item@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
 The `Product` documents can be included using the following syntax:
 
 {CODE:java includes_7_0@ClientApi/HowTo/HandleDocumentRelationships.java /}
+
+The fluent builder syntax works here too.
+
+{CODE:java includes_7_0_builder@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
 when you want to load multiple documents.
 
@@ -144,9 +164,17 @@ Now we want to include all documents that are under dictionary values:
 
 {CODE:java includes_10_1@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
+The code above can be also rewritten with fluent builder syntax:
+
+{CODE:java includes_10_1_builder@ClientApi/HowTo/HandleDocumentRelationships.java /}
+
 You can also include values from dictionary keys:
 
 {CODE:java includes_10_3@ClientApi/HowTo/HandleDocumentRelationships.java /}
+
+Here, as well, this can be written with fluent builder syntax:
+
+{CODE:java includes_10_3_builder@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
 #### Complex Types
 
