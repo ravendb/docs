@@ -54,7 +54,7 @@ public class Projections {
     //region indexes_1
     public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastName() {
-            map =  "docs.Employees.Select(employee => new {" +
+            map = "docs.Employees.Select(employee => new {" +
                 "    firstName = employee.firstName," +
                 "    lastName = employee.lastName" +
                 "})";
@@ -65,7 +65,7 @@ public class Projections {
     //region indexes_1_stored
     public static class Employees_ByFirstAndLastNameWithStoredFields extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastNameWithStoredFields() {
-            map =  "docs.Employees.Select(employee => new {" +
+            map = "docs.Employees.Select(employee => new {" +
                 "    firstName = employee.firstName," +
                 "    lastName = employee.lastName" +
                 "})";
@@ -78,7 +78,7 @@ public class Projections {
     //region indexes_2
     public static class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask {
         public Employees_ByFirstNameAndBirthday() {
-            map =  "docs.Employees.Select(employee => new {" +
+            map = "docs.Employees.Select(employee => new {" +
                 "    firstName = employee.firstName," +
                 "    birthday = employee.birthday" +
                 "})";
@@ -131,7 +131,7 @@ public class Projections {
 
             try (IDocumentSession session = store.openSession()) {
                 //region projections_2
-                QueryData queryData = new QueryData(new String[]{ "shipTo", "lines[].productName" },
+                QueryData queryData = new QueryData(new String[]{"shipTo", "lines[].productName"},
                     new String[]{"shipTo", "products"});
 
                 List<ShipToAndProducts> results = session.query(Order.class)

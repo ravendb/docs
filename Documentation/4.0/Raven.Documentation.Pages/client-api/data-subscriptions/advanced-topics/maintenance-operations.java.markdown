@@ -11,6 +11,7 @@ This page covers data subscriptions maintenance operations:
 [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
 [Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
 [Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
+[DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
 
 {NOTE/}
 
@@ -76,6 +77,43 @@ usage:
 
 {PANEL/}
 
+{PANEL:DocumentSubscriptions class}
+The `DocumentSubscriptions` class is the class that manages all interaction with the data subscriptions. 
+The class is available through `DocumentStore`'s `subscriptions()` method.
+
+| Method Signature| Return type | Description |
+|--------|:---|-------------| 
+| **create(SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **create(SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(Class<T> clazz)** | `String` | Creates a new data subscription. |
+| **create(Class<T> clazz, SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **create(Class<T> clazz, SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class<T> clazz)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class<T> clazz, SubscriptionCreationOptions options)** | `String` | Creates a new data subscription. |
+| **createForRevisions(Class<T> clazz, SubscriptionCreationOptions options, String database)** | `String` | Creates a new data subscription. |
+| **delete(String name)** | `void` | Deletes subscription. |
+| **delete(String name, String database)** | `void` | Deletes subscription. |
+| **dropConnection(String name)** | `void` | Drops existing subscription connection with worker. |
+| **dropConnection(String name, String database)** | `void` | Drops existing subscription connection with worker. |
+| **getSubscriptions(int start, int take)** | `List<SubscriptionState>` | Returns subscriptions list. |
+| **getSubscriptions(int start, int take, String database)** | `List<SubscriptionState>` | Returns subscriptions list. |
+| **getSubscriptionState(String subscriptionName)** | `SubscriptionState ` | Get specific subscription state. |
+| **getSubscriptionState(String subscriptionName, String database)** | `SubscriptionState ` | Get specific subscription state. |
+| **getSubscriptionWorker(string subscriptionName)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(string subscriptionName, String database)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(SubscriptionWorkerOptions options)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker(SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<ObjectNode>` | Generates a subscription worker, using default configurations, that processes documents in it's raw `ObjectNode` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, String subscriptionName)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, String subscriptionName, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, SubscriptionWorkerOptions options)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorker<T>(Class<T> clazz, SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<T>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, String subscriptionName)** | `SubscriptionWorker<Revision<T>>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, String subscriptionName, String database)** | `SubscriptionWorker<Revision<T>>` | Generates a subscription worker, using default configurations, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, SubscriptionWorkerOptions options)** | `SubscriptionWorker<Revision<T>>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+| **getSubscriptionWorkerForRevisions<T>(Class<T> clazz, SubscriptionWorkerOptions options, String database)** | `SubscriptionWorker<Revision<T>>` | Generates a subscription worker, using provided configuration, that processes documents deserialized to `T` type . |
+
+{PANEL/}
 
 ## Related Articles
 

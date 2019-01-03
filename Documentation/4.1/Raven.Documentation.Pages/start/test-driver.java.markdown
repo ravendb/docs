@@ -95,13 +95,13 @@ with just a minor change. Here you can change your targetServerLocation.
 
 ### Example
 
-{CODE test_driver_ConfigureServer@Start\RavenDBTestDriver.cs /}
+{CODE:java test_driver_ConfigureServer@Start\RavenDBTestDriver.java /}
 
 {PANEL/}
 
 {PANEL:Complete Example}
 
-{CODE test_full_example@Start\RavenDBTestDriverFull.cs /}
+{CODE:java test_full_example@Start\RavenDBTestDriverFull.java /}
 
 {PANEL/}
 

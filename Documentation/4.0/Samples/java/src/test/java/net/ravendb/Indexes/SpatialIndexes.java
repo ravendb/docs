@@ -8,9 +8,9 @@ public class SpatialIndexes {
     /*
     //region spatial_search_enhancements_3
     public static class SpatialOptionsFactory {
-        public GeographySpatialOptionsFactory getGeography()
+        public GeographySpatialOptionsFactory geography()
 
-        public CartesianSpatialOptionsFactory getCartesian()
+        public CartesianSpatialOptionsFactory cartesian()
     }
     //endregion
     */
@@ -146,7 +146,7 @@ public class SpatialIndexes {
                 "    coordinates = this.CreateSpatialField(((double ? ) e.latitude), ((double ? ) e.longitude)) " +
                 "})";
 
-            spatial("coordinates", f -> f.getCartesian().boundingBoxIndex());
+            spatial("coordinates", f -> f.cartesian().boundingBoxIndex());
         }
     }
     //endregion

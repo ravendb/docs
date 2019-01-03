@@ -1,4 +1,4 @@
-package net.ravendb.ClientApi.changes;
+package net.ravendb.ClientApi.Changes;
 
 import net.ravendb.client.documents.changes.IDatabaseChanges;
 import net.ravendb.client.primitives.CleanCloseable;

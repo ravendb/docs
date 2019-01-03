@@ -1,6 +1,6 @@
 # Session : Querying : Debugging : How to include Query Explanations
 
-`ExplainScores` allows to investigate details related to score assigned for each query result.
+`includeExplanations` allows to investigate details related to score assigned for each query result.
 
 ## Syntax
 
