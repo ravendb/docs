@@ -17,16 +17,16 @@ In this page:
 {PANEL: Typed Session API}
 
 A type safe session interface that allows performing the most common patch operations.  
-The patch request will be sent to server only after the call to `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
+The patch request will be sent to server only after the call to `SaveChanges`. This way it's possible to perform multiple operations in one request to the server.  
 
-### Increment field value
+### Increment Field Value
 `Session.Advanced.Increment`
 {CODE patch_generic_interface_increment@ClientApi\Operations\Patches\PatchRequests.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
-| **U** | `Type` | Field type, must be of numeric type, or a `string` of `char` for string concatenation |
+| **U** | `Type` | Field type, must be of numeric type or a `string` of `char` for string concatenation |
 | **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
@@ -34,7 +34,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 
 * Note the numeric values [restrictions](../../../server/kb/numbers-in-ravendb) in JavaScript
 
-### Set field value
+### Set Field Value
 `Session.Advanced.Patch`
 {CODE patch_generic_interface_set_value@ClientApi\Operations\Patches\PatchRequests.cs /}
 
@@ -42,12 +42,12 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
 | **U** | `Type` | Field type|
-| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **delta** | `U` | Value to set. |
 
-### Array manipulation
+### Array Manipulation
 `Session.Advanced.Patch`
 {CODE patch_generic_interface_array_modification_lambda@ClientApi\Operations\Patches\PatchRequests.cs /}
 
@@ -55,7 +55,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 | ------------- | ------------- | ----- |
 | **T** | `Type` | Entity type |
 | **U** | `Type` | Field type|
-| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation, this way, the session can track down the entity's ID |
+| **entity** | `T` | Entity on which the operation should be performed. The entity should be one that was returned by the current session in a `Load` or `Query` operation. This way the session can track down the entity's ID. |
 | **entity id** | `string` | Entity ID on which the operation should be performed. |
 | **fieldPath** | `Expression<Func<T, U>>` | Lambda describing the path to the field. |
 | **arrayMofificationLambda** | `Expression<Func<JavaScriptArray<U>, object>>` | Lambda that modifies the array, see `JavaScriptArray` below. |
@@ -74,7 +74,7 @@ The patch request will be sent to server only after the call to `SaveChanges`, t
 {PANEL/}
 
 {PANEL:Non-Typed Session API}
-The non-typed session api for patches uses the `Session.Advanced.Defer` function that allows registering single or several commands.  
+The non-typed Session API for patches uses the `Session.Advanced.Defer` function that allows registering single or several commands.  
 One of the possible commands is the `PatchCommandData`, describing single document patch command.  
 The patch request will be sent to server only after the call to `SaveChanges`, this way it's possible to perform multiple operations in one request to the server.  
 
@@ -130,7 +130,7 @@ An operations interface that exposes the full functionality and allows performin
 
 {PANEL: Examples}
 
-###Change field's value
+###Change Field's Value
 
 {CODE-TABS}
 {CODE-TAB:csharp:Session-typed-syntax patch_firstName_generic@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -138,7 +138,7 @@ An operations interface that exposes the full functionality and allows performin
 {CODE-TAB:csharp:Operations-syntax patch_firstName_non_generic_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Change values of two fields
+###Change Values of Two Fields
 
 {CODE-TABS}
 {CODE-TAB:csharp:Session-typed-syntax patch_firstName_and_lastName_generic@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -146,7 +146,7 @@ An operations interface that exposes the full functionality and allows performin
 {CODE-TAB:csharp:Operations-syntax pathc_firstName_and_lastName_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Increment value
+###Increment Value
 
 {CODE-TABS}
 {CODE-TAB:csharp:Session-typed-syntax increment_age_generic@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -154,7 +154,7 @@ An operations interface that exposes the full functionality and allows performin
 {CODE-TAB:csharp:Operations-syntax increment_age_non_generic_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Add item to array
+###Add Item to Array
 
 {CODE-TABS}
 {CODE-TAB:csharp:Session-typed-syntax add_new_comment_to_comments_generic_session@ClientApi\Operations\Patches\PatchRequests.cs /}
@@ -162,7 +162,7 @@ An operations interface that exposes the full functionality and allows performin
 {CODE-TAB:csharp:Operations-syntax add_new_comment_to_comments_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Insert item into specific position in array
+###Insert Item into Specific Position in Array
 
 Inserting item into specific position is supported only by the non-typed APIs
 {CODE-TABS}
@@ -170,7 +170,7 @@ Inserting item into specific position is supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax insert_new_comment_at_position_1_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Modify item in specific position in array
+###Modify Item in Specific Position in Array
 
 Inserting item into specific position is supported only by the non-typed APIs
 {CODE-TABS}
@@ -178,7 +178,7 @@ Inserting item into specific position is supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax modify_a_comment_at_position_3_in_comments_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Filter out items from an array
+###Filter out Items from an Array
 
 Filtering items from an array supported only by the non-typed APIs
 {CODE-TABS}
@@ -186,7 +186,7 @@ Filtering items from an array supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax filter_items_from_array_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Loading documents in a script
+###Loading Documents in a Script
 
 Loading documents supported only by non-typed APIs
 {CODE-TABS}
@@ -194,7 +194,7 @@ Loading documents supported only by non-typed APIs
 {CODE-TAB:csharp:Operations-syntax update_product_name_in_order_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Remove property
+###Remove Property
 
 Removing property supported only by the non-typed APIs
 {CODE-TABS}
@@ -202,7 +202,7 @@ Removing property supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Rename property
+###Rename Property
 
 Renaming property supported only by the non-typed APIs
 {CODE-TABS}
@@ -210,7 +210,7 @@ Renaming property supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax rename_property_age_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Add document
+###Add Document
 
 Adding a new document is supported only by the non-typed APIs
 {CODE-TABS}
@@ -218,7 +218,7 @@ Adding a new document is supported only by the non-typed APIs
 {CODE-TAB:csharp:Operations-syntax add_document_store@ClientApi\Operations\Patches\PatchRequests.cs /}
 {CODE-TABS/}
 
-###Clone document
+###Clone Document
 
 In order to clone a document use put method as follows
 {CODE-TABS}
