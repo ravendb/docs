@@ -14,7 +14,7 @@ Without this feature, you would have to create a fairly complex multiple map-red
 {CODE-TAB:java:JavaScript indexing_related_documents_2@Indexes\JavaScript.java /}
 {CODE-TABS/}
 
-Now we will be able to search for products using the `categoryName` as a parameter:
+Now we will be able to search for products using the `CategoryName` as a parameter:
 
 {CODE:java indexing_related_documents_7@Indexes\IndexingRelatedDocuments.java /}
 

@@ -58,7 +58,7 @@ The **Includes** feature addresses the limitations of denormalization. Instead o
 
 {CODE:java includes_1_0@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
-Above we are asking RavenDB to retrieve the `Order` `orders/1-A`, and at the same time "include" the `Customer` referenced by the `Order.customerId` field. The second call to `load()` is resolved completely client side (i.e. without a second request to the RavenDB server) because the relevant `Customer` object has already been retrieved (this is the full `Customer` object not a denormalized version). 
+Above we are asking RavenDB to retrieve the `Order` `orders/1-A`, and at the same time "include" the `Customer` referenced by the `Order.CustomerId` field. The second call to `load()` is resolved completely client side (i.e. without a second request to the RavenDB server) because the relevant `Customer` object has already been retrieved (this is the full `Customer` object not a denormalized version). 
 
 
 There is also a possibility to load multiple documents:
@@ -88,7 +88,7 @@ This works because RavenDB has two channels through which it can return informat
 
 ### One to Many Includes
 
-Include can be used with a many to one relationship. In the above classes, an `Order` has a field `supplierIds` which contains an array of references to `Supplier` documents. The following code will cause the suppliers to be pre-loaded:
+Include can be used with a many to one relationship. In the above classes, an `Order` has a field `SupplierIds` which contains an array of references to `Supplier` documents. The following code will cause the suppliers to be pre-loaded:
 
 {CODE:java includes_4_0@ClientApi/HowTo/HandleDocumentRelationships.java /}
 
@@ -140,9 +140,9 @@ When using string-based includes like:
 
 you must remember to follow certain rules that must apply to the provided string path:
 
-1.	**Dots** are used to separate fields e.g. `"referral.customerId"` in the example above means that our `Order` contains field `referral` and that field contains another field called `customerId`.
-2.	**Indexer operator** is used to indicate that field is a collection type. So if our `Order` has a list of LineItems and each `lineItem` contains a `productId` field, then we can create string path as follows: `"lineItems[].productId"`.
-3.	**Prefixes** can be used to indicate the prefix of the identifier of the document that is going to be included. It can be useful when working with custom or semantic identifiers. For example, if you have a customer stored under `customers/login@domain.com` then you can include it using `"referral.customerEmail(customers/)"` (`customers/` is the prefix here).
+1.	**Dots** are used to separate fields e.g. `"Referral.CustomerId"` in the example above means that our `Order` contains field `Referral` and that field contains another field called `CustomerId`.
+2.	**Indexer operator** is used to indicate that field is a collection type. So if our `Order` has a list of LineItems and each `LineItem` contains a `ProductId` field, then we can create string path as follows: `"LineItems[].ProductId"`.
+3.	**Prefixes** can be used to indicate the prefix of the identifier of the document that is going to be included. It can be useful when working with custom or semantic identifiers. For example, if you have a customer stored under `customers/login@domain.com` then you can include it using `"Referral.CustomerEmail(customers/)"` (`customers/` is the prefix here).
 
 Learning string path rules may be useful when you will want to query database using HTTP API.
 

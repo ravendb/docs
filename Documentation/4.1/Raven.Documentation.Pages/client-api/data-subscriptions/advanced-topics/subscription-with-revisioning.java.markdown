@@ -28,22 +28,22 @@ Example:
 Let us assume a user document that looks like:  
 
 `{  
-    name:'James',  
-    age:'21'  
+    Name:'James',  
+    Age:'21'  
 }`  
 
 We update the User document twice, in separate operations:  
-* We update the 'age' field to the value of 22  
-* We update the 'age' field to the value of 23  
+* We update the 'Age' field to the value of 22  
+* We update the 'Age' field to the value of 23  
 
 Data subscription's revision processing mechanism will receive pairs of revision in the following order:  
 
 
 | # | Previous | Current  |
 |---|---|-----| 
-| 1 | `null` | `{ name:'James', age:'21' }`  |
-| 2 | `{ name:'James', age:'21' }` | `{ name:'James', age:'22' }` |
-| 3 | `{ name:'James', age:'22' }` | `{ name:'James', age:'23' }` |
+| 1 | `null` | `{ Name:'James', Age:'21' }`  |
+| 2 | `{ Name:'James', Age:'21' }` | `{ Name:'James', Age:'22' }` |
+| 3 | `{ Name:'James', Age:'22' }` | `{ Name:'James', Age:'23' }` |
  
 
 {WARNING As seen above, in order for subscriptions on revisions to work properly, it needs the revisions entries to be available, otherwise, there will be no data to process. Therfore, it's crucial to make sure that the revisions configuration allows storing documents revisions enough time, without discarding unprocessed revisions /}
