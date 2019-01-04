@@ -75,7 +75,7 @@ public class Paging {
                 //region paging_0_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
-                    .whereGreaterThan("unitsInStock", 10)
+                    .whereGreaterThan("UnitsInStock", 10)
                     .toList();
                 //endregion
             }
@@ -84,7 +84,7 @@ public class Paging {
                 //region paging_2_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
-                    .whereGreaterThan("unitsInStock", 10)
+                    .whereGreaterThan("UnitsInStock", 10)
                     .skip(20) // skip 2 pages worth of products
                     .take(10) // take up to 10 products
                     .toList(); // execute query
@@ -98,7 +98,7 @@ public class Paging {
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class)
                     .statistics(stats)
-                    .whereGreaterThan("unitsInStock", 10)
+                    .whereGreaterThan("UnitsInStock", 10)
                     .skip(20)
                     .take(10)
                     .toList();
@@ -122,7 +122,7 @@ public class Paging {
                         .statistics(stats)
                         .skip((pageNumber * pageSize) + skippedResults)
                         .take(pageSize)
-                        .whereGreaterThan("unitsInStock", 10)
+                        .whereGreaterThan("UnitsInStock", 10)
                         .distinct()
                         .toList();
 

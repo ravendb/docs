@@ -49,7 +49,7 @@ public class HowToQuery {
                 // load all entities from 'Employees' collection
                 // where FirstName equals 'Robert'
                 List<Employee> employees = session.query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -60,7 +60,7 @@ public class HowToQuery {
                 // where firstName equals 'Robert'
                 // using 'Employees/ByName' index
                 List<Employee> employees = session.query(Employee.class, index("Employees/ByName"))
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -71,7 +71,7 @@ public class HowToQuery {
                 // where firstName equals 'Robert'
                 // using 'Employees/ByName' index
                 List<Employee> employees = session.query(Employee.class, Employees_ByName.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -81,7 +81,7 @@ public class HowToQuery {
                 // load all employees hired between
                 // 1/1/2002 and 12/31/2002
                 List<Employee> employees = session.advanced().documentQuery(Employee.class)
-                    .whereBetween("hiredAt",
+                    .whereBetween("HiredAt",
                         LocalDate.of(2002, 1, 1), LocalDate.of(2002, 12, 31))
                     .toList();
                 //endregion

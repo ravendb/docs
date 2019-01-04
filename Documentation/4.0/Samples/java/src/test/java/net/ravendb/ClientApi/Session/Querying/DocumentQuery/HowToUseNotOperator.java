@@ -17,7 +17,7 @@ public class HowToUseNotOperator {
                     .advanced()
                     .documentQuery(Employee.class)
                     .not()
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -32,9 +32,9 @@ public class HowToUseNotOperator {
                     .documentQuery(Employee.class)
                     .not()
                     .openSubclause()
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .andAlso()
-                    .whereEquals("lastName", "King")
+                    .whereEquals("LastName", "King")
                     .closeSubclause()
                     .toList();
                 //endregion
@@ -49,9 +49,9 @@ public class HowToUseNotOperator {
                 List<Employee> employees = session
                     .advanced()
                     .documentQuery(Employee.class)
-                    .whereNotEquals("firstName", "Robert")
+                    .whereNotEquals("FirstName", "Robert")
                     .andAlso()
-                    .whereNotEquals("lastName", "King")
+                    .whereNotEquals("LastName", "King")
                     .toList();
                 //endregion
             }

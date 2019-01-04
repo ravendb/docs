@@ -35,16 +35,16 @@ public class MapReduceIndexes {
 
         public Products_ByCategory() {
             map = "docs.Products.Select(product => new { " +
-                "    product = product, " +
-                "    categoryName = (this.LoadDocument(product.category, \"Categories\")).Name " +
+                "    Product = Product, " +
+                "    CategoryName = (this.LoadDocument(product.Category, \"Categories\")).Name " +
                 "}).Select(this0 => new { " +
-                "    category = this0.categoryName, " +
-                "    count = 1 " +
+                "    Category = this0.CategoryName, " +
+                "    Count = 1 " +
                 "})";
 
-            reduce = "results.GroupBy(result => result.category).Select(g => new { " +
-                "    category = g.Key, " +
-                "    count = Enumerable.Sum(g, x => ((int) x.count)) " +
+            reduce = "results.GroupBy(result => result.Category).Select(g => new { " +
+                "    Category = g.Key, " +
+                "    Count = Enumerable.Sum(g, x => ((int) x.Count)) " +
                 "})";
         }
     }
@@ -93,26 +93,26 @@ public class MapReduceIndexes {
 
         public Products_Average_ByCategory() {
             map = "docs.Products.Select(product => new { " +
-                "    product = product, " +
-                "    categoryName = (this.LoadDocument(product.category, \"Categories\")).name " +
+                "    Product = Product, " +
+                "    CategoryName = (this.LoadDocument(product.Category, \"Categories\")).Name " +
                 "}).Select(this0 => new { " +
-                "    category = this0.categoryName, " +
-                "    priceSum = this0.product.pricePerUnit, " +
-                "    priceAverage = 0, " +
-                "    productCount = 1 " +
+                "    Category = this0.CategoryName, " +
+                "    PriceSum = this0.Product.PricePerUnit, " +
+                "    PriceAverage = 0, " +
+                "    ProductCount = 1 " +
                 "})";
 
-            reduce = "results.GroupBy(result => result.category).Select(g => new { " +
+            reduce = "results.GroupBy(result => result.Category).Select(g => new { " +
                 "    g = g, " +
-                "    productCount = Enumerable.Sum(g, x => ((int) x.productCount)) " +
+                "    ProductCount = Enumerable.Sum(g, x => ((int) x.ProductCount)) " +
                 "}).Select(this0 => new { " +
                 "    this0 = this0, " +
-                "    priceSum = Enumerable.Sum(this0.g, x0 => ((decimal) x0.priceSum)) " +
+                "    PriceSum = Enumerable.Sum(this0.g, x0 => ((decimal) x0.PriceSum)) " +
                 "}).Select(this1 => new { " +
-                "    category = this1.this0.g.Key, " +
-                "    priceSum = this1.priceSum, " +
-                "    priceAverage = this1.priceSum / ((decimal) this1.this0.productCount), " +
-                "    productCount = this1.this0.productCount " +
+                "    Category = this1.this0.g.Key, " +
+                "    PriceSum = this1.PriceSum, " +
+                "    PriceAverage = this1.PriceSum / ((decimal) this1.this0.ProductCount), " +
+                "    ProductCount = this1.this0.ProductCount " +
                 "})";
         }
     }
@@ -151,17 +151,17 @@ public class MapReduceIndexes {
         }
 
         public Product_Sales() {
-            map = "docs.Orders.SelectMany(order => order.lines, (order, line) => new { " +
-                "    product = line.product, " +
-                "    count = 1, " +
-                "    total = (((decimal) line.quantity) * line.pricePerUnit) * (1M - line.discount) " +
+            map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new { " +
+                "    Product = line.Product, " +
+                "    Count = 1, " +
+                "    Total = (((decimal) line.Quantity) * line.PricePerUnit) * (1M - line.Discount) " +
                 "})";
 
 
             reduce = "results.GroupBy(result => result.Product).Select(g => new { " +
-                "    product = g.Key, " +
-                "    count = Enumerable.Sum(g, x => ((int) x.count)), " +
-                "    total = Enumerable.Sum(g, x0 => ((decimal) x0.total)) " +
+                "    Product = g.Key, " +
+                "    Count = Enumerable.Sum(g, x => ((int) x.Count)), " +
+                "    Total = Enumerable.Sum(g, x0 => ((decimal) x0.Total)) " +
                 "})";
         }
     }
@@ -209,21 +209,21 @@ public class MapReduceIndexes {
         }
 
         public Product_Sales_ByMonth() {
-            map = "docs.Orders.SelectMany(order => order.lines, (order, line) => new { " +
-                "    product = line.product, " +
-                "    month = new DateTime(order.orderedAt.Year, order.orderedAt.Month, 1), " +
-                "    count = 1, " +
-                "    total = (((decimal) line.quantity) * line.pricePerUnit) * (1M - line.discount) " +
+            map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new { " +
+                "    Product = line.Product, " +
+                "    Month = new DateTime(order.OrderedAt.Year, order.OrderedAt.Month, 1), " +
+                "    Count = 1, " +
+                "    Total = (((decimal) line.Quantity) * line.PricePerUnit) * (1M - line.Discount) " +
                 "})";
 
             reduce = "results.GroupBy(result => new { " +
-                "    product = result.product, " +
-                "    month = result.month " +
+                "    Product = result.Product, " +
+                "    Month = result.Month " +
                 "}).Select(g => new { " +
-                "    product = g.Key.product, " +
-                "    month = g.Key.month, " +
-                "    count = Enumerable.Sum(g, x => ((int) x.count)), " +
-                "    total = Enumerable.Sum(g, x0 => ((decimal) x0.total)) " +
+                "    Product = g.Key.Product, " +
+                "    Month = g.Key.Month, " +
+                "    Count = Enumerable.Sum(g, x => ((int) x.Count)), " +
+                "    Total = Enumerable.Sum(g, x0 => ((decimal) x0.Total)) " +
                 "})";
 
             outputReduceToCollection = "MonthlyProductSales";
@@ -237,7 +237,7 @@ public class MapReduceIndexes {
                 //region map_reduce_0_1
                 List<Products_ByCategory.Result> results = session
                     .query(Products_ByCategory.Result.class, Products_ByCategory.class)
-                    .whereEquals("category", "Seafood")
+                    .whereEquals("Category", "Seafood")
                     .toList();
                 //endregion
             }
@@ -246,7 +246,7 @@ public class MapReduceIndexes {
                 //region map_reduce_1_1
                 List<Products_Average_ByCategory.Result> results = session
                     .query(Products_Average_ByCategory.Result.class, Products_Average_ByCategory.class)
-                    .whereEquals("category", "Seafood")
+                    .whereEquals("Category", "Seafood")
                     .toList();
                 //endregion
             }

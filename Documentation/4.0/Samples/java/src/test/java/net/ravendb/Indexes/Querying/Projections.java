@@ -55,8 +55,8 @@ public class Projections {
     public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastName() {
             map = "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName," +
+                "    LastName = employee.LastName" +
                 "})";
         }
     }
@@ -66,8 +66,8 @@ public class Projections {
     public static class Employees_ByFirstAndLastNameWithStoredFields extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastNameWithStoredFields() {
             map = "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName," +
+                "    LastName = employee.LastName" +
                 "})";
 
             storeAllFields(FieldStorage.YES); // firstName and lastName fields can be retrieved directly from index
@@ -79,8 +79,8 @@ public class Projections {
     public static class Employees_ByFirstNameAndBirthday extends AbstractIndexCreationTask {
         public Employees_ByFirstNameAndBirthday() {
             map = "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName," +
-                "    birthday = employee.birthday" +
+                "    FirstName = employee.FirstName," +
+                "    Birthday = employee.Birthday" +
                 "})";
         }
     }
@@ -90,8 +90,8 @@ public class Projections {
     public static class Orders_ByShipToAndLines extends AbstractIndexCreationTask {
         public Orders_ByShipToAndLines() {
             map = "docs.Orders.Select(order => new {" +
-                "    shipTo = order.shipTo," +
-                "    lines = order.lines" +
+                "    ShipTo = order.ShipTo," +
+                "    Lines = order.Lines" +
                 "})";
         }
     }
@@ -101,8 +101,8 @@ public class Projections {
     public static class Orders_ByShippedAtAndCompany extends AbstractIndexCreationTask {
         public Orders_ByShippedAtAndCompany() {
             map = "docs.Orders.Select(order => new {" +
-                "    shippedAt = order.shippedAt," +
-                "    company = order.company" +
+                "    ShippedAt = order.ShippedAt," +
+                "    Company = order.Company" +
                 "})";
         }
     }
@@ -115,7 +115,7 @@ public class Projections {
                 //region projections_1
                 List<FirstAndLastName> results = session
                     .query(Employee.class, Employees_ByFirstAndLastName.class)
-                    .selectFields(FirstAndLastName.class, "firstName", "lastName")
+                    .selectFields(FirstAndLastName.class, "FirstName", "LastName")
                     .toList();
                 //endregion
             }
@@ -124,15 +124,15 @@ public class Projections {
                 //region projections_1_stored
                 List<FirstAndLastName> results = session
                     .query(Employee.class, Employees_ByFirstAndLastNameWithStoredFields.class)
-                    .selectFields(FirstAndLastName.class, "firstName", "lastName")
+                    .selectFields(FirstAndLastName.class, "FirstName", "LastName")
                     .toList();
                 //endregion
             }
 
             try (IDocumentSession session = store.openSession()) {
                 //region projections_2
-                QueryData queryData = new QueryData(new String[]{"shipTo", "lines[].productName"},
-                    new String[]{"shipTo", "products"});
+                QueryData queryData = new QueryData(new String[]{"ShipTo", "Lines[].ProductName"},
+                    new String[]{"ShipTo", "Products"});
 
                 List<ShipToAndProducts> results = session.query(Order.class)
                     .selectFields(ShipToAndProducts.class, queryData)
@@ -144,7 +144,7 @@ public class Projections {
                 //region projections_3
                 List<FullName> results = session.advanced().rawQuery(FullName.class, "from Employees as e " +
                     "select {" +
-                    "    fullName : e.firstName + \" \" + e.lastName " +
+                    "    FullName : e.FirstName + \" \" + e.LastName " +
                     "}").toList();
                 //endregion
             }
@@ -164,8 +164,8 @@ public class Projections {
                 List<OrderProjection> results = session.advanced().rawQuery(OrderProjection.class, "from Orders as o " +
                     "load o.company as c " +
                     "select { " +
-                    "    companyName: c.name," +
-                    "    shippedAt: o.shippedAt" +
+                    "    CompanyName: c.Name," +
+                    "    ShippedAt: o.ShippedAt" +
                     "}").toList();
                 //endregion
             }
@@ -174,9 +174,9 @@ public class Projections {
                 //region projections_6
                 List<EmployeeProjection> results = session.advanced().rawQuery(EmployeeProjection.class, "from Employees as e " +
                     "select { " +
-                    "    dayOfBirth : new Date(Date.parse(e.birthday)).getDate(), " +
-                    "    monthOfBirth : new Date(Date.parse(e.birthday)).getMonth() + 1, " +
-                    "    age : new Date().getFullYear() - new Date(Date.parse(e.birthday)).getFullYear() " +
+                    "    DayOfBirth : new Date(Date.parse(e.Birthday)).getDate(), " +
+                    "    MonthOfBirth : new Date(Date.parse(e.Birthday)).getMonth() + 1, " +
+                    "    Age : new Date().getFullYear() - new Date(Date.parse(e.Birthday)).getFullYear() " +
                     "}").toList();
                 //endregion
             }
@@ -185,8 +185,8 @@ public class Projections {
                 //region projections_7
                 List<EmployeeProjection> results = session.advanced().rawQuery(EmployeeProjection.class, "from Employees as e " +
                     "select { " +
-                    "    date : new Date(Date.parse(e.birthday)), " +
-                    "    name : e.firstName.substr(0,3) " +
+                    "    Date : new Date(Date.parse(e.Birthday)), " +
+                    "    Name : e.FirstName.substr(0,3) " +
                     "}").toList();
                 //endregion
             }
@@ -205,8 +205,8 @@ public class Projections {
                 //region projections_9
                 List<Total> results = session.advanced().rawQuery(Total.class, "from Orders as o " +
                     "select { " +
-                    "    total : o.lines.reduce( " +
-                    "        (acc , l) => acc += l.pricePerUnit * l.quantity, 0) " +
+                    "    Total : o.Lines.reduce( " +
+                    "        (acc , l) => acc += l.PricePerUnit * l.Quantity, 0) " +
                     "}").toList();
                 //endregion
             }

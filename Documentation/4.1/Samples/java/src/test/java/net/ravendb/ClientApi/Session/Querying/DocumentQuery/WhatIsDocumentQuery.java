@@ -43,7 +43,7 @@ public class WhatIsDocumentQuery {
                 List<Employee> employees = session
                     .advanced()
                     .documentQuery(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -56,7 +56,7 @@ public class WhatIsDocumentQuery {
                 List<Employee> employees = session
                     .advanced()
                     .documentQuery(Employee.class, "My/Custom/Index", null, false)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -69,7 +69,7 @@ public class WhatIsDocumentQuery {
                 List<Employee> employees = session
                     .advanced()
                     .documentQuery(Employee.class, MyCustomIndex.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }

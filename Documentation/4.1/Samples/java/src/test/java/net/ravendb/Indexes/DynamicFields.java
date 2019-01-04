@@ -79,7 +79,7 @@ public class DynamicFields {
 
         public Products_ByAttribute() {
             map = "docs.Products.Select(p => new { " +
-                "    _ = p.attributes.Select(attribute => this.CreateField(attribute.name, attribute.value, false, true)) " +
+                "    _ = p.Attributes.Select(attribute => this.CreateField(attribute.name, attribute.value, false, true)) " +
                 "})";
         }
     }

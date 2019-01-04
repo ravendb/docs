@@ -63,7 +63,7 @@ public class HowToWorkWithSuggestions {
                 Map<String, SuggestionResult> suggestions = session
                     .query(Employee.class, Employees_ByFullName.class)
                     .suggestUsing(builder ->
-                        builder.byField("fullName", "johne")
+                        builder.byField("FullName", "johne")
                             .withOptions(options))
                     .execute();
                 //endregion
@@ -71,7 +71,7 @@ public class HowToWorkWithSuggestions {
 
             try (IDocumentSession session = store.openSession()) {
                 //region suggest_8
-                SuggestionWithTerm suggestionWithTerm = new SuggestionWithTerm("fullName");
+                SuggestionWithTerm suggestionWithTerm = new SuggestionWithTerm("FullName");
                 suggestionWithTerm.setTerm("johne");
 
                 Map<String, SuggestionResult> suggestions = session

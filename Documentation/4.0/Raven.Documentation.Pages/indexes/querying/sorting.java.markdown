@@ -67,8 +67,8 @@ This can be achived by using the `orderBy` (`orderByDescending`) and `orderBySco
 {CODE-TAB:java:Index sorting_1_5@Indexes\Querying\Sorting.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByUnitsInStockAndName' 
-where unitsInStock > 10
-order by unitsInStock, score(), name desc
+where UnitsInStock > 10
+order by UnitsInStock, score(), Name desc
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

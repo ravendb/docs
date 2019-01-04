@@ -105,7 +105,7 @@ public class HowToCustomize {
                     ((sender, event) -> event.getQueryCustomization().noCaching()));
 
                 List<Employee> results = session.query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -116,7 +116,7 @@ public class HowToCustomize {
                     ((sender, event) -> event.getQueryCustomization().noTracking()));
 
                 List<Employee> results = session.query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -128,7 +128,7 @@ public class HowToCustomize {
 
                 //result will be ordered randomly each time
                 List<Employee> results = session.query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -139,7 +139,7 @@ public class HowToCustomize {
                     (sender, event) -> event.getQueryCustomization().waitForNonStaleResults());
 
                 List<Employee> results = session.query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }

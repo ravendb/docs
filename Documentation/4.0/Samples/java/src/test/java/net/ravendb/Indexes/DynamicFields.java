@@ -79,7 +79,7 @@ public class DynamicFields {
 
         public Products_ByAttribute() {
             map = "docs.Products.Select(p => new { " +
-                "    _ = p.attributes.Select(attribute => this.CreateField(attribute.name, attribute.value, false, true)) " +
+                "    _ = p.Attributes.Select(attribute => this.CreateField(attribute.Name, attribute.Value, false, true)) " +
                 "})";
         }
     }
@@ -91,7 +91,7 @@ public class DynamicFields {
                 //region dynamic_fields_4
                 List<Product> results = session
                     .query(Products_ByAttribute.Result.class, Products_ByAttribute.class)
-                    .whereEquals("color", "red")
+                    .whereEquals("Color", "red")
                     .ofType(Product.class)
                     .toList();
                 //endregion

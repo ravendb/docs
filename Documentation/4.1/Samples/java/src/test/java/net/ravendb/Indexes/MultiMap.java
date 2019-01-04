@@ -50,11 +50,11 @@ public class MultiMap {
     public static class Animals_ByName extends AbstractMultiMapIndexCreationTask {
         public Animals_ByName() {
             addMap( "docs.Cats.Select(c => new { " +
-                "    name = c.name " +
+                "    Name = c.Name " +
                 "})");
 
             addMap( "docs.Dogs.Select(d => new { " +
-                "    name = d.name " +
+                "    Name = d.Name " +
                 "})");
         }
     }
@@ -134,42 +134,42 @@ public class MultiMap {
         public Smart_Search() {
 
             addMap("docs.Companies.Select(c => new { " +
-                "    id = Id(c), " +
-                "    content = new string[] { " +
-                "        c.name " +
+                "    Id = Id(c), " +
+                "    Content = new string[] { " +
+                "        c.Name " +
                 "    }, " +
-                "    displayName = c.name, " +
-                "    collection = this.MetadataFor(c)[\"@collection\"] " +
+                "    DisplayName = c.Name, " +
+                "    Collection = this.MetadataFor(c)[\"@collection\"] " +
                 "})");
 
             addMap("docs.Products.Select(p => new { " +
-                "    id = Id(p), " +
-                "    content = new string[] { " +
-                "        p.name " +
+                "    Id = Id(p), " +
+                "    Content = new string[] { " +
+                "        p.Name " +
                 "    }, " +
-                "    displayName = p.name, " +
-                "    collection = this.MetadataFor(p)[\"@collection\"] " +
+                "    DisplayName = p.Name, " +
+                "    Collection = this.MetadataFor(p)[\"@collection\"] " +
                 "})");
 
             addMap("docs.Employees.Select(e => new { " +
-                "    id = Id(e), " +
-                "    content = new string[] { " +
-                "        e.firstName, " +
-                "        e.lastName " +
+                "    Id = Id(e), " +
+                "    Content = new string[] { " +
+                "        e.FirstName, " +
+                "        e.LastName " +
                 "    }, " +
-                "    displayName = (e.firstName + \" \") + e.lastName, " +
-                "    collection = this.MetadataFor(e)[\"@collection\"] " +
+                "    DisplayName = (e.FirstName + \" \") + e.LastName, " +
+                "    Collection = this.MetadataFor(e)[\"@collection\"] " +
                 "})");
 
             // mark 'content' field as analyzed which enables full text search operations
-            index("content", FieldIndexing.SEARCH);
+            index("Content", FieldIndexing.SEARCH);
 
             // storing fields so when projection (e.g. ProjectInto)
             // requests only those fields
             // then data will come from index only, not from storage
-            store("id", FieldStorage.YES);
-            store("displayName", FieldStorage.YES);
-            store("collection", FieldStorage.YES);
+            store("Id", FieldStorage.YES);
+            store("DisplayName", FieldStorage.YES);
+            store("Collection", FieldStorage.YES);
         }
     }
     //endregion
@@ -180,7 +180,7 @@ public class MultiMap {
                 //region multi_map_7
                 List<IAnimal> results = session
                     .query(IAnimal.class, Animals_ByName.class)
-                    .whereEquals("name", "Mitzy")
+                    .whereEquals("Name", "Mitzy")
                     .toList();
                 //endregion
             }
@@ -189,7 +189,7 @@ public class MultiMap {
                 //region multi_map_1_1
                 List<Smart_Search.Projection> results = session
                     .query(Smart_Search.Result.class, Smart_Search.class)
-                    .search("content", "Lau*")
+                    .search("Content", "Lau*")
                     .selectFields(Smart_Search.Projection.class)
                     .toList();
 

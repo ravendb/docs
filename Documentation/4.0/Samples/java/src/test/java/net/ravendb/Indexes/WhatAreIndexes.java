@@ -13,8 +13,8 @@ public class WhatAreIndexes {
     public static class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastName() {
             map =  "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName," +
+                "    LastName = employee.LastName" +
                 "})";
         }
     }
@@ -34,7 +34,7 @@ public class WhatAreIndexes {
                 //region indexes_3
                 List<Employee> results = session
                     .query(Employee.class, Employees_ByFirstAndLastName.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }

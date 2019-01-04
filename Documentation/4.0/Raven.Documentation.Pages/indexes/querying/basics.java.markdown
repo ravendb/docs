@@ -52,7 +52,7 @@ To filter the results, use the suitable method, like `whereEquals`:
 {CODE-TAB:java:Java basics_0_1@Indexes\Querying\Basics.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees
-where firstName = 'Robert'
+where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -60,7 +60,7 @@ where firstName = 'Robert'
 {CODE-TAB:java:Java basics_3_0@Indexes\Querying\Basics.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees
-where id() == 'employees/1-A'
+where id() = 'employees/1-A'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

@@ -28,8 +28,8 @@ public class Filtering {
     public class Employees_ByFirstAndLastName extends AbstractIndexCreationTask {
         public Employees_ByFirstAndLastName() {
             map = "docs.Employees.Select(employee => new {" +
-                "    firstName = employee.firstName," +
-                "    lastName = employee.lastName" +
+                "    FirstName = employee.FirstName," +
+                "    LastName = employee.LastName" +
                 "})";
         }
     }
@@ -39,7 +39,7 @@ public class Filtering {
     public class Products_ByUnitsInStock extends AbstractIndexCreationTask {
         public Products_ByUnitsInStock() {
             map = "docs.Products.Select(product => new {" +
-                "        unitsInStock = product.unitsInStock" +
+                "        UnitsInStock = product.UnitsInStock" +
                 "    })";
         }
     }
@@ -60,7 +60,7 @@ public class Filtering {
         }
         public Orders_ByTotalPrice() {
             map = "docs.Orders.Select(order => new {" +
-                "    totalPrice = Enumerable.Sum(order.lines, x => ((decimal)((((decimal) x.quantity) * x.pricePerUnit) * (1M - x.discount))))" +
+                "    TotalPrice = Enumerable.Sum(order.Lines, x => ((decimal)((((decimal) x.Quantity) * x.PricePerUnit) * (1M - x.Discount))))" +
                 "})";
         }
     }
@@ -70,7 +70,7 @@ public class Filtering {
     public class Order_ByOrderLinesCount extends AbstractIndexCreationTask {
         public Order_ByOrderLinesCount() {
             map = "docs.Orders.Select(order => new {" +
-                "    lines_count = order.lines.Count" +
+                "    Lines_count = order.Lines.Count" +
                 "})";
         }
     }
@@ -80,7 +80,7 @@ public class Filtering {
     public class Order_ByOrderLines_ProductName extends AbstractIndexCreationTask {
         public Order_ByOrderLines_ProductName() {
             map = "docs.Orders.Select(order => new {" +
-                "    lines_productName = order.lines.Select(x => x.productName)" +
+                "    Lines_productName = order.Lines.Select(x => x.ProductName)" +
                 "})";
         }
     }
@@ -102,9 +102,9 @@ public class Filtering {
                 //region filtering_0_1
                 List<Employee> results = session
                     .query(Employee.class, Employees_ByFirstAndLastName.class) // query 'Employees/ByFirstAndLastName' index
-                    .whereEquals("firstName", "Robert") // filtering predicates
+                    .whereEquals("FirstName", "Robert") // filtering predicates
                     .andAlso()   // by default OR is between each condition
-                    .whereEquals("lastName", "King") // materialize query by sending it to server for processing
+                    .whereEquals("LastName", "King") // materialize query by sending it to server for processing
                     .toList();
                 //endregion
             }
@@ -113,7 +113,7 @@ public class Filtering {
                 //region filtering_1_1
                 List<Product> results = session
                     .query(Product.class, Products_ByUnitsInStock.class) // query 'Products/ByUnitsInStock' index
-                    .whereGreaterThan("unitsInStock", 50) // filtering predicates
+                    .whereGreaterThan("UnitsInStock", 50) // filtering predicates
                     .toList(); // materialize query by sending it to server for processing
 
                 //endregion
@@ -123,7 +123,7 @@ public class Filtering {
                 //region filtering_7_1
                 List<Order> results = session
                     .query(Orders_ByTotalPrice.Result.class, Orders_ByTotalPrice.class)
-                    .whereGreaterThan("totalPrice", 50)
+                    .whereGreaterThan("TotalPrice", 50)
                     .ofType(Order.class)
                     .toList();
                 //endregion
@@ -133,7 +133,7 @@ public class Filtering {
                 //region filtering_2_1
                 List<Order> results = session
                     .query(Order.class, Order_ByOrderLinesCount.class) // query 'Order/ByOrderLinesCount' index
-                    .whereGreaterThan("lines_count", 50) // filtering predicates
+                    .whereGreaterThan("Lines_count", 50) // filtering predicates
                     .toList();   // materialize query by sending it to server for processing
                 //endregion
             }
@@ -142,7 +142,7 @@ public class Filtering {
                 //region filtering_3_1
                 session
                     .query(Order.class, Order_ByOrderLines_ProductName.class) // query 'Order/ByOrderLines/ProductName' index
-                    .whereEquals("lines_productName", "Teatime Chocolate Biscuits") // filtering predicates
+                    .whereEquals("Lines_productName", "Teatime Chocolate Biscuits") // filtering predicates
                     .toList(); // materialize query by sending it to server for processing
                 //endregion
             }
@@ -151,7 +151,7 @@ public class Filtering {
                 //region filtering_4_1
                 List<Employee> results = session
                     .query(Employee.class, Employees_ByFirstAndLastName.class) // query 'Employees/ByFirstAndLastName' index
-                    .whereIn("firstName", Arrays.asList("Robert", "Nancy")) // filtering predicates
+                    .whereIn("FirstName", Arrays.asList("Robert", "Nancy")) // filtering predicates
                     .toList();// materialize query by sending it to server for processing
                 //endregion
             }
@@ -179,7 +179,7 @@ public class Filtering {
                 // return all products which name starts with 'ch'
                 List<Product> results = session
                     .query(Product.class)
-                    .whereStartsWith("name", "ch")
+                    .whereStartsWith("Name", "ch")
                     .toList();
                 //endregion
             }
@@ -189,7 +189,7 @@ public class Filtering {
                 // return all products which name ends with 'ra'
                 List<Product> results = session
                     .query(Product.class)
-                    .whereEndsWith("name", "ra")
+                    .whereEndsWith("Name", "ra")
                     .toList();
                 //endregion
             }
@@ -199,7 +199,7 @@ public class Filtering {
                 // return all orders that were shipped to 'Albuquerque'
                 List<Order> results = session
                     .query(Order.class)
-                    .whereEquals("shipTo_city", "Albuquerque")
+                    .whereEquals("ShipTo_city", "Albuquerque")
                     .toList();
                 //endregion
             }

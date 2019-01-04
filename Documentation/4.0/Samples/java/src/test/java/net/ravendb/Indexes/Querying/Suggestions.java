@@ -20,11 +20,11 @@ public class Suggestions {
             map = "from product in docs.Products " +
                 "select new " +
                 "{ " +
-                "  product.name " +
+                "  product.Name " +
                 "} ";
 
-            index("name", FieldIndexing.SEARCH); // (optional) splitting name into multiple tokens
-            suggestion("name");// configuring suggestions
+            index("Name", FieldIndexing.SEARCH); // (optional) splitting name into multiple tokens
+            suggestion("Name");// configuring suggestions
         }
     }
     //endregion
@@ -39,7 +39,7 @@ public class Suggestions {
                 //region suggestions_2
                 Product product = session
                     .query(Product.class, Products_ByName.class)
-                    .search("name", "chaig")
+                    .search("Name", "chaig")
                     .firstOrDefault();
                 //endregion
             }
@@ -48,12 +48,12 @@ public class Suggestions {
                 //region suggestions_3
                 Map<String, SuggestionResult> suggestionResult = session
                     .query(Product.class, Products_ByName.class)
-                    .suggestUsing(builder -> builder.byField("name", "chaig"))
+                    .suggestUsing(builder -> builder.byField("Name", "chaig"))
                     .execute();
 
                 System.out.println("Did you mean?");
 
-                for (String suggestion : suggestionResult.get("name").getSuggestions()) {
+                for (String suggestion : suggestionResult.get("Name").getSuggestions()) {
                     System.out.println("\t" + suggestion);
                 }
                 //endregion
@@ -72,13 +72,13 @@ public class Suggestions {
                 Map<String, SuggestionResult> resultsByMultipleWords = session
                     .query(Product.class, Products_ByName.class)
                     .suggestUsing(builder ->
-                        builder.byField("name", new String[]{"chaig", "tof"})
+                        builder.byField("Name", new String[]{"chaig", "tof"})
                             .withOptions(options))
                     .execute();
 
                 System.out.println("Did you mean?");
 
-                for (String suggestion : resultsByMultipleWords.get("name").getSuggestions()) {
+                for (String suggestion : resultsByMultipleWords.get("Name").getSuggestions()) {
                     System.out.println("\t" + suggestion);
                 }
                 //endregion

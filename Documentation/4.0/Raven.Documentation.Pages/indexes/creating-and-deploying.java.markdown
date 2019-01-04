@@ -80,7 +80,7 @@ For instance, issuing a query like this
 {CODE-TAB:java:Java indexes_7@Indexes/Creating.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees
-where firstName = 'Robert' and lastName = 'King'
+where FirstName = 'Robert' and LastName = 'King'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

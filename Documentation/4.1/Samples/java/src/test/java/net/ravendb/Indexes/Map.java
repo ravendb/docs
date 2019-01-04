@@ -34,8 +34,8 @@ public class Map {
         //region indexes_2
         public Employees_ByFirstAndLastName() {
             map = "docs.Employees.Select(employee => new { " +
-                "    firstName = employee.firstName, " +
-                "    lastName = employee.lastName " +
+                "    FirstName = employee.FirstName, " +
+                "    LastName = employee.LastName " +
                 "})";
         }
         //endregion
@@ -57,7 +57,7 @@ public class Map {
 
         public Employees_ByFullName() {
             map = "docs.Employees.Select(employee => new { " +
-                "    fullName = (employee.firstName + \" \") + employee.lastName " +
+                "    FullName = (employee.FirstName + \" \") + employee.LastName " +
                 "})";
         }
     }
@@ -79,7 +79,7 @@ public class Map {
 
         public Employees_ByYearOfBirth() {
             map = "docs.Employees.Select(employee => new { " +
-                "    yearOfBirth = employee.birthday.year " +
+                "    YearOfBirth = employee.Birthday.Year " +
                 "})";
         }
     }
@@ -101,7 +101,7 @@ public class Map {
 
         public Employees_ByBirthday() {
             map = "docs.Employees.Select(employee => new { " +
-                "    birthday = employee.birthday " +
+                "    Birthday = employee.Birthday " +
                 "})";
         }
     }
@@ -123,7 +123,7 @@ public class Map {
 
         public Employees_ByCountry() {
             map = "docs.Employees.Select(employee => new { " +
-                "    country = employee.address.country " +
+                "    Country = employee.Address.Country " +
                 "})";
         }
     }
@@ -145,7 +145,7 @@ public class Map {
 
         public Employees_Query() {
             map = "docs.Employees.Select(employee => new { " +
-                "    query = new [] { employee.firstName, employee.lastName, employee.title, employee.address.city } " +
+                "    Query = new [] { employee.FirstName, employee.LastName, employee.Title, employee.Address.City } " +
                 "})";
             index("query", FieldIndexing.SEARCH);
         }
@@ -161,11 +161,11 @@ public class Map {
             try (IDocumentSession session = store.openSession()) {
                 //region indexes_4
                 List<Employee> employees1 = session.query(Employee.class, Employees_ByFirstAndLastName.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
 
                 List<Employee> employees2 = session.query(Employee.class, Query.index("Employees/ByFirstAndLastName"))
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }
@@ -177,7 +177,7 @@ public class Map {
                 // and changing type using 'ofType' before sending query to server
                 List<Employee> employees = session
                     .query(Employees_ByFullName.Result.class, Employees_ByFullName.class)
-                    .whereEquals("fullName", "Robert King")
+                    .whereEquals("FullName", "Robert King")
                     .ofType(Employee.class)
                     .toList();
                 //endregion
@@ -188,7 +188,7 @@ public class Map {
                 List<Employee> employees = session
                     .advanced()
                     .documentQuery(Employee.class, Employees_ByFullName.class)
-                    .whereEquals("fullName", "Robert King")
+                    .whereEquals("FullName", "Robert King")
                     .toList();
                 //endregion
             }
@@ -197,7 +197,7 @@ public class Map {
                 //region indexes_6_1
                 List<Employee> employees = session
                     .query(Employees_ByYearOfBirth.Result.class, Employees_ByYearOfBirth.class)
-                    .whereEquals("yearOfBirth", 1963)
+                    .whereEquals("YearOfBirth", 1963)
                     .ofType(Employee.class)
                     .toList();
                 //endregion
@@ -209,7 +209,7 @@ public class Map {
                 LocalDate endDate = startDate.plusYears(1).minus(1, ChronoUnit.MILLIS);
                 List<Employee> employees = session
                     .query(Employees_ByBirthday.Result.class, Employees_ByBirthday.class)
-                    .whereBetween("birthday", startDate, endDate)
+                    .whereBetween("Birthday", startDate, endDate)
                     .ofType(Employee.class)
                     .toList();
                 //endregion
@@ -219,7 +219,7 @@ public class Map {
                 //region indexes_7_1
                 List<Employee> employees = session
                     .query(Employees_ByCountry.Result.class, Employees_ByCountry.class)
-                    .whereEquals("country", "USA")
+                    .whereEquals("Country", "USA")
                     .ofType(Employee.class)
                     .toList();
                 //endregion
@@ -229,7 +229,7 @@ public class Map {
                 //region indexes_1_7
                 List<Employee> employees = session
                     .query(Employees_Query.Result.class, Employees_Query.class)
-                    .search("query", "John Doe")
+                    .search("Query", "John Doe")
                     .ofType(Employee.class)
                     .toList();
                 //endregion

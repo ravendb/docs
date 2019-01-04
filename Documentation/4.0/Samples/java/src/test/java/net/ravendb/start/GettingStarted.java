@@ -58,7 +58,7 @@ public class GettingStarted {
         //region client_3
         try (IDocumentSession session = store.openSession()) {     // Open a session for a default 'Database'
             Product product = session
-                .include("category")                        // Include Category
+                .include("Category")                        // Include Category
                 .load(Product.class, productId);            // Load the Product and start tracking
 
             Category category = session
@@ -78,9 +78,9 @@ public class GettingStarted {
         try (IDocumentSession session = store.openSession()) {      // Open a session for a default 'Database'
             List<String> productNames = session
                 .query(Product.class)                       // Query for Products
-                .whereGreaterThan("unitsInStock", 5)        // Filter
+                .whereGreaterThan("UnitsInStock", 5)        // Filter
                 .skip(0).take(10)                           // Page
-                .selectFields(String.class, "name")         // Project
+                .selectFields(String.class, "Name")         // Project
                 .toList();                                  // Materialize query
         }
         //endregion

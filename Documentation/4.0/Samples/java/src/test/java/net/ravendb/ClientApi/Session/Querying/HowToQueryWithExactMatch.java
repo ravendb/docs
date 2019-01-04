@@ -27,7 +27,7 @@ public class HowToQueryWithExactMatch {
                 // load all entities from 'Employees' collection
                 // where firstName equals 'Robert' (case sensitive match)
                 List<Employee> employees = session.query(Employee.class)
-                    .whereEquals("firstName", "Robert", true)
+                    .whereEquals("FirstName", "Robert", true)
                     .toList();
                 //endregion
             }
@@ -39,7 +39,7 @@ public class HowToQueryWithExactMatch {
                 // 'Singaporean Hokkien Fried Mee' product
                 // perform a case-sensitive match
                 List<Order> orders = session.query(Order.class)
-                    .whereEquals("lines[].productName", "Singaporean Hokkien Fried Mee", true)
+                    .whereEquals("Lines[].ProductName", "Singaporean Hokkien Fried Mee", true)
                     .toList();
                 //endregion
             }

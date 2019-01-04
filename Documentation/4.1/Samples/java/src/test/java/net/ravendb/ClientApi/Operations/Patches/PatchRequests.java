@@ -83,7 +83,7 @@ public class PatchRequests {
                 // change firstName to Robert
                 session
                     .advanced()
-                    .patch("employees/1", "firstName", "Robert");
+                    .patch("employees/1", "FirstName", "Robert");
                 //endregion
 
                 session.saveChanges();
@@ -93,7 +93,7 @@ public class PatchRequests {
                 //region patch_firstName_non_generic_session
                 // change firstName to Robert
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("this.firstName = args.firstName");
+                patchRequest.setScript("this.FirstName = args.firstName");
                 patchRequest.setValues(Collections.singletonMap("firstName", "Robert"));
                 PatchCommandData patchCommandData = new PatchCommandData("employees/1", null, patchRequest, null);
                 session.advanced().defer(patchCommandData);
@@ -106,7 +106,7 @@ public class PatchRequests {
                 //region patch_firstName_non_generic_store
                 // change firstName to Robert
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("this.firstName = args.firstName;");
+                patchRequest.setScript("this.FirstName = args.firstName;");
                 patchRequest.setValues(Collections.singletonMap("firstName", "Robert"));
                 PatchOperation patchOperation = new PatchOperation("employees/1", null, patchRequest);
                 store.operations().send(patchOperation);
@@ -118,8 +118,8 @@ public class PatchRequests {
                 // change firstName to Robert and lastName to Carter in single request
                 // note that in this case, we create single request, but two separate batch operations
                 // in order to achieve atomicity, please use the non generic APIs
-                session.advanced().patch("employees/1", "firstName", "Robert");
-                session.advanced().patch("employees/1", "lastName", "Carter");
+                session.advanced().patch("employees/1", "FirstName", "Robert");
+                session.advanced().patch("employees/1", "LastName", "Carter");
 
                 session.saveChanges();
                 //endregion
@@ -130,8 +130,8 @@ public class PatchRequests {
                 // change firstName to Robert and lastName to Carter in single request
                 // note that here we do maintain the atomicity of the operation
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("this.firstName = args.firstName;" +
-                    "this.lastName = args.lastName");
+                patchRequest.setScript("this.FirstName = args.firstName;" +
+                    "this.LastName = args.lastName");
 
                 Map<String, Object> values = new HashMap<>();
                 values.put("firstName", "Robert");
@@ -148,8 +148,8 @@ public class PatchRequests {
                 // change FirstName to Robert and LastName to Carter in single request
                 // note that here we do maintain the atomicity of the operation
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("this.firstName = args.firstName; " +
-                    "this.lastName = args.lastName");
+                patchRequest.setScript("this.FirstName = args.firstName; " +
+                    "this.LastName = args.lastName");
 
                 Map<String, Object> values = new HashMap<>();
                 values.put("firstName", "Robert");
@@ -163,7 +163,7 @@ public class PatchRequests {
             try (IDocumentSession session = store.openSession()) {
                 //region increment_age_generic
                 // increment UnitsInStock property value by 10
-                session.advanced().increment("products/1-A", "unitsInStock", 10);
+                session.advanced().increment("products/1-A", "UnitsInStock", 10);
 
                 session.saveChanges();
                 //endregion
@@ -172,7 +172,7 @@ public class PatchRequests {
             try (IDocumentSession session = store.openSession()) {
                 //region increment_age_non_generic_session
                 PatchRequest request = new PatchRequest();
-                request.setScript("this.unitsInStock += args.unitsToAdd");
+                request.setScript("this.UnitsInStock += args.unitsToAdd");
                 request.setValues(Collections.singletonMap("unitsToAdd", 10));
 
                 session.advanced().defer(
@@ -184,7 +184,7 @@ public class PatchRequests {
             {
                 //region increment_age_non_generic_store
                 PatchRequest request = new PatchRequest();
-                request.setScript("this.unitsInStock += args.unitsToAdd");
+                request.setScript("this.UnitsInStock += args.unitsToAdd");
                 request.setValues(Collections.singletonMap("unitsToAdd", 10));
                 store.operations().send(new PatchOperation("products/1-A", null, request));
                 //endregion
@@ -194,7 +194,7 @@ public class PatchRequests {
                 //region remove_property_age_non_generic_session
                 // remove property Age
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("delete this.age");
+                patchRequest.setScript("delete this.Age");
                 session.advanced().defer(
                     new PatchCommandData("employees/1", null, patchRequest, null));
                 session.saveChanges();
@@ -205,7 +205,7 @@ public class PatchRequests {
                 //region remove_property_age_store
                 //remove property age
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("delete this.age");
+                patchRequest.setScript("delete this.Age");
                 store.operations().send(new PatchOperation("employees/1", null, patchRequest));
                 //endregion
             }
@@ -215,8 +215,8 @@ public class PatchRequests {
                 // rename firstName to First
 
                 Map<String, Object> value = new HashMap<>();
-                value.put("old", "firstName");
-                value.put("new", "name");
+                value.put("old", "FirstName");
+                value.put("new", "Name");
 
                 PatchRequest patchRequest = new PatchRequest();
                 patchRequest.setScript("var firstName = this[args.rename.old];" +
@@ -233,8 +233,8 @@ public class PatchRequests {
             {
                 //region rename_property_age_store
                 Map<String, Object> value = new HashMap<>();
-                value.put("old", "firstName");
-                value.put("new", "name");
+                value.put("old", "FirstName");
+                value.put("new", "Name");
 
                 PatchRequest patchRequest = new PatchRequest();
                 patchRequest.setScript("var firstName = this[args.rename.old];" +
@@ -253,7 +253,7 @@ public class PatchRequests {
                 comment.setTitle("Some title");
 
                 session.advanced()
-                    .patch("blgoposts/1", "comments", comments -> comments.add(comment));
+                    .patch("blogposts/1", "comments", comments -> comments.add(comment));
 
                 session.saveChanges();
                 //endregion
@@ -380,9 +380,9 @@ public class PatchRequests {
                 //region update_product_name_in_order_session
                 // update product names in order, according to loaded product documents
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("this.lines.forEach(line => {" +
-                    " var productDoc = load(line.product);" +
-                    " line.productName = productDoc.name;" +
+                patchRequest.setScript("this.Lines.forEach(line => {" +
+                    " var productDoc = load(line.Product);" +
+                    " line.ProductName = productDoc.Name;" +
                     "});");
 
                 session.advanced().defer(
@@ -395,9 +395,9 @@ public class PatchRequests {
                 //region update_product_name_in_order_store
                 // update product names in order, according to loaded product documents
                 PatchRequest patchRequest = new PatchRequest();
-                patchRequest.setScript("this.lines.forEach(line => {" +
-                    " var productDoc = load(line.product);" +
-                    " line.productName = productDoc.name;" +
+                patchRequest.setScript("this.Lines.forEach(line => {" +
+                    " var productDoc = load(line.Product);" +
+                    " line.ProductName = productDoc.Name;" +
                     "});");
 
                 store.operations().send(new PatchOperation("blogposts/1", null, patchRequest));
@@ -411,7 +411,7 @@ public class PatchRequests {
             Operation operation = store
                 .operations()
                 .sendAsync(new PatchByQueryOperation("from Orders as o update  {" +
-                    "   o.freight += 10;" +
+                    "   o.Freight += 10;" +
                     "}"));
 
             // Wait for the operation to be complete on the server side.
@@ -426,10 +426,10 @@ public class PatchRequests {
             Operation operation = store
                 .operations()
                 .sendAsync(new PatchByQueryOperation("from Orders as o" +
-                    " where o.employee = 'employees/1-A'" +
+                    " where o.Employee = 'employees/1-A'" +
                     " update " +
                     "{ " +
-                    "  o.lines.forEach(line => line.discount = 0.3);" +
+                    "  o.Lines.forEach(line => line.Discount = 0.3);" +
                     "}"));
 
             operation.waitForCompletion();
@@ -443,9 +443,9 @@ public class PatchRequests {
                 .operations()
                 .sendAsync(new PatchByQueryOperation(new IndexQuery("" +
                     "from index 'Product/Search' as p " +
-                    " where p.supplier = 'suppliers/12-A'" +
+                    " where p.Supplier = 'suppliers/12-A'" +
                     " update {" +
-                    "  p.supplier = 'suppliers/13-A'" +
+                    "  p.Supplier = 'suppliers/13-A'" +
                     "}")));
 
 
@@ -464,10 +464,10 @@ public class PatchRequests {
                 .operations()
                 .sendAsync(new PatchByQueryOperation(new IndexQuery(
                     "from Orders as o " +
-                        "where o.company = 'companies/12-A' " +
+                        "where o.Company = 'companies/12-A' " +
                         "update " +
                         "{ " +
-                        "    o.company = 'companies/13-A';" +
+                        "    o.Company = 'companies/13-A';" +
                         "} "
                 ), options));
 
@@ -505,7 +505,7 @@ public class PatchRequests {
                     "from @all_docs " +
                         " update " +
                         "{ " +
-                        "  this.updated = true;" +
+                        "  this.Updated = true;" +
                         "}"
                 )));
 
@@ -524,7 +524,7 @@ public class PatchRequests {
                         " where id() in ('orders/1-A', 'companies/1-A')" +
                         " update " +
                         "{" +
-                        "  d.updated = true; " +
+                        "  d.Updated = true; " +
                         "} "
                 )));
 
@@ -540,7 +540,7 @@ public class PatchRequests {
                     " where id() in ($ids)" +
                     " update " +
                     " {" +
-                    "    d.updated = true; " +
+                    "    d.Updated = true; " +
                     "} "
             );
             Parameters parameters = new Parameters();

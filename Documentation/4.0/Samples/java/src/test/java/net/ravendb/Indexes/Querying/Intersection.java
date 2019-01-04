@@ -122,11 +122,11 @@ public class Intersection {
         }
 
         public TShirts_ByManufacturerColorSizeAndReleaseYear() {
-            map = "docs.TShirts.SelectMany(tshirt => tshirt.Types, (tshirt, type) => new {" +
-                "    Manufacturer = tshirt.Manufacturer," +
-                "    Color = type.Color," +
-                "    Size = type.Size," +
-                "    ReleaseYear = tshirt.ReleaseYear" +
+            map = "docs.TShirts.SelectMany(tshirt => tshirt.types, (tshirt, type) => new {" +
+                "    manufacturer = tshirt.manufacturer," +
+                "    color = type.color," +
+                "    size = type.size," +
+                "    releaseYear = tshirt.releaseYear" +
                 "})";
         }
     }

@@ -72,7 +72,7 @@ public class DataSubscriptions {
     //region subscriptions_example
     public void worker(IDocumentStore store) {
         SubscriptionCreationOptions options = new SubscriptionCreationOptions();
-        options.setQuery("from Orders where company = 'companies/11'");
+        options.setQuery("from Orders where Company = 'companies/11'");
 
         String subscriptionName = store.subscriptions().create(Order.class, options);
         SubscriptionWorker<Order> subscription = store
@@ -134,7 +134,7 @@ public class DataSubscriptions {
             SubscriptionCreationOptions options = new SubscriptionCreationOptions();
             options.setQuery("declare function getOrderLinesSum(doc) {" +
                 " var sum = 0;" +
-                " for (var i in doc.lines) { sum += doc.lines[i]; }" +
+                " for (var i in doc.Lines) { sum += doc.Lines[i]; }" +
                 " return sum;" +
                 "}" +
                 "from Orders as o " +
@@ -149,17 +149,17 @@ public class DataSubscriptions {
             SubscriptionCreationOptions options = new SubscriptionCreationOptions();
             options.setQuery(" declare function getOrderLinesSum(doc) {" +
                 "  var sum = 0; " +
-                "  for (var i in doc.lines) { sum += doc.lines[i]; }" +
+                "  for (var i in doc.Lines) { sum += doc.Lines[i]; }" +
                 "  return sum;" +
                 "}" +
                 "" +
                 " declare function projectOrder(doc) {" +
-                "    var employee = LoadDocument(doc.employee); " +
+                "    var employee = LoadDocument(doc.Employee); " +
                 "    return {" +
-                "        id: order.id," +
-                "        total: getOrderLinesSum(order)," +
-                "        shipTo: order.shipTo," +
-                "        employeeName: employee.firstName + ' ' + employee.lastName " +
+                "        Id: order.Id," +
+                "        Total: getOrderLinesSum(order)," +
+                "        ShipTo: order.ShipTo," +
+                "        EmployeeName: employee.FirstName + ' ' + employee.LastName " +
                 "    }" +
                 " }" +
                 " from order as o " +
@@ -205,7 +205,7 @@ public class DataSubscriptions {
             SubscriptionCreationOptions options = new SubscriptionCreationOptions();
             options.setQuery("declare function getOrderLinesSum(doc) {" +
                 "    var sum = 0;" +
-                "    for (var i in doc.lines) { sum += doc.lines[i]; } " +
+                "    for (var i in doc.Lines) { sum += doc.Lines[i]; } " +
                 "    return sum;" +
                 "}" +
                 "" +

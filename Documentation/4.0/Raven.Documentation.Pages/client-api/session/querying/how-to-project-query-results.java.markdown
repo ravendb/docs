@@ -16,7 +16,7 @@ The most common way to perform a query with projection is to use the `selectFiel
 {CODE-TAB:java:Java projections_1@ClientApi\Session\Querying\HowToProjectQueryResults.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Companies
-select name, address.city as city, address.country as country
+select Name, Address.City as City, Address.Country as Country
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -26,7 +26,7 @@ select name, address.city as city, address.country as country
 {CODE-TAB:java:Java projections_2@ClientApi\Session\Querying\HowToProjectQueryResults.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Orders
-select shipTo, lines[].productName as products
+select ShipTo, Lines[].ProductName as Products
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -37,7 +37,7 @@ select shipTo, lines[].productName as products
 {CODE-TAB-BLOCK:sql:RQL}
 from Employees as e
 select {
-    fullName : e.firstName + " " + e.lastName
+    FullName : e.FirstName + " " + e.LastName
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}

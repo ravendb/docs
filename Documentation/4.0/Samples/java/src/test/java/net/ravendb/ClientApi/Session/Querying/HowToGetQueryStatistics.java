@@ -23,7 +23,7 @@ public class HowToGetQueryStatistics {
                 Reference<QueryStatistics> stats = new Reference<>();
 
                 List<Employee> employees = session.query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .statistics(stats)
                     .toList();
 

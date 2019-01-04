@@ -47,7 +47,7 @@ where Lines.Count > 50
 
 ## Where + Any
 
-`Any` is useful when you have a collection of items (e.g. `Order` contains `orderLines`) and you want to filter out based on values from this collection. For example, let's retrieve all orders that contain an `orderLine` with a given product.
+`Any` is useful when you have a collection of items (e.g. `Order` contains `OrderLines`) and you want to filter out based on values from this collection. For example, let's retrieve all orders that contain an `OrderLine` with a given product.
 
 {CODE-TABS}
 {CODE-TAB:java:Query filtering_3_1@Indexes\Querying\Filtering.java /}
@@ -60,7 +60,7 @@ where Lines_ProductName = 'Teatime Chocolate Biscuits'
 
 ## Where + In
 
-When you want to check a single value against multiple values, the `In` operator can become handy. To retrieve all employees where `firstName` is either `Robert` or `Nancy`, we can issue the following query:
+When you want to check a single value against multiple values, the `In` operator can become handy. To retrieve all employees where `FirstName` is either `Robert` or `Nancy`, we can issue the following query:
 
 {CODE-TABS}
 {CODE-TAB:java:Query filtering_4_1@Indexes\Querying\Filtering.java /}

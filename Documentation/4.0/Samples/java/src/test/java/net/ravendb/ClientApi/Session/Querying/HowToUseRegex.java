@@ -31,7 +31,7 @@ public class HowToUseRegex {
                 // loads all products, which name
                 // starts with 'N' or 'A'
                 List<Product> products = session.query(Product.class)
-                    .whereRegex("name", "^[NA]")
+                    .whereRegex("Name", "^[NA]")
                     .toList();
                 //endregion
             }

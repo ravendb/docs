@@ -16,7 +16,7 @@ public class IndexingBasics {
             try (IDocumentSession session = store.openSession()) {
                 //region indexes_2
                 List<Employee> employees = session.query(Employee.class, Query.index("Employees/ByFirstName"))
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .toList();
                 //endregion
             }

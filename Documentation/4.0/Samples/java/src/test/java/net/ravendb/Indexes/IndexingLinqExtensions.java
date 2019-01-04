@@ -15,7 +15,7 @@ public class IndexingLinqExtensions {
     public static class Employees_ByReversedFirstName extends AbstractIndexCreationTask {
         public Employees_ByReversedFirstName() {
             map = "docs.Employees.Select(employee => new { " +
-                "    firstName = employee.firstName.Reverse() " +
+                "    FirstName = employee.FirstName.Reverse() " +
                 "})";
         }
     }
@@ -82,7 +82,7 @@ public class IndexingLinqExtensions {
                 //region indexes_2
                 List<Employee> results = session
                     .query(Employee.class, Employees_ByReversedFirstName.class)
-                    .whereEquals("firstName", "treboR")
+                    .whereEquals("FirstName", "treboR")
                     .toList();
                 //endregion
             }

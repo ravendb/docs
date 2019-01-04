@@ -20,7 +20,7 @@ public class HowToUseLucene {
                 session
                     .advanced()
                     .documentQuery(Company.class)
-                    .whereLucene("name", "bistro")
+                    .whereLucene("Name", "bistro")
                     .toList();
                 //endregion
             }

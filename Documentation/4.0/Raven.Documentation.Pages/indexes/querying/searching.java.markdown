@@ -33,7 +33,7 @@ By using the `search` method, you are also able to look for multiple indexed fie
 {CODE-TAB:java:Java search_5_0@Indexes\Querying\Searching.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Users
-where search(name, 'Adam') or search(hobbies, 'sport')
+where search(Name, 'Adam') or search(Hobbies, 'sport')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -49,7 +49,7 @@ For example:
 {CODE-TAB:java:Java search_6_0@Indexes\Querying\Searching.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Users
-where boost(search(hobbies, 'I love sport'), 10) or boost(search(hobbies, 'but also like reading books'), 5)
+where boost(search(Hobbies, 'I love sport'), 10) or boost(search(Hobbies, 'but also like reading books'), 5)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -71,7 +71,7 @@ will be translated into
 
 {CODE-BLOCK:csharp}
 from Users
-where search(hobbies, 'computers') or search(name, 'James') and Age = 20
+where search(Hobbies, 'computers') or search(Name, 'James') and Age = 20
 {CODE-BLOCK/}
 
 You can also specify what exactly the query logic should be. The applied option will influence a query term where it was used. The query as follows:
@@ -82,7 +82,7 @@ will result in the following RQL query:
 
 {CODE-BLOCK:csharp}
 from Users
-where search(name, 'Adam') and search(hobbies, 'sport')
+where search(Name, 'Adam') and search(Hobbies, 'sport')
 {CODE-BLOCK/}
 
 If you want to negate the term use `not`:
@@ -93,7 +93,7 @@ According to RQL syntax it will be transformed into the query:
 
 {CODE-BLOCK:csharp}
 from Users
-where exists(name) and not search(name, 'Adam')
+where exists(Name) and not search(James, 'Adam')
 {CODE-BLOCK/}
 
 You can also combine search options:

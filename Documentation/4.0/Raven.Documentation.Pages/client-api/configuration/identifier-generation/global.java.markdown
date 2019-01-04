@@ -24,7 +24,7 @@ In the metadata of all documents stored by RavenDB Java Client, you can find the
 }
 {CODE-BLOCK/}
 
-This property is used by RavenDB client to perform a conversion between a Java object and a JSON document stored in a database. A function responsible for retrieving the Java class of an entity is defined by `FindJavaClassName` convention:
+This property is used by RavenDB client to perform a conversion between a Java object and a JSON document stored in a database. A function responsible for retrieving the Java class of an entity is defined by `findJavaClassName` convention:
 
 {CODE:java find_type_name@ClientApi\Configuration\IdentifierGeneration\Global.java /}
 

@@ -18,7 +18,7 @@ You can:
 
 ## Indexing Single Fields
 
-Let's create an index that will help us search for `Employees` by their `firstName`, `lastName`, or both.
+Let's create an index that will help us search for `Employees` by their `FirstName`, `LastName`, or both.
 
 - First, let's create an index called `Employees/ByFirstAndLastName`
 
@@ -40,7 +40,7 @@ Let's create an index that will help us search for `Employees` by their `firstNa
 {CODE-TAB:java:Query indexes_4@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstAndLastName'
-where firstName = 'Robert'
+where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -48,7 +48,7 @@ where firstName = 'Robert'
 
 Please note that indexing capabilities are detected automatically from the returned field type from the indexing function. 
 
-For example, if our `Employee` will have a property called `age` that is an `integer` then the following indexing function...
+For example, if our `Employee` will have a property called `Age` that is an `integer` then the following indexing function...
 
 {CODE-TABS}
 {CODE-TAB-BLOCK:csharp:LINQ-syntax}
@@ -68,9 +68,9 @@ map('Employees', function(employee)
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-...grant us the capability to issue numeric queries (**return all the Employees that `age` is more than 30**). 
+...grant us the capability to issue numeric queries (**return all the Employees that `Age` is more than 30**). 
 
-Changing the `age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `age` field...
+Changing the `Age` type to a `string` will take that capability away from you. The easiest example would be to issue `.ToString()` on the `Age` field...
 
 {CODE-TABS}
 {CODE-TAB-BLOCK:csharp:LINQ-syntax}
@@ -100,8 +100,8 @@ You will probably notice that in the `Studio`, this function is a bit different 
 from employee in docs.Employees
 select new
 {
-	firstName = employee.firstName,
-	lastName = employee.lastName
+	FirstName = employee.FirstName,
+	LastName = employee.LastName
 }
 {CODE-BLOCK/}
 
@@ -124,7 +124,7 @@ Since each index contains a LINQ function, you can combine multiple fields into 
 {CODE-TAB:java:Query indexes_8@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName'
-where fullName = 'Robert King'
+where FullName = 'Robert King'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -132,7 +132,7 @@ where fullName = 'Robert King'
 
 {INFO: Information}
 
-In this example, the index field `query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
+In this example, the index field `Query` combines all values from various Employee fields into one. The default Analyzer on field is changed to enable `Full Text Search` operations. The matches no longer need to be exact.
 
 You can read more about analyzers and `Full Text Search` [here](../indexes/using-analyzers).
 
@@ -147,7 +147,7 @@ You can read more about analyzers and `Full Text Search` [here](../indexes/using
 {CODE-TAB:java:Query indexes_1_7@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/Query'
-where search(query, 'John Doe')
+where search(Query, 'John Doe')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -164,7 +164,7 @@ Imagine that you would like to return all employees that were born in a specific
 {CODE-TAB:java:Query indexes_5_1@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByBirthday '
-where birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
+where Birthday between '1963-01-01' and '1963-12-31T23:59:59.9990000'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -179,13 +179,13 @@ RavenDB gives you the ability to extract field data and to index by it. A differ
 {CODE-TAB:java:Query indexes_6_1@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByYearOfBirth'
-where yearOfBirth = 1963
+where YearOfBirth = 1963
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
 ## Indexing Nested Data
 
-If your document contains nested data, e.g. `Employee` contains `address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `country`:
+If your document contains nested data, e.g. `Employee` contains `Address`, you can index on its fields by accessing them directly in the index. Let's say that we would like to create an index that returns all employees that were born in a specific `Country`:
 
 {CODE-TABS}
 {CODE-TAB:java:Query-syntax indexes_1_4@Indexes/Map.java /}
@@ -196,7 +196,7 @@ If your document contains nested data, e.g. `Employee` contains `address`, you c
 {CODE-TAB:java:Query indexes_7_1@Indexes/Map.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByCountry'
-where country = 'USA'
+where Country = 'USA'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

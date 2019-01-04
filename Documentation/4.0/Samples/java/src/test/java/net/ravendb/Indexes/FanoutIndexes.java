@@ -10,9 +10,9 @@ public class FanoutIndexes {
     //region fanout_index_def_1
     public static class Orders_ByProduct extends AbstractIndexCreationTask {
         public Orders_ByProduct() {
-            map = "docs.Orders.SelectMany(order => order.lines, (order, orderLine) => new { " +
-                "    product = orderLine.product, " +
-                "    productName = orderLine.productName " +
+            map = "docs.Orders.SelectMany(order => order.Lines, (order, orderLine) => new { " +
+                "    Product = orderLine.Product, " +
+                "    ProductName = orderLine.ProductName " +
                 "})";
         }
     }
@@ -51,16 +51,16 @@ public class FanoutIndexes {
         }
 
         public Product_Sales() {
-            map = "docs.Orders.SelectMany(order => order.lines, (order, line) => new { " +
-                "    product = line.product, " +
-                "    count = 1, " +
-                "    total = (((decimal) line.quantity) * line.pricePerUnit) * (1M - line.discount) " +
+            map = "docs.Orders.SelectMany(order => order.Lines, (order, line) => new { " +
+                "    Product = line.Product, " +
+                "    Count = 1, " +
+                "    Total = (((decimal) line.Quantity) * line.PricePerUnit) * (1M - line.Discount) " +
                 "})";
 
             reduce = "results.GroupBy(result => result.product).Select(g => new {\n" +
-                "    product = g.Key,\n" +
-                "    count = Enumerable.Sum(g, x => ((int) x.count)),\n" +
-                "    total = Enumerable.Sum(g, x0 => ((decimal) x0.total))\n" +
+                "    Product = g.Key,\n" +
+                "    Count = Enumerable.Sum(g, x => ((int) x.Count)),\n" +
+                "    Total = Enumerable.Sum(g, x0 => ((decimal) x0.Total))\n" +
                 "})";
         }
     }
