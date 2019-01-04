@@ -72,7 +72,7 @@ public class WhatAreOperations {
             {
                 //region Client_Operations_1_async
                 IndexQuery indexQuery = new IndexQuery();
-                indexQuery.setQuery("from users where age == 5");
+                indexQuery.setQuery("from users where Age == 5");
                 DeleteByQueryOperation operation = new DeleteByQueryOperation(indexQuery);
                 Operation asyncOp = store.operations().sendAsync(operation);
                 //endregion

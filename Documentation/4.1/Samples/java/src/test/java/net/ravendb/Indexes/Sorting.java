@@ -7,10 +7,10 @@ public class Sorting {
     public static class Products_ByName extends AbstractIndexCreationTask {
         public Products_ByName() {
             map = "docs.Products.Select(product => new { " +
-                "    name = product.name " +
+                "    Name = product.Name " +
                 "})";
 
-            analyze("name", "Raven.Server.Documents.Indexes.Persistence.Lucene.Analyzers.Collation.Cultures.SvCollationAnalyzer, Raven.Server");
+            analyze("Name", "Raven.Server.Documents.Indexes.Persistence.Lucene.Analyzers.Collation.Cultures.SvCollationAnalyzer, Raven.Server");
         }
     }
     //endregion

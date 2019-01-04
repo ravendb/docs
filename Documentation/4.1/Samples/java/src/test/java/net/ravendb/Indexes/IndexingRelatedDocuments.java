@@ -85,7 +85,7 @@ public class IndexingRelatedDocuments {
 
         public Products_ByCategoryName() {
             map = "docs.Products.Select(product => new { " +
-                "    categoryName = (this.LoadDocument(product.category, \"Categories\")).name " +
+                "    CategoryName = (this.LoadDocument(product.Category, \"Categories\")).Name " +
                 "})";
         }
     }
@@ -131,7 +131,7 @@ public class IndexingRelatedDocuments {
             indexDefinition.setMaps(Collections.singleton("from product in products " +
                 "   select new " +
                 "   { " +
-                "       categoryName = LoadDocument(product.category, \"\"Categories\"\").name " +
+                "       CategoryName = LoadDocument(product.Category, \"\"Categories\"\").Name " +
                 "   }"));
 
             store.maintenance().send(new PutIndexesOperation(indexDefinition));
@@ -142,7 +142,7 @@ public class IndexingRelatedDocuments {
                 //region indexing_related_documents_7
                 List<Product> results = session
                     .query(Products_ByCategoryName.Result.class, Products_ByCategoryName.class)
-                    .whereEquals("categoryName", "Beverages")
+                    .whereEquals("CategoryName", "Beverages")
                     .ofType(Product.class)
                     .toList();
                 //endregion

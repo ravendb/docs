@@ -54,7 +54,7 @@ public class HowToPerformQueriesLazily {
                 //region lazy_2
                 Lazy<List<Employee>> employeesLazy = session
                     .query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .lazily();
 
                 List<Employee> employees = employeesLazy.getValue(); // query will be executed here
@@ -65,7 +65,7 @@ public class HowToPerformQueriesLazily {
                 //region lazy_5
                 Lazy<Integer> countLazy = session
                     .query(Employee.class)
-                    .whereEquals("firstName", "Robert")
+                    .whereEquals("FirstName", "Robert")
                     .countLazily();
 
                 Integer count = countLazy.getValue(); // query will be executed here
@@ -76,11 +76,11 @@ public class HowToPerformQueriesLazily {
                 //region lazy_7
                 Lazy<Map<String, SuggestionResult>> suggestLazy = session
                     .query(Employee.class, Query.index("Employees_ByFullName"))
-                    .suggestUsing(builder -> builder.byField("fullName", "johne"))
+                    .suggestUsing(builder -> builder.byField("FullName", "johne"))
                     .executeLazy();
 
                 Map<String, SuggestionResult> suggest = suggestLazy.getValue(); // query will be executed here
-                List<String> suggestions = suggest.get("fullName").getSuggestions();
+                List<String> suggestions = suggest.get("FullName").getSuggestions();
                 //endregion
             }
 

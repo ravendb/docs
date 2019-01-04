@@ -501,10 +501,10 @@ public class JavaScript {
         }
 
         public Authors_ByNameAndBookNames() {
-            setMaps(Sets.newHashSet("map('Author', function(a){\n" +
+            setMaps(Sets.newHashSet("map('author', function(a){\n" +
                 "            return {\n" +
-                "                Name: a.Name,\n" +
-                "                Books: a.BooksIds.forEach(x => load(x, 'Book').Name)\n" +
+                "                name: a.name,\n" +
+                "                books: a.booksIds.forEach(x => load(x, 'Book').name)\n" +
                 "            }\n" +
                 "        })"));
         }
@@ -528,16 +528,16 @@ public class JavaScript {
         public BlogPosts_ByCommentAuthor() {
             setMaps(Sets.newHashSet("map('BlogPosts', function(b){\n" +
                 "            var names = [];\n" +
-                "            b.Comments.forEach(x => getNames(x, names));\n" +
+                "            b.comments.forEach(x => getNames(x, names));\n" +
                 "                return {\n" +
-                "                   Authors : names\n" +
+                "                   authors : names\n" +
                 "                };" +
                 "            })"));
 
             Map<String, String> additionalSources = new HashMap<>();
             additionalSources.put("The Script", "function getNames(x, names){\n" +
-                "        names.push(x.Author);\n" +
-                "        x.Comments.forEach(x => getNames(x, names));\n" +
+                "        names.push(x.author);\n" +
+                "        x.comments.forEach(x => getNames(x, names));\n" +
                 "    }");
 
             setAdditionalSources(additionalSources);
@@ -550,8 +550,8 @@ public class JavaScript {
         public Events_ByNameAndCoordinates() {
             setMaps(Sets.newHashSet("map('events', function (e){\n" +
                 "    return {\n" +
-                "        Name: e.Name  ,\n" +
-                "        Coordinates: createSpatialField(e.Latitude, e.Longitude)\n" +
+                "        name: e.name  ,\n" +
+                "        coordinates: createSpatialField(e.latitude, e.longitude)\n" +
                 "    };\n" +
                 "})"));
         }
