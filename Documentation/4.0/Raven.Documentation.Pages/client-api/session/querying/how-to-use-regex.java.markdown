@@ -10,7 +10,7 @@ The supplied regular expression must be [.NET compatible](https://docs.microsoft
 {CODE-TAB:java:Java regex_1@ClientApi\Session\Querying\HowToUseRegex.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from Products 
-where regex(name, '^[NA]')
+where regex(Name, '^[NA]')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

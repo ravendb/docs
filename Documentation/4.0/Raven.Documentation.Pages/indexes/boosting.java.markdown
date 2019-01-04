@@ -4,7 +4,7 @@ A that RavenDB leverages from Lucene is called Boosting. This feature gives you 
 
 From the index perspective we can associate to an index entry a boosting factor. The higher value it has, the more relevant term will be. To do this, we must use the `Boost` method.
 
-Let's jump straight into the example. To perform the query that will return employees where either `firstName` or `lastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `firstName` matches the phrase, we must first create an index with boosted entry.
+Let's jump straight into the example. To perform the query that will return employees where either `FirstName` or `LastName` is equal to _Bob_, and to promote employees (move them to the top of the results) where `FirstName` matches the phrase, we must first create an index with boosted entry.
 
 {CODE-TABS}
 {CODE-TAB:java:AbstractIndexCreationTask boosting_2@Indexes\Boosting.java /}

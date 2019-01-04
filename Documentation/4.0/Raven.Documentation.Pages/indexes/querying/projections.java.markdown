@@ -15,7 +15,7 @@ The savings can be very significant if we need to show just a bit of information
 
 A good example in the sample data set would be the order document. If we ask for all the Orders where Company is "companies/65-A", the size of the result that we get back from the server is 19KB.
 
-However, if we perform the same query and ask to get back only the `employee` and `orderedAt` fields, the size of the result is only 5KB.  
+However, if we perform the same query and ask to get back only the Employee and OrderedAt fields, the size of the result is only 5KB.  
 
 Aside from allowing you to pick only a portion of the data, projection functions give you the ability to rename some fields, load external documents, and perform transformations on the results. 
 
@@ -46,11 +46,11 @@ select FirstName, LastName
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-This will issue a query to a database, requesting only `firstName` and `lastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index entry matches our query predicate, then we will try to extract all requested fields from that particular entry. If all requested fields are available in there, then we do not download it from storage. The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, so the documents will be fetched from storage.
+This will issue a query to a database, requesting only `FirstName` and `LastName` from all documents that index entries match query predicate from `Employees/ByFirstAndLastName` index. What does it mean? If an index entry matches our query predicate, then we will try to extract all requested fields from that particular entry. If all requested fields are available in there, then we do not download it from storage. The index `Employees/ByFirstAndLastName` used in the above query is not storing any fields, so the documents will be fetched from storage.
 
 ### Example II - Projecting Stored Fields
 
-If we create an index that stores `firstName` and `lastName` and it requests only those fields in query, then **the data will come from the index directly**.
+If we create an index that stores `FirstName` and `LastName` and it requests only those fields in query, then **the data will come from the index directly**.
 
 {CODE-TABS}
 {CODE-TAB:java:Query projections_1_stored@Indexes\Querying\Projections.java /}

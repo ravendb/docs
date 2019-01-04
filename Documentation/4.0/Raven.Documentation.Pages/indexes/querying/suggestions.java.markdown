@@ -14,7 +14,7 @@ If our database has `Northwind` samples deployed then it will not return any res
 {CODE-TAB:java:Query suggestions_3@Indexes\Querying\Suggestions.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Products/ByName' 
-select suggest('name', 'chaig')
+select suggest('Name', 'chaig')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

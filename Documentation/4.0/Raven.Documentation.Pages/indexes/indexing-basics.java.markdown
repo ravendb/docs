@@ -20,7 +20,7 @@ The fact is that we did not stop at this point. We went much further, by exposin
 {CODE-TAB:java:Java indexes_2@Indexes/IndexingBasics.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstName'
-where firstName = 'Robert'
+where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
@@ -30,7 +30,7 @@ You can also create queries by using [RawQuery](../client-api/session/querying/h
 {CODE-TAB:java:RawQuery indexes_4@Indexes/IndexingBasics.java /}
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFirstName'
-where firstName = 'Robert'
+where FirstName = 'Robert'
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

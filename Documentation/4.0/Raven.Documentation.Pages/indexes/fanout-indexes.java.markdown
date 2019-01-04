@@ -4,7 +4,7 @@ The fanout index is the index that outputs multiple index entries per each docum
 
 {CODE:java fanout_index_def_1@Indexes/FanoutIndexes.java /}
 
-A large order, having a lot of line items, will create an index entry per each `orderLine` item from the `lines` collection. A single document can generate hundreds of index entries.
+A large order, having a lot of line items, will create an index entry per each `OrderLine` item from the `Lines` collection. A single document can generate hundreds of index entries.
 
 The fanout index concept is not specific for map-only indexes. It also applies to map-reduce indexes:
 
