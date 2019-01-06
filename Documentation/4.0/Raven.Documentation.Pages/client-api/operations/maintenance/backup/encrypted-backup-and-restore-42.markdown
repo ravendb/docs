@@ -1,4 +1,4 @@
-﻿# Encrypted Backup and Restore (4.1 and down)  
+﻿# Encrypted Backup and Restore (4.1 and down)   [ignore - to be added to the 4.2 branch]
 
 ---
 
@@ -46,14 +46,24 @@
 {PANEL/}
 
 
-{PANEL: Encrypting Backups}
+{PANEL: Encrypting Snapshots}
 
 ####Encrypting a Snapshot
 
-* As explained [in the introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup-and-restore#introduction), Snapshots are automatically encrypted if the database is encrypted, and vice versa.  
-   * Other than taking care of authentication, there's no need to address it in the code.  
-   * Authentication-handling code sample:
+* Default behavior:  
+   * As explained [in the introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup-and-restore#introduction), Snapshots are automatically encrypted if the database is encrypted, and vice versa.  
+      * Other than taking care of authentication, there's no need to address it in the code.  
+      * Authentication-handling code sample:
+
 {CODE encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+* You **can** encrypt the Snapshot using an encryption key of your choice.  
+   * Pass your key to `EncryptionSettings` in the backup configuration structure.  
+   * Sample:
+    
+{CODE encryption_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+
 
 ####Restoring an encrypted Snapshot
 
@@ -63,5 +73,6 @@
 {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
 {PANEL/}
+
 
 ## Related Articles

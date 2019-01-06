@@ -7,7 +7,6 @@ using System.Collections.Generic;
 //using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Queries;
 using System.Threading;
-using Raven.Client.Documents.Operations.Counters;
 using System.Threading.Tasks;
 using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.Documents.Smuggler;
@@ -209,6 +208,91 @@ namespace Rvn.Ch02
                 #endregion
             }
 
+
+            #region encrypted_database
+            // path to the authentication key you received during the server setup
+            var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "https://a.johndom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
+            }.Initialize())
+            #endregion
+            {
+
+                #region encryption_key
+                var BackupEncryptionSettings = new BackupEncryptionSettings
+                {
+                    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+                };
+                #endregion
+
+                #region restore_encrypted_database
+                // restore encrypted database
+
+                // restore configuration
+                var restoreConfiguration = new RestoreBackupConfiguration();
+
+                //New database name
+                restoreConfiguration.DatabaseName = "newEncryptedDatabase";
+
+                //Backup-file location
+                var backupPath = @"C:\Users\John\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+                restoreConfiguration.BackupLocation = backupPath;
+
+                restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+
+                var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+                docStore.Maintenance.Server.Send(restoreBackupTask);
+                #endregion
+            }
+
+
+            // using dedicated encryption key for backup
+            // path to the authentication key you received during the server setup
+            var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "https://a.johndom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
+            }.Initialize())
+            {
+
+                #region restore_encrypted_database
+                // restore encrypted database
+
+                // restore configuration
+                var restoreConfiguration = new RestoreBackupConfiguration();
+
+                //New database name
+                restoreConfiguration.DatabaseName = "newEncryptedDatabase";
+
+                // restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+
+                #region encryption_key_for_restore
+                restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
+                {
+                    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+                };
+                #endregion
+
+                //Backup-file location
+                var backupPath = @"C:\Users\John\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+                restoreConfiguration.BackupLocation = backupPath;
+
+                var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+                docStore.Maintenance.Server.Send(restoreBackupTask);
+                #endregion
+            }
+
+
+
+
+
+
+
             * private class Foo
             {
                 public class DeleteDatabasesOperation
@@ -229,22 +313,8 @@ namespace Rvn.Ch02
                     }
 
                     #endregion
+                }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
-    }
     }
 }
