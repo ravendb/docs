@@ -208,7 +208,6 @@ namespace Rvn.Ch02
                 #endregion
             }
 
-
             #region encrypted_database
             // path to the authentication key you received during the server setup
             var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
@@ -218,9 +217,20 @@ namespace Rvn.Ch02
                 Database = "encryptedDatabase",
                 Certificate = cert
             }.Initialize())
-            #endregion
             {
+                // Backup & Restore here
+            }
+            #endregion
 
+            // path to the authentication key you received during the server setup
+            var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "https://a.johndom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
+            }.Initialize())
+            {
                 #region encryption_key
                 var BackupEncryptionSettings = new BackupEncryptionSettings
                 {
@@ -286,12 +296,6 @@ namespace Rvn.Ch02
                 docStore.Maintenance.Server.Send(restoreBackupTask);
                 #endregion
             }
-
-
-
-
-
-
 
             * private class Foo
             {

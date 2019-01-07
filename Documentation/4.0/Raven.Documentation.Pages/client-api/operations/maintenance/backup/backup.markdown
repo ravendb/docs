@@ -128,9 +128,9 @@
 
 * Do **not** substitute RavenDB's backup procedures, with simply copying the database folder yourself.  
   Learn the backup procedure and implement it as recommended.  
-   * Among other things, the official backup procedure provides -   
-      * A reliable point-in-time freeze of backed up data.  
-      * An ACIDity of backed-up data, so it wouldn't be dependent upon various files and connections when restored.  
+  Among other things, the official backup procedure provides -   
+   * A reliable point-in-time freeze of backed up data.  
+   * An ACIDity of backed-up data, so it wouldn't be dependent upon various files and connections when restored.  
      
 * Remove backup files  
    * RavenDB does **not** automatically remove aging backup files. Make sure yourself they are regularly removed.  

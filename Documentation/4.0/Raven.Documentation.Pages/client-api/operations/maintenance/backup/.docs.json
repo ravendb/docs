@@ -15,13 +15,8 @@
         "Mappings": []
     },
     {
-        "Path": "encrypted-backup-and-restore.markdown",
+        "Path": "encrypted-backup.markdown",
         "Name": "Encrypted Backup and Restore",
-        "Mappings": []
-    },
-    {
-        "Path": "encrypted-backup-and-restore-42.markdown",
-        "Name": "Encrypted Backup and Restore 4.2",
         "Mappings": []
     },
     {

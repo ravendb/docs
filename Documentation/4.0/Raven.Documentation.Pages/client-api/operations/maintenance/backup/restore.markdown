@@ -62,16 +62,16 @@ You can restore backed up databases using the Studio, or client API methods.
 
 * `LastFileNameToRestore`
     * Use **LastFileNameToRestore** if you want to restore backed up files up to a certain file, and omit the rest.  
-       * For example - 
-          * These are the files in your backup folder:  
-             2018-12-26-09-00.ravendb-full-backup  
-             2018-12-26-12-00.ravendb-incremental-backup  
-             2018-12-26-15-00.ravendb-incremental-backup  
-             2018-12-26-18-00.ravendb-incremental-backup  
-          * Feed **LastFileNameToRestore** with the 12:00 incremental-backup file name:
-             {CODE restore_last_file_name_to_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
-          * The full-backup and 12:00 incremental-backup files **will** be restored.  
-            The 15:00 and 18:00 files will be **omitted**.  
+      For example - 
+       * These are the files in your backup folder:  
+          2018-12-26-09-00.ravendb-full-backup  
+          2018-12-26-12-00.ravendb-incremental-backup  
+          2018-12-26-15-00.ravendb-incremental-backup  
+          2018-12-26-18-00.ravendb-incremental-backup  
+       * Feed **LastFileNameToRestore** with the 12:00 incremental-backup file name:
+          {CODE restore_last_file_name_to_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+       * The full-backup and 12:00 incremental-backup files **will** be restored.  
+         The 15:00 and 18:00 files will be **omitted**.  
 
 * `DataDirectory`  
    Choose the location and name of the directory the database will be restored to.  
@@ -102,8 +102,8 @@ You can restore backed up databases using the Studio, or client API methods.
       * On other nodes, restore the database using different names.  
       * Wait for the restoration to complete on all nodes.  
       * **Soft-delete** the additional databases (with altered names) on all nodes.  
-         * [Delete](../../../../client-api/operations/server-wide/delete-database#operations--server--how-to-delete-a-database) the databases from the cluster, but retain the data files on disk.  
-             * `HardDelete = false`
+        [Delete](../../../../client-api/operations/server-wide/delete-database#operations--server--how-to-delete-a-database) the databases from the cluster, but retain the data files on disk.  
+        `HardDelete = false`   
       * Rename the database folder on all nodes to the original database name.  
       * [Expand](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) the database group to all relevant nodes.  
 
