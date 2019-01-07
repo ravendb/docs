@@ -35,28 +35,10 @@ RavenDB emphasizes the importance of overall security, by allowing backup-encryp
 
 {NOTE/}
 
----
-
-####Snapshot encryption
-
-Snapshot encryption is automatic.  
-
-* When the database is **encrypted**, the Snapshot is **encrypted** as well.  
-* When the database is **un-encrypted**, the Snapshot is **un-encrypted** as well.  
-
-To restore an encrypted Snapshot, use the same encryption key used for the database encryption.  
-
----
-
-####Logical-backup encryption  
-
-{NOTE: Logical-backup encryption is supported by RavenDB version 4.2 and on.  }
-{NOTE/}
-
 {PANEL/}
 
 
-{PANEL: Encrypting Backups}
+{PANEL: Encryption Procedures}
 
 ####Authentication
 
@@ -69,8 +51,9 @@ Before actually backing up or restoring the database, authenticate your connecti
 
 ####Encrypting a Snapshot
 
-As explained in the [overview](../../../../client-api/operations/maintenance/backup/overview#encryption), a Snapshot is **automatically** encrypted if the database is encrypted and unencrypted if the database is not.  
-So assuming your database is encrypted, use a periodic-backup task to create snapshots [as you normally do](../../../../client-api/operations/maintenance/backup/backup#backup-types). The created Snapshot file **will** be encrypted.  
+As explained in the [overview](../../../../client-api/operations/maintenance/backup/overview#encryption), 
+a Snapshot is a duplication of the database files. Therefore the snapshot of an encrypted database is encrypted as well, and the snapshot of an unencrypted database is not encrypted.  
+Therefore, assuming your database is encrypted, use a periodic-backup task to create snapshots [as you normally do](../../../../client-api/operations/maintenance/backup/backup#backup-types). The created Snapshot file **will** be encrypted.  
 
 ---
 
@@ -82,6 +65,25 @@ The only difference (besides taking care of [authentication](../../../../client-
 
 * Code sample:
 {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+---
+
+####Encrypting a Logical backup
+
+You can encrypt a Logical backup whether the database is encrypted or not.  
+
+* When the database **is** encrypted, you can use either the database's encryption key for your backup, or encrypt the backup using your own key.  
+  Use `EncryptionKey` to use the database's encryption key.  
+  Code sample:
+{CODE encrypting_logical_backup_with_database_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+* When the database is **not** encrypted, you can use your own key.  
+  Use `BackupEncryptionSettings` for a key of your own.   
+  Code sample:
+{CODE encrypting_logical_backup_with_new_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+####Restoring an encrypted Logical backup
+
 
 {PANEL/}
 

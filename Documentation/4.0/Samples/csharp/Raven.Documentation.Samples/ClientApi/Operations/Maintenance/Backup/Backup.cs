@@ -281,7 +281,11 @@ namespace Rvn.Ch02
 
                 // restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
 
-                #region encryption_key_for_restore
+                #region encrypting_logical_backup_with_database_key
+                restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+                #endregion
+
+                #region encrypting_logical_backup_with_new_key
                 restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
                 {
                     Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
