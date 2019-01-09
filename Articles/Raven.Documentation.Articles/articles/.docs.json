@@ -588,7 +588,7 @@
             "twitter:url": "https://ravendb.net/articles/document-database-analytics-code-a-like-ravendb-case-study"
         }
     },
-	{
+    {
         "Path": "migrating-to-ravendb-at-36000-locations.markdown",
         "Name": "Migrating to RavenDB 4.0 in 36,000 Locations",
         "Mappings": [],
@@ -614,6 +614,118 @@
             "twitter:title": "Migrating to RavenDB 4.0 in 36,000 Locations | RavenDB",
             "twitter:description": "How does a Fortune 100 company migrate its database to RavenDB 4.0 at 36,000 locations? Find out in this webinar.",
             "twitter:url": "https://ravendb.net/articles/migrating-to-ravendb-at-36000-locations"
+        }
+    },
+    {
+        "Path": "extreme-performance-for-a-fully-transactional-nosql-database.markdown",
+        "Name": "Extreme Performance for a Fully Transactional NoSQL Database",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Extreme Performance for a Fully Transactional NoSQL Database | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/extreme-performance-for-a-fully-transactional-nosql-database",
+            "publishedAt": "22-01-2019"
+        },
+        "SeoMetaProperties": {
+            "description": "As the first NoSQL Database to feature ACID Consistency, we developed unique MapReduce, Queries and Dynamic Indexing methods to maximize performance while ACID.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Extreme Performance for a Fully Transactional NoSQL Database | RavenDB",
+            "og:description": "As the first NoSQL Database to feature ACID Consistency, we developed unique MapReduce, Queries and Dynamic Indexing methods to maximize performance while ACID.",
+            "og:url": "https://ravendb.net/articles/extreme-performance-for-a-fully-transactional-nosql-database",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/extreme-performance-for-a-fully-transactional-nosql-database&fileName=extreme-performance-for-a-fully-transactional-nosql-database.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Extreme Performance for a Fully Transactional NoSQL Database | RavenDB",
+            "twitter:description": "As the first NoSQL Database to feature ACID Consistency, we developed unique MapReduce, Queries and Dynamic Indexing methods to maximize performance while ACID.",
+            "twitter:url": "https://ravendb.net/articles/extreme-performance-for-a-fully-transactional-nosql-database"
+        }
+    },
+    {
+        "Path": "nosql-database-basics-for-succesful-agile-transformation.markdown",
+        "Name": "Database Basics for Successful Agile Transformation",
+        "Mappings": [],
+        "Metadata": {
+            "title": "Database Basics for Successful Agile Transformation | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/nosql-database-basics-for-succesful-agile-transformation",
+            "publishedAt": "24-01-2019"
+        },
+        "SeoMetaProperties": {
+            "description": "DevOps, Agile and microservices have a goal: Get it live NOW. Here's how our NoSQL database architecture advances continuous delivery and continuous deployment.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "Database Basics for Successful Agile Transformation | RavenDB",
+            "og:description": "DevOps, Agile and microservices have a goal: Get it live NOW. Here's how our NoSQL database architecture advances continuous delivery and continuous deployment.",
+            "og:url": "https://ravendb.net/articles/nosql-database-basics-for-succesful-agile-transformation",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/nosql-database-basics-for-succesful-agile-transformation&fileName=nosql-database-basics-for-succesful-agile-transformation.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "Database Basics for Successful Agile Transformation | RavenDB",
+            "twitter:description": "DevOps, Agile and microservices have a goal: Get it live NOW. Here's how our NoSQL database architecture advances continuous delivery and continuous deployment.",
+            "twitter:url": "https://ravendb.net/articles/nosql-database-basics-for-succesful-agile-transformation"
+        }
+    },
+    {
+        "Path": "a-nosql-database-system-architecture-for-the-iot.markdown",
+        "Name": "A NoSQL Database System Architecture for the IoT",
+        "Mappings": [],
+        "Metadata": {
+            "title": "A NoSQL Database System Architecture for the IoT | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/a-nosql-database-system-architecture-for-the-iot",
+            "publishedAt": "31-01-2019"
+        },
+        "SeoMetaProperties": {
+            "description": "Even as the amount and form of your data has changed drastically over the past decade, the fundamentals of your database system architecture doesn’t have to.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "A NoSQL Database System Architecture for the IoT | RavenDB",
+            "og:description": "Even as the amount and form of your data has changed drastically over the past decade, the fundamentals of your database system architecture doesn’t have to.",
+            "og:url": "https://ravendb.net/articles/a-nosql-database-system-architecture-for-the-iot",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/a-nosql-database-system-architecture-for-the-iot&fileName=a-nosql-database-system-architecture-for-the-iot.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "A NoSQL Database System Architecture for the IoT | RavenDB",
+            "twitter:description": "Even as the amount and form of your data has changed drastically over the past decade, the fundamentals of your database system architecture doesn’t have to.",
+            "twitter:url": "https://ravendb.net/articles/a-nosql-database-system-architecture-for-the-iot"
+        }
+    },
+    {
+        "Path": "ravendb-nosql-document-database-management-studio-gui.markdown",
+        "Name": "RavenDB NoSQL Management Studio GUI",
+        "Mappings": [],
+        "Metadata": {
+            "title": "RavenDB NoSQL Management Studio GUI | RavenDB",
+            "likeSection": "yes",
+            "url": "https://ravendb.net/articles/ravendb-nosql-document-database-management-studio-gui",
+            "publishedAt": "29-01-2019"
+        },
+        "SeoMetaProperties": {
+            "description": "Our built in GUI is part of your NoSQL Document Database. Monitor performance, operations, and all data. Create new nodes, ETL replication, MapReduce and more.",
+            "og:site_name": "RavenDB",
+            "og:type": "website",
+            "og:title": "RavenDB NoSQL Management Studio GUI | RavenDB",
+            "og:description": "Our built in GUI is part of your NoSQL Document Database. Monitor performance, operations, and all data. Create new nodes, ETL replication, MapReduce and more.",
+            "og:url": "https://ravendb.net/articles/ravendb-nosql-document-database-management-studio-gui",
+            "og:image": "https://ravendb.net/RavenFS/GetArticleImage?key=articles/ravendb-nosql-document-database-management-studio-gui&fileName=ravendb-nosql-document-database-management-studio-gui.jpg",
+            "og:image:width": "280",
+            "og:image:height": "280",
+            "twitter:card": "summary_large_image",
+            "twitter:creator": "@RavenDB",
+            "twitter:site": "@RavenDB",
+            "twitter:title": "RavenDB NoSQL Management Studio GUI | RavenDB",
+            "twitter:description": "Our built in GUI is part of your NoSQL Document Database. Monitor performance, operations, and all data. Create new nodes, ETL replication, MapReduce and more.",
+            "twitter:url": "https://ravendb.net/articles/ravendb-nosql-document-database-management-studio-gui"
         }
     }
 ]
