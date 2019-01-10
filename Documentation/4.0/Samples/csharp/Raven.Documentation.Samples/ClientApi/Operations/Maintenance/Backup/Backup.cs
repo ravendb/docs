@@ -57,6 +57,51 @@ namespace Rvn.Ch02
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
             }
+
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
+                #region encrypted_logical_full_backup
+                var config = new PeriodicBackupConfiguration
+                {
+                    LocalSettings = new LocalSettings
+                    {
+                        //Backup files local path
+                        FolderPath = @"C:\Users\John\backups"
+                    },
+
+                    //Full Backup period (Cron expression for a 3-hours period)
+                    FullBackupFrequency = "0 */3 * * *",
+
+                    //Type can be Backup or Snapshot
+                    BackupType = BackupType.Backup,
+
+                    //Task Name
+                    Name = "fullBackupTask",
+
+                    BackupEncryptionSettings = new BackupEncryptionSettings
+                    {
+                        Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+                    }
+
+                };
+                var operation = new UpdatePeriodicBackupOperation(config);
+                var result = await docStore.Maintenance.SendAsync(operation);
+                #endregion
+            }
+
+
+
+
+
+
+
+
+
             using (var docStore = new DocumentStore
             {
                 Urls = new[] { "http://127.0.0.1:8080" },
@@ -209,7 +254,7 @@ namespace Rvn.Ch02
             }
 
             #region encrypted_database
-            // path to the authentication key you received during the server setup
+            // path to the certificate you received during the server setup
             var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
             using (var docStore = new DocumentStore
             {
@@ -270,7 +315,6 @@ namespace Rvn.Ch02
             }.Initialize())
             {
 
-                #region restore_encrypted_database
                 // restore encrypted database
 
                 // restore configuration
@@ -281,16 +325,17 @@ namespace Rvn.Ch02
 
                 // restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
 
-                #region encrypting_logical_backup_with_database_key
-                restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
-                #endregion
-
                 #region encrypting_logical_backup_with_new_key
+                //Restore using your own key
                 restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
                 {
                     Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
                 };
                 #endregion
+
+                #region restore_encrypting_logical_backup_with_database_key
+                //Restore using the DB-encryption key
+                restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
 
                 //Backup-file location
                 var backupPath = @"C:\Users\John\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
@@ -300,6 +345,7 @@ namespace Rvn.Ch02
                 docStore.Maintenance.Server.Send(restoreBackupTask);
                 #endregion
             }
+
 
             * private class Foo
             {

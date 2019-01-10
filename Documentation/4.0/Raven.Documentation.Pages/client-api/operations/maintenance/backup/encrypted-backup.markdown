@@ -5,7 +5,7 @@
 {NOTE: }
 
 * With RavenDB 4.0 and 4.1, you can only encrypt a Snapshot - providing that the database has been encrypted.  
-* With RavenDB 4.2, you can encrypt a Logical backup as well.  
+* With RavenDB 4.2, you can encrypt a logical backup as well.  
 
 * In this page:  
   * [Introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup#introduction)  

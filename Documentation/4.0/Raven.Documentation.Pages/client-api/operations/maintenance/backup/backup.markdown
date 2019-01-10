@@ -17,7 +17,7 @@
       * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup#incremental-backup)  
       * [Point-in-Time Backup](../../../../client-api/operations/maintenance/backup/backup#point-in-time-backup)  
   * [Backup to Remote Destinations](../../../../client-api/operations/maintenance/backup/backup#backup-to-remote-destinations)  
-  * [Recommended Cautions](../../../../client-api/operations/maintenance/backup/backup#recommended-cautions)  
+  * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup#recommended-precautions)  
 
 {NOTE/}
 
@@ -123,20 +123,21 @@
 
 {PANEL/}
 
-{PANEL: Recommended Cautions}
+{PANEL: Recommended Precautions}
 {WARNING: }
 
-* Do **not** substitute RavenDB's backup procedures, with simply copying the database folder yourself.  
-  Learn the backup procedure and implement it as recommended.  
-  Among other things, the official backup procedure provides -   
+* **Don't substitute RavenDB's backup procedures with simply copying the database folder yourself**.  
+  The official backup procedure satisfies needs that simply copying the database folder does not. E.g. -  
    * A reliable point-in-time freeze of backed up data.  
-   * An ACIDity of backed-up data, so it wouldn't be dependent upon various files and connections when restored.  
+   * An ACIDity of backed-up data, to keep its independence during restoration.  
      
-* Remove backup files  
-   * RavenDB does **not** automatically remove aging backup files. Make sure yourself they are regularly removed.  
-     You can use services like crontab (a linux scheduling procedure) to create an old-backups-removal routine.  
-   * Remotely backed-up files are stored in a local folder first.  
-     Make sure this local folder is not where your database is, to prevent the backup procedure from consuming database storage space.  
+* **Regularly remove backup files**.  
+  Note that RavenDB does **not** automatically remove backup files. As they continue to aggregate, it is important that you take care of their regular removal.  
+  You can use services like crontab (a linux scheduling procedure) to create an old-backups-removal routine.  
+
+* **Locate backup files in a location other than your database's**.  
+  Note that backup files are always stored in a local folder first (even when the final backup destination is remote).  
+  Make sure that this local folder is not where your database is stored, as a precaution to keep vacant database storage space.  
      
 {WARNING/}
 {PANEL/}

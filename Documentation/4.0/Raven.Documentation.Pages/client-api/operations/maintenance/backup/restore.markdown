@@ -8,11 +8,12 @@ You can restore backed up databases using the Studio, or client API methods.
 
 * In this page:  
   * [Restoring a Database](../../../../client-api/operations/maintenance/backup/restore#restoring-a-database)  
-     * [To a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
+     * [Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore#configuration-and-execution)  
+     * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
          * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore#optional-settings)  
-     * [To multiple nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
-         * **Restore Database to a single node, and replicate it to other nodes**  
-         * **Restore Database to multiple nodes simultaneously**  
+     * [Restore Database To multiple nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
+         * [Restore Database to a Single Node & Replicate it to Other Nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
+         * [Restore Database to Multiple Nodes Simultaneously](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes-simultaneously)  
   * [Recommended Cautions](../../../../client-api/operations/maintenance/backup/restore#recommended-cautions)  
 
 {NOTE/}
@@ -89,23 +90,33 @@ You can restore backed up databases using the Studio, or client API methods.
 
 {PANEL: Restore Database to multiple nodes}
 
-* **Restore Database to a single node, and replicate it to other nodes**  
-   * [Restore the backup to a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node).  
-   * Modify the database group [topology](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) using [the Studio](../../../../studio/server/cluster/cluster-view#cluster-view-operations) or [code](../../../../server/clustering/cluster-api#cluster--cluster-api) to spread the database to the other nodes.  
+####Restore Database to a Single Node & Replicate it to Other Nodes  
 
-* **Restore Database to multiple nodes simultaneously**  
-   * This procedure is advisable only when restoring a [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot).
-      * Simultaneously restoring a Logical backup by multiple nodes, triggers each node to send change-vector updates to all other nodes.  
-      * Simultaneously restoring Snapshots does **not** trigger this behavior, because the databases kept by all nodes are considered identical.  
-   * Simultaneous restoration procedure:
-      * On the first node, restore the database using its original name.  
-      * On other nodes, restore the database using different names.  
-      * Wait for the restoration to complete on all nodes.  
-      * **Soft-delete** the additional databases (with altered names) on all nodes.  
-        [Delete](../../../../client-api/operations/server-wide/delete-database#operations--server--how-to-delete-a-database) the databases from the cluster, but retain the data files on disk.  
-        `HardDelete = false`   
-      * Rename the database folder on all nodes to the original database name.  
-      * [Expand](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) the database group to all relevant nodes.  
+The common approach to restoring a cluster is to restore the backed-up database to a single server, and then expand the database group to additional nodes, allowing normal replication.  
+
+* [Restore the backup to a single node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node).  
+* Modify the database group [topology](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) using [the Studio](../../../../studio/server/cluster/cluster-view#cluster-view-operations) or [code](../../../../server/clustering/cluster-api#cluster--cluster-api) to spread the database to the other nodes.  
+
+---
+
+####Restore Database to Multiple Nodes Simultaneously  
+
+You can create the cluster in advance, and restore the database to multiple nodes simultaneously.  
+
+{NOTE: This procedure is advisable only when restoring a Snapshot.}
+
+* Simultaneously restoring a [logical backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) by multiple nodes, triggers each node to send change-vector updates to all other nodes.  
+* Simultaneously restoring [a snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) does **not** initiate this behavior, because the databases kept by all nodes are considered identical.  
+
+{NOTE/}
+
+* On the first node, restore the database using its original name.  
+* On other nodes, restore the database using different names.  
+* Wait for the restoration to complete on all nodes.  
+* **Soft-delete** the additional databases (those with altered names).  
+   * [Delete](../../../../client-api/operations/server-wide/delete-database#operations--server--how-to-delete-a-database) the databases from the cluster with `HardDelete` set to `false`, to retain the data files on disk.  
+* Rename the database folder on all nodes to the original database name.  
+* [Expand](../../../../server/clustering/rachis/cluster-topology#modifying-the-topology) the database group to all relevant nodes.  
 
 {PANEL/}
 
@@ -116,8 +127,7 @@ When you create a backup of a database on one machine and restore it to another,
 
 * E.g., an ETL ongoing task from a production cluster may have unwanted results in a testing environment.  
 
-In such cases, disable ongoing tasks using the `DisableOngoingTasks` flag.  
-DisableOngoingTasks's default setting is FALSE, **allowing** tasks to run when backup is restored.  
+In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../../../client-api/operations/maintenance/backup/restore#configuration-and-execution) flag.  
 
 * Code Sample:  
   {CODE restore_disable_ongoing_tasks_true@ClientApi\Operations\Maintenance\Backup\Backup.cs /}

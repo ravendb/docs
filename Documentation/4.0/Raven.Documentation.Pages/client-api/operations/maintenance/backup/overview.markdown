@@ -83,7 +83,7 @@ In order to restore a database, RavenDB -
 
 There are two backup types: [Logical backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) (or simply "Backup") and [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot).  
 
-* A Logical backup is a compressed JSON dump of database contents, including documents and other data.  
+* A logical backup is a compressed JSON dump of database contents, including documents and other data.  
 * A SnapShot is a binary image of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
    * Using Snapshots is available only for _Enterprise subscribers_.  
 
@@ -105,7 +105,7 @@ Stored data can be **Encrypted** or **Unencrypter**.
 ####Compression
 
 * A backup always consists of a single compressed file.  
-  It is so for all backup formats: full "Logical" backup dumps, snapshot images, and the incremental backups that supplement both.  
+  It is so for all backup formats: full "logical" backup dumps, snapshot images, and the incremental backups that supplement both.  
 * Data is compressed using [gzip](https://www.gzip.org/).  
 
 ---
