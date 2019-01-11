@@ -4,8 +4,6 @@
 
 {SOCIAL-MEDIA-LIKE/}
 
-<br/>
-
 ## <em>Even as the amount and form of your data has changed drastically over the past decade, the fundamentals of your database system architecture doesn’t have to.</em>
 
 As far back as the <em>Sears, Roebuck and Company</em> founded at the end of the 19th century, data was always aggregated at the edge and centralized at the company headquarters.
