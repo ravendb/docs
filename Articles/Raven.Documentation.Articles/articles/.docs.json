@@ -624,7 +624,7 @@
             "title": "Extreme Performance for a Fully Transactional NoSQL Database | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb-gives-you-extreme-performance-for-a-fully-transactional-nosql-database",
-            "publishedAt": "22-01-2019"
+            "publishedAt": "2019-01-22"
         },
         "SeoMetaProperties": {
             "description": "As the first NoSQL Database to feature ACID Consistency, we developed unique MapReduce, Queries and Dynamic Indexing methods to maximize performance while ACID.",
@@ -652,7 +652,7 @@
             "title": "Database Basics for Successful Agile Transformation | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/nosql-database-basics-for-succesful-agile-transformation",
-            "publishedAt": "24-01-2019"
+            "publishedAt": "2019-01-24"
         },
         "SeoMetaProperties": {
             "description": "DevOps, Agile and microservices have a goal: Get it live NOW. Here's how our NoSQL database architecture advances continuous delivery and continuous deployment.",
@@ -680,7 +680,7 @@
             "title": "RavenDB NoSQL Management Studio GUI | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb-nosql-document-database-management-studio-gui",
-            "publishedAt": "29-01-2019"
+            "publishedAt": "2019-01-29"
         },
         "SeoMetaProperties": {
             "description": "Our built in GUI is part of your NoSQL Document Database. Monitor performance, operations, and all data. Create new nodes, ETL replication, MapReduce and more.",
@@ -708,7 +708,7 @@
             "title": "A NoSQL Database System Architecture for the IoT | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/a-nosql-database-system-architecture-for-the-iot",
-            "publishedAt": "31-01-2019"
+            "publishedAt": "2019-01-31"
         },
         "SeoMetaProperties": {
             "description": "Even as the amount and form of your data has changed drastically over the past decade, the fundamentals of your database system architecture doesn’t have to.",
