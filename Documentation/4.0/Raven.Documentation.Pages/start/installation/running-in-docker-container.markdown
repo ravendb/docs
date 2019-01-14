@@ -34,7 +34,12 @@ To install the `latest` tag but also persist the data to your hard-disk if the c
 docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/Server/RavenData ravendb/ravendb
 {CODE-BLOCK/}
 
-This requires that your docker client application has `sharing` enabled and that the folder (in this case, `C:\RavenDb\Data`) exists. So now, if the container is removed, the data remains. Later on, you can start up a new instance of the image with the volume mounted, the data comes back!
+So now, if the container is removed, the data remains. Later on, you can start up a new instance of the image with the volume mounted, the data comes back!
+
+{INFO Sharing data with Docker host with Docker for Windows}
+This requires that your docker client application has `sharing` enabled and that the folder (in this case, `C:\RavenDb\Data`) exists. 
+{INFO/}
+
 
 Finally, you might not want to run through the setup-wizard each time you wish to start RavenDb container on your localhost. To skip that setup-wizard you can issue the following command:
 {CODE-BLOCK:bash}
