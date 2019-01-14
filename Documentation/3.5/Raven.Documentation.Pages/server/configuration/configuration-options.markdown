@@ -469,7 +469,7 @@ This is the standard app.config XML file. The `appSettings` section is where the
 
 * **Raven/Voron/MaxScratchBufferSize**   
     The maximum scratch buffer (modified data by active transactions) size that can be used by Voron (in megabytes).    
-    _Default:_ 1024
+    _Default:_ 6144 
 
 * **Raven/Voron/AllowOn32Bits**   
     Allows to use Voron storage on servers running in 32-bit mode.   
