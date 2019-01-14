@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="client-api\operations\maintenance\backup\encrypted-backup-42.markdown" />
     <None Remove="server\administration\SNMP\images\monitoring-zabbix-add-host.PNG" />
     <None Remove="server\administration\SNMP\images\monitoring-zabbix-create-action.PNG" />
     <None Remove="server\administration\SNMP\images\monitoring-zabbix-create-trigger.PNG" />

@@ -9,12 +9,11 @@
 
 * In this page:  
   * [Introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup#introduction)  
-     * [RavenDB's comprehensive security approach](../../../../client-api/operations/maintenance/backup/encrypted-backup#ravendbs-comprehensive-security-approach)  
-     * [Snapshot Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#snapshot-encryption)  
-     * [Logical Backup encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#logical-backup-encryption)  
-  * [Encrypting Backups](../../../../client-api/operations/maintenance/backup/encrypted-backup#encrypting-backups)  
-     * [Authentication](../../../../client-api/operations/maintenance/backup/encrypted-backup#authentication)  
-     * [Encrypting a Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#encrypting-a-snapshot)  
+     * [RavenDB's security approach](../../../../client-api/operations/maintenance/backup/encrypted-backup#ravendbs-security-approach)  
+     * [Enable Secure Communication](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication)  
+  * [Logical-backup Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#logical-backup-encryption)  
+  * [Snapshot Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#snapshot-encryption)  
+     * [Creating an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-snapshot)  
      * [Restoring an encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-snapshot)  
 {NOTE/}
 
@@ -22,64 +21,58 @@
 
 {PANEL: Introduction}
 
-####RavenDB's comprehensive security approach  
+####RavenDB's security approach
 
-Encrypting backup files is just one aspect of RavenDB's comprehensive security approach.  
-Other aspects of this approach are implemented in [database encryption](../../../../server/security/encryption/database-encryption) and in [authentication of server-client communication](../../../../server/security/authentication/certificate-configuration).  
+Encrypting backup files is just **one respect** of RavenDB's comprehensive security approach.  
+Other respects are implemented in -
 
-{NOTE: You need to enable authentication.}
-RavenDB emphasizes the importance of overall security, by allowing backup-encryption only when [server-client communication is authenticated](../../../../server/security/authentication/certificate-configuration#authentication--manual-certificate-configuration).  
-
-* You can enable authentication during the server setup, either [manually](../../../../server/security/authentication/certificate-configuration) or [using the setup-wizard](../../../../start/installation/setup-wizard).  
-* Be aware that after enabling authentication, you will to [authenticate](../../../../client-api/operations/maintenance/backup/encrypted-backup#authentication) client-server communication.  
-
-{NOTE/}
+* [Database encryption](../../../../server/security/encryption/database-encryption)  
+* Securing server-client communication using [Authentication and certification](../../../../server/security/authentication/certificate-configuration).  
 
 ---
 
-####Snapshot encryption
+####Enable Secure Communication
 
-Snapshot encryption is automatic.  
+RavenDB emphasizes the importance of overall security, by allowing backup-encryption only 
+when server-client communication is [authenticated and certified](../../../../server/security/overview).  
 
-* When the database is **encrypted**, the Snapshot is **encrypted** as well.  
-* When the database is **un-encrypted**, the Snapshot is **un-encrypted** as well.  
+* **Enabling authentication and certification**  
+  Enable secure client-server communication during the server setup, either [manually](../../../../server/security/authentication/certificate-configuration) or [using the setup-wizard](../../../../start/installation/setup-wizard).  
 
-To restore an encrypted Snapshot, use the same encryption key used for the database encryption.  
+* **Client authentication procedure**  
+  When authentication is enabled, clients are required to certify themselves in order to connect the server.  
+  Here's a code sample for this procedure:  
+{CODE encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
----
+{PANEL/}
 
-####Logical-backup encryption  
+{PANEL: Logical-backup Encryption}
 
 {NOTE: Logical-backup encryption is supported by RavenDB version 4.2 and on.  }
 {NOTE/}
 
 {PANEL/}
 
+{PANEL: Snapshot Encryption}
 
-{PANEL: Encrypting Backups}
+####Creating an encrypted snapshot
 
-####Authentication
+A [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is an exact copy of the database files. 
+If the database is encrypted, so would be its snapshot. If the database is **not** encrypted, the snapshot won't be either.  
 
-As explained in the [introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup#introduction), 
-backup-encryption is available only when client-server authentication is enabled.  
-Before actually backing up or restoring the database, authenticate your connection.  
-
-* Code sample:
-{CODE encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
-
-####Encrypting a Snapshot
-
-As explained in the [overview](../../../../client-api/operations/maintenance/backup/overview#encryption), a Snapshot is **automatically** encrypted if the database is encrypted and unencrypted if the database is not.  
-So assuming your database is encrypted, use a periodic-backup task to create snapshots [as you normally do](../../../../client-api/operations/maintenance/backup/backup#backup-types). The created Snapshot file **will** be encrypted.  
+* If you want your snapshot to be encrypted, take the snapshot of an encrypted database.  
+* Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
+* Create a snapshot [as you normally would](../../../../client-api/operations/maintenance/backup/backup#backup-types).  
 
 ---
 
 ####Restoring an encrypted Snapshot
 
-An encrypted Snapshot is restored using **the same authentication key used to encrypt the database**.  
-The restoration is in most part similar to restoring an unencrypted snapshot.  
-The only difference (besides taking care of [authentication](../../../../client-api/operations/maintenance/backup/encrypted-backup#authentication)), is that you need to pass RestoreBackupOperation the encryption key. Do this using `restoreConfiguration.EncryptionKey`.  
+Restoring an encrypted snapshot is almost identical to restoring an unencrypted one.  
 
+* Embed the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
+* Pass RestoreBackupOperation an encryption key, using `restoreConfiguration.EncryptionKey`.  
+   Use **the same authentication key used to encrypt the database**.
 * Code sample:
 {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 

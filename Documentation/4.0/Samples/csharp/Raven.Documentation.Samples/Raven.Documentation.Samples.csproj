@@ -3,6 +3,9 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="NodaTime" Version="2.4.2" />
 	<PackageReference Include="RavenDB.Client" Version="4.0.9-patch-40054" />
     <PackageReference Include="RavenDB.TestDriver" Version="4.0.9-patch-40054" />
@@ -20,9 +23,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="ClientApi\Operations\Indexes\Get.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="ClientApi\Operations\Maintenance\Backup\EncryptedBackup.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="ClientApi\Operations\Maintenance\Backup\Backup.cs">
