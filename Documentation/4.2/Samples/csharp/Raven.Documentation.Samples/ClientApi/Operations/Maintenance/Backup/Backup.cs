@@ -29,10 +29,27 @@ namespace Rvn.Ch02
 
         static async Task MainInternal()
         {
+
+            #region encrypted_database
+            // path to the certificate you received during the server setup
+            var cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
+
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "http://127.0.0.1:8080" },
-                Database = "Products"
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
+            }.Initialize())
+            {
+                // Backup & Restore procedures here
+            }
+            #endregion
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
             }.Initialize())
             {
                 var config = new PeriodicBackupConfiguration
@@ -40,7 +57,7 @@ namespace Rvn.Ch02
                     LocalSettings = new LocalSettings
                     {
                         //Backup files local path
-                        FolderPath = @"C:\Users\John\backups"
+                        FolderPath = @"E:\RavenBackups"
                     },
 
                     //Full Backup period (Cron expression for a 3-hours period)
@@ -52,13 +69,13 @@ namespace Rvn.Ch02
                     //Task Name
                     Name = "fullBackupTask",
 
-                    #region use_database_encryption_key
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
+                        #region use_database_encryption_key
                         //Use the same encryption key as the database
                         EncryptionMode = EncryptionMode.UseDatabaseKey
+                        #endregion
                     }
-                    #endregion
 
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
@@ -67,27 +84,19 @@ namespace Rvn.Ch02
 
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "http://127.0.0.1:8080" },
-                Database = "Products"
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
             }.Initialize())
             {
                 #region use_database_encryption_key_full_sample
                 var config = new PeriodicBackupConfiguration
                 {
-                    LocalSettings = new LocalSettings
-                    {
-                        //Backup files local path
-                        FolderPath = @"C:\Users\John\backups"
-                    },
+                    //additional settings here..
+                    //..
 
-                    //Full Backup period (Cron expression for a 3-hours period)
-                    FullBackupFrequency = "0 */3 * * *",
-
-                    //Type can be Backup or Snapshot
+                    //This is a logical-backup
                     BackupType = BackupType.Backup,
-
-                    //Task Name
-                    Name = "fullBackupTask",
 
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
@@ -102,54 +111,12 @@ namespace Rvn.Ch02
 
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "http://127.0.0.1:8080" },
-                Database = "Products"
-            }.Initialize())
-            {
                 var config = new PeriodicBackupConfiguration
                 {
                     LocalSettings = new LocalSettings
                     {
                         //Backup files local path
-                        FolderPath = @"C:\Users\John\backups"
-                    },
-
-                    //Full Backup period (Cron expression for a 3-hours period)
-                    FullBackupFrequency = "0 */3 * * *",
-
-                    //Type can be Backup or Snapshot
-                    BackupType = BackupType.Backup,
-
-                    //Task Name
-                    Name = "fullBackupTask",
-
-                    #region use_provided_encryption_key
-                    BackupEncryptionSettings = new BackupEncryptionSettings
-                    {
-                        //Use an encryption key of your choice
-                        Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs=",
-                        EncryptionMode = EncryptionMode.UseProvidedKey
-                    }
-                    #endregion
-
-                };
-                var operation = new UpdatePeriodicBackupOperation(config);
-                var result = await docStore.Maintenance.SendAsync(operation);
-            }
-
-            using (var docStore = new DocumentStore
-            {
-                Urls = new[] { "http://127.0.0.1:8080" },
-                Database = "Products"
-            }.Initialize())
-            {
-                #region use_provided_encryption_key_full_sample
-                var config = new PeriodicBackupConfiguration
-                {
-                    LocalSettings = new LocalSettings
-                    {
-                        //Backup files local path
-                        FolderPath = @"C:\Users\John\backups"
+                        FolderPath = @"E:\RavenBackups"
                     },
 
                     //Full Backup period (Cron expression for a 3-hours period)
@@ -163,85 +130,93 @@ namespace Rvn.Ch02
 
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
+                        #region use_provided_encryption_key
                         //Use an encryption key of your choice
-                        Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs=",
-                        EncryptionMode = EncryptionMode.UseProvidedKey
+                        EncryptionMode = EncryptionMode.UseProvidedKey,
+                        Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+
+                        #endregion
                     }
                 };
+
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
-                #endregion
             }
 
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "http://127.0.0.1:8080" },
-                Database = "Products"
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
             }.Initialize())
             {
-                #region demonstrate_BackupEncryptionSettings_for_backup
                 var config = new PeriodicBackupConfiguration
                 {
-                    //Insert other backup settings here
+
+                    // additional settings here..
                     //..
 
+                    #region use_provided_encryption_key_full_sample
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
                         //Use an encryption key of your choice
-                        Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs=",
-                        EncryptionMode = EncryptionMode.UseProvidedKey
+                        EncryptionMode = EncryptionMode.UseProvidedKey,
+                        Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
                     }
+                    #endregion
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
-                #endregion
             }
 
-                #region encrypted_database
-                // path to the certificate you received during the server setup
-                var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "https://a.johndom.development.run" },
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
                 Database = "encryptedDatabase",
                 Certificate = cert
             }.Initialize())
             {
-                // Backup & Restore here
-            }
-            #endregion
+                var config = new PeriodicBackupConfiguration
+                {
 
-            // path to the authentication key you received during the server setup
-            var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
+                    // additional settings here..
+                    //..
+
+                    #region explicitly_choose_no_encryption
+                    BackupEncryptionSettings = new BackupEncryptionSettings
+                    {
+                        //No encryption
+                        EncryptionMode = EncryptionMode.None
+                    }
+                    #endregion
+                };
+                var operation = new UpdatePeriodicBackupOperation(config);
+                var result = await docStore.Maintenance.SendAsync(operation);
+            }
 
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "https://a.johndom.development.run" },
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
                 Database = "encryptedDatabase",
                 Certificate = cert
             }.Initialize())
             {
-
-
-                #region restore_encrypted_database
+                #region restore_encrypted_backup
                 // restore encrypted database
 
                 var restoreConfiguration = new RestoreBackupConfiguration();
 
-                restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
-                {
-                    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
-                };
-
                 //New database name
                 restoreConfiguration.DatabaseName = "newEncryptedDatabase";
 
                 //Backup-file location
-                var backupPath = @"C:\Users\John\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+                var backupPath = @"C:\Users\RavenDB\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
                 restoreConfiguration.BackupLocation = backupPath;
 
-                //Use the same encryption key used to encrypt the database
-                restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+                restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
+                {
+                    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+                };
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
                 docStore.Maintenance.Server.Send(restoreBackupTask);
@@ -250,42 +225,69 @@ namespace Rvn.Ch02
 
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "https://a.johndom.development.run" },
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
+                Database = "encryptedDatabase",
+                Certificate = cert
+            }.Initialize())
+            {
+                // restore encrypted database
+
+                var restoreConfiguration = new RestoreBackupConfiguration();
+
+                //New database name
+                restoreConfiguration.DatabaseName = "newEncryptedDatabase";
+
+                //Backup-file location
+                var backupPath = @"C:\Users\RavenDB\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+                restoreConfiguration.BackupLocation = backupPath;
+
+                #region restore_encrypted_database
+                //Restore the database using the key you encrypted it with
+                restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
+                {
+                    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
+                };
+
+                //Encrypt the restored database using this key
+                restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+
+                var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
+                docStore.Maintenance.Server.Send(restoreBackupTask);
+                #endregion
+            }
+
+                using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
                 Database = "encryptedDatabase",
                 Certificate = cert
             }.Initialize())
             {
 
-                #region demonstrate_BackupEncryptionSettings_for_restore
                 var restoreConfiguration = new RestoreBackupConfiguration();
-
-                restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
-                {
-                    Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
-                };
 
                 //New database name
                 restoreConfiguration.DatabaseName = "newEncryptedDatabase";
 
                 //Backup-file location
-                var backupPath = @"C:\Users\John\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+                var backupPath = @"C:\Users\RavenDB\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
                 restoreConfiguration.BackupLocation = backupPath;
 
-                //Use the same encryption key used to encrypt the database
-                restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
+                #region restore_unencrypted_database
+                restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
+                {
+                    //No encryption
+                    EncryptionMode = EncryptionMode.None
+                };
+                #endregion
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
                 docStore.Maintenance.Server.Send(restoreBackupTask);
-                #endregion
             }
 
-
-            // using dedicated encryption key for backup
-            // path to the authentication key you received during the server setup
-            var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "https://a.johndom.development.run" },
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
                 Database = "encryptedDatabase",
                 Certificate = cert
             }.Initialize())
@@ -314,7 +316,7 @@ namespace Rvn.Ch02
                 restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
 
                 //Backup-file location
-                var backupPath = @"C:\Users\John\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+                var backupPath = @"C:\Users\RavenDB\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
                 restoreConfiguration.BackupLocation = backupPath;
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
@@ -325,18 +327,28 @@ namespace Rvn.Ch02
 
             public class Foo
             {
-                public class bbb
+                #region BackupEncryptionSettings_definition
+                public class BackupEncryptionSettings
                 {
-                    public class xxx
-                    {
-                        public string ttt { get; set; }
-                    }
+                    public EncryptionMode EncryptionMode { get; set; }
+                    public string Key { get; set; }
 
-                    public class yyy
+                    public BackupEncryptionSettings()
                     {
-                        public string ttt { get; set; }
+                        Key = null;
+                        EncryptionMode = EncryptionMode.None;
                     }
                 }
+                #endregion
+
+                #region EncryptionMode_definition
+                public enum EncryptionMode
+    {
+                    None,
+                    UseDatabaseKey,
+                    UseProvidedKey
+                }
+                #endregion
             }
         }
     }

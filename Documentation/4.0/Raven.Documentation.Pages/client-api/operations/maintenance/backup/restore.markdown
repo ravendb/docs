@@ -11,7 +11,7 @@ You can restore backed up databases using the Studio, or client API methods.
      * [Configuration and Execution](../../../../client-api/operations/maintenance/backup/restore#configuration-and-execution)  
      * [Restore Database to a Single Node](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node)  
          * [Optional Settings](../../../../client-api/operations/maintenance/backup/restore#optional-settings)  
-     * [Restore Database To multiple nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
+     * [Restore Database to Multiple Nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes)  
          * [Restore Database to a Single Node & Replicate it to Other Nodes](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-a-single-node--replicate-it-to-other-nodes)  
          * [Restore Database to Multiple Nodes Simultaneously](../../../../client-api/operations/maintenance/backup/restore#restore-database-to-multiple-nodes-simultaneously)  
   * [Recommended Cautions](../../../../client-api/operations/maintenance/backup/restore#recommended-cautions)  
@@ -59,10 +59,10 @@ You can restore backed up databases using the Studio, or client API methods.
 
 
 {NOTE: }
-####Optional settings:
+####Optional Settings:
 
 * `LastFileNameToRestore`
-    * Use **LastFileNameToRestore** if you want to restore backed up files up to a certain file, and omit the rest.  
+    * Use **LastFileNameToRestore** if you want to restore backup-files until a certain file is reached and stop there.  
       For example - 
        * These are the files in your backup folder:  
           2018-12-26-09-00.ravendb-full-backup  
@@ -105,7 +105,7 @@ You can create the cluster in advance, and restore the database to multiple node
 
 {NOTE: This procedure is advisable only when restoring a Snapshot.}
 
-* Simultaneously restoring a [logical backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) by multiple nodes, triggers each node to send change-vector updates to all other nodes.  
+* Simultaneously restoring a [logical-backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) by multiple nodes, triggers each node to send change-vector updates to all other nodes.  
 * Simultaneously restoring [a snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) does **not** initiate this behavior, because the databases kept by all nodes are considered identical.  
 
 {NOTE/}
@@ -135,11 +135,17 @@ In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../.
 {WARNING/}
 {PANEL/}
 
-## Related Articles  (to be revised, ignore)
+## Related Articles  
+**Client Articles**:  
+[Backup & Restore Overview](../../../../client-api/operations/maintenance/backup/overview)  
+[Backup](../../../../client-api/operations/maintenance/backup/backup)  
+[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
 
-####Client
-[Backup using code](../../../../client-api/operations/maintenance/backup/backup)  
+**Studio Articles**:  
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
 
-####Studio
-[Backup using the Studio](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Restore using the Studio](../../../../studio/server/databases/create-new-database/from-backup)  
+**Security**:  
+[Database Encryption](../../../../server/security/encryption/database-encryption)  
+[Security Overview](../../../../server/security/overview)  
+[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  

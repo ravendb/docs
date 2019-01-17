@@ -41,7 +41,7 @@ namespace Rvn.Ch02
                     LocalSettings = new LocalSettings
                     {
                         //Backup files local path
-                        FolderPath = @"C:\Users\John\backups"
+                        FolderPath = @"E:\RavenBackups"
                     },
 
                     //Full Backup period (Cron expression for a 3-hours period)
@@ -71,7 +71,7 @@ namespace Rvn.Ch02
                     LocalSettings = new LocalSettings
                     {
                         //Backup files local path
-                        FolderPath = @"C:\Users\John\backups"
+                        FolderPath = @"E:\RavenBackups"
                     },
 
                     //Full Backup period (Cron expression for a 3-hours period)
@@ -112,7 +112,7 @@ namespace Rvn.Ch02
                 {
                     LocalSettings = new LocalSettings
                     {
-                        FolderPath = @"C:\Users\John\backups"
+                        FolderPath = @"E:\RavenBackups"
                     },
 
                     #region backup_type_snapshot
@@ -143,7 +143,7 @@ namespace Rvn.Ch02
                 {
                     LocalSettings = new LocalSettings
                     {
-                        FolderPath = @"C:\Users\John\backups"
+                        FolderPath = @"E:\RavenBackups"
                     },
 
                     //FTP Backup settings
@@ -182,7 +182,7 @@ namespace Rvn.Ch02
                 restoreConfiguration.DatabaseName = "newProductsDatabase";
 
                 //Local path with a backup file
-                var backupPath = @"C:\Users\John\backups\2018-12-26-16-17.ravendb-Products-A-backup";
+                var backupPath = @"C:\Users\RavenDB\backups\2018-12-26-16-17.ravendb-Products-A-backup";
                 restoreConfiguration.BackupLocation = backupPath;
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
@@ -202,7 +202,7 @@ namespace Rvn.Ch02
 
                 #region restore_to_specific__data_directory
                 //Restore to a pre-chosen folder
-                var dataPath = @"C:\Users\John\backups\2018-12-26-16-17.ravendb-Products-A-backup\restoredDatabaseLocation";
+                var dataPath = @"C:\Users\RavenDB\backups\2018-12-26-16-17.ravendb-Products-A-backup\restoredDatabaseLocation";
                 restoreConfiguration.DataDirectory = dataPath;
                 #endregion
 
@@ -215,10 +215,10 @@ namespace Rvn.Ch02
 
             #region encrypted_database
             // path to the certificate you received during the server setup
-            var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
+            var cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "https://a.johndom.development.run" },
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
                 Database = "encryptedDatabase",
                 Certificate = cert
             }.Initialize())
@@ -228,10 +228,10 @@ namespace Rvn.Ch02
             #endregion
 
             // path to the authentication key you received during the server setup
-            var cert = new X509Certificate2(@"C:\Users\John\authentication_key\admin.client.certificate.johndom.pfx");
+            var cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
             using (var docStore = new DocumentStore
             {
-                Urls = new[] { "https://a.johndom.development.run" },
+                Urls = new[] { "https://a.RavenDBdom.development.run" },
                 Database = "encryptedDatabase",
                 Certificate = cert
             }.Initialize())
@@ -246,7 +246,7 @@ namespace Rvn.Ch02
                 restoreConfiguration.DatabaseName = "newEncryptedDatabase";
 
                 //Backup-file location
-                var backupPath = @"C:\Users\John\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
+                var backupPath = @"C:\Users\RavenDB\2019-01-06-11-11.ravendb-encryptedDatabase-A-snapshot";
                 restoreConfiguration.BackupLocation = backupPath;
 
                 restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";

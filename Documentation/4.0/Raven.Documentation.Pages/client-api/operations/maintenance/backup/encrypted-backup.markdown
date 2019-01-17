@@ -5,23 +5,23 @@
 {NOTE: }
 
 * With RavenDB 4.0 and 4.1, you can only encrypt a Snapshot - providing that the database has been encrypted.  
-* With RavenDB 4.2, you can encrypt a logical backup as well.  
+* With RavenDB 4.2, you can encrypt a logical-backup as well.  
 
 * In this page:  
   * [Introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup#introduction)  
-     * [RavenDB's security approach](../../../../client-api/operations/maintenance/backup/encrypted-backup#ravendbs-security-approach)  
+     * [RavenDB's Security Approach](../../../../client-api/operations/maintenance/backup/encrypted-backup#ravendbs-security-approach)  
      * [Enable Secure Communication](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication)  
-  * [Logical-backup Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#logical-backup-encryption)  
+  * [Logical-Backup Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#logical-backup-encryption)  
   * [Snapshot Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#snapshot-encryption)  
      * [Creating an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-snapshot)  
-     * [Restoring an encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-snapshot)  
+     * [Restoring an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-snapshot)  
 {NOTE/}
 
 ---
 
 {PANEL: Introduction}
 
-####RavenDB's security approach
+####RavenDB's Security Approach
 
 Encrypting backup files is just **one respect** of RavenDB's comprehensive security approach.  
 Other respects are implemented in -
@@ -33,8 +33,8 @@ Other respects are implemented in -
 
 ####Enable Secure Communication
 
-RavenDB emphasizes the importance of overall security, by allowing backup-encryption only 
-when server-client communication is [authenticated and certified](../../../../server/security/overview).  
+RavenDB emphasizes the importance of overall security, by allowing encryption of the database only when 
+server-client communication is [authenticated and certified](../../../../server/security/overview).  
 
 * **Enabling authentication and certification**  
   Enable secure client-server communication during the server setup, either [manually](../../../../server/security/authentication/certificate-configuration) or [using the setup-wizard](../../../../start/installation/setup-wizard).  
@@ -55,10 +55,10 @@ when server-client communication is [authenticated and certified](../../../../se
 
 {PANEL: Snapshot Encryption}
 
-####Creating an encrypted snapshot
+####Creating an Encrypted Snapshot
 
 A [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is an exact copy of the database files. 
-If the database is encrypted, so would be its snapshot. If the database is **not** encrypted, the snapshot won't be either.  
+If the database is encrypted, so would be its snapshot. If the database is **not** encrypted, the snapshot wouldn't be either.  
 
 * If you want your snapshot to be encrypted, take the snapshot of an encrypted database.  
 * Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
@@ -66,7 +66,7 @@ If the database is encrypted, so would be its snapshot. If the database is **not
 
 ---
 
-####Restoring an encrypted Snapshot
+####Restoring an Encrypted Snapshot
 
 Restoring an encrypted snapshot is almost identical to restoring an unencrypted one.  
 
@@ -79,3 +79,16 @@ Restoring an encrypted snapshot is almost identical to restoring an unencrypted 
 {PANEL/}
 
 ## Related Articles
+**Client Articles**:  
+[Backup & Restore Overview](../../../../client-api/operations/maintenance/backup/overview)  
+[Backup](../../../../client-api/operations/maintenance/backup/backup)  
+[Restore](../../../../client-api/operations/maintenance/backup/restore)  
+
+**Studio Articles**:  
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+
+**Security**:  
+[Database Encryption](../../../../server/security/encryption/database-encryption)  
+[Security Overview](../../../../server/security/overview)  
+[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  

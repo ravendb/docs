@@ -20,23 +20,23 @@
     Maintaining a proper backup routine ensures that you'd be able to restore your data to its state at nearly any chosen point of time.  
 
 * In this page:  
-  * [Backing up and Restoring a database](../../../../client-api/operations/maintenance/backup/overview#backing-up-and-restoring-a-database)  
-     * [Backup scope: Full or Incremental](../../../../client-api/operations/maintenance/backup/overview#backup-scope-full-or-incremental)  
-     * [A typical backup folder](../../../../client-api/operations/maintenance/backup/overview#a-typical-backup-folder)  
-     * [Restoration procedure](../../../../client-api/operations/maintenance/backup/overview#restoration-procedure)  
+  * [Backing Up and Restoring a Database](../../../../client-api/operations/maintenance/backup/overview#backing-up-and-restoring-a-database)  
+     * [Backup Scope: Full or Incremental](../../../../client-api/operations/maintenance/backup/overview#backup-scope-full-or-incremental)  
+     * [A Typical Backup Folder](../../../../client-api/operations/maintenance/backup/overview#a-typical-backup-folder)  
+     * [Restoration Procedure](../../../../client-api/operations/maintenance/backup/overview#restoration-procedure)  
   * [Overview](../../../../client-api/operations/maintenance/backup/overview#overview)  
-      * [Backup Type: Logical Backup and Snapshot](../../../../client-api/operations/maintenance/backup/overview#backup-type-logical-backup-or-snapshot)  
+      * [Backup Type: Logical-Backup and Snapshot](../../../../client-api/operations/maintenance/backup/overview#backup-type-logical-backup-or-snapshot)  
       * [Encryption](../../../../client-api/operations/maintenance/backup/overview#encryption)  
       * [Compression](../../../../client-api/operations/maintenance/backup/overview#compression)  
       * [Backup Name](../../../../client-api/operations/maintenance/backup/overview#backup-name)  
-      * [Backup contents](../../../../client-api/operations/maintenance/backup/overview#backup-contents)  
+      * [Backup Contents](../../../../client-api/operations/maintenance/backup/overview#backup-contents)  
 {NOTE/}
 
 ---
 
 {PANEL: Backing up and Restoring a database}
 
-####Backup scope: Full or Incremental
+####Backup Scope: Full or Incremental
 
 * You can set the Backup task to create either **full** or **incremental** backups during its periodical executions.  
    * A **full-backup file** contains **all** current database contents and configuration.  
@@ -50,7 +50,7 @@
 
 ---
 
-####A typical backup folder
+####A Typical Backup Folder
 
 A typical backup folder holds a single full-backup file, and a list of incremental-backup files.  
 
@@ -63,7 +63,7 @@ A typical backup folder holds a single full-backup file, and a list of increment
 
 ---
 
-####Restoration procedure
+####Restoration Procedure
 
 In order to restore a database, RavenDB -  
 
@@ -79,11 +79,11 @@ In order to restore a database, RavenDB -
 
 {PANEL: Overview}
 
-####Backup Type: Logical Backup or Snapshot  
+####Backup Type: Logical-Backup or Snapshot  
 
-There are two backup types: [Logical backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) (or simply "Backup") and [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot).  
+There are two backup types: [Logical-backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) (or simply "Backup") and [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot).  
 
-* A logical backup is a compressed JSON dump of database contents, including documents and other data.  
+* A logical-backup is a compressed JSON dump of database contents, including documents and other data.  
 * A SnapShot is a binary image of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
    * Using Snapshots is available only for _Enterprise subscribers_.  
 
@@ -96,9 +96,9 @@ Stored data can be **Encrypted** or **Unencrypter**.
 * Snapshot encryption  
    * The snapshot of an [encrypted database](../../../../server/security/encryption/database-encryption), is encrypted.  
    * The snapshot of an unencrypted database, is unencrypted.  
-* Logical backup encryption  
-   * With RavenDB 4.0 and 4.1, you can create only an unencrypted logical backup.  
-   * With RavenDB 4.2 and on, you can encrypt a logical backup as well.  
+* Logical-backup encryption  
+   * With RavenDB 4.0 and 4.1, you can create only an unencrypted logical-backup.  
+   * With RavenDB 4.2 and on, you can encrypt a logical-backup as well.  
 
 ---
 
@@ -132,7 +132,7 @@ For example:
 
 ---
 
-####Backup contents
+####Backup Contents
 
 Backed-up data includes database-level and cluster-level contents.  
 
@@ -144,17 +144,23 @@ Backed-up data includes database-level and cluster-level contents.
   | Documents | Database Record (including tasks) |
   | Attachments | Compare-exchange values |
   | Revisions | Identities |
-  | Counters | Indexes <BR> (Logical Backups: Only Index definitions) |
+  | Counters | Indexes <BR> (Logical-Backups: Only Index definitions) |
   | Tombstones | Tasks state (Snapshot only) |
   | Conflicts |
 
 {PANEL/}
 
-## Related Articles  (to be revised, ignore)
+## Related Articles  
+**Client Articles**:  
+[Backup](../../../../client-api/operations/maintenance/backup/backup)  
+[Restore](../../../../client-api/operations/maintenance/backup/restore)  
+[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
 
-####Client
-[Restore using code](../../../../client-api/operations/maintenance/backup/restore)  
+**Studio Articles**:  
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
 
-####Studio
-[Backup using the Studio](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Restore using the Studio](../../../../studio/server/databases/create-new-database/from-backup)  
+**Security**:  
+[Database Encryption](../../../../server/security/encryption/database-encryption)  
+[Security Overview](../../../../server/security/overview)  
+[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  

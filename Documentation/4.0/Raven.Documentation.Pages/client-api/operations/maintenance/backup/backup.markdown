@@ -10,7 +10,7 @@
 
 * In this page:  
   * [Backup Types](../../../../client-api/operations/maintenance/backup/backup#backup-types)  
-      * [Logical Backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup)  
+      * [Logical-Backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup)  
       * [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot)  
   * [Backup Scope](../../../../client-api/operations/maintenance/backup/backup#backup-scope)  
       * [Full Backup](../../../../client-api/operations/maintenance/backup/backup#full-backup)  
@@ -25,7 +25,7 @@
 
 {PANEL: Backup Types}
 
-####Logical Backup (or simply "Backup")
+####Logical-Backup  
 
 * Data is backed-up in [compressed](../../../../client-api/operations/maintenance/backup/overview#compression) JSON files.  
 
@@ -50,14 +50,14 @@
    * Re-indexing is not required.  
    * Re-inserting data into the database is not required.  
 
-* Restoration Time is typically **faster** than that needed when restoring a logical backup.  
+* Restoration Time is typically **faster** than that needed when restoring a logical-backup.  
 
-* Needed storage space is **larger** than that required for a logical backup.  
+* Needed storage space is **larger** than that required for a logical-backup.  
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
-####Basic comparison between a logical backup and a snapshot:
+####Basic Comparison Between a Logical-Backup and a Snapshot:
 
   | Backup Type | Storage size | Stored Format | Restoration speed | Task characteristics |
   | ------ | ------ | ------ | ------ | ------ |
@@ -142,11 +142,19 @@
 {WARNING/}
 {PANEL/}
 
-## Related Articles (to be revised, ignore)
+## Related Articles  
 
-####Client
-[Restore using code](../../../../client-api/operations/maintenance/backup/restore)  
+**Client Articles**:  
+[Backup & Restore Overview](../../../../client-api/operations/maintenance/backup/overview)  
+[Restore](../../../../client-api/operations/maintenance/backup/restore)  
+[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
 
-####Studio
-[Backup using the Studio](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Restore using the Studio](../../../../studio/server/databases/create-new-database/from-backup)  
+**Studio Articles**:  
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+
+**Security**:  
+[Database Encryption](../../../../server/security/encryption/database-encryption)  
+[Security Overview](../../../../server/security/overview)  
+[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+

@@ -4,136 +4,215 @@
 
 {NOTE: }
 
-* With RavenDB 4.0 and 4.1, you can only encrypt a Snapshot - providing that the database has been encrypted.  
-  Starting with RavenDB 4.2, you can encrypt a logical backup and restore an encrypted one.  
+* With RavenDB 4.0 and 4.1, your backup-encryption options were limited to taking a snapshot of an encrypted database.  
+  Starting with RavenDB 4.2, you can encrypt and restore logical-backups.  
 
 * In this page:  
-  * [Introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup#introduction)  
-     * [RavenDB's Security Approach](../../../../client-api/operations/maintenance/backup/encrypted-backup#ravendbs-security-approach)  
-     * [Enable Secure Communication](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication)  
+  * [RavenDB's Security Approach](../../../../client-api/operations/maintenance/backup/encrypted-backup#ravendb)  
+     * [Secure Server-Client Communication](../../../../client-api/operations/maintenance/backup/encrypted-backup#secure-server-client-communication)  
+     * [Database Encryption](../../../../client-api/operations/maintenance/backup/encrypted-backup#database-encryption)  
+  * [Backup-Encryption Overview](../../../../client-api/operations/maintenance/backup/encrypted-backup#backup-encryption-overview)  
+     * [Prerequisites to Encrypting Backups](../../../../client-api/operations/maintenance/backup/encrypted-backup#prerequisites-to-encrypting-backups)  
+     * [Choosing Encryption Mode](../../../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode)  
      * [The Encryption Key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key)  
-     * [Encryption mode](../../../../client-api/operations/maintenance/backup/encrypted-backup#encryption-mode)  
-  * [Creating Encrypted Backups](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-encrypted-backups)  
-     * [Creating an Encrypted Logical-backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-logical-backup)  
+  * [Creating an Encrypted Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-backup)  
+     * [Creating an Encrypted Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-logical-backup)  
      * [Creating an Encrypted Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#creating-an-encrypted-snapshot)  
-  * [Restoring Encrypted Backups](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-encrypted-backups)  
+  * [Restoring an Encrypted Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-backup)  
+     * [Restoring a Logical-Backup](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-a-logical-backup)  
+     * [Restoring a Snapshot](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-a-snapshot)  
 {NOTE/}
 
 ---
-{PANEL: Introduction}
 
-####RavenDB's security approach
+{PANEL: RavenDB's security approach}
 
-Encrypting backup files is just **one respect** of RavenDB's comprehensive security approach.  
-Other respects are implemented in -
+Backups are encrypted to secure data when it is stored for safe-keping.  
+This is just **one respect** of RavenDB's comprehensive security approach.  
+Two other respects are -
 
-* [Database encryption](../../../../server/security/encryption/database-encryption)  
-* Securing server-client communication using [Authentication and certification](../../../../server/security/authentication/certificate-configuration).  
+* **Securing Server-Client Communication**  
+* **Encrypting the database**  
+
+They are introduced here only briefly, to help you put backup-encryption in context.  
 
 ---
 
-####Enable Secure Communication
+####Secure Server-Client Communication
 
-RavenDB emphasizes the importance of overall security, by allowing backup-encryption only 
-when server-client communication is authenticated and certified.  
+You can prevent unauthorized access to your data during transfer, by enabling [authentication and Certification](../../../../server/security/authentication/certificate-configuration) 
+of server-client communication.  
 
-* **Enabling authentication and certification**  
-  Enable secure client-server communication during the server setup, either [manually](../../../../server/security/authentication/certificate-configuration) or [using the setup-wizard](../../../../start/installation/setup-wizard).  
+* **Enable secure communication** in advance, during the server setup.  
+  You can enable it while installing the server either [manually](../../../../server/security/authentication/certificate-configuration) or [using the setup-wizard](../../../../start/installation/setup-wizard).  
+* **Authenticate with the server**.  
+  Be aware that enabling secure communication will require clients to **certify themselves** in order to access RavenDB.  
+  Client authentication code sample:
+  {CODE encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
-* **Client authentication procedure**  
-  When authentication is enabled, clients are required to certify themselves in order to connect the server.  
-  Here's a code sample for this procedure:  
-{CODE encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+---
+
+####Database Encryption
+
+Database encryption prevents unauthorized access to your data by [encrypting it on the server](../../../../server/security/encryption/database-encryption).  
+
+* **Secure communication to enable database encryption.**  
+  RavenDB emphasizes the importance of overall security, by allowing the creation of an encrypted database only 
+when [server-client communication is secure](../../../../client-api/operations/maintenance/backup/encrypted-backup#secure-server-client-communication). 
+If you want to encrypt your database, you need to enable authentication and certification first.  
+
+{PANEL/}
+
+{PANEL: Backup-encryption overview}
+
+####Prerequisites to Encrypting Backups
+
+* There are **no prerequisites** to encrypting a **logical-backup**.  
+* If you want your **snapshot** to be encrypted, simply take the snapshot of an [encrypted database](../../../../client-api/operations/maintenance/backup/encrypted-backup#database-encryption).  
+  A [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is an exact image of the database. 
+  If the database is encrypted, so would be its snapshot. If the DB is not encrypted, a snapshot of it wouldn't be either.  
+
+---
+
+####Choosing Encryption Mode
+
+Use the same [Backup](../../../../client-api/operations/maintenance/backup/backup#backup) and [Restore](../../../../client-api/operations/maintenance/backup/restore) methods you use to create and restore **un**encrypted backups.  
+Pass them a **BackupEncryptionSettings** structure to determine whether encryption is used, and if so - with which [encryption key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key).  
+
+* `BackupEncryptionSettings` definition:  
+  {CODE BackupEncryptionSettings_definition@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+    BackupEncryptionSettings parameters:  
+
+    | Parameter | Type | Functionality |
+    | ------------- | ------------- | ----- |
+    | **EncryptionMode** | enum | Set the encryption mode. <br> `none` - Use **no encryption** (this is the default mode). <br> `UseProvidedKey` - Provide **your own encryption key**. <br> `UseDatabaseKey` - Use **the same key the DB is encrypted with**. |
+    | **Key** | string | Pass your own encryption key using this parameter |
+    `EncryptionMode` definition:  
+    {CODE EncryptionMode_definition@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
 ---
 
 ####The Encryption Key
 
-When you encrypt your backup, you can use either **the database's** encryption key or **a new key** of your choice.  
+To encrypt your backup, either use **the database's** encryption key or **choose a new key**.  
 
-* **To use the database's Key**  
-  If your database is encrypted, you can use its encryption key for your backup as well.  
-   * This option is relevant for both logical-backups **and** snapshots.  
-   * Sample:  
+* **Using the database's Key**  
+  If your database is encrypted, you can utilize its existing encryption key for your backup as well.  
      {CODE use_database_encryption_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
-   * When your database is encrypted and your backup type is **Snapshot**, using the database's encryption key is **mandatory**.  
-     This is because creating an encrypted snapshot doesn't actually encrypt any file, but simply duplicates files already encrypted.  
+   
+    {NOTE: Both logical-backups and snapshots can use the same key as the database.}
+    {NOTE/}
 
-* **To use a key of your choice**  
-  You can encrypt a logical-backup using an encryption key of your choice, regardless of the database's key (if any).  
-   * This option is relevant for logical-backups **only**.  
-   * Sample:  
+* **Using a key of your choice**  
+  You can choose a key other than the database's to encrypt your logical-backup with.  
      {CODE use_provided_encryption_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
----
+    {NOTE: Only a logical-backup can use an encryption-key different than the database's.}
+    {NOTE/}
 
-####Encryption mode
-
-Use `BackupEncryptionSettings` to determine whether to use encryption at all, and if so - with [which key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key).  
-
-* `BackupEncryptionSettings` Parameters:  
-
-    | Parameter | Value | Functionality |
-    | ------------- | ------------- | ----- |
-    | **EncryptionMode** | enum | `none` - No encryption <br> `UseProvidedKey` - Choose your own key <br> `UseDatabaseKey` - Use the same key the DB is encrypted with |
-    | **Key** | string | to use your own key, provide it here |
-
-   * Sample of usage when creating a backup:  
-     {CODE demonstrate_BackupEncryptionSettings_for_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
-
-   * Sample of usage when restoring:  
-     {CODE demonstrate_BackupEncryptionSettings_for_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+    {NOTE: Use this key when creating an encrypted backup of an unencrypted database.}
+    {NOTE/}
 
 
 {PANEL/}
 
-{PANEL: Creating Encrypted Backups}
+{PANEL: Creating an encrypted backup}
 
-####Creating an Encrypted Logical-backup  
+####Creating an Encrypted Logical-Backup  
 
-Creating and restoring encrypted logical-backups is nearly similar to [creating](../../../../client-api/operations/maintenance/backup/backup) and [restoring](../../../../client-api/operations/maintenance/backup/restore) non-encrypted ones.  
-The additional steps you need to take for an encrypted backup are -  
+Creating an encrypted logical-backup is nearly similar to [creating a non-encrypted one](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup).  
 
-* Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
-* Provide an [encryption key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key).  
+* In addition to the regular backup procedure, take these steps:  
+   * If secure-communication is enabled on your server, Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#secure-server-client-communication) in your code.  
+   * Choose the [encryption mode](../../../../client-api/operations/maintenance/backup/encrypted-backup#choosing-encryption-mode).  
+   * Provide an [encryption key](../../../../client-api/operations/maintenance/backup/encrypted-backup#the-encryption-key) if needed.  
 
-* **To create the backup using the database encryption key:**  
-  Pass `UpdatePeriodicBackupOperation` the database's key using `PeriodicBackupConfiguration.BackupEncryptionSettings`.  
-  E.g. -  
+* Code sample: encrypting a backup **using the database encryption key**.  
   {CODE use_database_encryption_key_full_sample@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
-* **To create the backup using your own encryption key:**  
-  Pass `UpdatePeriodicBackupOperation` your key using `PeriodicBackupConfiguration.BackupEncryptionSettings`.  
-  E.g. -  
+* Code sample: encrypting a backup **with an encryption key of your choice** -  
  {CODE use_provided_encryption_key_full_sample@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+* To create an unencrypting backup -  
+   * Either let the default setting (`EncryptionMode = EncryptionMode.None`) work for you, or -
+   * Explicitly choose `EncryptionMode.None`.
+     {CODE explicitly_choose_no_encryption@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+{NOTE: You CAN encrypt the backup of an unencrypted database.}
+Pass the encryption key using `EncryptionMode.UseProvidedKey`.  
+{CODE use_provided_encryption_key@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+{NOTE/}
+
+{NOTE: Default encryption-key}
+
+If you don't explicitly state the encryption mode and key, their default value will be -
+
+* If the database is unencrypted, the backup is unencrypted as well.  
+* If the database is encrypted, the backup is encrypted using the database's key.  
+{NOTE/}
 
 ---
 
 ####Creating an Encrypted Snapshot
 
-A [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is an exact copy of the database files. 
-If the database is encrypted, so would be its snapshot. If the database is not, the snapshot won't be either.  
-
-* If you want your snapshot to be encrypted, take the snapshot of an encrypted database.  
-* Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
+* If you want your snapshot to be encrypted, [take the snapshot of an encrypted database](../../../../client-api/operations/maintenance/backup/encrypted-backup#prerequisites-to-encrypting-backups).  
+* If [secure-communication](../../../../client-api/operations/maintenance/backup/encrypted-backup#secure-server-client-communication) is enabled on your server, Include the **client authentication procedure** in your code.  
 * Create a snapshot [as you normally would](../../../../client-api/operations/maintenance/backup/backup#backup-types).  
 
-{NOTE: If the database is encrypted, the snapshot is encrypte with the same encryption key.}
+{NOTE: Default encryption-key}
+
+The snapshot of an encrypted database has the same encryption key as the database's.  
+The snapshot of an unencrypted database is not encrypted.  
 {NOTE/}
 
 {PANEL/}
 
-{PANEL: Restoring Encrypted Backups}
+{PANEL: Restoring an Encrypted Backup}
 
-Restoring logical-backups is similar to restoring snapshots.  
-Restoring a backup created using **the same key as the DB**, is similar to restoring a backup created using **a distinctive key**.  
-In both cases, it matters just that you use the same key you used while creating the backup.  
+To restore your encrypted backup, pass [RestoreBackupOperation](../../../../client-api/operations/maintenance/backup/restore#configuration-and-execution) the **key** used to encrypt it.  
+Pass the key using `restoreConfiguration.BackupEncryptionSettings`.  
+{CODE restore_encrypted_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
-* Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
-* Pass your encryption key to `RestoreBackupOperation` using `restoreConfiguration.BackupEncryptionSettings`.  
-* Code sample:
-{CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+---
+
+####Restoring a Logical-Backup
+
+A database is [restored](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-backup) from a logical-backup 
+to its **unencrypted** form.  
+If you want to encrypt the restored database, you have to address it explicitly.  
+
+* **To encrypt the restored database** -  
+  Pass `RestoreBackupOperation` an encryption key using `restoreConfiguration.EncryptionKey`.  
+  {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+To restore an **unencrypted** logical-backup -
+
+* Either provide **no encryption key** to activate the default value (`EncryptionMode.None`), or -
+* Choose `EncryptionMode.None` Explicitly.  
+  {CODE restore_unencrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
+
+---
+
+####Restoring a Snapshot
+
+There are no special requirements to [restoring](../../../../client-api/operations/maintenance/backup/encrypted-backup#restoring-an-encrypted-backup) snapshots.
+
+* The snapshot of an encrypted database is encrypted with the database's key.  
+* The database of an encrypted snapshot is restored to its encrypted form.  
 
 {PANEL/}
 
 ## Related Articles
+**Client Articles**:  
+[Backup & Restore Overview](../../../../client-api/operations/maintenance/backup/overview)  
+[Backup](../../../../client-api/operations/maintenance/backup/backup)  
+[Restore](../../../../client-api/operations/maintenance/backup/restore)  
+
+**Studio Articles**:  
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+
+**Security**:  
+[Database Encryption](../../../../server/security/encryption/database-encryption)  
+[Security Overview](../../../../server/security/overview)  
+[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
