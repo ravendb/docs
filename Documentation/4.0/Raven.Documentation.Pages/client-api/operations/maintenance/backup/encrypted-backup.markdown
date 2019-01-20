@@ -1,11 +1,12 @@
-﻿# Encrypted Backup and Restore  
+﻿# Backup Encryption  
 
 ---
 
 {NOTE: }
 
-* With RavenDB 4.0 and 4.1, you can only encrypt a Snapshot - providing that the database has been encrypted.  
-* With RavenDB 4.2, you can encrypt a logical-backup as well.  
+* The snapshot of an encrypted database is encrypted as well.  
+  You can create an encrypted backup by taking the snapshot of an encrypted database.  
+* Logical-backup encryption is not supported by RavenDB 4.0 and 4.1.  
 
 * In this page:  
   * [Introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup#introduction)  
@@ -46,9 +47,9 @@ server-client communication is [authenticated and certified](../../../../server/
 
 {PANEL/}
 
-{PANEL: Logical-backup Encryption}
+{PANEL: Logical-Backup Encryption}
 
-{NOTE: Logical-backup encryption is supported by RavenDB version 4.2 and on.  }
+{NOTE: Logical-backup encryption is not supported by RavenDB 4.0 and 4.1.  }
 {NOTE/}
 
 {PANEL/}
@@ -60,9 +61,12 @@ server-client communication is [authenticated and certified](../../../../server/
 A [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is an exact copy of the database files. 
 If the database is encrypted, so would be its snapshot. If the database is **not** encrypted, the snapshot wouldn't be either.  
 
-* If you want your snapshot to be encrypted, take the snapshot of an encrypted database.  
+* If you want your snapshot to be encrypted, take the snapshot of an [encrypted database](../../../../server/security/encryption/database-encryption#creating-an-encrypted-database-using-the-rest-api-and-the-client-api).  
 * Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
 * Create a snapshot [as you normally would](../../../../client-api/operations/maintenance/backup/backup#backup-types).  
+
+{NOTE: The incremental backups of an encrypted snapshot are encrypted as well, using the same key.}
+{NOTE/}
 
 ---
 

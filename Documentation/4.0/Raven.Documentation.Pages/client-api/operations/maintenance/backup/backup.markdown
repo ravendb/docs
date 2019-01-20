@@ -35,8 +35,6 @@
 
 * Restoration Time is therefore **slower** than that required when restoring a Snapshot.  
 
-* Needed storage space is **smaller** than that required to store a Snapshot image.  
-
 * Code Sample:
   {CODE logical_full_backup_every_3_hours@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
   Note the usage of [Cron scheduling](https://en.wikipedia.org/wiki/Cron) when setting backup frequency.  
@@ -44,7 +42,7 @@
 ####Snapshot
 
 * **Snapshot** backups are available for **Enterprise subscribers only**.  
-    A SnapShot is a binary duplication of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) file structure at a given point-in-time.  
+    A SnapShot is a compressed binary duplication of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) file structure at a given point-in-time.  
 
 * During restoration -
    * Re-indexing is not required.  
@@ -52,47 +50,49 @@
 
 * Restoration Time is typically **faster** than that needed when restoring a logical-backup.  
 
-* Needed storage space is **larger** than that required for a logical-backup.  
-
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 ####Basic Comparison Between a Logical-Backup and a Snapshot:
 
-  | Backup Type | Storage size | Stored Format | Restoration speed | Task characteristics |
-  | ------ | ------ | ------ | ------ | ------ |
-  | Snapshot | Large  | Compressed Binary Image | Fast | Ongoing Background Task |
-  | Backup | Small | Compressed Textual Data | Slow | Ongoing Background Task |
+  | Backup Type | Stored Format | Restoration speed | Task characteristics |
+  | ------ | ------ | ------ | ------ |
+  | Snapshot | Compressed Binary Image | Fast | Ongoing Background Task |
+  | Backup |  Compressed Textual Data | Slow | Ongoing Background Task |
+
+{NOTE: Make sure your server has access to the local backup path.}
+Verify that RavenDB is allowed to store backup files in the path set in `LocalSettings.FolderPath`.
+{NOTE/}
+
+
 
 {PANEL/}
 
-{PANEL: Backup scope}
+{PANEL: Backup Scope}
+
+As described in [the overview](../../../../client-api/operations/maintenance/backup/overview#backing-up-and-restoring-a-database), a backup task can create **full** and **incremental** backups.  
+
+* Both backup operations add a single new backup file to the backup folder each time they run. leaving existing backup files untouched.  
+* Both are operated by an **ongoing task**.  
 
 ####Full Backup
 
-* A full backup stores all your data from the dawn of time until moment of backup in a single file.  
+* There are no preliminary conditions to creating a full backup. Any node can perform this task.  
 
-* There are no preliminary conditions for creating a full backup, It can be done by any node.  
-
-* Full Backup Code Sample:
+* To run a full backup, set `FullBackupFrequency`.
   {CODE backup_full_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 
 ####Incremental Backup
 
-* An incremental backup is used to save the changes that occured in your database since the last backup.  
-
 * An incremental-backup file is always a dump of JSON-files.  
   It is so even when the full backup has been a binary snapshot.  
-
-* Incremental Backup files are typically very small.  
-
 * Incremental Backup ownership
    * An incremental backup can be created only by the node that currently owns the incremental-backup task.  
    * The ownership is granted dynamically by the cluster.  
-   * A node can be apointed to own the incremental backup task, only after creating a full backup at least once.  
+   * A node can be appointed to own the incremental backup task, only after creating a full backup at least once.  
 
-* Incremental Backup Code Sample:
+* To run an incremental backup, set `IncrementalBackupFrequency`.
   {CODE backup_incremental_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
 

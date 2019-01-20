@@ -1,10 +1,10 @@
-﻿# Encrypted Backup and Restore  
+﻿# Backup Encryption  
 
 ---
 
 {NOTE: }
 
-* With RavenDB 4.0 and 4.1, your backup-encryption options were limited to taking a snapshot of an encrypted database.  
+* With RavenDB 4.0 and 4.1, your backup-encryption options are limited to taking a snapshot of an encrypted database.  
   Starting with RavenDB 4.2, you can encrypt and restore logical-backups.  
 
 * In this page:  
@@ -25,16 +25,16 @@
 
 ---
 
-{PANEL: RavenDB's security approach}
+{PANEL: RavenDB's Security Approach}
 
-Backups are encrypted to secure data when it is stored for safe-keping.  
+The encryption of backup files secures data **while stored for safe-keeping**.  
 This is just **one respect** of RavenDB's comprehensive security approach.  
-Two other respects are -
+Other respects are -
 
-* **Securing Server-Client Communication**  
-* **Encrypting the database**  
+* Securing data **while transferred between server and client**
+* Securing data **while stored in the database**.  
 
-They are introduced here only briefly, to help you put backup-encryption in context.  
+These subjects are briefly introduced here, to help you put backup-encryption in context.  
 
 ---
 
@@ -63,12 +63,13 @@ If you want to encrypt your database, you need to enable authentication and cert
 
 {PANEL/}
 
-{PANEL: Backup-encryption overview}
+{PANEL: Backup-Encryption Overview}
 
 ####Prerequisites to Encrypting Backups
 
 * There are **no prerequisites** to encrypting a **logical-backup**.  
-* If you want your **snapshot** to be encrypted, simply take the snapshot of an [encrypted database](../../../../client-api/operations/maintenance/backup/encrypted-backup#database-encryption).  
+* If you want your **snapshot** to be encrypted, simply take the snapshot of an [encrypted database](../../../../server/security/encryption/database-encryption#creating-an-encrypted-database-using-the-rest-api-and-the-client-api).  
+
   A [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is an exact image of the database. 
   If the database is encrypted, so would be its snapshot. If the DB is not encrypted, a snapshot of it wouldn't be either.  
 
@@ -94,7 +95,7 @@ Pass them a **BackupEncryptionSettings** structure to determine whether encrypti
 
 ####The Encryption Key
 
-To encrypt your backup, either use **the database's** encryption key or **choose a new key**.  
+To encrypt your backup, either **use the database's encryption key** or **choose a new key**.  
 
 * **Using the database's Key**  
   If your database is encrypted, you can utilize its existing encryption key for your backup as well.  
@@ -116,7 +117,7 @@ To encrypt your backup, either use **the database's** encryption key or **choose
 
 {PANEL/}
 
-{PANEL: Creating an encrypted backup}
+{PANEL: Creating an Encrypted Backup}
 
 ####Creating an Encrypted Logical-Backup  
 
@@ -163,6 +164,9 @@ If you don't explicitly state the encryption mode and key, their default value w
 
 The snapshot of an encrypted database has the same encryption key as the database's.  
 The snapshot of an unencrypted database is not encrypted.  
+{NOTE/}
+
+{NOTE: The incremental backups of an encrypted snapshot are encrypted as well, using the same key.}
 {NOTE/}
 
 {PANEL/}

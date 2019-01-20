@@ -34,7 +34,7 @@
 
 ---
 
-{PANEL: Backing up and Restoring a database}
+{PANEL: Backing-Up and Restoring a Database}
 
 ####Backup Scope: Full or Incremental
 
@@ -43,10 +43,15 @@
       * Creating a full-backup file normally takes longer and requires more storage space than creating an incremental-backup file.  
    * An **incremental-backup file** contains only **the difference** between present data and data already backed up.  
       * An incremental-backup file is normally faster to create and smaller to keep than a full-backup file.  
-      * An incremental-backup file always **supplements** a previous backup-file.  
+      * An incremental-backup file always **updates** a previous backup-file.  
         If you set the Backup task to create incremental backups but a previous backup file doesn't exist -  
         Backup will create a **full backup** first.  
         Subsequent backups will be incremental.  
+
+* A **typical configuration** would be quick incremental-backup runs that "fill the gaps" between full backups.  
+  For example -  
+   * A **full-backup** task set to run **every 12 hours**,  
+   * and an **incremental-backup** task that runs **every 30 minutes**.  
 
 ---
 
@@ -91,14 +96,7 @@ There are two backup types: [Logical-backup](../../../../client-api/operations/m
 
 ####Encryption
 
-Stored data can be **Encrypted** or **Unencrypter**.  
-
-* Snapshot encryption  
-   * The snapshot of an [encrypted database](../../../../server/security/encryption/database-encryption), is encrypted.  
-   * The snapshot of an unencrypted database, is unencrypted.  
-* Logical-backup encryption  
-   * With RavenDB 4.0 and 4.1, you can create only an unencrypted logical-backup.  
-   * With RavenDB 4.2 and on, you can encrypt a logical-backup as well.  
+Stored data can be [Encrypted](../../../../client-api/operations/maintenance/backup/encrypted-backup) or Unencrypted.  
 
 ---
 

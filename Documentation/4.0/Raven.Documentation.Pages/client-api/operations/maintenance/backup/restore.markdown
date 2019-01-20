@@ -20,7 +20,7 @@ You can restore backed up databases using the Studio, or client API methods.
 
 ---
 
-{PANEL: Restoring a database}
+{PANEL: Restoring a Database}
 
 ####Configuration and Execution  
 
@@ -42,9 +42,13 @@ You can restore backed up databases using the Studio, or client API methods.
     | **EncryptionKey** <br> (Optional -<br> omit for default) | string | A key for an encrypted database. <br> **Default behavior: Try to restore as if DB is unencrypted.**|
     | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | boolean | `true` to disable ongoing tasks after restoring, <br> `false` to enable tasks after restoring. <br> **Default: `false` (tasks DO run when backup is restored)**|
   
+{NOTE: Make sure your server has permissions to read from `BackupLocation` and write to `DataDirectory`.}
+Verify that RavenDB has full access to the backup-files and database folders.
+{NOTE/}
+
 {PANEL/}
 
-{PANEL: Restore database to a single node}
+{PANEL: Restore Database to a Single Node}
 
 *  **Configuration**  
      * Set `DatabaseName` with the **new database name**.  
@@ -88,7 +92,7 @@ You can restore backed up databases using the Studio, or client API methods.
 
 {PANEL/}
 
-{PANEL: Restore Database to multiple nodes}
+{PANEL: Restore Database to Multiple Nodes}
 
 ####Restore Database to a Single Node & Replicate it to Other Nodes  
 

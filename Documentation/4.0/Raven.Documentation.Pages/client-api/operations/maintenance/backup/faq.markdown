@@ -7,7 +7,7 @@
 * Q: **Is there a one-time backup?**
 * A: No. Backup is an on-going task, and is meant to back your data up continuously.  
       * If you wish, you can trigger it for immediate execution and then disable the task.  
-      * You can also use [Smuggler](../../../../client-api/smuggler/what-is-smuggler#what-is-smuggler) for one-time [export](../../../../client-api/smuggler/what-is-smuggler#export) operations.  
+      * You can also use [Smuggler](../../../../client-api/smuggler/what-is-smuggler#what-is-smuggler) as an equivalent of a full backup for a single [export](../../../../client-api/smuggler/what-is-smuggler#export) operation.  
 
 ---
 
