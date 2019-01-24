@@ -680,7 +680,7 @@
             "title": "RavenDB NoSQL Management Studio GUI | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb-nosql-document-database-management-studio-gui",
-            "publishedAt": "2019-01-29"
+            "publishedAt": null
         },
         "SeoMetaProperties": {
             "description": "Our built in GUI is part of your NoSQL Document Database. Monitor performance, operations, and all data. Create new nodes, ETL replication, MapReduce and more.",
@@ -708,7 +708,7 @@
             "title": "A NoSQL Database System Architecture for the IoT | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/a-nosql-database-system-architecture-for-the-iot",
-            "publishedAt": "2019-01-31"
+            "publishedAt": null
         },
         "SeoMetaProperties": {
             "description": "Even as the amount and form of your data has changed drastically over the past decade, the fundamentals of your database system architecture doesn’t have to.",
