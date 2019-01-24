@@ -63,6 +63,13 @@ For example:
       - You can successfully modify Counters while their document is being modified by a different client.  
   * Counters actions can still be performed when their related documents are in a conflict state.  
 
+* **Counters cost**  
+  * Counters are designated to lower the cost of counting, but do come with a price.  
+     * **All the names** of a document's Counters are added to its content, increasing its size.  
+     * **Counters data** occupies storage space.  
+  * Be aware that the negligible amount of resources required by a few Counters, may become significant when managing many Counters.  
+    Prefer using a small amount of Counters for a large number of calculations.  
+  
 ---
 
 * **Counter Naming Convention**  
@@ -88,7 +95,7 @@ For example:
 * Counters management is currently an **experimental feature** of RavenDB, and is disabled by default.  
 
 *  To enable this feature, follow these steps:  
-  - Open the RavenDB server folder. E.g. `C:\Users\Dave\Downloads\RavenDB-4.1.1-windows-x64\Server`  
+  - Open the RavenDB server folder, e.g. `C:\Users\Dave\Downloads\RavenDB-4.1.1-windows-x64\Server`  
   - Open settings.json for editing.  
   - Enable the Experimental Features -  
     Verify that the json file contains the following line: **"Features.Availability": "Experimental"**  
@@ -107,26 +114,25 @@ Managing Counters is performed using the `CountersFor` Session object.
   - `CountersFor.GetAll`: Get _all_ the Counters of a document and their values.  
 
 *  **Usage Flow**:  
-  - Open a session.  
-  - Create an instance of `CountersFor`.  
-      - Either pass the `CountersFor` constructor an explicit document ID, -or-  
-      - Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
-  - Use Counter methods to manage the document's Counters.  
-
-* **Note: After executing `Increment` or `Delete`, you need to call `session.SaveChanges` for the changes to take effect.**  
+  * Open a session.  
+  * Create an instance of `CountersFor`.  
+      * Either pass the `CountersFor` constructor an explicit document ID, -or-  
+      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+  * Use Counter methods to manage the document's Counters.  
+  * If you execute [Increment](../../../client-api/session/counters/create-or-modify) or [Delete](../../../client-api/session/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
 
 *  **Success and Failure**:  
   - As long as the document exists, Counter actions (Increment, Get, Delete etc.) always succeed.
   - When a transaction that includes a Counter modification fails for any reason (e.g. a document concurrency conflict), 
     the Counter modification is reverted.
 
-* **Usage Flow Samples**
-
-  * **Using `CountersFor` by explicitly passing it a document ID (without pre-loading the document):**
-{CODE counters_region_CountersFor_without_document_load@ClientApi\Session\Counters\Counters.cs /}
-
-  * **Using `CountersFor` by passing it the document object:**
-{CODE counters_region_CountersFor_with_document_load@ClientApi\Session\Counters\Counters.cs /}
+* **`CountersFor` Usage Samples**  
+  You can Use `CountersFor` by **explicitly passing it a document ID** (without pre-loading the document).  
+  You can also use `CountersFor` by passing it **the document object**.  
+  {CODE-TABS}
+  {CODE-TAB:csharp:Pass-CountersFor-Document-ID counters_region_CountersFor_without_document_load@ClientApi\Session\Counters\Counters.cs /}
+  {CODE-TAB:csharp:Pass-CountersFor-Document-Object counters_region_CountersFor_with_document_load@ClientApi\Session\Counters\Counters.cs /}
+  {CODE-TABS/}
 
 ---
 
@@ -139,15 +145,15 @@ can operate on a set of Counters of different documents in a single request.
 {PANEL/}
 
 ## Related articles
-### Studio
-- [Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
+**Studio Articles**:  
+[Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
 
-###Client-API - Session
-- [Create or Modify Counter](../../../client-api/session/counters/create-or-modify)
-- [Delete Counter](../../../client-api/session/counters/delete)
-- [Retrieve Counter Values](../../../client-api/session/counters/retrieve-counter-values)
-- [Counters Interoperability](../../../client-api/session/counters/interoperability)
-- [Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)
+**Client-API - Session Articles**:  
+[Creating and Modifying Counters](../../../client-api/session/counters/create-or-modify)  
+[Deleting a Counter](../../../client-api/session/counters/delete)  
+[Retrieving Counter Values](../../../client-api/session/counters/retrieve-counter-values)  
+[Counters and other features](../../../client-api/session/counters/counters-and-other-features)  
+[Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)  
 
-###Client-API - Operations
-- [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+**Client-API - Operations Articles**:  
+[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

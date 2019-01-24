@@ -1,13 +1,10 @@
-# Retrieve Counter Values  
+# Retrieving Counter Values  
 ---
 
 {NOTE: }
 
-###`CountersFor.Get` & `CountersFor.GetAll`
-
-* You can retrieve the value of a single Counter (**Get**), or the values of all the Counters of a document (**GetAll**).
-
-* `Get` & `GetAll` are members of the [CountersFor Session object](../../../client-api/session/counters/overview#counter-methods-and-the--object).  
+* Use [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`Get` to retrieve the value of **a single Counter**,  
+  or [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`GetAll` to retrieve the values of **all the Counters of a document**.  
 
 * In this page:  
 
@@ -26,7 +23,7 @@
 
 {PANEL: Get Method - Retrieve a single Counter's value}
 
-#### Get: Syntax
+#### Get Syntax:
 
 * Use `Get` to retrieve the current value of a single Counter.  
 
@@ -40,7 +37,7 @@
 |:-------------:|:-------------:|
 | `long` | Counter's current value |
 
-#### Get: Usage Flow
+#### Get Usage Flow:
 
   - Open a session  
   - Create an instance of `CountersFor`.  
@@ -50,7 +47,7 @@
 
 {NOTE: }
 
-#### Get: Code Sample
+#### Get Code Sample:
 
 {CODE counters_region_Get@ClientApi\Session\Counters\Counters.cs /}
 {NOTE/}
@@ -60,7 +57,8 @@
 
 {PANEL: GetAll Method - Retrieve ALL Counters of a document}
 
-#### **GetAll**: Syntax
+#### GetAll Syntax:
+
 * Use `GetAll` to retrieve all names and values of a document's Counters.  
 
 {CODE GetAll-definition@ClientApi\Session\Counters\Counters.cs /}
@@ -69,32 +67,32 @@
 |:-------------:|:-------------:|
 | Dictionary | An array of Counter names and values |
 
-####**GetAll**: Usage Flow
+####GetAll Usage Flow:
 
-  - Open a session.    - 
-  - Create an instance of `CountersFor`.  
-      - Either pass the `CountersFor` constructor an explicit document ID, -or-  
-      - Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
-  - Execute `CountersFor.GetAll`.
+* Open a session.    - 
+* Create an instance of `CountersFor`.  
+   * Either pass the `CountersFor` constructor an explicit document ID, -or-  
+   * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+* Execute `CountersFor.GetAll`.
 
 {NOTE: }
 
-####**GetAll**: Code Sample
+####GetAll Code Sample:
 {CODE counters_region_GetAll@ClientApi\Session\Counters\Counters.cs /}
 {NOTE/}
 
 {PANEL/}
 
 ## Related articles
-### Studio
-- [Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
+**Studio Articles**:  
+[Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
 
-###Client-API - Session
-- [Counters Overview](../../../client-api/session/counters/overview)
-- [Create or Modify Counter](../../../client-api/session/counters/create-or-modify)
-- [Delete Counter](../../../client-api/session/counters/delete)
-- [Counters Interoperability](../../../client-api/session/counters/interoperability)
-- [Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)
+**Client-API - Session Articles**:  
+[Counters Overview](../../../client-api/session/counters/overview)  
+[Creating and Modifying Counters](../../../client-api/session/counters/create-or-modify)  
+[Deleting a Counter](../../../client-api/session/counters/delete)  
+[Counters and other features](../../../client-api/session/counters/counters-and-other-features)  
+[Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)  
 
-###Client-API - Operations
-- [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+**Client-API - Operations Articles**:  
+[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

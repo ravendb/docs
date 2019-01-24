@@ -1,26 +1,22 @@
-# Create or Modify a Counter
+# Creating and Modifying Counters
 ---
 
 {NOTE: }
 
-###`CountersFor.Increment`
+* Use the [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`Increment` method to **create** a new Counter or **modify** an existing Counter's value.  
 
-* Use the `Increment` method to **create** a new Counter, or **modify** an existing Counter's value.  
-
-* `Increment` is a member of the [CountersFor Session object](../../../client-api/session/counters/overview#counter-methods-and-the--object).  
-
-*  If the Counter already exists, `Increment` will increase (or decrease, if the value to "increment" is negative) its value.  
+*  If the Counter exists, `Increment` will add a number to the Counter's current value.  
    If the Counter doesn't exist, `Increment` will create it and set its initial value.  
 
 * In this page:
-  - [Syntax](../../../client-api/session/counters/create-or-modify#syntax)
-  - [Usage](../../../client-api/session/counters/create-or-modify#usage)
+  - [`Increment` Syntax](../../../client-api/session/counters/create-or-modify#increment-syntax)
+  - [`Increment` Usage](../../../client-api/session/counters/create-or-modify#increment-usage)
   - [Code Sample](../../../client-api/session/counters/create-or-modify#code-sample)
 {NOTE/}
 
 ---
 
-{PANEL: Syntax}
+{PANEL: `Increment` Syntax}
 
 {CODE Increment-definition@ClientApi\Session\Counters\Counters.cs /}
 
@@ -30,7 +26,7 @@
 |`incrementValue` | long | Increase Counter by this value. Default value is 1. <br> For a new Counter, this will be its initial value. |
 {PANEL/}
 
-{PANEL: Usage}
+{PANEL: `Increment` Usage}
 
 *  **Flow**:  
   - Open a session  
@@ -51,15 +47,15 @@
 {PANEL/}
 
 ## Related articles
-### Studio
-- [Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
+**Studio Articles**:  
+[Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
 
-###Client-API - Session
-- [Counters Overview](../../../client-api/session/counters/overview)
-- [Delete Counter](../../../client-api/session/counters/delete)
-- [Retrieve Counter Values](../../../client-api/session/counters/retrieve-counter-values)
-- [Counters Interoperability](../../../client-api/session/counters/interoperability)
-- [Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)
+**Client-API - Session Articles**:  
+[Counters Overview](../../../client-api/session/counters/overview)  
+[Deleting a Counter](../../../client-api/session/counters/delete)  
+[Retrieving Counter Values](../../../client-api/session/counters/retrieve-counter-values)  
+[Counters and other features](../../../client-api/session/counters/counters-and-other-features)  
+[Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)  
 
-###Client-API - Operations
-- [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+**Client-API - Operations Articles**:  
+[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

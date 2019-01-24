@@ -1,34 +1,28 @@
-# Delete a Counter  
+# Deleting a Counter  
 ---
 
 {NOTE: }
 
-###`CountersFor.Delete`
-
-* Use the `Delete` method to remove a Counter from a document.  
-
-* `Delete` is a member of the [CountersFor Session object](../../../client-api/session/counters/overview#counter-methods-and-the--object).  
-
-* `Delete` will not generate an error if the Counter doesn't exist.  
+* Use the [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`Delete` method to remove a Counter from a document.  
 
 * In this page:
-    - [Syntax](../../../client-api/session/counters/delete#syntax)
-    - [Usage](../../../client-api/session/counters/delete#usage)
+    - [`Delete ` Syntax](../../../client-api/session/counters/delete#delete-syntax)
+    - [`Delete ` Usage](../../../client-api/session/counters/delete#delete-usage)
     - [Code Sample](../../../client-api/session/counters/delete#code-sample)
 {NOTE/}
 
 ---
 
-{PANEL: Syntax}
+{PANEL: `Delete ` Syntax}
 
 {CODE Delete-definition@ClientApi\Session\Counters\Counters.cs /}
 
-| Parameters | Type | Description |
+| Parameter | Type | Description |
 |:-------------:|:-------------:|:-------------:|
 | `counterName` |  string | Counter's name |
 {PANEL/}
 
-{PANEL: Usage}
+{PANEL: `Delete ` Usage}
 
 *  **Flow**:  
   - Open a session  
@@ -41,6 +35,8 @@
 * **Note**:
     * A Counter you deleted will be removed only after the execution of `SaveChanges()`.  
     * Deleting a document deletes its Counters as well.  
+    * `Delete` will **not** generate an error if the Counter doesn't exist.  
+
 {PANEL/}
 
 {PANEL: Code Sample}
@@ -49,15 +45,15 @@
 {PANEL/}
 
 ## Related articles
-### Studio
-- [Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
+**Studio Articles**:  
+[Studio Counters Management](../../../studio/database/documents/document-view/additional-features/counters#counters)  
 
-###Client-API - Session
-- [Counters Overview](../../../client-api/session/counters/overview)
-- [Create or Modify Counter](../../../client-api/session/counters/create-or-modify)
-- [Retrieve Counter Values](../../../client-api/session/counters/retrieve-counter-values)
-- [Counters Interoperability](../../../client-api/session/counters/interoperability)
-- [Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)
+**Client-API - Session Articles**:  
+[Counters Overview](../../../client-api/session/counters/overview)  
+[Creating and Modifying Counters](../../../client-api/session/counters/create-or-modify)  
+[Retrieving Counter Values](../../../client-api/session/counters/retrieve-counter-values)  
+[Counters and other features](../../../client-api/session/counters/counters-and-other-features)  
+[Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)  
 
-###Client-API - Operations
-- [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+**Client-API - Operations Articles**:  
+[Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

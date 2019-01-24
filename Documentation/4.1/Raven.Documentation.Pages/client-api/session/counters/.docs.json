@@ -6,22 +6,22 @@
     },
     {
         "Path": "create-or-modify.markdown",
-        "Name": "Create or Modify a Counter",
+        "Name": "Creating and Modifying Counters",
         "Mappings": []
     },
     {
         "Path": "delete.markdown",
-        "Name": "Delete a Counter",
+        "Name": "Deleting a Counter",
         "Mappings": []
     },
     {
         "Path": "retrieve-counter-values.markdown",
-        "Name": "Retrieve Counter Values",
+        "Name": "Retrieving Counter Values",
         "Mappings": []
     },
     {
-        "Path": "interoperability.markdown",
-        "Name": "Interoperability",
+        "Path": "counters-and-other-features.markdown",
+        "Name": "Counters and other features",
         "Mappings": []
     },
     {

@@ -9,7 +9,7 @@
    * Voting results  
    * Any event related to the document  
 
-* Create and [manage](../../../../../client-api/session/counters/overview#managing-counters) Counters using [API methods](../../../../../client-api/session/counters/overview), or through the Studio.  
+* Create and manage Counters using [API methods](../../../../../client-api/session/counters/overview) or through the Studio.  
 
 * In this page:  
   * [Viewing Counters Data](../../../../../studio/database/documents/document-view/additional-features/counters#viewing-counters-data)  
@@ -102,7 +102,7 @@
 
 {PANEL:Counters and Ongoing Tasks}
 
- * There are Four [Ongoing task](../../../../../studio/database/tasks/ongoing-tasks/general-info) that [relate to Counters](../../../../../client-api/session/counters/interoperability#counters-and-ongoing-tasks) and can be configured using the Studio:  
+ * There are [Ongoing task](../../../../../studio/database/tasks/ongoing-tasks/general-info) that [relate to Counters](../../../../../client-api/session/counters/counters-and-other-features#counters-and-ongoing-tasks) and can be configured using the Studio:  
    * [Backup](../../../../../studio/database/tasks/ongoing-tasks/backup-task)  
      * All data, including Counters and their values, is stored and restored automatically.  
        There's no need to handle Counters in particular.  
@@ -138,7 +138,7 @@
 
 {PANEL:Counters Export and Import}
 
-* Use the "Export" option to dump selected database components into a file, for backup or transit.  
+* Use the "Export" option to export selected database components into a file, for backup or transit.  
   Use the "Import" option to restore exported components when required.  
    * Please note that a Counter can be imported only if the Counter's document exists.  
        * E.g., a Counter that's been created for a document named "products/1-C" and then exported to a file, can be imported only if "products/1-C" still exist.  
@@ -177,6 +177,6 @@
 
 
 ## Related articles
-### Client API
-- [Counters Overview (Session Usage)](../../../../../client-api/session/counters/overview)
-- [Counters Operations](../../../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)
+**Client API Articles**:  
+[Counters Overview (Session Usage)](../../../../../client-api/session/counters/overview)  
+[Counters Operations](../../../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  
