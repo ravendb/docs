@@ -1,4 +1,4 @@
-# Counters in a Cluster
+# Counters In Clusters
 ---
 
 {NOTE: }
@@ -9,15 +9,15 @@
   * In which rare cases do Counter modifications "race" against each other.  
 
 * In this page:  
-  * [Counter-Value Modification](../../../client-api/session/counters/counters-in-a-cluster#counter-value-modification)  
-     * [Value modification Flow](../../../client-api/session/counters/counters-in-a-cluster#value-modification-flow)  
-     * [Value Replication Flow](../../../client-api/session/counters/counters-in-a-cluster#value-replication-flow)  
-     * [Server Reply to Client Request](../../../client-api/session/counters/counters-in-a-cluster#server-reply-to-client-request)  
-  * [Counter Name modification](../../../client-api/session/counters/counters-in-a-cluster#counter-name-modification)  
-  * [Concurrent Modification](../../../client-api/session/counters/counters-in-a-cluster#concurrent-modification)  
-  * [Concurrent `Delete` and `Increment`](../../../client-api/session/counters/counters-in-a-cluster#concurrent-delete-and-increment)  
-     * [In a single-server system](../../../client-api/session/counters/counters-in-a-cluster#in-a-single-server-system)  
-     * [In a multi-node cluster](../../../client-api/session/counters/counters-in-a-cluster#in-a-multi-node-cluster)  
+  * [Counter-Value Modification](../../../client-api/session/counters/counters-in-clusters#counter-value-modification)  
+     * [Value modification Flow](../../../client-api/session/counters/counters-in-clusters#value-modification-flow)  
+     * [Value Replication Flow](../../../client-api/session/counters/counters-in-clusters#value-replication-flow)  
+     * [Server Reply to Client Request](../../../client-api/session/counters/counters-in-clusters#server-reply-to-client-request)  
+  * [Counter Name modification](../../../client-api/session/counters/counters-in-clusters#counter-name-modification)  
+  * [Concurrent Modification](../../../client-api/session/counters/counters-in-clusters#concurrent-modification)  
+  * [Concurrent `Delete` and `Increment`](../../../client-api/session/counters/counters-in-clusters#concurrent-delete-and-increment)  
+     * [In a single-server system](../../../client-api/session/counters/counters-in-clusters#in-a-single-server-system)  
+     * [In a multi-node cluster](../../../client-api/session/counters/counters-in-clusters#in-a-multi-node-cluster)  
 {NOTE/}
 
 ---
@@ -53,7 +53,7 @@ When a client modifies a Counter's value, only the portion of the Counter's valu
 ---
 
 ####Value Replication Flow
-After modifying the Counter's value locally, a node [replicates](../../../client-api/session/counters/counters-in-a-cluster#value-modification-and-replication) the new value to all other nodes.  
+After modifying the Counter's value locally, a node [replicates](../../../client-api/session/counters/counters-in-clusters#value-modification-and-replication) the new value to all other nodes.  
 This way each node is always kept updated with the values set for each Counter **by all nodes**.  
 
   > In the following example:  
@@ -100,7 +100,7 @@ When a client requests a Counter's value, it gets a single accumulated sum.
 
 **The same Counter can be concurrently modified by multiple clients**.  
 
-As described in the [Counters in a multi-node cluster](../../../client-api/session/counters/counters-in-a-cluster#counters-in-a-multi-node-cluster) section, each node manages its own portion of a Counter's value.  
+As described in the [Counters in a multi-node cluster](../../../client-api/session/counters/counters-in-clusters#counters-in-a-multi-node-cluster) section, each node manages its own portion of a Counter's value.  
 As a result-  
 
 * Clients can modify the same Counter concurrently.  

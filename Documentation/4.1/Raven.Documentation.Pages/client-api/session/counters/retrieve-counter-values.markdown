@@ -39,11 +39,11 @@
 
 #### Get Usage Flow:
 
-  - Open a session  
-  - Create an instance of `CountersFor`.  
-      - Either pass the `CountersFor` constructor an explicit document ID, -or-  
-      - Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
-  - Execute `CountersFor.Get`
+  * Open a session  
+  * Create an instance of `CountersFor`.  
+      * Either pass `CountersFor` an explicit document ID, -or-  
+      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+  * Execute `CountersFor.Get`
 
 {NOTE: }
 
@@ -71,7 +71,7 @@
 
 * Open a session.    - 
 * Create an instance of `CountersFor`.  
-   * Either pass the `CountersFor` constructor an explicit document ID, -or-  
+   * Either pass `CountersFor` an explicit document ID, -or-  
    * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
 * Execute `CountersFor.GetAll`.
 
@@ -92,7 +92,7 @@
 [Creating and Modifying Counters](../../../client-api/session/counters/create-or-modify)  
 [Deleting a Counter](../../../client-api/session/counters/delete)  
 [Counters and other features](../../../client-api/session/counters/counters-and-other-features)  
-[Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)  
+[Counters In Clusters](../../../client-api/session/counters/counters-in-clusters)  
 
 **Client-API - Operations Articles**:  
 [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

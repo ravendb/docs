@@ -14,7 +14,6 @@
 * In this page:  
   * [Viewing Counters Data](../../../../../studio/database/documents/document-view/additional-features/counters#viewing-counters-data)  
   * [Managing Counters](../../../../../studio/database/documents/document-view/additional-features/counters#managing-counters)  
-  * [Counters and ongoing-tasks](../../../../../studio/database/documents/document-view/additional-features/counters#counters-and-ongoing-tasks)  
   * [Counters Export and Import](../../../../../studio/database/documents/document-view/additional-features/counters#counters-export-and-import)  
 {NOTE/}
 
@@ -100,48 +99,10 @@
 {NOTE/}
 {PANEL/}
 
-{PANEL:Counters and Ongoing Tasks}
-
- * There are [Ongoing task](../../../../../studio/database/tasks/ongoing-tasks/general-info) that [relate to Counters](../../../../../client-api/session/counters/counters-and-other-features#counters-and-ongoing-tasks) and can be configured using the Studio:  
-   * [Backup](../../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-     * All data, including Counters and their values, is stored and restored automatically.  
-       There's no need to handle Counters in particular.  
-     * **Trigger**: Time Schedule  
-                    Full/Partial backup is invoked by a pre-set time routine.  
-     * **Counter value**: Distributed.  
-                          Counters are stored and restored along with their values on all nodes. 
-
-   * [External Replication](../../../../../studio/database/tasks/ongoing-tasks/external-replication-task)  
-     * The ongoing External Replication task replicates all data automatically, including Counters.  
-       **Triggers**: Document Change,
-                     Counter Value Modification  
-       **Counter value**: Distributed.
-                          Counters are replicated along with their values on all nodes. 
-
-   * [RavenDB ETL](../../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)  
-     Use [ETL](../../../server/ongoing-tasks/etl/basics) to export data from a Raven database to an external (either Raven or SQL) database.  
-     * [SQL ETL](../../../server/ongoing-tasks/etl/sql) - **Not supported**  
-                Counters are not exported to SQL databases over SQL ETL.  
-     * [RavenDB ETL](../../../server/ongoing-tasks/etl/raven) - **Supported**  
-         * Counters [are](../../../server/ongoing-tasks/etl/raven#counters) exported over RavenDB ETL.  
-         * Default behavior: When an ETL script is not provided, Counters **are** exported.  
-         * **Triggers**: Document Change,
-                         Counter Value Modification  
-         * **Counter value**: Distributed.
-                              Counters are exported along with their values on all nodes. 
-
-   * [Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions)  
-       * **Trigger**: Document Change  
-                      Data Subscriptions are **not** triggered by Counter Value modifications.  
-
-{PANEL/}
-
 {PANEL:Counters Export and Import}
 
-* Use the "Export" option to export selected database components into a file, for backup or transit.  
-  Use the "Import" option to restore exported components when required.  
-   * Please note that a Counter can be imported only if the Counter's document exists.  
-       * E.g., a Counter that's been created for a document named "products/1-C" and then exported to a file, can be imported only if "products/1-C" still exist.  
+You can **Export** selected components, including Counters, into a file, 
+and **Import** them into your database when required.  
 
 {NOTE: }
 
@@ -170,6 +131,16 @@
   **3.** Select a file you wish to import from, or another source.  
   **4.** Select the components you wish to import. Make sure Counters are included.  
   **5.** Click to import the database.  
+
+> Remember that Counters are **not** independent entities. You can import a Counter with its document, or into an existing document.  
+> 
+> E.g. to import the Counters of a document named "products/1-C":  
+>  
+>* Check "Include Documents" **and** "Include Counters".  
+>  This will import documents along with their Counters.  
+>* Check "Include Counters" but **not** "Include Documents".  
+>  Verify that a document named **products/1-C** already exists in your database.  
+>  The Counters will be imported into products/1-C.  
 
 {NOTE/}
 

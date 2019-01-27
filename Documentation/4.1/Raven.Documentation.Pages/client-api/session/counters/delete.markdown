@@ -3,7 +3,9 @@
 
 {NOTE: }
 
-* Use the [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`Delete` method to remove a Counter from a document.  
+* A Counter is deleted when its document is deleted.  
+
+* You can also use the [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`Delete` method to remove a Counter from a document.  
 
 * In this page:
     - [`Delete ` Syntax](../../../client-api/session/counters/delete#delete-syntax)
@@ -25,12 +27,12 @@
 {PANEL: `Delete ` Usage}
 
 *  **Flow**:  
-  - Open a session  
-  - Create an instance of `CountersFor`.  
-      - Either pass the `CountersFor` constructor an explicit document ID, -or-  
-      - Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
-  - Execute `CountersFor.Delete`
-  - Execute `session.SaveChanges` for the changes to take effect  
+  * Open a session  
+  * Create an instance of `CountersFor`.  
+      * Either pass `CountersFor` an explicit document ID, -or-  
+      * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
+  * Execute `CountersFor.Delete`
+  * Execute `session.SaveChanges` for the changes to take effect  
 
 * **Note**:
     * A Counter you deleted will be removed only after the execution of `SaveChanges()`.  
@@ -53,7 +55,7 @@
 [Creating and Modifying Counters](../../../client-api/session/counters/create-or-modify)  
 [Retrieving Counter Values](../../../client-api/session/counters/retrieve-counter-values)  
 [Counters and other features](../../../client-api/session/counters/counters-and-other-features)  
-[Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)  
+[Counters In Clusters](../../../client-api/session/counters/counters-in-clusters)  
 
 **Client-API - Operations Articles**:  
 [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  

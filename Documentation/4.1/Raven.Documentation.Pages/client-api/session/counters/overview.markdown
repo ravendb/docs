@@ -3,7 +3,7 @@
 
 {NOTE: }
 
-* Counters are numeric data variables that can be added to a document.  
+* RavenDB's distributed counters, **Counters** for short, are numeric data variables that can be added to documents.  
   Use a Counter to count anything that needs counting, like:
    * Sold products  
    * Voting results  
@@ -31,6 +31,13 @@ E.g. Use counters when you want to -
   - Count how many visitors from certain countries or regions read a document.  
   - Continuously record the number of visitors on an event page.  
 
+* **Distributed Values**  
+A Counter's value is [distributed between cluster nodes](../../../client-api/session/counters/counters-in-clusters).  
+Among the advantages of this:  
+
+ * The cluster **remains available** even when nodes crash.  
+ * Any node can provide or modify a Counter's value immediately, without checking or coordinating this with other nodes.  
+
 * **High performance, Low resources**  
 A document includes the Counter's _name_, while the Counter's actual _value_ is kept in a separate location.  
 Modifying a Counter's value doesn't require the modification of the document itself.  
@@ -55,7 +62,7 @@ For example:
 * **Cumulative Counter Actions**  
    - Counter value-modification actions are cumulative, the order in which they are executed doesn't matter.  
      E.g., It doesn't matter if a Counter has been incremented by 2 and then by 7, or by 7 first and then by 2.  
-   - When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require [special attention](../../../client-api/session/counters/counters-in-a-cluster#concurrent-delete-and-increment).  
+   - When a Counter is deleted, the sequence of Counter actions becomes non-cumulative and may require [special attention](../../../client-api/session/counters/counters-in-clusters#concurrent-delete-and-increment).  
 
 * **Counters and conflicts**  
   * Counter actions (for either name or value) do not cause conflicts.  
@@ -67,7 +74,7 @@ For example:
   * Counters are designated to lower the cost of counting, but do come with a price.  
      * **All the names** of a document's Counters are added to its content, increasing its size.  
      * **Counters data** occupies storage space.  
-  * Be aware that the negligible amount of resources required by a few Counters, may become significant when managing many Counters.  
+  * Be aware that the amount of resources required by a few Counters is negligible, but may become significant when managing many Counters.  
     Prefer using a small amount of Counters for a large number of calculations.  
   
 ---
@@ -81,7 +88,7 @@ For example:
     * Valid range: Signed 64-bit integer (-9223372036854775808 to 9223372036854775807)  
 
 * **Number of Counters per document**  
-    * There's no external limitation on the number of Counters you may create.  
+    * RavenDB doesn't limit the number of Counters you can create.  
 
 * **`HasCounters` Flag**  
     * When a Counter is added to a document, RavenDB automatically sets a `HasCounters` Flag in the document's metadata.  
@@ -116,7 +123,7 @@ Managing Counters is performed using the `CountersFor` Session object.
 *  **Usage Flow**:  
   * Open a session.  
   * Create an instance of `CountersFor`.  
-      * Either pass the `CountersFor` constructor an explicit document ID, -or-  
+      * Either pass `CountersFor` an explicit document ID, -or-  
       * Pass it an [entity tracked by the session](../../../client-api/session/loading-entities), e.g. a document object returned from [session.query](../../../client-api/session/querying/how-to-query) or from [session.Load](../../../client-api/session/loading-entities#load).  
   * Use Counter methods to manage the document's Counters.  
   * If you execute [Increment](../../../client-api/session/counters/create-or-modify) or [Delete](../../../client-api/session/counters/delete), call `session.SaveChanges` for the action to take effect on the server.  
@@ -153,7 +160,7 @@ can operate on a set of Counters of different documents in a single request.
 [Deleting a Counter](../../../client-api/session/counters/delete)  
 [Retrieving Counter Values](../../../client-api/session/counters/retrieve-counter-values)  
 [Counters and other features](../../../client-api/session/counters/counters-and-other-features)  
-[Counters in a Cluster](../../../client-api/session/counters/counters-in-a-cluster)  
+[Counters In Clusters](../../../client-api/session/counters/counters-in-clusters)  
 
 **Client-API - Operations Articles**:  
 [Counters Operations](../../../client-api/operations/counters/get-counters#operations--counters--how-to-get-counters)  
