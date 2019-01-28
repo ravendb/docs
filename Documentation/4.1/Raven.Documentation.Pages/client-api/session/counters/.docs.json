@@ -1,0 +1,32 @@
+[
+    {
+        "Path": "overview.markdown",
+        "Name": "Overview",
+        "Mappings": []
+    },
+    {
+        "Path": "create-or-modify.markdown",
+        "Name": "Creating and Modifying Counters",
+        "Mappings": []
+    },
+    {
+        "Path": "delete.markdown",
+        "Name": "Deleting a Counter",
+        "Mappings": []
+    },
+    {
+        "Path": "retrieve-counter-values.markdown",
+        "Name": "Retrieving Counter Values",
+        "Mappings": []
+    },
+    {
+        "Path": "counters-and-other-features.markdown",
+        "Name": "Counters and other features",
+        "Mappings": []
+    },
+    {
+        "Path": "counters-in-clusters.markdown",
+        "Name": "Counters In Clusters",
+        "Mappings": []
+    }
+]
