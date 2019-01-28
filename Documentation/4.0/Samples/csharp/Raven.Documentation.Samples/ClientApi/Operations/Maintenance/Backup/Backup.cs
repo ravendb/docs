@@ -175,6 +175,52 @@ namespace Rvn.Ch02
                 Database = "Products"
             }.Initialize())
             {
+                var config = new PeriodicBackupConfiguration
+                {
+                    LocalSettings = new LocalSettings
+                    {
+                        FolderPath = @"E:\RavenBackups"
+                    },
+
+                    //FTP Backup settings
+                    FtpSettings = new FtpSettings
+                    {
+                        Url = "192.168.10.4",
+                        Port = 8080,
+                        UserName = "John",
+                        Password = "JohnDoe38"
+                    },
+
+                    //Azure Backup settings
+                    AzureSettings = new AzureSettings
+                    {
+                        StorageContainer = "storageContainer",
+                        RemoteFolderName = "remoteFolder",
+                        AccountName = "JohnAccount",
+                        AccountKey = "key"
+                    }
+                };
+                #region initiate_immediate_backup_execution
+                var operation = new UpdatePeriodicBackupOperation(config);
+                var result = await docStore.Maintenance.SendAsync(operation);
+
+                //run a backup task immediately
+                await docStore.Maintenance.SendAsync(new StartBackupOperation(true, result.TaskId));
+                #endregion
+
+                #region get_backup_execution_results
+                //Provide GetPeriodicBackupStatusOperation with the task ID returned by RavenDB  
+                var backupStatus = new GetPeriodicBackupStatusOperation(result.TaskId);
+                #endregion
+            }
+
+
+            using (var docStore = new DocumentStore
+            {
+                Urls = new[] { "http://127.0.0.1:8080" },
+                Database = "Products"
+            }.Initialize())
+            {
                 #region restore_to_single_node
                 var restoreConfiguration = new RestoreBackupConfiguration();
 
@@ -274,8 +320,42 @@ namespace Rvn.Ch02
                         public string EncryptionKey { get; set; }
                         public bool DisableOngoingTasks { get; set; }
                     }
-
                     #endregion
+                }
+
+                #region periodic_backup_status
+                public class PeriodicBackupStatus : IDatabaseTaskStatus
+                {
+                    public long TaskId { get; set; }
+                    public BackupType BackupType { get; set; }
+                    public bool IsFull { get; set; }
+                    public string NodeTag { get; set; }
+                    public DateTime? LastFullBackup { get; set; }
+                    public DateTime? LastIncrementalBackup { get; set; }
+                    public DateTime? LastFullBackupInternal { get; set; }
+                    public DateTime? LastIncrementalBackupInternal { get; set; }
+                    public DateTime? LastIncrementalBackupInternal { get; set; }
+                    public LocalBackup LocalBackup { get; set; }
+                    public UploadToS3 UploadToS3;
+                    public UploadToGlacier UploadToGlacier;
+                    public UploadToAzure UploadToAzure;
+                    public UploadToFtp UploadToFtp;
+                    public long? LastEtag { get; set; }
+                    public LastRaftIndex LastRaftIndex { get; set; }
+                    public string FolderName { get; set; }
+                    public long? DurationInMs { get; set; }
+                    public long Version { get; set; }
+                    public Error Error { get; set; }
+                    public long? LastOperationId { get; set; }
+                }
+                #endregion
+
+                #region start_backup_operation
+                public StartBackupOperation(bool isFullBackup, long taskId)
+                #endregion
+                {
+                    _isFullBackup = isFullBackup;
+                    _taskId = taskId;
                 }
             }
         }

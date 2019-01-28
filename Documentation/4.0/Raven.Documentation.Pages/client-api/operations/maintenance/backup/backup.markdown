@@ -17,6 +17,7 @@
       * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup#incremental-backup)  
       * [Point-in-Time Backup](../../../../client-api/operations/maintenance/backup/backup#point-in-time-backup)  
   * [Backup to Remote Destinations](../../../../client-api/operations/maintenance/backup/backup#backup-to-remote-destinations)  
+  * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution)  
   * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup#recommended-precautions)  
 
 {NOTE/}
@@ -121,6 +122,32 @@ As described in [the overview](../../../../client-api/operations/maintenance/bac
 * Remote Backup Destinations Code Sample:
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
+{PANEL/}
+
+
+{PANEL: Initiate Immediate Backup Execution}
+
+The Backup task [runs continuously](../../../../client-api/operations/maintenance/backup/overview#backup--restore-overview) as an ongoing task, but you can also operate the task immediately if you wish to.  
+
+* To execute an existing backup task immediately, use the `StartBackupOperation` method.  
+   {CODE initiate_immediate_backup_execution@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
+  * Definition:
+    {CODE start_backup_operation@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+
+  * Parameters:
+    
+        | Parameter | Type | Functionality |
+        | ------ | ------ | ------ |
+        | isFullBackup | bool | true: full backup <br> false: incremental backup |
+        | taskId |  long | The task ID returned by RavenDB |
+
+
+* To verify the execution results, use the `GetPeriodicBackupStatusOperation` method.  
+  {CODE get_backup_execution_results@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
+   * Return Value:  
+     The status structure that **GetPeriodicBackupStatusOperation** returns, is filled with backup parameters you previously configured and with the execution results.  
+     {CODE periodic_backup_status@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 {PANEL/}
 
 {PANEL: Recommended Precautions}
