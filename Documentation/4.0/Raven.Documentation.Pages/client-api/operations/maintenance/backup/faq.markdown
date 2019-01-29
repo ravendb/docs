@@ -44,8 +44,8 @@
 ---
 
 * Q: **Are there any locations in which I better not store backup files?**  
-* A: It is recommended not to store your backups in your database's location, to avoid an even remotely-possible scenario of a database storage distress.  
-     
+* A: It is recommended not to store your backups on the same drive as your database's data files, to avoid self inflicted scenario of a database storage distress because of backups piling on.  
+
 {PANEL/}
 
 ## Related Articles

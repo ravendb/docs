@@ -5,8 +5,8 @@
 {NOTE: }
 
 * The snapshot of an encrypted database is encrypted as well.  
-  You can create an encrypted backup by taking the snapshot of an encrypted database.  
-* Logical-backup encryption is not supported by RavenDB 4.0 and 4.1.  
+  The snapshot of an unencrypted database is not uncrypted.  
+* Logical-backup encryption is **not** supported by RavenDB 4.0 and 4.1.  
 
 * In this page:  
   * [Introduction](../../../../client-api/operations/maintenance/backup/encrypted-backup#introduction)  
@@ -65,7 +65,7 @@ If the database is encrypted, so would be its snapshot. If the database is **not
 * Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
 * Create a snapshot [as you normally would](../../../../client-api/operations/maintenance/backup/backup#backup-types).  
 
-{NOTE: The incremental backups of an encrypted snapshot are encrypted as well, using the same key.}
+{NOTE: The incremental backups of an encrypted snapshot are **not** encrypted.}
 {NOTE/}
 
 ---
@@ -74,9 +74,9 @@ If the database is encrypted, so would be its snapshot. If the database is **not
 
 Restoring an encrypted snapshot is almost identical to restoring an unencrypted one.  
 
-* Embed the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
+* Include the [client authentication procedure](../../../../client-api/operations/maintenance/backup/encrypted-backup#enable-secure-communication) in your code.  
 * Pass RestoreBackupOperation an encryption key, using `restoreConfiguration.EncryptionKey`.  
-   Use **the same authentication key used to encrypt the database**.
+   Use **the same secret key used to encrypt the database**.
 * Code sample:
 {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 

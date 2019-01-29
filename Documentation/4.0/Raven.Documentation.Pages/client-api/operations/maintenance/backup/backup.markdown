@@ -3,10 +3,10 @@
 
 {NOTE: }
 
-* Backup "freezes" ACID captures of your data in chosen points of time.  
+* Create a backup of your data to secure it or to preserve a copy of it in its current state for future reference.  
 
-* Backup [runs as an ongoing task](../../../../client-api/operations/maintenance/backup/overview#backup--restore-overview).  
-   * If you need or prefer to manually backup data, you can use the [export](../../../../client-api/smuggler/what-is-smuggler#export) feature.  
+* RavenDB's ongoing Backup task is designed to run [continuously](../../../../client-api/operations/maintenance/backup/overview#backup--restore-overview).  
+  You can run it as a one-time operation as well, using [export](../../../../client-api/smuggler/what-is-smuggler#export) or executing a backup-task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
 
 * In this page:  
   * [Backup Types](../../../../client-api/operations/maintenance/backup/backup#backup-types)  
@@ -15,7 +15,6 @@
   * [Backup Scope](../../../../client-api/operations/maintenance/backup/backup#backup-scope)  
       * [Full Backup](../../../../client-api/operations/maintenance/backup/backup#full-backup)  
       * [Incremental Backup](../../../../client-api/operations/maintenance/backup/backup#incremental-backup)  
-      * [Point-in-Time Backup](../../../../client-api/operations/maintenance/backup/backup#point-in-time-backup)  
   * [Backup to Remote Destinations](../../../../client-api/operations/maintenance/backup/backup#backup-to-remote-destinations)  
   * [Initiate Immediate Backup Execution](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution)  
   * [Recommended Precautions](../../../../client-api/operations/maintenance/backup/backup#recommended-precautions)  
@@ -36,9 +35,13 @@
 
 * Restoration Time is therefore **slower** than that required when restoring a Snapshot.  
 
+* Backup size is **significantly smaller** than that of a Snapshot.
+
 * Code Sample:
   {CODE logical_full_backup_every_3_hours@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
   Note the usage of [Cron scheduling](https://en.wikipedia.org/wiki/Cron) when setting backup frequency.  
+
+---
 
 ####Snapshot
 
@@ -49,17 +52,21 @@
    * Re-indexing is not required.  
    * Re-inserting data into the database is not required.  
 
-* Restoration Time is typically **faster** than that needed when restoring a logical-backup.  
+* Restoration is typically **faster** than that of a logical backup.  
+
+* Snapshot size is typically **larger** than that of a logical backup.  
 
 * Code Sample:  
   {CODE backup_type_snapshot@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
+---
+
 ####Basic Comparison Between a Logical-Backup and a Snapshot:
 
-  | Backup Type | Stored Format | Restoration speed | Task characteristics |
+  | Backup Type | Stored Format | Restoration speed | Task characteristics | Size
   | ------ | ------ | ------ | ------ |
-  | Snapshot | Compressed Binary Image | Fast | Ongoing Background Task |
-  | Backup |  Compressed Textual Data | Slow | Ongoing Background Task |
+  | Snapshot | Compressed Binary Image | Fast | Ongoing Background Task | Larger than logical-backup's
+  | Logical backup |  Compressed Textual Data | Slow | Ongoing Background Task | Smaller than Snapshot's
 
 {NOTE: Make sure your server has access to the local backup path.}
 Verify that RavenDB is allowed to store backup files in the path set in `LocalSettings.FolderPath`.
@@ -83,36 +90,27 @@ As described in [the overview](../../../../client-api/operations/maintenance/bac
 * To run a full backup, set `FullBackupFrequency`.
   {CODE backup_full_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
+---
 
 ####Incremental Backup
 
-* An incremental-backup file is always a dump of JSON-files.  
-  It is so even when the full backup has been a binary snapshot.  
+* An incremental-backup file is **always in JSON format**. 
+  It is so even when the full backup it supplements is a binary snapshot.  
 * Incremental Backup ownership
-   * An incremental backup can be created only by the node that currently owns the incremental-backup task.  
+   * An incremental backup can be created only by the node that currently owns the backup task.  
    * The ownership is granted dynamically by the cluster.  
-   * A node can be appointed to own the incremental backup task, only after creating a full backup at least once.  
+   * A node can run the incremental backup task, only after creating a full backup at least once.  
 
 * To run an incremental backup, set `IncrementalBackupFrequency`.
   {CODE backup_incremental_backup@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
 
-
-####Point-In-Time Backup  
-
-* An elegant way to keep many restoration points without consuming too much storage space, is to use the **Revisions** feature.  
-  * [Enable the Revisions feature](../../../../server/extensions/revisions#configuration).  
-  * Routinely create [incremental backup](../../../../client-api/operations/maintenance/backup/backup#incremental-backup).  
-  * To preserve free storage, erase revisions after backup.  
-  * To restore data as it was in a certain moment -  
-     - Locate and restore the correct incremental backup.  
-     - Restore the correct [data revision](../../../../client-api/session/revisions/loading#revisions--loading-revisions) within this backup.  
 {PANEL/}
 
 {PANEL: Backup to Remote Destinations}
 
 * Backups can be made locally, as well as to a set of remote locations including -  
    * A network path
-   * an FTP/SFTP target
+   * An FTP/SFTP target
    * Amazon S3 
    * Azure Storage 
    * Amazon Glacier 

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Raven.Client.Documents.Operations.Backups;
 using Raven.Client.Documents.Smuggler;
 using Raven.Client.ServerWide.Operations;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Rvn.Ch02
 {
@@ -93,14 +94,6 @@ namespace Rvn.Ch02
                 var result = await docStore.Maintenance.SendAsync(operation);
                 #endregion
             }
-
-
-
-
-
-
-
-
 
             using (var docStore = new DocumentStore
             {
@@ -274,7 +267,7 @@ namespace Rvn.Ch02
             #endregion
 
             // path to the authentication key you received during the server setup
-            var cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
+            cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
             using (var docStore = new DocumentStore
             {
                 Urls = new[] { "https://a.RavenDBdom.development.run" },
@@ -301,13 +294,13 @@ namespace Rvn.Ch02
                 docStore.Maintenance.Server.Send(restoreBackupTask);
                 #endregion
             }
-
-            * private class Foo
+        }
+            public class Foo
             {
                 public class DeleteDatabasesOperation
                 {
                     #region restore_restorebackupoperation
-                    public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
+                    public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration);
                     #endregion
 
                     #region restore_restorebackupconfiguration
@@ -360,4 +353,4 @@ namespace Rvn.Ch02
             }
         }
     }
-}
+

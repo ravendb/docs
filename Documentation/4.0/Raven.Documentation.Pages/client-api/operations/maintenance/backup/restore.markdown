@@ -73,7 +73,7 @@ Verify that RavenDB has full access to the backup-files and database folders.
           2018-12-26-12-00.ravendb-incremental-backup  
           2018-12-26-15-00.ravendb-incremental-backup  
           2018-12-26-18-00.ravendb-incremental-backup  
-       * Feed **LastFileNameToRestore** with the 12:00 incremental-backup file name:
+       * Feed **LastFileNameToRestore** with the 2018-12-26-12-00 incremental-backup file name:
           {CODE restore_last_file_name_to_restore@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
        * The full-backup and 12:00 incremental-backup files **will** be restored.  
          The 15:00 and 18:00 files will be **omitted**.  

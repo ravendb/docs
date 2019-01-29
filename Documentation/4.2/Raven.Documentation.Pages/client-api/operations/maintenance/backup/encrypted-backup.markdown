@@ -4,8 +4,9 @@
 
 {NOTE: }
 
-* With RavenDB 4.0 and 4.1, your backup-encryption options are limited to taking a snapshot of an encrypted database.  
-  Starting with RavenDB 4.2, you can encrypt and restore logical-backups.  
+* The snapshot of an encrypted database is encrypted as well.  
+  The snapshot of an unencrypted database is not uncrypted.  
+* Encrypting logical backups **is** supported by RavenDB 4.2 and on.  
 
 * In this page:  
   * [RavenDB's Security Approach](../../../../client-api/operations/maintenance/backup/encrypted-backup#ravendb)  
@@ -68,6 +69,8 @@ If you want to encrypt your database, you need to enable authentication and cert
 ####Prerequisites to Encrypting Backups
 
 * There are **no prerequisites** to encrypting a **logical-backup**.  
+  An encrypted logical-backup can be generated for an encrypted database **and** for a non-encrypted database.  
+  You can also generate an encrypted logical backup of an encrypted database using a _different_ encryption key.  
 * If you want your **snapshot** to be encrypted, simply take the snapshot of an [encrypted database](../../../../server/security/encryption/database-encryption#creating-an-encrypted-database-using-the-rest-api-and-the-client-api).  
 
   A [snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot) is an exact image of the database. 
@@ -134,8 +137,8 @@ Creating an encrypted logical-backup is nearly similar to [creating a non-encryp
 * Code sample: encrypting a backup **with an encryption key of your choice** -  
  {CODE use_provided_encryption_key_full_sample@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
-* To create an unencrypting backup -  
-   * Either let the default setting (`EncryptionMode = EncryptionMode.None`) work for you, or -
+* To create an **unencrypted** backup:  
+   * Either let the default setting (`EncryptionMode = EncryptionMode.None`) do the work for you, or -
    * Explicitly choose `EncryptionMode.None`.
      {CODE explicitly_choose_no_encryption@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 
@@ -185,7 +188,7 @@ A database is [restored](../../../../client-api/operations/maintenance/backup/en
 to its **unencrypted** form.  
 If you want to encrypt the restored database, you have to address it explicitly.  
 
-* **To encrypt the restored database** -  
+* **To encrypt the restored database**:  
   Pass `RestoreBackupOperation` an encryption key using `restoreConfiguration.EncryptionKey`.  
   {CODE restore_encrypted_database@ClientApi\Operations\Maintenance\Backup\Backup.cs /}  
 

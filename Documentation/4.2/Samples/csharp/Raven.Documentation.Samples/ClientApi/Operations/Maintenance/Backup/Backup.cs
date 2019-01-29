@@ -109,7 +109,7 @@ namespace Rvn.Ch02
                 #endregion
             }
 
-            using (var docStore = new DocumentStore
+            using (var docStore = new DocumentStore)
             {
                 var config = new PeriodicBackupConfiguration
                 {
