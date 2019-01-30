@@ -19,7 +19,7 @@
 
 ---
 
-{PANEL:Viewing Counters Data}
+{PANEL: Viewing Counters Data}
 
 **To view counters data, open the document they belong to.**
 
@@ -57,7 +57,7 @@
 {NOTE/}
 {PANEL/}
 
-{PANEL:Managing Counters}
+{PANEL: Managing Counters}
 
 {NOTE: }
 
@@ -99,7 +99,7 @@
 {NOTE/}
 {PANEL/}
 
-{PANEL:Counters Export and Import}
+{PANEL: Counters Export and Import}
 
 You can **Export** selected components, including Counters, into a file, 
 and **Import** them into your database when required.  

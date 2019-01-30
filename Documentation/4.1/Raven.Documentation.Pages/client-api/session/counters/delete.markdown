@@ -3,9 +3,9 @@
 
 {NOTE: }
 
-* A Counter is deleted when its document is deleted.  
+* All the Counters for a document are deleted when the document is deleted.  
 
-* You can also use the [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`Delete` method to remove a Counter from a document.  
+* You can also use the [CountersFor](../../../client-api/session/counters/overview#counter-methods-and-the--object).`Delete` method to remove a specific Counter from a document.  
 
 * In this page:
     - [`Delete ` Syntax](../../../client-api/session/counters/delete#delete-syntax)

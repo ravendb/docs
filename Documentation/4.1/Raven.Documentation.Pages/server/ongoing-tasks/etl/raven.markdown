@@ -267,7 +267,8 @@ function loadCountersOfProductsBehavior(docId, counterName) {
 {CODE-BLOCK/}
 {NOTE/}
 
-{NOTE: Adding counter explicitly in a script}
+{NOTE: }
+####Adding counter explicitly in a script
 
 * The usage of counter behavior functions is limited to dealing with counters of documents that are loaded to the same collection. If a transformation script for `Employees`
 collection specifies that they are loaded to `People` collection in a target database then due to document ID generation strategy by ETL process (see above 'Documents Identifiers' paragraph)

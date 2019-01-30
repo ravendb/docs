@@ -7,6 +7,9 @@ using System.Collections.Generic;
 using Raven.Client.Documents.Queries;
 //using Raven.Client.Documents.Operations;
 using Raven.Client.Documents.Operations.Counters;
+using System.Threading.Tasks;
+using System.Threading;
+using Raven.Client.Documents.Smuggler;
 
 namespace Rvn.Ch02
 {
@@ -228,9 +231,10 @@ namespace Rvn.Ch02
             using (var session = docStore.OpenSession())
             {
                 //Select documents from the "Products" collection, with a Counter named `ProductLikes`.  
-                //Querying upon Counter values, e.g. using "Where", is not possible.  
+                //Querying upon Counter values (e.g. using "Where") is not possible.  
+                //In this example the documents that contain the Counter are NOT returned, only Counter values.
                 var query = session.Query<Product>()
-                .Select(counter => RavenQuery.Counter(counter, "ProductLikes"));
+                .Select(product => RavenQuery.Counter(product, "ProductLikes"));
 
                 var queryResults = query.ToList();
 
@@ -369,6 +373,31 @@ namespace Rvn.Ch02
             #region GetAll-definition
             Dictionary<string, long?> GetAll();
             #endregion
+        }
+
+
+
+        public async Task Sample()
+        {
+            var token = new CancellationToken();
+
+            using (var store = new DocumentStore())
+            {
+                // export only Indexes and Documents to a given file
+                var exportOperation = await store
+                    .Smuggler
+                    .ExportAsync(
+                        new DatabaseSmugglerExportOptions
+                        {
+                            #region smuggler_options
+                            OperateOnTypes = DatabaseItemType.Indexes
+                                             | DatabaseItemType.Documents
+                                             | DatabaseItemType.Counters
+                            #endregion
+                        },
+                        @"C:\ravendb-exports\Northwind.ravendbdump",
+                        token);
+            }
         }
     }
 }

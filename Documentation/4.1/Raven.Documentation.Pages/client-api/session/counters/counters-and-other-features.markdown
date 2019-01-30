@@ -8,14 +8,14 @@
    * How Counters trigger features' execution.  
 
 * In this page:  
-  * [Counters and Indexing](../../../client-api/session/counters/counters-and-other-features#counters-and-indexing)
-  * [Counters and Queries](../../../client-api/session/counters/counters-and-other-features#counters-and-queries)
-  * [Counters and Revisions](../../../client-api/session/counters/counters-and-other-features#counters-and-revisions)
-  * [Counters and Smuggler](../../../client-api/session/counters/counters-and-other-features#counters-and-smuggler)
-  * [Counters and Changes API](../../../client-api/session/counters/counters-and-other-features#counters-and-changes-api)
-  * [Counters and Ongoing Tasks (Backup, External replication, ETL, Subscriptions)](../../../client-api/session/counters/counters-and-other-features#counters-and-ongoing-tasks)
-  * [Counters and Other Features: summary](../../../client-api/session/counters/counters-and-other-features#counters-and-other-features-summary)
-  * [Including Counters](../../../client-api/session/counters/counters-and-other-features#including-counters)
+  * [Counters and Indexing](../../../client-api/session/counters/counters-and-other-features#counters-and-indexing)  
+  * [Counters and Queries](../../../client-api/session/counters/counters-and-other-features#counters-and-queries)  
+  * [Counters and Revisions](../../../client-api/session/counters/counters-and-other-features#counters-and-revisions)  
+  * [Counters and Smuggler](../../../client-api/session/counters/counters-and-other-features#counters-and-smuggler)  
+  * [Counters and Changes API](../../../client-api/session/counters/counters-and-other-features#counters-and-changes-api)  
+  * [Counters and Ongoing Tasks](../../../client-api/session/counters/counters-and-other-features#counters-and-ongoing-tasks) - `Backup`, `External replication`, `ETL`, `Data Subscription`  
+  * [Counters and Other Features: summary](../../../client-api/session/counters/counters-and-other-features#counters-and-other-features-summary)  
+  * [Including Counters](../../../client-api/session/counters/counters-and-other-features#including-counters)  
 {NOTE/}
 
 ---
@@ -32,16 +32,19 @@ RavenDB supports Counters-indexing **by name**, but **not by value**.
     To index a document's Counters by name, use [CounterNamesFor](../../../indexes/indexing-counters#indexes--indexing-counters).  
   
 * **Counter-Values indexing**  
-    Indexing by Counter-value is **not** provided, because it may initiate re-indexing intensive enough to hurt performance.  
+    Indexing by Counter-value is **not** provided, changing the Counter's value will not trigger indexing of the document.  
+    Counters are designed for high-throughput scenarios and cannot afford the re-indexing cost of each change.  
 
 ---
 
 ###Counters and Queries  
 
-You can create queries using code, or send the server raw queries for execution.  
-Either way, you can **query documents by Counter-names** but **not** filter results by Counter values.  
-This is because queries are generally [based on indexes](../../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../../client-api/session/counters/counters-and-other-features#counters-and-indexing).  
+Create queries **using code**, or send the server **raw queries** for execution.  
 
+* Either way, you can query Counters **by name** but **not by value**.  
+  This is because queries are generally [based on indexes](../../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../../client-api/session/counters/counters-and-other-features#counters-and-indexing).  
+* Counter values **can** be [projected](../../../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
+  This way a client can get Counter values from a query without downloading whole documents.  
 
 * Use [Session.Query](../../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  
    * **Returned Counter Value**: **Accumulated**  
@@ -49,13 +52,16 @@ This is because queries are generally [based on indexes](../../../start/getting-
      {CODE counters_region_query@ClientApi\Session\Counters\Counters.cs /}
 
 * Use [RawQuery](../../../client-api/session/querying/how-to-query#session.advanced.rawquery) to send the server raw RQL expressions for execution.  
-   * Use the `counter` method.  
+   * You can use the `counter` method.  
      **Returned Counter Value**: **Accumulated**
 
-  * Use the `counterRaw` method.  
+  * You can use the `counterRaw` method.  
      **Returned Counter Value**: **Distributed**  
-     A Counter's value is returned as a series of values, each maintained by one of the nodes.
-
+     A Counter's value is returned as a series of values, each maintained by one of the nodes.  
+      * It is not expected of you to use this in your application.  
+        Applications normally use the Counter's overall value, and very rarely refer to the value each node gives it.  
+      
+        
     `counter` and `counterRaw` samples:  
     {CODE-TABS}
     {CODE-TAB:csharp:counter counters_region_rawqueries_counter@ClientApi\Session\Counters\Counters.cs /}
@@ -86,8 +92,9 @@ database items from an existing file into the database.
 
 * **Transferred Counter Value**: **Distributed**  
   Smuggler transfers the entire series of values that the different nodes maintain for a Counter.  
-* To make Smuggler handle Counters, set the `OperateOnTypes` parameter to `DatabaseItemType.Counters`.  
- 
+* To make Smuggler handle Counters, include `DatabaseItemType.Counters` in `OperateOnTypes`'s list of entities to import or export.  
+  {CODE smuggler_options@ClientApi\Session\Counters\Counters.cs /}
+
 ---
 
 ###Counters and Changes API
@@ -114,7 +121,7 @@ Each [ongoing task](../../../studio/database/tasks/ongoing-tasks/general-info) r
       A logical backup is a higher-level implementation of [Smuggler](../../../client-api/session/counters/counters-and-other-features#counters-and-smuggler).  
       As with Smuggler, Counters are backed-up and restored including their values on all nodes.  
     * Snapshot:  
-      A snapshpt stores all data and settings as a single binary image.
+      A snapshot stores all data and settings as a single binary image.
       All components, including Counters, are restored to the exact same state they've been at during backup.  
 
 * **Counters** and the **External Replication task**  
@@ -132,7 +139,8 @@ Each [ongoing task](../../../studio/database/tasks/ongoing-tasks/general-info) r
       * Export can be initiated by both **Counter-name update** _and_ **Counter-value modification**.  
       * **Exported Counter Value**: **Distributed**  
         Counters are exported along with their values on all nodes.  
-      * **Default behavior**: When an ETL script is not provided, Counters are exported by default.  
+      * Counters can be [exported using a script](../../../server/ongoing-tasks/etl/raven#adding-counter-explicitly-in-a-script).  
+        **Default behavior**: When an ETL script is not provided, Counters are exported.  
       
 * **Counters** and the **[Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions#data-subscriptions) task**  
     Data Subscriptions can be initiated by document changes, including those caused by **Counter Name updates**.  
@@ -173,7 +181,9 @@ and how the various features handle Counter values.
 
 ###Including Counters  
 You can [include](../../../client-api/how-to/handle-document-relationships#includes) Counters while loading a document.  
-An included Counter is cached, so it can be immediately retrieved when needed.  
+An included Counter is retrieved in the same request as its owner-document and is held by the session, 
+so it can be immediately retrieved when needed with no additional remote calls.
+
 
 * **Including Counters when using [Session.Load](../../../client-api/session/loading-entities#session--loading-entities)**:  
     * Include a single Counter using `IncludeCounter`.  

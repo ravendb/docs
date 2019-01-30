@@ -38,7 +38,7 @@
 
 * **Note**:
     * Modifying a Counter using `Increment` only takes effect when `session.SaveChanges()` is executed.  
-    * To decrease a Counter's value, pass the method a negative "incrementValue".  
+    * To decrease a Counter's value, pass the method a negative number to `Increment`.  
 {PANEL/}
 
 {PANEL: Code Sample}

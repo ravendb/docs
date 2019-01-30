@@ -30,6 +30,8 @@ E.g. Use counters when you want to -
   - Keep track of the number of times a document has been viewed or rated.  
   - Count how many visitors from certain countries or regions read a document.  
   - Continuously record the number of visitors on an event page.  
+  - Avoid having to update the whole document for just a numeric value change.  
+  - Have a need for a high-throughput counter (also see **Distributed Values** below).  
 
 * **Distributed Values**  
 A Counter's value is [distributed between cluster nodes](../../../client-api/session/counters/counters-in-clusters).  
@@ -68,15 +70,17 @@ For example:
   * Counter actions (for either name or value) do not cause conflicts.  
       - Counter actions can be executed concurrently or in any order, without causing a conflict.  
       - You can successfully modify Counters while their document is being modified by a different client.  
-  * Counters actions can still be performed when their related documents are in a conflict state.  
+  * Counters actions can still be performed when their related documents are in a conflicted state.  
 
 * **Counters cost**  
   * Counters are designated to lower the cost of counting, but do come with a price.  
      * **All the names** of a document's Counters are added to its content, increasing its size.  
-     * **Counters data** occupies storage space.  
-  * Be aware that the amount of resources required by a few Counters is negligible, but may become significant when managing many Counters.  
-    Prefer using a small amount of Counters for a large number of calculations.  
-  
+     * **Counter values** occupy storage space.  
+  * Be aware that the negligible amount of resources required by a few Counters, 
+    may become significant when there are many.  
+    A single document with thousands of Counters is probably an indication of a modeling mistake, 
+    for example.
+
 ---
 
 * **Counter Naming Convention**  
@@ -86,9 +90,11 @@ For example:
 
 * **Counter Value**  
     * Valid range: Signed 64-bit integer (-9223372036854775808 to 9223372036854775807)  
+    * Only integer additions are supported (no floats or other mathematical operations).
 
 * **Number of Counters per document**  
     * RavenDB doesn't limit the number of Counters you can create.  
+    * Note that the Counter names are stored in the document metadata and impact the size of the document.  
 
 * **`HasCounters` Flag**  
     * When a Counter is added to a document, RavenDB automatically sets a `HasCounters` Flag in the document's metadata.  

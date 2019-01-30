@@ -92,7 +92,9 @@ When a client requests a Counter's value, it gets a single accumulated sum.
 **Replication due to a Counter Name modification**:
 
 * As described in the [Overview](../../../client-api/session/counters/overview#overview) section, creating or deleting a Counter triggers a document change.  
-* As a result, the whole document, including its Counters and their values, is replicated to all nodes in the database group.  
+* As a result, the whole document, including the new Counter value, is replicated to all nodes in the database group.  
+  Existing Counters aren't replicated, since they already exist on the other nodes and their values haven't changed.  
+
 
 {PANEL/}
 
@@ -101,7 +103,7 @@ When a client requests a Counter's value, it gets a single accumulated sum.
 **The same Counter can be concurrently modified by multiple clients**.  
 
 As described in the [Counters in a multi-node cluster](../../../client-api/session/counters/counters-in-clusters#counters-in-a-multi-node-cluster) section, each node manages its own portion of a Counter's value.  
-As a result-  
+As a result:  
 
 * Clients can modify the same Counter concurrently.  
 * Nodes do not need to coordinate Counter modification with each other.  
