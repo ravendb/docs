@@ -50,7 +50,7 @@
 
 ## Related Articles
 **Client Articles**:  
-[Backup & Restore Overview](../../../../client-api/operations/maintenance/backup/overview)  
+[Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
 [Backup](../../../../client-api/operations/maintenance/backup/backup)  
 [Restore](../../../../client-api/operations/maintenance/backup/restore)  
 [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  

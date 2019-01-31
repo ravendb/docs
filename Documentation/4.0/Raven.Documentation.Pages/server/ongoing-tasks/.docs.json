@@ -8,5 +8,10 @@
     "Path": "external-replication.markdown",
     "Name": "External Replication",
     "Mappings": []
+  },
+  {
+    "Path": "backup-overview.markdown",
+    "Name": "Backup Overview",
+    "Mappings": []
   }
 ]

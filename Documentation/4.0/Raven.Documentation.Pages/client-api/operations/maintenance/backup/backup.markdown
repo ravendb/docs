@@ -5,7 +5,7 @@
 
 * Create a backup of your data to secure it or to preserve a copy of it in its current state for future reference.  
 
-* RavenDB's ongoing Backup task is designed to run [continuously](../../../../client-api/operations/maintenance/backup/overview#backup--restore-overview).  
+* RavenDB's ongoing Backup task is designed to run [continuously](../../../../server/ongoing-tasks/backup-overview#backup--restore-overview).  
   You can run it as a one-time operation as well, using [export](../../../../client-api/smuggler/what-is-smuggler#export) or executing a backup-task [immediately](../../../../client-api/operations/maintenance/backup/backup#initiate-immediate-backup-execution).  
 
 * In this page:  
@@ -27,7 +27,7 @@
 
 ####Logical-Backup  
 
-* Data is backed-up in [compressed](../../../../client-api/operations/maintenance/backup/overview#compression) JSON files.  
+* Data is backed-up in [compressed](../../../../server/ongoing-tasks/backup-overview#compression) JSON files.  
 
 * During restoration, RavenDB -  
    * Re-inserts all data into the database.  
@@ -78,7 +78,7 @@ Verify that RavenDB is allowed to store backup files in the path set in `LocalSe
 
 {PANEL: Backup Scope}
 
-As described in [the overview](../../../../client-api/operations/maintenance/backup/overview#backing-up-and-restoring-a-database), a backup task can create **full** and **incremental** backups.  
+As described in [the overview](../../../../server/ongoing-tasks/backup-overview#backing-up-and-restoring-a-database), a backup task can create **full** and **incremental** backups.  
 
 * Both backup operations add a single new backup file to the backup folder each time they run. leaving existing backup files untouched.  
 * Both are operated by an **ongoing task**.  
@@ -125,7 +125,7 @@ As described in [the overview](../../../../client-api/operations/maintenance/bac
 
 {PANEL: Initiate Immediate Backup Execution}
 
-The Backup task [runs continuously](../../../../client-api/operations/maintenance/backup/overview#backup--restore-overview) as an ongoing task, but you can also operate the task immediately if you wish to.  
+The Backup task [runs continuously](../../../../server/ongoing-tasks/backup-overview#backup--restore-overview) as an ongoing task, but you can also operate the task immediately if you wish to.  
 
 * To execute an existing backup task immediately, use the `StartBackupOperation` method.  
    {CODE initiate_immediate_backup_execution@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
@@ -170,7 +170,7 @@ The Backup task [runs continuously](../../../../client-api/operations/maintenanc
 ## Related Articles  
 
 **Client Articles**:  
-[Backup & Restore Overview](../../../../client-api/operations/maintenance/backup/overview)  
+[Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
 [Restore](../../../../client-api/operations/maintenance/backup/restore)  
 [Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
 

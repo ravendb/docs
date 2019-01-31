@@ -1,35 +1,33 @@
-﻿# Backup & Restore Overview
+﻿# Backup Overview
 ---
 
 {NOTE: }
 
-* Use this overview as an introduction to backing up and restoring your databases.  
+* Maintaining a proper backup routine ensures that you'd be able to restore your data to its state in chosen points of time.  
+  Use this overview as an introduction to backing up and restoring your databases.  
 
-* **Backup**  
-   * The two principle reasons for backing up your database are -  
-      * **Securing data** in case catastrophe strikes.  
-      * **Freezing data in chosen points-in-time** to retain access to it in [various stages](../../../../client-api/operations/maintenance/backup/backup#point-in-time-backup) of its existence/development.  
-   * RavenDB's Backup is an **Ongoing task**.  
-      * RavenDB considers **Routine backup** a fundamental aspect of your database maintenance.  
-        Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../../../studio/database/tasks/ongoing-tasks/general-info).  
-        It is configured and executed once, and then continuously produces updated backups.  
-      * The Backup tasks works **in the background**.  
-        Like the other ongoing tasks, Backup runs in the background as an asynchronous task.  
+* The two principle reasons for backing up your database are -  
+   * **Securing data** in case catastrophe strikes.  
+   * **Freezing data in chosen points-in-time** to retain access to it in [various stages](../../client-api/operations/maintenance/backup/backup#point-in-time-backup) of its existence/development.  
 
-* **Restore**  
-    Maintaining a proper backup routine ensures that you'd be able to restore your data to its state at nearly any chosen point of time.  
+* RavenDB's Backup is an **Ongoing task**.  
+   * RavenDB considers **Routine backup** a fundamental aspect of your database maintenance.  
+     Backup is therefore provided not as a one-time operation, but as an [ongoing task](../../studio/database/tasks/ongoing-tasks/general-info).  
+     It is configured and executed once, and then continuously produces updated backups.  
+   * The Backup task runs **in the background**.  
+     Like other ongoing tasks, Backup is an asynchronous task that runs in the background.  
 
 * In this page:  
-  * [Backing Up and Restoring a Database](../../../../client-api/operations/maintenance/backup/overview#backing-up-and-restoring-a-database)  
-     * [Backup Scope: Full or Incremental](../../../../client-api/operations/maintenance/backup/overview#backup-scope-full-or-incremental)  
-     * [A Typical Backup Folder](../../../../client-api/operations/maintenance/backup/overview#a-typical-backup-folder)  
-     * [Restoration Procedure](../../../../client-api/operations/maintenance/backup/overview#restoration-procedure)  
-  * [Overview](../../../../client-api/operations/maintenance/backup/overview#overview)  
-      * [Backup Type: Logical-Backup and Snapshot](../../../../client-api/operations/maintenance/backup/overview#backup-type-logical-backup-or-snapshot)  
-      * [Encryption](../../../../client-api/operations/maintenance/backup/overview#encryption)  
-      * [Compression](../../../../client-api/operations/maintenance/backup/overview#compression)  
-      * [Backup Name](../../../../client-api/operations/maintenance/backup/overview#backup-name)  
-      * [Backup Contents](../../../../client-api/operations/maintenance/backup/overview#backup-contents)  
+  * [Backing Up and Restoring a Database](../../server/ongoing-tasks/backup-overview#backing-up-and-restoring-a-database)  
+     * [Backup Scope: Full or Incremental](../../server/ongoing-tasks/backup-overview#backup-scope-full-or-incremental)  
+     * [A Typical Backup Folder](../../server/ongoing-tasks/backup-overview#a-typical-backup-folder)  
+     * [Restoration Procedure](../../server/ongoing-tasks/backup-overview#restoration-procedure)  
+  * [Overview](../../server/ongoing-tasks/backup-overview#overview)  
+      * [Backup Type: Logical-Backup and Snapshot](../../server/ongoing-tasks/backup-overview#backup-type-logical-backup-or-snapshot)  
+      * [Encryption](../../server/ongoing-tasks/backup-overview#encryption)  
+      * [Compression](../../server/ongoing-tasks/backup-overview#compression)  
+      * [Backup Name](../../server/ongoing-tasks/backup-overview#backup-name)  
+      * [Backup Contents](../../server/ongoing-tasks/backup-overview#backup-contents)  
 {NOTE/}
 
 ---
@@ -78,7 +76,7 @@ In order to restore a database, RavenDB -
   A backup folder typically contains a single full backup, and the incremental backups that supplement it.  
 * Restores **incremental backups** one by one.  
   By default, RavenDB will restore all incremental backup files to the last.  
-  You can also use `LastFileNameToRestore` to [stop](../../../../client-api/operations/maintenance/backup/restore#restore-backup-configuration) restoration when a certain file is reached.  
+  You can also use `LastFileNameToRestore` to [stop restoration](../../client-api/operations/maintenance/backup/restore#optional-settings) when a certain file is reached.  
 
 {PANEL/}
 
@@ -86,17 +84,17 @@ In order to restore a database, RavenDB -
 
 ####Backup Type: Logical-Backup or Snapshot  
 
-There are two backup types: [Logical-backup](../../../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) (or simply "Backup") and [Snapshot](../../../../client-api/operations/maintenance/backup/backup#snapshot).  
+There are two backup types: [Logical-backup](../../client-api/operations/maintenance/backup/backup#logical-backup-or-simply-backup) (or simply "Backup") and [Snapshot](../../client-api/operations/maintenance/backup/backup#snapshot).  
 
 * A logical-backup is a compressed JSON dump of database contents, including documents and other data.  
-* A SnapShot is a binary image of the [database and journals](../../../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
+* A SnapShot is a binary image of the [database and journals](../../server/storage/directory-structure#storage--directory-structure) at a given point-in-time.  
    * Using Snapshots is available only for _Enterprise subscribers_.  
 
 ---
 
 ####Encryption
 
-Stored data can be [Encrypted](../../../../client-api/operations/maintenance/backup/encrypted-backup) or Unencrypted.  
+Stored data can be [Encrypted](../../client-api/operations/maintenance/backup/encrypted-backup) or Unencrypted.  
 
 ---
 
@@ -150,15 +148,15 @@ Backed-up data includes database-level and cluster-level contents.
 
 ## Related Articles  
 **Client Articles**:  
-[Backup](../../../../client-api/operations/maintenance/backup/backup)  
-[Restore](../../../../client-api/operations/maintenance/backup/restore)  
-[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+[Backup](../../client-api/operations/maintenance/backup/backup)  
+[Restore](../../client-api/operations/maintenance/backup/restore)  
+[Encrypted-Backup backup & restore](../../client-api/operations/maintenance/backup/encrypted-backup)  
 
 **Studio Articles**:  
-[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+[The Backup Task](../../studio/database/tasks/ongoing-tasks/backup-task)  
+[Create Database from Backup](../../studio/server/databases/create-new-database/from-backup)  
 
 **Security**:  
-[Database Encryption](../../../../server/security/encryption/database-encryption)  
-[Security Overview](../../../../server/security/overview)  
-[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+[Database Encryption](../../server/security/encryption/database-encryption)  
+[Security Overview](../../server/security/overview)  
+[Authentication and Certification](../../server/security/authentication/certificate-configuration)  

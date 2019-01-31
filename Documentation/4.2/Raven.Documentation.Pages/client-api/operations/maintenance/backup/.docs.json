@@ -1,10 +1,5 @@
 [
     {
-        "Path": "overview.markdown",
-        "Name": "Overview",
-        "Mappings": []
-    },
-    {
         "Path": "backup.markdown",
         "Name": "Backup",
         "Mappings": []
