@@ -1,0 +1,22 @@
+[
+    {
+        "Path": "backup.markdown",
+        "Name": "Backup",
+        "Mappings": []
+    },
+    {
+        "Path": "restore.markdown",
+        "Name": "Restore",
+        "Mappings": []
+    },
+    {
+        "Path": "encrypted-backup.markdown",
+        "Name": "Encryption",
+        "Mappings": []
+    },
+    {
+        "Path": "faq.markdown",
+        "Name": "FAQ",
+        "Mappings": []
+    }
+]
