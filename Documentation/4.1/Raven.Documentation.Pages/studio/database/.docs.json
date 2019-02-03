@@ -1,13 +1,7 @@
-﻿[
+[
     {
         "Path": "/documents",
         "Name": "Documents",
-        "Mappings": [],
-        "IsPlaceholder": "true"
-    },
-    {
-        "Path": "/indexes",
-        "Name": "Indexes",
         "Mappings": [],
         "IsPlaceholder": "true"
     },
@@ -20,7 +14,6 @@
     {
         "Path": "/tasks",
         "Name": "Tasks",
-        "Mappings": [],
-        "IsPlaceholder": "true"
+        "Mappings": []
     }
 ]
