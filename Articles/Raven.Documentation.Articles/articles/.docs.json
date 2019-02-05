@@ -736,7 +736,7 @@
             "title": "A Transactional NoSQL Database That’s Blazing Fast | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/a-transactional-nosql-database-with-acid-consistency-and-extreme-performance",
-            "publishedAt": "07-02-2019"
+            "publishedAt": "2019-02-07"
         },
         "SeoMetaProperties": {
             "description": "An ACID document database must deliver on data integrity, but also on performance. See how RavenDB gives you lightning speed along with ACID consistency.",
