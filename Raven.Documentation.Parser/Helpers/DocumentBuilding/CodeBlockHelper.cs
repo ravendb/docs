@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using Raven.Documentation.Parser.Data;
 
-namespace Raven.Documentation.Parser.Helpers
+namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
 {
     public class CodeBlockHelper
     {

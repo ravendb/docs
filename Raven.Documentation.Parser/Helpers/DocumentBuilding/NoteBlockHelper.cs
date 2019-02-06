@@ -1,8 +1,8 @@
-﻿namespace Raven.Documentation.Parser.Helpers
-{
-	using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
-	public static class NoteBlockHelper
+namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
+{
+    public static class NoteBlockHelper
 	{
 		private static readonly Regex BlockFinder = new Regex(@"{(NOTE|WARNING|INFO|DANGER|SAFE)\s+(.+)/}", RegexOptions.Compiled);
 
