@@ -78,9 +78,9 @@ Aside from missing documents, which are ignored, the order of the documents in t
 
 ## Set based operations
 
-Typically, document databases don't support set based operations. Raven does for deletes and updates, for inserts, you can POST to the [bulk_docs](http://ravendb.net/docs/http-api/multi/http-api-multi-batching?version=1.0) endpoint (this is how the client API behaves).
+Typically, document databases don't support set based operations. Raven does for deletes and updates, for inserts, you can POST to the [bulk_docs](https://ravendb.net/docs/http-api/multi/http-api-multi-batching?version=1.0) endpoint (this is how the client API behaves).
 
-Set based operations are based on very simple idea, you pass a query to a Raven index, and Raven will delete all the documents matching the query. All operations that are supported with an [index query](http://ravendb.net/docs/http-api/http-api-indexes-querying?version=1.0) are supported for set based operations. You need to specify the index that you intend to operate on, the actual query, the [optional cut off point](http://ravendb.net/docs/theory/indexes/docs-http-indexes?version=1.0) and whatever to allow this operation over a stale index.
+Set based operations are based on very simple idea, you pass a query to a Raven index, and Raven will delete all the documents matching the query. All operations that are supported with an [index query](https://ravendb.net/docs/http-api/http-api-indexes-querying?version=1.0) are supported for set based operations. You need to specify the index that you intend to operate on, the actual query, the [optional cut off point](https://ravendb.net/docs/theory/indexes/docs-http-indexes?version=1.0) and whatever to allow this operation over a stale index.
 
 Note that Raven indexes are allowed to be stale. If the index for the set based operation is stale, Raven will fail the operation. You can control this behavior using the following options:
 
@@ -113,7 +113,7 @@ This is the equivalent for:
 
 ###Set based updates
 
-Set based updates work very similarly to set based deletes. They require an index to operate on an a query for this index. But they use the [PATCH format](http://ravendb.net/docs/http-api/singledocumentoperations/http-api-patch?version=1.0) as their payload. For example, if we wanted to mark all the users who haven't logged on recently as inactive, we could define the following index:
+Set based updates work very similarly to set based deletes. They require an index to operate on an a query for this index. But they use the [PATCH format](https://ravendb.net/docs/http-api/singledocumentoperations/http-api-patch?version=1.0) as their payload. For example, if we wanted to mark all the users who haven't logged on recently as inactive, we could define the following index:
 
 {CODE-START:plain /}
     from user in docs.Users

@@ -22,7 +22,7 @@ The RavenDB server instance can be instantiated in several ways:
 
 The various deployment options are discussed in more details later, in the Server side chapter.
 
-To jump-start your learning process, it is sufficient that you download the [latest stable build](http://ravendb.net/download), unzip it to a folder, and run Server\Raven.Server.exe. You will then see a screen like this:
+To jump-start your learning process, it is sufficient that you download the [latest stable build](https://ravendb.net/download), unzip it to a folder, and run Server\Raven.Server.exe. You will then see a screen like this:
 
 ![Figure 1: Raven.Server.exe](images\raven.server.png)
 

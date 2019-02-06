@@ -46,7 +46,7 @@ For example, the following request:
     > curl -X GET http://localhost:8080/static/users/ayende.jpg
 {CODE-END /}
 
-Will retrieve an attachment whose key is "users/ayende.jpg", the response to the request is the exact byte stream that was stored in a previous [PUT](http://ravendb.net/docs/http-api/attachments/http-api-put-attachments) request.
+Will retrieve an attachment whose key is "users/ayende.jpg", the response to the request is the exact byte stream that was stored in a previous [PUT](https://ravendb.net/docs/http-api/attachments/http-api-put-attachments) request.
 
 ## DELETE
 
@@ -62,4 +62,4 @@ For a successful delete, RavenDB will respond with an HTTP response code 204 No 
     "HTTP/1.1 204 No Content"
 {CODE-END /}
 
-The only way a delete can fail is if [the etag doesn't match](http://ravendb.net/docs/http-api/http-api-concurrency?version=1.0), even if the attachment doesn't exist, a delete will still respond with a successful status code.
+The only way a delete can fail is if [the etag doesn't match](https://ravendb.net/docs/http-api/http-api-concurrency?version=1.0), even if the attachment doesn't exist, a delete will still respond with a successful status code.

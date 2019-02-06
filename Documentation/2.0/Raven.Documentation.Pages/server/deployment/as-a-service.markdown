@@ -20,4 +20,4 @@ The server storage and indexes will not be deleted when the server is uninstalle
 
 ## Server Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration?version=2.0) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](https://ravendb.net/docs/server/administration/configuration?version=2.0) page for complete info.

@@ -603,7 +603,7 @@
 - optimized new index creation,
 - better control for Cartesian/fanout indexing,
 - better auto-index generation,
-- ...more details [here](http://ayende.com/blog/168417/what-is-new-in-ravendb-3-0-indexing-backend) and [here](http://ayende.com/blog/168418/what-is-new-in-ravendb-3-0-indexing-enhancements)
+- ...more details [here](https://ayende.com/blog/168417/what-is-new-in-ravendb-3-0-indexing-backend) and [here](https://ayende.com/blog/168418/what-is-new-in-ravendb-3-0-indexing-enhancements)
 
 #### Transformers
 
@@ -613,7 +613,7 @@
 
 ### Client API
 
-- [Java API](http://ayende.com/blog/168354/what-is-new-in-ravendb-3-0-jvm-client-api),
+- [Java API](https://ayende.com/blog/168354/what-is-new-in-ravendb-3-0-jvm-client-api),
 - fully async (sync version is using async client underneath),
 - full support for Lazy async,
 - full support for Lazy timings,
@@ -628,7 +628,7 @@
 - patching (JavaScript) now supports [custom functions](../studio/overview/settings/custom-functions),
 - optimistic concurrency can be turned on globally using `store.Conventions.DefaultUseOptimisticConcurrency`,
 - `EmbeddedDocumentStore` was moved to `Raven.Database.dll`,
-- ...more details [here](http://ayende.com/blog/168386/what-is-new-in-ravendb-3-0-client-side)
+- ...more details [here](https://ayende.com/blog/168386/what-is-new-in-ravendb-3-0-client-side)
 
 #### Querying
 

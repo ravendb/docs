@@ -1,7 +1,7 @@
 #Document Structure Design Considerations
 While Raven is a schema-free data store, that doesn't mean that you shouldn't take some time to consider how to design your documents to ensure that you can access all the data that you need to serve user requests efficiently, reliably and with as little maintainability cost as possible.  
-The most typical error people make when trying to design the data model on top of a document database is to [try to model it the same way you would on top of a relational database](http://ayende.com/blog/4465/that-no-sql-thing-the-relational-modeling-anti-pattern-in-document-databases).  
-Raven is a non-relational data store. Trying to hammer a relational model on top of it will produce sub-optimal results. But you can get fantastic results by [taking advantage of the documented oriented nature of Raven](http://ayende.com/blog/4466/that-no-sql-thing-modeling-documents-in-a-document-database).
+The most typical error people make when trying to design the data model on top of a document database is to [try to model it the same way you would on top of a relational database](https://ayende.com/blog/4465/that-no-sql-thing-the-relational-modeling-anti-pattern-in-document-databases).  
+Raven is a non-relational data store. Trying to hammer a relational model on top of it will produce sub-optimal results. But you can get fantastic results by [taking advantage of the documented oriented nature of Raven](https://ayende.com/blog/4466/that-no-sql-thing-modeling-documents-in-a-document-database).
 
 ##Documents are not flat
 Documents, unlike a row in a RDBMS, are not flat. You are not limited to just storing keys and values. Instead, you can store complex object graphs as a single document. That includes arrays, dictionaries and trees. Unlike a relational database, where a row can only contain simple values and more complex data structures need to be stored as relations, you don't need to work hard to get your data into Raven.  

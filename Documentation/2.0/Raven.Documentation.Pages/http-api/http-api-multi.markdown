@@ -165,7 +165,7 @@ curl -X GET http://localhost:8080/queries?id=users/ayende"&"id=users/oren
 
 Typically, document databases don't support set based operations. Raven does it for deletes and updates. For inserts, you can POST to the [bulk_docs](http-api-multi#batching-requests) endpoint (this is how the Client API behaves).
 
-Set based operations are based on very simple idea, you pass a query to a Raven index, and Raven will delete all the documents matching the query. All operations that are supported with an [index query](http://ravendb.net/docs/http-api/http-api-indexes-querying) are supported for set based operations. You need to specify the index that you intend to operate on, the actual query, the [optional cut off point](http://ravendb.net/docs/theory/indexes/docs-http-indexes?version=2.0) and whatever to allow this operation over a stale index.
+Set based operations are based on very simple idea, you pass a query to a Raven index, and Raven will delete all the documents matching the query. All operations that are supported with an [index query](https://ravendb.net/docs/http-api/http-api-indexes-querying) are supported for set based operations. You need to specify the index that you intend to operate on, the actual query, the [optional cut off point](https://ravendb.net/docs/theory/indexes/docs-http-indexes?version=2.0) and whatever to allow this operation over a stale index.
 
 Note that Raven indexes are allowed to be stale. If the index for the set based operation is stale, Raven will fail the operation. You can control this behavior using the following options:
 

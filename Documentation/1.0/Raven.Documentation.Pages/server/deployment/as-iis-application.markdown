@@ -4,7 +4,7 @@ RavenDB can be run as an IIS application, or from a virtual directory under an I
 
 ## Setting up a RavenDB IIS application
 
-1. [Download the distribution zip](http://ravendb.net/download), and extract the "Web" folder.
+1. [Download the distribution zip](https://ravendb.net/download), and extract the "Web" folder.
 2. In IIS Manager, create a new website and point it's physical path to the `"/Web"` folder you extracted. Alternatively, point a virtual directory under an existing website to that folder.
 3. Set the Application Pool for the IIS application you will be using to "ASP.Net v4.0", or create a new Application Pool set to .NET 4.0 Integrated Pipeline.
 4. Set port and host if needed.
@@ -57,7 +57,7 @@ c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll, and Uncheck Veri
 
 ## Web Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration?version=1.0) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](https://ravendb.net/docs/server/administration/configuration?version=1.0) page for complete info.
 
 ## Recommended IIS Configuration
 

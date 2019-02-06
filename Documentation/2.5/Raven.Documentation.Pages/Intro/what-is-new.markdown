@@ -15,19 +15,19 @@
 * [Excel integration](../http-api/excel-integration) - CSV endpoint
 * [MSI Installer](../server/deployment/installer)
 * [Write Assurance](../server/scaling-out/replication/write-assurance)
-* [Usage Northwind for sample data](http://ayende.com/blog/162338/ravendb-sample-data-hello-northwind)
+* [Usage Northwind for sample data](https://ayende.com/blog/162338/ravendb-sample-data-hello-northwind)
 
 ##Indexing
 
 * [Index locking](../server/administration/index-administration#index-locking)
 * [Index priorities](../server/administration/index-administration#index-prioritization)
-* [Index directly to memory](http://ayende.com/blog/161282/robs-sprint-faster-index-creation)
-* [Query optimizer can expand indexes](http://ayende.com/blog/161283/robs-sprint-query-optimizer-jumped-a-grade)
+* [Index directly to memory](https://ayende.com/blog/161282/robs-sprint-faster-index-creation)
+* [Query optimizer can expand indexes](https://ayende.com/blog/161283/robs-sprint-query-optimizer-jumped-a-grade)
 
 ##Improvements
 
 * [Better Aggressive Cache with notifications usage](../client-api/advanced/aggressive-caching)
-* [Better pre fetching algorithms for reducing IO](http://ayende.com/blog/160291/ravendb-indexing-optimizations-step-iii-skipping-the-disk-altogether)
+* [Better pre fetching algorithms for reducing IO](https://ayende.com/blog/160291/ravendb-indexing-optimizations-step-iii-skipping-the-disk-altogether)
 * [More robust and better pefromance of SQL Replication](../server/extending/bundler/sql-replication)
 * DTC performance improvement
 * [Better adherence to the DTC protocol](../client-api/advanced/transaction-support)

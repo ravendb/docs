@@ -1,6 +1,6 @@
 # Optimizing referenced documents load
 
-One of the [design principals](http://ravendb.net/docs/theory/document-structure-design?version=1.0) that RavenDB adheres to is the idea that documents are independent, that all the data required to process a document is stored within the document itself.
+One of the [design principals](https://ravendb.net/docs/theory/document-structure-design?version=1.0) that RavenDB adheres to is the idea that documents are independent, that all the data required to process a document is stored within the document itself.
 
 That said, there are still valid scenarios where you might need to load associated documents, and that leads to a problem. Let us consider the following code:
 

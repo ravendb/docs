@@ -64,7 +64,7 @@ If and when they do decide to replace their systems, they have the chance to <em
 
 <div class="bottom-line">
     <p>
-        <a href="http://ravendb.net/"><strong>RavenDB</strong></a> is the industry’s premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database cluster. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
+        <a href="https://ravendb.net/"><strong>RavenDB</strong></a> is the industry’s premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database cluster. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
     </p>
     <p>
         RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds up to 1,000,000 reads and 100,000 writes per second on a single node using simple commodity hardware.

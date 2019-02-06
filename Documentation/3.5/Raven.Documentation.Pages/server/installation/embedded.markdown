@@ -20,4 +20,4 @@ Once you initialized the document store, you can access the Studio directly, exe
 
 ## Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration) page for the complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](https://ravendb.net/docs/server/administration/configuration) page for the complete info.

@@ -20,4 +20,4 @@ Once you initialized the document store, you can browse directly to the WebUI, e
 
 ## Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration?version=1.0) page for complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](https://ravendb.net/docs/server/administration/configuration?version=1.0) page for complete info.

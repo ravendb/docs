@@ -4,7 +4,7 @@ In order to export or import data from a RavenDB server, you can use the Raven.S
 
 Raven.Smuggler is distributed in both the:
 
-- RavenDB [distribution package](http://ravendb.net/download). It is located under the `/Smuggler` folder.
+- RavenDB [distribution package](https://ravendb.net/download). It is located under the `/Smuggler` folder.
 - RavenDB.Server [nuget package](https://nuget.org/packages/RavenDB.Server). It is located under the `/tools` folder.
 
 Using the Smuggler utility is necessary when trying to move a RavenDB Data folder between servers.

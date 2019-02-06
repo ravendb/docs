@@ -6,7 +6,7 @@
 
 Manual upgrade of RavenDB instance to a new version is very simple. In order to do so, you:
 
-0. Download distribution package from [here](http://ravendb.net/download).
+0. Download distribution package from [here](https://ravendb.net/download).
 1. Shutdown the RavenDB server (this depends on your deployment strategy. For a service - shutdown the service. For a IIS site - shutdown the IIS site).
 2. Remove old RavenDB binaries. Make sure not to delete your actual data which is in the folders like `Data` and not to overwrite your configuration files like `Raven.Server.exe.config` or `web.config`.
 3. Copy new binaries 

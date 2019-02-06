@@ -122,7 +122,7 @@ where:
 
 {CODE plugins_2_2@Server\Extending\Plugins\Index.cs /}
 
-This index works on the [following index](http://ayende.com/blog/4530/raven-event-sourcing) in order to create a static snapshot of the indexed document whenever it is indexed. Note that we use identity insert here (the key we use ends with '/') so we will have documents like this:
+This index works on the [following index](https://ayende.com/blog/4530/raven-event-sourcing) in order to create a static snapshot of the indexed document whenever it is indexed. Note that we use identity insert here (the key we use ends with '/') so we will have documents like this:
 
 * shoppingcarts/12/snapshots/1
 * shoppingcarts/12/snapshots/2
