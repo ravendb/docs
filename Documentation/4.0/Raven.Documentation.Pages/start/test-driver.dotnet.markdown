@@ -79,7 +79,7 @@ At the end of the test we query for TestDocument where their name contains the w
 {PANEL:Continuous Integration Servers}
 
 Best practice is to use a CI/CD server to help automate the testing and deployment of your new code. 
-Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://www.visualstudio.com/team-services/). Some customization is required for any
+Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://visualstudio.microsoft.com/team-services/). Some customization is required for any
 CI/CD product you use, because you will need to manually download the RavenDb Server _before_ any tests are kicked off. Remember, the Test Driver
 requires a `path location` for a `Raven.Server.exe` or `Raven.Server.dll` to be located, where the path on your CI/CD server 
 will most likely be different to the path on your localhost-development machine.

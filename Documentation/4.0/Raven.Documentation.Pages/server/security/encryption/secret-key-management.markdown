@@ -40,7 +40,7 @@ Another way to provide a master key is to use a file containing the raw key byte
 
 If a master key is not provided by the user RavenDB will use the following default behavior:
 
-In **Windows**, secret keys are encrypted and stored using the [Data Protection API (DPAPI)](https://msdn.microsoft.com/en-us/library/ms995355.aspx), which means they can only be retrieved by the user who stored them.
+In **Windows**, secret keys are encrypted and stored using the [Data Protection API (DPAPI)](https://docs.microsoft.com/en-us/previous-versions/ms995355(v=msdn.10)), which means they can only be retrieved by the user who stored them.
 
 In **Unix**, RavenDB will generate a random master key and store it in the user's home folder with read/write permissions (octal 1600) only for the user who stored it. Then, RavenDB will use this master key to encrypt the secret keys of encrypted databases.
 
@@ -48,7 +48,7 @@ In **Unix**, RavenDB will generate a random master key and store it in the user'
 
 This section is relevant only on Windows and only if you didn't supply a master key and chose to rely on the Windows protection methods.  
 
-Windows uses the **user password** to encrypt secrets in [DPAPI](https://msdn.microsoft.com/en-us/library/ms995355.aspx).
+Windows uses the **user password** to encrypt secrets in [DPAPI](https://docs.microsoft.com/en-us/previous-versions/ms995355(v=msdn.10)).
 When a Windows password is **changed** the following actions are taken:  
 
 - DPAPI receives notification from Winlogon during a password change operation.

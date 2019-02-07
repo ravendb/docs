@@ -109,7 +109,7 @@ You can interface with your users with RavenDB, while replicating the data to yo
 ## Bottom Line
 
 The ROI on your database is based on its ability to set up fast, deliver superior performance to your users, protect the integrity of your data at all times, scale up suddenly, and maintain airtight security for your customers private information. 
-At RavenDB, we support you in every phase of the process. <a href="http://bit.ly/2hHS6KK">Try it out at no cost!</a>
+At RavenDB, we support you in every phase of the process. <a href="https://ravendb.net/downloads">Try it out at no cost!</a>
 
 <div class="bottom-line">
 

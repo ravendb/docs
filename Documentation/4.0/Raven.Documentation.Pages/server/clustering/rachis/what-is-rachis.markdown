@@ -23,7 +23,7 @@
 
 {INFO: Learn More about Raft}
 
-* Nice visualizations can be found in [the secret life of data](http://thesecretlivesofdata.com/raft) & [raft.github](https://raft.github.io/).  
+* Nice visualizations can be found in [the secret life of data](http://thesecretlivesofdata.com/raft/) & [raft.github](https://raft.github.io/).  
 * The full Raft thesis can be found in: [Raft paper](http://web.stanford.edu/~ouster/cgi-bin/papers/raft-atc14).  
 {INFO/}
 {PANEL/}

@@ -12,7 +12,7 @@ with PyRavenDB Embedded package you can integrate your RavenDB server with few e
  PyRavenDB Embedded **does not include .NET Core runtime required for it to run**. 
  By default the `ServerOptions.framework_version` is set to the .NET Core version that we compiled the server with and `ServerOptions.dotnet_path` is set to `dotnet` meaning that it will require to have it declared in PATH. 
  We highly recommend using the .NET Core framework version defined in `ServerOptions.framework_version` for proper functioning of the Server.
- If you don't have dotnet installed The .NET Core runtime can be downloaded from [here](https://www.microsoft.com/net/download),
+ If you don't have dotnet installed The .NET Core runtime can be downloaded from [here](https://dotnet.microsoft.com/download),
 to use it just add it to the PATH or change `ServerOptions.dotnet_path` to **dotnet.exe** path you just downloaded.
 
 {CODE:python run_with_dotnet_path@server\embedded.py /}
@@ -24,8 +24,8 @@ to use it just add it to the PATH or change `ServerOptions.dotnet_path` to **dot
 ### Installation
 ---
 * Create a new project.
-* Install from [PyPi](https://pypi.python.org/pypi), 
-as [pyravendb-embedded](https://pypi.python.org/project/pyravendb-embedded).<br />
+* Install from [PyPi](https://pypi.org/), 
+as [pyravendb-embedded](https://pypi.org/project/pyravendb-embedded/).<br />
 `pip install pyravendb-embedded`
 * Start a new Embedded Server
 * Get the new Embedded Document Store, and start working with the database.

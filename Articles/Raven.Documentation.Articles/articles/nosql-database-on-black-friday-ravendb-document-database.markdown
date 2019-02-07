@@ -39,7 +39,7 @@ On just a single server, load balance also becomes an issue as too many people a
 
 The single server model means you have a single point of failure. Your house of cards is standing on top of the jack of diamonds. If there is just one problem with the server your entire application can go down. All your users are vulnerable to time outs, freezes, reloads, and crashes. 
 
-an [ITIC study](http://itic-corp.com/blog/2016/08/cost-of-hourly-downtime-soars-81-of-enterprises-say-it-exceeds-300k-on-average/) reported that 98% of organizations say a single hour of downtime costs over $100,000.
+an [ITIC study](https://itic-corp.com/blog/2016/08/cost-of-hourly-downtime-soars-81-of-enterprises-say-it-exceeds-300k-on-average/) reported that 98% of organizations say a single hour of downtime costs over $100,000.
 
 ### C. Your Options are Limited
 

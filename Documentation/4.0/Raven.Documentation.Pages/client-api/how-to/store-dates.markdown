@@ -16,4 +16,4 @@ The default storing format for `DateTime` is :  **"yyyy'-'MM'-'dd'T'HH':'mm':'ss
 For storing `DateTimeOffset`, RavenDB uses the [Round-trip ("o")](https://docs.microsoft.com/en-us/dotnet/standard/base-types/standard-date-and-time-format-strings#Roundtrip) format
 
 ##More Information
-For detailed information about this topic, please refer to the [Working with Date and Time in RavenDB](http://codeofmatt.com/2015/01/25/date-and-time-in-ravendb/) article written by Matt Johnson.
+For detailed information about this topic, please refer to the [Working with Date and Time in RavenDB](https://codeofmatt.com/date-and-time-in-ravendb/) article written by Matt Johnson.

@@ -9,8 +9,8 @@ RavenDB uses PowerShell to execute its build process. Open a PowerShell prompt a
 The following dependencies required by RavenDB code will be downloaded from NuGet:
 
 * [Asymmetric RSA Encryption for Silverlight and WP7](http://www.nuget.org/packages/DH.Scrypt.dll/)
-* [NLog](http://nlog-project.org/)
-* [Reactive Extensions](https://rx.codeplex.com/)
+* [NLog](https://nlog-project.org/)
+* [Reactive Extensions](https://archive.codeplex.com/?p=rx)
 * [ICSharpCode.NRefactory](http://www.nuget.org/packages/ICSharpCode.NRefactory)
 * [Mono.Cecil](http://www.nuget.org/packages/Mono.Cecil/)
 * [Microsoft.Web.Infrastructure](http://www.nuget.org/packages/Microsoft.Web.Infrastructure/)

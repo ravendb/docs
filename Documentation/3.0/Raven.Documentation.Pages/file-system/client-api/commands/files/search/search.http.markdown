@@ -15,7 +15,7 @@ curl \
 
 | Query parameter | Required | Description |
 | ------------- | -- | ---- |
-| **query** | Yes | The query containing search criteria (you can use the [built-in fields](../../../../indexing) or metadata entries) consistent with [Lucene syntax](http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html) |
+| **query** | Yes | The query containing search criteria (you can use the [built-in fields](../../../../indexing) or metadata entries) consistent with [Lucene syntax](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html) |
 | **sort** | No | The fields to sort by |
 | **start** | No | The start number to read index results |
 | **pageSize** | No | The max number of results that will be returned  (Default: 25)|

@@ -15,4 +15,4 @@ Disable TCP Offloading.
 
 ##Further read
 
-- [TCP Offloading Disabling](http://blogs.technet.com/b/onthewire/archive/2014/01/21/tcp-offloading-chimney-amp-rss-what-is-it-and-should-i-disable-it.aspx)
+- [TCP Offloading Disabling](https://blogs.technet.microsoft.com/onthewire/2014/01/21/tcp-offloadingchimney-rsswhat-is-it-and-should-i-disable-it/)

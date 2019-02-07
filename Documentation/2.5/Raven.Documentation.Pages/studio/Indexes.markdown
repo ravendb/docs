@@ -90,7 +90,7 @@ At the top right you have several buttons:
 - **Query Options**: In here you can select if the default operator is OR/AND (default is OR), and if to show fields and index entries.  
 ![Indexes Fig 19](Images/studio_indexes_19.PNG)  
 
-At the top of the body you have a space to type your query (with [lucene syntax](http://www.codeproject.com/Articles/29755/Introducing-Lucene-Net))  
+At the top of the body you have a space to type your query (with [lucene syntax](https://www.codeproject.com/Articles/29755/Introducing-Lucene-Net))  
 At to bottom the results of the query  
 ![Indexes Fig 14](Images/studio_indexes_14.PNG) 
 

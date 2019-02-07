@@ -62,6 +62,6 @@ The output of the built-in analyzers are shown below, they are all tokenizing th
 
     [quick]   [brown]   [fox]   [jumped]   [over]   [lazy]   [dog]   [bob@hotmail.com]   [123432]
 
-A simple way to see how text is tokenized by the Lucene analyzers is to use the tool available [here](http://www.codeproject.com/Articles/32175/Lucene-Net-Text-Analysis).
+A simple way to see how text is tokenized by the Lucene analyzers is to use the tool available [here](https://www.codeproject.com/Articles/32175/Lucene-Net-Text-Analysis).
 
 You can also create your own custom analyzer, compile it to a dll and drop it in in directory called "Analyzers" under the RavenDB base directory. Afterward, you can then use the fully qualified type name of your custom analyzer as the analyzer for a particular field.

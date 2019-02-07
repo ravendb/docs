@@ -4,7 +4,7 @@ To retrieve the files you are interested in, you need to define a set of conditi
 
 ##Where
 
-The first method to create a conditional query is `Where` which takes a string parameter. You need to manually define the whole query according to the [Lucene syntax](http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html), the same as for the [`SearchAsync` command](../../commands/files/search/search). This approach enjoys the full support of the Lucene search functionality. You can query the [built-in RavenFS fields](../../../indexing) as well as the custom files' metadata.
+The first method to create a conditional query is `Where` which takes a string parameter. You need to manually define the whole query according to the [Lucene syntax](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html), the same as for the [`SearchAsync` command](../../commands/files/search/search). This approach enjoys the full support of the Lucene search functionality. You can query the [built-in RavenFS fields](../../../indexing) as well as the custom files' metadata.
 
 {CODE filtering_1@FileSystem\ClientApi\Session\Querying\Filtering.cs /}
 

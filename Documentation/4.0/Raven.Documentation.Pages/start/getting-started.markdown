@@ -147,7 +147,7 @@ After your server is up and running, to write an application you need to acquire
 - .NET from [NuGet](https://www.nuget.org/packages/RavenDB.Client/)
 - Java from [Maven](https://search.maven.org/#search%7Cga%7C1%7Cg%3A%22net.ravendb%22%20AND%20a%3A%22ravendb%22)
 - Node.js from [NPM](https://www.npmjs.com/package/ravendb)
-- Python from [PyPi](https://pypi.python.org/pypi/pyravendb)
+- Python from [PyPi](https://pypi.org/project/pyravendb/)
 - [Ruby](https://github.com/ravendb/ravendb-ruby-client)
 - [Go](https://github.com/ravendb/ravendb-go-client)
 

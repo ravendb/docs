@@ -37,7 +37,7 @@ The requirements of the storage can be found in the article describing [Voron](.
 [SMB / CIFS](https://en.wikipedia.org/wiki/Server_Message_Block) is a protocol that can be used to access remote files over then network, between machines running different operating systems.
 It is widely used in two scenarios:
 
--  Azure File Storage service aka [CloudStor:Azure](https://azure.microsoft.com/en-us/services/storage/files)   
+-  Azure File Storage service aka [CloudStor:Azure](https://azure.microsoft.com/en-us/services/storage/files/)   
 -  Linux Docker container running under Windows Docker host with [sharing volumes](https://docs.docker.com/storage/volumes/#share-data-among-machines)
 
 What is supported:

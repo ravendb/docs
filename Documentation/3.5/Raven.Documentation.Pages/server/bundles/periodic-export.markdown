@@ -1,6 +1,6 @@
 # Bundle : Periodic Export
 
-RavenDB innately supports periodic exports of the documents and attachments (including deletions) to a file system folder, [Amazon AWS](http://aws.amazon.com/) services, or [Microsoft Azure](http://azure.microsoft.com/) storage.  
+RavenDB innately supports periodic exports of the documents and attachments (including deletions) to a file system folder, [Amazon AWS](https://aws.amazon.com/) services, or [Microsoft Azure](http://azure.microsoft.com/) storage.  
 
 ## How it works
 
@@ -42,7 +42,7 @@ Next, we need to create a backup setup document under the `Raven/Backup/Periodic
 
 `GlacierVaultName` and `S3BucketName` values **exclude** each other in favor of the `GlacierVaultName`, so if you specify both, RavenDB will only use `GlacierVaultName`. 
 
-{INFO More information about Amazon Simple Storage Service (Amazon S3) can be found [here](http://aws.amazon.com/s3/). If you are interested in Amazon Glacier, visit [this](http://aws.amazon.com/glacier/) page. /}
+{INFO More information about Amazon Simple Storage Service (Amazon S3) can be found [here](https://aws.amazon.com/s3/). If you are interested in Amazon Glacier, visit [this](https://aws.amazon.com/glacier/) page. /}
 
 ## Configuring Azure Storage
 

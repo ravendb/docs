@@ -8,7 +8,7 @@ Use the **SearchAsync** method to fetch the list of files matching the specified
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **query** | string | The query containing search criteria (you can use the [built-in fields](../../../../indexing) or metadata entries) consistent with [Lucene syntax](http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html) |
+| **query** | string | The query containing search criteria (you can use the [built-in fields](../../../../indexing) or metadata entries) consistent with [Lucene syntax](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html) |
 | **sortFields** | string[] | The fields to sort by |
 | **start** | int | The start number to read index results |
 | **pageSize** | int | The max number of results that will be returned |

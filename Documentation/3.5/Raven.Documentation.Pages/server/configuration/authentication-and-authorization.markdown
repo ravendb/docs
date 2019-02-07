@@ -60,7 +60,7 @@ to get back into the default setting.
 
 ## OAuth Authentication
 
-The second supported authentication type is an [OAuth](http://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
+The second supported authentication type is an [OAuth](https://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
 To authenticate the user by using API keys we need to create a document with `Raven/ApiKeys/key_name` as a key and `ApiKeyDefinition` as a content on the `system` database.
 
 ### Example:

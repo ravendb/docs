@@ -37,7 +37,7 @@ Above example gives a read-only access to `ExampleDB` to `IIS AppPool\DefaultApp
 
 ##OAuth Authentication
 
-Second supported authentication type is an [OAuth](http://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
+Second supported authentication type is an [OAuth](https://oauth.net/) authentication and to simplify the process, we have introduced the API key authentication described below.
 
 ###Example - API keys
 
