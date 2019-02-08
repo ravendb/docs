@@ -1,6 +1,6 @@
 # RavenDB documentation
 
-This repository contains documentation for [RavenDB](http://ravendb.net/docs).
+This repository contains documentation for [RavenDB](https://ravendb.net/docs).
 
 Found a bug?
 ------------

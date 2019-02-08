@@ -156,7 +156,7 @@ namespace Raven.Documentation.Parser.Compilation
             }
         }
 
-        private static bool AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory,
+        private static void AddNonMarkdownImage(ICollection<DocumentationImage> images, string directory,
             ParserOptions.GenerateImageUrl generateImageUrl, string documentationVersion, Language lang, HtmlNode node, string key)
         {
             if (node.Attributes.Contains("src"))
@@ -179,8 +179,6 @@ namespace Raven.Documentation.Parser.Compilation
                     ImageKey = $"{documentationVersion}/{src}"
                 });
             }
-
-            return true;
         }
 
         private static bool PrepareImage(ICollection<DocumentationImage> images, string directory,

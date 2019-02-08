@@ -33,4 +33,4 @@ Those are the _absolute minimum requirements_ for it to run. Please note that th
 
 ## Remarks
 
-If you have any questions regarding deployment, please [contact us](http://ravendb.net/support).
+If you have any questions regarding deployment, please [contact us](https://ravendb.net/support).

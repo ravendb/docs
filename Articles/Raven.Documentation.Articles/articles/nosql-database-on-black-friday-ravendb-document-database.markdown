@@ -39,7 +39,7 @@ On just a single server, load balance also becomes an issue as too many people a
 
 The single server model means you have a single point of failure. Your house of cards is standing on top of the jack of diamonds. If there is just one problem with the server your entire application can go down. All your users are vulnerable to time outs, freezes, reloads, and crashes. 
 
-an [ITIC study](http://itic-corp.com/blog/2016/08/cost-of-hourly-downtime-soars-81-of-enterprises-say-it-exceeds-300k-on-average/) reported that 98% of organizations say a single hour of downtime costs over $100,000.
+an [ITIC study](https://itic-corp.com/blog/2016/08/cost-of-hourly-downtime-soars-81-of-enterprises-say-it-exceeds-300k-on-average/) reported that 98% of organizations say a single hour of downtime costs over $100,000.
 
 ### C. Your Options are Limited
 
@@ -93,7 +93,7 @@ Either way, you have a tremendous opportunity to take the great leap forward in 
 
 <div class="bottom-line">
 <p>
-    <a href="http://ravendb.net/"><strong>RavenDB 4.0</strong></a> is an open source NoSQL document database that specializes in online transaction processing (<em>OLTP</em>). It's fully transactional (<em>ACID</em>), and compatible with legacy SQL RMDBs. You can have the best of SQL while enjoying high performance, a distributed data cluster, flexibility, and scalability with low overhead that comes with a top of the line NoSQL solution. RavenDB is an easy to use all-in-one database, striving to minimize your need for third party applications, tools, or support.</p>
+    <a href="https://ravendb.net/"><strong>RavenDB 4.0</strong></a> is an open source NoSQL document database that specializes in online transaction processing (<em>OLTP</em>). It's fully transactional (<em>ACID</em>), and compatible with legacy SQL RMDBs. You can have the best of SQL while enjoying high performance, a distributed data cluster, flexibility, and scalability with low overhead that comes with a top of the line NoSQL solution. RavenDB is an easy to use all-in-one database, striving to minimize your need for third party applications, tools, or support.</p>
 <p>RavenDB has a built-in storage engine, <em>Voron</em>, that operates at speeds up to 1,000,000 writes per second on a single node. You can build high-performance, low-latency applications quickly and efficiently. <a href="https://ravendb.net/downloads#server/dev">
 </p>
 

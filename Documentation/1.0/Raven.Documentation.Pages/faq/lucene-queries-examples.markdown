@@ -2,7 +2,7 @@
 
 ## Syntax
 
-[http://lucene.apache.org/core/old_versioned_docs/versions/2_9_4/queryparsersyntax.html](http://lucene.apache.org/core/old_versioned_docs/versions/2_9_4/queryparsersyntax.html)
+[http://lucene.apache.org/core/2_9_4/queryparsersyntax.html](http://lucene.apache.org/core/2_9_4/queryparsersyntax.html)
 
 ## Looking for words
 

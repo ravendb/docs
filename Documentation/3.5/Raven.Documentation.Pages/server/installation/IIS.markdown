@@ -4,7 +4,7 @@ RavenDB can be run as an IIS application, or from a virtual directory under an I
 
 ## Setting up a RavenDB IIS application
 
-1. [Download the distribution zip](http://ravendb.net/download) and extract the "Web" folder.
+1. [Download the distribution zip](https://ravendb.net/download) and extract the "Web" folder.
 2. In the IIS Manager, create a new website and point its physical path to the `"/Web"` folder you extracted. Alternatively, point a virtual directory under an existing website to that folder.
 3. Set the Application Pool for the IIS application you will be using to "ASP.Net v4.0", or create a new Application Pool set to .NET 4.0 Integrated Pipeline.
 4. Set port and host if needed.
@@ -57,7 +57,7 @@ c:\windows\microsoft.net\framework\v4.0.30319\aspnet_isapi.dll, and Uncheck Veri
 
 ## Web Configuration
 
-Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](http://ravendb.net/docs/server/administration/configuration) page for the complete info.
+Many configuration options are available for tuning RavenDB and fitting it to your needs. See the [Configuration options](https://ravendb.net/docs/server/administration/configuration) page for the complete info.
 
 ## Recommended IIS Configuration
 
@@ -99,7 +99,7 @@ You can also see all existing registrations with the following command:
 
 Another issue that is worth mentioning is a IISReset problem. By default it gives the IIS server 20 seconds to restart, 60 seconds to stop and 0s to reboot, after that period of time it aborts the thread of the application by using `Thread.Abort()` (in context of a RavenDB it means that we will have to run recovery process next time we start, so it will take even `longer`). In most cases there should be enough time, but when we consider a multi-tenancy feature and possibility of a database recovery process, then the available time might be insufficient.
 
-To handle the problematic IIS behavior we have redesigned the RavenDB startup process to handle `Thread.Abort()` more robustly and moved the DB initialization process to a separate, non-dependent by IIS process. More details about the issue and our solution can be found [here](http://ayende.com/blog/158817/things-we-learned-from-production-part-iindash-wake-up-or-i-kill-you-dead).
+To handle the problematic IIS behavior we have redesigned the RavenDB startup process to handle `Thread.Abort()` more robustly and moved the DB initialization process to a separate, non-dependent by IIS process. More details about the issue and our solution can be found [here](https://ayende.com/blog/158817/things-we-learned-from-production-part-iindash-wake-up-or-i-kill-you-dead).
 
 Our current implementation, due to limitations in IIS, does not cover WebSite restart scenario when long-running requests are in progress and might cause file access errors. When this problem occurs, the only solution is to **restart** the **IIS** server.
 
@@ -109,7 +109,7 @@ It has been confirmed that caching on RavenDB Server Farm causes unexpected erro
 
 ## IIS + Encryption
 
-When encryption bundle is activated the `CryptographicException` can occur with following message: "**The data protection operation was unsuccessful. This may have been caused by not having the user profile loaded for the current thread's user context, which may be the case when the thread is impersonating.**". To resolve this issue, on IIS 7 and later, user profile of the application pool identity must be loaded. More [here](http://blogs.msdn.com/b/vijaysk/archive/2009/03/08/iis-7-tip-3-you-can-now-load-the-user-profile-of-the-application-pool-identity.aspx).
+When encryption bundle is activated the `CryptographicException` can occur with following message: "**The data protection operation was unsuccessful. This may have been caused by not having the user profile loaded for the current thread's user context, which may be the case when the thread is impersonating.**". To resolve this issue, on IIS 7 and later, user profile of the application pool identity must be loaded. More [here](https://blogs.msdn.microsoft.com/vijaysk/2009/03/08/iis-7-tip-3-you-can-now-load-the-user-profile-of-the-application-pool-identity/).
 
 ## References
 

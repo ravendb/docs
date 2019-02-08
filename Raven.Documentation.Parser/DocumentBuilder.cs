@@ -2,7 +2,7 @@
 using System.IO;
 using MarkdownDeep;
 using Raven.Documentation.Parser.Data;
-using Raven.Documentation.Parser.Helpers;
+using Raven.Documentation.Parser.Helpers.DocumentBuilding;
 
 namespace Raven.Documentation.Parser
 {
@@ -62,6 +62,7 @@ namespace Raven.Documentation.Parser
             page.Metadata?.TryGetValue("url", out expectedPageUrl);
 
             _content = SocialMediaBlockHelper.ReplaceSocialMediaBlocks(_content, expectedPageUrl);
+            _content = InternalUrlsHelper.ConvertHttpToHttps(_content);
 
             return _content;
         }

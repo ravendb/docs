@@ -29,7 +29,7 @@ The various deployment options are discussed in more details in the [Server side
 
 To jump-start your learning process, it is sufficient that you 
 
-1. Download the [latest stable build](http://ravendb.net/download)
+1. Download the [latest stable build](https://ravendb.net/download)
 2. Unzip it to a folder
 3. Run \\Server\\Raven.Server.exe
 

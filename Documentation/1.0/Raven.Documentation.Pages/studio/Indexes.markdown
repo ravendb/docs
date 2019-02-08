@@ -55,6 +55,6 @@ Other then that the layout for dynamic query and index query is the same
 On the top right you have a button to execute the query  
 ![Indexes Fig 13](Images/studio_indexes_13.PNG)  
 
-At the top of the body you have a space to type your query (with [lucene syntax](http://www.codeproject.com/Articles/29755/Introducing-Lucene-Net))  
+At the top of the body you have a space to type your query (with [lucene syntax](https://www.codeproject.com/Articles/29755/Introducing-Lucene-Net))  
 At to bottom the results of the query  
 ![Indexes Fig 14](Images/studio_indexes_14.PNG) 

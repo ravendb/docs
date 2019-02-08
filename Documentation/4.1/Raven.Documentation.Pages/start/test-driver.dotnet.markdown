@@ -88,7 +88,7 @@ with just a minor change. Here you can change your ServerDirectory.
 {PANEL:Continuous Integration Servers}
 
 Best practice is to use a CI/CD server to help automate the testing and deployment of your new code. 
-Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://www.visualstudio.com/team-services/).
+Popular CI/CD products are [AppVeyor](https://www.appveyor.com/) or [Visual Studio Team Services (aka. VSTS)](https://visualstudio.microsoft.com/team-services/).
 
 {PANEL/}
 

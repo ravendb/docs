@@ -37,7 +37,7 @@ Lets consider a case when we want to convert one of the metadata values to one o
 
 {CODE document_conversion_example@ClientApi\Advanced\ClientSideListeners.cs /}
 
-More sophisticated example usage can be found [here](http://ravendb.net/kb/16/using-optimistic-concurrency-in-real-world-scenarios).
+More sophisticated example usage can be found [here](https://ravendb.net/kb/16/using-optimistic-concurrency-in-real-world-scenarios).
 
 ## Document Delete listener
 

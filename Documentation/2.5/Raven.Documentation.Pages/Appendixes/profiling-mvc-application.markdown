@@ -1,7 +1,7 @@
 ﻿#Profiling ASP.NET MVC application using RavenProfiler
 
 To set up profiling in RavenDB using the `RavenProfiler` you must follow a few simple steps which are defined below:   
-1\.	First, add `Raven.Client.MvcIntegration` assembly to MVC project. An alternative way is to install NuGet package that can be found [here](http://nuget.org/packages/RavenDB.Client.MvcIntegration).   
+1\.	First, add `Raven.Client.MvcIntegration` assembly to MVC project. An alternative way is to install NuGet package that can be found [here](https://www.nuget.org/packages/RavenDB.Client.MvcIntegration).   
 2\.	The next step is to initialize the profiler on your document store. This can be achieved by adding the following code in `Global.asax.cs` file.   
 
 {CODE profiling_mvc_application_1@Appendixes\ProfilingMvcApplication.cs /}

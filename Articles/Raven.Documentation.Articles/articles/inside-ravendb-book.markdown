@@ -31,7 +31,7 @@ Topics include:
 
 <div class="bottom-line">
     <p>
-        <a href="http://ravendb.net/"><strong>RavenDB</strong></a> is the leading operational and transactional Enterprise NoSQL database provider. Quick to install and simple to secure, RavenDB gives you rapid scalability with a distributed data cluster. You can use RavenDB in tandem with a relational database using our ETL Replication feature.
+        <a href="https://ravendb.net/"><strong>RavenDB</strong></a> is the leading operational and transactional Enterprise NoSQL database provider. Quick to install and simple to secure, RavenDB gives you rapid scalability with a distributed data cluster. You can use RavenDB in tandem with a relational database using our ETL Replication feature.
     </p>
     <p>
         <a href="https://ravendb.net#play-video"><strong>Enjoy a Fun Intro Video</strong></a> or <a href="https://ravendb.net/downloads"><strong>Download RavenDB 4.0 for free</strong></a> and get 3 cores, our state of the art GUI, and a 6 gigabyte RAM database with up to a 3-server cluster up and running quickly for your next project.

@@ -14,11 +14,11 @@ Each of those can be added to your project by either using **nuget** or extracti
 
 ## Installing using nuget
 
-You can consume RavenDB through NuGet. Follow [this](http://ravendb.net/docs/intro/quickstart/adding-ravendb-through-nuget?version=1.0) article for instructions how to do that.
+You can consume RavenDB through NuGet. Follow [this](https://ravendb.net/docs/intro/quickstart/adding-ravendb-through-nuget?version=1.0) article for instructions how to do that.
 
 ## Manually adding RavenDB using the build package
 
-Grab a stable build from the [downloads page](http://ravendb.net/download), and extract the required files to a new "RavenDB" folder in your application. You'll then need update your project with references to them.
+Grab a stable build from the [downloads page](https://ravendb.net/download), and extract the required files to a new "RavenDB" folder in your application. You'll then need update your project with references to them.
 
 Here's how to know which are the files you are going to need:
 

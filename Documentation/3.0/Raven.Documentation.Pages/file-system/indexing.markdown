@@ -1,6 +1,6 @@
 #Indexing
 
-The file system allows you to search files using [Lucene query syntax](http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html). You can look for a file by using:
+The file system allows you to search files using [Lucene query syntax](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html). You can look for a file by using:
 
 * name,
 * size,

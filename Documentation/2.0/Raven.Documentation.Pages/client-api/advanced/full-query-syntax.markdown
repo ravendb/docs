@@ -1,6 +1,6 @@
 ﻿#Full RavenDB query syntax
 
-A full query syntax is a combination of a [Lucene syntax](http://lucene.apache.org/core/old_versioned_docs/versions/2_9_4/queryparsersyntax.html) and RavenDB-specific extensions. This section describes all Raven flavored options which a user can use to
+A full query syntax is a combination of a [Lucene syntax](http://lucene.apache.org/core/2_9_4/queryparsersyntax.html) and RavenDB-specific extensions. This section describes all Raven flavored options which a user can use to
 construct index queries. The syntax that is presented here can by used to query by using either HTTP API or Client API 
 (*IDatabaseCommands.Query* and *IDocumentSession.Advanced.LuceneQuery* methods).
 

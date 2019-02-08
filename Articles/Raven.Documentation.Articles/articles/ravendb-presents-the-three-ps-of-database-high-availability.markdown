@@ -71,7 +71,7 @@ Backups allow you to have long term storage, and point in time recovery. You can
 
 <div class="bottom-line">
 <p>
-<a href="http://ravendb.net/"><strong>RavenDB</strong></a> is the industry’s premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
+<a href="https://ravendb.net/"><strong>RavenDB</strong></a> is the industry’s premiere NoSQL ACID Document Database. Easy to install, quick to learn, and fast to secure, RavenDB is fully transactional across your entire database. RavenDB can be used on-premise or in cloud solutions like Amazon Web Services (AWS) and Microsoft Azure.
 </p>
 
 <p>

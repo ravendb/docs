@@ -24,4 +24,4 @@ Those are the _absolute minimum requirements_ for it to run. Please note that th
 * Note that splitting the db across multiple physical HDs is also recommended
 * 64 bit OS
 
-If you have any questions regarding deployment, please [contact us](http://ravendb.net/support).
+If you have any questions regarding deployment, please [contact us](https://ravendb.net/support).

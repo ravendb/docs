@@ -30,7 +30,7 @@ Only stable builds are supported for production use.
 
 ## Reporting bugs
 
-Bugs should be reported in the mailing list: [http://groups.google.com/group/ravendb](http://groups.google.com/group/ravendb).
+Bugs should be reported in the mailing list: [https://groups.google.com/forum/#!forum/ravendb](https://groups.google.com/forum/#!forum/ravendb).
 
 When reporting a bug, please include:
 
@@ -47,6 +47,6 @@ A list of outstanding bugs can be found here: [http://issues.hibernatingrhinos.c
 
 ## Licensing and support
 
-RavenDB is released as open-source under the AGPL license. What that means is it is freely available, but if you want to use this with proprietary software, you **must** buy a [commercial license](http://ravendb.net/licensing).
+RavenDB is released as open-source under the AGPL license. What that means is it is freely available, but if you want to use this with proprietary software, you **must** buy a [commercial license](https://ravendb.net/licensing).
 
-RavenDB has a very active [mailing list](http://groups.google.com/group/ravendb), where users and RavenDB developers attend all queries quickly and efficiently.
+RavenDB has a very active [mailing list](https://groups.google.com/forum/#!forum/ravendb), where users and RavenDB developers attend all queries quickly and efficiently.

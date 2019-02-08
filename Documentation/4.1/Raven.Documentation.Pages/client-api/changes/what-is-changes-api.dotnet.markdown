@@ -9,7 +9,7 @@ This mechanism lets you notify users if something has changed without the need t
 Changes API uses WebSockets under the covers. Due to [the lack of support for client certificates in WebSockets implementation in .NET Core 2.0](https://github.com/dotnet/corefx/issues/5120#issuecomment-348557761)
 the Changes API won't work for secured servers accessible over HTTPS.
 
-This issue is fixed in the final version of .NET Core 2.1 available [here](https://www.microsoft.com/net/download). In order to workaround this you can switch your application to use .NET Core 2.1.
+This issue is fixed in the final version of .NET Core 2.1 available [here](https://dotnet.microsoft.com/download). In order to workaround this you can switch your application to use .NET Core 2.1.
 
 The issue affects only the RavenDB client.
 {DANGER/}

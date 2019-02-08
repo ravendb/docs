@@ -12,7 +12,7 @@ In this setup, we have two nodes holding the users, and two nodes with serve as 
 
 {NOTE Should you allow to failover writes to the replicated node? If you do, you need to recover those writes. The usual approach for that is to setup two way replication between the master and slave. Since the slave will be written to only if the master have failed, in essence what this means is that when the master restarts, we will be able to send it all the documents that were written to while it was down. There is a small chance of getting conflicts using this system, if a write occurs on the server as soon as it is up but before replication from the slave have finished. /}
 
-You need to either [handle that](http://ravendb.net/docs/server/extending/bundles/replicationconflicts) or to choose to disallow writes while using the master is unavailable, and use the slave just for reads.
+You need to either [handle that](https://ravendb.net/docs/server/extending/bundles/replicationconflicts) or to choose to disallow writes while using the master is unavailable, and use the slave just for reads.
 
 ## Sharding with internal failover nodes
 

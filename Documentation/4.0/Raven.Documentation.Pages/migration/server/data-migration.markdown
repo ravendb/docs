@@ -35,7 +35,7 @@ Next, you need to provide the migration configuration:
 
 - `Resource type` - whether you are going to import a database or a file system
 - `Data directory` - the absolute path to 3.x data directory
-- `Data exporter` - the absolute path to `Raven.StorageExporter.exe` - RavenDB 3.5 tool that can be found on [ravendb.net](http://ravendb.net/download) as a part of the tools package. Please make sure to use the latest version (patch or stable).
+- `Data exporter` - the absolute path to `Raven.StorageExporter.exe` - RavenDB 3.5 tool that can be found on [ravendb.net](https://ravendb.net/download) as a part of the tools package. Please make sure to use the latest version (patch or stable).
 
 The `Advanced` options section allows you to:
 

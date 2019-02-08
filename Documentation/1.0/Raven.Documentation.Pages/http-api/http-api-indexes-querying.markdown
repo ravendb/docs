@@ -91,7 +91,7 @@ This gives us all the documents where the home state is California. The same que
     }
 {CODE-END /}
 
-The query for Raven is the one used by Lucene. You can pass any valid Lucene query using the query parameter on the query string. You can read more on [the query syntax on the Lucene documentation](http://lucene.apache.org/core/old_versioned_docs/versions/3_0_0/queryparsersyntax.html).
+The query for Raven is the one used by Lucene. You can pass any valid Lucene query using the query parameter on the query string. You can read more on [the query syntax on the Lucene documentation](http://lucene.apache.org/core/3_0_3/queryparsersyntax.html).
 
 ##Fetching results from the index
 But while just getting the documents matching a particular query is useful, we can do better than that. Instead of getting the documents themselves, I want to get the values directly from the index, without getting the full document. So let us say that I just want to display the names by home state, we can do that by utilizing the fetch query string parameter.

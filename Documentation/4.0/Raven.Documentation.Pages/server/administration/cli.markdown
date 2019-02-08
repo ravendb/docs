@@ -66,7 +66,7 @@ ravendb> log on
 
 {PANEL:gc}
 
-Force Garbage Collection to a specific generation (0, 1 or 2).  See [GC.Collect Method](https://msdn.microsoft.com/en-us/library/y46kxc5e(v=vs.110).aspx)
+Force Garbage Collection to a specific generation (0, 1 or 2).  See [GC.Collect Method](https://docs.microsoft.com/en-us/dotnet/api/system.gc.collect?redirectedfrom=MSDN&view=netframework-4.7.2#System_GC_Collect_System_Int32_)
 
 {CODE-BLOCK:plain}
 gc <0|1|2>

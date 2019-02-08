@@ -7,4 +7,4 @@ However if you have people from around the world using the same database, and yo
 The decision of whether to use UTC, or Local Time, or `DateTimeOffset` is an application decision, not an infrastructure decision.  There are valid reasons for using any one of these.
 
 ##More Information
-For detailed information about this topic, please refer to the [Working with Date and Time in RavenDB](http://codeofmatt.com/2015/01/25/date-and-time-in-ravendb/) article written by Matt Johnson.
+For detailed information about this topic, please refer to the [Working with Date and Time in RavenDB](https://codeofmatt.com/date-and-time-in-ravendb/) article written by Matt Johnson.

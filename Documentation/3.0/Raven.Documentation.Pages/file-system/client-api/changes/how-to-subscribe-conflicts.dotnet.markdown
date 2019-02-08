@@ -17,4 +17,4 @@ Synchronization conflicts can be tracked by using `ForConflicts` method. You wil
 
 ## Remarks
 
-{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
+{INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project. /}

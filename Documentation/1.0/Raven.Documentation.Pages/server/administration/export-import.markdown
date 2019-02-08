@@ -2,7 +2,7 @@
 
 In order to export or import data from a RavenDB server, you can use the Raven.Smuggler utility.
 
-Raven.Smuggler is distributed both in the RavenDB [distrubution package](http://builds.hibernatingrhinos.com/Builds/RavenDB) and in any of the shipped [nuget packages](http://ravendb.net/docs/intro/quickstart/adding-ravendb-to-your-application?version=1.0#installing-using-nuget). It is located under the `/Tools` folder.
+Raven.Smuggler is distributed both in the RavenDB [distrubution package](https://hibernatingrhinos.com/builds) and in any of the shipped [nuget packages](https://ravendb.net/docs/intro/quickstart/adding-ravendb-to-your-application?version=1.0#installing-using-nuget). It is located under the `/Tools` folder.
 
 Using the Smuggler utility is necessary when trying to move a RavenDB Data folder around between servers. Simply copying it is not supported and can result in server errors.
 

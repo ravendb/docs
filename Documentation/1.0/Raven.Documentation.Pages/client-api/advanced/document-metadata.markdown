@@ -11,7 +11,7 @@ Here is a list of all properties RavenDB stores as metadata for its documents:
 * **Raven-Clr-Type** - Records the CLR type, set and used by the JSON serialization/deserialization process in the Client API.
 * **Raven-Entity-Name** - Records the entity name, aka the name of the RavenDB collection this entity belongs to.
 * **Non-Authoritive-Information** - This boolean value will be set to true if the data received by the client has been modified by an uncommitted transaction. You can read more on it in the Advanced section.
-* **Temp-Index-Score** - When querying RavenDB, this value is the [Lucene score](http://lucene.apache.org/java/2_9_2/scoring.html) of the entity for the query that was executed.
+* **Temp-Index-Score** - When querying RavenDB, this value is the [Lucene score](http://lucene.apache.org/core/2_9_4/scoring.html) of the entity for the query that was executed.
 * **Raven-Read-Only** - This document should be considered read only and not modified.
 * **Last-Modified** - The last modified time-stamp for the entity.
 * **@etag** - Every document in RavenDB has a corresponding e-tag (entity tag) stored as a sequential Guid. This e-tag is updated by RavenDB every time the document is changed.

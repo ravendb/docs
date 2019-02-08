@@ -62,7 +62,7 @@ Open the down arrow and click `New database from legacy files`.
             ![Figure 4. Create New Database From Legacy Files - Encryption](images/new-database-from-legacy-4.png "Encryption")
 
 5. **Data Exporter**
-    * RavenDB 3.5 tool that can be found on [ravendb.net](http://ravendb.net/download) as a part of the tools package.
+    * RavenDB 3.5 tool that can be found on [ravendb.net](https://ravendb.net/download) as a part of the tools package.
     
 {PANEL/}
 

@@ -3,7 +3,7 @@ using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Raven.Documentation.Parser.Helpers
+namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
 {
 	public class LegacyBlockHelper
 	{

@@ -32,7 +32,7 @@ event EventHandler ConnectionStatusChanged
 
 In order to retrieve notifications you have to subscribe server-side events by using either document or index related methods.
 
-{INFO To achieve a better experience of subsribing methods by using delegates, please add [Reactive Extensions](http://nuget.org/packages/Rx-Main) package to your project. /}
+{INFO To achieve a better experience of subsribing methods by using delegates, please add [Reactive Extensions](https://www.nuget.org/packages/Rx-Main) package to your project. /}
 
 ## Document notifications
 

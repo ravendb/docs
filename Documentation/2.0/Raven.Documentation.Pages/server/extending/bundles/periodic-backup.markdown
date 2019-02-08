@@ -1,6 +1,6 @@
 # Bundle: Periodic Backup
 
-RavenDB comes with support of doing periodic backup of documents and attachments to [Amazon AWS](http://aws.amazon.com/) services.  
+RavenDB comes with support of doing periodic backup of documents and attachments to [Amazon AWS](https://aws.amazon.com/) services.  
 When creating a database in the studio you will see that you can't change the selection of the 'Periodic Backup Bundle' it's selection depends on the license.  
 In order to periodic backup to work you must activate `PeriodicBackup` bundle, by activating this bundle globally and turning it on/off per database, or activating it per database only.
 
@@ -34,7 +34,7 @@ In next step we need to create a backup setup document under `Raven/Backup/Perio
 
 `GlacierVaultName` and `S3BucketName` values **exclude** each other in favor of the `GlacierVaultName` so if you will specify both, then RavenDB will only use `GlacierVaultName`. 
 
-{NOTE More information about Amazon Simple Storage Service (Amazon S3) can be found [here](http://aws.amazon.com/s3/) and if you are interested in Amazon Glacier then visit [this](http://aws.amazon.com/glacier/) page. /}
+{NOTE More information about Amazon Simple Storage Service (Amazon S3) can be found [here](https://aws.amazon.com/s3/) and if you are interested in Amazon Glacier then visit [this](https://aws.amazon.com/glacier/) page. /}
 
 ### Restore from a periodic backup
 The periodic backup is not a full backup really. It is, instead, an incremental export.

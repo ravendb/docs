@@ -1,11 +1,10 @@
-﻿namespace Raven.Documentation.Parser.Helpers
+﻿using System.Text;
+using System.Text.RegularExpressions;
+using HtmlAgilityPack;
+
+namespace Raven.Documentation.Parser.Helpers.DocumentBuilding
 {
-	using System.Text;
-	using System.Text.RegularExpressions;
-
-	using HtmlAgilityPack;
-
-	public class PanelBlockHelper
+    public class PanelBlockHelper
 	{
 		private static readonly Regex PanelBlockWithTitleFinder = new Regex(@"{PANEL:(.+?)}(.*?){PANEL/}", RegexOptions.Compiled | RegexOptions.Singleline);
 
