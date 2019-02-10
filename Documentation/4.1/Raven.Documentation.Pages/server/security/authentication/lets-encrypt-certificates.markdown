@@ -43,9 +43,9 @@ If a node is down and you click `Renew`, the cluster will complete the operation
 
 ## Updating DNS records
 
-At the moment, updating DNS records for your domain can only be acheived by running the Setup Wizard again.
+Updating DNS records for your domain can be acheived by running the Setup Wizard again or by using a dedicated page at the RavenDB website.
 
-We are working on a new dedicated page in our website that will allow to easily edit DNS records which are associated with your license. Once deployed, it will be described and explained here.
+The [Customers Portal](https://customers.ravendb.net) allows to easily edit DNS records which are associated with your license.
 
 ## Related articles
 
