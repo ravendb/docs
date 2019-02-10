@@ -23,7 +23,7 @@ If you are having trouble using the wizard or with security in general, please v
 
 [Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain as long as you can prove that you own it.
 
-During the wizard, RavenDB will give you a free subdomain. It lets you configure the DNS records for this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, but you can always update the DNS records by running the setup wizard.
+During the wizard, RavenDB will give you a free subdomain. It lets you configure the DNS records for this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, and we let you manage it through our [Customer Portal](https://customers.ravendb.net). Login with your license, and you can add/remove/update DNS records for your cluster.
 
 The free subdomain is given to you only for the purpose of proving ownership to Let's Encrypt. If you wish to use your own domain, you are welcome to acquire your own certificate and use that instead.
 

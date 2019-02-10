@@ -84,12 +84,14 @@ Please wait a while until DNS propagation is finished and try again. If you are 
 it might take hours to update because of DNS caching. If the issue persists, contact RavenDB's support.
 {CODE-BLOCK/}  
 
-If this happens, there is nothing you can do except wait for DNS propagation. When it's updated in dns.google.com click the `Try Again` button.
+If this happens, there is nothing you can do except wait for DNS propagation. When it's updated in dns.google.com click the `Try Again` button.  
+You can keep track of your RavenDB clusters and their associated DNS records at the [Customer's Portal](https://customers.ravendb.net).
 
 ### After installing with Let's Encrypt, can I change the DNS records?
 
-Yes.  
-You can run the setup wizard again.
+Yes.
+1. The [Customers Portal](https://customers.ravendb.net) allows to easily edit DNS records which are associated with your license.
+2. You can run the setup wizard again.
 If you supply different IP addresses then the wizard will update the DNS records of your domain.  
 If you use a new domain or if you add/remove nodes in the new configuration then the wizard will also fetch a new certificate.
 
