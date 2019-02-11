@@ -12,24 +12,24 @@ Assuming that you are running RavenDB on port 8080 (the default when running in 
 
 At the top left of the page there are the navigation tabs, a link for each of the screens in the Studio:
 
-![](Images/studio_base_1.PNG)  
+![Figure 1: Navigation Tabs](Images/studio_base_1.PNG)  
 
 Some database-wide statistics are shown at the bottom of the screen:
 
-![](Images/studio_base_3.PNG)
+![Figure 2: Database-wide Statistics](Images/studio_base_3.PNG)
 
 There you will also find the Licensing status and the build number:  
-![](Images/studio_base_4.PNG)
+![Figure 3: Licensing Status and Build Number](Images/studio_base_4.PNG)
 
 ## The Summary Screen
 
 The summary screen is the default screen shown whenever you access the RavenDB Management Studio, showing the latest documents updated (or created) in the database.
 
-![](Images/studio_summery_2.PNG)
+![Figure 4: The Summary Screen](Images/studio_summery_2.PNG)
 
 When accessing an empty database (or tenant) the page will look like this:
 
-![](Images/studio_summery_1.PNG)
+![Figure 5: The Summary Screen for an Empty Database](Images/studio_summery_1.PNG)
 
 Clicking on "Create sample data" will add some dummy MvcMusicStore data and indexes to the database. This is usually helpful to jumpstart the RavenDB learning process.
 

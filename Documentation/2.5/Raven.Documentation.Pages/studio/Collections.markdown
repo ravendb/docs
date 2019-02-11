@@ -22,6 +22,6 @@ To perform this delete operation, right click on a Collection name from the list
 
 If you wish to delete more then one collection you can do that by selecting several collections with the Ctrl or Shift keys (The same way it is done for windows with ctrl for selecting collections one by one and shift for selecting start and end) and right-clicking and selecting delete (or pressing the "Delete" key).
 
-![](Images/studio_collections_4.PNG)
+![Figure 4: Confirm Collection Delete](Images/studio_collections_4.PNG)
 
 {WARNING This operation cannot be undone, and is likely to delete a lot of documents. Use this option wisely. /}

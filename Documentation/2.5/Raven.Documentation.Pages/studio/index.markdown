@@ -7,13 +7,13 @@ The Studio is accessible from any RavenDB server, regardless of how it is deploy
 ## Basic navigation
 
 At the top left of the page there are the navigation tabs, a link for each of the screens in the Studio:  
-![](Images/studio_base_1.PNG)  
+![Figure 1: Navigation Tabs](Images/studio_base_1.PNG)  
 
 Some database-wide statistics are shown at the bottom of the screen:  
-![](Images/studio_base_3.PNG)
+![Figure 2: Database-wide Statistics](Images/studio_base_3.PNG)
 
 There you will also find the Licensing status and the build number for the server and the studio:  
-![](Images/studio_base_4.PNG)
+![Figure 3: Licensing Status and Build Number](Images/studio_base_4.PNG)
 
 ## Features overview
 

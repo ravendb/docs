@@ -3,7 +3,7 @@
 RavenDB supports multi-tenancy, and the Management Studio provides an easy way to manage multiple tenants from the same UI, and to create new tenants.
 
 At the top right corner of each screen, by the RavenDB logo, we have several indicators:  
-![](Images/studio_base_2.PNG)  
+![Top right corner indicators](Images/studio_base_2.PNG)  
 
 On the right we have a dot the represents the online status of the sever (red - offline, green online).  
 On the left we have the name of the current tenant you are working against is shown. Clicking on it will open a list of other available tenants, and selecting another one from that list will shift the Studio to working against that tenant.  

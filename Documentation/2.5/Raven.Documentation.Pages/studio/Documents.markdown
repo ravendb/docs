@@ -6,9 +6,9 @@ This screen gives an overview of all documents in the RavenDB server instance.
 
 When you will enter thin screen, on the left side you will see all available collections for the current database. Each collection will be represented by a different color and a number of documents that belong to it.
 
-![Figure 2: The list of available collection](Images/studio_collections_2.PNG)
+![Figure 1: The list of available collection](Images/studio_collections_2.PNG)
 
-![Figure 1: Document collections](Images/studio_collections_1.PNG)
+![Figure 2: Document collections](Images/studio_collections_1.PNG)
 
 {INFO A **Collection** in RavenDB is a group of documents sharing the same entity name. It is not a "database table", but rather a logical way of thinking of document groups. /}
 
@@ -22,7 +22,7 @@ To perform this delete operation, right click on a Collection name from the list
 
 ![Figure 3: Deleting a collection](Images/studio_collections_3.PNG)
 
-![](Images/studio_collections_4.PNG)
+![Confirm collection delete](Images/studio_collections_4.PNG)
 
 {WARNING This operation cannot be undone, and is likely to delete a lot of documents. Use this option wisely. /}
 
@@ -34,7 +34,7 @@ The documents are loaded from the database, newest first, documents from differe
 
 In the right side of the view you will find a couple of buttons.
 
-![](Images/studio_base_11.PNG)
+![Right side buttons](Images/studio_base_11.PNG)
 
 The left button allows you to Export to CSV.
 
@@ -73,7 +73,7 @@ On the top right corner of this screen you will find several buttons:
 - Search
 - Paging between the neighboring documents
 
-![](Images/studio_documents_9.PNG)
+![Top right corner buttons](Images/studio_documents_9.PNG)
 
 To the right of the form some statistics are shown - the metadata of the current document, formatted, and a list of possible reference found in it. Clicking on a reference will open that document for editing, if it exists in your database.
 
@@ -83,11 +83,11 @@ To the right of the form some statistics are shown - the metadata of the current
 
 Back in the main listing screen, at the top right corner of the screen you will find 2 additional Options:  
 
-![](Images/studio_base_5.PNG)
+![Main listing top right corner buttons](Images/studio_base_5.PNG)
 
 Click on the "Go To Document" and start typing the id of the document you want to edit and suggestions for your in will appear:
 
-![](Images/studio_base_9.PNG)
+![Go to Document suggestions](Images/studio_base_9.PNG)
 
 If no document exists in the database for the ID you provide you will be redirected to the Documents tab, otherwise the Document edit page will load with the requested document.
 
@@ -95,7 +95,7 @@ Clicking the "New" button will open the document editing screen, but this time w
 
 If you click on the arrow by the "New" button you will have several options where you will go to the respective pages for each item you want to create:
 
-![](Images/studio_base_10.PNG)
+![New button options](Images/studio_base_10.PNG)
 
 For a new document created through the Studio the `Raven-entity-Name` metadata attribute which sets its collection is set by the text before the '/' in the provided ID (with first letter in capital), so the a document with ID "albums/626" will be assigned to the "Albums" collection.
 

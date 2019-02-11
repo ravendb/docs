@@ -20,6 +20,6 @@ To perform this delete operation, right click on a Collection name from the list
 
 ![Figure 3: Deleting a collection](Images/studio_collections_3.PNG)
 
-![](Images/studio_collections_4.PNG)
+![Figure 4: Confirm Deleting a Collection](Images/studio_collections_4.PNG)
 
 {WARNING This operation cannot be undone, and is likely to delete a lot of documents. Use this option wisely. /}
