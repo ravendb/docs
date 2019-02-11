@@ -11,7 +11,7 @@ Rhino Security design has affected the design of this system heavily. In essence
 ##Important Assumptions
 The most important assumption that we make for the first version is that we can trust the client not to lie about whose user it is executing a certain operation. That one assumes the following deployment scenario:
 
-![Figure 1: Authorization Bundle](/images/authorization_bundle_faq.png)
+![Figure 1: Authorization Bundle](images\authorization_docs.png)
 
 In other words, only the application server can talk to the RavenDB server and the application server is running trusted code.
 
