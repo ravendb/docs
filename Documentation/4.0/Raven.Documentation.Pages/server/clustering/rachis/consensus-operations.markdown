@@ -56,7 +56,7 @@ See [Implementation Details](../../../server/clustering/rachis/consensus-operati
 
   | Action | Method | URL |
   | - | - | - |
-  | Wait fro Raft Command | `GET` | /rachis/waitfor?index=index |
+  | Wait for Raft Command | `GET` | /rachis/waitfor?index=index |
 
 * The request will return after the corresponding Raft command was successfully applied -or-  
   a `timeout` is returned after `Cluster.OperationTimeoutInSec` has passed (default: 15 seconds).  
