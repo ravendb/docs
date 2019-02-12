@@ -161,7 +161,7 @@ When executed, the following results would be displayed:
 We are seeing two different paths, since there are two paths possible for ```"dogs/1"``` node.
 
 {NOTE: Bug in the implementation}
-This is a [bug](http://issues.hibernatingrhinos.com/issue/RavenDB-12263) that is yet to be fixed, since the results for this query should be two pathes : ```"dogs/3 >> dogs/5 >> dogs/6"``` and ```"dogs/2 >> dogs/4 >> dogs/6"```
+This is a [bug](https://issues.hibernatingrhinos.com/issue/RavenDB-12263) that is yet to be fixed, since the results for this query should be two pathes : ```"dogs/3 >> dogs/5 >> dogs/6"``` and ```"dogs/2 >> dogs/4 >> dogs/6"```
 {NOTE/}
 
 {PANEL/}

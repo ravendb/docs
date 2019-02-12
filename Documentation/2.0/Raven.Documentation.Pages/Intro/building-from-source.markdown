@@ -16,4 +16,4 @@ The build process will, by default, execute all tests, which will take a while. 
 
 For all tests to run correctly, ASP.NET MVC 3 and Silverlight 4 Tools have to be installed as well.
 
-RavenDB uses the [xUnit](http://xunit.codeplex.com/) unit testing framework. You will need to unblock all DLLs under `(source)\Tools\xUnit` and install it from `xunit.installer.exe` before running the tests.
+RavenDB uses the [xUnit](https://github.com/xunit/xunit) unit testing framework. You will need to unblock all DLLs under `(source)\Tools\xUnit` and install it from `xunit.installer.exe` before running the tests.

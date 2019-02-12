@@ -4,7 +4,7 @@ When RavenDB is given a POCO to save, all properties (public, private and protec
 
 ## Through decoration with attributes 
 
-The easy way to customize serialization is by decorating classes, properties and fields with attributes. RavenDB is using [JSON.NET](http://json.codeplex.com/) for JSON serialization, and all attributes that are made available by the original project are supported by the RavenDB Client API as well. These attributes are in the `Raven.Imports.Newtonsoft.Json` namespace.
+The easy way to customize serialization is by decorating classes, properties and fields with attributes. RavenDB is using [JSON.NET](https://www.newtonsoft.com/json) for JSON serialization, and all attributes that are made available by the original project are supported by the RavenDB Client API as well. These attributes are in the `Raven.Imports.Newtonsoft.Json` namespace.
 
 Following are some examples for usage in common scenarios.
 

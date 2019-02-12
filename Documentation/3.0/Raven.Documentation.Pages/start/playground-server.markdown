@@ -18,7 +18,7 @@ Live-test server offers a full functionality of a RavenDB server and is availabl
 
 ## LINQPad
 
-Driver for [LINQPad](http://www.linqpad.net/) that supports RavenDB connectivity was created by Ronnie Overby. It can be downloaded from project [GitHub page](https://github.com/ronnieoverby/RavenDB-Linqpad-Driver) (compiling the solution will overwrite the installed driver) or installed directly through LINQPad.
+Driver for [LINQPad](https://www.linqpad.net/) that supports RavenDB connectivity was created by Ronnie Overby. It can be downloaded from project [GitHub page](https://github.com/ronnieoverby/RavenDB-Linqpad-Driver) (compiling the solution will overwrite the installed driver) or installed directly through LINQPad.
 
 ### Installation
 
@@ -46,7 +46,7 @@ Step 2. `RavenDB Connection` view will appear where you can specify all needed i
 
 ### Querying
 
-Please visting project [GitHub page](https://github.com/ronnieoverby/RavenDB-Linqpad-Driver) for more information on how to query or watch [this](http://www.youtube.com/watch?v=XgsPvyk0bjM) video created by author of the driver that will guide you through available functionalities.
+Please visting project [GitHub page](https://github.com/ronnieoverby/RavenDB-Linqpad-Driver) for more information on how to query or watch [this](https://www.youtube.com/watch?v=XgsPvyk0bjM) video created by author of the driver that will guide you through available functionalities.
 
 ## Related articles
 

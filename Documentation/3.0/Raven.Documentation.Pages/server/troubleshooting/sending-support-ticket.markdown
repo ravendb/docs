@@ -3,8 +3,8 @@
 When sending a support ticket, it is good to include as much information about the issue as you can. The following article describes what can be send along with the issue description to let us better understand your problem.
 
 1. Server and client version
-2. Web Traffic logs. We recommend using a [FiddlerCap](http://www.telerik.com/fiddler/fiddlercap) recorder which will create a SAZ file that we can analyze further:
-    - [Download](http://www.telerik.com/fiddler/fiddlercap) FiddlerCap
+2. Web Traffic logs. We recommend using a [FiddlerCap](https://www.telerik.com/fiddler/fiddlercap) recorder which will create a SAZ file that we can analyze further:
+    - [Download](https://www.telerik.com/fiddler/fiddlercap) FiddlerCap
     - Close all instances of Internet Explorer (or other browsers).
     - Run the FiddlerCapSetup.exe file.
     - FiddlerCap will start automatically when the installer completes.
@@ -49,7 +49,7 @@ And configure fiddler with given DocumentStore:
 
 ## Writing unit tests
 
-The NuGet package has been created for easier RavenDB test creation and can be downloaded [here](http://www.nuget.org/packages/RavenDB.Tests.Helpers/).
+The NuGet package has been created for easier RavenDB test creation and can be downloaded [here](https://www.nuget.org/packages/RavenDB.Tests.Helpers/).
 
 The package contains base class (`RavenTestBase`) with various methods useful for test creation:
 

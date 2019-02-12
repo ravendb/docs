@@ -13,7 +13,7 @@ To take an advantage of the spatial search, first we need to create an index wit
 Where:   
      
 *	**lat/lng** are latitude/longitude coordinates   
-*	**shapeWKT** is a shape in the [WKT](http://en.wikipedia.org/wiki/Well-known_text) format    
+*	**shapeWKT** is a shape in the [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format    
 
 ### Example
 
@@ -46,17 +46,17 @@ Geohash is a latitude/longitude representation system that describes earth as a 
 
 E.g. The location of 'New York' in the United States is represented by the following geohash: [DR5REGY6R](http://geohash.org/dr5regy6r) and it represents the `40.7144 -74.0060` coordinates. Removing characters from the end of geohash will decrease the precision level.
 
-More information about geohash uses, decoding algorithm and limitations can be found [here](http://en.wikipedia.org/wiki/Geohash).
+More information about geohash uses, decoding algorithm and limitations can be found [here](https://en.wikipedia.org/wiki/Geohash).
 {PANEL/}
 
 {PANEL:QuadPrefixTree}
 QuadTree represents the earth as a grid with exactly four cells and similarly to geohash, each grid cell (sometimes called a bucket) has a letter assigned, and is divided further into 4 more cells and so on.
 
-More information about QuadTree can be found [here](http://en.wikipedia.org/wiki/Quadtree).
+More information about QuadTree can be found [here](https://en.wikipedia.org/wiki/Quadtree).
 {PANEL/}
 
 {PANEL:BoundingBox}
-More information about BoundingBox can be found [here](http://en.wikipedia.org/wiki/Minimum_bounding_rectangle).
+More information about BoundingBox can be found [here](https://en.wikipedia.org/wiki/Minimum_bounding_rectangle).
 {PANEL/}
 
 {WARNING `GeohashPrefixTree` is a default `SpatialSearchStrategy`. Doing any changes to the strategy after an index has been created will trigger the re-indexation process. /}

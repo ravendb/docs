@@ -4,7 +4,7 @@ In case you see an issue with RavenDB and you can to report it, the bast way is 
 ## How to Create a Failing Test
 1) Create a new Console Application  
 2) Add the NuGet Package "RavenDB Test Helpers"  
-![](Images/tests_1.PNG)  
+![Add RavenDB Test Helpers NuGet Package](Images/tests_1.PNG)  
 3) Create a test like this:  
 {CODE RavenTestSample1@Samples\RavenTests\RavenTestSample.cs /}
 

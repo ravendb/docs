@@ -22,11 +22,11 @@ There are several ways to deploy RavenDB in your project:
 
 * Embedded client - embeds a RavenDB instance in your .NET application, web or desktop.
 
-After you have a RavenDB server instance up and running, it is easy to connect to it using the RavenDB client to store and retrieve your data. RavenDB works with your [POCO](http://en.wikipedia.org/wiki/Plain_Old_CLR_Object)s, meaning it is super-easy to integrate it with your existing or newly-built application:
+After you have a RavenDB server instance up and running, it is easy to connect to it using the RavenDB client to store and retrieve your data. RavenDB works with your [POCO](https://en.wikipedia.org/wiki/Plain_old_CLR_object)s, meaning it is super-easy to integrate it with your existing or newly-built application:
 
 {CODE nutshell1@Intro\RavenDbInNutshell.cs /}
 
-As you may have noticed, RavenDB uses the [Unit of Work pattern](http://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will be persisted in the database in a single transaction.
+As you may have noticed, RavenDB uses the [Unit of Work pattern](https://martinfowler.com/eaaCatalog/unitOfWork.html), so all changes made before calling session.SaveChanges() will be persisted in the database in a single transaction.
 
 ## RavenDB Development cycle
 
@@ -51,7 +51,7 @@ When reporting a bug, please include:
 
 *Bugs that comes with a way for us to reproduce the program locally (preferably a unit test) are usually fixed much more quickly.*
 
-A list of outstanding bugs can be found here: [http://issues.hibernatingrhinos.com/](http://issues.hibernatingrhinos.com/).
+A list of outstanding bugs can be found here: [https://issues.hibernatingrhinos.com/](https://issues.hibernatingrhinos.com/).
 
 ## Licensing and support
 

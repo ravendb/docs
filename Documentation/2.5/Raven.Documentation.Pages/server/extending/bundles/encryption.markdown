@@ -27,7 +27,7 @@ Above example demonstrates how to create `EncryptedDB` with active encryption an
 
 ## Encryption key management
 
-In RavenDB, we have two types of configurations. Server-wide, which is usually located at the `App.config` file and database specific, which is located at the System database. For the `App.config` file, we provide support for encrypting the file using [DPAPI](http://en.wikipedia.org/wiki/Data_Protection_API), using the standard .NET config file encryption system. For database specific values, we provide our own support for encrypting the values using DPAPI.
+In RavenDB, we have two types of configurations. Server-wide, which is usually located at the `App.config` file and database specific, which is located at the System database. For the `App.config` file, we provide support for encrypting the file using [DPAPI](https://en.wikipedia.org/wiki/Data_Protection_API), using the standard .NET config file encryption system. For database specific values, we provide our own support for encrypting the values using DPAPI.
 
 So, as the end result of above:    
 *	Your documents and indexes are encrypted when they are on disk using strong encryption.    

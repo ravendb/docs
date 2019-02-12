@@ -29,7 +29,7 @@ Above example demonstrates how to create `EncryptedFS` with active encryption an
 
 ## Encryption key management
 
-There are two types of configuration: server-wide configuration, which is usually located at `Raven.Server.exe.config / web.config` file and a file system specific configuration, which is located at `<system>` database. For the config file, we provide support for encrypting the file using [DPAPI](http://en.wikipedia.org/wiki/Data_Protection_API), using the standard .NET config file encryption system. For the file system specific values, we provide our own support for encrypting the values using DPAPI.
+There are two types of configuration: server-wide configuration, which is usually located at `Raven.Server.exe.config / web.config` file and a file system specific configuration, which is located at `<system>` database. For the config file, we provide support for encrypting the file using [DPAPI](https://en.wikipedia.org/wiki/Data_Protection_API), using the standard .NET config file encryption system. For the file system specific values, we provide our own support for encrypting the values using DPAPI.
 
 So, as the consequences of the above:    
 

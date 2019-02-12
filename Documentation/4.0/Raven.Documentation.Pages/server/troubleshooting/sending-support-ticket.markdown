@@ -3,8 +3,8 @@
 When sending a support ticket, it is good to include as much information about the issue as you can. The following article describes what can be sent along with the issue description to let us better understand your problem.
 
 1. Server and client version
-2. Web Traffic logs. We recommend using a [FiddlerCap](http://www.telerik.com/fiddler/fiddlercap) recorder which will create a SAZ file that we can analyze further:
-    - [Download](http://www.telerik.com/fiddler/fiddlercap) FiddlerCap
+2. Web Traffic logs. We recommend using a [FiddlerCap](https://www.telerik.com/fiddler/fiddlercap) recorder which will create a SAZ file that we can analyze further:
+    - [Download](https://www.telerik.com/fiddler/fiddlercap) FiddlerCap
     - Close all instances of Internet Explorer (or other browsers)
     - Run the FiddlerCapSetup.exe file
     - FiddlerCap will start automatically when the installer completes

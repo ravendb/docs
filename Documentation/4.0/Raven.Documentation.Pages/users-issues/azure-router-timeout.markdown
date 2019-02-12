@@ -22,4 +22,4 @@ There are two possible ways to do that:
 
 ##Further Reading
 
-- [Azure SQL Server Connection Management](http://social.technet.microsoft.com/wiki/contents/articles/1541.windows-azure-sql-database-connection-management.aspx)
+- [Azure SQL Server Connection Management](https://social.technet.microsoft.com/wiki/contents/articles/1541.windows-azure-sql-database-connection-management.aspx)

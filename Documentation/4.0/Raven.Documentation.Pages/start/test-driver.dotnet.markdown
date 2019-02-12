@@ -163,7 +163,7 @@ test-driver references that downloaded server, in your tests.
 4. Queue/build away!
 
 ####Step 1 - Global Environment Variables for the build definition.
-![](images/test-driver/td1.png)
+![VSTS Global Environment Variables](images/test-driver/td1.png)
 
 ####Step 2 - Check/update your custom test-driver code
 
@@ -181,7 +181,7 @@ if (!string.IsNullOrWhiteSpace(path))
 {CODE-BLOCK/}
 
 ####Step 3 - Add a custom powershell task
-![](images/test-driver/td2.png)
+![VSTS Add Custom Powershell Task](images/test-driver/td2.png)
 
 here's the code to quickly copy/paste the script into your VSTS task settings:
 

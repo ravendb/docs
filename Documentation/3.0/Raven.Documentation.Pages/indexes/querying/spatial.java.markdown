@@ -36,7 +36,7 @@ The `withinRadiusOf` method is a wrapper around `relatesToShape` method.
 
 {CODE:java spatial_search_7@Indexes\SpatialIndexes.java /}
 
-where first parameter is a name of the field containing the shape to use for filtering, next one is a shape in [WKT](http://en.wikipedia.org/wiki/Well-known_text) format and the last one is a spatial relation type.
+where first parameter is a name of the field containing the shape to use for filtering, next one is a shape in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the last one is a spatial relation type.
 
 So to perform a radius search from the above example and use `relatesToShape` method, we do as follows
 

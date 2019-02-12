@@ -7,7 +7,7 @@ Welcome to this introductory article that will guide you through all the parts o
 For starters, you need to have a RavenDB server running. There are couple of ways you can acquire it:
 
 - distribution package or installer can be downloaded from [ravendb.net](https://ravendb.net/download),
-- [NuGet package](http://www.nuget.org/packages/RavenDB.Server/)
+- [NuGet package](https://www.nuget.org/packages/RavenDB.Server/)
 
 Now, we will focus on the distribution package (if you want to read about the installer go [here](../server/installation/using-installer)). The package contains the following directories:
 

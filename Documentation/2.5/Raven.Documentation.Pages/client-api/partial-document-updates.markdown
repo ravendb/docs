@@ -150,7 +150,7 @@ It allows to retrieve debug information from a script execution. In order to ext
 
 #### lodash.js
 
-You can also take advantage of any function from [Lo-Dash](http://lodash.com/) library which is included into Raven script engine by default. Example with <em>forEach</em> usage:
+You can also take advantage of any function from [Lo-Dash](https://lodash.com/) library which is included into Raven script engine by default. Example with <em>forEach</em> usage:
 
 {CODE scriptedpatching_lodash@ClientApi/PartialDocumentUpdates.cs /}
 

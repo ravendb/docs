@@ -12,7 +12,7 @@ The documents are loaded from the database, newest first, and displayed with the
 
 Paging buttons are available above the documents list to allow you to go back and forth through it:
 
-![](Images/studio_base_6.PNG)
+![Paging Buttons](Images/studio_base_6.PNG)
 
 Next to that you will find a button allowing you to change the size of the document preview in the listing - from Compact view which only shows the collection name and the document id to Expanded view that will show the data of the document as a JSON string:
 
@@ -42,7 +42,7 @@ On the top right corner of this screen you will find several buttons:
 - Delete Document: to permanently delete the current document, will prompt before doing the delete
 - Refresh: will reload the document from the server
 
-![](Images/studio_documents_9.PNG)
+![Top Right Corner Buttons](Images/studio_documents_9.PNG)
 
 To the right of the form some statistics are shown - the metadata of the current document, formatted, and a list of possible reference found in it. Clicking on a reference will open that document for editing, if it exists in your database.
 
@@ -52,11 +52,11 @@ To the right of the form some statistics are shown - the metadata of the current
 
 Back in the main listing screen, at the top right corner of the screen you will find 2 additional buttons:  
 
-![](Images/studio_base_5.PNG)
+![Mailing List Screen Buttons](Images/studio_base_5.PNG)
 
 Clicking the "Edit document by Id" will pop-up an input box, where you can enter the document ID you wish to edit:
 
-![](Images/studio_base_9.PNG)
+![Editing the Document Id](Images/studio_base_9.PNG)
 
 If no document exists in the database for the ID you provide you will be redirected to the Documents tab, otherwise the Document edit page will load with the requested document.
 

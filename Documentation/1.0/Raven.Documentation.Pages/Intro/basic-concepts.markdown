@@ -24,7 +24,7 @@ The various deployment options are discussed in more details later, in the Serve
 
 To jump-start your learning process, it is sufficient that you download the [latest stable build](https://ravendb.net/download), unzip it to a folder, and run Server\Raven.Server.exe. You will then see a screen like this:
 
-![Figure 1: Raven.Server.exe](images\raven.server.png)
+![Figure 1: Raven.Server.exe](images/raven.server.png)
 
 Notice how a port for the server to listen on has been automatically selected for you, and a data directory has been created and is ready to store your data. This is RavenDB in debug mode, for production usage, you'll generally run it in IIS or as a Service.
 

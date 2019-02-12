@@ -47,7 +47,7 @@ The storage hardware / file system must support:
 
 * fsync
 * `[Windows]` UNBUFFERED_IO / WRITE_THROUGH
-* `[Windows]` [Hotfix for Windows 7 and Windows Server 2008 R2](http://support.microsoft.com/kb/2731284)
+* `[Windows]` [Hotfix for Windows 7 and Windows Server 2008 R2](https://support.microsoft.com/en-us/help/2731284/33-dos-error-code-when-memory-memory-mapped-files-are-cleaned-by-using)
 * `[Posix]` O_DIRECT
 
 ## Limitations

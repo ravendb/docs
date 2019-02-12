@@ -37,8 +37,6 @@ Lets consider a case when we want to convert one of the metadata values to one o
 
 {CODE document_conversion_example@ClientApi\Advanced\ClientSideListeners.cs /}
 
-More sophisticated example usage can be found [here](https://ravendb.net/kb/16/using-optimistic-concurrency-in-real-world-scenarios).
-
 ## Document Delete listener
 
 We introduced `IDocumentDeleteListener` interface which needs to be implemented if users wants to perform custom actions when delete operations are executed. Currently the interface contains only one method that is invoked before the delete request is sent to the server.

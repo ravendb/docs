@@ -6,7 +6,7 @@ RavenDB supports multi-tenancy, and the Management Studio provides an easy way t
 
 At the top right corner of each screen, by the RavenDB logo, the name of the current tenant you are working against is shown. Clicking on it will open a list of other available tenants, and selecting another one from that list will shift the Studio to working against that tenant.
 
-![](Images/studio_base_2.PNG)
+![Select Tenant](Images/studio_base_2.PNG)
 
 ## Creating a new tenant
 

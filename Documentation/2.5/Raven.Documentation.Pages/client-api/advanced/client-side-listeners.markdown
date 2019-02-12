@@ -37,8 +37,6 @@ Lets consider a case when we want to convert one of the metadata values to one o
 
 {CODE document_conversion_example@ClientApi\Advanced\ClientSideListeners.cs /}
 
-More sophisticated example usage can be found [here](https://ravendb.net/kb/16/using-optimistic-concurrency-in-real-world-scenarios).
-
 ## Extended Document Conversion listener
 
 Extended conversion listeners provide users with hook for additional logic when converting entities to documents and metadata and backwards. In contrast to `IDocumentConversionListener` the extended conversion listeners are providing hooks before and after actual document/entity conversion. Just implement `IExtendedDocumentConversionListener` with any logic that you need.

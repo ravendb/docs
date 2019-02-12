@@ -10,4 +10,4 @@ Unfortunately not everything can be showed in easy and understandable manner whe
 
 ## Related articles
 
-- [Northwind page](http://northwinddatabase.codeplex.com/)
+- [Northwind page](https://archive.codeplex.com/?p=northwinddatabase)

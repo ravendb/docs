@@ -26,6 +26,5 @@ When you enter the document you will see the edit page with a suggested document
 ![Tasks Fig 5](Images/studio_replication_5.PNG)  
 in order to resolve the conflict edit the document (make sure to remove the "conflict start" and "conflict end" before saving)  
 
-For a deeper look into resolving conflicts with the studio read [here](http://blogs.hibernatingrhinos.com/12609/dealing-with-conflicts-in-ravendb-studio)  
 For a complete walkthrough of replication in the studio go [here](../../studio/bundles/replication-walkthrough)  
 You can read more information about the Replication Bundle [here](../../server/scaling-out/replication?version=2.0)

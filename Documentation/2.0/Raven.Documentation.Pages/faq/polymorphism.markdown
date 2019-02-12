@@ -4,7 +4,7 @@ RavenDB stores document in JSON format, which make it very flexible, but also ma
 
 {NOTE There is no problem with polymorphism for entities that are stored as documents, only with embedded documents. /}
 
-That modification happens entirely at the [JSON.Net](http://json.codeplex.com/) layer, which is responsible for serializing and deserializing documents. The problem is when you have a model such as this:
+That modification happens entirely at the [JSON.Net](https://www.newtonsoft.com/json) layer, which is responsible for serializing and deserializing documents. The problem is when you have a model such as this:
 
 {CODE polymorphism_1@Faq/Polymorphism.cs /}
 

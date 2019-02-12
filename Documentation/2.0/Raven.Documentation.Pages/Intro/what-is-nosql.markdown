@@ -3,7 +3,7 @@
 
 A NoSQL database offers an alternative to the RDBMS style of data storage (**R**elational **D**ata**b**ase **M**anagement **S**ystem), shedding the rigid, table-based system used in an RDBMS, in place of a different storage model that emphasizes higher scalability and availability over conformant to a relational model.
 
-For a more expanded answer see this from [Wikipedia](http://en.wikipedia.org/wiki/NoSQL):
+For a more expanded answer see this from [Wikipedia](https://en.wikipedia.org/wiki/NoSQL):
 
 A NoSQL database provides a simple, lightweight mechanism for storage and retrieval of data that provides higher scalability and availability than traditional relational databases. The NoSQL data stores use looser consistency models to achieve horizontal scaling and higher availability.
 
