@@ -26,7 +26,7 @@ where spatial.within(spatial.point(latitude, longitude), spatial.wkt('Circle(30 
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-Where the shape is in [WKT](http://en.wikipedia.org/wiki/Well-known_text) format and the relation is one of `within`, `contains`, `disjoint`, `intersects`. The above example will yield the same results as the example from the `Radius Search` section.
+Where the shape is in [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format and the relation is one of `within`, `contains`, `disjoint`, `intersects`. The above example will yield the same results as the example from the `Radius Search` section.
 
 ## Static Indexes
 

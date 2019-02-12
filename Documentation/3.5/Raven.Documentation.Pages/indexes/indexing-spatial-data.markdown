@@ -14,7 +14,7 @@ where:
 
 *	**fieldName** is a name of the field containing the shape to use for filtering (if the overload with no `fieldName` is used, then the name is set to default value: `__spatial`)          
 *	**lat/lng** are latitude/longitude coordinates   
-*	**shapeWKT** is a shape in the [WKT](http://en.wikipedia.org/wiki/Well-known_text) format    
+*	**shapeWKT** is a shape in the [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) format    
 *	**strategy** is a spatial search strategy (default: `GeohashPrefixTree`)
 *	**maxTreeLevel** is a integer that indicates the maximum number of levels to be used in the `PrefixTree` and controls the precision of shape representation (**9** for `GeohashPrefixTree` and **23** for `QuadPrefixTree`)      
 
@@ -48,17 +48,17 @@ Geohash is a latitude/longitude representation system that describes earth as a 
 
 E.g. The location of 'New York' in the United States is represented by the following geohash: [DR5REGY6R](http://geohash.org/dr5regy6r) and it represents the `40.7144 -74.0060` coordinates. Removing characters from the end of geohash will decrease the precision level.
 
-More information about geohash uses, decoding algorithm and limitations can be found [here](http://en.wikipedia.org/wiki/Geohash).
+More information about geohash uses, decoding algorithm and limitations can be found [here](https://en.wikipedia.org/wiki/Geohash).
 {PANEL/}
 
 {PANEL:QuadPrefixTree}
 QuadTree represents earth as a grid with exactly four cells and similarly to geohash, each grid cell (sometimes called bucket) has a letter assigned and is divided further into 4 more cells and so on.
 
-More information about QuadTree can be found [here](http://en.wikipedia.org/wiki/Quadtree).
+More information about QuadTree can be found [here](https://en.wikipedia.org/wiki/Quadtree).
 {PANEL/}
 
 {PANEL:BoundingBox}
-More information about BoundingBox can be found [here](http://en.wikipedia.org/wiki/Minimum_bounding_rectangle).
+More information about BoundingBox can be found [here](https://en.wikipedia.org/wiki/Minimum_bounding_rectangle).
 {PANEL/}
 
 {WARNING `GeohashPrefixTree` is a default `SpatialSearchStrategy`. Doing any changes to the strategy after index has been created will trigger re-indexation process. /}

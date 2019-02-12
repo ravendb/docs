@@ -4,7 +4,7 @@
 
 RavenDB supports two storage engines and each database can be created with a different one:
 
-- _(Default)_ ESE (Extensible Storage Engine aka Esent) - Microsoft storage engine available in Windows. More info [here](http://en.wikipedia.org/wiki/Extensible_Storage_Engine).
+- _(Default)_ ESE (Extensible Storage Engine aka Esent) - Microsoft storage engine available in Windows. More info [here](https://en.wikipedia.org/wiki/Extensible_Storage_Engine).
 - Voron - custom made managed storage engine created by Hibernating Rhinos.
 
 {PANEL/}
@@ -28,7 +28,7 @@ RavenDB supports two storage engines and each database can be created with a dif
 
 - disk must handle UNBUFFERED_IO/WRITE_THROUGH properly
 - .NET 4.5 or higher
-- [Hotfix](http://support.microsoft.com/kb/2731284) for Windows 7 and Windows Server 2008 R2
+- [Hotfix](https://support.microsoft.com/en-us/help/2731284/33-dos-error-code-when-memory-memory-mapped-files-are-cleaned-by-using) for Windows 7 and Windows Server 2008 R2
 
 {INFO You can watch [Level 400 - Diving into Voron](https://www.youtube.com/watch?v=yJqOEqqUfUA) talk by Oren Eini if you are interested in details about Voron. /}
 

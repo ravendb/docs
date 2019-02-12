@@ -85,7 +85,7 @@ As a fully transactional database, you lose nothing by upgrading from a legacy S
 
 From this holiday season to the next, traffic will continue to expand. New innovations in applications will enable users to ask for greater amounts of individual and aggregated data in each session. To keep up with your customers, you have two options. 
 
-You can get a [nosql database and set up a cluster right away](https://ravendb.net/free), erasing the one fail point dilemma. Your database becomes an octopus: if one arm goes down, you still have seven. Your next project can start off with a stand-alone NoSQL solution.
+You can get a [nosql database and set up a cluster right away](https://ravendb.net/buy), erasing the one fail point dilemma. Your database becomes an octopus: if one arm goes down, you still have seven. Your next project can start off with a stand-alone NoSQL solution.
 
 If you have a legacy SQL database, or invested a lot into your current solutions, you can also create a polyglot architecture, attaching RavenDB to your current database, and enjoy the best of both worlds. You can retain the ACIDity of SQL while adding on top of it the speed and flexibility of NoSQL. 
 

@@ -186,7 +186,7 @@ where:
 * **GetNamespacesToImport** returns a list of namespaces that RavenDB will have to import   
 * **GetAssembliesToReference** returns a list of full paths to assemblies    
 
-**Example: Check if a given word is a [palindrome](http://en.wikipedia.org/wiki/Palindrome)**
+**Example: Check if a given word is a [palindrome](https://en.wikipedia.org/wiki/Palindrome)**
 
 {CODE plugins_6_1@Server\Extending\Plugins\Index.cs /}
 

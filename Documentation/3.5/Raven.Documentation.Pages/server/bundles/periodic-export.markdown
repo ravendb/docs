@@ -1,6 +1,6 @@
 # Bundle : Periodic Export
 
-RavenDB innately supports periodic exports of the documents and attachments (including deletions) to a file system folder, [Amazon AWS](https://aws.amazon.com/) services, or [Microsoft Azure](http://azure.microsoft.com/) storage.  
+RavenDB innately supports periodic exports of the documents and attachments (including deletions) to a file system folder, [Amazon AWS](https://aws.amazon.com/) services, or [Microsoft Azure](https://azure.microsoft.com/) storage.  
 
 ## How it works
 
@@ -54,7 +54,7 @@ Next, we need to create a backup setup document under the `Raven/Backup/Periodic
 
 {CODE periodic_backups_6@Server\Bundles\PeriodicExport.cs /}
 
-{INFO More information about Microsoft Azure Storage can be found [here](http://azure.microsoft.com/en-us/services/storage/) /}
+{INFO More information about Microsoft Azure Storage can be found [here](https://azure.microsoft.com/en-us/services/storage/) /}
 
 ## Remarks
 

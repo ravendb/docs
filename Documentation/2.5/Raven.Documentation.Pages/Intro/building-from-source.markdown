@@ -8,13 +8,13 @@ RavenDB uses PowerShell to execute its build process. Open a PowerShell prompt a
 
 The following dependencies required by RavenDB code will be downloaded from NuGet:
 
-* [Asymmetric RSA Encryption for Silverlight and WP7](http://www.nuget.org/packages/DH.Scrypt.dll/)
+* [Asymmetric RSA Encryption for Silverlight and WP7](https://www.nuget.org/packages/DH.Scrypt.dll/)
 * [NLog](https://nlog-project.org/)
 * [Reactive Extensions](https://archive.codeplex.com/?p=rx)
-* [ICSharpCode.NRefactory](http://www.nuget.org/packages/ICSharpCode.NRefactory)
-* [Mono.Cecil](http://www.nuget.org/packages/Mono.Cecil/)
-* [Microsoft.Web.Infrastructure](http://www.nuget.org/packages/Microsoft.Web.Infrastructure/)
-* [xUnit](http://xunit.codeplex.com/)
+* [ICSharpCode.NRefactory](https://www.nuget.org/packages/ICSharpCode.NRefactory)
+* [Mono.Cecil](https://www.nuget.org/packages/Mono.Cecil/)
+* [Microsoft.Web.Infrastructure](https://www.nuget.org/packages/Microsoft.Web.Infrastructure/)
+* [xUnit](https://github.com/xunit/xunit)
 * [Nancy FX](http://nancyfx.org/)
 
 Other dependencies you will find under _SharedLibs_ folder:
@@ -30,7 +30,7 @@ Other dependencies you will find under _SharedLibs_ folder:
 Additionally to build it correctly you have to install:
 
 * [Windows Installer XML (WiX)](http://http://wix.codeplex.com/)
-* [ASP.NET MVC 4](http://www.asp.net/mvc/mvc4)
+* [ASP.NET MVC 4](https://docs.microsoft.com/en-us/aspnet/mvc/mvc4)
 
 The build process will, by default, execute all tests, which will take a while. You may skip the tests by executing:
 

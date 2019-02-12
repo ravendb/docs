@@ -28,14 +28,14 @@ Spatial indexes can be queried using `Spatial` method which contains full spectr
 
 {PANEL:RelatesToShape}
 
-`RelatesToShape` is low-level method available for spatial searches. You can pass any valid [WKT](http://en.wikipedia.org/wiki/Well-known_text) shape with any relation.  All other methods sooner or later are using it to define a shape.
+`RelatesToShape` is low-level method available for spatial searches. You can pass any valid [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) shape with any relation.  All other methods sooner or later are using it to define a shape.
 
 {CODE spatial_3@ClientApi\Session\Querying\HowToQuerySpatialIndex.cs /}
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **fieldName** | string | Spatial field name. |
-| **shapeWKT** | string | [WKT](http://en.wikipedia.org/wiki/Well-known_text) formatted shape. |
+| **shapeWKT** | string | [WKT](https://en.wikipedia.org/wiki/Well-known_text_representation_of_geometry) formatted shape. |
 | **rel** | [SpatialRelation](../../../glossary/spatial-relation) | Spatial relation to check. |
 
 | Return Value | |

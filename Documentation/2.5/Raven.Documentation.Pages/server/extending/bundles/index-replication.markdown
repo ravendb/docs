@@ -31,7 +31,7 @@ Because the Index Replication bundle needs to connect to a relational database, 
 </connectionStrings>
 {CODE-END/}
 
-Using this approach, you can [encrypt the connectionStrings section](http://msdn.microsoft.com/en-us/library/zhhddkxy.aspx) and avoid have a connection string in plain text.
+Using this approach, you can [encrypt the connectionStrings section](https://msdn.microsoft.com/en-us/library/zhhddkxy.aspx) and avoid have a connection string in plain text.
 
 Specifying  the providerName definition is mandatory. The following is a list of supported providers:
 

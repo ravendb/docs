@@ -24,7 +24,7 @@ In case we want to find all documents with property Text containing specified se
 
 Take a look at these tests.
 
-[http://github.com/ravendb/ravendb/commit/721c50ea51ff7721928cca76de957e9f7d9e3786](http://github.com/ravendb/ravendb/commit/721c50ea51ff7721928cca76de957e9f7d9e3786)
+[https://github.com/ravendb/ravendb/commit/721c50ea51ff7721928cca76de957e9f7d9e3786](https://github.com/ravendb/ravendb/commit/721c50ea51ff7721928cca76de957e9f7d9e3786)
 
 ## How can I query for a null value?
 

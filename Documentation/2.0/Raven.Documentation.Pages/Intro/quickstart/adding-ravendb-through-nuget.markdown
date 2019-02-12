@@ -46,7 +46,7 @@ These are the packages that you are most likely to want to add to your applicati
 ### 3rd Party
 Note: 3rd Party packages are not officially supported by Hibernating Rhinos. Contact the author of these packages if there are any issues
 
-####Author: [Damian Hickey](http://twitter.com/randompunter)
+####Author: [Damian Hickey](https://twitter.com/randompunter)
 
 - [RavenDB.Bundles.Revisions](https://www.nuget.org/packages/RavenDB.Bundles.Revisions)
 - [RavenDB.Client.ContextualListeners](https://www.nuget.org/packages/RavenDB.Client.ContextualListeners)

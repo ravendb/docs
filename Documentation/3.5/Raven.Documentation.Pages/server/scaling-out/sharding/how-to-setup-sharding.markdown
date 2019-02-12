@@ -1,6 +1,6 @@
 # Sharding
 
-RavenDB has native sharding support. [Sharding](http://en.wikipedia.org/wiki/Shard_(database_architecture)) is a way to split your data across servers, so each server holds just a portion of your data. This is required in situations where you need to handle a lot of data.
+RavenDB has native sharding support. [Sharding](https://en.wikipedia.org/wiki/Shard_(database_architecture)) is a way to split your data across servers, so each server holds just a portion of your data. This is required in situations where you need to handle a lot of data.
 
 Let's say in our application we have to handle data from a lot of companies across the globe. One choice would be to store a company's data on a shard which depends on the company's region. For example, the companies located in Asia would be stored on one shard, the companies located in the Middle East would be stored on a different shard, and the companies from America would be stored on a third shard.
 

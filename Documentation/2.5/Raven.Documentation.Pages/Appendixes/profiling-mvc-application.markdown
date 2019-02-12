@@ -49,7 +49,7 @@ As a result of this setting, our profiling results will now hide data from all f
 
 ##Profiling only in debug mode
 
-To enable profiling only in debug mode one can use [Preprocessor Directives](http://msdn.microsoft.com/en-us/library/ed8yd1ha.aspx) or [ConditionalAttribute](http://msdn.microsoft.com/en-us/library/system.diagnostics.conditionalattribute.aspx).
+To enable profiling only in debug mode one can use [Preprocessor Directives](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/preprocessor-directives/index) or [ConditionalAttribute](http://msdn.microsoft.com/en-us/library/system.diagnostics.conditionalattribute.aspx).
 
 To use `Preprocessor Directives` simply wrap `InitializeRavenProfiler` method execution with `#if` directive:
 

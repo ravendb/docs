@@ -44,7 +44,7 @@ you to specify the suggesion query options:
 * *Field* - the name of the field that you want to find suggestions in,
 * *Term* - the provided by user search term,
 * *MaxSuggestions* - the number of suggestions to return (default: 15),
-* *Distance* - the enum that indicates what string distance algorithm should be used: [JaroWinkler](http://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance), [Levenshtein](http://en.wikipedia.org/wiki/Levenshtein_distance) (default) or [NGram](http://webdocs.cs.ualberta.ca/~kondrak/papers/spire05.pdf),
+* *Distance* - the enum that indicates what string distance algorithm should be used: [JaroWinkler](https://en.wikipedia.org/wiki/Jaro%E2%80%93Winkler_distance), [Levenshtein](https://en.wikipedia.org/wiki/Levenshtein_distance) (default) or [NGram](http://webdocs.cs.ualberta.ca/~kondrak/papers/spire05.pdf),
 * *Accuracy* - the minimal accuracy required from a string distance for a suggestion match (default: 0.0),
 * *Popularity* - determines whether the returned terms should be in order of popularity (default: false).
 
