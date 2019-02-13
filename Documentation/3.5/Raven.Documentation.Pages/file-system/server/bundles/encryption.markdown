@@ -9,7 +9,7 @@ If you want to setup a new file system with encryption bundle using the Studio, 
 
 The possible configuration options are:   
 
-* **Raven/Encryption/Algorithm** with [AssemblyQualifiedName](http://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) as a value. Additionally provided type must be a subclass of [SymmetricAlgorithm](http://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class    
+* **Raven/Encryption/Algorithm** with [AssemblyQualifiedName](https://msdn.microsoft.com/en-us/library/system.type.assemblyqualifiedname.aspx) as a value. Additionally provided type must be a subclass of [SymmetricAlgorithm](https://msdn.microsoft.com/en-us/library/system.security.cryptography.symmetricalgorithm.aspx) from `System.Security.Cryptography` namespace and must not be an abstract class    
 * **Raven/Encryption/Key** a key used for encryption purposes with minimum length of 8 characters, base64 encoded   
 * **Raven/Encryption/KeyBitsPreference** the preferred encryption key size in bits  
 
