@@ -58,12 +58,12 @@ namespace Raven.Documentation.Samples.Server
                 using (IDocumentSession session = store.OpenSession())
                 {
                     var query = from u in session.Query<User>()
-                                where u.Email == RavenQuery.CmpXchg<string>("emails/ayende@ayende.com")
+                                where u.Id == RavenQuery.CmpXchg<string>("emails/ayende@ayende.com")
                                 select u;
 
                     var q = session.Advanced
                         .DocumentQuery<User>()
-                        .WhereEquals("Email", CmpXchg.Value("emails/ayende@ayende.com"));
+                        .WhereEquals("Id", CmpXchg.Value("emails/ayende@ayende.com"));
                 }
                 #endregion
             }
