@@ -62,7 +62,7 @@
   2. **Incremental Backup**  
      Incremental Backup will only back up the delta of the data since the last Backup that has occurred  
 
-* Schedule the Backup Task time using a [Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.x/tutorials/crontrigger.html)  
+* Schedule the Backup Task time using a [Cron Expression](http://www.quartz-scheduler.org/documentation/quartz-2.3.0/tutorials/crontrigger.html)  
 
 * Notes:  
   1. If _only_ **Incremental Backup** is set, then a **Full Backup** will occur only in the _first_ time that the Task is triggered,  
