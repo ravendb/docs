@@ -1,0 +1,22 @@
+[
+  {
+    "Path": "server-dashboard.markdown",
+    "Name": "Server Dashboard",
+    "Mappings": []
+  },
+  {
+    "Path": "client-configuration.markdown",
+    "Name": "Client Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "/databases",
+    "Name": "Databases",
+    "Mappings": []
+  },
+  {
+    "Path": "/cluster",
+    "Name": "Cluster",
+    "Mappings": []
+  }
+]
