@@ -5,7 +5,7 @@
 EXPERT: Time to wait (in milliseconds) for the previous async commit before checking for the tx size.
 
 - **Type**: `int`
-- **Default**: `1000`
+- **Default**: `0`
 - **Scope**: Server-wide or per database
 
 {PANEL/}
