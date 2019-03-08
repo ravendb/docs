@@ -22,7 +22,7 @@ The maximum number of JavaScript scripts to be cached.
 
 {PANEL:Patching.StrictMode}
 
-Enables Strict Mode in JavaScript engine.
+Enables strict mode in the JavaScript engine.
 
 - **Type**: `bool`
 - **Default**: `true`
