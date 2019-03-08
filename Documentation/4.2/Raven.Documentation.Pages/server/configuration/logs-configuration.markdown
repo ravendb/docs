@@ -37,3 +37,24 @@ This indicates if logs should be written with UTC or server-local time.
 {INFO Writing logs in UTC is more performant than using server-local time. /}
 
 {PANEL/}
+
+{PANEL:Logs.MaxFileSizeInMb}
+
+The maximum size of the logs file in megabytes.
+
+- **Type**: `int`
+- **Default**: `128`
+- **Minimum**: `16`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
+{PANEL:Logs.RetentionTimeInHrs}
+
+How far back we should retain log entries, in hours.
+
+- **Type**: `int`
+- **Default**: `72`
+- **Scope**: Server-wide only
+
+{PANEL/}
