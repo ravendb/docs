@@ -1,0 +1,17 @@
+[
+    {
+        "Path": "add-connection-string.markdown",
+        "Name": "Add Connection String",
+        "Mappings": []
+    },
+    {
+        "Path": "remove-connection-string.markdown",
+        "Name": "Remove Connection String",
+        "Mappings": []  
+    },
+    {
+        "Path": "get-connection-string.markdown",
+        "Name": "Get Connection String",
+        "Mappings": []  
+    }
+]
