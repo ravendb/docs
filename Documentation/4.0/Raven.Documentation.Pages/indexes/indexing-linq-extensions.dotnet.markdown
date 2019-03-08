@@ -54,6 +54,10 @@ There are two overrides for each method: The first one returns the default value
 {CODE-TAB:csharp:Example indexes_5@Indexes/IndexingLinqExtensions.cs /}
 {CODE-TABS/}
 
+## Remarks
+
+{INFO Default `Storage` value for the `StoreAllFields()` method is `FieldStorage.No`. Keep in mind that storing fields will increase disk space usage. /}
+
 {PANEL/}
 
 ## Related Articles
