@@ -32,7 +32,7 @@ public class SetupDefaultDatabase {
         // created `operations` or opened `sessions`
         // will work on `Northwind` database by default
         // if no database is passed explicitly
-        try (DocumentStore store = new DocumentStore("http://localhost:8080", "Northwind")) {
+        try (DocumentStore store = new DocumentStore(new String[]{ "http://localhost:8080" }, "Northwind")) {
             store.initialize();
 
             try (IDocumentSession northwindSession = store.openSession()) {

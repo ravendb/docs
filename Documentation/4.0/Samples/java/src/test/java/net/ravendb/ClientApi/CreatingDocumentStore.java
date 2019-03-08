@@ -22,7 +22,7 @@ public class CreatingDocumentStore {
         private static IDocumentStore store;
 
         static {
-            store = new DocumentStore("http://localhost:8080", "Northwind");
+            store = new DocumentStore(new String[]{ "http://localhost:8080" }, "Northwind");
         }
 
         public static IDocumentStore getStore() {
