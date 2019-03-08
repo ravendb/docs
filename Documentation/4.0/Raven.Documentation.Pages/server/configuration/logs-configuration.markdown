@@ -34,6 +34,6 @@ This indicates if logs should be written with UTC or server-local time.
 - **Default**: `true`
 - **Scope**: Server-wide only
 
-{INFO Writting logs in UTC is more performant than using server-local time. /}
+{INFO Writing logs in UTC is more performant than using server-local time. /}
 
 {PANEL/}
