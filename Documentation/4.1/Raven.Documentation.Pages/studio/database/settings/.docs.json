@@ -30,7 +30,7 @@
     },
     {
         "Path": "import-from-other.markdown",
-        "Name": "Import from MongoDB/CosmosDB",
+        "Name": "Import from other",
         "Mappings": []
     },
     {
