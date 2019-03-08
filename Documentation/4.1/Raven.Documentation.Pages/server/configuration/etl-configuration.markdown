@@ -15,7 +15,7 @@ Number of seconds after which the SQL command will timeout.
 Number of seconds after which extraction and transformation will end and loading will start.
 
 - **Type**: `int`
-- **Default**: `60`
+- **Default**: `30`
 - **Scope**: Server-wide or per database
 
 {PANEL/}
@@ -25,7 +25,7 @@ Number of seconds after which extraction and transformation will end and loading
 Max number of extracted documents in an ETL batch. 
 
 - **Type**: `int`
-- **Default**: `null`
+- **Default**: `8192`
 - **Scope**: Server-wide or per database
 
 If value is not set, or set to null, the number of extracted documents fallbacks to `ETL.MaxNumberOfExtractedItems` value.
@@ -37,7 +37,7 @@ If value is not set, or set to null, the number of extracted documents fallbacks
 Max number of extracted items (documents, counters, etc) in an ETL batch.
 
 - **Type**: `int`
-- **Default**: `null`
+- **Default**: `8192`
 - **Scope**: Server-wide or per database
 
 If value is not set, or set to null, the number of extracted items isn't limited in the processed ETL batch.
