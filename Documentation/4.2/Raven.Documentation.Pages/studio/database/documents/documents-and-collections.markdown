@@ -64,6 +64,7 @@
 * 2  
   *  **Export CSV**: Export the collection data into a CSV file (visible columns only -or- all documents columns)  
   *  **Display**: Customize which columns to view. A custom column can be added  
+  *  **Query**: Navigates to query current collection view. 
 * 3  
   * **Patch**: Patch documents in a collection or in an index. See [Patch Documents](../../../../todo-update-me-later)  
   * **Query**: Query documents in a collection or in an index. See [Query Documents](../../../../todo-update-me-later)  
