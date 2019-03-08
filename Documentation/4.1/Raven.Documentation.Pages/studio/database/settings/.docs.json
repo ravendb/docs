@@ -26,7 +26,12 @@
     {
         "Path": "import-from-sql.markdown",
         "Name": "Import from SQL",
-        "Mappings":  []
+        "Mappings": []
+    },
+    {
+        "Path": "import-from-other.markdown",
+        "Name": "Import from MongoDB/CosmosDB",
+        "Mappings": []
     },
     {
         "Path": "manage-database-group.markdown",
