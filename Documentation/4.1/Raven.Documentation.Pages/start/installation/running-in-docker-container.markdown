@@ -9,7 +9,7 @@ A RavenDB Server can run on [Docker](https://www.docker.com/) using our official
 
 Server images are published on Docker for the following platforms:
 
-- Ubuntu 16.04
+- Ubuntu 18.04
 - Windows Nano Server
 
 ## Storage Requirements
@@ -24,27 +24,33 @@ Linux Docker container running under Windows Docker host via shared volumes [isn
 
 ## Tags
 
-For version `4.0` following tags are available:
+For version `4.1` following tags are available:
 
-- `4.0-ubuntu-latest` - contains the latest version of RavenDB 4.0 running on Ubuntu 16.04 container
+- `latest` and `windows-nanoserver-latest` 
 
-- `4.0-windows-nanoserver-latest` - contains the latest version of RavenDB 4.0 running running on Windows nanoserver
+- `4.1-ubuntu-latest` - contains the latest version of RavenDB 4.1 running on Ubuntu 18.04 container
 
-- every 4.0 release to has its own image set for both Ubuntu and Windows containers e.g. `4.0.7-ubuntu.16.04-x64` or `4.0.7-windows-nanoserver`
+- `4.1-windows-nanoserver-latest` - contains the latest version of RavenDB 4.1 running running on Windows nanoserver
+
+- every 4.1 release to has its own image set for both Ubuntu and Windows containers e.g. `4.1.4-ubuntu.18.04-x64` or `4.1.7-windows-nanoserver`
+
+- `latest` points to `4.1-ubuntu-latest`
+
+- `ubuntu-latest` and `windows-nanoserver-server` point to `4.1-*-latest`
 
 
 ## Example
 
-To run latest image of RavenDB `4.0`, you can issue a command as follows:
+To run latest image of RavenDB `4.1`, you can issue a command as follows:
 
 For Ubuntu:
 {CODE-BLOCK:bash}
-docker run -d -p 8080:8080 -p 38888:38888 ravendb/ravendb:4.0-ubuntu-latest
+docker run -d -p 8080:8080 -p 38888:38888 ravendb/ravendb
 {CODE-BLOCK/}
 
 For Windows:
 {CODE-BLOCK:bash}
-docker run -d -p 8080:8080 -p 38888:38888 ravendb/ravendb:4.0-windows-nanoserver-latest
+docker run -d -p 8080:8080 -p 38888:38888 ravendb/ravendb:4.1-windows-nanoserver-latest
 {CODE-BLOCK/}
 
 You can access the RavenDB Management Studio by going to `http://localhost:8080` in your browser. This assumes that you are using the default networking configuration with Docker, and that the Docker instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it externally, make sure to go through the security configuration first.
@@ -104,7 +110,7 @@ Mount it as a docker volume and use `--config-path PATH_TO_CONFIG` command line 
 Except the RavenDB Studio that you can access from the browser, you can connect to RavenDB administration console with the `rvn` utility like so:
 
 {CODE-BLOCK:plain}
-> docker exec -it 4d63 /opt/RavenDB/Server/rvn admin-channel
+> docker exec -it CONTAINER_ID /opt/RavenDB/Server/rvn admin-channel
 Will try to connect to discovered Raven.Server process : 8...
 
        _____                       _____  ____
@@ -117,7 +123,7 @@ Will try to connect to discovered Raven.Server process : 8...
 
       Safe by default, optimized for efficiency
 
- Build 40040, Version 4.0, SemVer 4.0.10, Commit dc2e9e3
+ Build 40040, Version 4.1, SemVer 4.1.4, Commit dc2e9e3
  PID 8, 64 bits, 2 Cores, Phys Mem 1.934 GBytes, Arch: X64
  Source Code (git repo): https://github.com/ravendb/ravendb
  Built with love by Hibernating Rhinos and awesome contributors!
@@ -134,9 +140,9 @@ For more information on using RavenDB Console please refer to [Administration - 
 
 These images were built using the following Dockerfiles:
 
-- [Windows Nanoserver image Dockerfile](https://github.com/ravendb/ravendb/blob/v4.0/docker/ravendb-nanoserver/Dockerfile)
+- [Windows Nanoserver image Dockerfile](https://github.com/ravendb/ravendb/blob/v4.1/docker/ravendb-nanoserver/Dockerfile)
 
-- [Ubuntu image Dockerfile](https://github.com/ravendb/ravendb/blob/v4.0/docker/ravendb-ubuntu/Dockerfile)
+- [Ubuntu image Dockerfile](https://github.com/ravendb/ravendb/blob/v4.1/docker/ravendb-ubuntu/Dockerfile)
 
 ## Remarks
 
