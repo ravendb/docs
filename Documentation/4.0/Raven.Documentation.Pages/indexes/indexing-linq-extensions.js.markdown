@@ -54,6 +54,10 @@ There are two overrides for each method: The first one returns the default value
 {CODE-TAB:nodejs:Example indexes_5@indexes/indexingLinqExtensions.js /}
 {CODE-TABS/}
 
+## Remarks
+
+{INFO Default `Storage` value for the `storeAllFields()` method is `"No"`. Keep in mind that storing fields will increase disk space usage. /}
+
 {PANEL/}
 
 ## Related Articles

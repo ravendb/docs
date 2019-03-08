@@ -54,6 +54,10 @@ There are two overrides for each method: The first one returns the default value
 {CODE-TAB:java:Example indexes_5@Indexes/IndexingLinqExtensions.java /}
 {CODE-TABS/}
 
+## Remarks
+
+{INFO Default `Storage` value for the `storeAllFields()` method is `FieldStorage.NO`. Keep in mind that storing fields will increase disk space usage. /}
+
 {PANEL/}
 
 ## Related Articles
