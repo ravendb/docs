@@ -5,7 +5,7 @@
 
 * SQL Migration allows you to import your existing SQL Database into RavenDB.
 
-* Currently **MySQL** and **SQL Server** are supported.
+* Currently **MySQL**, **SQL Server**, **Oracle** and **PostgresSQL** are supported.
 
 * Import process is semi automatic. In SQL world each relation is represented by link from foreign key to primary key. 
 The fact that we can distinguish one-to-one, one-to-many, or many-to-one relationships requires knowledge about business model and can not be 
