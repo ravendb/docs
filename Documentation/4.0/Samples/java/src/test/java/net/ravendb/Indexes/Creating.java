@@ -61,7 +61,7 @@ public class Creating {
         }
 
         public static void main(String[] args) {
-            try (IDocumentStore store = new DocumentStore("http://localhost:8080", "Northwind")) {
+            try (IDocumentStore store = new DocumentStore(new String[]{ "http://localhost:8080" }, "Northwind")) {
                 store.initialize();
 
                 new Orders_Totals().execute(store);
