@@ -56,7 +56,7 @@ There are two overrides for each method: The first one returns the default value
 
 ## Remarks
 
-{INFO Default `Storage` value for each field is `FieldStorage.No`. Keep in mind that storing fields will increase disk space usage. /}
+{INFO Default `Storage` value for the `StoreAllFields()` method is `FieldStorage.No`. Keep in mind that storing fields will increase disk space usage. /}
 
 {PANEL/}
 
