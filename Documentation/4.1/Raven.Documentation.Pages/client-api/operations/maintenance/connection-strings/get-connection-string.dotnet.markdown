@@ -11,6 +11,25 @@ You can get connection strings by using **GetConnectionStringsOperation**.
 | **connectionStringName** | `string` | Connection string name |
 | **type** | `ConnectionStringType` | Connection string type: `Raven` or `Sql` |
 
+
+| Return Value | | |
+| ------------- | ----- | --- |
+| `SqlConnectionStrings` | Dictionary<string, SqlConnectionString> | Dictionary which maps sql connection string name to definition |
+| `RavenConnectionStrings` | Dictionary<string, RavenConnectionString> | Dictionary which maps raven connection string name to definition |
+
+
+####RavenConnectionString 
+
+{CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+####SqlConnectionString
+
+{CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+####ConnectionString
+
+{CODE:csharp connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
 ## Example - Get all Connection Strings
 
 {CODE get_all_connection_strings@ClientApi\Operations\ConnectionStrings.cs /}

@@ -10,6 +10,18 @@ You can add connection string by using **PutConnectionStringOperation**.
 | ------------- | ----- | ---- |
 | **connectionString** | `T` | Connection string to create: `RavenConnectionString` or `SqlConnectionString` |
 
+####RavenConnectionString 
+
+{CODE:csharp raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+####SqlConnectionString
+
+{CODE:csharp sql_connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
+####ConnectionString
+
+{CODE:csharp connection_string@ClientApi\Operations\ConnectionStrings.cs /}
+
 ## Example - Add Raven Connection String
 
 {CODE add_raven_connection_string@ClientApi\Operations\ConnectionStrings.cs /}

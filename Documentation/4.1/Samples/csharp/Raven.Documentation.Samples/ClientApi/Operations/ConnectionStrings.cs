@@ -115,4 +115,39 @@ namespace Raven.Documentation.Samples.ClientApi.Operations
             }
         }
     }
+
+
+    public class Foo
+    {
+        #region raven_connection_string
+        public class RavenConnectionString : ConnectionString
+        {
+            public string Database { get; set; } // target database name
+            public string[] TopologyDiscoveryUrls; // list of server urls
+
+            public ConnectionStringType Type => ConnectionStringType.Raven;
+
+        }
+        #endregion
+    
+        #region sql_connection_string
+        public class SqlConnectionString : ConnectionString
+        {
+            public string ConnectionString { get; set; }
+
+            public string FactoryName { get; set; }
+
+            public ConnectionStringType Type => ConnectionStringType.Sql;
+
+        }
+        #endregion
+    
+        #region connection_string
+        public class ConnectionString
+        {
+            public string Name { get; set; } // name of connection string        
+        }
+        #endregion
+    }
+   
 }
