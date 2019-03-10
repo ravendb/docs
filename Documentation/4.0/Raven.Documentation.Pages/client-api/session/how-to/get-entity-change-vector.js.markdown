@@ -13,7 +13,7 @@ When a document is downloaded from the server, it contains various metadata info
 
 | Return Value | |
 | ------------- | ----- |
-| string | Returns the current change-vector for an entity. If the `instance` is transient, it will load the document from the server and attach the entity and its metadata to the session. |
+| string | Returns the current change-vector for an entity. Throws an exception if the `instance` is not tracked by the session. |
 
 ## Example
 

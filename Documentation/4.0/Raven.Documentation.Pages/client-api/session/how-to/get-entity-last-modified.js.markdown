@@ -14,7 +14,7 @@ Last modified date is stored within the metadata in session and is available for
 
 | Return Value | |
 | ------------- | ----- |
-| Date | Returns the last modified date for an entity. If the `instance` is transient, it will load the document from the server and attach the entity and its metadata to the session. |
+| Date | Returns the last modified date for an entity. Throws an exception if the `instance` is not tracked by the session. |
 
 
 ## Example
