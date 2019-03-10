@@ -137,7 +137,7 @@ Backed-up data includes database-level and cluster-level contents.
 
   | Database-level data | Cluster-level data|
   | ----|---- |
-  | Documents | Database Record (including tasks) |
+  | Documents | Database Record (Revisions, Expiration, Client configuration and Connection strings ) |
   | Attachments | Compare-exchange values |
   | Revisions | Identities |
   | Counters | Indexes <BR> (Logical-Backups: Only Index definitions) |
