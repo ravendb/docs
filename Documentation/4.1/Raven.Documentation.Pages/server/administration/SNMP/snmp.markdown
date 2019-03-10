@@ -123,6 +123,7 @@ RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 | 5.2.X.1.13 | Indicates if database is loaded |
 | 5.2.X.1.14 | Number of rehabs |
 | 5.2.X.1.15 | Number of performance hints |
+| 5.2.X.1.16 | Number of indexes errors per database |
 | 5.2.X.2.1 | Documents storage allocated size in MB |
 | 5.2.X.2.2 | Documents storage used size in MB |
 | 5.2.X.2.3 | Index storage allocated size in MB |
@@ -155,6 +156,7 @@ RavenDB's **root OID** is: **1.3.6.1.4.1.45751.1.1.**
 | 5.2.X.4.Y.13 | Index status |
 | 5.2.X.4.Y.14 | Number of maps per second (one minute rate) |
 | 5.2.X.4.Y.15 | Number of reduces per second (one minute rate) |
+| 5.2.X.4.Y.16 | Index type |
 
 ### Templates
 
