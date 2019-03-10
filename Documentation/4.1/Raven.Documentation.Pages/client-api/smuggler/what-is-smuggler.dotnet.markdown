@@ -39,7 +39,6 @@ In order to switch it to a different database use the `.ForDatabase` method.
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
 | **TransformScript** | `string` | JavaScript-based script applied to every exported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
-| **SkipRevisionCreation** | `bool`| Smuggler is configured to avoid creating new revisions during import. |
 
 ### Example
 
@@ -74,6 +73,7 @@ In order to switch it to a different database use the `.ForDatabase` method.
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
 | **TransformScript** | `string` | JavaScript-based script applied to every imported document. Read more [here](../../client-api/smuggler/what-is-smuggler#transformscript). |
 | **MaxStepsForTransformScript** | `int` | Maximum number of steps that transform script can process before failing. Default: 10000 |
+| **SkipRevisionCreation** | `bool`| Smuggler is configured to avoid creating new revisions during import. |
 
 ### Example
 
