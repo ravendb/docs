@@ -86,7 +86,7 @@ select
 from index 'Employees/ByFirstAndLastName' as e
 select 
 { 
-    FullName : e.FirstName + \" \" + e.LastName 
+    FullName : e.FirstName + " " + e.LastName 
 }
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
