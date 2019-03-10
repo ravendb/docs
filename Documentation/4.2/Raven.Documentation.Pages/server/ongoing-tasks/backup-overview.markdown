@@ -143,7 +143,7 @@ Backed-up data includes database-level and cluster-level contents.
   | Counters | Indexes <BR> (Logical-Backups: Only Index definitions) |
   | Tombstones | Tasks state (Snapshot only) |
   | Conflicts |
-
+  | Subscriptions |
 {PANEL/}
 
 ## Related Articles  

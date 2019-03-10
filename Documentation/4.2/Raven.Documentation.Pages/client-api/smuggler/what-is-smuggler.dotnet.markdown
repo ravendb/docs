@@ -34,7 +34,7 @@ In order to switch it to a different database use the `.ForDatabase` method.
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **Collections** | `List<string>` | List of specific collections to export. If empty, then all collections will be exported. Default: `empty` |
-| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange` |
+| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be exported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
 | **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
 | **IncludeExpired** | `bool` | Should expired documents be included in the export. Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
@@ -69,7 +69,7 @@ In order to switch it to a different database use the `.ForDatabase` method.
 | Parameters | | |
 | ------------- | ------------- | ----- |
 | **Collections** | `List<string>` | List specific of collections to import. If empty then all collections will be imported. Default: `empty` |
-| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange` |
+| **OperateOnTypes** | `DatabaseItemType` | Indicates what should be imported. Default: `Indexes`, `Documents`, `RevisionDocuments`, `Conflicts`, `DatabaseRecord`, `Identities`, `CompareExchange`, `Subscriptions` |
 | **OperateOnDatabaseRecordTypes** | `DatabaseRecordItemType` | Indicates what should be exported from database record. Default: `Client`, `ConflictSolverConfig`, `Expiration`, `ExternalReplications`, `PeriodicBackups`, `RavenConnectionStrings`, `RavenEtls`, `Revisions`, `SqlConnectionStrings`, `Sorters`, `SqlEtls`, `HubPullReplications`, `SinkPullReplications` |
 | **IncludeExpired** | `bool` | Should expired documents be imported. Default: `true` |
 | **RemoveAnalyzers** | `bool` | Should analyzers be removed from Indexes. Default: `false` |
