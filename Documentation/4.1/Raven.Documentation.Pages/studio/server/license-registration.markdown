@@ -2,9 +2,9 @@
 
 In order to register an instance of RavenDB with a license, you can: 
 
-- Navigate to _About_ page in studio, click _Replace License_ button, copy you license and click submit.
+- Navigate to _About_ page in studio, click _Replace License_ button, copy your license and click submit.
 - Copy your license to License.json and put it in the RavenDB folder.
-- Use the following [configuration](../../csharp/server/configuration/license-configuration) options:
+- Use the following [configuration](../../server/configuration/license-configuration) options:
 	*	**License**
 	The full license string for RavenDB. If License is specified, it overrides the `License.Path` configuration.
 
