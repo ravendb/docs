@@ -154,3 +154,8 @@ For more detailed information on how to use and setup RavenDB on Docker, please 
 
 - [Running as a Service](../../start/installation/running-as-service)
 - [Upgrading to New Version](../../start/installation/upgrading-to-new-version)
+
+### Setup Examples
+
+- [Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)
+

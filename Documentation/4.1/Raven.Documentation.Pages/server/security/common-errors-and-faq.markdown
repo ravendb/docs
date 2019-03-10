@@ -34,7 +34,7 @@ Make sure you provide the private IP address in the "IP Address / Hostname" fiel
 
 ### Ports are blocked by the firewall
 
-When configuring a VM in Azure, AWS or any other provider, you should define firewall rules to allow both the **HTTP** and **TCP** ports you have chosen during setup.
+When configuring a VM in Azure, [AWS](../../start/installation/setup-examples/aws-windows-vm) or any other provider, you should define firewall rules to allow both the **HTTP** and **TCP** ports you have chosen during setup.
 This should be done both inside the VM operating system **and** in the web dashboard or management console.
 
 If ports are blocked you'll get the following error.
@@ -324,6 +324,12 @@ To figure out what the new limit should be, look at the exception thrown by Rave
 
 - [Setup Wizard](../../start/installation/setup-wizard)
 - [Manual Setup](../../start/installation/manual)
+
+### Setup Examples
+
+- [AWS Windows VM](../../start/installation/setup-examples/aws-windows-vm)
+- [AWS Linux VM](../../start/installation/setup-examples/aws-linux-vm)
+- [Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)
 
 ### Security
 
