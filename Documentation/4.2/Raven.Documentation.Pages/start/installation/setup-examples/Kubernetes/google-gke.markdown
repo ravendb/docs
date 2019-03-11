@@ -1,0 +1,148 @@
+# Kubernetes : Google GKE
+
+In this walkthrough, we will setup a Kubernetes RavenDB cluster in GKE. The guide assumes prior knowledge of basic Kubernetes concepts. For more information please refer to the Kubernetes [official documentation](https://kubernetes.io/docs/home/).
+
+## Setting Up the Environment
+
+Follow the [Quickstart Guide](https://cloud.google.com/kubernetes-engine/docs/quickstart), and make sure you have gcloud and Kubectl installed.
+
+Go to the project's IAM settings and add a role called "Kubernetes Engine Admin" to the member "XXXXXXX-compute@developer.gserviceaccount.com" with the name "Compute Engine default service account" (or the equivilant member if the default name was changed).
+
+In this guide, we create a 3-node Stnadard Cluster with the most basic default settings.
+
+![1](images/gke/create-cluster.png)  
+
+When the cluster is ready, run the following command to authenticate with it:
+
+{CODE-BLOCK:bash}
+gcloud container clusters get-credentials ravendb-cluster
+{CODE-BLOCK/}
+
+And create a cluster-admin role binding for the administrator.
+
+{CODE-BLOCK:bash}
+kubectl create clusterrolebinding my-cluster-admin-binding --clusterrole cluster-admin --user $(gcloud config get-value account)
+{CODE-BLOCK/}
+
+## Deploying secrets
+
+For setting up a secured Kubernetes cluster, you must have your own domain and certificate. The RavenDB setup wizard with Let's Encrypt is not supported for this scenario.
+
+In this guide we are going to use a wildcard certificate for *.example.ravendb.cloud and a RavenDB developer license.
+
+To deploy the secrets run the following commands. If you decide to change any of the secret names, make sure you edit the .yaml files respectively.
+
+{CODE-BLOCK:bash}
+kubectl create secret generic license --from-file=./license.json
+{CODE-BLOCK/}
+{CODE-BLOCK:bash}
+kubectl create secret generic ssl --from-file=./example.ravendb.cloud.pfx
+{CODE-BLOCK/}
+
+## Deploying the HAProxy Ingress Controller
+
+[Kubernetes ingress](https://kubernetes.io/docs/concepts/services-networking/ingress/) is a collection of routing rules which define how external users access services running in a Kubernetes cluster. 
+In order for the Ingress resource to work, the cluster must have an [ingress controller](https://kubernetes.io/docs/concepts/services-networking/ingress-controllers/) running. 
+There are many third-party implementations and for this example we chose to work with [HAProxy](https://github.com/jcmoraisjr/haproxy-ingress).
+
+First, we need to label all of our cluster nodes: 
+
+{CODE-BLOCK:bash}
+kubectl label node role=ingress-controller --all
+{CODE-BLOCK/}
+
+Then we deploy the ingress controller with all of the necessary [RBAC (Role Based Access Control)](https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/rbac) rules.
+
+Download [haproxy.yaml](yamls/gke/haproxy.yaml) and deploy it to the cluster:
+
+{CODE-BLOCK:bash}
+kubectl create -f .\haproxy.yaml
+{CODE-BLOCK/}
+
+You may check that the command was executed by asking kubectl to list all the pods and services in the default namespace. 
+Take a look at the External-IP field. About a minute after deploying, you will receive a public IP for your cluster. 
+
+{CODE-BLOCK:bash}
+kubectl get svc
+kubectl get pod
+{CODE-BLOCK/}
+
+![2](images/gke/pending-ip.png)  
+
+## Deploying the RavenDB StatefulSet
+
+Download [ravendb.yaml](yamls/gke/ravendb.yaml) and deploy it to the cluster:
+
+{CODE-BLOCK:bash}
+kubectl create -f .\ravendb.yaml
+{CODE-BLOCK/}
+
+This will deploy the RavenDB [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) and the RavenDB pods will be created by order.
+
+RavenDB should be deployed in a StatefulSet (and not in a Deployment or ReplicaSet) which guarantees the following: 
+
+- Stable, unique network identifiers.  
+- Stable, persistent storage.  
+- Ordered, graceful deployment and scaling.  
+- Ordered, automated rolling updates.  
+
+To view the status of the cluster, run the following commands:
+
+{CODE-BLOCK:bash}
+kubectl get pod
+kubectl get svc
+{CODE-BLOCK/}
+
+![3](images/gke/container-creating.png)  
+
+While the RavenDB pods are being created, you may already set DNS records. Go to your domain provider and create an "A Record" with the External-IP of the HAProxy service.
+
+In our example we create an "A Record" for *.example.ravendb.cloud and set the IP address to 35.192.132.78 and the TTL to 1 second.
+
+![4](images/gke/dns.png)  
+
+Before trying to access the cluster, please register your wildcard server certificate in the OS (User Certificates Store). 
+This will allow Chrome to recognize it and be able to use it to authenticate to the cluster.
+
+Open Chrome and go to https://a.example.ravendb.cloud, then use the Cluster View in the Studio to add the other nodes to the RavenDB cluster.
+
+![5](images/gke/add-node.png) 
+
+## Troubleshooting
+
+If pods or services are not running or if they have errors you can issue a few commands that will help debug the problem.
+
+The logs command displays the standard error of the pod. In case RavenDB threw a startup exception, it will be shown there.
+{CODE-BLOCK:bash}
+kubectl logs ravendb-0
+{CODE-BLOCK/}
+
+Running the describe command on any kubernetes object (sts, svc, ingress, pod) will show details about the deployment of that object and in some cases relevant errors will be written there.
+{CODE-BLOCK:bash}
+kubectl describe pod haproxy-ingress-5d4d8d95d8-5rtqh
+{CODE-BLOCK/}
+
+If you need to restart a pod, simply delete it and it will terminate and then come back.
+{CODE-BLOCK:bash}
+kubectl delete pod ravendb-2
+{CODE-BLOCK/}
+
+If you delete the entire StatefulSet, the pods will be terminated by order of creation. 
+{CODE-BLOCK:bash}
+kubectl delete sts ravendb
+{CODE-BLOCK/}
+
+![6](images/gke/delete-sts.png)  
+
+## Related Articles
+
+### Getting Started
+
+- [Getting Started](../../../start/getting-started)
+
+### Installation
+
+- [Setup Wizard](../../../start/installation/setup-wizard)
+- [Setup Examples: Docker](../../../start/installation/setup-examples/aws-docker-linux-vm)
+- [Setup Examples: Windows VM](../../../start/installation/setup-examples/aws-windows-vm)
+- [Setup Examples: Linux VM](../../../start/installation/setup-examples/aws-linux-vm)

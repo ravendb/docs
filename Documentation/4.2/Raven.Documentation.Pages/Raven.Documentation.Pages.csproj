@@ -4,4 +4,13 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="start\installation\setup-examples\Kubernetes\images\eks\" />
+    <Folder Include="start\installation\setup-examples\Kubernetes\images\gke\" />
+    <Folder Include="start\installation\setup-examples\Kubernetes\images\aks\" />
+    <Folder Include="start\installation\setup-examples\Kubernetes\yamls\aks\" />
+    <Folder Include="start\installation\setup-examples\Kubernetes\yamls\eks\" />
+    <Folder Include="start\installation\setup-examples\Kubernetes\yamls\gke\" />
+  </ItemGroup>
+
 </Project>
