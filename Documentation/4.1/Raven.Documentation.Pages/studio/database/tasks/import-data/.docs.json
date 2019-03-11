@@ -1,5 +1,10 @@
 ﻿[
     {
+        "Path": "import-data-file.markdown",
+        "Name": "Import data from file (.ravendbdump)",
+        "Mappings": []
+    },
+    {
         "Path": "import-from-csv.markdown",
         "Name": "Import From CSV",
         "Mappings": []
