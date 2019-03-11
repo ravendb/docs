@@ -155,6 +155,10 @@ You can tweak the export/import process with the following parameters:
  - counter2: The counter storage to operate on. If no specified, the operations will be on the default counter storage (used only in the between operation).
  - no-compression-on-import: A flag that if set to true disables compression usage during import of documents.
  - help: You can use the help option in order to print the built-in options documentation.
+ - start-document-etag: Start exporting from the specified documents etag
+ - start-document-delete-etag: Start exporting from the specified document deletion etag
+ - start-attachment-etag: Start exporting from the specified attachment deletion etag
+ - start-attachment-delete-etag: Start exporting from the specified attachment deletion etag
 
 {PANEL/}
 
