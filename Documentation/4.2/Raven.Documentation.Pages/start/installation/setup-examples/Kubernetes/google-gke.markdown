@@ -12,7 +12,7 @@ In this guide, we create a 3-node Stnadard Cluster with the most basic default s
 
 ![1](images/gke/create-cluster.png)  
 
-When the cluster is ready, run the following command to authenticate with it:
+When the cluster is ready (can take a few minutes), run the following command to authenticate with it:
 
 {CODE-BLOCK:bash}
 gcloud container clusters get-credentials ravendb-cluster
@@ -28,15 +28,40 @@ kubectl create clusterrolebinding my-cluster-admin-binding --clusterrole cluster
 
 For setting up a secured Kubernetes cluster, you must have your own domain and certificate. The RavenDB setup wizard with Let's Encrypt is not supported for this scenario.
 
-In this guide we are going to use a wildcard certificate for *.example.ravendb.cloud and a RavenDB developer license.
+There are a few ways you can get a certificate. One way is to purchase it from a well known certificate authority. 
 
-To deploy the secrets run the following commands. If you decide to change any of the secret names, make sure you edit the .yaml files respectively.
+[Let's Encrypt](https://letsencrypt.org/) is a certificate authority which provides free certificates. 
+There are many tools available online that automate the process of getting the certificate from Let's Encrypt. Two examples are [Certbot](https://certbot.eff.org/) and a C# client called [Certes](https://github.com/fszlin/certes/).
+
+RavenDB will accept PFX server certificates which contain the private key, are not expired, and have the following fields:
+
+- KeyUsage: DigitalSignature, KeyEncipherment
+- ExtendedKeyUsage: Client Authentication, Server Authentication
+
+If you wish to use a self-signed certificate, you must register the CA certificate in the OS. A docker image can be created based on the RavenDB image:
 
 {CODE-BLOCK:bash}
-kubectl create secret generic license --from-file=./license.json
+FROM ravendb/ravendb:latest
+ADD my-ca.crt /usr/local/share/ca-certificates/my-ca.crt
+RUN update-ca-certificates
 {CODE-BLOCK/}
+
+In this guide we are going to use a wildcard certificate for *.example.ravendb.cloud and a RavenDB developer license ([get a license here](https://ravendb.net/buy)).
+
+You first need to convert the license and certificate files to base64. For example, in C# it can be done like this:
+
 {CODE-BLOCK:bash}
-kubectl create secret generic ssl --from-file=./example.ravendb.cloud.pfx
+Convert.ToBase64String(File.ReadAllBytes("example.ravendb.cloud.pfx"))
+{CODE-BLOCK/}
+Or in powershell:  
+{CODE-BLOCK:bash}
+[Convert]::ToBase64String([IO.File]::ReadAllBytes("example.ravendb.cloud.pfx"))
+{CODE-BLOCK/}
+
+Download [secrets.yaml](yamls/gke/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
+
+{CODE-BLOCK:bash}
+kubectl create -f .\secrets.yaml
 {CODE-BLOCK/}
 
 ## Deploying the HAProxy Ingress Controller
@@ -71,7 +96,7 @@ kubectl get pod
 
 ## Deploying the RavenDB StatefulSet
 
-Download [ravendb.yaml](yamls/gke/ravendb.yaml) and deploy it to the cluster:
+Download [ravendb.yaml](yamls/gke/ravendb.yaml), edit the ConfigMap and Ingress objects with your personal domain information, and deploy it to the cluster:
 
 {CODE-BLOCK:bash}
 kubectl create -f .\ravendb.yaml
@@ -102,7 +127,8 @@ In our example we create an "A Record" for *.example.ravendb.cloud and set the I
 ![4](images/gke/dns.png)  
 
 Before trying to access the cluster, please register your wildcard server certificate in the OS (User Certificates Store). 
-This will allow Chrome to recognize it and be able to use it to authenticate to the cluster.
+This will allow Chrome to recognize it and be able to use it to authenticate to the cluster. 
+After the cluster is set up, you should use the RavenDB Studio to create a `ClusterAdmin` client certificate, and use it instead of the server certificate.
 
 Open Chrome and go to https://a.example.ravendb.cloud, then use the Cluster View in the Studio to add the other nodes to the RavenDB cluster.
 
