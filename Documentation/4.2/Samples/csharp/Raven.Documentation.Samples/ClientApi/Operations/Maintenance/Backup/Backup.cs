@@ -1,18 +1,10 @@
-﻿using System;
-using Raven.Client.Documents;
-using Raven.Client;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
-//using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Queries;
-using System.Threading;
+﻿using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
+using Raven.Client.Documents;
 using Raven.Client.Documents.Operations.Backups;
-using Raven.Client.Documents.Smuggler;
 using Raven.Client.ServerWide.Operations;
 
-namespace Rvn.Ch02
+namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
     public class User
     {
@@ -31,6 +23,7 @@ namespace Rvn.Ch02
         {
 
             #region encrypted_database
+            
             // path to the certificate you received during the server setup
             var cert = new X509Certificate2(@"C:\Users\RavenDB\authentication_key\admin.client.certificate.RavenDBdom.pfx");
 
@@ -43,6 +36,7 @@ namespace Rvn.Ch02
             {
                 // Backup & Restore procedures here
             }
+
             #endregion
 
             using (var docStore = new DocumentStore
@@ -72,8 +66,10 @@ namespace Rvn.Ch02
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
                         #region use_database_encryption_key
+
                         //Use the same encryption key as the database
                         EncryptionMode = EncryptionMode.UseDatabaseKey
+
                         #endregion
                     }
 
@@ -90,6 +86,7 @@ namespace Rvn.Ch02
             }.Initialize())
             {
                 #region use_database_encryption_key_full_sample
+
                 var config = new PeriodicBackupConfiguration
                 {
                     //additional settings here..
@@ -106,10 +103,11 @@ namespace Rvn.Ch02
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
+
                 #endregion
             }
 
-            using (var docStore = new DocumentStore)
+            using (var docStore = new DocumentStore())
             {
                 var config = new PeriodicBackupConfiguration
                 {
@@ -131,6 +129,7 @@ namespace Rvn.Ch02
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
                         #region use_provided_encryption_key
+
                         //Use an encryption key of your choice
                         EncryptionMode = EncryptionMode.UseProvidedKey,
                         Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
@@ -157,12 +156,14 @@ namespace Rvn.Ch02
                     //..
 
                     #region use_provided_encryption_key_full_sample
+
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
                         //Use an encryption key of your choice
                         EncryptionMode = EncryptionMode.UseProvidedKey,
                         Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
                     }
+
                     #endregion
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
@@ -183,11 +184,13 @@ namespace Rvn.Ch02
                     //..
 
                     #region explicitly_choose_no_encryption
+
                     BackupEncryptionSettings = new BackupEncryptionSettings
                     {
                         //No encryption
                         EncryptionMode = EncryptionMode.None
                     }
+
                     #endregion
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
@@ -202,6 +205,7 @@ namespace Rvn.Ch02
             }.Initialize())
             {
                 #region restore_encrypted_backup
+
                 // restore encrypted database
 
                 var restoreConfiguration = new RestoreBackupConfiguration();
@@ -220,6 +224,7 @@ namespace Rvn.Ch02
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
                 docStore.Maintenance.Server.Send(restoreBackupTask);
+
                 #endregion
             }
 
@@ -242,6 +247,7 @@ namespace Rvn.Ch02
                 restoreConfiguration.BackupLocation = backupPath;
 
                 #region restore_encrypted_database
+
                 //Restore the database using the key you encrypted it with
                 restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
                 {
@@ -253,10 +259,11 @@ namespace Rvn.Ch02
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
                 docStore.Maintenance.Server.Send(restoreBackupTask);
+
                 #endregion
             }
 
-                using (var docStore = new DocumentStore
+            using (var docStore = new DocumentStore
             {
                 Urls = new[] { "https://a.RavenDBdom.development.run" },
                 Database = "encryptedDatabase",
@@ -274,11 +281,13 @@ namespace Rvn.Ch02
                 restoreConfiguration.BackupLocation = backupPath;
 
                 #region restore_unencrypted_database
+
                 restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
                 {
                     //No encryption
                     EncryptionMode = EncryptionMode.None
                 };
+
                 #endregion
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
@@ -304,14 +313,17 @@ namespace Rvn.Ch02
                 // restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
 
                 #region encrypting_logical_backup_with_new_key
+
                 //Restore using your own key
                 restoreConfiguration.BackupEncryptionSettings = new BackupEncryptionSettings
                 {
                     Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
                 };
+
                 #endregion
 
                 #region restore_encrypting_logical_backup_with_database_key
+
                 //Restore using the DB-encryption key
                 restoreConfiguration.EncryptionKey = "1F0K2R/KkcwbkK7n4kYlv5eqisy/pMnSuJvZ2sJ/EKo=";
 
@@ -321,35 +333,35 @@ namespace Rvn.Ch02
 
                 var restoreBackupTask = new RestoreBackupOperation(restoreConfiguration);
                 docStore.Maintenance.Server.Send(restoreBackupTask);
+
                 #endregion
             }
+        }
 
-
-            public class Foo
+        public class Foo
+        {
+            #region BackupEncryptionSettings_definition
+            public class BackupEncryptionSettings
             {
-                #region BackupEncryptionSettings_definition
-                public class BackupEncryptionSettings
+                public EncryptionMode EncryptionMode { get; set; }
+                public string Key { get; set; }
+
+                public BackupEncryptionSettings()
                 {
-                    public EncryptionMode EncryptionMode { get; set; }
-                    public string Key { get; set; }
-
-                    public BackupEncryptionSettings()
-                    {
-                        Key = null;
-                        EncryptionMode = EncryptionMode.None;
-                    }
+                    Key = null;
+                    EncryptionMode = EncryptionMode.None;
                 }
-                #endregion
-
-                #region EncryptionMode_definition
-                public enum EncryptionMode
-    {
-                    None,
-                    UseDatabaseKey,
-                    UseProvidedKey
-                }
-                #endregion
             }
+            #endregion
+
+            #region EncryptionMode_definition
+            public enum EncryptionMode
+            {
+                None,
+                UseDatabaseKey,
+                UseProvidedKey
+            }
+            #endregion
         }
     }
 }

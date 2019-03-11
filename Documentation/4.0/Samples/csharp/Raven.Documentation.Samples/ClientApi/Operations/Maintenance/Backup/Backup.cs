@@ -1,19 +1,12 @@
 ﻿using System;
-using Raven.Client.Documents;
-using Raven.Client;
-using System.Linq;
-using System.IO;
-using System.Collections.Generic;
-//using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Queries;
-using System.Threading;
-using System.Threading.Tasks;
-using Raven.Client.Documents.Operations.Backups;
-using Raven.Client.Documents.Smuggler;
-using Raven.Client.ServerWide.Operations;
 using System.Security.Cryptography.X509Certificates;
+using System.Threading.Tasks;
+using Raven.Client.Documents;
+using Raven.Client.Documents.Operations.Backups;
+using Raven.Client.ServerWide;
+using Raven.Client.ServerWide.Operations;
 
-namespace Rvn.Ch02
+namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
 {
     public class User
     {
@@ -82,13 +75,7 @@ namespace Rvn.Ch02
                     BackupType = BackupType.Backup,
 
                     //Task Name
-                    Name = "fullBackupTask",
-
-                    BackupEncryptionSettings = new BackupEncryptionSettings
-                    {
-                        Key = "OI7Vll7DroXdUORtc6Uo64wdAk1W0Db9ExXXgcg5IUs="
-                    }
-
+                    Name = "fullBackupTask"
                 };
                 var operation = new UpdatePeriodicBackupOperation(config);
                 var result = await docStore.Maintenance.SendAsync(operation);
@@ -295,62 +282,62 @@ namespace Rvn.Ch02
                 #endregion
             }
         }
-            public class Foo
+        public class Foo
+        {
+            public class RestoreBackupOperation
             {
-                public class DeleteDatabasesOperation
-                {
-                    #region restore_restorebackupoperation
-                    public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration);
-                    #endregion
+                #region restore_restorebackupoperation
+                public RestoreBackupOperation(RestoreBackupConfiguration restoreConfiguration)
+                #endregion
+                { }
 
-                    #region restore_restorebackupconfiguration
-                    public class RestoreBackupConfiguration
-                    {
-                        public string DatabaseName { get; set; }
-                        public string BackupLocation { get; set; }
-                        public string LastFileNameToRestore { get; set; }
-                        public string DataDirectory { get; set; }
-                        public string EncryptionKey { get; set; }
-                        public bool DisableOngoingTasks { get; set; }
-                    }
-                    #endregion
-                }
-
-                #region periodic_backup_status
-                public class PeriodicBackupStatus : IDatabaseTaskStatus
+                #region restore_restorebackupconfiguration
+                public class RestoreBackupConfiguration
                 {
-                    public long TaskId { get; set; }
-                    public BackupType BackupType { get; set; }
-                    public bool IsFull { get; set; }
-                    public string NodeTag { get; set; }
-                    public DateTime? LastFullBackup { get; set; }
-                    public DateTime? LastIncrementalBackup { get; set; }
-                    public DateTime? LastFullBackupInternal { get; set; }
-                    public DateTime? LastIncrementalBackupInternal { get; set; }
-                    public DateTime? LastIncrementalBackupInternal { get; set; }
-                    public LocalBackup LocalBackup { get; set; }
-                    public UploadToS3 UploadToS3;
-                    public UploadToGlacier UploadToGlacier;
-                    public UploadToAzure UploadToAzure;
-                    public UploadToFtp UploadToFtp;
-                    public long? LastEtag { get; set; }
-                    public LastRaftIndex LastRaftIndex { get; set; }
-                    public string FolderName { get; set; }
-                    public long? DurationInMs { get; set; }
-                    public long Version { get; set; }
-                    public Error Error { get; set; }
-                    public long? LastOperationId { get; set; }
+                    public string DatabaseName { get; set; }
+                    public string BackupLocation { get; set; }
+                    public string LastFileNameToRestore { get; set; }
+                    public string DataDirectory { get; set; }
+                    public string EncryptionKey { get; set; }
+                    public bool DisableOngoingTasks { get; set; }
                 }
                 #endregion
+            }
 
+            #region periodic_backup_status
+            public class PeriodicBackupStatus : IDatabaseTaskStatus
+            {
+                public long TaskId { get; set; }
+                public BackupType BackupType { get; set; }
+                public bool IsFull { get; set; }
+                public string NodeTag { get; set; }
+                public DateTime? LastFullBackup { get; set; }
+                public DateTime? LastIncrementalBackup { get; set; }
+                public DateTime? LastFullBackupInternal { get; set; }
+                public DateTime? LastIncrementalBackupInternal { get; set; }
+                public LocalBackup LocalBackup { get; set; }
+                public UploadToS3 UploadToS3;
+                public UploadToGlacier UploadToGlacier;
+                public UploadToAzure UploadToAzure;
+                public UploadToFtp UploadToFtp;
+                public long? LastEtag { get; set; }
+                public string FolderName { get; set; }
+                public long? DurationInMs { get; set; }
+                public long Version { get; set; }
+                public Error Error { get; set; }
+                public long? LastOperationId { get; set; }
+            }
+            #endregion
+
+            public class StartBackupOperation
+            {
                 #region start_backup_operation
                 public StartBackupOperation(bool isFullBackup, long taskId)
                 #endregion
                 {
-                    _isFullBackup = isFullBackup;
-                    _taskId = taskId;
                 }
             }
         }
     }
+}
 
