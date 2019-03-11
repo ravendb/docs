@@ -38,46 +38,50 @@ Subscription creation is accessible through `DocumentStore`'s `subscriptions` pr
 
 {PANEL: Subscription query} 
 
-All subscriptions, are eventually translated to an RQL-like statement. These statements has four parts:
-
 * Functions definition part, like in ordinary RQL. Those functions can contain any javascript code,
   and also supports `load` operations.
 
-* From statement, defining the documents source, e.g.: `from Orders`. The *from* statement can only address collections, therefore, indexes are not supported.    
+* From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
-send the documents to the worker or not. Those statements support the regular RQL syntax, 
-except the geo-spatial functions, which not supported by subscriptions. 
-In addition to that, the subscription's where statement can contain defined function calls, 
-allowing performing complex filtering logic.
+send the documents to the worker or not. Those statements supports either RQL like `equity` opeartions (`=`, `==`) ,  
+plain Javascript expressions or declared function calls, allowing to perform complex filtering logic.  
+The subscriptions RQL does not support any of the known RQL searching keywords.
 
 * Select statement, that defines the projection to be performed. 
 The select statements can contain function calls, allowing complex transformations.
 
-{INFO: Syntax limitations}
-Although subscription's query syntax is RQL-like there are keywords that are not supported:  
-* `Distinct`  
-* `index` (query an index)  
-* `OrderBy`  
-* `GroupBy`    
-* `Array`  
-* `Sum`  
-* `Min`  
-* `Max`  
-* `Avg`  
-* `Include`   
-* `Update`  
-* `Count`  
-* `Lucene`  
-* `moreLikeThis`  
-* `spatial.within`  
-* `spatial.contains`  
-* `spatial.disjoint`  
-* `spatial.intersects`  
-* `spatial.circle`  
-* `spatial.wkt`  
-* `spatial.point`  
+* Include statement allowing to define include path in document.  
+
+{INFO: Keywords}
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords are not supported.  
+Usage of Javascript ES5 syntax is supported.
 {INFO/}
+
+{INFO: Paths}
+Paths in subscriptions RQL statements are treated as Javascript indirections and not like regular RQL paths.  
+It means that a query that in RQL would look like:  
+
+```
+from Orders as o
+where o.Lines[].Product = "products/1-A"
+```
+
+Will look like that in subscriptions RQL:
+
+```
+declare function filterLines(doc, productId)
+{
+    if (!!doc.Lines){
+        return doc.Lines.filter(x=>x.Product == productId).length >0;
+    }
+    return false;
+}
+
+from Orders as o
+where filterLines(o, "products/1-A")
+```
+{INFO/}  
 
 {INFO: Revisions}
 In order to define a data subscription that uses documents revisions, there first has to be revisions configured for the specific collection.  
