@@ -66,10 +66,6 @@ You can use it with `ServerTestOptions` to change the path to the Raven server b
 `ServerTestOptions` inherits from [ServerOptions](../server/Embedded#getting-started). In that way you can be more in control of how the embedded server is going to run
 with just a minor change. Here you can change your ServerDirectory.
 
-| Name | Type | Description |
-| ------------- | ------------- | ----- |
-| **ServerDirectory** | string | The path to the server binary files (.dll) |
-
 {INFO /}
 
 ### Example
