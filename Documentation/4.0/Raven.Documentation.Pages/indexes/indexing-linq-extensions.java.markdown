@@ -56,6 +56,11 @@ There are two overrides for each method: The first one returns the default value
 
 {PANEL/}
 
+## Remarks
+
+{INFO Default `storage` value for the `storeAllFields()` method is `FieldStorage.NO`. Keep in mind that storing fields will increase disk space usage. /}
+
+
 ## Related Articles
 
 ### Indexes
