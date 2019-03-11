@@ -4,9 +4,9 @@
     "Name": "Revisions Support",
     "Mappings": []
   },
-    {
-        "Path": "maintenance-operations.markdown",
-        "Name": "Maintenance Operations",
-        "Mappings": []
-    }
+  {
+      "Path": "maintenance-operations.markdown",
+      "Name": "Maintenance Operations",
+      "Mappings": []
+  }
 ]
