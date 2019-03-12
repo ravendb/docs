@@ -115,7 +115,7 @@ kubectl get pod
 kubectl get svc
 {CODE-BLOCK/}
 
-![3](images/container-creating.png)  
+![3](images/eks/pod-svc.png)  
 
 While the RavenDB pods are being created, you may already set DNS records. Go to your domain provider and create an "A Record" with the External-IP of the HAProxy service.
 
@@ -154,8 +154,6 @@ If you delete the entire StatefulSet, the pods will be terminated by order of cr
 {CODE-BLOCK:bash}
 kubectl delete sts ravendb
 {CODE-BLOCK/}
-
-![6](images/delete-sts.png)  
 
 ## Related Articles
 

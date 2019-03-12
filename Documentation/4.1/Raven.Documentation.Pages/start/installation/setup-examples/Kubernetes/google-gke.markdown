@@ -158,8 +158,6 @@ If you delete the entire StatefulSet, the pods will be terminated by order of cr
 kubectl delete sts ravendb
 {CODE-BLOCK/}
 
-![6](images/delete-sts.png)  
-
 ## Related Articles
 
 ### Getting Started
