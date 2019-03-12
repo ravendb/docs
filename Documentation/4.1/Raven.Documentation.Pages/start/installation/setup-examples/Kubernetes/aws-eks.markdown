@@ -1,21 +1,24 @@
-# Kubernetes : Azure AKS
+# Kubernetes : AWS EKS
 
-In this walkthrough, we will setup a Kubernetes RavenDB cluster in AKS. The guide assumes prior knowledge of basic Kubernetes concepts. For more information please refer to the Kubernetes [official documentation](https://kubernetes.io/docs/home/).
+In this walkthrough, we will setup a Kubernetes RavenDB cluster in EKS. The guide assumes prior knowledge of basic Kubernetes concepts. For more information please refer to the Kubernetes [official documentation](https://kubernetes.io/docs/home/).
 
 ## Setting Up the Environment
 
-Follow the [Quickstart Guide](https://docs.microsoft.com/en-us/azure/aks/kubernetes-walkthrough), up to the point where you have installed Azure Cli and Kubectl and you have a running 3-node cluster.
+Follow the [Getting Started Guide](https://docs.aws.amazon.com/eks/latest/userguide/getting-started.html), up to the point where you have installed the AWS Cli and Kubectl and you have a running 3-node cluster.
+You should complete the prerequisites, Step 1: Create Your Amazon EKS Cluster, Step 2: Configure kubectl for Amazon EKS, and Step 3: Launch and Configure Amazon EKS Worker Nodes.
+
+It is important to wait until each step is completed. For example, don't launch worker nodes until the cluster in is the ACTIVE state.
 
 In this guide, we create a 3-node Stnadard Cluster with the most basic default settings.
 
 {CODE-BLOCK:bash}
-az aks create --resource-group RavenDBResourceGroup --name RavenDBCluster --node-count 3 --enable-addons monitoring --generate-ssh-keys --node-vm-size Standard_B2s
+aws eks create-cluster --name RavenDBCluster --role-arn arn:aws:iam::xxxxxxxxxxxx:role/eksServiceRole --resources-vpc-config subnetIds=subnet-0288eed287111aeb2,subnet-04dda7c6e45e6b84d,subnet-0fcfc595512851aa8,securityGroupIds=sg-03945782faf884513
 {CODE-BLOCK/}
 
-When the cluster is ready (can take a few minutes), run the following command to authenticate with it:
+Your cluster is ready when you run the following command and get 3 nodes in the READY state.
 
 {CODE-BLOCK:bash}
-az aks get-credentials --resource-group RavenDBResourceGroup --name RavenDBCluster
+kubectl get node
 {CODE-BLOCK/}
 
 ## Deploying secrets
@@ -52,7 +55,7 @@ Or in powershell:
 [Convert]::ToBase64String([IO.File]::ReadAllBytes("example.ravendb.cloud.pfx"))
 {CODE-BLOCK/}
 
-Download [secrets.yaml](yamls/aks/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
+Download [secrets.yaml](yamls/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
 
 {CODE-BLOCK:bash}
 kubectl create -f .\secrets.yaml
@@ -72,25 +75,25 @@ kubectl label node role=ingress-controller --all
 
 Then we deploy the ingress controller with all of the necessary [RBAC (Role Based Access Control)](https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/rbac) rules.
 
-Download [haproxy.yaml](yamls/gke/haproxy.yaml) and deploy it to the cluster:
+Download [haproxy.yaml](yamls/haproxy.yaml) and deploy it to the cluster:
 
 {CODE-BLOCK:bash}
 kubectl create -f .\haproxy.yaml
 {CODE-BLOCK/}
 
 You may check that the command was executed by asking kubectl to list all the pods and services in the default namespace. 
-Take a look at the External-IP field. About a minute after deploying, you will receive a public IP for your cluster. 
+Take a look at the External-IP field. About a minute after deploying, you will receive a public DNS name for your cluster. 
 
 {CODE-BLOCK:bash}
 kubectl get svc
 kubectl get pod
 {CODE-BLOCK/}
 
-![2](images/gke/pending-ip.png)  
+![2](images/eks/external-ip-dns.png)  
 
 ## Deploying the RavenDB StatefulSet
 
-Download [ravendb.yaml](yamls/gke/ravendb.yaml), edit the ConfigMap and Ingress objects with your personal domain information, and deploy it to the cluster:
+Download [ravendb.yaml](yamls/eks/ravendb.yaml), edit the ConfigMap and Ingress objects with your personal domain information, and deploy it to the cluster:
 
 {CODE-BLOCK:bash}
 kubectl create -f .\ravendb.yaml
@@ -112,13 +115,13 @@ kubectl get pod
 kubectl get svc
 {CODE-BLOCK/}
 
-![3](images/gke/container-creating.png)  
+![3](images/container-creating.png)  
 
 While the RavenDB pods are being created, you may already set DNS records. Go to your domain provider and create an "A Record" with the External-IP of the HAProxy service.
 
-In our example we create an "A Record" for *.example.ravendb.cloud and set the IP address to 35.192.132.78 and the TTL to 1 second.
+In our example we create an "A Record" for *.example.ravendb.cloud and set the Alias DNS name to "a6fa11d2844c711e98de402e297512db-1483410395.us-east-1.elb.amazonaws.com" and the TTL to 1 second.
 
-![4](images/gke/dns.png)  
+![4](images/eks/alias-dns.png)  
 
 Before trying to access the cluster, please register your wildcard server certificate in the OS (User Certificates Store). 
 This will allow Chrome to recognize it and be able to use it to authenticate to the cluster. 
@@ -126,7 +129,7 @@ After the cluster is set up, you should use the RavenDB Studio to create a `Clus
 
 Open Chrome and go to https://a.example.ravendb.cloud, then use the Cluster View in the Studio to add the other nodes to the RavenDB cluster.
 
-![5](images/gke/add-node.png) 
+![5](images/add-node.png) 
 
 ## Troubleshooting
 
@@ -152,7 +155,7 @@ If you delete the entire StatefulSet, the pods will be terminated by order of cr
 kubectl delete sts ravendb
 {CODE-BLOCK/}
 
-![6](images/gke/delete-sts.png)  
+![6](images/delete-sts.png)  
 
 ## Related Articles
 

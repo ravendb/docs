@@ -58,7 +58,7 @@ Or in powershell:
 [Convert]::ToBase64String([IO.File]::ReadAllBytes("example.ravendb.cloud.pfx"))
 {CODE-BLOCK/}
 
-Download [secrets.yaml](yamls/gke/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
+Download [secrets.yaml](yamls/secrets.yaml) and edit it with the base64 values of the license and certificate. Then deploy it to the cluster.
 
 {CODE-BLOCK:bash}
 kubectl create -f .\secrets.yaml
@@ -78,7 +78,7 @@ kubectl label node role=ingress-controller --all
 
 Then we deploy the ingress controller with all of the necessary [RBAC (Role Based Access Control)](https://github.com/jcmoraisjr/haproxy-ingress/tree/master/examples/rbac) rules.
 
-Download [haproxy.yaml](yamls/gke/haproxy.yaml) and deploy it to the cluster:
+Download [haproxy.yaml](yamls/haproxy.yaml) and deploy it to the cluster:
 
 {CODE-BLOCK:bash}
 kubectl create -f .\haproxy.yaml
@@ -92,7 +92,7 @@ kubectl get svc
 kubectl get pod
 {CODE-BLOCK/}
 
-![2](images/gke/pending-ip.png)  
+![2](images/pending-ip.png)  
 
 ## Deploying the RavenDB StatefulSet
 
@@ -118,13 +118,13 @@ kubectl get pod
 kubectl get svc
 {CODE-BLOCK/}
 
-![3](images/gke/container-creating.png)  
+![3](images/container-creating.png)  
 
 While the RavenDB pods are being created, you may already set DNS records. Go to your domain provider and create an "A Record" with the External-IP of the HAProxy service.
 
 In our example we create an "A Record" for *.example.ravendb.cloud and set the IP address to 35.192.132.78 and the TTL to 1 second.
 
-![4](images/gke/dns.png)  
+![4](images/dns.png)  
 
 Before trying to access the cluster, please register your wildcard server certificate in the OS (User Certificates Store). 
 This will allow Chrome to recognize it and be able to use it to authenticate to the cluster. 
@@ -132,7 +132,7 @@ After the cluster is set up, you should use the RavenDB Studio to create a `Clus
 
 Open Chrome and go to https://a.example.ravendb.cloud, then use the Cluster View in the Studio to add the other nodes to the RavenDB cluster.
 
-![5](images/gke/add-node.png) 
+![5](images/add-node.png) 
 
 ## Troubleshooting
 
@@ -158,7 +158,7 @@ If you delete the entire StatefulSet, the pods will be terminated by order of cr
 kubectl delete sts ravendb
 {CODE-BLOCK/}
 
-![6](images/gke/delete-sts.png)  
+![6](images/delete-sts.png)  
 
 ## Related Articles
 
