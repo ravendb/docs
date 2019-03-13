@@ -1,0 +1,61 @@
+﻿[
+    {
+        "Path": "setup-wizard.markdown",
+        "Name": "Setup Wizard",
+        "Mappings": []
+    },
+    {
+        "Path": "/setup-examples",
+        "Name": "Setup Examples",
+        "Mappings": []
+    },
+    {
+        "Path": "manual.markdown",
+        "Name": "Manual Setup",
+        "Mappings": []
+    },
+    {
+        "Path": "deployment-considerations.markdown",
+        "Name": "Deployment Considerations",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/installation/deployment-considerations"
+            }
+        ]
+    },
+    {
+        "Path": "running-as-service.markdown",
+        "Name": "Running as a Service",
+        "Mappings": []
+    },
+    {
+        "Path": "running-in-docker-container.markdown",
+        "Name": "Running in a Docker Container",
+        "Mappings": []
+    },
+    {
+        "Path": "upgrading-to-new-version.markdown",
+        "Name": "Upgrading to a New Version",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "server/administration/upgrade"
+            },
+            {
+                "Version": 3.0,
+                "Key": "server/installation/upgrading-to-new-version"
+            }
+        ]
+    },
+    {
+        "Path": "system-requirements.markdown",
+        "Name": "System Requirements",
+        "Mappings": []
+    },
+    {
+        "Path": "system-configuration-recommendations.markdown",
+        "Name": "System Configuration Recommendations",
+        "Mappings": []
+    }
+]

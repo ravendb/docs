@@ -1,0 +1,47 @@
+﻿[
+    {
+        "Path": "getting-started.markdown",
+        "Name": "Getting Started",
+        "Mappings": [
+            {
+                "Version": 1.0,
+                "Key": "intro/ravendb-in-a-nutshell"
+            }
+        ]
+    },
+    {
+        "Path": "whats-new.markdown",
+        "Name": "What's New",
+        "Mappings": [
+            {
+                "Version": 2.5,
+                "Key": "intro/what-is-new"
+            }
+        ]
+    },
+    {
+        "Path": "playground-server.markdown",
+        "Name": "Playground Server",
+        "Mappings": []
+    },
+    {
+        "Path": "about-examples.markdown",
+        "Name": "About Examples",
+        "Mappings": []
+    },
+    {
+        "Path": "test-driver.markdown",
+        "Name": "Unit Tests",
+        "Mappings": [
+            {
+                "Version": 3.0,
+                "Key": "server/troubleshooting/sending-support-ticket"
+            }
+        ]
+    },
+    {
+        "Path": "/installation",
+        "Name": "Installation",
+        "Mappings": []
+    }
+]
