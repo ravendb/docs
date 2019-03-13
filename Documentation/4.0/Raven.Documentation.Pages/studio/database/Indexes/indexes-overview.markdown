@@ -123,7 +123,7 @@ Indexes in RavenDB are split across the following multiple axes:
 
 * **Auto Indexes**:  
   When a Query doesn't specify a specific index to be used, the server [Query Optimizer](../../todo-update-me-later) will first analyze the query 
-  to see if an index that can answer the query exists.  
+  and search for an already existing Auto-Index that can answer the query.
   If there is no such index, the Query Optimizer creates on the fly an Auto-Index that can answer this query and all previous queries on that collection.  
   When the new Auto-Index has caught up, RavenDB cleans up all the old Auto-Indexes that are now superseded by the new one.  
 
