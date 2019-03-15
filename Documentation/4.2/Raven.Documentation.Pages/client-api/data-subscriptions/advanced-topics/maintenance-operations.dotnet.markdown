@@ -9,6 +9,7 @@ This page covers data subscriptions maintenance operations:
 [Deletion](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#deletion)  
 [Dropping Connection](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#dropping-connection)  
 [Disabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#disabling-subscription)  
+[Enabling subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#enabling-subscription)  
 [Updating subscription](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#updating-subscription)  
 [Getting subscription status](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#getting-subscription-status)  
 [DocumentSubscriptions class](../../../client-api/data-subscriptions/advanced-topics/maintenance-operations#documentsubscriptions-class)  
@@ -52,6 +53,19 @@ Existing subscriptions can be disabled remotely.
 usage: 
 
 {CODE subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+{PANEL/}
+
+{PANEL: Enabling subscription}
+
+Existing subscriptions can be enabled remotely.  
+This operation can be useful for already disabled subscriptions. A newly created subscription is enabled initially.
+
+{CODE interface_subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+usage: 
+
+{CODE subscription_enabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
 
 {PANEL/}
 
@@ -100,6 +114,8 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 | **DeleteAsync(string name, string database)** | `Task` | Deletes subscription. |
 | **DropConnection(string name, string database)** | `void` | Drops existing subscription connection with worker. |
 | **DropConnectionAsync(string name, string database)** | `Task` | Drops existing subscription connection with worker. |
+| **Enable(string name, string database)** | `void` | Enables existing subscription. |
+| **EnableAsync(string name, string database)** | `Task` | Enables existing subscription. |
 | **Disable(string name, string database)** | `void` | Disables existing subscription. |
 | **DisableAsync(string name, string database)** | `Task` | Disables existing subscription. |
 | **GetSubscriptions(int start, int take, string database)** | `List<SubscriptionState>` | Returns subscriptions list. |
