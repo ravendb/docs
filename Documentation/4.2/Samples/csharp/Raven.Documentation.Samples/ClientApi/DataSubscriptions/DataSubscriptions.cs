@@ -358,6 +358,11 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             Task DropConnectionAsync(string name, string database = null, CancellationToken token = default);
             #endregion
 
+            #region interface_subscription_disabling
+            void Disable(string name, string database = null);
+            Task DisableAsync(string name, string database = null, CancellationToken token = default);
+            #endregion
+
             #region interface_subscription_state
             SubscriptionState GetSubscriptionState(string subscriptionName, string database = null);
             Task<SubscriptionState> GetSubscriptionStateAsync(string subscriptionName, string database = null, CancellationToken token = default);
@@ -368,6 +373,10 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             string subscriptionName = string.Empty;
             using (var store = new DocumentStore())
             {
+                #region subscription_disabling
+                store.Subscriptions.Disable(subscriptionName);
+                #endregion
+
                 #region subscription_deletion
                 store.Subscriptions.Delete(subscriptionName);
                 #endregion

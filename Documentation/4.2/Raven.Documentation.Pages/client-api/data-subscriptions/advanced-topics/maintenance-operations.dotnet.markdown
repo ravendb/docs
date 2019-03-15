@@ -44,7 +44,15 @@ usage:
 {PANEL/}
 
 {PANEL: Disabling subscription}
-{INFO This operation can only be performed through the management studio /}
+
+Existing subscriptions can be disabled remotely.
+
+{CODE interface_subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
+usage: 
+
+{CODE subscription_disabling@ClientApi\DataSubscriptions\DataSubscriptions.cs /}
+
 {PANEL/}
 
 {PANEL: Updating subscription}
@@ -92,6 +100,8 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 | **DeleteAsync(string name, string database)** | `Task` | Deletes subscription. |
 | **DropConnection(string name, string database)** | `void` | Drops existing subscription connection with worker. |
 | **DropConnectionAsync(string name, string database)** | `Task` | Drops existing subscription connection with worker. |
+| **Disable(string name, string database)** | `void` | Disables existing subscription. |
+| **DisableAsync(string name, string database)** | `Task` | Disables existing subscription. |
 | **GetSubscriptions(int start, int take, string database)** | `List<SubscriptionState>` | Returns subscriptions list. |
 | **GetSubscriptionsAsync(int start, int take, string database)** | `Task<List<SubscriptionState>>` | Returns subscriptions list. |
 | **GetSubscriptionState(string subscriptionName, string database)** | `SubscriptionState ` | Get specific subscription state. |
