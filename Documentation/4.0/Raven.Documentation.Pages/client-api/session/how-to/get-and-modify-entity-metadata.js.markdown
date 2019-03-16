@@ -12,7 +12,7 @@ When a document is downloaded from the server, it contains various metadata info
 
 | Return Value | |
 | ------------- | ----- |
-| object | Returns the metadata for the specified entity. If the `entity` is transient, it will load the metadata from the store and associate the current state of the entity with the metadata from the server. |
+| object | Returns the metadata for the specified entity. Throws an exception if the `instance` is not tracked by the session. |
 
 ### Example
 
