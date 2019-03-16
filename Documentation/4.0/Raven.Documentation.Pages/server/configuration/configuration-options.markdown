@@ -5,12 +5,14 @@ However, these options can be manually configured in order to accommodate differ
 
 {PANEL:Environment Variables}
 
-Configuration can be adjusted by preceding configuration keys with `RAVEN_` or `RAVEN.` prefix. 
+Configuration can be adjusted using environment variables. Server is going to pick up all environment variables preceded by `RAVEN_` prefix and apply their values to specified configuration keys. All period `.` characters in configuration keys should be replaced with an underscore character (`_`) when used in environment variables. 
 
 ### Example
 
 {CODE-BLOCK:plain}
-RAVEN_Setup.Mode=None
+RAVEN_Setup_Mode=None
+RAVEN_DataDir=RavenData
+RAVEN_Certificate_Path=/config/raven-server.certificate.pfx
 {CODE-BLOCK/}
 
 {PANEL/}

@@ -1,16 +1,18 @@
 # Configuration Options
 
-RavenDB is **Safe by Default** which means its set of options are configured for the best safety.  
+RavenDB is **Safe by Default** which means its set of options is configured for the best safety.  
 However, these options can be manually configured in order to accommodate different server behavior.
 
 {PANEL:Environment Variables}
 
-Configuration can be adjusted by preceding configuration keys with `RAVEN_` or `RAVEN.` prefix. All `.` in configuration keys can be substituted with `_` if needed so from Server perspective `RAVEN_Setup.Mode` and `RAVEN_Setup_Mode` are equivalent.
+Configuration can be adjusted using environment variables. Server is going to pick up all environment variables preceded by `RAVEN_` prefix and apply their values to specified configuration keys. All period `.` characters in configuration keys should be replaced with an underscore character (`_`) when used in environment variables. 
 
 ### Example
 
 {CODE-BLOCK:plain}
-RAVEN_Setup.Mode=None
+RAVEN_Setup_Mode=None
+RAVEN_DataDir=RavenData
+RAVEN_Certificate_Path=/config/raven-server.certificate.pfx
 {CODE-BLOCK/}
 
 {PANEL/}
