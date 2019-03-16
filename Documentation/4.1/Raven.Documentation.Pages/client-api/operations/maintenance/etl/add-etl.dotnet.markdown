@@ -29,3 +29,9 @@ You can add ETL task by using **AddEtlOperation**.
 ### Studio
 
 - [RavenDB ETL Task](../../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task)
+
+### Connection Strings
+
+- [Add](../../../../client-api/operations/maintenance/connection-strings/add-connection-string)
+- [Get](../../../../client-api/operations/maintenance/connection-strings/get-connection-string)
+- [Remove](../../../../client-api/operations/maintenance/connection-strings/remove-connection-string)

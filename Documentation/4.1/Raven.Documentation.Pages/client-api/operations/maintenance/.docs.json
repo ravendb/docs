@@ -38,5 +38,10 @@
     "Path": "/etl",
     "Name": "ETL",
     "Mappings": []
+  },
+  {
+    "Path": "/connection-strings",
+    "Name": "Connection strings",
+    "Mappings": []
   }
 ]
