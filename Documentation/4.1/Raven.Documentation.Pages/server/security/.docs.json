@@ -5,24 +5,30 @@
         "Mappings": []
     },
     {
-      "Path": "/authentication",
-      "Name": "Authentication",
-      "Mappings": []
+        "Path": "/authentication",
+        "Name": "Authentication",
+        "Mappings": []
     },
     {
-      "Path": "/authorization",
-      "Name": "Authorization",
-      "Mappings": []
+        "Path": "/authorization",
+        "Name": "Authorization",
+        "Mappings": []
     },
     {
-      "Path": "/encryption",
-      "Name": "Encryption",
-      "Mappings": []
+        "Path": "/encryption",
+        "Name": "Encryption",
+        "Mappings": []
     },
     {
-      "Path": "/audit-log",
-      "Name": "Audit Log",
-      "Mappings": []
+        "Path": "/audit-log",
+        "Name": "Audit Log",
+        "Mappings": []
+    },
+    {
+        "Path": "fiddler-usage-with-secured-database.markdown",
+        "Name": "Fiddler Usage With Secured Database",
+        "Mappings": [],
+        "IsPlaceholder": "true"
     },
     {
         "Path": "common-errors-and-faq.markdown",
