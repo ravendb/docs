@@ -71,6 +71,15 @@ namespace Raven.Documentation.Samples.Server
 
             #endregion
 
+            #region start_server_with_server_directory_option
+
+            EmbeddedServer.Instance.StartServer(new ServerOptions
+            {
+                ServerDirectory = @"C:\RavenDB\Server"
+            });
+
+            #endregion
+
             #region get_document_store
 
             EmbeddedServer.Instance.GetDocumentStore("Embedded");

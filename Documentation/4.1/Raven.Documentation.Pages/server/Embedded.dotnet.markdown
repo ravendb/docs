@@ -17,7 +17,7 @@ There is one prerequsite and one recommendation for the Embedded package:
 
 Prerequsite:
 
-- **.NET Core runtime** must be installed manually
+- Install **.NET Core runtime** either manually or [along with a RavenDB full version](embedded#setting-server-directory)
 
 Recommendation:
 
@@ -100,10 +100,26 @@ For more control on how to start the server just pass to `StartServer` method a 
 | **ServerUrl** | string | What address we want to start our server (default `127.0.0.1:0`) |
 | **MaxServerStartupTimeDuration** | `TimeSpan` | The timeout for the server to start |
 | **CommandLineArgs** | `List<string>` | The [command lines arguments](../server/configuration/configuration-options#command-line-arguments) to start the server with |
+| **ServerDirectory** | string | The path to the server binary files<sup>[*](../server/embedded#setting-server-directory) |
 
 {INFO /}
 
 {CODE start_server_with_options@Server\Embedded.cs /}
+
+{NOTE: }
+#### Setting Server Directory
+In case you're not interested in installing the .Net run-time environment on your system, you can -  
+
+* [Download](https://ravendb.net/download) a full RavenDB version.  
+  This version already includes a .Net run-time environment.  
+* Extract the downloaded version to a local folder.  
+  E.g. `C:\RavenDB`.  
+* Set the `ServerDirectory` server option to the RavenDB subfolder that contains -
+   * `Raven.Server.exe` in Windows  
+   * `Raven.Server` in Posix  
+
+   {CODE start_server_with_server_directory_option@Server\Embedded.cs /}
+{NOTE/}
 
 {NOTE  Without the `ServerOptions`, RavenDB server will start with a default values on `127.0.0.1:{Random Port}`  /}
 
