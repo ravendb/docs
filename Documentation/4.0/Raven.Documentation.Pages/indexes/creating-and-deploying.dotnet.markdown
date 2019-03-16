@@ -84,7 +84,9 @@ Since RavenDB 4.0, **all** index updates are side-by-side by default. The new in
 
 {PANEL:**Auto indexes**}
 
-Auto-indexes are **created** when queries that do **not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
+Auto-indexes are **created** when queries that **do not specify an index name** are executed and, after in-depth query analysis, **no matching AUTO index is found** on the server-side.
+
+{NOTE The query optimizer doesn't take into account the static indexes when it determines what index should be used to handle a query. /}
 
 ### Naming Convention
 
