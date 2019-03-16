@@ -65,6 +65,11 @@
         "Mappings": []
     },
     {
+        "Path": "get-entity-counters.markdown",
+        "Name": "...get entity counters",
+        "Mappings": []
+    },
+    {
         "Path": "get-current-session-node.markdown",
         "Name": "...get current session node",
         "Mappings": []
