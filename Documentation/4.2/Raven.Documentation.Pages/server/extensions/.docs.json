@@ -18,5 +18,9 @@
                 "Key": "server/bundles/versioning"
             }
         ]
+    },
+    {
+        "Path": "revert-revisions.markdown",
+        "Name": "Revert Revisions"
     }
 ]
