@@ -80,17 +80,19 @@ namespace Raven.Documentation.Samples.Indexes.Querying
         }
         #endregion
 
-        public class Products_ByName : AbstractIndexCreationTask<Product>
+        #region sorting_9_3
+        public class Events_ByCoordinates : AbstractIndexCreationTask<Event>
         {
-            public Products_ByName()
+            public Events_ByCoordinates()
             {
-                Map = products => from product in products
-                                  select new
-                                  {
-                                      product.Name
-                                  };
+                Map = events => from e in events
+                                select new
+                                {
+                                    Coordinates = CreateSpatialField(e.Latitude, e.Longitude)
+                                };
             }
         }
+        #endregion
 
         public Sorting()
         {
@@ -283,6 +285,38 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .DocumentQuery<Product, Products_ByUnitsInStock>()
                         .WhereGreaterThan(x => x.UnitsInStock, 10)
                         .OrderBy("Name", OrderingType.AlphaNumeric)
+                        .ToList();
+                    #endregion
+                }
+            }
+
+            using (var store = new DocumentStore())
+            {
+                using (var session = store.OpenSession())
+                {
+                    #region sorting_9_1
+                    List<Event> results = session
+                        .Query<Event, Events_ByCoordinates>()
+                        .Spatial(
+                            "Coordinates",
+                            criteria => criteria.WithinRadius(500, 30, 30))
+                        .OrderByDistance(
+                            factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region sorting_9_2
+                    List<Event> results = session
+                        .Advanced
+                        .DocumentQuery<Event, Events_ByCoordinates>()
+                        .Spatial(
+                            "Coordinates",
+                            criteria => criteria.WithinRadius(500, 30, 30))
+                        .OrderByDistance(
+                            factory => factory.Point(x => x.Latitude, x => x.Longitude), 32.1234, 23.4321)
                         .ToList();
                     #endregion
                 }

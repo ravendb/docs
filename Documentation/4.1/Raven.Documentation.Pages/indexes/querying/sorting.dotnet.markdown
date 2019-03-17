@@ -46,7 +46,9 @@ order by UnitsInStock desc
 
 ## Ordering by Score
 
-When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)) and this value is available in metadata information of a document under `@index-score` (the higher the value, the better the match). To order by this value you can use the `OrderByScore` or the `OrderByScoreDescending` methods:
+When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)).  
+This value is available in metadata information of the resulting query documents under `@index-score` (the higher the value, the better the match).  
+To order by this value you can use the `OrderByScore` or the `OrderByScoreDescending` methods:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Query sorting_4_1@Indexes\Querying\Sorting.cs /}
@@ -126,6 +128,23 @@ order by Name as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Spatial Ordering
+
+If your data contains geographical locations, you might want to sort the query result by distance from a given point.
+
+This can be achived by using the `OrderByDistance` and `OrderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)):
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query sorting_9_1@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:DocumentQuery sorting_9_2@Indexes\Querying\Sorting.cs /}
+{CODE-TAB:csharp:Index sorting_9_3@Indexes\Querying\Sorting.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Events/ByCoordinates'
+where spatial.within(Coordinates, spatial.circle(500, 30, 30))
+order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 ## Related Articles
 
 ### Indexes
@@ -138,3 +157,4 @@ order by Name as alphanumeric
 - [Basics](../../indexes/querying/basics)
 - [Filtering](../../indexes/querying/filtering)
 - [Paging](../../indexes/querying/paging)
+- [Spatial](../../indexes/querying/spatial)
