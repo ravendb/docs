@@ -1,6 +1,6 @@
-﻿# Configuration : updates Options
+﻿# Configuration : Updates Options
 
-{PANEL:Patching.MaxStepsForScript}
+{PANEL:Updates.Channel}
 
 Indicates what release channel should be used to perform latest version checks.
 
