@@ -145,4 +145,19 @@ namespace Raven.Documentation.Samples.Indexes
             }
         }
     }
+
+    public class CreatingWithCustomConfiguration
+    {
+        #region indexes_9
+        public class Orders_Totals : AbstractIndexCreationTask<Order>
+        {
+            public Orders_Totals()
+            {
+                // ...
+                Configuration["Indexing.MapTimeoutInSec"] = "30";
+            }
+
+        }
+        #endregion
+    }
 }

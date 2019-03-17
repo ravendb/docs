@@ -42,6 +42,11 @@ There is not much use from an index if it is not deployed to the server. To do s
 
 {SAFE If an index exists on the server and the stored definition is the same as the one that was sent, it will not be overwritten. The indexed data will not be deleted and indexation will not start from scratch. /}
 
+#### Creating an Index with Custom Configuration
+
+If you need to create an index with a custom [`index configuration`](../server/configuration/indexing-configuration) you can set them in the index class constructor like so: 
+{CODE indexes_9@Indexes/Creating.cs /}
+
 #### Using Assembly Scanner
 
 All classes that inherit from `AbstractIndexCreationTask` can be deployed at once using one of `IndexCreation.CreateIndexes` method overloads.
