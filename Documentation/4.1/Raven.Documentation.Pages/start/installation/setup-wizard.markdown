@@ -324,6 +324,13 @@ Once all the servers are up and running, building the cluster is simple. Access 
 - [Common Setup Wizard Errors and FAQ](../../server/security/common-errors-and-faq#setup-wizard-issues)
 - [Manual Setup](../../start/installation/manual)
 
+### Setup Examples
+
+- [AWS Windows VM](../../start/installation/setup-examples/aws-windows-vm)
+- [AWS Linux VM](../../start/installation/setup-examples/aws-linux-vm)
+- [Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)
+
+
 ### Security
 
 - [Security in RavenDB](../../server/security/overview)
