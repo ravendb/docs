@@ -1,0 +1,77 @@
+[
+  {
+    "Path": "add-database-node.markdown",
+    "Name": "Add Database Node",
+    "Mappings": []
+  },
+  {
+    "Path": "compact-database.markdown",
+    "Name": "Compact Database",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "client-api/commands/admin/compaction"
+      }
+    ]
+  },
+  {
+    "Path": "create-database.markdown",
+    "Name": "Create Database",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-database.markdown",
+    "Name": "Delete Databases",
+    "Mappings": []
+  },
+  {
+    "Path": "get-build-number.markdown",
+    "Name": "Get Build Number",
+    "Mappings": []
+  },
+  {
+    "Path": "get-database-names.markdown",
+    "Name": "Get Database Names",
+    "Mappings": [
+      {
+        "Version": 3.5,
+        "Key": "client-api/commands/how-to/get-names-of-all-databases-on-a-server"
+      }
+    ]
+  },
+  {
+    "Path": "modify-conflict-solver.markdown",
+    "Name": "Modify Conflict Solver",
+    "Mappings": []
+  },
+  {
+    "Path": "promote-database-node.markdown",
+    "Name": "Promote Database Node",
+    "Mappings": []
+  },
+  {
+    "Path": "restore-backup.markdown",
+    "Name": "Restore Backup",
+    "Mappings": []
+  },
+  {
+    "Path": "toggle-databases-state.markdown",
+    "Name": "Toggle Databases State",
+    "Mappings": []
+  },
+  {
+    "Path": "/certificates",
+    "Name": "Certificates",
+    "Mappings": []
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  },
+  {
+      "Path": "/logs",
+      "Name": "Logs",
+      "Mappings": []
+  }
+]

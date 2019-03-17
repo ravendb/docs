@@ -10,7 +10,7 @@
 
 | Return Value | |
 | ------------- | ---- |
-| `ClientConfiguration` | configuration which will be used by the RavenDB Client |
+| `ClientConfiguration` | Configuration which will be used by the RavenDB Client |
 
 ## Example
 
@@ -18,4 +18,6 @@
 
 ## Related Articles
 
+- [How to put **Server-Wide client configuration**?](../../../../client-api/operations/server-wide/configuration/put-serverwide-client-configuration)
 - [How to get **client configuration**?](../../../../client-api/operations/maintenance/configuration/get-client-configuration)
+- [How to put **client configuration**?](../../../../client-api/operations/maintenance/configuration/put-client-configuration)
