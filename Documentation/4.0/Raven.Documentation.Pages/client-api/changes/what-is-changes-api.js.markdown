@@ -48,6 +48,10 @@ In order to end subscription (stop listening for particular notifications) you m
 
 {CODE:nodejs changes_2@client-api\changes\whatIsChangesApi.js /}
 
+## Remarks
+
+{NOTE One or more open Changes API connections will prevent a database from becoming idle and unloaded, regardless of [configuration value for database idle timeout](../../server/configuration/database-configuration#databases.maxidletimeinsec)/}
+
 ## Related Articles
 
 ### Changes API
