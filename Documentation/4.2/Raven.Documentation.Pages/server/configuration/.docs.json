@@ -128,5 +128,10 @@
         "Path": "transaction-merger-configuration.markdown",
         "Name": "Transaction Merger Configuration",
         "Mappings": []
+    },
+    {
+        "Path": "updates-configuration.markdown",
+        "Name": "Updates Configuration",
+        "Mappings": []
     }
 ]
