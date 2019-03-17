@@ -205,3 +205,15 @@ Max time to wait in seconds when forcing the storage environment flush and sync 
 - **Scope**: Server-wide only
 
 {PANEL/}
+
+
+{PANEL:Indexing.MapBatchSize}
+
+Maximum number of documents to be processed by the index per indexing batch.
+
+- **Type**: `int`
+- **Default**: `null` (no limit)
+- **MinValue**: `128` 
+- **Scope**: Server-wide or per database
+
+{PANEL/}
