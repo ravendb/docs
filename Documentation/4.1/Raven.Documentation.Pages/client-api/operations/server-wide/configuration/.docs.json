@@ -1,0 +1,12 @@
+[
+  {
+    "Path": "get-serverwide-client-configuration.markdown",
+    "Name": "Get Server Wide Client Configuration",
+    "Mappings": []
+  },
+  {
+    "Path": "put-serverwide-client-configuration.markdown",
+    "Name": "Put Server Wide Client Configuration",
+    "Mappings": []
+  }
+]
