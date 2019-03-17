@@ -605,7 +605,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Patches
                 operation.OnProgressChanged = x =>
                 {
                     DeterminateProgress progress = (DeterminateProgress)x;
-                    Console.WriteLine($"Progress: Processed:{progress.Total}; Total:{progress.Processed}");
+                    Console.WriteLine($"Progress: Processed: {progress.Processed}; Total: {progress.Total}");
                 };
 
                 operation.WaitForCompletion();
