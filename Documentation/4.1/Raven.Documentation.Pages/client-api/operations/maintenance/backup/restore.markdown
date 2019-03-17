@@ -41,6 +41,7 @@ You can restore backed up databases using the Studio, or client API methods.
     | **DataDirectory** <br> (Optional -<br> omit for default) | string | Database data directory. <br> **Default folder: Under the "Databases" folder, in a folder that carries the restored database's name.** |
     | **EncryptionKey** <br> (Optional -<br> omit for default) | string | A key for an encrypted database. <br> **Default behavior: Try to restore as if DB is unencrypted.**|
     | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | boolean | `true` to disable ongoing tasks after restoring, <br> `false` to enable tasks after restoring. <br> **Default: `false` (tasks DO run when backup is restored)**|
+    | **SkipIndexes** <br> (Optional -<br> omit for default) | boolean | `true` to disable indexes import, <br> `false` to enable indexes import. <br> **Default: `false` restore all indexes.**|
   
 {NOTE: Make sure your server has permissions to read from `BackupLocation` and write to `DataDirectory`.}
 Verify that RavenDB has full access to the backup-files and database folders.

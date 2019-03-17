@@ -300,6 +300,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                     public string DataDirectory { get; set; }
                     public string EncryptionKey { get; set; }
                     public bool DisableOngoingTasks { get; set; }
+                    public bool SkipIndexes { get; set; }
                 }
                 #endregion
             }
@@ -321,6 +322,7 @@ namespace Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup
                 public UploadToAzure UploadToAzure;
                 public UploadToFtp UploadToFtp;
                 public long? LastEtag { get; set; }
+                public LastRaftIndex LastRaftIndex { get; set; }
                 public string FolderName { get; set; }
                 public long? DurationInMs { get; set; }
                 public long Version { get; set; }
