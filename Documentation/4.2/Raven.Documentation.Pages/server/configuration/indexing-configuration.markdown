@@ -217,3 +217,28 @@ Maximum number of documents to be processed by the index per indexing batch.
 - **Scope**: Server-wide or per database
 
 {PANEL/}
+
+
+{PANEL:Indexing.MaxGram}
+
+Largest n-gram to generate when NGram analyzer is used.
+
+- **Type**: `int`
+- **Default**: `6`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
+
+
+{PANEL/}
+
+
+{PANEL:Indexing.MinGram}
+
+Smallest n-gram to generate when NGram analyzer is used.
+
+- **Type**: `int`
+- **Default**: `2`
+- **Scope**: Server-wide or per database
+
+{PANEL/}
