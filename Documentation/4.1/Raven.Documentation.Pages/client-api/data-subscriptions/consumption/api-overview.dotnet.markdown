@@ -88,7 +88,8 @@ Session will be created by the same document store that created the worker, ther
 However, in order to maintain consistency, the session will address the same server that the batch was received from.  
 It won't try to fail over to another server. It might also fail if the subscription worker changes the node it communicates with.  
 Such event could happen if the subscription worker starts again to address its original node after a fallback occurrence.  
-If such failure occurs, the subscription processing will be stopped, and will have to be restarted, as shown [here](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  {NOTE/}
+If such failure occurs, the subscription processing will be stopped, and will have to be restarted, as shown [here](../../../client-api/data-subscriptions/consumption/examples#client-with-full-exception-handling-and-processing-retries)  
+{NOTE/}
 
 
 
@@ -165,9 +166,8 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
 - [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
-

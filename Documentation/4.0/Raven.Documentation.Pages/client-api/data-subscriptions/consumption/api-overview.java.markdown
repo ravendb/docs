@@ -129,7 +129,7 @@ The `run` function receives the client-side code as a consumer that will process
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
