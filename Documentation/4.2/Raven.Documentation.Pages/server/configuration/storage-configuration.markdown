@@ -137,6 +137,16 @@ The number of seconds to wait for the OnDirectoryInitialize executable to exit. 
 
 {PANEL/}
 
+{PANEL:Storage.EnablePrefetching}
+
+Enables memory prefetching mechanism if OS supports it.  
+
+- **Type**: `bool`
+- **Default**: `true`
+- **Scope**: Server-wide only
+
+{PANEL/}
+
 ## Related Articles
 
 - [Storage Engine](../../server/storage/storage-engine)
