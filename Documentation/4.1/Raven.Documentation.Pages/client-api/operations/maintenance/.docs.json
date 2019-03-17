@@ -43,5 +43,10 @@
     "Path": "/connection-strings",
     "Name": "Connection strings",
     "Mappings": []
+  },
+  {
+    "Path": "/backup",
+    "Name": "Backup",
+    "Mappings": []
   }
 ]
