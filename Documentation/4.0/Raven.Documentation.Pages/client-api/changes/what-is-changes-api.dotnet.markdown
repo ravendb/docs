@@ -56,7 +56,7 @@ In order to end subscription (stop listening for particular notifications) you m
 
 ## Remarks
 
-{NOTE One or more open Changes API connections will prevent a database from becoming idle, regardless of [configuration value for database idle timeout](http://localhost:54391/docs/article-page/4.0/csharp/server/configuration/database-configuration#databases.maxidletimeinsec). /}
+{NOTE One or more open Changes API connections will prevent a database from becoming idle and unloaded, regardless of [configuration value for database idle timeout](/docs/article-page/4.0/csharp/server/configuration/database-configuration#databases.maxidletimeinsec) /}
 
 {INFO To get more method overloads, especially the ones supporting delegates, please add [Reactive Extensions Core](https://www.nuget.org/packages/System.Reactive.Core/) package to your project. /}
 
