@@ -142,7 +142,7 @@ If such failure occurs, the subscription processing will be stopped, and will ha
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)

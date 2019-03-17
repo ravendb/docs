@@ -108,7 +108,7 @@ Data subscriptions are accessible by a document store. Here's an example of an a
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [How to Create a Data Subscription](../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
 - [How to Consume a Data Subscription](../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)

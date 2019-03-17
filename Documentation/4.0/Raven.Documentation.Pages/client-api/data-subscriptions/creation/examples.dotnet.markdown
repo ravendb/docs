@@ -70,9 +70,12 @@ Please see the [page](../../../client-api/data-subscriptions/advanced-topics/sub
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
 - [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
 
+**Knowledge Base**:
+
+- [JavaScript Engine](../../../server/kb/javascript-engine)

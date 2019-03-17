@@ -38,7 +38,7 @@ In this page:
 
 | Parameters | | |
 | ------------- | ------------- | ----- |
-| **queryToUpdate** | `string` or `IndexQuery` | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the Javascript patch code
+| **queryToUpdate** | `string` or `IndexQuery` | RQL query defining the update operation. The RQL query starts as any other RQL query with "from" and "update" statements. Later, it continues with an "update" clause in which you describe the JavaScript patch code
 | **options** | `QueryOperationOptions` | Options defining how the operation will be performed and various constraints on how it is performed
 
 {PANEL/}
