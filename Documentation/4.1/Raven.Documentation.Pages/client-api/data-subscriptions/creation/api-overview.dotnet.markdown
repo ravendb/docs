@@ -71,8 +71,8 @@ All subscriptions, are eventually translated to an RQL-like statement. These sta
 * From statement, defining the documents source, ex: `from Orders`. The from statement can only address collections, therefore, indexes are not supported.    
 
 * Where statement describing the criteria according to which it will be decided to either 
-send the documents to the worker or not. Those statements supports either RQL like `equity` opeartions (`=`, `==`) ,  
-plain Javascript expressions or declared function calls, allowing to perform complex filtering logic.  
+send the documents to the worker or not. Those statements supports either RQL like `equality` operations (`=`, `==`) ,  
+plain JavaScript expressions or declared function calls, allowing to perform complex filtering logic.  
 The subscriptions RQL does not support any of the known RQL searching keywords.
 
 * Select statement, that defines the projection to be performed. 
@@ -81,8 +81,8 @@ The select statements can contain function calls, allowing complex transformatio
 * Include statement allowing to define include path in document.  
 
 {INFO: Keywords}
-Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords are not supported.  
-Usage of Javascript ES5 syntax is supported.
+Although subscription's query syntax has an RQL-like structure, it supports only the `declare`, `select` and `where` keywords, usage of all other RQL keywords is not supported.  
+Usage of JavaScript ES5 syntax is supported.
 {INFO/}
 
 {INFO: Paths}
@@ -122,8 +122,14 @@ The subscription should be defined in a special way:
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:  
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
 - [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+**Knowledge Base**:
+
+- [JavaScript Engine](../../../server/kb/javascript-engine)
+
+
