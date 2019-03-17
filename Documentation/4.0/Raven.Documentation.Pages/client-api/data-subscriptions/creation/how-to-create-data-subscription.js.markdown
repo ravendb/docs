@@ -64,7 +64,11 @@ Setting that node manually can help manually choosing a more fitting server from
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
+
+**Knowledge Base**:
+
+- [JavaScript Engine](../../../server/kb/javascript-engine)
