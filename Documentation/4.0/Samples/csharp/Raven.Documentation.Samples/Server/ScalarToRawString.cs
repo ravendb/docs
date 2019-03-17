@@ -50,7 +50,7 @@ namespace Raven.Documentation.Samples.Server
                 #region query_with_big_number_projection
                     From InterstellarTrips as trip
                     Where trip.TotalDistance = '314159265358979323846264'
-                    Select x.Name, x.TotalDistance, x.GasBill // note that here we did not use a Javascript projection                    
+                    Select x.Name, x.TotalDistance, x.GasBill // note that here we did not use a JavaScript projection                    
                 #endregion
 ").AddParameter("$name", "John Doe").ToList();
         }
