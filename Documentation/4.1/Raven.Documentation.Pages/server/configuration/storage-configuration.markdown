@@ -1,4 +1,4 @@
-﻿# Configuration : Storage
+﻿﻿# Configuration : Storage
 
 The following configuration options allow you configure [the storage engine](../../server/storage/storage-engine).
 
@@ -134,6 +134,16 @@ The number of seconds to wait for the OnDirectoryInitialize executable to exit. 
 - **Type**: `int`
 - **Default**: `30`
 - **Scope**: Server-wide or per database
+
+{PANEL/}
+
+{PANEL:Storage.SkipChecksumOnRecovery}
+
+Skip checksum validation on database loading process (applicable only for ARM 32/64). Default: false. Experts only.
+
+- **Type**: `bool`
+- **Default**: false
+- **Scope**: Server-wide
 
 {PANEL/}
 
