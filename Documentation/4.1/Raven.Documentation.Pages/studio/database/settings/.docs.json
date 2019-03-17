@@ -24,6 +24,16 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "import-data-file.markdown",
+        "Name": "Import data file",
+        "Mappings": []
+    },
+    {
+        "Path": "import-from-csv.markdown",
+        "Name": "Import from csv",
+        "Mappings": []
+    },
+    {
         "Path": "import-from-sql.markdown",
         "Name": "Import from SQL",
         "Mappings": []
