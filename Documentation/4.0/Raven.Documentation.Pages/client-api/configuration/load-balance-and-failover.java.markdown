@@ -11,7 +11,7 @@
 
 * Note: ***Write*** requests will always access the [Preferred Node](../../client-api/configuration/load-balance-and-failover#preferred-node) calculated by the client.  
 
-{CODE ReadBalanceBehavior@ClientApi\Configuration\Cluster.cs /}
+{CODE:java ReadBalanceBehavior@ClientApi\Configuration\Cluster.java /}
 
 * In this page:  
   * [ReadBalanceBehavior Options](../../client-api/configuration/load-balance-and-failover#readbalancebehavior-options)  
