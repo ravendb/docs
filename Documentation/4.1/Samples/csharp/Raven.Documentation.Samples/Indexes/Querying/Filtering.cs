@@ -373,6 +373,48 @@ namespace Raven.Documentation.Samples.Indexes.Querying
                         .ToList();
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_11_1
+                    Order order = session
+                        .Query<Order>()
+                        .Where(x => x.Id == "orders/1-A")
+                        .FirstOrDefault();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_11_2
+                    Order order = session
+                        .Advanced
+                        .DocumentQuery<Order>()
+                        .WhereEquals(x => x.Id, "orders/1-A")
+                        .FirstOrDefault();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_12_1
+                    IList<Order> orders = session
+                        .Query<Order>()
+                        .Where(x => x.Id.StartsWith("orders/1"))
+                        .ToList();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region filtering_12_2
+                    IList<Order> orders = session
+                        .Advanced
+                        .DocumentQuery<Order>()
+                        .WhereStartsWith(x => x.Id, "orders/1")
+                        .ToList();
+                    #endregion
+                }
             }
         }
     }

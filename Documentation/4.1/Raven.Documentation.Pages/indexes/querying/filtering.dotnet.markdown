@@ -143,6 +143,33 @@ where endsWith(Name, 'ra')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Where - Identifier Property
+
+Once a property used in `Where` clause is recognized as an identity property of a given entity type (according to [`FindIdentityProperty` convention](../../client-api/configuration/identifier-generation/global#findidentityproperty))
+and there aren't any other fields involved then such a query is called "collection query". Simple collection queries that ask about documents with given IDs or where identifiers start with a given prefix
+and don't require any additional handling like ordering, full text searching etc, are handled directly by storage engine. It means that querying by ID doesn't use an auto-index and has no extra cost. In terms of efficiency, it is the same as
+loading documents with [`session.Load`](../../client-api/session/loading-entities) usage.
+
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query filtering_11_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_11_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Orders
+where id() = 'orders/1-A'
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+{CODE-TABS}
+{CODE-TAB:csharp:Query filtering_12_1@Indexes\Querying\Filtering.cs /}
+{CODE-TAB:csharp:DocumentQuery filtering_12_2@Indexes\Querying\Filtering.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Orders
+where startsWith(id(), 'orders/1')
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+
 ## Remarks
 
 {INFO Underneath, `Query` and `DocumentQuery` are converting predicates to the `IndexQuery` class so they can issue a query from a **low-level operation method**. /}
