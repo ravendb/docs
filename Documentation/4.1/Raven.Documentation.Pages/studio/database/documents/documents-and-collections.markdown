@@ -4,7 +4,7 @@
 {NOTE: Documents}
 
 * A document holds your data in a JSON format object  
-* For more information about a document, see [Document View](../../../studio/database/documents/document-view)
+* For more information about a document, see [Document View](../../../studio/database/documents/document-view/document-view)
 {NOTE/}
 
 {NOTE: Collections}

@@ -34,13 +34,13 @@ Operation scope: Local node
 An index usually needs to be reset once it reached its error quota and its state was changed to `Error`. Resetting an index means forcing RavenDB to re-index all documents
 matched by the index definition (can be a lengthy process on large databases).
 
-You can reset an index using [the Studio](../../studio/database/indexes/todo) or [the Client API](../../client-api/operations/maintenance/indexes/reset-index).
+You can reset an index using [the Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) or [the Client API](../../client-api/operations/maintenance/indexes/reset-index).
 
 Operation scope: Local node
 
 ## Delete
 
-You can delete an index by using [the Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+You can delete an index by using [the Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
 or [the Client API](../../client-api/operations/maintenance/indexes/delete-index).
 
 Operation scope: Cluster
@@ -67,8 +67,8 @@ A typical flow can be:
 
 4. Once the side-by-side index is done indexing, the original index will be replaced and you can safely deploy your new application to production.  
 
-To lock the index you can use the [Studio](../../../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
-or the [Client API](../../client-api/operations/maintenance/indexes/set-indexes-lock).  
+To lock the index you can use the [Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
+or the [Client API](../../client-api/operations/maintenance/indexes/set-index-lock).  
 Note: This is not a security feature, an index can be unlocked at any time.  
 
 Operation scope: Cluster  
@@ -86,7 +86,7 @@ should be done first. You can increase or lower the index priority and RavenDB w
 | High | Normal |
 
 You can change the index priority by using [the Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view---actions) 
-or [the Client API](../../client-api/operations/maintenance/indexes/set-indexes-priority).
+or [the Client API](../../client-api/operations/maintenance/indexes/set-index-priority).
 
 {NOTE:Expert configuration options}
 

@@ -89,7 +89,7 @@ This index makes an assumption that all documents have a `DateOfBirth` property 
 
 Because indexes are updated on a background thread, it is unlikely that users will be aware of those errors.  
 
-RavenDB surfaces index execution errors in two places, the first is the index statistics and index error statistics. Accessible for programmatic access at `/indexes/stats` and `/indexes/errors` or in human readable form at [Studio]().
+RavenDB surfaces index execution errors in two places, the first is the index statistics and index error statistics. Accessible for programmatic access at `/indexes/stats` and `/indexes/errors` or in human readable form at [Studio](../../todo-update-me-later).
 
 {CODE-TABS}
 {CODE-TAB-BLOCK:json:Statistics}

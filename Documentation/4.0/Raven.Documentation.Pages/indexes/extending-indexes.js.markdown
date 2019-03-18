@@ -11,7 +11,7 @@
 
 * The indexing process will execute the LINQ code and the invoked additional source code.  
 
-* Adding this custom code can be done from [Studio](../../../todo-upadte-me-later) or from code using the _additional sources_ feature.  
+* Adding this custom code can be done from [Studio](../studio/database/indexes/create-map-index#additional-sources) or from code using the _additional sources_ feature.  
   See [example](../indexes/extending-indexes#including-additional-sources-from-client-code) below.  
 
 * Advantages:

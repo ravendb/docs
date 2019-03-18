@@ -43,7 +43,7 @@ Create queries **using code**, or send the server **raw queries** for execution.
 
 * Either way, you can query Counters **by name** but **not by value**.  
   This is because queries are generally [based on indexes](../../../start/getting-started#example-iii---querying), and Counter values are [not indexed](../../../client-api/session/counters/counters-and-other-features#counters-and-indexing).  
-* Counter values **can** be [projected](../../../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
+* Counter values **can** be [projected](../../../indexes/querying/projections) from query results, as demonstrated in the following examples.  
   This way a client can get Counter values from a query without downloading whole documents.  
 
 * Use [Session.Query](../../../client-api/session/querying/how-to-query#session.query) to code queries yourself.  

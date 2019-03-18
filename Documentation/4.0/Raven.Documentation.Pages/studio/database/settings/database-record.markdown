@@ -31,18 +31,18 @@
 | `Disabled` | True or false. <br/> Can be modified in [Databases View](../../../studio/server/databases/databases-list-view#database-actions) |
 | `Encrypted` | True or false, defined when the database is created. <br/> See [Create Database - Encrypted](../../../studio/server/databases/create-new-database/encrypted) |
 | `Topology` | The current Database Group Topology. <br/> Can be managed in [Database Group Topology](../../../studio/database/settings/manage-database-group) |
-| `Indexes` | The current indexes defined in the database. <br/> Can be managed in [Indexes](../../../todo-update-me-later) |
-| `AutoIndexes` | The current auto-indexes defined in the database. <br/> Can be managed in [Auto-Indexes](../../../todo-update-me-later) |
+| `Indexes` | The current indexes defined in the database. <br/> Can be managed in [Indexes](../../../studio/database/indexes/indexes-list-view) |
+| `AutoIndexes` | The current auto-indexes that exist in the database. <br/> Can be managed in [Auto-Indexes](../../../studio/database/indexes/indexes-list-view) |
 | `Settings` | Server configuration, <br/> As set in the [settings.json file](../../../server/configuration/configuration-options) |
-| `Revisions` | Documents revisions configuration. <br/> Can be set in [Document Revisions](../../../todo-update-me-later) |
+| `Revisions` | Documents revisions configuration. <br/> Can be set in [Document Revisions](../../../server/extensions/revisions) |
 | `Expiration` | Documents expiration configuration. <br/> Can be set in [Document Expiration](../../../studio/database/settings/document-expiration) |
 | `PeriodicBackups` | Current Backup tasks configured. <br/> Can be managed in [Backup Task](../../../studio/database/tasks/ongoing-tasks/backup-task) |
 | `ExternalReplications` | Current External Replicaton tasks configured. <br/>Can be managed in [External Replication Task](../../../studio/database/tasks/ongoing-tasks/external-replication-task) |
 | `RavenConnectionStrings` | RavenDB connection strings that are defined for usage with RavenDB ETL tasks and External Replication tasks. <br/> See [RavenDB Connection Strings](../../../todo-update-me-later) |
 | `SqlConnectionStrings` | SQL connection strings that are defined for usage with SQL ETL task . <br/> See [SQL Connection Strings](../../../todo-update-me-later) ||
 | `RavenEtls` | Current RavenDB ETL tasks configured. <br/> Can be managed in [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) |
-| `SqlEtls` | Current SQL ETL tasks configured. <br/> Can be managed in [SQL ETL Task](../../../todo-update-me-later) |
-| `Client` | The database Client Configuration. <br/> As set in [Database Client Configuration](../../../todo-update-me-later) |
+| `SqlEtls` | Current SQL ETL tasks configured. <br/> Can be managed in [SQL ETL Task](../../../server/ongoing-tasks/etl/sql) |
+| `Client` | The database Client Configuration. <br/> As set in [Database Client Configuration](../../../studio/database/settings/client-configuration-per-database) |
 | `DeletionInProgress` | A list of nodes that are currently in the process of deleting this database |
 | `DeletionInProgressChangeVector` | The _change-vector_ that accompanies a _Delete Database_ command that is issued by the Cluster Observer when supervising the database replication factor after a partition scenario. <br/> Relevant only for a node that has come back from a Rehab state after a partition occurred, in order to update the other nodes in the database group with database content updates that occurred on this node at partition time. |
 | `ConflictSolverConfig` | Conflict Resolution configuration. <br/> Can be set in [Conflict Resolution](../../../studio/database/settings/conflict-resolution) |

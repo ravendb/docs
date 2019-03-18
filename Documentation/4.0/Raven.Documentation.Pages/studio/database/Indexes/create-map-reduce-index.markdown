@@ -163,7 +163,7 @@
 
 * You can set up a [RavenDB ETL Task](../../../studio/database/tasks/ongoing-tasks/ravendb-etl-task) 
   on the Artificial Documents collection to a dedicated database on a separate cluster for further processing, 
-  as well as other ongoing tasks such as: [SQL ETL](../todo-update-me-later) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions).
+  as well as other ongoing tasks such as: [SQL ETL](../../../server/ongoing-tasks/etl/sql) and [Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions).
 {NOTE/}
 
 {NOTE: }
@@ -188,7 +188,7 @@
   A Subscription failover to another node may cause the subscription to send Artificial Documents  
   that the subscription has already acknowledged.  
 
-  2. Artificial documents cannot use [Revisions](../todo-update-me-later) or [Attachments](../todo-update-me-later).  
+  2. Artificial documents cannot use [Revisions](../../../server/extensions/revisions) or [Attachments](../../../client-api/session/attachments/what-are-attachments).  
 
 * Learn more about using Artificial Documents from the client code in [Reduce Results as Artificial Documents](../../../indexes/map-reduce-indexes#reduce-results-as-artificial-documents)  
 {NOTE/}

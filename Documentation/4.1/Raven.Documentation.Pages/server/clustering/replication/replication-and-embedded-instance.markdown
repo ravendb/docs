@@ -6,10 +6,10 @@ Essentially, Embedded RavenDB is the same as non-embedded, their only difference
 
 ## Configuring Replication between Embedded Instance and a Cluster
 {PANEL:Examples in this page }
-  * [Configuring cluster membership of embedded instance through the Studio](#configuring-cluster-membership-of-embedded-instance-through-the-studio)  
-  * [Programmatically configuring cluster membership of embedded instance](#programmatically-configuring-cluster-membership-of-embedded-instance)  
-  * [Configuring embedded instance as External Replication destination through the Studio](#configuring-embedded-instance-as-external-replication-destination-through-the-studio)  
-  * [Programmatically embedded instance as External Replication destination](#programmatically-embedded-instance-as-external-replication-destination)  
+  * [Configuring cluster membership of embedded instance through the Studio](../../../server/clustering/replication/replication-and-embedded-instance#configuring-cluster-membership-of-embedded-instance-through-the-studio)  
+  * [Programmatically configuring cluster membership of embedded instance](../../../server/clustering/replication/replication-and-embedded-instance#programmatically-configuring-cluster-membership-of-embedded-instance)  
+  * [Configuring embedded instance as External Replication destination through the Studio](../../../server/clustering/replication/replication-and-embedded-instance#configuring-embedded-instance-as-external-replication-destination-through-the-studio)  
+  * [Programmatically embedded instance as External Replication destination](../../../server/clustering/replication/replication-and-embedded-instance#programmatically-embedded-instance-as-external-replication-destination)  
 {PANEL/}
 
 

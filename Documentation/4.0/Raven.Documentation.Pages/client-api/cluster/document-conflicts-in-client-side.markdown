@@ -11,7 +11,7 @@ For more information about conflicts and their resolution, see [article about co
 DocumentConflictException will be thrown for any access of a conflicted document.
 Fetching attachments of a conflicted document will throw `InvalidOperationException` on the server.
 
-## How can the conflict can be resolved from the client side?
+## How to resolve a conflict from the client side?
  * PUT of a document with ID that belongs to conflicted document will resolve the conflict.
 
 {CODE PUT_Sample@ClientApi\Cluster\DocumentConflictsInClientSide.cs /}
@@ -20,7 +20,7 @@ Fetching attachments of a conflicted document will throw `InvalidOperationExcept
 
 {CODE DELETE_Sample@ClientApi\Cluster\DocumentConflictsInClientSide.cs /}
 
- * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/change-vector).
+ * Incoming replication will resolve conflict if the incoming document has a larger [change vector](../../server/clustering/replication/change-vector).
 
 ## Modifying conflict resolution from the client-side
 In RavenDB we can resolve conflicts either by resolving to the latest or by using a conflict resolution script to decide which one of the conflicted document variants are the ones that need to be kept. The following is an example of how we can set a conflict resolution script from the client-side.
