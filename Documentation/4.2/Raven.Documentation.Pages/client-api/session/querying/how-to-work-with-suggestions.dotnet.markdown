@@ -21,6 +21,7 @@ The `Suggestion` feature is available through query extension methods. It gives 
 | **path** | `Expression<Func<T, object>>` | Points to the index field that should be used for operation |
 | **term** | string | Term that will be used as a basis of the suggestions |
 | **terms** | string[] | Terms that will be used as a basis of the suggestions |
+| **displayName** | string | User defined friendly name for suggestion result. If `null`, field name will be used.  |
 | **options** | `SuggestionOptions` | Non-default options that should be used for operation |
 
 ### Options
@@ -33,6 +34,12 @@ The `Suggestion` feature is available through query extension methods. It gives 
 | **Distance** | `StringDistanceTypes` | String distance algorithm to use (`None`, `Levenshtein`, `JaroWinkler`, `NGram`) |
 | **Accuracy** | float? | Suggestion accuracy |
 | **SortMode** | `SuggestionSortMode` | Indicates in what order the results should be returned (`None`, `Popularity`) |
+
+### Multiple suggestions
+
+You are able to ask for multiple suggestions using a single query.
+
+{CODE suggest_3@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
 
 ## Example I
 
@@ -53,6 +60,20 @@ select suggest('FullName', 'johne', '{ "Accuracy" : 0.4, "PageSize" : 5, "Distan
 {CODE-TAB-BLOCK:sql:RQL}
 from index 'Employees/ByFullName' 
 select suggest('FullName', 'johne')
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
+
+## Example III
+
+Looking for suggestions with dynamic query usage for multiple fields:
+
+{CODE-TABS}
+{CODE-TAB:csharp:Sync suggest_10@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
+{CODE-TAB:csharp:Async suggest_11@ClientApi\Session\Querying\HowToWorkWithSuggestions.cs /}
+{CODE-TAB-BLOCK:sql:RQL}
+from Employees 
+select suggest('FirstName', 'johne') as CustomFirstName, suggest('LastName', 'owen')
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 

@@ -42,6 +42,14 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
             ISuggestionOperations<T> ByField(Expression<Func<T, object>> path, string[] terms);
 
             ISuggestionOperations<T> WithOptions(SuggestionOptions options);
+
+            ISuggestionOperations<T> WithDisplayName(string displayName);
+            #endregion
+
+            #region suggest_3
+            ISuggestionQuery<T> AndSuggestUsing(SuggestionBase suggestion);
+
+            ISuggestionQuery<T> AndSuggestUsing(Action<ISuggestionBuilder<T>> builder);
             #endregion
         }
 
@@ -105,6 +113,32 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
                     Dictionary<string, SuggestionResult> suggestions = await asyncSession
                         .Query<Employee, Employees_ByFullName>()
                         .SuggestUsing(new SuggestionWithTerm("FullName") { Term = "johne" })
+                        .ExecuteAsync();
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region suggest_10
+                    Dictionary<string, SuggestionResult> suggestions = session.Query<Employee>()
+                        .SuggestUsing(x => x
+                            .ByField(y => y.FirstName, "johne")
+                            .WithDisplayName("CustomLastName"))
+                        .AndSuggestUsing(x => x
+                            .ByField(y => y.LastName, "owen"))
+                        .Execute();
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region suggest_11
+                    Dictionary<string, SuggestionResult> suggestions = await asyncSession.Query<Employee>()
+                        .SuggestUsing(x => x
+                            .ByField(y => y.FirstName, "johne")
+                            .WithDisplayName("CustomFirstName"))
+                        .AndSuggestUsing(x => x
+                            .ByField(y => y.LastName, "owen"))
                         .ExecuteAsync();
                     #endregion
                 }
