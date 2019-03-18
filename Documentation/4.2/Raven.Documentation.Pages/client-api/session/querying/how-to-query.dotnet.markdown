@@ -123,6 +123,7 @@ Available custom methods and extensions:
 - [Statistics](../../../client-api/session/querying/how-to-get-query-statistics)
 - [SuggestUsing](../../../client-api/session/querying/how-to-work-with-suggestions)
 - ToListAsync
+- ToArrayAsync
 
 ## Related Articles
 
