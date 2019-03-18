@@ -112,8 +112,7 @@ public class CompareExchange {
         try {
             // Do some work for the duration that was set.
             // Don't exceed the duration, otherwise resource is available for someone else.
-        }
-        finally {
+        } finally {
             releaseResource(store, "Printer/First-Floor", reservationIndex);
         }
     }
