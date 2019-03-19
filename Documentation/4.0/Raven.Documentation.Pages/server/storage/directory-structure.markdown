@@ -34,6 +34,6 @@ The data is persisted in a `Raven.voron` file and `.journal` files which are loc
 
 ### Storage
 
-- [Customize Data Location](customize-data-locations)
-- [Storage Engine](../../storage/storage-engine)
+- [Customize Data Location](../../server/storage/customizing-raven-data-files-locations)
+- [Storage Engine](../../server/storage/storage-engine)
 - [Transaction Mode](../../server/storage/transaction-mode)

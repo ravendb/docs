@@ -23,7 +23,7 @@ Usually, RavenDB's uses the multi master model and apply a transaction on a sing
 members in the cluster. This ensures that even in the presence of network partitions or hard failures RavenDB is able to 
 accept writes and safely keep them.
 
-The downside of the multi master model is that certain error modes can cause two clients to try to modify the same set of documents on two different database nodes. That can cause [Conflicts](../server/clustering/replication/replication-conflicts) and make it hard to provide certain guarantees to the application. For example, ensuring the uniqueness of a user's email in a distributed cluster. Just checking for the existence of the email is not sufficient, it might be that two clients talking to separate database nodes and both of them checking that the user does not exists and then create what will end up as a duplicate user.
+The downside of the multi master model is that certain error modes can cause two clients to try to modify the same set of documents on two different database nodes. That can cause [Conflicts](../../server/clustering/replication/replication-conflicts) and make it hard to provide certain guarantees to the application. For example, ensuring the uniqueness of a user's email in a distributed cluster. Just checking for the existence of the email is not sufficient, it might be that two clients talking to separate database nodes and both of them checking that the user does not exists and then create what will end up as a duplicate user.
 
 To handle this (and similar) scenario, RavenDB offers the cluster wide transaction feature. This allow you to explicitly state that you want
 a particular interaction with the database to favor consistency over availability and ensure that changes are going to be applied in an
@@ -39,7 +39,7 @@ replication vs. cluster wide transactions that are accepted by a majority of the
 
 1. A request sent from the client via [SaveChanges()](../../client-api/session/saving-changes) will generate a [Raft Command](../../server/clustering/rachis/consensus-operations#implementation-details) and the server will wait for a consensus on it.
 2. When consensus is achieved, each node will validate the compare exchange values first, if this fails the transaction is rolled back.
-From the nature of the [Raft consensus algorithm](../server/clustering/rachis/what-is-rachis#what-is-raft-?) the cluster wide transaction should be either _eventually_ accepted on _all_ nodes or fail on _all_ of them. 
+From the nature of the [Raft consensus algorithm](../../server/clustering/rachis/what-is-rachis#what-is-raft-?) the cluster wide transaction should be either _eventually_ accepted on _all_ nodes or fail on _all_ of them. 
 3. Once the validation has passed the request will be stored on the local cluster state machine of every node to be processed in an asynchronous manner by the relevant database.
 4. The relevant database notice that it have pending cluster transactions and will start to execute them. 
 Since order matters a failure at this stage will halt the cluster transaction execution until it fixed. The possible failure modes for this scenario are listed below.
@@ -60,7 +60,8 @@ The Cluster transaction feature allows to perform consistent cluster wide ACID t
 **Atomicity** - After having a quorum for the cluster transaction request by raft and successful concurrency check for the compare exchange values, it is guaranteed to be executed.
 Failure during the quorum or the concurrency check will roll back the transaction, while failure during the commit of the documents will halt any further cluster transactions execution on the database until that failure is remedied (failure mode for the documents commits are described later [here](../../server/clustering/cluster-transactions#failure-modes-for-cluster-wide_transactions)).
 
-**Consistency** - Is guaranteed on the requested node. The node will complete the request only when the transaction is completed and the documents are persistent on the node. The response to the client will contain the cluster transaction [Raft Index]() so it be added to any future request in order to ensure that the node has committed that transaction before serving the client. 
+**Consistency** - Is guaranteed on the requested node. The node will complete the request only when the transaction is completed and the documents are persistent on the node. The response to the client will contain the cluster transaction [Raft Index](../../server/clustering/rachis/consensus-operations#raft-index) 
+so it be added to any future request in order to ensure that the node has committed that transaction before serving the client. 
 
 **Durability** - Once the transaction has been accepted it is guaranteed to run on all the database's node, even in the case of system (or even cluster-wide) restarts or failures.
 

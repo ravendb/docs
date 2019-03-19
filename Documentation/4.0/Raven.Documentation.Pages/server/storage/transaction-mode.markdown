@@ -42,5 +42,5 @@ curl -X GET http://127.0.0.1:8080/databases/myDB/admin/transactions-mode?mode=Sa
 
 ### Storage
 
-- [Storage Engine](../../storage/storage-engine)
-- [Directory Structure](../../storage/directory-structure)
+- [Storage Engine](../../server/storage/storage-engine)
+- [Directory Structure](../../server/storage/directory-structure)

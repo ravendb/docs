@@ -32,7 +32,7 @@ The _Cluster Observer_ stores its information **in memory**, so when the `Leader
 
 | URL | Method | Query Params. | Description |
 | - | - | - | - |
-| `/admin/cluster/observer/suspend` | POST | value=[`bool`] | Setting `false` will suspend the _Cluster Observer_ operation for the current [Leader term](../../../todo-update-me-later). |
+| `/admin/cluster/observer/suspend` | POST | value=[`bool`] | Setting `false` will suspend the _Cluster Observer_ operation for the current [Leader term](../../../studio/server/cluster/cluster-view#cluster-nodes-states-&-types-flow). |
 | `/admin/cluster/observer/decisions` | GET | | Fetch the log of the recent decisions made by the cluster observer. |
 | `/admin/cluster/maintenance-stats` | GET | | Fetch the latest reports of the _Cluster Observer_ |
 {PANEL/}

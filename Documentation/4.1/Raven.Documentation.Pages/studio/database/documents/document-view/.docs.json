@@ -1,5 +1,10 @@
 [
     {
+        "Path": "document-view.markdown",
+        "Name": "Document View",
+        "Mappings": []
+    },
+    {
         "Path": "/additional-features",
         "Name": "Additional Features",
         "Mappings": []

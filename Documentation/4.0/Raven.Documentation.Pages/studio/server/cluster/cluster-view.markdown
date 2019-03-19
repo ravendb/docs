@@ -158,7 +158,7 @@ Operations in RavenDB are usually divided into cluster-wide operations and inter
 * i.e.:  
   * Creating/deleting/enabling/disabling a database  
   * Creating/deleting/modifying/enabling/disabling an [ongoing task](../../../studio/database/tasks/ongoing-tasks/general-info)  
-  * Creating/deleting/modifying an [index](../../../todo-update-me-later)  
+  * Creating/deleting/modifying an [index](../../../studio/database/indexes/indexes-overview)  
 
 ###Database Operation
 

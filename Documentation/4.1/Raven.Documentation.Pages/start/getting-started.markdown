@@ -59,9 +59,9 @@ If you are interested in hosting the server in a Docker container, please read o
 
 If you are interested in hosting the server on a VM, please refer to
 
-- [AWS Windows VM](../../start/installation/setup-examples/aws-windows-vm)   
-- [AWS Linux VM](../../start/installation/setup-examples/aws-linux-vm)   
-- [Docker on AWS Linux VM](../../start/installation/setup-examples/aws-docker-linux-vm)
+- [AWS Windows VM](../start/installation/setup-examples/aws-windows-vm)
+- [AWS Linux VM](../start/installation/setup-examples/aws-linux-vm)
+- [Docker on AWS Linux VM](../start/installation/setup-examples/aws-docker-linux-vm)
 
 {NOTE/}
 
