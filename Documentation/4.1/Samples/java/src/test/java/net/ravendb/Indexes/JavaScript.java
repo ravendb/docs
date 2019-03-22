@@ -534,7 +534,7 @@ public class JavaScript {
                 "                };" +
                 "            })"));
 
-            Map<String, String> additionalSources = new HashMap<>();
+            java.util.Map<String, String> additionalSources = new HashMap<>();
             additionalSources.put("The Script", "function getNames(x, names){\n" +
                 "        names.push(x.author);\n" +
                 "        x.comments.forEach(x => getNames(x, names));\n" +
