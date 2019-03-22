@@ -65,7 +65,7 @@
 
 | Return Type |Description |
 |:-------------:|:-------------:|
-| Dictionary | An array of Counter names and values |
+| Dictionary<string, long> | Map of Counter names and values |
 
 ####GetAll Usage Flow:
 
