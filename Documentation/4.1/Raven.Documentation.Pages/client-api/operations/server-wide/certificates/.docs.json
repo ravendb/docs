@@ -1,0 +1,27 @@
+[
+  {
+    "Path": "create-client-certificate.markdown",
+    "Name": "Create Client Certificate",
+    "Mappings": []
+  },
+  {
+    "Path": "get-certificate.markdown",
+    "Name": "Get Certificate",
+    "Mappings": []
+  },
+  {
+    "Path": "get-certificates.markdown",
+    "Name": "Get Certificates",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-certificate.markdown",
+    "Name": "Delete Certificate",
+    "Mappings": []
+  },
+  {
+    "Path": "put-client-certificate.markdown",
+    "Name": "Put Client Certificate",
+    "Mappings": []
+  }
+]
