@@ -27,7 +27,7 @@ order by UnitsInStock as long desc
 
 {INFO:Forcing ordering type}
 
- `OrderingType` can be forced by passing `OrderingType` explicitly to one of the `orderBy` methods.
+By default, `orderBy` methods will determine `orderingType` from the property path expression (e.g. `x => x.unitsInStock` will result in `OrderingType.LONG` because property type is an integer), but a different ordering can be forced by passing `OrderingType` explicitly to one of the `orderBy` methods.
 
 {CODE-TABS}
 {CODE-TAB:java:Java sorting_8_1@Indexes\Querying\Sorting.java /}
@@ -43,7 +43,9 @@ order by UnitsInStock desc
 
 ## Ordering by Score
 
-When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)) and this value is available in metadata information of a document under `@index-score` (the higher the value, the better the match). To order by this value you can use the `orderByScore` or the `orderByScoreDescending` methods:
+When a query is issued, each index entry is scored by Lucene (you can read more about Lucene scoring [here](http://lucene.apache.org/core/3_3_0/scoring.html)).  
+This value is available in metadata information of the resulting query documents under `@index-score` (the higher the value, the better the match).  
+To order by this value you can use the `orderByScore` or the `orderByScoreDescending` methods:
 
 {CODE-TABS}
 {CODE-TAB:java:Java sorting_4_1@Indexes\Querying\Sorting.java /}
@@ -55,12 +57,11 @@ order by score()
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-
 ## Chaining Orderings
 
 It is also possible to chain multiple orderings of the query results. 
 You can sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`).  
-This can be achieved by using the `orderBy` (`orderByDescending`) and `orderByScore` (`orderByScoreDescending`) methods.
+This can be achieved by using the `thenBy` (`thenByDescending`) and `thenByScore` (`thenByScoreDescending`) methods.
 
 {CODE-TABS}
 {CODE-TAB:java:Query sorting_4_3@Indexes\Querying\Sorting.java /}
@@ -120,6 +121,22 @@ order by Name as alphanumeric
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
+## Spatial Ordering
+
+If your data contains geographical locations, you might want to sort the query result by distance from a given point.
+
+This can be achived by using the `orderByDistance` and `orderByDistanceDescending` methods (API reference [here](../../client-api/session/querying/how-to-query-a-spatial-index#orderbydistance)):
+
+{CODE-TABS}
+{CODE-TAB:java:Query sorting_9_1@Indexes\Querying\Sorting.java /}
+{CODE-TAB:java:Index sorting_9_3@Indexes\Querying\Sorting.java /}
+{CODE-TAB-BLOCK:sql:RQL}
+from index 'Events/ByCoordinates'
+where spatial.within(Coordinates, spatial.circle(500, 30, 30))
+order by spatial.distance(spatial.point(Latitude, Longitude), spatial.point(32.1234, 23.4321))
+{CODE-TAB-BLOCK/}
+{CODE-TABS/}
+
 ## Related Articles
 
 ### Indexes
@@ -132,3 +149,4 @@ order by Name as alphanumeric
 - [Basics](../../indexes/querying/basics)
 - [Filtering](../../indexes/querying/filtering)
 - [Paging](../../indexes/querying/paging)
+- [Spatial](../../indexes/querying/spatial)
