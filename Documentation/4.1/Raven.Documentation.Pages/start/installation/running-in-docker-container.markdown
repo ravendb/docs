@@ -39,7 +39,7 @@ For version `4.1` following tags are available:
 - `ubuntu-latest` and `windows-nanoserver-server` point to `4.1-*-latest`
 
 
-## Example
+## Examples
 
 To run latest image of RavenDB `4.1`, you can issue a command as follows:
 
@@ -54,6 +54,34 @@ docker run -d -p 8080:8080 -p 38888:38888 ravendb/ravendb:4.1-windows-nanoserver
 {CODE-BLOCK/}
 
 You can access the RavenDB Management Studio by going to `http://localhost:8080` in your browser. This assumes that you are using the default networking configuration with Docker, and that the Docker instance is not exposed beyond the host machine. If you intend to host RavenDB on Docker and expose it externally, make sure to go through the security configuration first.
+
+To install the `latest` tag but also persist the data to your hard disk if the container is removed, you can issue a command as follows:
+
+{CODE-BLOCK:bash}
+docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/Server/RavenData ravendb/ravendb
+{CODE-BLOCK/}
+
+ So now, if the container is removed, the data remains. Later on, you can start up a new instance of the image with the volume mounted to that same directory, the data comes back!
+
+{INFO Sharing data with Docker host with Docker for Windows}
+This requires that your docker client application has `sharing` enabled and that the folder (in this case, `C:\RavenDb\Data`) exists. 
+{INFO/}
+
+Finally, you might not want to run through the Setup Wizard each time you wish to start RavenDB container on your localhost. To skip that Setup Wizard you can issue the following command:
+
+{CODE-BLOCK:bash}
+docker run --rm -d -p 8080:8080 -p 38888:38888 -v c:/RavenDb/Data:/opt/RavenDB/Server/RavenData --name RavenDb-WithData -e RAVEN_Setup_Mode=None -e RAVEN_License_Eula_Accepted=true -e RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork ravendb/ravendb
+{CODE-BLOCK/}
+
+This will skip the Setup Wizard and mount a volume for data persistence.
+
+{WARNING} 
+Running a docker container with `RAVEN_Setup_Mode=None` and `RAVEN_Security_UnsecuredAccessAllowed=PrivateNetwork` is going to start an *unsecured* server.
+{WARNING/}
+
+{INFO EULA acceptance}
+By setting `RAVEN_License_Eula_Accepted=true` you're accepting our (terms & conditions)[https://ravendb.net/terms/commercial].
+{INFO/}
 
 ## Configuration
 
