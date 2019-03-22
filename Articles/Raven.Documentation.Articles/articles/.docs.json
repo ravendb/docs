@@ -22,7 +22,8 @@
             "title": "RavenDB or Elastic: The best database for you? | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/choosing-the-best-nosql-database",
-            "publishedAt": "2017-09-01"
+            "publishedAt": "2017-09-01",
+            "subcategories": "nosql-database,data-security"
         },
         "SeoMetaProperties": {
             "description": "Let's compare RavenDB and Elastic to see who is ACID, scalable, high availability, and has superior performance. Which is the best NoSQL Document Database?",
@@ -51,7 +52,8 @@
             "title": "Holding Off Harvey With High Availability | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/holding-off-harvey-with-high-availability",
-            "publishedAt": "2017-09-10"
+            "publishedAt": "2017-09-10",
+            "subcategories": "data-storage,nosql-database"
         },
         "SeoMetaProperties": {
             "description": "Hurricane Harvey was the ultimate high availability test for all databases both SQL and NoSQL. In a crisis, can technology’s best fend off nature’s worst?",
@@ -80,7 +82,8 @@
             "title": "Why are so Many NoSQL Databases Getting Hacked? | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/why-are-so-many-nosql-databases-getting-hacked",
-            "publishedAt": "2017-10-02"
+            "publishedAt": "2017-10-02",
+            "subcategories": "nosql-database,data-security"
         },
         "SeoMetaProperties": {
             "description": "Over 100,000 MongoDB databases have been hijacked. Hackers have also raided servers hosting data on ElasticSearch, Apache CouchDB, and Hadoop. What's going on?",
@@ -109,7 +112,8 @@
             "title": "RavenDB Presents the Three Ps of Database High Availability | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb-presents-the-three-ps-of-database-high-availability",
-            "publishedAt": "2017-10-20"
+            "publishedAt": "2017-10-20",
+            "subcategories": "data-storage"
         },
         "SeoMetaProperties": {
             "description": "How RavenDB Proliferates, Preserves, and Perpetuates your Data. To maintain high-availability for your database, we set up multiple lines of defense.",
@@ -138,7 +142,8 @@
             "title": "A NoSQL Database on Black Friday: The Gift that Keeps Giving | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/nosql-database-on-black-friday-ravendb-document-database",
-            "publishedAt": "2017-11-14"
+            "publishedAt": "2017-11-14",
+            "subcategories": "data-storage,nosql-database"
         },
         "SeoMetaProperties": {
             "description": "From Black Friday, to Cyber Monday, and right through the holidays, you want your application to run at peak performance. For that you need a NoSQL database.",
@@ -196,7 +201,8 @@
             "title": "3 Hidden Challenges for Your Database on Black Friday | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/black-friday-cyber-monday-nosql-database-ravendb",
-            "publishedAt": "2017-11-17"
+            "publishedAt": "2017-11-17",
+            "subcategories": "data-storage"
         },
         "SeoMetaProperties": {
             "description": "From Black Friday through New Year’s, a NoSQL database that scales up quickly is like opening up extra cash registers to serve a growing line.",
@@ -225,7 +231,8 @@
             "title": "How A NoSQL MapReduce Can Boost Your Database Performance | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/how-nosql-mapreduce-can-boost-your-database-performance",
-            "publishedAt": "2017-12-01"
+            "publishedAt": "2017-12-01",
+            "subcategories": "data-storage"
         },
         "SeoMetaProperties": {
             "description": "MapReduce Aggregation is great for your business, but it costs precious time and server resources. A NoSQL database like RavenDB can do it for free.",
@@ -283,7 +290,8 @@
             "title": "Making &quot;How to set up a Database&quot; Really Easy | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/making-how-to-set-up-a-database-easy-for-nosql-document-database",
-            "publishedAt": "2018-01-02"
+            "publishedAt": "2018-01-02",
+            "subcategories": "data-security"
         },
         "SeoMetaProperties": {
             "description": "Perform a simple NoSql Database download. Includes easy install, raven security encryption, and setup. How to set up a database is easy with our setup wizard.",
@@ -312,7 +320,8 @@
             "title": "RavenDB 4.0 Passes Intense Security Check | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb40-passes-intense-security-check",
-            "publishedAt": "2018-03-14"
+            "publishedAt": "2018-03-14",
+            "subcategories": "data-security"
         },
         "SeoMetaProperties": {
             "description": "To protect our users from any data breach, we hired a third-party security firm and told them to do their worst with RavenDB.",
@@ -341,7 +350,8 @@
             "title": "7 Ways The Right Database Pays for Itself | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/cost-benefits-ravendb-nosql-acid-database",
-            "publishedAt": "2018-03-28"
+            "publishedAt": "2018-03-28",
+            "subcategories": "nosql-database"
         },
         "SeoMetaProperties": {
             "description": "With the right database you don’t pay to play – we pay you! Discover the 7 features a database must have to generate a positive ROI for your investment in it.",
@@ -399,7 +409,8 @@
             "title": "Security Vulnerability Advisory for RavenDB 4.0 | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/security-vulnerability-advisory-for-ravendb-2018-06-12",
-            "publishedAt": "2018-06-12"
+            "publishedAt": "2018-06-12",
+            "subcategories": "data-security"
         },
         "SeoMetaProperties": {
             "description": "During routine internal security testing, a remotely exploitable issue was discovered. This issue has been addressed and is available in release: 4.0.5",
@@ -428,7 +439,8 @@
             "title": "ACID 2020: The Next Generation of Data Consistency | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/acid-cluster-distributed-nonrelational-database",
-            "publishedAt": "2018-07-12"
+            "publishedAt": "2018-07-12",
+            "subcategories": "data-storage,nosql-database"
         },
         "SeoMetaProperties": {
             "description": "ACID for multiple documents was fine in 2010. Today, nonrelational distributed databases handle far more data requiring a new generation of fully transactional.",
@@ -484,7 +496,8 @@
             "title": "Performing Well on Older Machines and Smaller Hardware | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/ravendb-point-of-sale-raspberry-pi-acid",
-            "publishedAt": "2018-07-25"
+            "publishedAt": "2018-07-25",
+            "subcategories": "data-storage"
         },
         "SeoMetaProperties": {
             "description": "Imagine having to operate your database on a server the size of your hand, or even your thumb. It’s like asking Beyonce to dance with Steve Wozniak.",
@@ -540,7 +553,8 @@
             "title": "Migrating data to RavenDB | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/data-migration-from-cosmosdb-mongodb-sql-to-ravendb",
-            "publishedAt": "2018-09-10"
+            "publishedAt": "2018-09-10",
+            "subcategories": "data-migration"
         },
         "SeoMetaProperties": {
             "description": "Need a high performance database for your next project? Worried about the costs of a NoSQL solution? Have no fear! RavenDB is simple to install and easy to use.",
@@ -596,7 +610,8 @@
             "title": "Migrating to RavenDB 4.0 in 36,000 Locations | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/migrating-to-ravendb-at-36000-locations",
-            "publishedAt": "2018-10-26"
+            "publishedAt": "2018-10-26",
+            "subcategories": "data-migration"
         },
         "SeoMetaProperties": {
             "description": "How does a Fortune 100 company migrate its database to RavenDB 4.0 at 36,000 locations? Find out in this webinar.",
@@ -624,7 +639,8 @@
             "title": "Database Basics for Successful Agile Transformation | RavenDB",
             "likeSection": "yes",
             "url": "https://ravendb.net/articles/nosql-database-basics-for-succesful-agile-transformation",
-            "publishedAt": "2019-01-24"
+            "publishedAt": "2019-01-24",
+            "subcategories": "nosql-database"
         },
         "SeoMetaProperties": {
             "description": "DevOps, Agile and microservices have a goal: Get it live NOW. Here's how our NoSQL database architecture advances continuous delivery and continuous deployment.",
