@@ -63,11 +63,15 @@ Two secured RavenDB clusters with ETL or External Replication defined between th
 Once the source cluster renews its certificate, the destination cluster will no longer trust it because the thumbprint has changed. 
 In such a case, the admin had to go to the destination and manually tell it to trust the new source certificate.
 
-The problem was addressed in RavenDB 4.2 where we introduced Implicit Trust by `Public Key Pinning Hash`. If the source cluster renews its certificate by 
-using **the same private key**, the new certificate will have the same `Public Key Pinning Hash`, and the destination cluster will be able to trust the new certificate and will register it (implicitly) for future connections.
+The problem was addressed in RavenDB 4.2 where Implicit Trust by `Public Key Pinning Hash` was introduced. If the source cluster renews its certificate by 
+using **the same private key**, the new certificate will have the same `Public Key Pinning Hash`, and the destination cluster will be able to trust the new certificate. It will also be registered (implicitly) for future connections.
 
-When using the RavenDB Let's Encrypt solution, all of the renewals and certificate signing is handled for you, and use the same private key. It means you don't need to do **anything** and the whole process is transparent.
-But, in order to use this feature if you provide your own certificate, you must sign the certificate with the same private key as the one you are renewing. 
+{WARNING:Important}
+For security reasons, this feature will only work if the new certificate was issued by the same certificate authority as the original certificate.
+{WARNING/}
+
+When using the RavenDB Let's Encrypt solution, all of the renewals and certificate signing is handled for you (using the same private key). It means you don't need to do **anything** and the whole process is transparent.
+But, in case you provide your own certificate, in order to use this feature you must use the same issuer and sign the certificate with the same private key as the one you are renewing. 
 
 This feature means that you can drastically reduce the amount of work that an admin has to do in a multi-cluster topology and leads you to a system that you setup once and just keeps working.
 
