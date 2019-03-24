@@ -2,14 +2,14 @@ Note: where `/database/*/` prefix exists, replace `*` with database name
 # Debug					
 |Endpoint 	|Method 	|Parameters 	|Description 	|Remarks	|*|
 |-|-|-|-|-|-|
-|/admin/debug/cluster-info-package	|GET	|	|	|	|TODO|
+|/admin/debug/cluster-info-package	|GET	|	|Returns whole cluster information package as zip format|
 |/admin/debug/cpu/stats	|GET	|	|Returns RavenDB's processor usage and thread pool status	|	||
 |/admin/debug/info-package	|GET	|	|Save debug package information for later analysis	|	||
 |/admin/debug/memory/low-mem-log	|GET	|	|Low memory events report	|	||
 |/admin/debug/memory/smaps	|GET	|	|Returns all RavenDB's process mappings including shared/private clean/dirty memory allocations	|Availabe only on Linux	||
 |/admin/debug/memory/stats	|GET	|	|Full report of memory usage including un/managed usage by thread and free memory status 	|	||
 |/admin/debug/node/engine-logs	|GET	|	|Rachis logs	|	||
-|/admin/debug/node/ping	|GET	|	|	|	|TODO|
+|/admin/debug/node/ping	|GET	|-(Optional) url-<br /> -(Optional)node-<br />For specifying the node by url or node tag 	|Test the ability to reach the server|
 |/admin/debug/node/remote-connections	|GET	|	|	|	|TODO|
 |/admin/debug/node/state-change-history	|GET	|	|	|	|TODO|
 |/admin/debug/proc/meminfo	|GET	|	|Return /proc/<RavenDB ProcNum>/meminfo	|Availabe only on Linux	||

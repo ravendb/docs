@@ -48,10 +48,5 @@
         "Path": "/kb",
         "Name": "Knowledge Base",
         "Mappings": []
-    },
-    {
-        "Path": "/troubleshooting",
-        "Name": "Troubleshooting",
-        "Mappings": []
     }
 ]
