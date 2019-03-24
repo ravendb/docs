@@ -1,0 +1,17 @@
+[
+  {
+    "Path": "distributed-database.markdown",
+    "Name": "Distributed Database",
+    "Mappings": []
+  },
+  {
+    "Path": "highly-available-tasks.markdown",
+    "Name": "Highly Available Tasks",
+    "Mappings": []
+  },
+  {
+    "Path": "cluster-observer.markdown",
+    "Name": "Cluster Observer",
+    "Mappings": []
+  }
+]
