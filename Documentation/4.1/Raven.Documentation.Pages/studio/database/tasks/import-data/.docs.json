@@ -8,5 +8,15 @@
         "Path": "import-from-csv.markdown",
         "Name": "Import From CSV",
         "Mappings": []
+    },
+	{
+        "Path": "import-from-sql.markdown",
+        "Name": "Import from SQL",
+        "Mappings": []
+    },
+    {
+        "Path": "import-from-other.markdown",
+        "Name": "Import from other",
+        "Mappings": []
     }
 ]
