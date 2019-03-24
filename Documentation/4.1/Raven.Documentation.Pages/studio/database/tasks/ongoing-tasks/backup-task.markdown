@@ -149,3 +149,25 @@
   * A new database can be [created from a Backup](../../../../studio/server/databases/create-new-database/from-backup)  
   * This can be done for both 'Backup' & 'Snapshot' types  
 {PANEL/}
+
+## Related Articles
+
+**Studio Articles**:   
+[Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
+[Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
+[Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
+
+**Client Articles**:  
+[Restore](../../../../client-api/operations/maintenance/backup/restore)   
+[Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
+[What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)   
+[Backup](../../../../client-api/operations/maintenance/backup/backup)
+
+**Serevr Articles**:  
+[Backup Overview](../../../../server/ongoing-tasks/backup-overview)
+
+**Migration Articles**:  
+[Migration](../../../../migration/server/data-migration) 
+
+
+

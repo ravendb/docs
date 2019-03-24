@@ -75,16 +75,16 @@ Consumption:
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)
 - [How to Consume a Data Subscription](../../../client-api/data-subscriptions/consumption/how-to-consume-data-subscription)
 
-### Session
+**Session**:
 
 - [What are Revisions](../../../client-api/session/revisions/what-are-revisions)
 
-### Server
+**Server**:
 
 - [Revisions](../../../server/extensions/revisions)

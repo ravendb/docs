@@ -164,4 +164,4 @@ select Name, Phone
 
 ### Server
 
-- [JavaScript Engine](../../../server/kb.jsscript-engine)  
+- [JavaScript Engine](../../../server/kb/javascript-engine)

@@ -13,7 +13,8 @@ Upgrading a RavenDB instance to a new version is very simple. In order to do so,
     * for console application - execute 'shutdown' command in the RavenDB CLI
 
 3. Remove old RavenDB binaries
-    * make sure to _not_ delete your actual data which is in the folders like `RavenData` and _not_ to overwrite your configuration files like [settings.json](../../server/configuration/configuration-options#json).
+    * make sure to _not_ delete your actual data which is in the folders like `RavenData` and _not_ to overwrite your configuration files like [settings.json](../../server/configuration/configuration-options#json). 
+    * make sure not to delete your certificate file which ends with `.pfx` or `.pem`, for more details see our [certificate page](../../server/security/authentication/certificate-configuration). 
 
 4. Copy new binaries. 
 

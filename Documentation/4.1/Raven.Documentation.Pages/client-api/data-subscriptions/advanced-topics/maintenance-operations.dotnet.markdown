@@ -105,7 +105,7 @@ The class is available through `DocumentStore`'s `Subscriptions` property.
 
 ## Related Articles
 
-### Data Subscriptions
+**Data Subscriptions**:
 
 - [What are Data Subscriptions](../../../client-api/data-subscriptions/what-are-data-subscriptions)
 - [How to Create a Data Subscription](../../../client-api/data-subscriptions/creation/how-to-create-data-subscription)

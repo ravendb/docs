@@ -140,7 +140,7 @@ Index Northwind C:\Raven4\Server\System\Temp C:\Raven4\Server\Databases\Northwin
 ### Storage
 
 - [Directory Structure](directory-structure)
-- [Storage Engine](../../storage/storage-engine)
+- [Storage Engine](../../server/storage/storage-engine)
 - [Transaction Mode](../../server/storage/transaction-mode)
 
 ### Installation

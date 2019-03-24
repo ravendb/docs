@@ -11,7 +11,7 @@
 * The **Database Group** refers to all the database instances in the cluster.  
   Every node in a Database Group will have a _full copy_ of all the data,  
   including documents, indexes, tombstones (which is how we replicate deletes), 
-  attachments and [revisions](../../../todo-update-me-later),  
+  attachments and revisions,  
   and is able to serve all queries, operations and write requests.  
 
 * The **Database Group Topology** is the specification of nodes that contain the database in the cluster in a particular point in time.  

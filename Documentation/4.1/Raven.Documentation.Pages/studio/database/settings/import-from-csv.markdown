@@ -84,4 +84,3 @@ Now that we got a valid CSV file we can import it to RavenDB by selecting
 ![Figure 1. Import CSV file](images/csv-import.JPG "Import CSV file")
 
 The end result should look like the document above
-

@@ -6,7 +6,7 @@
 
 Aggregations are a crucial part of any business. Totals like monthly sales, daily users, or even number of comments made in the morning hours can uncover a new opportunity, identify where to cut costs, or direct your resources towards an overall increase in productivity.
 
-<img class="pull-right margin-left img-responsive" alt="How A NoSQL MapReduce Can Boost Your Database Performance" src="images/abandoned-shopping-carts.jpg" />
+<img class="floating-right margin-left img-responsive" alt="How A NoSQL MapReduce Can Boost Your Database Performance" src="images/abandoned-shopping-carts.jpg" />
 
 MapReduce queries add flexibility and speed to aggregating your data, creating a whole new world of potential. 
 
@@ -42,7 +42,7 @@ For a relational database, MapReduce queries are not an option.
 
 ## What is MapReduce in RavenDB?
 
-<img class="pull-left margin-right img-responsive" alt="How A NoSQL MapReduce Can Boost Your Database Performance" src="images/results-wait-for-you.jpg" />
+<img class="floating-left margin-right img-responsive" alt="How A NoSQL MapReduce Can Boost Your Database Performance" src="images/results-wait-for-you.jpg" />
 
 The developers at RavenDB came up with a solution for fast and easy aggregation for singular or polymorphic data. You only have to aggregate once. RavenDB MapReduce will keep your results live as new data comes in.
 The first time you perform an aggregation, a MapReduce index will be created. It will go through all the documents, sort by region, and give you your totals. 

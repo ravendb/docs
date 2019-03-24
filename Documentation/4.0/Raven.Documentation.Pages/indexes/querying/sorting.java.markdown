@@ -13,7 +13,7 @@ where UnitsInStock > 10
 {CODE-TAB-BLOCK/}
 {CODE-TABS/}
 
-To start sorting, we need to request to order by some specified index field. In our case we will order by `unitsInStock` in descending order:
+To start sorting, we need to request to order by some specified index field. In our case we will order by `UnitsInStock` in descending order:
 
 {CODE-TABS}
 {CODE-TAB:java:Java sorting_2_1@Indexes\Querying\Sorting.java /}
@@ -60,7 +60,7 @@ order by score()
 
 It is also possible to chain multiple orderings of the query results. 
 You can sort the query results first by some specified index field (or by the `@index-score`), then sort all the equal entries by some different index field (or the `@index-score`).  
-This can be achived by using the `orderBy` (`orderByDescending`) and `orderByScore` (`orderByScoreDescending`) methods.
+This can be achieved by using the `orderBy` (`orderByDescending`) and `orderByScore` (`orderByScoreDescending`) methods.
 
 {CODE-TABS}
 {CODE-TAB:java:Query sorting_4_3@Indexes\Querying\Sorting.java /}

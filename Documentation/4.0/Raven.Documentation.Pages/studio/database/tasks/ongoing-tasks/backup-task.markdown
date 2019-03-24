@@ -4,7 +4,7 @@
 {NOTE: }
 
 * Schedule a **Backup Task** in order to backup your data.  
-  This will allow you to [restore the database](../../../todo-update-me-later) to a previous state from a specific point in time.  
+  This will allow you to [restore the database](../../../client-api/operations/maintenance/backup/restore) to a previous state from a specific point in time.  
 
 * This task is _not_ replicating your data, see more below in [Backup -vs- Replication](../../../../studio/database/tasks/ongoing-tasks/backup-task#backup-task--vs--replication-task)  
 
