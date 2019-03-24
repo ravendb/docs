@@ -167,16 +167,16 @@ public class Counters {
             //Returned Counter value is accumulated
             List<CounterResult> rawQuery1 = session
                 .advanced()
-                .rawQuery(CounterResult.class, "from users as u select counter(u, \"productLikes\")")
+                .rawQuery(CounterResult.class, "from products as p select counter(p, \"productLikes\")")
                 .toList();
 
             List<CounterResult> rawQuery2 = session.advanced().rawQuery(CounterResult.class,
-                "from users select counter(\"productLikes\") as productLikesCount")
+                "from products select counter(\"productLikes\") as productLikesCount")
                 .toList();
 
             List<CounterResult> rawQuery3 = session.advanced()
                 .rawQuery(CounterResult.class,
-                    "from products where productLikes > 500 select ProductSection, counter(\"productLikes\")")
+                    "from products where PricePerUnit > 50 select Name, counter(\"productLikes\")")
                 .toList();
             //endregion
 
@@ -195,6 +195,7 @@ public class Counters {
         private Long productPrice;
         private Long productLikes;
         private String productSection;
+		private String name;
 
         public Long getProductPrice() {
             return productPrice;
@@ -207,6 +208,10 @@ public class Counters {
         public Long getProductLikes() {
             return productLikes;
         }
+		
+		public String getName() {
+            return name;
+        }
 
         public void setProductLikes(Long productLikes) {
             this.productLikes = productLikes;
@@ -218,6 +223,10 @@ public class Counters {
 
         public void setProductSection(String productSection) {
             this.productSection = productSection;
+        }
+		
+		public void setName(String name) {
+            this.name = name;
         }
     }
 
