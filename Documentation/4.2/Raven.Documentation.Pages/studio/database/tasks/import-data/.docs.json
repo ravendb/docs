@@ -3,5 +3,15 @@
         "Path": "import-data-file.markdown",
         "Name": "Import data from file (.ravendbdump)",
         "Mappings": []
+    },
+    {
+        "Path": "import-from-ravendb.markdown",
+        "Name": "Import From RavenDB",
+        "Mappings": []
+    },
+    {
+        "Path": "import-from-csv.markdown",
+        "Name": "Import From CSV",
+        "Mappings": []
     }
 ]
