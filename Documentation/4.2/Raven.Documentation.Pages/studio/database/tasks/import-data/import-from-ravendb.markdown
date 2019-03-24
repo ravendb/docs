@@ -14,13 +14,17 @@ Select `From RavenDB`.
 
 ## Import configuration
 
+We need to specify the URL and select the database we want to import the data from.
+
 ![Figure 4. Import configuration](images/import-from-ravendb-configuration.png "Import Configuration")
 
-1. **Server URL** - URL to server you want to import from.
+1. **Server URL** - URL to server you want to import from, you can specify URL to either v4 server or v3 server.
 2. **Server Version** - Version of server that you want to import from.
 3. **Database Name** - The name of the Database that you want to migrate your data from.
 
 ## Import options 
+
+Here we can filter the data we want to import, select configuration and apply a transform script on your documents.
 
 ![Figure 5. Import Options](images/import-from-ravendb-options.png "Import Options")
 
