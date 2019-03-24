@@ -41,6 +41,7 @@ You can restore backed up databases using the Studio, or client API methods.
     | **DataDirectory** <br> (Optional -<br> omit for default) | string | Database data directory. <br> **Default folder: Under the "Databases" folder, in a folder that carries the restored database's name.** |
     | **EncryptionKey** <br> (Optional -<br> omit for default) | string | A key for an encrypted database. <br> **Default behavior: Try to restore as if DB is unencrypted.**|
     | **DisableOngoingTasks** <br> (Optional -<br> omit for default) | boolean | `true` to disable ongoing tasks after restoring, <br> `false` to enable tasks after restoring. <br> **Default: `false` (tasks DO run when backup is restored)**|
+    | **SkipIndexes** <br> (Optional -<br> omit for default) | boolean | `true` to disable indexes import, <br> `false` to enable indexes import. <br> **Default: `false` restore all indexes.**|
   
 {NOTE: Make sure your server has permissions to read from `BackupLocation` and write to `DataDirectory`.}
 Verify that RavenDB has full access to the backup-files and database folders.
@@ -139,17 +140,21 @@ In such cases, **disable** ongoing tasks using the [DisableOngoingTasks](../../.
 {WARNING/}
 {PANEL/}
 
-## Related Articles  
+## Related Articles
+
+**Studio Articles**:   
+[Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
+[Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
+[Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
+
 **Client Articles**:  
-[Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
-[Backup](../../../../client-api/operations/maintenance/backup/backup)  
-[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+[Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
+[What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)   
+[Backup](../../../../client-api/operations/maintenance/backup/backup)   
+[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
+**Serevr Articles**:  
+[Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
-**Studio Articles**:  
-[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
-
-**Security**:  
-[Database Encryption](../../../../server/security/encryption/database-encryption)  
-[Security Overview](../../../../server/security/overview)  
-[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+**Migration Articles**:  
+[Migration](../../../../migration/server/data-migration) 

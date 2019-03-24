@@ -32,3 +32,22 @@
    * Download, print, or copy and save the key in a safe place. It will NOT be available again!  
 
 {PANEL/}
+
+## Related Articles
+
+**Studio Articles**:   
+[Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
+[Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)          
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
+
+**Client Articles**:  
+[Restore](../../../../client-api/operations/maintenance/backup/restore)   
+[Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
+[What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)   
+[Backup](../../../../client-api/operations/maintenance/backup/backup)
+
+**Serevr Articles**:  
+[Backup Overview](../../../../server/ongoing-tasks/backup-overview)
+
+**Migration Articles**:  
+[Migration](../../../../migration/server/data-migration) 
