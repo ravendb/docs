@@ -1,29 +1,85 @@
 ﻿# FAQ : What is a Collection
+---
 
-A collection in RavenDB is a set of documents with the same `@collection` metadata property which is filled in by the client based on the type of entity object that you store (the function responsible for tagging documents can by overwritten by using [customizations](../../client-api/configuration/identifier-generation/global#findtypetagname-and-finddynamictagname)). 
+{NOTE: }
 
-If the documents are inserted through the studio, a `@collection` metadata will be generated for them, e.g `users|`/`users/`/`users/17` will have `@collection:Users`.
+* **A collection** in RavenDB is a set of documents tagged with the same `@collection` metadata property.  
+  Every document belongs to exactly one collection.  
 
-Documents that are in the same collection can have a completely different structure. This is a major advantage of using a schemaless database.
+* Being a schemaless database, there is no requirement that documents in the same collection will share the same structure,  
+  although typically, a collection holds similarly structured documents based on the entity type of the document.  
 
-The collection is just a virtual concept. There is no influence on how or where the documents within the same collection are stored. 
+* The collection is just a virtual concept.  
+  There is no influence on how or where documents within the same collection are physically stored.  
 
-The collection concept has a great meaning for three RavenDB features: [the Studio](../../studio/database/documents/documents-and-collections), [the indexes](../../indexes/what-are-indexes) and [the document ID generation](../../client-api/document-identifiers/working-with-document-identifiers) on the client side.
+* Collections are used throughout many RavenDB features, such as defining indexes, setting revisions, and much more.
 
-##Collections Usage
+* In this page:  
+  * [Collection Name Generation](../../client-api/faq/what-is-a-collection#collection-name-generation)
+  * [Collection Usages](../../client-api/faq/what-is-a-collection#collection-usages)
 
-###Studio
+* For more information see [Documents and Collections](../../studio/database/documents/documents-and-collections)
+{NOTE/}
 
-The first time you encounter the collection will likely be while accessing the studio. You will see that, for example, the `Order` entity that you have just stored is visible under the `Orders` collection. By default, the client pluralizes the collection name based on the type name. 
+![Figure 1. What is a Collection](images/what-is-a-collection.png "A document in 'Users' collection")
 
-How that happens in the virtual concept of the collections is visualized in the studio. Each RavenDB database has a storage index per collection, which is used internally to query the database and retrieve only documents from the specified collection. This way the Studio can group the documents into the collections.
+---
 
-###Indexing
+{PANEL: Collection Name Generation}
 
-Each RavenDB index is built against a collection (or collections when using [multi map index](../../indexes/multi-map-indexes)) and we iterate over the collection's documents during the indexing process.
+**When storing an entity from the client:**  
 
-###Document IDs
+* The document collection metadata is generated **based on the stored entity object type**.  
 
-The default convention is that documents have the identifiers like `orders/1-A` where `orders` is just a collection name and `1` is the identity value and `A` is the `Server's Tag`. 
+* By default, the client pluralizes the collection name based on the type name.  
+  e.g. storing an entity of type `Order` will generate the collection name `Orders`.  
 
-The ranges of available identity values returned by [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm) are per collection name.
+* The function that is responsible for tagging the documents can be overridden.  
+  See: [Global Identifier Generation Conventions](../../client-api/configuration/identifier-generation/global#findtypetagname-and-finddynamictagname). 
+
+----
+
+**When creating a new document through the Studio:**  
+
+* The collection metadata is generated **based on the document ID prefix**.  
+  e.g  Documents that are created with the following IDs: `users|23` / `users/45` / `users/17`  
+  will all belong to the same `Users` collection.  
+
+* For more information see [Documents and Collections](../../studio/database/documents/documents-and-collections)  
+{PANEL/}
+
+{PANEL: Collection Usages}
+
+* **A Collection Query**
+  * RavenDB keeps an internal storage index per collection created.  
+    This internal index is used to query the database and retrieve only documents from a specified collection.  
+
+* **In Indexing**
+  * Each [Map Index](../../indexes/map-indexes) is built against a single collection (or muliple collections when using a [Multi-Map Index](../../indexes/multi-map-indexes).  
+    During the indexing process, the index function iterates only over the documents that belong to the specified collection(s).  
+
+* **In Revisions**
+  * Documents [Revisions](../../server/extensions/revisions) can be defined per collection.  
+
+* **In Ongoing Tasks**
+  * A [RavenDB ETL Task](../../server/ongoing-tasks/etl/raven) & [SQL ETL Task](../../server/ongoing-tasks/etl/sql) are defined on specified collections.  
+
+* **The @hilo Collection**
+  * The ranges of available IDs values returned by [HiLo algorithm](../../client-api/document-identifiers/hilo-algorithm) are per collection name.  
+    Learn more in: [The @hilo Collection](../../studio/database/documents/documents-and-collections#the-@hilo-collection)  
+
+* **The @empty Collection**
+  * Learn more in: [The @empty Collection](../../studio/database/documents/documents-and-collections#the-@empty-collection)  
+
+{PANEL/}
+
+----
+
+## Related Articles
+
+### Studio
+- [Documents and Collections](../../studio/database/documents/documents-and-collections)  
+
+### Client API
+- [Document ID Generation](../../client-api/document-identifiers/working-with-document-identifiers)  
+- [Identifiers Generation - Summary](../../server/kb/document-identifier-generation)  
