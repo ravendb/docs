@@ -46,7 +46,7 @@ namespace Raven.Documentation.Samples.Indexes
 							let metadata = MetadataFor(product)
 							select new
 							{
-								LastModified = metadata.Value<DateTime>("Last-Modified")
+								LastModified = metadata.Value<DateTime>("@last-modified")
 							};
 			}
 		}
