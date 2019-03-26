@@ -2,7 +2,7 @@
 
 ## What is CSV
 
-*A Comma-Separated Values (CSV) file is a delimited text file that uses a comma to separate values* ([from Wikipedia](https://en.wikipedia.org/wiki/Comma-separated_values)).  
+A Comma-Separated Values (CSV) file is a delimited text file that uses a comma to separate values ([from Wikipedia](https://en.wikipedia.org/wiki/Comma-separated_values)).  
 
 ## How should I format my documents as CSV
 
@@ -51,7 +51,7 @@ Inner Object
 
 The import process will combine properties with the same prefix back into one JSON object.  
 
-The `ArrayObject` property is an array and as such contains multiple values. These should be escaped as strings like so:  
+The `ArrayObject` property is an array and as such contains multiple values. These should be escaped as a string like so:  
 
 {CODE-BLOCK:json}
 ArrayObject
@@ -72,7 +72,7 @@ If we want to import the document with a specific `id` we need to include an `@i
 Samples/1-A
 {CODE-BLOCK/} 
 
-The end result should look like this:
+The complete CSV line should look like this:  
 
 {CODE-BLOCK:json}
 @id,Name,NestedObject.Name,ArrayObject,@metadata.@collection
@@ -83,3 +83,5 @@ Now that we've got a valid CSV file we can import it to RavenDB by selecting the
 `Settings`>`Import Data`>`From CSV file`  
 
 ![Figure 1. Import CSV file](images/csv-import.JPG "Import CSV file")
+
+After importing the CSV file, the resulting document should look like the document [above](../../../../studio/database/tasks/import-data/import-from-csv#how-should-i-format-my-documents-as-csv).

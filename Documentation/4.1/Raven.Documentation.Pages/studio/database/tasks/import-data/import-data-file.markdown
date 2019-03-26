@@ -27,11 +27,11 @@ Now we are faced with multiple optional filters for importing data.
 - **Include Compare Exchange**: determines whether Compare Exchange values contained in the file should be imported.  
 
 {NOTE:Note}
-If any of the options are set but the file doesn't contain any items of that type, it will not throw an error. 
+No error is thrown if you select an option that is Not contained in the file.  
 {NOTE/}
 
 ## Advanced Import Options
-![Figure 1. Advanced import options](images/advanced-import-options.JPG)  
+![Figure 1. Advanced import options](images/advanced-import-options.JPG "Advanced import options")  
 
 - **Use Transform script**: when enabled, you will be able to input a transform JavaScript script to be operated on each document contained by the file.
 
