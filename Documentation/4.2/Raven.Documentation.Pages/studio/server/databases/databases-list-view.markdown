@@ -29,8 +29,7 @@
    * ***Disabled*** - the database has been disabled.  
   
    * Note:  
-     If the database is contained in one of the cluster's other nodes, but not in the current node (of this instance of the studio),
-     the database state will be ***'Remote'*** - see more [below](http://localhost:54391/article/4.2/csharp/studio/server/databases/databases-list-view#remote-database).
+     If the database is contained in a cluster's node that is different than the node that is currently viewed in this Studio instance, then 'Remote' will be indicated - see more [below](../../../studio/server/databases/databases-list-view#remote-database).
 
 2. **Containing nodes**   
    These are the nodes that contain a copy of the database. 
@@ -72,7 +71,7 @@
    A disabled database cannot be accessed. 
 
 4. **More actions**  
-   Pause indexing, Disable indexing, Compact database - see more [below](http://localhost:54391/article/4.2/csharp/studio/server/databases/databases-list-view#more-actions). 
+   Pause indexing, Disable indexing, Compact database - see more [below](../../../studio/server/databases/databases-list-view#more-actions). 
 
 5. **Refresh data**  
    Refresh the database stats data in this view from the server.
@@ -85,14 +84,14 @@
 ![Figure 3. Creating New Database](images/database-actions-2.png "Creating New Database Options")
 
 1. **Create new database from scratch**   
-   See detailed flow in: // TODO: add links to relevant page when exists.. 
+   See detailed flow [here](../../../studio/server/databases/create-new-database/general-flow)  
 
 2. **Create new database from an existing backup copy**   
-   See detailed flow in: // TODO: add links to relevant page when exists..
+   See detailed flow [here](../../../studio/server/databases/create-new-database/from-backup)  
 
 3. **Create new database from legacy data files**      
    Create a new database from a 3.x RavenDB version database    
-   See detailed flow in: // TODO: add links to relevant page when exists..
+   See detailed flow [here](../../../studio/server/databases/create-new-database/from-legacy-files)
 {PANEL/}
 
 {PANEL: More Actions}
