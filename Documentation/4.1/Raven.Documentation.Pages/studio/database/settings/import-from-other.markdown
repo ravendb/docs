@@ -45,7 +45,7 @@ This application is available in the `tools` package which you can download from
    * Input the name of the source database
    
 6. **Migrate all collections**
-   * You can either import all collections or choose collections individually  
+   * You can either import all collections or select specific collections  
    * Optionally you can rename the imported collections  
    
 7. **Use transform script** 
@@ -76,7 +76,7 @@ This application is available in the `tools` package which you can download from
    * Input the name of the source database
    
 6. **Migrate all collections**
-   * You can either import all collections or choose collections individually  
+   * You can either import all collections or select specific collections  
    * Optionally you can rename the collections  
    
 7. **Use transform script** 
