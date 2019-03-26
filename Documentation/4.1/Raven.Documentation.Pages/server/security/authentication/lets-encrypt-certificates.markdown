@@ -19,7 +19,7 @@ When there are 30 days left until expiration, RavenDB will initiate the certific
 Once the renewed certificate is obtained, [it will be replaced](../../../server/security/authentication/certificate-renewal-and-rotation) in all the nodes of the cluster without needing to shut down any server.
 
 {WARNING: Warning} 
-Automatic renewals of certificates are available only if you obtained your certificate using the Setup Wizard and got your free RavenDB domain. Independently obtained certificates will not renew automatically, even if issued by Let's Encrypt.
+Automatic certificate renewal is available only if you obtained your certificate using the Setup Wizard and got your free RavenDB domain. Independently obtained certificates will not renew automatically, even if issued by Let's Encrypt.
 {WARNING/}
 
 When running as a cluster, the replacement process is a distributed operation. It involves sending the new certificate to all nodes, and requires all nodes to confirm that they have recieved and replaced the certificate.
@@ -36,7 +36,7 @@ During the process you will receive alerts in the studio and in the logs indicat
 
 ## Manual Renewal
 
-You may initiate the renewal process manually by going to the certificate view in the studio and clicking `Renew` on the server certificate. It will trigger the same certificate replacement process which was described in [Automatic Renewal](http://localhost:54391/article/4.1/csharp/server/security/authentication/lets-encrypt-certificates#automatic-renewal).
+You may initiate the renewal process manually by going to the certificate view in the studio and clicking `Renew` on the server certificate. It will trigger the same certificate replacement process which was described in [Automatic Renewal](../../../server/security/authentication/lets-encrypt-certificates#automatic-renewal).
 
 If a node is down and you click `Renew`, the cluster will complete the operation without the node that is down. **When bringing that node up, the certificate must be replaced manually.**
 
@@ -45,7 +45,7 @@ If a node is down and you click `Renew`, the cluster will complete the operation
 
 Updating DNS records for your domain can be acheived by running the Setup Wizard again or by using a dedicated page at the RavenDB website.
 
-The [Customers Portal](https://customers.ravendb.net) allows you to easily edit DNS records which are associated with your license.
+You can easily edit the DNS records which are associated with your license using the [Customers Portal](https://customers.ravendb.net).
 
 ## Related articles
 
