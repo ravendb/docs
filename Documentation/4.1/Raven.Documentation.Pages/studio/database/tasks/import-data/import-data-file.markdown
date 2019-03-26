@@ -1,41 +1,45 @@
-﻿# Import data from .ravendbdump file
+﻿# Import Data From .ravendbdump File
 
-A .ravendbdump file is RavenDB format for exporting a database and it is backward compatible between RavenDB versions.  
-Inorder to import a `.ravendbdump` we need an existing database, lets create `Northwind` database and select `Setting`.
-![Figure 1. Settings](images/setting.png "Settings")
-Lets select `Import Data`
-![Figure 2. Import Data](images/import-data.png "Import Data")
-Now we are faced with multiple filters for importing data.
-![Figure 3. Import Options](images/import-options.png "Import Options")
+A `.ravendbdump` file is the RavenDB format for exporting a database. It is backwards compatible between RavenDB versions. 
+In order to import a `.ravendbdump` file we need an existing database. Let's create a new `Northwind` database and navigate to `Settings`.  
+![Figure 1. Settings](images/setting.png)
+---
+Next, navigate to `Import Data`  
 
-## Import options 
+![Figure 2. Import Data](images/import-data.png)
+---
+Now we are faced with multiple optional filters for importing data.  
 
-- Include Documents: Determines whether or not documents contained in the file should be imported or not, if disabled attachments and counters will automatically be disabled too. 
-- Include Attachments: Determines whether or not attachments contained in the file should be imported. 
-- Include Legacy Attachments: Determines whether or not legacy attachments contained in the file should be imported where legacy attachments refers to v2.x and v3.x attachments. 
-- Include Counters: Determines whether or not Counters contained in the file should be imported. 
-- Include Revisions: Determines whether or not Revisions contained in the file should be imported. 
-- Include Conflicts: Determines whether or not Conflicts contained in the file should be imported. 
-- Include Indexes: Determines whether or not Indexes contained in the file should be imported. 
-- Remove Analyzers: Determines whether or not Analyzers used by indexes should be stripted or not. 
-- Include Identities: Determines whether or not Identities contained in the file should be imported. 
-- Include Configuration: Determines whether or not configurations of Revisions, Expiration and Client contained in the file should be imported. 
-- Include Compare Exchange: Determines whether or not Compare Exchange values contained in the file should be imported. 
+![Figure 3. Import Options](images/import-options.png)
+---
+## Import Options 
+
+- **Include Documents**: determines whether the documents contained in the file should be imported. If disabled, attachments and counters will automatically be disabled as well.  
+- **Include Attachments**: determines whether attachments contained in the file should be imported.  
+- **Include Legacy Attachments**: legacy attachments refers to v2.x and v3.x attachments. Determines whether legacy attachments contained in the file should be imported.  
+- **Include Counters**: determines whether Counters contained in the file should be imported.  
+- **Include Revisions**: determines whether Revisions contained in the file should be imported.  
+- **Include Conflicts**: determines whether Conflicts contained in the file should be imported.  
+- **Include Indexes**: determines whether Indexes contained in the file should be imported.  
+- **Remove Analyzers**: determines whether the Analyzers used by indexes should be scripted.  
+- **Include Identities**: determines whether Identities contained in the file should be imported.  
+- **Include Configuration**: determines whether configurations of Revisions, Expiration and Client contained in the file should be imported.  
+- **Include Compare Exchange**: determines whether Compare Exchange values contained in the file should be imported.  
 
 {NOTE:Note}
-If any of the options is set but the file doesn't contain any items of that type it will not error. 
+If any of the options are set but the file doesn't contain any items of that type, it will not throw an error. 
 {NOTE/}
 
-## Advanced import options
-![Figure 1. Advanced import options](images/advanced-import-options.JPG "Advanced import options")
+## Advanced Import Options
+![Figure 1. Advanced import options](images/advanced-import-options.JPG)  
 
-- Use Transform script: when enabled will allow to supply a transform javascript script to be operated on each document contained by the file
+- **Use Transform script**: when enabled, you will be able to input a transform JavaScript script to be operated on each document contained by the file.
 
 {CODE-BLOCK:javascript}
 delete this['@metadata']['@change-vector']
 {CODE-BLOCK/} 
 
-The script above will delete the change-vector from imported documents and will generate new change vectors during import. 
-This is very helpfull if the data is imported from a diffrent database group and you want to avoid adding old change vector entries to a new environment. 
+For example, the script above will delete the Change Vectors from imported documents and generate new Change Vectors during import. 
+This is very helpful if the data is imported from a different database group and you want to avoid adding old change vector entries to a new environment. 
 
-- Copy command as PowerShell: generates the commands to run the importing logic from PowerShell.
+- **Copy command as PowerShell**: generates the commands to run the importing logic from PowerShell.
