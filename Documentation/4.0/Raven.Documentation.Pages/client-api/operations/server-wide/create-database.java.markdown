@@ -28,7 +28,7 @@ Create a new database on a server.
 | disabled | `boolean` (default: false) | [Disable](../../../client-api/operations/server-wide/toggle-databases-state) the database |
 | encrypted | `boolean` (default: false) | Enable database [Encryption](../../../server/security/encryption/database-encryption) |
 | deletionInProgress | `Map<String, DeletionInProgress>` | Mark the deletion of the database from specific nodes |
-| topology | `DatabaseTopology` | By default this is `null` and the server will decide on which nodes to place the database according to the `Replication Factor` |
+| topology | `DatabaseTopology` | Topology is _'null'_ by default. The server will decide on which nodes to place the database according to the [Replication Factor](../../../glossary/replication-factor) |
 | conflictSolverConfig | `ConflictSolver` | Specify the strategy to resolve [Conflicts](../../../server/clustering/replication/replication-conflicts) |
 | indexes | `Map<String, IndexDefinition>` | Define [Indexes](../../../Indexes/creating-and-deploying#using-maintenance-operations) |
 | autoIndexes | `Map<String, AutoIndexDefinition>` | Define [Auto Indexes](../../../Indexes/creating-and-deploying#using-maintenance-operations) |
