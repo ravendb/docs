@@ -1,0 +1,12 @@
+[
+    {
+        "Path": "debug-routes.markdown",
+        "Name": "Debug Endpoints",
+        "Mappings": [
+            {
+                "Version": 4.1,
+                "Key": "server/troubleshooting/debug-routes"
+            }
+        ]
+    }
+]
