@@ -3,11 +3,11 @@
 
 {NOTE: }
 
-* Import from other allows you to import your existing NoSQL Database into RavenDB.
+* Import _From other_ allows you to import your existing NoSQL Database into RavenDB.
 
 * Currently **MongoDB** and **CosmosDB** are supported.
 
-* You can import all collections or choose collections to import.
+* You can import all collections or select individual collections to import.
 
 * In this page:
   * [Import from MongoDB](../../../studio/database/settings/import-from-other#import-from-mongodb)
@@ -17,8 +17,8 @@
 
 {INFO:Before you start}
 
-You need to download external tool used to migrate data from your existing NoSQL database called `Raven.Migrator`. 
-This application is available in `tools` package, which you can obtain from [ravendb.net](https://ravendb.net/downloads) page. 
+You need to download an external tool used to migrate data from your existing NoSQL database called `Raven.Migrator`. 
+This application is available in the `tools` package which you can download from [ravendb.net/downloads](https://ravendb.net/downloads). 
 
 {INFO/}
 
@@ -29,27 +29,27 @@ This application is available in `tools` package, which you can obtain from [rav
 ![Figure 1.](images/mongodb-1.png "Import from MongoDB")
 
 1. **Migrator Path** 
-   * `Raven.Migrator.exe` can be found in tools package on [ravendb.net](https://ravendb.net/downloads) website
-   * Provide path to folder which contains `Raven.Migrator.exe` file.
+   * `Raven.Migrator.exe` can be found in the tools package on [ravendb.net/downloads](https://ravendb.net/downloads)
+   * Input the path to the folder which contains `Raven.Migrator.exe`
 
 2. **Database Source**
-   * Choose `MongoDB`
+   * Select `MongoDB`
    
 3. **Connection String** 
-   * Provide connection string to your mongodb instance 
+   * Input the connection string to your MongoDB instance 
    
 4. **Migrate GridFS** 
-   * Choosing this option will save GridFS attachments as documents with attachments in `@files` collection.
+   * Choosing this option will import GridFS attachments and save them as documents with attachments in the `@files` collection
    
 5. **Database Name**
-   * Provide name of source database
+   * Input the name of the source database
    
 6. **Migrate all collections**
-   * You can either import all collections or choose which collections should be imported. 
-   * Optionally you can rename collection names. 
+   * You can either import all collections or select specific collections  
+   * Optionally you can rename the imported collections  
    
 7. **Use transform script** 
-   * Transform script written in JavaScript allow to filter / modify imported documents.   
+   * A script for filtering / modifying imported documents (written in JavaScript)  
 
 {PANEL/}
 
@@ -60,11 +60,11 @@ This application is available in `tools` package, which you can obtain from [rav
 
 
 1. **Migrator Path** 
-   * `Raven.Migrator.exe` can be found in tools package on [ravendb.net](https://ravendb.net/downloads) website
-   * Provide path to folder which contains `Raven.Migrator.exe` file.
+   * `Raven.Migrator.exe` can be found in the tools package on [ravendb.net/downloads](https://ravendb.net/downloads)
+   * Input the path to the folder which contains `Raven.Migrator.exe`.
 
 2. **Database Source**
-   * Choose `CosmosDB`
+   * Select `CosmosDB`
    
 3. **Azure Endpoint URL** 
    * URL for CosmosDB database 
@@ -73,13 +73,13 @@ This application is available in `tools` package, which you can obtain from [rav
    * Primary key for CosmosDB
    
 5. **Database Name**
-   * Provide name of source database
+   * Input the name of the source database
    
 6. **Migrate all collections**
-   * You can either import all collections or choose which collections should be imported. 
-   * Optionally you can rename collection names. 
+   * You can either import all collections or select specific collections  
+   * Optionally you can rename the collections  
    
 7. **Use transform script** 
-   * Transform script written in JavaScript allow to filter / modify imported documents.   
+   * A JavaScript script to filter / modify imported documents.  
 
 {PANEL/}
