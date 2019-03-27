@@ -1,6 +1,6 @@
 # Installation : Setup Wizard Walkthrough
 
-We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning and to stay secure through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
+We want to make it as easy as possible for you to start RavenDB with a valid, trusted certificate from the very beginning. We want you to stay secure throughout your application lifecycle, starting with the early stages of development and all the way to production and day-to-day usage.
 
 To make the setup process as smooth as possible, we introduced the "Setup Wizard", a step-by-step guide to help you configure your desired level of security and easily deploy a secured cluster.
 
@@ -23,15 +23,15 @@ If you are having trouble using the wizard or with security in general, please v
 
 [Let's Encrypt](https://letsencrypt.org/) is a free, automated, and non-profit certificate authority. It will generate a certificate for your domain as long as you can prove that you own it.
 
-During the wizard, RavenDB will give you a free subdomain. It lets you configure the DNS records for this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, and we let you manage it through our [Customer Portal](https://customers.ravendb.net). Login with your license, and you can add/remove/update DNS records for your cluster.
+During the wizard, RavenDB will give you a free subdomain. This will let you configure the DNS records for this subdomain to point to the IP addresses your server will listen to. The subdomain is owned by RavenDB, and you can manage it through our [Customer Portal](https://customers.ravendb.net). Login with your license key, and you can add/remove/update DNS records for your cluster.
 
 The free subdomain is given to you only for the purpose of proving ownership to Let's Encrypt. If you wish to use your own domain, you are welcome to acquire your own certificate and use that instead.
 
 {WARNING: Security consideration and ownership of certificates and domains} 
 
-The automatic setup is designed to be as convenient and as easy as possible. It takes care of all the nitpicks of setting up DNS records, generating certificates, and doing their renewals. Because of those requirements, the ownership of the certificates and DNS records needs to stay within the Hibernating Rhinos company. This gives us the ability to generate valid certificates and modify DNS settings for your registered domains and should be a consideration to keep in mind while reviewing the security of your system. Hibernating Rhinos **will never** exploit these abilities and will never perform any modifications to the certificates and DNS records unless explicitly requested by the client.
+The automatic setup is designed to be as convenient and as easy as possible. It takes care of all the details of setting up DNS records, generating certificates, and performing their renewals. Because of these requirements, the ownership of the certificates and DNS records needs to stay within the Hibernating Rhinos company. This gives us the ability to generate valid certificates and modify DNS settings for your registered domains and should be a consideration to keep in mind while reviewing the security of your system. Hibernating Rhinos will **never** exploit these abilities and will never perform any modifications to the certificates and DNS records unless explicitly requested by the client.
 
-The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuss. We **recommend** that for actual production deployments and for the highest level of security and control, you'll use **your own certificates and domains**, avoiding the need to rely on third party for such a critical part of your security.
+The purpose of this feature is to make it easy for users to get set up and running with a minimum of fuss. We **recommend** that for actual production deployments and for the highest level of security and control, you'll use **your own certificates and domains**, avoiding the need to rely on a third party for such a critical part of your security.
 
 {WARNING/}
 
@@ -120,7 +120,7 @@ If the validation fails, you will receive a detailed error. You can go back in t
 
 A [common error](../../server/security/common-errors-and-faq) is that DNS records didn't update locally. You may wait a bit and try again. An easy workaround is to configure (just for the setup) your network card to use Google's DNS server (8.8.8.8), to bypass caching of DNS records.
 
-Tip:  use dns.google.com to see the dns record of your domain.
+Tip:  use dns.google.com to see the DNS record of your domain.
 
 When finished you will receive a Zip file containing all of the cluster configuration files and certificates. In case you are setting up a cluster, you will use this Zip file to setup the other nodes.
 
@@ -281,7 +281,7 @@ Click restart when finished and repeat the process for more nodes. When all the 
 
 ![Figure 11. Complete Cluster](images/setup/w7.png)
 
-You have successfully finished setting up a secure cluster of RavenDB servers using you own wildcard certificate.
+You have successfully finished setting up a secure cluster of RavenDB servers using your own wildcard certificate.
 
 {PANEL/}
 
