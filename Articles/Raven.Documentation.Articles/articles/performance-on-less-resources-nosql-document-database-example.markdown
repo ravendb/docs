@@ -8,7 +8,7 @@ ZAP is one of only two Yellow Pages franchises in the world to go completely dig
 They needed to fix a series of legacy websites with rapidly deteriorating performance, and increase the amount of information they could provide their users - while retaining top SEO ranking. Performance, especially on mobile devices, is a critical factor in SEO - so time was of the essence.<br/>
 Follow through this article to see what happened when RavenDB – a NoSQL document database - was put into action.
 
-<a href="https://youtu.be/THeXFDMxr6s">
+<a href="https://youtu.be/THeXFDMxr6s" target="_blank">
 <img class="img-responsive" alt="Follow this article to see how a Yellow Pages Company has doubled performance and tripled the data presented to users while using fewer servers, just by using RavenDB - the NoSQL Document Database." src="images/what-businesses-are-saying-about-ravendb.jpg" />
 </a>
 
@@ -26,8 +26,8 @@ They needed to hurdle the following obstacles:
 
 ## Leveraging RavenDB - a NoSQL Document Database - Fixed All Issues and Increased Performance
 
-<a href="https://ravendb.net">
-    <img class="pull-right margin-left img-responsive" alt="I really, really recommend RavenDB ~ Hagai Albo, CTO, Zap Group" src="images/zap-group-quote.png" />
+<a href="https://ravendb.net" target="_blank">
+    <img class="pull-right margin-left img-responsive" alt="I really, really recommend RavenDB ~ Hagai Albo, CTO, Zap Group" src="images/zap-group-quote.png"/>
 </a>
 
 Switching to RavenDB has eliminated all above technical complexities. ZAP was able to build a very fast performing search engine while enjoying the following:<br/>
@@ -66,7 +66,7 @@ Migrating to RavenDB enabled ZAP to do a lot of things better!
     <li>As bounce-rate dropped and site-engagement improved dramatically, pages per visit surged.</li>
     <li>Zap developers’ productivity has improved as new features can be easily added now, reducing Time-to-Market.<br>
     </ul>
-<a href="https://youtu.be/7MuqEPgq_Yk"><img class="img-responsive" alt="Zapping Ever Faster" src="images/zapping-ever-faster.jpg" /></a>
+<a href="https://youtu.be/7MuqEPgq_Yk"  target="_blank" ><img class="img-responsive" alt="Zapping Ever Faster" src="images/zapping-ever-faster.jpg"/></a>
 <hr style="border-color: grey">
 <div class="bottom-line">
     <strong>About RavenDB</strong><br/>
