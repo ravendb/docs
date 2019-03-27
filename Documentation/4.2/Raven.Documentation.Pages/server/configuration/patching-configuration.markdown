@@ -2,7 +2,7 @@
 
 {PANEL:Patching.MaxStepsForScript}
 
-The maximum number of steps iterations to give a script before timing out.
+The maximum number of statements a script can execute before throwing a `Jint.Runtime.StatementsCountOverflowException`.
 
 - **Type**: `int`
 - **Default**: `10000`
