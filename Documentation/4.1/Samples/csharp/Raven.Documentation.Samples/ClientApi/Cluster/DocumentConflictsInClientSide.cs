@@ -6,6 +6,7 @@ using Raven.Client.Documents;
 using Raven.Client.ServerWide;
 using Raven.Client.ServerWide.Operations;
 using Raven.Documentation.Samples.Indexes.Querying;
+using Raven.Documentation.Samples.ClientApi.Operations.Maintenance.Backup;
 
 namespace Raven.Documentation.Samples.ClientApi.Cluster
 {
