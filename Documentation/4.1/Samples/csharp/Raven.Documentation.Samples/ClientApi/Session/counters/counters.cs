@@ -1,12 +1,8 @@
 using System;
 using Raven.Client.Documents;
-using Raven.Client;
 using System.Linq;
-using System.IO;
 using System.Collections.Generic;
 using Raven.Client.Documents.Queries;
-//using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Operations.Counters;
 using System.Threading.Tasks;
 using System.Threading;
 using Raven.Client.Documents.Smuggler;
