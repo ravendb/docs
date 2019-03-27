@@ -1,7 +1,12 @@
 [
-  {
-    "Path": "cluster-observer.markdown",
-    "Name": "observer-log",
-    "Mappings": []
-  }
+    {
+        "Path": "cluster-observer.markdown",
+        "Name": "Cluster Observer",
+        "Mappings": [
+            {
+                "Version": 4.0,
+                "Key": "studio/server/cluster/cluster-observer"
+            }
+        ]
+    }
 ]
