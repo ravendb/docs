@@ -2,11 +2,11 @@
 
 {INFO:Prerequisites}
 
-Running RavenDB as a Service requires the prerequisites defined in [here](../../start/getting-started#prerequisites).
+The prerequisites for running RavenDB as a Service are defined [here](../../start/getting-started#prerequisites).  
 
 {INFO/}
 
-After completing the Server configuration process either via [Setup Wizard](../../start/installation/setup-wizard) or [Manually](../../start/installation/manual), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server distribution package.
+After completing the Server configuration process either via the [Setup Wizard](../../start/installation/setup-wizard) or [Manually](../../start/installation/manual), you can register the Server as a Service using the `rvn` tool that can be found inside the RavenDB Server distribution package.
 
 {PANEL:Windows}
 
