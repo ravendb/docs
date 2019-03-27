@@ -14,7 +14,11 @@
         "Name": "JavaScript Engine"
     },
     {
-        "Path": "numbers-in-ravendb.markdown",
-        "Name": "Numbers in RavenDB"
+        "Path": "linux-setting-memlock.markdown",
+        "Name": "Linux: Setting `memlock` when using encrypted database"
+    },
+    {
+        "Path": "javascript-engine.markdown",
+        "Name": "JavaScript Engine"
     }
 ]
