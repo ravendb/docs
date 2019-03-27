@@ -1,6 +1,6 @@
 # Performance on Less Resources: A NoSQL Document Database Usage Example<br/><small>by <a href="mailto:oren@hibernatingrhinos.com">Oren Eini</a></small>
 
-![Performance on Less Resources: A NoSQL Document Database Usage Example](images/zap-use-case-1.jpg)
+![Performance on Less Resources: A NoSQL Document Database Usage Example](images/performance-on-less-resources-nosql-document-database-example.jpg)
 
 {SOCIAL-MEDIA-LIKE/}<br/>
 
