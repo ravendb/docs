@@ -74,6 +74,51 @@ If you want each query to [wait for non-stale results](../../../indexes/stale-in
 
 {CODE on_before_query_execute_event_2@ClientApi\Session\Events.cs /}
 
+{PANEL/}
+
+{PANEL:OnBeforeConversionToDocument}
+
+This event is invoked before conversion of an entity to blittable JSON document. E.g. it's called when sending a document to a server.
+
+It takes the argument `BeforeConversionToDocumentEventArgs`, that consists of an entity, its ID and the session instance. 
+
+{CODE on_before_conversion_to_document@ClientApi\Session\Events.cs /}
+
+
+{PANEL/}
+
+{PANEL:OnAfterConversionToDocument}
+
+This event is invoked after conversion of an entity to blittable JSON document.
+
+It takes the argument `AfterConversionToDocumentEventArgs `, that consists of an entity, its ID, the session instance and converted JSON document.
+
+{CODE on_after_conversion_to_document@ClientApi\Session\Events.cs /}
+
+{PANEL/}
+
+{PANEL:OnBeforeConversionToEntity}
+
+This event is invoked before conversion of a JSON document to an entity. E.g. it's called when loading a document.
+
+It takes the argument `BeforeConversionToEntityEventArgs`, that consists of a JSON document, its ID and type, and the session instance. 
+
+{CODE on_before_conversion_to_entity@ClientApi\Session\Events.cs /}
+
+
+{PANEL/}
+
+{PANEL:OnAfterConversionToEntity}
+
+This event is invoked after conversion of a JSON document to an entity.
+
+{CODE on_after_conversion_to_entity@ClientApi\Session\Events.cs /}
+
+It takes the argument `AfterConversionToEntityEventArgs`, that consists of a JSON document, its ID, the session instance and a converted entity.
+
+
+{PANEL/}
+
 ## Related articles
 
 ### Document Store

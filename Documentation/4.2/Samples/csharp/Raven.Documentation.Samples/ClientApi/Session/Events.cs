@@ -2,6 +2,7 @@
 using Raven.Client.Documents;
 using Raven.Client.Documents.Session;
 using Raven.Documentation.Samples.Orders;
+using Sparrow.Json.Parsing;
 using Sparrow.Logging;
 
 namespace Raven.Documentation.Samples.ClientApi.Session
@@ -60,6 +61,10 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 store.OnAfterSaveChanges += OnAfterSaveChangesEvent;
                 store.OnBeforeDelete += OnBeforeDeleteEvent;
                 store.OnBeforeQuery += OnBeforeQueryEvent;
+                store.OnBeforeConversionToDocument += OnBeforeConversionToDocument;
+                store.OnAfterConversionToDocument += OnAfterConversionToDocument;
+                store.OnBeforeConversionToEntity += OnBeforeConversionToEntity;
+                store.OnAfterConversionToEntity += OnAfterConversionToEntity;
 
                 #region store_session
                 // Subscribe to the event
@@ -97,8 +102,57 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     session.SaveChanges(); // NotSupportedException will be thrown here
                 }
                 #endregion
-
             }
         }
+
+        #region on_before_conversion_to_document
+        private void OnBeforeConversionToDocument(object sender, BeforeConversionToDocumentEventArgs args)
+        {
+            if (args.Entity is Item item)
+                item.Before = true;
+        }
+        #endregion
+
+        #region on_after_conversion_to_document
+        private void OnAfterConversionToDocument(object sender, AfterConversionToDocumentEventArgs args)
+        {
+            if (args.Entity is Item item)
+            {
+                if (args.Document.Modifications == null)
+                    args.Document.Modifications = new DynamicJsonValue();
+
+                args.Document.Modifications["After"] = true;
+                args.Document = args.Session.Context.ReadObject(args.Document, args.Id);
+
+                item.After = true;
+            }
+        }
+        #endregion
+
+        #region on_after_conversion_to_entity
+        private void OnAfterConversionToEntity(object sender, AfterConversionToEntityEventArgs args)
+        {
+            if (args.Entity is Item item)
+                item.After = true;
+        }
+        #endregion
+
+        #region on_before_conversion_to_entity
+        private void OnBeforeConversionToEntity(object sender, BeforeConversionToEntityEventArgs args)
+        {
+            var document = args.Document;
+            if (document.Modifications == null)
+                document.Modifications = new DynamicJsonValue();
+
+            document.Modifications["Before"] = true;
+            args.Document = args.Session.Context.ReadObject(document, args.Id);
+        }
+        #endregion
+    }
+
+    internal class Item
+    {
+        public bool Before { get; set; }
+        public bool After { get; set; }
     }
 }
