@@ -330,6 +330,74 @@ namespace Raven.Documentation.Samples.ClientApi.Session.Querying
 
                     #endregion
                 }
+
+                using (var session = store.OpenSession())
+                {
+                    #region order_by_count
+
+                    var results = session.Query<Order>()
+                        .GroupBy(x => x.Employee)
+                        .Select(x => new
+                        {
+                            Employee = x.Key,
+                            Count = x.Count()
+                        })
+                        .OrderBy(x => x.Count)
+                        .ToList();
+
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region order_by_count_async
+
+                    var results = await asyncSession.Query<Order>()
+                        .GroupBy(x => x.Employee)
+                        .Select(x => new
+                        {
+                            Employee = x.Key,
+                            Count = x.Count()
+                        })
+                        .OrderBy(x => x.Count)
+                        .ToListAsync();
+
+                    #endregion
+                }
+
+                using (var session = store.OpenSession())
+                {
+                    #region order_by_sum
+
+                    var results = session.Query<Order>()
+                        .GroupBy(x => x.Employee)
+                        .Select(x => new
+                        {
+                            Employee = x.Key,
+                            Sum = x.Sum(y => y.Freight)
+                        })
+                        .OrderBy(x => x.Sum)
+                        .ToList();
+
+                    #endregion
+                }
+
+                using (var asyncSession = store.OpenAsyncSession())
+                {
+                    #region order_by_sum_async
+
+                    var results = await asyncSession.Query<Order>()
+                        .GroupBy(x => x.Employee)
+                        .Select(x => new
+                        {
+                            Employee = x.Key,
+                            Count = x.Count()
+                        })
+                        .OrderBy(x => x.Count)
+                        .ToListAsync();
+
+                    #endregion
+                }
             }
         }
 
