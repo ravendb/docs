@@ -1,6 +1,10 @@
 language: shell 
 os: windows
+install:
+  - PowerShell -Command 'Set-ExecutionPolicy -ExecutionPolicy RemoteSigned'
+  - choco install nodejs-lts;
+env:
+  - PATH="$PATH;C:\Program Files\nodejs"
 script:
-  - cd Raven.Documentation.Cli 
-  - dotnet restore 
-  - dotnet run
+  - powershell "./scripts/verifyDocs.ps1"
+  - powershell "./scripts/lintNodejsCodeSamples.ps1"
