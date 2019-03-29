@@ -12,6 +12,12 @@
     {
         "Path": "cluster-observer.markdown",
         "Name": "Cluster Observer",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "studio/server/debug/advanced/cluster-observer"
+            }
+        ],
+        "LastSupportedVersion": "4.1"
     }
 ]
