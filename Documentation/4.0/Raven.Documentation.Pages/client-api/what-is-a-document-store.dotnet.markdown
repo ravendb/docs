@@ -37,19 +37,22 @@ The document store ensures access to the following client API features:
 
 {PANEL}
 
-* The **Document Store** is a Client API object which establishes and manages the connection channel between a client application and a RavenDB server instance  
-  * Accesses the server via HTTP requests  
+* The **Document Store** is the main entry point for the Client API.  
 
-* Exposes methods for performing all the operations that can be run against the associated server(s)  
+* Manages the connection between a client application and a RavenDB server instance.  
 
-* Holds the cache, the cluster topology, and any configurations and customizations that may have been applied  
+* Exposes the methods for performing all operations that can be run against the associated server(s).  
+  * Use the document store to create new [**Session**] objects
+
+* Holds the authentication certificate, cache, the cluster topology, and any customizations that may have been applied  
 
 * It is the single access point to a particular RavenDB cluster  
-  * Has a list of URL addresses that point to server nodes  
+  * Has a list of URL addresses that point to its associated server nodes  
+  * Accesses the server via HTTP requests  
 
-* Should implement the [Singleton Pattern]  
+* It's recommended that the document store implement the [Singleton Pattern]  
 
-The document store exposes the following client API features:
+The document store exposes the following Client API features:
 
 * [Session](../client-api/session/what-is-a-session-and-how-does-it-work)
 * [Operations](../client-api/operations/what-are-operations)
