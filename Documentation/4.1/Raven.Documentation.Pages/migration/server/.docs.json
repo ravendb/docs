@@ -1,0 +1,37 @@
+[
+  {
+    "Path": "data-migration.markdown",
+    "Name": "Data migration",
+    "Mappings": []
+  },
+  {
+    "Path": "configuration-options.markdown",
+    "Name": "Configuration options",
+    "Mappings": []
+  },
+  {
+    "Path": "indexes.markdown",
+    "Name": "Indexes",
+    "Mappings": []
+  },
+  {
+    "Path": "bundles.markdown",
+    "Name": "Bundles",
+    "Mappings": []
+  },
+  {
+    "Path": "triggers.markdown",
+    "Name": "Triggers",
+    "Mappings": []
+  },
+  {
+    "Path": "authentication.markdown",
+    "Name": "Authentication",
+    "Mappings": []
+  },
+  {
+    "Path": "snmp.markdown",
+    "Name": "SNMP",
+    "Mappings": []
+  }
+]

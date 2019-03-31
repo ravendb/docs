@@ -43,3 +43,9 @@ For example, the script above will delete the Change Vectors from imported docum
 This is very helpful if the data is imported from a different database group and you want to avoid adding old change vector entries to a new environment. 
 
 - **Copy command as PowerShell**: generates the commands to run the importing logic from PowerShell.
+
+## Related Articles  
+		
+**Client Articles**:  
+[What Is Smuggler](../../../client-api/smuggler/what-is-smuggler) 
+

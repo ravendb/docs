@@ -13,10 +13,5 @@
                 "Key": "studio/tasks"
             }
         ]
-    },
-    {
-        "Path": "/import-data",
-        "Name": "Import Data",
-        "Mappings": []
     }
 ]

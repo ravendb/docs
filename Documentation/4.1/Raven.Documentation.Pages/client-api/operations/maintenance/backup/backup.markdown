@@ -195,19 +195,24 @@ The Backup task [runs continuously](../../../../server/ongoing-tasks/backup-over
 {WARNING/}
 {PANEL/}
 
-## Related Articles  
+ 
+## Related Articles
+
+**Studio Articles**:   
+[Create a Database : From Backup](../../../../studio/server/databases/create-new-database/from-backup)   
+[Create a Database : General Flow](../../../../studio/server/databases/create-new-database/general-flow)        
+[Create a Database : Encrypted](../../../../studio/server/databases/create-new-database/encrypted)      
+[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)    
 
 **Client Articles**:  
-[Backup Overview](../../../../server/ongoing-tasks/backup-overview)  
-[Restore](../../../../client-api/operations/maintenance/backup/restore)  
-[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)  
+[Restore](../../../../client-api/operations/maintenance/backup/restore)   
+[Operations: How to Restore a Database from Backup](../../../../client-api/operations/server-wide/restore-backup)    
+[What Is Smuggler](../../../../client-api/smuggler/what-is-smuggler)  
+[Encrypted-Backup backup & restore](../../../../client-api/operations/maintenance/backup/encrypted-backup)   
 
-**Studio Articles**:  
-[The Backup Task](../../../../studio/database/tasks/ongoing-tasks/backup-task)  
-[Create Database from Backup](../../../../studio/server/databases/create-new-database/from-backup)  
+**Serevr Articles**:  
+[Backup Overview](../../../../server/ongoing-tasks/backup-overview)
 
-**Security**:  
-[Database Encryption](../../../../server/security/encryption/database-encryption)  
-[Security Overview](../../../../server/security/overview)  
-[Authentication and Certification](../../../../server/security/authentication/certificate-configuration)  
+**Migration Articles**:  
+[Migration](../../../../migration/server/data-migration)   
 
