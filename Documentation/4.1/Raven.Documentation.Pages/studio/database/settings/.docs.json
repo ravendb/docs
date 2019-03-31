@@ -25,7 +25,7 @@
     },
     {
         "Path": "import-data-file.markdown",
-        "Name": "Import data file",
+        "Name": "Import from File (.ravendbdump)",
         "Mappings": [
             {
                 "Version": 4.2,
@@ -58,7 +58,7 @@
     },
     {
         "Path": "import-from-other.markdown",
-        "Name": "Import from other",
+        "Name": "Import from Other Databases",
         "Mappings": [
             {
                 "Version": 4.2,

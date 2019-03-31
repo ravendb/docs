@@ -1,17 +1,17 @@
 ﻿[
     {
         "Path": "import-data-file.markdown",
-        "Name": "Import data from file (.ravendbdump)",
+        "Name": "Import from File (.ravendbdump)",
         "Mappings": []
     },
     {
         "Path": "import-from-ravendb.markdown",
-        "Name": "Import From RavenDB",
+        "Name": "Import from RavenDB",
         "Mappings": []
     },
     {
         "Path": "import-from-csv.markdown",
-        "Name": "Import From CSV",
+        "Name": "Import from CSV",
         "Mappings": []
     },
     {
@@ -21,7 +21,7 @@
     },
     {
         "Path": "import-from-other.markdown",
-        "Name": "Import from other",
+        "Name": "Import from Other Databases",
         "Mappings": []
     }
 ]

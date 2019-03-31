@@ -24,12 +24,12 @@ No extra table/collection is needed.
 * Primary / Foreign keys must be defined in source SQL database so migrator can work correctly.   
 
 * In this page:
-  * [Pointing to source database](../../../studio/database/settings/import-from-sql#pointing-to-source-database)
-  * [Sql Migration - View Properties](../../../studio/database/settings/import-from-sql#sql-migration---view-properties)
-  * [Sql Migration - Handling relationships](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
-  * [Filtering / Transforming documents](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
-  * [Test 'filter / transform' scripts](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
-  * [Data integrity helpers](../../../studio/database/settings/import-from-sql#sql-migration---handling-relationships)
+  * [Pointing to source database](#pointing-to-source-database)
+  * [Sql Migration - View Properties](#sql-migration---view-properties)
+  * [Sql Migration - Handling relationships](#sql-migration---handling-relationships)
+  * [Filtering / Transforming documents](#filtering-/-transforming-documents)
+  * [Test 'filter / transform' scripts](#test-)
+  * [Data integrity helpers](#data-integrity-helpers)
 {NOTE/}
 
 ---

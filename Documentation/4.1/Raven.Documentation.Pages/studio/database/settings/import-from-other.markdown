@@ -10,8 +10,8 @@
 * You can import all collections or select individual collections to import.
 
 * In this page:
-  * [Import from MongoDB](../../../studio/database/settings/import-from-other#import-from-mongodb)
-  * [Import from CosmosDB](../../../studio/database/settings/import-from-other#import-from-cosmosdb)
+  * [Import from MongoDB](#import-from-mongodb)
+  * [Import from CosmosDB](#import-from-cosmosdb)
 {NOTE/}
 
 
