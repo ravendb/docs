@@ -14,15 +14,15 @@ Here you can filter the data you want to import, select configuration and apply 
 ![Figure 3. Import Options](images/import-from-file-options.png "Import Options")
 
 - **Include Documents:** Determines whether or not documents contained in the file should be imported or not, if disabled attachments and counters will automatically be disabled too. 
-- **Include Attachments:** Determines whether or not attachments contained in the file should be imported. 
-- **Include Legacy Attachments:** Determines whether or not legacy attachments contained in the file should be imported where legacy attachments refers to v2.x and v3.x attachments. 
-- **Include Counters:** Determines whether or not Counters contained in the file should be imported. 
-- **Include Legacy Counters:** Determines whether or not Legacy Counters contained in the file should be imported. 
-- **Include Expired Documents:** Determines whether or not Expired Documents contained in the file should be imported. 
-- **Include Revisions:** Determines whether or not Revisions contained in the file should be imported.
-- **Include Conflicts:** Determines whether or not Conflicts contained in the file should be imported.
+    - **Include Attachments:** Determines whether or not attachments contained in the file should be imported. 
+    - **Include Legacy Attachments:** Determines whether or not legacy attachments contained in the file should be imported where legacy attachments refers to v2.x and v3.x attachments. 
+    - **Include Counters:** Determines whether or not Counters contained in the file should be imported. 
+    - **Include Legacy Counters:** Determines whether or not Legacy Counters contained in the file should be imported. 
+    - **Include Expired Documents:** Determines whether or not Expired Documents contained in the file should be imported. 
+    - **Include Revisions:** Determines whether or not Revisions contained in the file should be imported.
+    - **Include Conflicts:** Determines whether or not Conflicts contained in the file should be imported.
 - **Include Indexes:** Determines whether or not Indexes contained in the file should be imported. 
-- **Remove Analyzers:** Determines whether or not Analyzers used by indexes contained in the file should be stripted or not. 
+    - **Remove Analyzers:** Determines whether or not Analyzers used by indexes contained in the file should be stripted or not. 
 - **Include Identities:** Determines whether or not Identities contained in the file should be imported.
 - **Include Compare Exchange:** Determines whether or not Compare Exchange values contained in the file should be imported.
 - **Include Subscriptions:** Determines whether or not Subscriptions contained in the file should be imported.
