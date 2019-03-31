@@ -1,5 +1,10 @@
 [
     {
+        "Path": "general-info.markdown",
+        "Name": "General Info",
+        "Mappings": []
+    },
+    {
         "Path": "/etl",
         "Name": "ETL",
         "Mappings": []
