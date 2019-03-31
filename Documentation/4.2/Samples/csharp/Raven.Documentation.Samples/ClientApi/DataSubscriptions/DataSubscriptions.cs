@@ -319,6 +319,13 @@ namespace Raven.Documentation.Samples.ClientApi.DataSubscriptions
             });
             #endregion
 
+            #region create_subscription_with_includes_strongly_typed
+            store.Subscriptions.Create(new SubscriptionCreationOptions<Order>()
+            {
+                Includes = builder => builder
+                    .IncludeDocuments(x => x.Lines.Select(y => y.Product))
+            });
+            #endregion
             #region create_subscription_with_includes_rql_path
             store.Subscriptions.Create(new SubscriptionCreationOptions()
             {
