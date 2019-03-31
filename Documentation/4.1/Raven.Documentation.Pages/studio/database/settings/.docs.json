@@ -25,23 +25,47 @@
     },
     {
         "Path": "import-data-file.markdown",
-        "Name": "Import data file",
-        "Mappings": []
+        "Name": "Import from File (.ravendbdump)",
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "studio/database/tasks/import-data/import-data-file"
+            }
+        ],
+        "LastSupportedVersion": "4.1"
     },
     {
         "Path": "import-from-csv.markdown",
-        "Name": "Import from csv",
-        "Mappings": []
+        "Name": "Import from CSV",
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "studio/database/tasks/import-data/import-from-csv"
+            }
+        ],
+        "LastSupportedVersion": "4.1"
     },
     {
         "Path": "import-from-sql.markdown",
         "Name": "Import from SQL",
-        "Mappings": []
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "studio/database/tasks/import-data/import-from-sql"
+            }
+        ],
+        "LastSupportedVersion": "4.1"
     },
     {
         "Path": "import-from-other.markdown",
-        "Name": "Import from other",
-        "Mappings": []
+        "Name": "Import from Other Databases",
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "studio/database/tasks/import-data/import-from-other"
+            }
+        ],
+        "LastSupportedVersion": "4.1"
     },
     {
         "Path": "manage-database-group.markdown",

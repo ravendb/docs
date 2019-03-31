@@ -1,4 +1,4 @@
-﻿# Import from MongoDB/CosmosDB
+﻿# Import from Other Databases
 ---
 
 {NOTE: }
