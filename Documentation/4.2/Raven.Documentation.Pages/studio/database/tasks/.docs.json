@@ -1,7 +1,7 @@
 [
     {
-        "Path": "/ongoing-tasks",
-        "Name": "Ongoing Tasks",
+        "Path": "/import-data",
+        "Name": "Import Data",
         "Mappings": []
     },
     {
@@ -15,8 +15,8 @@
         ]
     },
     {
-        "Path": "/import-data",
-        "Name": "Import Data",
+        "Path": "/ongoing-tasks",
+        "Name": "Ongoing Tasks",
         "Mappings": []
     }
 ]
