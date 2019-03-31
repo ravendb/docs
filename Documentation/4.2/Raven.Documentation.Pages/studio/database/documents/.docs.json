@@ -1,0 +1,22 @@
+[
+    {
+        "Path": "/document-view",
+        "Name": "Document View",
+        "Mappings": []
+    },
+    {
+        "Path": "documents-and-collections.markdown",
+        "Name": "Documents and Collections",
+        "Mappings": []
+    },
+    {
+        "Path": "create-new-document.markdown",
+        "Name": "Create New Document",
+        "Mappings": []
+    },
+    {
+        "Path": "conflicts-view.markdown",
+        "Name": "Conflicts View",
+        "Mappings": []
+    }
+]
