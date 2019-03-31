@@ -66,7 +66,7 @@ To enable the script, add the following to settings.json:
 "Security.Certificate.Exec.Arguments": "certificate.sh"
 {CODE-BLOCK/}
 
-If you're using Windows, [see this example](../../../server/security/authentication/certificate-configuration) of how to write a file to standard output in Powershell.
+Certbot is not available in Windows, but you can use a c# client called [Certes](https://github.com/fszlin/certes/), or [other similar projects](https://letsencrypt.org/docs/client-options/) that automate the certificate process. [See this example](../../../server/security/authentication/certificate-configuration) of how to write a file to standard output in Powershell.
 
 ## Manual Renewal
 
