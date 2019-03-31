@@ -4,8 +4,8 @@ The pull replication feature allow an inter-cluster database replication to be i
 
 There are two roles:
 
-1. The [Hub](../../server/ongoing-tasks/pull-replication/pull-replication-as-hub), a database from which the data will be pulled from.
-2. The [Sink](../../server/ongoing-tasks/pull-replication/pull-replication-as-sink), a database that will initiate the connection and receive the data from the Hub.
+1. The **Hub**, a database from which the data will be pulled from.
+2. The **Sink**, a database that will initiate the connection and receive the data from the Hub.
 
 ## Why Pull Replication
 
@@ -17,7 +17,7 @@ For example
 
 {INFO: Configure the Pull Replication via the Studio}
 
-Checkout the studio [walk-through](../../studio/database/tasks/ongoing-tasks/pull-replication-task) for configuring the pull replication.
+Checkout the studio [walk-through](../../studio/database/tasks/ongoing-tasks/pull-replication) for configuring the pull replication.
 
 {INFO/}
 
