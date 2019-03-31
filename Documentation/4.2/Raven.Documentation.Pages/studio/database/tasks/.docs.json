@@ -5,6 +5,11 @@
         "Mappings": []
     },
     {
+        "Path": "export-database.markdown",
+        "Name": "Export Database",
+        "Mappings": []
+    },
+    {
         "Path": "create-sample-data.markdown",
         "Name": "Create Sample Data",
         "Mappings": [
