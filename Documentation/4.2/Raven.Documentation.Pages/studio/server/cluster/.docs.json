@@ -1,0 +1,12 @@
+[
+    {
+        "Path": "cluster-view.markdown",
+        "Name": "Cluster View",
+        "Mappings": []
+    },
+    {
+        "Path": "add-node-to-cluster.markdown",
+        "Name": "Add Node to Cluster",
+        "Mappings": []
+    }
+]

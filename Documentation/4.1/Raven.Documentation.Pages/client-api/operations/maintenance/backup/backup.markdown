@@ -119,7 +119,35 @@ As described in [the overview](../../../../server/ongoing-tasks/backup-overview#
 
 * Remote Backup Destinations Code Sample:
   {CODE backup_remote_destinations@ClientApi\Operations\Maintenance\Backup\Backup.cs /}
-
+ 
+ {INFO: Tip}
+    You can change youer Access Management in Amazon S3 so the user doing backup don't have full access, 
+    read more [here](https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction_access-management.html).   
+    for example:
+    {CODE-BLOCK:json}
+        {
+            "Version": "2012-10-17",
+            "Statement": [
+                {
+                    "Sid": "VisualEditor0",
+                    "Effect": "Allow",
+                    "Action": "s3:PutObject",
+                    "Resource": "arn:aws:s3:::BUCKET_NAME/*"
+                },
+                {
+                    "Sid": "VisualEditor1",
+                    "Effect": "Allow",
+                    "Action": [
+                        "s3:ListBucket",
+                        "s3:GetBucketAcl",
+                        "s3:GetBucketLocation"
+                    ],
+                    "Resource": "arn:aws:s3:::BUCKET_NAME"
+                }
+            ]
+        }
+    {CODE-BLOCK/}
+ {INFO/}
 {PANEL/}
 
 

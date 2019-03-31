@@ -144,6 +144,7 @@ These type of operations contain various administrative and miscellaneous config
 * [DeleteDatabasesOperation](../../client-api/operations/server-wide/delete-database)   
 * [PromoteDatabaseNodeOperation](../../client-api/operations/server-wide/promote-database-node)   
 * [ToggleDatabasesStateOperation](../../client-api/operations/server-wide/toggle-databases-state)   
+* [ReorderDatabaseMembersOperation](../../client-api/operations/server-wide/reorder-database-members)   
 
 #### Miscellaneous
 

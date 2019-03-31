@@ -1,17 +1,23 @@
 [
-  {
-    "Path": "cluster-view.markdown",
-    "Name": "Cluster View",
-    "Mappings": []
-  },
-  {
-    "Path": "add-node-to-cluster.markdown",
-    "Name": "Add Node to Cluster",
-    "Mappings": []
-  },
-  {
-    "Path": "cluster-observer.markdown",
-    "Name": "Cluster Observer",
-    "Mappings": []
-  }
+    {
+        "Path": "cluster-view.markdown",
+        "Name": "Cluster View",
+        "Mappings": []
+    },
+    {
+        "Path": "add-node-to-cluster.markdown",
+        "Name": "Add Node to Cluster",
+        "Mappings": []
+    },
+    {
+        "Path": "cluster-observer.markdown",
+        "Name": "Cluster Observer",
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "studio/server/debug/advanced/cluster-observer"
+            }
+        ],
+        "LastSupportedVersion": "4.1"
+    }
 ]

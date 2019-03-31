@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Raven.Documentation.Parser.Data;
 
@@ -50,13 +51,17 @@ namespace Raven.Documentation.Parser.Compilation.ToC
         {
             foreach (var sourceItem in source)
             {
-                var matchedItem = destination.SingleOrDefault(x => x.Key == sourceItem.Key);
-
-                if (matchedItem == null)
+                var matchedItems = destination.Where(x => x.Key == sourceItem.Key).ToList();
+                if (matchedItems.Count == 0)
                 {
                     destination.Add(sourceItem);
                     continue;
                 }
+
+                if (matchedItems.Count > 1)
+                    throw new InvalidOperationException($"Detected more than one matching element during ToC merging. Key: '{sourceItem.Key}'.");
+
+                var matchedItem = matchedItems.First();
 
                 if (matchedItem.SourceVersion == null)
                 {
@@ -96,7 +101,7 @@ namespace Raven.Documentation.Parser.Compilation.ToC
                 if (_compiledTocs.ContainsKey(key))
                     _compiledTocs[key].Add(entry);
                 else
-                    _compiledTocs[key] = new List<Entry> {entry};
+                    _compiledTocs[key] = new List<Entry> { entry };
             }
 
             public List<KeyValuePair<string, List<Entry>>> GetDuplicated()

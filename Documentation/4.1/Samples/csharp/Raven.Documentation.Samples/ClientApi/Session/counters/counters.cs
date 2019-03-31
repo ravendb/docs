@@ -1,12 +1,8 @@
 using System;
 using Raven.Client.Documents;
-using Raven.Client;
 using System.Linq;
-using System.IO;
 using System.Collections.Generic;
 using Raven.Client.Documents.Queries;
-//using Raven.Client.Documents.Operations;
-using Raven.Client.Documents.Operations.Counters;
 using System.Threading.Tasks;
 using System.Threading;
 using Raven.Client.Documents.Smuggler;
@@ -133,99 +129,6 @@ namespace Rvn.Ch02
                 }
             }
             #endregion
-
-            // playing with GettAll
-            /*
-            using (var session = docStore.OpenSession())
-            {
-
-                // load all objects of a specific database
-                Console.WriteLine("list all documents in a collection");
-                var documentsList = session.Advanced.LoadStartingWith<Product>("products/");
-                foreach (var someRecord in documentsList)
-                {
-                    var documentID = someRecord.Id;
-                    //Console.WriteLine();
-                    Console.WriteLine("\ndocument ID: " + documentID);
-
-                    var document = session.Load<Product>(documentID); // load a document
-                    var documentCounters = session.CountersFor(document); // get the counters for this document
-
-                    //list all counters currently attached to a certain object
-                    Console.WriteLine("all counters for this document: ");
-                    var documentCountersArray = documentCounters.GetAll().ToArray(); // gett all counters attached to this document
-                    foreach (var counter in documentCountersArray)
-                    {
-                        Console.WriteLine("counter key: " + counter.Key + ", counter value: " + counter.Value);
-                    }
-                }
-
-                Console.ReadKey();
-            }
-            */
-
-            //playing with batch operations
-            /*
-            using (var session = docStore.OpenSession())
-            {
-                    //	GetCountersOperation
-                    var getthem = new GetCountersOperation("products/1-C", "c2");
-                    var resgettem = docStore.Operations.Send(getthem);
-                    Console.WriteLine("tararam2 results " + resgettem?.Counters[0]?.TotalValue);
-
-
-                    // batch
-                    var docsies =
-                        new List<DocumentCountersOperation>()
-                        {
-                                new DocumentCountersOperation
-                                {
-                                    DocumentId = "products/1-C",
-                                    Operations = new List<CounterOperation>
-                                        {
-                                            new CounterOperation {CounterName = "c1", Type = CounterOperationType.Delete },
-                                            new CounterOperation {CounterName = "c2", Type = CounterOperationType.Increment, Delta = -100 },
-                                            new CounterOperation {CounterName = "c3", Type = CounterOperationType.Get },
-                                        }
-                                },
-                                new DocumentCountersOperation
-                                {
-                                    DocumentId = "Users/3",
-                                    Operations = new List<CounterOperation>
-                                            {
-                                                new CounterOperation {CounterName = "u1", Type = CounterOperationType.Delete },
-                                                new CounterOperation {CounterName = "u2", Type = CounterOperationType.Increment, Delta = 0100 },
-                                                new CounterOperation {CounterName = "u3", Type = CounterOperationType.Get },
-                                            }
-                                }
-                        };
-                  
-                    var counterBatchObject = new CounterBatch();
-                    counterBatchObject.Documents = docsies;
-                    counterBatchObject.ReplyWithAllNodesValues = true;
-
-                    var counterBatchOperationObject = new CounterBatchOperation(counterBatchObject);
-
-                    var res = docStore.Operations.Send(counterBatchOperationObject);
-                    foreach (var detail in res.Counters)
-                    {
-                        Console.WriteLine($"name = " +
-                      $"{detail.CounterName}, value = {detail.TotalValue}");
-
-                        Console.WriteLine("values per node: ");
-                        foreach (var nodeValue in detail.CounterValues)
-                        {
-                            Console.WriteLine($"{nodeValue.Key[0]}:{nodeValue.Value}");
-                        }
-                        
-
-                    }
-                    
-
-                    Console.ReadKey();
-            }
-              */
-
             //Query a collection for documents with a Counter named "ProductLikes"
             #region counters_region_query
             using (var session = docStore.OpenSession())
@@ -295,15 +198,15 @@ namespace Rvn.Ch02
                 //Various RQL expressions sent to the server using counter()
                 //Returned Counter value is accumulated
                 var rawquery1 = session.Advanced
-                    .RawQuery<CounterResult>("from users as u select counter(u, \"ProductLikes\")")
+                    .RawQuery<CounterResult>("from products as p select counter(p, \"ProductLikes\")")
                     .ToList();
 
                 var rawquery2 = session.Advanced
-                    .RawQuery<CounterResult>("from users select counter(\"ProductLikes\") as ProductLikesCount")
+                    .RawQuery<CounterResult>("from products select counter(\"ProductLikes\") as ProductLikesCount")
                     .ToList();
 
                 var rawquery3 = session.Advanced
-                    .RawQuery<CounterResult>("from products where ProductLikes > 500 select ProductSection, counter(\"ProductLikes\")")
+                    .RawQuery<CounterResult>("from products where PricePerUnit > 50 select Name, counter(\"ProductLikes\")")
                     .ToList();
                 #endregion
 
@@ -340,6 +243,7 @@ namespace Rvn.Ch02
             public string CustomerId { get; set; }
             public DateTime Started { get; set; }
             public DateTime? Ended { get; set; }
+            public double PricePerUnit { get; set; }
             public string Issue { get; set; }
             public int Votes { get; set; }
         }

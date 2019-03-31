@@ -4,6 +4,11 @@
         "Name": "ETL",
         "Mappings": []
     },
+        {
+        "Path": "pull-replication.markdown",
+        "Name": "Pull Replication",
+        "Mappings": []
+    },
     {
         "Path": "backup-overview.markdown",
         "Name": "Backup Overview",

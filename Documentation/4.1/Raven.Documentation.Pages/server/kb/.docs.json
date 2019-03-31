@@ -16,5 +16,13 @@
     {
         "Path": "numbers-in-ravendb.markdown",
         "Name": "Numbers in RavenDB"
+    },
+    {
+        "Path": "linux-setting-limits.markdown",
+        "Name": "Linux: Setting limits"
+    },
+    {
+        "Path": "linux-setting-memlock.markdown",
+        "Name": "Linux: Setting `memlock` when using encrypted database"
     }
 ]

@@ -188,7 +188,7 @@
 
 There are following limitations for document IDs:  
 
-* The identifier length limit is 2025 bytes (in UTF8)  
+* The identifier length limit is 512 bytes (in UTF8)  
 * The identifier cannot contain `\` character
 * You can't store identifier ending with `/` or `|` characters (reserved for Server-Side ID and Identity generation strategies)
 
