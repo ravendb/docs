@@ -1,14 +1,32 @@
-# Client API: How to Create a Document Store
+﻿# Client API : How to Create a Document Store
 
-To create an instance of the `DocumentStore` you need to specify a list of URL addresses that point to RavenDB server nodes.
+---
+{NOTE: }  
 
-{WARNING:Important}
-Do not open a `DocumentStore` using URL addresses that point to nodes outside your cluster.
-{WARNING/}
+* The example code [below] shows a typical initialization of a document store.  
 
-{CODE document_store_creation@ClientApi\CreatingDocumentStore.cs /}
+* After creating a `new DocumentStore()` object, apply all necessary configurations. Do not call `.initialize()` on a document store before it is fully configured.  
 
-This will instantiate a communication channel between your application and the local RavenDB server instance.
+* We recommend that your `DocumentStore` instance implement the [singleton pattern] as demonstrated in the example code.  
+  * This is because creating more than one document store is resource intensive, and should not be necessary in most cases  
+  * The document store is thread safe  
+
+* Include a **list of URLs** to RavenDB servers. These servers should all be nodes of the same cluster.  
+
+{WARNING: }  
+Do not open a `DocumentStore` using URL addresses that point to nodes outside your cluster.  
+{WARNING/}  
+
+* Apply any other configurations to the document store, such as:  
+  * Passing it an [authentication certificate]  
+  * Selecting the [default database] that you want this document store to operate on  
+  * Setting the [conventions]  
+
+* Finally, call `.initialize()` to begin using the document store.  
+
+{CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}  
+
+{NOTE/}
 
 ##Initialization
 
@@ -25,7 +43,7 @@ The conventions are frozen after `DocumentStore` initialization so they need to 
 Because the document store is a heavyweight object, there should only be one instance created per application (singleton). The document store is a thread safe object and its typical
 initialization looks like the following:
 
-{CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}
+
 
 {NOTE If you use more than one instance of `DocumentStore` you should dispose it after use. /}
 
