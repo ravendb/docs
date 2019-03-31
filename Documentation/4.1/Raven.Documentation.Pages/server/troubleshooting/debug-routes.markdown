@@ -2,23 +2,23 @@ Note: where `/database/*/` prefix exists, replace `*` with database name
 # Debug					
 |Endpoint 	|Method 	|Parameters 	|Description 	|Remarks	|*|
 |-|-|-|-|-|-|
-|/admin/debug/cluster-info-package	|GET	|	|Returns whole cluster information package as zip format|
+|/admin/debug/cluster-info-package	|GET	|	|Returns whole cluster information package as zip format| ||
 |/admin/debug/cpu/stats	|GET	|	|Returns RavenDB's processor usage and thread pool status	|	||
 |/admin/debug/info-package	|GET	|	|Save debug package information for later analysis	|	||
 |/admin/debug/memory/low-mem-log	|GET	|	|Low memory events report	|	||
 |/admin/debug/memory/smaps	|GET	|	|Returns all RavenDB's process mappings including shared/private clean/dirty memory allocations	|Availabe only on Linux	||
 |/admin/debug/memory/stats	|GET	|	|Full report of memory usage including un/managed usage by thread and free memory status 	|	||
 |/admin/debug/node/engine-logs	|GET	|	|Rachis logs	|	||
-|/admin/debug/node/ping	|GET	|-(Optional) url-<br /> -(Optional)node-<br />For specifying the node by url or node tag 	|Test the ability to reach the server|
-|/admin/debug/node/remote-connections	|GET	|	|	|	|TODO|
-|/admin/debug/node/state-change-history	|GET	|	|	|	|TODO|
+|/admin/debug/node/ping	|GET	|-(Optional) url-<br /> -(Optional)node-<br />For specifying the node by url or node tag 	|Test the ability to reach the server | ||
+|/admin/debug/node/remote-connections	|GET	|	|Returns connections' detailes of members and whacher in the cluster |  ||
+|/admin/debug/node/state-change-history	|GET	|	|List the node's state transition history in the cluster	|	||
 |/admin/debug/proc/meminfo	|GET	|	|Return /proc/<RavenDB ProcNum>/meminfo	|Availabe only on Linux	||
 |/admin/debug/proc/stats	|GET	|	|Return /proc/<RavenDB ProcNum>/stats	|Availabe only on Linux	||
 |/admin/debug/proc/status	|GET	|	|Return /proc/<RavenDB ProcNum>/status	|Availabe only on Linux	||
 |/admin/debug/threads/runaway	|GET	|	|List all threads and their names, sorted by duration	|	||
 |/build/version	|GET	|	|Returns product build number, major version, commit hash and full version number	|	||
-|/databases/*/admin/debug/cluster/txinfo	|GET	|	|	|	|TODO|
-|/databases/*/admin/debug/txinfo	|GET	|	|	|	|TODO|
+|/databases/*/admin/debug/cluster/txinfo	|GET	|-(Optional) from - Amount of result to skip<br /> -(Optional)take - Amount of result to take|List the incomplete [cluster transaction commands](../clustering/cluster-transactions#cluster--cluster-wide-transactions) |	||
+|/databases/*/admin/debug/txinfo	|GET	|	|List 	|	||
 |/databases/*/debug/documents/huge	|GET	|	|List documents IDs which exceeds PerformanceHints.Documents.HugeDocumentSizeInMb settings	|	||
 |/databases/*/debug/identities	|GET	|	|	|	|TODO|
 |/databases/*/debug/info-package	|GET	|	|Save debug package information for later analysis	|	||
