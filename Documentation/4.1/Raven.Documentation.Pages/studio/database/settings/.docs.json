@@ -24,6 +24,17 @@
         "IsPlaceholder": "true"
     },
     {
+        "Path": "export-database.markdown",
+        "Name": "Export Database",
+        "Mappings": [
+            {
+                "Version": 4.2,
+                "Key": "studio/database/tasks/export-database"
+            }
+        ],
+        "LastSupportedVersion": "4.1"
+    },
+    {
         "Path": "import-data-file.markdown",
         "Name": "Import from File (.ravendbdump)",
         "Mappings": [
