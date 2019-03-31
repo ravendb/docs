@@ -60,6 +60,11 @@
         ]
     },
     {
+        "Path": "cluster-transaction.markdown",
+        "Name": "Cluster Transaction",
+        "Mappings": []
+    },
+    {
         "Path": "/querying",
         "Name": "Querying",
         "Mappings": []
