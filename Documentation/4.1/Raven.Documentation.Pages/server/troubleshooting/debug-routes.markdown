@@ -17,7 +17,7 @@ Note: where `/database/*/` prefix exists, replace `*` with database name
 |/admin/debug/proc/status	|GET	|	|Return /proc/<RavenDB ProcNum>/status	|Availabe only on Linux	||
 |/admin/debug/threads/runaway	|GET	|	|List all threads and their names, sorted by duration	|	||
 |/build/version	|GET	|	|Returns product build number, major version, commit hash and full version number	|	||
-|/databases/*/admin/debug/cluster/txinfo	|GET	|	|	|	|TODO|
+|/databases/*/admin/debug/cluster/txinfo	|GET	|	|	|	|List the incomplete cluster transaction commands |
 |/databases/*/admin/debug/txinfo	|GET	|	|	|	|TODO|
 |/databases/*/debug/documents/huge	|GET	|	|List documents IDs which exceeds PerformanceHints.Documents.HugeDocumentSizeInMb settings	|	||
 |/databases/*/debug/identities	|GET	|	|	|	|TODO|
