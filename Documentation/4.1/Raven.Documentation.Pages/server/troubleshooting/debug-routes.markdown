@@ -11,7 +11,7 @@ Note: where `/database/*/` prefix exists, replace `*` with database name
 |/admin/debug/node/engine-logs	|GET	|	|Rachis logs	|	||
 |/admin/debug/node/ping	|GET	|-(Optional) url-<br /> -(Optional)node-<br />For specifying the node by url or node tag 	|Test the ability to reach the server | ||
 |/admin/debug/node/remote-connections	|GET	|	|Returns connections' detailes of members and whacher in the cluster |  ||
-|/admin/debug/node/state-change-history	|GET	|	|	|	|TODO|
+|/admin/debug/node/state-change-history	|GET	|	|List the node's state transition history in the cluster	|	||
 |/admin/debug/proc/meminfo	|GET	|	|Return /proc/<RavenDB ProcNum>/meminfo	|Availabe only on Linux	||
 |/admin/debug/proc/stats	|GET	|	|Return /proc/<RavenDB ProcNum>/stats	|Availabe only on Linux	||
 |/admin/debug/proc/status	|GET	|	|Return /proc/<RavenDB ProcNum>/status	|Availabe only on Linux	||
