@@ -1,4 +1,4 @@
-﻿# Operations : How to Get Index Names
+# Operations: How to Get Index Names
 
 **GetIndexNamesOperation** is used to retrieve multiple index names from a database.
 

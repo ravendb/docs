@@ -1,4 +1,4 @@
-﻿# Glossary : SynchronizationDetails
+# Glossary: SynchronizationDetails
 
 RavenFS client API class contains info about an file synchronization that is in progress.
 

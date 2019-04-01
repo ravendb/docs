@@ -1,4 +1,4 @@
-﻿# Glossary : ConflictItem
+# Glossary: ConflictItem
 
 RavenFS client API class that represents a synchronization conflict.
 

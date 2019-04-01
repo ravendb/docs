@@ -1,4 +1,4 @@
-# Manage Your Server : Studio Config
+# Manage Your Server: Studio Config
 
 Here you can configure the following:
 

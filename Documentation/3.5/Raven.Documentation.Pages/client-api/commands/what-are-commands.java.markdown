@@ -1,4 +1,4 @@
-# Commands : What are the commands?
+# Commands: What are the commands?
 
 Commands are a set of low level operations that can be used to manipulate data and change configuration on a server.
 

@@ -1,4 +1,4 @@
-#Commands : GetDirectoriesAsync
+#Commands: GetDirectoriesAsync
 
 The **GetDirectoriesAsync** method is designated to retrieve the paths of subdirectories of a specified directory. 
 

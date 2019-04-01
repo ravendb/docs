@@ -1,4 +1,4 @@
-# Session : Storing Entities
+# Session: Storing Entities
 
 To store entities inside the **session** object, use one of the three `store` methods.
 

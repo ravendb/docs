@@ -1,4 +1,4 @@
-﻿# Migration : Triggers
+# Migration: Triggers
 
 The server side triggers were often the source of problems in RavenDB 3.x, especially related to performance. In RavenDB 4.0 the notion of triggers has been removed completely.
 

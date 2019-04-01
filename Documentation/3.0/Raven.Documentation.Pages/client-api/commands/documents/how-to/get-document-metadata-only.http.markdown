@@ -1,4 +1,4 @@
-# Commands : Documents : How to get document metadata only?
+# Commands: Documents: How to get document metadata only?
 
 **Head** is used to retrieve document metadata from a database.
 

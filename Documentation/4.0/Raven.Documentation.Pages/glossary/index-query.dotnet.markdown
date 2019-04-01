@@ -1,4 +1,4 @@
-﻿# Glossary : IndexQuery
+# Glossary: IndexQuery
 
 ### Properties
 

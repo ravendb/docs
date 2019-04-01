@@ -1,4 +1,4 @@
-# Status : Sql Replication Stats
+# Status: Sql Replication Stats
 
 Here you can find information about sql replication status.
 

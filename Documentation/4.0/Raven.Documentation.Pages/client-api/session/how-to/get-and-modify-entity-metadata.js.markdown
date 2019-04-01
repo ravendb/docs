@@ -1,4 +1,4 @@
-# Session : How to Get and Modify Entity Metadata
+# Session: How to Get and Modify Entity Metadata
 
 When a document is downloaded from the server, it contains various metadata information like ID or current change-vector. This information is stored in a session and is available for each entity using the `getMetadataFor` method from the `advanced` session operations.
 

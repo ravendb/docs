@@ -1,4 +1,4 @@
-﻿# Cluster : Cluster Node Health Check
+# Cluster: Cluster Node Health Check
 
 A health check sends an HTTP request to the `/databases/[Database Name]/stats` endpoint. 
 If the request is successful, it will reset node failure counters which will cause the client to try sending operations to that specific node again.

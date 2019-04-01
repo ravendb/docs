@@ -1,4 +1,4 @@
-﻿# Glossary : Database Id
+# Glossary: Database Id
   
 ### What are Database Ids?
 Each database in RavenDB has a Guid, which must be unique in the cluster. 

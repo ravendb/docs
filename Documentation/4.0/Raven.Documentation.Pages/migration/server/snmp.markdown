@@ -1,4 +1,4 @@
-﻿# Migration : SNMP
+# Migration: SNMP
 
 {NOTE The complete list of OID can be found [here](../../server/administration/SNMP/snmp) /}
 

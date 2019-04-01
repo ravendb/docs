@@ -1,4 +1,4 @@
-﻿# Indexes : Extending Indexes
+# Indexes: Extending Indexes
 ---
 
 {NOTE: }

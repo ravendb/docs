@@ -1,4 +1,4 @@
-# Configuration : Performance Hints Options
+# Configuration: Performance Hints Options
 
 {PANEL:PerformanceHints.Documents.HugeDocumentSizeInMb}
 

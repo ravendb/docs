@@ -1,4 +1,4 @@
-# Installation : Running as an IIS application
+# Installation: Running as an IIS application
 
 RavenDB can be run as an IIS application, or from a virtual directory under an IIS application.
 

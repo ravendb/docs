@@ -1,4 +1,4 @@
-﻿# Glossary : StreamQueryStatistics
+# Glossary: StreamQueryStatistics
 
 ### Properties
 

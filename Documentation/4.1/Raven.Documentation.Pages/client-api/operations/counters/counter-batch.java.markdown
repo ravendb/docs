@@ -1,4 +1,4 @@
-﻿# Operations : Counters : Batch
+# Operations: Counters: Batch
 
 *CounterBatchOperation* allows you to operate on multiple counters (`INCREMENT`, `GET`, `DELETE`) of different documents in a **single request**.
 

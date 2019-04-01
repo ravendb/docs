@@ -1,4 +1,4 @@
-#Commands : DeleteKey
+#Commands: DeleteKey
 
 The **DELETE** method is used to remove a configuration stored under the specified key.
 

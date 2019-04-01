@@ -1,4 +1,4 @@
-# Commands : Indexes : How to get index terms?
+# Commands: Indexes: How to get index terms?
 
 **GetTerms** will retrieve all stored terms for a field of an index.
 

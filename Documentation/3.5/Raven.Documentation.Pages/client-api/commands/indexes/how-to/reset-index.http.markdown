@@ -1,4 +1,4 @@
-# Commands : Indexes : How to reset index?
+# Commands: Indexes: How to reset index?
 
 **ResetIndex** will remove all indexing data from a server for a given index so the indexation can start from scratch for that index.
 

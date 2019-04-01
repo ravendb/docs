@@ -1,4 +1,4 @@
-# Session : Querying : How to get query statistics?
+# Session: Querying: How to get query statistics?
 
 Query statistics can provide important information about query e.g. duration, total number of results, staleness information, etc. To access statistics use `statistics` method.
 

@@ -1,4 +1,4 @@
-#Commands : StartAsync
+#Commands: StartAsync
 
 The **StartAsync** method is used to manually force the synchronization to the destinations. It has two overloads that allow you either to synchronize all the files which require that or to synchronize just one specified file.
 

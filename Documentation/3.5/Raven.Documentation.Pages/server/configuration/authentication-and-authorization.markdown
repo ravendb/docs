@@ -1,4 +1,4 @@
-# Configuration : Authentication & Authorization
+# Configuration: Authentication & Authorization
 
 RavenDB comes with built-in authentication functionality and it supports two types of authentication:    
 

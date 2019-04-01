@@ -1,4 +1,4 @@
-# Configuration : Backup
+# Configuration: Backup
 
 {PANEL:Server.LocalRootPath}
 

@@ -1,4 +1,4 @@
-﻿# Conventions : Serialization
+# Conventions: Serialization
 
 ##CustomizeJsonSerializer
 

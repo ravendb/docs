@@ -1,4 +1,4 @@
-#Commands : GetSearchFieldsAsync
+#Commands: GetSearchFieldsAsync
 
 **GetSearchFieldsAsync** is used to retrieve the list of all available field names to build a query.
 

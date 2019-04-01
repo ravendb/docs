@@ -1,4 +1,4 @@
-﻿#Session : Querying : StreamFileHeadersAsync
+#Session: Querying: StreamFileHeadersAsync
 
 File Header can be streamed With **StreamFileHeadersAsync** method from Advanced session operations  .
 

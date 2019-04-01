@@ -1,4 +1,4 @@
-﻿# Glossary : FilesystemBackupRequest
+# Glossary: FilesystemBackupRequest
 
 ### Properties
 

@@ -1,4 +1,4 @@
-# Settings : Replication
+# Settings: Replication
 
 Here you can edit the following [replication](../../../server/scaling-out/replication/how-replication-works) settings:
 

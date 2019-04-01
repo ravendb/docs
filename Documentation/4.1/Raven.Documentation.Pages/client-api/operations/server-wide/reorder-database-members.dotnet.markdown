@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to reoder database members?
+# Operations: Server: How to reoder database members?
 
 **ReorderDatabaseMembersOperation** allows you to change the order of nodes in the [Database Group Topology](../../../studio/database/settings/manage-database-group).
 

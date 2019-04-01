@@ -1,4 +1,4 @@
-#Commands : UpdateMetadata
+#Commands: UpdateMetadata
 
 The **POST** operation is used if you need to change just the file's metadata without any modification to its content. 
 

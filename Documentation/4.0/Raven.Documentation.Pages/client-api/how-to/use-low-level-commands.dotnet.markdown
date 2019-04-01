@@ -1,4 +1,4 @@
-# Client API : How to Use Low-Level Commands
+# Client API: How to Use Low-Level Commands
 
 Low-level commands are the mechanism that [Operations](../../client-api/operations/what-are-operations) are built on top of.  
 When performing an operation, there is an underlying low-level command that is in charge of sending the appropriate request to the server 

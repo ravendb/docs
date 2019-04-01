@@ -1,4 +1,4 @@
-﻿# Compare Exchange : How to Get Compare Exchange Values
+# Compare Exchange: How to Get Compare Exchange Values
 
 ---
 

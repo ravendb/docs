@@ -1,4 +1,4 @@
-# Plugins : Tasks
+# Plugins: Tasks
 
 Another type of plugins gives us the ability to perform various actions during server/database startup process or enables us to perform actions periodically. For these instances we have introduced two interfaces and one abstract class.
 

@@ -1,4 +1,4 @@
-# Attachments : Loading Attachments
+# Attachments: Loading Attachments
 
 There are a few methods that allow you to download attachments from a database:   
 

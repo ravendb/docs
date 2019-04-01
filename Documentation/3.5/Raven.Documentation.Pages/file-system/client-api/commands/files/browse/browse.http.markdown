@@ -1,4 +1,4 @@
-#Commands : Browse
+#Commands: Browse
 
 The **GET** method with **start** and **pageSize** parameters is intended to browse existing files. 
 

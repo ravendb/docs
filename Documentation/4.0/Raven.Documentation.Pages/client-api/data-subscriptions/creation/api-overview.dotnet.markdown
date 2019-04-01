@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : Creation API Overview
+# Data Subscriptions: Creation API Overview
 
 ---
 

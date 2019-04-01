@@ -1,4 +1,4 @@
-# Attachments : Delete
+# Attachments: Delete
 
 **DeleteAttachment** is used to remove an attachment from a database.
 

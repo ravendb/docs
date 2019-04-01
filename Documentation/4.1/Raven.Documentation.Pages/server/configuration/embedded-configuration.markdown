@@ -1,4 +1,4 @@
-# Configuration : Embedded Options
+# Configuration: Embedded Options
 
 {PANEL:Embedded.ParentProcessId or Testing.ParentProcessId}
 

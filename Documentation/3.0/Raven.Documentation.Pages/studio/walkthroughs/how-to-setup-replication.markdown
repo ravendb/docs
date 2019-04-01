@@ -1,4 +1,4 @@
-# Walkthroughs : Setting up replication
+# Walkthroughs: Setting up replication
 
 {PANEL}
 

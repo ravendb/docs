@@ -1,4 +1,4 @@
-﻿# Glossary : Tombstones
+# Glossary: Tombstones
 
 When a document is deleted, RavenDB will leave behind a "delete marker" which is called a Tombstone. 
   

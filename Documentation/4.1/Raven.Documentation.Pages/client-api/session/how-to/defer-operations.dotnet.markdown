@@ -1,4 +1,4 @@
-# Session : How to Defer Operations
+# Session: How to Defer Operations
 
 Operations can be deferred till `SaveChanges` is called by using `Defer` method in `Advanced` session operations. All of the operations will update session state appropriately after `SaveChanges` is called.
 

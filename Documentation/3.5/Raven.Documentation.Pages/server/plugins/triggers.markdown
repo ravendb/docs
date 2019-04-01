@@ -1,4 +1,4 @@
-# Plugins : Triggers
+# Plugins: Triggers
 
 This type of extensions grants the ability to manipulate while a certain action is taking place e.g. document is being deleted or index is being updated.
 

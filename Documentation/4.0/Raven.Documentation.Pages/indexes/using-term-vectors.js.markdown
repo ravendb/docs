@@ -1,4 +1,4 @@
-# Indexes : Term Vectors
+# Indexes: Term Vectors
 
 [Term Vector](https://en.wikipedia.org/wiki/Vector_space_model) is a representation of a text document as a vector of identifiers that can be used for similarity searches, information filtering, information retrieval, and indexing. In RavenDB the feature like [MoreLikeThis](../client-api/session/querying/how-to-use-morelikethis) is leveraging the term vectors to accomplish its purposes.
 

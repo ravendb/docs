@@ -1,4 +1,4 @@
-﻿# Bulk Insert : How to Work With Bulk Insert Operation
+# Bulk Insert: How to Work With Bulk Insert Operation
 
 One of the features that is particularly useful when inserting large amount of data is `bulk inserting`. This is an optimized time-saving approach with few drawbacks that will be described later.
 

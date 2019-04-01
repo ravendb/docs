@@ -1,4 +1,4 @@
-# Installation : Setup Wizard Walkthrough
+# Installation: Setup Wizard Walkthrough
 
 We want to make it as easy as possible for you to start RavenDB with a valid trusted certificate from the very beginning and to stay secure through your entire application lifecycle, starting from early stages of development, ending on production and day-to-day usage.
 

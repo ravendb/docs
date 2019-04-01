@@ -1,4 +1,4 @@
-﻿# Glossary : Facet
+# Glossary: Facet
 
 ### Properties
 

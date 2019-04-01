@@ -1,4 +1,4 @@
-# Encryption : Server Store Encryption
+# Encryption: Server Store Encryption
 
 The Server Store is an internal special database (sometimes called the `System` database) which is **not encrypted by default**. 
 It is used by RavenDB to hold server wide information and includes details such as the cluster state machine, database records, 

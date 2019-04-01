@@ -1,4 +1,4 @@
-# Session : How to Disable Caching per Session
+# Session: How to Disable Caching per Session
 
 To reduce the overhead of sending the documents over the network, client library is caching the HTTP responses and sends only ETags to Server. If the request was previously cached giving the Server an opportunity to send back `304 Not Modified` without any content data or sending the up-to-date results, this will update the cache. This behavior can be changed globally by disabling the HTTP Cache size (more [here](../../../client-api/configuration/conventions#maxhttpcachesize)), but can also be changed per session basing using the `SessionOptions.NoCaching` property.
 

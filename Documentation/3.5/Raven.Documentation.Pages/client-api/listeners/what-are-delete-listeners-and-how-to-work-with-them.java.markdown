@@ -1,4 +1,4 @@
-# Listeners : What are delete listeners and how to work with them?
+# Listeners: What are delete listeners and how to work with them?
 
 `IDocumentDeleteListener` interface which needs to be implemented if a user wants to add a custom logic or an action when a delete operation is executed. 
 The interface contains only one method that is invoked before the delete request is sent to the server:

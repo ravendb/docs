@@ -1,4 +1,4 @@
-# Session : How to mark entity as readonly?
+# Session: How to mark entity as readonly?
 
 Entities can be marked as read-only using `markReadOnly`. This operation is equal to adding to entity metadata a key `Raven-Read-Only` with value set to `True`.   
 

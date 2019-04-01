@@ -1,4 +1,4 @@
-# Configuration : How to enable FIPS compliant encryption algorithms?
+# Configuration: How to enable FIPS compliant encryption algorithms?
 
 {INFO This feature requires a valid **enterprise** license. /}
 

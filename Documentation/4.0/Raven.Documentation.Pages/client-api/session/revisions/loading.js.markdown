@@ -1,4 +1,4 @@
-# Revisions : Loading Revisions
+# Revisions: Loading Revisions
 
 There are a few methods that allow you to download revisions from a database:   
 

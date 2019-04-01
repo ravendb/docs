@@ -1,4 +1,4 @@
-# Authentication : Let's Encrypt Certificates
+# Authentication: Let's Encrypt Certificates
 
 RavenDB 4.x uses X.509 certificates for authentication and authorization and has **built in support** for [Let's Encrypt](https://letsencrypt.org/).
 

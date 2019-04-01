@@ -1,4 +1,4 @@
-﻿# Querying : Suggestions
+# Querying: Suggestions
 
 RavenDB has an indexing mechanism built upon the Lucene engine which has a great suggestions feature. This capability allows a significant improvement of search functionalities enhancing the overall user experience of the application.
 

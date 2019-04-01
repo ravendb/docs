@@ -1,4 +1,4 @@
-﻿# Glossary : ReplicationDestination
+# Glossary: ReplicationDestination
 
 ### Properties
 

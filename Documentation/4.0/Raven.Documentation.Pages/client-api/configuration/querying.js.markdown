@@ -1,4 +1,4 @@
-﻿# Conventions : Querying
+# Conventions: Querying
 
 ##ThrowIfQueryPageSizeIsNotSet
 

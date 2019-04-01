@@ -1,4 +1,4 @@
-﻿# Glossary : BulkInsertChangeNotification
+# Glossary: BulkInsertChangeNotification
 
 ### General
 

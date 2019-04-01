@@ -1,4 +1,4 @@
-# Commands : Querying : How to query a database?
+# Commands: Querying: How to query a database?
 
 Use **Query** method to fetch results of a selected index according to a specified query.
 

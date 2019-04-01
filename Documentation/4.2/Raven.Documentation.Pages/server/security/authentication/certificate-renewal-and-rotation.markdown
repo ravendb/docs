@@ -1,4 +1,4 @@
-# Authentication : Certificate Renewal & Rotation
+# Authentication: Certificate Renewal & Rotation
 
 X.509 certificates have expiration dates and must be renewed once in a while.
 

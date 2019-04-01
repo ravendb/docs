@@ -1,4 +1,4 @@
-﻿# Glossary : FilesystemRestoreRequest
+# Glossary: FilesystemRestoreRequest
 
 ### Properties
 

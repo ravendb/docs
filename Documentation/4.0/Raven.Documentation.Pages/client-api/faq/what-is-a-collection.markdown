@@ -1,4 +1,4 @@
-﻿# FAQ : What is a Collection
+# FAQ: What is a Collection
 ---
 
 {NOTE: }

@@ -1,4 +1,4 @@
-# Monitoring : Disk I/O Performance Monitor
+# Monitoring: Disk I/O Performance Monitor
 
 It is possible to track I/O rates in RavenDB using the Monitor tool.
 

@@ -1,4 +1,4 @@
-# Configuration : Security
+# Configuration: Security
 
 The following configuration values allow you to control the desired level of security in a RavenDB server. For a more detailed explanation, please visit the [Security Section](../security/overview).
 

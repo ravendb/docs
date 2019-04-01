@@ -1,4 +1,4 @@
-#Commands : ResolveConflict
+#Commands: ResolveConflict
 
 The **PATCH** method resolves the conflict according to the specified conflict resolution strategy.
 

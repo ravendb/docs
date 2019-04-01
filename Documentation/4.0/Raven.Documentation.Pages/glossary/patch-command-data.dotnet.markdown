@@ -1,4 +1,4 @@
-﻿# Glossary : PatchCommandData
+# Glossary: PatchCommandData
 
 ### Properties
 

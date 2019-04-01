@@ -1,4 +1,4 @@
-﻿# Settings : Quotas
+# Settings: Quotas
 
 If the [Quotas](../../../server/bundles/quotas) bundle is chosen, in Settings section additional configuration settings for this bundle appear. You can introduce some changes in the following:
 

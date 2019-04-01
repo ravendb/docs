@@ -1,4 +1,4 @@
-# Session : Querying : How to use Lucene in queries?
+# Session: Querying: How to use Lucene in queries?
 
 Lucene can be used directly by using `documentQuery` method from advanced session operations. It allows us to acquire low-level access to query structure which gives more flexibility.
 

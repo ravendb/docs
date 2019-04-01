@@ -1,4 +1,4 @@
-#Commands : DeleteKeyAsync
+#Commands: DeleteKeyAsync
 
 **DeleteKeyAsync** is used to remove a configuration stored under the specified key.
 

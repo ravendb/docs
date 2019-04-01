@@ -1,4 +1,4 @@
-# Indexes : Indexing Hierarchical Data
+# Indexes: Indexing Hierarchical Data
 
 One of the greatest advantages of a document database is that we have very few limits on how we structure our data. One very common scenario is the usage of hierarchical data structures. The most trivial of them is the comment thread:
 

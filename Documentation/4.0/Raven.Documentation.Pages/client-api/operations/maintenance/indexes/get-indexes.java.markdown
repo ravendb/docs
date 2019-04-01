@@ -1,4 +1,4 @@
-﻿# Operations : How to Get Indexes
+# Operations: How to Get Indexes
 
 **GetIndexesOperation** is used to retrieve multiple index definitions from a database.
 

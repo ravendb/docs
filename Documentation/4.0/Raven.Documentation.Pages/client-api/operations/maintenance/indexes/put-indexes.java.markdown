@@ -1,4 +1,4 @@
-﻿# Operations : How to Put Indexes
+# Operations: How to Put Indexes
 
 **PutIndexesOperation** is used to insert indexes into a database.
 

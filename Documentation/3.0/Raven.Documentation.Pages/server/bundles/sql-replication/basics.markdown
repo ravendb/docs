@@ -1,4 +1,4 @@
-# Bundle : SQL Replication : Basics
+# Bundle: SQL Replication: Basics
 
 To provide an easy and flexible way to setup a replication to SQL servers, we have replaced the Index Replication bundle with new mechanism that is a part of a SQL Replication bundle.   
 

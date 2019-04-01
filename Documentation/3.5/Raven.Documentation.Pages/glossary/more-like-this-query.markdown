@@ -1,4 +1,4 @@
-﻿# Glossary : MoreLikeThisQuery
+# Glossary: MoreLikeThisQuery
 
 ### Properties
 

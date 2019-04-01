@@ -1,4 +1,4 @@
-# Cluster : Best Practices
+# Cluster: Best Practices
 
 {NOTE: }
 

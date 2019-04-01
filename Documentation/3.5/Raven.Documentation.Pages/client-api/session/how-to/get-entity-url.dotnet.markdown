@@ -1,4 +1,4 @@
-# Session : How to get entity url?
+# Session: How to get entity url?
 
 `GetDocumentUrl` is a method in `Advanced` session operations that returns full url for a given entity.
 

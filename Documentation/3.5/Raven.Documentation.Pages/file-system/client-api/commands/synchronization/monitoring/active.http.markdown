@@ -1,4 +1,4 @@
-#Commands : GetActive
+#Commands: GetActive
 
 The **GET** method returns the information about the active outgoing synchronizations.
 

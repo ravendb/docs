@@ -1,4 +1,4 @@
-# Setup Examples : Docker on AWS Linux VM
+# Setup Examples: Docker on AWS Linux VM
 
 In this walkthrough we will setup RavenDB using Docker on an AWS EC2 t2.micro virtual machine running Ubuntu 16.04.
 

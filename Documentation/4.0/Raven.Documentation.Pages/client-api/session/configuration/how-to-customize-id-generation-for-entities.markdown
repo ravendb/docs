@@ -1,4 +1,4 @@
-# Session : How to Customize ID Generation for Entities
+# Session: How to Customize ID Generation for Entities
 
 In RavenDB, you will encounter a few ways to create document IDs. We suggest that you should first read the article '[Working with Document Identifiers](../../../client-api/document-identifiers/working-with-document-identifiers)' to achieve the basic knowledge about built-in ID generation strategies before you start customizing identifiers of your entities.
 

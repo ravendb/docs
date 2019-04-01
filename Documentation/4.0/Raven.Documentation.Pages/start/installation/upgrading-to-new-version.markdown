@@ -1,4 +1,4 @@
-# Installation : Upgrading to a New Version
+# Installation: Upgrading to a New Version
 
 {INFO On a live system, a minor version upgrade process typically takes around 30 seconds. /}
 

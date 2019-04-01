@@ -1,4 +1,4 @@
-﻿# Glossary : RavenDB Cluster
+# Glossary: RavenDB Cluster
 
 ### What is a cluster?
 A group of RavenDB servers which may or may not be on the same machine. 

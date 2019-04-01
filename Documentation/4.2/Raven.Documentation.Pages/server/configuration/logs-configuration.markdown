@@ -1,4 +1,4 @@
-# Configuration : Logs Options
+# Configuration: Logs Options
 
 {PANEL:Logs.Path}
 

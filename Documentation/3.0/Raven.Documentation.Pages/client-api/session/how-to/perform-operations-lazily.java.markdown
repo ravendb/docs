@@ -1,4 +1,4 @@
-# Session : How to perform operations lazily?
+# Session: How to perform operations lazily?
 
 Operation execution for operations such as `load`, `load with includes`, `loadStartingWith`, `moreLikeThis` and queries can be deferred till needed using **lazy session operations**. Those operations ca be accessed using `lazily` in `advanced()` session operations.
 

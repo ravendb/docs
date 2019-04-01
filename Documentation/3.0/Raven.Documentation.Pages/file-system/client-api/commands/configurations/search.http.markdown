@@ -1,4 +1,4 @@
-#Commands : Search
+#Commands: Search
 
 The **GET** method retrieves the names of configurations that starts with a specified prefix. 
 

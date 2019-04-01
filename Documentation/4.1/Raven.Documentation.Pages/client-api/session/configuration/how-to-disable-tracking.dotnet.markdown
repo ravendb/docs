@@ -1,4 +1,4 @@
-# Session : How to Disable Entities Tracking per Session
+# Session: How to Disable Entities Tracking per Session
 
 By default, session is tracking the changes. This means that for each document retrieved, session will start tracking it's changes allowing you to make the modifications and save the entities using the `SaveChanges` method.
 

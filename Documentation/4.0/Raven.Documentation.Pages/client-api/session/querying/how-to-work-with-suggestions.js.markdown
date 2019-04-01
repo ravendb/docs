@@ -1,4 +1,4 @@
-# Session : Querying : How to Work with Suggestions
+# Session: Querying: How to Work with Suggestions
 
 The `suggestion` feature is available through query extension methods. It gives you the ability to find word similarities using string distance algorithms.
 

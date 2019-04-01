@@ -1,4 +1,4 @@
-﻿# Querying : Spatial
+# Querying: Spatial
 
 To perform a spatial search, you can use the `spatial()` method which contains a full spectrum of spatial capabilities. You can check the detailed Client API reference for this method [here](../../client-api/session/querying/how-to-query-a-spatial-index).
 

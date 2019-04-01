@@ -1,4 +1,4 @@
-#Commands : StreamFileHeaders
+#Commands: StreamFileHeaders
 
 The **GET** method is used to stream the headers of files which match the criteria chosen from a file system.
 

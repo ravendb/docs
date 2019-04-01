@@ -1,4 +1,4 @@
-﻿# Glossary : IndexMergeResults
+# Glossary: IndexMergeResults
 
 ### Properties
 

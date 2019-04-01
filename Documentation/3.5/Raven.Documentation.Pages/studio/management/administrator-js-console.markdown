@@ -1,4 +1,4 @@
-# Manage Your Server : Administrator JS Console
+# Manage Your Server: Administrator JS Console
   
 You can use this view to run JS scripts on a database.
 

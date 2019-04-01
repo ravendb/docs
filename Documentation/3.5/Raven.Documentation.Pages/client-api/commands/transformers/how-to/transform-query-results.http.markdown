@@ -1,4 +1,4 @@
-# Commands : Transformers : How to transform query results using transformer?
+# Commands: Transformers: How to transform query results using transformer?
 
 Simply use `transformer` parameter to specify transfomer name and `tp` parameters to specify transformer parameters. More info can be found in [Query](../../../../client-api/commands/querying/how-to-query-a-database) section.
 

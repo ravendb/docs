@@ -1,4 +1,4 @@
-# Changes API : How to subscribe to index changes?
+# Changes API: How to subscribe to index changes?
 
 Following methods allow you to subscribe to index changes:
 

@@ -1,4 +1,4 @@
-﻿# Glossary : SpatialCriteriaFactory
+# Glossary: SpatialCriteriaFactory
 
 ### Methods
 

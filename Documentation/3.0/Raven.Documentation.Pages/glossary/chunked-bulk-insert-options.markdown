@@ -1,4 +1,4 @@
-﻿# Glossary : BulkInsertOptions
+# Glossary: BulkInsertOptions
 
 ### Properties
 

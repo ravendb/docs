@@ -1,4 +1,4 @@
-﻿# Tasks : Subscriptions
+# Tasks: Subscriptions
 
 This view lists all available subscriptions and the etag of the last acknowledged and processed document.
 You have the ability to manually set the last etag.

@@ -1,4 +1,4 @@
-﻿# Knowledge Base : Document Identifier Generation
+# Knowledge Base: Document Identifier Generation
 ---
 
 {NOTE: }

@@ -1,4 +1,4 @@
-﻿# Client API : How to Handle Document Relationships
+# Client API: How to Handle Document Relationships
 
 One of the design principles that RavenDB adheres to is the idea that documents are independent, meaning all data required to process a document is stored within the document itself. However, this doesn't mean there should not be relations between objects.
 

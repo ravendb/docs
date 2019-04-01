@@ -1,4 +1,4 @@
-﻿# Glossary : StreamResult&lt;T&gt;
+# Glossary: StreamResult&lt;T&gt;
 
 ### Properties
 

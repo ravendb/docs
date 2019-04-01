@@ -1,4 +1,4 @@
-#Commands : StartCompact
+#Commands: StartCompact
 
 **StartCompact** initializes the compaction of the indicated file system. This operation makes the file system offline for the time of compaction.
 

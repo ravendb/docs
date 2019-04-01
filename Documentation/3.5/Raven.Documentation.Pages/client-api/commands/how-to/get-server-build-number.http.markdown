@@ -1,4 +1,4 @@
-# Commands : How to get server build number?
+# Commands: How to get server build number?
 
 To check with what version of server you are working use `build/version` endpoint.
 

@@ -1,4 +1,4 @@
-# Session : Querying : What is a Document Query?
+# Session: Querying: What is a Document Query?
 
 Querying capabilities can be accessed via the `documentQuery` method in advanced session operations. `DocumentQuery` gives you more flexibility and control over the process of building a query.
 

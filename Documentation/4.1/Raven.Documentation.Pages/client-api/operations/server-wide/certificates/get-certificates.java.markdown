@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get Certificates
+# Operations: Server: How to Get Certificates
 
 To get client certificates use **GetCertificatesOperation**.
 

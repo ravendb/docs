@@ -1,4 +1,4 @@
-# Session : How to Customize the Identity Property Lookup for Entities
+# Session: How to Customize the Identity Property Lookup for Entities
 
 The client must know which property of your entity is considered as an identity. By default, it always looks for the `id` field (case-sensitive). This behavior can be changed by overwriting one of our conventions called `identityProperty`.
 

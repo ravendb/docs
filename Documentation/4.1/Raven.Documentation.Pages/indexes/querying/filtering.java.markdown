@@ -1,4 +1,4 @@
-﻿# Querying : Filtering
+# Querying: Filtering
 
 One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition. There are couple of ways to do this. 
 

@@ -1,4 +1,4 @@
-# Session : Querying : How to query?
+# Session: Querying: How to query?
 
 Database can be queried using LINQ-enabled `Query` method with few custom extension that will be described later.
 

@@ -1,4 +1,4 @@
-# Cluster : Cluster API
+# Cluster: Cluster API
 
 The easiest way to manage a RavenDB cluster is through the Management Studio's [Cluster View](../../studio/server/cluster/cluster-view).  
 All cluster operations are available through the GUI. However, sometimes you'd want to automate things. 

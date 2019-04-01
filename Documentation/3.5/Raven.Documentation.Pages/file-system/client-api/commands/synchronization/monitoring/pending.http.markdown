@@ -1,4 +1,4 @@
-#Commands : GetPending
+#Commands: GetPending
 
 The **GET** method returns the information about the files that wait for a synchronization slot to a destination file system.
 

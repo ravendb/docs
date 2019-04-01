@@ -1,4 +1,4 @@
-﻿# Session : Loading entities
+# Session: Loading entities
 
 The `load` method allow user to download a documents from database and convert them to entities.
 

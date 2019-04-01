@@ -1,4 +1,4 @@
-﻿# Replication : Using Embedded Instance
+# Replication: Using Embedded Instance
 
 ## Overview
 [Replication](../../../server/clustering/replication/replication) works by using long-living TCP connections between cluster nodes, or in case of [External Replication](../../../server/ongoing-tasks/external-replication) instances external to the cluster. 

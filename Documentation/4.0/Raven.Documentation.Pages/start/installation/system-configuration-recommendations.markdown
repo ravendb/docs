@@ -1,4 +1,4 @@
-# Installation : System Configuration Recommendations
+# Installation: System Configuration Recommendations
 
 {PANEL: Linux - Ubuntu 16.04}
 

@@ -1,4 +1,4 @@
-# Manage Your Server : IO Test
+# Manage Your Server: IO Test
 
 You can use this view to test the speed of reading or writing (or reading and writing simultaneously) of the data from the disk.
 

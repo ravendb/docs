@@ -1,4 +1,4 @@
-# Commands : Indexes : Delete
+# Commands: Indexes: Delete
 
 **DeleteIndex** is used to remove an index from a database.
 

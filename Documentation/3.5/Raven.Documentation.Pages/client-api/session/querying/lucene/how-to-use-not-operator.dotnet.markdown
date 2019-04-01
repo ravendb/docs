@@ -1,4 +1,4 @@
-# Session : Querying : How to use NOT operator?
+# Session: Querying: How to use NOT operator?
 
 `IDocumentQuery` contains `NOT` operator which can be used to negate **next** predicate
 

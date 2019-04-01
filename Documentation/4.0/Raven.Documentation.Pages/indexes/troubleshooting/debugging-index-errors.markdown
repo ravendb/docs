@@ -1,4 +1,4 @@
-# Indexes : Debugging Index Errors
+# Indexes: Debugging Index Errors
 
 Indexes in RavenDB are user provided LINQ queries running on top of dynamic JSON data model. There is a wide space for errors here, either because of malformed index definition or missing / corrupt data on the JSON document itself.
 

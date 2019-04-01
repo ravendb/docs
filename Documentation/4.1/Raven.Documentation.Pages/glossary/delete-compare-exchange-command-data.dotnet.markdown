@@ -1,4 +1,4 @@
-﻿# Glossary : DeleteCompareExchangeCommandData
+# Glossary: DeleteCompareExchangeCommandData
 
 ### Properties
 

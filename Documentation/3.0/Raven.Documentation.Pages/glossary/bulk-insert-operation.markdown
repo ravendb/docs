@@ -1,4 +1,4 @@
-﻿# Glossary : BulkInsertOperation
+# Glossary: BulkInsertOperation
 
 ### Related delegates
 

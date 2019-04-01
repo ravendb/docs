@@ -1,4 +1,4 @@
-# Session : Querying : How to Use Intersect
+# Session: Querying: How to Use Intersect
 
 To return only documents that match **all** provided sub-queries, use the `intersect` method which enables RavenDB to perform server-side intersection queries.
 

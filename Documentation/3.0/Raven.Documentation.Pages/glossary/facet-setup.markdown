@@ -1,4 +1,4 @@
-﻿# Glossary : FacetSetup
+# Glossary: FacetSetup
 
 ### Properties
 

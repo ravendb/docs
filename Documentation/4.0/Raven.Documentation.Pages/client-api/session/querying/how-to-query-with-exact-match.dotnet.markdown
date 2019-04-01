@@ -1,4 +1,4 @@
-# Session : Querying : How to Query With Exact Match
+# Session: Querying: How to Query With Exact Match
 
 By default, the `Where` method in `Query` uses a case-insensitive match.
 

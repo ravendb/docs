@@ -1,4 +1,4 @@
-﻿#Glossary : RavenDB Cluster Node
+#Glossary: RavenDB Cluster Node
 
 ### What is Cluster Node?
 

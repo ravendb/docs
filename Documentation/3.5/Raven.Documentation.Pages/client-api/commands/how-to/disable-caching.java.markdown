@@ -1,4 +1,4 @@
-# Commands : How to disable caching?
+# Commands: How to disable caching?
 
 To disable caching in Commands use `disableAllCaching` method.
 

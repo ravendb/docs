@@ -1,4 +1,4 @@
-# Configuration : Windows Clustering on Windows Server 2008
+# Configuration: Windows Clustering on Windows Server 2008
 
 {INFO Windows Clustering feature is only available in the Enterprise Edition. /}
 

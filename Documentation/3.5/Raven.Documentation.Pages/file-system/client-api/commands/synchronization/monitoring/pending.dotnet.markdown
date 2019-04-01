@@ -1,4 +1,4 @@
-#Commands : GetPendingAsync
+#Commands: GetPendingAsync
 
 The **GetPendingAsync** method returns the information about the files that wait for a synchronization slot to a destination file system.
 

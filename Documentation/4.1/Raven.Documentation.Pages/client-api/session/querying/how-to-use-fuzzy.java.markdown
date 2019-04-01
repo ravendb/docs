@@ -1,4 +1,4 @@
-# Session : Querying : How to Use Fuzzy
+# Session: Querying: How to Use Fuzzy
 
 Fuzzy search is supported via `fuzzy` method. This method is available only from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) level and can only be performed on single term values. Because of that it can be used only right after `whereEquals` method.
 

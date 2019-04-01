@@ -1,4 +1,4 @@
-# Commands : How to get database configuration?
+# Commands: How to get database configuration?
 
 `GetDatabaseConfiguration` from admin database commands can be used to retrieve database configuration.
 

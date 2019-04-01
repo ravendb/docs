@@ -1,4 +1,4 @@
-# Bundle : Compression
+# Bundle: Compression
 
 To reduce the cost of I/O operations and reduce the size of the database on a disk, we have introduced the `Compression` bundle. Compression is only applied to documents, indexes are not compressed. This is because RavenDB is performing a lot of random reads from indexes, whereas with documents we almost always read/write the full content. Note that the compression process is fully transparent for the end-user.
 

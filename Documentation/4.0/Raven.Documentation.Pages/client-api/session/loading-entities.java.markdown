@@ -1,4 +1,4 @@
-﻿# Session : Loading Entities
+# Session: Loading Entities
 
 There are various methods with many overloads that allow users to download documents from a database and convert them to entities. This article will cover the following methods:
 

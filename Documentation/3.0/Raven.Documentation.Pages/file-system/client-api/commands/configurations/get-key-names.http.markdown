@@ -1,4 +1,4 @@
-#Commands : GetKeyNamesAsync
+#Commands: GetKeyNamesAsync
 
 The **GET** method on `/config` endpoint returns names of all stored configurations.
 

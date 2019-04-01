@@ -1,4 +1,4 @@
-﻿# Glossary : ReplicationConflictNotification
+# Glossary: ReplicationConflictNotification
 
 ### General
 

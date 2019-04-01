@@ -1,4 +1,4 @@
-#Commands : SearchOnDirectoryAsync
+#Commands: SearchOnDirectoryAsync
 
 The **SearchOnDirectoryAsync** method returns files located in a given directory and matching specified file name search pattern. 
 

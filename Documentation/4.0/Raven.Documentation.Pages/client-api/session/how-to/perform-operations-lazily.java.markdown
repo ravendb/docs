@@ -1,4 +1,4 @@
-# Session : How to Perform Operations Lazily
+# Session: How to Perform Operations Lazily
 
 Operation execution for operations such as `load`, `load with includes`, `loadStartingWith` and queries can be deferred till needed using **lazy session operations**. Those operations ca be accessed using `lazily` property found in `advanced` session operations.
 

@@ -1,4 +1,4 @@
-# Configuration : Options
+# Configuration: Options
 
 All the configuration options detailed below are defined in the <appSettings> section of your config file as separate values. When running RavenDB as a website (through IIS, or in Embedded mode), the config file is `web.config`; otherwise it is the `Raven.Server.exe.config` file.
 

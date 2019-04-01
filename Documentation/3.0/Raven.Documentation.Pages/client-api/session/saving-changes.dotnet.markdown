@@ -1,4 +1,4 @@
-# Session : Saving changes
+# Session: Saving changes
 
 Pending session operations e.g. `Store`, `Delete` and many others will not be send to server till `SaveChanges` is called.
 

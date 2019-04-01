@@ -1,4 +1,4 @@
-# Walkthroughs : Setting up compression
+# Walkthroughs: Setting up compression
 
 To set up [Compression](../../server/bundles/compression) bundle using Studio following steps need to be taken:
 

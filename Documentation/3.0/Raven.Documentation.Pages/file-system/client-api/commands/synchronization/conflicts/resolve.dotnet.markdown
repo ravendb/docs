@@ -1,4 +1,4 @@
-#Commands : ResolveConflictAsync
+#Commands: ResolveConflictAsync
 
 **ResolveConflictAsync** resolves the conflict according to the specified conflict resolution strategy.
 

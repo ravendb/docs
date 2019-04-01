@@ -1,4 +1,4 @@
-# Configuration : Patching Options
+# Configuration: Patching Options
 
 {PANEL:Patching.MaxStepsForScript}
 

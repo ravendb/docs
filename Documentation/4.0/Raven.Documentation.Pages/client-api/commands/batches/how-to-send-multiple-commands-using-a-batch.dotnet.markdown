@@ -1,4 +1,4 @@
-# Batches : How to Send Multiple Commands Using a Batch
+# Batches: How to Send Multiple Commands Using a Batch
 
 To send **multiple commands** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `BatchCommand` should be used.
 

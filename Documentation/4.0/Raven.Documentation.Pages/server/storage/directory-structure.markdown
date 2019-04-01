@@ -1,4 +1,4 @@
-﻿# Storage : Directory Structure
+# Storage: Directory Structure
 
 {PANEL:RavenDB Data}
 

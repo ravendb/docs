@@ -1,4 +1,4 @@
-# Session : Querying : How to Query a Spatial Index
+# Session: Querying: How to Query a Spatial Index
 
 Spatial indexes can be queried using the `spatial` method which contains a full spectrum of spatial methods. The following article will cover these methods:
 

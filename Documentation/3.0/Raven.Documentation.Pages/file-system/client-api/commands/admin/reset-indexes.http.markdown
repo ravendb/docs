@@ -1,4 +1,4 @@
-#Commands : ResetIndexes
+#Commands: ResetIndexes
 
 The **POST** method forces RavenFS to rebuild Lucene indexes from scratch.
 

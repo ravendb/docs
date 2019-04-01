@@ -1,4 +1,4 @@
-# Attachments : Deleting Attachments
+# Attachments: Deleting Attachments
 
 The method `session.advanced.attachments.delete()` is used to remove an attachment from a document.
 

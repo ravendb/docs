@@ -1,4 +1,4 @@
-# Authentication : Manual Certificate Configuration
+# Authentication: Manual Certificate Configuration
 
 In RavenDB, configuration values can be set using environment variables, command line arguments or using the [settings.json](../../configuration/configuration-options#json) file. For more details, please read the [Configuration Section.](../../configuration/configuration-options)  
 

@@ -1,4 +1,4 @@
-﻿# Knowledge Base : JavaScript Engine
+# Knowledge Base: JavaScript Engine
 ---
 
 {NOTE: }

@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Global Configuration
+# Manage Your Server: Global Configuration
 
 ### Bundles
 

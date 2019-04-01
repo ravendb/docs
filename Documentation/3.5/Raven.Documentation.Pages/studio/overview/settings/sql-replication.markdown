@@ -1,4 +1,4 @@
-# Settings : SQL Replication
+# Settings: SQL Replication
 
 Here you can adjust the [SQL Replication](../../../server/bundles/sql-replication/basics) settings.
 

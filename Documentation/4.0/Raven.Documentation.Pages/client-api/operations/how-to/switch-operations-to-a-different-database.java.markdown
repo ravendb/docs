@@ -1,4 +1,4 @@
-# Operations : How to Switch Operations to a Different Database
+# Operations: How to Switch Operations to a Different Database
 
 By default, the operations available directly in store are working on a default database that was setup for that store. To switch operations to a different database that is available on that server use the **forDatabase** method.
 

@@ -1,4 +1,4 @@
-﻿# Operations : How to Delete an Index
+# Operations: How to Delete an Index
 
 **DeleteIndexOperation** is used to remove an index from a database.
 

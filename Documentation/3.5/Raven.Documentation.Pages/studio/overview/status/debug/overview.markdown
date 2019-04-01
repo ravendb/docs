@@ -1,4 +1,4 @@
-﻿# Status : Debug
+# Status: Debug
 
 Here you get a clear view of the data from debug endpoints. You can learn more about endpoints [here](../../../../server/troubleshooting/debug-endpoints).
 

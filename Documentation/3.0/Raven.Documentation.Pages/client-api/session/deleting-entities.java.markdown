@@ -1,4 +1,4 @@
-# Session : Deleting entities
+# Session: Deleting entities
 
 Entities can be marked for deletion by using `delete` method, but will not be removed from server until `saveChanges` is called.
 

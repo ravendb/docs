@@ -1,4 +1,4 @@
-# Encryption : Database Encryption
+# Encryption: Database Encryption
 
 In RavenDB you can create encrypted databases. Each encrypted database will have its own secret key which is used to encrypt and decrypt data.
 

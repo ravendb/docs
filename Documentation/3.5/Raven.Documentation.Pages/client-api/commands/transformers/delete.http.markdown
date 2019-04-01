@@ -1,4 +1,4 @@
-# Commands : Transformers : Delete
+# Commands: Transformers: Delete
 
 **DeleteTransformer** is used to remove a transformer from a database.
 

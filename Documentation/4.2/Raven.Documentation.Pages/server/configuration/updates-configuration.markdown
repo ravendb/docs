@@ -1,4 +1,4 @@
-﻿# Configuration : Updates Options
+# Configuration: Updates Options
 
 {PANEL:Updates.Channel}
 

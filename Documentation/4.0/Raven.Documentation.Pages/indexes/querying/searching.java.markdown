@@ -1,4 +1,4 @@
-﻿# Querying : Searching
+# Querying: Searching
 
 When you need to do a more complex text searching, use the `search` method. This method allows you to pass a few search terms that will be used in the searching process for a particular field. Here is a sample code
 that uses the `search` method to get users with the name *John* or *Adam*:

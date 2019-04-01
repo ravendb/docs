@@ -1,4 +1,4 @@
-# Status : Index Errors
+# Status: Index Errors
 
 Here we can view all indexing errors that occurred during indexation. Alerts are listed by date of occurrence in a system, starting with the most recent ones.
 

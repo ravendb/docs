@@ -1,4 +1,4 @@
-# Session : How to Check if There are Any Changes on a Session
+# Session: How to Check if There are Any Changes on a Session
 
 Single entity can be checked for changes using [hasChanged](../../../client-api/session/how-to/check-if-entity-has-changed) method, but there is also a possibility to check if there are any changes on a session or even what has changed. Both the `hasChanges`  method and the `whatChanged` method are available in the `advanced` session operations.
 

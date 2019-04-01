@@ -1,4 +1,4 @@
-#Commands : BrowseAsync
+#Commands: BrowseAsync
 
 The **BrowseAsync** method is used to scan a file system for existing files.
 

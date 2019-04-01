@@ -1,4 +1,4 @@
-﻿# Glossary : Node Tag
+# Glossary: Node Tag
 
 ### What is a Node Tag?
 

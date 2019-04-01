@@ -1,4 +1,4 @@
-# Indexes : Analyzers
+# Indexes: Analyzers
 
 RavenDB uses indexes to facilitate fast queries powered by [**Lucene**](http://lucene.apache.org/), the full-text search engine.
 

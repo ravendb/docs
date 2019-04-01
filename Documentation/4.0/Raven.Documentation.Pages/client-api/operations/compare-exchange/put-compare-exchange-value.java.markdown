@@ -1,4 +1,4 @@
-﻿# Compare Exchange : How to Put Compare Exchange Value
+# Compare Exchange: How to Put Compare Exchange Value
 
 ---
 

@@ -1,4 +1,4 @@
-# Session : How to Get Entity Counters
+# Session: How to Get Entity Counters
 
 When a document is downloaded from the server, it contains various metadata information like ID or current change-vector.  
   

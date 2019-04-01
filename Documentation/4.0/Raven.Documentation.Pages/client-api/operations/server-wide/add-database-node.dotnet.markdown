@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to add database node?
+# Operations: Server: How to add database node?
 
 **AddDatabaseNodeOperation** allows you to add extra node to database group.
 

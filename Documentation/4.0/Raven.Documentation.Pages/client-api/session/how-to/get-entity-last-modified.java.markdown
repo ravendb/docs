@@ -1,4 +1,4 @@
-# Session : How to Get Entity Last Modified 
+# Session: How to Get Entity Last Modified 
 
 When a document is downloaded from the server it contains various metadata information, including the last modified date of the document.  
 

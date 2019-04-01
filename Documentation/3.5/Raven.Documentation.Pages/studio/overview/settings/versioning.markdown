@@ -1,4 +1,4 @@
-# Settings : Versioning
+# Settings: Versioning
 
 In this view you can change the settings of the [Versioning](../../../server/bundles/versioning) bundle. 
 Default settings will appear, yet you can change the collection settings manually by clicking on the `Add versioning` button. 

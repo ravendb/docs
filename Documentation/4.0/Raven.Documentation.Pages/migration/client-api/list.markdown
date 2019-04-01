@@ -1,4 +1,4 @@
-﻿# Migration : List of Differences in Client API between 3.x and 4.0
+# Migration: List of Differences in Client API between 3.x and 4.0
 
 The list of differences in the public Client API between 3.x and 4.0 contains the following changes:
 

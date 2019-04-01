@@ -1,4 +1,4 @@
-﻿# Operations : How to Remove Connection String
+# Operations: How to Remove Connection String
 
 You can remove a connection string by using **RemoveConnectionStringOperation**.
 

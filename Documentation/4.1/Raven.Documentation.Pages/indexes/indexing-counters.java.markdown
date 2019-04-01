@@ -1,4 +1,4 @@
-﻿# Indexes : Indexing Counters
+# Indexes: Indexing Counters
 
 Counter names can be indexed using `CounterNamesFor`. 
 

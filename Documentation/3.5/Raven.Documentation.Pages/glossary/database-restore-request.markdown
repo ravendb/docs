@@ -1,4 +1,4 @@
-﻿# Glossary : DatabaseRestoreRequest
+# Glossary: DatabaseRestoreRequest
 
 ### Properties
 

@@ -1,4 +1,4 @@
-# Configuration : Transaction Merger Options
+# Configuration: Transaction Merger Options
 
 {PANEL:TransactionMerger.MaxTimeToWaitForPreviousTxInMs}
 

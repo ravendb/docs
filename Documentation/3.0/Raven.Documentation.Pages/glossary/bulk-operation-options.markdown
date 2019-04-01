@@ -1,4 +1,4 @@
-﻿# Glossary : BulkOperationOptions
+# Glossary: BulkOperationOptions
 
 Holds different setting options for base operations.
 

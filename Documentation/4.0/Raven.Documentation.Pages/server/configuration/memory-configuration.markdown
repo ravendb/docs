@@ -1,4 +1,4 @@
-# Configuration : Memory Options
+# Configuration: Memory Options
 
 {PANEL:Memory.LowMemoryLimitInMb}
 

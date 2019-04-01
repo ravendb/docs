@@ -1,4 +1,4 @@
-﻿# Bundle : MoreLikeThis
+# Bundle: MoreLikeThis
 
 More Like This returns a list of similar documents that are related to a given document. This feature can be used, for example, when viewing an article. Many news sites show a list of the related articles at the bottom of the page. To accomplish this, the RavenDB More Like This uses the More Like This from the Lucene contrib project. To find out more about the algorithm, please read Aaron Johnson excellent blog post that is available [here](http://cephas.net/blog/2008/03/30/how-morelikethis-works-in-lucene/).
 

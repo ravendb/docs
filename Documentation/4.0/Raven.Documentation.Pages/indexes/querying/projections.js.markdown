@@ -1,4 +1,4 @@
-# Querying : Projections
+# Querying: Projections
 
 There are couple of ways to perform projections in RavenDB:
 

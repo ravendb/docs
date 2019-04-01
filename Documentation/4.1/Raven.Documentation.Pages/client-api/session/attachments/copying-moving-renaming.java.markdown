@@ -1,4 +1,4 @@
-# Attachments : Copying, Moving & Renaming
+# Attachments: Copying, Moving & Renaming
 
 Attachments can be copied, moved or renamed using appropriate built-in session methods. All of those actions are executed when `saveChanges` is called and are taking place on the server-side, removing the need to transfer whole attachment binary data over the network in order to perform the action.
 

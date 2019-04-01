@@ -1,4 +1,4 @@
-﻿# Commands : How to retrieve user permission for a specified database?
+# Commands: How to retrieve user permission for a specified database?
 
 `GetUserPermission` used to retrieve user permissions for a specified database
 

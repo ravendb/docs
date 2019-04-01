@@ -1,4 +1,4 @@
-﻿# Commands : How to get the primary database Url?
+# Commands: How to get the primary database Url?
 
 `Url` is a helper method that returns the primary database url.
 

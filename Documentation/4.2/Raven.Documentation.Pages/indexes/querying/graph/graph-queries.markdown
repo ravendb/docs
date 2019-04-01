@@ -1,4 +1,4 @@
-﻿# Querying : Graph Queries
+# Querying: Graph Queries
 
 Graph queries are a new type of queries that allows you to query your documents as if they were a graph.  
 The nodes which we query are your regular documents and the edges are just any string property that holds the id of another document.  

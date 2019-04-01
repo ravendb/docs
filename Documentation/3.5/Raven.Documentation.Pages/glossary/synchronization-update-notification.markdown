@@ -1,4 +1,4 @@
-﻿# Glossary : SynchronizationUpdateNotification
+# Glossary: SynchronizationUpdateNotification
 
 ### Properties
 

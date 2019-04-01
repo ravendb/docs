@@ -1,4 +1,4 @@
-﻿# Patching : How to Perform Set Based Operations on Documents
+# Patching: How to Perform Set Based Operations on Documents
 
 {NOTE: }
 Sometimes we need to update a large amount of documents answering certain criteria. A simple SQL query doing that will look like this:

@@ -1,5 +1,4 @@
-﻿
-# Connecting to a RavenDB data store
+﻿# Connecting to a RavenDB data store
 
 As we have seen, RavenDB can run in one of two modes: a client/server mode, where communication is made via HTTP; and an embedded mode, in which the client API makes direct calls against the Database API.
 

@@ -1,4 +1,4 @@
-﻿# Operations : How to Put Client Configuration
+# Operations: How to Put Client Configuration
 
 **PutClientConfigurationOperation** is used to save a client configuration on the server. It allows you to override client's settings remotely. 
 

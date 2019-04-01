@@ -1,4 +1,4 @@
-#Commands : SetKey
+#Commands: SetKey
 
 The **PUT** operation is used to store a JSON formatted object as [a configuration item](../../../configurations) under the specified key. 
 

@@ -1,4 +1,4 @@
-# Commands : Indexes : Put
+# Commands: Indexes: Put
 
 
 {PANEL:PutIndex}

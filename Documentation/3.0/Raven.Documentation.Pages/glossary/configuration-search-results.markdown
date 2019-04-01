@@ -1,4 +1,4 @@
-﻿# Glossary : ConfigurationSearchResults
+# Glossary: ConfigurationSearchResults
 
 RavenFS client API class representing configuration search results.
 

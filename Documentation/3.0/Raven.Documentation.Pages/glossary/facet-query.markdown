@@ -1,4 +1,4 @@
-﻿# Glossary : FacetQuery
+# Glossary: FacetQuery
 
 ### Properties
 

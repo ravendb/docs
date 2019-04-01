@@ -1,4 +1,4 @@
-﻿# Glossary : FieldHighlightings
+# Glossary: FieldHighlightings
 
 ### Properties
 

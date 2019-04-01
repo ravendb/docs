@@ -1,4 +1,4 @@
-# Session : How to change maximum number of requests per session?
+# Session: How to change maximum number of requests per session?
 
 By default, maximum number of requests that session can send to server is **30**. This number, if everything is done correctly, should never be reached. Remote calls are expensive, and the number of remote calls per "session" should be as close to **1** as possible. If the limit is reached, it is a sure sign of either a `Select N+1` problem or other misuse of the session object.
 

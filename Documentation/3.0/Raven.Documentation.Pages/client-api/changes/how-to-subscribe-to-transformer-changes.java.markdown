@@ -1,4 +1,4 @@
-# Changes API : How to subscribe to transformer changes?
+# Changes API: How to subscribe to transformer changes?
 
 All transformer changes can be tracked using `forAllTransformers` method.
 

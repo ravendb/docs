@@ -1,4 +1,4 @@
-# Session : Querying : How to Perform Proximity Search
+# Session: Querying: How to Perform Proximity Search
 
 To find words within a specific distance away use `proximity` method. This method is available only from [DocumentQuery](../../../client-api/session/querying/document-query/what-is-document-query) level and can only be used right after `search` method.
 

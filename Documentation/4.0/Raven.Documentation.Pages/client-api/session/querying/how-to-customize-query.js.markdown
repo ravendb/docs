@@ -1,4 +1,4 @@
-# Session : Querying : How to Customize a Query
+# Session: Querying: How to Customize a Query
 
 The following query customization options are available:
 

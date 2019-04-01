@@ -1,4 +1,4 @@
-﻿# Commands : How to retrieve user info?
+# Commands: How to retrieve user info?
 
 `GetUserInfo` used to retrieve the user info
 

@@ -1,4 +1,4 @@
-﻿#Commands : CleanUp
+#Commands: CleanUp
 
 The **POST** method forces to run a background task that will clean up files marked as deleted. Read [Background tasks](../../../server/background-tasks) article for details.
 

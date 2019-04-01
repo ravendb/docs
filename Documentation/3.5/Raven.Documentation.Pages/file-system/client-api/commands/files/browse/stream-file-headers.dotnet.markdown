@@ -1,4 +1,4 @@
-#Commands : StreamFileHeadersAsync
+#Commands: StreamFileHeadersAsync
 
 **StreamFileHeadersAsync** is used to stream the headers of files which match the criteria chosen from a file system.
 

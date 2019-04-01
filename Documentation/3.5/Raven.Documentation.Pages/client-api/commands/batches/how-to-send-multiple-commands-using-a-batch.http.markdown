@@ -1,4 +1,4 @@
-# Batches : How to send multiple commands using a batch?
+# Batches: How to send multiple commands using a batch?
 
 To send **multiple operations** in a **single request**, reducing the number of remote calls and allowing several operations to share **same transaction**, `bulk_docs` endpoint should be used.
 

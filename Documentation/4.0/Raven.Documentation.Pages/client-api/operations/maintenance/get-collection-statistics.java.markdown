@@ -1,4 +1,4 @@
-﻿# Operations : How to Get Collection Statistics
+# Operations: How to Get Collection Statistics
 
 **GetCollectionStatisticsOperation** is used to return total count of documents, conflicts and document count in each collection.
 

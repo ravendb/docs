@@ -1,4 +1,4 @@
-# Authorization : Security Clearance and Permissions
+# Authorization: Security Clearance and Permissions
 
 X.509 certificates are used for authentication - validating that users are who they say they are. Once a connection is authenticated, RavenDB uses the certificate for authorization as well. 
 

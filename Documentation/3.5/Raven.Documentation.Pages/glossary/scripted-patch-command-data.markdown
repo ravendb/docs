@@ -1,4 +1,4 @@
-﻿# Glossary : ScriptedPatchCommandData
+# Glossary: ScriptedPatchCommandData
 
 ### Properties
 

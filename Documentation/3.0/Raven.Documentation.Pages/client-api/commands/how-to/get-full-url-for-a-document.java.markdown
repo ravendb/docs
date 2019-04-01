@@ -1,4 +1,4 @@
-# Commands : How to get full url for a document?
+# Commands: How to get full url for a document?
 
 `urlFor` is a helper method that returns full url for a given document key.
 

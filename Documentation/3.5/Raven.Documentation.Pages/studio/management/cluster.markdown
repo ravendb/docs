@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Cluster
+# Manage Your Server: Cluster
 
 ### Setting up the cluster
 

@@ -1,4 +1,4 @@
-﻿# Operations : How to Change the Index Lock Mode
+# Operations: How to Change the Index Lock Mode
 
 **SetIndexesLockOperation**  allows you to change index lock mode for a given index or indexes.
 

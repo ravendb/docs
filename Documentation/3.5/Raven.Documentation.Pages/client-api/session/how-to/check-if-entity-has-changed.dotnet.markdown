@@ -1,4 +1,4 @@
-# Session : How to check if entity has changed?
+# Session: How to check if entity has changed?
 
 To check if specific entity differs from the one downloaded from server `HasChanged` method from `Advanced` session operations has been introduced.
 

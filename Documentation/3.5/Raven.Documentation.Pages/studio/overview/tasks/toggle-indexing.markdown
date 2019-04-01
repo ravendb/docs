@@ -1,4 +1,4 @@
-# Tasks : Toggle Indexing
+# Tasks: Toggle Indexing
 
 This view grants you the ability to pause the indexing process, which is expensive in terms of server resources.   
 It might be useful in cases where you want to modify the entire database or make changes to many documents at once.    

@@ -1,4 +1,4 @@
-﻿#Commands : GetKeyAsync
+#Commands: GetKeyAsync
 
 **GetKeyAsync** is used to retrieve an object stored as [a configuration item](../../../configurations) in RavenFS.
 

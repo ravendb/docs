@@ -1,4 +1,4 @@
-﻿# Operations : How to Change Index Priority
+# Operations: How to Change Index Priority
 
 **SetIndexesPriorityOperation**  allows you to change an index priority for a given index or indexes.
 

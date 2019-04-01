@@ -1,4 +1,4 @@
-# Attachments : Get
+# Attachments: Get
 
 There are few methods that allow you to download attachments from a database:   
 - [GetAttachment](../../../client-api/commands/attachments/get#getattachment)   

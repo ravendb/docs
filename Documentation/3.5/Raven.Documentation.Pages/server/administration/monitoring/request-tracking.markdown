@@ -1,4 +1,4 @@
-# Monitoring : Request Tracking
+# Monitoring: Request Tracking
 
 It is possible to record and replay requests that are being received by RavenDB.
 

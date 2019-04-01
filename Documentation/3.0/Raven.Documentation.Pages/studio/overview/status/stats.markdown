@@ -1,4 +1,4 @@
-# Status : Stats
+# Status: Stats
 
 This view displays the statistics for a current database. Here you can find information like:
 

@@ -1,4 +1,4 @@
-# Installation : Setup Wizard Walkthrough
+# Installation: Setup Wizard Walkthrough
 ---
 
 {NOTE: }

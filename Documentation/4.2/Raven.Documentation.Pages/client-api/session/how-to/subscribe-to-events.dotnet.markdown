@@ -1,4 +1,4 @@
-# Session : How to Subscribe to Events
+# Session: How to Subscribe to Events
 
 The concept of events provides users with a mechanism to perform custom actions in response to operations taken in a session. 
 

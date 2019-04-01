@@ -1,4 +1,4 @@
-﻿# Knowledge Base : Numbers in RavenDB
+# Knowledge Base: Numbers in RavenDB
 ---
 
 {NOTE: }

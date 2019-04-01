@@ -1,4 +1,4 @@
-# Configuration : Tombstone Options
+# Configuration: Tombstone Options
 
 {PANEL:Tombstones.CleanupIntervalInMin}
 

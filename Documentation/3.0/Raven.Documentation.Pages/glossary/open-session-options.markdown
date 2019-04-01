@@ -1,4 +1,4 @@
-﻿# Glossary : OpenSessionOptions
+# Glossary: OpenSessionOptions
 
 ### Properties
 

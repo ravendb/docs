@@ -1,4 +1,4 @@
-# Commands : How to start backup or restore operations?
+# Commands: How to start backup or restore operations?
 
 {PANEL:StartBackup}
 

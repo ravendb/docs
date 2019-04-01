@@ -1,4 +1,4 @@
-#Commands : GetConflictsAsync
+#Commands: GetConflictsAsync
 
 **GetConflictsAsync** retrieves the existing conflict items.
 

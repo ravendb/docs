@@ -1,4 +1,4 @@
-﻿# Glossary : QueryHeaderInformation
+# Glossary: QueryHeaderInformation
 
 ### Properties
 

@@ -1,4 +1,4 @@
-﻿# Glossary : IndexDefinition
+# Glossary: IndexDefinition
 
 ### Properties
 

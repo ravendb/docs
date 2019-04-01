@@ -1,4 +1,4 @@
-# Session : How to Get Entity Change-Vector
+# Session: How to Get Entity Change-Vector
 
 The change-vector reflects the cluster wide point in time where something happened. It includes the unique database ID, node identifier, and the Etag of the document in the specific node.
 When a document is downloaded from the server, it contains various metadata information e.g. ID or current change-vector. Current change-vector is stored within the metadata in session and is available for each entity using the `GetChangeVectorFor` method from the `Advanced` session operations.

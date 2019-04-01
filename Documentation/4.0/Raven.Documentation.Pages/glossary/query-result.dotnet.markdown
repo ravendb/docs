@@ -1,4 +1,4 @@
-﻿# Glossary : QueryResult
+# Glossary: QueryResult
 
 ### Properties
 

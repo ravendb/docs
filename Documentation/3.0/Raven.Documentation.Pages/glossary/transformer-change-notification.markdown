@@ -1,4 +1,4 @@
-﻿# Glossary : TransformerChangeNotification
+# Glossary: TransformerChangeNotification
 
 ### General
 

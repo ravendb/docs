@@ -1,4 +1,4 @@
-# Commands : Querying : How to stream query results?
+# Commands: Querying: How to stream query results?
 
 Use **StreamQuery** method to stream results of a selected index according to a specified query.
 

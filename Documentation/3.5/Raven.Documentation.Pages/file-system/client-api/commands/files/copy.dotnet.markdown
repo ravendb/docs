@@ -1,4 +1,4 @@
-﻿#Commands : CopyAsync
+#Commands: CopyAsync
 
 **CopyAsync** is used to copy the file.
 

@@ -1,4 +1,4 @@
-# Installation : System requirements
+# Installation: System requirements
 
 ## Server mode
 

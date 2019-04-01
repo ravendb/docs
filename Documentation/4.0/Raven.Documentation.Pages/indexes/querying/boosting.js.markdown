@@ -1,4 +1,4 @@
-﻿# Querying : Boosting
+# Querying: Boosting
 
 Indexing in RavenDB is built upon the Lucene engine that provides a boosting term mechanism. This feature introduces the relevance level of matching documents based on the terms found. 
 

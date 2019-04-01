@@ -1,4 +1,4 @@
-# Indexes : Map-Reduce Indexes
+# Indexes: Map-Reduce Indexes
 
 Map-Reduce indexes allow you to perform complex aggregations of data. The first stage, called the map, runs over documents and extracts portions of data according to the defined mapping function(s).
 Upon completion of the first phase, reduction is applied to the map results and the final outcome is produced.

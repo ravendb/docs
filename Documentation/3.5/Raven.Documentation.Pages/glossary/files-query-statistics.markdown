@@ -1,4 +1,4 @@
-﻿# Glossary : FilesQueryStatistics
+# Glossary: FilesQueryStatistics
 
 ### Properties
 

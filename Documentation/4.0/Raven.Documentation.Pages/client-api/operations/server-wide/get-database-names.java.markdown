@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get the Names of Databases on a Server
+# Operations: Server: How to Get the Names of Databases on a Server
 
 To download available database names from a server, use the `GetDatabaseNames` operation.
 

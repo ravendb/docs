@@ -1,4 +1,4 @@
-﻿# Glossary : SuggestionQueryResult
+# Glossary: SuggestionQueryResult
 
 ### Properties
 

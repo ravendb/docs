@@ -1,4 +1,4 @@
-# Settings : Custom Functions
+# Settings: Custom Functions
 
 This view allows you to write custom JavaScript functions that can be used by all functionalities on server side that take leverage of JavaScript e.g. [patching API](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents) or [SQL Replication](../../../server/bundles/sql-replication/basics). To write custom functions, you need to create your own [commonjs module](http://wiki.commonjs.org/wiki/Modules/1.1).
 

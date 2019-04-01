@@ -1,4 +1,4 @@
-#Commands : GetDirectories
+#Commands: GetDirectories
 
 The **GET** method is designated to retrieve the paths of subdirectories of a specified directory. 
 

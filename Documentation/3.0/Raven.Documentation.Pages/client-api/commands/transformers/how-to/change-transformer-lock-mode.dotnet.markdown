@@ -1,4 +1,4 @@
-# Commands : Transformers : How to change transformer lock mode?
+# Commands: Transformers: How to change transformer lock mode?
 
 **SetTransformerLock** method allows you to change transformer lock mode for a given transformer.
 

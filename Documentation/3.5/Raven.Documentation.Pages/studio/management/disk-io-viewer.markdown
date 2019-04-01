@@ -1,4 +1,4 @@
-# Manage Your Server : Disk I/O Viewer
+# Manage Your Server: Disk I/O Viewer
 
 You can use this option to view reports of disk I/O tests which were performed earlier.
 

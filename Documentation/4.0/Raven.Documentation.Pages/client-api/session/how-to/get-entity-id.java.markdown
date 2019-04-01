@@ -1,4 +1,4 @@
-# Session : How to Get Entity ID
+# Session: How to Get Entity ID
 
 Entities does not have to contain an ID property or field. In the case of such an entity, and a need for knowing under what ID it is stored on the server, the `getDocumentId` method was created.
 

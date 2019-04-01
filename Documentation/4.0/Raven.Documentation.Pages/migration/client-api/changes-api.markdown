@@ -1,4 +1,4 @@
-﻿# Migration : Changes API
+# Migration: Changes API
 
 There is one known issue related to using Changes API on RavenDB 4.0:
 

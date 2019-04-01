@@ -1,4 +1,4 @@
-﻿# Operations : How to Add Connection String
+# Operations: How to Add Connection String
 
 You can add a connection string by using **PutConnectionStringOperation**.
 

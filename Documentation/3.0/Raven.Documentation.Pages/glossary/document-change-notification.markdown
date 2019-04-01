@@ -1,4 +1,4 @@
-﻿# Glossary : DocumentChangeNotification
+# Glossary: DocumentChangeNotification
 
 ### General
 

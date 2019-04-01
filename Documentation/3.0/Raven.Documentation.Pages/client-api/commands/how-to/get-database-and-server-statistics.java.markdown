@@ -1,4 +1,4 @@
-# Commands : How to get database and server statistics?
+# Commands: How to get database and server statistics?
 
 There are two types of statistics available. First type of statistics returns server-wide information, the second one returns statistics for particular database.
 

@@ -1,4 +1,4 @@
-﻿# Glossary : MultiLoadResult
+# Glossary: MultiLoadResult
 
 ### Properties
 

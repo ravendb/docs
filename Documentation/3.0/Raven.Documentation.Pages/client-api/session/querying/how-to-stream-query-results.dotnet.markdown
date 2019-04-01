@@ -1,4 +1,4 @@
-# Session : Querying : How to stream query results?
+# Session: Querying: How to stream query results?
 
 Query results can be streamed using `Stream` method from `Advanced` session operations.
 

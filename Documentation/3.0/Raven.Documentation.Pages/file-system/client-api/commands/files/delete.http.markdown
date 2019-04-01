@@ -1,4 +1,4 @@
-﻿#Commands : Delete
+#Commands: Delete
 
 The **DELETE** methods allow to remove a single file or multiple files at once from the file system.
 

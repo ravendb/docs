@@ -1,4 +1,4 @@
-﻿# Session : Storing entities in session
+# Session: Storing entities in session
 
 To store entities inside session object use the `store` method.
 {CODE:python store_entities_1@ClientApi\Session\StoringEntities.py /}

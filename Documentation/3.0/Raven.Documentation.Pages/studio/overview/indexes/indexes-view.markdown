@@ -1,4 +1,4 @@
-# Indexes : Indexes View
+# Indexes: Indexes View
 
 This view lists all available indexes in a current database and gives you the ability to create, edit, query, or delete indexes. Indexes are grouped by a collection they are working on and each index contains basic information, such as a number of indexed entries and locked state.
 

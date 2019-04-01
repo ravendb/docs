@@ -1,4 +1,4 @@
-﻿# FAQ : Transaction Support in RavenDB
+# FAQ: Transaction Support in RavenDB
 
 {PANEL:ACID storage}
 

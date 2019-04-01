@@ -1,4 +1,4 @@
-# Session : How to Enable Optimistic Concurrency
+# Session: How to Enable Optimistic Concurrency
 
 By default, optimistic concurrency checks are turned **off**. Changes made outside our session object will be overwritten. Concurrent changes to the same document will use
 the Last Write Wins strategy. 

@@ -1,4 +1,4 @@
-# Query : Reporting View
+# Query: Reporting View
 
 This view allows to perform report queries on results of existing indexes. Under the hood it works based on [Dynamic aggregation](../../../indexes/querying/dynamic-aggregation) feature.
 

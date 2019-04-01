@@ -1,4 +1,4 @@
-﻿# Operations : Counters : How to Get Counters
+# Operations: Counters: How to Get Counters
 
 This operation is used to get counters values for a specific document.  
 Can be used to get a single counter value, multiple counters values or all counters values.

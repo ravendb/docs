@@ -1,4 +1,4 @@
-# Configuration : Server Options
+# Configuration: Server Options
 
 {PANEL:Server.MaxTimeForTaskToWaitForDatabaseToLoadInSec}
 

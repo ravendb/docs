@@ -1,4 +1,4 @@
-# Troubleshooting : Debug endpoints
+# Troubleshooting: Debug endpoints
 
 {INFO All endpoints that are **not `<system>`-only** can be accessed for particular database by adding `/databases/{database_name}/` prefix. /}
 

@@ -1,4 +1,4 @@
-﻿# Migration : How to Migrate Highlighting from 3.x
+# Migration: How to Migrate Highlighting from 3.x
 
 Highlighting functionality has been merged into [RQL](../../../../indexes/querying/what-is-rql). Following minor and cosmetic changes have been introduced.
 

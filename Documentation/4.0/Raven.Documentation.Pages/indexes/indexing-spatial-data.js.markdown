@@ -1,4 +1,4 @@
-# Indexes : Indexing Spatial Data
+# Indexes: Indexing Spatial Data
 
 To support the ability to retrieve the data based on spatial coordinates, the spatial search has been introduced.
 

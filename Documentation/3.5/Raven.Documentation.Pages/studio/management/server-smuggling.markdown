@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Server Smuggling
+# Manage Your Server: Server Smuggling
 This feature is meant primarily for users that work with multiple instances of RavenDB. 
 The common scenario is in production/staging/development where you need to move data between databases. 
 Previously, you had to manually move the data using import or export.   

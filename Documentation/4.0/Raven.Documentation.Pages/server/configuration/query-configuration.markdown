@@ -1,4 +1,4 @@
-# Configuration : Query Options
+# Configuration: Query Options
 
 {PANEL:Query.MaxClauseCount}
 

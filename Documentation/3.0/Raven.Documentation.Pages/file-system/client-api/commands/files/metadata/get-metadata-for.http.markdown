@@ -1,4 +1,4 @@
-﻿#Commands : GetMetadata
+#Commands: GetMetadata
 
 The **HEAD** method is used to retrieve the file's metadata.
 

@@ -1,4 +1,4 @@
-# Configuration : License registration
+# Configuration: License registration
 
 In order to register an instance of RavenDB with a license, you can: 
 

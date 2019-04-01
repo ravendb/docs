@@ -1,4 +1,4 @@
-# Session : Opening a Session
+# Session: Opening a Session
 
 To open session use the `openSession` method from `DocumentStore`.
 

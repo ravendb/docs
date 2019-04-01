@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : How to Create a Data Subscription
+# Data Subscriptions: How to Create a Data Subscription
 
 ---
 

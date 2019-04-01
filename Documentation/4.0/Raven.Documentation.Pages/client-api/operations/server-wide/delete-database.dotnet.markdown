@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to delete a database?
+# Operations: Server: How to delete a database?
 
 This operation is used to delete databases from a server, with a possibility to remove all the data from hard drive.
 

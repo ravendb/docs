@@ -1,4 +1,4 @@
-# Attachments : Storing Attachments
+# Attachments: Storing Attachments
 
 In order to store an attachment in RavenDB you need to create a document. Then you can attach an attachment to the document using the `session.advanced.attachments.store()` method.
 

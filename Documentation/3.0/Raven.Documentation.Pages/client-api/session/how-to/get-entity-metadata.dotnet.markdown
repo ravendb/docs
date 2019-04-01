@@ -1,4 +1,4 @@
-# Session : How to get entity metadata?
+# Session: How to get entity metadata?
 
 When document is downloaded from server it contains various metadata information e.g. Id or current etag. This information is stored in session and available for each entity using `GetMetadataFor` method from `Advanced` session operations.
 

@@ -1,4 +1,4 @@
-#Session : Querying : How to Perform Dynamic Group By Query
+#Session: Querying: How to Perform Dynamic Group By Query
 
 Since RavenDB 4.0, the query optimizer supports dynamic group by queries and automatically creates auto map-reduce indexes.
 

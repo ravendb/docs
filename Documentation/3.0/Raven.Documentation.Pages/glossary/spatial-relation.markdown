@@ -1,4 +1,4 @@
-﻿# Glossary : SpatialRelation
+# Glossary: SpatialRelation
 
 ### Enum values
 

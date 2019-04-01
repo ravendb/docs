@@ -1,4 +1,4 @@
-# Settings : Periodic Export
+# Settings: Periodic Export
 
 In this view you can set up `Periodic Export` bundle configuration (you can read more about that bundle [here](../../../server/bundles/periodic-export)).
 

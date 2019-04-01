@@ -1,4 +1,4 @@
-﻿# Changes API : How to Subscribe to Document Changes
+# Changes API: How to Subscribe to Document Changes
 
 Following methods allow you to subscribe to document changes:
 

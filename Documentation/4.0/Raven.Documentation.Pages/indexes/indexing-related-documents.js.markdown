@@ -1,4 +1,4 @@
-# Indexes : Indexing Related Documents
+# Indexes: Indexing Related Documents
 
 To extend indexing capabilities and simplify many scenarios, we have introduced the possibility for indexing related documents.
 

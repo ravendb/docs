@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Put Server-Wide Client Configuration
+# Operations: Server: How to Put Server-Wide Client Configuration
 
 **PutServerWideClientConfigurationOperation** is used to save a server-wide client configuration on the server. It allows you to override the client's settings remotely.  
 

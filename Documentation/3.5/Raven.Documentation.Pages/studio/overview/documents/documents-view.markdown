@@ -1,4 +1,4 @@
-# Documents : Documents View
+# Documents: Documents View
 
 Documents view gives you the overview of all documents available in a specific database.
 

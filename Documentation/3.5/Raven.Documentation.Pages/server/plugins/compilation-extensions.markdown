@@ -1,4 +1,4 @@
-# Plugins : Compilation Extensions
+# Plugins: Compilation Extensions
 
 In certain situations users may want to use more complex logic to calculate a value of an index entry field. To do this we have introduced an `AbstractDynamicCompilationExtension`to RavenDB.
 

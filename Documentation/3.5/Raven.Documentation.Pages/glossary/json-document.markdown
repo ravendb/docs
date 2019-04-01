@@ -1,4 +1,4 @@
-﻿# Glossary : JsonDocument
+# Glossary: JsonDocument
 
 ### Properties
 

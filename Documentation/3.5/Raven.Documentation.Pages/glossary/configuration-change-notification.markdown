@@ -1,4 +1,4 @@
-﻿# Glossary : ConfigurationChangeNotification
+# Glossary: ConfigurationChangeNotification
 
 ### Properties
 

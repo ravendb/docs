@@ -1,4 +1,4 @@
-# Commands : Documents : Get
+# Commands: Documents: Get
 
 There are a few methods that allow you to retrieve documents from a database:   
 

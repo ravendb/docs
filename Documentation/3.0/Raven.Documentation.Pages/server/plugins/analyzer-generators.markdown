@@ -1,4 +1,4 @@
-# Plugins : Analyzer Generators
+# Plugins: Analyzer Generators
 
 To add a custom analyzer, one must implement the `AbstractAnalyzerGenerator` class and provide logic when your custom analyzer should be used.
 

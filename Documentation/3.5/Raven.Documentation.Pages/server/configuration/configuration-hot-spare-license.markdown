@@ -1,4 +1,4 @@
-# Configuration : Hot Spare License
+# Configuration: Hot Spare License
 
 One of the most important features in RavenDB is replication, and the ability to use a 
 replica node to get high availability and load balancing across all nodes.

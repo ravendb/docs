@@ -1,4 +1,4 @@
-# Session : Querying : How to work with suggestions?
+# Session: Querying: How to work with suggestions?
 
 Session `Query` method contains extensions (`Suggest`) that allow you to use suggestion feature.
 

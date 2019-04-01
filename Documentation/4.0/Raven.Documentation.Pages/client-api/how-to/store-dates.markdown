@@ -1,4 +1,4 @@
-# Client API : How to Store Dates in RavenDB Using UTC and Using Local Time
+# Client API: How to Store Dates in RavenDB Using UTC and Using Local Time
 
 When you store a date to RavenDB, it will save whether it's UTC or not.  When it's not UTC, a local date is treated as "Unspecified".
   

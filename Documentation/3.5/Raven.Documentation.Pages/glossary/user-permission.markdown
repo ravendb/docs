@@ -1,4 +1,4 @@
-﻿# Glossary : UserPermission
+# Glossary: UserPermission
 
 Holds the user permission info for the database.
 

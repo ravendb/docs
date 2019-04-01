@@ -1,4 +1,4 @@
-﻿# Operations : How to Get Connection String
+# Operations: How to Get Connection String
 
 You can get connection strings by using **GetConnectionStringsOperation**.
 

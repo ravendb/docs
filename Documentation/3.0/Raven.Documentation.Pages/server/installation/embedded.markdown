@@ -1,4 +1,4 @@
-# Installation : Embedded
+# Installation: Embedded
 
 RavenDB makes it very easy to be embedded within your application. The first step is to reference the `Raven.Database.dll`, either via nuget (package name: `RavenDB.Database`) or by taking the files from the zip distribution package.
 

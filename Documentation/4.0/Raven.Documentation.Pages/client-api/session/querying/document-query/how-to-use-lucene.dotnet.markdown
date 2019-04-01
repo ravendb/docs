@@ -1,4 +1,4 @@
-# Session : Querying : How to use Lucene
+# Session: Querying: How to use Lucene
 
 Lucene flavored syntax can be used with the `WhereLucene` method, a part of the filtering methods available in `IDocumentQuery`.
 

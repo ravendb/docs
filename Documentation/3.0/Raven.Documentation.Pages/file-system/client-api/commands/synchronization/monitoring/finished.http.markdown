@@ -1,4 +1,4 @@
-#Commands : GetFinished
+#Commands: GetFinished
 
 The **GET** method allows to page through the [`SynchronizationReports`](../../../../../glossary/synchronization-report) of already accomplished file synchronizations on the destination server.
 

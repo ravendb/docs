@@ -1,4 +1,4 @@
-# Commands : How to start or stop indexing and get indexing status?
+# Commands: How to start or stop indexing and get indexing status?
 
 Following endpoints have been created to enable user to toggle reducing:   
 - [StartReducing](../../../client-api/commands/how-to/start-stop-reducing#startreducing)   

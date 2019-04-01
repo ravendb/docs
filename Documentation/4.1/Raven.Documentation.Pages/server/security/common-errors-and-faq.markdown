@@ -1,4 +1,4 @@
-# Security : Common Errors & FAQ
+# Security: Common Errors & FAQ
 
 In this section, we review some of the common security configuration errors and explain how to handle them.
 

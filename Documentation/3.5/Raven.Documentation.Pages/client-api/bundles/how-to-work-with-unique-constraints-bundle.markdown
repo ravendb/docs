@@ -1,4 +1,4 @@
-#Unique Constraints : How to work with unique constraints bundle?
+#Unique Constraints: How to work with unique constraints bundle?
 
 In order to use this bundle first activate it on the server. The description can be found in [server section](../../server/bundles/unique-constraints).
 
