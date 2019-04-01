@@ -35,34 +35,32 @@ The document store ensures access to the following client API features:
 
 ---
 
-{PANEL}
+{NOTE: }
 
 * The **Document Store** is the main entry point for the Client API.  
 
-* Manages the connection between a client application and a RavenDB server instance.  
+* Manages the connection between a client application and a RavenDB server.  
 
 * Exposes the methods for performing all operations that can be run against the associated server(s).  
-  * Use the document store to create new [**Session**] objects
+  * Use the document store to create new [Session](../client-api/session/what-is-a-session-and-how-does-it-work) objects  
 
-* Holds the authentication certificate, cache, the cluster topology, and any customizations that may have been applied  
+* Holds the authentication certificate, the cache, the cluster topology, and any customizations that may have been applied.  
 
-* The single access point to a particular RavenDB cluster  
+* The single access point to a particular RavenDB cluster.  
   * Has a list of URL addresses that point to its associated server nodes  
   * Accesses the server via HTTP requests  
 
-* It's recommended that the document store implement the [Singleton Pattern]  
+* It is recommended that the document store implement the [Singleton Pattern].  
 
-The document store exposes the following Client API features:
-
-* [Session](../client-api/session/what-is-a-session-and-how-does-it-work)
-* [Operations](../client-api/operations/what-are-operations)
-* [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation)
-* [Changes API](../client-api/changes/what-is-changes-api)
-* [Conventions](../client-api/configuration/conventions)
-* [Events](../client-api/session/how-to/subscribe-to-events)
-* [Aggressive cache](../client-api/how-to/setup-aggressive-caching)
-
-{PANEL/}
+* The document store exposes the following Client API features:  
+  * [Session](../client-api/session/what-is-a-session-and-how-does-it-work)  
+  * [Operations](../client-api/operations/what-are-operations)  
+  * [Bulk insert](../client-api/bulk-insert/how-to-work-with-bulk-insert-operation)  
+  * [Changes API](../client-api/changes/what-is-changes-api)  
+  * [Conventions](../client-api/configuration/conventions)  
+  * [Events](../client-api/session/how-to/subscribe-to-events)  
+  * [Aggressive cache](../client-api/how-to/setup-aggressive-caching)  
+{NOTE/}
 
 ## Related Articles
 
