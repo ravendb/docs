@@ -1,22 +1,24 @@
 # Client API: How to Setup a Default Database
 
-`Database` property allows you to setup a default database for a `DocumentStore`. Implication of setting up a default database is that each time you access [Operations](../client-api/operations/what-are-operations) or create a [Session](../client-api/session/what-is-a-session-and-how-does-it-work) without explicitly passing database on which they should operate on then default database is assumed.
+* When a document store has a **default database**, each [Operation](../client-api/operations/what-are-operations) or [Session](../client-api/session/what-is-a-session-and-how-does-it-work) created through that document store will operate on that database by default.  
 
-## Example I
+* It is also possible to specify the database individually, whether or not a default database has been set.  
+
+* In this page:  
+  * [Example With No Default Database](#no_default)  
+  * [Example With a Default Database](#default)  
+  <a name="no_default"/>
+## Example With No Default Database
 
 {CODE default_database_1@ClientApi\SetupDefaultDatabase.cs /}
-
-## Example II
+<a name="default"/>
+## Example With a Default Database
 
 {CODE default_database_2@ClientApi\SetupDefaultDatabase.cs /}
 
-## Remarks
-
-{NOTE By default value of `Database` property in `DocumentStore` is `null` which means that in any actions that need a database name we will have to specify the database./}
-
 ## Related Articles
 
-### Document Store
+### Client API
 
 - [What is a Document Store](../client-api/what-is-a-document-store)
 - [Creating a Document Store](../client-api/creating-document-store)
