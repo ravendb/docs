@@ -29,11 +29,11 @@ Here we can filter the data we want to import, select configuration and apply a 
 ![Figure 5. Import Options](images/import-from-ravendb-options.png "Import Options")
 
 - **Include Documents:** Determines whether or not documents should be imported or not, if disabled attachments and counters will automatically be disabled too. 
-- **Include Attachments:** Determines whether or not attachments should be imported. 
-- **Include Revisions:** Determines whether or not Revisions should be imported.
-- **Include Conflicts:** Determines whether or not Conflicts should be imported.
+    - **Include Attachments:** Determines whether or not attachments should be imported. 
+    - **Include Revisions:** Determines whether or not Revisions should be imported.
+    - **Include Conflicts:** Determines whether or not Conflicts should be imported.
 - **Include Indexes:** Determines whether or not Indexes should be imported. 
-- **Remove Analyzers:** Determines whether or not Analyzers used by indexes should be stripted or not. 
+    - **Remove Analyzers:** Determines whether or not Analyzers used by indexes should be stripted or not. 
 - **Include Identities:** Determines whether or not Identities should be imported.
 - **Include Compare Exchange:** Determines whether or not Compare Exchange values should be imported.
 - **Include Subscriptions:** Determines whether or not Subscriptions should be imported.
