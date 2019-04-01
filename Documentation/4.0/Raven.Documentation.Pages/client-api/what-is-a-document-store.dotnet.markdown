@@ -46,7 +46,7 @@ The document store ensures access to the following client API features:
 
 * Holds the authentication certificate, cache, the cluster topology, and any customizations that may have been applied  
 
-* It is the single access point to a particular RavenDB cluster  
+* The single access point to a particular RavenDB cluster  
   * Has a list of URL addresses that point to its associated server nodes  
   * Accesses the server via HTTP requests  
 
