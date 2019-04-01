@@ -24,9 +24,11 @@ Do not open a `DocumentStore` using URL addresses that point to nodes outside yo
 
 * Finally, call `.initialize()` to begin using the document store.  
 
-{CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}  
-
 {NOTE/}
+
+##Example Initialization
+
+{CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}  
 
 ##Initialization
 
