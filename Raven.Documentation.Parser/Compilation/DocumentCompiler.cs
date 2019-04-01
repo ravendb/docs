@@ -103,6 +103,9 @@ namespace Raven.Documentation.Parser.Compilation
                 ProcessNonMarkdownImages(file, documentationVersion, page.Language, htmlDocument, images, key);
 
                 var title = ExtractTitle(page, htmlDocument);
+
+                ValidateTitle(title);
+
                 var textContent = ExtractTextContent(htmlDocument, out var relatedArticlesContent);
 
                 var caseSensitiveFileName = PathHelper.GetProperFilePathCapitalization(file.FullName);
@@ -267,6 +270,12 @@ namespace Raven.Documentation.Parser.Compilation
                 return "No title";
 
             return node.InnerText;
+        }
+
+        private void ValidateTitle(string title)
+        {
+            if (title.Contains(" :"))
+                throw new InvalidOperationException("Please remove space before the colon (\" :\") in the markdown file heading.");
         }
     }
 }
