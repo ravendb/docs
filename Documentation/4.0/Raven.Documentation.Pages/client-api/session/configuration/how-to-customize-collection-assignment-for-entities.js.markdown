@@ -1,4 +1,4 @@
-# Session : How to Customize Collection Assignment for Entities
+# Session: How to Customize Collection Assignment for Entities
 
 Entities are grouped into [collections](../../faq/what-is-a-collection) on the server side. In order to determine the collection name that an entity belongs to
 there is special convention which return the collection name based on the type of an entity: [`findCollectionName`](../../configuration/identifier-generation/global#findcollectionname).

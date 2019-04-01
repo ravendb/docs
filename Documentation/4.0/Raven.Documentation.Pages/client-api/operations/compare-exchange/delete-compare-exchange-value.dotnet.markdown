@@ -1,4 +1,4 @@
-﻿# Compare Exchange : How to Delete Compare Exchange Value
+# Compare Exchange: How to Delete Compare Exchange Value
 
 ---
 

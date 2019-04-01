@@ -1,4 +1,4 @@
-﻿#Commands : RetryCopyingAsync
+#Commands: RetryCopyingAsync
 
 **RetryCopyingAsync** runs a background task that will resume unaccomplished file copies. Read [Background tasks](../../../server/background-tasks) article for details.
 

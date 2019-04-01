@@ -1,4 +1,4 @@
-# Session : Querying : How to use search?
+# Session: Querying: How to use search?
 
 More complex text searching can be achieved by using `search` extension method. This method allows you to pass one or more search terms that will be used in searching process for a particular field (or fields).
 

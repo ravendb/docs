@@ -1,4 +1,4 @@
-# Indexes : Transformers Edit View
+# Indexes: Transformers Edit View
 
 This view allows adding new transformers or editing existing ones.
 

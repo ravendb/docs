@@ -1,4 +1,4 @@
-﻿# Troubleshooting : Voron Recovery Tool
+# Troubleshooting: Voron Recovery Tool
 
 The Voron recovery tool is designed to extract your data even on the worst corruption state imaginable.  
 

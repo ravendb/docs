@@ -1,4 +1,4 @@
-﻿# Operations : Attachments : How to Get an Attachment
+# Operations: Attachments: How to Get an Attachment
 
 This operation is used to get an attachment from a document. 
 

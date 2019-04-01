@@ -1,4 +1,4 @@
-# Administration : Multiple Databases
+# Administration: Multiple Databases
 
 RavenDB originally supports multiple databases. If you want to configure the additional databases, you need to create a document, as usual. RavenDB multi database support was explicitly designed to support multi tenancy scenarios, and RavenDB can handle hundreds or thousands of databases on the same instance.   
 

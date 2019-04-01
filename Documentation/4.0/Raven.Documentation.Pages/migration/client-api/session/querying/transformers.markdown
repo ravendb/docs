@@ -1,4 +1,4 @@
-﻿# Migration : How to Migrate Transformers from 3.x
+# Migration: How to Migrate Transformers from 3.x
 
 Transformers were removed and substituted by a server-side projection support. Methods like `TransformWith` are no longer available and simple `Select` should be used instead. 
 

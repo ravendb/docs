@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Compact a Database
+# Operations: Server: How to Compact a Database
 
 To compact database, please use **CompactDatabaseOperation**. You can choose what should be compacted: documents and/or listed indexes.
 

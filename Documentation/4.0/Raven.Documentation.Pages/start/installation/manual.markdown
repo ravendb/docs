@@ -1,4 +1,4 @@
-# Installation : Manual Setup
+# Installation: Manual Setup
 
 By default, when Server is started using `run.ps1` (or `run.sh`) script. It will open a browser with a [Setup Wizard](../../start/installation/setup-wizard) which will guide you through the Server configuration process.
 

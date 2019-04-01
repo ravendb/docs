@@ -1,4 +1,4 @@
-# Configuration : Monitoring Options
+# Configuration: Monitoring Options
 
 {PANEL:Monitoring.Snmp.Enabled}
 

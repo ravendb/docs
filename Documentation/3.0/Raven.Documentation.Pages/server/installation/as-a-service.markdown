@@ -1,4 +1,4 @@
-# Installation : Running as a service
+# Installation: Running as a service
 
 RavenDB supports running as a system service, creating its own HTTP server, and processing all requests internally.
 

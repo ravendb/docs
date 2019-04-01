@@ -1,4 +1,4 @@
-﻿# Operations : How to Disable an Index
+# Operations: How to Disable an Index
 
 The **DisableIndexOperation** is used to turn the indexing off for a given index. Querying a `disabled` index is allowed, but it may return stale results.
 

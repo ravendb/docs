@@ -1,4 +1,4 @@
-# Documents : Document Edit View
+# Documents: Document Edit View
 
 Whenever you want to edit a document (e.g. by clicking on Id in [Documents View](../../../studio/overview/documents/documents-view)) you will be redirected to `Document Edit View` which allows you to view or edit document's content and its metadata.
 

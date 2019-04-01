@@ -1,4 +1,4 @@
-# Session : What is a session and how does it work?
+# Session: What is a session and how does it work?
 
 After creating a RavenDB document store, we are ready to use the database server instance it is pointing at. For any operation we want to perform on the DB, we start by obtaining a new Session object from the document store. The Session object will contain everything needed to perform any operation necessary:
 

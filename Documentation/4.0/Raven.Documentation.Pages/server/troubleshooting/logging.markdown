@@ -1,4 +1,4 @@
-﻿# Troubleshooting : Logging
+# Troubleshooting: Logging
 
 RavenDB has extensive support for logging, enabling you to figure out exactly what is going on in the server.
 

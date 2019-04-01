@@ -1,4 +1,4 @@
-﻿# Migration : Patching
+# Migration: Patching
 
 This article describes the differences between 3.x and 4.0. It's primarily focused on the JavaScript capabilities. If you are interested only in Client API changes, please visit [this article](../../client-api/operations/patching/single-document).
 

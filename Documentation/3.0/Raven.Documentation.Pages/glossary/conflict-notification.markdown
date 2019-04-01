@@ -1,4 +1,4 @@
-﻿# Glossary : ConflictNotification
+# Glossary: ConflictNotification
 
 ### Properties
 

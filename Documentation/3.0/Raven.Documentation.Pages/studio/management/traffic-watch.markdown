@@ -1,4 +1,4 @@
-# Manage Your Server : Traffic Watch
+# Manage Your Server: Traffic Watch
 
 Thanks to the Traffic Watch you can easily view all incoming HTTP Requests, and their details, for the chosen database. To establish such a connection, you need to choose from the following options that appear when you click on the `Configure Connection` button:
 

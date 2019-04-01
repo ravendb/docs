@@ -1,4 +1,4 @@
-# Bundle : Versioning
+# Bundle: Versioning
 
 The versioning bundle will create snapshots for every document, upon every update received, or when it is deleted. It is useful when you need to track the history of the documents or when you need a full audit trail.
 

@@ -1,4 +1,4 @@
-# Session : How to defer operations?
+# Session: How to defer operations?
 
 Operations can be deferred till `saveChanges` is called by using `defer` method in `advanced()` session operations. There are four types of commands that can be deferred:
 

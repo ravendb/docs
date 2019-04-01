@@ -1,4 +1,4 @@
-# Encryption : Secret Key Management
+# Encryption: Secret Key Management
 
 One of the challenges in cryptosystems is "secret protection" - how to protect the encryption key.  
 If the key is stored in plain text then any user that can access the key can access the encrypted data. If the key is to be encrypted, another key is needed, and so on. 

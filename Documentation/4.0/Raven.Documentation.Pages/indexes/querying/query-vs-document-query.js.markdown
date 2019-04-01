@@ -1,4 +1,4 @@
-﻿# Querying : Query vs DocumentQuery
+# Querying: Query vs DocumentQuery
 
 Unlike .NET, Node.js client offers single API for querying documents. 
 

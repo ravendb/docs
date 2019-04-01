@@ -1,4 +1,4 @@
-# Bundle : Encryption
+# Bundle: Encryption
 
 The encryption bundle introduces data encryption to RavenDB. By default it uses AES-128 encryption algorithm, but this can be easily changed if needed. Encryption is fully transparent for the end-user, it applies to all documents and in default configuration to all indexes as well.
 

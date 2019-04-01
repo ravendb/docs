@@ -1,4 +1,4 @@
-﻿# Replication : How client integrates with replication bundle?
+# Replication: How client integrates with replication bundle?
 
 RavenDB's Client API is aware of the replication mechanism offered by the server instances and is ready to support failover scenarios.
 

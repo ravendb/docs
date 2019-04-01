@@ -1,4 +1,4 @@
-# Session : Querying : How to perform a faceted search?
+# Session: Querying: How to perform a faceted search?
 
 To execute facet query using session `Query` method use `ToFacets` extension. There is also a possibility to convert query straight into `FacetQuery` instance using `ToFacetQuery` extension.
 

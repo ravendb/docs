@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Windows Authentication
+# Manage Your Server: Windows Authentication
 
 The Studio supports configuring Windows Authentication. In this view you can configure authentication settings for a single user or a user group (read more about Authentication & Authorization [here](../../server/configuration/authentication-and-authorization)).
 

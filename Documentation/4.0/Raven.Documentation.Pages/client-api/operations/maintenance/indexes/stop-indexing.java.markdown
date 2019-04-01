@@ -1,4 +1,4 @@
-﻿# Operations : How to Stop Indexing
+# Operations: How to Stop Indexing
 
 **StopIndexingOperation** is used to stop indexing for the entire database.
 

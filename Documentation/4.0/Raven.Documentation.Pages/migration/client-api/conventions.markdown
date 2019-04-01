@@ -1,4 +1,4 @@
-﻿# Migration : Changes in Conventions
+# Migration: Changes in Conventions
 
 All conventions needs to be set before `DocumentStore.Initialize` is called.   
 Otherwise, an `InvalidOperationException` will be thrown.

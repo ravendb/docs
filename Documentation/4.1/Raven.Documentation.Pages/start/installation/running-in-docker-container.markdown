@@ -1,4 +1,4 @@
-# Installation : Running in a Docker Container
+# Installation: Running in a Docker Container
 
 A RavenDB Server can run on [Docker](https://www.docker.com/) using our official images available in these channels:
 

@@ -1,4 +1,4 @@
-﻿# Storage : Customizing RavenDB Data Files Locations
+# Storage: Customizing RavenDB Data Files Locations
 
 ##  Storing RavenDB data files in different devices, by customizing their locations.
 

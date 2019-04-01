@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get Server-Wide Client Configuration
+# Operations: Server: How to Get Server-Wide Client Configuration
 
 **GetServerWideClientConfigurationOperation** is used to return a server-wide client configuration which is saved on the server and overrides the client behavior. 
 

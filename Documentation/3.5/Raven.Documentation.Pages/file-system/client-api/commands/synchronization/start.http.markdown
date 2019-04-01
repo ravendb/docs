@@ -1,4 +1,4 @@
-#Commands : Start
+#Commands: Start
 
 The **POST** methods are used to manually force the synchronization to the destinations. 
 There are two endpoints that allow you either to synchronize all the files which require that or to synchronize just one specified file.

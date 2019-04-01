@@ -1,4 +1,4 @@
-# Configuration : Command Line Arguments
+# Configuration: Command Line Arguments
 
 Running RavenDB using command line options provides the ability to setup both its behavior (e.g. running as daemon or service) and its configuration options.
 

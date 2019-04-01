@@ -1,4 +1,4 @@
-# Session : Querying : How to perform a faceted search?
+# Session: Querying: How to perform a faceted search?
 
 To execute facet query using session `query` method use `toFacets` method.
 

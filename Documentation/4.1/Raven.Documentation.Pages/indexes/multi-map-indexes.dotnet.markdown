@@ -1,4 +1,4 @@
-# Indexes : Multi-Map Indexes
+# Indexes: Multi-Map Indexes
 
 Multi-Map indexes allow you to index data from multiple collections e.g. polymorphic data (check the [example](../indexes/indexing-polymorphic-data)) or any common data between types.
 

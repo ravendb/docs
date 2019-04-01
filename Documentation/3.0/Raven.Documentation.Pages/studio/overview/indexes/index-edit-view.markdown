@@ -1,4 +1,4 @@
-# Indexes : Index Edit View
+# Indexes: Index Edit View
 
 Whenever you want to add a new one or edit an existing index, you will be redirected to the `Index Edit View`. This view helps you shape the index definition by providing code-completion, formatters, C# code generator, and more.
 

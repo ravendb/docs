@@ -1,4 +1,4 @@
-# Commands : Indexes : Put
+# Commands: Indexes: Put
 
 There are few methods that allow you to insert index into a database:   
 - [PutIndex](../../../client-api/commands/indexes/put#putindex)   

@@ -1,4 +1,4 @@
-# Settings : Database Settings
+# Settings: Database Settings
 
 Here you can edit settings for the current database.
 

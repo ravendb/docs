@@ -1,4 +1,4 @@
-﻿# Operations : Attachments : How to Delete an Attachment
+# Operations: Attachments: How to Delete an Attachment
 
 This operation is used to delete an attachment from a document. 
 

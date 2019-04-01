@@ -1,4 +1,4 @@
-﻿# Documents : Conflicts View
+# Documents: Conflicts View
 
 If [Replication Bundle](../../../server/scaling-out/replication/how-replication-works) is enabled then an additional view is available in the studio - Conflicts. In order navigate there expand the `Documents` option from the main bar.
 

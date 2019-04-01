@@ -1,4 +1,4 @@
-#Commands : Rename
+#Commands: Rename
 
 The **PATCH** method is used to change the file name. 
 

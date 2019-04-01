@@ -1,4 +1,4 @@
-# Changes API : What is Changes API?
+# Changes API: What is Changes API?
 
 The RavenDB client offers a push notification feature that allows you to receive messages from a server about events that occurred there.
 You are able to subscribe to events for all documents or indexes as well as to indicate a particular one that you are interested in. 

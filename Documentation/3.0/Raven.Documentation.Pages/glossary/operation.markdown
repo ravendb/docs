@@ -1,4 +1,4 @@
-﻿# Glossary : Operation
+# Glossary: Operation
 
 ### Methods
 

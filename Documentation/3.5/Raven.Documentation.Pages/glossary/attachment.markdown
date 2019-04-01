@@ -1,4 +1,4 @@
-﻿# Glossary : Attachment
+# Glossary: Attachment
 
 ### Properties
 

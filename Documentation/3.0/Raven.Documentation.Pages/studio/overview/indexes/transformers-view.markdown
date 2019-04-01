@@ -1,4 +1,4 @@
-# Indexes : Transformers View
+# Indexes: Transformers View
 
 This view lists all available transformers in the current database and gives you the ability to create new ones and edit or delete existing ones.
 

@@ -1,4 +1,4 @@
-﻿# Querying : Highlighting
+# Querying: Highlighting
 
 Another feature called `Highlighting` has been added to RavenDB to enhance the search UX.
 

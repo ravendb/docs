@@ -1,4 +1,4 @@
-# Tasks : CSV Import
+# Tasks: CSV Import
 
 This view allows you to import CSV data from files. You can create a file using `Export CSV` functionality in [Documents View](../../../studio/overview/documents/documents-view) or [Query View](../../../studio/overview/query/query-view).
 

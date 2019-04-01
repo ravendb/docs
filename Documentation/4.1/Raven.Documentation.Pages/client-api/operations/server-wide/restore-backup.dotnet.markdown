@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Restore a Database from the Backup
+# Operations: Server: How to Restore a Database from the Backup
 
 To restore a database from its backup, use **RestoreBackupOperation**. 
 

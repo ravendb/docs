@@ -1,4 +1,4 @@
-#Commands : Delete
+#Commands: Delete
 
 There are two methods that allow to delete a single file or multiple files at once.
 

@@ -1,4 +1,4 @@
-# Security : Overview
+# Security: Overview
 
 In the security section, we will review the security features in RavenDB and explain how to manage your secured server or cluster.
 

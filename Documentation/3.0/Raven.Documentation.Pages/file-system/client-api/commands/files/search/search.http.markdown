@@ -1,4 +1,4 @@
-#Commands : Search
+#Commands: Search
 
 Use the **GET** method on `/search` endpoint to fetch the list of files matching the specified query.
 

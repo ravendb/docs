@@ -1,4 +1,4 @@
-﻿# Glossary : UserInfo
+# Glossary: UserInfo
 
 Holds the user info for the database.
 

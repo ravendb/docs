@@ -1,4 +1,4 @@
-# Query : Data Exploration View
+# Query: Data Exploration View
 
 One of the things that tend to happen a lot when we are developing with a database is that we need to peek at 
 the data, and a lot of the time, just looking at the data one document at a time isn't good for us.

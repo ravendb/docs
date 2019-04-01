@@ -1,4 +1,4 @@
-﻿# Administration : Index Administration
+# Administration: Index Administration
 
 RavenDB indexes can be administrated easily by the user with the [Studio](../../studio/database/indexes/indexes-list-view#indexes-list-view) or via maintenance operations in the Client API.
 

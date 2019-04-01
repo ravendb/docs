@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Modify a Conflict Solver
+# Operations: Server: How to Modify a Conflict Solver
 
 The conflict solver allows you to set a conflict resolution script for each collection or resolve conflicts using the latest version. 
 

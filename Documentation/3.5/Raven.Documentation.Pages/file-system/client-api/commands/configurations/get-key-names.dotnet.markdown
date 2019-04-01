@@ -1,4 +1,4 @@
-#Commands : GetKeyNamesAsync
+#Commands: GetKeyNamesAsync
 
 **GetKeyNamesAsync** retrieves names of all stored configurations.
 

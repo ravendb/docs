@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Gather Debug Info
+# Manage Your Server: Gather Debug Info
 
 Here you can create a debug info package for **all loaded** databases.
 

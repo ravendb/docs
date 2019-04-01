@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Server Permissions
+# Manage Your Server: Server Permissions
 
 As described in [Configuration : Authentication & Authorization](../../server/configuration/authentication-and-authorization), you can use two different authentication methods in RavenDB.   
 In both methods, each user is associated with a permission type:   

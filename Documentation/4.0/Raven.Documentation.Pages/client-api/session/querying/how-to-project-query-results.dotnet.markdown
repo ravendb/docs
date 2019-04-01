@@ -1,4 +1,4 @@
-# Session : Querying : How to Project Query Results
+# Session: Querying: How to Project Query Results
 
 Instead of pulling full documents in query results you can just grab some pieces of data from documents. You can also transform the projected
 results. The projections are defined in LINQ with the usage of:

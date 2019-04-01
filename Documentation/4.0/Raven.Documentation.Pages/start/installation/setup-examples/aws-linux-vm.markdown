@@ -1,4 +1,4 @@
-# Setup Examples : AWS Linux VM
+# Setup Examples: AWS Linux VM
 
 In this walkthrough, we will setup RavenDB on an AWS EC2 t2.micro virtual machine running Ubuntu 16.04.
 

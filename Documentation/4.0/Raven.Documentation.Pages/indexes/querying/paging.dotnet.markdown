@@ -1,4 +1,4 @@
-﻿# Querying : Paging
+# Querying: Paging
 
 Paging, or pagination, is the process of splitting a dataset into pages, reading one page at a time. This is useful for optimizing bandwidth traffic and hardware usage or simply because no user can handle huge amounts of data at once.
 

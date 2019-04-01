@@ -1,4 +1,4 @@
-﻿# Glossary : DatabaseStatistics
+# Glossary: DatabaseStatistics
 
 ### Properties
 

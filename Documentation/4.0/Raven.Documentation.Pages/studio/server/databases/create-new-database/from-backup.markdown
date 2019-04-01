@@ -1,4 +1,4 @@
-﻿# Create a Database : From Backup
+# Create a Database: From Backup
 ---
 
 {NOTE: }

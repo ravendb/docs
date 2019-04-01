@@ -1,4 +1,4 @@
-﻿# Indexes : Indexing Basics
+# Indexes: Indexing Basics
 
 To achieve very fast response times, RavenDB handles **indexing in the background** whenever data is added or changed. This approach allows the server to respond quickly even when large amounts of data have changed. The only drawback of this choice is that results might be stale (more about staleness in next section). Underneath, the server is using [Lucene](http://lucene.apache.org/) to perform indexation and [Raven Query Language](../indexes/querying/what-is-rql) for querying.
 

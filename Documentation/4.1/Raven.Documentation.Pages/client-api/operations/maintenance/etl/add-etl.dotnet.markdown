@@ -1,4 +1,4 @@
-﻿# Operations : How to Add ETL
+# Operations: How to Add ETL
 
 You can add ETL task by using **AddEtlOperation**.
 

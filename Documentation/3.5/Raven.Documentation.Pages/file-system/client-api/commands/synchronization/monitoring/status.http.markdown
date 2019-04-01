@@ -1,4 +1,4 @@
-#Commands : GetSynchronizationStatus
+#Commands: GetSynchronizationStatus
 
 **GET** method allow to retrieve a report that contains the information about the synchronization of a specified file.
 

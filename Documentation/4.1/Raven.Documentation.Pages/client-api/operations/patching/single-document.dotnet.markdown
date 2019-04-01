@@ -1,4 +1,4 @@
-﻿# Patching : How to Perform Single Document Patch Operations
+# Patching: How to Perform Single Document Patch Operations
 
 {NOTE: }
 The **Patch** operation is used to perform partial document updates without having to load, modify, and save a full document. The whole operation is executed on the server-side and is useful as a performance enhancement or for updating denormalized data in entities.

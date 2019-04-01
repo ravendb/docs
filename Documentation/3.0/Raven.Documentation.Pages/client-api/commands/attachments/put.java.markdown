@@ -1,4 +1,4 @@
-# Attachments : Put
+# Attachments: Put
 
 **PutAttachment** is used to insert or update an attachment in a database.
 

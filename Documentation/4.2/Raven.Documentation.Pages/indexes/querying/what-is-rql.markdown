@@ -1,4 +1,4 @@
-﻿# Querying : RQL - Raven Query Language
+# Querying: RQL - Raven Query Language
 
 RQL, the Raven Query Language, is an SQL-like language used to retrieve the data from the server when queries are being executed. 
 

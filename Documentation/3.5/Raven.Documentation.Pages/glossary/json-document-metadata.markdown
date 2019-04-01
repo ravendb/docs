@@ -1,4 +1,4 @@
-﻿# Glossary : JsonDocumentMetadata
+# Glossary: JsonDocumentMetadata
 
 ### Properties
 

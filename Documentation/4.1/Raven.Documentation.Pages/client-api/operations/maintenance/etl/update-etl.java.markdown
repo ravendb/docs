@@ -1,4 +1,4 @@
-﻿# Operations : How to Update ETL
+# Operations: How to Update ETL
 
 You can modify ETL task by using **UpdateEtlOperation**.
 

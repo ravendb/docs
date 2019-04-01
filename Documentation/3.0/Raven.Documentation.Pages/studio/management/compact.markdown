@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Compact
+# Manage Your Server: Compact
 
 Here you can easily compact data by choosing an appropriate database or a file system.
 

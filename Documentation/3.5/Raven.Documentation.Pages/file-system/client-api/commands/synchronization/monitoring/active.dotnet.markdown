@@ -1,4 +1,4 @@
-#Commands : GetActiveAsync
+#Commands: GetActiveAsync
 
 The **GetActiveAsync** method returns the information about the active outgoing synchronizations.
 

@@ -1,4 +1,4 @@
-﻿# Manage Your Server : API Keys
+# Manage Your Server: API Keys
 
 Here you can quickly create API Keys or edit already existing ones (read more about Authentication & Authorization [here](../../server/configuration/authentication-and-authorization)).
 

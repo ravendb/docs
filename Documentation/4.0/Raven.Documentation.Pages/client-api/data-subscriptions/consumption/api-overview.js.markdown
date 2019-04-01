@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : Consumption API Overview
+# Data Subscriptions: Consumption API Overview
 
 ---
 

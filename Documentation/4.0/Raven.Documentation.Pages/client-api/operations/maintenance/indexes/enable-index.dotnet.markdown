@@ -1,4 +1,4 @@
-﻿# Operations : How to Enable an Index
+# Operations: How to Enable an Index
 
 The **EnableIndexOperation** is used to turn on the indexing for a given index.
 

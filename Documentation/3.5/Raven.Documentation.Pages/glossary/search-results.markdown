@@ -1,4 +1,4 @@
-﻿# Glossary : SearchResults
+# Glossary: SearchResults
 
 RavenFS client API class representing search results.
 

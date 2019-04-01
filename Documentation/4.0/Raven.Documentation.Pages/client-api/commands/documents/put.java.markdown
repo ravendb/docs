@@ -1,4 +1,4 @@
-# Commands : Documents : Put
+# Commands: Documents: Put
 
 **Put** is used to insert or update a document in a database.
 

@@ -1,4 +1,4 @@
-# Indexes : Indexing LINQ Extensions
+# Indexes: Indexing LINQ Extensions
 
 Various indexing LINQ extensions are available to enhance the usability and reduce the complexity of the indexing functions. The available extensions are:
 

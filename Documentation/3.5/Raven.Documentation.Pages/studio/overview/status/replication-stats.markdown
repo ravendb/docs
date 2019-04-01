@@ -1,4 +1,4 @@
-# Status : Replication Stats
+# Status: Replication Stats
 
 Here you can find information about replication status and detailed information concerning each node to which data is replicated or from which it is received.
 

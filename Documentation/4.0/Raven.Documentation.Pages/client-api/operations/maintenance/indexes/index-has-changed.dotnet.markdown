@@ -1,4 +1,4 @@
-﻿# Operations : How to Check if an Index has Changed
+# Operations: How to Check if an Index has Changed
 
 **IndexHasChangedOperation** will let you check if the given index definition differs from the one on a server. This might be useful when you want to check the prior index deployment, if the index will be overwritten, and if indexing data will be lost.
 

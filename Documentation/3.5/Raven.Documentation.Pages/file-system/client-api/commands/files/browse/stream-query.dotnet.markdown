@@ -1,4 +1,4 @@
-﻿#Commands : StreamQueryAsync
+#Commands: StreamQueryAsync
 
 **StreamQueryAsync** is used to Stream the query results to the client.
 

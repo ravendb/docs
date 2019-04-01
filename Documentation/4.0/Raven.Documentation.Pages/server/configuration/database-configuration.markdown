@@ -1,4 +1,4 @@
-# Configuration : Database
+# Configuration: Database
 
 {PANEL:Databases.QueryTimeoutInSec}
 

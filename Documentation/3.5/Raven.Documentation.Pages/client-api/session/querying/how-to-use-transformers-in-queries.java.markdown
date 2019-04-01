@@ -1,4 +1,4 @@
-# Session : Querying : How to use transformers in queries?
+# Session: Querying: How to use transformers in queries?
 
 Transformers can be used with session queries using `transformWith` method.
 

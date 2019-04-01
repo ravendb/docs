@@ -1,4 +1,4 @@
-# Installation : Using installer
+# Installation: Using installer
 
 The installation of RavenDB can be accomplished with a GUI installer. The setup wizard will guide you through an installation process where you just need to
 select the type of an installation and provide configuration options.

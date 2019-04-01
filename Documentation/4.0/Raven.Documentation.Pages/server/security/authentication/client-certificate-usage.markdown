@@ -1,4 +1,4 @@
-# Authentication : Client Certificate Usage
+# Authentication: Client Certificate Usage
 
 In previous sections we described how to obtain a server certificate and how to configure RavenDB to use it. In this section we will cover how to use client certificates to connect to a RavenDB server.
 

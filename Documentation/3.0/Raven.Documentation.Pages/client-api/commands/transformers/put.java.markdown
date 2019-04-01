@@ -1,4 +1,4 @@
-# Commands : Transformers : Put
+# Commands: Transformers: Put
 
 **PutTransformer** is used to add a transformer to a database.
 

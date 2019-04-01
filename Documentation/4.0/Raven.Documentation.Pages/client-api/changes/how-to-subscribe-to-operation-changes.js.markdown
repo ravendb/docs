@@ -1,4 +1,4 @@
-﻿# Changes API : How to Subscribe to Operation Changes
+# Changes API: How to Subscribe to Operation Changes
 
 The following methods allow you to subscribe to operation changes:
 

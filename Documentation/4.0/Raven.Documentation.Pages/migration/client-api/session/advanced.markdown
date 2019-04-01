@@ -1,4 +1,4 @@
-﻿# Migration : Changes Related to IAdvancedDocumentSessionOperations
+# Migration: Changes Related to IAdvancedDocumentSessionOperations
 
 Changes in advanced session operations are accessible by `session.Advanced`.
 

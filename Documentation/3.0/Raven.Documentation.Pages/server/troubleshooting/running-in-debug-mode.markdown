@@ -1,4 +1,4 @@
-# Troubleshooting : Running in Debug mode
+# Troubleshooting: Running in Debug mode
 
 Raven can be deployed in several ways, but the easiest method is to simply start the server located in the release zip under "/Server/Raven.Server.exe"
 That will start the server as a console application, which displays the server log.

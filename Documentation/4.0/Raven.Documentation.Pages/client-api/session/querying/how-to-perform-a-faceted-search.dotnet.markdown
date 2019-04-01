@@ -1,4 +1,4 @@
-# Session : Querying : How to Perform a Faceted (Aggregated) Search
+# Session: Querying: How to Perform a Faceted (Aggregated) Search
 
 To execute facet (aggregation) query using the session `Query` method, use the `AggregateBy` or `AggregateUsing` methods. This will scope you to the aggregation query builder where you will be allowed to define single or multiple facets for the query using a straightforward and fluent API.
 

@@ -1,4 +1,4 @@
-﻿# Glossary : BatchResult
+# Glossary: BatchResult
 
 ### Properties
 

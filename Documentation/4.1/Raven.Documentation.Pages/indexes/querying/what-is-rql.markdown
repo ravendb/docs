@@ -1,4 +1,4 @@
-﻿# Querying : RQL - Raven Query Language
+# Querying: RQL - Raven Query Language
 
 ##Overview
 

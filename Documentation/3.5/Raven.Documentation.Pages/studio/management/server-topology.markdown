@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Server Topology
+# Manage Your Server: Server Topology
 
 Here you can request server replication topology. 
 When the answer is received, a graph presenting nodes and their connection status will be displayed.

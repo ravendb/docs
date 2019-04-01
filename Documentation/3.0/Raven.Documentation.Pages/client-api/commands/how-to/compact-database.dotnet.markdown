@@ -1,4 +1,4 @@
-# Commands : How to compact database?
+# Commands: How to compact database?
 
 To compact a database, please use `CompactDatabase` command available in `GlobalAdmin`.
 

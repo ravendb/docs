@@ -1,4 +1,4 @@
-# Client API : How to Integrate with Excel
+# Client API: How to Integrate with Excel
 
 A very common use case for many applications is to expose data to users as an Excel file. RavenDB has dedicated support that allows you to directly consume data stored in a database by an Excel application. 
 

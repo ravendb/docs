@@ -1,4 +1,4 @@
-# Commands : Indexes : How to change index lock mode?
+# Commands: Indexes: How to change index lock mode?
 
 **SetIndexLock** method allows you to change index lock mode for a given index.
 

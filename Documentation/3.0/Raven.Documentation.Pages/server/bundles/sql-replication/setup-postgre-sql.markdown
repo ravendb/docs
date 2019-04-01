@@ -1,4 +1,4 @@
-# Bundle : SQL Replication : PostgreSQL
+# Bundle: SQL Replication: PostgreSQL
 
 To setup a replication to PostgreSQL following steps need to be done:
 

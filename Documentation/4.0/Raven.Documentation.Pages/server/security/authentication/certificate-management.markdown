@@ -1,4 +1,4 @@
-# Authentication : Certificate Management
+# Authentication: Certificate Management
 
 Once authentication is set up, it's the administrator's responsibility to issue and manage client certificates.
 

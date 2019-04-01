@@ -1,4 +1,4 @@
-# Listeners : What are conversion listeners and how to work with them?
+# Listeners: What are conversion listeners and how to work with them?
 
 Conversion listeners provide users with hook for an additional logic when converting an entity to a document/metadata pair and backwards.
 

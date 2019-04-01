@@ -1,4 +1,4 @@
-# Administration : Statistics
+# Administration: Statistics
 
 ## Server statistics
 

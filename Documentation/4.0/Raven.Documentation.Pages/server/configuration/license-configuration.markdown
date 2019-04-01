@@ -1,4 +1,4 @@
-# Configuration : License Options
+# Configuration: License Options
 
 {PANEL:License}
 

@@ -1,4 +1,4 @@
-﻿# Server : Running an Embedded Instance
+# Server: Running an Embedded Instance
 
 {PANEL:Overview}
 

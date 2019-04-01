@@ -1,4 +1,4 @@
-# Indexes : Dynamic Fields
+# Indexes: Dynamic Fields
 
 While strongly typed entities are well processed by LINQ expressions, some scenarios demand the use of dynamic properties. 
 

@@ -1,4 +1,4 @@
-﻿# Indexes : Boosting
+# Indexes: Boosting
 
 A that RavenDB leverages from Lucene is called Boosting. This feature gives you the ability to manually tune the relevance level of matching documents when performing a query. 
 

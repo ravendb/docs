@@ -1,4 +1,4 @@
-﻿# Configuration : Storage Options
+# Configuration: Storage Options
 
 The following configuration options allow you configure [the storage engine](../../server/storage/storage-engine).
 

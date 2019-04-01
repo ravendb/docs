@@ -1,4 +1,4 @@
-# Indexes : Dynamic Fields
+# Indexes: Dynamic Fields
 
 To support searching in object graphs they cannot have the entire structure declared upfront. 
 

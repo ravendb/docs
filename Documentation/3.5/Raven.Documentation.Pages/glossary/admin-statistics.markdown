@@ -1,4 +1,4 @@
-﻿# Glossary : AdminStatistics
+# Glossary: AdminStatistics
 
 ### Properties
 

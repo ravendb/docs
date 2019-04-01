@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get Logs Configuration
+# Operations: Server: How to Get Logs Configuration
 
 To set the server logs configuration, use **SetLogsConfigurationOperation** from `Maintenance.Server`. The server logs configuration is not persisted and will get back to the original value after server restart.
 

@@ -1,4 +1,4 @@
-﻿#Glossary : Database Group
+#Glossary: Database Group
 
 ### What is a database group?
 When a database is created in a [RavenDB Cluster](./ravendb-cluster), we can choose a subset of nodes it would exist on.

@@ -1,4 +1,4 @@
-# Listeners : What are conflict listeners and how to work with them?
+# Listeners: What are conflict listeners and how to work with them?
 
 To allow users to handle document replication conflicts automatically, we introduced a Document Conflict listener.
 To create your own listener of this type, just implement IDocumentConflictListener interface.

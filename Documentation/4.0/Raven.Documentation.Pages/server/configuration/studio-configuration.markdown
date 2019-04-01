@@ -1,4 +1,4 @@
-# Configuration : Studio Options
+# Configuration: Studio Options
 
 {PANEL:Studio.Path}
 

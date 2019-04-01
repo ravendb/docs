@@ -1,4 +1,4 @@
-﻿# Conventions : Load Balance & Failover
+# Conventions: Load Balance & Failover
 
 {NOTE: }
 

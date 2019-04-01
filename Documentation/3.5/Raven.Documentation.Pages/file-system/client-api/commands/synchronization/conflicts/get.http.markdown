@@ -1,4 +1,4 @@
-#Commands : GetConflicts
+#Commands: GetConflicts
 
 The **GET** method retrieves the existing conflict items.
 

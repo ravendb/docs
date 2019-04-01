@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Create a Database
+# Operations: Server: How to Create a Database
 
 Create a new database on a server.
 

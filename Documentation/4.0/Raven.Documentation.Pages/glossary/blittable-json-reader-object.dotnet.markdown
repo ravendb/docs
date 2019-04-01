@@ -1,4 +1,4 @@
-﻿# Glossary : BlittableJsonReaderObject
+# Glossary: BlittableJsonReaderObject
 
 The reader object of a blittable JSON document.
 

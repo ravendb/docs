@@ -1,4 +1,4 @@
-# Bundle : Quotas
+# Bundle: Quotas
 
 The Quotas Bundle is helpful when you want to restrict the size of a database. By setting a hard limit and a soft margin, the bundle will make sure you never exceed the space you designate for it to use.
 

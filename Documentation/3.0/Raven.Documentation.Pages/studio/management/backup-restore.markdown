@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Backup & Restore
+# Manage Your Server: Backup & Restore
 
 `Backup` is used to create a backup of a database or a file system. All you need to do is give the name of a resource you want to backup, backup's location, and determine whether the backup should be incremental or not.
 

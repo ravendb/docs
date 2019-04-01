@@ -1,4 +1,4 @@
-# Encryption : Encryption At Rest
+# Encryption: Encryption At Rest
 
 Encryption at rest is implemented at the storage layer, using Daniel J. Bernstein's `XChaCha20-Poly1305` authenticated encryption algorithm.
 

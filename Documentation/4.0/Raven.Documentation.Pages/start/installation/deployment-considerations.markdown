@@ -1,4 +1,4 @@
-# Installation : Deployment Considerations
+# Installation: Deployment Considerations
 
 Deployment of a RavenDB cluster requires some thought about how to setup the network and the cluster and the databases you'll use. 
 In terms of hardware, while obviously more is generally better, RavenDB can do quite well on small instances (such as a resource

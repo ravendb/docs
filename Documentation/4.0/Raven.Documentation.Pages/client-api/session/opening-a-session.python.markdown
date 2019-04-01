@@ -1,4 +1,4 @@
-﻿# Session : Opening a session
+# Session: Opening a session
 
 To open synchronous session use `open_session` method from `documentstore`.
 

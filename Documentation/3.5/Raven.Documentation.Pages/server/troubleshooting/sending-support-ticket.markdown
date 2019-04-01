@@ -1,4 +1,4 @@
-# Troubleshooting : Sending support ticket
+# Troubleshooting: Sending support ticket
 
 When sending a support ticket, it is good to include as much information about the issue as you can. The following article describes what can be send along with the issue description to let us better understand your problem.
 

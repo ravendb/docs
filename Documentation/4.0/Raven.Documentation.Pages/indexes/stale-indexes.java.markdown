@@ -1,4 +1,4 @@
-# Indexes : Stale Indexes
+# Indexes: Stale Indexes
 
 RavenDB performs indexing in the background threads. The indexes start processing whenever the new data comes in, and the existing documents are updated or deleted.
 

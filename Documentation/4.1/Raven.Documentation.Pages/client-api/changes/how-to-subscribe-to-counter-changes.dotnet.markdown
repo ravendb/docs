@@ -1,4 +1,4 @@
-﻿# Changes API : How to Subscribe to Counter Changes
+# Changes API: How to Subscribe to Counter Changes
 
 Following methods allow you to subscribe to counter changes:
 

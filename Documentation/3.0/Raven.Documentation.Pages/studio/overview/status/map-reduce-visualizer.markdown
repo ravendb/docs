@@ -1,4 +1,4 @@
-# Status : Map/Reduce visualizer
+# Status: Map/Reduce visualizer
 
 In this view you get a visualization for map/reduce process. 
 The following options are available in the `Action bar`:

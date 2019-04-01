@@ -1,4 +1,4 @@
-﻿# Migration : Indexes defined using client API
+# Migration: Indexes defined using client API
 
 Below there is list of changes to `AbstractIndexCreationTask`, `AbstractMultiMapIndexCreationTask` and `IndexDefinition`.
 

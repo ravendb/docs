@@ -1,4 +1,4 @@
-﻿# Tasks : Import & Export Database
+# Tasks: Import & Export Database
 
 Import and Export Tabs enable fast data moving between databases. For data export, the following tools can be used:
 

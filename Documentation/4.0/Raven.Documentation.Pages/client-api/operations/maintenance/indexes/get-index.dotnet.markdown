@@ -1,4 +1,4 @@
-﻿# Operations : How to Get an Index
+# Operations: How to Get an Index
 
 **GetIndexOperation** is used to retrieve an index definition from a database.
 

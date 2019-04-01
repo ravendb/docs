@@ -1,4 +1,4 @@
-﻿# Glossary : Raft Consensus Algorithm
+# Glossary: Raft Consensus Algorithm
 
 ### What is Raft?
 

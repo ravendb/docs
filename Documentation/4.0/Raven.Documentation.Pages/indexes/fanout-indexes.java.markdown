@@ -1,4 +1,4 @@
-﻿# Indexes : Fanout Indexes
+# Indexes: Fanout Indexes
 
 The fanout index is the index that outputs multiple index entries per each document. Here is an example of such one:
 

@@ -1,4 +1,4 @@
-﻿#Commands : StartsWith
+#Commands: StartsWith
 
 The **GET** method with the **startsWith** parameter can be used to retrieve multiple file headers for the specified prefix name.
 

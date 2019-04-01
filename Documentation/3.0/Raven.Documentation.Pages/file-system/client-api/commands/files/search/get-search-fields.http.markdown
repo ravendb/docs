@@ -1,4 +1,4 @@
-#Commands : GetSearchFields
+#Commands: GetSearchFields
 
 The **GET** method is used to retrieve the list of all available field names to build a query. 
 

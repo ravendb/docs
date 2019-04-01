@@ -1,4 +1,4 @@
-﻿# Client API : How to Create a Document Store
+# Client API: How to Create a Document Store
 
 To create an instance of the `DocumentStore` you need to specify a list of URL addresses that point to RavenDB server nodes.
 

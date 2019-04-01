@@ -1,4 +1,4 @@
-# Indexes : Storing Data in Index
+# Indexes: Storing Data in Index
 
 Once the [tokenization and analysis](../indexes/using-analyzers) process is completed, the resulting tokens, created according to the used analyzer, are stored in the index.
 By default, tokens saved in the index are available for searching. but their original field values aren't stored.

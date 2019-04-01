@@ -1,4 +1,4 @@
-# Settings : ETL (Extract Transform Load)
+# Settings: ETL (Extract Transform Load)
 
 Here you can edit the following [ETL](../../../server/scaling-out/etl) settings:      
    

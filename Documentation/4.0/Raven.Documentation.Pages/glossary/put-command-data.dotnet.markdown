@@ -1,4 +1,4 @@
-﻿# Glossary : PutCommandData
+# Glossary: PutCommandData
 
 ### Properties
 

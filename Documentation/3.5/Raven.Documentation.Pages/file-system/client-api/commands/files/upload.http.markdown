@@ -1,4 +1,4 @@
-#Commands : Upload
+#Commands: Upload
 
 The **PUT** method is used to insert a new file or update the content of an existing one in a file system.
 

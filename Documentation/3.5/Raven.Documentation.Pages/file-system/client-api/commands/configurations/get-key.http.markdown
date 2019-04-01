@@ -1,4 +1,4 @@
-﻿#Commands : GetKey
+#Commands: GetKey
 
 The **PUT** operation is used to retrieve an object stored as [a configuration item](../../../configurations) in RavenFS.
 

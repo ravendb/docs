@@ -1,4 +1,4 @@
-# Session : Querying : How to use intersect?
+# Session: Querying: How to use intersect?
 
 To return only documents that match **all** provided sub-queries we have introduced `intersect` extension that enables us to do server-side intersection queries.
 

@@ -1,4 +1,4 @@
-# Authorization : How to work with authorization bundle?
+# Authorization: How to work with authorization bundle?
 
 In order to use this bundle first activate it on the server. The description can be found in [server section](../../server/bundles/authorization).
 

@@ -1,4 +1,4 @@
-# Attachments : Deleting Attachments
+# Attachments: Deleting Attachments
 
 **Delete** from `session.Advanced.Attachments` is used to remove an attachment from a document.
 

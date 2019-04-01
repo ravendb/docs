@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : Common Data Subscription Creation Examples
+# Data Subscriptions: Common Data Subscription Creation Examples
 
 ---
 

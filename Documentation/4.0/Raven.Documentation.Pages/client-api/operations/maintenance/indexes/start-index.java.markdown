@@ -1,4 +1,4 @@
-﻿# Operations : How to Start an Index
+# Operations: How to Start an Index
 
 The **StartIndexOperation** is used to resume indexing for an index.
 

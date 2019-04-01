@@ -1,4 +1,4 @@
-﻿# Glossary : IndexToAdd
+# Glossary: IndexToAdd
 
 ### Properties
 

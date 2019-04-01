@@ -1,4 +1,4 @@
-# Client API : What is a public API?
+# Client API: What is a public API?
 
 In RavenDB we are doing our best to not introduce any breaking changes in the public API between minor versions of our client API. This means that the upgrade between version 4.0.A and 4.0.B or even 4.C.D should be smooth.
 

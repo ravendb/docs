@@ -1,4 +1,4 @@
-# Session : Querying : How to customize query?
+# Session: Querying: How to customize query?
 
 Following query customization options are available in `IDocumentQueryCustomization` interface:
 

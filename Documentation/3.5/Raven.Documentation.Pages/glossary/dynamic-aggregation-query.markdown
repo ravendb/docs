@@ -1,4 +1,4 @@
-﻿# Glossary : DynamicAggregationQuery
+# Glossary: DynamicAggregationQuery
 
 ### Methods
 

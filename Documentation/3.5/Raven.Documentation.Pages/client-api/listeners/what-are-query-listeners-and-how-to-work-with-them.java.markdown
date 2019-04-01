@@ -1,4 +1,4 @@
-# Listeners : What are query listeners and how to work with them?
+# Listeners: What are query listeners and how to work with them?
 
 The reason we have document query listeners is to apply query customizations globally. In order to do this the user need to create their own implementation of the `IDocumentQueryListener`.
 

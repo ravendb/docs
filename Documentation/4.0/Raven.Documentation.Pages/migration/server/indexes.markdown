@@ -1,4 +1,4 @@
-﻿# Migration : Indexing Changes
+# Migration: Indexing Changes
 
 {PANEL:Breaking changes in index definition}
 

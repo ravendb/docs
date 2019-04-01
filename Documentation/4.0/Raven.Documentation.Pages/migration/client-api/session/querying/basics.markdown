@@ -1,4 +1,4 @@
-﻿# Migration : How to migrate Queries from 3.x?
+# Migration: How to migrate Queries from 3.x?
 
 Following changes occurred in 4.0 and need to be considered when migration is done.
 

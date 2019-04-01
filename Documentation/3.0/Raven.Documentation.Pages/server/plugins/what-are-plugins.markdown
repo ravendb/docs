@@ -1,4 +1,4 @@
-# Plugins : What are plugins?
+# Plugins: What are plugins?
 
 Under the `Raven.Database.Plugins` namespace, various interfaces and classes that might be used to extend the database behavior can be found.
 

@@ -1,4 +1,4 @@
-﻿# Glossary : AttachmentInformation
+# Glossary: AttachmentInformation
 
 ### Properties
 

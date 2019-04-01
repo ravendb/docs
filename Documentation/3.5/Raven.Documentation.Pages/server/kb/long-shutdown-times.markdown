@@ -1,4 +1,4 @@
-# KB : Server : Long shutdown times
+# KB: Server: Long shutdown times
 
 It is good to be aware of the possibility of a longer-running shutdown. We will start describing this subject with defining the shutdown sequence of a RavenDB database.
 

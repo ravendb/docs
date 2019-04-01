@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : Subscription Consumption Examples
+# Data Subscriptions: Subscription Consumption Examples
 
 ---
 

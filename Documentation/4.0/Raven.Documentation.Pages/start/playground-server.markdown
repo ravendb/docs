@@ -1,4 +1,4 @@
-﻿# Getting Started : Playground Server
+# Getting Started: Playground Server
 
 Our live-test server offers a full functionality of a RavenDB server and is available at [live-test.ravendb.net](http://live-test.ravendb.net/). We encourage you to use it and test various functionalities.
 

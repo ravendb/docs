@@ -1,4 +1,4 @@
-# Session : How to customize key generation for entities?
+# Session: How to customize key generation for entities?
 
 In RavenDB you will encounter a few ways to create document keys. We suggest that you should first read up the article [Working with document identifiers](../../document-identifiers/working-with-document-ids)
 to achieve the basic knowledge about built-in key generation strategies, before you start customizing identifiers of your entities.

@@ -1,4 +1,4 @@
-# Status : Request tracking
+# Status: Request tracking
 
 `Request counter` - shows how many requests per second were there in a given time.
 

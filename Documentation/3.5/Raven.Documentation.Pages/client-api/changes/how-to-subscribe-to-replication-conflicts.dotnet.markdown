@@ -1,4 +1,4 @@
-# Changes API : How to subscribe to replication conflicts?
+# Changes API: How to subscribe to replication conflicts?
 
 Replication conflicts, for both documents and attachments, can be tracked using `ForAllReplicationConflicts` method available in changes API.
 

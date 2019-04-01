@@ -1,4 +1,4 @@
-﻿# Glossary : DeleteCommandData
+# Glossary: DeleteCommandData
 
 ### Properties
 

@@ -1,4 +1,4 @@
-# Query : Query View
+# Query: Query View
 
 This view allows running queries for already existing indexes (click [here](../../../indexes/creating-and-deploying#static-indexes) to read about static indexes) and running dynamic queries, which can create a new dynamic index (click [here](../../../indexes/creating-and-deploying#auto-indexes) to read more about dynamic indexes)
 

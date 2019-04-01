@@ -1,4 +1,4 @@
-# Administration : Backup and Restore
+# Administration: Backup and Restore
 
 {PANEL:**How to backup a database?**}
 

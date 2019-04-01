@@ -1,4 +1,4 @@
-# Listeners : What are store listeners and how to work with them?
+# Listeners: What are store listeners and how to work with them?
 
 In order execute a custom action before or after a document is stored the `IDocumentStoreListener` needs to be implemented:
 

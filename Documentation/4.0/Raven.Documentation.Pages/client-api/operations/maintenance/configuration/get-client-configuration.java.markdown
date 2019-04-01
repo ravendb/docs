@@ -1,4 +1,4 @@
-﻿# Operations : How to Get Client Configuration
+# Operations: How to Get Client Configuration
 
 **GetClientConfigurationOperation** is used to return a client configuration, which is saved on the server and overrides client behavior. 
 

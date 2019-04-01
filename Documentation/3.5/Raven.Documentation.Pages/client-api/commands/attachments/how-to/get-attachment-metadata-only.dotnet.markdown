@@ -1,4 +1,4 @@
-# Attachments : How to get attachment metadata only?
+# Attachments: How to get attachment metadata only?
 
 There are few methods that allow you to download attachment metadata from a database:   
 - [HeadAttachment](../../../../client-api/commands/attachments/how-to/get-attachment-metadata-only#head)   

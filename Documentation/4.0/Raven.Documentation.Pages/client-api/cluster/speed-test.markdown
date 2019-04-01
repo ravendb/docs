@@ -1,4 +1,4 @@
-﻿# Cluster : Speed Test
+# Cluster: Speed Test
 ---
 
 {NOTE: }

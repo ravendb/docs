@@ -1,4 +1,4 @@
-﻿# Glossary : Etags
+# Glossary: Etags
 
 ### What are Etags?
 

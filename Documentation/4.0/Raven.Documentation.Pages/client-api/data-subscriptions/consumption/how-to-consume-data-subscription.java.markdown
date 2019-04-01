@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : How to Consume a Data Subscription
+# Data Subscriptions: How to Consume a Data Subscription
 
 ---
 

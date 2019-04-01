@@ -1,4 +1,4 @@
-﻿# Operations : How to Get Detailed Database Statistics
+# Operations: How to Get Detailed Database Statistics
 
 **GetDetailedStatisticsOperation** will retrieve the same database statistics as [GetStatisticsOperation](../../../client-api/operations/maintenance/get-statistics) plus total count of identities and counters. 
 

@@ -1,4 +1,4 @@
-# Session : Querying : How to perform a multifaceted search?
+# Session: Querying: How to perform a multifaceted search?
 
 Multiple [Facet queries](../../../client-api/session/querying/how-to-perform-a-faceted-search) can be executed at once using `multiFacetedSearch` method from `advanced` session operations.
 

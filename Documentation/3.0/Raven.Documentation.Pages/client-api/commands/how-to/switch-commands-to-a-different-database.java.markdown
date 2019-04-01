@@ -1,4 +1,4 @@
-# Commands : How to switch command to a different database?
+# Commands: How to switch command to a different database?
 
 By default, commands available directly in store are working on a default database that was setup for that store. To switch commands to a different database that is available on that server use **ForDatabase** method.
 

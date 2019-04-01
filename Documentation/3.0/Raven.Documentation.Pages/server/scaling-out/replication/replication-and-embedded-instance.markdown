@@ -1,4 +1,4 @@
-# Replication : Using Embedded instance
+# Replication: Using Embedded instance
 
 [Replication](../../../server/scaling-out/replication/how-replication-works) works using plain HTTP requests to replicate all changes from one server instance to another. When running in embedded mode, you can't replicate to that instance (since it has no HTTP endpoints), unless you use [Embedded+HTTP mode](../../../server/installation/embedded) but you can replicate from that instance.
 

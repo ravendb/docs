@@ -1,4 +1,4 @@
-#Commands : GetDestinations
+#Commands: GetDestinations
 
 The list of destination file systems are stored as the configuration under `Raven/Synchronization/Destinations`. You can retrieve it by executing [the appropriate GET](../../configurations/get-key) method.
 

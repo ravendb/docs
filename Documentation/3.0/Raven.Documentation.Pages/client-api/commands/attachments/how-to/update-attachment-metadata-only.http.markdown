@@ -1,4 +1,4 @@
-# Attachments : How to update an attachment metadata only?
+# Attachments: How to update an attachment metadata only?
 
 **UpdateAttachmentMetadata** is used to update an attachment metadata in a database.
 

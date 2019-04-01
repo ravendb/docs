@@ -1,4 +1,4 @@
-﻿# Glossary : SynchronizationDestination
+# Glossary: SynchronizationDestination
 
 ### Properties
 

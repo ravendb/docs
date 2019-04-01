@@ -1,4 +1,4 @@
-﻿# Conventions : Querying
+# Conventions: Querying
 
 ##FindPropertyNameForIndex and FindPropertyNameForDynamicIndex
 

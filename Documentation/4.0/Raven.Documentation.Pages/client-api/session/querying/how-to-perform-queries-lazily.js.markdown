@@ -1,4 +1,4 @@
-# Session : Querying : How to Perform Queries Lazily
+# Session: Querying: How to Perform Queries Lazily
 
 In some situations, query execution must be delayed. To cover such a scenario, `lazily` and many other query extensions have been introduced.
 

@@ -1,4 +1,4 @@
-﻿# Migration : How to Migrate Facets and Dynamic Aggregation from 3.x
+# Migration: How to Migrate Facets and Dynamic Aggregation from 3.x
 
 Facets and Dynamic Aggregation have been merged into a single feature and are now a part of [RQL](../../../../indexes/querying/what-is-rql).
 

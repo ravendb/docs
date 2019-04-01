@@ -1,4 +1,4 @@
-# Session : Querying : How to use highlighting?
+# Session: Querying: How to use highlighting?
 
 **Highlighting** can be a great feature for increasing search UX. To take leverage of it use `highlight` method which is a part of query customizations available from `customize`.
 

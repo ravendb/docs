@@ -1,4 +1,4 @@
-#Commands : SearchOnDirectory
+#Commands: SearchOnDirectory
 
 In order to look for files located in a given directory use the standard [search method](./search) with `__directoryName` and `__level` [terms](../../../../indexing)
 specified in the query parameter.

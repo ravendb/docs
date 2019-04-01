@@ -1,4 +1,4 @@
-# Client API : Setting up Authentication and Authorization
+# Client API: Setting up Authentication and Authorization
 
 Authentication and authorization is based on [client X.509 certificates](../server/security/authorization/security-clearance-and-permissions).
 

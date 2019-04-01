@@ -1,4 +1,4 @@
-﻿# Session : Saving changes
+# Session: Saving changes
 
 Pending session operations e.g. `store`, `delete` and many others will not be send to server till `save_changes` is called.
 

@@ -1,4 +1,4 @@
-# Plugins : Codecs
+# Plugins: Codecs
 
 The `AbstractDocumentCodec` and `AbstractIndexCodec` classes have been introduced as an entry point to custom compression methods.
 

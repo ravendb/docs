@@ -1,4 +1,4 @@
-# Session : Querying : How to Query
+# Session: Querying: How to Query
 
 This session explains the following methods to query a database:
 

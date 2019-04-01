@@ -1,4 +1,4 @@
-﻿# Monitoring : SNMP Support
+# Monitoring: SNMP Support
 
 Simple Network Management Protocol (SNMP) is an Internet-standard protocol for collecting and organizing information 
 about managed devices on IP networks, and is used primarily for monitoring network services. SNMP exposes management 

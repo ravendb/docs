@@ -1,4 +1,4 @@
-﻿# Querying : Faceted (Aggregation) Search
+# Querying: Faceted (Aggregation) Search
 
 When displaying a large amount of data, paging is often used to make viewing the data manageable. It's also useful to give some context of the entire data-set and a easy way to drill-down into particular categories. The common approach to doing this is a "faceted search", as shown in the image below. __Note__ how the count of each category within the current search is across the top.
 

@@ -1,4 +1,4 @@
-# Ongoing Tasks : External Replication
+# Ongoing Tasks: External Replication
 
 We call the task of replicating between two different database groups _external replication_.  
 There is actually no difference in the implementation of an _external replication_ and a regular replication process.  

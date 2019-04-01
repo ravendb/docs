@@ -1,4 +1,4 @@
-# Commands : How to get names of all databases on a server?
+# Commands: How to get names of all databases on a server?
 
 To download all available database names from a server, use the `getDatabaseNames` command from `GlobalAdmin`.
 

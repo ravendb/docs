@@ -1,4 +1,4 @@
-﻿# Glossary : FileHeader
+# Glossary: FileHeader
 
 RavenFS client API class contains info about a file.
 

@@ -1,4 +1,4 @@
-# Session : How to Refresh an Entity
+# Session: How to Refresh an Entity
 
 To update an entity with the latest changes from the server, use the `refresh` method from `advanced` session operations.
 

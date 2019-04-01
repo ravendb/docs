@@ -1,4 +1,4 @@
-# Session : Querying : How to Stream Query Results
+# Session: Querying: How to Stream Query Results
 
 Query results can be streamed using the `stream()` method from the `advanced` session operations. The query can be issued using either a static index, or it can be a dynamic one where it will be handled by an auto index.
 

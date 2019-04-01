@@ -1,4 +1,4 @@
-﻿# Manage Your Server : Admin Logs
+# Manage Your Server: Admin Logs
 
 Here you can connect to a server and view server logs. In order to do so, click on the `Configure Connection` button, which will allow you to set the following:
 

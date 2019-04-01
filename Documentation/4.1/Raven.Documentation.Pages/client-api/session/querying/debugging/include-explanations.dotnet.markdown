@@ -1,4 +1,4 @@
-# Session : Querying : Debugging : How to include Query Explanations
+# Session: Querying: Debugging: How to include Query Explanations
 
 `includeExplanations` allows to investigate details related to score assigned for each query result.
 

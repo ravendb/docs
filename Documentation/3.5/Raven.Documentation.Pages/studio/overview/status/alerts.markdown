@@ -1,4 +1,4 @@
-﻿# Status : Alerts
+# Status: Alerts
 
 Here you can view all (unread and read) alerts occurring on a server.
 

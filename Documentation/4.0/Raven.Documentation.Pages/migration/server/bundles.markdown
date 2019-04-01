@@ -1,4 +1,4 @@
-﻿# Migration : Bundles
+# Migration: Bundles
 
 RavenDB 4.0 doesn't have the notion of bundles. All features are built into the RavenDB server.  
 Many of RavenDB 3.x bundles have been designed to work in a cluster environment. You will find them as [Ongoing Tasks](../../studio/database/tasks/ongoing-tasks/general-info).  

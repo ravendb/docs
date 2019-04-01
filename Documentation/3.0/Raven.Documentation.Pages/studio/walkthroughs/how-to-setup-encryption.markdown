@@ -1,4 +1,4 @@
-# Walkthroughs : Setting up encryption
+# Walkthroughs: Setting up encryption
 
 To set up an [Encryption](../../server/bundles/encryption) bundle using Studio following steps need to be taken:
 

@@ -1,4 +1,4 @@
-﻿#  Indexes : Sorting & Collation
+#  Indexes: Sorting & Collation
 
 Starting from version 4.0, RavenDB automatically determines sorting based on an indexed value. All values will have a capability to be sorted `lexicographically`. Numerical values will also be sortable by their `double` and `long` value.
 

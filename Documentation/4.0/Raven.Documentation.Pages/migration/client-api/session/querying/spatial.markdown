@@ -1,4 +1,4 @@
-﻿# Migration : How to Migrate Spatial from 3.x
+# Migration: How to Migrate Spatial from 3.x
 
 Spatial functionality has been merged into [RQL](../../../../indexes/querying/what-is-rql). To reflect that change, the Client API has integrated this feature into the `session.Query` and `session.Advanced.DocumentQuery`. The following migration samples will focus on the `session.Query` - the most common and recommended way of interaction with querying capabilities on RavenDB.
 

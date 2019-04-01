@@ -1,4 +1,4 @@
-# Installation : System Requirements
+# Installation: System Requirements
 
 ## Minimum Requirements
 

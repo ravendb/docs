@@ -1,4 +1,4 @@
-# Configuration : Testing Options
+# Configuration: Testing Options
 
 {PANEL:Testing.ParentProcessId}
 

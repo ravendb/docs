@@ -1,4 +1,4 @@
-# Session : How to get entity etag?
+# Session: How to get entity etag?
 
 When document is downloaded from server it contains various metadata information e.g. Id or current etag. Current etag is stored within metadata in session and available for each entity using `GetEtagFor` method from `Advanced` session operations.
 

@@ -1,4 +1,4 @@
-# Commands : Indexes : How to change index priority?
+# Commands: Indexes: How to change index priority?
 
 **SetIndexPriority** method allows you to change index priority for a given index.
 

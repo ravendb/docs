@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get Server Build Number
+# Operations: Server: How to Get Server Build Number
 
 To get the server build number use **GetBuildNumberOperation** from `Maintenance.Server`
 

@@ -1,4 +1,4 @@
-﻿# Create a Database : From Legacy Files
+# Create a Database: From Legacy Files
 ---
 
 {NOTE: }

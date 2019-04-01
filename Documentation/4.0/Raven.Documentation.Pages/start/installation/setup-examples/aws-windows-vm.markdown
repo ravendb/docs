@@ -1,4 +1,4 @@
-# Setup Examples : AWS Windows VM
+# Setup Examples: AWS Windows VM
 
 In this walkthrough we will setup RavenDB on an AWS EC2 t2.micro Windows virtual machine.
 

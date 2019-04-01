@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : Maintenance Operations
+# Data Subscriptions: Maintenance Operations
 
 ---
 

@@ -1,4 +1,4 @@
-﻿# Monitoring : How to Setup Zabbix Monitoring
+# Monitoring: How to Setup Zabbix Monitoring
 
 RavenDB 3.5 supports [SNNP](./snmp), which means that with a few quick steps you can monitor your server using Zabbix.
 

@@ -1,4 +1,4 @@
-# Tasks : Toggle Indexing
+# Tasks: Toggle Indexing
 
 This simple view grants you the ability to pause the indexing process. Note that information concerning the pausing is not persisted so restarting the server will re-enable indexing.
 

@@ -1,4 +1,4 @@
-#Commands : SearchAsync
+#Commands: SearchAsync
 
 **SearchAsync** retrieves the names of configurations that starts with a specified prefix.
 

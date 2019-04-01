@@ -1,4 +1,4 @@
-﻿# Glossary : DataSubscriptionChangeNotification
+# Glossary: DataSubscriptionChangeNotification
 
 ### General
 

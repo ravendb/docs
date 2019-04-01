@@ -1,4 +1,4 @@
-# Session : Opening a Session
+# Session: Opening a Session
 
 To open a synchronous session, use the `OpenSession` method from `DocumentStore`. If you prefer working in an asynchronous manner, use `OpenAsyncSession`.
 

@@ -1,4 +1,4 @@
-# Session : Querying : How to perform projection?
+# Session: Querying: How to perform projection?
 
 There are a couple types of projections:
 

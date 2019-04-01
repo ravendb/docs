@@ -1,4 +1,4 @@
-# FAQ : Backward Compatibility
+# FAQ: Backward Compatibility
 
 When it comes to client server compatibility in RavenDB, there are two valid rules. 
 

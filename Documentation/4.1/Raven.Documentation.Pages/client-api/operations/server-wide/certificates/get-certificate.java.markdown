@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get a Certificate
+# Operations: Server: How to Get a Certificate
 
 To get a client certificate by thumbprint use **GetCertificateOperation**.
 

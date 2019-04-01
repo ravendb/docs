@@ -1,4 +1,4 @@
-﻿# Operations : Attachments : How to Put an Attachment
+# Operations: Attachments: How to Put an Attachment
 
 This operation is used to put an attachment to a document. 
 

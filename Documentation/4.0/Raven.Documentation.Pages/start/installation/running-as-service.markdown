@@ -1,4 +1,4 @@
-# Installation : Running as a Service
+# Installation: Running as a Service
 
 {INFO:Prerequisites}
 

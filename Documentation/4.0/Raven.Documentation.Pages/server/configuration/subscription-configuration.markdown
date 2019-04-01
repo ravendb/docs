@@ -1,4 +1,4 @@
-# Configuration : Subscription Options
+# Configuration: Subscription Options
 
 {PANEL:Subscriptions.MaxNumberOfConcurrentConnections}
 

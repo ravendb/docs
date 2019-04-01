@@ -1,4 +1,4 @@
-﻿# Glossary : FileSystemDocument
+# Glossary: FileSystemDocument
 
 ### Properties
 

@@ -1,4 +1,4 @@
-# Session : How to Check if a Document Exists
+# Session: How to Check if a Document Exists
 
 In order to check if a document with specific ID exists in the database, use the `exists()` method from the `advanced` session operations.
 

@@ -1,4 +1,4 @@
-﻿# Operations : How to Stop an Index
+# Operations: How to Stop an Index
 
 The **StopIndexOperation** is used to stop indexing for an index. 
 

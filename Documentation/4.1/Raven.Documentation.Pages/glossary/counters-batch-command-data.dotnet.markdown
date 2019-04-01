@@ -1,4 +1,4 @@
-﻿# Glossary : CountersBatchCommandData
+# Glossary: CountersBatchCommandData
 
 ### Properties
 

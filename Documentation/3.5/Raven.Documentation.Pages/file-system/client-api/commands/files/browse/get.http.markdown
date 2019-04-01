@@ -1,4 +1,4 @@
-#Commands : Get
+#Commands: Get
 
 The **GET** method with **fileNames** parameters is used to retrieve headers of multiple files.
 

@@ -1,4 +1,4 @@
-# Session : How to Get the Current Session Node
+# Session: How to Get the Current Session Node
 
 When working in a RavenDB cluster, a database can reside on multiple nodes. When the client needs to send a request to the server, it can have several nodes to choose from.
 

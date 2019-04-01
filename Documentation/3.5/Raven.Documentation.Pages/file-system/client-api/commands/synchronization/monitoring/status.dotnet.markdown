@@ -1,4 +1,4 @@
-#Commands : GetSynchronizationStatusForAsync
+#Commands: GetSynchronizationStatusForAsync
 
 **GetSynchronizationStatusForAsync** returns a report that contains the information about the synchronization of a specified file.
 

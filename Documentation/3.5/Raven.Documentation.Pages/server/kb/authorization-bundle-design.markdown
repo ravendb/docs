@@ -1,4 +1,4 @@
-# KB : Bundles : Authorization Bundle Design
+# KB: Bundles: Authorization Bundle Design
 
 I used to be able to just sit down and write some code, and eventually things would work. Just In Time Design. That is how I wrote things like Rhino Mocks, for example.
 

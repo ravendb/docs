@@ -1,4 +1,4 @@
-﻿# Glossary : RavenQueryStatistics
+# Glossary: RavenQueryStatistics
 
 ### Properties
 

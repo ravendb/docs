@@ -1,4 +1,4 @@
-# Documents : Patch View
+# Documents: Patch View
 
 Single documents, entire collections or query results can be patched using this view. More detailed information of JavaScript patching capabilities can be found [here](../../../client-api/commands/patches/how-to-use-javascript-to-patch-your-documents). This article focuses on the Studio's side of the patching.
 

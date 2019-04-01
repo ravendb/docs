@@ -1,4 +1,4 @@
-# Session : How to use MoreLikeThis?
+# Session: How to use MoreLikeThis?
 
 `MoreLikeThis` is available through `advanced()` in session operations. This method returns articles similar to the provided input.
 

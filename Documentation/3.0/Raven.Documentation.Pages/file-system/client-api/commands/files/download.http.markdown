@@ -1,4 +1,4 @@
-#Commands : Download
+#Commands: Download
 
 The **GET** method is used to retrieve the file's content and metadata.
 

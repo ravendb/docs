@@ -1,4 +1,4 @@
-﻿# Getting Started : A Few Words About Examples
+# Getting Started: A Few Words About Examples
 
 Most examples in this documentation use the `Northwind` sample database (with minor adjustments) which is fairly popular in .NET, and can be deployed easily using your RavenDB Studio (more information on how to deploy it can be found [here](../studio/database/tasks/create-sample-data)).
 

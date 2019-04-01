@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Put a Client Certificate
+# Operations: Server: How to Put a Client Certificate
 
 You can register an existing client certificate using **PutClientCertificateOperation**. 
 

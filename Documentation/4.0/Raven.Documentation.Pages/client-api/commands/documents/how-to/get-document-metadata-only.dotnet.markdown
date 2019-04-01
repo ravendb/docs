@@ -1,4 +1,4 @@
-# Commands : Documents : How to Get Document Metadata Only
+# Commands: Documents: How to Get Document Metadata Only
 
 **GetDocumentsCommand** can be used to retrieve the metadata of documents.
 

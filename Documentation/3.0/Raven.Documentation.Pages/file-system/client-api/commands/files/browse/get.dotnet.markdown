@@ -1,4 +1,4 @@
-#Commands : GetAsync
+#Commands: GetAsync
 
 **GetAsync** is used to get the file headers of the selected files.
 

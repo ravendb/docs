@@ -1,4 +1,4 @@
-﻿# Cluster : How a Client Integrates with Replication and the Cluster
+# Cluster: How a Client Integrates with Replication and the Cluster
 
 {PANEL:**Failover Behavior**}
 

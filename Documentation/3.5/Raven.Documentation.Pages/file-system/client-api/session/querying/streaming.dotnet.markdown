@@ -1,4 +1,4 @@
-﻿#Session : Querying : StreamQueryAsync
+#Session: Querying: StreamQueryAsync
 
 Query results can be streamed using **StreamQueryAsync** method from Advanced session operations.
 

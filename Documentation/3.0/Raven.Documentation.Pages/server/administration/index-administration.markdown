@@ -1,4 +1,4 @@
-# Administration : Index administration
+# Administration: Index administration
 
 RavenDB indexes can be administrated easily by the user with a code or the Studio.
 

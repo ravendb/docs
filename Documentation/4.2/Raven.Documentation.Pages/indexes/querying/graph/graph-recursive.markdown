@@ -1,4 +1,4 @@
-﻿#Graph API : Recursive Queries
+#Graph API: Recursive Queries
 
 ### What are Recursive Queries and why would we want to use them?
 We have seen in [this](#) article how we can execute graph queries to find matching sub-graph patterns. This is useful when we are looking for specific patterns in a graph.

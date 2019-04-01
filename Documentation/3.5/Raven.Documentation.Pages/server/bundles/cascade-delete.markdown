@@ -1,4 +1,4 @@
-# Bundle : Cascade Delete
+# Bundle: Cascade Delete
 
 The cascade delete bundle allows a specified set of documents and attachments to be deleted when the document that owns it is deleted. Typical usage scenarios include deleting an attachment that is referenced by a document, or removing a set of child documents referenced by a parent document.
 

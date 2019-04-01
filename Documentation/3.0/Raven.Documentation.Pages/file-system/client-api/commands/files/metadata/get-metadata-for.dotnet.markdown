@@ -1,4 +1,4 @@
-#Commands : GetMetadataForAsync
+#Commands: GetMetadataForAsync
 
 **GetMetadataForAsync** is used to retrieve the file's metadata.
 

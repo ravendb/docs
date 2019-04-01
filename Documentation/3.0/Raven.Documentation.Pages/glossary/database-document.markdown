@@ -1,4 +1,4 @@
-﻿# Glossary : DatabaseDocument
+# Glossary: DatabaseDocument
 
 ### Properties
 

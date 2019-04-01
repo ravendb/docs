@@ -1,4 +1,4 @@
-﻿# Querying : Query vs DocumentQuery
+# Querying: Query vs DocumentQuery
 
 Unlike .NET client, Java client offers single API for querying documents. 
 

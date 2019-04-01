@@ -1,4 +1,4 @@
-﻿# Status : Logs
+# Status: Logs
 
 This view allows browsing through last 500 log entries, filtered by severity. You can also sort them using various search phrases, or by log level, logged time, etc.
 

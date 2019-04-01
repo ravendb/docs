@@ -1,4 +1,4 @@
-# Administration : Exporting and Importing data
+# Administration: Exporting and Importing data
 
 In order to export or import data from a RavenDB server, you can use the Raven.Smuggler utility (aka `Smuggler`).
 

@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Promote a Database Node?
+# Operations: Server: How to Promote a Database Node?
 
 This operation is used to promote a database node. After promotion, the node is considered as a `Member`. 
 

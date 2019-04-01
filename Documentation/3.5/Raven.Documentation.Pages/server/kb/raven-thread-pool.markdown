@@ -1,4 +1,4 @@
-# KB : RTP : Raven Thread Pool
+# KB: RTP: Raven Thread Pool
 
 The .NET thread pool is a really amazing piece of technology, and it is suitable for a wide range of usages. RavenDB has been making use of it for almost all of its concurrent work since the very beginning.
 In this article, we will explain some of the reasons why we chose to implement our own thread pool.

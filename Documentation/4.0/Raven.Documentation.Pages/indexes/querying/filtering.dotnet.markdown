@@ -1,4 +1,4 @@
-﻿# Querying : Filtering
+# Querying: Filtering
 
 One of the most basic functionalities of querying is the ability to filter out data and return records that match a given condition. There are couple of ways to do this and they all depend on the querying approach you want to use ([Query](../../client-api/session/querying/how-to-query)from basic session operations, [DocumentQuery](../../client-api/session/querying/document-query/what-is-document-query) from advanced session operations, or directly using [RQL](../../indexes/querying/what-is-rql)).  
 

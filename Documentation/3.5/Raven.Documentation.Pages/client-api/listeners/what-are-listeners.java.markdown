@@ -1,4 +1,4 @@
-# Listeners : What are listeners?
+# Listeners: What are listeners?
 
 The concept of listeners provides users with a mechanism to perform custom actions, in response to operations taken in a session. 
 The listener implements an interface whose methods are called when a particular action is executed on an entity or querying is run.

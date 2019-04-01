@@ -1,4 +1,4 @@
-# Status : Storage
+# Status: Storage
 
 `On disk` - shows general information about space used and paths to logs, data and indexes.
 

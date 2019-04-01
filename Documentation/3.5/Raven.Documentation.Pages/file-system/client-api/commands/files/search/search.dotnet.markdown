@@ -1,4 +1,4 @@
-#Commands : SearchAsync
+#Commands: SearchAsync
 
 Use the **SearchAsync** method to fetch the list of files matching the specified query.
 

@@ -1,4 +1,4 @@
-#Commands : RetryRenaming
+#Commands: RetryRenaming
 
 The **POST** method runs a background task that will resume unaccomplished file renames. Read [Background tasks](../../../server/background-tasks) article for details.
 

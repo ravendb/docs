@@ -1,4 +1,4 @@
-﻿# Create a Database : Encrypted
+# Create a Database: Encrypted
 ---
 
 {NOTE: }

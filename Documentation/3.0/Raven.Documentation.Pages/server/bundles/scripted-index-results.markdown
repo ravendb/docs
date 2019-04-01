@@ -1,4 +1,4 @@
-# Bundle : Scripted Index Results
+# Bundle: Scripted Index Results
 
 Scripted Index Results bundle allows you to attach scripts to indexes. Those scripts can operate on the results of the indexing. This creates new opportunities, such as modification
 of documents by index calculated values or recursive map/reduce indexes.

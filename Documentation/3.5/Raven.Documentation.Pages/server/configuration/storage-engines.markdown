@@ -1,4 +1,4 @@
-# Configuration : Storage Engines
+# Configuration: Storage Engines
 
 {PANEL}
 

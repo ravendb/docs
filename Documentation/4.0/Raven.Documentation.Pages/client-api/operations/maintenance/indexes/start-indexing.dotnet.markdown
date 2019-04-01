@@ -1,4 +1,4 @@
-﻿# Operations : How to Start Indexing
+# Operations: How to Start Indexing
 
 **StartIndexingOperation** is used to resume indexing for entire database. 
 

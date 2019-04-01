@@ -1,4 +1,4 @@
-# Session : How to Ignore Entity Changes
+# Session: How to Ignore Entity Changes
 
 In order to mark an entity as one that should be ignored for change tracking purposes, use the `IgnoreChangesFor` method from the `Advanced` session operations.  
 

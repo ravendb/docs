@@ -1,4 +1,4 @@
-# Changes API : How to subscribe to data subscription changes?
+# Changes API: How to subscribe to data subscription changes?
 
 All subscription changes can be tracked by using `ForAllDataSubscriptions` and `ForDataSubscription` methods.
 

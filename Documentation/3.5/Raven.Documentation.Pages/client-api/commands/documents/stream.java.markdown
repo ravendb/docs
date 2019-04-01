@@ -1,4 +1,4 @@
-# Commands : Documents : Stream
+# Commands: Documents: Stream
 
 **StreamDocs** is used to stream documents which match chosen criteria from a database.
 

@@ -1,4 +1,4 @@
-﻿# Data Subscriptions : Revisions Support
+# Data Subscriptions: Revisions Support
 
 ---
 

@@ -1,4 +1,4 @@
-# Configuration : Replication Options
+# Configuration: Replication Options
 
 {PANEL:Replication.ActiveConnectionTimeoutInSec}
 

@@ -1,4 +1,4 @@
-﻿# Operations : Server : How to Get Logs Configuration
+# Operations: Server: How to Get Logs Configuration
 
 To get the server logs configuration, use **GetLogsConfigurationOperation** from `Maintenance.Server`
 

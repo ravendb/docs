@@ -1,4 +1,4 @@
-﻿# Operations : How to Get Index Terms
+# Operations: How to Get Index Terms
 
 The **GetTermsOperation** will retrieve stored terms for a field of an index.
 

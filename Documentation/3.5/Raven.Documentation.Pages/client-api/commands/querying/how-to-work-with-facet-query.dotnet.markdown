@@ -1,4 +1,4 @@
-# Commands : Querying : How to work with Facet query?
+# Commands: Querying: How to work with Facet query?
 
 There are two methods that allow you to send a Facet query to a database:   
 - [GetFacets](../../../client-api/commands/querying/how-to-work-with-facet-query#getfacets)    
