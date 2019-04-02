@@ -21,6 +21,7 @@
         }
 
         #region document_store_holder
+        //how to generate a singleton document store
         public class DocumentStoreHolder
         {
             private static Lazy<IDocumentStore> store = new Lazy<IDocumentStore>(CreateStore);
@@ -31,8 +32,9 @@
             {
                 IDocumentStore store = new DocumentStore()
                 {
-                    Urls = new[] { "http://localhost:8080" },
-                    Database = "Northwind"
+                    Urls = new[] { "http://your_RavenDB_cluster_node_A",
+                        "http://your_RavenDB_cluster_node_B", "..." },
+                    Database = "your_database_name"
                 }.Initialize();
 
                 return store;
