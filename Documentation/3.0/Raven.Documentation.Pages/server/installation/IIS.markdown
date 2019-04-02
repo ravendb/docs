@@ -109,7 +109,7 @@ It has been confirmed that caching on RavenDB Server Farm causes unexpected erro
 
 ## IIS + Encryption
 
-When encryption bundle is activated the `CryptographicException` can occur with following message: "**The data protection operation was unsuccessful. This may have been caused by not having the user profile loaded for the current thread's user context, which may be the case when the thread is impersonating.**". To resolve this issue, on IIS 7 and later, user profile of the application pool identity must be loaded. More [here](https://blogs.msdn.microsoft.com/vijaysk/2009/03/08/iis-7-tip-3-you-can-now-load-the-user-profile-of-the-application-pool-identity/).
+When encryption bundle is activated the `CryptographicException` can occur with following message: "**The data protection operation was unsuccessful. This may have been caused by not having the user profile loaded for the current thread's user context, which may be the case when the thread is impersonating.**". To resolve this issue, on IIS 7 and later, user profile of the application pool identity must be loaded.
 
 ## References
 

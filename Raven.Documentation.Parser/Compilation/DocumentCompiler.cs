@@ -192,6 +192,9 @@ namespace Raven.Documentation.Parser.Compilation
             {
                 var imagePath = Path.Combine(directory, src);
 
+                if (File.Exists(imagePath) == false)
+                    throw new InvalidOperationException($"Could not find image in '{imagePath}' for article '{key}'.");
+
                 src = src.Replace('\\', '/');
                 if (src.StartsWith("."))
                     throw new InvalidOperationException($"Invalid image path '{src}' in article '{key}'. It cannot start from dot ('.').");
