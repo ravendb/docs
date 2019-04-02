@@ -32,9 +32,7 @@ The document store ensures access to the following client API features:
 - [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)
 =======
 # Client API : What is a Document Store
-
 ---
-
 {NOTE: }
 
 * The **Document Store** is the main entry point for the Client API.  
@@ -50,7 +48,9 @@ The document store ensures access to the following client API features:
   * Has a list of URL addresses that point to its associated server nodes  
   * Accesses the server via HTTP requests  
 
-* It is recommended that the document store implement the [Singleton Pattern].  
+* It is recommended that the document store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton).  
+
+* [How to create a document store](../client-api/creating-document-store)
 
 * The document store exposes the following Client API features:  
   * [Session](../client-api/session/what-is-a-session-and-how-does-it-work)  
@@ -69,7 +69,7 @@ The document store ensures access to the following client API features:
 - [Getting Started](../start/getting-started)
 - [Setup Wizard](../start/installation/setup-wizard)
 
-### Document Store
+### Client API
 
 - [Creating a Document Store](../client-api/creating-document-store)
 - [Setting up Default Database](../client-api/setting-up-default-database)
