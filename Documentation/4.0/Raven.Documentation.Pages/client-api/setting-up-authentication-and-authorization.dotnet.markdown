@@ -10,9 +10,9 @@
 
 * Pass your certificate to the document store's `Certificate` property, as shown in the [example code](#example) below.
 {NOTE/}  
-
-## Example
 <a name="example"></a>
+## Example
+
 {CODE client_cert@ClientApi\Certificate.cs /}
 
 ## Related Articles

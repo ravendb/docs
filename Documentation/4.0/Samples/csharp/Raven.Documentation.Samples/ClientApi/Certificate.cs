@@ -16,8 +16,8 @@ namespace Raven.Documentation.Samples.ClientApi
             using (IDocumentStore store = new DocumentStore()
             {
                 Certificate = clientCertificate,
-                Database = "Northwind",
-                Urls = new[] {"https://my_secured_raven"}
+                Database = "your_secured_database_name",
+                Urls = new[] {"https://your_secured_RavenDB_server_URL"}
             }.Initialize())
             {
                 // do your work here
