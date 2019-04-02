@@ -1,10 +1,24 @@
 # Session: Opening a Session
 
-To open a synchronous session, use the `OpenSession` method from `DocumentStore`. If you prefer working in an asynchronous manner, use `OpenAsyncSession`.
+---
 
-## Syntax
+{NOTE: }
 
-There are three overloads of `OpenSession / OpenAsyncSession` methods
+* Always open a new session object in a `using` statement so that the resources allocated to it can be released when you're done with it. Alternatively, call `.Dispose()` on it.  
+
+* There are two kinds of sessions: **sync** and **async**. Both can be opened from the `DocumentStore`, with `.OpenSession()` and `.OpenAsyncSession()` respectively.  
+  * Each of these methods have three overloads that receive different parameters. These parameters alter the `SessionOptions` object.
+
+* In this page:  
+  * [Syntax](../../client-api/session/opening-a-session#syntax) - the three overloaded methods for opening sessions.  
+  * [SessionOptions](../../client-api/session/opening-a-session#sessionoptions) - an object containing various configurations for the session.  
+{NOTE/}
+
+---
+
+{PANEL:Syntax}
+
+There are three overloads of `OpenSession() / OpenAsyncSession()`
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_1@ClientApi\Session\OpeningSession.cs /}
@@ -25,15 +39,9 @@ The second method is an equivalent of doing
 {CODE-TAB:csharp:Async open_session_3_1@ClientApi\Session\OpeningSession.cs /}
 {CODE-TABS/}
 
-| Parameters | | |
-| ------------- | ------------- | ----- |
-| **options** | `OpenSessionOptions` | Options **containing** information such as **name of database** and **RequestExecutor**. |
+{PANEL/}
 
-| Return Value | |
-| ------------- | ----- |
-| IDocumentSession / IAsyncDocumentSession | Instance of a session object. |
-
-## Options
+{PANEL:SessionOptions}
 
 {CODE session_options@ClientApi\Session\OpeningSession.cs /}
 
@@ -58,12 +66,6 @@ The second method is an equivalent of doing
 {CODE-TAB:csharp:Sync open_session_tracking_1@ClientApi\Session\OpeningSession.cs /}
 {CODE-TAB:csharp:Async open_session_tracking_2@ClientApi\Session\OpeningSession.cs /}
 {CODE-TABS/}
-
-## Remarks
-
-{DANGER:Important}
-**Always remember to release session allocated resources after usage by invoking the `Dispose` method or wrapping the session object in the `using` statement.**
-{DANGER/}
 
 ## Related Articles
 

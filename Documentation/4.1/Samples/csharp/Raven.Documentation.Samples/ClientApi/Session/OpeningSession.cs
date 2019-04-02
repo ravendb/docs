@@ -27,22 +27,27 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         private interface IFoo
         {
             #region open_session_1
-            // Open session for a 'default' database configured in 'DocumentStore'
+            // Open session for the default database configured in `DocumentStore.Database`
             IDocumentSession OpenSession();
 
             // Open session for a specified database
             IDocumentSession OpenSession(string database);
 
+            // Open session and pass it a preconfigured SessionOptions object
             IDocumentSession OpenSession(SessionOptions options);
+
+            //The first overloaded method is equivalent to
+
             #endregion
 
             #region open_session_1_1
-            // Open session for a 'default' database configured in 'DocumentStore'
+            // Open session for the default database configured in `DocumentStore.Database`
             IAsyncDocumentSession OpenAsyncSession();
 
             // Open session for a specified database
             IAsyncDocumentSession OpenAsyncSession(string database);
 
+            // Open session and pass it a preconfigured SessionOptions object
             IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
             #endregion
         }
