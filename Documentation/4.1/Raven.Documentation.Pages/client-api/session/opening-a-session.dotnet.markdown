@@ -51,17 +51,17 @@ The `SessionOptions` object is a property of `session` which contains various op
 
 ## Related Articles
 
-### Session
+### Client API
 
 - [What is a Session and How Does it Work](../../client-api/session/what-is-a-session-and-how-does-it-work) 
 - [Storing Entities](../../client-api/session/storing-entities)
 - [Loading Entities](../../client-api/session/loading-entities)
 - [Saving Changes](../../client-api/session/saving-changes)
 
-### Querying
+### Indexes
 
-- [Basics](../../indexes/querying/basics)
+- [Querying Basics](../../indexes/querying/basics)
 
-### Document Store
+### Getting Started
 
 - [What is a Document Store](../../client-api/what-is-a-document-store)
