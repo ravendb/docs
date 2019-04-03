@@ -9,41 +9,32 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 {
     public class OpeningSession
     {
-        private interface IFoo2
-        {
-            #region session_options
-            string Database { get; set; }
-
-            bool NoTracking { get; set; }
-
-            bool NoCaching { get; set; }
-
-            RequestExecutor RequestExecutor { get; set; }
-
-            TransactionMode TransactionMode { get; set; }
-            #endregion
-        }
-
         private interface IFoo
         {
             #region open_session_1
+            // First overloaded method
             // Open session for the default database configured in `DocumentStore.Database`
             IDocumentSession OpenSession();
 
+            // Second overloaded method
             // Open session for a specified database
             IDocumentSession OpenSession(string database);
 
+            // Third overloaded method
             // Open session and pass it a preconfigured SessionOptions object
             IDocumentSession OpenSession(SessionOptions options);
             #endregion
 
             #region open_session_1_1
+            // First overloaded method
             // Open session for the default database configured in `DocumentStore.Database`
             IAsyncDocumentSession OpenAsyncSession();
 
+            // Second overloaded method
             // Open session for a specified database
             IAsyncDocumentSession OpenAsyncSession(string database);
 
+            // Third overloaded method
             // Open session and pass it a preconfigured SessionOptions object
             IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
             #endregion
@@ -51,38 +42,44 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
         public async Task Sample()
         {
-            string databaseName = "DB1";
+            #region open_session_2
+            using (var store = new DocumentStore())
+            {
+                //The first overloaded version -
+                store.OpenSession();
+                //- is equivalent to:
+                store.OpenSession(new SessionOptions());
+
+                //The second overloaded version -
+                store.OpenSession("your_database_name");
+                //- is equivalent to:
+                store.OpenSession(new SessionOptions
+                {
+                    Database = "your_database_name"
+                });
+            }
+            #endregion
+
+            #region open_session_2_1
+            using (var store = new DocumentStore())
+            {
+                //The first overloaded method -
+                store.OpenAsyncSession();
+                //- is equivalent to:
+                store.OpenAsyncSession(new SessionOptions());
+
+                //The second overloaded method -
+                store.OpenAsyncSession("your_database_name");
+                //- is equivalent to:
+                store.OpenAsyncSession(new SessionOptions
+                {
+                    Database = "your_database_name"
+                });
+            }
+            #endregion
 
             using (var store = new DocumentStore())
             {
-                #region open_session_2
-                store.OpenSession(); //this is equivalent to:
-                store.OpenSession(new SessionOptions());
-
-
-                store.OpenSession(new SessionOptions
-                {
-                    Database = databaseName
-                });
-                #endregion
-
-                #region open_session_2_1
-                store.OpenAsyncSession(new SessionOptions());
-
-                store.OpenAsyncSession(new SessionOptions
-                {
-                    Database = databaseName
-                });
-                #endregion
-
-                #region open_session_3
-
-                #endregion
-
-                #region open_session_3_1
-
-                #endregion
-
                 #region open_session_4
                 using (IDocumentSession session = store.OpenSession())
                 {
