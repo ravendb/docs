@@ -4,11 +4,11 @@
 
 {NOTE: }
 
-* Always open a new session object in a `using` statement so that the resources allocated to it can be released when you're done with it. Alternatively, call `.Dispose()` on it. (The session implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
+* Always open a new session object in a `using` statement so that the resources allocated to it can be released after you're done with it. Alternatively, call `.Dispose()` on it. (The session implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
 
 * There are two kinds of session: **sync** and **async**. Both can be opened from the `DocumentStore`, with `.OpenSession()` and `.OpenAsyncSession()` respectively.  
 
-* `OpenSession/OpenAsyncSession` have three overloaded versions that receive different parameters. These parameters alter the **session options**.
+* `OpenSession` and `OpenAsyncSession` each have three overloads that create sessions with different **session options**.
 
 * In this page:  
   * [Syntax](../../client-api/session/opening-a-session#syntax)  
@@ -19,14 +19,15 @@
 
 {PANEL:Syntax}
 
-There are three overloaded versions of `OpenSession() / OpenAsyncSession()`:
+There are three overloads each of `OpenSession() / OpenAsyncSession()`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_1@ClientApi\Session\OpeningSession.cs /}
 {CODE-TAB:csharp:Async open_session_1_1@ClientApi\Session\OpeningSession.cs /}
 {CODE-TABS/}
+<br/>
 
-The first two overloaded methods simply wrap the third overloaded method and pass it a `new SessionOptions()` object.
+All the first two overloads do is wrap the third overload and pass it a new `SessionOptions` object.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_2@ClientApi\Session\OpeningSession.cs /}
@@ -36,7 +37,7 @@ The first two overloaded methods simply wrap the third overloaded method and pas
 
 {PANEL:SessionOptions}
 
-The `SessionOptions` object contains the following properties which configure the session's behavior:  
+The `SessionOptions` object is a property of `session` which contains various options to configure the session's behavior:  
 
 | Option | Type | Description | Default Value |
 | --- | --- | --- | --- |
@@ -44,7 +45,7 @@ The `SessionOptions` object contains the following properties which configure th
 | **NoTracking** | bool | Whether the session should keep track of changes to `stored` or `loaded` entities. [How to Disable Tracking](../../client-api/session/configuration/how-to-disable-tracking) | `false` |
 | **NoCaching** | bool | Whether the session should cache responses. [How to Disable Caching](../../client-api/session/configuration/how-to-disable-caching) | `false` |
 | **RequestExecutor** | `RequestExecutor` | _(Advanced)_ Which request executor the session should use | `null` - the default request executor is used |
-| **TransactionMode** | `TransactionMode` | The two transaction modes are `SingleNode` and `ClusterWide`. [Cluster-Wide Transactions](../../server/clustering/cluster-transactions) | `SingleNode` |
+| **TransactionMode** | `TransactionMode` | The two transaction modes are `SingleNode` and `ClusterWide`. Learn more about [Cluster-Wide Transactions](../../server/clustering/cluster-transactions) | `SingleNode` |
 
 {PANEL/}
 

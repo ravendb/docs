@@ -12,29 +12,29 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         private interface IFoo
         {
             #region open_session_1
-            // First overloaded method
+            // First overload
             // Open session for the default database configured in `DocumentStore.Database`
             IDocumentSession OpenSession();
 
-            // Second overloaded method
+            // Second overload
             // Open session for a specified database
             IDocumentSession OpenSession(string database);
 
-            // Third overloaded method
+            // Third overload
             // Open session and pass it a preconfigured SessionOptions object
             IDocumentSession OpenSession(SessionOptions options);
             #endregion
 
             #region open_session_1_1
-            // First overloaded method
+            // First overload
             // Open session for the default database configured in `DocumentStore.Database`
             IAsyncDocumentSession OpenAsyncSession();
 
-            // Second overloaded method
+            // Second overload
             // Open session for a specified database
             IAsyncDocumentSession OpenAsyncSession(string database);
 
-            // Third overloaded method
+            // Third overload
             // Open session and pass it a preconfigured SessionOptions object
             IAsyncDocumentSession OpenAsyncSession(SessionOptions options);
             #endregion
@@ -45,12 +45,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             #region open_session_2
             using (var store = new DocumentStore())
             {
-                //The first overloaded version -
+                //The first overload -
                 store.OpenSession();
                 //- is equivalent to:
                 store.OpenSession(new SessionOptions());
 
-                //The second overloaded version -
+                //The second overload -
                 store.OpenSession("your_database_name");
                 //- is equivalent to:
                 store.OpenSession(new SessionOptions
@@ -63,12 +63,12 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             #region open_session_2_1
             using (var store = new DocumentStore())
             {
-                //The first overloaded method -
+                //The first overload -
                 store.OpenAsyncSession();
                 //- is equivalent to:
                 store.OpenAsyncSession(new SessionOptions());
 
-                //The second overloaded method -
+                //The second overload -
                 store.OpenAsyncSession("your_database_name");
                 //- is equivalent to:
                 store.OpenAsyncSession(new SessionOptions
