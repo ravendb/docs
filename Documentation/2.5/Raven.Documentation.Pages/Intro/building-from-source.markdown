@@ -29,7 +29,7 @@ Other dependencies you will find under _SharedLibs_ folder:
 
 Additionally to build it correctly you have to install:
 
-* [Windows Installer XML (WiX)](http://http://wix.codeplex.com/)
+* [Windows Installer XML (WiX)](http://wixtoolset.org/)
 * [ASP.NET MVC 4](https://docs.microsoft.com/en-us/aspnet/mvc/mvc4)
 
 The build process will, by default, execute all tests, which will take a while. You may skip the tests by executing:
