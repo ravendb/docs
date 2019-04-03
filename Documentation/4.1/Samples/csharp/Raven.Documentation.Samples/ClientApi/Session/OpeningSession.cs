@@ -35,9 +35,6 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 
             // Open session and pass it a preconfigured SessionOptions object
             IDocumentSession OpenSession(SessionOptions options);
-
-            //The first overloaded method is equivalent to
-
             #endregion
 
             #region open_session_1_1
@@ -59,25 +56,31 @@ namespace Raven.Documentation.Samples.ClientApi.Session
             using (var store = new DocumentStore())
             {
                 #region open_session_2
+                store.OpenSession(); //this is equivalent to:
                 store.OpenSession(new SessionOptions());
-                #endregion
 
-                #region open_session_2_1
-                store.OpenAsyncSession(new SessionOptions());
-                #endregion
 
-                #region open_session_3
                 store.OpenSession(new SessionOptions
                 {
                     Database = databaseName
                 });
                 #endregion
 
-                #region open_session_3_1
+                #region open_session_2_1
+                store.OpenAsyncSession(new SessionOptions());
+
                 store.OpenAsyncSession(new SessionOptions
                 {
                     Database = databaseName
                 });
+                #endregion
+
+                #region open_session_3
+
+                #endregion
+
+                #region open_session_3_1
+
                 #endregion
 
                 #region open_session_4

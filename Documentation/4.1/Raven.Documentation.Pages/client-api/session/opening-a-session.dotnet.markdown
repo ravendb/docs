@@ -7,7 +7,7 @@
 * Always open a new session object in a `using` statement so that the resources allocated to it can be released when you're done with it. Alternatively, call `.Dispose()` on it.  
 
 * There are two kinds of sessions: **sync** and **async**. Both can be opened from the `DocumentStore`, with `.OpenSession()` and `.OpenAsyncSession()` respectively.  
-  * Each of these methods have three overloads that receive different parameters. These parameters alter the `SessionOptions` object.
+  * Each of these methods have three overloaded versions that receive different parameters. These parameters alter the `SessionOptions`.
 
 * In this page:  
   * [Syntax](../../client-api/session/opening-a-session#syntax) - the three overloaded methods for opening sessions.  
@@ -18,14 +18,14 @@
 
 {PANEL:Syntax}
 
-There are three overloads of `OpenSession() / OpenAsyncSession()`
+There are three overloaded versions of `OpenSession() / OpenAsyncSession()`:
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_1@ClientApi\Session\OpeningSession.cs /}
 {CODE-TAB:csharp:Async open_session_1_1@ClientApi\Session\OpeningSession.cs /}
 {CODE-TABS/}
 
-The first method is an equivalent of doing
+The first two overloaded methods do nothing but call the third overloaded method and pass it a `new SessionOptions()`.
 
 {CODE-TABS}
 {CODE-TAB:csharp:Sync open_session_2@ClientApi\Session\OpeningSession.cs /}
@@ -52,6 +52,8 @@ The second method is an equivalent of doing
 | **NoCaching** | bool | Indicates if session should **not** cache responses. Default: `false`. More [here](../../client-api/session/configuration/how-to-disable-caching). |
 | **RequestExecutor** | `RequestExecutor` | _(Advanced)_ Request executor to use. If `null` default one will be used. |
 | **TransactionMode** | `TransactionMode` | Sets the mode for the session. By default it is set to `SingleNode`, but session can also operate 'ClusterWide'. You can read more about Cluster-Wide Transactions [here](../../server/clustering/cluster-transactions). |
+
+{PANEL/}
 
 ## Example I
 
