@@ -9,6 +9,21 @@ namespace Raven.Documentation.Samples.ClientApi.Session
 {
     public class OpeningSession
     {
+        private interface IFoo2
+        {
+            #region session_options
+            string Database { get; set; }
+
+            bool NoTracking { get; set; }
+
+            bool NoCaching { get; set; }
+
+            RequestExecutor RequestExecutor { get; set; }
+
+            TransactionMode TransactionMode { get; set; }
+            #endregion
+        }
+
         private interface IFoo
         {
             #region open_session_1
