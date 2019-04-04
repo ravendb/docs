@@ -104,6 +104,12 @@ namespace Raven.Documentation.Web.Controllers
         {
             return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.Generate);
         }
+        [NonAction]
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public virtual System.Web.Mvc.ActionResult AssignDiscussionHash()
+        {
+            return new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AssignDiscussionHash);
+        }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public DocsController Actions { get { return MVC.Docs; } }
@@ -128,6 +134,7 @@ namespace Raven.Documentation.Web.Controllers
             public readonly string ValidateMappings = "ValidateMappings";
             public readonly string OldArticlePage = "OldArticlePage";
             public readonly string Generate = "Generate";
+            public readonly string AssignDiscussionHash = "AssignDiscussionHash";
         }
 
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -141,6 +148,7 @@ namespace Raven.Documentation.Web.Controllers
             public const string ValidateMappings = "ValidateMappings";
             public const string OldArticlePage = "OldArticlePage";
             public const string Generate = "Generate";
+            public const string AssignDiscussionHash = "AssignDiscussionHash";
         }
 
 
@@ -220,6 +228,17 @@ namespace Raven.Documentation.Web.Controllers
         public ActionParamsClass_Generate GenerateParams { get { return s_params_Generate; } }
         [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
         public class ActionParamsClass_Generate
+        {
+            public readonly string language = "language";
+            public readonly string version = "version";
+            public readonly string key = "key";
+            public readonly string all = "all";
+        }
+        static readonly ActionParamsClass_AssignDiscussionHash s_params_AssignDiscussionHash = new ActionParamsClass_AssignDiscussionHash();
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public ActionParamsClass_AssignDiscussionHash AssignDiscussionHashParams { get { return s_params_AssignDiscussionHash; } }
+        [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
+        public class ActionParamsClass_AssignDiscussionHash
         {
             public readonly string language = "language";
             public readonly string version = "version";
@@ -382,6 +401,21 @@ namespace Raven.Documentation.Web.Controllers
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
             ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "all", all);
             GenerateOverride(callInfo, language, version, key, all);
+            return callInfo;
+        }
+
+        [NonAction]
+        partial void AssignDiscussionHashOverride(T4MVC_System_Web_Mvc_ActionResult callInfo, string language, string version, string key, bool all);
+
+        [NonAction]
+        public override System.Web.Mvc.ActionResult AssignDiscussionHash(string language, string version, string key, bool all)
+        {
+            var callInfo = new T4MVC_System_Web_Mvc_ActionResult(Area, Name, ActionNames.AssignDiscussionHash);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "language", language);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "version", version);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "key", key);
+            ModelUnbinderHelpers.AddRouteValues(callInfo.RouteValueDictionary, "all", all);
+            AssignDiscussionHashOverride(callInfo, language, version, key, all);
             return callInfo;
         }
 

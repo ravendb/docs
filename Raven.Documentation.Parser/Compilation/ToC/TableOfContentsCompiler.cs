@@ -36,7 +36,7 @@ namespace Raven.Documentation.Parser.Compilation.ToC
         {
             var directory = _options.GetPathToDocumentationPagesDirectory(documentationVersion);
 
-            Debug.Assert(Directory.Exists(_options.GetPathToDocumentationPagesDirectory(documentationVersion)));
+            Debug.Assert(Directory.Exists(directory));
 
             var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
             if (File.Exists(docsFilePath) == false)

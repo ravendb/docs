@@ -66,5 +66,9 @@ namespace Raven.Documentation.Parser
         public GenerateImageUrl ImageUrlGenerator { get; set; }
 
         public List<string> VersionsToParse { get; set; }
+
+        public bool CanCompileVersion(string version) => CompileAllVersions || VersionsToParse.Contains(version);
+
+        private bool CompileAllVersions => VersionsToParse.Count == 0;
     }
 }

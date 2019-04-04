@@ -74,16 +74,6 @@ namespace Links
         public const string UrlPath = "~/Scripts";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
-        public static readonly string _references_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/_references.min.js") ? Url("_references.min.js") : Url("_references.js");
-        public static readonly string jquery_1_8_0_intellisense_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-1.8.0.intellisense.min.js") ? Url("jquery-1.8.0.intellisense.min.js") : Url("jquery-1.8.0.intellisense.js");
-        public static readonly string jquery_1_8_0_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery-1.8.0.min.js") ? Url("jquery-1.8.0.min.js") : Url("jquery-1.8.0.js");
-        public static readonly string jquery_1_8_0_min_js = Url("jquery-1.8.0.min.js");
-        public static readonly string jquery_validate_vsdoc_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate-vsdoc.min.js") ? Url("jquery.validate-vsdoc.min.js") : Url("jquery.validate-vsdoc.js");
-        public static readonly string jquery_validate_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate.min.js") ? Url("jquery.validate.min.js") : Url("jquery.validate.js");
-        public static readonly string jquery_validate_min_js = Url("jquery.validate.min.js");
-        public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/jquery.validate.unobtrusive.min.js") ? Url("jquery.validate.unobtrusive.min.js") : Url("jquery.validate.unobtrusive.js");
-        public static readonly string jquery_validate_unobtrusive_min_js = Url("jquery.validate.unobtrusive.min.js");
-        public static readonly string prism_js = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/prism.min.js") ? Url("prism.min.js") : Url("prism.js");
     }
 
     [GeneratedCode("T4MVC", "2.0"), DebuggerNonUserCode]
@@ -91,8 +81,6 @@ namespace Links
         public const string UrlPath = "~/Content";
         public static string Url() { return T4MVCHelpers.ProcessVirtualPath(UrlPath); }
         public static string Url(string fileName) { return T4MVCHelpers.ProcessVirtualPath(UrlPath + "/" + fileName); }
-        public static readonly string font_awesome_css = T4MVCHelpers.IsProduction() && T4Extensions.FileExists(UrlPath + "/font-awesome.min.css") ? Url("font-awesome.min.css") : Url("font-awesome.css");
-        public static readonly string font_awesome_min_css = Url("font-awesome.min.css");
         public static readonly string glyphicons_halflings_regular_eot = Url("glyphicons-halflings-regular.eot");
         public static readonly string glyphicons_halflings_regular_svg = Url("glyphicons-halflings-regular.svg");
         public static readonly string glyphicons_halflings_regular_ttf = Url("glyphicons-halflings-regular.ttf");
@@ -125,23 +113,12 @@ namespace Links
         {
             public static class Assets
             {
-                public static readonly string _references_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/_references.js"); 
-                public static readonly string jquery_1_8_0_intellisense_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-1.8.0.intellisense.js"); 
-                public static readonly string jquery_1_8_0_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-1.8.0.js"); 
-                public static readonly string jquery_1_8_0_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery-1.8.0.min.js"); 
-                public static readonly string jquery_validate_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.validate.js"); 
-                public static readonly string jquery_validate_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.validate.min.js"); 
-                public static readonly string jquery_validate_unobtrusive_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.validate.unobtrusive.js"); 
-                public static readonly string jquery_validate_unobtrusive_min_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/jquery.validate.unobtrusive.min.js"); 
-                public static readonly string prism_js = T4MVCHelpers.ProcessAssetPath("~/Scripts/prism.js"); 
             }
         }
         public static partial class Content 
         {
             public static class Assets
             {
-                public static readonly string font_awesome_css = T4MVCHelpers.ProcessAssetPath("~/Content/font-awesome.css");
-                public static readonly string font_awesome_min_css = T4MVCHelpers.ProcessAssetPath("~/Content/font-awesome.min.css");
                 public static readonly string prism_css = T4MVCHelpers.ProcessAssetPath("~/Content/prism.css");
             }
         }

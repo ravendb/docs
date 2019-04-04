@@ -5,8 +5,7 @@
 		"Mappings": [
 			{
 				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
+				"Key": "client-api/commands/what-are-commands"
 			}
 		]
 	},
@@ -16,8 +15,7 @@
 		"Mappings": [
 			{
 				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
+				"Key": "client-api/commands/what-are-commands"
 			}
 		]
 	},
@@ -27,8 +25,7 @@
 		"Mappings": [
 			{
 				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
+				"Key": "client-api/commands/what-are-commands"
 			}
 		]
 	},
@@ -38,8 +35,7 @@
 		"Mappings": [
 			{
 				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands",
-				"Language": "Http"
+				"Key": "client-api/commands/what-are-commands"
 			}
 		]
 	}

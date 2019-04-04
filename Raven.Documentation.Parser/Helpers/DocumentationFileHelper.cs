@@ -12,34 +12,79 @@ namespace Raven.Documentation.Parser.Helpers
     {
         public static IEnumerable<FolderItem> ParseFile(string filePath)
         {
-            List<DocumentationFile> docFiles;
-            try
-            {
-                var contents = File.ReadAllText(filePath);
-                docFiles = JsonConvert.DeserializeObject<List<DocumentationFile>>(contents);
-            }
-            catch (Exception e)
-            {
-                throw new InvalidOperationException("Could not parse file: " + filePath, e);
-            }
+            var docFiles = DeserializeFile(filePath);
 
             foreach (var file in docFiles)
             {
                 var path = file.Path;
                 var name = file.Name;
-                var isFolder = path.StartsWith("/");
+                var isFolder = IsFolder(file);
+
                 var item = new FolderItem(isFolder)
                 {
                     Language = Language.All,
                     Description = name,
                     Name = isFolder ? path.Substring(1, path.Length - 1) : path.Substring(0, path.Length - Constants.MarkdownFileExtension.Length),
                     LastSupportedVersion = file.LastSupportedVersion,
+                    DiscussionHash = file.DiscussionHash,
                     Mappings = file.Mappings,
                     Metadata = file.Metadata,
                     SeoMetaProperties = file.SeoMetaProperties
                 };
 
                 yield return item;
+            }
+        }
+
+        private static bool IsFolder(DocumentationFile docFile) => docFile.Path.StartsWith("/");
+
+        public static void AssignDiscussionHashIfNeeded(string filePath)
+        {
+            var docFiles = DeserializeFile(filePath);
+            var overwriteNeeded = false;
+
+            foreach (var item in docFiles)
+            {
+                if (IsFolder(item) || string.IsNullOrEmpty(item.DiscussionHash) == false)
+                    continue;
+
+                item.DiscussionHash = Guid.NewGuid().ToString();
+                overwriteNeeded = true;
+            }
+
+            if (overwriteNeeded)
+                SerializeFile(filePath, docFiles);
+        }
+
+        private static List<DocumentationFile> DeserializeFile(string filePath)
+        {
+            try
+            {
+                var contents = File.ReadAllText(filePath);
+                var docFiles = JsonConvert.DeserializeObject<List<DocumentationFile>>(contents);
+                return docFiles;
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException("Could not parse file: " + filePath, e);
+            }
+        }
+
+        private static void SerializeFile(string filePath, List<DocumentationFile> items)
+        {
+            try
+            {
+                var serializerSettings = new JsonSerializerSettings
+                {
+                    NullValueHandling = NullValueHandling.Ignore
+                };
+
+                var json = JsonConvert.SerializeObject(items, Formatting.Indented, serializerSettings);
+                File.WriteAllText(filePath, json);
+            }
+            catch (Exception e)
+            {
+                throw new InvalidOperationException($"Could not save file: {filePath}", e);
             }
         }
 
