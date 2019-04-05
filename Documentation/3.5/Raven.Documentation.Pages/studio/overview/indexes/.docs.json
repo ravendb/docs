@@ -1,7 +1,8 @@
-﻿[
+[
   {
     "Path": "indexes-view.markdown",
     "Name": "Indexes View",
+    "DiscussionId": "6f68f6bf-3297-4a20-84f4-f5195ea5fe72",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "index-edit-view.markdown",
     "Name": "Index Edit View",
+    "DiscussionId": "c7a64484-13a1-4d49-8cca-efa907091e4b",
     "Mappings": [
       {
         "Version": 1.0,
@@ -22,11 +24,13 @@
   {
     "Path": "transformers-view.markdown",
     "Name": "Transformers View",
-    "Mappings": [ ]
+    "DiscussionId": "eb018e97-60c3-4196-b832-2c9cf0edbbd6",
+    "Mappings": []
   },
   {
     "Path": "transformer-edit-view.markdown",
     "Name": "Transformer Edit View",
-    "Mappings": [ ]
+    "DiscussionId": "df80d89f-5adc-4fc7-a8c1-071a2ba452eb",
+    "Mappings": []
   }
 ]

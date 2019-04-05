@@ -1,12 +1,13 @@
-﻿[
-	{
-		"Path": "using-api-keys.markdown",
-		"Name": "API Keys Sample",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/management/api-keys"
-			}
-		]
-	}
+[
+  {
+    "Path": "using-api-keys.markdown",
+    "Name": "API Keys Sample",
+    "DiscussionId": "e93704ec-d390-4086-ac67-fd6e1a74f4b2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/management/api-keys"
+      }
+    ]
+  }
 ]

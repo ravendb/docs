@@ -2,6 +2,7 @@
   {
     "Path": "overview.markdown",
     "Name": "Overview",
+    "DiscussionId": "8266d88a-91ff-4ea9-9050-ebeeec2e04e3",
     "Mappings": [
       {
         "Version": 3.5,
@@ -12,21 +13,25 @@
   {
     "Path": "put-compare-exchange-value.markdown",
     "Name": "Put Compare Exchange Value",
+    "DiscussionId": "5f43ac6f-c291-4aa2-ad84-4a9204fb0ff8",
     "Mappings": []
   },
   {
     "Path": "get-compare-exchange-value.markdown",
     "Name": "Get Compare Exchange Value",
+    "DiscussionId": "598ab496-ff53-4cfa-bd30-65b89d1753b4",
     "Mappings": []
   },
   {
     "Path": "get-compare-exchange-values.markdown",
     "Name": "Get Compare Exchange Values",
+    "DiscussionId": "a80b0ae5-7538-4c87-9339-ef99c21ec622",
     "Mappings": []
   },
   {
     "Path": "delete-compare-exchange-value.markdown",
     "Name": "Delete Compare Exchange Value",
+    "DiscussionId": "6da683d5-3cf2-40e3-ab26-b67f876d7d8c",
     "Mappings": []
   }
 ]

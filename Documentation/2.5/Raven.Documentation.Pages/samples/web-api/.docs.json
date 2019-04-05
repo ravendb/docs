@@ -1,12 +1,13 @@
-﻿[
-	{
-		"Path": "createAspNetWebApiProject.markdown",
-		"Name": "ASP.NET WebAPI Sample",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "samples/mvc-starter-kit"
-			}
-		]
-	}
+[
+  {
+    "Path": "createAspNetWebApiProject.markdown",
+    "Name": "ASP.NET WebAPI Sample",
+    "DiscussionId": "666436a7-57bd-47f2-8eab-3306ce0a666c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "samples/mvc-starter-kit"
+      }
+    ]
+  }
 ]

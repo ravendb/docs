@@ -1,22 +1,26 @@
 [
-    {
-        "Path": "backup.markdown",
-        "Name": "Backup",
-        "Mappings": []
-    },
-    {
-        "Path": "restore.markdown",
-        "Name": "Restore",
-        "Mappings": []
-    },
-    {
-        "Path": "encrypted-backup.markdown",
-        "Name": "Encryption",
-        "Mappings": []
-    },
-    {
-        "Path": "faq.markdown",
-        "Name": "FAQ",
-        "Mappings": []
-    }
+  {
+    "Path": "backup.markdown",
+    "Name": "Backup",
+    "DiscussionId": "42867ee0-2083-45ef-80f9-aa51d110a2f0",
+    "Mappings": []
+  },
+  {
+    "Path": "restore.markdown",
+    "Name": "Restore",
+    "DiscussionId": "ad0c87b7-a05e-4bfc-bb90-982ed304debb",
+    "Mappings": []
+  },
+  {
+    "Path": "encrypted-backup.markdown",
+    "Name": "Encryption",
+    "DiscussionId": "0dc191f4-ddd2-468d-a928-589f1102b12e",
+    "Mappings": []
+  },
+  {
+    "Path": "faq.markdown",
+    "Name": "FAQ",
+    "DiscussionId": "28356d89-7d5b-403e-9f13-535ae37b2517",
+    "Mappings": []
+  }
 ]

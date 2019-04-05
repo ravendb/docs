@@ -2,16 +2,19 @@
   {
     "Path": "distributed-database.markdown",
     "Name": "Distributed Database",
+    "DiscussionId": "3f8bbfb6-daa0-40da-9510-d082e60f6a33",
     "Mappings": []
   },
   {
     "Path": "highly-available-tasks.markdown",
     "Name": "Highly Available Tasks",
+    "DiscussionId": "5effe837-ae5b-47bc-b56e-e933f86968a4",
     "Mappings": []
   },
   {
     "Path": "cluster-observer.markdown",
     "Name": "Cluster Observer",
+    "DiscussionId": "6f0b6e41-3834-4203-8c82-e2aaf3b74e38",
     "Mappings": []
   }
 ]

@@ -2,41 +2,49 @@
   {
     "Path": "introduction.markdown",
     "Name": "Introduction",
+    "DiscussionId": "79e615b9-d130-4ab9-a2f9-dbd46ff3e0c7",
     "Mappings": []
   },
   {
     "Path": "document-store.markdown",
     "Name": "Document Store",
+    "DiscussionId": "e2bd37b5-18f6-490c-8610-6b7c2d540b03",
     "Mappings": []
   },
   {
     "Path": "conventions.markdown",
     "Name": "Conventions",
+    "DiscussionId": "63a5955d-c547-4700-9e48-ed74837c47aa",
     "Mappings": []
   },
   {
     "Path": "patching.markdown",
     "Name": "Patching",
+    "DiscussionId": "2ce82286-e691-4ec8-9f83-5f67c4cfe2d3",
     "Mappings": []
   },
   {
     "Path": "commands.markdown",
     "Name": "Commands",
+    "DiscussionId": "e9043e1b-8ae5-4bf9-8e43-2eec025a3cfa",
     "Mappings": []
   },
   {
     "Path": "indexes.markdown",
     "Name": "Indexes",
+    "DiscussionId": "6013011d-948b-4cfc-8c26-a4df8d96696a",
     "Mappings": []
   },
   {
     "Path": "changes-api.markdown",
     "Name": "Changes API",
+    "DiscussionId": "ce798102-d286-4f31-9a26-472b9dcbc206",
     "Mappings": []
   },
   {
     "Path": "list.markdown",
     "Name": "List of Differences in Public API",
+    "DiscussionId": "851fb18d-fddb-47c7-be01-b0772cfad244",
     "Mappings": []
   },
   {

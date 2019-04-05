@@ -1,112 +1,122 @@
-﻿[
-	{
-		"Path": "transaction-support.markdown",
-		"Name": "Transaction support in RavenDB",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/transaction-support/dtc-transactions"
-			}
-		]
-	},
-	{
-		"Path": "document-metadata.markdown",
-		"Name": "Working with document metadata",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "querying-for-terms.markdown",
-		"Name": "Querying for terms",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/indexes/how-to/get-index-terms"
-			}
-		]
-	},
-	{
-		"Path": "dynamic-fields.markdown",
-		"Name": "Dynamic fields",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/using-dynamic-fields"
-			}
-		]
-	},
-	{
-		"Path": "/databasecommands",
-		"Name": "DatabaseCommands",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands"
-			}
-		]
-	},
-	{
-		"Path": "/asyncdatabasecommands",
-		"Name": "AsyncDatabaseCommands",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands"
-			}
-		]
-	},
-	{
-		"Path": "index-administration.markdown",
-		"Name": "Index Administration",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/administration/index-administration"
-			}
-		]
-	},
-	{
-		"Path": "custom-serialization.markdown",
-		"Name": "Custom serialization / deserialization",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "aggressive-caching.markdown",
-		"Name": "Aggressive Caching",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/how-to/setup-aggressive-caching"
-			}
-		]
-	},
-	{
-		"Path": "client-side-listeners.markdown",
-		"Name": "Client-side Listeners",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/listeners/what-are-listeners"
-			}
-		]
-	},
-	{
-		"Path": "bulk-inserts.markdown",
-		"Name": "Bulk inserts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/bulk-insert/how-to-work-with-bulk-insert-operation"
-			}
-		]
-	},
-	{
-		"Path": "full-query-syntax.markdown",
-		"Name": "Full query syntax",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/full-query-syntax"
-			}
-		]
-	}
+[
+  {
+    "Path": "transaction-support.markdown",
+    "Name": "Transaction support in RavenDB",
+    "DiscussionId": "30c43841-384c-4c4e-a940-deafce681738",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/transaction-support/dtc-transactions"
+      }
+    ]
+  },
+  {
+    "Path": "document-metadata.markdown",
+    "Name": "Working with document metadata",
+    "DiscussionId": "98151137-a4e5-4f24-95c0-b2bc7727c94d",
+    "Mappings": []
+  },
+  {
+    "Path": "querying-for-terms.markdown",
+    "Name": "Querying for terms",
+    "DiscussionId": "2bbeda78-55ee-4d70-8b86-72c4ef84ad83",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/indexes/how-to/get-index-terms"
+      }
+    ]
+  },
+  {
+    "Path": "dynamic-fields.markdown",
+    "Name": "Dynamic fields",
+    "DiscussionId": "9512130b-7be6-4e17-9a42-62b9612ed006",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/using-dynamic-fields"
+      }
+    ]
+  },
+  {
+    "Path": "/databasecommands",
+    "Name": "DatabaseCommands",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "/asyncdatabasecommands",
+    "Name": "AsyncDatabaseCommands",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands"
+      }
+    ]
+  },
+  {
+    "Path": "index-administration.markdown",
+    "Name": "Index Administration",
+    "DiscussionId": "87149fab-0fd1-4cb9-8a35-66a7456b9244",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/administration/index-administration"
+      }
+    ]
+  },
+  {
+    "Path": "custom-serialization.markdown",
+    "Name": "Custom serialization / deserialization",
+    "DiscussionId": "76153744-ec2b-4a59-b10c-f5cec82ad9a1",
+    "Mappings": []
+  },
+  {
+    "Path": "aggressive-caching.markdown",
+    "Name": "Aggressive Caching",
+    "DiscussionId": "c87fccfc-a8f0-4640-99c1-cec489b16731",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/how-to/setup-aggressive-caching"
+      }
+    ]
+  },
+  {
+    "Path": "client-side-listeners.markdown",
+    "Name": "Client-side Listeners",
+    "DiscussionId": "4e74edf6-b17a-464d-b5fc-4b53f2f1a708",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/listeners/what-are-listeners"
+      }
+    ]
+  },
+  {
+    "Path": "bulk-inserts.markdown",
+    "Name": "Bulk inserts",
+    "DiscussionId": "d9514717-4e56-4408-9107-e893a0651471",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/bulk-insert/how-to-work-with-bulk-insert-operation"
+      }
+    ]
+  },
+  {
+    "Path": "full-query-syntax.markdown",
+    "Name": "Full query syntax",
+    "DiscussionId": "7deb91e2-6890-49e3-ba33-1826c0c7f3b4",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/full-query-syntax"
+      }
+    ]
+  }
 ]

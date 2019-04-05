@@ -2,21 +2,25 @@
   {
     "Path": "general-flow.markdown",
     "Name": "General Flow",
+    "DiscussionId": "cbfc079f-2f0b-4de4-84de-ad512effd560",
     "Mappings": []
   },
   {
     "Path": "encrypted.markdown",
     "Name": "Encrypted",
+    "DiscussionId": "2101409f-1e65-48f3-8495-4c6ebe87b9d0",
     "Mappings": []
   },
   {
     "Path": "from-backup.markdown",
     "Name": "From Backup",
+    "DiscussionId": "73171f6d-34af-4899-aa60-8d0d7f09d26a",
     "Mappings": []
   },
   {
     "Path": "from-legacy-files.markdown",
     "Name": "From Legacy Files",
+    "DiscussionId": "35c32df9-e097-4562-9efb-49c53bd00249",
     "Mappings": []
   }
 ]

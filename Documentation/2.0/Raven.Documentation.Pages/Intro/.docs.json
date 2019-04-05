@@ -1,62 +1,69 @@
-﻿[
-	{
-		"Path": "what-is-nosql.markdown",
-		"Name": "What is NoSQL",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "ravendb-in-a-nutshell.markdown",
-		"Name": "RavenDB in a nutshell",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "basic-concepts.markdown",
-		"Name": "Basic concepts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "safe-by-default.markdown",
-		"Name": "Safe by default",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "high-performance.markdown",
-		"Name": "High Performance",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/quickstart",
-		"Name": "Quickstart tutorials",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "system-requirements.markdown",
-		"Name": "System requirements",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/system-requirements"
-			}
-		]
-	},
-	{
-		"Path": "building-from-source.markdown",
-		"Name": "Building from source",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "what-is-nosql.markdown",
+    "Name": "What is NoSQL",
+    "DiscussionId": "3cc20354-51fd-4d75-b86e-573c19dbf798",
+    "Mappings": []
+  },
+  {
+    "Path": "ravendb-in-a-nutshell.markdown",
+    "Name": "RavenDB in a nutshell",
+    "DiscussionId": "b196a7a3-2d08-4851-8dcc-2ad81a5238a1",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "basic-concepts.markdown",
+    "Name": "Basic concepts",
+    "DiscussionId": "d5c9e94f-4e63-4d1a-a24b-c015bf8b5183",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "safe-by-default.markdown",
+    "Name": "Safe by default",
+    "DiscussionId": "531e002c-17d8-4286-b39b-724541706ed3",
+    "Mappings": []
+  },
+  {
+    "Path": "high-performance.markdown",
+    "Name": "High Performance",
+    "DiscussionId": "63c25f56-87f9-4125-9451-213f443fd277",
+    "Mappings": []
+  },
+  {
+    "Path": "/quickstart",
+    "Name": "Quickstart tutorials",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "system-requirements.markdown",
+    "Name": "System requirements",
+    "DiscussionId": "5d8b9003-3666-4f48-a1ad-015e809730ac",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/system-requirements"
+      }
+    ]
+  },
+  {
+    "Path": "building-from-source.markdown",
+    "Name": "Building from source",
+    "DiscussionId": "8cc36e99-1318-40e6-8181-caae6ef0dcd9",
+    "Mappings": []
+  }
 ]

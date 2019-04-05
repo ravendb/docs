@@ -1,42 +1,46 @@
-﻿[
-	{
-		"Path": "what-is-raven-fs.markdown",
-		"Name": "What is RavenFS?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "files.markdown",
-		"Name": "Files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "configurations.markdown",
-		"Name": "Configurations",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "indexing.markdown",
-		"Name": "Indexing",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/client-api",
-		"Name": "Client API",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/synchronization",
-		"Name": "Synchronization",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/server",
-		"Name": "Server",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/studio",
-		"Name": "Studio",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "what-is-raven-fs.markdown",
+    "Name": "What is RavenFS?",
+    "DiscussionId": "7189beb5-ed27-426f-94e0-bae1072ea4cf",
+    "Mappings": []
+  },
+  {
+    "Path": "files.markdown",
+    "Name": "Files",
+    "DiscussionId": "eea9a607-b3c6-4a7a-a3a3-8d99b3abb433",
+    "Mappings": []
+  },
+  {
+    "Path": "configurations.markdown",
+    "Name": "Configurations",
+    "DiscussionId": "7585719b-e2ec-4afe-85d5-00f4dfa52dc4",
+    "Mappings": []
+  },
+  {
+    "Path": "indexing.markdown",
+    "Name": "Indexing",
+    "DiscussionId": "94d950dc-5696-43e4-b898-714ccc1efd0b",
+    "Mappings": []
+  },
+  {
+    "Path": "/client-api",
+    "Name": "Client API",
+    "Mappings": []
+  },
+  {
+    "Path": "/synchronization",
+    "Name": "Synchronization",
+    "Mappings": []
+  },
+  {
+    "Path": "/server",
+    "Name": "Server",
+    "Mappings": []
+  },
+  {
+    "Path": "/studio",
+    "Name": "Studio",
+    "Mappings": []
+  }
 ]

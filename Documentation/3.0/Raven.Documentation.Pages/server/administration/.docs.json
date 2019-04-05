@@ -1,71 +1,79 @@
-﻿[
-	{
-		"Path": "administration-101.markdown",
-		"Name": "Administration 101",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "multiple-databases.markdown",
-		"Name": "Multiple databases",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/multiple-databases"
-			}
-		]
-	},
-	{
-		"Path": "statistics.markdown",
-		"Name": "Statistics",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "backup-and-restore.markdown",
-		"Name": "Backup & Restore",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/administration/backup-restore"
-			}
-		]
-	},
-	{
-		"Path": "exporting-and-importing-data.markdown",
-		"Name": "Exporting & Importing data",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/administration/export-import"
-			}
-		]
-	},
-	{
-		"Path": "differences-between-backup-and-export.markdown",
-		"Name": "Differences between backup and export",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "migrating-attachments-to-ravenfs.markdown",
-		"Name": "Migrating attachments into RavenFS",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "index-administration.markdown",
-		"Name": "Index administration",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/advanced/index-administration"
-			},
-			{
-				"Version": 2.5,
-				"Key": "server/administration/index-administration"
-			}
-		]
-	},
-	{
-		"Path": "/monitoring",
-		"Name": "Monitoring",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "administration-101.markdown",
+    "Name": "Administration 101",
+    "DiscussionId": "3fd02b58-a6b0-4b03-92c1-f827a0307084",
+    "Mappings": []
+  },
+  {
+    "Path": "multiple-databases.markdown",
+    "Name": "Multiple databases",
+    "DiscussionId": "54d7f0e1-30c9-444e-80f3-39cc5d31732d",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/multiple-databases"
+      }
+    ]
+  },
+  {
+    "Path": "statistics.markdown",
+    "Name": "Statistics",
+    "DiscussionId": "8dd2239e-bb3e-4edd-b448-d9276d3c1f14",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-and-restore.markdown",
+    "Name": "Backup & Restore",
+    "DiscussionId": "9ce65d20-18d2-4762-8312-47cd1028a6c0",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/administration/backup-restore"
+      }
+    ]
+  },
+  {
+    "Path": "exporting-and-importing-data.markdown",
+    "Name": "Exporting & Importing data",
+    "DiscussionId": "554b2e13-2f39-410d-9640-96b4658a7b28",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/administration/export-import"
+      }
+    ]
+  },
+  {
+    "Path": "differences-between-backup-and-export.markdown",
+    "Name": "Differences between backup and export",
+    "DiscussionId": "e3afa995-4230-4646-a7b6-20406b7a4a84",
+    "Mappings": []
+  },
+  {
+    "Path": "migrating-attachments-to-ravenfs.markdown",
+    "Name": "Migrating attachments into RavenFS",
+    "DiscussionId": "247522ec-4ada-4ed9-b016-49cc9d2cbcbb",
+    "Mappings": []
+  },
+  {
+    "Path": "index-administration.markdown",
+    "Name": "Index administration",
+    "DiscussionId": "d73b5f3f-1592-4ae0-9816-b76da4a526df",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/advanced/index-administration"
+      },
+      {
+        "Version": 2.5,
+        "Key": "server/administration/index-administration"
+      }
+    ]
+  },
+  {
+    "Path": "/monitoring",
+    "Name": "Monitoring",
+    "Mappings": []
+  }
 ]

@@ -2,6 +2,7 @@
   {
     "Path": "what-is-a-collection.markdown",
     "Name": "What is a collection?",
+    "DiscussionId": "fece21c4-c053-44ad-946d-2f257c12e0e4",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "transaction-support.markdown",
     "Name": "Transaction support",
+    "DiscussionId": "09e810d7-2553-456f-a1c7-e055b1732b45",
     "Mappings": [
       {
         "Version": 1.0,
@@ -22,6 +24,7 @@
   {
     "Path": "backward-compatibility.markdown",
     "Name": "Backward compatibility",
+    "DiscussionId": "aa05beae-5226-4d6a-9861-6f6837f5adbc",
     "Mappings": [
       {
         "Version": 2.0,

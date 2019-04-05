@@ -2,11 +2,13 @@
   {
     "Path": "what-is-rql.markdown",
     "Name": "What is RQL",
+    "DiscussionId": "774d2f90-150b-4aae-8f6c-d371ab6201ce",
     "Mappings": []
   },
   {
     "Path": "basics.markdown",
     "Name": "Basics",
+    "DiscussionId": "e9a86f6b-b231-4914-85fb-e1b0a62dc579",
     "Mappings": [
       {
         "Version": 1.0,
@@ -17,11 +19,13 @@
   {
     "Path": "filtering.markdown",
     "Name": "Filtering",
+    "DiscussionId": "de269cba-415f-4b67-8fa1-f0390d4ab20d",
     "Mappings": []
   },
   {
     "Path": "paging.markdown",
     "Name": "Paging",
+    "DiscussionId": "f59f48e7-3864-4f4d-84e6-ae5f427c9784",
     "Mappings": [
       {
         "Version": 1.0,
@@ -32,26 +36,31 @@
   {
     "Path": "sorting.markdown",
     "Name": "Sorting",
+    "DiscussionId": "02dec3d4-55fb-4768-a437-955b3f9d25d1",
     "Mappings": []
   },
   {
     "Path": "boosting.markdown",
     "Name": "Boosting",
+    "DiscussionId": "36de1ad6-915c-40b4-9905-075b78930379",
     "Mappings": []
   },
   {
     "Path": "projections.markdown",
     "Name": "Projections",
+    "DiscussionId": "da044934-b24c-4d0e-946a-0fdda4abf880",
     "Mappings": []
   },
   {
     "Path": "distinct.markdown",
     "Name": "Distinct",
+    "DiscussionId": "a22cdcd5-da95-4c71-a9bf-d06142cc8892",
     "Mappings": []
   },
   {
     "Path": "searching.markdown",
     "Name": "Searching",
+    "DiscussionId": "3d32f28e-80e6-482b-b46c-a36f3a4a29ce",
     "Mappings": [
       {
         "Version": 2.0,
@@ -62,6 +71,7 @@
   {
     "Path": "intersection.markdown",
     "Name": "Intersection",
+    "DiscussionId": "8595e72a-6986-4041-92ab-652bd3169f48",
     "Mappings": [
       {
         "Version": 2.0,
@@ -72,6 +82,7 @@
   {
     "Path": "suggestions.markdown",
     "Name": "Suggestions",
+    "DiscussionId": "e4b05ae7-0e6c-4225-80a0-79a39ddadb83",
     "Mappings": [
       {
         "Version": 2.0,
@@ -82,6 +93,7 @@
   {
     "Path": "spatial.markdown",
     "Name": "Spatial",
+    "DiscussionId": "9da4a2dd-9a59-4858-9524-3a4cb04ca336",
     "Mappings": [
       {
         "Version": 2.0,
@@ -92,6 +104,7 @@
   {
     "Path": "faceted-search.markdown",
     "Name": "Faceted search",
+    "DiscussionId": "471f8569-81ba-49c1-86fd-6c42c068deed",
     "Mappings": [
       {
         "Version": 1.0,
@@ -102,6 +115,7 @@
   {
     "Path": "morelikethis.markdown",
     "Name": "MoreLikeThis",
+    "DiscussionId": "5d2616c7-088d-4cab-8f53-aea7b28c321f",
     "Mappings": [
       {
         "Version": 3.0,
@@ -112,6 +126,7 @@
   {
     "Path": "query-vs-document-query.markdown",
     "Name": "Query vs DocumentQuery",
+    "DiscussionId": "73b6dea7-68dc-4c75-9072-7b50cff79976",
     "Mappings": [
       {
         "Version": 2.5,

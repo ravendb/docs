@@ -2,21 +2,25 @@
   {
     "Path": "encryption-at-rest.markdown",
     "Name": "Encryption at Rest",
+    "DiscussionId": "657c42d7-e516-4330-825b-366a08e6bfff",
     "Mappings": []
   },
   {
     "Path": "database-encryption.markdown",
     "Name": "Database Encryption",
+    "DiscussionId": "29ff6775-8ee9-4f24-a3b3-6f87255b3abc",
     "Mappings": []
   },
   {
     "Path": "server-store-encryption.markdown",
     "Name": "Server Store Encryption",
+    "DiscussionId": "4c64358b-7d52-4bd3-9a41-33faa07a5f97",
     "Mappings": []
   },
   {
     "Path": "secret-key-management.markdown",
     "Name": "Secret Key Management",
+    "DiscussionId": "b98905cb-be65-4839-8fda-55a12c9a4e43",
     "Mappings": []
   }
 ]

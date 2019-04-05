@@ -1,12 +1,14 @@
-﻿[
-	{
-		"Path": "overview.markdown",
-		"Name": "Overview",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "explain-replication.markdown",
-		"Name": "Explain replication",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "59053116-6af5-453d-9985-4732274b6d01",
+    "Mappings": []
+  },
+  {
+    "Path": "explain-replication.markdown",
+    "Name": "Explain replication",
+    "DiscussionId": "a6d5116a-19a3-4e57-8f1e-5af982372a73",
+    "Mappings": []
+  }
 ]

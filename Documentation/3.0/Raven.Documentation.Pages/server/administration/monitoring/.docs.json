@@ -1,12 +1,14 @@
-﻿[
-	{
-		"Path": "pandora-fms.markdown",
-		"Name": "Pandora FMS",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "request-tracking.markdown",
-		"Name": "Request Tracking",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "pandora-fms.markdown",
+    "Name": "Pandora FMS",
+    "DiscussionId": "b61859c4-fba7-4da8-8d36-cbf1bdf23059",
+    "Mappings": []
+  },
+  {
+    "Path": "request-tracking.markdown",
+    "Name": "Request Tracking",
+    "DiscussionId": "edb72810-b2f6-47fc-9229-1fc37503f199",
+    "Mappings": []
+  }
 ]

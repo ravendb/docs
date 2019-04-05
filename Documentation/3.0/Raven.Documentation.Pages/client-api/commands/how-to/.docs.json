@@ -2,66 +2,79 @@
   {
     "Path": "switch-commands-to-a-different-database.markdown",
     "Name": "...switch commands to a different database",
+    "DiscussionId": "b159bc22-18f8-4ce3-a03b-7b148d2996d1",
     "Mappings": []
   },
   {
     "Path": "switch-commands-credentials.markdown",
     "Name": "...switch commands credentials",
+    "DiscussionId": "27f5c763-5a2e-48b8-9910-97140527a01b",
     "Mappings": []
   },
   {
     "Path": "disable-caching.markdown",
     "Name": "...disable caching",
+    "DiscussionId": "259dfe87-61b5-43f7-8c0f-970e542cdf7a",
     "Mappings": []
   },
   {
     "Path": "start-stop-indexing-and-get-indexing-status.markdown",
     "Name": "...start or stop indexing and get indexing status",
+    "DiscussionId": "74ca5d32-160f-46a1-8bde-f845b2a2ac34",
     "Mappings": []
   },
   {
     "Path": "start-stop-reducing.markdown",
     "Name": "...start or stop reducing",
+    "DiscussionId": "d11fa835-a234-481b-b727-e0c0295e18d5",
     "Mappings": []
   },
   {
     "Path": "create-delete-database.markdown",
     "Name": "...create or delete database",
+    "DiscussionId": "5108e83e-6e39-46e1-b59e-797f5723f9f7",
     "Mappings": []
   },
   {
     "Path": "compact-database.markdown",
     "Name": "...compact database",
+    "DiscussionId": "3d77e141-f9d3-4b4f-8fdc-9c91a822e490",
     "Mappings": []
   },
   {
     "Path": "get-database-and-server-statistics.markdown",
     "Name": "...get database and server statistics",
+    "DiscussionId": "965e94f7-e57c-4f2c-be10-9df45bf3c3dd",
     "Mappings": []
   },
   {
     "Path": "get-database-configuration.markdown",
     "Name": "...get database configuration",
+    "DiscussionId": "d494f9a5-1f23-46cf-96bd-a05460c8b258",
     "Mappings": []
   },
   {
     "Path": "start-backup-restore-operations.markdown",
     "Name": "...start backup or restore operations",
+    "DiscussionId": "fe3d7e01-2411-4b9a-96a8-0166d6cbd0f1",
     "Mappings": []
   },
   {
     "Path": "get-full-url-for-a-document.markdown",
     "Name": "...get full url for a document",
+    "DiscussionId": "5d4c6ce8-6f57-4247-8866-9daf954121fa",
     "Mappings": []
   },
   {
     "Path": "get-server-build-number.markdown",
     "Name": "...get server build number",
+    "DiscussionId": "d8bc94e4-a5a4-4924-8838-16876885b9cc",
     "Mappings": []
   },
   {
     "Path": "get-names-of-all-databases-on-a-server.markdown",
     "Name": "...get names of all databases on a server",
+    "DiscussionId": "68d3ca29-d182-4e3d-b6c9-065c2d2f939b",
     "Mappings": []
   }
 ]

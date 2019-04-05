@@ -1,37 +1,41 @@
-﻿[
-	{
-		"Path": "documents-view.markdown",
-		"Name": "Documents View",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/documents"
-			}
-		]
-	},
-	{
-		"Path": "document-edit-view.markdown",
-		"Name": "Document Edit View",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/documents"
-			}
-		]
-	},
-	{
-		"Path": "patch-view.markdown",
-		"Name": "Patch View",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/patch"
-			}
-		]
-	},
-	{
-		"Path": "conflicts-view.markdown",
-		"Name": "Conflicts View",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "documents-view.markdown",
+    "Name": "Documents View",
+    "DiscussionId": "5daec1c1-0b16-43e2-a47b-665ae38a6a26",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/documents"
+      }
+    ]
+  },
+  {
+    "Path": "document-edit-view.markdown",
+    "Name": "Document Edit View",
+    "DiscussionId": "ce76f10d-4feb-4161-8da8-f621cb8a7b80",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/documents"
+      }
+    ]
+  },
+  {
+    "Path": "patch-view.markdown",
+    "Name": "Patch View",
+    "DiscussionId": "cdeb1bed-273e-49c1-8b7a-1a2b5e5fbd86",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/patch"
+      }
+    ]
+  },
+  {
+    "Path": "conflicts-view.markdown",
+    "Name": "Conflicts View",
+    "DiscussionId": "1a03cd45-889e-4865-a8bb-1a46e07f30a4",
+    "Mappings": []
+  }
 ]

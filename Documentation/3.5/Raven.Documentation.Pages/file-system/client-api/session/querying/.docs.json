@@ -1,33 +1,38 @@
-﻿[
+[
   {
     "Path": "basics.markdown",
     "Name": "Basics",
+    "DiscussionId": "6b96e160-36a0-4d42-aadb-9a74726bf960",
     "Mappings": []
   },
   {
     "Path": "filtering.markdown",
     "Name": "Filtering",
+    "DiscussionId": "46444f81-0baa-4f50-89f1-2c8746263ea8",
     "Mappings": []
   },
   {
     "Path": "sorting.markdown",
     "Name": "Sorting",
+    "DiscussionId": "a6308ffb-ab5c-4293-9dcf-0695dd1d4ff2",
     "Mappings": []
   },
   {
     "Path": "paging.markdown",
     "Name": "Paging",
+    "DiscussionId": "04f15755-1b95-4f59-8ef3-ddaf737b7ca5",
     "Mappings": []
   },
   {
     "Path": "statistics.markdown",
     "Name": "Statistics",
+    "DiscussionId": "5021dd6f-57e2-42f5-9a1d-d673f2759331",
     "Mappings": []
-
   },
   {
     "Path": "streaming.markdown",
     "Name": "Streaming",
+    "DiscussionId": "c3a68d0e-6738-494a-90ba-99ba099eee57",
     "Mappings": []
   }
 ]

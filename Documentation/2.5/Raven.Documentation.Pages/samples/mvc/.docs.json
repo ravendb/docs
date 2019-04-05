@@ -1,12 +1,13 @@
-﻿[
-	{
-		"Path": "createAspNetMVC4Project.markdown",
-		"Name": "ASP.NET MVC 4 Sample",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "samples/mvc-starter-kit"
-			}
-		]
-	}
+[
+  {
+    "Path": "createAspNetMVC4Project.markdown",
+    "Name": "ASP.NET MVC 4 Sample",
+    "DiscussionId": "a591c5b0-98c2-4646-b712-e9ab25a70f9d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "samples/mvc-starter-kit"
+      }
+    ]
+  }
 ]

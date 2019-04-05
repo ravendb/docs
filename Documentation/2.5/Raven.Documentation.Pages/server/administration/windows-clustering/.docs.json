@@ -1,30 +1,32 @@
-﻿[
-	{
-		"Path": "fcm_configuration_2008.markdown",
-		"Name": "Windows Server 2008",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/windows-clustering/windows-server-2008"
-			},
-			{
-				"Version": 2.0,
-				"Key": "server/administration/fmc_configuration"
-			}
-		]
-	},
-	{
-		"Path": "fcm_configuration_2012.markdown",
-		"Name": "Windows Server 2012",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/windows-clustering/windows-server-2012"
-			},
-			{
-				"Version": 2.0,
-				"Key": "server/administration/fmc_configuration"
-			}
-		]
-	}
+[
+  {
+    "Path": "fcm_configuration_2008.markdown",
+    "Name": "Windows Server 2008",
+    "DiscussionId": "0486b869-75fe-415f-a394-dafbcafccdbe",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/windows-clustering/windows-server-2008"
+      },
+      {
+        "Version": 2.0,
+        "Key": "server/administration/fmc_configuration"
+      }
+    ]
+  },
+  {
+    "Path": "fcm_configuration_2012.markdown",
+    "Name": "Windows Server 2012",
+    "DiscussionId": "e74fe276-85d5-43d8-8386-7190d959bb26",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/windows-clustering/windows-server-2012"
+      },
+      {
+        "Version": 2.0,
+        "Key": "server/administration/fmc_configuration"
+      }
+    ]
+  }
 ]

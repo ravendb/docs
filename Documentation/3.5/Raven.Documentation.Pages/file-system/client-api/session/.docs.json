@@ -1,47 +1,56 @@
-﻿[
+[
   {
     "Path": "what-is-a-file-session.markdown",
     "Name": "What is a file session?",
+    "DiscussionId": "75540ab5-61fb-41e0-89e9-f4f103002061",
     "Mappings": []
   },
   {
     "Path": "opening-session.markdown",
     "Name": "Opening a session",
+    "DiscussionId": "8d97ce95-8de0-469d-899e-7d8033467665",
     "Mappings": []
   },
   {
     "Path": "loading-files.markdown",
     "Name": "Loading files",
+    "DiscussionId": "9682c64a-d133-4474-8f4c-e8487f0d5b30",
     "Mappings": []
   },
   {
     "Path": "uploading-files.markdown",
     "Name": "Uploading files",
+    "DiscussionId": "ac9f2a6a-3037-4167-8ba5-ffcb086f3806",
     "Mappings": []
   },
   {
     "Path": "downloading-files.markdown",
     "Name": "Downloading files",
+    "DiscussionId": "3a05db72-339f-4590-a092-6e1307404abd",
     "Mappings": []
   },
   {
     "Path": "renaming-files.markdown",
     "Name": "Renaming files",
+    "DiscussionId": "88d1c599-0514-4183-ab27-8bc5741b4f51",
     "Mappings": []
   },
   {
     "Path": "deleting-files.markdown",
     "Name": "Deleting files",
+    "DiscussionId": "e1d562cd-8a77-4107-943d-6aabe2631978",
     "Mappings": []
   },
   {
     "Path": "changing-metadata.markdown",
     "Name": "Changing metadata",
+    "DiscussionId": "8e2c0b91-9c1f-48c2-9981-3389c589893e",
     "Mappings": []
   },
   {
     "Path": "saving-changes.markdown",
     "Name": "Saving changes",
+    "DiscussionId": "300e0864-9f33-431d-9990-5304c96d64b0",
     "Mappings": []
   },
   {
@@ -57,6 +66,7 @@
   {
     "Path": "streaming-files.markdown",
     "Name": "StreamFileHeaders",
+    "DiscussionId": "c3defe47-f9f6-45e9-965d-6f55d97e0099",
     "Mappings": []
   }
 ]

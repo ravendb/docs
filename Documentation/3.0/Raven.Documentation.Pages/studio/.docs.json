@@ -1,27 +1,28 @@
-﻿[
-	{
-		"Path": "accessing-studio.markdown",
-		"Name": "Accessing Studio",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio"
-			}
-		]
-	},
-	{
-		"Path": "/overview",
-		"Name": "Overview",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/management",
-		"Name": "Management",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/walkthroughs",
-		"Name": "Walkthroughs",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "accessing-studio.markdown",
+    "Name": "Accessing Studio",
+    "DiscussionId": "9e42d981-3b8e-4247-a95a-3eb185959910",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio"
+      }
+    ]
+  },
+  {
+    "Path": "/overview",
+    "Name": "Overview",
+    "Mappings": []
+  },
+  {
+    "Path": "/management",
+    "Name": "Management",
+    "Mappings": []
+  },
+  {
+    "Path": "/walkthroughs",
+    "Name": "Walkthroughs",
+    "Mappings": []
+  }
 ]

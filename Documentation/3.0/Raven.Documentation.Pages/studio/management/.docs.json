@@ -2,51 +2,61 @@
   {
     "Path": "api-keys.markdown",
     "Name": "API Keys",
+    "DiscussionId": "4c52e061-1350-496b-9d09-4454da2a94b1",
     "Mappings": []
   },
   {
     "Path": "windows-authentication.markdown",
     "Name": "Windows Authentication",
+    "DiscussionId": "8d1e9ab1-2f69-4319-98a1-05d5b6ea3cf5",
     "Mappings": []
   },
   {
     "Path": "backup-restore.markdown",
     "Name": "Backup & Restore",
+    "DiscussionId": "888249fc-30d1-43f2-b790-52c1cb74a524",
     "Mappings": []
   },
   {
     "Path": "compact.markdown",
     "Name": "Compact",
+    "DiscussionId": "b5ac2347-98e5-44f7-b691-90b111544f87",
     "Mappings": []
   },
   {
     "Path": "admin-logs.markdown",
     "Name": "Admin Logs",
+    "DiscussionId": "722b00d3-7094-468b-9e05-b54bdc35f58e",
     "Mappings": []
   },
   {
     "Path": "traffic-watch.markdown",
     "Name": "Traffic Watch",
+    "DiscussionId": "5bdf041a-f799-4273-be6c-ad39775f0591",
     "Mappings": []
   },
   {
     "Path": "license-information.markdown",
     "Name": "License information",
+    "DiscussionId": "18d32aa5-682e-408b-8a4b-5cf6d0278948",
     "Mappings": []
   },
   {
     "Path": "gather-debug-info.markdown",
     "Name": "Gather Debug Info",
+    "DiscussionId": "1e5366a8-a9b6-42be-b12b-3daf93e81627",
     "Mappings": []
   },
   {
     "Path": "io-test.markdown",
     "Name": "IO Test",
+    "DiscussionId": "ce4e1384-bf44-48de-bd10-362f7c15428b",
     "Mappings": []
   },
   {
     "Path": "studio-config.markdown",
     "Name": "Studio Config",
+    "DiscussionId": "b6197b3f-1ea5-4b9a-88a1-a1c35a2e6c32",
     "Mappings": []
   }
 ]

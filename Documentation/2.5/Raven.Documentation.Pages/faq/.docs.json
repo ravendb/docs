@@ -1,112 +1,125 @@
-﻿[
-	{
-		"Path": "working-with-dtc.markdown",
-		"Name": "Working with System.Transactions",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/transaction-support/dtc-transactions"
-			}
-		]
-	},
-	{
-		"Path": "unique-constraints.markdown",
-		"Name": "Creating unique constraints",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/transaction-support/dtc-transactions"
-			}
-		]
-	},
-	{
-		"Path": "slow-response-times.markdown",
-		"Name": "Resolving slow response times",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "skipped-results.markdown",
-		"Name": "What are skipped results?",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/paging#paging-through-tampered-results"
-			}
-		]
-	},
-	{
-		"Path": "polymorphism.markdown",
-		"Name": "Polymorphism in RavenDB",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-polymorphic-data"
-			}
-		]
-	},
-	{
-		"Path": "lucene-queries-examples.markdown",
-		"Name": "Lucene queries example",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/full-query-syntax"
-			}
-		]
-	},
-	{
-		"Path": "low-memory-footprint.markdown",
-		"Name": "Reducing RavenDB memory footprint",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "indexing-across-entities.markdown",
-		"Name": "How to index across entities?",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/multi-map-indexes"
-			}
-		]
-	},
-	{
-		"Path": "optimizing-referenced-documents-load.markdown",
-		"Name": "Optimizing referenced documents load",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/handling-document-relationships"
-			}
-		]
-	},
-	{
-		"Path": "immutable-entities.markdown",
-		"Name": "Immutable entities with Raven DB",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "denormalized-updates.markdown",
-		"Name": "Updating denormalized data",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
-			}
-		]
-	},
-	{
-		"Path": "denormalized-references.markdown",
-		"Name": "Denormalized References",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "storing-dates.markdown",
-		"Name": "Storing dates in RavenDB",
-		"Mappings": [
-            {
-                "Version": 3.0,
-                "Key":  "client-api/how-to/store-dates"
-            }
-        ]
-	}
+[
+  {
+    "Path": "working-with-dtc.markdown",
+    "Name": "Working with System.Transactions",
+    "DiscussionId": "67f83aa7-7887-422c-b966-77e5c0935fb0",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/transaction-support/dtc-transactions"
+      }
+    ]
+  },
+  {
+    "Path": "unique-constraints.markdown",
+    "Name": "Creating unique constraints",
+    "DiscussionId": "73fa13d6-10e0-4474-80e6-ee088ab29b55",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/transaction-support/dtc-transactions"
+      }
+    ]
+  },
+  {
+    "Path": "slow-response-times.markdown",
+    "Name": "Resolving slow response times",
+    "DiscussionId": "b9487cbd-3797-448e-a501-288d66b3d807",
+    "Mappings": []
+  },
+  {
+    "Path": "skipped-results.markdown",
+    "Name": "What are skipped results?",
+    "DiscussionId": "673a605b-a7fd-496f-adcc-807378d6eed3",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/paging#paging-through-tampered-results"
+      }
+    ]
+  },
+  {
+    "Path": "polymorphism.markdown",
+    "Name": "Polymorphism in RavenDB",
+    "DiscussionId": "3ce090e7-7caf-43a5-804b-23452407626e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-polymorphic-data"
+      }
+    ]
+  },
+  {
+    "Path": "lucene-queries-examples.markdown",
+    "Name": "Lucene queries example",
+    "DiscussionId": "f83c377b-92f2-4135-a629-c97bdb4968bf",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/full-query-syntax"
+      }
+    ]
+  },
+  {
+    "Path": "low-memory-footprint.markdown",
+    "Name": "Reducing RavenDB memory footprint",
+    "DiscussionId": "016e3787-b045-4dbf-a1f4-ea131db2398b",
+    "Mappings": []
+  },
+  {
+    "Path": "indexing-across-entities.markdown",
+    "Name": "How to index across entities?",
+    "DiscussionId": "b7e845af-5003-4440-89db-c19b67514784",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/multi-map-indexes"
+      }
+    ]
+  },
+  {
+    "Path": "optimizing-referenced-documents-load.markdown",
+    "Name": "Optimizing referenced documents load",
+    "DiscussionId": "318659f6-db30-4e8a-aae9-4524d8c217f8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/handling-document-relationships"
+      }
+    ]
+  },
+  {
+    "Path": "immutable-entities.markdown",
+    "Name": "Immutable entities with Raven DB",
+    "DiscussionId": "4b49dd9f-fac8-4048-a588-af2b9c423ba9",
+    "Mappings": []
+  },
+  {
+    "Path": "denormalized-updates.markdown",
+    "Name": "Updating denormalized data",
+    "DiscussionId": "8f469c19-412b-455b-a4dd-0739ca84881b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
+      }
+    ]
+  },
+  {
+    "Path": "denormalized-references.markdown",
+    "Name": "Denormalized References",
+    "DiscussionId": "5a419f5f-7ea7-4862-8697-b0b5ba9914ce",
+    "Mappings": []
+  },
+  {
+    "Path": "storing-dates.markdown",
+    "Name": "Storing dates in RavenDB",
+    "DiscussionId": "0d1f063c-b4f5-4458-aae8-34ccce0db81c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/how-to/store-dates"
+      }
+    ]
+  }
 ]

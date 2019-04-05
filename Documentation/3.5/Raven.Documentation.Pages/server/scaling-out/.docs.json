@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "Path": "/replication",
     "Name": "Replication",
@@ -17,6 +17,7 @@
   {
     "Path": "replication-with-sharding.markdown",
     "Name": "Replication with Sharding",
+    "DiscussionId": "206687c6-157d-4d28-8c28-85320e6b572f",
     "Mappings": [
       {
         "Version": 1.0,
@@ -27,11 +28,13 @@
   {
     "Path": "etl.markdown",
     "Name": "ETL (Extract Transform Load)",
+    "DiscussionId": "0cb3e535-e053-47a7-92dd-122d034beb9d",
     "Mappings": []
   },
   {
     "Path": "sla.markdown",
     "Name": "SLA (Service Level Agreement)",
+    "DiscussionId": "25524ca0-9577-4869-a530-d2c85bf0b48f",
     "Mappings": []
   }
 ]

@@ -1,37 +1,40 @@
-﻿[
-	{
-		"Path": "what-is-files-store.markdown",
-		"Name": "What is a files store?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "creating-files-store.markdown",
-		"Name": "Creating a files store",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/commands",
-		"Name": "Commands",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/session",
-		"Name": "Session",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/changes",
-		"Name": "Changes API",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/listeners",
-		"Name": "Listeners",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "sharding.markdown",
-		"Name": "Sharding",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "what-is-files-store.markdown",
+    "Name": "What is a files store?",
+    "DiscussionId": "7245cf35-39d3-45ec-aa70-1767c84b454b",
+    "Mappings": []
+  },
+  {
+    "Path": "creating-files-store.markdown",
+    "Name": "Creating a files store",
+    "DiscussionId": "068527d6-4ef7-477c-91a5-a9375e035f22",
+    "Mappings": []
+  },
+  {
+    "Path": "/commands",
+    "Name": "Commands",
+    "Mappings": []
+  },
+  {
+    "Path": "/session",
+    "Name": "Session",
+    "Mappings": []
+  },
+  {
+    "Path": "/changes",
+    "Name": "Changes API",
+    "Mappings": []
+  },
+  {
+    "Path": "/listeners",
+    "Name": "Listeners",
+    "Mappings": []
+  },
+  {
+    "Path": "sharding.markdown",
+    "Name": "Sharding",
+    "DiscussionId": "3495f89b-035c-4d5c-b291-0a2c1dade274",
+    "Mappings": []
+  }
 ]

@@ -1,67 +1,74 @@
-﻿[
-	{
-		"Path": "database-settings.markdown",
-		"Name": "Database Settings",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/statistics"
-			}
-		]
-	},
-	{
-		"Path": "quotas.markdown",
-		"Name": "Quotas",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/bundles/quotas"
-			}
-		]
-	},
-	{
-		"Path": "replication.markdown",
-		"Name": "Replication",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/bundles/replication"
-			}
-		]
-	},
-	{
-		"Path": "sql-replication.markdown",
-		"Name": "SQL Replication",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "studio/bundles/sql-replication"
-			}
-		]
-	},
-	{
-		"Path": "versioning.markdown",
-		"Name": "Versioning",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/bundles/versioning"
-			}
-		]
-	},
-	{
-		"Path": "periodic-export.markdown",
-		"Name": "Periodic Export",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/bundles/periodicbackup"
-			}
-		]
-	},
-	{
-		"Path": "custom-functions.markdown",
-		"Name": "Custom Functions",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "database-settings.markdown",
+    "Name": "Database Settings",
+    "DiscussionId": "1a60eb6a-1cde-4bee-a72a-2e5e8f2efb1a",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/statistics"
+      }
+    ]
+  },
+  {
+    "Path": "quotas.markdown",
+    "Name": "Quotas",
+    "DiscussionId": "762f5742-812a-488e-985e-199b66a1a104",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/bundles/quotas"
+      }
+    ]
+  },
+  {
+    "Path": "replication.markdown",
+    "Name": "Replication",
+    "DiscussionId": "51d98b19-968d-4de5-a0ae-51835e526769",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/bundles/replication"
+      }
+    ]
+  },
+  {
+    "Path": "sql-replication.markdown",
+    "Name": "SQL Replication",
+    "DiscussionId": "ce24890b-13d6-4f49-82c1-00946bfe0650",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "studio/bundles/sql-replication"
+      }
+    ]
+  },
+  {
+    "Path": "versioning.markdown",
+    "Name": "Versioning",
+    "DiscussionId": "5d2d39c4-b4e5-4c4a-aa3f-71af191b8271",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/bundles/versioning"
+      }
+    ]
+  },
+  {
+    "Path": "periodic-export.markdown",
+    "Name": "Periodic Export",
+    "DiscussionId": "c5820229-a303-4217-bf56-500c439e1b0a",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/bundles/periodicbackup"
+      }
+    ]
+  },
+  {
+    "Path": "custom-functions.markdown",
+    "Name": "Custom Functions",
+    "DiscussionId": "d001344c-1c8e-4311-9c19-56bc6a741e6e",
+    "Mappings": []
+  }
 ]

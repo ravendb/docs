@@ -1,82 +1,90 @@
-﻿[
-	{
-		"Path": "as-a-service.markdown",
-		"Name": "Running as a service",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/as-a-service"
-			}
-		]
-	},
-	{
-		"Path": "as-iis-application.markdown",
-		"Name": "Deploying as an IIS application",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/IIS"
-			}
-		]
-	},
-	{
-		"Path": "embedded.markdown",
-		"Name": "Embedded",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/embedded"
-			}
-		]
-	},
-	{
-		"Path": "recommended-configuration.markdown",
-		"Name": "Recommended configuration",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/system-requirements"
-			}
-		]
-	},
-	{
-		"Path": "docs-deploy-debug.markdown",
-		"Name": "Running in Debug mode",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/troubleshooting/running-in-debug-mode"
-			}
-		]
-	},
-	{
-		"Path": "docs-debug-logging.markdown",
-		"Name": "Debug Logging",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/troubleshooting/enabling-logging"
-			}
-		]
-	},
-	{
-		"Path": "enabling-ssl.markdown",
-		"Name": "Enabling SSL",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/enabling-ssl"
-			}
-		]
-	},
-	{
-		"Path": "installer.markdown",
-		"Name": "Installer",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/using-installer"
-			}
-		]
-	}
+[
+  {
+    "Path": "as-a-service.markdown",
+    "Name": "Running as a service",
+    "DiscussionId": "a41b3507-f49b-4f27-9f85-e026ffbe0b04",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/as-a-service"
+      }
+    ]
+  },
+  {
+    "Path": "as-iis-application.markdown",
+    "Name": "Deploying as an IIS application",
+    "DiscussionId": "282703d5-a93e-496d-8b33-f33b70cebfd8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/IIS"
+      }
+    ]
+  },
+  {
+    "Path": "embedded.markdown",
+    "Name": "Embedded",
+    "DiscussionId": "e0210f9b-924b-4105-a648-91b42a9e37fb",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/embedded"
+      }
+    ]
+  },
+  {
+    "Path": "recommended-configuration.markdown",
+    "Name": "Recommended configuration",
+    "DiscussionId": "163ba2ca-ed9a-4fb4-acc6-fc940a780cdf",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/system-requirements"
+      }
+    ]
+  },
+  {
+    "Path": "docs-deploy-debug.markdown",
+    "Name": "Running in Debug mode",
+    "DiscussionId": "d9e8f8b4-1485-43b8-a9e5-46c6fbf63c43",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/troubleshooting/running-in-debug-mode"
+      }
+    ]
+  },
+  {
+    "Path": "docs-debug-logging.markdown",
+    "Name": "Debug Logging",
+    "DiscussionId": "e342f0e0-374d-41ed-b1b1-c851048767ec",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/troubleshooting/enabling-logging"
+      }
+    ]
+  },
+  {
+    "Path": "enabling-ssl.markdown",
+    "Name": "Enabling SSL",
+    "DiscussionId": "42dbdbb9-68e9-4be0-b8a2-09d89de8e4ac",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/enabling-ssl"
+      }
+    ]
+  },
+  {
+    "Path": "installer.markdown",
+    "Name": "Installer",
+    "DiscussionId": "e452666e-d3e8-4c84-96e1-8ea8dc7017f8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/using-installer"
+      }
+    ]
+  }
 ]

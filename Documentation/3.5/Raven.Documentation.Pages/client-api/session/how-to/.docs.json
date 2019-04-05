@@ -2,11 +2,13 @@
   {
     "Path": "defer-operations.markdown",
     "Name": "...defer operations",
+    "DiscussionId": "19bb058c-44b5-4771-8b41-e286718cd05c",
     "Mappings": []
   },
   {
     "Path": "perform-operations-lazily.markdown",
     "Name": "...perform operations lazily",
+    "DiscussionId": "c981a980-cb45-43ab-a14e-07979da30135",
     "Mappings": [
       {
         "Version": 2.0,
@@ -17,61 +19,73 @@
   {
     "Path": "clear-a-session.markdown",
     "Name": "...clear a session",
+    "DiscussionId": "495096e8-40d2-47b7-8939-a5cbce0e2f74",
     "Mappings": []
   },
   {
     "Path": "evict-entity-from-a-session.markdown",
     "Name": "...evict entity from a session",
+    "DiscussionId": "a2c82a18-e769-4408-adbb-e82fc42ecbfc",
     "Mappings": []
   },
   {
     "Path": "refresh-entity.markdown",
     "Name": "...refresh entity",
+    "DiscussionId": "df804a9e-2326-4bb3-9daa-43a208125821",
     "Mappings": []
   },
   {
     "Path": "get-entity-id.markdown",
     "Name": "...get entity id",
+    "DiscussionId": "ce9e23db-9e6d-47ed-917e-8c54764c7f4e",
     "Mappings": []
   },
   {
     "Path": "get-entity-metadata.markdown",
     "Name": "...get entity metadata",
+    "DiscussionId": "49f45a3f-016c-4789-9b67-7ebf950d039d",
     "Mappings": []
   },
   {
     "Path": "get-entity-etag.markdown",
     "Name": "...get entity etag",
+    "DiscussionId": "8ad297f2-c15d-4113-8106-be30184ace94",
     "Mappings": []
   },
   {
     "Path": "get-entity-url.markdown",
     "Name": "...get entity url",
+    "DiscussionId": "d9ef9273-0432-4f78-86ed-2c85792d59f2",
     "Mappings": []
   },
   {
     "Path": "check-if-entity-has-changed.markdown",
     "Name": "...check if entity has changed",
+    "DiscussionId": "726ceeb1-876e-4572-a651-4bd846be3849",
     "Mappings": []
   },
   {
     "Path": "check-if-there-are-any-changes-on-a-session.markdown",
     "Name": "...check if there are any changes on a session",
+    "DiscussionId": "9b194184-b904-4c17-bf2e-0ad0854373b8",
     "Mappings": []
   },
   {
     "Path": "mark-entity-as-readonly.markdown",
     "Name": "...mark entity as readonly",
+    "DiscussionId": "702dd848-7c6d-4885-9dbe-5c42b4b51684",
     "Mappings": []
   },
   {
     "Path": "use-morelikethis.markdown",
     "Name": "...use MoreLikeThis?",
+    "DiscussionId": "e71a59b4-5499-463e-933b-0a500155d0aa",
     "Mappings": []
   },
   {
     "Path": "delete-documents-using-index-with-linq.markdown",
     "Name": "...delete-documents-using-index-with-linq",
+    "DiscussionId": "814c9b25-6855-448a-81d8-189e0713a65a",
     "Mappings": []
   }
 ]

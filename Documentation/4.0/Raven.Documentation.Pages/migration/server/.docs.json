@@ -2,36 +2,43 @@
   {
     "Path": "data-migration.markdown",
     "Name": "Data migration",
+    "DiscussionId": "1da70fb0-d3ef-40ff-a433-ed7ea56457f6",
     "Mappings": []
   },
   {
     "Path": "configuration-options.markdown",
     "Name": "Configuration options",
+    "DiscussionId": "53c92bee-a7bc-456a-b181-77cfd347a0b8",
     "Mappings": []
   },
   {
     "Path": "indexes.markdown",
     "Name": "Indexes",
+    "DiscussionId": "ca082399-f251-4965-9eda-ba6577588a55",
     "Mappings": []
   },
   {
     "Path": "bundles.markdown",
     "Name": "Bundles",
+    "DiscussionId": "5bb66d0c-1ef1-4ea4-a623-4dd6ed26ec49",
     "Mappings": []
   },
   {
     "Path": "triggers.markdown",
     "Name": "Triggers",
+    "DiscussionId": "4035b2bc-a03b-43fa-8f87-3c86554b772c",
     "Mappings": []
   },
   {
     "Path": "authentication.markdown",
     "Name": "Authentication",
+    "DiscussionId": "45b2c454-ad38-4bec-9aa7-f3fdd7661897",
     "Mappings": []
   },
   {
     "Path": "snmp.markdown",
     "Name": "SNMP",
+    "DiscussionId": "555e5d38-264c-4249-9360-1e1a3f4f78d6",
     "Mappings": []
   }
 ]

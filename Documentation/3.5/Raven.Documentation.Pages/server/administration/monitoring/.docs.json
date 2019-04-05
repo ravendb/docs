@@ -1,20 +1,23 @@
-﻿[
-	{
+[
+  {
     "Path": "pandora-fms.markdown",
     "Name": "Pandora FMS",
+    "DiscussionId": "e441a857-ea8c-4fec-936c-b43620b8d3ed",
     "Mappings": []
   },
   {
     "Path": "request-tracking.markdown",
     "Name": "Request Tracking",
+    "DiscussionId": "f824d226-aa04-4ee7-82e7-b456298d7299",
     "Mappings": []
   },
   {
     "Path": "disk-io-perf-monitor.markdown",
     "Name": "Disk IO Performance Monitor",
+    "DiscussionId": "76f89fa7-0711-4abf-8dd2-51569a87695b",
     "Mappings": []
   },
-	{
+  {
     "Path": "/SNMP",
     "Name": "SNMP",
     "Mappings": []

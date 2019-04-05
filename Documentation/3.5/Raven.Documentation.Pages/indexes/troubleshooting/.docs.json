@@ -1,12 +1,13 @@
-﻿[
-	{
-		"Path": "debugging-index-errors.markdown",
-		"Name": "Debugging index errors",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/querying/static-indexes/indexes-error-handling"
-			}
-		]
-	}
+[
+  {
+    "Path": "debugging-index-errors.markdown",
+    "Name": "Debugging index errors",
+    "DiscussionId": "c429ed6e-5a71-47a3-8bc8-85d7ae915cc2",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/static-indexes/indexes-error-handling"
+      }
+    ]
+  }
 ]

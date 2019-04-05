@@ -2,21 +2,24 @@
   {
     "Path": "how-client-integrates-with-replication-bundle.markdown",
     "Name": "How client integrates with replication bundle?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/scaling-out/replication/client-integration"
-			}
-		]
+    "DiscussionId": "8a13f72b-30a4-4d35-988f-d68099b8444f",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/scaling-out/replication/client-integration"
+      }
+    ]
   },
   {
     "Path": "how-to-work-with-authorization-bundle.markdown",
     "Name": "How to work with authorization bundle?",
+    "DiscussionId": "4d2f850e-a872-44fa-ba1d-9bbbfd86657a",
     "Mappings": []
   },
   {
     "Path": "how-to-work-with-unique-constraints-bundle.markdown",
     "Name": "How to work with unique constraints bundle?",
+    "DiscussionId": "1c5ca5c2-2a37-426f-b01a-4eaa320f5a57",
     "Mappings": []
   }
 ]

@@ -2,9 +2,10 @@
   {
     "Path": "conventions.markdown",
     "Name": "Conventions",
+    "DiscussionId": "b544cafa-b6b9-426f-a62d-4d349bab9d92",
     "Mappings": [
       {
-        "Version": "3.0",
+        "Version": 3.0,
         "Key": "client-api/configuration/conventions/what-are-conventions"
       }
     ]
@@ -12,9 +13,10 @@
   {
     "Path": "querying.markdown",
     "Name": "Querying",
+    "DiscussionId": "671dd502-14d2-4a6e-9c5f-befea500450b",
     "Mappings": [
       {
-        "Version": "3.0",
+        "Version": 3.0,
         "Key": "client-api/configuration/conventions/querying"
       }
     ]
@@ -22,14 +24,16 @@
   {
     "Path": "serialization.markdown",
     "Name": "Serialization",
+    "DiscussionId": "da305bdb-37c5-4ee9-b5a2-f641969427e1",
     "Mappings": []
   },
   {
     "Path": "load-balance-and-failover.markdown",
     "Name": "Load Balance & Failover",
+    "DiscussionId": "b0d33f30-29ae-4972-8342-e6ce5ac9a4d1",
     "Mappings": [
       {
-        "Version": "3.0",
+        "Version": 3.0,
         "Key": "client-api/configuration/conventions/replication"
       }
     ]
@@ -39,7 +43,7 @@
     "Name": "Identifier generation",
     "Mappings": [
       {
-        "Version": "3.0",
+        "Version": 3.0,
         "Key": "client-api/configuration/conventions/identifier-generation"
       }
     ]

@@ -1,82 +1,89 @@
-﻿[
-	{
-		"Path": "connecting-to-a-ravendb-datastore.markdown",
-		"Name": "Connecting to a RavenDB datastore",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/creating-document-store"
-			}
-		]
-	},
-	{
-		"Path": "/basic-operations",
-		"Name": "Basic operations",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/querying",
-		"Name": "Querying",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/what-are-indexes"
-			}
-		]
-	},
-	{
-		"Path": "working-asynchronously.markdown",
-		"Name": "Working Asynchronously",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "partial-document-updates.markdown",
-		"Name": "Partial document updates using the Patching API",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/patches/how-to-work-with-patch-requests"
-			}
-		]
-	},
-	{
-		"Path": "set-based-operations.markdown",
-		"Name": "Set based operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
-			}
-		]
-	},
-	{
-		"Path": "attachments.markdown",
-		"Name": "Attachments",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/what-are-commands#attachment-commands"
-			}
-		]
-	},
-	{
-		"Path": "faceted-search.markdown",
-		"Name": "Faceted search",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/faceted-search"
-			}
-		]
-	},
-	{
-		"Path": "/advanced",
-		"Name": "Advanced topics",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "fsharp.markdown",
-		"Name": "RavenDB in F#",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "connecting-to-a-ravendb-datastore.markdown",
+    "Name": "Connecting to a RavenDB datastore",
+    "DiscussionId": "9f6cde1d-deb7-4971-ad6e-d151c7459c3b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/creating-document-store"
+      }
+    ]
+  },
+  {
+    "Path": "/basic-operations",
+    "Name": "Basic operations",
+    "Mappings": []
+  },
+  {
+    "Path": "/querying",
+    "Name": "Querying",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/what-are-indexes"
+      }
+    ]
+  },
+  {
+    "Path": "working-asynchronously.markdown",
+    "Name": "Working Asynchronously",
+    "DiscussionId": "3048b4d4-9730-4d7c-975a-9e6059bc4b71",
+    "Mappings": []
+  },
+  {
+    "Path": "partial-document-updates.markdown",
+    "Name": "Partial document updates using the Patching API",
+    "DiscussionId": "9a8ddf69-135b-46e2-86f2-f568cfc39717",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/patches/how-to-work-with-patch-requests"
+      }
+    ]
+  },
+  {
+    "Path": "set-based-operations.markdown",
+    "Name": "Set based operations",
+    "DiscussionId": "eba8a172-88a5-49a2-a883-3f5e12265f14",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/documents/how-to/delete-or-update-documents-using-index"
+      }
+    ]
+  },
+  {
+    "Path": "attachments.markdown",
+    "Name": "Attachments",
+    "DiscussionId": "742162c9-4102-4dd4-8077-68e94b2a3e70",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/what-are-commands#attachment-commands"
+      }
+    ]
+  },
+  {
+    "Path": "faceted-search.markdown",
+    "Name": "Faceted search",
+    "DiscussionId": "ddd99fb3-6041-4eaf-a34c-0c1bfa428227",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/faceted-search"
+      }
+    ]
+  },
+  {
+    "Path": "/advanced",
+    "Name": "Advanced topics",
+    "Mappings": []
+  },
+  {
+    "Path": "fsharp.markdown",
+    "Name": "RavenDB in F#",
+    "DiscussionId": "643b1c09-f20e-4a3a-ad52-3f907f94be52",
+    "Mappings": []
+  }
 ]

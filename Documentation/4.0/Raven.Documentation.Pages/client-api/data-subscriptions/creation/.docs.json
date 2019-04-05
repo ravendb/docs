@@ -2,16 +2,19 @@
   {
     "Path": "how-to-create-data-subscription.markdown",
     "Name": "How to Create a Data Subscription",
+    "DiscussionId": "0325d973-2bbd-444a-a33e-2535a2a39a1b",
     "Mappings": []
   },
   {
     "Path": "examples.markdown",
     "Name": "Examples",
+    "DiscussionId": "7bbefeef-80cf-4767-b1bb-d989ed556d9a",
     "Mappings": []
   },
   {
     "Path": "api-overview.markdown",
     "Name": "API Overview",
+    "DiscussionId": "7e187f27-0adc-4a2e-bce8-661fa8aa2174",
     "Mappings": []
   }
 ]

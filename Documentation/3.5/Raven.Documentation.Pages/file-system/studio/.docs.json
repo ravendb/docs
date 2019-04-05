@@ -1,4 +1,4 @@
-﻿[
+[
   {
     "Path": "/files",
     "Name": "Files",
@@ -7,6 +7,7 @@
   {
     "Path": "search-view.markdown",
     "Name": "Search view",
+    "DiscussionId": "35bc2055-5180-41a8-8067-3e735e307d24",
     "Mappings": []
   },
   {
@@ -22,6 +23,7 @@
   {
     "Path": "configurations-view.markdown",
     "Name": "Configurations view",
+    "DiscussionId": "f42d86da-1aa7-4609-b728-568fba20bdf3",
     "Mappings": []
   },
   {
@@ -32,6 +34,7 @@
   {
     "Path": "status-view.markdown",
     "Name": "Status View",
+    "DiscussionId": "ae6ae062-6e3b-4449-807d-f4a78e23fa63",
     "Mappings": []
   },
   {

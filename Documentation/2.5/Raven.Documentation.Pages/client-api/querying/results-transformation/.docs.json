@@ -1,52 +1,57 @@
-﻿[
-	{
-		"Path": "result-transformers.markdown",
-		"Name": "Result Transformers",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "transformers/what-are-transformers"
-			}
-		]
-	},
-	{
-		"Path": "of-type.markdown",
-		"Name": "OfType (As)",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-perform-projection"
-			}
-		]
-	},
-	{
-		"Path": "project-from-index-fields-into.markdown",
-		"Name": "ProjectFromIndexFieldsInto (AsProjection)",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-perform-projection"
-			}
-		]
-	},
-	{
-		"Path": "transform-results.markdown",
-		"Name": "TransformResults",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-customize-query#transformresults"
-			}
-		]
-	},
-	{
-		"Path": "select-fields.markdown",
-		"Name": "SelectFields",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-perform-projection"
-			}
-		]
-	}
+[
+  {
+    "Path": "result-transformers.markdown",
+    "Name": "Result Transformers",
+    "DiscussionId": "7877b6dd-9675-4ed3-a5f6-7f700fcf8e7e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "transformers/what-are-transformers"
+      }
+    ]
+  },
+  {
+    "Path": "of-type.markdown",
+    "Name": "OfType (As)",
+    "DiscussionId": "9e4626e9-f2ab-4463-9d9a-17c4b66c538b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-perform-projection"
+      }
+    ]
+  },
+  {
+    "Path": "project-from-index-fields-into.markdown",
+    "Name": "ProjectFromIndexFieldsInto (AsProjection)",
+    "DiscussionId": "38f62266-1a95-4ee8-8a3e-2de1694bd135",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-perform-projection"
+      }
+    ]
+  },
+  {
+    "Path": "transform-results.markdown",
+    "Name": "TransformResults",
+    "DiscussionId": "0e5d609e-87cb-43a6-84eb-2235482aa124",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-customize-query#transformresults"
+      }
+    ]
+  },
+  {
+    "Path": "select-fields.markdown",
+    "Name": "SelectFields",
+    "DiscussionId": "1d1bc604-456e-4f63-8a5e-a78313ee93a3",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-perform-projection"
+      }
+    ]
+  }
 ]

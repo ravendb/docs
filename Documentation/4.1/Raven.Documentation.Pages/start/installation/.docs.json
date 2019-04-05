@@ -1,61 +1,69 @@
 [
-    {
-        "Path": "setup-wizard.markdown",
-        "Name": "Setup Wizard",
-        "Mappings": []
-    },
-    {
-        "Path": "/setup-examples",
-        "Name": "Setup Examples",
-        "Mappings": []
-    },
-    {
-        "Path": "manual.markdown",
-        "Name": "Manual Setup",
-        "Mappings": []
-    },
-    {
-        "Path": "deployment-considerations.markdown",
-        "Name": "Deployment Considerations",
-        "Mappings": [
-            {
-                "Version": 3.0,
-                "Key": "server/installation/deployment-considerations"
-            }
-        ]
-    },
-    {
-        "Path": "running-as-service.markdown",
-        "Name": "Running as a Service",
-        "Mappings": []
-    },
-    {
-        "Path": "running-in-docker-container.markdown",
-        "Name": "Running in a Docker Container",
-        "Mappings": []
-    },
-    {
-        "Path": "upgrading-to-new-version.markdown",
-        "Name": "Upgrading to a New Version",
-        "Mappings": [
-            {
-                "Version": 1.0,
-                "Key": "server/administration/upgrade"
-            },
-            {
-                "Version": 3.0,
-                "Key": "server/installation/upgrading-to-new-version"
-            }
-        ]
-    },
-    {
-        "Path": "system-requirements.markdown",
-        "Name": "System Requirements",
-        "Mappings": []
-    },
-    {
-        "Path": "system-configuration-recommendations.markdown",
-        "Name": "System Configuration Recommendations",
-        "Mappings": []
-    }
+  {
+    "Path": "setup-wizard.markdown",
+    "Name": "Setup Wizard",
+    "DiscussionId": "9ec18b39-d486-488f-ae3c-f08529ddb74a",
+    "Mappings": []
+  },
+  {
+    "Path": "/setup-examples",
+    "Name": "Setup Examples",
+    "Mappings": []
+  },
+  {
+    "Path": "manual.markdown",
+    "Name": "Manual Setup",
+    "DiscussionId": "ef5aab05-1dca-4ff3-9b84-6e431a11d18d",
+    "Mappings": []
+  },
+  {
+    "Path": "deployment-considerations.markdown",
+    "Name": "Deployment Considerations",
+    "DiscussionId": "1addca60-13a6-43a9-a235-6a69d34aca0d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/deployment-considerations"
+      }
+    ]
+  },
+  {
+    "Path": "running-as-service.markdown",
+    "Name": "Running as a Service",
+    "DiscussionId": "40649e02-f474-4c8a-9f87-9c3df90b83db",
+    "Mappings": []
+  },
+  {
+    "Path": "running-in-docker-container.markdown",
+    "Name": "Running in a Docker Container",
+    "DiscussionId": "eda38daa-a361-4114-9519-0684a7e1bda2",
+    "Mappings": []
+  },
+  {
+    "Path": "upgrading-to-new-version.markdown",
+    "Name": "Upgrading to a New Version",
+    "DiscussionId": "57129334-7cc2-41b8-b0d3-3bcce5cdca3f",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/administration/upgrade"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/installation/upgrading-to-new-version"
+      }
+    ]
+  },
+  {
+    "Path": "system-requirements.markdown",
+    "Name": "System Requirements",
+    "DiscussionId": "169ece6b-79c8-4e69-81ec-a25bb90840be",
+    "Mappings": []
+  },
+  {
+    "Path": "system-configuration-recommendations.markdown",
+    "Name": "System Configuration Recommendations",
+    "DiscussionId": "05780903-e868-4ff3-84f6-044bf20b6103",
+    "Mappings": []
+  }
 ]

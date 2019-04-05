@@ -2,9 +2,10 @@
   {
     "Path": "global.markdown",
     "Name": "Global",
+    "DiscussionId": "45086654-1633-460c-9d3d-cbb12aa666bb",
     "Mappings": [
       {
-        "Version": "3.0",
+        "Version": 3.0,
         "Key": "client-api/configuration/conventions/identifier-generation/global"
       }
     ]
@@ -12,9 +13,10 @@
   {
     "Path": "type-specific.markdown",
     "Name": "Type-specific",
+    "DiscussionId": "d8df2100-2687-466e-9761-f7fde186463c",
     "Mappings": [
       {
-        "Version": "3.0",
+        "Version": 3.0,
         "Key": "client-api/configuration/conventions/identifier-generation/type-specific"
       }
     ]

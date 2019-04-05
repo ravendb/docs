@@ -2,11 +2,13 @@
   {
     "Path": "global.markdown",
     "Name": "Global",
+    "DiscussionId": "6f6ade35-7b16-4d93-889b-a547b5b6018c",
     "Mappings": []
   },
   {
     "Path": "type-specific.markdown",
     "Name": "Type-specific",
+    "DiscussionId": "0bc7ffa0-ef00-4346-93c4-9c4b52250d28",
     "Mappings": []
   }
 ]

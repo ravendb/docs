@@ -1,56 +1,61 @@
-﻿[
-	{
-		"Path": "configuration.markdown",
-		"Name": "Configuration options",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/configuration-options"
-			}
-		]
-	},
-	{
-		"Path": "backup-restore.markdown",
-		"Name": "Backup & Restore",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/backup-and-restore"
-			}
-		]
-	},
-	{
-		"Path": "export-import.markdown",
-		"Name": "Exporting and Importing data",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/exporting-and-importing-data"
-			}
-		]
-	},
-	{
-		"Path": "upgrade.markdown",
-		"Name": "Doing upgrade",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/upgrading-to-new-version"
-			}
-		]
-	},
-	{
-		"Path": "fmc_configuration.markdown",
-		"Name": "Windows Clustering",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/administration/windows-clustering/fcm_configuration_2008"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/windows-clustering/windows-server-2012"
-			}
-		]
-	}
+[
+  {
+    "Path": "configuration.markdown",
+    "Name": "Configuration options",
+    "DiscussionId": "74243931-1ac5-495c-be58-2b93e6a7b2a2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/configuration-options"
+      }
+    ]
+  },
+  {
+    "Path": "backup-restore.markdown",
+    "Name": "Backup & Restore",
+    "DiscussionId": "899b28fc-b90d-4339-8a76-94accf29b710",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/backup-and-restore"
+      }
+    ]
+  },
+  {
+    "Path": "export-import.markdown",
+    "Name": "Exporting and Importing data",
+    "DiscussionId": "ce0a3a32-82b9-4b8c-bf0f-f62a2584f73f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/exporting-and-importing-data"
+      }
+    ]
+  },
+  {
+    "Path": "upgrade.markdown",
+    "Name": "Doing upgrade",
+    "DiscussionId": "dadd3c12-5b3f-42bf-bc1f-c01d3972070c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/upgrading-to-new-version"
+      }
+    ]
+  },
+  {
+    "Path": "fmc_configuration.markdown",
+    "Name": "Windows Clustering",
+    "DiscussionId": "9560f23e-73ed-4176-95cc-f2a54c8dbea5",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/administration/windows-clustering/fcm_configuration_2008"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/windows-clustering/windows-server-2012"
+      }
+    ]
+  }
 ]

@@ -1,42 +1,50 @@
 [
-    {
-        "Path": "basics.markdown",
-        "Name": "Basics",
-        "Mappings": []
-    },
-    {
-        "Path": "transformers.markdown",
-        "Name": "Transformers",
-        "Mappings": []
-    },
-    {
-        "Path": "spatial.markdown",
-        "Name": "Spatial",
-        "Mappings": []
-    },
-    {
-        "Path": "facets-and-dynamic-aggregation.markdown",
-        "Name": "Facets and Dynamic Aggregation",
-        "Mappings": []
-    },
-    {
-        "Path": "suggestions.markdown",
-        "Name": "Suggestions",
-        "Mappings": []
-    },
-    {
-        "Path": "morelikethis.markdown",
-        "Name": "MoreLikeThis",
-        "Mappings": []
-    },
-    {
-        "Path": "highlighting.markdown",
-        "Name": "Highlighting",
-        "Mappings": []
-    },
-    {
-        "Path": "documentquery.markdown",
-        "Name": "DocumentQuery",
-        "Mappings": []
-    }
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "DiscussionId": "1bdfd32f-9b07-4a81-b864-0fc7cb82ea8d",
+    "Mappings": []
+  },
+  {
+    "Path": "transformers.markdown",
+    "Name": "Transformers",
+    "DiscussionId": "c9b4ac43-0f2a-4df9-a445-cdc9be267af4",
+    "Mappings": []
+  },
+  {
+    "Path": "spatial.markdown",
+    "Name": "Spatial",
+    "DiscussionId": "26aff3d6-fd9f-4ca4-bea1-7c21f1d272b4",
+    "Mappings": []
+  },
+  {
+    "Path": "facets-and-dynamic-aggregation.markdown",
+    "Name": "Facets and Dynamic Aggregation",
+    "DiscussionId": "c91da32e-c614-41cf-be73-2c8f3bcd9ea8",
+    "Mappings": []
+  },
+  {
+    "Path": "suggestions.markdown",
+    "Name": "Suggestions",
+    "DiscussionId": "cc45e1f5-8a0f-4ad2-a319-e2773ab2a6de",
+    "Mappings": []
+  },
+  {
+    "Path": "morelikethis.markdown",
+    "Name": "MoreLikeThis",
+    "DiscussionId": "733eb651-bda3-4595-b59e-4b77ca05a5c0",
+    "Mappings": []
+  },
+  {
+    "Path": "highlighting.markdown",
+    "Name": "Highlighting",
+    "DiscussionId": "7d74e4e3-ef56-41f9-960e-ea9de341f204",
+    "Mappings": []
+  },
+  {
+    "Path": "documentquery.markdown",
+    "Name": "DocumentQuery",
+    "DiscussionId": "70c9a3af-9858-47f9-ba48-b22bfd357e04",
+    "Mappings": []
+  }
 ]

@@ -1,117 +1,127 @@
-﻿[
-	{
-		"Path": "using-linq-to-query-ravendb.markdown",
-		"Name": "Using Linq to query RavenDB indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/basics"
-			}
-		]
-	},
-	{
-		"Path": "paging.markdown",
-		"Name": "Paging",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/paging"
-			}
-		]
-	},
-	{
-		"Path": "stale-indexes.markdown",
-		"Name": "Stale indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/stale-indexes"
-			}
-		]
-	},
-	{
-		"Path": "/static-indexes",
-		"Name": "Static indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/creating-and-deploying"
-			}
-		]
-	},
-	{
-		"Path": "handling-document-relationships.markdown",
-		"Name": "Handling document relationships",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/handling-document-relationships"
-			}
-		]
-	},
-	{
-		"Path": "polymorphism.markdown",
-		"Name": "Polymorphism",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-polymorphic-data"
-			}
-		]
-	},
-	{
-		"Path": "/results-transformation",
-		"Name": "Results transformation",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "lazy-operations.markdown",
-		"Name": "Lazy Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/how-to/perform-operations-lazily"
-			}
-		]
-	},
-	{
-		"Path": "intersection.markdown",
-		"Name": "Intersection",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/intersection"
-			}
-		]
-	},
-	{
-		"Path": "query-and-lucene-query.markdown",
-		"Name": "Query and LuceneQuery",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/query-vs-document-query"
-			}
-		]
-	},
-	{
-		"Path": "query-customizations.markdown",
-		"Name": "Query customization",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-customize-query"
-			}
-		]
-	},
-	{
-		"Path": "dynamic-aggregation.markdown",
-		"Name": "Dynamic aggregation",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/dynamic-aggregation"
-			}
-		]
-	}
+[
+  {
+    "Path": "using-linq-to-query-ravendb.markdown",
+    "Name": "Using Linq to query RavenDB indexes",
+    "DiscussionId": "07b00972-09bf-43a2-9d2a-094dacf64ab8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/basics"
+      }
+    ]
+  },
+  {
+    "Path": "paging.markdown",
+    "Name": "Paging",
+    "DiscussionId": "cdde03b7-c9b2-424f-b279-a0bff4bc299f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/paging"
+      }
+    ]
+  },
+  {
+    "Path": "stale-indexes.markdown",
+    "Name": "Stale indexes",
+    "DiscussionId": "300a913a-2e45-44d9-b0a3-867f4443274b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/stale-indexes"
+      }
+    ]
+  },
+  {
+    "Path": "/static-indexes",
+    "Name": "Static indexes",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/creating-and-deploying"
+      }
+    ]
+  },
+  {
+    "Path": "handling-document-relationships.markdown",
+    "Name": "Handling document relationships",
+    "DiscussionId": "61134c92-ace5-41a3-ab4d-73680746cf9e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/handling-document-relationships"
+      }
+    ]
+  },
+  {
+    "Path": "polymorphism.markdown",
+    "Name": "Polymorphism",
+    "DiscussionId": "a3c77281-a177-49fd-9436-5fa777fbce4b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-polymorphic-data"
+      }
+    ]
+  },
+  {
+    "Path": "/results-transformation",
+    "Name": "Results transformation",
+    "Mappings": []
+  },
+  {
+    "Path": "lazy-operations.markdown",
+    "Name": "Lazy Operations",
+    "DiscussionId": "50e1f725-a229-409e-b7b9-07a40fc1e2df",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/how-to/perform-operations-lazily"
+      }
+    ]
+  },
+  {
+    "Path": "intersection.markdown",
+    "Name": "Intersection",
+    "DiscussionId": "3a193bd9-b5a4-4ea0-a2db-f162e312e1bb",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/intersection"
+      }
+    ]
+  },
+  {
+    "Path": "query-and-lucene-query.markdown",
+    "Name": "Query and LuceneQuery",
+    "DiscussionId": "ea77c959-4fbe-420b-84a4-5de9e62fe319",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/query-vs-document-query"
+      }
+    ]
+  },
+  {
+    "Path": "query-customizations.markdown",
+    "Name": "Query customization",
+    "DiscussionId": "649fa7f6-3225-4e8f-bc23-cfa080b74a73",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-customize-query"
+      }
+    ]
+  },
+  {
+    "Path": "dynamic-aggregation.markdown",
+    "Name": "Dynamic aggregation",
+    "DiscussionId": "38c998d7-43da-47a2-ac88-94d1e47dc9a8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/dynamic-aggregation"
+      }
+    ]
+  }
 ]

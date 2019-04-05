@@ -2,11 +2,13 @@
   {
     "Path": "how-to-use-lucene-in-queries.markdown",
     "Name": "How to use Lucene in queries?",
+    "DiscussionId": "5432c946-eb37-4719-b907-9616c85d4432",
     "Mappings": []
   },
   {
     "Path": "how-to-use-not-operator.markdown",
     "Name": "How to use NOT operator?",
+    "DiscussionId": "bd977eae-0de1-465d-a5f9-a999d6744618",
     "Mappings": []
   }
 ]

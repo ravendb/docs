@@ -1,142 +1,152 @@
-﻿[
-	{
-		"Path": "quotas.markdown",
-		"Name": "Quotas Bundle",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/quotas"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/quotas"
-			}
-		]
-	},
-	{
-		"Path": "versioning.markdown",
-		"Name": "Versioning Bundle",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/versioning"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/versioning"
-			}
-		]
-	},
-	{
-		"Path": "morelikethis.markdown",
-		"Name": "More Like This",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/morelikethis"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/more-like-this"
-			}
-		]
-	},
-	{
-		"Path": "unique-constraints.markdown",
-		"Name": "Unique Constraints",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/unique-constraints"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/unique-constraints"
-			}
-		]
-	},
-	{
-		"Path": "authorization.markdown",
-		"Name": "Authorization Bundle",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/authorization"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/authorization"
-			}
-		]
-	},
-	{
-		"Path": "authorization-bundle-design.markdown",
-		"Name": "Authorization Bundle Design Notes",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/authorization-bundle-design"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/kb/authorization-bundle-design"
-			}
-		]
-	},
-	{
-		"Path": "cascade-delete.markdown",
-		"Name": "Cascade Delete Bundle",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/cascade-delete"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/cascade-delete"
-			}
-		]
-	},
-	{
-		"Path": "expiration.markdown",
-		"Name": "Expiration Bundle",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/expiration"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/expiration"
-			}
-		]
-	},
-	{
-		"Path": "index-replication.markdown",
-		"Name": "Index Replication Bundle",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/index-replication"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/bundles/replication"
-			}
-		]
-	},
-	{
-		"Path": "authentication.markdown",
-		"Name": "Authentication Bundle",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/authentication"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/authentication-and-authorization"
-			}
-		]
-	}
+[
+  {
+    "Path": "quotas.markdown",
+    "Name": "Quotas Bundle",
+    "DiscussionId": "83ef8362-22b5-4064-85ff-629aab30bdf4",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/quotas"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/quotas"
+      }
+    ]
+  },
+  {
+    "Path": "versioning.markdown",
+    "Name": "Versioning Bundle",
+    "DiscussionId": "5fcc1b92-e3f6-4ad8-ad53-e9cc4928b31b",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/versioning"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/versioning"
+      }
+    ]
+  },
+  {
+    "Path": "morelikethis.markdown",
+    "Name": "More Like This",
+    "DiscussionId": "d87a0a4c-b983-4b74-8599-1a381f2cc368",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/morelikethis"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/more-like-this"
+      }
+    ]
+  },
+  {
+    "Path": "unique-constraints.markdown",
+    "Name": "Unique Constraints",
+    "DiscussionId": "f4fa72a5-a134-41fb-858b-e32814c6c184",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/unique-constraints"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/unique-constraints"
+      }
+    ]
+  },
+  {
+    "Path": "authorization.markdown",
+    "Name": "Authorization Bundle",
+    "DiscussionId": "61294677-8c13-4fa3-9fd5-56bee80eb4ba",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/authorization"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/authorization"
+      }
+    ]
+  },
+  {
+    "Path": "authorization-bundle-design.markdown",
+    "Name": "Authorization Bundle Design Notes",
+    "DiscussionId": "b9a4d02b-b006-495e-8ecf-a0c44acdb342",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/authorization-bundle-design"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/kb/authorization-bundle-design"
+      }
+    ]
+  },
+  {
+    "Path": "cascade-delete.markdown",
+    "Name": "Cascade Delete Bundle",
+    "DiscussionId": "65d6ca2b-26d0-405b-aa7b-d396e11ddb74",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/cascade-delete"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/cascade-delete"
+      }
+    ]
+  },
+  {
+    "Path": "expiration.markdown",
+    "Name": "Expiration Bundle",
+    "DiscussionId": "ec5dfad8-8130-45aa-b47b-272e7c3f92bc",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/expiration"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/expiration"
+      }
+    ]
+  },
+  {
+    "Path": "index-replication.markdown",
+    "Name": "Index Replication Bundle",
+    "DiscussionId": "9ee79039-e31f-4e32-a5cb-9f846740c14a",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/index-replication"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/bundles/replication"
+      }
+    ]
+  },
+  {
+    "Path": "authentication.markdown",
+    "Name": "Authentication Bundle",
+    "DiscussionId": "599d04b4-3a95-4c43-87b5-4d493cb3bae4",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/authentication"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/authentication-and-authorization"
+      }
+    ]
+  }
 ]

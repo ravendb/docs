@@ -1,17 +1,19 @@
-﻿[
-	{
-		"Path": "basics.markdown",
-		"Name": "Basics",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/bundles/sql-replication"
-			}
-		]
-	},
-	{
-		"Path": "setup-postgre-sql.markdown",
-		"Name": "PostgreSQL",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "DiscussionId": "5b671ad2-00e1-412e-9486-c74591790182",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/bundles/sql-replication"
+      }
+    ]
+  },
+  {
+    "Path": "setup-postgre-sql.markdown",
+    "Name": "PostgreSQL",
+    "DiscussionId": "911daa28-c265-4b43-86b1-8c53532b002c",
+    "Mappings": []
+  }
 ]

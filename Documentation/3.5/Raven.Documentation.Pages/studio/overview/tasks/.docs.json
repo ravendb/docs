@@ -1,7 +1,8 @@
-﻿[
+[
   {
     "Path": "import-export-database.markdown",
     "Name": "Import & Export Database",
+    "DiscussionId": "290cb1f1-f0a3-478c-8965-06de6f2c24ab",
     "Mappings": [
       {
         "Version": 1.0,
@@ -12,6 +13,7 @@
   {
     "Path": "toggle-indexing.markdown",
     "Name": "Toggle Indexing",
+    "DiscussionId": "4ae9dfbe-94d6-4e26-a98f-b66589bcf856",
     "Mappings": [
       {
         "Version": 1.0,
@@ -22,6 +24,7 @@
   {
     "Path": "subscriptions.markdown",
     "Name": "Subscriptions",
+    "DiscussionId": "8974aac5-f8bb-497e-ad41-16daf1ad8b1a",
     "Mappings": [
       {
         "Version": 1.0,
@@ -32,6 +35,7 @@
   {
     "Path": "create-sample-data.markdown",
     "Name": "Create Sample Data",
+    "DiscussionId": "840b8df4-c974-4682-aab2-0193b7954d0a",
     "Mappings": [
       {
         "Version": 1.0,
@@ -42,6 +46,7 @@
   {
     "Path": "csv-import.markdown",
     "Name": "CSV Import",
+    "DiscussionId": "0fe1c6a4-0349-4e4e-b353-17b25c7cfc5c",
     "Mappings": [
       {
         "Version": 1.0,

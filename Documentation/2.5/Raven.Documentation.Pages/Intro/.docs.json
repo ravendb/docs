@@ -1,72 +1,80 @@
-﻿[
-	{
-		"Path": "what-is-nosql.markdown",
-		"Name": "What is NoSQL",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "ravendb-in-a-nutshell.markdown",
-		"Name": "RavenDB in a nutshell",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "basic-concepts.markdown",
-		"Name": "Basic concepts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "safe-by-default.markdown",
-		"Name": "Safe by default",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "high-performance.markdown",
-		"Name": "High Performance",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/quickstart",
-		"Name": "Quickstart tutorials",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/getting-started"
-			}
-		]
-	},
-	{
-		"Path": "system-requirements.markdown",
-		"Name": "System requirements",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/system-requirements"
-			}
-		]
-	},
-	{
-		"Path": "building-from-source.markdown",
-		"Name": "Building from source",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "what-is-new.markdown",
-		"Name": "What's new in 2.5?",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "start/whats-new"
-			}
-		]
-	}
+[
+  {
+    "Path": "what-is-nosql.markdown",
+    "Name": "What is NoSQL",
+    "DiscussionId": "ec1b83b5-c844-44e0-a31a-0a048d972357",
+    "Mappings": []
+  },
+  {
+    "Path": "ravendb-in-a-nutshell.markdown",
+    "Name": "RavenDB in a nutshell",
+    "DiscussionId": "5f755c34-3f40-47ee-aafd-55fdb375b97d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "basic-concepts.markdown",
+    "Name": "Basic concepts",
+    "DiscussionId": "ec4c2b78-2928-42e5-8d25-1f73457a13a7",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "safe-by-default.markdown",
+    "Name": "Safe by default",
+    "DiscussionId": "b61bc73f-db84-46c7-849f-010d109cc39b",
+    "Mappings": []
+  },
+  {
+    "Path": "high-performance.markdown",
+    "Name": "High Performance",
+    "DiscussionId": "1818c4de-b13a-4c36-aac0-db240e28d110",
+    "Mappings": []
+  },
+  {
+    "Path": "/quickstart",
+    "Name": "Quickstart tutorials",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/getting-started"
+      }
+    ]
+  },
+  {
+    "Path": "system-requirements.markdown",
+    "Name": "System requirements",
+    "DiscussionId": "51b248c6-7947-44fd-a59c-5815b56f651c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/system-requirements"
+      }
+    ]
+  },
+  {
+    "Path": "building-from-source.markdown",
+    "Name": "Building from source",
+    "DiscussionId": "df948c1a-f90a-485c-97e9-7bf584926389",
+    "Mappings": []
+  },
+  {
+    "Path": "what-is-new.markdown",
+    "Name": "What's new in 2.5?",
+    "DiscussionId": "87121874-6d41-4284-a3ef-f6487d5bf5f6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "start/whats-new"
+      }
+    ]
+  }
 ]

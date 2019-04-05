@@ -2,61 +2,67 @@
   {
     "Path": "what-are-listeners.markdown",
     "Name": "What are listeners?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/client-side-listeners"
-			}
-		]
+    "DiscussionId": "404bf031-c9e7-4123-96cb-426a25c015e2",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/client-side-listeners"
+      }
+    ]
   },
   {
     "Path": "what-are-store-listeners-and-how-to-work-with-them.markdown",
     "Name": "Store listeners",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/client-side-listeners"
-			}
-		]
+    "DiscussionId": "21753aec-bf34-43c5-9edb-d7a4affaa71b",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/client-side-listeners"
+      }
+    ]
   },
   {
     "Path": "what-are-delete-listeners-and-how-to-work-with-them.markdown",
     "Name": "Delete listeners",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/client-side-listeners"
-			}
-		]
+    "DiscussionId": "2815d3cb-e81f-478d-a8b5-b584fd140619",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/client-side-listeners"
+      }
+    ]
   },
   {
     "Path": "what-are-conversion-listeners-and-how-to-work-with-them.markdown",
     "Name": "Conversion listeners",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/client-side-listeners"
-			}
-		]
+    "DiscussionId": "fde39563-5802-41a9-b365-0e7bdfd8fe0d",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/client-side-listeners"
+      }
+    ]
   },
   {
     "Path": "what-are-conflict-listeners-and-how-to-work-with-them.markdown",
     "Name": "Conflict listeners",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/client-side-listeners"
-			}
-		]
+    "DiscussionId": "d4cc978a-f092-4ea3-ac50-202aa68a23bb",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/client-side-listeners"
+      }
+    ]
   },
   {
     "Path": "what-are-query-listeners-and-how-to-work-with-them.markdown",
     "Name": "Query listeners",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/client-side-listeners"
-			}
-		]
+    "DiscussionId": "b3c7ea0e-7919-446d-b6b6-56d21ae86c32",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/client-side-listeners"
+      }
+    ]
   }
 ]

@@ -1,7 +1,8 @@
 [
-    {
-        "Path": "customizing-raven-data-files-locations.markdown",
-        "Name": "Customizing Raven Data Files Locations",
-        "Mappings": []
-    }
+  {
+    "Path": "customizing-raven-data-files-locations.markdown",
+    "Name": "Customizing Raven Data Files Locations",
+    "DiscussionId": "faf870cc-0d68-44c1-b0db-4a8b6e6aeccd",
+    "Mappings": []
+  }
 ]

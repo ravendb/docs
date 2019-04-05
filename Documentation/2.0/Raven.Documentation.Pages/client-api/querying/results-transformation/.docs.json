@@ -1,42 +1,46 @@
-﻿[
-	{
-		"Path": "of-type.markdown",
-		"Name": "OfType (As)",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-perform-projection"
-			}
-		]
-	},
-	{
-		"Path": "project-from-index-fields-into.markdown",
-		"Name": "ProjectFromIndexFieldsInto (AsProjection)",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-perform-projection"
-			}
-		]
-	},
-	{
-		"Path": "transform-results.markdown",
-		"Name": "TransformResults",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-customize-query#transformresults"
-			}
-		]
-	},
-	{
-		"Path": "select-fields.markdown",
-		"Name": "SelectFields",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/querying/how-to-perform-projection"
-			}
-		]
-	}
+[
+  {
+    "Path": "of-type.markdown",
+    "Name": "OfType (As)",
+    "DiscussionId": "2332957c-c2a8-4ca8-835e-a540893a6656",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-perform-projection"
+      }
+    ]
+  },
+  {
+    "Path": "project-from-index-fields-into.markdown",
+    "Name": "ProjectFromIndexFieldsInto (AsProjection)",
+    "DiscussionId": "0de5ddeb-12a5-42eb-87e9-8f3254ee2902",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-perform-projection"
+      }
+    ]
+  },
+  {
+    "Path": "transform-results.markdown",
+    "Name": "TransformResults",
+    "DiscussionId": "59dc4e14-1a25-4ac1-a5c4-65dd8c47aeff",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-customize-query#transformresults"
+      }
+    ]
+  },
+  {
+    "Path": "select-fields.markdown",
+    "Name": "SelectFields",
+    "DiscussionId": "ee175bab-dc8d-4d6e-bd01-4ab3a46e09a1",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/querying/how-to-perform-projection"
+      }
+    ]
+  }
 ]

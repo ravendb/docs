@@ -2,11 +2,13 @@
   {
     "Path": "get-attachment-metadata-only.markdown",
     "Name": "...get attachment metadata only",
+    "DiscussionId": "e4f05cf8-88e9-461c-bd49-31b57c1014d6",
     "Mappings": []
   },
   {
     "Path": "update-attachment-metadata-only.markdown",
     "Name": "...update attachment metadata only",
+    "DiscussionId": "0d18614c-4435-4acd-a411-295de3e59747",
     "Mappings": []
   }
 ]

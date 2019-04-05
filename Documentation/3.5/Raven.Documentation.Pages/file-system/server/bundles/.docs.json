@@ -1,12 +1,14 @@
-﻿[
-	{
-		"Path": "encryption.markdown",
-		"Name": "Encryption",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "versioning.markdown",
-		"Name": "Versioning",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "encryption.markdown",
+    "Name": "Encryption",
+    "DiscussionId": "ad3c1ff3-f1f8-436e-aea1-b44888b19123",
+    "Mappings": []
+  },
+  {
+    "Path": "versioning.markdown",
+    "Name": "Versioning",
+    "DiscussionId": "55b53683-077f-496d-95e5-3bd3e4cd65a2",
+    "Mappings": []
+  }
 ]

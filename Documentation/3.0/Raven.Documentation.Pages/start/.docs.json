@@ -1,32 +1,36 @@
-﻿[
-	{
-		"Path": "getting-started.markdown",
-		"Name": "Getting started",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "intro/ravendb-in-a-nutshell"
-			}
-		]
-	},
-	{
-		"Path": "whats-new.markdown",
-		"Name": "What's new",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "intro/what-is-new"
-			}
-		]
-	},
-	{
-		"Path": "playground-server.markdown",
-		"Name": "Playground Server",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "about-examples.markdown",
-		"Name": "About examples",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "getting-started.markdown",
+    "Name": "Getting started",
+    "DiscussionId": "ec14b988-047d-4c57-b608-8f719bff75f1",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "intro/ravendb-in-a-nutshell"
+      }
+    ]
+  },
+  {
+    "Path": "whats-new.markdown",
+    "Name": "What's new",
+    "DiscussionId": "7bbc5bf3-6c0c-4fc3-833e-03523d10b7e8",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "intro/what-is-new"
+      }
+    ]
+  },
+  {
+    "Path": "playground-server.markdown",
+    "Name": "Playground Server",
+    "DiscussionId": "970472ac-231f-497e-a8f3-d112023d0ef5",
+    "Mappings": []
+  },
+  {
+    "Path": "about-examples.markdown",
+    "Name": "About examples",
+    "DiscussionId": "0de7308a-b482-4a6a-b533-cb1558549a49",
+    "Mappings": []
+  }
 ]

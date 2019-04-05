@@ -1,87 +1,96 @@
-﻿[
-	{
-		"Path": "license-registration.markdown",
-		"Name": "License Registration",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/license-registration"
-			}
-		]
-	},
-	{
-		"Path": "configuration.markdown",
-		"Name": "Configuration options",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/configuration/configuration-options"
-			}
-		]
-	},
-	{
-		"Path": "index-administration.markdown",
-		"Name": "Index Administration",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/index-administration"
-			}
-		]
-	},
-	{
-		"Path": "backup-restore.markdown",
-		"Name": "Backup & Restore",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/backup-and-restore"
-			}
-		]
-	},
-	{
-		"Path": "export-import.markdown",
-		"Name": "Exporting and Importing data",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/administration/exporting-and-importing-data"
-			}
-		]
-	},
-	{
-		"Path": "upgrade.markdown",
-		"Name": "Doing upgrade",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/upgrading-to-new-version"
-			}
-		]
-	},
-	{
-		"Path": "/windows-clustering",
-		"Name": "Windows Clustering",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "statistics.markdown",
-		"Name": "Statistics",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "perf-counters.markdown",
-		"Name": "Performance Counters",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "long-shutdown-times.markdown",
-		"Name": "Long shutdown times",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/kb/long-shutdown-times"
-			}
-		]
-	}
+[
+  {
+    "Path": "license-registration.markdown",
+    "Name": "License Registration",
+    "DiscussionId": "62068822-91a0-4b49-9f87-6adc1079db7f",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/license-registration"
+      }
+    ]
+  },
+  {
+    "Path": "configuration.markdown",
+    "Name": "Configuration options",
+    "DiscussionId": "2623e551-9586-440a-8411-ca65cf9049a4",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/configuration/configuration-options"
+      }
+    ]
+  },
+  {
+    "Path": "index-administration.markdown",
+    "Name": "Index Administration",
+    "DiscussionId": "507aab77-7abf-45c5-b013-77721fd520d1",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/index-administration"
+      }
+    ]
+  },
+  {
+    "Path": "backup-restore.markdown",
+    "Name": "Backup & Restore",
+    "DiscussionId": "a36c9d37-1cc1-4f91-b1ae-c876ad874b28",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/backup-and-restore"
+      }
+    ]
+  },
+  {
+    "Path": "export-import.markdown",
+    "Name": "Exporting and Importing data",
+    "DiscussionId": "785f90e7-5732-4231-a3bc-1a369b668e3a",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/administration/exporting-and-importing-data"
+      }
+    ]
+  },
+  {
+    "Path": "upgrade.markdown",
+    "Name": "Doing upgrade",
+    "DiscussionId": "415c252b-67b8-4293-86c8-79ade5d4f317",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/upgrading-to-new-version"
+      }
+    ]
+  },
+  {
+    "Path": "/windows-clustering",
+    "Name": "Windows Clustering",
+    "Mappings": []
+  },
+  {
+    "Path": "statistics.markdown",
+    "Name": "Statistics",
+    "DiscussionId": "19c9fab0-e868-4bda-8acc-3becaeff3878",
+    "Mappings": []
+  },
+  {
+    "Path": "perf-counters.markdown",
+    "Name": "Performance Counters",
+    "DiscussionId": "82b0940c-97e2-45c0-942d-9fcba52f9411",
+    "Mappings": []
+  },
+  {
+    "Path": "long-shutdown-times.markdown",
+    "Name": "Long shutdown times",
+    "DiscussionId": "7378e800-cb8d-4e28-92ef-de5da1fa5389",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/kb/long-shutdown-times"
+      }
+    ]
+  }
 ]

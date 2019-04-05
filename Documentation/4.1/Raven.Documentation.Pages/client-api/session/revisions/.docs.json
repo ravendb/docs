@@ -2,16 +2,19 @@
   {
     "Path": "what-are-revisions.markdown",
     "Name": "What are Revisions",
+    "DiscussionId": "88bfd5cd-b5d9-4e31-b38a-21c6506a90e8",
     "Mappings": []
   },
   {
     "Path": "loading.markdown",
     "Name": "Loading",
+    "DiscussionId": "ba3f27dd-dc68-4851-a6bd-3c0166703820",
     "Mappings": []
   },
   {
-      "Path": "counter-revisions.markdown",
-      "Name": "Counter Revisions",
-      "Mappings": []
+    "Path": "counter-revisions.markdown",
+    "Name": "Counter Revisions",
+    "DiscussionId": "68e60b2c-83a2-42dd-b464-9deb18c90e7a",
+    "Mappings": []
   }
 ]

@@ -1,22 +1,26 @@
-﻿[
-	{
-		"Path": "what-are-listeners.markdown",
-		"Name": "What are listeners?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "delete-listeners.markdown",
-		"Name": "Delete listeners",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "metadata-change-listeners.markdown",
-		"Name": "Metadata change listeners",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "conflict-listeners.markdown",
-		"Name": "Conflict listeners",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "what-are-listeners.markdown",
+    "Name": "What are listeners?",
+    "DiscussionId": "7af54f7b-d850-496a-b5d4-3b03ae190783",
+    "Mappings": []
+  },
+  {
+    "Path": "delete-listeners.markdown",
+    "Name": "Delete listeners",
+    "DiscussionId": "d4799f75-569c-40ab-b5a7-42a42117776f",
+    "Mappings": []
+  },
+  {
+    "Path": "metadata-change-listeners.markdown",
+    "Name": "Metadata change listeners",
+    "DiscussionId": "5275ea23-1806-429b-a837-c342ec918d4c",
+    "Mappings": []
+  },
+  {
+    "Path": "conflict-listeners.markdown",
+    "Name": "Conflict listeners",
+    "DiscussionId": "5233528e-b015-4479-95cd-4d2a6646e680",
+    "Mappings": []
+  }
 ]

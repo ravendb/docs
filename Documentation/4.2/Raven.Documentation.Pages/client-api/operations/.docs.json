@@ -2,11 +2,13 @@
   {
     "Path": "what-are-operations.markdown",
     "Name": "What are Operations",
-    "Mappings": [] 
+    "DiscussionId": "24621696-2fd1-4e20-b196-98b4541277d6",
+    "Mappings": []
   },
   {
     "Path": "delete-by-query.markdown",
     "Name": "Delete By Query",
+    "DiscussionId": "9dee83b3-faaa-4347-8c6b-4e25eaf574c4",
     "Mappings": []
   },
   {

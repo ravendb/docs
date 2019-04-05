@@ -1,32 +1,38 @@
 [
-    {
-        "Path": "overview.markdown",
-        "Name": "Overview",
-        "Mappings": []
-    },
-    {
-        "Path": "create-or-modify.markdown",
-        "Name": "Creating and Modifying Counters",
-        "Mappings": []
-    },
-    {
-        "Path": "delete.markdown",
-        "Name": "Deleting a Counter",
-        "Mappings": []
-    },
-    {
-        "Path": "retrieve-counter-values.markdown",
-        "Name": "Retrieving Counter Values",
-        "Mappings": []
-    },
-    {
-        "Path": "counters-and-other-features.markdown",
-        "Name": "Counters and other features",
-        "Mappings": []
-    },
-    {
-        "Path": "counters-in-clusters.markdown",
-        "Name": "Counters In Clusters",
-        "Mappings": []
-    }
+  {
+    "Path": "overview.markdown",
+    "Name": "Overview",
+    "DiscussionId": "4b025409-89dd-4afc-bb8e-40511d09b7f4",
+    "Mappings": []
+  },
+  {
+    "Path": "create-or-modify.markdown",
+    "Name": "Creating and Modifying Counters",
+    "DiscussionId": "b1a72600-57f9-4b86-bd7a-fd6b082a2030",
+    "Mappings": []
+  },
+  {
+    "Path": "delete.markdown",
+    "Name": "Deleting a Counter",
+    "DiscussionId": "32fce702-84b9-4f97-8807-93f4c00eb18e",
+    "Mappings": []
+  },
+  {
+    "Path": "retrieve-counter-values.markdown",
+    "Name": "Retrieving Counter Values",
+    "DiscussionId": "1de87a3e-d831-4528-942d-2f61f7d23cb9",
+    "Mappings": []
+  },
+  {
+    "Path": "counters-and-other-features.markdown",
+    "Name": "Counters and other features",
+    "DiscussionId": "d6819d0f-37b6-4866-b344-477830eb1702",
+    "Mappings": []
+  },
+  {
+    "Path": "counters-in-clusters.markdown",
+    "Name": "Counters In Clusters",
+    "DiscussionId": "3a5ec3ed-d536-4012-8dc8-a365886df8ee",
+    "Mappings": []
+  }
 ]

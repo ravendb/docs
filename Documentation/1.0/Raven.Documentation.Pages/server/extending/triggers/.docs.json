@@ -1,58 +1,62 @@
-﻿[
-	{
-		"Path": "put.markdown",
-		"Name": "PUT",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/plugins/triggers"
-			}
-		]
-	},
-	{
-		"Path": "read.markdown",
-		"Name": "READ",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/plugins/triggers"
-			}
-		]
-	},
-	{
-		"Path": "delete.markdown",
-		"Name": "DELETE",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/plugins/triggers"
-			}
-		]
-	},
-	{
-		"Path": "indexing.markdown",
-		"Name": "Index Update",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/plugins/triggers"
-			}
-		]
-	}
+[
+  {
+    "Path": "put.markdown",
+    "Name": "PUT",
+    "DiscussionId": "e4f23e57-5a2f-4652-9139-44cbaaf1bf12",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/plugins/triggers"
+      }
+    ]
+  },
+  {
+    "Path": "read.markdown",
+    "Name": "READ",
+    "DiscussionId": "2e1a2a26-3e3a-4cb9-b399-9090f49b5bb6",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/plugins/triggers"
+      }
+    ]
+  },
+  {
+    "Path": "delete.markdown",
+    "Name": "DELETE",
+    "DiscussionId": "4ccaa64e-021f-49de-9707-e1ff62eb36a1",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/plugins/triggers"
+      }
+    ]
+  },
+  {
+    "Path": "indexing.markdown",
+    "Name": "Index Update",
+    "DiscussionId": "da151184-02f4-44e7-a5b9-c1659f42bc71",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/plugins/triggers"
+      }
+    ]
+  }
 ]

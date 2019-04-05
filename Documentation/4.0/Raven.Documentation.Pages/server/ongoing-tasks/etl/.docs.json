@@ -2,16 +2,19 @@
   {
     "Path": "basics.markdown",
     "Name": "ETL Basics",
+    "DiscussionId": "49f3e0d2-debe-4122-b2af-19e0d85a84ad",
     "Mappings": []
   },
   {
     "Path": "raven.markdown",
     "Name": "RavenDB ETL",
+    "DiscussionId": "b4b76978-6a44-43e5-bd8a-d9a59ece0867",
     "Mappings": []
   },
   {
     "Path": "sql.markdown",
     "Name": "SQL ETL",
+    "DiscussionId": "15f15856-7ed0-4515-b1bd-e940700699f5",
     "Mappings": []
   }
 ]

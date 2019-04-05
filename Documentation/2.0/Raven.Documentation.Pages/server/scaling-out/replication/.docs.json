@@ -1,42 +1,46 @@
-﻿[
-	{
-		"Path": "client-integration.markdown",
-		"Name": "Client integration",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
-			}
-		]
-	},
-	{
-		"Path": "handling-conflicts.markdown",
-		"Name": "Dealing with Replication Conflicts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/replication-conflicts"
-			}
-		]
-	},
-	{
-		"Path": "from-embedded-server.markdown",
-		"Name": "Replicating from an Embedded instance",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/replication-and-embedded-instance"
-			}
-		]
-	},
-	{
-		"Path": "advanced-replication-details.markdown",
-		"Name": "Advanced replication details",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/kb/advanced-replication-details"
-			}
-		]
-	}
+[
+  {
+    "Path": "client-integration.markdown",
+    "Name": "Client integration",
+    "DiscussionId": "ea93f1f0-fef8-4617-9ee5-8a8b217b9b01",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
+      }
+    ]
+  },
+  {
+    "Path": "handling-conflicts.markdown",
+    "Name": "Dealing with Replication Conflicts",
+    "DiscussionId": "72d9e174-fea9-42dd-b06a-3cf6920aac88",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/replication-conflicts"
+      }
+    ]
+  },
+  {
+    "Path": "from-embedded-server.markdown",
+    "Name": "Replicating from an Embedded instance",
+    "DiscussionId": "1404ca20-e6a6-4c02-a8ec-b792978c28d0",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/replication-and-embedded-instance"
+      }
+    ]
+  },
+  {
+    "Path": "advanced-replication-details.markdown",
+    "Name": "Advanced replication details",
+    "DiscussionId": "f56b239e-a96a-463d-8b47-46a3d0bfdc46",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/kb/advanced-replication-details"
+      }
+    ]
+  }
 ]

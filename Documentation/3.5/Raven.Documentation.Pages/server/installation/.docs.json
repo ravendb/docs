@@ -1,67 +1,74 @@
-﻿[
-	{
-		"Path": "system-requirements.markdown",
-		"Name": "System requirements",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/deployment/recommended-configuration"
-			}
-		]
-	},
-	{
-		"Path": "as-a-service.markdown",
-		"Name": "Windows Service",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/deployment/as-a-service"
-			}
-		]
-	},
-	{
-		"Path": "IIS.markdown",
-		"Name": "IIS application",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/deployment/as-iis-application"
-			}
-		]
-	},
-	{
-		"Path": "deployment-considerations.markdown",
-		"Name": "Deployment considerations",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "embedded.markdown",
-		"Name": "Embedded",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/deployment/embedded"
-			}
-		]
-	},
-	{
-		"Path": "using-installer.markdown",
-		"Name": "Using installer",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/deployment/installer"
-			}
-		]
-	},
-	{
-		"Path": "upgrading-to-new-version.markdown",
-		"Name": "Upgrading to a new version",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/administration/upgrade"
-			}
-		]
-	}
+[
+  {
+    "Path": "system-requirements.markdown",
+    "Name": "System requirements",
+    "DiscussionId": "fc2f2c83-af03-43be-9df5-c459433a18f4",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/deployment/recommended-configuration"
+      }
+    ]
+  },
+  {
+    "Path": "as-a-service.markdown",
+    "Name": "Windows Service",
+    "DiscussionId": "8d3c18ed-8e23-41ba-9140-2bab696bf918",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/deployment/as-a-service"
+      }
+    ]
+  },
+  {
+    "Path": "IIS.markdown",
+    "Name": "IIS application",
+    "DiscussionId": "26125f20-d1a5-4319-a31f-8e5c9c175d89",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/deployment/as-iis-application"
+      }
+    ]
+  },
+  {
+    "Path": "deployment-considerations.markdown",
+    "Name": "Deployment considerations",
+    "DiscussionId": "2ea42019-c1ba-458f-9454-0de917aeeecc",
+    "Mappings": []
+  },
+  {
+    "Path": "embedded.markdown",
+    "Name": "Embedded",
+    "DiscussionId": "ef062ec6-96ab-44dc-a103-e8edab7e1836",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/deployment/embedded"
+      }
+    ]
+  },
+  {
+    "Path": "using-installer.markdown",
+    "Name": "Using installer",
+    "DiscussionId": "176327c8-3868-48d3-9b6d-db5b6a5eb397",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/deployment/installer"
+      }
+    ]
+  },
+  {
+    "Path": "upgrading-to-new-version.markdown",
+    "Name": "Upgrading to a new version",
+    "DiscussionId": "9539716a-91c4-47fb-a5a9-99a055a53364",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/administration/upgrade"
+      }
+    ]
+  }
 ]

@@ -1,32 +1,34 @@
-﻿[
-	{
-		"Path": "/files",
-		"Name": "Files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "search-view.markdown",
-		"Name": "Search view",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/synchronization",
-		"Name": "Synchronization",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/tasks",
-		"Name": "Tasks",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "configurations-view.markdown",
-		"Name": "Configurations view",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/how-to",
-		"Name": "How to ...",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "/files",
+    "Name": "Files",
+    "Mappings": []
+  },
+  {
+    "Path": "search-view.markdown",
+    "Name": "Search view",
+    "DiscussionId": "bd96d752-3460-4161-8387-6289115ff017",
+    "Mappings": []
+  },
+  {
+    "Path": "/synchronization",
+    "Name": "Synchronization",
+    "Mappings": []
+  },
+  {
+    "Path": "/tasks",
+    "Name": "Tasks",
+    "Mappings": []
+  },
+  {
+    "Path": "configurations-view.markdown",
+    "Name": "Configurations view",
+    "DiscussionId": "7b8c3a37-1844-4e46-b1a2-e720cef08c98",
+    "Mappings": []
+  },
+  {
+    "Path": "/how-to",
+    "Name": "How to ...",
+    "Mappings": []
+  }
 ]

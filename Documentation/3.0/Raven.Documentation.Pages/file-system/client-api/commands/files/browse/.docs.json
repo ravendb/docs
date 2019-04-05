@@ -2,26 +2,31 @@
   {
     "Path": "browse.markdown",
     "Name": "Browse",
+    "DiscussionId": "c2b350c0-7c12-4d98-a27f-4ef7e34913d3",
     "Mappings": []
   },
   {
     "Path": "get.markdown",
     "Name": "Get",
+    "DiscussionId": "25be046a-e4a7-4370-b2bb-5bb5675b15f1",
     "Mappings": []
   },
   {
     "Path": "starts-with.markdown",
     "Name": "StartsWith",
+    "DiscussionId": "81da11d4-8950-4a1d-8c50-1f743ab3212d",
     "Mappings": []
   },
   {
     "Path": "stream-file-headers.markdown",
     "Name": "StreamFileHeaders",
+    "DiscussionId": "0bf03063-aee2-495a-b6b2-090db26b34ac",
     "Mappings": []
   },
   {
     "Path": "get-directories.markdown",
     "Name": "GetDirectories",
+    "DiscussionId": "37b40e6a-beae-4a5d-b206-9cdb2fda06a4",
     "Mappings": []
   }
 ]

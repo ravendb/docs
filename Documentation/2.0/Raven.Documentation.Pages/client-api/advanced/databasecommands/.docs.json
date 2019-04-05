@@ -1,12 +1,13 @@
-﻿[
-	{
-		"Path": "batch.markdown",
-		"Name": "Batch",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/commands/batches/how-to-send-multiple-commands-using-a-batch"
-			}
-		]
-	}
+[
+  {
+    "Path": "batch.markdown",
+    "Name": "Batch",
+    "DiscussionId": "af270c2f-8dc6-4a05-8d32-e1db513e7b1c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/commands/batches/how-to-send-multiple-commands-using-a-batch"
+      }
+    ]
+  }
 ]

@@ -2,41 +2,48 @@
   {
     "Path": "what-is-changes-api.markdown",
     "Name": "What is Changes API?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/changes-api"
-			}
-		]
+    "DiscussionId": "82ad668e-319e-47b8-875f-f313986ba76e",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/changes-api"
+      }
+    ]
   },
   {
     "Path": "how-to-subscribe-to-document-changes.markdown",
     "Name": "How to subscribe to document changes?",
+    "DiscussionId": "7b9c7179-66c1-4276-af1f-bd9ee92e57cb",
     "Mappings": []
   },
   {
     "Path": "how-to-subscribe-to-index-changes.markdown",
     "Name": "How to subscribe to index changes?",
+    "DiscussionId": "855ad183-a1aa-4b90-b60a-a5b753b8ba04",
     "Mappings": []
   },
   {
     "Path": "how-to-subscribe-to-bulk-insert-operation-changes.markdown",
     "Name": "How to subscribe to bulk insert operation changes?",
+    "DiscussionId": "d470b640-7279-46b5-8e51-adfb95a64c84",
     "Mappings": []
   },
   {
     "Path": "how-to-subscribe-to-transformer-changes.markdown",
     "Name": "How to subscribe to transformer changes?",
+    "DiscussionId": "4fecc63e-fbf1-414c-b25f-2060f48cc67a",
     "Mappings": []
   },
   {
     "Path": "how-to-subscribe-to-replication-conflicts.markdown",
     "Name": "How to subscribe to replication conflicts?",
+    "DiscussionId": "bb8ffb4f-537e-4a1a-914b-694855989628",
     "Mappings": []
   },
   {
     "Path": "how-to-subscribe-to-data-subscription-changes.markdown",
     "Name": "How to subscribe to data subscription changes?",
+    "DiscussionId": "a8178fc3-1c14-4a9a-a298-1a78ec4465c1",
     "Mappings": []
   }
 ]

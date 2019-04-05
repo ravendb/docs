@@ -1,22 +1,26 @@
-﻿[
+[
   {
     "Path": "overview.markdown",
     "Name": "Overview",
+    "DiscussionId": "150f7826-1cc2-40f5-b882-1272e22db12c",
     "Mappings": []
   },
   {
     "Path": "explain-replication.markdown",
     "Name": "Explain replication",
+    "DiscussionId": "88344e5a-6f3a-4656-ac7f-485e5985c72d",
     "Mappings": []
   },
   {
     "Path": "data-subscription.markdown",
     "Name": "Data subscription",
+    "DiscussionId": "1f3ffe52-2d70-4131-915c-ee574ac0ac05",
     "Mappings": []
   },
   {
     "Path": "queries.markdown",
     "Name": "Queries",
+    "DiscussionId": "0d7a6a87-e59a-445a-9593-cce0c61da0ae",
     "Mappings": []
   }
 ]

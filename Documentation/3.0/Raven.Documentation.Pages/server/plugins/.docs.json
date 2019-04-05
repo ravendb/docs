@@ -1,80 +1,87 @@
-﻿[
-	{
-		"Path": "what-are-plugins.markdown",
-		"Name": "What are plugins?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/extending/triggers"
-			},
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			}
-		]
-	},
-	{
-		"Path": "triggers.markdown",
-		"Name": "Triggers",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/extending/triggers"
-			},
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			}
-		]
-	},
-	{
-		"Path": "codecs.markdown",
-		"Name": "Codecs",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			}
-		]
-	},
-	{
-		"Path": "tasks.markdown",
-		"Name": "Tasks",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			}
-		]
-	},
-	{
-		"Path": "compilation-extensions.markdown",
-		"Name": "Compilation Extensions",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			}
-		]
-	},
-	{
-		"Path": "analyzer-generators.markdown",
-		"Name": "Analyzer Generators",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			}
-		]
-	},
-	{
-		"Path": "database-configuration.markdown",
-		"Name": "Database Configuration",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			}
-		]
-	}
+[
+  {
+    "Path": "what-are-plugins.markdown",
+    "Name": "What are plugins?",
+    "DiscussionId": "a5f71ae1-798f-4cc0-9dd4-671bc3c2b175",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/extending/triggers"
+      },
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      }
+    ]
+  },
+  {
+    "Path": "triggers.markdown",
+    "Name": "Triggers",
+    "DiscussionId": "6cf62468-e93f-49ca-9459-4b2ba2790456",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/extending/triggers"
+      },
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      }
+    ]
+  },
+  {
+    "Path": "codecs.markdown",
+    "Name": "Codecs",
+    "DiscussionId": "4937e942-501f-4a5a-90be-fe878efbc3f5",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      }
+    ]
+  },
+  {
+    "Path": "tasks.markdown",
+    "Name": "Tasks",
+    "DiscussionId": "97bf421c-5899-4159-8b75-67ba0d917dfa",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      }
+    ]
+  },
+  {
+    "Path": "compilation-extensions.markdown",
+    "Name": "Compilation Extensions",
+    "DiscussionId": "8355166c-fac5-488f-879a-0cc7711d82ab",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      }
+    ]
+  },
+  {
+    "Path": "analyzer-generators.markdown",
+    "Name": "Analyzer Generators",
+    "DiscussionId": "24d662db-3b45-412d-9c9f-8f1d33a004f6",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      }
+    ]
+  },
+  {
+    "Path": "database-configuration.markdown",
+    "Name": "Database Configuration",
+    "DiscussionId": "17e763c0-4f90-4da6-b125-c10dbd2a8ae3",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      }
+    ]
+  }
 ]

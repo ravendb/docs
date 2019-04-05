@@ -1,17 +1,19 @@
 [
-    {
-        "Path": "basics.markdown",
-        "Name": "Basics",
-        "Mappings": []
-    },
-    {
-        "Path": "advanced.markdown",
-        "Name": "Advanced",
-        "Mappings": []
-    },
-    {
-        "Path": "/querying",
-        "Name": "Querying",
-        "Mappings": []
-    }
+  {
+    "Path": "basics.markdown",
+    "Name": "Basics",
+    "DiscussionId": "96b4475a-31e8-422b-8414-0630a1e50f99",
+    "Mappings": []
+  },
+  {
+    "Path": "advanced.markdown",
+    "Name": "Advanced",
+    "DiscussionId": "e68d39fb-4466-414f-9f0f-3e6b5758f7e2",
+    "Mappings": []
+  },
+  {
+    "Path": "/querying",
+    "Name": "Querying",
+    "Mappings": []
+  }
 ]

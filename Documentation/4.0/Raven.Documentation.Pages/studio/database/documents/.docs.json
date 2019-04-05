@@ -2,21 +2,25 @@
   {
     "Path": "documents-and-collections.markdown",
     "Name": "Documents and Collections",
+    "DiscussionId": "fd4a506e-6118-48f0-98c5-1bddc4da6159",
     "Mappings": []
   },
   {
     "Path": "create-new-document.markdown",
     "Name": "Create New Document",
+    "DiscussionId": "e6c89e96-bf7b-454f-98d5-0fc3a166aadd",
     "Mappings": []
   },
   {
     "Path": "document-view.markdown",
     "Name": "Document View",
+    "DiscussionId": "0ab1fc77-9d16-48fe-abab-fdbf913e7ff9",
     "Mappings": []
   },
   {
     "Path": "conflicts-view.markdown",
     "Name": "Conflicts View",
+    "DiscussionId": "ed8d7cb0-288d-4967-92f6-d3e1bab4d95c",
     "Mappings": []
   }
 ]

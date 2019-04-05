@@ -7,115 +7,131 @@
   {
     "Path": "how-to-query.markdown",
     "Name": "How to query?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/querying/using-linq-to-query-ravendb"
-			}
-		]
+    "DiscussionId": "b8587bb9-8c82-4fe4-8357-2854dc14264e",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/querying/using-linq-to-query-ravendb"
+      }
+    ]
   },
   {
     "Path": "how-to-stream-query-results.markdown",
     "Name": "How to stream query results?",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "client-api/advanced/unbounded-results"
-			}
-		]
+    "DiscussionId": "edf0877e-4186-405a-8313-823a5898bfe1",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "client-api/advanced/unbounded-results"
+      }
+    ]
   },
   {
     "Path": "how-to-customize-query.markdown",
     "Name": "How to customize query?",
+    "DiscussionId": "e43c0ea2-cf5b-40e8-9b23-1807ef2db6f4",
     "Mappings": []
   },
   {
     "Path": "how-to-use-transformers-in-queries.markdown",
     "Name": "How to use transformers in queries?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/results-transformation/transform-results"
-			} ]
-			},
+    "DiscussionId": "37bd0bef-729d-48fe-b55c-c994e6a08e48",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/results-transformation/transform-results"
+      }
+    ]
+  },
   {
     "Path": "how-to-perform-a-faceted-search.markdown",
     "Name": "How to perform a faceted search?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/faceted-search"
-			}
-		]
+    "DiscussionId": "ddcda850-2e6a-45f0-bdec-5fae3c3a73b5",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/faceted-search"
+      }
+    ]
   },
   {
     "Path": "how-to-perform-a-multifaceted-search.markdown",
     "Name": "How to perform a multifaceted search?",
+    "DiscussionId": "aaf44481-0971-4912-a187-c55a81b065d5",
     "Mappings": []
   },
   {
     "Path": "how-to-query-a-spatial-index.markdown",
     "Name": "How to query a spatial index?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/static-indexes/spatial-search"
-			}
-		]
+    "DiscussionId": "34617154-b3b3-4249-bf43-6aef32e3cc10",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/spatial-search"
+      }
+    ]
   },
   {
     "Path": "how-to-perform-dynamic-aggregation.markdown",
     "Name": "How to perform dynamic aggregation?",
+    "DiscussionId": "75bb9b7f-74c0-42bd-9ce2-5b3be7d27f80",
     "Mappings": []
   },
   {
     "Path": "how-to-get-query-statistics.markdown",
     "Name": "How to get query statistics?",
+    "DiscussionId": "fa4315f2-853a-4709-bee9-9dfd0d27b5a1",
     "Mappings": []
   },
   {
     "Path": "how-to-perform-projection.markdown",
     "Name": "How to perform projection?",
+    "DiscussionId": "47967cae-6b41-4c07-9156-96413787411e",
     "Mappings": []
   },
   {
     "Path": "how-to-use-intersect.markdown",
     "Name": "How to use intersect?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/intersection"
-			}
-		]
+    "DiscussionId": "2046bdeb-aa63-442f-84be-81559074559e",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/intersection"
+      }
+    ]
   },
   {
     "Path": "how-to-perform-queries-lazily.markdown",
     "Name": "How to perform queries lazily?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/lazy-operations"
-			}
-		]
+    "DiscussionId": "865e0ffa-6be0-42d3-aea1-442f3944179a",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/lazy-operations"
+      }
+    ]
   },
   {
     "Path": "how-to-work-with-suggestions.markdown",
     "Name": "How to work with suggestions?",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/querying/static-indexes/suggestions"
-			}
-		]
+    "DiscussionId": "bfa7a1d7-a263-4816-85da-b1748e263323",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/querying/static-indexes/suggestions"
+      }
+    ]
   },
   {
     "Path": "how-to-use-search.markdown",
     "Name": "How to use search?",
+    "DiscussionId": "ba84a3e5-9e20-454a-9e6a-8fef0a573eee",
     "Mappings": []
   },
   {
     "Path": "how-to-use-highlighting.markdown",
     "Name": "How to use highlighting?",
+    "DiscussionId": "3804d51b-d33e-4597-8d50-0e08444bee5c",
     "Mappings": []
   }
 ]

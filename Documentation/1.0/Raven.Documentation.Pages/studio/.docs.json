@@ -1,72 +1,79 @@
-﻿[
-	{
-		"Path": "documents.markdown",
-		"Name": "The Documents Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/documents/documents-view"
-			}
-		]
-	},
-	{
-		"Path": "collections.markdown",
-		"Name": "The Collections Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/documents/documents-view"
-			}
-		]
-	},
-	{
-		"Path": "indexes.markdown",
-		"Name": "Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/indexes/indexes-view"
-			}
-		]
-	},
-	{
-		"Path": "tasks.markdown",
-		"Name": "The Tasks Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/tasks/import-export-database"
-			}
-		]
-	},
-	{
-		"Path": "logs.markdown",
-		"Name": "The Logs Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/status/logs"
-			}
-		]
-	},
-	{
-		"Path": "statistics.markdown",
-		"Name": "Database Statistics",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/status/stats"
-			}
-		]
-	},
-	{
-		"Path": "multi-database.markdown",
-		"Name": "Multi-databse Support",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/accessing-studio"
-			}
-		]
-	}
+[
+  {
+    "Path": "documents.markdown",
+    "Name": "The Documents Screen",
+    "DiscussionId": "0b57ffc4-19be-4738-92a1-4c41ab5d8a6b",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/documents/documents-view"
+      }
+    ]
+  },
+  {
+    "Path": "collections.markdown",
+    "Name": "The Collections Screen",
+    "DiscussionId": "2d4dc320-698e-4788-b84f-b5c13b8630d5",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/documents/documents-view"
+      }
+    ]
+  },
+  {
+    "Path": "indexes.markdown",
+    "Name": "Indexes",
+    "DiscussionId": "338c6d65-af63-4657-85e1-14287cf003fe",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/indexes/indexes-view"
+      }
+    ]
+  },
+  {
+    "Path": "tasks.markdown",
+    "Name": "The Tasks Screen",
+    "DiscussionId": "df97ff5b-a770-45ae-988c-85d3b746beb7",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/tasks/import-export-database"
+      }
+    ]
+  },
+  {
+    "Path": "logs.markdown",
+    "Name": "The Logs Screen",
+    "DiscussionId": "ff423f8f-c8f0-4cec-8b62-5d7584d6c5aa",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/status/logs"
+      }
+    ]
+  },
+  {
+    "Path": "statistics.markdown",
+    "Name": "Database Statistics",
+    "DiscussionId": "fdae2d40-fc63-46da-b2ac-7f9f054b61ee",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/status/stats"
+      }
+    ]
+  },
+  {
+    "Path": "multi-database.markdown",
+    "Name": "Multi-databse Support",
+    "DiscussionId": "5445c5e3-6102-43f6-b1b3-0a537356cd68",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/accessing-studio"
+      }
+    ]
+  }
 ]

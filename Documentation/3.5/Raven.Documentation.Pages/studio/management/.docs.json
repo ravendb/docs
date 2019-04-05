@@ -2,91 +2,109 @@
   {
     "Path": "api-keys.markdown",
     "Name": "API Keys",
+    "DiscussionId": "c98b9f3e-93e0-4e75-b0aa-508da3e7dbd3",
     "Mappings": []
   },
   {
     "Path": "windows-authentication.markdown",
     "Name": "Windows Authentication",
+    "DiscussionId": "80bda1b0-5868-4bd7-8d34-587db5bf7019",
     "Mappings": []
   },
   {
     "Path": "server-permissions.markdown",
     "Name": "Server Permissions",
+    "DiscussionId": "53ea7f62-4c09-411d-ba71-3d5ad1d83153",
     "Mappings": []
   },
   {
     "Path": "cluster.markdown",
     "Name": "Cluster",
+    "DiscussionId": "ef60732e-5344-4909-af7a-2f024dc5386e",
     "Mappings": []
   },
   {
     "Path": "global-configuration.markdown",
     "Name": "Global Configuration",
+    "DiscussionId": "65a7be80-9111-46c0-a58f-da9087684d08",
     "Mappings": []
   },
   {
     "Path": "server-smuggling.markdown",
     "Name": "Server Smuggling",
+    "DiscussionId": "959da07c-0ee1-4a79-8d05-ec5bfbc884d8",
     "Mappings": []
   },
   {
     "Path": "backup-restore.markdown",
     "Name": "Backup & Restore",
+    "DiscussionId": "47593853-52ff-411a-b659-9b71029c17c5",
     "Mappings": []
   },
   {
     "Path": "compact.markdown",
     "Name": "Compact",
+    "DiscussionId": "4c6fe26b-b1fd-4722-903c-81c3477b86ef",
     "Mappings": []
   },
   {
     "Path": "admin-logs.markdown",
     "Name": "Admin Logs",
+    "DiscussionId": "ade2fce9-8a8a-4ff5-8211-39e366599a9b",
     "Mappings": []
   },
   {
     "Path": "server-topology.markdown",
     "Name": "Server Topology",
+    "DiscussionId": "2da43da5-c55f-4687-8449-a9120dc3901c",
     "Mappings": []
   },
   {
     "Path": "traffic-watch.markdown",
     "Name": "Traffic Watch",
+    "DiscussionId": "cefadaac-9382-48c4-a40e-5dd39f0e55f7",
     "Mappings": []
   },
   {
     "Path": "license-information.markdown",
     "Name": "License information",
+    "DiscussionId": "80651d55-11ca-4ca0-8404-81bb9e3f7db2",
     "Mappings": []
   },
   {
     "Path": "hot-spare.markdown",
     "Name": "Hot Spare",
+    "DiscussionId": "8f2833d8-709e-496a-91db-38b67e24dc7b",
     "Mappings": []
   },
   {
     "Path": "gather-debug-info.markdown",
     "Name": "Gather Debug Info",
+    "DiscussionId": "c83e56e0-3ea0-45ff-8cac-833c8e8c9e80",
     "Mappings": []
   },
   {
     "Path": "io-test.markdown",
     "Name": "IO Test",
+    "DiscussionId": "17ef6005-aad7-4243-9ec0-25b9abe5e699",
     "Mappings": []
   },
   {
     "Path": "disk-io-viewer.markdown",
     "Name": "Disk IO Viewer",
+    "DiscussionId": "6c3bf768-3b53-43c8-ac7c-2514f7291dc2",
     "Mappings": []
   },
   {
     "Path": "administrator-js-console.markdown",
     "Name": "Administrator JS Console",
+    "DiscussionId": "c3bacee0-7ad3-4f2d-b76a-40427d45bbd3",
     "Mappings": []
   },
   {
     "Path": "studio-config.markdown",
     "Name": "Studio Config",
+    "DiscussionId": "d9099466-a01f-448a-b2ca-5b1d4431dfbe",
     "Mappings": []
   }
 ]

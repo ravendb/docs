@@ -1,87 +1,99 @@
-﻿[
-	{
-		"Path": "stats.markdown",
-		"Name": "Stats",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/statistics"
-			}
-		]
-	},
-	{
-		"Path": "/indexing",
-		"Name": "Indexing",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "request-tracking.markdown",
-		"Name": "Request Tracking",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "logs.markdown",
-		"Name": "Logs",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "studio/logs"
-			}
-		]
-	},
-	{
-		"Path": "running-tasks.markdown",
-		"Name": "Running Tasks",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "alerts.markdown",
-		"Name": "Alerts",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "studio/alerts"
-			}
-		]
-	},
-	{
-		"Path": "index-errors.markdown",
-		"Name": "Index Errors",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "replication-stats.markdown",
-		"Name": "Replication Stats",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "sql-replication-stats.markdown",
-		"Name": "Sql Replication Stats",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "user-info.markdown",
-		"Name": "User Info",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "map-reduce-visualizer.markdown",
-		"Name": "Map-Reduce Visualizer",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/debug",
-		"Name": "Debug",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "storage.markdown",
-		"Name": "Storage",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "gather-debug-info.markdown",
-		"Name": "Gather Debug Info",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "stats.markdown",
+    "Name": "Stats",
+    "DiscussionId": "0ef98fd8-d924-4668-b39e-d089c0133d95",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/statistics"
+      }
+    ]
+  },
+  {
+    "Path": "/indexing",
+    "Name": "Indexing",
+    "Mappings": []
+  },
+  {
+    "Path": "request-tracking.markdown",
+    "Name": "Request Tracking",
+    "DiscussionId": "82880552-2b35-4810-9ecc-3866d99d3c84",
+    "Mappings": []
+  },
+  {
+    "Path": "logs.markdown",
+    "Name": "Logs",
+    "DiscussionId": "6d46caba-c8d3-4702-bb9e-fd1ea56be9e7",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "studio/logs"
+      }
+    ]
+  },
+  {
+    "Path": "running-tasks.markdown",
+    "Name": "Running Tasks",
+    "DiscussionId": "aabdc2a7-8279-4037-bbe9-f269c866fc8e",
+    "Mappings": []
+  },
+  {
+    "Path": "alerts.markdown",
+    "Name": "Alerts",
+    "DiscussionId": "284244b6-7754-45bc-9594-5db071142482",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "studio/alerts"
+      }
+    ]
+  },
+  {
+    "Path": "index-errors.markdown",
+    "Name": "Index Errors",
+    "DiscussionId": "e6852bde-ec47-419e-ad19-e4ae78d924dd",
+    "Mappings": []
+  },
+  {
+    "Path": "replication-stats.markdown",
+    "Name": "Replication Stats",
+    "DiscussionId": "c97f0c2d-47b6-4f76-8eaa-53ade625bbd4",
+    "Mappings": []
+  },
+  {
+    "Path": "sql-replication-stats.markdown",
+    "Name": "Sql Replication Stats",
+    "DiscussionId": "253af866-9917-4cdb-a851-68c03ed1e56e",
+    "Mappings": []
+  },
+  {
+    "Path": "user-info.markdown",
+    "Name": "User Info",
+    "DiscussionId": "c49e6ba1-07cf-403e-9a70-a7b9d257cebb",
+    "Mappings": []
+  },
+  {
+    "Path": "map-reduce-visualizer.markdown",
+    "Name": "Map-Reduce Visualizer",
+    "DiscussionId": "8922b38a-e465-4aee-8a8a-99e38220533c",
+    "Mappings": []
+  },
+  {
+    "Path": "/debug",
+    "Name": "Debug",
+    "Mappings": []
+  },
+  {
+    "Path": "storage.markdown",
+    "Name": "Storage",
+    "DiscussionId": "a53efe4a-4ea1-48af-bd66-b79edfb0ad68",
+    "Mappings": []
+  },
+  {
+    "Path": "gather-debug-info.markdown",
+    "Name": "Gather Debug Info",
+    "DiscussionId": "5f6bd1b3-1b02-4b5e-8139-330e66a6441d",
+    "Mappings": []
+  }
 ]

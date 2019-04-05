@@ -1,12 +1,13 @@
-﻿[
-	{
-		"Path": "lucene-indexes-usage.markdown",
-		"Name": "How does RavenDB use Lucene for indexing?",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/what-are-indexes"
-			}
-		]
-	}
+[
+  {
+    "Path": "lucene-indexes-usage.markdown",
+    "Name": "How does RavenDB use Lucene for indexing?",
+    "DiscussionId": "351582a6-ee5c-495d-a379-c5e2aa808512",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/what-are-indexes"
+      }
+    ]
+  }
 ]

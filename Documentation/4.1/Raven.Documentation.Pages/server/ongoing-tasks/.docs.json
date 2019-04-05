@@ -1,17 +1,19 @@
 [
-    {
-        "Path": "general-info.markdown",
-        "Name": "General Info",
-        "Mappings": []
-    },
-    {
-        "Path": "/etl",
-        "Name": "ETL",
-        "Mappings": []
-    },
-    {
-        "Path": "backup-overview.markdown",
-        "Name": "Backup Overview",
-        "Mappings": []
-    }
+  {
+    "Path": "general-info.markdown",
+    "Name": "General Info",
+    "DiscussionId": "d24b385e-5eae-4171-b35d-277157b8e933",
+    "Mappings": []
+  },
+  {
+    "Path": "/etl",
+    "Name": "ETL",
+    "Mappings": []
+  },
+  {
+    "Path": "backup-overview.markdown",
+    "Name": "Backup Overview",
+    "DiscussionId": "2b3b34b3-04f0-4c1a-bfcf-40a9ed314f8a",
+    "Mappings": []
+  }
 ]

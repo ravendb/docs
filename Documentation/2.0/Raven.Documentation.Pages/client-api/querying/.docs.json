@@ -1,97 +1,105 @@
-﻿[
-	{
-		"Path": "using-linq-to-query-ravendb.markdown",
-		"Name": "Using Linq to query RavenDB indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/basics"
-			}
-		]
-	},
-	{
-		"Path": "paging.markdown",
-		"Name": "Paging",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/paging"
-			}
-		]
-	},
-	{
-		"Path": "stale-indexes.markdown",
-		"Name": "Stale indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/stale-indexes"
-			}
-		]
-	},
-	{
-		"Path": "/static-indexes",
-		"Name": "Static indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/creating-and-deploying"
-			}
-		]
-	},
-	{
-		"Path": "handling-document-relationships.markdown",
-		"Name": "Handling document relationships",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/handling-document-relationships"
-			}
-		]
-	},
-	{
-		"Path": "polymorphism.markdown",
-		"Name": "Polymorphism",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/indexing-polymorphic-data"
-			}
-		]
-	},
-	{
-		"Path": "/results-transformation",
-		"Name": "Results transformation",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "lazy-operations.markdown",
-		"Name": "Lazy Operations",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/session/how-to/perform-operations-lazily"
-			}
-		]
-	},
-	{
-		"Path": "intersection.markdown",
-		"Name": "Intersection",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/intersection"
-			}
-		]
-	},
-	{
-		"Path": "query-and-lucene-query.markdown",
-		"Name": "Query and LuceneQuery",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/query-vs-document-query"
-			}
-		]
-	}
+[
+  {
+    "Path": "using-linq-to-query-ravendb.markdown",
+    "Name": "Using Linq to query RavenDB indexes",
+    "DiscussionId": "807a133f-fe4e-48c2-8854-b715df9ee8b2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/basics"
+      }
+    ]
+  },
+  {
+    "Path": "paging.markdown",
+    "Name": "Paging",
+    "DiscussionId": "86fb316d-7c96-4900-b01f-e3e398b2a8d6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/paging"
+      }
+    ]
+  },
+  {
+    "Path": "stale-indexes.markdown",
+    "Name": "Stale indexes",
+    "DiscussionId": "1e8caf3f-09cd-4669-bdfe-a381b0068e58",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/stale-indexes"
+      }
+    ]
+  },
+  {
+    "Path": "/static-indexes",
+    "Name": "Static indexes",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/creating-and-deploying"
+      }
+    ]
+  },
+  {
+    "Path": "handling-document-relationships.markdown",
+    "Name": "Handling document relationships",
+    "DiscussionId": "ae54ec1f-833b-4900-9c0d-31fce5703558",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/handling-document-relationships"
+      }
+    ]
+  },
+  {
+    "Path": "polymorphism.markdown",
+    "Name": "Polymorphism",
+    "DiscussionId": "2baa20ad-d9c8-43fc-906e-f407a98addf1",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/indexing-polymorphic-data"
+      }
+    ]
+  },
+  {
+    "Path": "/results-transformation",
+    "Name": "Results transformation",
+    "Mappings": []
+  },
+  {
+    "Path": "lazy-operations.markdown",
+    "Name": "Lazy Operations",
+    "DiscussionId": "b8021789-c471-4b49-bc2f-67a0ea70314e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/session/how-to/perform-operations-lazily"
+      }
+    ]
+  },
+  {
+    "Path": "intersection.markdown",
+    "Name": "Intersection",
+    "DiscussionId": "7a01a310-0c16-4b1a-bcaa-3c13e2ea885c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/intersection"
+      }
+    ]
+  },
+  {
+    "Path": "query-and-lucene-query.markdown",
+    "Name": "Query and LuceneQuery",
+    "DiscussionId": "0ba4ef36-f93a-4aae-87a8-8e5846e40052",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/query-vs-document-query"
+      }
+    ]
+  }
 ]

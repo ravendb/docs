@@ -1,12 +1,13 @@
-﻿[
+[
   {
     "Path": "/windows-clustering",
     "Name": "Windows Clustering",
-    "Mappings": [ ]
+    "Mappings": []
   },
   {
     "Path": "enabling-ssl.markdown",
     "Name": "Enabling SSL",
+    "DiscussionId": "6f68360e-ee66-47b7-aaca-97105e9789b8",
     "Mappings": [
       {
         "Version": 2.5,
@@ -17,11 +18,13 @@
   {
     "Path": "enabling-fips-compliant-encryption-algorithms.markdown",
     "Name": "Enabling FIPS compliant encryption",
-    "Mappings": [ ]
+    "DiscussionId": "ca01c622-f172-4ab5-a21c-6f7375ea1482",
+    "Mappings": []
   },
   {
     "Path": "authentication-and-authorization.markdown",
     "Name": "Authentication & Authorization",
+    "DiscussionId": "4bce08b8-c597-4305-9b91-f8cf55d7dc78",
     "Mappings": [
       {
         "Version": 2.0,
@@ -32,6 +35,7 @@
   {
     "Path": "license-registration.markdown",
     "Name": "License registration",
+    "DiscussionId": "b9239d41-b84f-48a1-afc9-9dd15c3c355a",
     "Mappings": [
       {
         "Version": 2.5,
@@ -42,11 +46,13 @@
   {
     "Path": "configuration-hot-spare-license.markdown",
     "Name": "Hot Spare License",
-    "Mappings": [ ]
+    "DiscussionId": "8d66412b-8f47-4309-9bc3-223fd1b02f63",
+    "Mappings": []
   },
   {
     "Path": "configuration-options.markdown",
     "Name": "Configuration options",
+    "DiscussionId": "15c97234-2930-4b42-af81-202de8dd8dd9",
     "Mappings": [
       {
         "Version": 1.0,
@@ -57,6 +63,7 @@
   {
     "Path": "storage-engines.markdown",
     "Name": "Storage Engines",
-    "Mappings": [ ]
+    "DiscussionId": "a52e5d94-8c6b-499f-81d0-7ca5a2bc9885",
+    "Mappings": []
   }
 ]

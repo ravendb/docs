@@ -1,17 +1,20 @@
-﻿[
-	{
-		"Path": "conflicts-view.markdown",
-		"Name": "Conflicts view",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "destinations-view.markdown",
-		"Name": "Destinations view",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "configuration-view.markdown",
-		"Name": "Configuration view",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "conflicts-view.markdown",
+    "Name": "Conflicts view",
+    "DiscussionId": "5efe7131-3902-4d03-ac8b-12e8a8dca90e",
+    "Mappings": []
+  },
+  {
+    "Path": "destinations-view.markdown",
+    "Name": "Destinations view",
+    "DiscussionId": "09f9a4d9-f0fe-4c27-a789-bcb546bc4c4e",
+    "Mappings": []
+  },
+  {
+    "Path": "configuration-view.markdown",
+    "Name": "Configuration view",
+    "DiscussionId": "aae86d84-94d3-4424-a118-299f6b352d8e",
+    "Mappings": []
+  }
 ]

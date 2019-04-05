@@ -2,11 +2,13 @@
   {
     "Path": "single-document.markdown",
     "Name": "Single Document",
+    "DiscussionId": "747d3289-44f3-40b0-b5b3-f0d9076e8e91",
     "Mappings": []
   },
   {
     "Path": "set-based.markdown",
     "Name": "Set Based",
+    "DiscussionId": "a6a41b20-25e2-476a-81bd-68a74369ef3a",
     "Mappings": []
   }
 ]

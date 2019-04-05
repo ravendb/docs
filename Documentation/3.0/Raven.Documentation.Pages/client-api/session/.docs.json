@@ -2,62 +2,68 @@
   {
     "Path": "what-is-a-session-and-how-does-it-work.markdown",
     "Name": "What is a session and how does it work?",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/basic-operations/understanding-session-object"
-			}
-		]
+    "DiscussionId": "24a17a3a-4dea-48db-8447-9ad46ba1fbf5",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/basic-operations/understanding-session-object"
+      }
+    ]
   },
   {
     "Path": "opening-a-session.markdown",
     "Name": "Opening a session",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/basic-operations/opening-a-session"
-			}
-		]
+    "DiscussionId": "c3947d90-51e8-4ef9-a0e5-dc4bef1047ce",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/basic-operations/opening-a-session"
+      }
+    ]
   },
   {
     "Path": "storing-entities.markdown",
     "Name": "Storing entities",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/basic-operations/saving-new-document"
-			}
-		]
+    "DiscussionId": "061f5153-ce0b-476e-a173-3cae284ac02c",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/basic-operations/saving-new-document"
+      }
+    ]
   },
   {
     "Path": "deleting-entities.markdown",
     "Name": "Deleting entities",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/basic-operations/deleting-documents"
-			}
-		]
+    "DiscussionId": "a471ece2-66ab-4d25-afd3-7fe3888b08ca",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/basic-operations/deleting-documents"
+      }
+    ]
   },
   {
     "Path": "loading-entities.markdown",
     "Name": "Loading entities",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/basic-operations/loading-editing-existing-document"
-			}
-		]
+    "DiscussionId": "70e0f46f-ed7a-4800-b7f0-ed66881c5c0e",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/basic-operations/loading-editing-existing-document"
+      }
+    ]
   },
   {
     "Path": "saving-changes.markdown",
     "Name": "Saving changes",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "client-api/basic-operations/saving-new-document"
-			}
-		]
+    "DiscussionId": "027721c6-2f16-414d-b31d-30296ace0b65",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "client-api/basic-operations/saving-new-document"
+      }
+    ]
   },
   {
     "Path": "/querying",

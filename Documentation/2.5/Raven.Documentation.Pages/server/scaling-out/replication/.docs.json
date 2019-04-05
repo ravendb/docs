@@ -1,52 +1,57 @@
-﻿[
-	{
-		"Path": "client-integration.markdown",
-		"Name": "Client integration",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
-			}
-		]
-	},
-	{
-		"Path": "handling-conflicts.markdown",
-		"Name": "Dealing with Replication Conflicts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/replication-conflicts"
-			}
-		]
-	},
-	{
-		"Path": "from-embedded-server.markdown",
-		"Name": "Replicating from an Embedded instance",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/replication-and-embedded-instance"
-			}
-		]
-	},
-	{
-		"Path": "advanced-replication-details.markdown",
-		"Name": "Advanced replication details",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/kb/advanced-replication-details"
-			}
-		]
-	},
-	{
-		"Path": "write-assurance.markdown",
-		"Name": "Write assurance",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/scaling-out/replication/write-assurance"
-			}
-		]
-	}
+[
+  {
+    "Path": "client-integration.markdown",
+    "Name": "Client integration",
+    "DiscussionId": "ae0f3578-6c3b-44d7-8cc9-2ac8d8d9ce57",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "client-api/bundles/how-client-integrates-with-replication-bundle"
+      }
+    ]
+  },
+  {
+    "Path": "handling-conflicts.markdown",
+    "Name": "Dealing with Replication Conflicts",
+    "DiscussionId": "774e969c-1f06-42e3-873b-520531634d39",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/replication-conflicts"
+      }
+    ]
+  },
+  {
+    "Path": "from-embedded-server.markdown",
+    "Name": "Replicating from an Embedded instance",
+    "DiscussionId": "06f9011c-0090-4db8-93c2-eb62074d67d7",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/replication-and-embedded-instance"
+      }
+    ]
+  },
+  {
+    "Path": "advanced-replication-details.markdown",
+    "Name": "Advanced replication details",
+    "DiscussionId": "66286523-54ae-44eb-b63e-84bcc9cf2bc8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/kb/advanced-replication-details"
+      }
+    ]
+  },
+  {
+    "Path": "write-assurance.markdown",
+    "Name": "Write assurance",
+    "DiscussionId": "62572911-f6e1-4f59-b9e1-6d5601584914",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/scaling-out/replication/write-assurance"
+      }
+    ]
+  }
 ]

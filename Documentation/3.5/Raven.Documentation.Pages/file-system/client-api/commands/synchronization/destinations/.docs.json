@@ -2,11 +2,13 @@
   {
     "Path": "get.markdown",
     "Name": "GetDestinations",
+    "DiscussionId": "fbb52dcc-c14d-4d9f-8028-0538f6a1f36a",
     "Mappings": []
   },
   {
     "Path": "set.markdown",
     "Name": "SetDestinations",
+    "DiscussionId": "4b66d608-e9f4-4d6f-a53d-369cddcbffc3",
     "Mappings": []
   }
 ]

@@ -1,7 +1,8 @@
-﻿[
-	{
-		"Path": "export-and-import-views.markdown",
-		"Name": "Export and import",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "export-and-import-views.markdown",
+    "Name": "Export and import",
+    "DiscussionId": "db736eec-a645-4788-8a2f-ace3ae52109c",
+    "Mappings": []
+  }
 ]

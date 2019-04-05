@@ -1,12 +1,14 @@
-﻿[
-	{
-		"Path": "cleanup.markdown",
-		"Name": "CleanUp",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "retry-renaming.markdown",
-		"Name": "RetryRenaming",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "cleanup.markdown",
+    "Name": "CleanUp",
+    "DiscussionId": "f3ecf59e-9791-498d-9f35-985582c283cd",
+    "Mappings": []
+  },
+  {
+    "Path": "retry-renaming.markdown",
+    "Name": "RetryRenaming",
+    "DiscussionId": "f181ebb6-35d9-457e-9c66-887a5526c0fc",
+    "Mappings": []
+  }
 ]

@@ -1,32 +1,33 @@
-﻿[
-	{
-		"Path": "what-are-commands.markdown",
-		"Name": "What are commands?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/files",
-		"Name": "Files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/configurations",
-		"Name": "Configurations",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/synchronization",
-		"Name": "Synchronization",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/storage",
-		"Name": "Storage",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/admin",
-		"Name": "Admin",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "what-are-commands.markdown",
+    "Name": "What are commands?",
+    "DiscussionId": "05eebec8-c016-4d7e-9a0c-a27b47b39a59",
+    "Mappings": []
+  },
+  {
+    "Path": "/files",
+    "Name": "Files",
+    "Mappings": []
+  },
+  {
+    "Path": "/configurations",
+    "Name": "Configurations",
+    "Mappings": []
+  },
+  {
+    "Path": "/synchronization",
+    "Name": "Synchronization",
+    "Mappings": []
+  },
+  {
+    "Path": "/storage",
+    "Name": "Storage",
+    "Mappings": []
+  },
+  {
+    "Path": "/admin",
+    "Name": "Admin",
+    "Mappings": []
+  }
 ]

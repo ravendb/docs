@@ -1,57 +1,66 @@
-﻿[
-	{
-		"Path": "what-is-a-file-session.markdown",
-		"Name": "What is a file session?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "opening-session.markdown",
-		"Name": "Opening a session",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "loading-files.markdown",
-		"Name": "Loading files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "uploading-files.markdown",
-		"Name": "Uploading files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "downloading-files.markdown",
-		"Name": "Downloading files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "renaming-files.markdown",
-		"Name": "Renaming files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "deleting-files.markdown",
-		"Name": "Deleting files",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "changing-metadata.markdown",
-		"Name": "Changing metadata",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "saving-changes.markdown",
-		"Name": "Saving changes",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/querying",
-		"Name": "Querying",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "/configuration",
-		"Name": "Configuration",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "what-is-a-file-session.markdown",
+    "Name": "What is a file session?",
+    "DiscussionId": "027a5f8c-ab73-424b-8cfd-5e2cd1053988",
+    "Mappings": []
+  },
+  {
+    "Path": "opening-session.markdown",
+    "Name": "Opening a session",
+    "DiscussionId": "f9619c30-3884-4d3f-883d-36c0c93beaae",
+    "Mappings": []
+  },
+  {
+    "Path": "loading-files.markdown",
+    "Name": "Loading files",
+    "DiscussionId": "b1e4d07d-275d-4641-a0e6-cea14c0450c0",
+    "Mappings": []
+  },
+  {
+    "Path": "uploading-files.markdown",
+    "Name": "Uploading files",
+    "DiscussionId": "097dbbf0-6dff-42a5-ae33-f5e1e0ce993e",
+    "Mappings": []
+  },
+  {
+    "Path": "downloading-files.markdown",
+    "Name": "Downloading files",
+    "DiscussionId": "14f65621-42e0-45f1-8c3c-2f2da1eb0603",
+    "Mappings": []
+  },
+  {
+    "Path": "renaming-files.markdown",
+    "Name": "Renaming files",
+    "DiscussionId": "3902d097-d8e7-41b7-ae99-67bb86cb6caf",
+    "Mappings": []
+  },
+  {
+    "Path": "deleting-files.markdown",
+    "Name": "Deleting files",
+    "DiscussionId": "389c4421-d1b9-40a2-ac76-d4a9e4bcda9e",
+    "Mappings": []
+  },
+  {
+    "Path": "changing-metadata.markdown",
+    "Name": "Changing metadata",
+    "DiscussionId": "a2c278bb-9081-4abb-b4df-616291d47248",
+    "Mappings": []
+  },
+  {
+    "Path": "saving-changes.markdown",
+    "Name": "Saving changes",
+    "DiscussionId": "d6c51a15-55f1-44b0-8ab3-637f40e01f7b",
+    "Mappings": []
+  },
+  {
+    "Path": "/querying",
+    "Name": "Querying",
+    "Mappings": []
+  },
+  {
+    "Path": "/configuration",
+    "Name": "Configuration",
+    "Mappings": []
+  }
 ]

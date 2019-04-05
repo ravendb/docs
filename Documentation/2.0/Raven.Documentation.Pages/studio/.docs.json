@@ -1,97 +1,106 @@
-﻿[
-	{
-		"Path": "/bundles",
-		"Name": "Bundles",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "documents.markdown",
-		"Name": "The Documents Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/documents/documents-view"
-			}
-		]
-	},
-	{
-		"Path": "collections.markdown",
-		"Name": "The Collections Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/documents/documents-view"
-			}
-		]
-	},
-	{
-		"Path": "indexes.markdown",
-		"Name": "Indexes",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/indexes/indexes-view"
-			}
-		]
-	},
-	{
-		"Path": "tasks.markdown",
-		"Name": "The Tasks Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/tasks/import-export-database"
-			}
-		]
-	},
-	{
-		"Path": "logs.markdown",
-		"Name": "The Logs Screen",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/status/logs"
-			}
-		]
-	},
-	{
-		"Path": "statistics.markdown",
-		"Name": "Database Statistics",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/status/stats"
-			}
-		]
-	},
-	{
-		"Path": "multi-database.markdown",
-		"Name": "Multi-databse Support",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/accessing-studio"
-			}
-		]
-	},
-	{
-		"Path": "patch.markdown",
-		"Name": "Patching",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/documents/patch-view"
-			}
-		]
-	},
-	{
-		"Path": "alerts.markdown",
-		"Name": "Alerts",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "studio/overview/status/alerts"
-			}
-		]
-	}
+[
+  {
+    "Path": "/bundles",
+    "Name": "Bundles",
+    "Mappings": []
+  },
+  {
+    "Path": "documents.markdown",
+    "Name": "The Documents Screen",
+    "DiscussionId": "0c6a15b2-a5fe-49e5-a84a-a13dfa8d4e6c",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/documents/documents-view"
+      }
+    ]
+  },
+  {
+    "Path": "collections.markdown",
+    "Name": "The Collections Screen",
+    "DiscussionId": "d54b8c07-70ee-4a20-a7d2-21b9c001e85a",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/documents/documents-view"
+      }
+    ]
+  },
+  {
+    "Path": "indexes.markdown",
+    "Name": "Indexes",
+    "DiscussionId": "aea22218-c206-4557-b44f-1cb9f6dead30",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/indexes/indexes-view"
+      }
+    ]
+  },
+  {
+    "Path": "tasks.markdown",
+    "Name": "The Tasks Screen",
+    "DiscussionId": "8e5cafed-2a71-407a-bbdd-43323f1a5ed9",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/tasks/import-export-database"
+      }
+    ]
+  },
+  {
+    "Path": "logs.markdown",
+    "Name": "The Logs Screen",
+    "DiscussionId": "1a183d6d-a7f0-4944-b344-8554abe013fd",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/status/logs"
+      }
+    ]
+  },
+  {
+    "Path": "statistics.markdown",
+    "Name": "Database Statistics",
+    "DiscussionId": "b524b751-85b5-46d3-b9e7-3d8e87a687f2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/status/stats"
+      }
+    ]
+  },
+  {
+    "Path": "multi-database.markdown",
+    "Name": "Multi-databse Support",
+    "DiscussionId": "92956dfc-1cf9-42fc-b7bd-2ed71e2d7ed2",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/accessing-studio"
+      }
+    ]
+  },
+  {
+    "Path": "patch.markdown",
+    "Name": "Patching",
+    "DiscussionId": "cf543793-7a13-4f6e-8af3-3f7fae58d180",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/documents/patch-view"
+      }
+    ]
+  },
+  {
+    "Path": "alerts.markdown",
+    "Name": "Alerts",
+    "DiscussionId": "0137b726-b824-48d2-a7a1-db35d39dc020",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "studio/overview/status/alerts"
+      }
+    ]
+  }
 ]

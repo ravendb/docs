@@ -1,12 +1,14 @@
 [
-    {
-        "Path": "snmp.markdown",
-        "Name": "What is SNMP",
-        "Mappings": []
-    },
-    {
-        "Path": "setup-zabbix.markdown",
-        "Name": "Zabbix",
-        "Mappings": []
-    }
+  {
+    "Path": "snmp.markdown",
+    "Name": "What is SNMP",
+    "DiscussionId": "e93eeece-4ec7-49a1-a421-3e76be46447a",
+    "Mappings": []
+  },
+  {
+    "Path": "setup-zabbix.markdown",
+    "Name": "Zabbix",
+    "DiscussionId": "fd2935c8-c276-454b-b518-6449b1d37673",
+    "Mappings": []
+  }
 ]

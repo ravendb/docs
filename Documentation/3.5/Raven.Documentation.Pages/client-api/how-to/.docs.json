@@ -2,47 +2,53 @@
   {
     "Path": "work-with-authentication.markdown",
     "Name": "...work with authentication",
+    "DiscussionId": "538f133a-1edf-4742-b6b9-bfe9005bd320",
     "Mappings": []
   },
   {
     "Path": "setup-aggressive-caching.markdown",
     "Name": "...setup aggressive caching",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "client-api/advanced/aggressive-caching"
-			}
-		]
+    "DiscussionId": "0b5628f4-3535-42bf-ae4c-72b49f231acb",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "client-api/advanced/aggressive-caching"
+      }
+    ]
   },
   {
     "Path": "send-custom-request-using-httpjsonrequestfactory.markdown",
     "Name": "...send custom request",
+    "DiscussionId": "befdf85d-d4d0-49cc-9cb3-66bbf9211a54",
     "Mappings": []
   },
   {
     "Path": "integrate-with-excel.markdown",
     "Name": "...integrate with Excel",
+    "DiscussionId": "49f457ff-e5b6-476b-9416-004bbe80aca1",
     "Mappings": []
   },
-    {
-        "Path": "enable-profiling.markdown",
-        "Name": "...enable profiling",
-        "Mappings": [ ]
-    },
+  {
+    "Path": "enable-profiling.markdown",
+    "Name": "...enable profiling",
+    "DiscussionId": "feb92a61-b2ad-43be-b493-a5201c69e9a7",
+    "Mappings": []
+  },
   {
     "Path": "store-dates.markdown",
     "Name": "...store dates",
+    "DiscussionId": "efc1c6ff-ac7d-4f9c-a037-85400bbb2759",
     "Mappings": [
       {
         "Version": 1.0,
         "Key": "faq/storing-dates"
       }
-
     ]
   },
   {
     "Path": "create-custom-http-message-handler.markdown",
     "Name": "...create a custom message handler",
-    "Mappings": [ ]
-  },
+    "DiscussionId": "de9e2c70-7d5b-496f-b2a1-1da71dba8602",
+    "Mappings": []
+  }
 ]

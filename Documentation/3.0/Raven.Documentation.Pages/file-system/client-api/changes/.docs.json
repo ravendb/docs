@@ -1,22 +1,26 @@
-﻿[
-	{
-		"Path": "how-to-subscribe-file-changes.markdown",
-		"Name": "How to subscribe to file changes?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "how-to-subscribe-synchronization-notifications.markdown",
-		"Name": "How to subscribe to synchronization notifications?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "how-to-subscribe-conflicts.markdown",
-		"Name": "How to subscribe to synchronization conflicts?",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "how-to-subscribe-configuration-changes.markdown",
-		"Name": "How to subscribe to configuration changes?",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "how-to-subscribe-file-changes.markdown",
+    "Name": "How to subscribe to file changes?",
+    "DiscussionId": "e4931f6d-439a-4ef9-9cae-ae76af38afe7",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-synchronization-notifications.markdown",
+    "Name": "How to subscribe to synchronization notifications?",
+    "DiscussionId": "ef3eec48-efeb-4ddf-b770-66cea7f08e75",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-conflicts.markdown",
+    "Name": "How to subscribe to synchronization conflicts?",
+    "DiscussionId": "c78d4238-1bcf-4079-93b8-bd244d3432a0",
+    "Mappings": []
+  },
+  {
+    "Path": "how-to-subscribe-configuration-changes.markdown",
+    "Name": "How to subscribe to configuration changes?",
+    "DiscussionId": "2d7fb45f-71d9-47f4-b601-a8ac3f8bbffe",
+    "Mappings": []
+  }
 ]

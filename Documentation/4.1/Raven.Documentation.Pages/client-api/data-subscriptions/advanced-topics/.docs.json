@@ -2,11 +2,13 @@
   {
     "Path": "subscription-with-revisioning.markdown",
     "Name": "Revisions Support",
+    "DiscussionId": "683e7435-5dfe-4682-89d0-3d8ef01b6b27",
     "Mappings": []
   },
-    {
-        "Path": "maintenance-operations.markdown",
-        "Name": "Maintenance Operations",
-        "Mappings": []
-    }
+  {
+    "Path": "maintenance-operations.markdown",
+    "Name": "Maintenance Operations",
+    "DiscussionId": "0a674770-4822-4aab-9c9b-9cf2d6cd841e",
+    "Mappings": []
+  }
 ]

@@ -1,17 +1,20 @@
-﻿[
-	{
-		"Path": "indexing-performance.markdown",
-		"Name": "Indexing performance",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "index-stats.markdown",
-		"Name": "Index stats",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "batch-size-and-prefetches.markdown",
-		"Name": "Index batch size and Prefetches",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "indexing-performance.markdown",
+    "Name": "Indexing performance",
+    "DiscussionId": "f18ec694-dc89-45c4-9670-1b53d83be278",
+    "Mappings": []
+  },
+  {
+    "Path": "index-stats.markdown",
+    "Name": "Index stats",
+    "DiscussionId": "b5567f28-f225-4fce-af56-da467a353842",
+    "Mappings": []
+  },
+  {
+    "Path": "batch-size-and-prefetches.markdown",
+    "Name": "Index batch size and Prefetches",
+    "DiscussionId": "4cc9a653-cca1-4dda-a303-90e678db3120",
+    "Mappings": []
+  }
 ]

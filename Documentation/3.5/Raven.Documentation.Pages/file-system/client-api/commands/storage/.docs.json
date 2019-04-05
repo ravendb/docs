@@ -1,17 +1,20 @@
-﻿[
+[
   {
     "Path": "cleanup.markdown",
     "Name": "CleanUp",
+    "DiscussionId": "9906818b-5f84-4b05-9f0e-1d4921a6da21",
     "Mappings": []
   },
   {
     "Path": "retry-renaming.markdown",
     "Name": "RetryRenaming",
+    "DiscussionId": "9cb98e55-2a28-4330-8c62-a2542c4be2f5",
     "Mappings": []
   },
   {
     "Path": "retry-copying.markdown",
     "Name": "RetryCopying",
+    "DiscussionId": "9b594f8b-7a99-46f3-b1b9-e72ef638b68e",
     "Mappings": []
   }
 ]

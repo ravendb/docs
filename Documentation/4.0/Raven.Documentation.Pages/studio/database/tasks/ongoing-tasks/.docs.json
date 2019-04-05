@@ -2,21 +2,25 @@
   {
     "Path": "general-info.markdown",
     "Name": "General Info",
+    "DiscussionId": "3c82a001-dc1f-4d55-a661-7f0cfb9a41bd",
     "Mappings": []
   },
   {
     "Path": "external-replication-task.markdown",
     "Name": "External Replication Task",
+    "DiscussionId": "8052f919-6472-4228-95de-83ea9e4af283",
     "Mappings": []
   },
   {
     "Path": "ravendb-etl-task.markdown",
     "Name": "RavenDB ETL Task",
+    "DiscussionId": "cf0163cc-1e5b-441f-bb1e-4de8a3d65bfe",
     "Mappings": []
   },
   {
     "Path": "backup-task.markdown",
     "Name": "Backup Task",
+    "DiscussionId": "4b07e2ec-3386-4e99-861f-7b9f56954d7d",
     "Mappings": []
   }
 ]

@@ -1,57 +1,63 @@
-﻿[
-	{
-		"Path": "/windows-clustering",
-		"Name": "Windows Clustering",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "enabling-ssl.markdown",
-		"Name": "Enabling SSL",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/deployment/enabling-ssl"
-			}
-		]
-	},
-	{
-		"Path": "enabling-fips-compliant-encryption-algorithms.markdown",
-		"Name": "Enabling FIPS compliant encryption",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "authentication-and-authorization.markdown",
-		"Name": "Authentication & Authorization",
-		"Mappings": [
-			{
-				"Version": 2.0,
-				"Key": "server/authentication"
-			}
-		]
-	},
-	{
-		"Path": "license-registration.markdown",
-		"Name": "License registration",
-		"Mappings": [
-			{
-				"Version": 2.5,
-				"Key": "server/administration/license-registration"
-			}
-		]
-	},
-	{
-		"Path": "configuration-options.markdown",
-		"Name": "Configuration options",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/administration/configuration"
-			}
-		]
-	},
-	{
-		"Path": "storage-engines.markdown",
-		"Name": "Storage Engines",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "/windows-clustering",
+    "Name": "Windows Clustering",
+    "Mappings": []
+  },
+  {
+    "Path": "enabling-ssl.markdown",
+    "Name": "Enabling SSL",
+    "DiscussionId": "30b83c9f-2329-41cf-b653-7f4a3bc6ab20",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/deployment/enabling-ssl"
+      }
+    ]
+  },
+  {
+    "Path": "enabling-fips-compliant-encryption-algorithms.markdown",
+    "Name": "Enabling FIPS compliant encryption",
+    "DiscussionId": "2890462d-52b6-4463-8551-50ee07a3d9cb",
+    "Mappings": []
+  },
+  {
+    "Path": "authentication-and-authorization.markdown",
+    "Name": "Authentication & Authorization",
+    "DiscussionId": "62b2d83d-d4ef-4070-9168-f52fc46ac27c",
+    "Mappings": [
+      {
+        "Version": 2.0,
+        "Key": "server/authentication"
+      }
+    ]
+  },
+  {
+    "Path": "license-registration.markdown",
+    "Name": "License registration",
+    "DiscussionId": "6e21b97e-87df-4230-a621-f5a42ff7f6dc",
+    "Mappings": [
+      {
+        "Version": 2.5,
+        "Key": "server/administration/license-registration"
+      }
+    ]
+  },
+  {
+    "Path": "configuration-options.markdown",
+    "Name": "Configuration options",
+    "DiscussionId": "741b9ee1-7625-4a48-9620-9aacd16419f4",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/administration/configuration"
+      }
+    ]
+  },
+  {
+    "Path": "storage-engines.markdown",
+    "Name": "Storage Engines",
+    "DiscussionId": "b82bd7ae-c779-4e5c-89ef-80c8f63decc9",
+    "Mappings": []
+  }
 ]

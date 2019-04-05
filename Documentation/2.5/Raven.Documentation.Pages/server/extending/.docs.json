@@ -1,35 +1,36 @@
-﻿[
-	{
-		"Path": "/bundles",
-		"Name": "Using the Bundles",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/plugins/triggers"
-			}
-		]
-	},
-	{
-		"Path": "/requestResponders",
-		"Name": "Request Responders",
-		"Mappings": [ ]
-	},
-	{
-		"Path": "plugins.markdown",
-		"Name": "Plugins",
-		"Mappings": [
-			{
-				"Version": 1.0,
-				"Key": "server/extending/triggers"
-			},
-			{
-				"Version": 2.0,
-				"Key": "server/extending/plugins"
-			},
-			{
-				"Version": 3.0,
-				"Key": "server/plugins/triggers"
-			}
-		]
-	}
+[
+  {
+    "Path": "/bundles",
+    "Name": "Using the Bundles",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/plugins/triggers"
+      }
+    ]
+  },
+  {
+    "Path": "/requestResponders",
+    "Name": "Request Responders",
+    "Mappings": []
+  },
+  {
+    "Path": "plugins.markdown",
+    "Name": "Plugins",
+    "DiscussionId": "e316c7d2-0b65-46a1-98ae-40d75d9eecdd",
+    "Mappings": [
+      {
+        "Version": 1.0,
+        "Key": "server/extending/triggers"
+      },
+      {
+        "Version": 2.0,
+        "Key": "server/extending/plugins"
+      },
+      {
+        "Version": 3.0,
+        "Key": "server/plugins/triggers"
+      }
+    ]
+  }
 ]

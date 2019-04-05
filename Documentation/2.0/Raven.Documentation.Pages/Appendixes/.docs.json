@@ -1,27 +1,30 @@
-﻿[
-	{
-		"Path": "lucene-indexes-usage.markdown",
-		"Name": "How does RavenDB use Lucene for indexing?",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/what-are-indexes"
-			}
-		]
-	},
-	{
-		"Path": "lucene-score.markdown",
-		"Name": "Lucene Score",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "indexes/querying/sorting#ordering-by-score"
-			}
-		]
-	},
-	{
-		"Path": "profiling-mvc-application.markdown",
-		"Name": "Profiling ASP.NET MVC application using RavenProfiler",
-		"Mappings": [ ]
-	}
+[
+  {
+    "Path": "lucene-indexes-usage.markdown",
+    "Name": "How does RavenDB use Lucene for indexing?",
+    "DiscussionId": "5e8c9996-2f84-45f1-a57c-830df232a2cb",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/what-are-indexes"
+      }
+    ]
+  },
+  {
+    "Path": "lucene-score.markdown",
+    "Name": "Lucene Score",
+    "DiscussionId": "cd71df8f-e316-4505-9e6b-8ca9e8e698c8",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "indexes/querying/sorting#ordering-by-score"
+      }
+    ]
+  },
+  {
+    "Path": "profiling-mvc-application.markdown",
+    "Name": "Profiling ASP.NET MVC application using RavenProfiler",
+    "DiscussionId": "1a120921-fe8c-4de1-80dd-5d16e8d11ab5",
+    "Mappings": []
+  }
 ]

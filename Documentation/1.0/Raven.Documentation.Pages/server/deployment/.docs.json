@@ -1,62 +1,68 @@
-﻿[
-	{
-		"Path": "as-a-service.markdown",
-		"Name": "Running as a service",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/as-a-service"
-			}
-		]
-	},
-	{
-		"Path": "as-iis-application.markdown",
-		"Name": "Deploying as an IIS application",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/IIS"
-			}
-		]
-	},
-	{
-		"Path": "embedded.markdown",
-		"Name": "Embedded",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/embedded"
-			}
-		]
-	},
-	{
-		"Path": "recommended-configuration.markdown",
-		"Name": "Recommended configuration",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/installation/system-requirements"
-			}
-		]
-	},
-	{
-		"Path": "docs-deploy-debug.markdown",
-		"Name": "Running in Debug mode",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/troubleshooting/running-in-debug-mode"
-			}
-		]
-	},
-	{
-		"Path": "docs-debug-logging.markdown",
-		"Name": "Debug Logging",
-		"Mappings": [
-			{
-				"Version": 3.0,
-				"Key": "server/troubleshooting/enabling-logging"
-			}
-		]
-	}
+[
+  {
+    "Path": "as-a-service.markdown",
+    "Name": "Running as a service",
+    "DiscussionId": "b9352765-ce5f-4bfa-9b5a-b4463b39cb08",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/as-a-service"
+      }
+    ]
+  },
+  {
+    "Path": "as-iis-application.markdown",
+    "Name": "Deploying as an IIS application",
+    "DiscussionId": "e3cf28b4-8712-4a93-afec-98094992ebba",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/IIS"
+      }
+    ]
+  },
+  {
+    "Path": "embedded.markdown",
+    "Name": "Embedded",
+    "DiscussionId": "1656bd65-41df-40b7-943f-b0611a36298e",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/embedded"
+      }
+    ]
+  },
+  {
+    "Path": "recommended-configuration.markdown",
+    "Name": "Recommended configuration",
+    "DiscussionId": "b82a0b82-47ba-4573-856d-25ed2a722f0d",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/installation/system-requirements"
+      }
+    ]
+  },
+  {
+    "Path": "docs-deploy-debug.markdown",
+    "Name": "Running in Debug mode",
+    "DiscussionId": "cb513f40-9465-4489-b64a-f3d0891230a7",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/troubleshooting/running-in-debug-mode"
+      }
+    ]
+  },
+  {
+    "Path": "docs-debug-logging.markdown",
+    "Name": "Debug Logging",
+    "DiscussionId": "ce584fae-1d33-4730-817c-2853ef8d0de6",
+    "Mappings": [
+      {
+        "Version": 3.0,
+        "Key": "server/troubleshooting/enabling-logging"
+      }
+    ]
+  }
 ]

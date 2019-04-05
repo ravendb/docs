@@ -1,12 +1,13 @@
 [
-    {
-        "Path": "document-view.markdown",
-        "Name": "Document View",
-        "Mappings": []
-    },
-    {
-        "Path": "/additional-features",
-        "Name": "Additional Features",
-        "Mappings": []
-    }
+  {
+    "Path": "document-view.markdown",
+    "Name": "Document View",
+    "DiscussionId": "7f23c082-8913-4176-b84a-e47398f6cec6",
+    "Mappings": []
+  },
+  {
+    "Path": "/additional-features",
+    "Name": "Additional Features",
+    "Mappings": []
+  }
 ]

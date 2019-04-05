@@ -1,12 +1,14 @@
-﻿[
+[
   {
     "Path": "clustering-overview.markdown",
     "Name": "Overview",
+    "DiscussionId": "053fc05e-604e-4543-b814-124fac061fa9",
     "Mappings": []
   },
   {
     "Path": "what-is-rachis.markdown",
     "Name": "Rachis",
+    "DiscussionId": "98fa4bc9-035b-440b-aae2-f9566c1d11cf",
     "Mappings": []
   }
 ]
