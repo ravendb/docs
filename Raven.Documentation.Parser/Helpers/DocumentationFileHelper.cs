@@ -39,7 +39,7 @@ namespace Raven.Documentation.Parser.Helpers
 
         private static bool IsFolder(DocumentationFile docFile) => docFile.Path.StartsWith("/");
 
-        public static void AssignDiscussionIdIfNeeded(string filePath, FolderItem itemToCheck)
+        public static void AssignDiscussionIdIfNeeded(string filePath, FolderItem itemToCheck, string discussionId = null)
         {
             var docFiles = DeserializeFile(filePath);
             var overwriteNeeded = false;
@@ -51,7 +51,7 @@ namespace Raven.Documentation.Parser.Helpers
                 if (IsFolder(item) || string.IsNullOrEmpty(item.DiscussionId) == false)
                     continue;
 
-                item.DiscussionId = Guid.NewGuid().ToString();
+                item.DiscussionId = discussionId ?? Guid.NewGuid().ToString();
                 overwriteNeeded = true;
             }
 

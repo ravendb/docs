@@ -43,7 +43,13 @@
 
         public string DiscussionId { get; set; }
 
-        public string GetDiscussionKey() => $"{Version}/{Language.ToString().ToLowerInvariant()}/{DiscussionId}";
+        public string GetDiscussionKey()
+        {
+            if (string.IsNullOrEmpty(DiscussionId))
+                return null;
+
+            return $"{Version}/{Language.ToString().ToLowerInvariant()}/{DiscussionId}";
+        }
 
 		public string GetUniqueKey()
 		{

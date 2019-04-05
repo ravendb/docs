@@ -43,23 +43,46 @@ namespace Raven.Documentation.Parser.Compilation.DocumentationDirectory
 
             ValidateTableOfContentsItem(tocItem, version);
 
-            var directory = tocItem.GetSourceBaseDirectory(Options);
+            var sourceDirectory = tocItem.GetSourceBaseDirectory(Options);
 
-            AssignDiscussionIdsIfNeeded(tocItem, directory);
-            var pagesToCompile = GetPagesForTocItem(tocItem, directory);
+            AssignDiscussionIds(tocItem, sourceDirectory, version);
+
+            var pagesToCompile = GetPagesForTocItem(tocItem, sourceDirectory);
 
             foreach (var pageToCompile in pagesToCompile)
             {
-                yield return CompileDocumentationPage(pageToCompile, directory, version, pageToCompile.Mappings, tocItem.SourceVersion);
+                yield return CompileDocumentationPage(pageToCompile, sourceDirectory, version, pageToCompile.Mappings, tocItem.SourceVersion);
             }
         }
 
-        private void AssignDiscussionIdsIfNeeded(TableOfContents.TableOfContentsItem tocItem, string directory)
+        private void AssignDiscussionIds(TableOfContents.TableOfContentsItem tocItem, string sourceDirectory, string version)
+        {
+            AssignDiscussionIdsInDocsFile(tocItem, sourceDirectory);
+            var sourceDiscussionId = GetSourceDiscussionId(tocItem, sourceDirectory);
+            AssignDiscussionIdToDerivedPages(tocItem, version, sourceDiscussionId);
+        }
+
+        private void AssignDiscussionIdsInDocsFile(TableOfContents.TableOfContentsItem tocItem, string directory, string discussionId = null)
         {
             var matchingFolderItem = GetFolderItemForTocItem(directory, tocItem);
 
+            if (matchingFolderItem == null)
+                return;
+
             var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
-            DocumentationFileHelper.AssignDiscussionIdIfNeeded(docsFilePath, matchingFolderItem);
+            DocumentationFileHelper.AssignDiscussionIdIfNeeded(docsFilePath, matchingFolderItem, discussionId);
+        }
+
+        private string GetSourceDiscussionId(TableOfContents.TableOfContentsItem tocItem, string directory)
+        {
+            var matchingFolderItem = GetFolderItemForTocItem(directory, tocItem);
+            return matchingFolderItem.DiscussionId;
+        }
+
+        private void AssignDiscussionIdToDerivedPages(TableOfContents.TableOfContentsItem tocItem, string version, string sourceDiscussionId)
+        {
+            var directory = tocItem.GetDirectoryPath(version, Options);
+            AssignDiscussionIdsInDocsFile(tocItem, directory, sourceDiscussionId);
         }
 
         private void ValidateTableOfContentsItem(TableOfContents.TableOfContentsItem tocItem, string version)
