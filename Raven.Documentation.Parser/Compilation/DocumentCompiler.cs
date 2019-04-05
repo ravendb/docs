@@ -33,7 +33,8 @@ namespace Raven.Documentation.Parser.Compilation
                 Mappings = parameters.Mappings,
                 Metadata = parameters.Metadata,
                 SeoMetaProperties = parameters.SeoMetaProperties,
-                RelatedArticlesContent = parameters.RelatedArticlesContent
+                RelatedArticlesContent = parameters.RelatedArticlesContent,
+                DiscussionId = parameters.DiscussionId
             };
         }
     }
@@ -71,6 +72,7 @@ namespace Raven.Documentation.Parser.Compilation
             public string RelatedArticlesContent { get; set; }
             public Dictionary<string, string> Metadata { get; set; }
             public Dictionary<string, string> SeoMetaProperties { get; set; }
+            public string DiscussionId { get; set; }
         }
 
         public TPage Compile(CompilationUtils.Parameters parameters)
@@ -133,7 +135,8 @@ namespace Raven.Documentation.Parser.Compilation
                     Mappings = mappings.OrderBy(x => x.Version).ToList(),
                     RelatedArticlesContent = relatedArticlesContent,
                     Metadata = page.Metadata,
-                    SeoMetaProperties = page.SeoMetaProperties
+                    SeoMetaProperties = page.SeoMetaProperties,
+                    DiscussionId = page.DiscussionId
                 };
 
                 return CreatePage(createPageParams);

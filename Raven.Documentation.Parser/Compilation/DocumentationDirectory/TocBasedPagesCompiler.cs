@@ -44,12 +44,22 @@ namespace Raven.Documentation.Parser.Compilation.DocumentationDirectory
             ValidateTableOfContentsItem(tocItem, version);
 
             var directory = tocItem.GetSourceBaseDirectory(Options);
+
+            AssignDiscussionIdsIfNeeded(tocItem, directory);
             var pagesToCompile = GetPagesForTocItem(tocItem, directory);
 
             foreach (var pageToCompile in pagesToCompile)
             {
                 yield return CompileDocumentationPage(pageToCompile, directory, version, pageToCompile.Mappings, tocItem.SourceVersion);
             }
+        }
+
+        private void AssignDiscussionIdsIfNeeded(TableOfContents.TableOfContentsItem tocItem, string directory)
+        {
+            var matchingFolderItem = GetFolderItemForTocItem(directory, tocItem);
+
+            var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
+            DocumentationFileHelper.AssignDiscussionIdIfNeeded(docsFilePath, matchingFolderItem);
         }
 
         private void ValidateTableOfContentsItem(TableOfContents.TableOfContentsItem tocItem, string version)
@@ -62,20 +72,29 @@ namespace Raven.Documentation.Parser.Compilation.DocumentationDirectory
 
         private IEnumerable<FolderItem> GetPagesForTocItem(TableOfContents.TableOfContentsItem tocItem, string directory)
         {
-            var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
-            if (File.Exists(docsFilePath) == false)
-                yield break;
+            var matchingFolderItem = GetFolderItemForTocItem(directory, tocItem);
 
-            var keySuffix = tocItem.GetKeySuffix();
+            var pages = GetPages(directory, matchingFolderItem);
 
-            var matchingFolderItems = DocumentationFileHelper.ParseFile(docsFilePath)
-                .Where(x => x.Name == keySuffix)
-                .SelectMany(x => GetPages(directory, x));
-
-            foreach (var folderItem in matchingFolderItems)
+            foreach (var folderItem in pages)
             {
                 yield return folderItem;
             }
+        }
+
+        private FolderItem GetFolderItemForTocItem(string directory, TableOfContents.TableOfContentsItem tocItem)
+        {
+            var docsFilePath = Path.Combine(directory, Constants.DocumentationFileName);
+
+            if (File.Exists(docsFilePath) == false)
+                return null;
+
+            var keySuffix = tocItem.GetKeySuffix();
+
+            var matchingFolderItem = DocumentationFileHelper.ParseFile(docsFilePath)
+                .SingleOrDefault(x => x.Name == keySuffix);
+
+            return matchingFolderItem;
         }
     }
 }

@@ -605,16 +605,6 @@ namespace Raven.Documentation.Web.Controllers
                 MVC.Docs.Name,
                 new { language = CurrentLanguage, version = CurrentVersion, key = key });
         }
-
-        public virtual ActionResult AssignDiscussionHash(string language, string version, string key, bool all)
-        {
-            var parserOptions = GetParserOptions(all);
-
-            var hashAssigner = new DocHashAssigner(parserOptions);
-            hashAssigner.Run();
-
-            return RedirectToDocPage(language, version, key);
-        }
     }
 
     internal class SearchTokens

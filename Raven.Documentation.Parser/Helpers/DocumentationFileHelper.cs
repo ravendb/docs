@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Newtonsoft.Json;
 
@@ -26,7 +27,7 @@ namespace Raven.Documentation.Parser.Helpers
                     Description = name,
                     Name = isFolder ? path.Substring(1, path.Length - 1) : path.Substring(0, path.Length - Constants.MarkdownFileExtension.Length),
                     LastSupportedVersion = file.LastSupportedVersion,
-                    DiscussionHash = file.DiscussionHash,
+                    DiscussionId = file.DiscussionId,
                     Mappings = file.Mappings,
                     Metadata = file.Metadata,
                     SeoMetaProperties = file.SeoMetaProperties
@@ -38,17 +39,19 @@ namespace Raven.Documentation.Parser.Helpers
 
         private static bool IsFolder(DocumentationFile docFile) => docFile.Path.StartsWith("/");
 
-        public static void AssignDiscussionHashIfNeeded(string filePath)
+        public static void AssignDiscussionIdIfNeeded(string filePath, FolderItem itemToCheck)
         {
             var docFiles = DeserializeFile(filePath);
             var overwriteNeeded = false;
 
-            foreach (var item in docFiles)
+            var docFilesToUpdate = docFiles.Where(x => x.Name == itemToCheck.Description);
+
+            foreach (var item in docFilesToUpdate)
             {
-                if (IsFolder(item) || string.IsNullOrEmpty(item.DiscussionHash) == false)
+                if (IsFolder(item) || string.IsNullOrEmpty(item.DiscussionId) == false)
                     continue;
 
-                item.DiscussionHash = Guid.NewGuid().ToString();
+                item.DiscussionId = Guid.NewGuid().ToString();
                 overwriteNeeded = true;
             }
 

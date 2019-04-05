@@ -25,8 +25,6 @@ namespace Raven.Documentation.Parser
 
         public override ParserOutput Parse()
         {
-            AssignDiscussionHash();
-
             var tableOfContents = GenerateTableOfContents().ToList();
             var docs = GenerateDocumentationPages(tableOfContents);
 
@@ -35,12 +33,6 @@ namespace Raven.Documentation.Parser
                 TableOfContents = tableOfContents,
                 Pages = docs
             };
-        }
-
-        private void AssignDiscussionHash()
-        {
-            var hashAssigner = new DocHashAssigner(Options);
-            hashAssigner.Run();
         }
 
         private IEnumerable<TableOfContents> GenerateTableOfContents()
