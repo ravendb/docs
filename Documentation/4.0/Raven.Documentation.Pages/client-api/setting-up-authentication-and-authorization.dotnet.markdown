@@ -9,10 +9,15 @@
 * X.509 certificates can be obtained for free through RavenDB. Alternatively, use your own certificate. Read more in the [Setup Wizard Walkthrough](../start/installation/setup-wizard#secure-setup-with-a-let).  
 
 * Pass your certificate to the document store's `Certificate` property, as shown in the [example code](#example) below.
+
 {NOTE/}
+
 {PANEL:Example - Initializing Document Store With Certificate}<a name="example"></a>
+
 {CODE client_cert@ClientApi\Certificate.cs /}
+
 {PANEL/}
+
 ## Related Articles
 
 ### Getting Started
