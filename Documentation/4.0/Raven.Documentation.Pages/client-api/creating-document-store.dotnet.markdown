@@ -20,14 +20,14 @@
 * We recommend that your document store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton) as demonstrated in the example code 
 [below](../client-api/creating-document-store#example---typical-initialization).  
   * Creating more than one document store is resource intensive, and one instance is sufficient for most use cases  
-  * If you do use additional document store instances, you should dispose of them after use (document store implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
+  * If you do create additional document store instances, you should dispose of them after use (document store implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
   * The document store is thread safe  
 
 {NOTE/}
 
 {PANEL:Example - Typical Initialization}
 
-This example demostrates the initialization of a singleton document store, as well as setting the list of URLs and the default database.
+This example demonstrates the initialization of a singleton document store, as well as setting the list of URLs and the default database.
 {CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}  
 
 {PANEL/}
