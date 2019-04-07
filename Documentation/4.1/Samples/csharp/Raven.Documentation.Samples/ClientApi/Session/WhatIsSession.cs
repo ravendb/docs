@@ -14,23 +14,20 @@ namespace Raven.Documentation.Samples.ClientApi.Session
         {
             using (var store = new DocumentStore())
             {
-                #region session_usage_1
                 //A client-side copy of the document Id.
-                string companyId;
+                string companyId = null;
 
+                #region session_usage_1
                 //Store new document.
                 using (IDocumentSession session = store.OpenSession())
                 {
                     Company entity = new Company { Name = "Company" };
                     session.Store(entity);
-                    //The entity is now marked for storage,
-                    //and changes made to it will be tracked,
-                    //but it is not sent to the server until `SaveChanges()` is called.
+                    //The entity is now marked for storage.
+                    //Changes made to it will be tracked by default.
+                    //However it is not actually sent to the server 
+                    //until `SaveChanges()` is called.
                     session.SaveChanges();
-
-                    //Calling `Store()` has generated an Id for our entity.
-                    //Let's save it for use in the next example.
-                    companyId = entity.Id;
                 }
                 #endregion
 
@@ -38,12 +35,13 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 //Load document from database, edit it, and save it.
                 using (IDocumentSession session = store.OpenSession())
                 {
-                    //Use companyId from the previous example.
-                    Company entity = session.Load<Company>(companyId); 
+                    //Load using known Id
+                    Company entity = session.Load<Company>(companyId);
+                    //Edit a property
                     entity.Name = "Another Company";
 
                     //When a document is loaded, the session tracks 
-                    //all changes made to it (by default).
+                    //all changes made to it by default.
                     //A call to `SaveChanges()` sends all accumulated changes to the server.
                     session.SaveChanges(); 
                     //Note that no call to `Store()` is required for a loaded document.

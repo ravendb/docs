@@ -63,9 +63,10 @@ opened. [Read more](../../client-api/session/opening-a-session#example-ii---disa
 
 The session implements the [Identity Map Pattern](https://martinfowler.com/eaaCatalog/identityMap.html). If we load the same document twice in the same session, it won't be saved as 
 two different objects. The first call to `Load()` will retrieve an entity from the database and save it in the identity map. The second call to `Load()` will simply retrieve the same entity 
-from the identity map and will not make a call to the server. In the context of a session, the same document loaded twice always resolves to the same entity instance.  
+from the identity map and will not make a call to the server. In the context of a single session, the same document loaded twice always resolves to the same entity instance.  
 {CODE session_usage_3@ClientApi\Session\WhatIsSession.cs /}
-This code will not throw an exception.
+
+The above command will not throw an exception.
 
 {PANEL/}
 
