@@ -23,6 +23,9 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                 {
                     Company entity = new Company { Name = "Company" };
                     session.Store(entity);
+                    //The entity is now marked for storage,
+                    //and changes made to it will be tracked,
+                    //but it is not sent to the server until `SaveChanges()` is called.
                     session.SaveChanges();
 
                     //Calling `Store()` has generated an Id for our entity.
@@ -43,7 +46,7 @@ namespace Raven.Documentation.Samples.ClientApi.Session
                     //all changes made to it (by default).
                     //A call to `SaveChanges()` sends all accumulated changes to the server.
                     session.SaveChanges(); 
-                    //Note that no call to `Store()` is required this time.
+                    //Note that no call to `Store()` is required for a loaded document.
                 }
                 #endregion
 
