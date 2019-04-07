@@ -1,43 +1,43 @@
-﻿# Client API : How to Create a Document Store
-
+﻿# Client API: Creating a Document Store
 ---
 {NOTE: }  
 
-* The [example code](../client-api/creating-document-store#example---typical-initialization) below shows a typical initialization of a document store.  
+* When creating a new document store, make sure to apply all necessary configurations before calling `.initialize()`. 
+  * [Conventions](../client-api/configuration/conventions) are frozen upon initialization  
 
-* After creating a new `DocumentStore` object, apply all necessary configurations. Do not call `.initialize()` on a document store before it is fully configured.  
+* Pass your document store a list of URLs to your RavenDB servers.  
+  * **Important**: these servers must all be nodes of the same cluster  
 
-* We recommend that your document store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton) as demonstrated in the example code below.  
-  * This is because creating more than one document store is resource intensive, and is be necessary in most usage cases  
-  * The document store is thread safe  
+* Pass your document store an [Authentication Certificate](../client-api/setting-up-authentication-and-authorization) to access secure servers.  
 
-* Include a list of URLs to RavenDB servers. These servers should all be nodes of the same cluster.  
-  * **Important**: do not open a document store using URL addresses that point to nodes outside your cluster.  
+* Select the [Default Database](../client-api/setting-up-default-database) that you want your document store to operate on.  
 
-* Apply any other configurations to the document store, such as:  
-  * Passing it an [Authentication Certificate](../client-api/setting-up-authentication-and-authorization)  
-  * Selecting the [Default Database](../client-api/setting-up-default-database) that you want this document store to operate on  
-  * Setting the [Conventions](../client-api/configuration/conventions)  
+* Set the conventions and any other customizations you wish to apply.  
 
 * Finally, call `.initialize()` to begin using the document store.  
-  * Conventions are frozen after initialization.
+  * This will instantiate a connection between your application and the associated server(s)  
+
+* We recommend that your document store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton) as demonstrated in the example code 
+[below](../client-api/creating-document-store#example---typical-initialization).  
+  * Creating more than one document store is resource intensive, and one instance is sufficient for most use cases  
+  * If you do use additional document store instances, you should dispose of them after use (document store implements [IDisposable](https://docs.microsoft.com/en-us/dotnet/api/system.idisposable?view=netframework-4.7.2))  
+  * The document store is thread safe  
 
 {NOTE/}
 
 {PANEL:Example - Typical Initialization}
 
+This example demostrates the initialization of a singleton document store, as well as setting the list of URLs and the default database.
 {CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}  
 
 {PANEL/}
 
 ## Related Articles
 
-### Session
+### Client API
 
 - [What is a Session and How Does it Work](../client-api/session/what-is-a-session-and-how-does-it-work)
-
-### Document Store
-
 - [What is a Document Store](../client-api/what-is-a-document-store)
 - [Setting up Default Database](../client-api/setting-up-default-database)
 - [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)
+- [Conventions Overview](../client-api/configuration/conventions)

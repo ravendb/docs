@@ -21,19 +21,23 @@
         }
 
         #region document_store_holder
-        //how to generate a singleton document store
+        //Holder for a single instance of document store
+        //which will be used throughout your client application.
         public class DocumentStoreHolder
         {
+            //`Lazy` ensures that the Document Store is only created once.
             private static Lazy<IDocumentStore> store = new Lazy<IDocumentStore>(CreateStore);
-
+            
             public static IDocumentStore Store => store.Value;
-
+            
             private static IDocumentStore CreateStore()
             {
                 IDocumentStore store = new DocumentStore()
                 {
+                    //URLs to associated server(s)
                     Urls = new[] { "http://your_RavenDB_cluster_node_A",
                         "http://your_RavenDB_cluster_node_B", "..." },
+                    //Default database
                     Database = "your_database_name"
                 }.Initialize();
 
