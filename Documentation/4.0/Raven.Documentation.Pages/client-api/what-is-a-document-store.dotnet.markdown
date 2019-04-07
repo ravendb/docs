@@ -1,4 +1,5 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Client API: What is a Document Store
 
 A document store is our main client API object which establishes and manages the connection channel between an application and a database instance. 
@@ -32,23 +33,25 @@ The document store ensures access to the following client API features:
 - [Setting up Authentication and Authorization](../client-api/setting-up-authentication-and-authorization)
 =======
 # Client API : What is a Document Store
+=======
+# Client API: What is a Document Store
+>>>>>>> RDoc-1529-WhatIsADocumentStore
 ---
 {NOTE: }
 
 * The **Document Store** is the main entry point for the Client API.  
 
-* Manages the connection between a client application and a RavenDB server.  
-
-* Exposes the methods for performing all operations that can be run against the associated server(s).  
-  * Use the document store to create new [Session](../client-api/session/what-is-a-session-and-how-does-it-work) objects  
-
-* Holds the authentication certificate, the cache, the cluster topology, and any customizations that may have been applied.  
-
-* The single access point to a particular RavenDB cluster.  
-  * Has a list of URL addresses that point to its associated server nodes  
+* Establishes and manages the connection between a client application and a RavenDB server or cluster of servers.   
+  * Has a list of URL addresses that point to its associated server(s)  
   * Accesses the server via HTTP requests  
 
-* It is recommended that the document store implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton).  
+* Exposes the methods for performing all operations that can be run against the associated server(s).  
+  * Use the document store to create [Session](../client-api/session/what-is-a-session-and-how-does-it-work) objects  
+
+* Holds the [Authentication Certificate](../client-api/setting-up-authentication-and-authorization), the 
+[Cluster Topology](../server/clustering/rachis/cluster-topology), the configurations, the cache, and any customizations that you may have applied.  
+
+* It is recommended that your document store instance implement the [Singleton Pattern](https://csharpindepth.com/articles/Singleton).  
 
 * [How to create a document store](../client-api/creating-document-store)
 
