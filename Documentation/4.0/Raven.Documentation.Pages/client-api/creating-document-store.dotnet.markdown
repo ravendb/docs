@@ -25,9 +25,10 @@
 
 {NOTE/}
 
+---
 {PANEL:Example - Typical Initialization}
 
-This example demonstrates the initialization of a singleton document store, as well as setting the list of URLs and the default database.
+This example demonstrates the implementation of a singleton document store, as well as configuring the list of URLs and the default database.
 {CODE document_store_holder@ClientApi\CreatingDocumentStore.cs /}  
 
 {PANEL/}
