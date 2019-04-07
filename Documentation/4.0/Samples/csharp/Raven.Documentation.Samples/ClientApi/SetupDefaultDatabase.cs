@@ -11,9 +11,6 @@ namespace Raven.Documentation.Samples.ClientApi
         public SetupDefaultDatabase()
         {
             #region default_database_1
-            // when no default database, i.e. `Database` property, is set
-            // we will need to specify the database for each action
-            // if no database is passed explicitly we will get an exception
             using (IDocumentStore store = new DocumentStore
             {
                 Urls = new[] { "http://your_RavenDB_server_URL" }
@@ -21,7 +18,7 @@ namespace Raven.Documentation.Samples.ClientApi
             {
                 using (IDocumentSession session = store.OpenSession(database: "NorthWind"))
                 {
-                    // do your work here
+                    //Do your work here
                 }
                 store.Maintenance.Server.Send(new CompactDatabaseOperation(new CompactSettings
                                                                                         { DatabaseName = "NorthWind" }));
@@ -29,26 +26,22 @@ namespace Raven.Documentation.Samples.ClientApi
             #endregion
 
             #region default_database_2
-            // when `Database` is set to `Northwind`
-            // any `Operation` or `Session` created through `store`
-            // will operate on `Northwind` database by default
-            // if no other database is passed explicitly
             using (IDocumentStore store = new DocumentStore
             {
                 Urls = new[] { "http://your_RavenDB_server_URL" },
                 Database = "Northwind"
             }.Initialize())
             {
-                using (IDocumentSession northwindSession = store.OpenSession()) //default
+                using (IDocumentSession northwindSession = store.OpenSession()) //Default database
                 {
-                    // do your work here
+                    //Do your work here
                 }
                 store.Maintenance.Send(new DeleteIndexOperation("NorthWindIndex"));
 
 
-                using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks")) //explicit pass
+                using (IDocumentSession adventureWorksSession = store.OpenSession("AdventureWorks")) //Specified database
                 {
-                    // do your work here
+                    //Do your work here
                 }
                 store.Maintenance.ForDatabase("AdventureWorks").Send(new DeleteIndexOperation("AdventureWorksIndex"));
             }
