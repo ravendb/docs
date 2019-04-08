@@ -70,6 +70,48 @@ The above command will not throw an exception.
 
 {PANEL/}
 
+{PANEL: `session.Advanced`}
+
+The session.Advanced properties
+
+| Method | Type/Return Value | Description |
+|---|---|---|
+| Clear
+| Defer
+| DocumentQuery<>
+| Equals
+| Evict<>
+| Exists
+| GetChangeVectorFor<>
+| GetCountersFor<>
+| GetCurrentSessionNode
+| GetDocumentId
+| GetHashCode
+| GetLastModifiedFor<>
+| GetMetadataFor
+| GetType
+| HasChanged
+| IgnoreChangesFor
+| Increment<>
+| IsLoaded
+| LoadIntoStream
+| LoadStartingWith<>
+| LoadStartingWithIntoStream
+| Patch<>
+| RawQuery<>
+| Refresh<>
+| SetTransactionMode
+| Stream<>
+| StreamInto<>
+| ToString
+| WaitForIndexesAfterSaveChanges
+| WaitForReplicationAfterSaveChanges
+| WhatChanged
+
+
+
+{PANEL/}
+
 {PANEL:Select N+1 Problem}
 
 The [Select N+1 problem](http://blogs.microsoft.co.il/gilf/2010/08/18/select-n1-problem-how-to-decrease-your-orm-performance/) is very common with all ORMs and ORM-like APIs, including the RavenDB Client API. It results in an excessive number of remote calls to the server, which makes a query very expensive.
